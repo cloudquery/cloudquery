@@ -64,7 +64,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...
 		return nil, fmt.Errorf("failed to unmarshal vercel spec: %w", err)
 	}
 
-	services, err := getServiceClient(veSpec, "")
+	services, err := getServiceClient(logger.With().Str("source", "stripe-client").Logger(), veSpec, "")
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...
 	return &cl, nil
 }
 
-func getServiceClient(spec *Spec, teamID string) (*vercel.Client, error) {
+func getServiceClient(logger zerolog.Logger, spec *Spec, teamID string) (*vercel.Client, error) {
 	if spec.AccessToken == "" {
 		return nil, errors.New("no access token provided")
 	}
@@ -89,13 +89,27 @@ func getServiceClient(spec *Spec, teamID string) (*vercel.Client, error) {
 	if spec.Timeout < 1 {
 		spec.Timeout = 5
 	}
+	if spec.PageSize < 1 {
+		spec.PageSize = 100
+	}
+	if spec.MaxRetries < 1 {
+		spec.MaxRetries = 10
+	}
+	if spec.MaxWait < 1 {
+		spec.MaxWait = 300
+	}
 
-	return vercel.New(&http.Client{
-		Timeout: time.Duration(spec.Timeout) * time.Second,
-	},
+	return vercel.New(
+		logger,
+		&http.Client{
+			Timeout: time.Duration(spec.Timeout) * time.Second,
+		},
 		spec.EndpointURL,
 		spec.AccessToken,
 		teamID,
+		spec.MaxRetries,
+		spec.MaxWait,
+		spec.PageSize,
 	), nil
 }
 

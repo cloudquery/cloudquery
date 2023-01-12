@@ -40,3 +40,12 @@ This is the (nested) spec used by the Vercel source plugin:
 
 - `timeout_secs` (integer in seconds, optional. Default: 5):
   Timeout for requests against the Vercel REST API.
+
+- `max_retries` (integer in seconds, optional. Default: 10):
+  Maximum number of retries for requests against the Vercel REST API.
+
+- `max_wait_secs` (integer in seconds, optional. Default: 300):
+  Maximum wait time between rate limited API requests. The plugin waits until the rate limit resets. If there's a need to wait longer than this time, the request will fail.
+
+- `page_size` (integer, optional. Default: 100):
+  Number of items to request in each API call. This is a tradeoff between the number of API calls and the number of items per API call, which might take too long. The maximum allowed value is 100.
