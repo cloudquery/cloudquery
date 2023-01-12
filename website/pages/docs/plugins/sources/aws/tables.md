@@ -356,6 +356,7 @@
 - [aws_neptune_subnet_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_neptune_subnet_groups.md)
 - [aws_organizations_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_organizations_accounts.md)
 - [aws_organizations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_organizations.md)
+- [aws_organization_resource_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_organization_resource_policies.md)
 - [aws_qldb_ledgers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_qldb_ledgers.md)
   - [aws_qldb_ledger_journal_kinesis_streams](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_qldb_ledger_journal_kinesis_streams.md)
   - [aws_qldb_ledger_journal_s3_exports](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_qldb_ledger_journal_s3_exports.md)

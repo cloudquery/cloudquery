@@ -43,8 +43,9 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute": {
 		// we migrated this to manual written client as it has childs
-		"NewVirtualMachinesClient": true,
-		"NewResourceSKUsClient":    true,
+		"NewVirtualMachinesClient":         true,
+		"NewResourceSKUsClient":            true,
+		"NewVirtualMachineScaleSetsClient": true,
 	},
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos": {
 		"NewDatabaseAccountsClient": true,
@@ -105,6 +106,26 @@ var newFuncToSkipPerPackage = map[string]map[string]bool{
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory": {
 		// requires renaming etag
 		"NewFactoriesClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v2": {
+		// requires setting an API version explicitly
+		"NewDeploymentsClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu": {
+		// Getting "The resource type could not be found in the namespace 'Microsoft.WindowsESU' for api version '2019-09-16-preview'". Seems like the API doesn't work
+		"NewMultipleActivationKeysClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata": {
+		// Requires setting the API version to 2019-05-10-preview
+		"NewSQLServerRegistrationsClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot": {
+		// Requires setting the API version to 2022-08-08
+		"NewBotsClient": true,
+	},
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering": {
+		// The primary key for this resource is Name and not ID
+		"NewServiceProvidersClient": true,
 	},
 }
 

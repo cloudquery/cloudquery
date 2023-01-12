@@ -335,6 +335,7 @@ func tables() []*schema.Table {
 		neptune.SubnetGroups(),
 		organizations.Accounts(),
 		organizations.Organizations(),
+		organizations.ResourcePolicies(),
 		qldb.Ledgers(),
 		quicksight.Analyses(),
 		quicksight.Dashboards(),

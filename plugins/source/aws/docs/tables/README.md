@@ -356,6 +356,7 @@
 - [aws_neptune_subnet_groups](aws_neptune_subnet_groups.md)
 - [aws_organizations_accounts](aws_organizations_accounts.md)
 - [aws_organizations](aws_organizations.md)
+- [aws_organization_resource_policies](aws_organization_resource_policies.md)
 - [aws_qldb_ledgers](aws_qldb_ledgers.md)
   - [aws_qldb_ledger_journal_kinesis_streams](aws_qldb_ledger_journal_kinesis_streams.md)
   - [aws_qldb_ledger_journal_s3_exports](aws_qldb_ledger_journal_s3_exports.md)

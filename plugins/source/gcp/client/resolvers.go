@@ -19,6 +19,11 @@ func ResolveProject(_ context.Context, meta schema.ClientMeta, r *schema.Resourc
 	return r.Set("project_id", client.ProjectId)
 }
 
+func ResolveOrganization(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+	client := meta.(*Client)
+	return r.Set(c.Name, client.OrgId)
+}
+
 func AddGcpMetadata(ctx context.Context, c schema.ClientMeta, r *schema.Resource) error {
 	return resolveLocation(ctx, c, r)
 }

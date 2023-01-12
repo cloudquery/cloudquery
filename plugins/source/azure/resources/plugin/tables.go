@@ -12,7 +12,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/authorization"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/automation"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/azurearcdata"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/azuredata"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/batch"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/billing"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/botservice"
@@ -44,7 +43,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/frontdoor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hanaonazure"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hdinsight"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/healthbot"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/healthcareapis"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hybridcompute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/hybriddatamanager"
@@ -55,7 +53,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mysqlflexibleservers"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/network"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/networkfunction"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/nginx"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/notificationhubs"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/operationalinsights"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/peering"
@@ -79,7 +76,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/streamanalytics"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/support"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/synapse"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsesu"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsiot"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/workloads"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -114,7 +110,6 @@ func generatedTables() []*schema.Table {
 		azurearcdata.PostgresInstances(),
 		azurearcdata.SqlManagedInstances(),
 		azurearcdata.SqlServerInstances(),
-		azuredata.SqlServerRegistrations(),
 		batch.Account(),
 		billing.Accounts(),
 		billing.EnrollmentAccounts(),
@@ -132,7 +127,6 @@ func generatedTables() []*schema.Table {
 		compute.Images(),
 		compute.RestorePointCollections(),
 		compute.Snapshots(),
-		compute.VirtualMachineScaleSets(),
 		confluent.MarketplaceAgreements(),
 		connectedvmware.Clusters(),
 		connectedvmware.Datastores(),
@@ -171,7 +165,6 @@ func generatedTables() []*schema.Table {
 		frontdoor.NetworkExperimentProfiles(),
 		hanaonazure.SapMonitors(),
 		hdinsight.Clusters(),
-		healthbot.Bots(),
 		healthcareapis.Services(),
 		hybridcompute.PrivateLinkScopes(),
 		hybriddatamanager.DataManagers(),
@@ -223,13 +216,11 @@ func generatedTables() []*schema.Table {
 		network.Watchers(),
 		network.WebApplicationFirewallPolicies(),
 		networkfunction.AzureTrafficCollectorsBySubscription(),
-		nginx.Deployments(),
 		notificationhubs.Namespaces(),
 		operationalinsights.Clusters(),
 		operationalinsights.Workspaces(),
 		peering.ServiceCountries(),
 		peering.ServiceLocations(),
-		peering.ServiceProviders(),
 		portal.ListTenantConfigurationViolations(),
 		portal.TenantConfigurations(),
 		postgresql.Servers(),
@@ -282,7 +273,6 @@ func generatedTables() []*schema.Table {
 		support.Tickets(),
 		synapse.PrivateLinkHubs(),
 		synapse.Workspaces(),
-		windowsesu.MultipleActivationKeys(),
 		windowsiot.Services(),
 		workloads.Monitors(),
 	}

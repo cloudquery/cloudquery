@@ -1,6 +1,10 @@
-# Table: azure_windowsesu_multiple_activation_keys
+# Table: azure_compute_virtual_machine_scale_set_vms
 
 The primary key for this table is **id**.
+
+## Relations
+
+This table depends on [azure_compute_virtual_machine_scale_sets](azure_compute_virtual_machine_scale_sets.md).
 
 ## Columns
 
@@ -13,7 +17,13 @@ The primary key for this table is **id**.
 |subscription_id|String|
 |id (PK)|String|
 |location|String|
+|identity|JSON|
+|plan|JSON|
 |properties|JSON|
 |tags|JSON|
+|instance_id|String|
 |name|String|
+|resources|JSON|
+|sku|JSON|
 |type|String|
+|zones|StringArray|
