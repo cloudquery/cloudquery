@@ -1,0 +1,46 @@
+# Oracle Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+import { Callout } from 'nextra-theme-docs';
+
+<Badge text={"Latest: " + getLatestVersion("source", "oracle")}/>
+
+The CloudQuery Oracle plugin extracts Oracle Cloud Infrastructure resources (`oci`). It is based on [the OCI Go SDK](https://github.com/oracle/oci-go-sdk) and the [Oracle Cloud REST API](https://docs.oracle.com/en-us/iaas/api/#/).
+
+## Authentication
+
+In order for CloudQuery to sync resources from your Oracle Cloud setup, you will need to authenticate with your Oracle Cloud account.
+CloudQuery supports the same authentication methods as the OCI Go SDK, and uses the "default" configuration provider. You can read about how to create an Oracle Cloud configuration file in https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm.
+
+An example configuration file (e.g. in `~/.oci/config`) looks like this:
+
+```ini
+[DEFAULT]
+user=ocid1.user.oc1..<unique_ID>
+fingerprint=<your_fingerprint>
+key_file=~/.oci/oci_api_key.pem
+tenancy=ocid1.tenancy.oc1..<unique_ID>
+region=us-ashburn-1
+```
+
+<Callout type="info">
+Note that CloudQuery will `sync` information from all regions - not only the region specified in the `oci` config.
+</Callout>
+
+## Configuration
+
+In order to get started with the Oracle plugin, you need to create a YAML file in your CloudQuery configuration directory (e.g. named `oracle.yml`).
+
+The following example sets up the Oracle plugin, and connects it to a postgresql destination:
+
+```yaml
+kind: source
+spec:
+  name: "oracle"
+  path: cloudquery/oracle
+  version: "VERSION_SOURCE_ORACLE" 
+  destinations: ["postgresql"]
+  tables: ["*"]
+  spec:
+```
