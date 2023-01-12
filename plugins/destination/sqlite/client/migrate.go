@@ -175,6 +175,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 			for _, colChange := range tableChange.columnChanges {
 				if colChange.new {
 					c.logger.Debug().Str("table", table.Name).Str("column", colChange.name).Msg("Column doesn't exist, creating")
+					table := tableChange.table
 					sql := "alter table \"" + table.Name + "\" add column \"" + colChange.name + "\" \"" + colChange.newType + `"`
 					if _, err := c.db.Exec(sql); err != nil {
 						return fmt.Errorf("failed to add column %s on table %s: %w", colChange.name, table.Name, err)
