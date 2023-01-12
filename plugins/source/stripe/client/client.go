@@ -57,6 +57,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, opts 
 		return nil, err
 	}
 
+	if err := validateAccess(services); err != nil {
+		return nil, err
+	}
+
 	cl := New(logger, s, *stSpec, services, o.Backend)
 	return &cl, nil
 }
@@ -86,4 +90,12 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*client.API, error) {
 		Uploads: stripe.GetBackendWithConfig(stripe.UploadsBackend, sCfg),
 	})
 	return c, nil
+}
+
+func validateAccess(svc *client.API) error {
+	_, err := svc.Accounts.Get()
+	if err != nil {
+		return err
+	}
+	return nil
 }
