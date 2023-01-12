@@ -1,11 +1,11 @@
 WITH
     settings_with_logs AS (
-        SELECT resource_uri, storage_account_id, JSONB_ARRAY_ELEMENTS(logs) AS logs FROM azure_monitor_diagnostic_settings
+        SELECT resource_id, storage_account_id, JSONB_ARRAY_ELEMENTS(diagnostic_settings_resource -> 'properties' -> 'logs') AS logs FROM azure_monitor_diagnostic_settings
     ),
     logging_enabled AS (
         SELECT DISTINCT a._cq_id
   FROM azure_keyvault_managed_hsms a
-    LEFT JOIN settings_with_logs s ON a.id = s.resource_uri
+    LEFT JOIN settings_with_logs s ON a.id = s.resource_id
     WHERE (s.logs->>'enabled')::boolean IS TRUE
     AND s.logs->>'category' = 'AuditEvent'
     AND (s.storage_account_id IS NOT NULL OR s.storage_account_id IS DISTINCT FROM '')

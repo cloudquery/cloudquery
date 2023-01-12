@@ -1,7 +1,7 @@
 WITH logging_enabled AS (
   SELECT DISTINCT n.cq_id
   FROM azure_servicebus_namespaces n
-           LEFT JOIN azure_monitor_diagnostic_settings s ON n.id = s.resource_uri
+           LEFT JOIN azure_monitor_diagnostic_settings s ON n.id = s.resource_id
            LEFT JOIN azure_monitor_diagnostic_setting_logs l
                      ON s.cq_id = l.diagnostic_setting_cq_id
   WHERE l.enabled = TRUE
