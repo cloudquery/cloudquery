@@ -26,8 +26,9 @@ The process to follow for adding a new table is:
 
 1. Add a new directory matching the AWS service name under [resources/services](resources/services) (e.g. `resources/services/newservice`), if one doesn't exist already
 2. Create a new file under the new directory with the name of the resource (e.g. `resources/services/newservice/myresource.go`) and add a function that returns `*schema.Table`. The easiest is to copy-paste an existing table as a starting point ([Kinesis](resources/services/kinesis/kinesis.go) is a good example).
-3. Update all the fields, taking special care to ensure that the `transformers.TransformWithStruct()` call in the `Resolver` function has the correct struct type (e.g. `transformers.TransformWithStruct(&types.MyResource{})`)
-4. Implement the resolver function. This should have the signature: 
+3. **Important**: Add a call to the new function to the list of tables in [tables.go](resources/plugin/tables.go). Otherwise, the new table will not be included in the plugin.  
+4. Update all the fields, taking special care to ensure that the `transformers.TransformWithStruct()` call in the `Resolver` function has the correct struct type (e.g. `transformers.TransformWithStruct(&types.MyResource{})`)
+5. Implement the resolver function. This should have the signature: 
    ```go
    func fetchMyResource(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
        // TODO: implement this
@@ -42,7 +43,7 @@ The process to follow for adding a new table is:
    ```
    
    With this in hand, complete the resolver function to fetch all resources. After resources are retrieved, send them to the `res` channel for the SDK to deliver to all destinations.
-5. Implement a mock test in `myresource_mock_test.go`. We will not describe this in detail here; look at a few examples for similar resources to get you started.
+6. Implement a mock test in `myresource_mock_test.go`. We will not describe this in detail here; look at a few examples for similar resources to get you started.
 
 We highly recommend looking at other resources similar to yours to get an idea of what needs to be done in each step.  
 
