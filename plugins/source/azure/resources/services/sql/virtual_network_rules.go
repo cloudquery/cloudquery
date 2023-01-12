@@ -9,12 +9,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Servers() *schema.Table {
+func virtualNetworkRules() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_servers",
-		Resolver:  fetchServers,
+		Name:      "azure_sql_virtual_network_rules",
+		Resolver:  fetchVirtualNetworkRules,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_sql),
-		Transform: transformers.TransformWithStruct(&armsql.Server{}),
+		Transform: transformers.TransformWithStruct(&armsql.VirtualNetworkRule{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -30,19 +30,21 @@ func Servers() *schema.Table {
 				},
 			},
 		},
-		Relations: []*schema.Table{
-			virtualNetworkRules(),
-		},
 	}
 }
 
-func fetchServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchVirtualNetworkRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	p := parent.Item.(*armsql.Server)
 	cl := meta.(*client.Client)
-	svc, err := armsql.NewServersClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armsql.NewVirtualNetworkRulesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	group, err := client.ParseResourceGroup(*p.ID)
+	if err != nil {
+		return err
+	}
+	pager := svc.NewListByServerPager(group, *p.Name, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

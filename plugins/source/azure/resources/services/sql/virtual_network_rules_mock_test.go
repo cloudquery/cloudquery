@@ -5,16 +5,13 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"testing"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
 )
 
-func createServers(router *mux.Router) error {
-	var item armsql.ServersClientListResponse
+func createVirtualNetworkRules(router *mux.Router) error {
+	var item armsql.VirtualNetworkRulesClientListByServerResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -22,7 +19,7 @@ func createServers(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/debug/providers/Microsoft.Sql/servers/test string/virtualNetworkRules", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -34,11 +31,5 @@ func createServers(router *mux.Router) error {
 		}
 	})
 
-	createVirtualNetworkRules(router)
-
 	return nil
-}
-
-func TestServers(t *testing.T) {
-	client.MockTestHelper(t, Servers(), createServers)
 }
