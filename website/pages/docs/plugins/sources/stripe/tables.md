@@ -17,6 +17,7 @@
 - [stripe_credit_notes](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/stripe/docs/tables/stripe_credit_notes.md)
 - [stripe_customers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/stripe/docs/tables/stripe_customers.md) (Incremental)
 - [stripe_disputes](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/stripe/docs/tables/stripe_disputes.md) (Incremental)
+- [stripe_events](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/stripe/docs/tables/stripe_events.md) (Incremental)
 - [stripe_file_links](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/stripe/docs/tables/stripe_file_links.md) (Incremental)
 - [stripe_files](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/stripe/docs/tables/stripe_files.md) (Incremental)
 - [stripe_identity_verification_reports](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/stripe/docs/tables/stripe_identity_verification_reports.md) (Incremental)

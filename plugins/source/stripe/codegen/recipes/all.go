@@ -71,6 +71,10 @@ var AllResources = []*Resource{
 		StateParamName: createdStateParam,
 	},
 	{
+		DataStruct:     &stripe.Event{},
+		StateParamName: createdStateParam,
+	},
+	{
 		DataStruct:     &stripe.FileLink{},
 		StateParamName: createdStateParam,
 	},
