@@ -19,6 +19,7 @@
   "shopify": "Shopify",
   "slack": "Slack",
   "snyk": "Snyk",
+  "stripe": "Stripe",
   "pagerduty": "PagerDuty",
   "tailscale": "Tailscale",
   "terraform": "Terraform",
