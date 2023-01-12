@@ -44,7 +44,7 @@ Click Create New Dataset and choose PostgresSQL (In this tutorial we will connec
 
 ### Step 3: Visualize the Data!
 
-Choose the table you want to visualize, in this case we will choose the`aws_resources` view which you need to create. To create or update the view, run [this query](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/views/resources.sql) on your database. This will allow you to visualize all resources across all accounts and regions.
+Choose the table you want to visualize, in this case we will choose the`aws_resources` view which you need to create. To create or update the view, run [this query](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/views/resources.sql) (part of the CloudQuery AWS Source plugin source code) on your database. This will allow you to visualize all resources across all accounts and regions.
 
 ![](/images/blog/cloud-asset-inventory-cloudquery-aws-quicksight/2.png)
 
