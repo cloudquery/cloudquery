@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v2.1.0...plugins-source-github-v2.1.1) (2023-01-12)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.2 ([#6695](https://github.com/cloudquery/cloudquery/issues/6695)) ([694ab9f](https://github.com/cloudquery/cloudquery/commit/694ab9f3e20473146e3620d7b03bb17eb259d697))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.25.0 ([#6745](https://github.com/cloudquery/cloudquery/issues/6745)) ([9c41854](https://github.com/cloudquery/cloudquery/commit/9c418547c3bbff97449765e337182230fb5e40d5))
+* **github:** Fix panic in workflow fetching ([#6693](https://github.com/cloudquery/cloudquery/issues/6693)) ([a582f0b](https://github.com/cloudquery/cloudquery/commit/a582f0b76bb28be4ca6a9448fcf452d7408b12fd))
+
 ## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v2.0.0...plugins-source-github-v2.1.0) (2023-01-10)
 
 
