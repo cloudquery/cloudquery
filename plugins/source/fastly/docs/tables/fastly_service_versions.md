@@ -9,9 +9,9 @@ The composite primary key for this table is (**number**, **service_id**).
 This table depends on [fastly_services](fastly_services.md).
 
 The following tables depend on fastly_service_versions:
-  - [fastly_service_health_checks](fastly_service_health_checks.md)
-  - [fastly_service_domains](fastly_service_domains.md)
   - [fastly_service_backends](fastly_service_backends.md)
+  - [fastly_service_domains](fastly_service_domains.md)
+  - [fastly_service_health_checks](fastly_service_health_checks.md)
 
 ## Columns
 

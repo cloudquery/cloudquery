@@ -7,8 +7,8 @@ The primary key for this table is **arn**.
 ## Relations
 
 The following tables depend on aws_redshift_clusters:
-  - [aws_redshift_snapshots](aws_redshift_snapshots.md)
   - [aws_redshift_cluster_parameter_groups](aws_redshift_cluster_parameter_groups.md)
+  - [aws_redshift_snapshots](aws_redshift_snapshots.md)
 
 ## Columns
 

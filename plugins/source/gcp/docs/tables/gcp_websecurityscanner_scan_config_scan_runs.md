@@ -9,8 +9,8 @@ The composite primary key for this table is (**project_id**, **name**).
 This table depends on [gcp_websecurityscanner_scan_configs](gcp_websecurityscanner_scan_configs.md).
 
 The following tables depend on gcp_websecurityscanner_scan_config_scan_runs:
-  - [gcp_websecurityscanner_scan_config_scan_run_findings](gcp_websecurityscanner_scan_config_scan_run_findings.md)
   - [gcp_websecurityscanner_scan_config_scan_run_crawled_urls](gcp_websecurityscanner_scan_config_scan_run_crawled_urls.md)
+  - [gcp_websecurityscanner_scan_config_scan_run_findings](gcp_websecurityscanner_scan_config_scan_run_findings.md)
 
 ## Columns
 
