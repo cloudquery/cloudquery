@@ -1,8 +1,8 @@
-WITH secured_vms AS (SELECT compute_virtual_machine_id
-                     FROM azure_compute_virtual_machine_extensions
-                     WHERE type = 'DependencyAgentLinux'
-                       AND publisher = 'Microsoft.Azure.Monitoring.DependencyAgent'
-                       AND provisioning_state = 'Succeeded')
+WITH secured_vms AS ( SELECT vm.id as compute_virtual_machine_id
+                      FROM azure_compute_virtual_machines vm left join azure_compute_virtual_machine_extensions ex on vm._cq_id = ex._cq_parent_id
+                     WHERE properties ->> 'publisher' = 'DependencyAgentLinux'
+                       AND properties ->> 'type' = 'Microsoft.Azure.Monitoring.DependencyAgent'
+                       AND properties ->> 'provisioningState' = 'Succeeded')
 insert into azure_policy_results
 SELECT
   :'execution_time',

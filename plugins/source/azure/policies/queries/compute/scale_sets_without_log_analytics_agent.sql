@@ -1,9 +1,9 @@
 WITH sets_with_logs AS (
-    SELECT compute_virtual_machine_id
-    FROM azure_compute_virtual_machine_extensions
-    WHERE publisher = 'Microsoft.EnterpriseCloud.Monitoring'
-      AND type IN ('MicrosoftMonitoringAgent', 'OmsAgentForLinux')
-      AND provisioning_state = 'Succeeded'
+    SELECT vm.id as compute_virtual_machine_id
+    FROM azure_compute_virtual_machines vm left join azure_compute_virtual_machine_extensions ex on vm._cq_id = ex._cq_parent_id
+    WHERE ex.properties ->> 'publisher' = 'Microsoft.EnterpriseCloud.Monitoring'
+      AND  ex.properties ->> 'type' IN ('MicrosoftMonitoringAgent', 'OmsAgentForLinux')
+      AND ex.properties ->> 'provisioningState' = 'Succeeded'
       -- AND settings ->> 'workspaceId' IS NOT NULL -- TODO FIXME missing?
       )
 insert into azure_policy_results
