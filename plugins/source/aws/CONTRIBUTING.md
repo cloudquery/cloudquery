@@ -25,7 +25,7 @@ As a prerequisite, in [aws-sdk-go-v2](https://pkg.go.dev/github.com/aws/aws-sdk-
 The process to follow for adding a new table is:
 
 1. Add a new directory matching the AWS service name under [resources/services](resources/services) (e.g. `resources/services/newservice`), if one doesn't exist already
-2. Create a new file under the new directory with the name of the resource (e.g. `resources/services/newservice/myresource.go`) and add a function that returns `*schema.Table`. The easiest is to copy-paste an existing table as a starting point ([Kinesis](resources/services/kinesis/kinesis.go) is a good example).
+2. Create a new file under the new directory with the name of the resource (e.g. `resources/services/newservice/myresource.go`) and add a function that returns `*schema.Table`. The easiest is to copy-paste an existing table as a starting point ([`Kinesis`](resources/services/kinesis/kinesis.go) is a good example).
 3. **Important**: Add a call to the new function to the list of tables in [tables.go](resources/plugin/tables.go). Otherwise, the new table will not be included in the plugin.  
 4. Update all the fields, taking special care to ensure that the `transformers.TransformWithStruct()` call in the `Resolver` function has the correct struct type (e.g. `transformers.TransformWithStruct(&types.MyResource{})`)
 5. Implement the resolver function. This should have the signature: 
@@ -35,7 +35,7 @@ The process to follow for adding a new table is:
    }
    ```
    
-   The easiest is to copy-paste an existing resolver as a starting point. (Again, [Kinesis](resources/services/kinesis/streams_fetch.go) is a good example.)
+   The easiest is to copy-paste an existing resolver as a starting point. (Again, [`Kinesis`](resources/services/kinesis/streams_fetch.go) is a good example.)
    
    You may use a type assertion on `meta` to obtain a reference to your interface functions, e.g.:
    ```go
