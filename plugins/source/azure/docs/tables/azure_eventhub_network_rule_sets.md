@@ -1,11 +1,10 @@
-# Table: azure_eventhub_namespaces
+# Table: azure_eventhub_network_rule_sets
 
 The primary key for this table is **id**.
 
 ## Relations
 
-The following tables depend on azure_eventhub_namespaces:
-  - [azure_eventhub_network_rule_sets](azure_eventhub_network_rule_sets.md)
+This table depends on [azure_eventhub_namespaces](azure_eventhub_namespaces.md).
 
 ## Columns
 
@@ -15,13 +14,9 @@ The following tables depend on azure_eventhub_namespaces:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
 |id (PK)|String|
-|identity|JSON|
-|location|String|
 |properties|JSON|
-|sku|JSON|
-|tags|JSON|
+|location|String|
 |name|String|
 |system_data|JSON|
 |type|String|
