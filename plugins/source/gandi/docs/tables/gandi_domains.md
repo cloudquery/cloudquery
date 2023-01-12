@@ -5,10 +5,10 @@ The primary key for this table is **id**.
 ## Relations
 
 The following tables depend on gandi_domains:
+  - [gandi_domain_dnssec_keys](gandi_domain_dnssec_keys.md)
+  - [gandi_domain_glue_records](gandi_domain_glue_records.md)
   - [gandi_domain_livedns](gandi_domain_livedns.md)
   - [gandi_domain_web_redirections](gandi_domain_web_redirections.md)
-  - [gandi_domain_glue_records](gandi_domain_glue_records.md)
-  - [gandi_domain_dnssec_keys](gandi_domain_dnssec_keys.md)
 
 ## Columns
 

@@ -13,7 +13,7 @@ func TenantActivityLogAlerts() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_monitor_tenant_activity_log_alerts",
 		Resolver:  fetchTenantActivityLogAlerts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_insights),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_tenant_activity_log_alerts", client.Namespacemicrosoft_insights),
 		Transform: transformers.TransformWithStruct(&armmonitor.ActivityLogAlertResource{}),
 		Columns: []schema.Column{
 			{

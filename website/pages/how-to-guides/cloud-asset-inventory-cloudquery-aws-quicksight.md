@@ -28,7 +28,7 @@ In this guide, we will walk you through how to set up CloudQuery to build your c
 
 ## Walkthrough
 
-### Step 1: **Install or Deploy CloudQuery**
+### Step 1: Install or Deploy CloudQuery
 
 If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool, take a look at our [quickstart guide](/docs/quickstart) and [AWS source plugin](/docs/plugins/sources/aws/overview).
 
@@ -44,7 +44,7 @@ Click Create New Dataset and choose PostgresSQL (In this tutorial we will connec
 
 ### Step 3: Visualize the Data!
 
-Choose the table you want to visualize, in this case we will choose the`aws_resources` view which you need to [create](https://www.cloudquery.io/blog/aws-resources-view) to visualize all resources across all accounts and regions.
+Choose the table you want to visualize, in this case we will choose the`aws_resources` view which you need to create. To create or update the view, run [this query](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/views/resources.sql) (part of the CloudQuery AWS Source plugin source code) on your database. This will allow you to visualize all resources across all accounts and regions.
 
 ![](/images/blog/cloud-asset-inventory-cloudquery-aws-quicksight/2.png)
 
