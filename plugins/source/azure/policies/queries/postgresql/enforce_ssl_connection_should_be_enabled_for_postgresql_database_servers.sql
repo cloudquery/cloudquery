@@ -7,7 +7,7 @@ SELECT
   subscription_id
   id,
   case
-    when properties->'sslEnforcement' IS DISTINCT FROM 'Enabled'
+    when properties->>'sslEnforcement' IS DISTINCT FROM 'Enabled'
     then 'fail' else 'pass'
   end
 FROM azure_postgresql_servers

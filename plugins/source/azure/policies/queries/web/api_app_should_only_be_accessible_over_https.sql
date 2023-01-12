@@ -7,7 +7,7 @@ SELECT
   subscription_id,
   id,
   case
-    when kind LIKE '%api' AND https_only IS NOT TRUE
+    when kind LIKE '%api' AND (properties ->> 'httpsOnly')::boolean IS NOT TRUE
       then 'fail' else 'pass'
   end
-FROM azure_web_apps
+FROM azure_appservice_web_apps

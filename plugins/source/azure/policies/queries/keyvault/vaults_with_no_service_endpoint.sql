@@ -4,10 +4,10 @@ WITH subs AS (
 ),
 secured_vaults AS (SELECT v._cq_id, nvr->>'id' AS subnet_id
                         FROM azure_keyvault_keyvault  v,
-                             jsonb_array_elements(v.properties->'networkACLs'->'virtualNetworkRules') AS nvr
+                             jsonb_array_elements(v.properties->'networkAcls'->'virtualNetworkRules') AS nvr
                                  LEFT JOIN subs
                                            ON nvr->>'id' = subs.subnet->>'id'
-                        WHERE v.properties->'networkACLs'->>'defaultAction' = 'Deny'
+                        WHERE v.properties->'networkAcls'->>'defaultAction' = 'Deny'
                           AND subs.provisioning_state = 'Succeeded')
 -- TODO check
 insert into azure_policy_results

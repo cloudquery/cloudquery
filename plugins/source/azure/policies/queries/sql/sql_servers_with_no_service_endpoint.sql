@@ -4,10 +4,10 @@ WITH subs AS (
 ), secured_servers AS (SELECT s._cq_id
                          FROM azure_sql_servers s
                                   LEFT JOIN azure_sql_virtual_network_rules r
-                                            ON s.id = r.sql_server_id
+                                            ON s._cq_id = r._cq_parent_id
                                   LEFT JOIN subs
-                                            ON r.virtual_network_subnet_id = subs.subnet->>'id'
-                         WHERE r.virtual_network_subnet_id IS NOT NULL
+                                            ON r.properties ->> 'virtualNetworkSubnetId' = subs.subnet->>'id'
+                         WHERE r.properties -> 'virtualNetworkSubnetId' IS NOT NULL
                            AND subs.provisioning_state = 'Succeeded')
 insert into azure_policy_results
 SELECT
