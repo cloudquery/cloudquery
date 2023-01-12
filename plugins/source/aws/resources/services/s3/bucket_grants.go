@@ -13,7 +13,6 @@ func BucketGrants() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_Grant.html`,
 		Resolver:    fetchS3BucketGrants,
 		Transform:   transformers.TransformWithStruct(&types.Grant{}),
-		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
