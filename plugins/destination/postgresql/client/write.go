@@ -69,7 +69,8 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 			sql = c.upsert(table)
 		}
 		batch.Queue(sql, r.Data...)
-		if batch.Len() >= c.batchSize {
+		batchSize := batch.Len()
+		if batchSize >= c.batchSize {
 			br := c.conn.SendBatch(ctx, batch)
 			if err := br.Close(); err != nil {
 				var pgErr *pgconn.PgError
@@ -79,12 +80,13 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 				}
 				return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
 			}
-			atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
+			atomic.AddUint64(&c.metrics.Writes, uint64(batchSize))
 			batch = &pgx.Batch{}
 		}
 	}
 
-	if batch.Len() > 0 {
+	batchSize := batch.Len()
+	if batchSize > 0 {
 		br := c.conn.SendBatch(ctx, batch)
 		if err := br.Close(); err != nil {
 			var pgErr *pgconn.PgError
@@ -94,7 +96,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 			}
 			return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
 		}
-		atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
+		atomic.AddUint64(&c.metrics.Writes, uint64(batchSize))
 	}
 
 	return nil

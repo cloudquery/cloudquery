@@ -137,6 +137,8 @@
   - [gcp_sql_users](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_sql_users.md)
 - [gcp_storage_buckets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_storage_buckets.md)
   - [gcp_storage_bucket_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_storage_bucket_policies.md)
+- [gcp_vpcaccess_locations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_vpcaccess_locations.md)
+  - [gcp_vpcaccess_connectors](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_vpcaccess_connectors.md)
 - [gcp_websecurityscanner_scan_configs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_websecurityscanner_scan_configs.md)
   - [gcp_websecurityscanner_scan_config_scan_runs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_websecurityscanner_scan_config_scan_runs.md)
     - [gcp_websecurityscanner_scan_config_scan_run_crawled_urls](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_websecurityscanner_scan_config_scan_run_crawled_urls.md)
