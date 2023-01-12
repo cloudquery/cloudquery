@@ -191,6 +191,7 @@
 - [azure_sql_instance_pools](azure_sql_instance_pools.md)
 - [azure_sql_managed_instances](azure_sql_managed_instances.md)
 - [azure_sql_servers](azure_sql_servers.md)
+  - [azure_sql_virtual_network_rules](azure_sql_virtual_network_rules.md)
 - [azure_sql_virtual_clusters](azure_sql_virtual_clusters.md)
 - [azure_sqlvirtualmachine_groups](azure_sqlvirtualmachine_groups.md)
 - [azure_sqlvirtualmachine_sql_virtual_machines](azure_sqlvirtualmachine_sql_virtual_machines.md)

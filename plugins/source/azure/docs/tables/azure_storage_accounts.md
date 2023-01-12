@@ -17,6 +17,7 @@ The following tables depend on azure_storage_accounts:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|subscription_id|String|
 |id (PK)|String|
 |location|String|
 |extended_location|JSON|

@@ -1,11 +1,10 @@
-# Table: azure_sql_servers
+# Table: azure_sql_virtual_network_rules
 
 The primary key for this table is **id**.
 
 ## Relations
 
-The following tables depend on azure_sql_servers:
-  - [azure_sql_virtual_network_rules](azure_sql_virtual_network_rules.md)
+This table depends on [azure_sql_servers](azure_sql_servers.md).
 
 ## Columns
 
@@ -17,10 +16,6 @@ The following tables depend on azure_sql_servers:
 |_cq_parent_id|UUID|
 |subscription_id|String|
 |id (PK)|String|
-|location|String|
-|identity|JSON|
 |properties|JSON|
-|tags|JSON|
-|kind|String|
 |name|String|
 |type|String|

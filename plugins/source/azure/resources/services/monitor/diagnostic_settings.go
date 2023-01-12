@@ -13,7 +13,7 @@ import (
 )
 
 type diagnosticSettingsWrapper struct {
-	armmonitor.DiagnosticSettingsResource
+	*armmonitor.DiagnosticSettingsResource
 	ResourceId string
 }
 
@@ -77,7 +77,7 @@ func fetchDiagnosticSettings(ctx context.Context, meta schema.ClientMeta, parent
 				}
 				for _, ds := range p.Value {
 					res <- diagnosticSettingsWrapper{
-						*ds,
+						ds,
 						*r.ID,
 					}
 				}
