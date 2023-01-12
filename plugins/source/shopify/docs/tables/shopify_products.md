@@ -5,8 +5,8 @@ The primary key for this table is **id**.
 ## Relations
 
 The following tables depend on shopify_products:
-  - [shopify_product_variants](shopify_product_variants.md)
   - [shopify_product_images](shopify_product_images.md)
+  - [shopify_product_variants](shopify_product_variants.md)
 
 ## Columns
 
