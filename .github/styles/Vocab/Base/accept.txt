@@ -135,6 +135,7 @@ Snyk
 SRE
 SREs
 Steampipe
+Stripe
 subfolder
 subnet
 subpolicies
