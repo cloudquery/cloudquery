@@ -13,7 +13,6 @@ func BucketGrants() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_Grant.html`,
 		Resolver:    fetchS3BucketGrants,
 		Transform:   transformers.TransformWithStruct(&types.Grant{}),
-		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -21,9 +20,16 @@ func BucketGrants() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
-				Name:     "bucket_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:            "bucket_arn",
+				Type:            schema.TypeString,
+				Resolver:        schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+			{
+				Name:            "grantee_id",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("Grantee.ID"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 	}
