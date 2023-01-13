@@ -26,9 +26,15 @@ func BucketGrants() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
+				Name:            "grantee_type",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("Grantee.Type"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+			{
 				Name:            "grantee_id",
 				Type:            schema.TypeString,
-				Resolver:        schema.PathResolver("Grantee.ID"),
+				Resolver:        resolveBucketGranteeID,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
