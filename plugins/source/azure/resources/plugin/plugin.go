@@ -42,6 +42,7 @@ var customTables = []*schema.Table{
 	mariadb.Servers(),
 	monitor.TenantActivityLogAlerts(),
 	monitor.DiagnosticSettings(),
+	monitor.ActivityLogAlerts(),
 	mysql.Servers(),
 	network.ExpressRouteGateways(),
 	security.Pricings(),
