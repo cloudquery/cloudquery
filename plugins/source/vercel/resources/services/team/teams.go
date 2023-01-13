@@ -9,9 +9,10 @@ import (
 
 func Teams() *schema.Table {
 	return &schema.Table{
-		Name:      "vercel_teams",
-		Resolver:  fetchTeams,
-		Transform: transformers.TransformWithStruct(&vercel.Team{}, client.SharedTransformers()...),
+		Name:          "vercel_teams",
+		Resolver:      fetchTeams,
+		Transform:     transformers.TransformWithStruct(&vercel.Team{}, client.SharedTransformers()...),
+		IsIncremental: true,
 		Columns: []schema.Column{
 			{
 				Name:     "id",
