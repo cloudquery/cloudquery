@@ -156,8 +156,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork v1.1.0 
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork v1.1.0/go.mod h1:243D9iHbcQXoFUtgHJwL7gl2zx1aDuDMjvBZVGr2uW0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction v1.0.0 h1:UVtXsUrI42NcbF2Gix72ocqrSwGGXGpyEqCRD8/R/KY=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction v1.0.0/go.mod h1:NopiK8zJllx4yy6CPbkpOIu5B+ZVYSEEbMoqoXU1Wl4=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx v1.0.1 h1:CHxPPRzAmUuS2IICn2+yaDK1UvOJQYnO+LNFxTxFRUU=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx v1.0.1/go.mod h1:48/T/8W/5Aovgn3AD+koLpqWo/1H86Z8DoGkhJIlThg=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v2 v2.0.0 h1:HwXVlgG4XaUBd0/lUGJ9lsG9pWzu7A1JpdNiy1R7UdA=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v2 v2.0.0/go.mod h1:VEHdexm48gSyyFNL3OlBTwhSWpL9xeeymKeSqieivbg=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs v1.0.0 h1:HEDHc0NG7a3n4W7h2ZVhHHO3mwjgmhxk4iaJ95L3P2w=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs v1.0.0/go.mod h1:38scdclLd79YBNBeF+8vwMHYglYHP2g1yNzMjOzIIW8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights v1.0.0 h1:hdC0QToUqJikvZXE/ZSHafNv10IcYYkCPY7B99QhNSc=
@@ -214,8 +214,6 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport v1.0.0 
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport v1.0.0/go.mod h1:1cSbREmeSg3E0axaZjCa6PjG5LgxP+GNrsj+6x1CShk=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse v0.5.0 h1:CMHxfGGGbg9ua3uSBNRdhKa+fciYNavayBiG0I6LA34=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse v0.5.0/go.mod h1:0LrLPHG/bVyQWENxWqSj2ycnnrpTjeSFrKuWymCBceM=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu v0.5.0 h1:3KqtRRZBq1l4VzJXMDl63EXdfAp4bQoULM39fIZITDM=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu v0.5.0/go.mod h1:yEqTWOTAVoFRXM0b6XSb1xpN4HgplSMQYjsZz1PFtg0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot v1.0.0 h1:gg1fn6y2Jd+fTUxMau0UINwLCjEzELbyzoy8+c26phU=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot v1.0.0/go.mod h1:kdl0zSso4qqJdaxAr31cwQXwBZLd+zUT5O3EQbC3Jc8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads v0.2.0 h1:t6Ef1sDPDa/hPY6HWuATAYD7OEX4e3tz0sh32ecN+g8=
@@ -231,8 +229,8 @@ github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWR
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/plugin-sdk v1.23.0 h1:pjgxQdozJ9fgD1v7r+d4YQR73bhC0t7fjT52C5HTpkg=
-github.com/cloudquery/plugin-sdk v1.23.0/go.mod h1:teMPyCON3uPdMsHvzpSiOg+IK2sOR5Tf9dYLreoURzI=
+github.com/cloudquery/plugin-sdk v1.25.0 h1:LnKWhX94AF8Y/GASzLCTlMF4rZX85KXcA4CjB2vERtc=
+github.com/cloudquery/plugin-sdk v1.25.0/go.mod h1:teMPyCON3uPdMsHvzpSiOg+IK2sOR5Tf9dYLreoURzI=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=

@@ -44,6 +44,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Sour
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 	config.SetDefaults()
+	err = config.Validate()
+	if err != nil {
+		return nil, fmt.Errorf("failed to validate spec: %w", err)
+	}
 
 	client := hackernews.NewClient()
 	if err != nil {

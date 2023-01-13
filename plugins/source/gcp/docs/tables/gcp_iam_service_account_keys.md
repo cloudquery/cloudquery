@@ -20,7 +20,7 @@ This table depends on [gcp_iam_service_accounts](gcp_iam_service_accounts.md).
 |service_account_unique_id|String|
 |name (PK)|String|
 |key_algorithm|String|
-|public_key_data|IntArray|
+|public_key_data|ByteArray|
 |valid_after_time|Timestamp|
 |valid_before_time|Timestamp|
 |key_origin|String|

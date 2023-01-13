@@ -1,6 +1,9 @@
 package items
 
 import (
+	"reflect"
+
+	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/hermanschaaf/hackernews"
@@ -15,6 +18,8 @@ func Items() *schema.Table {
 		Transform: transformers.TransformWithStruct(
 			&hackernews.Item{},
 			transformers.WithSkipFields("ID"),
+			transformers.WithTypeTransformer(typeTransformer),
+			transformers.WithResolverTransformer(resolverTransformer),
 		),
 		Columns: []schema.Column{
 			{
@@ -28,4 +33,18 @@ func Items() *schema.Table {
 			},
 		},
 	}
+}
+
+func typeTransformer(f reflect.StructField) (schema.ValueType, error) {
+	if f.Name == "Time" {
+		return schema.TypeTimestamp, nil
+	}
+	return transformers.DefaultTypeTransformer(f)
+}
+
+func resolverTransformer(f reflect.StructField, path string) schema.ColumnResolver {
+	if f.Name == "Time" {
+		return client.UnixTimeResolver(f.Name)
+	}
+	return transformers.DefaultResolverTransformer(f, path)
 }

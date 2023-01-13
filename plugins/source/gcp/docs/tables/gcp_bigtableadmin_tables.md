@@ -2,7 +2,7 @@
 
 https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances.tables#Table
 
-The primary key for this table is **project_id**.
+The composite primary key for this table is (**project_id**, **instance_name**, **name**).
 
 ## Relations
 
@@ -17,6 +17,8 @@ This table depends on [gcp_bigtableadmin_instances](gcp_bigtableadmin_instances.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
+|instance_name (PK)|String|
+|name (PK)|String|
 |families|StringArray|
 |family_infos|JSON|
 |deletion_protection|Int|

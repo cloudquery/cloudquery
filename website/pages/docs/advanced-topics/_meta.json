@@ -6,5 +6,6 @@
   "proxy-configuration": "Proxy Configuration",
   "rate-limiting": "Rate Limiting",
   "running-cloudquery-in-parallel": "Running CloudQuery in Parallel",
-  "security": "Security"
+  "security": "Security",
+  "managing-incremental-tables": "Managing Incremental Tables"
 }

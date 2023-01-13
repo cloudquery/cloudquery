@@ -6,6 +6,61 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [11.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v11.0.0...plugins-source-aws-v11.0.1) (2023-01-12)
+
+
+### Bug Fixes
+
+* **aws:** Correctly fill in `grantee_id` column to `aws_s3_bucket_grants` ([#6772](https://github.com/cloudquery/cloudquery/issues/6772)) ([2cf0451](https://github.com/cloudquery/cloudquery/commit/2cf0451476faaaa014fa723be0e9732cb51d21da))
+* Update endpoints ([#6774](https://github.com/cloudquery/cloudquery/issues/6774)) ([0523a1a](https://github.com/cloudquery/cloudquery/commit/0523a1a0e2b7ccd01a5222f58bbc484cf6968ca4))
+
+## [11.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v10.1.0...plugins-source-aws-v11.0.0) (2023-01-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* introduce `aws_s3_bucket_grants` explicit primary key `(bucket_arn, grantee_id)`. If you've previously synced this table you'll need to drop it for the PK change (migration) to succeed.
+
+### Features
+
+* **aws:** Add Org resource policies ([#6743](https://github.com/cloudquery/cloudquery/issues/6743)) ([80dcf8e](https://github.com/cloudquery/cloudquery/commit/80dcf8e9c5c13adcd91f58046d712bf87d6c1d3f))
+* **aws:** Add support for xray resource policy ([#4833](https://github.com/cloudquery/cloudquery/issues/4833)) ([b68dc35](https://github.com/cloudquery/cloudquery/commit/b68dc350487194de6d5600663a147cca21123c82))
+
+
+### Bug Fixes
+
+* **aws:** Add PKs To IAM Resources ([#6741](https://github.com/cloudquery/cloudquery/issues/6741)) ([f7cdb07](https://github.com/cloudquery/cloudquery/commit/f7cdb07d19447cfc3651892b7d8d870ce3f29c15))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.2 ([#6695](https://github.com/cloudquery/cloudquery/issues/6695)) ([694ab9f](https://github.com/cloudquery/cloudquery/commit/694ab9f3e20473146e3620d7b03bb17eb259d697))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.25.0 ([#6745](https://github.com/cloudquery/cloudquery/issues/6745)) ([9c41854](https://github.com/cloudquery/cloudquery/commit/9c418547c3bbff97449765e337182230fb5e40d5))
+* introduce `aws_s3_bucket_grants` explicit primary key `(bucket_arn, grantee_id)`. If you've previously synced this table you'll need to drop it for the PK change (migration) to succeed. ([cf35801](https://github.com/cloudquery/cloudquery/commit/cf3580131cd9957b4a569e4ff44acc529b532826))
+
+## [10.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v10.0.0...plugins-source-aws-v10.1.0) (2023-01-11)
+
+
+### Features
+
+* **aws:** Add support for Savingsplans ([#6660](https://github.com/cloudquery/cloudquery/issues/6660)) ([6566ac5](https://github.com/cloudquery/cloudquery/commit/6566ac566816ab3de6d2a3433db88501b38b3564))
+
+
+### Bug Fixes
+
+* Update endpoints ([#6652](https://github.com/cloudquery/cloudquery/issues/6652)) ([6a53fa9](https://github.com/cloudquery/cloudquery/commit/6a53fa92f4e6b9097f5759384d07a513db1bdbbb))
+
+## [10.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v9.2.0...plugins-source-aws-v10.0.0) (2023-01-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** `aws_amp_rule_groups_namespaces` column `data` type changed from `IntArray` to `ByteArray`
+* **deps:** `aws_iam_virtual_mfa_devices` column `base32_string_seed` type changed from `IntArray` to `ByteArray`
+* **deps:** `aws_iam_virtual_mfa_devices` column `qr_code_png` type changed from `IntArray` to `ByteArray`
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.1 ([31405ae](https://github.com/cloudquery/cloudquery/commit/31405aec106a1ea9eef7a05fc46cb5f6dfabebce))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.1 ([31405ae](https://github.com/cloudquery/cloudquery/commit/31405aec106a1ea9eef7a05fc46cb5f6dfabebce))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.1 ([31405ae](https://github.com/cloudquery/cloudquery/commit/31405aec106a1ea9eef7a05fc46cb5f6dfabebce))
+
 ## [9.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v9.1.1...plugins-source-aws-v9.2.0) (2023-01-10)
 
 

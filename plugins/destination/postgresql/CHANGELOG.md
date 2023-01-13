@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.4...plugins-destination-postgresql-v2.0.5) (2023-01-10)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.1 ([#6553](https://github.com/cloudquery/cloudquery/issues/6553)) ([392b848](https://github.com/cloudquery/cloudquery/commit/392b848b3124f9cf28f6234fdb9a43d671069879))
+* Error if after the migration there are `not null` columns that are not part of the new schema ([#6519](https://github.com/cloudquery/cloudquery/issues/6519)) ([566da52](https://github.com/cloudquery/cloudquery/commit/566da52d730f8ce0b88277f71d88fe0d861a336e))
+
 ## [2.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.3...plugins-destination-postgresql-v2.0.4) (2023-01-09)
 
 

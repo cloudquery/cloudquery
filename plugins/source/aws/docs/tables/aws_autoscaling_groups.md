@@ -7,8 +7,8 @@ The primary key for this table is **arn**.
 ## Relations
 
 The following tables depend on aws_autoscaling_groups:
-  - [aws_autoscaling_group_scaling_policies](aws_autoscaling_group_scaling_policies.md)
   - [aws_autoscaling_group_lifecycle_hooks](aws_autoscaling_group_lifecycle_hooks.md)
+  - [aws_autoscaling_group_scaling_policies](aws_autoscaling_group_scaling_policies.md)
 
 ## Columns
 

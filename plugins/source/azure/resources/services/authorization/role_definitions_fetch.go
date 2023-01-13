@@ -14,7 +14,7 @@ func fetchRoleDefinitions(ctx context.Context, meta schema.ClientMeta, parent *s
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager("global", nil)
+	pager := svc.NewListPager("subscriptions/"+cl.SubscriptionId, &armauthorization.RoleDefinitionsClientListOptions{Filter: nil})
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

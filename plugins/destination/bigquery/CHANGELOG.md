@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.0.4...plugins-destination-bigquery-v2.1.0) (2023-01-10)
+
+
+### Features
+
+* **bigquery:** Add call to action to type change error message ([#6644](https://github.com/cloudquery/cloudquery/issues/6644)) ([9daa552](https://github.com/cloudquery/cloudquery/commit/9daa5522f07b300d63deaeca62b4eb710cb1d5a0))
+* **bigquery:** Add table name to auto migrate error messages ([#6638](https://github.com/cloudquery/cloudquery/issues/6638)) ([e5edf0d](https://github.com/cloudquery/cloudquery/commit/e5edf0d284adbcce9c708977c417051c0da5f732))
+
+## [2.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.0.3...plugins-destination-bigquery-v2.0.4) (2023-01-10)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.1 ([#6553](https://github.com/cloudquery/cloudquery/issues/6553)) ([392b848](https://github.com/cloudquery/cloudquery/commit/392b848b3124f9cf28f6234fdb9a43d671069879))
+
 ## [2.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.0.2...plugins-destination-bigquery-v2.0.3) (2023-01-09)
 
 
