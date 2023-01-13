@@ -2,26 +2,19 @@ package subscription
 
 import (
 	"encoding/json"
-	"net/http"
-	"testing"
-
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
+	"net/http"
 )
 
-func createSubscriptions(router *mux.Router) error {
-	var item armsubscription.SubscriptionsClientListResponse
+func createLocations(router *mux.Router) error {
+	var item armsubscription.SubscriptionsClientListLocationsResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
 
-	emptyStr := ""
-	item.NextLink = &emptyStr
-
-	router.HandleFunc("/subscriptions", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/test string/locations", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -32,10 +25,5 @@ func createSubscriptions(router *mux.Router) error {
 			return
 		}
 	})
-	createLocations(router)
 	return nil
-}
-
-func TestSubscriptions(t *testing.T) {
-	client.MockTestHelper(t, Subscriptions(), createSubscriptions)
 }

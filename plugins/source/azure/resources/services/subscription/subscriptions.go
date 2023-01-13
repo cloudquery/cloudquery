@@ -23,5 +23,8 @@ func Subscriptions() *schema.Table {
 				},
 			},
 		},
+		Relations: []*schema.Table{
+			locations(),
+		},
 	}
 }
