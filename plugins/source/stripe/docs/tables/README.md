@@ -17,6 +17,7 @@
 - [stripe_credit_notes](stripe_credit_notes.md)
 - [stripe_customers](stripe_customers.md) (Incremental)
 - [stripe_disputes](stripe_disputes.md) (Incremental)
+- [stripe_events](stripe_events.md) (Incremental)
 - [stripe_file_links](stripe_file_links.md) (Incremental)
 - [stripe_files](stripe_files.md) (Incremental)
 - [stripe_identity_verification_reports](stripe_identity_verification_reports.md) (Incremental)

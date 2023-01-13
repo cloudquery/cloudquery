@@ -13,6 +13,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/credit_notes"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/customers"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/disputes"
+	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/events"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/file_links"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/files"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/identity"
@@ -56,6 +57,7 @@ func tables() []*schema.Table {
 		credit_notes.CreditNotes(),
 		customers.Customers(),
 		disputes.Disputes(),
+		events.Events(),
 		file_links.FileLinks(),
 		files.Files(),
 		identity.IdentityVerificationReports(),
