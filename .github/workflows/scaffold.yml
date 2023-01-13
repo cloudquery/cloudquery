@@ -14,7 +14,6 @@ on:
 
 jobs:
   scaffold:
-    plugins-destination-s3:
     timeout-minutes: 30
     name: "scaffold"
     runs-on: ubuntu-latest
