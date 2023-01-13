@@ -5,23 +5,20 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
-	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 )
 
 type Client struct {
-	logger         zerolog.Logger
-	Spec           Spec
-	OSSClient      *oss.Client
-	ossClientCache map[string]*oss.Client
-	Client         *sdk.Client
-	Accounts       []string
-	Regions        []string
-	AccountID      string
-	Region         string
+	services  map[string]map[string]*Services // account id -> region id -> Services
+	logger    zerolog.Logger
+	Spec      Spec
+	Accounts  []string
+	Regions   []string
+	AccountID string
+	Region    string
 }
 
 func (c *Client) Logger() *zerolog.Logger {
@@ -32,20 +29,9 @@ func (c *Client) ID() string {
 	return strings.Join([]string{c.AccountID, c.Region}, ":")
 }
 
-func (c *Client) GetOSSClient(location string) (*oss.Client, error) {
-	client, ok := c.ossClientCache[location]
-	if ok {
-		return client, nil
-	}
-
-	ossCli, err := oss.New(endpoint, c.Spec.AccessKey, c.Spec.SecretKey)
-	if err != nil {
-		return nil, err
-	}
-	c.ossClientCache[location] = ossCli
-	return ossCli, nil
+func (c *Client) Services() *Services {
+	return c.services[c.AccountID][c.Region]
 }
-
 func (c *Client) withAccountIDAndRegion(accountID, region string) *Client {
 	return &Client{
 		logger:    c.logger.With().Str("account_id", accountID).Str("region", region).Logger(),
@@ -54,7 +40,7 @@ func (c *Client) withAccountIDAndRegion(accountID, region string) *Client {
 	}
 }
 
-func New(_ context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func New(_ context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
 	var spec Spec
 	err := s.UnmarshalSpec(&spec)
 	if err != nil {
@@ -63,17 +49,18 @@ func New(_ context.Context, logger zerolog.Logger, s specs.Source) (schema.Clien
 	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
-	endpoint := fmt.Sprintf("oss-%s.aliyuncs.com", spec.RegionID)
-	ossCli, err := oss.New(endpoint, spec.AccessKey, spec.SecretKey, oss.Timeout(15, 30))
-	if err != nil {
-		return nil, err
-	}
-	client, err := sdk.NewClientWithAccessKey(spec.RegionID, spec.AccessKey, spec.SecretKey)
-	if err != nil {
-		return nil, err
-	}
-	ossClientCache := make(map[string]*oss.Client)
-	ossClientCache["oss-"+spec.RegionID] = ossCli
 
-	return &Client{logger: &logger, Spec: spec, OSSClient: ossCli, ossClientCache: ossClientCache, Client: client}, nil
+	services := make(map[string]map[string]*Services)
+	for _, account := range spec.Accounts {
+		for _, region := range account.RegionIDs {
+			if _, ok := services[account.Name]; !ok {
+				services[account.Name] = make(map[string]*Services)
+			}
+			services[account.Name][region], err = initServices(account, region)
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+	return &Client{logger: logger, Spec: spec, services: services}, nil
 }

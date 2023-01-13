@@ -2,7 +2,7 @@ package client
 
 import "github.com/cloudquery/plugin-sdk/schema"
 
-func AccountRegionMultiplexer(meta schema.ClientMeta) []schema.ClientMeta {
+func AccountRegionMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	var l = make([]schema.ClientMeta, 0)
 	client := meta.(*Client)
 	for _, accountID := range client.Accounts {
