@@ -84,7 +84,7 @@ func runScaffoldSource(org string, name string, outputDir string) error {
 			formattedContent, err := format.Source(content)
 			if err != nil {
 				// we still write the file even if it's not formatted for easy debugging
-				os.WriteFile(outputDir+"/"+filePath, content, 0644)
+				_ = os.WriteFile(outputDir+"/"+filePath, content, 0644)
 				return fmt.Errorf("failed to format source %s: %w", filePath, err)
 			}
 			content = formattedContent
