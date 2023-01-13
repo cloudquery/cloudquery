@@ -1,20 +1,20 @@
 # Table: alicloud_oss_bucket_stats
 
+The primary key for this table is **_cq_id**.
 
+## Relations
 
-The composite primary key for this table is (**name**, **update_date**).
-
-
+This table depends on [alicloud_oss_buckets](alicloud_oss_buckets.md).
 
 ## Columns
+
 | Name          | Type          |
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id|UUID|
+|_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
-|name (PK)|String|
-|update_date (PK)|String|
+|xml_name|JSON|
 |storage|Int|
 |object_count|Int|
 |multipart_upload_count|Int|

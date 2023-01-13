@@ -14,9 +14,9 @@ func BillOverview() *schema.Table {
 		Transform: transformers.TransformWithStruct(
 			&BillOverviewModel{},
 			transformers.WithPrimaryKeys(
-				"billing_cycle", "account_id", "product_code",
-				"bill_account_id", "product_type", "pip_code",
-				"subscription_type", "commodity_code",
+				"BillingCycle", "AccountID", "ProductCode",
+				"BillAccountID", "ProductType", "PipCode",
+				"SubscriptionType", "CommodityCode",
 			),
 		),
 		Columns: []schema.Column{},
