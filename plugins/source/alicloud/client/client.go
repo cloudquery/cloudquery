@@ -37,7 +37,7 @@ func (c *Client) GetOSSClient(location string) (*oss.Client, error) {
 	if ok {
 		return client, nil
 	}
-	endpoint := fmt.Sprintf("%s.aliyuncs.com", location)
+
 	ossCli, err := oss.New(endpoint, c.Spec.AccessKey, c.Spec.SecretKey)
 	if err != nil {
 		return nil, err
@@ -58,17 +58,10 @@ func New(_ context.Context, logger zerolog.Logger, s specs.Source) (schema.Clien
 	var spec Spec
 	err := s.UnmarshalSpec(&spec)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal GitHub spec: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal alicloud spec: %w", err)
 	}
-	// validate plugin config
-	if spec.RegionID == "" {
-		return nil, fmt.Errorf("missing alicloud region id in configuration")
-	}
-	if spec.AccessKey == "" {
-		return nil, fmt.Errorf("missing alicloud access key in configuration")
-	}
-	if spec.SecretKey == "" {
-		return nil, fmt.Errorf("missing alicloud secret key in configuration")
+	if err := spec.Validate(); err != nil {
+		return nil, err
 	}
 	endpoint := fmt.Sprintf("oss-%s.aliyuncs.com", spec.RegionID)
 	ossCli, err := oss.New(endpoint, spec.AccessKey, spec.SecretKey, oss.Timeout(15, 30))
