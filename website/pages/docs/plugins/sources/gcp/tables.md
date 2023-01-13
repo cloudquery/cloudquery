@@ -143,6 +143,8 @@
   - [gcp_sql_users](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_sql_users.md)
 - [gcp_storage_buckets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_storage_buckets.md)
   - [gcp_storage_bucket_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_storage_bucket_policies.md)
+- [gcp_vision_products](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_vision_products.md)
+  - [gcp_vision_product_reference_images](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_vision_product_reference_images.md)
 - [gcp_vmmigration_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_vmmigration_groups.md)
 - [gcp_vmmigration_sources](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_vmmigration_sources.md)
   - [gcp_vmmigration_source_datacenter_connectors](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_vmmigration_source_datacenter_connectors.md)
