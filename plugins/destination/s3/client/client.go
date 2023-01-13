@@ -54,7 +54,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 	c.pluginSpec.SetDefaults()
 
-	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion("us-east-1"))
+	cfg, err := config.LoadDefaultConfig(ctx, config.WithDefaultRegion("us-east-1"))
 	if err != nil {
 		return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
 	}
