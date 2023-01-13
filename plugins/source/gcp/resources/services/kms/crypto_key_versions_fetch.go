@@ -8,28 +8,26 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/api/iterator"
-	locationpb "google.golang.org/genproto/googleapis/cloud/location"
 )
 
-func fetchKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchCryptoKeyVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	p := parent.Item.(*locationpb.Location)
+	p := parent.Item.(*kmspb.CryptoKey)
 	kmsClient, err := kms.NewKeyManagementClient(ctx, c.ClientOptions...)
 	if err != nil {
 		return err
 	}
 
-	it := kmsClient.ListKeyRings(ctx, &kmspb.ListKeyRingsRequest{Parent: p.Name})
+	it := kmsClient.ListCryptoKeyVersions(ctx, &kmspb.ListCryptoKeyVersionsRequest{Parent: p.Name})
 	for {
-		resp, err := it.Next()
+		key, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
 			return err
 		}
-
-		res <- resp
+		res <- key
 	}
 	return nil
 }

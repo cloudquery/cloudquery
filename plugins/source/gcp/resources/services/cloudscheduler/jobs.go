@@ -1,19 +1,19 @@
-package kms
+package cloudscheduler
 
 import (
-	pb "cloud.google.com/go/kms/apiv1/kmspb"
+	pb "cloud.google.com/go/scheduler/apiv1/schedulerpb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
-func KeyRings() *schema.Table {
+func Jobs() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_kms_keyrings",
-		Description: `https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings#KeyRing`,
-		Resolver:    fetchKeyrings,
-		Multiplex:   client.ProjectMultiplexEnabledServices("cloudkms.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.KeyRing{}, client.Options()...),
+		Name:        "gcp_cloudscheduler_jobs",
+		Description: `https://cloud.google.com/scheduler/docs/reference/rest/v1/projects.locations.jobs#Job`,
+		Resolver:    fetchJobs,
+		Multiplex:   client.ProjectMultiplexEnabledServices("cloudscheduler.googleapis.com"),
+		Transform:   transformers.TransformWithStruct(&pb.Job{}, client.Options()...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -31,10 +31,6 @@ func KeyRings() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
-		},
-		Relations: []*schema.Table{
-			CryptoKeys(),
-			ImportJobs(),
 		},
 	}
 }

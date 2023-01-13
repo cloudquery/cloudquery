@@ -37,5 +37,8 @@ func CryptoKeys() *schema.Table {
 				Resolver: resolveRotationPeriod,
 			},
 		},
+		Relations: []*schema.Table{
+			CryptoKeyVersions(),
+		},
 	}
 }
