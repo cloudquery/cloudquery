@@ -11,6 +11,11 @@ The CloudQuery Vercel plugin pulls configuration out of Vercel resources and loa
 
 In order to fetch information from Vercel, `cloudquery` needs to be authenticated. An access token is required for authentication. You can create a new access token in [Vercel's Account Tokens Page](https://vercel.com/account/tokens).
 
+## Incremental Syncing
+
+The Vercel plugin supports incremental syncing. This means that only new data will be fetched from Vercel and loaded into your destination for supported tables (support depending on API endpoint). This is done by keeping track of the last paginator for each table and only fetching data that has been updated since then.
+To enable this, `backend` option must be set in the spec (as shown in the [example](./configuration.md#Example)). This is documented in the [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) section.
+
 ## Query Examples
 
 ### Detect domain registrations that will expire soon
