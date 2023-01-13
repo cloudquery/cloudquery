@@ -15,7 +15,7 @@ func Buckets() *schema.Table {
 		Transform: transformers.TransformWithStruct(
 			&oss.BucketProperties{},
 			transformers.WithPrimaryKeys(
-				"name",
+				"Name",
 			),
 		),
 		Columns: []schema.Column{},

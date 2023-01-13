@@ -13,7 +13,7 @@ func BucketStats() *schema.Table {
 		Transform: transformers.TransformWithStruct(
 			&oss.BucketStat{},
 			transformers.WithPrimaryKeys(
-				"name",
+				"Name",
 			),
 		),
 		Columns: []schema.Column{},
