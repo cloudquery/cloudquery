@@ -26,12 +26,15 @@ spec:
   path: "cloudquery/s3"
   version: "VERSION_DESTINATION_S3"
   write_mode: "append" # s3 only supports 'append' mode
-
+  # batch_size: 10000 # optional
+  # batch_size_bytes: 5242880 # optional
   spec:
     bucket: "bucket_name"
     path: "path/to/files"
     format: "csv"
 ```
+
+The S3 destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
 
 ## S3 Spec
 
