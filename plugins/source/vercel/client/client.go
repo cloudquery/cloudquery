@@ -58,6 +58,7 @@ func (c *Client) WithTeamID(teamID string) schema.ClientMeta {
 		TeamID:     teamID,
 		TeamIDs:    c.TeamIDs,
 		Services:   c.Services.WithTeamID(teamID),
+		Backend:    c.Backend,
 	}
 }
 
