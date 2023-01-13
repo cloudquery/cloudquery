@@ -90,7 +90,7 @@ func getBucketLocation(ctx context.Context, s3Client *s3.Client, bucket string) 
 	if err != nil {
 		return "", fmt.Errorf("failed to get bucket location: %w", err)
 	}
-	if output.LocationConstraint == "null" {
+	if output.LocationConstraint == "" {
 		return "us-east-1", nil
 	}
 	return string(output.LocationConstraint), nil
