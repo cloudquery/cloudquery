@@ -14,6 +14,7 @@ Autoscaling
 aws
 AWS
 backoff
+backend_spec
 Boldstart
 bool
 browsable
@@ -37,6 +38,7 @@ CrowdStrike
 CSPM
 CSPMs
 Cybersecurity
+deduplication
 Datadog
 datasource
 Datasource
@@ -133,6 +135,7 @@ Snyk
 SRE
 SREs
 Steampipe
+Stripe
 subfolder
 subnet
 subpolicies

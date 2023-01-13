@@ -15,12 +15,12 @@ The following tables depend on vercel_domains:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |bought_at|Timestamp|
 |cdn_enabled|Bool|
 |config_verified_at|Timestamp|
 |created_at|Timestamp|
 |expires_at|Timestamp|
-|id (PK)|String|
 |intended_nameservers|StringArray|
 |custom_nameservers|StringArray|
 |name|String|

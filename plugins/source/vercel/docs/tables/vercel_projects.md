@@ -15,6 +15,7 @@ The following tables depend on vercel_projects:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |account_id|String|
 |auto_expose_system_envs|Bool|
 |build_command|String|
@@ -25,7 +26,6 @@ The following tables depend on vercel_projects:
 |env|JSON|
 |framework|String|
 |git_fork_protection|Bool|
-|id (PK)|String|
 |install_command|String|
 |name|String|
 |node_version|String|

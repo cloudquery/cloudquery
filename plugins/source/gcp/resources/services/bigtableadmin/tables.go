@@ -24,6 +24,22 @@ func Tables() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "instance_name",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("name"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
 		},
 	}
 }

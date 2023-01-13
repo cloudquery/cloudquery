@@ -12,6 +12,7 @@ import (
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
 	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/googleapis/gax-go/v2"
@@ -85,7 +86,7 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
 	var err error
 	c := Client{
 		logger:          logger,

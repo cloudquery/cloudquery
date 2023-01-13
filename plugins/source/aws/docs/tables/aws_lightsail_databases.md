@@ -7,9 +7,9 @@ The primary key for this table is **_cq_id**.
 ## Relations
 
 The following tables depend on aws_lightsail_databases:
-  - [aws_lightsail_database_parameters](aws_lightsail_database_parameters.md)
   - [aws_lightsail_database_events](aws_lightsail_database_events.md)
   - [aws_lightsail_database_log_events](aws_lightsail_database_log_events.md)
+  - [aws_lightsail_database_parameters](aws_lightsail_database_parameters.md)
 
 ## Columns
 

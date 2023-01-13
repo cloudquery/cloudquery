@@ -13,7 +13,7 @@ func Profiles() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_cdn_profiles",
 		Resolver:  fetchProfiles,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_cdn),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_cdn_profiles", client.Namespacemicrosoft_cdn),
 		Transform: transformers.TransformWithStruct(&armcdn.Profile{}),
 		Columns: []schema.Column{
 			{

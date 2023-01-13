@@ -12,7 +12,6 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugins/source/gcp/codegen/client"
 	"github.com/iancoleman/strcase"
 )
@@ -46,11 +45,6 @@ func generateTemplate(name string, output string, data any) {
 
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse %s: %w", name, err))
-	}
-
-	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
-	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse SDK template %s: %w", name, err))
 	}
 
 	var buff bytes.Buffer
