@@ -17,7 +17,7 @@ Find more information at:
 
 func NewCmdRoot() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "cloudquery",
+		Use:     "scaffold",
 		Short:   rootShort,
 		Long:    rootLong,
 		Version: Version,
