@@ -40,6 +40,7 @@ jobs:
               return files.some(file => file.startsWith(`${action}/`) || matchesWorkflow(file, action))
             }
             let actions = ["cli",
+                           "scaffold",
                            "plugins/source/aws",
                            "plugins/source/azure",
                            "plugins/source/azuredevops",
