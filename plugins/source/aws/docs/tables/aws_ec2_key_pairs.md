@@ -15,10 +15,10 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |create_time|Timestamp|
 |key_fingerprint|String|
 |key_name|String|
 |key_pair_id|String|
 |key_type|String|
 |public_key|String|
-|tags|JSON|

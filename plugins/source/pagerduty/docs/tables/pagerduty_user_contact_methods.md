@@ -17,14 +17,14 @@ This table depends on [pagerduty_users](pagerduty_users.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|html_url|String|
+|send_html_email|Bool|
 |type|String|
 |summary|String|
 |self|String|
-|html_url|String|
 |label|String|
 |address|String|
 |send_short_email|Bool|
-|send_html_email|Bool|
 |blacklisted|Bool|
 |country_code|Int|
 |enabled|Bool|

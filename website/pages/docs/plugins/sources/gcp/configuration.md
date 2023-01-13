@@ -55,7 +55,7 @@ This is the (nested) spec used by GCP Source Plugin
   If specified APIs will be retried with exponential backoff if they are rate limited. This is the max number of retries.
 
 - `enabled_services_only` (bool) (default: false).
-If enabled CloudQuery will skip any resources that belong to a service that has been disabled or not been enabled. 
+If enabled CloudQuery will skip any resources that belong to a service that has been disabled or not been enabled. If you use this option on a large organization (with more than 500 projects) you should also set the `backoff_retries` to a value greater than `0` otherwise the sync could fail because of rate limiting.
 
 ## GCP + Kubernetes (GKE)
 

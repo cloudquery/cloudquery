@@ -19,6 +19,7 @@ This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |capacity_provider_strategy|JSON|
 |cluster_arn|String|
 |created_at|Timestamp|
@@ -43,9 +44,9 @@ This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 |role_arn|String|
 |running_count|Int|
 |scheduling_strategy|String|
+|service_arn|String|
 |service_name|String|
 |service_registries|JSON|
 |status|String|
-|tags|JSON|
 |task_definition|String|
 |task_sets|JSON|

@@ -17,8 +17,8 @@ This table depends on [github_teams](github_teams.md).
 |org (PK)|String|
 |team_id (PK)|Int|
 |membership|JSON|
-|login|String|
 |id (PK)|Int|
+|login|String|
 |node_id|String|
 |avatar_url|String|
 |html_url|String|

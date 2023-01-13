@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.0.4...plugins-destination-bigquery-v2.1.0) (2023-01-10)
+
+
+### Features
+
+* **bigquery:** Add call to action to type change error message ([#6644](https://github.com/cloudquery/cloudquery/issues/6644)) ([9daa552](https://github.com/cloudquery/cloudquery/commit/9daa5522f07b300d63deaeca62b4eb710cb1d5a0))
+* **bigquery:** Add table name to auto migrate error messages ([#6638](https://github.com/cloudquery/cloudquery/issues/6638)) ([e5edf0d](https://github.com/cloudquery/cloudquery/commit/e5edf0d284adbcce9c708977c417051c0da5f732))
+
+## [2.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.0.3...plugins-destination-bigquery-v2.0.4) (2023-01-10)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.1 ([#6553](https://github.com/cloudquery/cloudquery/issues/6553)) ([392b848](https://github.com/cloudquery/cloudquery/commit/392b848b3124f9cf28f6234fdb9a43d671069879))
+
+## [2.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.0.2...plugins-destination-bigquery-v2.0.3) (2023-01-09)
+
+
+### Bug Fixes
+
+* **bigquery:** Implement some mitigations for Bigquery data and metadata delays ([#6381](https://github.com/cloudquery/cloudquery/issues/6381)) ([ec1d132](https://github.com/cloudquery/cloudquery/commit/ec1d132529824d16682a92a83ee326fcba939efc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.22.0 ([#6516](https://github.com/cloudquery/cloudquery/issues/6516)) ([b7e4e73](https://github.com/cloudquery/cloudquery/commit/b7e4e737a5f4d8f254960426ea8ba555d8f9b944))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.23.0 ([#6522](https://github.com/cloudquery/cloudquery/issues/6522)) ([ce24f1d](https://github.com/cloudquery/cloudquery/commit/ce24f1d64394cbb5ab07dcaa4af66c53f77f700f))
+* **deps:** Update plugin-sdk to v1.21.0 for destinations ([#6419](https://github.com/cloudquery/cloudquery/issues/6419)) ([f3b989f](https://github.com/cloudquery/cloudquery/commit/f3b989f7cbe335481dc01ad2a56cf7eff48e01d5))
+* Set batch size bytes limit in BigQuery ([#6439](https://github.com/cloudquery/cloudquery/issues/6439)) ([2f73cab](https://github.com/cloudquery/cloudquery/commit/2f73cabcdd93b4302f33442f070e7c352a381ee4))
+
 ## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.0.1...plugins-destination-bigquery-v2.0.2) (2023-01-05)
 
 

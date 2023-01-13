@@ -22,5 +22,6 @@ The following tables depend on aws_iam_groups:
 |id (PK)|String|
 |arn|String|
 |create_date|Timestamp|
+|group_id|String|
 |group_name|String|
 |path|String|

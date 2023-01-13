@@ -19,6 +19,7 @@ The primary key for this table is **arn**.
 |enhanced_monitoring|JSON|
 |open_shard_count|Int|
 |retention_period_hours|Int|
+|stream_arn|String|
 |stream_creation_timestamp|Timestamp|
 |stream_name|String|
 |stream_status|String|

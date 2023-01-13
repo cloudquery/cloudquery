@@ -1,5 +1,7 @@
 # Table: aws_quicksight_groups
 
+https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Group.html
+
 The primary key for this table is **arn**.
 
 ## Relations

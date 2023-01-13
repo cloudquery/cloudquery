@@ -14,6 +14,6 @@ The primary key for this table is **id**.
 |_cq_parent_id|UUID|
 |organization_id|String|
 |settings|JSON|
-|credentials|JSON|
 |id (PK)|String|
+|credentials|JSON|
 |type|String|

@@ -8,10 +8,10 @@ The primary key for this table is **arn**.
 
 The following tables depend on aws_ec2_transit_gateways:
   - [aws_ec2_transit_gateway_attachments](aws_ec2_transit_gateway_attachments.md)
+  - [aws_ec2_transit_gateway_multicast_domains](aws_ec2_transit_gateway_multicast_domains.md)
+  - [aws_ec2_transit_gateway_peering_attachments](aws_ec2_transit_gateway_peering_attachments.md)
   - [aws_ec2_transit_gateway_route_tables](aws_ec2_transit_gateway_route_tables.md)
   - [aws_ec2_transit_gateway_vpc_attachments](aws_ec2_transit_gateway_vpc_attachments.md)
-  - [aws_ec2_transit_gateway_peering_attachments](aws_ec2_transit_gateway_peering_attachments.md)
-  - [aws_ec2_transit_gateway_multicast_domains](aws_ec2_transit_gateway_multicast_domains.md)
 
 ## Columns
 
@@ -25,9 +25,11 @@ The following tables depend on aws_ec2_transit_gateways:
 |region|String|
 |id|String|
 |arn (PK)|String|
+|tags|JSON|
 |creation_time|Timestamp|
 |description|String|
 |options|JSON|
 |owner_id|String|
 |state|String|
-|tags|JSON|
+|transit_gateway_arn|String|
+|transit_gateway_id|String|

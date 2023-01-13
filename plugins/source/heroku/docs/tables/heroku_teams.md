@@ -12,11 +12,11 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |created_at|Timestamp|
 |credit_card_collections|Bool|
 |default|Bool|
 |enterprise_account|JSON|
-|id (PK)|String|
 |identity_provider|JSON|
 |membership_limit|Float|
 |name|String|

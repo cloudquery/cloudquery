@@ -17,12 +17,12 @@ This table depends on [gitlab_groups](gitlab_groups.md).
 |base_url (PK)|String|
 |group_id (PK)|Int|
 |id (PK)|Int|
+|expires_at|Timestamp|
 |username|String|
 |name|String|
 |state|String|
 |avatar_url|String|
 |web_url|String|
 |created_at|Timestamp|
-|expires_at|Timestamp|
 |access_level|Int|
 |group_saml_identity|JSON|

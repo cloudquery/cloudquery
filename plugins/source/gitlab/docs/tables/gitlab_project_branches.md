@@ -16,8 +16,8 @@ This table depends on [gitlab_projects](gitlab_projects.md).
 |_cq_parent_id|UUID|
 |base_url|String|
 |project_id (PK)|Int|
-|commit|JSON|
 |name (PK)|String|
+|commit|JSON|
 |protected|Bool|
 |merged|Bool|
 |default|Bool|

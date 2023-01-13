@@ -19,3 +19,4 @@ This table depends on [datadog_roles](datadog_roles.md).
 |id|String|
 |relationships|JSON|
 |type|String|
+|additional_properties|JSON|

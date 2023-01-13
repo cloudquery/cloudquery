@@ -3,8 +3,10 @@
 package ses
 
 import (
+	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ActiveReceiptRuleSets() *schema.Table {
@@ -12,6 +14,7 @@ func ActiveReceiptRuleSets() *schema.Table {
 		Name:        "aws_ses_active_receipt_rule_sets",
 		Description: `https://docs.aws.amazon.com/ses/latest/APIReference/API_DescribeActiveReceiptRuleSet.html`,
 		Resolver:    fetchSesActiveReceiptRuleSets,
+		Transform:   transformers.TransformWithStruct(&ses.DescribeActiveReceiptRuleSetOutput{}, transformers.WithSkipFields("Metadata", "ResultMetadata")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("email"),
 		Columns: []schema.Column{
 			{

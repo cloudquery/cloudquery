@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |tags|JSON|
 |creation_time|Timestamp|
 |execution_role_arn|String|
+|model_arn|String|
 |model_name|String|
 |containers|JSON|
 |enable_network_isolation|Bool|

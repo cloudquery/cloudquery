@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |active_directory_configuration|JSON|
 |creation_time|Timestamp|
 |endpoints|JSON|
@@ -22,8 +23,8 @@ The primary key for this table is **arn**.
 |lifecycle|String|
 |lifecycle_transition_reason|JSON|
 |name|String|
+|resource_arn|String|
 |root_volume_security_style|String|
 |storage_virtual_machine_id|String|
 |subtype|String|
-|tags|JSON|
 |uuid|String|

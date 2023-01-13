@@ -7,8 +7,8 @@ The primary key for this table is **arn**.
 ## Relations
 
 The following tables depend on aws_autoscaling_groups:
-  - [aws_autoscaling_group_scaling_policies](aws_autoscaling_group_scaling_policies.md)
   - [aws_autoscaling_group_lifecycle_hooks](aws_autoscaling_group_lifecycle_hooks.md)
+  - [aws_autoscaling_group_scaling_policies](aws_autoscaling_group_scaling_policies.md)
 
 ## Columns
 
@@ -31,6 +31,7 @@ The following tables depend on aws_autoscaling_groups:
 |health_check_type|String|
 |max_size|Int|
 |min_size|Int|
+|auto_scaling_group_arn|String|
 |capacity_rebalance|Bool|
 |context|String|
 |default_instance_warmup|Int|

@@ -25,6 +25,7 @@ The primary key for this table is **arn**.
 |kms_key_id|String|
 |last_modified_time|Timestamp|
 |network_interface_id|String|
+|notebook_instance_arn|String|
 |notebook_instance_lifecycle_config_name|String|
 |notebook_instance_name|String|
 |notebook_instance_status|String|

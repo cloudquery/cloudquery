@@ -3,8 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/shopify
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.21.0
-	github.com/gertd/go-pluralize v0.2.1
+	github.com/cloudquery/plugin-sdk v1.25.0
 	github.com/gorilla/mux v1.8.0
 	github.com/rs/zerolog v1.28.0
 	golang.org/x/time v0.3.0

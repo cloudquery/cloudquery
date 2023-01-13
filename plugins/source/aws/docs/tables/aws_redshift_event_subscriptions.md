@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |cust_subscription_id|String|
 |customer_aws_id|String|
 |enabled|Bool|
@@ -25,4 +26,3 @@ The primary key for this table is **arn**.
 |source_type|String|
 |status|String|
 |subscription_creation_time|Timestamp|
-|tags|JSON|

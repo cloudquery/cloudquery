@@ -8,8 +8,8 @@ The primary key for this table is **id**.
 
 The following tables depend on pagerduty_incidents:
   - [pagerduty_incident_alerts](pagerduty_incident_alerts.md)
-  - [pagerduty_incident_notes](pagerduty_incident_notes.md)
   - [pagerduty_incident_log_entries](pagerduty_incident_log_entries.md)
+  - [pagerduty_incident_notes](pagerduty_incident_notes.md)
 
 ## Columns
 
@@ -20,20 +20,20 @@ The following tables depend on pagerduty_incidents:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|html_url|String|
+|created_at|Timestamp|
+|last_status_change_at|Timestamp|
 |type|String|
 |summary|String|
 |self|String|
-|html_url|String|
 |incident_number|Int|
 |title|String|
 |description|String|
-|created_at|Timestamp|
 |pending_actions|JSON|
 |incident_key|String|
 |service|JSON|
 |assignments|JSON|
 |acknowledgements|JSON|
-|last_status_change_at|Timestamp|
 |last_status_change_by|JSON|
 |first_trigger_log_entry|JSON|
 |escalation_policy|JSON|

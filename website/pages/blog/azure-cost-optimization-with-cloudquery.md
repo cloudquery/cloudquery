@@ -99,7 +99,7 @@ We need to run one more thing before we can start correlating away though.
 
 ## The Azure Resources View
 
-The `azure_resources` view is useful for seeing all your Azure resources in one place or finding a specific resource, by id or name. It's a view, so it's not synced to the database, but we can create it by running the queries provided [here](https://github.com/cloudquery/cq-provider-azure/blob/main/views/resource.sql). First query will drop the view if it exists, and the second query will create it. Run these queries in your PostgreSQL database.
+The `azure_resources` view is useful for seeing all your Azure resources in one place or finding a specific resource, by id or name. It's a view, so it's not synced to the database, but we can create it by running the queries provided [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/views/resource.sql). First query will drop the view if it exists, and the second query will create it. Run these queries in your PostgreSQL database.
 
 ## Correlating the data
 
@@ -163,4 +163,4 @@ FROM cost_by_res c JOIN azure_resources r ON LOWER(r.full_id)=LOWER(c.res_id);
 
 In this blog post we just shared an example of what you can do by combining cost data with your infrastructure state/metadata synced by CloudQuery. The number of use cases around cost (aka "FinOps" :) ) is really infinite and it all depends on what you are trying to achieve and optimize for.
 
-We hope you enjoyed this tutorial and found it useful. If you have any questions or feedback, please reach out to us on [Discord](https://discord.gg/8qZ7Y4Z) or [Twitter](https://twitter.com/cloudqueryio).
+We hope you enjoyed this tutorial and found it useful. If you have any questions or feedback, please reach out to us on [Discord](https://www.cloudquery.io/discord) or [Twitter](https://twitter.com/cloudqueryio).

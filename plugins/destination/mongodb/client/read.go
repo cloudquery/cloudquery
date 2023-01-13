@@ -14,6 +14,10 @@ func (*Client) createResultsArray(res bson.M, table *schema.Table) []any {
 	results := make([]any, 0, len(table.Columns))
 	for _, col := range table.Columns {
 		val := res[col.Name]
+		if val == nil {
+			results = append(results, nil)
+			continue
+		}
 		switch col.Type {
 		case schema.TypeBool:
 			r := (val).(bool)

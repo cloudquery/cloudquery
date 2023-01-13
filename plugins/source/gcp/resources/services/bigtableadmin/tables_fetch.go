@@ -25,6 +25,11 @@ func fetchTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	return nil
 }
 
+type tableInfoWithName struct {
+	*bigtable.TableInfo
+	Name string
+}
+
 func getTableInfo(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
 	c := meta.(*client.Client)
 	instance := r.Parent.Item.(*bigtable.InstanceInfo)
@@ -38,6 +43,6 @@ func getTableInfo(ctx context.Context, meta schema.ClientMeta, r *schema.Resourc
 		return err
 	}
 
-	r.SetItem(tableInfo)
+	r.SetItem(tableInfoWithName{TableInfo: tableInfo, Name: table})
 	return nil
 }

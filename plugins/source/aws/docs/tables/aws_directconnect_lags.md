@@ -26,6 +26,7 @@ The primary key for this table is **arn**.
 |encryption_mode|String|
 |has_logical_redundancy|String|
 |jumbo_frame_capable|Bool|
+|lag_id|String|
 |lag_name|String|
 |lag_state|String|
 |location|String|

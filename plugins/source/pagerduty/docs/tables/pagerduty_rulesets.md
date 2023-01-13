@@ -18,11 +18,11 @@ The following tables depend on pagerduty_rulesets:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
+|created_at|Timestamp|
 |name|String|
 |type|String|
 |self|String|
 |routing_keys|StringArray|
-|created_at|Timestamp|
 |creator|JSON|
 |updated_at|String|
 |updater|JSON|

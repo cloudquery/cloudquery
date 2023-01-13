@@ -53,5 +53,6 @@ This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 |stopped_at|Timestamp|
 |stopped_reason|String|
 |stopping_at|Timestamp|
+|task_arn|String|
 |task_definition_arn|String|
 |version|Int|

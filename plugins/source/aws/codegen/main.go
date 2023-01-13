@@ -1,132 +1,236 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"path"
+	"reflect"
+	"runtime"
 
-	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/services"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/tables"
-	"golang.org/x/sync/errgroup"
+	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
+	"github.com/aws/aws-sdk-go-v2/service/account"
+	"github.com/aws/aws-sdk-go-v2/service/acm"
+	"github.com/aws/aws-sdk-go-v2/service/amp"
+	"github.com/aws/aws-sdk-go-v2/service/apigateway"
+	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
+	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/apprunner"
+	"github.com/aws/aws-sdk-go-v2/service/appstream"
+	"github.com/aws/aws-sdk-go-v2/service/appsync"
+	"github.com/aws/aws-sdk-go-v2/service/athena"
+	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/backup"
+	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
+	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
+	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
+	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
+	"github.com/aws/aws-sdk-go-v2/service/codebuild"
+	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
+	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
+	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
+	"github.com/aws/aws-sdk-go-v2/service/configservice"
+	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
+	"github.com/aws/aws-sdk-go-v2/service/dax"
+	"github.com/aws/aws-sdk-go-v2/service/directconnect"
+	"github.com/aws/aws-sdk-go-v2/service/docdb"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
+	"github.com/aws/aws-sdk-go-v2/service/ecr"
+	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
+	"github.com/aws/aws-sdk-go-v2/service/ecs"
+	"github.com/aws/aws-sdk-go-v2/service/efs"
+	"github.com/aws/aws-sdk-go-v2/service/eks"
+	"github.com/aws/aws-sdk-go-v2/service/elasticache"
+	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
+	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
+	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
+	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
+	"github.com/aws/aws-sdk-go-v2/service/elastictranscoder"
+	"github.com/aws/aws-sdk-go-v2/service/emr"
+	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
+	"github.com/aws/aws-sdk-go-v2/service/firehose"
+	"github.com/aws/aws-sdk-go-v2/service/frauddetector"
+	"github.com/aws/aws-sdk-go-v2/service/fsx"
+	"github.com/aws/aws-sdk-go-v2/service/glacier"
+	"github.com/aws/aws-sdk-go-v2/service/glue"
+	"github.com/aws/aws-sdk-go-v2/service/guardduty"
+	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/identitystore"
+	"github.com/aws/aws-sdk-go-v2/service/inspector"
+	"github.com/aws/aws-sdk-go-v2/service/inspector2"
+	"github.com/aws/aws-sdk-go-v2/service/iot"
+	"github.com/aws/aws-sdk-go-v2/service/kafka"
+	"github.com/aws/aws-sdk-go-v2/service/kinesis"
+	"github.com/aws/aws-sdk-go-v2/service/kms"
+	"github.com/aws/aws-sdk-go-v2/service/lambda"
+	"github.com/aws/aws-sdk-go-v2/service/lightsail"
+	"github.com/aws/aws-sdk-go-v2/service/mq"
+	"github.com/aws/aws-sdk-go-v2/service/mwaa"
+	"github.com/aws/aws-sdk-go-v2/service/neptune"
+	"github.com/aws/aws-sdk-go-v2/service/organizations"
+	"github.com/aws/aws-sdk-go-v2/service/qldb"
+	"github.com/aws/aws-sdk-go-v2/service/quicksight"
+	"github.com/aws/aws-sdk-go-v2/service/ram"
+	"github.com/aws/aws-sdk-go-v2/service/rds"
+	"github.com/aws/aws-sdk-go-v2/service/redshift"
+	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
+	"github.com/aws/aws-sdk-go-v2/service/route53"
+	"github.com/aws/aws-sdk-go-v2/service/route53domains"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go-v2/service/s3control"
+	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
+	"github.com/aws/aws-sdk-go-v2/service/savingsplans"
+	"github.com/aws/aws-sdk-go-v2/service/scheduler"
+	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
+	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
+	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
+	"github.com/aws/aws-sdk-go-v2/service/ses"
+	"github.com/aws/aws-sdk-go-v2/service/sesv2"
+	"github.com/aws/aws-sdk-go-v2/service/sfn"
+	"github.com/aws/aws-sdk-go-v2/service/shield"
+	"github.com/aws/aws-sdk-go-v2/service/sns"
+	"github.com/aws/aws-sdk-go-v2/service/sqs"
+	"github.com/aws/aws-sdk-go-v2/service/ssm"
+	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
+	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
+	"github.com/aws/aws-sdk-go-v2/service/transfer"
+	"github.com/aws/aws-sdk-go-v2/service/waf"
+	"github.com/aws/aws-sdk-go-v2/service/wafregional"
+	"github.com/aws/aws-sdk-go-v2/service/wafv2"
+	"github.com/aws/aws-sdk-go-v2/service/workspaces"
+	"github.com/aws/aws-sdk-go-v2/service/xray"
+	"github.com/cloudquery/codegen/interfaces"
+	"github.com/thoas/go-funk"
 )
 
-func generateResources() ([]*recipes.Resource, error) {
-	var resources []*recipes.Resource
-	resources = append(resources, recipes.AccessAnalyzerResources()...)
-	resources = append(resources, recipes.AccountResources()...)
-	resources = append(resources, recipes.ACMResources()...)
-	resources = append(resources, recipes.AMPResources()...)
-	resources = append(resources, recipes.APIGatewayResources()...)
-	resources = append(resources, recipes.APIGatewayV2Resources()...)
-	resources = append(resources, recipes.ApplicationAutoScalingResources()...)
-	resources = append(resources, recipes.ApprunnerResources()...)
-	resources = append(resources, recipes.AppstreamResources()...)
-	resources = append(resources, recipes.AppSync()...)
-	resources = append(resources, recipes.AthenaResources()...)
-	resources = append(resources, recipes.AutoscalingResources()...)
-	resources = append(resources, recipes.BackupResources()...)
-	resources = append(resources, recipes.CloudformationResources()...)
-	resources = append(resources, recipes.CloudfrontResources()...)
-	resources = append(resources, recipes.CloudHSMV2()...)
-	resources = append(resources, recipes.CloudtrailResources()...)
-	resources = append(resources, recipes.CloudWatchLogsResources()...)
-	resources = append(resources, recipes.CloudwatchResources()...)
-	resources = append(resources, recipes.CodeBuildResources()...)
-	resources = append(resources, recipes.CodePipelineResources()...)
-	resources = append(resources, recipes.CognitoResources()...)
-	resources = append(resources, recipes.ConfigResources()...)
-	resources = append(resources, recipes.DaxResources()...)
-	resources = append(resources, recipes.DirectConnectResources()...)
-	resources = append(resources, recipes.DMSResources()...)
-	resources = append(resources, recipes.DocumentDBResources()...)
-	resources = append(resources, recipes.DynamoDBResources()...)
-	resources = append(resources, recipes.EC2Resources()...)
-	resources = append(resources, recipes.ECRPublicResources()...)
-	resources = append(resources, recipes.ECRResources()...)
-	resources = append(resources, recipes.ECSResources()...)
-	resources = append(resources, recipes.EFSResources()...)
-	resources = append(resources, recipes.EKSResources()...)
-	resources = append(resources, recipes.ElastiCacheResources()...)
-	resources = append(resources, recipes.ElasticbeanstalkResources()...)
-	resources = append(resources, recipes.ElasticsearchResources()...)
-	resources = append(resources, recipes.ElastictranscoderResources()...)
-	resources = append(resources, recipes.ELBv1Resources()...)
-	resources = append(resources, recipes.ELBv2Resources()...)
-	resources = append(resources, recipes.EMRResources()...)
-	resources = append(resources, recipes.EventbridgeResources()...)
-	resources = append(resources, recipes.FirehoseResources()...)
-	resources = append(resources, recipes.FraudDetectorResources()...)
-	resources = append(resources, recipes.FSXResources()...)
-	resources = append(resources, recipes.GlacierResources()...)
-	resources = append(resources, recipes.GlueResources()...)
-	resources = append(resources, recipes.GuarddutyResources()...)
-	resources = append(resources, recipes.IAMResources()...)
-	resources = append(resources, recipes.IdentitystoreResources()...)
-	resources = append(resources, recipes.Inspector2Resources()...)
-	resources = append(resources, recipes.InspectorResources()...)
-	resources = append(resources, recipes.IOTResources()...)
-	resources = append(resources, recipes.KafkaResources()...)
-	resources = append(resources, recipes.KinesisResources()...)
-	resources = append(resources, recipes.KMSResources()...)
-	resources = append(resources, recipes.LambdaResources()...)
-	resources = append(resources, recipes.LightsailResources()...)
-	resources = append(resources, recipes.MQResources()...)
-	resources = append(resources, recipes.MWAAResources()...)
-	resources = append(resources, recipes.NeptuneResources()...)
-	resources = append(resources, recipes.OrganizationsResources()...)
-	resources = append(resources, recipes.QLDBResources()...)
-	resources = append(resources, recipes.QuickSightResources()...)
-	resources = append(resources, recipes.RAMResources()...)
-	resources = append(resources, recipes.RDSResources()...)
-	resources = append(resources, recipes.RedshiftResources()...)
-	resources = append(resources, recipes.ResourceGroupsResources()...)
-	resources = append(resources, recipes.Route53Resources()...)
-	resources = append(resources, recipes.S3Resources()...)
-	resources = append(resources, recipes.SagemakerResources()...)
-	resources = append(resources, recipes.SchedulerResources()...)
-	resources = append(resources, recipes.SecretsManagerResources()...)
-	resources = append(resources, recipes.ServiceCatalogResources()...)
-	resources = append(resources, recipes.ServiceQuotasResources()...)
-	resources = append(resources, recipes.SESResources()...)
-	resources = append(resources, recipes.ShieldResources()...)
-	resources = append(resources, recipes.SNSResources()...)
-	resources = append(resources, recipes.SQSResources()...)
-	resources = append(resources, recipes.SSMResources()...)
-	resources = append(resources, recipes.SSOAdminResources()...)
-	resources = append(resources, recipes.StepFunctionResources()...)
-	resources = append(resources, recipes.TimestreamResources()...)
-	resources = append(resources, recipes.TransferResources()...)
-	resources = append(resources, recipes.WAFRegionalResources()...)
-	resources = append(resources, recipes.WAFResources()...)
-	resources = append(resources, recipes.WAFv2Resources()...)
-	resources = append(resources, recipes.WorkspacesResources()...)
-	resources = append(resources, recipes.XRayResources()...)
-
-	err := recipes.SetParentChildRelationships(resources)
-	if err != nil {
-		return nil, fmt.Errorf("failed to set parent-child relationships: %w", err)
-	}
-	grp := new(errgroup.Group)
-	for _, resource := range resources {
-		grp.Go(resource.Generate)
-	}
-
-	return resources, grp.Wait()
+var clients = []any{
+	&accessanalyzer.Client{},
+	&account.Client{},
+	&acm.Client{},
+	&amp.Client{},
+	&apigateway.Client{},
+	&apigatewayv2.Client{},
+	&applicationautoscaling.Client{},
+	&apprunner.Client{},
+	&appstream.Client{},
+	&appsync.Client{},
+	&athena.Client{},
+	&autoscaling.Client{},
+	&backup.Client{},
+	&cloudformation.Client{},
+	&cloudfront.Client{},
+	&cloudhsmv2.Client{},
+	&cloudtrail.Client{},
+	&cloudwatch.Client{},
+	&cloudwatchlogs.Client{},
+	&codebuild.Client{},
+	&codepipeline.Client{},
+	&cognitoidentity.Client{},
+	&cognitoidentityprovider.Client{},
+	&configservice.Client{},
+	&databasemigrationservice.Client{},
+	&dax.Client{},
+	&directconnect.Client{},
+	&docdb.Client{},
+	&dynamodb.Client{},
+	&ec2.Client{},
+	&ecr.Client{},
+	&ecrpublic.Client{},
+	&ecs.Client{},
+	&efs.Client{},
+	&eks.Client{},
+	&elasticache.Client{},
+	&elasticbeanstalk.Client{},
+	&elasticloadbalancing.Client{},
+	&elasticloadbalancingv2.Client{},
+	&elasticsearchservice.Client{},
+	&elastictranscoder.Client{},
+	&emr.Client{},
+	&eventbridge.Client{},
+	&firehose.Client{},
+	&frauddetector.Client{},
+	&fsx.Client{},
+	&glacier.Client{},
+	&glue.Client{},
+	&guardduty.Client{},
+	&iam.Client{},
+	&identitystore.Client{},
+	&inspector.Client{},
+	&inspector2.Client{},
+	&iot.Client{},
+	&kafka.Client{},
+	&kinesis.Client{},
+	&kms.Client{},
+	&lambda.Client{},
+	&lightsail.Client{},
+	&mq.Client{},
+	&mwaa.Client{},
+	&neptune.Client{},
+	&organizations.Client{},
+	&qldb.Client{},
+	&quicksight.Client{},
+	&ram.Client{},
+	&rds.Client{},
+	&redshift.Client{},
+	&resourcegroups.Client{},
+	&route53.Client{},
+	&route53domains.Client{},
+	&s3.Client{},
+	&s3control.Client{},
+	&sagemaker.Client{},
+	&savingsplans.Client{},
+	&scheduler.Client{},
+	&secretsmanager.Client{},
+	&servicecatalog.Client{},
+	&servicecatalogappregistry.Client{},
+	&servicequotas.Client{},
+	&ses.Client{},
+	&sesv2.Client{},
+	&sfn.Client{},
+	&shield.Client{},
+	&sns.Client{},
+	&sqs.Client{},
+	&ssm.Client{},
+	&ssoadmin.Client{},
+	&timestreamwrite.Client{},
+	&transfer.Client{},
+	&waf.Client{},
+	&wafregional.Client{},
+	&wafv2.Client{},
+	&workspaces.Client{},
+	&xray.Client{},
 }
 
+// Generate the service interfaces under in client/services for use with mockgen.
 func main() {
-	err := services.Generate()
-	if err != nil {
-		log.Fatal(err)
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		panic("failed to get caller information")
 	}
+	err := interfaces.Generate(
+		clients,
+		path.Join(path.Dir(filename), "../client/services"),
+		interfaces.WithIncludeFunc(include),
+		interfaces.WithExtraImports(extraImports),
+	)
+	if err != nil {
+		panic(err)
+	}
+}
 
-	resources, err := generateResources()
-	if err != nil {
-		log.Fatal(err)
+func include(m reflect.Method) bool {
+	// these methods will be included despite not starting with an accepted prefix
+	var exceptions = []string{
+		"QuerySchemaVersionMetadata",
+		"GenerateCredentialReport",
 	}
+	if funk.ContainsString(exceptions, m.Name) {
+		return true
+	}
+	return interfaces.MethodHasAnyPrefix(m, []string{"List", "Get", "Describe", "Search", "BatchGet"})
+}
 
-	err = tables.Generate(resources)
-	if err != nil {
-		log.Fatal(err)
-	}
+func extraImports(_ reflect.Method) []string {
+	return []string{"context"}
 }

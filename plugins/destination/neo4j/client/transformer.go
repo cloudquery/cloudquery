@@ -5,19 +5,31 @@ import (
 )
 
 func (*Client) TransformBool(v *schema.Bool) any {
-	return v.Bool
+	if v.Status == schema.Present {
+		return v.Bool
+	}
+	return nil
 }
 
 func (*Client) TransformBytea(v *schema.Bytea) any {
-	return v.Bytes
+	if v.Status == schema.Present {
+		return v.Bytes
+	}
+	return nil
 }
 
 func (*Client) TransformFloat8(v *schema.Float8) any {
-	return v.Float
+	if v.Status == schema.Present {
+		return v.Float
+	}
+	return nil
 }
 
 func (*Client) TransformInt8(v *schema.Int8) any {
-	return v.Int
+	if v.Status == schema.Present {
+		return v.Int
+	}
+	return nil
 }
 
 func (*Client) TransformInt8Array(v *schema.Int8Array) any {
@@ -29,14 +41,17 @@ func (*Client) TransformInt8Array(v *schema.Int8Array) any {
 }
 
 func (*Client) TransformJSON(v *schema.JSON) any {
-	if v.Status != schema.Present {
-		return nil
+	if v.Status == schema.Present {
+		return string(v.Bytes)
 	}
-	return string(v.Bytes)
+	return nil
 }
 
 func (*Client) TransformText(v *schema.Text) any {
-	return v.String()
+	if v.Status == schema.Present {
+		return v.String()
+	}
+	return nil
 }
 
 func (*Client) TransformTextArray(v *schema.TextArray) any {
@@ -48,14 +63,17 @@ func (*Client) TransformTextArray(v *schema.TextArray) any {
 }
 
 func (*Client) TransformTimestamptz(v *schema.Timestamptz) any {
-	if v.Status != schema.Present {
-		return nil
+	if v.Status == schema.Present {
+		return v.Time
 	}
-	return v.Time
+	return nil
 }
 
 func (*Client) TransformUUID(v *schema.UUID) any {
-	return v.String()
+	if v.Status == schema.Present {
+		return v.String()
+	}
+	return nil
 }
 
 func (*Client) TransformUUIDArray(v *schema.UUIDArray) any {
@@ -67,7 +85,10 @@ func (*Client) TransformUUIDArray(v *schema.UUIDArray) any {
 }
 
 func (*Client) TransformCIDR(v *schema.CIDR) any {
-	return v.String()
+	if v.Status == schema.Present {
+		return v.String()
+	}
+	return nil
 }
 
 func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
@@ -79,7 +100,10 @@ func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
 }
 
 func (*Client) TransformInet(v *schema.Inet) any {
-	return v.String()
+	if v.Status == schema.Present {
+		return v.String()
+	}
+	return nil
 }
 
 func (*Client) TransformInetArray(v *schema.InetArray) any {
@@ -91,7 +115,10 @@ func (*Client) TransformInetArray(v *schema.InetArray) any {
 }
 
 func (*Client) TransformMacaddr(v *schema.Macaddr) any {
-	return v.String()
+	if v.Status == schema.Present {
+		return v.String()
+	}
+	return nil
 }
 
 func (*Client) TransformMacaddrArray(v *schema.MacaddrArray) any {

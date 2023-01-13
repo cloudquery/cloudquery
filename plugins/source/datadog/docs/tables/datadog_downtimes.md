@@ -29,3 +29,4 @@ The composite primary key for this table is (**account_name**, **id**).
 |start|Int|
 |timezone|String|
 |updater_id|JSON|
+|additional_properties|JSON|
