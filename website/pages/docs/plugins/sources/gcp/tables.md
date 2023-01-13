@@ -90,6 +90,8 @@
   - [gcp_cloudiot_devices](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_cloudiot_devices.md)
     - [gcp_cloudiot_device_configs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_cloudiot_device_configs.md)
     - [gcp_cloudiot_device_states](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_cloudiot_device_states.md)
+- [gcp_cloudscheduler_locations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_cloudscheduler_locations.md)
+  - [gcp_cloudscheduler_jobs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_cloudscheduler_jobs.md)
 - [gcp_compute_addresses](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_addresses.md)
 - [gcp_compute_autoscalers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_autoscalers.md)
 - [gcp_compute_backend_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_backend_services.md)
