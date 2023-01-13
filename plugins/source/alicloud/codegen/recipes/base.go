@@ -1,4 +1,4 @@
-package recipies
+package recipes
 
 import (
 	"bytes"

@@ -3,6 +3,8 @@ package client
 import (
 	"context"
 	"fmt"
+	"strings"
+
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -11,19 +13,23 @@ import (
 )
 
 type Client struct {
-	logger         *zerolog.Logger
+	logger         zerolog.Logger
 	Spec           Spec
 	OSSClient      *oss.Client
 	ossClientCache map[string]*oss.Client
 	Client         *sdk.Client
+	Accounts       []string
+	Regions        []string
+	AccountID      string
+	Region         string
 }
 
 func (c *Client) Logger() *zerolog.Logger {
-	return c.logger
+	return &c.logger
 }
 
-func (*Client) ID() string {
-	return "alicloud-client"
+func (c *Client) ID() string {
+	return strings.Join([]string{c.AccountID, c.Region}, ":")
 }
 
 func (c *Client) GetOSSClient(location string) (*oss.Client, error) {
@@ -38,6 +44,14 @@ func (c *Client) GetOSSClient(location string) (*oss.Client, error) {
 	}
 	c.ossClientCache[location] = ossCli
 	return ossCli, nil
+}
+
+func (c *Client) withAccountIDAndRegion(accountID, region string) *Client {
+	return &Client{
+		logger:    c.logger.With().Str("account_id", accountID).Str("region", region).Logger(),
+		AccountID: accountID,
+		Region:    region,
+	}
 }
 
 func New(_ context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {

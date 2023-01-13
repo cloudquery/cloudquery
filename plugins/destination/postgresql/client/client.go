@@ -87,6 +87,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	pgxConfig.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
 		return nil
 	}
+	pgxConfig.HealthCheckPeriod
 
 	pgxConfig.ConnConfig.Tracer = &tracelog.TraceLog{
 		Logger:   pgx_zero_log.NewLogger(c.logger),

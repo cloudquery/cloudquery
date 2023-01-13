@@ -3,17 +3,18 @@ package bss
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"time"
+
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/bssopenapi"
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client"
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/codegen/models"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"net/http"
-	"time"
 )
 
 var (
-	_maxLimit = 100
+	maxLimit = 100
 )
 
 // See: https://help.aliyun.com/document_detail/100400.html
@@ -96,7 +97,7 @@ func fetchBssBill(_ context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		pageNum := 1
 		total := 0
 		request.PageNum = requests.NewInteger(pageNum)
-		request.PageSize = requests.NewInteger(_maxLimit)
+		request.PageSize = requests.NewInteger(maxLimit)
 		for {
 			response, err := cli.QueryBill(request)
 			if err != nil {

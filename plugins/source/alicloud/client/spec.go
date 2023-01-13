@@ -1,8 +1,11 @@
 package client
 
 type Spec struct {
-	RegionID    string `json:"region_id,omitempty"`
-	AccessKey   string `json:"access_key,omitempty"`
-	SecretKey   string `json:"secret_key,omitempty"`
-	BillHistory int    `json:"bill_history,omitempty"`
+	Accounts []AccountSpec `json:"accounts,omitempty"`
+}
+
+type AccountSpec struct {
+	Regions   []string `json:"regions,omitempty"`
+	AccessKey string   `json:"access_key,omitempty"`
+	SecretKey string   `json:"secret_key,omitempty"`
 }

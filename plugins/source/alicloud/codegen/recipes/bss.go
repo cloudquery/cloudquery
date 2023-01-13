@@ -1,4 +1,4 @@
-package recipies
+package recipes
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/codegen/models"

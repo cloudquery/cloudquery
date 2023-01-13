@@ -3,19 +3,16 @@ module github.com/cloudquery/cloudquery/plugins/source/alicloud
 go 1.19
 
 require (
-	github.com/alibabacloud-go/tea v1.1.20
 	github.com/aliyun/alibaba-cloud-sdk-go v1.62.80
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.6+incompatible
-	github.com/cloudquery/plugin-sdk v1.11.1
+	github.com/cloudquery/plugin-sdk v1.25.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.28.0
 	github.com/thoas/go-funk v0.9.2
-	golang.org/x/crypto v0.0.0-20220926161630-eccd6366d1be
 )
 
 require (
-	github.com/alibabacloud-go/debug v0.0.0-20190504072949-9472017b5c68 // indirect
 	github.com/getsentry/sentry-go v0.15.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect

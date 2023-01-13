@@ -1,4 +1,4 @@
-package recipies
+package recipes
 
 import (
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"

@@ -3,6 +3,7 @@ package oss
 import (
 	"context"
 	"fmt"
+
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client"
 	"github.com/cloudquery/plugin-sdk/schema"
