@@ -9,12 +9,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func virtualNetworkRules() *schema.Table {
+func managedInstanceEncryptionProtectors() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_virtual_network_rules",
-		Resolver:  fetchVirtualNetworkRules,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_sql_virtual_network_rules", client.Namespacemicrosoft_sql),
-		Transform: transformers.TransformWithStruct(&armsql.VirtualNetworkRule{}),
+		Name:      "azure_sql_managed_instance_encryption_protectors",
+		Resolver:  fetchManagedInstanceEncryptionProtectors,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_sql_managed_instance_encryption_protectors", client.Namespacemicrosoft_sql),
+		Transform: transformers.TransformWithStruct(&armsql.ManagedInstanceEncryptionProtector{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",
@@ -28,10 +28,10 @@ func virtualNetworkRules() *schema.Table {
 	}
 }
 
-func fetchVirtualNetworkRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	p := parent.Item.(*armsql.Server)
+func fetchManagedInstanceEncryptionProtectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	p := parent.Item.(*armsql.ManagedInstance)
 	cl := meta.(*client.Client)
-	svc, err := armsql.NewVirtualNetworkRulesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armsql.NewManagedInstanceEncryptionProtectorsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func fetchVirtualNetworkRules(ctx context.Context, meta schema.ClientMeta, paren
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListByServerPager(group, *p.Name, nil)
+	pager := svc.NewListByInstancePager(group, *p.Name, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

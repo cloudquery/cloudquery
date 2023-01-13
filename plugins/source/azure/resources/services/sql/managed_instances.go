@@ -30,6 +30,9 @@ func ManagedInstances() *schema.Table {
 				},
 			},
 		},
+		Relations: []*schema.Table{
+			managedInstanceEncryptionProtectors(),
+		},
 	}
 }
 
