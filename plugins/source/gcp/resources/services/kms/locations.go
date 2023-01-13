@@ -1,19 +1,19 @@
 package kms
 
 import (
-	pb "cloud.google.com/go/kms/apiv1/kmspb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
+	locationpb "google.golang.org/genproto/googleapis/cloud/location"
 )
 
-func KeyRings() *schema.Table {
+func Locations() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_kms_keyrings",
+		Name:        "gcp_kms_locations",
 		Description: `https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings#KeyRing`,
-		Resolver:    fetchKeyrings,
+		Resolver:    fetchLocations,
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudkms.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.KeyRing{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&locationpb.Location{}, client.Options()...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -33,8 +33,8 @@ func KeyRings() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			CryptoKeys(),
-			ImportJobs(),
+			KeyRings(),
+			EkmConnections(),
 		},
 	}
 }
