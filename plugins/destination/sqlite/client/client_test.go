@@ -7,7 +7,7 @@ import (
 )
 
 func TestPlugin(t *testing.T) {
-	p := destination.NewPlugin("postgresql", "development", New)
+	p := destination.NewPlugin("sqlite", "development", New)
 
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{
