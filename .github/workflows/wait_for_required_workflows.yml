@@ -61,6 +61,7 @@ jobs:
                            "plugins/source/slack",
                            "plugins/source/salesforce",
                            "plugins/source/snyk",
+                           "plugins/source/stripe",
                            "plugins/source/tailscale",
                            "plugins/source/pagerduty",
                            "plugins/source/terraform",

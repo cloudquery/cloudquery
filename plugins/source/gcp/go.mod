@@ -34,6 +34,8 @@ require (
 	cloud.google.com/go/secretmanager v1.9.0
 	cloud.google.com/go/serviceusage v1.4.0
 	cloud.google.com/go/storage v1.28.0
+	cloud.google.com/go/vmmigration v1.3.0
+	cloud.google.com/go/vpcaccess v1.5.0
 	cloud.google.com/go/websecurityscanner v1.4.0
 	cloud.google.com/go/workflows v1.9.0
 	github.com/cloudquery/plugin-sdk v1.25.0
