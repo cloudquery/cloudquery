@@ -83,7 +83,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			return nil, err
 		}
 
-		services := vercel.New(mockClient, h.URL, testToken, veSpec.TeamIDs[0])
+		services := vercel.New(logger.With().Str("source", "stripe-client").Logger(), mockClient, h.URL, testToken, veSpec.TeamIDs[0], 5, 10, 100)
 
 		c := New(logger, spec, veSpec, services, veSpec.TeamIDs)
 		return &c, nil

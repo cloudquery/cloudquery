@@ -1,0 +1,85 @@
+name: Source Plugin Stripe Workflow
+
+on:
+  pull_request:
+    paths:
+      - "plugins/source/stripe/**"
+      - ".github/workflows/source_stripe.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/stripe/**"
+      - ".github/workflows/source_stripe.yml"
+
+jobs:
+  plugins-source-stripe:
+    timeout-minutes: 30
+    name: "plugins/source/stripe"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/stripe
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/stripe/go.mod
+          cache: true
+          cache-dependency-path: plugins/source/stripe/go.sum
+      - name: golangci-lint
+        uses: cloudquery/golangci-lint-action@master
+        with:
+          version: v1.50.1
+          working-directory: plugins/source/stripe
+          args: "--config ../../.golangci.yml"
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      - name: Test
+        run: make test
+      - name: gen
+        if: github.event_name == 'pull_request'
+        run: make gen
+      - name: Fail if generation updated files
+        if: github.event_name == 'pull_request'
+        run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
+  validate-release:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    env:
+      CGO_ENABLED: 0
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/source/stripe/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.3-release-cache-plugins-source-stripe
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/stripe/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/source/stripe/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
