@@ -54,11 +54,16 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 	c.pluginSpec.SetDefaults()
 
-	cfg, err := config.LoadDefaultConfig(ctx)
+	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion("us-east-1"))
 	if err != nil {
 		return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
 	}
 
+	location, err := getBucketLocation(ctx, s3.NewFromConfig(cfg), c.pluginSpec.Bucket)
+	if err != nil {
+		return nil, fmt.Errorf("unable to determine region of S3 bucket: %w", err)
+	}
+	cfg.Region = location
 	c.s3Client = s3.NewFromConfig(cfg)
 	c.uploader = manager.NewUploader(c.s3Client)
 	c.downloader = manager.NewDownloader(c.s3Client)
@@ -76,4 +81,17 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 
 func (*Client) Close(ctx context.Context) error {
 	return nil
+}
+
+func getBucketLocation(ctx context.Context, s3Client *s3.Client, bucket string) (string, error) {
+	output, err := s3Client.GetBucketLocation(ctx, &s3.GetBucketLocationInput{
+		Bucket: aws.String(bucket),
+	})
+	if err != nil {
+		return "", fmt.Errorf("failed to get bucket location: %w", err)
+	}
+	if output.LocationConstraint == "null" {
+		return "us-east-1", nil
+	}
+	return string(output.LocationConstraint), nil
 }
