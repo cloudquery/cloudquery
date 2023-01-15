@@ -13,7 +13,7 @@ var (
 
 func Plugin() *source.Plugin {
 	return source.NewPlugin(
-		"test",
+		"{{.Org}}-{{.Name}}",
 		Version,
 		schema.Tables{
 			resources.SampleTable(),
