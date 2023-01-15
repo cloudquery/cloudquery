@@ -1,0 +1,90 @@
+name: release-scaffold
+on:
+  push:
+    tags:
+      - 'scaffold-v*.*.*'
+env:
+  CGO_ENABLED: 0
+
+jobs:
+  release-scaffold:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      # Tag format is scaffold-<version>
+      - name: Split tag
+        id: split
+        run: |
+          tag=${{github.ref_name}}
+          echo "version=$(echo $tag | cut -d- -f2-)" >> $GITHUB_OUTPUT
+      # Fail if not a valid SemVer string
+      - name: Parse semver string
+        id: semver_parser
+        uses: booxmedialtd/ws-action-parse-semver@e81ad80123156d7ddd4f6c8383e63f497f857deb
+        with:
+          input_string: ${{steps.split.outputs.version}}
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('scaffold/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.4-release-cache-scaffold
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: scaffold/go.mod
+      - name: Install GoReleaser
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish -f ./scaffold/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+          GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
+
+      # Publish to GitHub and Homebrew
+      - name: Run GoReleaser Release
+        if: steps.semver_parser.outputs.prerelease == ''
+        run: goreleaser release --rm-dist -f ./scaffold/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+          GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
+          # A custom token is required for publishing to Homebrew
+          GITHUB_TOKEN: ${{ secrets.GORELEASER_GITHUB_TOKEN }}
+
+      # Publish only to GitHub
+      - name: Run GoReleaser PreRelease
+        if: steps.semver_parser.outputs.prerelease != ''
+        run: goreleaser release --rm-dist -f ./scaffold/.goreleaser.prerelease.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+          GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
+          # A custom token is required for publishing to Homebrew
+          GITHUB_TOKEN: ${{ secrets.GORELEASER_GITHUB_TOKEN }}
+
+      - name: Update version file
+        if: steps.semver_parser.outputs.prerelease == ''
+        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./website/versions/scaffold.json'
+          
+      - name: Create Pull Request
+        if: steps.semver_parser.outputs.prerelease == ''
+        uses: peter-evans/create-pull-request@v4
+        with:
+          # required so the PR triggers workflow runs
+          token: ${{ secrets.GH_CQ_BOT }}
+          branch: chore/update-scaffold-version
+          base: main
+          title: "chore: Update Scaffold version to ${{steps.split.outputs.version}}"
+          commit-message: "chore: Update Scaffold version to ${{steps.split.outputs.version}}"
+          body: Updates Scaffold latest version to ${{steps.split.outputs.version}}
+          labels: automerge
+          author: cq-bot <cq-bot@users.noreply.github.com>
