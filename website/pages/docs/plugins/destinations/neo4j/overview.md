@@ -27,7 +27,8 @@ spec:
   registry: "github"
   path: "cloudquery/neo4j"
   version: "VERSION_DESTINATION_NEO4J"
-
+  # batch_size: 10000 # optional
+  # batch_size_bytes: 5242880 # optional
   spec:
     connection_string: "bolt://localhost:7687"
     username: "${USERNAME}"
@@ -37,6 +38,8 @@ spec:
 <Callout type="info">
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 </Callout>
+
+The Neo4j destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes). 
 
 ### Plugin Spec
 

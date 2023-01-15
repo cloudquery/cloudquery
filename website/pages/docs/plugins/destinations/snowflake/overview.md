@@ -24,9 +24,13 @@ spec:
   path: cloudquery/snowflake
   version: "VERSION_DESTINATION_SNOWFLAKE"
   write_mode: "append"
+  # batch_size: 10000 # optional
+  # batch_size_bytes: 5242880 # optional
   spec:
     connection_string: ${SNOWFLAKE_CONNECTION_STRING}
 ```
+
+The Snowflake destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
 
 ## Snowflake Spec
 

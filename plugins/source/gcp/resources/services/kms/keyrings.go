@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
-func Keyrings() *schema.Table {
+func KeyRings() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_kms_keyrings",
 		Description: `https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings#KeyRing`,
@@ -34,6 +34,7 @@ func Keyrings() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			CryptoKeys(),
+			ImportJobs(),
 		},
 	}
 }
