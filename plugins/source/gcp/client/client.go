@@ -88,6 +88,9 @@ func (c *Client) ID() string {
 	if c.OrgId != "" {
 		return "org:" + c.OrgId
 	}
+	if c.Location != "" {
+		return "project:" + c.ProjectId + ":location:" + c.Location
+	}
 	return c.ProjectId
 }
 
