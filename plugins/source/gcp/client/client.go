@@ -91,7 +91,7 @@ func (c *Client) ID() string {
 	if c.Location != "" {
 		return "project:" + c.ProjectId + ":location:" + c.Location
 	}
-	return c.ProjectId
+	return "project:" + c.ProjectId
 }
 
 func (c *Client) Logger() *zerolog.Logger {
