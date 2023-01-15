@@ -88,7 +88,10 @@ func (c *Client) ID() string {
 	if c.OrgId != "" {
 		return "org:" + c.OrgId
 	}
-	return c.ProjectId
+	if c.Location != "" {
+		return "project:" + c.ProjectId + ":location:" + c.Location
+	}
+	return "project:" + c.ProjectId
 }
 
 func (c *Client) Logger() *zerolog.Logger {
