@@ -128,6 +128,8 @@
     - [gcp_kms_crypto_keys](gcp_kms_crypto_keys.md)
       - [gcp_kms_crypto_key_versions](gcp_kms_crypto_key_versions.md)
     - [gcp_kms_import_jobs](gcp_kms_import_jobs.md)
+- [gcp_livestream_channels](gcp_livestream_channels.md)
+- [gcp_livestream_inputs](gcp_livestream_inputs.md)
 - [gcp_logging_metrics](gcp_logging_metrics.md)
 - [gcp_logging_sinks](gcp_logging_sinks.md)
 - [gcp_monitoring_alert_policies](gcp_monitoring_alert_policies.md)
