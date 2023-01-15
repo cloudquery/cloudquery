@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/DataDog/datadog-api-client-go/v2 v2.6.1
-	github.com/cloudquery/plugin-sdk v1.25.0
+	github.com/cloudquery/plugin-sdk v1.25.1
 	github.com/golang/mock v1.6.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.28.0

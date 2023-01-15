@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/mongodb
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.25.0
+	github.com/cloudquery/plugin-sdk v1.25.1
 	github.com/rs/zerolog v1.28.0
 	go.mongodb.org/mongo-driver v1.11.1
 )

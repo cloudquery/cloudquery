@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/gandi
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.25.0
+	github.com/cloudquery/plugin-sdk v1.25.1
 	github.com/go-gandi/go-gandi v0.5.1-0.20221118201059-f69b292fa399
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0

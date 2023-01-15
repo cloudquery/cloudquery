@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/gitlab
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.25.0
+	github.com/cloudquery/plugin-sdk v1.25.1
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/rs/zerolog v1.28.0
 	github.com/xanzy/go-gitlab v0.74.0

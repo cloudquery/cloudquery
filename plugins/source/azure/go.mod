@@ -95,11 +95,9 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse v0.5.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads v0.2.0
-	github.com/cloudquery/plugin-sdk v1.25.0
+	github.com/cloudquery/plugin-sdk v1.25.1
 	github.com/gorilla/mux v1.8.0
-	github.com/iancoleman/strcase v0.2.0
 	github.com/rs/zerolog v1.28.0
-	golang.org/x/mod v0.6.0
 )
 
 require github.com/kylelemons/godebug v1.1.0 // indirect
