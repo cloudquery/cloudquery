@@ -26,7 +26,6 @@ type Client struct {
 	resourceGroups       map[string][]*armresources.GenericResourceExpanded
 	// this is set by table client multiplexer
 	SubscriptionId string
-	ResourceGroup  string
 	Creds          azcore.TokenCredential
 	Options        *arm.ClientOptions
 }
