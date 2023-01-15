@@ -145,6 +145,8 @@
   - [gcp_sql_users](gcp_sql_users.md)
 - [gcp_storage_buckets](gcp_storage_buckets.md)
   - [gcp_storage_bucket_policies](gcp_storage_bucket_policies.md)
+- [gcp_videotranscoder_job_templates](gcp_videotranscoder_job_templates.md)
+- [gcp_videotranscoder_jobs](gcp_videotranscoder_jobs.md)
 - [gcp_vision_products](gcp_vision_products.md)
   - [gcp_vision_product_reference_images](gcp_vision_product_reference_images.md)
 - [gcp_vmmigration_groups](gcp_vmmigration_groups.md)
