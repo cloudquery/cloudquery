@@ -33,8 +33,8 @@ func createWebApps(router *mux.Router) error {
 			return
 		}
 	})
-	createWebAppAuthSettings(router)
-	return nil
+
+	return createWebAppAuthSettings(router)
 }
 
 func TestWebApps(t *testing.T) {
