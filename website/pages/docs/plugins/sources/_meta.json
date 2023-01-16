@@ -2,6 +2,7 @@
   "overview": "Overview",
   "aws": "AWS",
   "azure": "Azure",
+  "azuredevops": "Azure DevOps",
   "cloudflare": "Cloudflare",
   "datadog": "Datadog",
   "digitalocean": "DigitalOcean",

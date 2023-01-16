@@ -44,6 +44,8 @@ type Client struct {
 	ProjectId string
 	// this is set by table client Org multiplexer
 	OrgId string
+	// this is set by table client Location multiplexer
+	Location string
 	// Logger
 	logger zerolog.Logger
 }
@@ -55,6 +57,13 @@ func (c *Client) withProject(project string) *Client {
 	newClient := *c
 	newClient.logger = c.logger.With().Str("project_id", project).Logger()
 	newClient.ProjectId = project
+	return &newClient
+}
+
+func (c *Client) withLocation(location string) *Client {
+	newClient := *c
+	newClient.logger = c.logger.With().Str("location", location).Logger()
+	newClient.Location = location
 	return &newClient
 }
 
@@ -79,7 +88,10 @@ func (c *Client) ID() string {
 	if c.OrgId != "" {
 		return "org:" + c.OrgId
 	}
-	return c.ProjectId
+	if c.Location != "" {
+		return "project:" + c.ProjectId + ":location:" + c.Location
+	}
+	return "project:" + c.ProjectId
 }
 
 func (c *Client) Logger() *zerolog.Logger {
