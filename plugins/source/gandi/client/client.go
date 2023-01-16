@@ -47,7 +47,7 @@ func (c *Client) ID() string {
 	return c.sharingID
 }
 
-func Configure(_ context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(_ context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	gaSpec := &Spec{}
 	if err := s.UnmarshalSpec(gaSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal gandi spec: %w", err)

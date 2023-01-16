@@ -37,7 +37,7 @@ func (*Client) ID() string {
 	return "hackernews"
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, opts ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, opts source.Options) (schema.ClientMeta, error) {
 	var config Spec
 	err := sourceSpec.UnmarshalSpec(&config)
 	if err != nil {
@@ -54,11 +54,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Sour
 		return nil, fmt.Errorf("failed to create hackernews client: %w", err)
 	}
 
-	o := source.Options{}
-	for _, opt := range opts {
-		opt(&o)
-	}
-
 	return &Client{
 		logger:     logger,
 		sourceSpec: sourceSpec,
@@ -66,6 +61,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Sour
 		HackerNews: client,
 		maxRetries: defaultMaxRetries,
 		backoff:    defaultBackoff,
-		Backend:    o.Backend,
+		Backend:    opts.Backend,
 	}, nil
 }

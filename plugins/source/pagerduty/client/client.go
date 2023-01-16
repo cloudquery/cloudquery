@@ -22,7 +22,7 @@ type Client struct {
 	logger          zerolog.Logger
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	authToken, err := getAuthToken()
 	if err != nil {
 		return nil, err
