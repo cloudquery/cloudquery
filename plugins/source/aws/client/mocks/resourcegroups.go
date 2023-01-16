@@ -35,6 +35,26 @@ func (m *MockResourcegroupsClient) EXPECT() *MockResourcegroupsClientMockRecorde
 	return m.recorder
 }
 
+// GetAccountSettings mocks base method.
+func (m *MockResourcegroupsClient) GetAccountSettings(arg0 context.Context, arg1 *resourcegroups.GetAccountSettingsInput, arg2 ...func(*resourcegroups.Options)) (*resourcegroups.GetAccountSettingsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetAccountSettings", varargs...)
+	ret0, _ := ret[0].(*resourcegroups.GetAccountSettingsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccountSettings indicates an expected call of GetAccountSettings.
+func (mr *MockResourcegroupsClientMockRecorder) GetAccountSettings(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccountSettings", reflect.TypeOf((*MockResourcegroupsClient)(nil).GetAccountSettings), varargs...)
+}
+
 // GetGroup mocks base method.
 func (m *MockResourcegroupsClient) GetGroup(arg0 context.Context, arg1 *resourcegroups.GetGroupInput, arg2 ...func(*resourcegroups.Options)) (*resourcegroups.GetGroupOutput, error) {
 	m.ctrl.T.Helper()

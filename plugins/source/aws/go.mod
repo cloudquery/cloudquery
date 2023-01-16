@@ -72,7 +72,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ram v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/rds v1.40.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.27.0
-	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.13.0
+	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.0
