@@ -103,6 +103,7 @@
 - [aws_config_conformance_packs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_config_conformance_packs.md)
   - [aws_config_conformance_pack_rule_compliances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_config_conformance_pack_rule_compliances.md)
 - [aws_dax_clusters](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_dax_clusters.md)
+- [aws_db_proxies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_db_proxies.md)
 - [aws_directconnect_connections](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_directconnect_connections.md)
 - [aws_directconnect_gateways](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_directconnect_gateways.md)
   - [aws_directconnect_gateway_associations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_directconnect_gateway_associations.md)
