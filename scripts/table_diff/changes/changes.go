@@ -20,9 +20,24 @@ type change struct {
 	Breaking bool   `json:"breaking"`
 }
 
+type columnType int
+
+const (
+	columnTypePK columnType = 1 << iota
+	columnTypeIncremental
+)
+
 type column struct {
-	dataType string
-	pk       bool
+	dataType   string
+	columnType columnType
+}
+
+func (c column) pk() bool {
+	return c.columnType&columnTypePK != 0
+}
+
+func (c column) incremental() bool {
+	return c.columnType&columnTypeIncremental != 0
 }
 
 func backtickStrings(strings ...string) []interface{} {
@@ -33,10 +48,10 @@ func backtickStrings(strings ...string) []interface{} {
 	return backticked
 }
 
-func parseColumnChange(line string) (name string, dataType string, pk bool) {
+func parseColumnChange(line string) (name string, dataType string, columnType columnType) {
 	match := columnRegex.FindStringSubmatch(line)
 	if match == nil {
-		return "", "", false
+		return "", "", columnType
 	}
 	result := make(map[string]string)
 	for i, name := range columnRegex.SubexpNames() {
@@ -44,8 +59,14 @@ func parseColumnChange(line string) (name string, dataType string, pk bool) {
 			result[name] = match[i]
 		}
 	}
-	cleanName := strings.TrimSuffix(result["name"], " (PK)")
-	return cleanName, result["dataType"], result["name"] != cleanName
+	if strings.Contains(result["name"], " (PK)") {
+		columnType |= columnTypePK
+	}
+	if strings.Contains(result["name"], " (Incremental Key)") {
+		columnType |= columnTypeIncremental
+	}
+	cleanName := strings.Split(result["name"], " (")[0]
+	return cleanName, result["dataType"], columnType
 }
 
 func parsePKChange(line string) (names []string) {
@@ -75,11 +96,11 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 				}
 				continue
 			}
-			name, dataType, pk := parseColumnChange(line.Line)
+			name, dataType, columnType := parseColumnChange(line.Line)
 			if name == "" || dataType == "" {
 				continue
 			}
-			column := column{dataType: dataType, pk: pk}
+			column := column{dataType: dataType, columnType: columnType}
 			switch line.Op {
 			case gitdiff.OpAdd:
 				addedColumns[name] = column
@@ -90,7 +111,7 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 	}
 	for deletedName, deletedColumn := range deletedColumns {
 		if addedColumn, ok := addedColumns[deletedName]; ok {
-			if deletedColumn.dataType == addedColumn.dataType && deletedColumn.pk == addedColumn.pk {
+			if deletedColumn.dataType == addedColumn.dataType && deletedColumn.columnType == addedColumn.columnType {
 				changes = append(changes, change{
 					Text:     fmt.Sprintf("Table %s: column order changed for %s", backtickStrings(table, deletedName)...),
 					Breaking: false,
@@ -105,17 +126,31 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 				})
 			}
 
-			if addedColumn.pk && !deletedColumn.pk {
+			if addedColumn.pk() && !deletedColumn.pk() {
 				changes = append(changes, change{
 					Text:     fmt.Sprintf("Table %s: primary key constraint added to column %s", backtickStrings(table, deletedName)...),
 					Breaking: false,
 				})
 			}
 
-			if !addedColumn.pk && deletedColumn.pk {
+			if !addedColumn.pk() && deletedColumn.pk() {
 				changes = append(changes, change{
 					Text:     fmt.Sprintf("Table %s: primary key constraint removed from column %s", backtickStrings(table, deletedName)...),
 					Breaking: false,
+				})
+			}
+
+			if addedColumn.incremental() && !deletedColumn.incremental() {
+				changes = append(changes, change{
+					Text:     fmt.Sprintf("Table %s: column %s added to cursor for incremental syncs", backtickStrings(table, deletedName)...),
+					Breaking: true,
+				})
+			}
+
+			if !addedColumn.incremental() && deletedColumn.incremental() {
+				changes = append(changes, change{
+					Text:     fmt.Sprintf("Table %s: column %s removed from cursor for incremental syncs", backtickStrings(table, deletedName)...),
+					Breaking: true,
 				})
 			}
 		} else {
@@ -128,12 +163,15 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 	for addedName, addedColumn := range addedColumns {
 		if _, ok := deletedColumns[addedName]; !ok {
 			name := addedName
-			if addedColumn.pk {
-				name = fmt.Sprintf("%s (PK)", name)
+			if addedColumn.pk() {
+				name += " (PK)"
+			}
+			if addedColumn.incremental() {
+				name += " (Incremental Key)"
 			}
 			changes = append(changes, change{
 				Text:     fmt.Sprintf("Table %s: column added with name %s and type %s", backtickStrings(table, name, addedColumn.dataType)...),
-				Breaking: addedColumn.pk,
+				Breaking: addedColumn.pk(),
 			})
 		}
 	}
