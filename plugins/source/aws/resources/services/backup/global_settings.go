@@ -23,6 +23,14 @@ func GlobalSettings() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "region",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
 		},
 	}
 }
