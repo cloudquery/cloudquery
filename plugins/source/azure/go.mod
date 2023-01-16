@@ -79,6 +79,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations v1.1.0
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlinks v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy v0.6.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas v0.5.0
@@ -100,10 +101,7 @@ require (
 	github.com/rs/zerolog v1.28.0
 )
 
-require (
-	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlinks v1.0.0 // indirect
-	github.com/kylelemons/godebug v1.1.0 // indirect
-)
+require github.com/kylelemons/godebug v1.1.0 // indirect
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.1.2 // indirect; indirect // indirect
