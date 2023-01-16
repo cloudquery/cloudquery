@@ -254,8 +254,8 @@ github.com/aws/aws-sdk-go-v2/service/waf v1.11.21 h1:4g4cMwemkVh0kjgMbg4DLqYBprw
 github.com/aws/aws-sdk-go-v2/service/waf v1.11.21/go.mod h1:7/L+ejelv5nOhsD/4pbaVl6jAtCgtYwgud8Pb/SeheE=
 github.com/aws/aws-sdk-go-v2/service/wafregional v1.13.1 h1:PAszA6EKbNHvs8V6WFI3CL22dUIBRjfMhjbyRg/lS8M=
 github.com/aws/aws-sdk-go-v2/service/wafregional v1.13.1/go.mod h1:oCfqX0qay7HrOqf6viIlSqBV1CykdyArfznKg2j2utA=
-github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.4 h1:uikbWWM04WHokxui8+bZoyS4srq/2b5VANN22smoy5w=
-github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.4/go.mod h1:dXnnPzwqtz7h6DRUYvXpdV59mg9bwnDDWaGxo16++cU=
+github.com/aws/aws-sdk-go-v2/service/wafv2 v1.24.1 h1:YzOhdiziSg3yxG9nQxSuCPbLehoSY7lGx/zrPLTP1BM=
+github.com/aws/aws-sdk-go-v2/service/wafv2 v1.24.1/go.mod h1:dXnnPzwqtz7h6DRUYvXpdV59mg9bwnDDWaGxo16++cU=
 github.com/aws/aws-sdk-go-v2/service/workspaces v1.27.2 h1:GaH1EkxY3IgRAzfMATr6sHy6ymoXfH+cnBuuEB9YtvM=
 github.com/aws/aws-sdk-go-v2/service/workspaces v1.27.2/go.mod h1:oudvE1/KOdqMDrq9PG1QjLpvQb8S5R3y2Fci+Vuc6To=
 github.com/aws/aws-sdk-go-v2/service/xray v1.15.3 h1:twjIORJccJIKXy2FFtlUDzlzaS91AAKypuuTN4gL2Ew=
