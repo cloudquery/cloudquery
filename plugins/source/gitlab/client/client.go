@@ -14,10 +14,11 @@ import (
 type Client struct {
 	// This is a client that you need to create and initialize in Configure
 	// It will be passed for each resource fetcher.
-	logger  zerolog.Logger
-	Gitlab  *gitlab.Client
-	spec    specs.Source
-	BaseURL string
+	logger         zerolog.Logger
+	Gitlab         *gitlab.Client
+	spec           specs.Source
+	BaseURL        string
+	MinAccessLevel *gitlab.AccessLevelValue
 }
 
 func (c *Client) Logger() *zerolog.Logger {
@@ -37,9 +38,14 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 		return nil, err
 	}
 
+	var minAccessLevel *gitlab.AccessLevelValue
 	opts := []gitlab.ClientOptionFunc{}
 	if gitlabSpec.BaseURL != "" {
 		opts = append(opts, gitlab.WithBaseURL(gitlabSpec.BaseURL))
+	} else {
+		// on GitLab SaaS we don't want to sync the whole of GitLab, so we sync based on access level
+		// TODO: use gitlab.MinimalAccessPermissions once supported. Related https://gitlab.com/gitlab-org/gitlab/-/issues/296089#note_496386453
+		minAccessLevel = gitlab.AccessLevel(gitlab.GuestPermissions)
 	}
 
 	c, err := gitlab.NewClient(gitlabSpec.Token, opts...)
@@ -48,8 +54,9 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 	}
 
 	return &Client{
-		logger: logger,
-		Gitlab: c,
-		spec:   s,
+		logger:         logger,
+		Gitlab:         c,
+		spec:           s,
+		MinAccessLevel: minAccessLevel,
 	}, nil
 }
