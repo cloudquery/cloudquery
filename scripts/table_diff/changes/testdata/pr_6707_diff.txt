@@ -1,0 +1,168 @@
+diff --git a/plugins/source/shopify/docs/tables/README.md b/plugins/source/shopify/docs/tables/README.md
+index 90f49ef7b93e..073ec3283a8b 100644
+--- a/plugins/source/shopify/docs/tables/README.md
++++ b/plugins/source/shopify/docs/tables/README.md
+@@ -2,11 +2,11 @@
+ 
+ ## Tables
+ 
+-- [shopify_abandoned_checkouts](shopify_abandoned_checkouts.md)
+-- [shopify_customers](shopify_customers.md)
+-- [shopify_orders](shopify_orders.md)
+-- [shopify_price_rules](shopify_price_rules.md)
++- [shopify_abandoned_checkouts](shopify_abandoned_checkouts.md) (Incremental)
++- [shopify_customers](shopify_customers.md) (Incremental)
++- [shopify_orders](shopify_orders.md) (Incremental)
++- [shopify_price_rules](shopify_price_rules.md) (Incremental)
+   - [shopify_price_rule_discount_codes](shopify_price_rule_discount_codes.md)
+-- [shopify_products](shopify_products.md)
++- [shopify_products](shopify_products.md) (Incremental)
+   - [shopify_product_images](shopify_product_images.md)
+   - [shopify_product_variants](shopify_product_variants.md)
+\ No newline at end of file
+diff --git a/plugins/source/shopify/docs/tables/shopify_abandoned_checkouts.md b/plugins/source/shopify/docs/tables/shopify_abandoned_checkouts.md
+index 4092c203dfb9..020483280d38 100644
+--- a/plugins/source/shopify/docs/tables/shopify_abandoned_checkouts.md
++++ b/plugins/source/shopify/docs/tables/shopify_abandoned_checkouts.md
+@@ -1,6 +1,7 @@
+ # Table: shopify_abandoned_checkouts
+ 
+ The primary key for this table is **id**.
++It supports incremental syncs based on the **updated_at** column.
+ 
+ ## Columns
+ 
+@@ -11,13 +12,13 @@ The primary key for this table is **id**.
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+ |id (PK)|Int|
++|updated_at (Incremental Key)|Timestamp|
+ |token|String|
+ |cart_token|String|
+ |email|String|
+ |gateway|String|
+ |buyer_accepts_marketing|Bool|
+ |created_at|Timestamp|
+-|updated_at|Timestamp|
+ |landing_site|String|
+ |note_attributes|JSON|
+ |referring_site|String|
+diff --git a/plugins/source/shopify/docs/tables/shopify_customers.md b/plugins/source/shopify/docs/tables/shopify_customers.md
+index 0ce10bdad5de..251540eee487 100644
+--- a/plugins/source/shopify/docs/tables/shopify_customers.md
++++ b/plugins/source/shopify/docs/tables/shopify_customers.md
+@@ -1,6 +1,7 @@
+ # Table: shopify_customers
+ 
+ The primary key for this table is **id**.
++It supports incremental syncs based on the **updated_at** column.
+ 
+ ## Columns
+ 
+@@ -11,10 +12,10 @@ The primary key for this table is **id**.
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+ |id (PK)|Int|
++|updated_at (Incremental Key)|Timestamp|
+ |email|String|
+ |accepts_marketing|Bool|
+-|created_at (Incremental Key)|Timestamp|
+-|updated_at|Timestamp|
++|created_at|Timestamp|
+ |first_name|String|
+ |last_name|String|
+ |orders_count|Int|
+diff --git a/plugins/source/shopify/docs/tables/shopify_orders.md b/plugins/source/shopify/docs/tables/shopify_orders.md
+index 3ecd8e46f25f..a266bd04e1a2 100644
+--- a/plugins/source/shopify/docs/tables/shopify_orders.md
++++ b/plugins/source/shopify/docs/tables/shopify_orders.md
+@@ -1,6 +1,7 @@
+ # Table: shopify_orders
+ 
+ The primary key for this table is **id**.
++It supports incremental syncs based on the (**created_at**, **updated_at**) columns.
+ 
+ ## Columns
+ 
+@@ -11,6 +12,8 @@ The primary key for this table is **id**.
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+ |id (PK)|Int|
++|created_at (Incremental Key)|Timestamp|
++|updated_at (Incremental Key)|Timestamp|
+ |admin_graphql_api_id|String|
+ |app_id|Int|
+ |browser_ip|String|
+@@ -22,7 +25,6 @@ The primary key for this table is **id**.
+ |closed_at|Timestamp|
+ |confirmed|Bool|
+ |contact_email|String|
+-|created_at|Timestamp|
+ |currency|String|
+ |current_subtotal_price|String|
+ |current_total_discounts|String|
+@@ -61,7 +63,6 @@ The primary key for this table is **id**.
+ |total_tax|String|
+ |total_tip_received|String|
+ |total_weight|Int|
+-|updated_at|Timestamp|
+ |user_id|Int|
+ |customer|JSON|
+ |discount_applications|JSON|
+diff --git a/plugins/source/shopify/docs/tables/shopify_price_rules.md b/plugins/source/shopify/docs/tables/shopify_price_rules.md
+index 8b614b64f60c..e38136881b03 100644
+--- a/plugins/source/shopify/docs/tables/shopify_price_rules.md
++++ b/plugins/source/shopify/docs/tables/shopify_price_rules.md
+@@ -1,7 +1,7 @@
+ # Table: shopify_price_rules
+ 
+ The primary key for this table is **id**.
+-
++It supports incremental syncs based on the **updated_at** column.
+ ## Relations
+ 
+ The following tables depend on shopify_price_rules:
+@@ -16,6 +16,7 @@ The following tables depend on shopify_price_rules:
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+ |id (PK)|Int|
++|updated_at (Incremental Key)|Timestamp|
+ |value_type|String|
+ |value|String|
+ |customer_selection|String|
+@@ -27,7 +28,6 @@ The following tables depend on shopify_price_rules:
+ |starts_at|Timestamp|
+ |ends_at|Timestamp|
+ |created_at|Timestamp|
+-|updated_at|Timestamp|
+ |entitled_product_ids|JSON|
+ |entitled_variant_ids|JSON|
+ |entitled_collection_ids|JSON|
+diff --git a/plugins/source/shopify/docs/tables/shopify_products.md b/plugins/source/shopify/docs/tables/shopify_products.md
+index 4894f78c142e..a93f66000cfb 100644
+--- a/plugins/source/shopify/docs/tables/shopify_products.md
++++ b/plugins/source/shopify/docs/tables/shopify_products.md
+@@ -1,7 +1,7 @@
+ # Table: shopify_products
+ 
+ The primary key for this table is **id**.
+-
++It supports incremental syncs based on the **updated_at** column.
+ ## Relations
+ 
+ The following tables depend on shopify_products:
+@@ -17,13 +17,13 @@ The following tables depend on shopify_products:
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+ |id (PK)|Int|
++|updated_at (Incremental Key)|Timestamp|
+ |title|String|
+ |body_html|String|
+ |vendor|String|
+ |product_type|String|
+ |created_at|Timestamp|
+ |handle|String|
+-|updated_at|Timestamp|
+ |published_at|Timestamp|
+ |template_suffix|String|
+ |status|String|
