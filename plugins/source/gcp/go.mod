@@ -35,6 +35,7 @@ require (
 	cloud.google.com/go/secretmanager v1.9.0
 	cloud.google.com/go/serviceusage v1.4.0
 	cloud.google.com/go/storage v1.28.0
+	cloud.google.com/go/translate v1.4.0
 	cloud.google.com/go/video v1.9.0
 	cloud.google.com/go/vision/v2 v2.5.0
 	cloud.google.com/go/vmmigration v1.3.0

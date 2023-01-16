@@ -95,7 +95,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/waf v1.12.0
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.24.1
-	github.com/aws/aws-sdk-go-v2/service/workspaces v1.27.2
+	github.com/aws/aws-sdk-go-v2/service/workspaces v1.28.0
 	github.com/aws/aws-sdk-go-v2/service/xray v1.16.0
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
