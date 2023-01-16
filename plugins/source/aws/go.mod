@@ -72,7 +72,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ram v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/rds v1.40.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.27.0
-	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.13.0
+	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.0
@@ -87,16 +87,16 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ses v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/sfn v1.17.0
-	github.com/aws/aws-sdk-go-v2/service/sns v1.18.8
-	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.17
-	github.com/aws/aws-sdk-go-v2/service/ssm v1.34.0
-	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.15.16
+	github.com/aws/aws-sdk-go-v2/service/sns v1.19.0
+	github.com/aws/aws-sdk-go-v2/service/sqs v1.20.0
+	github.com/aws/aws-sdk-go-v2/service/ssm v1.35.0
+	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/sts v1.18.0
-	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.8
-	github.com/aws/aws-sdk-go-v2/service/waf v1.11.21
-	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.4
+	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.15.0
+	github.com/aws/aws-sdk-go-v2/service/waf v1.12.0
+	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.27.2
-	github.com/aws/aws-sdk-go-v2/service/xray v1.15.3
+	github.com/aws/aws-sdk-go-v2/service/xray v1.16.0
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.0
@@ -139,10 +139,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.21 // indirect
-	github.com/aws/aws-sdk-go-v2/service/shield v1.17.13
+	github.com/aws/aws-sdk-go-v2/service/shield v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/sso v1.12.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/transfer v1.27.0
-	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.22
+	github.com/aws/aws-sdk-go-v2/service/transfer v1.28.0
+	github.com/aws/aws-sdk-go-v2/service/wafregional v1.13.1
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
