@@ -103,6 +103,7 @@
 - [aws_config_conformance_packs](aws_config_conformance_packs.md)
   - [aws_config_conformance_pack_rule_compliances](aws_config_conformance_pack_rule_compliances.md)
 - [aws_dax_clusters](aws_dax_clusters.md)
+- [aws_db_proxies](aws_db_proxies.md)
 - [aws_directconnect_connections](aws_directconnect_connections.md)
 - [aws_directconnect_gateways](aws_directconnect_gateways.md)
   - [aws_directconnect_gateway_associations](aws_directconnect_gateway_associations.md)
