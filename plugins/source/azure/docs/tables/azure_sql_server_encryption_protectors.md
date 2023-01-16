@@ -1,10 +1,10 @@
-# Table: azure_sql_database_threat_protections
+# Table: azure_sql_server_encryption_protectors
 
 The primary key for this table is **id**.
 
 ## Relations
 
-This table depends on [azure_sql_databases](azure_sql_databases.md).
+This table depends on [azure_sql_servers](azure_sql_servers.md).
 
 ## Columns
 
@@ -16,6 +16,7 @@ This table depends on [azure_sql_databases](azure_sql_databases.md).
 |_cq_parent_id|UUID|
 |properties|JSON|
 |id (PK)|String|
-|system_data|JSON|
+|kind|String|
+|location|String|
 |name|String|
 |type|String|

@@ -1,10 +1,10 @@
-# Table: azure_postgresql_configurations
+# Table: azure_sql_server_database_threat_protections
 
 The primary key for this table is **id**.
 
 ## Relations
 
-This table depends on [azure_postgresql_servers](azure_postgresql_servers.md).
+This table depends on [azure_sql_server_databases](azure_sql_server_databases.md).
 
 ## Columns
 
@@ -16,5 +16,6 @@ This table depends on [azure_postgresql_servers](azure_postgresql_servers.md).
 |_cq_parent_id|UUID|
 |properties|JSON|
 |id (PK)|String|
+|system_data|JSON|
 |name|String|
 |type|String|

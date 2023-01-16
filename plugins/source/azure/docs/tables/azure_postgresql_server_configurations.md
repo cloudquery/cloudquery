@@ -1,10 +1,10 @@
-# Table: azure_sql_database_blob_auditing_policies
+# Table: azure_postgresql_server_configurations
 
 The primary key for this table is **id**.
 
 ## Relations
 
-This table depends on [azure_sql_databases](azure_sql_databases.md).
+This table depends on [azure_postgresql_servers](azure_postgresql_servers.md).
 
 ## Columns
 
@@ -16,6 +16,5 @@ This table depends on [azure_sql_databases](azure_sql_databases.md).
 |_cq_parent_id|UUID|
 |properties|JSON|
 |id (PK)|String|
-|kind|String|
 |name|String|
 |type|String|

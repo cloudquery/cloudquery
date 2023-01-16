@@ -1,4 +1,4 @@
-# Table: azure_postgresql_firewall_rules
+# Table: azure_postgresql_server_firewall_rules
 
 The primary key for this table is **id**.
 

@@ -1,10 +1,10 @@
-# Table: azure_sql_encryption_protectors
+# Table: azure_sql_server_database_blob_auditing_policies
 
 The primary key for this table is **id**.
 
 ## Relations
 
-This table depends on [azure_sql_servers](azure_sql_servers.md).
+This table depends on [azure_sql_server_databases](azure_sql_server_databases.md).
 
 ## Columns
 
@@ -17,6 +17,5 @@ This table depends on [azure_sql_servers](azure_sql_servers.md).
 |properties|JSON|
 |id (PK)|String|
 |kind|String|
-|location|String|
 |name|String|
 |type|String|
