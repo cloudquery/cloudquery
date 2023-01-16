@@ -55,7 +55,7 @@ type ListObjectsResponse struct {
 	Sobject []Sobject `json:"sobjects"`
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	cqClient := Client{
 		logger: logger,
 	}

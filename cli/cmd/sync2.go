@@ -107,7 +107,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 		g.Go(func() error {
 			var destFailedWrites uint64
 			var err error
-			if err = destClients[i].Write2(gctx, selectedTables, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
+			if err = destClients[i].Write2(gctx, sourceSpec, selectedTables, syncTime, destSubscriptions[i]); err != nil {
 				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
 			// call Close on destination client using the outer context, so that it happens even if writes get cancelled
