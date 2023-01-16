@@ -13,7 +13,7 @@ func networkRuleSets() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_eventhub_network_rule_sets",
 		Resolver:  fetchNetworkRuleSets,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_eventhub),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_eventhub_network_rule_sets", client.Namespacemicrosoft_eventhub),
 		Transform: transformers.TransformWithStruct(&armeventhub.NetworkRuleSet{}),
 		Columns: []schema.Column{
 			{

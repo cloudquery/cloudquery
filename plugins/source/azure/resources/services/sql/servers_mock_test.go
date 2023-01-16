@@ -34,9 +34,7 @@ func createServers(router *mux.Router) error {
 		}
 	})
 
-	createVirtualNetworkRules(router)
-
-	return nil
+	return createVirtualNetworkRules(router)
 }
 
 func TestServers(t *testing.T) {

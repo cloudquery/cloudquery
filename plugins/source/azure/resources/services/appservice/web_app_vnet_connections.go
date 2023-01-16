@@ -13,7 +13,7 @@ func webAppVnetConnections() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_web_app_vnet_connections",
 		Resolver:  fetchWebAppVnetConnections,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_web),
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_web_app_vnet_connections", client.Namespacemicrosoft_web),
 		Transform: transformers.TransformWithStruct(&armappservice.VnetInfoResource{}),
 		Columns: []schema.Column{
 			{

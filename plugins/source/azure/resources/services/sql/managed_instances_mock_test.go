@@ -34,8 +34,7 @@ func createManagedInstances(router *mux.Router) error {
 		}
 	})
 
-	createManagedInstanceEncryptionProtectors(router)
-	return nil
+	return createManagedInstanceEncryptionProtectors(router)
 }
 
 func TestManagedInstances(t *testing.T) {

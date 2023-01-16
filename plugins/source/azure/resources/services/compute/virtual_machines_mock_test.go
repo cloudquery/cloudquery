@@ -49,8 +49,8 @@ func createVirtualMachines(router *mux.Router) error {
 			return
 		}
 	})
-	createVirtualMachineExtensions(router)
-	return nil
+
+	return createVirtualMachineExtensions(router)
 }
 
 func TestVirtualMachines(t *testing.T) {

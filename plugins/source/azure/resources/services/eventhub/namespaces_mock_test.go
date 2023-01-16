@@ -34,9 +34,7 @@ func createNamespaces(router *mux.Router) error {
 		}
 	})
 
-	createNamespaceRuleSets(router)
-
-	return nil
+	return createNamespaceRuleSets(router)
 }
 
 func TestNamespaces(t *testing.T) {

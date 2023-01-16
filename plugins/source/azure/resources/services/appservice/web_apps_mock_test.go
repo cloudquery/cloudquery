@@ -33,8 +33,8 @@ func createWebApps(router *mux.Router) error {
 			return
 		}
 	})
-	createVnetConnections(router)
-	return nil
+
+	return createVnetConnections(router)
 }
 
 func TestWebApps(t *testing.T) {
