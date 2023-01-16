@@ -3,8 +3,8 @@ package client
 import (
 	"reflect"
 
-	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/oracle/oci-go-sdk/v65/common"
 )
 
@@ -19,5 +19,5 @@ func OracleTypeTransformer(field reflect.StructField) (schema.ValueType, error) 
 		return schema.TypeTimestamp, nil
 	}
 
-	return codegen.DefaultTypeTransformer(field)
+	return transformers.DefaultTypeTransformer(field)
 }

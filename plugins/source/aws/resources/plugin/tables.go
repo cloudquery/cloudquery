@@ -357,6 +357,7 @@ func tables() []*schema.Table {
 		rds.ClusterSnapshots(),
 		rds.Clusters(),
 		rds.DbParameterGroups(),
+		rds.DbProxies(),
 		rds.DbSecurityGroups(),
 		rds.DbSnapshots(),
 		rds.EventSubscriptions(),

@@ -42,7 +42,7 @@ func New(logger zerolog.Logger, s specs.Source, okt *okta.APIClient) *Client {
 	}
 }
 
-func Configure(_ context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(_ context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	oktaSpec := &Spec{}
 	if err := s.UnmarshalSpec(oktaSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal okta spec: %w", err)

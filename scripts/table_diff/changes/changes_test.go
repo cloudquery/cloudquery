@@ -27,22 +27,24 @@ func Test_parseColumnChange(t *testing.T) {
 		line string
 	}
 	tests := []struct {
-		name         string
-		args         args
-		wantName     string
-		wantDataType string
-		wantPk       bool
+		name           string
+		args           args
+		wantName       string
+		wantDataType   string
+		wantColumnType columnType
 	}{
 		{name: "Should parse name and data type when change is a column", args: args{line: "|name|String|"}, wantName: "name", wantDataType: "String"},
-		{name: "Should parse name, pk and data type when a column is a primary key", args: args{line: "|name (PK)|String|"}, wantName: "name", wantDataType: "String", wantPk: true},
+		{name: "Should parse name, pk and data type when a column is a primary key", args: args{line: "|name (PK)|String|"}, wantName: "name", wantDataType: "String", wantColumnType: columnTypePK},
 		{name: "Should return empty strings when change is not a column", args: args{line: "# Table: azure_appservice_site_auth_settings"}, wantName: "", wantDataType: ""},
+		{name: "Should parse name, incremental key and data type when a column is an incremental key", args: args{line: "|updated_at (Incremental Key)|Timestamp|"}, wantName: "updated_at", wantDataType: "Timestamp", wantColumnType: columnTypeIncremental},
+		{name: "Should parse name, pk and incremental key", args: args{line: "|updated_at (PK) (Incremental Key)|Timestamp|"}, wantName: "updated_at", wantDataType: "Timestamp", wantColumnType: columnTypeIncremental | columnTypePK},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotName, gotDataType, pk := parseColumnChange(tt.args.line)
+			gotName, gotDataType, columnType := parseColumnChange(tt.args.line)
 			require.Equal(t, tt.wantName, gotName)
 			require.Equal(t, tt.wantDataType, gotDataType)
-			require.Equal(t, tt.wantPk, pk)
+			require.Equal(t, tt.wantColumnType, columnType)
 		})
 	}
 }
@@ -308,6 +310,40 @@ func Test_getChanges(t *testing.T) {
 				{
 					Text:     "Table `github_workflows`: column order changed for `id`",
 					Breaking: false,
+				},
+			},
+		},
+		{
+			name:         "Should handle incremental column changes",
+			diffDataFile: "testdata/pr_6707_diff.txt",
+			wantChanges: []change{
+				{
+					Text:     "Table `shopify_abandoned_checkouts`: column `updated_at` added to cursor for incremental syncs",
+					Breaking: true,
+				},
+				{
+					Text:     "Table `shopify_customers`: column `created_at` removed from cursor for incremental syncs",
+					Breaking: true,
+				},
+				{
+					Text:     "Table `shopify_customers`: column `updated_at` added to cursor for incremental syncs",
+					Breaking: true,
+				},
+				{
+					Text:     "Table `shopify_orders`: column `created_at` added to cursor for incremental syncs",
+					Breaking: true,
+				},
+				{
+					Text:     "Table `shopify_orders`: column `updated_at` added to cursor for incremental syncs",
+					Breaking: true,
+				},
+				{
+					Text:     "Table `shopify_price_rules`: column `updated_at` added to cursor for incremental syncs",
+					Breaking: true,
+				},
+				{
+					Text:     "Table `shopify_products`: column `updated_at` added to cursor for incremental syncs",
+					Breaking: true,
 				},
 			},
 		},

@@ -36,7 +36,7 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 	}
 	defer gsrv.Stop()
 	eg := &errgroup.Group{}
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		err := createService(gsrv)
 		if err != nil {
 			return nil, fmt.Errorf("failed to createService: %w", err)
@@ -95,7 +95,7 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 	mux := httprouter.New()
 	ts := httptest.NewUnstartedServer(mux)
 	defer ts.Close()
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		err := createService(mux)
 		if err != nil {
 			return nil, fmt.Errorf("failed to createService: %w", err)

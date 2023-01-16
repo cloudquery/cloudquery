@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/heroku
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.25.0
+	github.com/cloudquery/plugin-sdk v1.25.1
 	github.com/google/go-cmp v0.5.9
 	github.com/googleapis/gax-go/v2 v2.7.0
 	github.com/heroku/heroku-go/v5 v5.5.0

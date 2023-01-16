@@ -101,7 +101,7 @@ func (c *Client) disocverResourceGroups(ctx context.Context) error {
 	return nil
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var spec Spec
 	var err error
 	if err := s.UnmarshalSpec(&spec); err != nil {
