@@ -61,7 +61,7 @@ func TestMigrateErrors(t *testing.T) {
 			{Name: "created_at", Type: schema.TypeString},
 		},
 	}
-	p := destination.NewPlugin("postgresql", "development", New)
+	p := destination.NewPlugin("sqlite", "development", New)
 	ctx := context.Background()
 
 	spec := Spec{
