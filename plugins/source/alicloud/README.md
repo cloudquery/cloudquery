@@ -1,12 +1,8 @@
-# Source Plugin: alicloud
+# Alibaba Cloud Source Plugin
 
-## Tables
-See: [Table Docs](docs/tables/README.md)
+The `alicloud` source plugin extracts information from many of the supported services by Alibaba Cloud (阿里云).
 
-## Test
-```
-cloudquery sync ./config/alicloud.yaml
-```
+## Links
 
-## References
-- https://github.com/aliyun/alibaba-cloud-sdk-go
+- [User Guide](https://cloudquery.io/docs/plugins/sources/alicloud/overview)
+
