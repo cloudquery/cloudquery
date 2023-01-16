@@ -1,5 +1,7 @@
 # Table: aws_glue_ml_transforms
 
+https://docs.aws.amazon.com/glue/latest/webapi/API_MLTransform.html
+
 The primary key for this table is **arn**.
 
 ## Relations
