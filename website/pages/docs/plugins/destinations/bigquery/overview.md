@@ -31,12 +31,16 @@ spec:
   path: cloudquery/bigquery
   version: "VERSION_DESTINATION_BIGQUERY"
   write_mode: "append"
+  # batch_size: 1000 # optional
+  # batch_size_bytes: 5242880 # optional
   spec:
     project_id: ${PROJECT_ID}
     dataset_id: ${DATASET_ID}
 ```
 
-Note that the BigQuery plugin only supports the `append` write mode.
+The BigQuery destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+
+Note that the BigQuery plugin only supports the `append` write mode. 
 
 ## Authentication
 

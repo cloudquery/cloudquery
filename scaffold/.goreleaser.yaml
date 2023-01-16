@@ -1,0 +1,33 @@
+project_name: scaffold
+
+monorepo:
+  tag_prefix: scaffold-
+  dir: scaffold
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      # Include everything from pre-release (build & publish to GitHub), plus publish to docker and Homebrew
+      path: ./scaffold/.goreleaser.prerelease.yaml
+
+brews:
+  -
+    ids:
+      - homebrew
+    name: scaffold
+    tap:
+      owner: cloudquery
+      name: homebrew-tap
+    url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .PrefixedTag }}/{{ .ArtifactName }}"
+    homepage: "https://cloudquery.io"
+    description: "Scaffold CloudQuery source and destination plugins"
+  -
+    ids:
+      - homebrew
+    name: scaffold@{{.Version}}
+    tap:
+      owner: cloudquery
+      name: homebrew-tap
+    url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .PrefixedTag }}/{{ .ArtifactName }}"
+    homepage: "https://cloudquery.io"
+    description: "Scaffold CloudQuery source and destination plugins"

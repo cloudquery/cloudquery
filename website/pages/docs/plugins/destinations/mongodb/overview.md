@@ -25,6 +25,8 @@ spec:
   registry: "github"
   path: "cloudquery/mongodb"
   version: "VERSION_DESTINATION_MONGODB"
+  # batch_size: 10000 # optional
+  # batch_size_bytes: 5242880 # optional
   spec:
     connection_string: "mongodb://localhost:27017"
     database: "your_mongo_database_name"
@@ -33,6 +35,8 @@ spec:
 <Callout type="info">
 Make sure to use [environment variable substitution](/docs/advanced-topics/environment-variable-substitution) in production instead of committing the credentials to the configuration file directly.
 </Callout>
+
+The MongoDB destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes). 
 
 ### MongoDB Spec
 

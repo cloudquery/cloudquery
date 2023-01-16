@@ -31,11 +31,15 @@ require (
 	cloud.google.com/go/redis v1.10.0
 	cloud.google.com/go/resourcemanager v1.4.0
 	cloud.google.com/go/run v0.4.0
+	cloud.google.com/go/scheduler v1.7.0
 	cloud.google.com/go/secretmanager v1.9.0
 	cloud.google.com/go/serviceusage v1.4.0
 	cloud.google.com/go/storage v1.28.0
-	cloud.google.com/go/websecurityscanner v1.4.0
+	cloud.google.com/go/video v1.9.0
+	cloud.google.com/go/vision/v2 v2.5.0
+	cloud.google.com/go/vmmigration v1.3.0
 	cloud.google.com/go/vpcaccess v1.5.0
+	cloud.google.com/go/websecurityscanner v1.4.0
 	cloud.google.com/go/workflows v1.9.0
 	github.com/cloudquery/plugin-sdk v1.25.0
 	github.com/golang/mock v1.6.0
@@ -59,6 +63,7 @@ require (
 require (
 	cloud.google.com/go v0.107.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.2 // indirect
+	cloud.google.com/go/vision v1.2.0 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.2.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
 	github.com/cncf/udpa/go v0.0.0-20210930031921-04548b0d99d4 // indirect

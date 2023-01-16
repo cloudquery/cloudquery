@@ -10,11 +10,11 @@ This destination plugin lets you sync data from a CloudQuery source to remote Az
 
 ## Authentication
 
-Authenitcation is similar to Azure CLI. See also [azure source plugin](../../sources/azure/overview#authentication) for more information.
+Authentication is similar to Azure CLI. See also [azure source plugin](../../sources/azure/overview#authentication) for more information.
 
 ## Example
 
-This example configures a Azure blob storage destination, to create CSV files in `https://cqdestinationazblob.blob.core.windows.net/test/path/to/files`. Note that the Azure blob storage plugin only supports `append` write-mode.
+This example configures an Azure blob storage destination, to create CSV files in `https://cqdestinationazblob.blob.core.windows.net/test/path/to/files`. Note that the Azure blob storage plugin only supports `append` write-mode.
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
@@ -25,7 +25,8 @@ spec:
   path: "cloudquery/azblob"
   version: "VERSION_DESTINATION_AZBLOB"
   write_mode: "append" # this plugin only supports 'append' mode
-
+  # batch_size: 10000 # optional
+  # batch_size_bytes: 5242880 # optional
   spec:
     storage_account: "cqdestinationazblob"
     container: "test"
@@ -33,9 +34,11 @@ spec:
     format: "csv"
 ```
 
+The Azure blob destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes). 
+
 ## Azure Blob Spec
 
-This is the (nested) spec used by the CSV destination Plugin.
+This is the (nested) spec used by the Azure blob destination Plugin.
 
 - `storage_account` (string) (required)
 
