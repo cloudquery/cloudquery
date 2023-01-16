@@ -2,7 +2,7 @@
 .PHONY: test
 test: gen-fixtures
 	wget -nc https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json -P ./resources/testdata
-	go test -timeout 3m ./...
+	go test -race -timeout 3m ./...
 
 .PHONY: gen-docs
 gen-docs:

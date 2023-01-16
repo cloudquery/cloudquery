@@ -51,8 +51,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, opts TestOptions) {
 			return nil, fmt.Errorf("failed to unmarshal stripe spec: %w", err)
 		}
 
-		setupMockClient(logger.Level(zerolog.InfoLevel), *addr)
-		cl := sclient.New(stripe.Key, nil)
+		cl := sclient.New("sk_test_myTestKey", getBackends(logger, *addr))
 		return New(logger, spec, stSpec, cl, opts.Backend), nil
 	}
 
@@ -124,12 +123,9 @@ func startMockServer() (*string, func() error, error) {
 	}, nil
 }
 
-func setupMockClient(logger zerolog.Logger, addr string) {
+func getBackends(logger zerolog.Logger, addr string) *stripe.Backends {
 	// This is mostly copied from stripe-go's testing package at https://github.com/stripe/stripe-go/blob/master/testing/testing.go
 	// Since the code is inside init() it can't be used directly without multiple headaches, and even if we do that we can't force it to run HTTP only.
-
-	stripe.Key = "sk_test_myTestKey"
-
 	stripeMockBackend := stripe.GetBackendWithConfig(
 		stripe.APIBackend,
 		&stripe.BackendConfig{
@@ -137,6 +133,8 @@ func setupMockClient(logger zerolog.Logger, addr string) {
 			LeveledLogger: &LeveledLogger{Logger: logger},
 		},
 	)
-	stripe.SetBackend(stripe.APIBackend, stripeMockBackend)
-	stripe.SetBackend(stripe.UploadsBackend, stripeMockBackend)
+	backends := stripe.NewBackends(nil)
+	backends.API = stripeMockBackend
+	backends.Uploads = stripeMockBackend
+	return backends
 }
