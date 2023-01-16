@@ -319,7 +319,7 @@ func Test_getChanges(t *testing.T) {
 			wantChanges: []change{
 				{
 					Text:     "Table `shopify_abandoned_checkouts`: incremental sync support added to column `updated_at`",
-					Breaking: false,
+					Breaking: true,
 				},
 				{
 					Text:     "Table `shopify_customers`: incremental sync support removed from column `created_at`",
@@ -327,23 +327,23 @@ func Test_getChanges(t *testing.T) {
 				},
 				{
 					Text:     "Table `shopify_customers`: incremental sync support added to column `updated_at`",
-					Breaking: false,
+					Breaking: true,
 				},
 				{
 					Text:     "Table `shopify_orders`: incremental sync support added to column `created_at`",
-					Breaking: false,
+					Breaking: true,
 				},
 				{
 					Text:     "Table `shopify_orders`: incremental sync support added to column `updated_at`",
-					Breaking: false,
+					Breaking: true,
 				},
 				{
 					Text:     "Table `shopify_price_rules`: incremental sync support added to column `updated_at`",
-					Breaking: false,
+					Breaking: true,
 				},
 				{
 					Text:     "Table `shopify_products`: incremental sync support added to column `updated_at`",
-					Breaking: false,
+					Breaking: true,
 				},
 			},
 		},
