@@ -1,6 +1,7 @@
 package client
 
 import (
+	"fmt"
 	"sort"
 
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -34,13 +35,19 @@ func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	return l
 }
 
-func AccountRegionMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
-	var l = make([]schema.ClientMeta, 0)
-	client := meta.(*Client)
-	for accountID, account := range client.services {
-		for region := range account {
-			l = append(l, client.WithAccountIDAndRegion(accountID, region))
+func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
+	return func(meta schema.ClientMeta) []schema.ClientMeta {
+		var l = make([]schema.ClientMeta, 0)
+		client := meta.(*Client)
+		for accountID := range client.services {
+			if regions, ok := ServiceRegions[service]; ok {
+				for _, region := range regions {
+					l = append(l, client.WithAccountIDAndRegion(accountID, region))
+				}
+			} else {
+				panic(fmt.Sprintf("service %s is not supported. Add it to client/service_regions.go", service))
+			}
 		}
+		return l
 	}
-	return l
 }

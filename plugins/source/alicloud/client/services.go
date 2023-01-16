@@ -11,6 +11,7 @@ import (
 type Services struct {
 	OSS services.OssClient
 	BSS services.BssopenapiClient
+	ECS services.EcsClient
 }
 
 func initServices(account AccountSpec, region string) (*Services, error) {
