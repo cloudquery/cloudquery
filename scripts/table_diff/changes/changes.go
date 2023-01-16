@@ -142,7 +142,7 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 
 			if addedColumn.incremental() && !deletedColumn.incremental() {
 				changes = append(changes, change{
-					Text:     fmt.Sprintf("Table %s: incremental sync support added to column %s", backtickStrings(table, deletedName)...),
+					Text:     fmt.Sprintf("Table %s: column %s added to cursor for incremental syncs", backtickStrings(table, deletedName)...),
 					Breaking: false,
 				})
 			}
