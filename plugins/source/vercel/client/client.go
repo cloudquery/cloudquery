@@ -58,19 +58,13 @@ func (c *Client) WithTeamID(teamID string) schema.ClientMeta {
 		TeamID:     teamID,
 		TeamIDs:    c.TeamIDs,
 		Services:   c.Services.WithTeamID(teamID),
-		Backend:    c.Backend,
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, opts ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, o source.Options) (schema.ClientMeta, error) {
 	veSpec := &Spec{}
 	if err := s.UnmarshalSpec(veSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal vercel spec: %w", err)
-	}
-
-	o := source.Options{}
-	for _, opt := range opts {
-		opt(&o)
 	}
 
 	services, err := getServiceClient(logger.With().Str("source", "stripe-client").Logger(), veSpec, "")
