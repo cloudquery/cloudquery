@@ -66,6 +66,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/peering"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/policy"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/portal"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/postgresql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/postgresqlflexibleservers"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/postgresqlhsc"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/powerbidedicated"
@@ -254,6 +255,7 @@ func tables() []*schema.Table {
 		peering.ServiceProviders(),
 		portal.ListTenantConfigurationViolations(),
 		portal.TenantConfigurations(),
+		postgresql.Servers(),
 		postgresqlflexibleservers.Servers(),
 		postgresqlhsc.ServerGroups(),
 		powerbidedicated.Capacities(),
@@ -295,6 +297,7 @@ func tables() []*schema.Table {
 		security.Topology(),
 		security.WorkspaceSettings(),
 		servicebus.Namespaces(),
+		sql.Servers(),
 		sql.InstancePools(),
 		sql.ManagedInstances(),
 		sql.VirtualClusters(),
