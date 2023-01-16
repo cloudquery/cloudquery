@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/oracle/oci-go-sdk/v65/common"
@@ -36,7 +37,7 @@ type Client struct {
 	logger zerolog.Logger
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	configProvider := common.DefaultConfigProvider()
 
 	tenancyOcid, err := configProvider.TenancyOCID()

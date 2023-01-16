@@ -313,7 +313,7 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 	return awsCfg, err
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var awsConfig Spec
 	err := spec.UnmarshalSpec(&awsConfig)
 	if err != nil {

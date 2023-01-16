@@ -74,5 +74,6 @@
   "plugins/destination/kafka": "1.0.2",
   "plugins/destination/kafka+FILLER": "0.0.0",
   "plugins/source/hackernews": "1.1.1",
-  "plugins/source/hackernews+FILLER": "0.0.0"
+  "plugins/source/hackernews+FILLER": "0.0.0",
+  "scaffold": "1.0.0"
 }
