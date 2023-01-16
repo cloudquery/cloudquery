@@ -1,19 +1,19 @@
 WITH alert_condition AS (
-	SELECT
-		subscription_id
-	FROM
-		azure_monitor_activity_log_alerts,
-		jsonb_array_elements_text ( to_jsonb ( scopes ) ) SCOPE
-	WHERE
-		LOCATION = 'Global'
-		AND enabled
-		AND SCOPE = '/subscriptions/' || subscription_id
-		AND _cq_id IN (
-		SELECT op._cq_id
-		FROM
-			azure_monitor_activity_log_alerts op, jsonb_array_elements(op.condition) AS opcond,
-			azure_monitor_activity_log_alerts cat, jsonb_array_elements(cat.condition) AS catcond
-		WHERE
+    SELECT
+        subscription_id
+    FROM
+        azure_monitor_activity_log_alerts,
+        jsonb_array_elements_text ( to_jsonb ( properties -> 'scopes' ) ) SCOPE
+    WHERE
+            location = 'Global'
+      AND (properties ->> 'enabled')::boolean
+    AND SCOPE = '/subscriptions/' || subscription_id
+    AND _cq_id IN (
+    SELECT op._cq_id
+    FROM
+    azure_monitor_activity_log_alerts op, jsonb_array_elements(op.properties -> 'condition') AS opcond,
+    azure_monitor_activity_log_alerts cat, jsonb_array_elements(cat.properties -> 'condition') AS catcond
+    WHERE
 			    -- TODO check
 			catcond->>'equals' = 'Administrative'
 			AND catcond->>'field' = 'category'

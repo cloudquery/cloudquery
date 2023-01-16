@@ -1,9 +1,9 @@
 WITH protected_instances AS (SELECT s.id AS instance_id
                              FROM azure_sql_managed_instances s
                                       LEFT JOIN azure_sql_managed_instance_encryption_protectors ep
-                                                ON s.id = ep.sql_managed_instance_id
-                             WHERE ep.server_key_type = 'AzureKeyVault'
-                               AND ep.uri IS NOT NULL)
+                                                ON s._cq_id = ep._cq_parent_id
+                             WHERE ep.properties ->> 'serverKeyType' = 'AzureKeyVault'
+                               AND ep.properties ->> 'uri' IS NOT NULL)
 insert into azure_policy_results
 SELECT
   :'execution_time' as execution_time,
