@@ -1,5 +1,7 @@
 # Table: aws_lightsail_database_log_events
 
+https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_GetRelationalDatabaseLogEvents.html
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

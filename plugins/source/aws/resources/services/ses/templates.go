@@ -10,6 +10,7 @@ import (
 func Templates() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_ses_templates",
+		Description:         `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailTemplate.html`,
 		Resolver:            fetchSesTemplates,
 		PreResourceResolver: getTemplate,
 		Transform:           transformers.TransformWithStruct(&models.Template{}),
