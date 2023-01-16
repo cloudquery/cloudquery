@@ -10,6 +10,7 @@ import (
 func RolePolicies() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_iam_role_policies",
+		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetRolePolicy.html`,
 		Resolver:            fetchIamRolePolicies,
 		PreResourceResolver: getRolePolicy,
 		Transform:           transformers.TransformWithStruct(&iam.GetRolePolicyOutput{}),

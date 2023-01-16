@@ -27,7 +27,7 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func Configure(_ context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(_ context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	tsSpec := new(Spec)
 	err := spec.UnmarshalSpec(tsSpec)
 	if err != nil {

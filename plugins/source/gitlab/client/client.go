@@ -28,7 +28,7 @@ func (c *Client) ID() string {
 	return c.spec.Name
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	gitlabSpec := &Spec{}
 	if err := s.UnmarshalSpec(gitlabSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal gitlab spec: %w", err)
