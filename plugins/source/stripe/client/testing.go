@@ -45,7 +45,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, opts TestOptions) {
 		}
 	}()
 
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
 		var stSpec Spec
 		if err := spec.UnmarshalSpec(&stSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal stripe spec: %w", err)

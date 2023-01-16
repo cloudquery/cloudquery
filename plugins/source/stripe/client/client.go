@@ -45,10 +45,15 @@ func (c *Client) ID() string {
 	return c.sourceSpec.Name
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source.Options) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, opts ...source.Option) (schema.ClientMeta, error) {
 	stSpec := &Spec{}
 	if err := s.UnmarshalSpec(stSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal stripe spec: %w", err)
+	}
+
+	o := source.Options{}
+	for _, opt := range opts {
+		opt(&o)
 	}
 
 	services, err := getServiceClient(logger, stSpec)
@@ -60,7 +65,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, opts 
 		return nil, err
 	}
 
-	cl := New(logger, s, *stSpec, services, opts.Backend)
+	cl := New(logger, s, *stSpec, services, o.Backend)
 	return cl, nil
 }
 
