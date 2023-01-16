@@ -232,8 +232,8 @@ github.com/aws/aws-sdk-go-v2/service/sfn v1.17.0 h1:D/NRBYtylwdGLucbrKFMl3EpF8lV
 github.com/aws/aws-sdk-go-v2/service/sfn v1.17.0/go.mod h1:8M33kWcIYN1f2bfWrvKxzxveUN7UJv3dD3rmLoDaWrE=
 github.com/aws/aws-sdk-go-v2/service/shield v1.18.0 h1:dI9aouKTKx7R6HcHrEYSkOpTfCtGt+8wE3QPCohhm2Y=
 github.com/aws/aws-sdk-go-v2/service/shield v1.18.0/go.mod h1:0mYbbS2XwsqOGyD5ReNH4FV884zHQB1WcixrT0ckhRI=
-github.com/aws/aws-sdk-go-v2/service/sns v1.18.8 h1:Iwbdihm8vAnNJhnggU1D98JD79ZIIaOFFB8DBiA8Z48=
-github.com/aws/aws-sdk-go-v2/service/sns v1.18.8/go.mod h1:iTh9DgwDnFqF5LfFHNXWAxLe9zV0/XcWaMCWXIRDqXA=
+github.com/aws/aws-sdk-go-v2/service/sns v1.19.0 h1:ZU8uo+/XBgJLoYMEN5iPUd+WQXLt53S46ULtRa85+uk=
+github.com/aws/aws-sdk-go-v2/service/sns v1.19.0/go.mod h1:iTh9DgwDnFqF5LfFHNXWAxLe9zV0/XcWaMCWXIRDqXA=
 github.com/aws/aws-sdk-go-v2/service/sqs v1.20.0 h1:tQoMg8i4nFAB70cJ4wiAYEiZRYo2P6uDmU2D6ys/igo=
 github.com/aws/aws-sdk-go-v2/service/sqs v1.20.0/go.mod h1:jQhN5f4p3PALMNlUtfb/0wGIFlV7vGtJlPDVfxfNfPY=
 github.com/aws/aws-sdk-go-v2/service/ssm v1.35.0 h1:QWCcOeLTrjvf7UdYIadzrhNH3PI6T9jXOV64Ez5YUgg=
@@ -258,8 +258,8 @@ github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.4 h1:uikbWWM04WHokxui8+bZoyS4sr
 github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.4/go.mod h1:dXnnPzwqtz7h6DRUYvXpdV59mg9bwnDDWaGxo16++cU=
 github.com/aws/aws-sdk-go-v2/service/workspaces v1.27.2 h1:GaH1EkxY3IgRAzfMATr6sHy6ymoXfH+cnBuuEB9YtvM=
 github.com/aws/aws-sdk-go-v2/service/workspaces v1.27.2/go.mod h1:oudvE1/KOdqMDrq9PG1QjLpvQb8S5R3y2Fci+Vuc6To=
-github.com/aws/aws-sdk-go-v2/service/xray v1.15.3 h1:twjIORJccJIKXy2FFtlUDzlzaS91AAKypuuTN4gL2Ew=
-github.com/aws/aws-sdk-go-v2/service/xray v1.15.3/go.mod h1:Kkt49F7NMkrNQRa/dK5Twp+UtCRViNXp7Mv7rlfac08=
+github.com/aws/aws-sdk-go-v2/service/xray v1.16.0 h1:jLrbk0oHwcL/flkJ2ZIQ1lSp0aKcj2p4IdXh+nG2mmA=
+github.com/aws/aws-sdk-go-v2/service/xray v1.16.0/go.mod h1:Kkt49F7NMkrNQRa/dK5Twp+UtCRViNXp7Mv7rlfac08=
 github.com/aws/smithy-go v1.13.5 h1:hgz0X/DX0dGqTYpGALqXJoRKRj5oQ7150i5FdTePzO8=
 github.com/aws/smithy-go v1.13.5/go.mod h1:Tg+OJXh4MB2R/uN61Ko2f6hTZwB/ZYGOtib8J3gBHzA=
 github.com/basgys/goxml2json v1.1.0 h1:4ln5i4rseYfXNd86lGEB+Vi652IsIXIvggKM/BhUKVw=
