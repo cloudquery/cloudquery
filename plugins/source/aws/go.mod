@@ -80,7 +80,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.62.0
 	github.com/aws/aws-sdk-go-v2/service/savingsplans v1.12.0
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.1.0
-	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.0
+	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.0
