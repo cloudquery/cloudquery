@@ -1,0 +1,14 @@
+variables:
+  component: source/oracle
+  binary: oracle
+
+project_name: plugins/source/oracle
+
+monorepo:
+  tag_prefix: plugins-source-oracle-
+  dir: plugins/source/oracle
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

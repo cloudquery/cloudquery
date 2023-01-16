@@ -52,7 +52,7 @@ func (c Client) WithContext(k8sContext string) *Client {
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var k8sSpec Spec
 
 	if err := s.UnmarshalSpec(&k8sSpec); err != nil {
