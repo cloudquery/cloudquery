@@ -19,6 +19,7 @@
     "plugins/source/gitlab": { "component": "plugins-source-gitlab" },
     "plugins/source/hackernews": { "component": "plugins-source-hackernews" },
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
+    "plugins/source/hubspot": { "component": "plugins-source-hubspot" },
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
     "plugins/source/okta": { "component": "plugins-source-okta" },
     "plugins/source/oracle": {"component": "plugins-source-oracle"},
@@ -79,3 +80,4 @@
   "pull-request-title-pattern": "chore${scope}: Release${component} v${version}",
   "sequential-calls": true
 }
+
