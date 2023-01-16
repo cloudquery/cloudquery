@@ -1,0 +1,14 @@
+variables:
+  component: source/alicloud
+  binary: alicloud
+
+project_name: plugins/source/alicloud
+
+monorepo:
+  tag_prefix: plugins-source-alicloud-
+  dir: plugins/source/alicloud
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml
