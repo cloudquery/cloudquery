@@ -318,31 +318,31 @@ func Test_getChanges(t *testing.T) {
 			diffDataFile: "testdata/pr_6707_diff.txt",
 			wantChanges: []change{
 				{
-					Text:     "Table `shopify_abandoned_checkouts`: incremental sync support added to column `updated_at`",
+					Text:     "Table `shopify_abandoned_checkouts`: column `updated_at` added to cursor for incremental syncs",
 					Breaking: true,
 				},
 				{
-					Text:     "Table `shopify_customers`: incremental sync support removed from column `created_at`",
+					Text:     "Table `shopify_customers`: column `created_at` removed from cursor for incremental syncs",
 					Breaking: true,
 				},
 				{
-					Text:     "Table `shopify_customers`: incremental sync support added to column `updated_at`",
+					Text:     "Table `shopify_customers`: column `updated_at` added to cursor for incremental syncs",
 					Breaking: true,
 				},
 				{
-					Text:     "Table `shopify_orders`: incremental sync support added to column `created_at`",
+					Text:     "Table `shopify_orders`: column `created_at` added to cursor for incremental syncs",
 					Breaking: true,
 				},
 				{
-					Text:     "Table `shopify_orders`: incremental sync support added to column `updated_at`",
+					Text:     "Table `shopify_orders`: column `updated_at` added to cursor for incremental syncs",
 					Breaking: true,
 				},
 				{
-					Text:     "Table `shopify_price_rules`: incremental sync support added to column `updated_at`",
+					Text:     "Table `shopify_price_rules`: column `updated_at` added to cursor for incremental syncs",
 					Breaking: true,
 				},
 				{
-					Text:     "Table `shopify_products`: incremental sync support added to column `updated_at`",
+					Text:     "Table `shopify_products`: column `updated_at` added to cursor for incremental syncs",
 					Breaking: true,
 				},
 			},
