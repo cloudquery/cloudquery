@@ -246,8 +246,8 @@ github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.0 h1:Jfly6mRxk2ZOSlbCvZfKNS7T
 github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.0/go.mod h1:TZSH7xLO7+phDtViY/KUp9WGCJMQkLJ/VpgkTFd5gh8=
 github.com/aws/aws-sdk-go-v2/service/sts v1.18.0 h1:kOO++CYo50RcTFISESluhWEi5Prhg+gaSs4whWabiZU=
 github.com/aws/aws-sdk-go-v2/service/sts v1.18.0/go.mod h1:+lGbb3+1ugwKrNTWcf2RT05Xmp543B06zDFTwiTLp7I=
-github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.8 h1:1FPvcg1m3K7bip7WLscELLF4RKZR0Ys1iUbomhtDYJY=
-github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.8/go.mod h1:CrQFb3Pn8vnj3GDpjKlv9ANunOJx75Km6JkP6pxc2b8=
+github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.15.0 h1:2s9bsjDcaThDWfu/SmGIj9oLCtL3JrA0rt7dgTWCffs=
+github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.15.0/go.mod h1:CrQFb3Pn8vnj3GDpjKlv9ANunOJx75Km6JkP6pxc2b8=
 github.com/aws/aws-sdk-go-v2/service/transfer v1.27.0 h1:E8EpFslyukXM9gQAmmiJC8lvlGWbzPmzZv69FLv9UBg=
 github.com/aws/aws-sdk-go-v2/service/transfer v1.27.0/go.mod h1:/Sg7CaZ5ua+MkOUGhg0yeVIgnpKc+/ehJcoik7Yikl8=
 github.com/aws/aws-sdk-go-v2/service/waf v1.11.21 h1:4g4cMwemkVh0kjgMbg4DLqYBprwzmVh7qI7bmljCcz0=
