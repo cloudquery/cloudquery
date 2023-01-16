@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/PagerDuty/go-pagerduty v1.6.0
-	github.com/cloudquery/plugin-sdk v1.25.0
+	github.com/cloudquery/plugin-sdk v1.25.1
 	github.com/rs/zerolog v1.28.0
 	golang.org/x/exp v0.0.0-20221230185412-738e83a70c30
 	gopkg.in/yaml.v3 v3.0.1

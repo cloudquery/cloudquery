@@ -33,7 +33,7 @@ func (c *Client) ID() string {
 	return c.spec.Name
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	crowdStrikeSpec := &Spec{}
 	if err := s.UnmarshalSpec(&crowdStrikeSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal CrowdStrike spec: %w", err)

@@ -24,7 +24,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 	ts := httptest.NewUnstartedServer(mux)
 	defer ts.Close()
 
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, _ specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, _ specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		err := createService(mux)
 		if err != nil {
 			return nil, fmt.Errorf("failed to createService: %w", err)

@@ -28,7 +28,7 @@ func (c *Client) ID() string {
 	return c.spec.Name
 }
 
-func Configure(ctx context.Context, l zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, l zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var herokuSpec Spec
 	if err := s.UnmarshalSpec(&herokuSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal heroku spec: %w", err)

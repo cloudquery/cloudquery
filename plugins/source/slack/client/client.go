@@ -50,7 +50,7 @@ func (c *Client) withTeamID(teamID string) schema.ClientMeta {
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var config Spec
 	err := s.UnmarshalSpec(&config)
 	if err != nil {
