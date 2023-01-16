@@ -92,6 +92,7 @@
     - [gcp_cloudiot_device_states](gcp_cloudiot_device_states.md)
 - [gcp_cloudscheduler_locations](gcp_cloudscheduler_locations.md)
   - [gcp_cloudscheduler_jobs](gcp_cloudscheduler_jobs.md)
+- [gcp_cloudsupport_cases](gcp_cloudsupport_cases.md)
 - [gcp_compute_addresses](gcp_compute_addresses.md)
 - [gcp_compute_autoscalers](gcp_compute_autoscalers.md)
 - [gcp_compute_backend_services](gcp_compute_backend_services.md)
