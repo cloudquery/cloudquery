@@ -92,7 +92,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.34.0
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/sts v1.18.0
-	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.14.8
+	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.21
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.23.4
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.27.2
