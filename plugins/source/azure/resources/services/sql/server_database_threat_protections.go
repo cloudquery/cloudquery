@@ -6,11 +6,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func encryption_protectors() *schema.Table {
+func server_database_threat_protections() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_encryption_protectors",
-		Resolver:  fetchEncryptionProtectors,
-		Transform: transformers.TransformWithStruct(&armsql.EncryptionProtector{}),
+		Name:      "azure_sql_server_database_threat_protections",
+		Resolver:  fetchDatabaseThreatProtections,
+		Transform: transformers.TransformWithStruct(&armsql.DatabaseAdvancedThreatProtection{}),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -26,14 +26,9 @@ func encryption_protectors() *schema.Table {
 				},
 			},
 			{
-				Name:     "kind",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Kind"),
-			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
+				Name:     "system_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SystemData"),
 			},
 			{
 				Name:     "name",

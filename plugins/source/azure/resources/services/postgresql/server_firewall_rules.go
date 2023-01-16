@@ -1,16 +1,16 @@
-package sql
+package postgresql
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func database_threat_protections() *schema.Table {
+func firewall_rules() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_database_threat_protections",
-		Resolver:  fetchDatabaseThreatProtections,
-		Transform: transformers.TransformWithStruct(&armsql.DatabaseAdvancedThreatProtection{}),
+		Name:      "azure_postgresql_server_firewall_rules",
+		Resolver:  fetchFirewallRules,
+		Transform: transformers.TransformWithStruct(&armpostgresql.FirewallRule{}),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -24,11 +24,6 @@ func database_threat_protections() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "system_data",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SystemData"),
 			},
 			{
 				Name:     "name",

@@ -1,16 +1,16 @@
-package postgresql
+package sql
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func configurations() *schema.Table {
+func server_encryption_protectors() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_postgresql_configurations",
-		Resolver:  fetchConfigurations,
-		Transform: transformers.TransformWithStruct(&armpostgresql.Configuration{}),
+		Name:      "azure_sql_server_encryption_protectors",
+		Resolver:  fetchEncryptionProtectors,
+		Transform: transformers.TransformWithStruct(&armsql.EncryptionProtector{}),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
@@ -24,6 +24,16 @@ func configurations() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "kind",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Kind"),
+			},
+			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:     "name",

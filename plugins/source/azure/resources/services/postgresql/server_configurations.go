@@ -6,11 +6,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func firewall_rules() *schema.Table {
+func serverConfigurations() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_postgresql_firewall_rules",
-		Resolver:  fetchFirewallRules,
-		Transform: transformers.TransformWithStruct(&armpostgresql.FirewallRule{}),
+		Name:      "azure_postgresql_server_configurations",
+		Resolver:  fetchServerConfigurations,
+		Transform: transformers.TransformWithStruct(&armpostgresql.Configuration{}),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

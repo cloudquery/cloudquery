@@ -34,8 +34,8 @@ func Servers() *schema.Table {
 			server_vulnerability_assessments(),
 			server_blob_auditing_policies(),
 			server_admins(),
-			encryption_protectors(),
-			databases(),
+			server_encryption_protectors(),
+			server_databases(),
 		},
 	}
 }

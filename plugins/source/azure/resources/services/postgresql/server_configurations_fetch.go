@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchServerConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*armpostgresql.Server)
 	cl := meta.(*client.Client)
 	svc, err := armpostgresql.NewConfigurationsClient(cl.SubscriptionId, cl.Creds, cl.Options)

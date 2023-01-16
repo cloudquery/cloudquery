@@ -6,9 +6,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func database_blob_auditing_policies() *schema.Table {
+func server_database_blob_auditing_policies() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_database_blob_auditing_policies",
+		Name:      "azure_sql_server_database_blob_auditing_policies",
 		Resolver:  fetchDatabaseBlobAuditingPolicies,
 		Transform: transformers.TransformWithStruct(&armsql.DatabaseBlobAuditingPolicy{}),
 		Columns: []schema.Column{
