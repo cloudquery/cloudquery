@@ -30,12 +30,14 @@ func (c *Client) ID() string {
 func (c *Client) Services() *Services {
 	return c.services[c.AccountID][c.Region]
 }
-func (c *Client) withAccountIDAndRegion(accountID, regionID string) *Client {
+
+func (c *Client) WithAccountIDAndRegion(accountID, region string) *Client {
 	return &Client{
-		logger:    c.logger.With().Str("account_id", accountID).Str("region_id", regionID).Logger(),
 		services:  c.services,
+		logger:    c.logger.With().Str("account_id", accountID).Str("region", region).Logger(),
+		Spec:      c.Spec,
 		AccountID: accountID,
-		Region:    regionID,
+		Region:    region,
 	}
 }
 
@@ -45,13 +47,14 @@ func New(_ context.Context, logger zerolog.Logger, s specs.Source, _ source.Opti
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal alicloud spec: %w", err)
 	}
+	spec.SetDefaults()
 	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
 
 	services := make(map[string]map[string]*Services)
 	for _, account := range spec.Accounts {
-		for _, region := range account.RegionIDs {
+		for _, region := range account.Regions {
 			if _, ok := services[account.Name]; !ok {
 				services[account.Name] = make(map[string]*Services)
 			}
@@ -64,11 +67,11 @@ func New(_ context.Context, logger zerolog.Logger, s specs.Source, _ source.Opti
 	return &Client{logger: logger, Spec: spec, services: services}, nil
 }
 
-// mostly used for updating services in testing
+// used for updating services in testing
 func (c *Client) updateServices(svcs Services) {
 	for accountID := range c.services {
-		for regionID := range c.services[accountID] {
-			c.services[accountID][regionID] = &svcs
+		for region := range c.services[accountID] {
+			c.services[accountID][region] = &svcs
 		}
 	}
 }

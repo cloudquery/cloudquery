@@ -16,11 +16,11 @@ func Plugin() *source.Plugin {
 	return source.NewPlugin(
 		"alicloud",
 		Version,
+		// Note:  this list should only include top-level tables
 		[]*schema.Table{
 			bss.BillOverview(),
 			bss.Bill(),
 			oss.Buckets(),
-			oss.BucketStats(),
 		},
 		client.New,
 	)

@@ -10,7 +10,7 @@ import (
 func Buckets() *schema.Table {
 	return &schema.Table{
 		Name:      "alicloud_oss_buckets",
-		Multiplex: client.AccountRegionMultiplex,
+		Multiplex: client.AccountMultiplex,
 		Resolver:  fetchOssBuckets,
 		Transform: transformers.TransformWithStruct(
 			&oss.BucketProperties{},

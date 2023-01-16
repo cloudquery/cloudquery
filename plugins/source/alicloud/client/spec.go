@@ -9,12 +9,18 @@ type Spec struct {
 
 type AccountSpec struct {
 	Name      string   `json:"name,omitempty"`
+	Regions   []string `json:"regions,omitempty"`
 	AccessKey string   `json:"access_key,omitempty"`
 	SecretKey string   `json:"secret_key,omitempty"`
-	RegionIDs []string `json:"region_ids,omitempty"`
 }
 
-func (s Spec) Validate() error {
+func (s *Spec) SetDefaults() {
+	if s.BillHistoryMonths == 0 {
+		s.BillHistoryMonths = 12
+	}
+}
+
+func (s *Spec) Validate() error {
 	if len(s.Accounts) == 0 {
 		return fmt.Errorf("missing alicloud accounts in configuration")
 	}
@@ -33,8 +39,8 @@ func (s Spec) Validate() error {
 		if account.SecretKey == "" {
 			return fmt.Errorf("missing secret_key in account configuration for account %s", account.Name)
 		}
-		if len(account.RegionIDs) == 0 {
-			return fmt.Errorf("missing region_ids in account configuration for account %s", account.Name)
+		if len(account.Regions) == 0 {
+			return fmt.Errorf("missing regions in account configuration for account %s", account.Name)
 		}
 	}
 	return nil

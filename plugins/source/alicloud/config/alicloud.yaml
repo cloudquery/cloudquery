@@ -8,7 +8,7 @@ spec:
     - alicloud_oss_*
     - alicloud_bss_*
   spec:
-    region_id: ""
+    region: ""
     access_key: ""
     secret_key: ""
 ---

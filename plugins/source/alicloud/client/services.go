@@ -13,12 +13,12 @@ type Services struct {
 	BSS services.BssopenapiClient
 }
 
-func initServices(account AccountSpec, regionID string) (*Services, error) {
-	ossCli, err := oss.New(fmt.Sprintf("%s.aliyuncs.com", regionID), account.AccessKey, account.SecretKey, oss.Timeout(15, 30))
+func initServices(account AccountSpec, region string) (*Services, error) {
+	ossCli, err := oss.New(fmt.Sprintf("oss-%s.aliyuncs.com", region), account.AccessKey, account.SecretKey, oss.Timeout(15, 30))
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize oss client: %w", err)
 	}
-	bssCli, err := bssopenapi.NewClientWithAccessKey(regionID, account.AccessKey, account.SecretKey)
+	bssCli, err := bssopenapi.NewClientWithAccessKey(region, account.AccessKey, account.SecretKey)
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize bssopenapi client: %w", err)
 	}

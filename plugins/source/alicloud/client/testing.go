@@ -31,10 +31,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		if err := spec.UnmarshalSpec(&aliSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal alicloud spec: %w", err)
 		}
-		aliSpec.Accounts = []AccountSpec{
-			{Name: "test-account", RegionIDs: []string{"test-region"}, AccessKey: "test-access-key", SecretKey: "test-secret-key"},
-		}
-		spec.Spec = aliSpec
+
 		c, err := New(ctx, l, spec, source.Options{})
 		if err != nil {
 			return nil, err
@@ -57,5 +54,10 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		Version:      version,
 		Tables:       []string{table.Name},
 		Destinations: []string{"mock-destination"},
+		Spec: Spec{
+			Accounts: []AccountSpec{
+				{Name: "test-account", Regions: []string{"test-region"}, AccessKey: "test-access-key", SecretKey: "test-secret-key"},
+			},
+		},
 	})
 }
