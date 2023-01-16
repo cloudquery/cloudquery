@@ -37,8 +37,9 @@ func fetchBssBill(_ context.Context, meta schema.ClientMeta, _ *schema.Resource,
 			if err != nil {
 				return err
 			}
-			if response.GetHttpStatus() != http.StatusOK {
-				return fmt.Errorf("httpcode %d", response.GetHttpStatus())
+			if !response.Success {
+				code := response.GetHttpStatus()
+				return fmt.Errorf("got response status code %d (%v)", code, http.StatusText(code))
 			}
 			for _, item := range response.Data.Items.Item {
 				res <- &BillModel{

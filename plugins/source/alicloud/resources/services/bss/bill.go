@@ -1,6 +1,7 @@
 package bss
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
@@ -9,6 +10,7 @@ func Bill() *schema.Table {
 	return &schema.Table{
 		Name:        "alicloud_bss_bill",
 		Resolver:    fetchBssBill,
+		Multiplex:   client.AccountMultiplex,
 		Description: "https://help.aliyun.com/document_detail/100400.html",
 		Transform: transformers.TransformWithStruct(
 			&BillModel{},

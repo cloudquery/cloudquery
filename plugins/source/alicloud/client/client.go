@@ -15,8 +15,6 @@ type Client struct {
 	services  map[string]map[string]*Services // account id -> region id -> Services
 	logger    zerolog.Logger
 	Spec      Spec
-	Accounts  []string
-	Regions   []string
 	AccountID string
 	Region    string
 }
@@ -32,15 +30,16 @@ func (c *Client) ID() string {
 func (c *Client) Services() *Services {
 	return c.services[c.AccountID][c.Region]
 }
-func (c *Client) withAccountIDAndRegion(accountID, region string) *Client {
+func (c *Client) withAccountIDAndRegion(accountID, regionID string) *Client {
 	return &Client{
-		logger:    c.logger.With().Str("account_id", accountID).Str("region", region).Logger(),
+		logger:    c.logger.With().Str("account_id", accountID).Str("region_id", regionID).Logger(),
+		services:  c.services,
 		AccountID: accountID,
-		Region:    region,
+		Region:    regionID,
 	}
 }
 
-func New(_ context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func New(_ context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var spec Spec
 	err := s.UnmarshalSpec(&spec)
 	if err != nil {
@@ -63,4 +62,13 @@ func New(_ context.Context, logger zerolog.Logger, s specs.Source, _ ...source.O
 		}
 	}
 	return &Client{logger: logger, Spec: spec, services: services}, nil
+}
+
+// mostly used for updating services in testing
+func (c *Client) updateServices(svcs Services) {
+	for accountID := range c.services {
+		for regionID := range c.services[accountID] {
+			c.services[accountID][regionID] = &svcs
+		}
+	}
 }

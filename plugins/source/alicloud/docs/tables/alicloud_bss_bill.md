@@ -2,7 +2,7 @@
 
 https://help.aliyun.com/document_detail/100400.html
 
-The composite primary key for this table is (**_cq_id**, **billing_cycle**, **account_id**, **subscription_type**, **commodity_code**, **product_code**, **product_type**, **pip_code**, **record_id**).
+The composite primary key for this table is (**billing_cycle**, **account_id**, **subscription_type**, **commodity_code**, **product_code**, **product_type**, **pip_code**, **record_id**).
 
 ## Columns
 
@@ -10,7 +10,7 @@ The composite primary key for this table is (**_cq_id**, **billing_cycle**, **ac
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
 |billing_cycle (PK)|String|
 |account_id (PK)|String|

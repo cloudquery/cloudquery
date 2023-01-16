@@ -8,6 +8,11 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client/services"
 )
 
+type Services struct {
+	OSS services.OssClient
+	BSS services.BssopenapiClient
+}
+
 func initServices(account AccountSpec, regionID string) (*Services, error) {
 	ossCli, err := oss.New(fmt.Sprintf("%s.aliyuncs.com", regionID), account.AccessKey, account.SecretKey, oss.Timeout(15, 30))
 	if err != nil {
@@ -21,9 +26,4 @@ func initServices(account AccountSpec, regionID string) (*Services, error) {
 		OSS: ossCli,
 		BSS: bssCli,
 	}, nil
-}
-
-type Services struct {
-	OSS services.OssClient
-	BSS services.BssopenapiClient
 }
