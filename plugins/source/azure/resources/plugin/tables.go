@@ -269,6 +269,7 @@ func tables() []*schema.Table {
 		reservations.Reservation(),
 		reservations.ReservationOrder(),
 		resources.Resources(),
+		resources.Links(),
 		policy.Assignments(),
 		policy.DataPolicyManifests(),
 		policy.Definitions(),
