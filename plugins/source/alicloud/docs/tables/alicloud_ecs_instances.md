@@ -16,12 +16,12 @@ The composite primary key for this table is (**account_id**, **region_id**, **in
 |hostname|String|
 |image_id|String|
 |instance_type|String|
-|auto_release_time|String|
-|last_invoked_time|String|
+|auto_release_time|Timestamp|
+|last_invoked_time|Timestamp|
 |os_type|String|
 |device_available|Bool|
 |instance_network_type|String|
-|registration_time|String|
+|registration_time|Timestamp|
 |local_storage_amount|Int|
 |network_type|String|
 |intranet_ip|String|
@@ -37,7 +37,7 @@ The composite primary key for this table is (**account_id**, **region_id**, **in
 |gpu_amount|Int|
 |connected|Bool|
 |invocation_count|Int|
-|start_time|String|
+|start_time|Timestamp|
 |zone_id|String|
 |internet_max_bandwidth_in|Int|
 |internet_charge_type|String|
@@ -62,10 +62,10 @@ The composite primary key for this table is (**account_id**, **region_id**, **in
 |description|String|
 |recyclable|Bool|
 |sale_cycle|String|
-|expired_time|String|
+|expired_time|Timestamp|
 |internet_ip|String|
 |memory|Int|
-|creation_time|String|
+|creation_time|Timestamp|
 |agent_version|String|
 |key_pair_name|String|
 |hpc_cluster_id|String|

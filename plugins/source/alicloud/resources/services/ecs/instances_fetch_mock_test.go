@@ -22,6 +22,12 @@ func buildEcsInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 	b.BaseResponse = fakeSuccessRequest(t)
+	b.Instances.Instance[0].CreationTime = "2020-01-01T01:23Z"
+	b.Instances.Instance[0].StartTime = "2020-01-01T01:23Z"
+	b.Instances.Instance[0].ExpiredTime = "2020-01-01T01:23Z"
+	b.Instances.Instance[0].RegistrationTime = "2020-01-01T01:23Z"
+	b.Instances.Instance[0].AutoReleaseTime = "2020-01-01T01:23Z"
+	b.Instances.Instance[0].LastInvokedTime = "2020-01-01T01:23Z"
 	b.TotalCount = 2
 	mock.EXPECT().DescribeInstances(gomock.Any()).Times(2).Return(b, nil)
 	return client.Services{ECS: mock}
