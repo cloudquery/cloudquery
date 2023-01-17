@@ -4,7 +4,7 @@ Fivetran is a closed source managed ELT SaaS solution with a few key differences
 
 **Key Differences:**
 
-**Open Source and Extensible**: CloudQuery is open-source and has a [pluggable architecture](https://hub.cloudquery.io) which means you can contribute missing resources to existing plugins or you can create your own plugins in order to grab data from proprietary APIs or other SaaS applications.
+- **Open Source and Extensible**: CloudQuery is open-source and has a [pluggable architecture](https://hub.cloudquery.io) which means you can contribute missing resources to existing plugins or you can create your own plugins (Utilzing CloudQuery SDK) in order to grab data from proprietary APIs or other SaaS applications.
 - **High Performance** - CloudQuery SDK and connectors are written in Go utilizing excelent support of go-routines which enables high-performance and low memory usage.
 - **Type System** - CloudQuery SDK supports a rich type system for connectors which enables richer schemas and more accurate data.
 - **Self Hosted** - You can run CloudQuery on your own infrastructure, ensuring that your data doesn't leave your infrastructure. Fivetran only offer a managed solution at the moment.

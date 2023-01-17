@@ -45,13 +45,13 @@ const FEATURES: Features = [
     page: "all",
   },
   {
-    name: "Data Silos",
+    name: "Elimnate data silos",
     description: `Elimnate data silos across your organization, security, infrastructure, marketing and finance teams.`,
     Icon: DatabaseIcon,
     page: "all",
   },
   {
-    name: "Unlimited Scale",
+    name: "Unlimited scale",
     description: `CloudQuery plugins are statless and can scaled easily horizontally on any executor such as k8s, batch jobs.`,
     Icon: ArrowsExpandIcon,
     page: "all",
