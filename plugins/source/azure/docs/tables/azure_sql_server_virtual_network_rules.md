@@ -1,10 +1,10 @@
-# Table: azure_eventhub_network_rule_sets
+# Table: azure_sql_server_virtual_network_rules
 
 The primary key for this table is **id**.
 
 ## Relations
 
-This table depends on [azure_eventhub_namespaces](azure_eventhub_namespaces.md).
+This table depends on [azure_sql_servers](azure_sql_servers.md).
 
 ## Columns
 
@@ -16,7 +16,5 @@ This table depends on [azure_eventhub_namespaces](azure_eventhub_namespaces.md).
 |_cq_parent_id|UUID|
 |id (PK)|String|
 |properties|JSON|
-|location|String|
 |name|String|
-|system_data|JSON|
 |type|String|

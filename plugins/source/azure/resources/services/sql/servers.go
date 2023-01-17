@@ -36,7 +36,7 @@ func Servers() *schema.Table {
 			server_admins(),
 			server_encryption_protectors(),
 			server_databases(),
-			virtualNetworkRules(),
+			virtual_network_rules(),
 		},
 	}
 }

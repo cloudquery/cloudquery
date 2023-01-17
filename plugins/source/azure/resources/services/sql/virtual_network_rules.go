@@ -8,9 +8,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func virtualNetworkRules() *schema.Table {
+func virtual_network_rules() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_virtual_network_rules",
+		Name:      "azure_sql_server_virtual_network_rules",
 		Resolver:  fetchVirtualNetworkRules,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_sql_virtual_network_rules", client.Namespacemicrosoft_sql),
 		Transform: transformers.TransformWithStruct(&armsql.VirtualNetworkRule{}),

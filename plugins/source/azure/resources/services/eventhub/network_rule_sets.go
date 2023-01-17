@@ -8,9 +8,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func networkRuleSets() *schema.Table {
+func namespace_network_rule_sets() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_eventhub_network_rule_sets",
+		Name:      "azure_eventhub_namespace_network_rule_sets",
 		Resolver:  fetchNetworkRuleSets,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_eventhub_network_rule_sets", client.Namespacemicrosoft_eventhub),
 		Transform: transformers.TransformWithStruct(&armeventhub.NetworkRuleSet{}),

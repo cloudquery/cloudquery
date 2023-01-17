@@ -1,11 +1,10 @@
-# Table: azure_subscription_subscriptions
+# Table: azure_subscription_subscription_locations
 
 The primary key for this table is **id**.
 
 ## Relations
 
-The following tables depend on azure_subscription_subscriptions:
-  - [azure_subscription_subscription_locations](azure_subscription_subscription_locations.md)
+This table depends on [azure_subscription_subscriptions](azure_subscription_subscriptions.md).
 
 ## Columns
 
@@ -16,8 +15,8 @@ The following tables depend on azure_subscription_subscriptions:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
-|authorization_source|String|
-|subscription_policies|JSON|
 |display_name|String|
-|state|String|
+|latitude|String|
+|longitude|String|
+|name|String|
 |subscription_id|String|

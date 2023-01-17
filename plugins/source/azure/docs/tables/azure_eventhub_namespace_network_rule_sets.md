@@ -1,10 +1,10 @@
-# Table: azure_subscription_locations
+# Table: azure_eventhub_namespace_network_rule_sets
 
 The primary key for this table is **id**.
 
 ## Relations
 
-This table depends on [azure_subscription_subscriptions](azure_subscription_subscriptions.md).
+This table depends on [azure_eventhub_namespaces](azure_eventhub_namespaces.md).
 
 ## Columns
 
@@ -15,8 +15,8 @@ This table depends on [azure_subscription_subscriptions](azure_subscription_subs
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
-|display_name|String|
-|latitude|String|
-|longitude|String|
+|properties|JSON|
+|location|String|
 |name|String|
-|subscription_id|String|
+|system_data|JSON|
+|type|String|

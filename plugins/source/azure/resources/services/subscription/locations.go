@@ -10,7 +10,7 @@ import (
 
 func locations() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_subscription_locations",
+		Name:      "azure_subscription_subscription_locations",
 		Resolver:  fetchLocations,
 		Transform: transformers.TransformWithStruct(&armsubscription.Location{}),
 		Columns: []schema.Column{
