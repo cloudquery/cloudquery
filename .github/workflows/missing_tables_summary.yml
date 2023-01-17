@@ -1,8 +1,8 @@
 name: Report missing tables
 
 on:
-  # Using pull_request_target works on forked PRs too. This is safe since we don't checkout the PR code (we only use the diff)
-  pull_request_target:
+  # Using pull_request works on forked PRs too. This is safe since we don't checkout the PR code (we only use the diff)
+  pull_request:
     branches:
       - main
     types:
@@ -12,6 +12,7 @@ on:
       - reopened
 jobs:
   missing-tables:
+    if: startsWith(github.head_ref, 'release-please--branches--main--components')
     defaults:
       run:
         working-directory: scripts/missing_tables
