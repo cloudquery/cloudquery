@@ -40,7 +40,7 @@ const FEATURES: Features = [
   },
   {
     name: "Pre-built queries",
-    description: `CloudQuery maintains number of out-of-the-box security and compliance policies for cloud infrastructure.`,
+    description: `CloudQuery maintains a number of out-of-the-box security and compliance policies for cloud infrastructure.`,
     Icon: KeyIcon,
     page: "all",
   },
