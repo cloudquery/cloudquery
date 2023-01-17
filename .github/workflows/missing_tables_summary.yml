@@ -2,7 +2,7 @@ name: Report missing tables
 
 on:
   # Using pull_request_target works on forked PRs too. This is safe since we don't checkout the PR code (we only use the diff)
-  pull_request:
+  pull_request_target:
     branches:
       - main
     types:
