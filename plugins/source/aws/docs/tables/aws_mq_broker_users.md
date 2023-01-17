@@ -1,5 +1,7 @@
 # Table: aws_mq_broker_users
 
+https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers-broker-id-users-username.html
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

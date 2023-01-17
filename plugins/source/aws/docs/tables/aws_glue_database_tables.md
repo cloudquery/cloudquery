@@ -1,5 +1,7 @@
 # Table: aws_glue_database_tables
 
+https://docs.aws.amazon.com/glue/latest/webapi/API_Table.html
+
 The composite primary key for this table is (**database_arn**, **name**).
 
 ## Relations
