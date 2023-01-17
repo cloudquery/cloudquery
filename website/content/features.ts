@@ -22,7 +22,7 @@ export type Features = Array<Feature>;
 const FEATURES: Features = [
   {
     name: "Open source",
-    description: `Easily extensible plugin architecture. Contribute to our official plugins or develop your own with CloudQuery SDK.`,
+    description: `Extensible plugin architecture. Contribute to our official plugins or develop your own with CloudQuery SDK.`,
     Icon: CodeIcon,
     page: "all",
   },
