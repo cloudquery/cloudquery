@@ -9,6 +9,7 @@ import (
 func NotebookInstances() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_sagemaker_notebook_instances",
+		Description:         `https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeNotebookInstance.html`,
 		Resolver:            fetchSagemakerNotebookInstances,
 		PreResourceResolver: getNotebookInstance,
 		Transform:           transformers.TransformWithStruct(&WrappedSageMakerNotebookInstance{}, transformers.WithUnwrapStructFields("DescribeNotebookInstanceOutput")),

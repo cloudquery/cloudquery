@@ -9,10 +9,11 @@ import (
 
 func BillingGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iot_billing_groups",
-		Resolver:  fetchIotBillingGroups,
-		Transform: transformers.TransformWithStruct(&iot.DescribeBillingGroupOutput{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer("iot"),
+		Name:        "aws_iot_billing_groups",
+		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeBillingGroup.html`,
+		Resolver:    fetchIotBillingGroups,
+		Transform:   transformers.TransformWithStruct(&iot.DescribeBillingGroupOutput{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -1,5 +1,7 @@
 # Table: aws_glue_registry_schema_versions
 
+https://docs.aws.amazon.com/glue/latest/webapi/API_GetSchemaVersion.html
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
