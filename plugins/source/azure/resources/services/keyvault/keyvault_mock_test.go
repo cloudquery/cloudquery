@@ -38,7 +38,7 @@ func createKeyvault(router *mux.Router) error {
 		return err
 	}
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/test string/providers/Microsoft.KeyVault/vaults/debug", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/debug/providers/Microsoft.KeyVault/vaults/test string", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&v)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

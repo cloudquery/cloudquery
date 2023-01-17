@@ -11,10 +11,11 @@ import (
 
 func Keyvault() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_keyvault_keyvault",
-		Resolver:  fetchKeyvault,
-		Multiplex: client.SubscriptionMultiplex,
-		Transform: transformers.TransformWithStruct(&armkeyvault.Vault{}),
+		Name:                "azure_keyvault_keyvault",
+		PreResourceResolver: keyvaultGet,
+		Resolver:            fetchKeyvault,
+		Multiplex:           client.SubscriptionMultiplex,
+		Transform:           transformers.TransformWithStruct(&armkeyvault.Vault{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -38,6 +39,25 @@ func Keyvault() *schema.Table {
 	}
 }
 
+func keyvaultGet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	r := resource.Item.(*armkeyvault.Vault)
+	cl := meta.(*client.Client)
+	svc, err := armkeyvault.NewVaultsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
+	group, err := client.ParseResourceGroup(*r.ID)
+	if err != nil {
+		return err
+	}
+	resp, err := svc.Get(ctx, group, *r.Name, nil)
+	if err != nil {
+		return err
+	}
+	resource.SetItem(resp.Vault)
+	return nil
+}
+
 func fetchKeyvault(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armkeyvault.NewVaultsClient(cl.SubscriptionId, cl.Creds, cl.Options)
@@ -52,15 +72,10 @@ func fetchKeyvault(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		}
 
 		for _, r := range p.Value {
-			group, err := client.ParseResourceGroup(*r.ID)
-			if err != nil {
-				return err
+			res <- &armkeyvault.Vault{
+				ID:   r.ID,
+				Name: r.Name,
 			}
-			resp, err := svc.Get(ctx, *r.Name, group, nil)
-			if err != nil {
-				return err
-			}
-			res <- resp.Vault
 		}
 	}
 	return nil
