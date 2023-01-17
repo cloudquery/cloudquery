@@ -18,7 +18,16 @@ func Buckets() *schema.Table {
 				"Name",
 			),
 		),
-		Columns: []schema.Column{},
+		Columns: []schema.Column{
+			{
+				Name:     "account_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAccount,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+		},
 		Relations: []*schema.Table{
 			BucketStats(),
 		},
