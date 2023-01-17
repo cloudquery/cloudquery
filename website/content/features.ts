@@ -34,7 +34,7 @@ const FEATURES: Features = [
   },
   {
     name: "Deploy anywhere",
-    description: `CloudQuery plugins are single binary executables and can be deployed and run anywhere.`,
+    description: `CloudQuery plugins are single-binary executables and can be deployed and run anywhere.`,
     Icon: ChartBarIcon,
     page: "all",
   },
