@@ -10,6 +10,7 @@ import (
 func IdentityPools() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_cognito_identity_pools",
+		Description:         `https://docs.aws.amazon.com/cognitoidentity/latest/APIReference/API_DescribeIdentityPool.html`,
 		Resolver:            fetchCognitoIdentityPools,
 		PreResourceResolver: getIdentityPool,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("cognito-identity"),

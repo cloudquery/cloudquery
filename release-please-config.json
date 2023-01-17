@@ -20,6 +20,7 @@
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
     "plugins/source/okta": { "component": "plugins-source-okta" },
+    "plugins/source/oracle": {"component": "plugins-source-oracle"},
     "plugins/source/salesforce": { "component": "plugins-source-salesforce" },
     "plugins/source/slack": { "component": "plugins-source-slack" },
     "plugins/source/snyk": { "component": "plugins-source-snyk" },

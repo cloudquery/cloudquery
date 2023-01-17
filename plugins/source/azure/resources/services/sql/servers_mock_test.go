@@ -33,8 +33,22 @@ func createServers(router *mux.Router) error {
 			return
 		}
 	})
-
-	return createVirtualNetworkRules(router)
+	if err := createServerVulnerabilityAssessments(router); err != nil {
+		return err
+	}
+	if err := createServerBlobAuditingPolicies(router); err != nil {
+		return err
+	}
+	if err := createServerAdmins(router); err != nil {
+		return err
+	}
+	if err := createEncryptionProtectors(router); err != nil {
+		return err
+	}
+	if err := createVirtualNetworkRules(router); err != nil {
+		return err
+	}
+	return createDatabases(router)
 }
 
 func TestServers(t *testing.T) {

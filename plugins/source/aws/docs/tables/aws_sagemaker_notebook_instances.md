@@ -1,5 +1,7 @@
 # Table: aws_sagemaker_notebook_instances
 
+https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeNotebookInstance.html
+
 The primary key for this table is **arn**.
 
 ## Columns

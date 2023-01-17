@@ -9,10 +9,11 @@ import (
 
 func Jobs() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_glue_jobs",
-		Resolver:  fetchGlueJobs,
-		Transform: transformers.TransformWithStruct(&types.Job{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer("glue"),
+		Name:        "aws_glue_jobs",
+		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_Job.html`,
+		Resolver:    fetchGlueJobs,
+		Transform:   transformers.TransformWithStruct(&types.Job{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

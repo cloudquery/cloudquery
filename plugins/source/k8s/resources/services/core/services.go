@@ -38,12 +38,12 @@ func Services() *schema.Table {
 			{
 				Name:     "spec_cluster_ips",
 				Type:     schema.TypeInetArray,
-				Resolver: schema.PathResolver("Spec.ClusterIPs"),
+				Resolver: client.StringToInetArrayPathResolver("Spec.ClusterIPs"),
 			},
 			{
 				Name:     "spec_external_ips",
 				Type:     schema.TypeInetArray,
-				Resolver: schema.PathResolver("Spec.ExternalIPs"),
+				Resolver: client.StringToInetArrayPathResolver("Spec.ExternalIPs"),
 			},
 			{
 				Name:     "spec_load_balancer_ip",

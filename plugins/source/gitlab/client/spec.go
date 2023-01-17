@@ -12,11 +12,5 @@ func (s Spec) Validate() error {
 	if gitlabToken == "" {
 		return errors.New("missing GitLab API token in configuration file")
 	}
-	if s.BaseURL == "" {
-		return errors.New("missing GitLab base URL in configuration file")
-	}
-	if s.BaseURL == "gitlab.com" {
-		return errors.New("base URL cannot be `gitlab.com` this plugin only supports self hosted instances")
-	}
 	return nil
 }

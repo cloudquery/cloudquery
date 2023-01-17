@@ -1,5 +1,7 @@
 # Table: aws_timestream_databases
 
+https://docs.aws.amazon.com/timestream/latest/developerguide/API_Database.html
+
 The primary key for this table is **arn**.
 
 ## Relations

@@ -10,6 +10,7 @@ import (
 func EndpointConfigurations() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_sagemaker_endpoint_configurations",
+		Description:         `https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeEndpointConfig.html`,
 		Resolver:            fetchSagemakerEndpointConfigurations,
 		PreResourceResolver: getEndpointConfiguration,
 		Transform:           transformers.TransformWithStruct(&sagemaker.DescribeEndpointConfigOutput{}),
