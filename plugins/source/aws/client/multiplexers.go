@@ -41,6 +41,26 @@ func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	return l
 }
 
+func ServiceAccountSingleRegionMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
+	return func(meta schema.ClientMeta) []schema.ClientMeta {
+		var l = make([]schema.ClientMeta, 0)
+		client := meta.(*Client)
+		for partition := range client.ServicesManager.services {
+			for accountID := range client.ServicesManager.services[partition] {
+				for region := range client.ServicesManager.services[partition][accountID] {
+					if !isSupportedServiceForRegion(service, region) {
+						meta.(*Client).Logger().Trace().Str("service", service).Str("region", region).Str("partition", partition).Msg("region is not supported for service")
+						continue
+					}
+					l = append(l, client.withPartitionAccountIDAndRegion(partition, accountID, region))
+					break
+				}
+			}
+		}
+		return l
+	}
+}
+
 func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
 		var l = make([]schema.ClientMeta, 0)
