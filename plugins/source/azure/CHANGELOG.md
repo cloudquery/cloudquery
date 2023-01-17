@@ -5,6 +5,19 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v3.3.1...plugins-source-azure-v3.4.0) (2023-01-17)
+
+
+### Features
+
+* Azure sql and postgresql resoruces for policies ([#6374](https://github.com/cloudquery/cloudquery/issues/6374)) ([97cbc2d](https://github.com/cloudquery/cloudquery/commit/97cbc2d733a148a12ec58ff40a35ac9064ed89f4))
+* **azure-resources:** Add missing security tables ([#6905](https://github.com/cloudquery/cloudquery/issues/6905)) ([8a64414](https://github.com/cloudquery/cloudquery/commit/8a6441459039be190491de753f9ad23c8f07a3d4))
+
+
+### Bug Fixes
+
+* **azure:** Duplicate entries for `azure_subscription_subscriptions` ([#6887](https://github.com/cloudquery/cloudquery/issues/6887)) ([73cf12a](https://github.com/cloudquery/cloudquery/commit/73cf12a9821bef5a6c731b45bdf2fc5ba64ac5a8))
+
 ## [3.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v3.3.0...plugins-source-azure-v3.3.1) (2023-01-17)
 
 
