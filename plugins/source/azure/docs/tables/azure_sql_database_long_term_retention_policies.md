@@ -1,4 +1,4 @@
-# Table: azure_sql_long_term_retention_policies
+# Table: azure_sql_database_long_term_retention_policies
 
 The primary key for this table is **id**.
 
