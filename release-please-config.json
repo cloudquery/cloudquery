@@ -4,6 +4,7 @@
   "packages": {
     "cli": { "component": "cli" },
     "scaffold": { "component": "scaffold" },
+    "plugins/source/alicloud": { "component": "plugins-source-alicloud" },
     "plugins/source/aws": { "component": "plugins-source-aws" },
     "plugins/source/azure": { "component": "plugins-source-azure" },
     "plugins/source/azuredevops": { "component": "plugins-source-azuredevops" },
