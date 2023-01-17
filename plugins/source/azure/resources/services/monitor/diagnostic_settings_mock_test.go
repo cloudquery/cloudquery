@@ -54,9 +54,7 @@ func createDiagnosticSettings(router *mux.Router) error {
 		}
 	})
 
-	createResources(router)
-
-	return nil
+	return createResources(router)
 }
 
 func TestDiagnosticSettings(t *testing.T) {
