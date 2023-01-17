@@ -9,10 +9,11 @@ import (
 
 func DataRetrievalPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_glacier_data_retrieval_policies",
-		Resolver:  fetchGlacierDataRetrievalPolicies,
-		Transform: transformers.TransformWithStruct(&types.DataRetrievalPolicy{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer("glacier"),
+		Name:        "aws_glacier_data_retrieval_policies",
+		Description: `https://docs.aws.amazon.com/amazonglacier/latest/dev/api-GetDataRetrievalPolicy.html`,
+		Resolver:    fetchGlacierDataRetrievalPolicies,
+		Transform:   transformers.TransformWithStruct(&types.DataRetrievalPolicy{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glacier"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

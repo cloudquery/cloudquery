@@ -28,7 +28,7 @@ spec:
 
 This is the (nested) spec used by the Snyk source plugin.
 
-- `api_key` (string, required. Default: `SNYK_API_KEY` environment variable):
+- `api_key` (string, required):
   An API key to access Snyk resources.
   See [Authentication for API](https://docs.snyk.io/snyk-api-info/authentication-for-api) for more information.
 

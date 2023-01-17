@@ -10,6 +10,7 @@ import (
 func RegistrySchemaVersions() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_glue_registry_schema_versions",
+		Description:         `https://docs.aws.amazon.com/glue/latest/webapi/API_GetSchemaVersion.html`,
 		Resolver:            fetchGlueRegistrySchemaVersions,
 		PreResourceResolver: getRegistrySchemaVersion,
 		Transform:           transformers.TransformWithStruct(&glue.GetSchemaVersionOutput{}),

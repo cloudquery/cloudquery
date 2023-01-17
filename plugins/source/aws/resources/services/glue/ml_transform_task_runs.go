@@ -9,10 +9,11 @@ import (
 
 func MlTransformTaskRuns() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_glue_ml_transform_task_runs",
-		Resolver:  fetchGlueMlTransformTaskRuns,
-		Transform: transformers.TransformWithStruct(&types.TaskRun{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer("glue"),
+		Name:        "aws_glue_ml_transform_task_runs",
+		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_TaskRun.html`,
+		Resolver:    fetchGlueMlTransformTaskRuns,
+		Transform:   transformers.TransformWithStruct(&types.TaskRun{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -10,6 +10,7 @@ import (
 func Functions() *schema.Table {
 	return &schema.Table{
 		Name:                 "aws_lambda_functions",
+		Description:          `https://docs.aws.amazon.com/lambda/latest/dg/API_GetFunction.html`,
 		Resolver:             fetchLambdaFunctions,
 		PreResourceResolver:  getFunction,
 		PostResourceResolver: resolvePolicyCodeSigningConfig,

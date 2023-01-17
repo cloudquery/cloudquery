@@ -9,10 +9,11 @@ import (
 
 func Databases() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_glue_databases",
-		Resolver:  fetchGlueDatabases,
-		Transform: transformers.TransformWithStruct(&types.Database{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer("glue"),
+		Name:        "aws_glue_databases",
+		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_Database.html`,
+		Resolver:    fetchGlueDatabases,
+		Transform:   transformers.TransformWithStruct(&types.Database{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

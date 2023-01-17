@@ -10,6 +10,7 @@ import (
 func Ledgers() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_qldb_ledgers",
+		Description:         `https://docs.aws.amazon.com/qldb/latest/developerguide/API_DescribeLedger.html`,
 		Resolver:            fetchQldbLedgers,
 		PreResourceResolver: getLedger,
 		Transform:           transformers.TransformWithStruct(&qldb.DescribeLedgerOutput{}),
