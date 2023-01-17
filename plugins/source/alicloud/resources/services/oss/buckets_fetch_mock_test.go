@@ -17,6 +17,7 @@ func buildOssBuckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err := faker.FakeObject(&b); err != nil {
 		t.Fatal(err)
 	}
+	b.Buckets[0].Location = "cn-hangzhou"
 	mock.EXPECT().ListBuckets().Return(b, nil)
 
 	buildOssBucketStats(t, mock, b.Buckets[0].Name)

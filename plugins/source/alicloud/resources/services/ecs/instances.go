@@ -1,13 +1,13 @@
 package ecs
 
 import (
-	"reflect"
-	"strings"
-
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
+
+	"reflect"
+	"strings"
 )
 
 func Instances() *schema.Table {

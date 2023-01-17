@@ -11,15 +11,14 @@ const SecurityQuery = () => (
     </>
 )
 
-const ComplianceQuery = () => (
+const MarketingQuery = () => (
     <>
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>SELECT</span></div>
-        <div><span>    account_id,</span></div>
-        <div><span>    require_uppercase_characters</span></div>
+        <div><span>    *</span></div>
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>FROM</span></div>
-        <div><span>    aws_iam_password_policies</span></div>
+        <div><span>    shopify_abandoned_checkouts</span></div>
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>WHERE</span></div>
-        <div>    require_uppercase_characters =<span style={{ color: "var(--shiki-token-keyword)" }}> FALSE</span></div>
+        <div>    total_price {'>'} <span style={{ color: "var(--shiki-token-keyword)" }}> 1000</span></div>
     </>
 )
 
@@ -46,10 +45,10 @@ const QUERIES_EXAMPLES = [
         description: 'Find all public facing AWS load balancers',
     },
     {
-        code: 'SELECT account_id, require_uppercase_characters FROM aws_iam_password_policies WHERE require_uppercase_characters = FALSE',
-        html: <ComplianceQuery />,
-        title: 'Compliance',
-        description: 'AWS CIS 1.5 Ensure IAM password policy requires at least one uppercase letter',
+        code: 'SELECT * FROM shopify_abandoned_checkouts WHERE total_price > 1000',
+        html: <MarketingQuery />,
+        title: 'Marketing',
+        description: 'Find all abandoned checkouts with a total price greater than $1000',
     },
     {
         code: 'SELECT arn FROM aws_iam_users JOIN aws_iam_user_tags ON aws_iam_users.id = aws_iam_user_tags.user_id JOIN okta_users ON aws_iam_users.tags.value = okta_users.profile_email WHERE aws_iam_users.tags_key = "email"',
