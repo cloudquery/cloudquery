@@ -10,6 +10,7 @@ import (
 func UserAccessKeys() *schema.Table {
 	return &schema.Table{
 		Name:                 "aws_iam_user_access_keys",
+		Description:          `https://docs.aws.amazon.com/IAM/latest/APIReference/API_AccessKeyMetadata.html`,
 		Resolver:             fetchIamUserAccessKeys,
 		PostResourceResolver: postIamUserAccessKeyResolver,
 		Transform:            transformers.TransformWithStruct(&models.AccessKeyWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),

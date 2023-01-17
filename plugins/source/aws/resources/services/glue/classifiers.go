@@ -9,10 +9,11 @@ import (
 
 func Classifiers() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_glue_classifiers",
-		Resolver:  fetchGlueClassifiers,
-		Transform: transformers.TransformWithStruct(&types.Classifier{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer("glue"),
+		Name:        "aws_glue_classifiers",
+		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_Classifier.html`,
+		Resolver:    fetchGlueClassifiers,
+		Transform:   transformers.TransformWithStruct(&types.Classifier{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

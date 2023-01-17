@@ -1,5 +1,7 @@
 # Table: aws_glacier_vault_notifications
 
+https://docs.aws.amazon.com/amazonglacier/latest/dev/api-vault-notifications-get.html
+
 The primary key for this table is **vault_arn**.
 
 ## Relations
