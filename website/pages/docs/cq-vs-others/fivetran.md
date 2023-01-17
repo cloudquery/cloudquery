@@ -8,4 +8,4 @@ Fivetran is a closed source managed ELT SaaS solution with a few key differences
 - **High Performance** - CloudQuery SDK and connectors are written in Go utilizing excellent support of go-routines which enables high-performance and low memory usage.
 - **Type System** - CloudQuery SDK supports a rich type system for connectors which enables richer schemas and more accurate data.
 - **Self Hosted** - You can run CloudQuery on your own infrastructure, ensuring that your data doesn't leave your infrastructure. Fivetran only offer a managed solution at the moment.
-- **Connectors** - Fivetran has more source connectors then CloudQuery at the moment. CloudQuery team is maintaining official widely used connectors while mostly developing CloudQuery SDK to enable developer to write their own high performance connectors.
+- **Connectors** - Fivetran has more source connectors than CloudQuery at the moment. The CloudQuery team adds and maintains official, widely-used connectors, while also developing the CloudQuery SDK to enable developers to write their own high-performance connectors.
