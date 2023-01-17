@@ -1,6 +1,8 @@
 # Table: aws_glue_datacatalog_encryption_settings
 
-The primary key for this table is **account_id**.
+https://docs.aws.amazon.com/glue/latest/webapi/API_GetDataCatalogEncryptionSettings.html
+
+The composite primary key for this table is (**account_id**, **region**).
 
 ## Columns
 
@@ -11,6 +13,6 @@ The primary key for this table is **account_id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
-|region|String|
+|region (PK)|String|
 |connection_password_encryption|JSON|
 |encryption_at_rest|JSON|
