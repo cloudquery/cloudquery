@@ -21,18 +21,6 @@ export type Features = Array<Feature>;
 
 const FEATURES: Features = [
   {
-    name: "Cloud asset inventory",
-    description: `Build your own multi-cloud asset inventory with standard SQL and BI tools.`,
-    Icon: ChartBarIcon,
-    page: "all",
-  },
-  {
-    name: "CSPM",
-    description: `Customize pre-built open source SQL policies and visualize them with your any of your favorite BI tools.`,
-    Icon: KeyIcon,
-    page: "all",
-  },
-  {
     name: "Open source",
     description: `Easily extensible plugin architecture. Contribute to our official plugins or develop your own with CloudQuery SDK.`,
     Icon: CodeIcon,
@@ -45,14 +33,26 @@ const FEATURES: Features = [
     page: "all",
   },
   {
-    name: "Database agnostic",
-    description: `CloudQuery can store your configuration in any supported destination such as database, data lake or streaming platform for further analysis.`,
+    name: "Deploy anywhere",
+    description: `CloudQuery plugins are single binary executables and can be deployed and run anywhere.`,
+    Icon: ChartBarIcon,
+    page: "all",
+  },
+  {
+    name: "Pre-built queries",
+    description: `CloudQuery maintains number of out-of-the-box security and compliance policies for cloud infrastructure.`,
+    Icon: KeyIcon,
+    page: "all",
+  },
+  {
+    name: "Data Silos",
+    description: `Elimnate data silos across your organization, security, infrastructure, marketing and finance teams.`,
     Icon: DatabaseIcon,
     page: "all",
   },
   {
-    name: "Raw access to data",
-    description: `Decouple data ingestion and get raw access to your data in structured and unstructured formats.`,
+    name: "Unlimited Scale",
+    description: `CloudQuery plugins are statless and can scaled easily horizontally on any executor such as k8s, batch jobs.`,
     Icon: ArrowsExpandIcon,
     page: "all",
   },
