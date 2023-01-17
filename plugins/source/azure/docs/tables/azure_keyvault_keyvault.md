@@ -18,7 +18,9 @@ The following tables depend on azure_keyvault_keyvault:
 |_cq_parent_id|UUID|
 |subscription_id|String|
 |id (PK)|String|
+|properties|JSON|
 |location|String|
-|name|String|
 |tags|JSON|
+|name|String|
+|system_data|JSON|
 |type|String|

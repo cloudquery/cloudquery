@@ -30,6 +30,9 @@ func WebApps() *schema.Table {
 				},
 			},
 		},
+		Relations: []*schema.Table{
+			webAppAuthSettings(),
+		},
 	}
 }
 
