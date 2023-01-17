@@ -43,9 +43,10 @@ func (c *Client) discoverSubscriptions(ctx context.Context) error {
 			return err
 		}
 		for _, sub := range page.Value {
+			// we record all returned values, even disabled
+			c.SubscriptionsObjects = append(c.SubscriptionsObjects, sub)
 			if *sub.State == armsubscription.SubscriptionStateEnabled {
 				c.subscriptions = append(c.subscriptions, strings.TrimPrefix(*sub.ID, "/subscriptions/"))
-				c.SubscriptionsObjects = append(c.SubscriptionsObjects, sub)
 			}
 		}
 	}
