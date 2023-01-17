@@ -1,5 +1,7 @@
 # Table: aws_iam_user_access_keys
 
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_AccessKeyMetadata.html
+
 The composite primary key for this table is (**account_id**, **user_arn**, **access_key_id**).
 
 ## Relations

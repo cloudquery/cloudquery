@@ -10,6 +10,7 @@ import (
 func FunctionAliases() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_lambda_function_aliases",
+		Description:         `https://docs.aws.amazon.com/lambda/latest/dg/API_AliasConfiguration.html`,
 		Resolver:            fetchLambdaFunctionAliases,
 		PreResourceResolver: getFunctionAliasURLConfig,
 		Transform:           transformers.TransformWithStruct(&models.AliasWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),

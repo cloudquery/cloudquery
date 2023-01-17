@@ -10,6 +10,7 @@ import (
 func RegistrySchemas() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_glue_registry_schemas",
+		Description:         `https://docs.aws.amazon.com/glue/latest/webapi/API_GetSchema.html`,
 		Resolver:            fetchGlueRegistrySchemas,
 		PreResourceResolver: getRegistrySchema,
 		Transform:           transformers.TransformWithStruct(&glue.GetSchemaOutput{}),

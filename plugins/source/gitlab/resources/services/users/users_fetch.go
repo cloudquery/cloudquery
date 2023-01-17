@@ -10,6 +10,10 @@ import (
 
 func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
+	if c.BaseURL == "" {
+		c.Logger().Info().Str("table", "gitlab_users").Msg("not supported for GitLab SaaS, skipping...")
+		return nil
+	}
 
 	opt := &gitlab.ListUsersOptions{
 		ListOptions: gitlab.ListOptions{
