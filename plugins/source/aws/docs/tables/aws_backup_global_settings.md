@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeGlobalSettings.html
 
-The composite primary key for this table is (**account_id**, **region**).
+The primary key for this table is **account_id**.
 
 ## Columns
 
@@ -13,7 +13,6 @@ The composite primary key for this table is (**account_id**, **region**).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
-|region (PK)|String|
 |global_settings|JSON|
 |last_update_time|Timestamp|
 |result_metadata|JSON|
