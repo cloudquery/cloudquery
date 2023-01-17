@@ -1,6 +1,6 @@
-# Table: aws_lambda_runtimes
+# Table: azure_security_settings
 
-The primary key for this table is **name**.
+The primary key for this table is **id**.
 
 ## Columns
 
@@ -10,4 +10,8 @@ The primary key for this table is **name**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|name (PK)|String|
+|subscription_id|String|
+|id (PK)|String|
+|kind|String|
+|name|String|
+|type|String|
