@@ -51,7 +51,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	}
 
 	if !noMigrate {
-		fmt.Printf("Starting migration for:%s->%s\n", sourceSpec.VersionString(), destinationStrings)
+		fmt.Printf("Starting migration for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 		log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start migration")
 		migrateStart := time.Now()
 
