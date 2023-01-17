@@ -17,12 +17,12 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	var err error
 	destinationStrings := make([]string, len(destinationsSpecs))
 	for i := range destinationsSpecs {
-		destinationStrings[i] = destinationsSpecs[i].String()
+		destinationStrings[i] = destinationsSpecs[i].VersionString()
 	}
 	syncTime := time.Now().UTC()
 
-	log.Info().Stringer("source", sourceSpec).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("Start sync")
-	defer log.Info().Stringer("source", sourceSpec).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("End sync")
+	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("Start sync")
+	defer log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("End sync")
 
 	destClients, err := newDestinationClients(ctx, sourceSpec, destinationsSpecs, cqDir)
 	if err != nil {
@@ -32,7 +32,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 
 	selectedTables, tablesForSpecSupported, err := getTablesForSpec(ctx, sourceClient, sourceSpec)
 	if err != nil {
-		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec, err)
+		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.VersionString(), err)
 	}
 
 	tableCount := len(selectedTables.FlattenTables())
@@ -44,28 +44,28 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 			word = "table"
 		}
 		if noMigrate {
-			fmt.Printf("Source %s will sync %d %s.\n", sourceSpec, tableCount, word)
+			fmt.Printf("Source %s will sync %d %s.\n", sourceSpec.VersionString(), tableCount, word)
 		} else {
-			fmt.Printf("Source %s will migrate and sync %d %s.\n", sourceSpec, tableCount, word)
+			fmt.Printf("Source %s will migrate and sync %d %s.\n", sourceSpec.VersionString(), tableCount, word)
 		}
 	}
 
 	if !noMigrate {
-		fmt.Println("Starting migration for:", sourceSpec, "->", destinationsSpecs)
-		log.Info().Stringer("source", sourceSpec).Strs("destinations", destinationStrings).Msg("Start migration")
+		fmt.Printf("Starting migration for:%s->%s\n", sourceSpec.VersionString(), destinationStrings)
+		log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start migration")
 		migrateStart := time.Now()
 
 		for i, destinationSpec := range destinationsSpecs {
 			// Currently we migrate all tables, but this is subject to change once policies
 			// are adapted to handle non-existent tables in some way.
 			if err := destClients[i].Migrate(ctx, selectedTables); err != nil {
-				return fmt.Errorf("failed to migrate source %s on destination %s : %w", sourceSpec, destinationSpec, err)
+				return fmt.Errorf("failed to migrate source %s on destination %s : %w", sourceSpec.VersionString(), destinationSpec.VersionString(), err)
 			}
 		}
 		migrateTimeTook := time.Since(migrateStart)
 		fmt.Printf("Migration completed successfully.\n")
 		log.Info().
-			Stringer("source", sourceSpec).
+			Str("source", sourceSpec.VersionString()).
 			Strs("destinations", destinationStrings).
 			Int("num_tables", tableCount).
 			Float64("time_took", migrateTimeTook.Seconds()).
@@ -74,15 +74,15 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 
 	resources := make(chan []byte)
 	g, gctx := errgroup.WithContext(ctx)
-	log.Info().Stringer("source", sourceSpec).Strs("destinations", destinationStrings).Msg("Start fetching resources")
-	fmt.Println("Starting sync for:", sourceSpec, "->", destinationsSpecs)
+	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start fetching resources")
+	fmt.Printf("Starting sync for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 	g.Go(func() error {
 		defer close(resources)
 		if err := sourceClient.Sync2(gctx, sourceSpec, resources); err != nil {
 			if isUnknownConcurrencyFieldError(err) {
-				return fmt.Errorf("unsupported version of source %s. Please update to the latest version from https://cloudquery.io/docs/plugins/sources", sourceSpec)
+				return fmt.Errorf("unsupported version of source %s. Please update to the latest version from https://cloudquery.io/docs/plugins/sources", sourceSpec.VersionString())
 			}
-			return fmt.Errorf("failed to sync source %s: %w", sourceSpec, err)
+			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.VersionString(), err)
 		}
 		return nil
 	})
@@ -108,11 +108,11 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 			var destFailedWrites uint64
 			var err error
 			if err = destClients[i].Write2(gctx, sourceSpec, selectedTables, syncTime, destSubscriptions[i]); err != nil {
-				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec, destination, err)
+				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.VersionString(), destination.VersionString(), err)
 			}
 			// call Close on destination client using the outer context, so that it happens even if writes get cancelled
 			if err := destClients[i].Close(ctx); err != nil {
-				return fmt.Errorf("failed to close destination client for %s->%s: %w", sourceSpec, destination, err)
+				return fmt.Errorf("failed to close destination client for %s->%s: %w", sourceSpec.VersionString(), destination.VersionString(), err)
 			}
 			failedWrites += destFailedWrites
 			return nil
@@ -159,7 +159,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 
 	metrics, err := sourceClient.GetMetrics(ctx)
 	if err != nil {
-		return fmt.Errorf("failed to get metrics for source %s: %w", sourceSpec, err)
+		return fmt.Errorf("failed to get metrics for source %s: %w", sourceSpec.VersionString(), err)
 	}
 
 	fmt.Printf("Sync completed successfully. Resources: %d, Errors: %d, Panics: %d, Time: %s\n", metrics.TotalResources(), metrics.TotalErrors(), metrics.TotalPanics(), syncTimeTook.Truncate(time.Second).String())
@@ -189,7 +189,7 @@ func getTablesForSpec(ctx context.Context, sourceClient *clients.SourceClient, s
 
 	allTables, err := sourceClient.GetTables(ctx)
 	if err != nil {
-		return tables, true, fmt.Errorf("failed to get all tables for source %s: %w", sourceSpec, err)
+		return tables, true, fmt.Errorf("failed to get all tables for source %s: %w", sourceSpec.VersionString(), err)
 	}
 
 	// make sure selected tables only includes top-level tables; we don't want a flattened list
