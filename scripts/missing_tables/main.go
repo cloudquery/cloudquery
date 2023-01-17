@@ -56,7 +56,7 @@ func parseCodeTables() map[string]string {
 			continue
 		}
 
-		tableNameRegex := regexp.MustCompile(`Name\:.*?"(.*?)",`)
+		tableNameRegex := regexp.MustCompile(`schema.Table[\s\S]+?Name\:.*?"(.*?)",`)
 		tableName := tableNameRegex.FindStringSubmatch(contentString)
 		tablesMap[tableName[1]] = tableFile
 
