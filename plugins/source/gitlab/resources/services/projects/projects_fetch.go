@@ -12,6 +12,7 @@ func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	c := meta.(*client.Client)
 
 	opt := &gitlab.ListProjectsOptions{
+		MinAccessLevel: c.MinAccessLevel,
 		ListOptions: gitlab.ListOptions{
 			PerPage: 1000,
 		},
