@@ -9,10 +9,11 @@ import (
 
 func ConformancePackRuleCompliances() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_config_conformance_pack_rule_compliances",
-		Resolver:  fetchConfigConformancePackRuleCompliances,
-		Multiplex: client.ServiceAccountRegionMultiplexer("config"),
-		Transform: transformers.TransformWithStruct(&models.ConformancePackComplianceWrapper{}),
+		Name:        "aws_config_conformance_pack_rule_compliances",
+		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConformancePackCompliance.html`,
+		Resolver:    fetchConfigConformancePackRuleCompliances,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("config"),
+		Transform:   transformers.TransformWithStruct(&models.ConformancePackComplianceWrapper{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
