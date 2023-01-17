@@ -2,6 +2,11 @@
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on azure_appservice_web_apps:
+  - [azure_appservice_web_app_auth_settings](azure_appservice_web_app_auth_settings.md)
+
 ## Columns
 
 | Name          | Type          |
