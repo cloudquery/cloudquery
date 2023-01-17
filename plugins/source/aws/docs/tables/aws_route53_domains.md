@@ -1,5 +1,7 @@
 # Table: aws_route53_domains
 
+https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_GetDomainDetail.html
+
 The composite primary key for this table is (**account_id**, **domain_name**).
 
 ## Columns

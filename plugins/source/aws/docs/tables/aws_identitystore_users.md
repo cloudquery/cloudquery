@@ -1,5 +1,7 @@
 # Table: aws_identitystore_users
 
+https://docs.aws.amazon.com/singlesignon/latest/IdentityStoreAPIReference/API_User.html
+
 The primary key for this table is **_cq_id**.
 
 ## Columns
