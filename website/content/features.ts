@@ -45,7 +45,7 @@ const FEATURES: Features = [
     page: "all",
   },
   {
-    name: "Elimnate data silos",
+    name: "Eliminate data silos",
     description: `Elimnate data silos across your organization, security, infrastructure, marketing and finance teams.`,
     Icon: DatabaseIcon,
     page: "all",
