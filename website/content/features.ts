@@ -28,7 +28,7 @@ const FEATURES: Features = [
   },
   {
     name: "Blazing fast",
-    description: `CloudQuery concurrency system utilizes the excellent Go concurrency model with light-weight goroutines.`,
+    description: `CloudQuery is optimized for performance, utilizing the excellent Go concurrency model with light-weight goroutines.`,
     Icon: LightningBoltIcon,
     page: "all",
   },
