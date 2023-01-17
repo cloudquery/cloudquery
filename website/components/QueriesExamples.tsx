@@ -18,7 +18,7 @@ const MarketingQuery = () => (
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>FROM</span></div>
         <div><span>    shopify_abandoned_checkouts</span></div>
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>WHERE</span></div>
-        <div>    total_price ><span style={{ color: "var(--shiki-token-keyword)" }}> 1000</span></div>
+        <div>    total_price {'>'} <span style={{ color: "var(--shiki-token-keyword)" }}> 1000</span></div>
     </>
 )
 
