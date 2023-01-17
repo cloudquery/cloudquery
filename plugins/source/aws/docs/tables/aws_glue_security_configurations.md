@@ -1,5 +1,7 @@
 # Table: aws_glue_security_configurations
 
+https://docs.aws.amazon.com/glue/latest/webapi/API_SecurityConfiguration.html
+
 The composite primary key for this table is (**account_id**, **region**, **name**).
 
 ## Columns

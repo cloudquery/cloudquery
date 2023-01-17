@@ -9,10 +9,11 @@ import (
 
 func Registries() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ecr_registries",
-		Resolver:  fetchEcrRegistries,
-		Multiplex: client.ServiceAccountRegionMultiplexer("api.ecr"),
-		Transform: transformers.TransformWithStruct(&ecr.DescribeRegistryOutput{}),
+		Name:        "aws_ecr_registries",
+		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_DescribeRegistry.html`,
+		Resolver:    fetchEcrRegistries,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("api.ecr"),
+		Transform:   transformers.TransformWithStruct(&ecr.DescribeRegistryOutput{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

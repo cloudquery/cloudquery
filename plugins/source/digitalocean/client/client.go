@@ -131,7 +131,7 @@ func (s *ServicesManager) ServicesByRegion(region string) *Services {
 	return s.services[region]
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	// providerConfig := config.(*Config)
 	var doSpec Spec
 	if err := s.UnmarshalSpec(&doSpec); err != nil {

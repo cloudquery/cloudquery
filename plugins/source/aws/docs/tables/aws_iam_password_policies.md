@@ -1,5 +1,7 @@
 # Table: aws_iam_password_policies
 
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_PasswordPolicy.html
+
 The primary key for this table is **account_id**.
 
 ## Columns

@@ -10,6 +10,7 @@ import (
 func WebAcls() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_wafv2_web_acls",
+		Description:         `https://docs.aws.amazon.com/waf/latest/APIReference/API_WebACL.html`,
 		Resolver:            fetchWafv2WebAcls,
 		PreResourceResolver: getWebAcl,
 		Transform:           transformers.TransformWithStruct(&models.WebACLWrapper{}, transformers.WithUnwrapStructFields("WebACL")),

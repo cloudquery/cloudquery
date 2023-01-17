@@ -34,7 +34,7 @@ func (c *Client) ID() string {
 	return c.CurrentBackend
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	tfSpec := &Spec{}
 	if err := s.UnmarshalSpec(tfSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal terraform spec: %w", err)
