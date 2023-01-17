@@ -52,7 +52,7 @@ const FEATURES: Features = [
   },
   {
     name: "Unlimited scale",
-    description: `CloudQuery plugins are statless and can scaled easily horizontally on any executor such as k8s, batch jobs.`,
+    description: `CloudQuery plugins are stateless and can scaled easily horizontally on any executor such as k8s, batch jobs.`,
     Icon: ArrowsExpandIcon,
     page: "all",
   },
