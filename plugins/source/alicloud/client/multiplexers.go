@@ -39,13 +39,15 @@ func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
 		var l = make([]schema.ClientMeta, 0)
 		client := meta.(*Client)
-		for accountID := range client.services {
+		for accountID, accountRegions := range client.services {
 			if regions, ok := ServiceRegions[service]; ok {
 				for _, region := range regions {
-					l = append(l, client.WithAccountIDAndRegion(accountID, region))
+					if _, regionConfigured := accountRegions[region]; regionConfigured {
+						l = append(l, client.WithAccountIDAndRegion(accountID, region))
+					}
 				}
 			} else {
-				panic(fmt.Sprintf("service %s is not supported. Add it to client/service_regions.go", service))
+				panic(fmt.Sprintf("service %s is not yet supported. Developer hint: add it to client/service_regions.go", service))
 			}
 		}
 		return l

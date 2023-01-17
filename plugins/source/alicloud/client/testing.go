@@ -56,7 +56,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		Destinations: []string{"mock-destination"},
 		Spec: Spec{
 			Accounts: []AccountSpec{
-				{Name: "test-account", Regions: []string{"test-region"}, AccessKey: "test-access-key", SecretKey: "test-secret-key"},
+				{Name: "test-account", Regions: []string{"cn-hangzhou"}, AccessKey: "test-access-key", SecretKey: "test-secret-key"},
 			},
 		},
 	})
