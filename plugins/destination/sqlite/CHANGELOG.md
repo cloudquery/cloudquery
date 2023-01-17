@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v1.1.5...plugins-destination-sqlite-v1.1.6) (2023-01-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.2 ([#6695](https://github.com/cloudquery/cloudquery/issues/6695)) ([694ab9f](https://github.com/cloudquery/cloudquery/commit/694ab9f3e20473146e3620d7b03bb17eb259d697))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.25.0 ([#6745](https://github.com/cloudquery/cloudquery/issues/6745)) ([9c41854](https://github.com/cloudquery/cloudquery/commit/9c418547c3bbff97449765e337182230fb5e40d5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.25.1 ([#6805](https://github.com/cloudquery/cloudquery/issues/6805)) ([9da0ce2](https://github.com/cloudquery/cloudquery/commit/9da0ce283f50410eb9274375ec1d22131a80d937))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.26.0 ([#6839](https://github.com/cloudquery/cloudquery/issues/6839)) ([6ccda8d](https://github.com/cloudquery/cloudquery/commit/6ccda8d0bc6e7ce75f4a64a18911e349ccaac277))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.27.0 ([#6856](https://github.com/cloudquery/cloudquery/issues/6856)) ([545799b](https://github.com/cloudquery/cloudquery/commit/545799bb0481087e187b5f27c88f5dde9c99f2f0))
+* **sqlite-migrate:** Use `int` when getting `pk` column information ([#6848](https://github.com/cloudquery/cloudquery/issues/6848)) ([8ed1d94](https://github.com/cloudquery/cloudquery/commit/8ed1d946061b58eb80ccb65201fa26266671f11d))
+* **sqlite:** Set module in logs to `sqlite-dest` instead of `pg-dest` ([#6764](https://github.com/cloudquery/cloudquery/issues/6764)) ([6cfda91](https://github.com/cloudquery/cloudquery/commit/6cfda91c6d1d62688ba0d56ea8119136842b334a))
+
 ## [1.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v1.1.4...plugins-destination-sqlite-v1.1.5) (2023-01-10)
 
 
