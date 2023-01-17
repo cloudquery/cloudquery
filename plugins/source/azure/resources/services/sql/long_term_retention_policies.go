@@ -8,8 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-// todo add it as a relation to a database
-func longTermRetentionPolicies() *schema.Table {
+func long_term_retention_policies() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sql_long_term_retention_policies",
 		Resolver:  fetchLongTermRetentionPolicies,
@@ -34,7 +33,7 @@ func longTermRetentionPolicies() *schema.Table {
 }
 
 func fetchLongTermRetentionPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	pp := parent.Item.(*armsql.Server)
+	pp := parent.Parent.Item.(*armsql.Server)
 	p := parent.Item.(*armsql.Database)
 	cl := meta.(*client.Client)
 	svc, err := armsql.NewLongTermRetentionPoliciesClient(cl.SubscriptionId, cl.Creds, cl.Options)

@@ -80,7 +80,6 @@ func fetchDiagnosticSettings(ctx context.Context, meta schema.ClientMeta, parent
 						*r.ID,
 					}
 				}
-
 			}
 		}
 	}

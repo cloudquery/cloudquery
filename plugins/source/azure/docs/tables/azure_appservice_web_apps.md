@@ -6,6 +6,7 @@ The primary key for this table is **id**.
 
 The following tables depend on azure_appservice_web_apps:
   - [azure_appservice_web_app_auth_settings](azure_appservice_web_app_auth_settings.md)
+  - [azure_appservice_web_app_vnet_connections](azure_appservice_web_app_vnet_connections.md)
 
 ## Columns
 
