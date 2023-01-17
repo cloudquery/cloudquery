@@ -10,6 +10,7 @@ import (
 func Workflows() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_glue_workflows",
+		Description:         `https://docs.aws.amazon.com/glue/latest/webapi/API_Workflow.html`,
 		Resolver:            fetchGlueWorkflows,
 		PreResourceResolver: getWorkflow,
 		Transform:           transformers.TransformWithStruct(&types.Workflow{}),

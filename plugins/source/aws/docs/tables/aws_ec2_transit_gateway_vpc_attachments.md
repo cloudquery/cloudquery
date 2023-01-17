@@ -19,11 +19,11 @@ This table depends on [aws_ec2_transit_gateways](aws_ec2_transit_gateways.md).
 |account_id|String|
 |region|String|
 |transit_gateway_arn|String|
+|tags|JSON|
 |creation_time|Timestamp|
 |options|JSON|
 |state|String|
 |subnet_ids|StringArray|
-|tags|JSON|
 |transit_gateway_attachment_id|String|
 |transit_gateway_id|String|
 |vpc_id|String|
