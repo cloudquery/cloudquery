@@ -1,5 +1,7 @@
 {
   "overview": "Overview",
+  "fivetran": "CloudQuery vs Fivetran",
+  "airbyte": "CloudQuery vs Airbyte",
   "aws-config": "CloudQuery vs AWS Config",
   "google-cloud-asset-inventory": "CloudQuery vs Google Cloud Asset Inventory",
   "cspms": "CloudQuery vs CSPMs (Cloud Security Posture Management)",
