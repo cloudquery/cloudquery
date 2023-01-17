@@ -21,38 +21,38 @@ export type Features = Array<Feature>;
 
 const FEATURES: Features = [
   {
-    name: "Cloud asset inventory",
-    description: `Build your own multi-cloud asset inventory with standard SQL and BI tools.`,
-    Icon: ChartBarIcon,
-    page: "all",
-  },
-  {
-    name: "CSPM",
-    description: `Customize pre-built open source SQL policies and visualize them with your any of your favorite BI tools.`,
-    Icon: KeyIcon,
-    page: "all",
-  },
-  {
     name: "Open source",
-    description: `Easily extensible plugin architecture. Contribute to our official plugins or develop your own with CloudQuery SDK.`,
+    description: `Extensible plugin architecture. Contribute to our official plugins or develop your own with CloudQuery SDK.`,
     Icon: CodeIcon,
     page: "all",
   },
   {
     name: "Blazing fast",
-    description: `CloudQuery concurrency system utilizes the excellent Go concurrency model with light-weight goroutines.`,
+    description: `CloudQuery is optimized for performance, utilizing the excellent Go concurrency model with light-weight goroutines.`,
     Icon: LightningBoltIcon,
     page: "all",
   },
   {
-    name: "Database agnostic",
-    description: `CloudQuery can store your configuration in any supported destination such as database, data lake or streaming platform for further analysis.`,
+    name: "Deploy anywhere",
+    description: `CloudQuery plugins are single-binary executables and can be deployed and run anywhere.`,
+    Icon: ChartBarIcon,
+    page: "all",
+  },
+  {
+    name: "Pre-built queries",
+    description: `CloudQuery maintains a number of out-of-the-box security and compliance policies for cloud infrastructure.`,
+    Icon: KeyIcon,
+    page: "all",
+  },
+  {
+    name: "Eliminate data silos",
+    description: `Eliminate data silos across your organization, unifying data between security, infrastructure, marketing and finance teams.`,
     Icon: DatabaseIcon,
     page: "all",
   },
   {
-    name: "Raw access to data",
-    description: `Decouple data ingestion and get raw access to your data in structured and unstructured formats.`,
+    name: "Unlimited scale",
+    description: `CloudQuery plugins are stateless and can scaled easily horizontally on any executor such as k8s, batch jobs.`,
     Icon: ArrowsExpandIcon,
     page: "all",
   },

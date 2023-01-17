@@ -44,7 +44,7 @@ export default function Home() {
         <title>CloudQuery</title>
         <meta
           name="og:description"
-          content="CloudQuery is an open source high performance data integration platform designed for security and infrastructure teams"
+          content="CloudQuery is an open source high performance data integration platform built for developers."
         />
       </Head>
 
@@ -52,17 +52,19 @@ export default function Home() {
         <div className="flex flex-col justify-between md:mr-4">
           <div>
             <h1 className="max-w-5xl mx-auto nx-text-6xl font-extrabold tracking-tighter leading-[1.1] sm:text-7xl lg:nx-text-8xl xl:nx-text-8xl">
-              Data integration
-              <br className="hidden lg:block" />
-              <span className="pr-1 inline-block text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500 ">
-                at scale.
-              </span>
+               Frustratingly
+               <br className="hidden lg:block" />
+               <span className="pr-1 inline-block text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500 ">
+               reliable
+               </span>
+               &nbsp;
+               ELT
             </h1>
             <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
-              Sync cloud assets to any database, transform and visualize.
+              Sync any source to any destination, transform and visualize.
             </p>
             <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
-              CloudQuery is an open source high performance data integration platform designed for security and infrastructure teams.
+            CloudQuery is an open source high performance data integration platform built for developers.
             </p>
           </div>
           <div className="flex fix-flex-col h-32 mt-4 md:mt-0 mb-6 md:mb-0 items-center gap-3 md:flex-row xl:flex-row">
@@ -126,10 +128,10 @@ export default function Home() {
       <div className="relative from-gray-50 to-gray-100">
         <div className="px-4 py-16 mx-auto sm:pt-20 sm:pb-24 lg:max-w-7xl lg:pt-24">
           <h2 className="nx-text-4xl font-extrabold tracking-tight lg:nx-text-5xl xl:nx-text-6xl lg:text-center dark:text-white">
-            Data analysis, security, auditing, and compliance
+              Built for any team
           </h2>
           <p className="mx-auto mt-4 text-lg font-medium text-gray-400 lg:max-w-3xl lg:text-xl lg:text-center">
-            Leverage SQL to get visibility into your cloud infrastructure and SaaS applications.
+            Engineering, Infrastructure, Security, Marketing, Sales, Support, FinOps
           </p>
           <QueriesExamples onClick={onClick} />
         </div>
@@ -141,7 +143,7 @@ export default function Home() {
             Integrations
           </h2>
           <p className="mx-auto mt-4 font-medium text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
-            Integrate with a growing list of <a className="dark:text-white" href="/docs/plugins/sources/overview">20+ cloud providers and SaaS apps</a> with more than 1,000 unique tables. Sync to your <a href="/docs/plugins/destinations/overview" className="dark:text-white">favorite database, data warehouse or data lake</a>.
+            Integrate with a growing list of <a className="dark:text-white" href="/docs/plugins/sources/overview">30+ cloud providers and SaaS apps</a> with more than 1,000 unique tables. Sync to your <a href="/docs/plugins/destinations/overview" className="dark:text-white">favorite database, data warehouse or data lake</a>.
           </p>
           <Integrations />
         </div>
@@ -150,7 +152,7 @@ export default function Home() {
             <div className="space-y-4 sm:space-y-0 sm:mx-auto ">
               <Link href="/docs">
                 <a className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white no-underline bg-black border border-transparent rounded-md dark:bg-white dark:text-black betterhover:dark:hover:bg-gray-300 betterhover:hover:bg-gray-700 md:py-3 md:text-lg md:px-10 md:leading-6">
-                  Start Building →
+                  Start Syncing →
                 </a>
               </Link>
             </div>

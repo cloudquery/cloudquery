@@ -6,6 +6,7 @@ import (
 	"runtime"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/bssopenapi"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/cloudquery/codegen/interfaces"
 	"github.com/thoas/go-funk"
@@ -14,6 +15,7 @@ import (
 var clients = []any{
 	&oss.Client{},
 	&bssopenapi.Client{},
+	&ecs.Client{},
 }
 
 // Generate the service interfaces under in client/services for use with mockgen.
