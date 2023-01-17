@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func server_databases() *schema.Table {
+func serverDatabases() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sql_server_databases",
 		Resolver:  fetchDatabases,
@@ -68,11 +68,11 @@ func server_databases() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			server_database_blob_auditing_policies(),
-			transparent_data_encryptions(),
-			server_database_threat_protections(),
+			serverDatabaseBlobAuditingPolicies(),
+			transparentDataEncryptions(),
+			serverDatabaseThreatProtections(),
 			database_vulnerability_assessments(),
-			long_term_retention_policies(),
+			longTermRetentionPolicies(),
 		},
 	}
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func namespace_network_rule_sets() *schema.Table {
+func namespaceNetworkRuleSets() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_eventhub_namespace_network_rule_sets",
 		Resolver:  fetchNetworkRuleSets,

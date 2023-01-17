@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func server_admins() *schema.Table {
+func serverAdmins() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sql_server_admins",
 		Resolver:  fetchServerAdmins,

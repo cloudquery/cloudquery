@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func long_term_retention_policies() *schema.Table {
+func longTermRetentionPolicies() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sql_database_long_term_retention_policies",
 		Resolver:  fetchLongTermRetentionPolicies,

@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func server_database_threat_protections() *schema.Table {
+func serverDatabaseThreatProtections() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sql_server_database_threat_protections",
 		Resolver:  fetchDatabaseThreatProtections,

@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func server_encryption_protectors() *schema.Table {
+func serverEncryptionProtectors() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sql_server_encryption_protectors",
 		Resolver:  fetchEncryptionProtectors,

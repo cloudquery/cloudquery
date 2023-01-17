@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func virtual_network_rules() *schema.Table {
+func virtualNetworkRules() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sql_server_virtual_network_rules",
 		Resolver:  fetchVirtualNetworkRules,

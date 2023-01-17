@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func transparent_data_encryptions() *schema.Table {
+func transparentDataEncryptions() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_sql_transparent_data_encryptions",
 		Resolver:  fetchTransparentDataEncryptions,
