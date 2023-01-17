@@ -157,6 +157,7 @@ var GcpServices = map[string]bool{
 	"jobs.googleapis.com":                          true,
 	"keep.googleapis.com":                          true,
 	"kgsearch.googleapis.com":                      true,
+	"kmsinventory.googleapis.com":                  true,
 	"language.googleapis.com":                      true,
 	"libraryagent.googleapis.com":                  true,
 	"licensing.googleapis.com":                     true,
