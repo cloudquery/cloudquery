@@ -2,6 +2,7 @@ package security
 
 import (
 	"context"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -21,27 +22,12 @@ func Contacts() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties"),
-			},
-			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
 			},
 		},
 	}
