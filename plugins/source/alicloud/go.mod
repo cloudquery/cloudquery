@@ -6,7 +6,7 @@ require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.62.80
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.6+incompatible
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-sdk v1.25.1
+	github.com/cloudquery/plugin-sdk v1.27.0
 	github.com/golang/mock v1.4.4
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.28.0
@@ -43,6 +43,5 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
-replace (
-	github.com/cloudquery/plugin-sdk v1.25.1 => ../../../../plugin-sdk
-)
+
+replace github.com/cloudquery/plugin-sdk v1.25.1 => ../../../../plugin-sdk
