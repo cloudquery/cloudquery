@@ -20,7 +20,7 @@ See the **[Quickstart guide](https://www.cloudquery.io/docs/quickstart)** for in
 - **Deploy anywhere**: CloudQuery plugins are single-binary executables and can be deployed and run anywhere.
 - **Pre-built queries**: CloudQuery maintains a number of out-of-the-box security and compliance policies for cloud infrastructure.
 - **Eliminate data silos**: Eliminate data silos across your organization, unifying data between security, infrastructure, marketing and finance teams.
-- **Unlimited scale**: CloudQuery plugins are stateless and can be scaled horizontally on any platform, such as VMs, Kubernetes or batch jobs.
+- **Unlimited scale**: CloudQuery plugins are stateless and can be scaled horizontally on any platform, such as EC2, Kubernetes, batch jobs or any other compute.
 
 ### Links
 
