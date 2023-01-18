@@ -11,10 +11,11 @@ import (
 
 func ResourceHealthMetadata() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_appservice_resource_health_metadata",
-		Resolver:  fetchResourceHealthMetadata,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_resource_health_metadata", client.Namespacemicrosoft_web),
-		Transform: transformers.TransformWithStruct(&armappservice.ResourceHealthMetadata{}),
+		Name:        "azure_appservice_resource_health_metadata",
+		Resolver:    fetchResourceHealthMetadata,
+		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/resource-health-metadata/list?tabs=HTTP#resourcehealthmetadata",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_resource_health_metadata", client.Namespacemicrosoft_web),
+		Transform:   transformers.TransformWithStruct(&armappservice.ResourceHealthMetadata{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

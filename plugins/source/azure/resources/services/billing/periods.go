@@ -11,10 +11,11 @@ import (
 
 func Periods() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_billing_periods",
-		Resolver:  fetchPeriods,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_billing_periods", client.Namespacemicrosoft_billing),
-		Transform: transformers.TransformWithStruct(&armbilling.Period{}),
+		Name:        "azure_billing_periods",
+		Resolver:    fetchPeriods,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling@v0.5.0#Period",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_billing_periods", client.Namespacemicrosoft_billing),
+		Transform:   transformers.TransformWithStruct(&armbilling.Period{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

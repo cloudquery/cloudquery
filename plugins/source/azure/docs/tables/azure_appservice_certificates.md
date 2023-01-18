@@ -1,5 +1,7 @@
 # Table: azure_appservice_certificates
 
+https://learn.microsoft.com/en-us/rest/api/appservice/certificates/list?tabs=HTTP#certificate
+
 The primary key for this table is **id**.
 
 ## Columns
