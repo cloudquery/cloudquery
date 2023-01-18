@@ -138,7 +138,7 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcom
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute v1.0.0/go.mod h1:1NeTZ+3vRBuUPpEtXrSJ04vtntkZ81chcQcbSapoGic=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager v1.0.0 h1:49R0R823xUhYD0XwRLkYe3+FYrm/BF0iWz7pmBiDOD4=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager v1.0.0/go.mod h1:AADSbpi2s5AxkzC+i03szNbVgHa6UKMiQ5etRwjrp1U=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal v1.0.0 h1:lMW1lD/17LUA5z1XTURo7LcVG2ICBPlyMHjIUrcFZNQ=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal v1.1.1 h1:BZOe7ExNYNGmapT91ZUrxtMYsqVljMxTHEnwjOdG7pk=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault v1.0.0 h1:Jc2KcpCDMu7wJfkrzn7fs/53QMDXH78GuqnH4HOd7zs=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault v1.0.0/go.mod h1:PFVgFsclKzPqYRT/BiwpfUN22cab0C7FlgXR3iWpwMo=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto v1.1.0 h1:0wECNgkDj/xFPXXOM9umr6+PJ9jzHCIIsIagkcueaFg=
@@ -186,8 +186,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub v1.0.0/go.mod h1:WgD0yeS1pzWoXYFotk+NHTIu2Etw0moMCNDg3mlcXIA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift v1.1.0 h1:CWMopqW0o2RkNKBCIxvNWuTqkZucCLvOEWuojtrzjTA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift v1.1.0/go.mod h1:x0UxEDaV/su14hvPXzjKV0xzlufYq8OTebollMzBQDw=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis v1.0.0 h1:nmpTBgRg1HynngFYICRhceC7s5dmbKN9fJ/XQz/UQ2I=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis v1.0.0/go.mod h1:3yjiOtnkVociBTlF7UZrwAGfJrGaOCsvtVS4HzNajxQ=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2 v2.1.0 h1:np26UAXwK6IGy0y1WONpykT73Zy2zjsYQ+rGp2y3ZL0=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2 v2.1.0/go.mod h1:9cvVd/AvgCW3ki18aWkDiqmR0u1DTmZ2fQoHoH3gZbA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay v1.0.0 h1:MpzuhAA8DyFfJ2mcVnfBE+OsS7r2oWGnJ0zoCuZ2OYc=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay v1.0.0/go.mod h1:mcgbqUk0SJX+X93DQdseYYzpbMcgx4yJp2qDeOj9OXA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations v1.1.0 h1:0OO/3K+SKt45gXiOU4gHRILOLeNOUZdqeNO47Mq6iN8=
