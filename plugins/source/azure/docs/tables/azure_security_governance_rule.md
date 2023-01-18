@@ -1,5 +1,7 @@
 # Table: azure_security_governance_rule
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity@v0.9.0#GovernanceRule
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: azure_providerhub_provider_registrations
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub@v1.0.0#ProviderRegistration
+
 The primary key for this table is **id**.
 
 ## Columns

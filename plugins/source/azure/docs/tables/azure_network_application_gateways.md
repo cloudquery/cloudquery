@@ -1,5 +1,7 @@
 # Table: azure_network_application_gateways
 
+https://learn.microsoft.com/en-us/rest/api/application-gateway/application-gateways/list?tabs=HTTP#applicationgateway
+
 The primary key for this table is **id**.
 
 ## Columns

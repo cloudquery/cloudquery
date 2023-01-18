@@ -1,5 +1,7 @@
 # Table: azure_workloads_monitors
 
+https://learn.microsoft.com/en-us/rest/api/workloads/sap-monitor/list?tabs=HTTP#monitor
+
 The primary key for this table is **id**.
 
 ## Columns

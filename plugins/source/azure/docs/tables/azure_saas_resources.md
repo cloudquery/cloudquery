@@ -1,5 +1,7 @@
 # Table: azure_saas_resources
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas@v0.5.0#Resource
+
 The primary key for this table is **id**.
 
 ## Columns

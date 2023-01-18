@@ -11,10 +11,11 @@ import (
 
 func Namespaces() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_servicebus_namespaces",
-		Resolver:  fetchNamespaces,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_servicebus_namespaces", client.Namespacemicrosoft_servicebus),
-		Transform: transformers.TransformWithStruct(&armservicebus.SBNamespace{}),
+		Name:        "azure_servicebus_namespaces",
+		Resolver:    fetchNamespaces,
+		Description: "https://learn.microsoft.com/en-us/rest/api/servicebus/stable/namespaces/list?tabs=HTTP#sbnamespace",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_servicebus_namespaces", client.Namespacemicrosoft_servicebus),
+		Transform:   transformers.TransformWithStruct(&armservicebus.SBNamespace{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -11,10 +11,11 @@ import (
 
 func PrivateLinkHubs() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_synapse_private_link_hubs",
-		Resolver:  fetchPrivateLinkHubs,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_synapse_private_link_hubs", client.Namespacemicrosoft_synapse),
-		Transform: transformers.TransformWithStruct(&armsynapse.PrivateLinkHub{}),
+		Name:        "azure_synapse_private_link_hubs",
+		Resolver:    fetchPrivateLinkHubs,
+		Description: "https://learn.microsoft.com/en-us/rest/api/synapse/private-link-hubs/list?tabs=HTTP#privatelinkhub",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_synapse_private_link_hubs", client.Namespacemicrosoft_synapse),
+		Transform:   transformers.TransformWithStruct(&armsynapse.PrivateLinkHub{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
