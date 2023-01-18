@@ -1,5 +1,7 @@
 # Table: azure_security_alerts_suppression_rules
 
+https://learn.microsoft.com/en-us/rest/api/defenderforcloud/alerts-suppression-rules/list?tabs=HTTP#alertssuppressionrule
+
 The primary key for this table is **id**.
 
 ## Columns

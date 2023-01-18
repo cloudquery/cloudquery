@@ -11,10 +11,11 @@ import (
 
 func Grafana() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_dashboard_grafana",
-		Resolver:  fetchGrafana,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_dashboard_grafana", client.Namespacemicrosoft_dashboard),
-		Transform: transformers.TransformWithStruct(&armdashboard.ManagedGrafana{}),
+		Name:        "azure_dashboard_grafana",
+		Resolver:    fetchGrafana,
+		Description: "https://learn.microsoft.com/en-us/rest/api/managed-grafana/grafana/list-by-resource-group?tabs=HTTP#managedgrafana",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_dashboard_grafana", client.Namespacemicrosoft_dashboard),
+		Transform:   transformers.TransformWithStruct(&armdashboard.ManagedGrafana{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

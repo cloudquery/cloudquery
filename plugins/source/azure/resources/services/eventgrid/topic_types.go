@@ -3,7 +3,7 @@ package eventgrid
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func TopicTypes() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_eventgrid_topic_types",
-		Resolver:  fetchTopicTypes,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_eventgrid_topic_types", client.Namespacemicrosoft_eventgrid),
-		Transform: transformers.TransformWithStruct(&armeventgrid.TopicTypeInfo{}),
+		Name:        "azure_eventgrid_topic_types",
+		Resolver:    fetchTopicTypes,
+		Description: "https://learn.microsoft.com/en-us/rest/api/eventgrid/controlplane-version2022-06-15/topic-types/list?tabs=HTTP#topictypeinfo",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_eventgrid_topic_types", client.Namespacemicrosoft_eventgrid),
+		Transform:   transformers.TransformWithStruct(&armeventgrid.TopicTypeInfo{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

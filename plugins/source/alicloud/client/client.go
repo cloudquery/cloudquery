@@ -24,7 +24,7 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func (c *Client) ID() string {
-	return strings.Join([]string{c.AccountID, c.Region}, ":")
+	return strings.Join([]string{"alicloud", c.AccountID, c.Region}, ":")
 }
 
 func (c *Client) Services() *Services {

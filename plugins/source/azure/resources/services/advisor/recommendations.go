@@ -11,10 +11,11 @@ import (
 
 func Recommendations() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_advisor_recommendations",
-		Resolver:  fetchRecommendations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_advisor_recommendations", client.Namespacemicrosoft_advisor),
-		Transform: transformers.TransformWithStruct(&armadvisor.ResourceRecommendationBase{}),
+		Name:        "azure_advisor_recommendations",
+		Description: "https://learn.microsoft.com/en-us/rest/api/advisor/recommendations/list?tabs=HTTP#resourcerecommendationbase",
+		Resolver:    fetchRecommendations,
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_advisor_recommendations", client.Namespacemicrosoft_advisor),
+		Transform:   transformers.TransformWithStruct(&armadvisor.ResourceRecommendationBase{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

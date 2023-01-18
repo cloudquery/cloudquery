@@ -1,5 +1,7 @@
 # Table: azure_security_discovered_security_solutions
 
+https://learn.microsoft.com/en-us/rest/api/defenderforcloud/discovered-security-solutions/list?tabs=HTTP#discoveredsecuritysolution
+
 The primary key for this table is **id**.
 
 ## Columns

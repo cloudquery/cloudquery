@@ -6,6 +6,57 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [12.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v11.0.1...plugins-source-aws-v12.0.0) (2023-01-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** Add region to `aws_backup_global_settings` primary key ([#6844](https://github.com/cloudquery/cloudquery/issues/6844))
+* **aws:** Remove redundant fields from `aws_lambda_runtimes` ([#6849](https://github.com/cloudquery/cloudquery/issues/6849))
+* **aws:** Add `region` to `aws_docdb_engine_versions` primary key ([#6846](https://github.com/cloudquery/cloudquery/issues/6846))
+
+### Features
+
+* **aws:** Add Elasticbeanstalk Application Tags ([#6915](https://github.com/cloudquery/cloudquery/issues/6915)) ([fd66b78](https://github.com/cloudquery/cloudquery/commit/fd66b78738d0831b0979866b2034da539505d883))
+* **aws:** Add missing descriptions ([#6847](https://github.com/cloudquery/cloudquery/issues/6847)) ([d62b50b](https://github.com/cloudquery/cloudquery/commit/d62b50b57e5100ffa2adcf2d79b958501139d579))
+* **aws:** Add RDS DB Proxies ([#6831](https://github.com/cloudquery/cloudquery/issues/6831)) ([8233160](https://github.com/cloudquery/cloudquery/commit/823316000a922df54ad4e713979267f0e8e4d9ab))
+* **aws:** Remove more codegen ([#6853](https://github.com/cloudquery/cloudquery/issues/6853)) ([795e40d](https://github.com/cloudquery/cloudquery/commit/795e40d05ef7cb8f5dbe7b5fa94cb2c02e0f1c16))
+
+
+### Bug Fixes
+
+* **aws:** Add `db_engine_version_description` to `aws_rds_engine_versions` primary key ([#6851](https://github.com/cloudquery/cloudquery/issues/6851)) ([779be98](https://github.com/cloudquery/cloudquery/commit/779be9866beea65b95961119229f922bde4e9c97))
+* **aws:** Add `name` and `vendor_name` to `aws_wafv2_managed_rule_groups` primary key ([#6843](https://github.com/cloudquery/cloudquery/issues/6843)) ([d555ed5](https://github.com/cloudquery/cloudquery/commit/d555ed5ad36ca2dd3b04437e35bc65420d1b7aa0))
+* **aws:** Add `region` to `aws_docdb_engine_versions` primary key ([#6846](https://github.com/cloudquery/cloudquery/issues/6846)) ([0f624ab](https://github.com/cloudquery/cloudquery/commit/0f624abaeb0ff4ddcf33b5ad92a7f577c2ab0c19))
+* **aws:** Add `region` to `aws_glue_datacatalog_encryption_settings` primary key ([#6845](https://github.com/cloudquery/cloudquery/issues/6845)) ([9b8b5b1](https://github.com/cloudquery/cloudquery/commit/9b8b5b1de07e7bb824b74e72d8c3b97794ebc4fd))
+* **aws:** Add `region` to `aws_ram_resource_types` primary key ([#6850](https://github.com/cloudquery/cloudquery/issues/6850)) ([99eddd6](https://github.com/cloudquery/cloudquery/commit/99eddd64636a685fe33fba395a81cea9312e929b))
+* **aws:** Add region to `aws_backup_global_settings` primary key ([#6844](https://github.com/cloudquery/cloudquery/issues/6844)) ([397e02a](https://github.com/cloudquery/cloudquery/commit/397e02ad7d3dd1f0786fe17870e7b780f1c5dd8a))
+* **aws:** Remove redundant fields from `aws_lambda_runtimes` ([#6849](https://github.com/cloudquery/cloudquery/issues/6849)) ([cc5af56](https://github.com/cloudquery/cloudquery/commit/cc5af567cfab772ff5d7d7582a7c9604cb49fd37))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs to v1.19.0 ([#6813](https://github.com/cloudquery/cloudquery/issues/6813)) ([c623e0a](https://github.com/cloudquery/cloudquery/commit/c623e0a7272963b44878a7cc60b8fe8721e2bdfb))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/ec2 to v1.78.0 ([#6814](https://github.com/cloudquery/cloudquery/issues/6814)) ([902bee0](https://github.com/cloudquery/cloudquery/commit/902bee073c1affc5588f39a4380d5a2fbb9f0440))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/ecrpublic to v1.15.0 ([#6815](https://github.com/cloudquery/cloudquery/issues/6815)) ([df72894](https://github.com/cloudquery/cloudquery/commit/df7289443715b19b4ff2efb7e203009e0fddbcc9))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/lambda to v1.28.0 ([#6816](https://github.com/cloudquery/cloudquery/issues/6816)) ([56fe84f](https://github.com/cloudquery/cloudquery/commit/56fe84f72e30dbe51ded739577c161321a633bb0))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/rds to v1.40.0 ([#6817](https://github.com/cloudquery/cloudquery/issues/6817)) ([6227bef](https://github.com/cloudquery/cloudquery/commit/6227befc5b237c6a16dacb5f9461616dee3f8676))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/resourcegroups to v1.14.0 ([#6818](https://github.com/cloudquery/cloudquery/issues/6818)) ([c343395](https://github.com/cloudquery/cloudquery/commit/c343395247cd65705f4d5fda129c75a3942f6841))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/secretsmanager to v1.18.1 ([#6812](https://github.com/cloudquery/cloudquery/issues/6812)) ([99df2d9](https://github.com/cloudquery/cloudquery/commit/99df2d92cb8622132820e9c7d7ce68ba602c908a))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/shield to v1.18.0 ([#6819](https://github.com/cloudquery/cloudquery/issues/6819)) ([0f18621](https://github.com/cloudquery/cloudquery/commit/0f18621d869af0663d26455a058f2ed71b394b62))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/sns to v1.19.0 ([#6820](https://github.com/cloudquery/cloudquery/issues/6820)) ([95bbafd](https://github.com/cloudquery/cloudquery/commit/95bbafd40859c1b8484dc1a54d9da2f486ebe8b0))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/sqs to v1.20.0 ([#6821](https://github.com/cloudquery/cloudquery/issues/6821)) ([02974bc](https://github.com/cloudquery/cloudquery/commit/02974bc91797b54b28b0cd29ed12894feb6b0161))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/ssm to v1.35.0 ([#6822](https://github.com/cloudquery/cloudquery/issues/6822)) ([82250e0](https://github.com/cloudquery/cloudquery/commit/82250e0ad236e1b4b3395b1cf718ca55f8ee5d85))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/ssoadmin to v1.16.0 ([#6823](https://github.com/cloudquery/cloudquery/issues/6823)) ([75412e5](https://github.com/cloudquery/cloudquery/commit/75412e5a8ab598731dadd527a1782630e3403fd6))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/timestreamwrite to v1.15.0 ([#6824](https://github.com/cloudquery/cloudquery/issues/6824)) ([8912b57](https://github.com/cloudquery/cloudquery/commit/8912b579dbf08c66b4395b7a133ba973d4899bb7))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/transfer to v1.28.0 ([#6825](https://github.com/cloudquery/cloudquery/issues/6825)) ([18f6ad7](https://github.com/cloudquery/cloudquery/commit/18f6ad7a0e15b5c8592882b7ccb00bd4d087a84d))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/waf to v1.12.0 ([#6826](https://github.com/cloudquery/cloudquery/issues/6826)) ([0c8c0d3](https://github.com/cloudquery/cloudquery/commit/0c8c0d3ad12a625b2ebed08a1d90a8855883112a))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/wafregional to v1.13.1 ([#6827](https://github.com/cloudquery/cloudquery/issues/6827)) ([d3a03fc](https://github.com/cloudquery/cloudquery/commit/d3a03fc1902d2f942d34f22c8febd4b8ee53ba6b))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/wafv2 to v1.24.1 ([#6828](https://github.com/cloudquery/cloudquery/issues/6828)) ([d24c78e](https://github.com/cloudquery/cloudquery/commit/d24c78e75e100cd5364cc01a3e3f9257870f6a7a))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/workspaces to v1.28.0 ([#6829](https://github.com/cloudquery/cloudquery/issues/6829)) ([8ce0af6](https://github.com/cloudquery/cloudquery/commit/8ce0af610a2e385ada5f42223d3620ab0d620707))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/xray to v1.16.0 ([#6830](https://github.com/cloudquery/cloudquery/issues/6830)) ([0d88a34](https://github.com/cloudquery/cloudquery/commit/0d88a342167ed5ba8829b4eaace1b19fcf3a921a))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.25.1 ([#6805](https://github.com/cloudquery/cloudquery/issues/6805)) ([9da0ce2](https://github.com/cloudquery/cloudquery/commit/9da0ce283f50410eb9274375ec1d22131a80d937))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.26.0 ([#6839](https://github.com/cloudquery/cloudquery/issues/6839)) ([6ccda8d](https://github.com/cloudquery/cloudquery/commit/6ccda8d0bc6e7ce75f4a64a18911e349ccaac277))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.27.0 ([#6856](https://github.com/cloudquery/cloudquery/issues/6856)) ([545799b](https://github.com/cloudquery/cloudquery/commit/545799bb0481087e187b5f27c88f5dde9c99f2f0))
+* Update endpoints ([#6798](https://github.com/cloudquery/cloudquery/issues/6798)) ([041040d](https://github.com/cloudquery/cloudquery/commit/041040d2b7674b7b4ffd524bb654b69d08964bf7))
+* Update endpoints ([#6912](https://github.com/cloudquery/cloudquery/issues/6912)) ([bb77355](https://github.com/cloudquery/cloudquery/commit/bb77355f7d5ab1e9d661d6b99e694c873601f923))
+
 ## [11.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v11.0.0...plugins-source-aws-v11.0.1) (2023-01-12)
 
 

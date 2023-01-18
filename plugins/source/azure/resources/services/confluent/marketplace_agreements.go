@@ -11,10 +11,11 @@ import (
 
 func MarketplaceAgreements() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_confluent_marketplace_agreements",
-		Resolver:  fetchMarketplaceAgreements,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_confluent_marketplace_agreements", client.Namespacemicrosoft_confluent),
-		Transform: transformers.TransformWithStruct(&armconfluent.AgreementResource{}),
+		Name:        "azure_confluent_marketplace_agreements",
+		Resolver:    fetchMarketplaceAgreements,
+		Description: "https://learn.microsoft.com/en-us/rest/api/confluent/marketplace-agreements/list?tabs=HTTP#confluentagreementresource",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_confluent_marketplace_agreements", client.Namespacemicrosoft_confluent),
+		Transform:   transformers.TransformWithStruct(&armconfluent.AgreementResource{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

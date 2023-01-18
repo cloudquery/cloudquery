@@ -11,10 +11,11 @@ import (
 
 func Jobs() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_databox_jobs",
-		Resolver:  fetchJobs,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_databox_jobs", client.Namespacemicrosoft_databox),
-		Transform: transformers.TransformWithStruct(&armdatabox.JobResource{}),
+		Name:        "azure_databox_jobs",
+		Resolver:    fetchJobs,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox@v1.0.0#JobResource",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_databox_jobs", client.Namespacemicrosoft_databox),
+		Transform:   transformers.TransformWithStruct(&armdatabox.JobResource{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

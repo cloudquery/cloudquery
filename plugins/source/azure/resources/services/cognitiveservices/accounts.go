@@ -11,10 +11,11 @@ import (
 
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_cognitiveservices_accounts",
-		Resolver:  fetchAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_cognitiveservices_accounts", client.Namespacemicrosoft_cognitiveservices),
-		Transform: transformers.TransformWithStruct(&armcognitiveservices.Account{}),
+		Name:        "azure_cognitiveservices_accounts",
+		Resolver:    fetchAccounts,
+		Description: "https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/accounts/list?tabs=HTTP#account",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cognitiveservices_accounts", client.Namespacemicrosoft_cognitiveservices),
+		Transform:   transformers.TransformWithStruct(&armcognitiveservices.Account{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

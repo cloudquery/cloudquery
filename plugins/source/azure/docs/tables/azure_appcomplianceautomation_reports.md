@@ -1,5 +1,7 @@
 # Table: azure_appcomplianceautomation_reports
 
+https://learn.microsoft.com/en-us/rest/api/appcompliance/reports/list?tabs=HTTP#reportresource
+
 The primary key for this table is **id**.
 
 ## Columns

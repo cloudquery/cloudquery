@@ -41,6 +41,7 @@ jobs:
             }
             let actions = ["cli",
                            "scaffold",
+                           "plugins/source/alicloud",
                            "plugins/source/aws",
                            "plugins/source/azure",
                            "plugins/source/azuredevops",

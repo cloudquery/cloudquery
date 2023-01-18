@@ -1,5 +1,7 @@
 # Table: azure_appservice_environments
 
+https://learn.microsoft.com/en-us/rest/api/appservice/app-service-environments/list?tabs=HTTP#appserviceenvironmentresource
+
 The primary key for this table is **id**.
 
 ## Columns

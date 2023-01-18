@@ -11,10 +11,11 @@ import (
 
 func Suppressions() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_advisor_suppressions",
-		Resolver:  fetchSuppressions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_advisor_suppressions", client.Namespacemicrosoft_advisor),
-		Transform: transformers.TransformWithStruct(&armadvisor.SuppressionContract{}),
+		Name:        "azure_advisor_suppressions",
+		Description: "https://learn.microsoft.com/en-us/rest/api/advisor/suppressions/list?tabs=HTTP#suppressioncontractlistresult",
+		Resolver:    fetchSuppressions,
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_advisor_suppressions", client.Namespacemicrosoft_advisor),
+		Transform:   transformers.TransformWithStruct(&armadvisor.SuppressionContract{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

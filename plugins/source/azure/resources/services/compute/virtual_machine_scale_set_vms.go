@@ -3,7 +3,7 @@ package compute
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func VirtualMachineScaleSetsVMs() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_compute_virtual_machine_scale_set_vms",
-		Resolver:  fetchVirtualMachineScaleSetsVMs,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machine_scale_sets_vms", client.Namespacemicrosoft_compute),
-		Transform: transformers.TransformWithStruct(&armcompute.VirtualMachineScaleSetVM{}),
+		Name:        "azure_compute_virtual_machine_scale_set_vms",
+		Resolver:    fetchVirtualMachineScaleSetsVMs,
+		Description: "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machine-scale-set-vms/list?tabs=HTTP#virtualmachinescalesetvm",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machine_scale_sets_vms", client.Namespacemicrosoft_compute),
+		Transform:   transformers.TransformWithStruct(&armcompute.VirtualMachineScaleSetVM{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

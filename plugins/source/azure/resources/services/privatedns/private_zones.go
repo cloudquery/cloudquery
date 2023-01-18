@@ -11,10 +11,11 @@ import (
 
 func PrivateZones() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_privatedns_private_zones",
-		Resolver:  fetchPrivateZones,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_privatedns_private_zones", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armprivatedns.PrivateZone{}),
+		Name:        "azure_privatedns_private_zones",
+		Resolver:    fetchPrivateZones,
+		Description: "https://learn.microsoft.com/en-us/rest/api/dns/privatedns/private-zones/list?tabs=HTTP#privatezone",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_privatedns_private_zones", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armprivatedns.PrivateZone{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

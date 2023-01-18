@@ -11,10 +11,11 @@ import (
 
 func DnsForwardingRulesets() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_dnsresolver_dns_forwarding_rulesets",
-		Resolver:  fetchDnsForwardingRulesets,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_dnsresolver_dns_forwarding_rulesets", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armdnsresolver.DNSForwardingRuleset{}),
+		Name:        "azure_dnsresolver_dns_forwarding_rulesets",
+		Resolver:    fetchDnsForwardingRulesets,
+		Description: "https://learn.microsoft.com/en-us/rest/api/dns/dnsresolver/dns-forwarding-rulesets/list?tabs=HTTP#dnsforwardingruleset",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_dnsresolver_dns_forwarding_rulesets", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armdnsresolver.DNSForwardingRuleset{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

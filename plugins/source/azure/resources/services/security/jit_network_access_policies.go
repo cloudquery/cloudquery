@@ -11,10 +11,11 @@ import (
 
 func JitNetworkAccessPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_jit_network_access_policies",
-		Resolver:  fetchJitNetworkAccessPolicies,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_jit_network_access_policies", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.JitNetworkAccessPolicy{}),
+		Name:        "azure_security_jit_network_access_policies",
+		Resolver:    fetchJitNetworkAccessPolicies,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/jit-network-access-policies/list?tabs=HTTP#jitnetworkaccesspolicy",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_jit_network_access_policies", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.JitNetworkAccessPolicy{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

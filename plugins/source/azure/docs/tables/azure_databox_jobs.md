@@ -1,5 +1,7 @@
 # Table: azure_databox_jobs
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox@v1.0.0#JobResource
+
 The primary key for this table is **id**.
 
 ## Columns
