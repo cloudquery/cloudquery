@@ -1,7 +1,7 @@
 {
   "cli": "2.2.0",
   "cli+FILLER": "0.0.0",
-  "plugins/source/aws": "11.0.1",
+  "plugins/source/aws": "12.0.0",
   "plugins/source/aws+FILLER": "0.0.0",
   "plugins/source/azure": "3.4.0",
   "plugins/source/azure+FILLER": "0.0.0",
@@ -76,5 +76,6 @@
   "plugins/source/hackernews": "1.1.2",
   "plugins/source/hackernews+FILLER": "0.0.0",
   "scaffold": "1.0.0",
-  "plugins/source/oracle": "1.0.0"
+  "plugins/source/oracle": "1.0.1",
+  "plugins/source/oracle+FILLER": "0.0.0"
 }
