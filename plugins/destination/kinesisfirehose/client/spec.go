@@ -6,13 +6,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 )
 
-type FormatType string
-
-const (
-	FormatTypeCSV  = "csv"
-	FormatTypeJSON = "json"
-)
-
 type Spec struct {
 	StreamARN string `json:"stream_arn,omitempty"`
 	NoRotate  bool   `json:"no_rotate,omitempty"`
