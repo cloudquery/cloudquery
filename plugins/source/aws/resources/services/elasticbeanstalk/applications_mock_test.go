@@ -20,9 +20,21 @@ func buildElasticbeanstalkApplications(t *testing.T, ctrl *gomock.Controller) cl
 		t.Fatal(err)
 	}
 
+	tag := elasticbeanstalkTypes.Tag{}
+	err = faker.FakeObject(&tag)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	m.EXPECT().DescribeApplications(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticbeanstalk.DescribeApplicationsOutput{
 			Applications: []elasticbeanstalkTypes.ApplicationDescription{la},
+		}, nil)
+
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&elasticbeanstalk.ListTagsForResourceOutput{
+			ResourceTags: []elasticbeanstalkTypes.Tag{tag},
+			ResourceArn:  la.ApplicationArn,
 		}, nil)
 
 	return client.Services{
