@@ -54,6 +54,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Sour
 		return nil, fmt.Errorf("failed to create hackernews client: %w", err)
 	}
 
+	be := opts.Backend
+	if be == nil {
+		be = &NopBackend{}
+	}
 	return &Client{
 		logger:     logger,
 		sourceSpec: sourceSpec,
@@ -61,6 +65,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Sour
 		HackerNews: client,
 		maxRetries: defaultMaxRetries,
 		backoff:    defaultBackoff,
-		Backend:    opts.Backend,
+		Backend:    be,
 	}, nil
 }
