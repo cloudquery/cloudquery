@@ -1,5 +1,7 @@
 # Table: azure_healthcareapis_services
 
+https://learn.microsoft.com/en-us/rest/api/healthcareapis/services/list?tabs=HTTP#servicesdescription
+
 The primary key for this table is **id**.
 
 ## Columns

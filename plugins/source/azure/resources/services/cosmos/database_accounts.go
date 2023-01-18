@@ -11,10 +11,11 @@ import (
 
 func DatabaseAccounts() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_cosmos_database_accounts",
-		Resolver:  fetchDatabaseAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_cosmos_database_accounts", client.Namespacemicrosoft_documentdb),
-		Transform: transformers.TransformWithStruct(&armcosmos.DatabaseAccountGetResults{}),
+		Name:        "azure_cosmos_database_accounts",
+		Resolver:    fetchDatabaseAccounts,
+		Description: "https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/database-accounts/list?tabs=HTTP#databaseaccountgetresults",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cosmos_database_accounts", client.Namespacemicrosoft_documentdb),
+		Transform:   transformers.TransformWithStruct(&armcosmos.DatabaseAccountGetResults{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

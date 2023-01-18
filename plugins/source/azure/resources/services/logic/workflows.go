@@ -11,10 +11,11 @@ import (
 
 func Workflows() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_logic_workflows",
-		Resolver:  fetchWorkflows,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_logic_workflows", client.Namespacemicrosoft_logic),
-		Transform: transformers.TransformWithStruct(&armlogic.Workflow{}),
+		Name:        "azure_logic_workflows",
+		Resolver:    fetchWorkflows,
+		Description: "https://learn.microsoft.com/en-us/rest/api/logic/workflows/list-by-subscription?tabs=HTTP#workflow",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_logic_workflows", client.Namespacemicrosoft_logic),
+		Transform:   transformers.TransformWithStruct(&armlogic.Workflow{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

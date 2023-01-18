@@ -1,5 +1,7 @@
 # Table: azure_datafactory_factories
 
+https://learn.microsoft.com/en-us/rest/api/datafactory/factories/list?tabs=HTTP#factory
+
 The primary key for this table is **id**.
 
 ## Columns

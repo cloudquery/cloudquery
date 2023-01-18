@@ -1,5 +1,7 @@
 # Table: azure_cdn_rule_sets
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn@v1.0.0#RuleSet
+
 The primary key for this table is **id**.
 
 ## Relations

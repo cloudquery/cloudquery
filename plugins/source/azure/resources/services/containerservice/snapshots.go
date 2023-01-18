@@ -11,10 +11,11 @@ import (
 
 func Snapshots() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_containerservice_snapshots",
-		Resolver:  fetchSnapshots,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_containerservice_snapshots", client.Namespacemicrosoft_containerservice),
-		Transform: transformers.TransformWithStruct(&armcontainerservice.Snapshot{}),
+		Name:        "azure_containerservice_snapshots",
+		Resolver:    fetchSnapshots,
+		Description: "https://learn.microsoft.com/en-us/rest/api/aks/snapshots/list?tabs=HTTP#snapshot",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_containerservice_snapshots", client.Namespacemicrosoft_containerservice),
+		Transform:   transformers.TransformWithStruct(&armcontainerservice.Snapshot{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

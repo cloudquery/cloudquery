@@ -8,9 +8,10 @@ import (
 
 func rule_sets() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_cdn_rule_sets",
-		Resolver:  fetchRuleSets,
-		Transform: transformers.TransformWithStruct(&armcdn.RuleSet{}),
+		Name:        "azure_cdn_rule_sets",
+		Resolver:    fetchRuleSets,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn@v1.0.0#RuleSet",
+		Transform:   transformers.TransformWithStruct(&armcdn.RuleSet{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

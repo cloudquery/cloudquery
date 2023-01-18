@@ -1,5 +1,7 @@
 # Table: azure_hdinsight_clusters
 
+https://learn.microsoft.com/en-us/rest/api/hdinsight/2021-06-01/clusters/list?tabs=HTTP#cluster
+
 The primary key for this table is **id**.
 
 ## Columns

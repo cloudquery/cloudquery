@@ -11,10 +11,11 @@ import (
 
 func ContainerGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_containerinstance_container_groups",
-		Resolver:  fetchContainerGroups,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_containerinstance_container_groups", client.Namespacemicrosoft_containerinstance),
-		Transform: transformers.TransformWithStruct(&armcontainerinstance.ContainerGroup{}),
+		Name:        "azure_containerinstance_container_groups",
+		Resolver:    fetchContainerGroups,
+		Description: "https://learn.microsoft.com/en-us/rest/api/container-instances/container-groups/list?tabs=HTTP#containergroup",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_containerinstance_container_groups", client.Namespacemicrosoft_containerinstance),
+		Transform:   transformers.TransformWithStruct(&armcontainerinstance.ContainerGroup{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
