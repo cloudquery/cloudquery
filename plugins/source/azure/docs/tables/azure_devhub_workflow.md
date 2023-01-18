@@ -1,5 +1,7 @@
 # Table: azure_devhub_workflow
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub@v0.2.0#Workflow
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: azure_dnsresolver_dns_resolvers
 
+https://learn.microsoft.com/en-us/rest/api/dns/dnsresolver/dns-resolvers/list?tabs=HTTP#dnsresolver
+
 The primary key for this table is **id**.
 
 ## Columns
