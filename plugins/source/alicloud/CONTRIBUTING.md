@@ -2,7 +2,7 @@
 
 Thanks for contributing to CloudQuery! You are awesome. This document serves as a guide for adding new services and resources to the Alibaba Cloud source plugin.
 
-There are three main steps to adding a new Alibaba Cloud resource:
+There are two main steps to adding a new Alibaba Cloud resource:
 
 1. [Generate interfaces for the Alibaba Cloud SDK function(s) that fetch the resource](#step-1-generate-interfaces-for-the-alibaba-cloud-sdk-functions-that-fetch-the-resource)
 2. [Add a new table](#step-2-add-a-new-table)
