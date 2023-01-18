@@ -15,11 +15,12 @@ import (
 )
 
 type Client struct {
-	destination.UnimplementedUnmanagedWriter
-	logger     zerolog.Logger
-	spec       specs.Destination
-	pluginSpec Spec
-
+	destination.UnimplementedManagedWriter
+	destination.DefaultReverseTransformer
+	logger         zerolog.Logger
+	spec           specs.Destination
+	pluginSpec     Spec
+	metrics        destination.Metrics
 	firehoseClient *firehose.Client
 
 	jsonTransformer        *json.Transformer
