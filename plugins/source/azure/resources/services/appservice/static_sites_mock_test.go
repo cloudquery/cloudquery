@@ -8,7 +8,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
 )

@@ -1,5 +1,7 @@
 # Table: azure_appservice_web_apps
 
+https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/list#site
+
 The primary key for this table is **id**.
 
 ## Relations

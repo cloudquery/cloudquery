@@ -11,10 +11,11 @@ import (
 
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_hdinsight_clusters",
-		Resolver:  fetchClusters,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_hdinsight_clusters", client.Namespacemicrosoft_hdinsight),
-		Transform: transformers.TransformWithStruct(&armhdinsight.Cluster{}),
+		Name:        "azure_hdinsight_clusters",
+		Resolver:    fetchClusters,
+		Description: "https://learn.microsoft.com/en-us/rest/api/hdinsight/2021-06-01/clusters/list?tabs=HTTP#cluster",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_hdinsight_clusters", client.Namespacemicrosoft_hdinsight),
+		Transform:   transformers.TransformWithStruct(&armhdinsight.Cluster{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

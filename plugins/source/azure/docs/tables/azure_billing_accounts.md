@@ -1,5 +1,7 @@
 # Table: azure_billing_accounts
 
+https://learn.microsoft.com/en-us/rest/api/billing/2020-05-01/billing-accounts/list?tabs=HTTP#billingaccount
+
 The primary key for this table is **id**.
 
 ## Columns

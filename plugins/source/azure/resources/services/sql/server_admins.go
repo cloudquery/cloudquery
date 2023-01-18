@@ -8,9 +8,10 @@ import (
 
 func serverAdmins() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_server_admins",
-		Resolver:  fetchServerAdmins,
-		Transform: transformers.TransformWithStruct(&armsql.ServerAzureADAdministrator{}),
+		Name:        "azure_sql_server_admins",
+		Resolver:    fetchServerAdmins,
+		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/server-azure-ad-administrators/list-by-server?tabs=HTTP#serverazureadadministrator",
+		Transform:   transformers.TransformWithStruct(&armsql.ServerAzureADAdministrator{}),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

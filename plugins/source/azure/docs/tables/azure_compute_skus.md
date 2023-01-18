@@ -1,5 +1,7 @@
 # Table: azure_compute_skus
 
+https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list?tabs=HTTP#resourceskusresult
+
 The primary key for this table is **id**.
 
 ## Columns

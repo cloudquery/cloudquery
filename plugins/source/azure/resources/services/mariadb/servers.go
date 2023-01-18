@@ -11,10 +11,11 @@ import (
 
 func Servers() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_mariadb_servers",
-		Resolver:  fetchServers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_mariadb_servers", client.Namespacemicrosoft_dbformariadb),
-		Transform: transformers.TransformWithStruct(&armmariadb.Server{}),
+		Name:        "azure_mariadb_servers",
+		Resolver:    fetchServers,
+		Description: "https://learn.microsoft.com/en-us/rest/api/mariadb/servers/list?tabs=HTTP#server",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_mariadb_servers", client.Namespacemicrosoft_dbformariadb),
+		Transform:   transformers.TransformWithStruct(&armmariadb.Server{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

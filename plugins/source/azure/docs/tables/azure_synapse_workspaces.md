@@ -1,5 +1,7 @@
 # Table: azure_synapse_workspaces
 
+https://learn.microsoft.com/en-us/rest/api/synapse/workspaces/list?tabs=HTTP#workspace
+
 The primary key for this table is **id**.
 
 ## Columns

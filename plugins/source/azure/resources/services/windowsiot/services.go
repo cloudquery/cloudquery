@@ -11,10 +11,11 @@ import (
 
 func Services() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_windowsiot_services",
-		Resolver:  fetchServices,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_windowsiot_services", client.Namespacemicrosoft_windowsiot),
-		Transform: transformers.TransformWithStruct(&armwindowsiot.DeviceService{}),
+		Name:        "azure_windowsiot_services",
+		Resolver:    fetchServices,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot@v1.0.0#DeviceService",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_windowsiot_services", client.Namespacemicrosoft_windowsiot),
+		Transform:   transformers.TransformWithStruct(&armwindowsiot.DeviceService{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

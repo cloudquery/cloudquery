@@ -1,5 +1,7 @@
 # Table: azure_dns_zones
 
+https://learn.microsoft.com/en-us/rest/api/dns/zones/list?tabs=HTTP#zone
+
 The primary key for this table is **id**.
 
 ## Columns

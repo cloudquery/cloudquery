@@ -1,5 +1,7 @@
 # Table: azure_security_settings
 
+https://learn.microsoft.com/en-us/rest/api/defenderforcloud/settings/list?tabs=HTTP#settingslist
+
 The primary key for this table is **id**.
 
 ## Columns

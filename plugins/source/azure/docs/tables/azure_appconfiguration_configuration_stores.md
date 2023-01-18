@@ -1,5 +1,7 @@
 # Table: azure_appconfiguration_configuration_stores
 
+https://learn.microsoft.com/en-us/rest/api/appconfiguration/stable/configuration-stores/list?tabs=HTTP#configurationstore
+
 The primary key for this table is **id**.
 
 ## Columns

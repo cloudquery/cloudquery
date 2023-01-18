@@ -8,9 +8,10 @@ import (
 
 func firewall_rules() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_postgresql_server_firewall_rules",
-		Resolver:  fetchFirewallRules,
-		Transform: transformers.TransformWithStruct(&armpostgresql.FirewallRule{}),
+		Name:        "azure_postgresql_server_firewall_rules",
+		Resolver:    fetchFirewallRules,
+		Description: "https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/firewall-rules/list-by-server?tabs=HTTP#firewallrule",
+		Transform:   transformers.TransformWithStruct(&armpostgresql.FirewallRule{}),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

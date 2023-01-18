@@ -1,5 +1,7 @@
 # Table: azure_dashboard_grafana
 
+https://learn.microsoft.com/en-us/rest/api/managed-grafana/grafana/list-by-resource-group?tabs=HTTP#managedgrafana
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: azure_network_vpn_sites
 
+https://learn.microsoft.com/en-us/rest/api/virtualwan/vpn-sites/list?tabs=HTTP#vpnsite
+
 The primary key for this table is **id**.
 
 ## Columns

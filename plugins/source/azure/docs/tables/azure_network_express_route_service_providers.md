@@ -1,5 +1,7 @@
 # Table: azure_network_express_route_service_providers
 
+https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-service-providers/list?tabs=HTTP#expressrouteserviceprovider
+
 The primary key for this table is **id**.
 
 ## Columns

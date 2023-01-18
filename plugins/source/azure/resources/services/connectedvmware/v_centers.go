@@ -11,10 +11,11 @@ import (
 
 func VCenters() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_connectedvmware_v_centers",
-		Resolver:  fetchVCenters,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_v_centers", client.Namespacemicrosoft_connectedvmwarevsphere),
-		Transform: transformers.TransformWithStruct(&armconnectedvmware.VCenter{}),
+		Name:        "azure_connectedvmware_v_centers",
+		Resolver:    fetchVCenters,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#VCenter",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_v_centers", client.Namespacemicrosoft_connectedvmwarevsphere),
+		Transform:   transformers.TransformWithStruct(&armconnectedvmware.VCenter{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

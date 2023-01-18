@@ -11,10 +11,11 @@ import (
 
 func Servers() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_postgresql_servers",
-		Resolver:  fetchServers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_postgresql_servers", client.Namespacemicrosoft_dbforpostgresql),
-		Transform: transformers.TransformWithStruct(&armpostgresql.Server{}),
+		Name:        "azure_postgresql_servers",
+		Resolver:    fetchServers,
+		Description: "https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/servers/list?tabs=HTTP#server",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_postgresql_servers", client.Namespacemicrosoft_dbforpostgresql),
+		Transform:   transformers.TransformWithStruct(&armpostgresql.Server{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

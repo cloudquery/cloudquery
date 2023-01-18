@@ -1,5 +1,7 @@
 # Table: azure_compute_images
 
+https://learn.microsoft.com/en-us/rest/api/compute/images/list?tabs=HTTP#image
+
 The primary key for this table is **id**.
 
 ## Columns

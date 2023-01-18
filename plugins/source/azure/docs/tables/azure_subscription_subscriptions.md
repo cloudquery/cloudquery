@@ -1,5 +1,7 @@
 # Table: azure_subscription_subscriptions
 
+https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list?tabs=HTTP#subscription
+
 The primary key for this table is **id**.
 
 ## Relations

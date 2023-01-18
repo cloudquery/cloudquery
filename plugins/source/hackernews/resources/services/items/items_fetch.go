@@ -36,13 +36,6 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		return fmt.Errorf("failed to retrieve state from backend: %w", err)
 	}
 
-	// find the max item ID from the Hacker News API
-	maxID, err := c.HackerNews.MaxItemID(ctx)
-	if err != nil {
-		return err
-	}
-	c.Logger().Info().Int("max_id", maxID).Msg("Found max ID")
-
 	// read the cursor from the state, or default to 0 if it's not set
 	cursor := 0
 	if value == "" {
@@ -54,6 +47,13 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		}
 		c.Logger().Info().Int("cursor", cursor).Msg("Found previous cursor")
 	}
+
+	// find the max item ID from the Hacker News API
+	maxID, err := c.HackerNews.MaxItemID(ctx)
+	if err != nil {
+		return err
+	}
+	c.Logger().Info().Int("max_id", maxID).Msg("Found max ID")
 
 	// we allow the user to specify a start time for posts, so we need to find the first post after that time
 	if c.Spec.StartTime != "" {

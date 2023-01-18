@@ -11,10 +11,11 @@ import (
 
 func WebTests() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_applicationinsights_web_tests",
-		Resolver:  fetchWebTests,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_applicationinsights_web_tests", client.Namespacemicrosoft_insights),
-		Transform: transformers.TransformWithStruct(&armapplicationinsights.WebTest{}),
+		Name:        "azure_applicationinsights_web_tests",
+		Resolver:    fetchWebTests,
+		Description: "https://learn.microsoft.com/en-us/rest/api/application-insights/web-tests/list?tabs=HTTP#webtest",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_applicationinsights_web_tests", client.Namespacemicrosoft_insights),
+		Transform:   transformers.TransformWithStruct(&armapplicationinsights.WebTest{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

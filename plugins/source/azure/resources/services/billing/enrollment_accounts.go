@@ -11,10 +11,11 @@ import (
 
 func EnrollmentAccounts() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_billing_enrollment_accounts",
-		Resolver:  fetchEnrollmentAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_billing_enrollment_accounts", client.Namespacemicrosoft_billing),
-		Transform: transformers.TransformWithStruct(&armbilling.EnrollmentAccountSummary{}),
+		Name:        "azure_billing_enrollment_accounts",
+		Resolver:    fetchEnrollmentAccounts,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling@v0.5.0#EnrollmentAccountSummary",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_billing_enrollment_accounts", client.Namespacemicrosoft_billing),
+		Transform:   transformers.TransformWithStruct(&armbilling.EnrollmentAccountSummary{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

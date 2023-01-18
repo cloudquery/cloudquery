@@ -1,5 +1,7 @@
 # Table: azure_datalakestore_accounts
 
+https://learn.microsoft.com/en-us/rest/api/datalakestore/accounts/list?tabs=HTTP#datalakestoreaccountbasic
+
 The primary key for this table is **id**.
 
 ## Columns

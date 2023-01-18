@@ -8,9 +8,10 @@ import (
 
 func serverEncryptionProtectors() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_server_encryption_protectors",
-		Resolver:  fetchEncryptionProtectors,
-		Transform: transformers.TransformWithStruct(&armsql.EncryptionProtector{}),
+		Name:        "azure_sql_server_encryption_protectors",
+		Resolver:    fetchEncryptionProtectors,
+		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/encryption-protectors/list-by-server?tabs=HTTP#encryptionprotector",
+		Transform:   transformers.TransformWithStruct(&armsql.EncryptionProtector{}),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",

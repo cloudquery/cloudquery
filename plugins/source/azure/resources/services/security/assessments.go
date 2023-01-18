@@ -2,6 +2,7 @@ package security
 
 import (
 	"context"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -10,10 +11,11 @@ import (
 
 func Assessments() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_assessments",
-		Resolver:  fetchAssessments,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_assessments", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.AssessmentResponse{}),
+		Name:        "azure_security_assessments",
+		Resolver:    fetchAssessments,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/assessments/list?tabs=HTTP#securityassessment",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_assessments", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.AssessmentResponse{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

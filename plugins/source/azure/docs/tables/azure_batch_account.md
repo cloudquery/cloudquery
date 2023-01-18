@@ -1,5 +1,7 @@
 # Table: azure_batch_account
 
+https://learn.microsoft.com/en-us/rest/api/batchmanagement/batch-account/list?tabs=HTTP#batchaccount
+
 The primary key for this table is **id**.
 
 ## Columns
