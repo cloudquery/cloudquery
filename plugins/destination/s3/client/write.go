@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -14,10 +15,24 @@ import (
 	"github.com/google/uuid"
 )
 
+const (
+	PathVarTable = "{{TABLE}}"
+	PathVarUUID  = "{{UUID}}"
+)
+
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
-	name := fmt.Sprintf("%s/%s.%s.%s", c.pluginSpec.Path, table.Name, c.pluginSpec.Format, uuid.NewString())
-	if c.pluginSpec.NoRotate {
-		name = fmt.Sprintf("%s/%s.%s", c.pluginSpec.Path, table.Name, c.pluginSpec.Format)
+	path := c.pluginSpec.Path
+	if !strings.Contains(path, PathVarTable) {
+		// for backwards-compatibility, default to given path plus /{{TABLE}}.[format].{{UUID}} if
+		// no {{TABLE}} value is found in the path string
+		path += fmt.Sprintf("/%s.%s", PathVarTable, c.pluginSpec.Format)
+		if !c.pluginSpec.NoRotate {
+			path += "." + PathVarUUID
+		}
+	}
+	name := strings.ReplaceAll(path, PathVarTable, table.Name)
+	if !c.pluginSpec.NoRotate {
+		name = strings.ReplaceAll(name, PathVarUUID, uuid.NewString())
 	}
 	var b bytes.Buffer
 	w := io.Writer(&b)
@@ -33,8 +48,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
-	// we don't do that in parallel here because aws sdk moves the burden to the devleoper and
-	// we don't want to deal with that yet. in the future maybe we can run some benchmarks and see if adding parralization helps.
+	// we don't do upload in parallel here because AWS sdk moves the burden to the developer, and
+	// we don't want to deal with that yet. in the future maybe we can run some benchmarks and see if adding parallelization helps.
 	r := io.Reader(&b)
 	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
 		Bucket: aws.String(c.pluginSpec.Bucket),

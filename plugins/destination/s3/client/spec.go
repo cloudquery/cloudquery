@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"strings"
 )
 
 type FormatType string
@@ -26,6 +27,9 @@ func (s *Spec) Validate() error {
 	}
 	if s.Path == "" {
 		return fmt.Errorf("path is required")
+	}
+	if s.NoRotate && strings.Contains(s.Path, PathVarUUID) {
+		return fmt.Errorf("path should not contain %s when no_rotate = true", PathVarUUID)
 	}
 	if s.Format == "" {
 		return fmt.Errorf("format is required")
