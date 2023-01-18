@@ -118,6 +118,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengage
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric v0.1.0/go.mod h1:DUMazTNJom3Q3//FvzpqP3ItsMwcPp467JHvTyX+8ts=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid v1.0.0 h1:w6b0+FygDpqM7g5cjbeyPoBzgxVHwwt2vCUvTz1oFY8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid v1.0.0/go.mod h1:t8kRpcgm+RdImuJgHG6SfoQ0tpb9LGl7MF1E6u0yeeA=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2 v2.0.0 h1:PcP4TC+0dC85A3i1p7CbD0FyrjnTvzQ3ipgSkJTIb7Y=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2 v2.0.0/go.mod h1:rUn3oBeYkTxIsUzKxtXUPOt1ZO+bVHuZ3m5wauIfUHw=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub v1.0.0 h1:BWeAAEzkCnL0ABVJqs+4mYudNch7oFGPtTlSmIWL8ms=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub v1.0.0/go.mod h1:Y3gnVwfaz8h6L1YHar+NfWORtBoVUSB5h4GlGkdeF7Q=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor v1.0.0 h1:9LwllQVG4QBsCFEvYgvmwq3SEdiPaZIS4QF3g/D8/Ak=
