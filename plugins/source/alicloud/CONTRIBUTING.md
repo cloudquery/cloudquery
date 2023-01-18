@@ -55,7 +55,6 @@ A few important things to note when adding functions that call the Alibaba Cloud
 
 - Keep transformations to a minimum. As far as possible, we aim to deliver an accurate reflection of what the Alibaba Cloud API provides.
 - We generally only unroll structs one level deep. Nested structs should be transformed into JSON columns. 
-- For consistency, make sure the resource has an `ARN` stored in a column named `arn`. Sometimes this means using the Alibaba Cloud SDK to generate an ARN for the resource.
-- Make sure the resource has a `tags` JSON column (if possible). Sometimes this requires additional SDK calls. Sometimes the column needs to be renamed from `tag_list` to `tags` (and converted to a map). There are custom `ResolveTags` and `ResolveTagFields` resolvers to help with this. It's not always possible, but we try to keep the `tags` column consistent across Alibaba Cloud resources.
+- Make sure the resource has a `tags` JSON column (if possible). Sometimes this requires additional SDK calls.
 - Before submitting a pull request, run `make gen-docs` to generate documentation for the table. Include these generated files in the pull request.
 - If you get stuck or need help, feel free to reach out on [Discord](https://www.cloudquery.io/discord). We are a friendly community and would love to help!
