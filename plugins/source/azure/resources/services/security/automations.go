@@ -11,10 +11,11 @@ import (
 
 func Automations() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_automations",
-		Resolver:  fetchAutomations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_automations", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.Automation{}),
+		Name:        "azure_security_automations",
+		Resolver:    fetchAutomations,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/automations/list?tabs=HTTP#automation",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_automations", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.Automation{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

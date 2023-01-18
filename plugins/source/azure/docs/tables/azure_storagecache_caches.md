@@ -1,5 +1,7 @@
 # Table: azure_storagecache_caches
 
+https://learn.microsoft.com/en-us/rest/api/storagecache/caches/list?tabs=HTTP#cache
+
 The primary key for this table is **id**.
 
 ## Columns

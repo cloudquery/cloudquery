@@ -11,10 +11,11 @@ import (
 
 func NatGateways() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_nat_gateways",
-		Resolver:  fetchNatGateways,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_nat_gateways", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.NatGateway{}),
+		Name:        "azure_network_nat_gateways",
+		Resolver:    fetchNatGateways,
+		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/nat-gateways/list?tabs=HTTP#natgateway",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_nat_gateways", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.NatGateway{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

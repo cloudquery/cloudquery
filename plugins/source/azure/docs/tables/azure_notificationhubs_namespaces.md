@@ -1,5 +1,7 @@
 # Table: azure_notificationhubs_namespaces
 
+https://learn.microsoft.com/en-us/rest/api/notificationhubs/namespaces/list?tabs=HTTP#namespaceresource
+
 The primary key for this table is **id**.
 
 ## Columns

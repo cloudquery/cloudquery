@@ -11,10 +11,11 @@ import (
 
 func WorkspaceSettings() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_workspace_settings",
-		Resolver:  fetchWorkspaceSettings,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_workspace_settings", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.WorkspaceSetting{}),
+		Name:        "azure_security_workspace_settings",
+		Resolver:    fetchWorkspaceSettings,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/workspace-settings/list?tabs=HTTP#workspacesetting",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_workspace_settings", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.WorkspaceSetting{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

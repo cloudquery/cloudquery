@@ -1,5 +1,7 @@
 # Table: azure_peering_service_locations
 
+https://learn.microsoft.com/en-us/rest/api/peering/peering-service-locations/list?tabs=HTTP#peeringservicelocation
+
 The primary key for this table is **id**.
 
 ## Columns
