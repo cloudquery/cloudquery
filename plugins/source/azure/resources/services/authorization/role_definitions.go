@@ -9,10 +9,11 @@ import (
 
 func RoleDefinitions() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_authorization_role_definitions",
-		Resolver:  fetchRoleDefinitions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_role_definitions", client.Namespacemicrosoft_authorization),
-		Transform: transformers.TransformWithStruct(&armauthorization.RoleDefinition{}),
+		Name:        "azure_authorization_role_definitions",
+		Resolver:    fetchRoleDefinitions,
+		Description: "https://learn.microsoft.com/en-us/rest/api/authorization/role-definitions/list?tabs=HTTP#roledefinition",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_role_definitions", client.Namespacemicrosoft_authorization),
+		Transform:   transformers.TransformWithStruct(&armauthorization.RoleDefinition{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

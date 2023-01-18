@@ -11,10 +11,11 @@ import (
 
 func Recommendations() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_appservice_recommendations",
-		Resolver:  fetchRecommendations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_recommendations", client.Namespacemicrosoft_web),
-		Transform: transformers.TransformWithStruct(&armappservice.Recommendation{}),
+		Name:        "azure_appservice_recommendations",
+		Resolver:    fetchRecommendations,
+		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/recommendations/list#recommendation",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_recommendations", client.Namespacemicrosoft_web),
+		Transform:   transformers.TransformWithStruct(&armappservice.Recommendation{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

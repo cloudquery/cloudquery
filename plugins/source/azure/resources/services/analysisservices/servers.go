@@ -11,10 +11,11 @@ import (
 
 func Servers() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_analysisservices_servers",
-		Resolver:  fetchServers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_analysisservices_servers", client.Namespacemicrosoft_analysisservices),
-		Transform: transformers.TransformWithStruct(&armanalysisservices.Server{}),
+		Name:        "azure_analysisservices_servers",
+		Resolver:    fetchServers,
+		Description: "https://learn.microsoft.com/en-us/rest/api/analysisservices/servers/list?tabs=HTTP#analysisservicesserver",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_analysisservices_servers", client.Namespacemicrosoft_analysisservices),
+		Transform:   transformers.TransformWithStruct(&armanalysisservices.Server{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
