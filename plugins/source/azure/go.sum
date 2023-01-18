@@ -212,6 +212,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage v1.2.0 
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage v1.2.0/go.mod h1:c+Lifp3EDEamAkPVzMooRNOK6CZjNSdEnf1A7jsI9u4=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache v1.0.0 h1:3UQFOxKO93+20/+4mZweaGTbICtgQDRchk946N6/mvI=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache v1.0.0/go.mod h1:3n9xGw4M5LJpJLV62q8elF/XpfC/f4CY0SudWJuQOIQ=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v2 v2.0.0 h1:60V+CBUyW2qCFT0cZmhSv/0Uix4bqjb7/DTNvZ83U1A=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v2 v2.0.0/go.mod h1:Vk4F/ip+NpYSq6KtOCR2aDSfUkgS8Hs+5ZERwsYBefk=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics v1.0.0 h1:IDuSHsqMhi6PysfqSycxXBz7WOYRGSvw31IK/Zio8cA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics v1.0.0/go.mod h1:44ZAL1LS24yrReci8LqmY3tY9sX0wf/wXadZNT8SQHY=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription v1.0.0 h1:vsovXlTyKHZXnqzQyt7QMVkwpJBDkHchQL53qXaGBRY=
