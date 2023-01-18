@@ -11,10 +11,11 @@ import (
 
 func Settings() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_settings",
-		Resolver:  fetchSettings,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_settings", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.Setting{}),
+		Name:        "azure_security_settings",
+		Resolver:    fetchSettings,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/settings/list?tabs=HTTP#settingslist",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_settings", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.Setting{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -11,10 +11,11 @@ import (
 
 func ExpressRoutePorts() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_express_route_ports",
-		Resolver:  fetchExpressRoutePorts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_express_route_ports", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.ExpressRoutePort{}),
+		Name:        "azure_network_express_route_ports",
+		Resolver:    fetchExpressRoutePorts,
+		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-ports/list?tabs=HTTP#expressrouteport",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_express_route_ports", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRoutePort{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

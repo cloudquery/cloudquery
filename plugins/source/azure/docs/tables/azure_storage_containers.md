@@ -1,5 +1,7 @@
 # Table: azure_storage_containers
 
+https://learn.microsoft.com/en-us/rest/api/storagerp/blob-containers/list?tabs=HTTP#listcontaineritem
+
 The primary key for this table is **id**.
 
 ## Relations

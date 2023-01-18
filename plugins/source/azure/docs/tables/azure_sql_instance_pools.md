@@ -1,5 +1,7 @@
 # Table: azure_sql_instance_pools
 
+https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/instance-pools/list?tabs=HTTP#instancepool
+
 The primary key for this table is **id**.
 
 ## Columns

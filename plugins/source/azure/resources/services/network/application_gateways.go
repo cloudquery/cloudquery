@@ -11,10 +11,11 @@ import (
 
 func ApplicationGateways() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_application_gateways",
-		Resolver:  fetchApplicationGateways,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_application_gateways", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.ApplicationGateway{}),
+		Name:        "azure_network_application_gateways",
+		Resolver:    fetchApplicationGateways,
+		Description: "https://learn.microsoft.com/en-us/rest/api/application-gateway/application-gateways/list?tabs=HTTP#applicationgateway",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_application_gateways", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.ApplicationGateway{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

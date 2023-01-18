@@ -1,5 +1,7 @@
 # Table: azure_policy_set_definitions
 
+https://learn.microsoft.com/en-us/rest/api/policy/policy-set-definitions/list?tabs=HTTP#policysetdefinition
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -11,10 +11,11 @@ import (
 
 func Solutions() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_solutions",
-		Resolver:  fetchSolutions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_solutions", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.Solution{}),
+		Name:        "azure_security_solutions",
+		Resolver:    fetchSolutions,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity@v0.9.0#Solution",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_solutions", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.Solution{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

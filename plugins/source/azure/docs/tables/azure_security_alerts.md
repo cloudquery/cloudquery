@@ -1,5 +1,7 @@
 # Table: azure_security_alerts
 
+https://learn.microsoft.com/en-us/rest/api/defenderforcloud/alerts/list?tabs=HTTP#alert
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: azure_network_bgp_service_communities
 
+https://learn.microsoft.com/en-us/rest/api/expressroute/bgp-service-communities/list?tabs=HTTP#bgpservicecommunity
+
 The primary key for this table is **id**.
 
 ## Columns
