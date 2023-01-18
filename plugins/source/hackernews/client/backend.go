@@ -4,14 +4,14 @@ import "context"
 
 type NopBackend struct{}
 
-func (b *NopBackend) Set(ctx context.Context, table, clientID, value string) error {
+func (*NopBackend) Set(ctx context.Context, table, clientID, value string) error {
 	return nil
 }
 
-func (b *NopBackend) Get(ctx context.Context, table, clientID string) (string, error) {
+func (*NopBackend) Get(ctx context.Context, table, clientID string) (string, error) {
 	return "", nil
 }
 
-func (b *NopBackend) Close(ctx context.Context) error {
+func (*NopBackend) Close(ctx context.Context) error {
 	return nil
 }
