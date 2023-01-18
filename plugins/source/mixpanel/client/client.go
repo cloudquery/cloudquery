@@ -18,8 +18,8 @@ import (
 type Client struct {
 	logger     zerolog.Logger
 	sourceSpec specs.Source
-	mpSpec     Spec
 
+	MPSpec   Spec
 	Services *mixpanel.Client
 	Backend  backend.Backend
 }
@@ -28,7 +28,7 @@ func New(logger zerolog.Logger, sourceSpec specs.Source, mpSpec Spec, services *
 	return Client{
 		logger:     logger,
 		sourceSpec: sourceSpec,
-		mpSpec:     mpSpec,
+		MPSpec:     mpSpec,
 		Services:   services,
 		Backend:    bk,
 	}
@@ -66,6 +66,26 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*mixpanel.Client, erro
 		return nil, errors.New("no project id provided")
 	}
 
+	const dateFormat = "2006-01-02"
+
+	if spec.StartDate == "" {
+		dt := time.Now().UTC().Add(-30 * 24 * 86400 * time.Second).Format(dateFormat)
+		logger.Info().Str("start_date", dt).Msg("no start date provided, defaulting to 30 days ago")
+		spec.StartDate = dt
+	}
+	if spec.EndDate == "" {
+		dt := time.Now().UTC().Add(-86400 * time.Second).Format(dateFormat)
+		logger.Info().Str("end_date", dt).Msg("no end date provided, defaulting to yesterday")
+		spec.EndDate = dt
+	}
+
+	if _, err := time.Parse(spec.StartDate, dateFormat); err != nil {
+		return nil, fmt.Errorf("invalid start date format: %w", err)
+	}
+	if _, err := time.Parse(spec.EndDate, dateFormat); err != nil {
+		return nil, fmt.Errorf("invalid start date format: %w", err)
+	}
+
 	if spec.Timeout < 1 {
 		spec.Timeout = 10
 	}
@@ -75,6 +95,7 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*mixpanel.Client, erro
 	if spec.PageSize < 1 {
 		spec.PageSize = 50
 	}
+
 	rg, err := mixpanel.ParseRegion(spec.Region)
 	if err != nil {
 		return nil, err

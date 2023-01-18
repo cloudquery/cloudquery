@@ -63,6 +63,10 @@ func New(logger zerolog.Logger, hc HTTPDoer, region Region, baseURL, apiUser, ap
 }
 
 func (v *Client) Request(ctx context.Context, path string, qp url.Values, fill any) error {
+	if qp == nil {
+		qp = url.Values{}
+	}
+
 	body, err := v.request(ctx, path, qp)
 	if err != nil {
 		return err

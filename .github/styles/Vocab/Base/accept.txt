@@ -90,6 +90,7 @@ licensors
 Lightsail
 Mailchimp
 Metabase
+Mixpanel
 Monorepo
 NACL
 NACLs

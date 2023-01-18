@@ -21,6 +21,9 @@ func Funnels() *schema.Table {
 				Resolver: client.ResolveProjectID,
 			},
 		},
+		Relations: []*schema.Table{
+			FunnelReports(),
+		},
 	}
 }
 

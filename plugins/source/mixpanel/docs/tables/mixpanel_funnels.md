@@ -2,6 +2,11 @@
 
 The primary key for this table is **_cq_id**.
 
+## Relations
+
+The following tables depend on mixpanel_funnels:
+  - [mixpanel_funnel_reports](mixpanel_funnel_reports.md)
+
 ## Columns
 
 | Name          | Type          |
