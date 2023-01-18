@@ -11,7 +11,7 @@ This is useful in various use-cases, especially in data lakes where you can quer
 
 ## Authentication
 
-Authenitcation is similar to AWS CLI. See also [aws source plugin](../../sources/aws/overview#authentication) for more information.
+Authentication is similar to AWS CLI. See also [aws source plugin](../../sources/aws/overview#authentication) for more information.
 
 ## Example
 
@@ -51,3 +51,11 @@ This is the (nested) spec used by the CSV destination Plugin.
 - `format` (string) (required)
 
   Format of the output file. `json` and `csv` are supported.
+
+- `include_headers` (boolean) (optional)
+
+  Whether the first line of the file should be the column headers. Default value is `false`.
+
+- `delimiter` (string) (optional)
+
+  Character that should be used as the delimiter. Default values is `,`.
