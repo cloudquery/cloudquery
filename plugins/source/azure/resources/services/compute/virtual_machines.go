@@ -11,10 +11,11 @@ import (
 
 func VirtualMachines() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_compute_virtual_machines",
-		Resolver:  fetchVirtualMachines,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machines", client.Namespacemicrosoft_compute),
-		Transform: transformers.TransformWithStruct(&armcompute.VirtualMachine{}),
+		Name:        "azure_compute_virtual_machines",
+		Resolver:    fetchVirtualMachines,
+		Description: "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machines/list?tabs=HTTP#virtualmachine",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machines", client.Namespacemicrosoft_compute),
+		Transform:   transformers.TransformWithStruct(&armcompute.VirtualMachine{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

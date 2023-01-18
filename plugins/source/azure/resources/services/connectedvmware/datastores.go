@@ -11,10 +11,11 @@ import (
 
 func Datastores() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_connectedvmware_datastores",
-		Resolver:  fetchDatastores,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_datastores", client.Namespacemicrosoft_connectedvmwarevsphere),
-		Transform: transformers.TransformWithStruct(&armconnectedvmware.Datastore{}),
+		Name:        "azure_connectedvmware_datastores",
+		Resolver:    fetchDatastores,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#Datastore",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_datastores", client.Namespacemicrosoft_connectedvmwarevsphere),
+		Transform:   transformers.TransformWithStruct(&armconnectedvmware.Datastore{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -1,5 +1,7 @@
 # Table: azure_compute_cloud_services
 
+https://learn.microsoft.com/en-us/rest/api/compute/cloud-services/list?tabs=HTTP#cloudservice
+
 The primary key for this table is **id**.
 
 ## Columns

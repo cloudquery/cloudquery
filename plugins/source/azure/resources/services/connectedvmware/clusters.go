@@ -11,10 +11,11 @@ import (
 
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_connectedvmware_clusters",
-		Resolver:  fetchClusters,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_clusters", client.Namespacemicrosoft_connectedvmwarevsphere),
-		Transform: transformers.TransformWithStruct(&armconnectedvmware.Cluster{}),
+		Name:        "azure_connectedvmware_clusters",
+		Resolver:    fetchClusters,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#Cluster",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_clusters", client.Namespacemicrosoft_connectedvmwarevsphere),
+		Transform:   transformers.TransformWithStruct(&armconnectedvmware.Cluster{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
