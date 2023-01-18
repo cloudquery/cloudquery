@@ -11,7 +11,7 @@ It can be used for real applications, but is mainly intended to serve as an exam
 
 ## Configuration
 
-The following configuration syncs from Hacker News to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec). The `postgresql` destination is not shown here and needs to be separately defined.
+The following configuration syncs from Hacker News to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/quickstart) if you need help setting up the destination.
 
 ```yaml
 kind: source
@@ -20,11 +20,20 @@ spec:
   path: "cloudquery/hackernews"
   version: "VERSION_SOURCE_HACKERNEWS"
   tables: ["*"]
+  backend: local
   destinations: 
     - "postgresql"
   spec:
     item_concurrency: 100
 ```
+
+import { Callout } from 'nextra-theme-docs'
+
+<Callout type="info">
+
+Note that if `backend: local` is not specified, the default will be no backend. This will result in all items being fetched on every sync, instead of incremental syncs.
+
+</Callout>
 
 - `item_concurrency` (int, optional):
     The number of items to fetch concurrently. Defaults to 100.

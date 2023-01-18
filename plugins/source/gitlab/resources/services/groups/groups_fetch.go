@@ -12,6 +12,7 @@ func fetchGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	c := meta.(*client.Client)
 
 	opt := &gitlab.ListGroupsOptions{
+		MinAccessLevel: c.MinAccessLevel,
 		ListOptions: gitlab.ListOptions{
 			PerPage: 1000,
 		},

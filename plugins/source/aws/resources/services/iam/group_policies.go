@@ -10,6 +10,7 @@ import (
 func GroupPolicies() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_iam_group_policies",
+		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetGroupPolicy.html`,
 		Resolver:            fetchIamGroupPolicies,
 		PreResourceResolver: getGroupPolicy,
 		Transform:           transformers.TransformWithStruct(&iam.GetGroupPolicyOutput{}),

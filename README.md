@@ -2,8 +2,8 @@
 <h1 align="center"><img alt="cloudquery logo" width=75% src="https://github.com/cloudquery/cloudquery/raw/main/cli/docs/images/logo.png"/></h1>
 <!-- markdownlint-enable MD033 -->
 
-CloudQuery is an open-source,
-high-performance data integration platform for security and infrastructure teams.
+CloudQuery is an [open-source](https://github.com/cloudquery/cloudquery),
+high-performance data integration framework built for developers.
 
 CloudQuery extracts, transforms, and loads configuration from cloud APIs to
 variety of supported destinations such as databases, data lakes, or streaming platforms
@@ -15,18 +15,18 @@ See the **[Quickstart guide](https://www.cloudquery.io/docs/quickstart)** for in
 
 ## Why CloudQuery?
 
-- **Open source**: Easily extendable plugin architecture. Contribute to our official plugins or develop your own with the CloudQuery SDK.
-- **Blazing fast**: CloudQuery's concurrency system leverages the excellent Go concurrency model with light-weight Goroutines.
-- **Database agnostic**: CloudQuery can store your configuration in any supported destination such as a database, data lake, or streaming platform for further analysis.
-- **Pre-built queries**: CloudQuery maintains a rich set of SQL queries and Grafana dashboards for asset inventory, CSPMs, Security & Compliance, and Cost use-cases.
-- **Raw access to data**: Decouple data ingestion and have raw access to your data, with which you can build your own security stack and re-use
-  best-of-breed tools for querying (SQL,…), transformation (dbt,…), and visualization (Grafana, Preset, Metabase, PowerBI, …).
+- **Open source**: Extensible plugin architecture. Contribute to our official plugins or develop your own with CloudQuery SDK.
+- **Blazing fast**: CloudQuery is optimized for performance, utilizing the excellent Go concurrency model with light-weight goroutines.
+- **Deploy anywhere**: CloudQuery plugins are single-binary executables and can be deployed and run anywhere.
+- **Pre-built queries**: CloudQuery maintains a number of out-of-the-box security and compliance policies for cloud infrastructure.
+- **Eliminate data silos**: Eliminate data silos across your organization, unifying data between security, infrastructure, marketing and finance teams.
+- **Unlimited scale**: CloudQuery plugins are stateless and can be scaled horizontally on any platform, such as EC2, Kubernetes, batch jobs or any other compute.
 
 ### Links
 
 - Homepage: https://www.cloudquery.io
 - Documentation: https://www.cloudquery.io/docs
-- Plugins: https://www.cloudquery.io/docs/plugins/sources
+- Plugins: https://www.cloudquery.io/docs/plugins/overview
 - Releases: https://github.com/cloudquery/cloudquery/releases
 
 ## License

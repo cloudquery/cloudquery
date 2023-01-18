@@ -3,6 +3,7 @@ ACLs
 Airbyte
 Ajv
 anonymized
+Alibaba
 API
 APIs
 architected
@@ -168,3 +169,6 @@ Yandex
 Yevgeny
 zsh
 Zsh
+Fivetran
+Extensible
+VMs

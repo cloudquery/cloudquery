@@ -1,5 +1,7 @@
 # Table: aws_lambda_function_aliases
 
+https://docs.aws.amazon.com/lambda/latest/dg/API_AliasConfiguration.html
+
 The primary key for this table is **arn**.
 
 ## Relations

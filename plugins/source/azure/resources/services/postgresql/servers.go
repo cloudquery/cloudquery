@@ -30,6 +30,11 @@ func Servers() *schema.Table {
 				},
 			},
 		},
+
+		Relations: []*schema.Table{
+			serverConfigurations(),
+			firewall_rules(),
+		},
 	}
 }
 

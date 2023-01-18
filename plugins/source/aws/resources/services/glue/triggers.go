@@ -10,6 +10,7 @@ import (
 func Triggers() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_glue_triggers",
+		Description:         `https://docs.aws.amazon.com/glue/latest/webapi/API_Trigger.html`,
 		Resolver:            fetchGlueTriggers,
 		PreResourceResolver: getTrigger,
 		Transform:           transformers.TransformWithStruct(&types.Trigger{}),

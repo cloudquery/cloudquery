@@ -9,6 +9,7 @@ import (
 func Models() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_sagemaker_models",
+		Description:         `https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeModel.html`,
 		Resolver:            fetchSagemakerModels,
 		PreResourceResolver: getModel,
 		Transform:           transformers.TransformWithStruct(&WrappedSageMakerModel{}, transformers.WithUnwrapStructFields("DescribeModelOutput")),
