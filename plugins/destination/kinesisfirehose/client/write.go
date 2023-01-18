@@ -29,10 +29,13 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	}
 
 	for _, resource := range data {
-		jsonObj := make(map[string]any, len(table.Columns))
+		jsonObj := make(map[string]any, len(table.Columns)+1)
 		for i := range resource {
 			jsonObj[table.Columns[i].Name] = resource[i]
 		}
+		// Add table name to the json object
+		// TODO: This should be added to the SDK so that it can be used for other plugins as well
+		jsonObj["_cq_table_name"] = table.Name
 		b, err := json.Marshal(jsonObj)
 		if err != nil {
 			return err
@@ -40,8 +43,16 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 		recordsBatchInput.Records = append(recordsBatchInput.Records, types.Record{
 			Data: b,
 		})
+		if len(recordsBatchInput.Records) == 1000 {
+			c.sendBatch(ctx, recordsBatchInput)
+			recordsBatchInput.Records = nil
+		}
 	}
 
+	return c.sendBatch(ctx, recordsBatchInput)
+}
+
+func (c *Client) sendBatch(ctx context.Context, recordsBatchInput *firehose.PutRecordBatchInput) error {
 	resp, err := c.firehoseClient.PutRecordBatch(ctx, recordsBatchInput)
 	if err != nil {
 		c.logger.Error().Err(err).Msg("failed to write to firehose")
