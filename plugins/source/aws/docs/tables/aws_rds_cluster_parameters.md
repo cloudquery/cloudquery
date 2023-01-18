@@ -1,5 +1,7 @@
 # Table: aws_rds_cluster_parameters
 
+https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Parameter.html
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

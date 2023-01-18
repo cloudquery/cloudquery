@@ -12,6 +12,7 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |app|JSON|
 |app_setup|JSON|
 |branch|String|
@@ -19,7 +20,6 @@ The primary key for this table is **id**.
 |creator|JSON|
 |error_status|String|
 |fork_repo|JSON|
-|id (PK)|String|
 |message|String|
 |pipeline|JSON|
 |pr_number|Int|

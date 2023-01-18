@@ -7,8 +7,8 @@ The primary key for this table is **arn**.
 ## Relations
 
 The following tables depend on aws_apprunner_services:
-  - [aws_apprunner_operations](aws_apprunner_operations.md)
   - [aws_apprunner_custom_domains](aws_apprunner_custom_domains.md)
+  - [aws_apprunner_operations](aws_apprunner_operations.md)
 
 ## Columns
 
@@ -26,6 +26,7 @@ The following tables depend on aws_apprunner_services:
 |created_at|Timestamp|
 |instance_configuration|JSON|
 |network_configuration|JSON|
+|service_arn|String|
 |service_id|String|
 |service_name|String|
 |source_configuration|JSON|

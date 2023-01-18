@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -57,13 +58,13 @@ func (c *Client) WithTeamID(teamID string) schema.ClientMeta {
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	veSpec := &Spec{}
 	if err := s.UnmarshalSpec(veSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal vercel spec: %w", err)
 	}
 
-	services, err := getServiceClient(veSpec, "")
+	services, err := getServiceClient(logger.With().Str("source", "stripe-client").Logger(), veSpec, "")
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +79,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 	return &cl, nil
 }
 
-func getServiceClient(spec *Spec, teamID string) (*vercel.Client, error) {
+func getServiceClient(logger zerolog.Logger, spec *Spec, teamID string) (*vercel.Client, error) {
 	if spec.AccessToken == "" {
 		return nil, errors.New("no access token provided")
 	}
@@ -88,13 +89,27 @@ func getServiceClient(spec *Spec, teamID string) (*vercel.Client, error) {
 	if spec.Timeout < 1 {
 		spec.Timeout = 5
 	}
+	if spec.PageSize < 1 {
+		spec.PageSize = 100
+	}
+	if spec.MaxRetries < 1 {
+		spec.MaxRetries = 10
+	}
+	if spec.MaxWait < 1 {
+		spec.MaxWait = 300
+	}
 
-	return vercel.New(&http.Client{
-		Timeout: time.Duration(spec.Timeout) * time.Second,
-	},
+	return vercel.New(
+		logger,
+		&http.Client{
+			Timeout: time.Duration(spec.Timeout) * time.Second,
+		},
 		spec.EndpointURL,
 		spec.AccessToken,
 		teamID,
+		spec.MaxRetries,
+		spec.MaxWait,
+		spec.PageSize,
 	), nil
 }
 

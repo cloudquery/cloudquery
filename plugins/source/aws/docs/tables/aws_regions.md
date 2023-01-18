@@ -18,3 +18,4 @@ The primary key for this table is **_cq_id**.
 |region|String|
 |endpoint|String|
 |opt_in_status|String|
+|region_name|String|

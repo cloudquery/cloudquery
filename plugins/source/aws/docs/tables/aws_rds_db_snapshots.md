@@ -20,6 +20,7 @@ The primary key for this table is **arn**.
 |allocated_storage|Int|
 |availability_zone|String|
 |db_instance_identifier|String|
+|db_snapshot_arn|String|
 |db_snapshot_identifier|String|
 |dbi_resource_id|String|
 |encrypted|Bool|

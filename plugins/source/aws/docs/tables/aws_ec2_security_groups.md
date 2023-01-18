@@ -15,11 +15,11 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |description|String|
 |group_id|String|
 |group_name|String|
 |ip_permissions|JSON|
 |ip_permissions_egress|JSON|
 |owner_id|String|
-|tags|JSON|
 |vpc_id|String|

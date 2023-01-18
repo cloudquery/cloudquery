@@ -1,0 +1,14 @@
+variables:
+  component: source/snyk
+  binary: snyk
+
+project_name: plugins/source/snyk
+
+monorepo:
+  tag_prefix: plugins-source-snyk-
+  dir: plugins/source/snyk
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

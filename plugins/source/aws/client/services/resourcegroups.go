@@ -8,6 +8,7 @@ import (
 
 //go:generate mockgen -package=mocks -destination=../mocks/resourcegroups.go -source=resourcegroups.go ResourcegroupsClient
 type ResourcegroupsClient interface {
+	GetAccountSettings(context.Context, *resourcegroups.GetAccountSettingsInput, ...func(*resourcegroups.Options)) (*resourcegroups.GetAccountSettingsOutput, error)
 	GetGroup(context.Context, *resourcegroups.GetGroupInput, ...func(*resourcegroups.Options)) (*resourcegroups.GetGroupOutput, error)
 	GetGroupConfiguration(context.Context, *resourcegroups.GetGroupConfigurationInput, ...func(*resourcegroups.Options)) (*resourcegroups.GetGroupConfigurationOutput, error)
 	GetGroupQuery(context.Context, *resourcegroups.GetGroupQueryInput, ...func(*resourcegroups.Options)) (*resourcegroups.GetGroupQueryOutput, error)

@@ -27,6 +27,7 @@ The following tables depend on aws_docdb_clusters:
 |backup_retention_period|Int|
 |clone_group_id|String|
 |cluster_create_time|Timestamp|
+|db_cluster_arn|String|
 |db_cluster_identifier|String|
 |db_cluster_members|JSON|
 |db_cluster_parameter_group|String|

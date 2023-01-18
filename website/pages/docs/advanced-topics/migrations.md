@@ -19,4 +19,5 @@ CloudQuery is an open-source cloud asset inventory powered by SQL, and as such, 
 
 ## Type Change
 
-This is the most complex situation most probably and as a source plugin developer you want to avoid it if possible. However, on the destination plugin side, it will first try to change the column if it happens the new type can also store the old type data, if not, this will be the only case where the destination plugin will be re-creating the column.
+This is the most complex situation most probably and as a source plugin developer you want to avoid it if possible. On the destination plugin side, the column will be dropped an re-added.
+

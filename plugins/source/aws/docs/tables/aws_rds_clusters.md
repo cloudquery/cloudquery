@@ -35,6 +35,7 @@ The primary key for this table is **arn**.
 |copy_tags_to_snapshot|Bool|
 |cross_account_clone|Bool|
 |custom_endpoints|StringArray|
+|db_cluster_arn|String|
 |db_cluster_identifier|String|
 |db_cluster_instance_class|String|
 |db_cluster_members|JSON|
@@ -61,6 +62,7 @@ The primary key for this table is **arn**.
 |iops|Int|
 |kms_key_id|String|
 |latest_restorable_time|Timestamp|
+|master_user_secret|JSON|
 |master_username|String|
 |monitoring_interval|Int|
 |monitoring_role_arn|String|

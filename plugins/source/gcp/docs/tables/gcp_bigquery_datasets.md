@@ -2,7 +2,7 @@
 
 https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets#Dataset
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**project_id**, **id**).
 
 ## Relations
 
@@ -15,9 +15,10 @@ The following tables depend on gcp_bigquery_datasets:
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
-|project_id|String|
+|project_id (PK)|String|
+|id (PK)|String|
 |access|JSON|
 |creation_time|Int|
 |dataset_reference|JSON|
@@ -28,7 +29,6 @@ The following tables depend on gcp_bigquery_datasets:
 |description|String|
 |etag|String|
 |friendly_name|String|
-|id|String|
 |is_case_insensitive|Bool|
 |kind|String|
 |labels|JSON|

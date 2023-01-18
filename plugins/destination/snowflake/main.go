@@ -12,6 +12,6 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("snowflake", plugin.Version, client.New)
+	p := destination.NewPlugin("snowflake", plugin.Version, client.New, destination.WithManagedWriter())
 	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
 }

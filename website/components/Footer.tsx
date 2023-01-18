@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useState, ReactNode, FormEvent } from "react";
 import CloudQueryLogo from "./logos/CloudQuery";
+import {getPagesUnderRoute} from "nextra/context";
 
 function FooterLink({ href, children }: { href: string; children: ReactNode }) {
   const classes =
@@ -55,6 +56,22 @@ const navigation = {
     { name: "Terms of Use", href: "/terms" },
   ],
 };
+
+
+interface Page {
+  name: string;
+  route: string;
+  children?: Page[];
+  meta?: Record<string, any>;
+  frontMatter?: any;
+}
+
+function sortByDate(a: Page, b: Page) {
+  return (
+      new Date(b.frontMatter?.date).getTime() -
+      new Date(a.frontMatter?.date).getTime()
+  );
+}
 
 export function Footer() {
   return (
@@ -119,21 +136,32 @@ export function Footer() {
             <SubmitForm />
           </div>
         </div>
-
-        <div className="pt-8 mt-8 md:flex md:items-center md:justify-between">
+        <div className="md:grid md:grid-cols-2 md:gap-8">
+          <div className="md:flex md:items-center md:justify-between mt-8">
+            <div>
+              <a
+                className="text-current"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.cloudquery.io"
+              >
+                <CloudQueryLogo />
+              </a>
+              <p className="mt-4 text-xs text-gray-500 ">
+                &copy; {new Date().getFullYear()} CloudQuery, Inc. All rights
+                reserved.
+              </p>
+            </div>
+          </div>
           <div>
-            <a
-              className="text-current"
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.cloudquery.io"
-            >
-              <CloudQueryLogo />
-            </a>
-            <p className="mt-4 text-xs text-gray-500 ">
-              &copy; {new Date().getFullYear()} CloudQuery, Inc. All rights
-              reserved.
-            </p>
+            <div className="md:text-right mt-8">
+              <span>Latest from our blog</span>
+              <h2 className="block font-semibold nx-text-2xl dark:nx-text-white">
+                {getPagesUnderRoute("/blog").sort(sortByDate)?.map((page: Page) => {
+                  return <a href={page.route}>{page.frontMatter?.title}</a>
+                })[0]}
+              </h2>
+            </div>
           </div>
         </div>
       </div>

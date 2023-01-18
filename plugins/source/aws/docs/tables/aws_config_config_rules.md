@@ -1,5 +1,7 @@
 # Table: aws_config_config_rules
 
+https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConfigRules.html
+
 The primary key for this table is **arn**.
 
 ## Relations
@@ -19,6 +21,7 @@ The following tables depend on aws_config_config_rules:
 |region|String|
 |arn (PK)|String|
 |source|JSON|
+|config_rule_arn|String|
 |config_rule_id|String|
 |config_rule_name|String|
 |config_rule_state|String|

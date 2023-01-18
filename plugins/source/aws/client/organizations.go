@@ -2,7 +2,9 @@ package client
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
+	"github.com/thoas/go-funk"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
@@ -44,20 +46,28 @@ func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.Org
 	var rawAccounts []orgTypes.Account
 	var err error
 	if len(awsConfig.Organization.OrganizationUnits) > 0 {
-		rawAccounts, err = getOUAccounts(ctx, accountsApi, awsConfig.Organization.OrganizationUnits)
+		rawAccounts, err = getOUAccounts(ctx, accountsApi, awsConfig.Organization)
 	} else {
-		rawAccounts, err = getAllAccounts(ctx, accountsApi)
+		rawAccounts, err = getAllAccounts(ctx, accountsApi, awsConfig.Organization)
 	}
 
 	if err != nil {
 		return []Account{}, err
 	}
+	seen := map[string]struct{}{}
 	accounts := make([]Account, 0)
 	for _, account := range rawAccounts {
 		// Only load Active accounts
-		if account.Status != orgTypes.AccountStatusActive {
+		if account.Status != orgTypes.AccountStatusActive || account.Id == nil {
 			continue
 		}
+
+		// Skip duplicates
+		if _, found := seen[*account.Id]; found {
+			continue
+		}
+		seen[*account.Id] = struct{}{}
+
 		roleArn := arn.ARN{
 			Partition: "aws",
 			Service:   "iam",
@@ -83,46 +93,78 @@ func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.Org
 }
 
 // Get Accounts for specific Organizational Units
-func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, ous []string) ([]orgTypes.Account, error) {
+func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, awsOrg *AwsOrg) ([]orgTypes.Account, error) {
+	q := awsOrg.OrganizationUnits
+	var ou string
 	var rawAccounts []orgTypes.Account
+	seenOUs := map[string]struct{}{}
+	for len(q) > 0 {
+		ou, q = q[0], q[1:]
 
-	for _, ou := range ous {
-		var paginationToken *string
-		for {
-			resp, err := accountsApi.ListAccountsForParent(ctx, &organizations.ListAccountsForParentInput{
-				NextToken: paginationToken,
-				ParentId:  aws.String(ou),
-			})
+		// Skip duplicates to avoid making duplicate API calls
+		if _, found := seenOUs[ou]; found {
+			continue
+		}
+		seenOUs[ou] = struct{}{}
+
+		// Skip any OUs that user has asked to skip
+		if funk.ContainsString(awsOrg.SkipOrganizationalUnits, ou) {
+			continue
+		}
+
+		// get accounts directly under this OU
+		accountsPaginator := organizations.NewListAccountsForParentPaginator(accountsApi, &organizations.ListAccountsForParentInput{
+			ParentId: aws.String(ou),
+		})
+		for accountsPaginator.HasMorePages() {
+			output, err := accountsPaginator.NextPage(ctx)
 			if err != nil {
 				return nil, err
 			}
-			rawAccounts = append(rawAccounts, resp.Accounts...)
-			if resp.NextToken == nil {
-				break
+			for _, account := range output.Accounts {
+				// Skip any accounts that user has asked to skip
+				if funk.ContainsString(awsOrg.SkipMemberAccounts, *account.Id) {
+					continue
+				}
+				rawAccounts = append(rawAccounts, account)
 			}
-			paginationToken = resp.NextToken
+		}
+
+		// get OUs directly under this OU, and add them to the queue
+		ouPaginator := organizations.NewListChildrenPaginator(accountsApi, &organizations.ListChildrenInput{
+			ChildType: orgTypes.ChildTypeOrganizationalUnit,
+			ParentId:  aws.String(ou),
+		})
+		for ouPaginator.HasMorePages() {
+			output, err := ouPaginator.NextPage(ctx)
+			if err != nil {
+				return nil, err
+			}
+			for _, child := range output.Children {
+				q = append(q, *child.Id)
+			}
 		}
 	}
+
 	return rawAccounts, nil
 }
 
 // Get All accounts in a specific organization
-func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClient) ([]orgTypes.Account, error) {
+func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClient, org *AwsOrg) ([]orgTypes.Account, error) {
 	var rawAccounts []orgTypes.Account
-	var paginationToken *string
-
-	for {
-		resp, err := accountsApi.ListAccounts(ctx, &organizations.ListAccountsInput{
-			NextToken: paginationToken,
-		})
+	accountsPaginator := organizations.NewListAccountsPaginator(accountsApi, &organizations.ListAccountsInput{})
+	for accountsPaginator.HasMorePages() {
+		output, err := accountsPaginator.NextPage(ctx)
 		if err != nil {
 			return nil, err
 		}
-		rawAccounts = append(rawAccounts, resp.Accounts...)
-		if resp.NextToken == nil {
-			break
+		for _, account := range output.Accounts {
+			// Skip any accounts that user has asked to skip
+			if funk.ContainsString(org.SkipMemberAccounts, *account.Id) {
+				continue
+			}
+			rawAccounts = append(rawAccounts, account)
 		}
-		paginationToken = resp.NextToken
 	}
 	return rawAccounts, nil
 }

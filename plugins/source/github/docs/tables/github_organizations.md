@@ -5,6 +5,8 @@ The composite primary key for this table is (**org**, **id**).
 ## Relations
 
 The following tables depend on github_organizations:
+  - [github_organization_dependabot_alerts](github_organization_dependabot_alerts.md)
+  - [github_organization_dependabot_secrets](github_organization_dependabot_secrets.md)
   - [github_organization_members](github_organization_members.md)
 
 ## Columns

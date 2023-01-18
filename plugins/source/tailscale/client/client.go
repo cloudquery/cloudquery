@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -26,7 +27,7 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func Configure(_ context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
+func Configure(_ context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	tsSpec := new(Spec)
 	err := spec.UnmarshalSpec(tsSpec)
 	if err != nil {

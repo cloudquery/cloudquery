@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|certificate_arn|String|
 |certificate_identifier|String|
 |certificate_type|String|
 |thumbprint|String|

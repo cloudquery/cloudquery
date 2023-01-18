@@ -12,6 +12,7 @@ import (
 
 var (
 	columnRegex = regexp.MustCompile(`^\|(?P<name>.*)\|(?P<dataType>.*)\|`)
+	pkRegex     = regexp.MustCompile(`^The composite primary key for this table is \(([^)]+)\)\.`)
 )
 
 type change struct {
@@ -19,9 +20,24 @@ type change struct {
 	Breaking bool   `json:"breaking"`
 }
 
+type columnType int
+
+const (
+	columnTypePK columnType = 1 << iota
+	columnTypeIncremental
+)
+
 type column struct {
-	dataType string
-	pk       bool
+	dataType   string
+	columnType columnType
+}
+
+func (c column) pk() bool {
+	return c.columnType&columnTypePK != 0
+}
+
+func (c column) incremental() bool {
+	return c.columnType&columnTypeIncremental != 0
 }
 
 func backtickStrings(strings ...string) []interface{} {
@@ -32,10 +48,10 @@ func backtickStrings(strings ...string) []interface{} {
 	return backticked
 }
 
-func parseColumnChange(line string) (name string, dataType string, pk bool) {
+func parseColumnChange(line string) (name string, dataType string, columnType columnType) {
 	match := columnRegex.FindStringSubmatch(line)
 	if match == nil {
-		return "", "", false
+		return "", "", columnType
 	}
 	result := make(map[string]string)
 	for i, name := range columnRegex.SubexpNames() {
@@ -43,20 +59,48 @@ func parseColumnChange(line string) (name string, dataType string, pk bool) {
 			result[name] = match[i]
 		}
 	}
-	cleanName := strings.TrimSuffix(result["name"], " (PK)")
-	return cleanName, result["dataType"], result["name"] != cleanName
+	if strings.Contains(result["name"], " (PK)") {
+		columnType |= columnTypePK
+	}
+	if strings.Contains(result["name"], " (Incremental Key)") {
+		columnType |= columnTypeIncremental
+	}
+	cleanName := strings.Split(result["name"], " (")[0]
+	return cleanName, result["dataType"], columnType
+}
+
+func parsePKChange(line string) (names []string) {
+	match := pkRegex.FindStringSubmatch(line)
+	if len(match) != 2 {
+		return nil
+	}
+	for _, part := range strings.Split(match[1], ", ") {
+		names = append(names, strings.Trim(part, "*"))
+	}
+	return
 }
 
 func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 	addedColumns := make(map[string]column)
 	deletedColumns := make(map[string]column)
+	var addedPK, deletedPK []string
 	for _, fragment := range file.TextFragments {
 		for _, line := range fragment.Lines {
-			name, dataType, pk := parseColumnChange(line.Line)
+			pkChanges := parsePKChange(line.Line)
+			if len(pkChanges) > 0 {
+				switch line.Op {
+				case gitdiff.OpAdd:
+					addedPK = pkChanges
+				case gitdiff.OpDelete:
+					deletedPK = pkChanges
+				}
+				continue
+			}
+			name, dataType, columnType := parseColumnChange(line.Line)
 			if name == "" || dataType == "" {
 				continue
 			}
-			column := column{dataType: dataType, pk: pk}
+			column := column{dataType: dataType, columnType: columnType}
 			switch line.Op {
 			case gitdiff.OpAdd:
 				addedColumns[name] = column
@@ -67,7 +111,7 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 	}
 	for deletedName, deletedColumn := range deletedColumns {
 		if addedColumn, ok := addedColumns[deletedName]; ok {
-			if deletedColumn.dataType == addedColumn.dataType && deletedColumn.pk == addedColumn.pk {
+			if deletedColumn.dataType == addedColumn.dataType && deletedColumn.columnType == addedColumn.columnType {
 				changes = append(changes, change{
 					Text:     fmt.Sprintf("Table %s: column order changed for %s", backtickStrings(table, deletedName)...),
 					Breaking: false,
@@ -78,21 +122,35 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 			if addedColumn.dataType != deletedColumn.dataType {
 				changes = append(changes, change{
 					Text:     fmt.Sprintf("Table %s: column type changed from %s to %s for %s", backtickStrings(table, deletedColumn.dataType, addedColumn.dataType, deletedName)...),
-					Breaking: false,
+					Breaking: true,
 				})
 			}
 
-			if addedColumn.pk && !deletedColumn.pk {
+			if addedColumn.pk() && !deletedColumn.pk() {
 				changes = append(changes, change{
 					Text:     fmt.Sprintf("Table %s: primary key constraint added to column %s", backtickStrings(table, deletedName)...),
 					Breaking: false,
 				})
 			}
 
-			if !addedColumn.pk && deletedColumn.pk {
+			if !addedColumn.pk() && deletedColumn.pk() {
 				changes = append(changes, change{
 					Text:     fmt.Sprintf("Table %s: primary key constraint removed from column %s", backtickStrings(table, deletedName)...),
 					Breaking: false,
+				})
+			}
+
+			if addedColumn.incremental() && !deletedColumn.incremental() {
+				changes = append(changes, change{
+					Text:     fmt.Sprintf("Table %s: column %s added to cursor for incremental syncs", backtickStrings(table, deletedName)...),
+					Breaking: true,
+				})
+			}
+
+			if !addedColumn.incremental() && deletedColumn.incremental() {
+				changes = append(changes, change{
+					Text:     fmt.Sprintf("Table %s: column %s removed from cursor for incremental syncs", backtickStrings(table, deletedName)...),
+					Breaking: true,
 				})
 			}
 		} else {
@@ -105,26 +163,45 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 	for addedName, addedColumn := range addedColumns {
 		if _, ok := deletedColumns[addedName]; !ok {
 			name := addedName
-			if addedColumn.pk {
-				name = fmt.Sprintf("%s (PK)", name)
+			if addedColumn.pk() {
+				name += " (PK)"
+			}
+			if addedColumn.incremental() {
+				name += " (Incremental Key)"
 			}
 			changes = append(changes, change{
 				Text:     fmt.Sprintf("Table %s: column added with name %s and type %s", backtickStrings(table, name, addedColumn.dataType)...),
-				Breaking: addedColumn.pk,
+				Breaking: addedColumn.pk(),
 			})
 		}
 	}
 
+	// check PK:
+	if len(addedPK) > 0 && len(addedPK) == len(deletedPK) {
+		// if they are unequal the pk added/removed is correct.
+		changes = append(changes, change{
+			Text: fmt.Sprintf("Table %s: primary key order changed from %s to %s",
+				backtickStrings(
+					table,
+					strings.Join(deletedPK, ", "),
+					strings.Join(addedPK, ", "),
+				)...,
+			),
+			Breaking: true,
+		})
+	}
+
 	sort.SliceStable(changes, func(i, j int) bool {
-		iBreaking := changes[i].Breaking
-		jBreaking := changes[j].Breaking
-		if iBreaking && !jBreaking {
+		chI := changes[i]
+		chJ := changes[j]
+		switch {
+		case chI.Breaking && !chJ.Breaking:
 			return true
-		}
-		if !iBreaking && jBreaking {
+		case !chI.Breaking && chJ.Breaking:
 			return false
+		default:
+			return chI.Text < chJ.Text
 		}
-		return changes[i].Text < changes[j].Text
 	})
 	return changes
 }

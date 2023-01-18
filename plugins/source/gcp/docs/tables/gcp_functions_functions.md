@@ -2,7 +2,7 @@
 
 https://cloud.google.com/functions/docs/reference/rest/v1/projects.locations.functions#CloudFunction
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**project_id**, **name**).
 
 ## Columns
 
@@ -10,10 +10,10 @@ The primary key for this table is **_cq_id**.
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
-|project_id|String|
-|name|String|
+|project_id (PK)|String|
+|name (PK)|String|
 |description|String|
 |status|String|
 |entry_point|String|

@@ -12,6 +12,8 @@ digitalocean:
   - plugins/source/digitalocean/**/*
 datadog:
   - plugins/source/datadog/**/*
+fastly:
+  - plugins/source/fastly/**/*
 fuzz:
   - plugins/source/fuzz/**/*
 gandi:
@@ -20,30 +22,54 @@ gcp:
   - plugins/source/gcp/**/*
 github:
   - plugins/source/github/**/*
+gitlab:
+  - plugins/source/gitlab/**/*
 k8s:
   - plugins/source/k8s/**/*
+hackernews:
+  - plugins/source/hackernews/**/*
 heroku:
   - plugins/source/heroku/**/*
 okta:
   - plugins/source/okta/**/*
+oracle:
+  - plugins/source/oracle/**/*
 slack:
   - plugins/source/slack/**/*
+shopify:
+  - plugins/source/shopify/**/*
+stripe:
+  - plugins/source/stripe/**/*
 pagerduty:
   - plugins/source/pagerduty/**/*
 terraform:
   - plugins/source/terraform/**/*
 vercel:
   - plugins/source/vercel/**/*
+salesforce:
+  - plugins/source/salesforce/**/*
 postgresql:
   - plugins/destination/postgresql/**/*
 sqlite:
   - plugins/destination/sqlite/**/*
+s3:
+  - plugins/destination/s3/**/*
 csv:
   - plugins/destination/csv/**/*
+file:
+  - plugins/destination/file/**/*
+gcs:
+  - plugins/destination/gcs/**/*
 snowflake:
   - plugins/destination/snowflake/**/*
 bigquery:
   - plugins/destination/bigquery/**/*
+mongodb:
+  - plugins/destination/mongodb/**/*
+neo4j:
+  - plugins/destination/neo4j/**/*
+kafka:
+  - plugins/destination/kafka/**/*
 website:
   - website/**/*
 cli:

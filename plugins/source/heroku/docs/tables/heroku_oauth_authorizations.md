@@ -12,11 +12,11 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|id (PK)|String|
 |access_token|JSON|
 |client|JSON|
 |created_at|Timestamp|
 |grant|JSON|
-|id (PK)|String|
 |refresh_token|JSON|
 |scope|StringArray|
 |updated_at|Timestamp|

@@ -13,15 +13,15 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
-|type|String|
-|summary|String|
-|self|String|
 |html_url|String|
 |icon_url|String|
 |logo_url|String|
+|guide_url|String|
+|url|String|
+|type|String|
+|summary|String|
+|self|String|
 |label|String|
 |key|String|
 |description|String|
-|guide_url|String|
 |send_types|StringArray|
-|url|String|

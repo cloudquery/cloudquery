@@ -1,5 +1,7 @@
 # Table: aws_sagemaker_training_jobs
 
+https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeTrainingJob.html
+
 The primary key for this table is **arn**.
 
 ## Columns
@@ -20,6 +22,7 @@ The primary key for this table is **arn**.
 |resource_config|JSON|
 |secondary_status|String|
 |stopping_condition|JSON|
+|training_job_arn|String|
 |training_job_name|String|
 |training_job_status|String|
 |auto_ml_job_arn|String|

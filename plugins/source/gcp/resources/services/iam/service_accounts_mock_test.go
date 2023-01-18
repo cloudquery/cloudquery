@@ -1,63 +1,44 @@
 package iam
 
 import (
-	"encoding/json"
-	"net/http"
+	"context"
+	"fmt"
 	"testing"
-	"time"
 
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/julienschmidt/httprouter"
+	"google.golang.org/grpc"
 
-	"google.golang.org/api/iam/v1"
+	pb "cloud.google.com/go/iam/admin/apiv1/adminpb"
 )
 
-func createServiceAccounts(mux *httprouter.Router) error {
-	var item iam.ServiceAccount
-	if err := faker.FakeObject(&item); err != nil {
-		return err
-	}
-	item.Name = "test"
-	mux.GET("/v1/projects/testProject/serviceAccounts", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &iam.ListServiceAccountsResponse{
-			Accounts: []*iam.ServiceAccount{&item},
-		}
-		b, err := json.Marshal(resp)
-		if err != nil {
-			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
-			return
-		}
-		if _, err := w.Write(b); err != nil {
-			http.Error(w, "failed to write", http.StatusBadRequest)
-			return
-		}
-	})
-
-	var key iam.ServiceAccountKey
-	if err := faker.FakeObject(&key); err != nil {
-		return err
-	}
-	key.ValidAfterTime = time.Now().Format(time.RFC3339)
-	key.ValidBeforeTime = time.Now().Format(time.RFC3339)
-	mux.GET("/v1/test/keys", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &iam.ListServiceAccountKeysResponse{
-			Keys: []*iam.ServiceAccountKey{&key},
-		}
-		b, err := json.Marshal(resp)
-		if err != nil {
-			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
-			return
-		}
-		if _, err := w.Write(b); err != nil {
-			http.Error(w, "failed to write", http.StatusBadRequest)
-			return
-		}
-	})
-
+func createServiceAccounts(gsrv *grpc.Server) error {
+	fakeServer := &fakeServiceAccountsServer{}
+	pb.RegisterIAMServer(gsrv, fakeServer)
 	return nil
 }
 
+type fakeServiceAccountsServer struct {
+	pb.UnimplementedIAMServer
+}
+
+func (*fakeServiceAccountsServer) ListServiceAccounts(context.Context, *pb.ListServiceAccountsRequest) (*pb.ListServiceAccountsResponse, error) {
+	resp := pb.ListServiceAccountsResponse{}
+	if err := faker.FakeObject(&resp); err != nil {
+		return nil, fmt.Errorf("failed to fake data: %w", err)
+	}
+	resp.NextPageToken = ""
+	return &resp, nil
+}
+
+func (*fakeServiceAccountsServer) ListServiceAccountKeys(context.Context, *pb.ListServiceAccountKeysRequest) (*pb.ListServiceAccountKeysResponse, error) {
+	resp := pb.ListServiceAccountKeysResponse{}
+	if err := faker.FakeObject(&resp); err != nil {
+		return nil, fmt.Errorf("failed to fake data: %w", err)
+	}
+	return &resp, nil
+}
+
 func TestServiceAccounts(t *testing.T) {
-	client.MockTestRestHelper(t, ServiceAccounts(), createServiceAccounts, client.TestOptions{})
+	client.MockTestGrpcHelper(t, ServiceAccounts(), createServiceAccounts, client.TestOptions{})
 }

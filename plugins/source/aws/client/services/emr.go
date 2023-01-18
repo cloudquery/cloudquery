@@ -17,6 +17,7 @@ type EmrClient interface {
 	DescribeStudio(context.Context, *emr.DescribeStudioInput, ...func(*emr.Options)) (*emr.DescribeStudioOutput, error)
 	GetAutoTerminationPolicy(context.Context, *emr.GetAutoTerminationPolicyInput, ...func(*emr.Options)) (*emr.GetAutoTerminationPolicyOutput, error)
 	GetBlockPublicAccessConfiguration(context.Context, *emr.GetBlockPublicAccessConfigurationInput, ...func(*emr.Options)) (*emr.GetBlockPublicAccessConfigurationOutput, error)
+	GetClusterSessionCredentials(context.Context, *emr.GetClusterSessionCredentialsInput, ...func(*emr.Options)) (*emr.GetClusterSessionCredentialsOutput, error)
 	GetManagedScalingPolicy(context.Context, *emr.GetManagedScalingPolicyInput, ...func(*emr.Options)) (*emr.GetManagedScalingPolicyOutput, error)
 	GetStudioSessionMapping(context.Context, *emr.GetStudioSessionMappingInput, ...func(*emr.Options)) (*emr.GetStudioSessionMappingOutput, error)
 	ListBootstrapActions(context.Context, *emr.ListBootstrapActionsInput, ...func(*emr.Options)) (*emr.ListBootstrapActionsOutput, error)

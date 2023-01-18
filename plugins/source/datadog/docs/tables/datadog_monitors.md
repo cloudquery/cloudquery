@@ -32,3 +32,4 @@ The following tables depend on datadog_monitors:
 |state|JSON|
 |tags|StringArray|
 |type|String|
+|additional_properties|JSON|

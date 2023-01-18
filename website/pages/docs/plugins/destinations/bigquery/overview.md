@@ -31,12 +31,16 @@ spec:
   path: cloudquery/bigquery
   version: "VERSION_DESTINATION_BIGQUERY"
   write_mode: "append"
+  # batch_size: 1000 # optional
+  # batch_size_bytes: 5242880 # optional
   spec:
     project_id: ${PROJECT_ID}
     dataset_id: ${DATASET_ID}
 ```
 
-Note that the BigQuery plugin only supports the `append` write mode.
+The BigQuery destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+
+Note that the BigQuery plugin only supports the `append` write mode. 
 
 ## Authentication
 
@@ -86,14 +90,9 @@ This is the top-level spec used by the BigQuery destination plugin.
 
   The time partitioning to use when creating tables. The partition time column used will always be `_cq_sync_time` so that all rows for a sync run will be partitioned on the hour/day the sync started.
 
-
 - `service_account_key_json` (string) (default: empty).
 
   GCP service account key content. This allows for using different service accounts for the GCP source and BigQuery destination. If using service account keys, it is best to use [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution).
-
-- `batch_size` (int, optional. Default: 1000)
-
-  Number of rows to insert in a single batch.
 
 ## Underlying library
 

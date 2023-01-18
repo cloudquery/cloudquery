@@ -1,5 +1,7 @@
 # Table: aws_identitystore_groups
 
+https://docs.aws.amazon.com/singlesignon/latest/IdentityStoreAPIReference/API_Group.html
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

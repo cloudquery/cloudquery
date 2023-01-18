@@ -1,0 +1,1 @@
+# CloudQuery {{.Name}} Source Plugin

@@ -1,15 +1,17 @@
 # Table: aws_lambda_functions
 
+https://docs.aws.amazon.com/lambda/latest/dg/API_GetFunction.html
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
 
 The following tables depend on aws_lambda_functions:
-  - [aws_lambda_function_event_invoke_configs](aws_lambda_function_event_invoke_configs.md)
   - [aws_lambda_function_aliases](aws_lambda_function_aliases.md)
-  - [aws_lambda_function_versions](aws_lambda_function_versions.md)
   - [aws_lambda_function_concurrency_configs](aws_lambda_function_concurrency_configs.md)
+  - [aws_lambda_function_event_invoke_configs](aws_lambda_function_event_invoke_configs.md)
   - [aws_lambda_function_event_source_mappings](aws_lambda_function_event_source_mappings.md)
+  - [aws_lambda_function_versions](aws_lambda_function_versions.md)
 
 ## Columns
 

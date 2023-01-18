@@ -19,6 +19,7 @@ The primary key for this table is **arn**.
 |deletion_protection|Bool|
 |engine|String|
 |engine_version|String|
+|global_cluster_arn|String|
 |global_cluster_identifier|String|
 |global_cluster_members|JSON|
 |global_cluster_resource_id|String|

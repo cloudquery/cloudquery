@@ -47,3 +47,4 @@ The primary key for this table is **arn**.
 |snapshot_retention_limit|Int|
 |snapshot_window|String|
 |transit_encryption_enabled|Bool|
+|transit_encryption_mode|String|

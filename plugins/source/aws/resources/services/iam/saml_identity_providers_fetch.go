@@ -30,6 +30,10 @@ func getSamlIdentityProvider(ctx context.Context, meta schema.ClientMeta, resour
 		return err
 	}
 
-	resource.Item = models.IAMSAMLIdentityProviderWrapper{GetSAMLProviderOutput: providerResponse, Arn: *p.Arn}
+	resource.Item = models.IAMSAMLIdentityProviderWrapper{
+		GetSAMLProviderOutput: providerResponse,
+		Arn:                   *p.Arn,
+		Tags:                  client.TagsToMap(providerResponse.Tags),
+	}
 	return nil
 }

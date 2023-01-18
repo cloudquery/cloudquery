@@ -1,5 +1,7 @@
 # Table: aws_glacier_vaults
 
+https://docs.aws.amazon.com/amazonglacier/latest/dev/api-vaults-get.html
+
 The primary key for this table is **arn**.
 
 ## Relations
@@ -25,4 +27,5 @@ The following tables depend on aws_glacier_vaults:
 |last_inventory_date|String|
 |number_of_archives|Int|
 |size_in_bytes|Int|
+|vault_arn|String|
 |vault_name|String|

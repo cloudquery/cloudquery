@@ -16,7 +16,10 @@ func (*Client) TransformBool(v *schema.Bool) any {
 }
 
 func (*Client) TransformBytea(v *schema.Bytea) any {
-	return v.Bytes
+	if v.Status == schema.Present {
+		return v.Bytes
+	}
+	return nil
 }
 
 func (*Client) TransformFloat8(v *schema.Float8) any {
@@ -34,19 +37,18 @@ func (*Client) TransformInt8(v *schema.Int8) any {
 }
 
 func (*Client) TransformInt8Array(v *schema.Int8Array) any {
-	r := pgtype.Array[pgtype.Int8]{}
+	r := pgtype.FlatArray[pgtype.Int8]{}
 	for _, e := range v.Elements {
-		r.Elements = append(r.Elements, pgtype.Int8{Int64: e.Int, Valid: e.Status == schema.Present})
-	}
-	r.Valid = v.Status == schema.Present
-	for _, d := range v.Dimensions {
-		r.Dims = append(r.Dims, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+		r = append(r, pgtype.Int8{Int64: e.Int, Valid: e.Status == schema.Present})
 	}
 	return &r
 }
 
 func (*Client) TransformJSON(v *schema.JSON) any {
-	return v.Bytes
+	if v.Status == schema.Present {
+		return v.Bytes
+	}
+	return nil
 }
 
 func (*Client) TransformText(v *schema.Text) any {
@@ -57,13 +59,9 @@ func (*Client) TransformText(v *schema.Text) any {
 }
 
 func (*Client) TransformTextArray(v *schema.TextArray) any {
-	r := pgtype.Array[pgtype.Text]{}
+	r := pgtype.FlatArray[pgtype.Text]{}
 	for _, e := range v.Elements {
-		r.Elements = append(r.Elements, pgtype.Text{String: stripNulls(e.Str), Valid: e.Status == schema.Present})
-	}
-	r.Valid = v.Status == schema.Present
-	for _, d := range v.Dimensions {
-		r.Dims = append(r.Dims, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+		r = append(r, pgtype.Text{String: stripNulls(e.Str), Valid: e.Status == schema.Present})
 	}
 	return &r
 }
@@ -83,72 +81,61 @@ func (*Client) TransformUUID(v *schema.UUID) any {
 }
 
 func (*Client) TransformUUIDArray(v *schema.UUIDArray) any {
-	r := pgtype.Array[pgtype.UUID]{}
+	r := pgtype.FlatArray[pgtype.UUID]{}
 	for _, e := range v.Elements {
-		r.Elements = append(r.Elements, pgtype.UUID{Bytes: e.Bytes, Valid: e.Status == schema.Present})
-	}
-	r.Valid = v.Status == schema.Present
-	for _, d := range v.Dimensions {
-		r.Dims = append(r.Dims, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+		r = append(r, pgtype.UUID{Bytes: e.Bytes, Valid: e.Status == schema.Present})
 	}
 	return &r
 }
 
 func (*Client) TransformCIDR(v *schema.CIDR) any {
-	return v.IPNet
+	if v.Status == schema.Present {
+		return v.IPNet
+	}
+	return nil
 }
 
 func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
-	r := pgtype.Array[*net.IPNet]{}
+	r := pgtype.FlatArray[*net.IPNet]{}
 	for _, e := range v.Elements {
-		r.Elements = append(r.Elements, e.IPNet)
-	}
-	r.Valid = v.Status == schema.Present
-	for _, d := range v.Dimensions {
-		r.Dims = append(r.Dims, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+		r = append(r, e.IPNet)
 	}
 	return &r
 }
 
 func (*Client) TransformInet(v *schema.Inet) any {
-	return v.IPNet
+	if v.Status == schema.Present {
+		return v.IPNet
+	}
+	return nil
 }
 
 func (*Client) TransformInetArray(v *schema.InetArray) any {
-	r := pgtype.Array[*net.IPNet]{}
+	r := pgtype.FlatArray[*net.IPNet]{}
 	for _, e := range v.Elements {
-		r.Elements = append(r.Elements, e.IPNet)
-	}
-	r.Valid = v.Status == schema.Present
-	for _, d := range v.Dimensions {
-		r.Dims = append(r.Dims, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+		r = append(r, e.IPNet)
 	}
 	return &r
 }
 
 func (*Client) TransformMacaddr(v *schema.Macaddr) any {
-	return v.Addr
+	if v.Status == schema.Present {
+		return v.Addr
+	}
+	return nil
 }
 
 func (c *Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
 	if c.pgType == pgTypeCockroachDB {
-		r := pgtype.Array[pgtype.Text]{}
+		r := pgtype.FlatArray[pgtype.Text]{}
 		for _, e := range v.Elements {
-			r.Elements = append(r.Elements, pgtype.Text{String: e.String(), Valid: e.Status == schema.Present})
-		}
-		r.Valid = v.Status == schema.Present
-		for _, d := range v.Dimensions {
-			r.Dims = append(r.Dims, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+			r = append(r, pgtype.Text{String: e.String(), Valid: e.Status == schema.Present})
 		}
 		return &r
 	}
-	r := pgtype.Array[net.HardwareAddr]{}
+	r := pgtype.FlatArray[net.HardwareAddr]{}
 	for _, e := range v.Elements {
-		r.Elements = append(r.Elements, e.Addr)
-	}
-	r.Valid = v.Status == schema.Present
-	for _, d := range v.Dimensions {
-		r.Dims = append(r.Dims, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+		r = append(r, e.Addr)
 	}
 	return &r
 }

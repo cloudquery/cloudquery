@@ -28,6 +28,7 @@ The primary key for this table is **arn**.
 |lustre_configuration|JSON|
 |network_interface_ids|StringArray|
 |owner_id|String|
+|resource_arn|String|
 |storage_capacity|Int|
 |subnet_ids|StringArray|
 |vpc_id|String|

@@ -1,0 +1,14 @@
+variables:
+  component: source/hackernews
+  binary: hackernews
+
+project_name: plugins/source/hackernews
+
+monorepo:
+  tag_prefix: plugins-source-hackernews-
+  dir: plugins/source/hackernews
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

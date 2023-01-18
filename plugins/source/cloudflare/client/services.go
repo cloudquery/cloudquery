@@ -19,10 +19,10 @@ type Api interface {
 	ListWAFGroups(ctx context.Context, zoneID, packageID string) ([]cloudflare.WAFGroup, error)
 	ListWAFRules(ctx context.Context, zoneID, packageID string) ([]cloudflare.WAFRule, error)
 
-	ListWorkerScripts(ctx context.Context) (cloudflare.WorkerListResponse, error)
-	ListWorkerRoutes(ctx context.Context, zoneID string) (cloudflare.WorkerRoutesResponse, error)
-	ListWorkerCronTriggers(ctx context.Context, accountID, scriptName string) ([]cloudflare.WorkerCronTrigger, error)
-	ListWorkersSecrets(ctx context.Context, script string) (cloudflare.WorkersListSecretsResponse, error)
+	ListWorkers(ctx context.Context, rc *cloudflare.ResourceContainer, params cloudflare.ListWorkersParams) (cloudflare.WorkerListResponse, *cloudflare.ResultInfo, error)
+	ListWorkerRoutes(ctx context.Context, rc *cloudflare.ResourceContainer, params cloudflare.ListWorkerRoutesParams) (cloudflare.WorkerRoutesResponse, error)
+	ListWorkerCronTriggers(ctx context.Context, rc *cloudflare.ResourceContainer, params cloudflare.ListWorkerCronTriggersParams) ([]cloudflare.WorkerCronTrigger, error)
+	ListWorkersSecrets(ctx context.Context, rc *cloudflare.ResourceContainer, params cloudflare.ListWorkersSecretsParams) (cloudflare.WorkersListSecretsResponse, error)
 
 	ListCertificatePacks(ctx context.Context, zoneID string) ([]cloudflare.CertificatePack, error)
 

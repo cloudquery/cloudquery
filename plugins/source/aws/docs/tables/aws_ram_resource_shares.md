@@ -19,13 +19,14 @@ The following tables depend on aws_ram_resource_shares:
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
+|arn (PK)|String|
+|tags|JSON|
 |allow_external_principals|Bool|
 |creation_time|Timestamp|
 |feature_set|String|
 |last_updated_time|Timestamp|
 |name|String|
 |owning_account_id|String|
-|arn (PK)|String|
+|resource_share_arn|String|
 |status|String|
 |status_message|String|
-|tags|JSON|
