@@ -1,3 +1,10 @@
+---
+title: How to Load Infrastructure Data into Athena
+tag: tutorial
+description: Load CloudQuery source data into AWS Athena.  
+author: hermanschaaf
+---
+
 # How to Load Infrastructure Data into Athena  
 
 ## Introduction
@@ -12,11 +19,22 @@ Let's get started!
 
 ## Steps
 
-### 1. Install CloudQuery
+### Step 1: Install CloudQuery
 
 To sync infrastructure data to S3, you will first need an installation of the CloudQuery CLI (or Docker image). See our [Quickstart](/docs/quickstart) for detailed instructions.
 
-### 2. Configure the AWS Source Plugin 
+### Step 2: Create a Bucket for the Data
+
+We will need to upload the sync results to S3 so that Athena can query them. We'll use the AWS CLI to do this in this tutorial, but you can also use the AWS web console or Terraform/CloudFormation if you prefer.
+
+First, we'll create a bucket to store the data:
+
+```bash copy
+export BUCKET_NAME=cloudquery-athena-example
+aws s3 mb s3://$BUCKET_NAME
+```
+
+### Step 3: Configure the AWS Source Plugin 
 
 We will configure the CloudQuery AWS source plugin to sync data from your AWS account(s). To do so, we'll create a file called `aws.yml` with the following config:
 
@@ -27,66 +45,41 @@ spec:
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
   tables: ["*"]
-  destinations: ["csv"]
+  destinations: ["s3"]
 ```
 
 This is the most basic configuration of the AWS source plugin. It will work as long as the AWS credentials you have configured in your environment have the appropriate permissions (e.g. via `aws sso login`). For more information on configuring the AWS source plugin, see the [AWS Source Plugin](/docs/plugins/source/aws) documentation.
 
-### 3. Configure the CSV Destination Plugin
+### Step 4: Configure the CSV Destination Plugin
 
-Similar to the config we created for the AWS plugin, we also need a destination config that is configured to write the AWS data to CSV files inside a local directory called `cq_csv_output`:
+Similar to the config we created for the AWS plugin, we also need a destination config that is configured to write the AWS data to JSON files in S3:
 
-```yaml title="csv.yml"
+```yaml title="s3.yml"
 kind: destination
 spec:
-  name: "csv"
-  path: "cloudquery/csv"
-  version: "VERSION_DESTINATION_CSV"
+  name: "s3"
+  path: "cloudquery/s3"
+  version: "VERSION_DESTINATION_S3"
   write_mode: "append"
   spec:
-    directory: './`cq_csv_output`'
+    bucket: "${BUCKET_NAME}"
+    path: "cloudquery/{{TABLE}}/{{UUID}}.json"
+    format: "json"
 ```
 
-For more information on configuring the CSV destination plugin, see the [CSV Destination Plugin](/docs/plugins/destination/csv) documentation.
+For more information on configuring the S3 destination plugin, see the [S3 Destination Plugin](/docs/plugins/destination/s3) documentation.
 
-### 4. Run CloudQuery sync
+### Step 5: Run CloudQuery sync
 
-With the CLI installed, these two files in place, and an enviroment authenticated to AWS, we can now run the following command to sync our AWS data to CSV files:
+With the CLI installed, these two files in place, and an environment authenticated to AWS, we can now run the following command to sync our AWS infrastructure data to S3:
 
 ```bash copy
-cloudquery sync aws.yml csv.yml
+cloudquery sync aws.yml s3.yml
 ```
 
-This will write the AWS data to CSV files in the `cq_csv_output` directory. You can see the files that were created by running `ls -al cq_csv_output`.
+This will write the AWS data as JSON files to the S3 bucket. You can see the files that were created by running `aws s3 ls s3://$BUCKET_NAME`.
 
-### 5. Upload the files to S3
-
-You should now have a directory called `cq_csv_output` that contains a number of CSV files. We need to upload these to S3 so that Athena can query them. We'll use the AWS CLI to do this in this tutorial, but you can also use the AWS web console or Terraform/CloudFormation if you prefer.
-
-First, we'll create a bucket to store the data:
-
-```bash copy
-export BUCKET_NAME=cloudquery-athena-example
-aws s3 mb s3://$BUCKET_NAME
-```
-
-Now we can upload the files to the bucket. Athena requires every table to be in its own directory, so we'll use a little bash scripting to upload each CSV file into its own directory:
-
-```bash copy
-for file in cq_csv_output/*.csv; do
-    filename=$(basename "$file")
-    foldername="${filename%.*}"
-    aws s3 cp "$file" "s3://$BUCKET_NAME/$foldername/$filename"
-done
-```
-
-You should now see a large number of objects in the bucket, which we can verify by listing the items:
-
-```bash copy
-aws s3 ls s3://$BUCKET_NAME
-```
-
-### 6. Create a Glue Crawler
+### Step 6: Create a Glue Crawler
 
 Athena can query data in S3, but it needs to know the schema of the data in order to do so. We can use a Glue Crawler to automatically infer the schema of the data and create a table in the Athena database we created in the previous step. We'll use the AWS CLI again.
 
@@ -267,7 +260,7 @@ aws glue start-crawler --name cloudquery-athena-example
 
 (You can also run the crawler on a schedule, but we won't cover that here.)
 
-### 7. Query the data
+### Step 7: Query the data
 
 The crawler should have created a database and tables in the Glue Data Catalog. Now we can query the data using Athena! Let's use the AWS Console for this step. Navigate to the Athena service in the AWS Console, go to the Query Editor page, and select the database we created earlier. You should see a list of tables in the database. Let's run a simple query to see what's in the `aws_iam_users` table:
 
