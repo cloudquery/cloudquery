@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -40,10 +41,15 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 		if err != nil {
 			return err
 		}
+		dst := &bytes.Buffer{}
+		err = json.Compact(dst, b)
+		if err != nil {
+			return err
+		}
 		recordsBatchInput.Records = append(recordsBatchInput.Records, types.Record{
-			Data: b,
+			Data: dst.Bytes(),
 		})
-		if len(recordsBatchInput.Records) == 1000 {
+		if len(recordsBatchInput.Records) == 500 {
 			c.sendBatch(ctx, recordsBatchInput)
 			recordsBatchInput.Records = nil
 		}
@@ -61,6 +67,9 @@ func (c *Client) sendBatch(ctx context.Context, recordsBatchInput *firehose.PutR
 	if aws.ToInt32(resp.FailedPutCount) > int32(0) {
 		// Handle partial success
 		c.logger.Warn().Msg("partial success in writing to firehose")
+		for i, r := range resp.RequestResponses {
+			c.logger.Warn().Msgf("record %d: %s", i, *r.ErrorMessage)
+		}
 	}
 	return nil
 }
