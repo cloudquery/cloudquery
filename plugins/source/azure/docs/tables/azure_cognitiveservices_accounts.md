@@ -1,5 +1,7 @@
 # Table: azure_cognitiveservices_accounts
 
+https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/accounts/list?tabs=HTTP#account
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -8,9 +8,10 @@ import (
 
 func sql_databases() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_cosmos_sql_databases",
-		Resolver:  fetchSqlDatabases,
-		Transform: transformers.TransformWithStruct(&armcosmos.SQLDatabaseGetResults{}),
+		Name:        "azure_cosmos_sql_databases",
+		Resolver:    fetchSqlDatabases,
+		Description: "https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/sql-resources/list-sql-databases?tabs=HTTP#sqldatabasegetresults",
+		Transform:   transformers.TransformWithStruct(&armcosmos.SQLDatabaseGetResults{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

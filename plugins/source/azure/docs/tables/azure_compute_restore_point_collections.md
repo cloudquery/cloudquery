@@ -1,5 +1,7 @@
 # Table: azure_compute_restore_point_collections
 
+https://learn.microsoft.com/en-us/rest/api/compute/restore-point-collections/list?tabs=HTTP#restorepointcollection
+
 The primary key for this table is **id**.
 
 ## Columns
