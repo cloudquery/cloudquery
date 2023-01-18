@@ -1,5 +1,7 @@
 # Table: azure_network_route_tables
 
+https://learn.microsoft.com/en-us/rest/api/virtualnetwork/route-tables/list?tabs=HTTP#routetable
+
 The primary key for this table is **id**.
 
 ## Columns

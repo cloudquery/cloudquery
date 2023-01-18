@@ -11,10 +11,11 @@ import (
 
 func ExternalSecuritySolutions() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_external_security_solutions",
-		Resolver:  fetchExternalSecuritySolutions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_external_security_solutions", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.ExternalSecuritySolution{}),
+		Name:        "azure_security_external_security_solutions",
+		Resolver:    fetchExternalSecuritySolutions,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/external-security-solutions/list?tabs=HTTP#externalsecuritysolutionlist",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_external_security_solutions", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.ExternalSecuritySolution{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

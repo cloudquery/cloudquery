@@ -11,10 +11,11 @@ import (
 
 func Monitors() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_workloads_monitors",
-		Resolver:  fetchMonitors,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_workloads_monitors", client.Namespacemicrosoft_workloads),
-		Transform: transformers.TransformWithStruct(&armworkloads.Monitor{}),
+		Name:        "azure_workloads_monitors",
+		Resolver:    fetchMonitors,
+		Description: "https://learn.microsoft.com/en-us/rest/api/workloads/sap-monitor/list?tabs=HTTP#monitor",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_workloads_monitors", client.Namespacemicrosoft_workloads),
+		Transform:   transformers.TransformWithStruct(&armworkloads.Monitor{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

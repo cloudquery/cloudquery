@@ -11,10 +11,11 @@ import (
 
 func ApplicationSecurityGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_application_security_groups",
-		Resolver:  fetchApplicationSecurityGroups,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_application_security_groups", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.ApplicationSecurityGroup{}),
+		Name:        "azure_network_application_security_groups",
+		Resolver:    fetchApplicationSecurityGroups,
+		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/application-security-groups/list?tabs=HTTP#applicationsecuritygroup",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_application_security_groups", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.ApplicationSecurityGroup{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

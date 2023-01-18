@@ -11,10 +11,11 @@ import (
 
 func IpAllocations() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_ip_allocations",
-		Resolver:  fetchIpAllocations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_ip_allocations", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.IPAllocation{}),
+		Name:        "azure_network_ip_allocations",
+		Resolver:    fetchIpAllocations,
+		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/ip-allocations/list?tabs=HTTP#ipallocation",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_ip_allocations", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.IPAllocation{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

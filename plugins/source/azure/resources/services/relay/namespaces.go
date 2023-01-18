@@ -11,10 +11,11 @@ import (
 
 func Namespaces() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_relay_namespaces",
-		Resolver:  fetchNamespaces,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_relay_namespaces", client.Namespacemicrosoft_relay),
-		Transform: transformers.TransformWithStruct(&armrelay.Namespace{}),
+		Name:        "azure_relay_namespaces",
+		Resolver:    fetchNamespaces,
+		Description: "https://learn.microsoft.com/en-us/rest/api/relay/namespaces/list?tabs=HTTP#relaynamespace",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_relay_namespaces", client.Namespacemicrosoft_relay),
+		Transform:   transformers.TransformWithStruct(&armrelay.Namespace{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

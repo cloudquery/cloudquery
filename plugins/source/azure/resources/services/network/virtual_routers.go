@@ -11,10 +11,11 @@ import (
 
 func VirtualRouters() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_virtual_routers",
-		Resolver:  fetchVirtualRouters,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_routers", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.VirtualRouter{}),
+		Name:        "azure_network_virtual_routers",
+		Resolver:    fetchVirtualRouters,
+		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/virtual-routers/list?tabs=HTTP#virtualrouter",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_routers", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualRouter{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

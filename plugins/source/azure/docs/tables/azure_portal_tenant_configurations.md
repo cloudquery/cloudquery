@@ -1,5 +1,7 @@
 # Table: azure_portal_tenant_configurations
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal@v0.5.0#Configuration
+
 The primary key for this table is **id**.
 
 ## Columns

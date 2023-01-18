@@ -1,5 +1,7 @@
 # Table: azure_redhatopenshift_open_shift_clusters
 
+https://learn.microsoft.com/en-us/rest/api/openshift/open-shift-clusters/list?tabs=HTTP#openshiftcluster
+
 The primary key for this table is **id**.
 
 ## Columns

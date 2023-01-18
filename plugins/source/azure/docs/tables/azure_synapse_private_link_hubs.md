@@ -1,5 +1,7 @@
 # Table: azure_synapse_private_link_hubs
 
+https://learn.microsoft.com/en-us/rest/api/synapse/private-link-hubs/list?tabs=HTTP#privatelinkhub
+
 The primary key for this table is **id**.
 
 ## Columns

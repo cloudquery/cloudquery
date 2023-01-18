@@ -1,5 +1,7 @@
 # Table: azure_sql_server_database_blob_auditing_policies
 
+https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/database-blob-auditing-policies/list-by-database?tabs=HTTP#databaseblobauditingpolicy
+
 The primary key for this table is **id**.
 
 ## Relations

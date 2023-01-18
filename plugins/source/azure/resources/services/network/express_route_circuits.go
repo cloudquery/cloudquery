@@ -11,10 +11,11 @@ import (
 
 func ExpressRouteCircuits() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_express_route_circuits",
-		Resolver:  fetchExpressRouteCircuits,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_express_route_circuits", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.ExpressRouteCircuit{}),
+		Name:        "azure_network_express_route_circuits",
+		Resolver:    fetchExpressRouteCircuits,
+		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuits/list?tabs=HTTP#expressroutecircuit",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_express_route_circuits", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRouteCircuit{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

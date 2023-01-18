@@ -1,5 +1,7 @@
 # Table: azure_security_topology
 
+https://learn.microsoft.com/en-us/rest/api/defenderforcloud/topology/list?tabs=HTTP#topologyresource
+
 The primary key for this table is **id**.
 
 ## Columns

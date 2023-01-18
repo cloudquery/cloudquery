@@ -1,5 +1,7 @@
 # Table: azure_support_tickets
 
+https://learn.microsoft.com/en-us/rest/api/support/support-tickets/list?tabs=HTTP#supportticketdetails
+
 The primary key for this table is **id**.
 
 ## Columns

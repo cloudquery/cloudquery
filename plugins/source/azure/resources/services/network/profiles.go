@@ -11,10 +11,11 @@ import (
 
 func Profiles() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_profiles",
-		Resolver:  fetchProfiles,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_profiles", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.Profile{}),
+		Name:        "azure_network_profiles",
+		Resolver:    fetchProfiles,
+		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-profiles/list?tabs=HTTP#networkprofile",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_profiles", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.Profile{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
