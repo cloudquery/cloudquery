@@ -13,6 +13,6 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("kinesisfirehose", plugin.Version, client.New, destination.WithManagedWriter())
+	p := destination.NewPlugin("kinesisfirehose", plugin.Version, client.New, destination.WithDefaultBatchSize(500))
 	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
 }
