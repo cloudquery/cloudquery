@@ -1,5 +1,7 @@
 # Table: azure_engagementfabric_accounts
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric@v0.1.0#Account
+
 The primary key for this table is **id**.
 
 ## Columns

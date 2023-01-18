@@ -8,9 +8,10 @@ import (
 
 func server_configurations() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_mysql_server_configurations",
-		Resolver:  fetchServerConfigurations,
-		Transform: transformers.TransformWithStruct(&armmysql.Configuration{}),
+		Name:        "azure_mysql_server_configurations",
+		Resolver:    fetchServerConfigurations,
+		Description: "https://learn.microsoft.com/en-us/rest/api/mysql/singleserver/configurations/list-by-server?tabs=HTTP#configuration",
+		Transform:   transformers.TransformWithStruct(&armmysql.Configuration{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

@@ -1,5 +1,7 @@
 # Table: azure_monitor_tenant_activity_log_alerts
 
+https://learn.microsoft.com/en-us/rest/api/monitor/activity-log-alerts/list-by-subscription-id?tabs=HTTP#activitylogalertresource
+
 The primary key for this table is **id**.
 
 ## Columns

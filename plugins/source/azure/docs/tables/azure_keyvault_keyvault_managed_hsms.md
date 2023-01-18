@@ -1,5 +1,7 @@
 # Table: azure_keyvault_keyvault_managed_hsms
 
+https://learn.microsoft.com/en-us/rest/api/keyvault/managedhsm/managed-hsms/list-by-subscription?tabs=HTTP#managedhsm
+
 The primary key for this table is **id**.
 
 ## Columns

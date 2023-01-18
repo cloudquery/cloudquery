@@ -8,9 +8,10 @@ import (
 
 func keyvault_keys() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_keyvault_keyvault_keys",
-		Resolver:  fetchKeyvaultKeys,
-		Transform: transformers.TransformWithStruct(&armkeyvault.Key{}),
+		Name:        "azure_keyvault_keyvault_keys",
+		Resolver:    fetchKeyvaultKeys,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault@v1.0.0#Key",
+		Transform:   transformers.TransformWithStruct(&armkeyvault.Key{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",
