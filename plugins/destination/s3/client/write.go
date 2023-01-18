@@ -48,7 +48,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
-	// we don't do upload in parallel here because AWS sdk moves the burden to the developer, and
+	// we don't upload in parallel here because AWS sdk moves the burden to the developer, and
 	// we don't want to deal with that yet. in the future maybe we can run some benchmarks and see if adding parallelization helps.
 	r := io.Reader(&b)
 	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
