@@ -23,7 +23,13 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	w := io.Writer(&b)
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		client, err := csv.NewClient()
+		opts := []csv.Options{
+			csv.WithDelimiter(c.pluginSpec.Delimiter),
+		}
+		if c.pluginSpec.IncludeHeaders {
+			opts = append(opts, csv.WithHeader())
+		}
+		client, err := csv.NewClient(opts...)
 		if err != nil {
 			return err
 		}
