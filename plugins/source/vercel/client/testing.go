@@ -72,7 +72,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	newTestExecutionClient := func(ctx context.Context, _ zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, _ zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		var veSpec Spec
 		if err := spec.UnmarshalSpec(&veSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal vercel spec: %w", err)

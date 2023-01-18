@@ -14,7 +14,7 @@ The core responsibilities of a source plugin:
 - Define the schema (tables).
 - Authenticate with the supported APIs, SaaS services and/or cloud providers.
 - Extracting data from the supported APIs and transform them into the defined schema.
-- Send the data as JSON to the CLI for further processing and storage at the defined destination plugins.
+- Send the data via [protobuf](https://github.com/cloudquery/plugin-sdk/tree/main/internal/pb) to the CLI for further processing and storage at the defined destination plugins.
 
 See [Configuration Reference](../reference/source-spec)
 
@@ -24,6 +24,6 @@ The core responsibilities of a destination plugin:
 
 - Authenticate with the destination (such as database, message queue, storage).
 - Auto-migrate the schemas defined by the source plugins.
-- Save each incoming JSON object in the appropriate table.
+- Save each incoming object in the appropriate table.
 
 See [Configuration Reference](../reference/destination-spec)

@@ -26,7 +26,6 @@ type Client struct {
 	resourceGroups       map[string][]*armresources.GenericResourceExpanded
 	// this is set by table client multiplexer
 	SubscriptionId string
-	ResourceGroup  string
 	Creds          azcore.TokenCredential
 	Options        *arm.ClientOptions
 }
@@ -44,9 +43,10 @@ func (c *Client) discoverSubscriptions(ctx context.Context) error {
 			return err
 		}
 		for _, sub := range page.Value {
+			// we record all returned values, even disabled
+			c.SubscriptionsObjects = append(c.SubscriptionsObjects, sub)
 			if *sub.State == armsubscription.SubscriptionStateEnabled {
 				c.subscriptions = append(c.subscriptions, strings.TrimPrefix(*sub.ID, "/subscriptions/"))
-				c.SubscriptionsObjects = append(c.SubscriptionsObjects, sub)
 			}
 		}
 	}
@@ -102,7 +102,7 @@ func (c *Client) disocverResourceGroups(ctx context.Context) error {
 	return nil
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var spec Spec
 	var err error
 	if err := s.UnmarshalSpec(&spec); err != nil {

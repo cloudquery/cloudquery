@@ -26,7 +26,7 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		var awsSpec Spec
 		if err := spec.UnmarshalSpec(&awsSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal aws spec: %w", err)

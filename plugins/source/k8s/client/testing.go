@@ -26,7 +26,7 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
-	configureFunc := func(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+	configureFunc := func(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		var k8sSpec Spec
 		if err := s.UnmarshalSpec(&k8sSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal k8s spec: %w", err)
