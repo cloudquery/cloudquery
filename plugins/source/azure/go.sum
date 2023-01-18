@@ -82,8 +82,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armconta
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry v0.6.0/go.mod h1:0FPu3oDRGPvuX1H8TtHJ5XGA0KrXLunomcixR+PQGGA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice v1.0.0 h1:figxyQZXzZQIcP3njhC68bYUiTw45J8/SsHaLW8Ax0M=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice v1.0.0/go.mod h1:TmlMW4W5OvXOmOyKNnor8nlMMiO1ctIyzmHme/VHsrA=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos v1.0.0 h1:Fv8iibGn1eSw0lt2V3cTsuokBEnOP+M//n8OiMcCgTM=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos v1.0.0/go.mod h1:Qpe/qN9d5IQ7WPtTXMRCd6+BWTnhi3sxXVys6oJ5Vho=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2 v2.1.0 h1:OsCNwwLbOU/1B7i/t57vb8D2x9jQ5I4yvw3EB/67VPY=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2 v2.1.0/go.mod h1:0Ru3yBTzBbuSfQbbQYmF+D3muZzraKOSIkGzvHpOWi8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement v1.0.0 h1:8L7OWiGwm6qe2U3zDv3K3WDXwOOgurDu7qw6Mv86Nlw=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement v1.0.0/go.mod h1:A8BFugBY4i+NVB3A87dK5jR0q765uv4KY8fE8o+sCcM=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights v1.0.0 h1:LonxoZFQ3+bmWU6GqIGZ/gP8YEte4lV4ZbqpUqJxlG4=

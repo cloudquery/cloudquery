@@ -1,7 +1,7 @@
 package cosmos
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
