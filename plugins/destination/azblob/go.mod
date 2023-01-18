@@ -12,7 +12,7 @@ require (
 )
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.1.4 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.3.0 // indirect; indirect // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.1.2 // indirect; indirect // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v0.7.0 // indirect
 	github.com/getsentry/sentry-go v0.16.0 // indirect
