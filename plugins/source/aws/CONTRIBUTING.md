@@ -2,7 +2,7 @@
 
 Thanks for contributing to CloudQuery! You are awesome. This document serves as a guide for adding new services and resources to the AWS source plugin.
 
-There are three main steps to adding a new AWS resource:
+There are two main steps to adding a new AWS resource:
 
 1. [Generate interfaces for the AWS SDK function(s) that fetch the resource](#step-1-generate-interfaces-for-the-aws-sdk-functions-that-fetch-the-resource)
 2. [Add a new table](#step-2-add-a-new-table)
