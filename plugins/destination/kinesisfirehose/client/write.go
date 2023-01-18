@@ -6,15 +6,18 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"sync/atomic"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/firehose/types"
+	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
+func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
 	parsedARN, err := arn.Parse(c.pluginSpec.StreamARN)
 	if err != nil {
 		c.logger.Error().Err(err).Msg("invalid firehose stream ARN")
@@ -29,10 +32,15 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 		DeliveryStreamName: aws.String(resource[1]),
 	}
 
-	for _, resource := range data {
+	for resource := range res {
+		table := tables.Get(resource.TableName)
+		if table == nil {
+			panic(fmt.Errorf("table %s not found", resource.TableName))
+		}
+
 		jsonObj := make(map[string]any, len(table.Columns)+1)
-		for i := range resource {
-			jsonObj[table.Columns[i].Name] = resource[i]
+		for i := range resource.Data {
+			jsonObj[table.Columns[i].Name] = resource.Data[i]
 		}
 		// Add table name to the json object
 		// TODO: This should be added to the SDK so that it can be used for other plugins as well
@@ -46,16 +54,27 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 		if err != nil {
 			return err
 		}
-		recordsBatchInput.Records = append(recordsBatchInput.Records, types.Record{
-			Data: dst.Bytes(),
-		})
+		if len(dst.Bytes()) < 1024000 {
+			recordsBatchInput.Records = append(recordsBatchInput.Records, types.Record{
+				Data: dst.Bytes(),
+			})
+		} else {
+			// log that skipping because record is too large
+			c.logger.Warn().Msgf("skipping record because it is too large: %s", string(b))
+		}
 		if len(recordsBatchInput.Records) == 500 {
 			c.sendBatch(ctx, recordsBatchInput)
+			atomic.AddUint64(&c.metrics.Writes, uint64(len(recordsBatchInput.Records)))
 			recordsBatchInput.Records = nil
 		}
 	}
 
-	return c.sendBatch(ctx, recordsBatchInput)
+	if len(recordsBatchInput.Records) > 0 {
+		c.sendBatch(ctx, recordsBatchInput)
+		atomic.AddUint64(&c.metrics.Writes, uint64(len(recordsBatchInput.Records)))
+	}
+
+	return nil
 }
 
 func (c *Client) sendBatch(ctx context.Context, recordsBatchInput *firehose.PutRecordBatchInput) error {
@@ -67,9 +86,44 @@ func (c *Client) sendBatch(ctx context.Context, recordsBatchInput *firehose.PutR
 	if aws.ToInt32(resp.FailedPutCount) > int32(0) {
 		// Handle partial success
 		c.logger.Warn().Msg("partial success in writing to firehose")
-		for i, r := range resp.RequestResponses {
-			c.logger.Warn().Msgf("record %d: %s", i, *r.ErrorMessage)
+		retryRecords := &firehose.PutRecordBatchInput{
+			DeliveryStreamName: recordsBatchInput.DeliveryStreamName,
 		}
+		for i, r := range resp.RequestResponses {
+			if r.RecordId == nil {
+				retryRecords.Records = append(retryRecords.Records, recordsBatchInput.Records[i])
+			}
+		}
+		return c.retryBatch(ctx, retryRecords, 1)
+	} else {
+		c.logger.Warn().Msgf("wrote: %d records", len(recordsBatchInput.Records))
+	}
+
+	return nil
+}
+
+func (c *Client) retryBatch(ctx context.Context, recordsBatchInput *firehose.PutRecordBatchInput, count int) error {
+	if count == 5 {
+		return fmt.Errorf("max retries reached")
+	}
+
+	time.Sleep(time.Duration(count) * time.Second)
+	retryRecords := &firehose.PutRecordBatchInput{
+		DeliveryStreamName: recordsBatchInput.DeliveryStreamName,
+	}
+	resp, err := c.firehoseClient.PutRecordBatch(ctx, recordsBatchInput)
+	if err != nil {
+		c.logger.Error().Err(err).Msg("failed to write to firehose")
+		return err
+	}
+	if aws.ToInt32(resp.FailedPutCount) > int32(0) {
+		for i, r := range resp.RequestResponses {
+			if r.RecordId == nil {
+				retryRecords.Records = append(retryRecords.Records, recordsBatchInput.Records[i])
+			}
+		}
+		return c.retryBatch(ctx, retryRecords, count+1)
 	}
 	return nil
+
 }
