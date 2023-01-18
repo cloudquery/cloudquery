@@ -14,7 +14,9 @@ require("prismjs/components/prism-toml");
 
 // Shim requestIdleCallback in Safari
 if (typeof window !== "undefined" && !("requestIdleCallback" in window)) {
+  // @ts-expect-error
   window.requestIdleCallback = (fn) => setTimeout(fn, 1);
+  // @ts-expect-error
   window.cancelIdleCallback = (e) => clearTimeout(e);
 }
 

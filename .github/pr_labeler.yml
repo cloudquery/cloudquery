@@ -34,6 +34,8 @@ plausible:
   - plugins/source/plausible/**/*
 k8s:
   - plugins/source/k8s/**/*
+launchdarkly:
+  - plugins/source/launchdarkly/**/*
 mixpanel:
   - plugins/source/mixpanel/**/*
 okta:

@@ -21,6 +21,7 @@
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
     "plugins/source/hubspot": { "component": "plugins-source-hubspot" },
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
+    "plugins/source/launchdarkly": { "component": "plugins-source-launchdarkly" },
     "plugins/source/okta": { "component": "plugins-source-okta" },
     "plugins/source/oracle": {"component": "plugins-source-oracle"},
     "plugins/source/salesforce": { "component": "plugins-source-salesforce" },

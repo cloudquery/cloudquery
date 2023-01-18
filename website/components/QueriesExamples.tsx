@@ -1,4 +1,4 @@
-import { DuplicateIcon } from "@heroicons/react/outline"
+import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 
 const SecurityQuery = () => (
     <>
@@ -90,7 +90,7 @@ const QueryItem = ({ children, onClick, description, title }) => {
                     onClick={onClick}
                     className="absolute bottom-6 right-3 px-2 py-2 text-gray-600 bg-black rounded-md bg-opacity-5 dark:bg-white dark:text-gray-300 dark:border-gray-700 dark:bg-opacity-5 betterhover:hover:bg-gray-50 betterhover:dark:hover:bg-gray-900 md:py-3 md:text-base md:leading-6 md:px-10"
                 >
-                    <DuplicateIcon className="w-6 h-6 text-gray-400" />
+                    <DocumentDuplicateIcon className="w-6 h-6 text-gray-400" />
                 </button>
             </div>
             <div className='mt-6'>

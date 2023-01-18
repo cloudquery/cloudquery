@@ -17,9 +17,9 @@ This table depends on [gcp_vmmigration_sources](gcp_vmmigration_sources.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
-|name (PK)|String|
 |create_time|Timestamp|
 |update_time|Timestamp|
+|name (PK)|String|
 |registration_id|String|
 |service_account|String|
 |version|String|
