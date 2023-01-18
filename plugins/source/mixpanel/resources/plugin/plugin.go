@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/client"
+	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/resources/services/annotations"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/resources/services/cohorts"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/resources/services/funnels"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
@@ -17,6 +18,7 @@ func Plugin() *source.Plugin {
 		"mixpanel",
 		Version,
 		[]*schema.Table{
+			annotations.Annotations(),
 			cohorts.Cohorts(),
 			funnels.Funnels(),
 		},

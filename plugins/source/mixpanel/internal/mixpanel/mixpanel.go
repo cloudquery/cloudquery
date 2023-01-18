@@ -26,6 +26,8 @@ type Client struct {
 	pageSize   int64
 }
 
+const StatusOK = "ok"
+
 type HTTPDoer interface {
 	Do(req *http.Request) (*http.Response, error)
 }
@@ -67,7 +69,9 @@ func (v *Client) Request(ctx context.Context, path string, qp url.Values, fill a
 		qp = url.Values{}
 	}
 
-	body, err := v.request(ctx, path, qp)
+	uri := v.getBaseURL() + path
+
+	body, err := v.request(ctx, uri, qp)
 	if err != nil {
 		return err
 	}
@@ -79,9 +83,7 @@ func (v *Client) Request(ctx context.Context, path string, qp url.Values, fill a
 	return json.NewDecoder(body).Decode(&fill)
 }
 
-func (v *Client) request(ctx context.Context, path string, qp url.Values) (io.ReadCloser, error) {
-	u := v.getBaseURL() + path
-
+func (v *Client) request(ctx context.Context, uri string, qp url.Values) (io.ReadCloser, error) {
 	if v.projectID > 0 {
 		qp.Set("project_id", strconv.FormatInt(v.projectID, 10))
 	}
@@ -91,7 +93,7 @@ func (v *Client) request(ctx context.Context, path string, qp url.Values) (io.Re
 
 	retries := int64(0)
 	for {
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, u+"?"+qp.Encode(), nil)
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, uri+"?"+qp.Encode(), nil)
 		if err != nil {
 			return nil, err
 		}
@@ -136,8 +138,8 @@ func (v *Client) getBaseURL() string {
 
 	switch v.region {
 	case RegionEU:
-		return "https://api.eu.mixpanel.com"
+		return "https://eu.mixpanel.com"
 	default:
-		return "https://api.mixpanel.com"
+		return "https://mixpanel.com"
 	}
 }
