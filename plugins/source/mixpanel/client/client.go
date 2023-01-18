@@ -75,13 +75,21 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*mixpanel.Client, erro
 	if spec.PageSize < 1 {
 		spec.PageSize = 50
 	}
+	rg, err := mixpanel.ParseRegion(spec.Region)
+	if err != nil {
+		return nil, err
+	}
+	if rg == mixpanel.RegionNone {
+		rg = mixpanel.RegionUS
+	}
 
 	return mixpanel.New(
 		logger,
 		&http.Client{
 			Timeout: time.Duration(spec.Timeout) * time.Second,
 		},
-		spec.BaseURL,
+		rg,
+		"",
 		spec.Username,
 		spec.Secret,
 		spec.ProjectID,

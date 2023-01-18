@@ -91,7 +91,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			return nil, err
 		}
 
-		services := mixpanel.New(logger, mockClient, h.URL, testUser, testSecret, testProjectID, 0, 1, 50)
+		services := mixpanel.New(logger, mockClient, mixpanel.RegionNone, h.URL, testUser, testSecret, testProjectID, 0, 1, 50)
 		c := New(logger, spec, mpSpec, services, opts.Backend)
 		return &c, nil
 	}

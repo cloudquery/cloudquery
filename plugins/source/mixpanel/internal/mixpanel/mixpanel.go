@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -16,6 +17,7 @@ import (
 type Client struct {
 	logger                 zerolog.Logger
 	hc                     HTTPDoer
+	region                 Region
 	baseURL                string
 	apiUser, apiSecret     string
 	projectID, workspaceID int64
@@ -28,14 +30,27 @@ type HTTPDoer interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-func New(logger zerolog.Logger, hc HTTPDoer, baseURL, apiUser, apiSecret string, projectID, workspaceID, maxRetries, pageSize int64) *Client {
-	if baseURL == "" {
-		baseURL = "https://mixpanel.com"
-	}
+type Region string
 
+const (
+	RegionNone = Region("")
+	RegionUS   = Region("us")
+	RegionEU   = Region("eu")
+)
+
+func ParseRegion(v string) (Region, error) {
+	r := Region(strings.ToLower(v))
+	if r != RegionNone && r != RegionUS && r != RegionEU {
+		return RegionNone, fmt.Errorf("unknown region %q", v)
+	}
+	return r, nil
+}
+
+func New(logger zerolog.Logger, hc HTTPDoer, region Region, baseURL, apiUser, apiSecret string, projectID, workspaceID, maxRetries, pageSize int64) *Client {
 	return &Client{
 		logger:      logger,
 		hc:          hc,
+		region:      region,
 		baseURL:     baseURL,
 		apiUser:     apiUser,
 		apiSecret:   apiSecret,
@@ -61,7 +76,7 @@ func (v *Client) Request(ctx context.Context, path string, qp url.Values, fill a
 }
 
 func (v *Client) request(ctx context.Context, path string, qp url.Values) (io.ReadCloser, error) {
-	u := v.baseURL + path
+	u := v.getBaseURL() + path
 
 	if v.projectID > 0 {
 		qp.Set("project_id", strconv.FormatInt(v.projectID, 10))
@@ -108,4 +123,17 @@ func (v *Client) request(ctx context.Context, path string, qp url.Values) (io.Re
 	}
 
 	return nil, fmt.Errorf("exceeded max retries")
+}
+
+func (v *Client) getBaseURL() string {
+	if v.baseURL != "" {
+		return v.baseURL
+	}
+
+	switch v.region {
+	case RegionEU:
+		return "https://api.eu.mixpanel.com"
+	default:
+		return "https://api.mixpanel.com"
+	}
 }

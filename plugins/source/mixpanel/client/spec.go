@@ -8,7 +8,7 @@ type Spec struct {
 	WorkspaceID int64 `json:"workspace_id,omitempty"`
 
 	// Optional
-	BaseURL    string `json:"base_url,omitempty"`
+	Region     string `json:"region,omitempty"`
 	Timeout    int64  `json:"timeout_secs,omitempty"`
 	MaxRetries int64  `json:"max_retries,omitempty"`
 	PageSize   int64  `json:"page_size,omitempty"`
