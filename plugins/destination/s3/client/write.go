@@ -23,11 +23,19 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	w := io.Writer(&b)
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		if err := csv.WriteTableBatch(w, table, data); err != nil {
+		client, err := csv.NewClient()
+		if err != nil {
+			return err
+		}
+		if err := client.WriteTableBatch(w, table, data); err != nil {
 			return err
 		}
 	case FormatTypeJSON:
-		if err := json.WriteTableBatch(w, table, data); err != nil {
+		client, err := json.NewClient()
+		if err != nil {
+			return err
+		}
+		if err := client.WriteTableBatch(w, table, data); err != nil {
 			return err
 		}
 	default:

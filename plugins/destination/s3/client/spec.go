@@ -12,13 +12,19 @@ const (
 )
 
 type Spec struct {
-	Bucket   string     `json:"bucket,omitempty"`
-	Path     string     `json:"path,omitempty"`
-	Format   FormatType `json:"format,omitempty"`
-	NoRotate bool       `json:"no_rotate,omitempty"`
+	Bucket         string     `json:"bucket,omitempty"`
+	Path           string     `json:"path,omitempty"`
+	Format         FormatType `json:"format,omitempty"`
+	IncludeHeaders bool       `json:"include_headers,omitempty"`
+	Delimiter      rune       `json:"delimiter,omitempty"`
+	NoRotate       bool       `json:"no_rotate,omitempty"`
 }
 
-func (*Spec) SetDefaults() {}
+func (s *Spec) SetDefaults() {
+	if s.Delimiter == 0 {
+		s.Delimiter = ','
+	}
+}
 
 func (s *Spec) Validate() error {
 	if s.Bucket == "" {

@@ -45,11 +45,26 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		if err := csv.Read(r, table, sourceName, res); err != nil {
+		opts := []csv.Options{
+			csv.WithDelimiter(c.pluginSpec.Delimiter),
+		}
+		if c.pluginSpec.IncludeHeaders {
+			opts = append(opts, csv.WithHeader())
+		}
+
+		client, err := csv.NewClient(opts...)
+		if err != nil {
+			return err
+		}
+		if err = client.Read(r, table, sourceName, res); err != nil {
 			return err
 		}
 	case FormatTypeJSON:
-		if err := json.Read(r, table, sourceName, res); err != nil {
+		client, err := json.NewClient()
+		if err != nil {
+			return err
+		}
+		if err := client.Read(r, table, sourceName, res); err != nil {
 			return err
 		}
 	default:
