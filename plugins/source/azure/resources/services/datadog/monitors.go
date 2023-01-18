@@ -11,10 +11,11 @@ import (
 
 func Monitors() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_datadog_monitors",
-		Resolver:  fetchMonitors,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_datadog_monitors", client.Namespacemicrosoft_datadog),
-		Transform: transformers.TransformWithStruct(&armdatadog.MonitorResource{}),
+		Name:        "azure_datadog_monitors",
+		Resolver:    fetchMonitors,
+		Description: "https://learn.microsoft.com/en-us/rest/api/datadog/monitors/list?tabs=HTTP#datadogmonitorresource",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datadog_monitors", client.Namespacemicrosoft_datadog),
+		Transform:   transformers.TransformWithStruct(&armdatadog.MonitorResource{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

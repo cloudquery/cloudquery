@@ -11,10 +11,11 @@ import (
 
 func Services() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_healthcareapis_services",
-		Resolver:  fetchServices,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_healthcareapis_services", client.Namespacemicrosoft_healthcareapis),
-		Transform: transformers.TransformWithStruct(&armhealthcareapis.ServicesDescription{}),
+		Name:        "azure_healthcareapis_services",
+		Resolver:    fetchServices,
+		Description: "https://learn.microsoft.com/en-us/rest/api/healthcareapis/services/list?tabs=HTTP#servicesdescription",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_healthcareapis_services", client.Namespacemicrosoft_healthcareapis),
+		Transform:   transformers.TransformWithStruct(&armhealthcareapis.ServicesDescription{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

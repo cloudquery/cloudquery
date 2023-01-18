@@ -11,10 +11,11 @@ import (
 
 func DnsResolvers() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_dnsresolver_dns_resolvers",
-		Resolver:  fetchDnsResolvers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_dnsresolver_dns_resolvers", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armdnsresolver.DNSResolver{}),
+		Name:        "azure_dnsresolver_dns_resolvers",
+		Resolver:    fetchDnsResolvers,
+		Description: "https://learn.microsoft.com/en-us/rest/api/dns/dnsresolver/dns-resolvers/list?tabs=HTTP#dnsresolver",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_dnsresolver_dns_resolvers", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armdnsresolver.DNSResolver{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

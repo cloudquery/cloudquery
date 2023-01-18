@@ -1,5 +1,7 @@
 # Table: azure_healthbot_bots
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot@v1.0.0#HealthBot
+
 The primary key for this table is **id**.
 
 ## Columns

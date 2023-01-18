@@ -11,10 +11,11 @@ import (
 
 func ProviderOperationsMetadata() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_authorization_provider_operations_metadata",
-		Resolver:  fetchProviderOperationsMetadata,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_provider_operations_metadata", client.Namespacemicrosoft_authorization),
-		Transform: transformers.TransformWithStruct(&armauthorization.ProviderOperationsMetadata{}),
+		Name:        "azure_authorization_provider_operations_metadata",
+		Resolver:    fetchProviderOperationsMetadata,
+		Description: "https://learn.microsoft.com/en-us/rest/api/authorization/provider-operations-metadata/list?tabs=HTTP#provideroperationsmetadata",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_provider_operations_metadata", client.Namespacemicrosoft_authorization),
+		Transform:   transformers.TransformWithStruct(&armauthorization.ProviderOperationsMetadata{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

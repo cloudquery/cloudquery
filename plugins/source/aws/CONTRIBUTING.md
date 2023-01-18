@@ -2,7 +2,7 @@
 
 Thanks for contributing to CloudQuery! You are awesome. This document serves as a guide for adding new services and resources to the AWS source plugin.
 
-There are three main steps to adding a new AWS resource:
+There are two main steps to adding a new AWS resource:
 
 1. [Generate interfaces for the AWS SDK function(s) that fetch the resource](#step-1-generate-interfaces-for-the-aws-sdk-functions-that-fetch-the-resource)
 2. [Add a new table](#step-2-add-a-new-table)
@@ -16,7 +16,7 @@ As a prerequisite, in [aws-sdk-go-v2](https://pkg.go.dev/github.com/aws/aws-sdk-
 
 ### Generate the Service Interface (if it doesn't exist)
 
-1. Check in [client/services.go](client/services.go) that the service you need has an interface defined. If it does, you can skip to [2. Add a Code Generation Recipe](#2-add-a-code-generation-recipe). If not, read on to learn how to generate the interface.
+1. Check in [client/services.go](client/services.go) that the service you need has an interface defined. If it does, you can skip to [Step 2](#step-2-add-a-new-table). If not, read on to learn how to generate the interface.
 2. Inside [codegen/services/clients.go](codegen/services/clients.go), add the client for the AWS SDK you need to the `clients` slice. You may need to run `go get github.com/aws/aws-sdk-go-v2/service/<service-name>` (e.g. `go get github.com/aws/aws-sdk-go-v2/service/dynamodb`) to add the dependency first.
 3. Run `make gen-mocks`. This takes a few seconds, but it should add the interface for your client to [client/services.go](client/services.go) and create a mock for it that will be used in unit tests later.
 

@@ -1,5 +1,7 @@
 # Table: azure_applicationinsights_web_tests
 
+https://learn.microsoft.com/en-us/rest/api/application-insights/web-tests/list?tabs=HTTP#webtest
+
 The primary key for this table is **id**.
 
 ## Columns

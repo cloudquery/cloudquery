@@ -1,5 +1,7 @@
 # Table: azure_appservice_deleted_web_apps
 
+https://learn.microsoft.com/en-us/rest/api/appservice/deleted-web-apps/list#deletedsite
+
 The primary key for this table is **id**.
 
 ## Columns

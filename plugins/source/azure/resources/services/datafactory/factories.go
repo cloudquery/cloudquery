@@ -11,10 +11,11 @@ import (
 
 func Factories() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_datafactory_factories",
-		Resolver:  fetchFactories,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_datafactory_factories", client.Namespacemicrosoft_datafactory),
-		Transform: transformers.TransformWithStruct(&armdatafactory.Factory{}, transformers.WithSkipFields("ETag")),
+		Name:        "azure_datafactory_factories",
+		Resolver:    fetchFactories,
+		Description: "https://learn.microsoft.com/en-us/rest/api/datafactory/factories/list?tabs=HTTP#factory",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datafactory_factories", client.Namespacemicrosoft_datafactory),
+		Transform:   transformers.TransformWithStruct(&armdatafactory.Factory{}, transformers.WithSkipFields("ETag")),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

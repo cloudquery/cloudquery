@@ -11,10 +11,11 @@ import (
 
 func Reports() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_appcomplianceautomation_reports",
-		Resolver:  fetchReports,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appcomplianceautomation_reports", client.Namespacemicrosoft_appcomplianceautomation),
-		Transform: transformers.TransformWithStruct(&armappcomplianceautomation.ReportResource{}),
+		Name:        "azure_appcomplianceautomation_reports",
+		Resolver:    fetchReports,
+		Description: "https://learn.microsoft.com/en-us/rest/api/appcompliance/reports/list?tabs=HTTP#reportresource",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appcomplianceautomation_reports", client.Namespacemicrosoft_appcomplianceautomation),
+		Transform:   transformers.TransformWithStruct(&armappcomplianceautomation.ReportResource{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -1,5 +1,7 @@
 # Table: azure_monitor_private_link_scopes
 
+https://learn.microsoft.com/en-us/rest/api/monitor/privatelinkscopes(preview)/private%20link%20scopes%20(preview)/list?tabs=HTTP#azuremonitorprivatelinkscope
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -11,10 +11,11 @@ import (
 
 func Account() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_automation_account",
-		Resolver:  fetchAccount,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_automation_account", client.Namespacemicrosoft_automation),
-		Transform: transformers.TransformWithStruct(&armautomation.Account{}),
+		Name:        "azure_automation_account",
+		Resolver:    fetchAccount,
+		Description: "https://learn.microsoft.com/en-us/rest/api/automation/automation-account/list?tabs=HTTP#automationaccount",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_automation_account", client.Namespacemicrosoft_automation),
+		Transform:   transformers.TransformWithStruct(&armautomation.Account{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
