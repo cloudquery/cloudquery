@@ -5,6 +5,29 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v3.3.1...plugins-source-azure-v3.4.0) (2023-01-17)
+
+
+### Features
+
+* Azure sql and postgresql resoruces for policies ([#6374](https://github.com/cloudquery/cloudquery/issues/6374)) ([97cbc2d](https://github.com/cloudquery/cloudquery/commit/97cbc2d733a148a12ec58ff40a35ac9064ed89f4))
+* **azure-resources:** Add missing security tables ([#6905](https://github.com/cloudquery/cloudquery/issues/6905)) ([8a64414](https://github.com/cloudquery/cloudquery/commit/8a6441459039be190491de753f9ad23c8f07a3d4))
+
+
+### Bug Fixes
+
+* **azure:** Duplicate entries for `azure_subscription_subscriptions` ([#6887](https://github.com/cloudquery/cloudquery/issues/6887)) ([73cf12a](https://github.com/cloudquery/cloudquery/commit/73cf12a9821bef5a6c731b45bdf2fc5ba64ac5a8))
+
+## [3.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v3.3.0...plugins-source-azure-v3.3.1) (2023-01-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.25.0 ([#6745](https://github.com/cloudquery/cloudquery/issues/6745)) ([9c41854](https://github.com/cloudquery/cloudquery/commit/9c418547c3bbff97449765e337182230fb5e40d5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.25.1 ([#6805](https://github.com/cloudquery/cloudquery/issues/6805)) ([9da0ce2](https://github.com/cloudquery/cloudquery/commit/9da0ce283f50410eb9274375ec1d22131a80d937))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.26.0 ([#6839](https://github.com/cloudquery/cloudquery/issues/6839)) ([6ccda8d](https://github.com/cloudquery/cloudquery/commit/6ccda8d0bc6e7ce75f4a64a18911e349ccaac277))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.27.0 ([#6856](https://github.com/cloudquery/cloudquery/issues/6856)) ([545799b](https://github.com/cloudquery/cloudquery/commit/545799bb0481087e187b5f27c88f5dde9c99f2f0))
+
 ## [3.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v3.2.0...plugins-source-azure-v3.3.0) (2023-01-11)
 
 

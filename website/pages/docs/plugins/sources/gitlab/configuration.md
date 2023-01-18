@@ -28,5 +28,5 @@ This is the (nested) spec used by the GitLab source plugin:
 - `access_token` (string, required):
   An access token for your GitLab server. Instructions on how to generate an access token [here](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token).
 
-- `base_url` (string, required):
-  URL for your GitLab server.
+- `base_url` (string, optional):
+  URL for your self hosted GitLab server. Leave empty for GitLab SaaS. Not all tables are supported for GitLab SaaS.

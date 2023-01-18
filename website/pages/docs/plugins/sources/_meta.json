@@ -1,5 +1,6 @@
 {
   "overview": "Overview",
+  "alicloud": "Alibaba Cloud",
   "aws": "AWS",
   "azure": "Azure",
   "azuredevops": "Azure DevOps",

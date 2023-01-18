@@ -1,5 +1,7 @@
 # Table: aws_iot_security_profiles
 
+https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeSecurityProfile.html
+
 The primary key for this table is **arn**.
 
 ## Columns
@@ -21,6 +23,7 @@ The primary key for this table is **arn**.
 |behaviors|JSON|
 |creation_date|Timestamp|
 |last_modified_date|Timestamp|
+|security_profile_arn|String|
 |security_profile_description|String|
 |security_profile_name|String|
 |version|Int|

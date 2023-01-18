@@ -10,6 +10,7 @@ import (
 func TrainingJobs() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_sagemaker_training_jobs",
+		Description:         `https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeTrainingJob.html`,
 		Resolver:            fetchSagemakerTrainingJobs,
 		PreResourceResolver: getTrainingJob,
 		Transform:           transformers.TransformWithStruct(&sagemaker.DescribeTrainingJobOutput{}),
