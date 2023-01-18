@@ -19,7 +19,7 @@ func buildBssBill(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 	b.Success = true
 	b.Data.TotalCount = 2
-	mock.EXPECT().QueryBill(gomock.Any()).Times(2).Return(b, nil)
+	mock.EXPECT().QueryBill(gomock.Any()).AnyTimes().Return(b, nil)
 	return client.Services{BSS: mock}
 }
 

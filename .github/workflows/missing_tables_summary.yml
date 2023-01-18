@@ -1,0 +1,67 @@
+name: Report missing tables
+
+on:
+  # Using pull_request works on forked PRs too. This is safe since we don't checkout the PR code (we only use the diff)
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+jobs:
+  missing-tables:
+    if: startsWith(github.head_ref, 'release-please--branches--main--components')
+    defaults:
+      run:
+        working-directory: scripts/missing_tables
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    outputs:
+      breaking: ${{ steps.breaking.outputs.status }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: scripts/missing_tables/go.mod
+          cache: true
+          cache-dependency-path: scripts/missing_tables/go.sum
+      - name: Get missing tables
+        id: missing-tables
+        run: |
+          missing_tables=$(go run main.go)
+          echo "result<<EOF" >> $GITHUB_OUTPUT
+          echo "$missing_tables" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      - name: Find Comment
+        uses: peter-evans/find-comment@81e2da3af01c92f83cb927cf3ace0e085617c556
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: '### This PR has missing tables'
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@69c3c2de5df8d610a0f80b32b36b7cd26adbe201
+        if: steps.missing-tables.outputs.result != ''
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### This PR has missing tables
+
+            ${{steps.missing-tables.outputs.result}}
+          edit-mode: replace
+      - name: Delete comment
+        if: steps.find-comment.outputs.comment-id != '' && steps.missing-tables.outputs.result == ''
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.deleteComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: ${{ steps.find-comment.outputs.comment-id }}
+            })
+  
