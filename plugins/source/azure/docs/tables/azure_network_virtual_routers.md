@@ -1,5 +1,7 @@
 # Table: azure_network_virtual_routers
 
+https://learn.microsoft.com/en-us/rest/api/virtualnetwork/virtual-routers/list?tabs=HTTP#virtualrouter
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: azure_sql_managed_instances
 
+https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/managed-instances/list?tabs=HTTP#managedinstance
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -11,10 +11,11 @@ import (
 
 func SecurityPartnerProviders() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_security_partner_providers",
-		Resolver:  fetchSecurityPartnerProviders,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_security_partner_providers", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.SecurityPartnerProvider{}),
+		Name:        "azure_network_security_partner_providers",
+		Resolver:    fetchSecurityPartnerProviders,
+		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/security-partner-providers/list?tabs=HTTP#securitypartnerprovider",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_security_partner_providers", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.SecurityPartnerProvider{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

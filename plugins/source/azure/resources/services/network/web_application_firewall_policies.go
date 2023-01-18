@@ -11,10 +11,11 @@ import (
 
 func WebApplicationFirewallPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_web_application_firewall_policies",
-		Resolver:  fetchWebApplicationFirewallPolicies,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_web_application_firewall_policies", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.WebApplicationFirewallPolicy{}),
+		Name:        "azure_network_web_application_firewall_policies",
+		Resolver:    fetchWebApplicationFirewallPolicies,
+		Description: "https://learn.microsoft.com/en-us/rest/api/application-gateway/web-application-firewall-policies/list?tabs=HTTP#webapplicationfirewallpolicy",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_web_application_firewall_policies", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.WebApplicationFirewallPolicy{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

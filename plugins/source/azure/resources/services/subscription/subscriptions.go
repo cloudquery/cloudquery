@@ -9,10 +9,11 @@ import (
 
 func Subscriptions() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_subscription_subscriptions",
-		Resolver:  fetchSubscriptions,
-		Multiplex: client.SingleSubscriptionMultiplex,
-		Transform: transformers.TransformWithStruct(&armsubscription.Subscription{}),
+		Name:        "azure_subscription_subscriptions",
+		Resolver:    fetchSubscriptions,
+		Description: "https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list?tabs=HTTP#subscription",
+		Multiplex:   client.SingleSubscriptionMultiplex,
+		Transform:   transformers.TransformWithStruct(&armsubscription.Subscription{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

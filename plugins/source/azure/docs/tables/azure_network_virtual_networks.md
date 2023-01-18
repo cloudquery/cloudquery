@@ -1,5 +1,7 @@
 # Table: azure_network_virtual_networks
 
+https://learn.microsoft.com/en-us/rest/api/virtualnetwork/virtual-networks/list-all?tabs=HTTP#virtualnetwork
+
 The primary key for this table is **id**.
 
 ## Columns

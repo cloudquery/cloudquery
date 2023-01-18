@@ -11,10 +11,11 @@ import (
 
 func PublicIpPrefixes() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_public_ip_prefixes",
-		Resolver:  fetchPublicIpPrefixes,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_public_ip_prefixes", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.PublicIPPrefix{}),
+		Name:        "azure_network_public_ip_prefixes",
+		Resolver:    fetchPublicIpPrefixes,
+		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/public-ip-prefixes/list?tabs=HTTP#publicipprefix",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_public_ip_prefixes", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.PublicIPPrefix{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

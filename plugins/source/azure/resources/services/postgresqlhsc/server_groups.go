@@ -11,10 +11,11 @@ import (
 
 func ServerGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_postgresqlhsc_server_groups",
-		Resolver:  fetchServerGroups,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_postgresqlhsc_server_groups", client.Namespacemicrosoft_dbforpostgresql),
-		Transform: transformers.TransformWithStruct(&armpostgresqlhsc.ServerGroup{}),
+		Name:        "azure_postgresqlhsc_server_groups",
+		Resolver:    fetchServerGroups,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc@v0.5.0#ServerGroup",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_postgresqlhsc_server_groups", client.Namespacemicrosoft_dbforpostgresql),
+		Transform:   transformers.TransformWithStruct(&armpostgresqlhsc.ServerGroup{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

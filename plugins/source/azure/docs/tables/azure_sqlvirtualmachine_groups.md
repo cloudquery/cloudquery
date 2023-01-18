@@ -1,5 +1,7 @@
 # Table: azure_sqlvirtualmachine_groups
 
+https://learn.microsoft.com/en-us/rest/api/sqlvm/2022-07-01-preview/sql-virtual-machine-groups/list?tabs=HTTP#sqlvirtualmachinegroup
+
 The primary key for this table is **id**.
 
 ## Columns

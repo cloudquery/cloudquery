@@ -11,10 +11,11 @@ import (
 
 func AssessmentsMetadata() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_assessments_metadata",
-		Resolver:  fetchAssessmentsMetadata,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_assessments_metadata", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.AssessmentMetadataResponse{}),
+		Name:        "azure_security_assessments_metadata",
+		Resolver:    fetchAssessmentsMetadata,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/assessments-metadata/list?tabs=HTTP#securityassessmentmetadata",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_assessments_metadata", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.AssessmentMetadataResponse{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

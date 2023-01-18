@@ -1,5 +1,7 @@
 # Table: azure_security_secure_score_controls
 
+https://learn.microsoft.com/en-us/rest/api/defenderforcloud/secure-score-controls/list?tabs=HTTP#securescorecontroldetails
+
 The primary key for this table is **id**.
 
 ## Columns
