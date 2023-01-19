@@ -17,7 +17,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	}
 	var b bytes.Buffer
 	w := io.Writer(&b)
-	if err := c.filetype.WriteTableBatch(w, table, data); err != nil {
+	if err := c.Client.WriteTableBatch(w, table, data); err != nil {
 		return err
 	}
 	r := io.Reader(&b)

@@ -25,7 +25,7 @@ type Client struct {
 	s3Client   *s3.Client
 	uploader   *manager.Uploader
 	downloader *manager.Downloader
-	filetype   *filetypes.Client
+	*filetypes.Client
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -49,7 +49,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	if err != nil {
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}
-	c.filetype = filetypesClient
+	c.Client = filetypesClient
 
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithDefaultRegion("us-east-1"))
 	if err != nil {

@@ -7,10 +7,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func (c *Client) ReverseTransformValues(table *schema.Table, values []any) (schema.CQTypes, error) {
-	return c.filetype.ReverseTransformValues(table, values)
-}
-
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
 	if !c.pluginSpec.NoRotate {
 		return fmt.Errorf("reading is not supported when no_rotate is false. Table: %q; Source: %q", table.Name, sourceName)
@@ -22,5 +18,5 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	}
 	defer r.Close()
 
-	return c.filetype.Read(r, table, sourceName, res)
+	return c.Client.Read(r, table, sourceName, res)
 }
