@@ -16,7 +16,7 @@ func TestPluginCSV(t *testing.T) {
 		StorageAccount: storage_account,
 		Container:      container,
 		Path:           t.TempDir(),
-		FileSpec: filetypes.FileSpec{
+		FileSpec: &filetypes.FileSpec{
 			Format:   filetypes.FormatTypeCSV,
 			NoRotate: true,
 		},
@@ -39,7 +39,7 @@ func TestPluginJSON(t *testing.T) {
 		StorageAccount: storage_account,
 		Container:      container,
 		Path:           t.TempDir(),
-		FileSpec: filetypes.FileSpec{
+		FileSpec: &filetypes.FileSpec{
 			Format:   filetypes.FormatTypeJSON,
 			NoRotate: true,
 		},

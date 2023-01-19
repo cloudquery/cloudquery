@@ -17,13 +17,11 @@ type Spec struct {
 	StorageAccount string `json:"storage_account,omitempty"`
 	Container      string `json:"container,omitempty"`
 	Path           string `json:"path,omitempty"`
-	filetypes.FileSpec
+	*filetypes.FileSpec
 }
 
 func (s *Spec) SetDefaults() {
-	if s.Delimiter == 0 {
-		s.Delimiter = ','
-	}
+	s.FileSpec.SetDefaults()
 }
 
 func (s *Spec) Validate() error {

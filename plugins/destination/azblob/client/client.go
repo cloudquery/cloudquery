@@ -42,7 +42,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, err
 	}
 	c.pluginSpec.SetDefaults()
-	filetypes, err := filetypes.NewClient(&c.pluginSpec.FileSpec)
+	filetypes, err := filetypes.NewClient(c.pluginSpec.FileSpec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}

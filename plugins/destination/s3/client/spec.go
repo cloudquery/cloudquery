@@ -8,7 +8,7 @@ import (
 )
 
 type Spec struct {
-	filetypes.FileSpec
+	*filetypes.FileSpec
 	Bucket string `json:"bucket,omitempty"`
 	Path   string `json:"path,omitempty"`
 }
@@ -22,9 +22,7 @@ func (s *Spec) SetDefaults() {
 			s.Path += "." + PathVarUUID
 		}
 	}
-	if s.Delimiter == 0 {
-		s.Delimiter = ','
-	}
+	s.FileSpec.SetDefaults()
 }
 
 func (s *Spec) Validate() error {
