@@ -16,7 +16,7 @@ func TestCreateTable(t *testing.T) {
   [_cq_source_name] varchar(8000),
   [_cq_sync_time] datetimeoffset,
   [extra_col] float NOT NULL
-  PRIMARY KEY (
+  CONSTRAINT [table_name_cqpk] PRIMARY KEY (
   [extra_col]
   )
 );`
