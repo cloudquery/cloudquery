@@ -80,5 +80,5 @@
   "plugins/source/oracle": "1.0.1",
   "plugins/source/oracle+FILLER": "0.0.0",
   "plugins/source/alicloud": "1.0.0",
-  "plugins/source/alicloud+FILLER": "1.0.0"
+  "plugins/source/alicloud+FILLER": "0.0.0"
 }
