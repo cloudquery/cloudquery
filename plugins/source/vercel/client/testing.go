@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
+	"github.com/cloudquery/plugin-sdk/backend"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -21,6 +22,10 @@ import (
 )
 
 const testToken = "SomeToken"
+
+type TestOptions struct {
+	Backend backend.Backend
+}
 
 type MockHttpClient struct {
 	rootURL string
@@ -52,7 +57,7 @@ func (c *MockHttpClient) Do(req *http.Request) (*http.Response, error) {
 	return c.client.Do(req)
 }
 
-func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.Router) error) {
+func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.Router) error, opts TestOptions) {
 	version := "vDev"
 
 	t.Helper()
@@ -85,7 +90,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 
 		services := vercel.New(logger.With().Str("source", "stripe-client").Logger(), mockClient, h.URL, testToken, veSpec.TeamIDs[0], 5, 10, 100)
 
-		c := New(logger, spec, veSpec, services, veSpec.TeamIDs)
+		c := New(logger, spec, veSpec, services, veSpec.TeamIDs, opts.Backend)
 		return &c, nil
 	}
 
