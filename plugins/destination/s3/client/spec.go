@@ -3,36 +3,17 @@ package client
 import (
 	"fmt"
 	"strings"
+
+	"github.com/cloudquery/filetypes"
 )
-
-type FormatType string
-
-const (
-	FormatTypeCSV  = "csv"
-	FormatTypeJSON = "json"
-)
-
-type FileSpec struct {
-	Format         FormatType `json:"format,omitempty"`
-	IncludeHeaders *bool      `json:"include_headers,omitempty"`
-	Delimiter      rune       `json:"delimiter,omitempty"`
-	NoRotate       bool       `json:"no_rotate,omitempty"`
-}
 
 type Spec struct {
+	*filetypes.FileSpec
 	Bucket string `json:"bucket,omitempty"`
 	Path   string `json:"path,omitempty"`
-	FileSpec
 }
 
 func (s *Spec) SetDefaults() {
-	if s.Delimiter == 0 {
-		s.Delimiter = ','
-	}
-	if s.IncludeHeaders == nil {
-		headers := true
-		s.IncludeHeaders = &headers
-	}
 	if !strings.Contains(s.Path, PathVarTable) {
 		// for backwards-compatibility, default to given path plus /{{TABLE}}.[format].{{UUID}} if
 		// no {{TABLE}} value is found in the path string
@@ -41,6 +22,7 @@ func (s *Spec) SetDefaults() {
 			s.Path += "." + PathVarUUID
 		}
 	}
+	s.FileSpec.SetDefaults()
 }
 
 func (s *Spec) Validate() error {

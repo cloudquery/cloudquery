@@ -3,6 +3,7 @@ package client
 import (
 	"testing"
 
+	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 )
 
@@ -13,8 +14,8 @@ func TestPluginCSV(t *testing.T) {
 	spec := Spec{
 		Bucket: bucket,
 		Path:   t.TempDir(),
-		FileSpec: FileSpec{
-			Format:   FormatTypeCSV,
+		FileSpec: &filetypes.FileSpec{
+			Format:   filetypes.FormatTypeCSV,
 			NoRotate: true,
 		},
 	}
@@ -35,8 +36,8 @@ func TestPluginJSON(t *testing.T) {
 	spec := Spec{
 		Bucket: bucket,
 		Path:   t.TempDir(),
-		FileSpec: FileSpec{
-			Format:   FormatTypeJSON,
+		FileSpec: &filetypes.FileSpec{
+			Format:   filetypes.FormatTypeJSON,
 			NoRotate: true,
 		},
 	}
