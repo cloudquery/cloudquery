@@ -9,7 +9,7 @@ author: hermanschaaf
 
 ## Introduction
 
-Athena is a serverless query service by AWS that allows you to query data in S3 using standard SQL. In this tutorial, we will show you how to load your cloud infrastructure data into S3 using CloudQuery and query it using Athena. This allows you to get fine-grained insight into your infrastructure data, all from the convenience of a serverless query environment running on AWS. 
+Athena is a serverless query service by AWS that allows you to query data in S3 using standard SQL. In this tutorial, we will show you how to load your cloud infrastructure data into S3 using CloudQuery and query it using Athena. This allows you to get fine-grained insights into your infrastructure data, all from the convenience of a serverless query environment running on AWS. 
 
 By the end of this post, you will be able to query your AWS infrastructure data using Athena:
 
@@ -137,8 +137,7 @@ aws iam put-role-policy \
     --policy-document file://crawler-policy-s3-access.json
 ```
 
-The crawler will also need additional permissions to perform all its tasks, such as writing CloudWatch logs. We attach another policy to the role to give it these permissions. You should review these permissions to ensure they are appropriate for your use case:
-
+The crawler will also need additional permissions to perform all its tasks, such as writing CloudWatch logs. We attach another policy to the role to give it these permissions. This is the same as the default policy created by AWS when creating a crawler through the console. You should review these permissions to ensure they are appropriate for your use case:
 
 ```json copy title="crawler-policy.json"
 {
