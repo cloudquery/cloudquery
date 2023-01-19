@@ -11,6 +11,7 @@ import (
 // Migrate relies on the CLI/client to lock before running migration.
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	eg, _ := errgroup.WithContext(ctx)
+	eg.SetLimit(100)
 	for _, table := range tables {
 		table := table
 		eg.Go(func() error {
