@@ -75,11 +75,11 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, err
 	}
 
-	filetypes, err := filetypes.NewClient(c.pluginSpec.FileSpec)
+	filetypesClient, err := filetypes.NewClient(c.pluginSpec.FileSpec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}
-	c.filetype = filetypes
+	c.filetype = filetypesClient
 
 	return c, nil
 }
