@@ -1,7 +1,7 @@
 # Table: vercel_domain_records
 
 The composite primary key for this table is (**domain_name**, **id**).
-
+It supports incremental syncs.
 ## Relations
 
 This table depends on [vercel_domains](vercel_domains.md).

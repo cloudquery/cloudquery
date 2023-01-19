@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
@@ -30,7 +31,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	if !c.pluginSpec.NoRotate {
 		return fmt.Errorf("reading is not supported when no_rotate is false. Table: %q; Source: %q", table.Name, sourceName)
 	}
-	name := fmt.Sprintf("%s/%s.%s", c.pluginSpec.Path, table.Name, c.pluginSpec.Format)
+	name := strings.ReplaceAll(c.pluginSpec.Path, PathVarTable, table.Name)
 	writerAtBuffer := manager.NewWriteAtBuffer(make([]byte, 0, maxFileSize))
 	_, err := c.downloader.Download(ctx,
 		writerAtBuffer,
