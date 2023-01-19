@@ -10,14 +10,15 @@ const bucket = "cq-playground-test"
 
 func TestPluginCSV(t *testing.T) {
 	p := destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
-
+	spec := Spec{
+		Bucket:   bucket,
+		Path:     t.TempDir(),
+		Format:   FormatTypeCSV,
+		NoRotate: true,
+	}
+	spec.SetDefaults()
 	destination.PluginTestSuiteRunner(t, p,
-		Spec{
-			Bucket:   bucket,
-			Path:     t.TempDir(),
-			Format:   FormatTypeCSV,
-			NoRotate: true,
-		},
+		spec,
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:     true,
 			SkipDeleteStale:   true,
@@ -29,14 +30,15 @@ func TestPluginCSV(t *testing.T) {
 
 func TestPluginJSON(t *testing.T) {
 	p := destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
-
+	spec := Spec{
+		Bucket:   bucket,
+		Path:     t.TempDir(),
+		Format:   FormatTypeJSON,
+		NoRotate: true,
+	}
+	spec.SetDefaults()
 	destination.PluginTestSuiteRunner(t, p,
-		Spec{
-			Bucket:   bucket,
-			Path:     t.TempDir(),
-			Format:   FormatTypeJSON,
-			NoRotate: true,
-		},
+		spec,
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:     true,
 			SkipDeleteStale:   true,
