@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
+	"github.com/cloudquery/plugin-sdk/backend"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -23,15 +24,17 @@ type Client struct {
 	TeamID   string
 	TeamIDs  []string
 	Services *vercel.Client
+	Backend  backend.Backend
 }
 
-func New(logger zerolog.Logger, sourceSpec specs.Source, veSpec Spec, services *vercel.Client, teamIDs []string) Client {
+func New(logger zerolog.Logger, sourceSpec specs.Source, veSpec Spec, services *vercel.Client, teamIDs []string, bk backend.Backend) Client {
 	return Client{
 		logger:     logger,
 		sourceSpec: sourceSpec,
 		veSpec:     veSpec,
-		Services:   services,
 		TeamIDs:    teamIDs,
+		Services:   services,
+		Backend:    bk,
 	}
 }
 
@@ -58,7 +61,7 @@ func (c *Client) WithTeamID(teamID string) schema.ClientMeta {
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, o source.Options) (schema.ClientMeta, error) {
 	veSpec := &Spec{}
 	if err := s.UnmarshalSpec(veSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal vercel spec: %w", err)
@@ -75,7 +78,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 		}
 	}
 
-	cl := New(logger, s, *veSpec, services, veSpec.TeamIDs)
+	cl := New(logger, s, *veSpec, services, veSpec.TeamIDs, o.Backend)
 	return &cl, nil
 }
 
