@@ -4,20 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/filetypes/csv"
-	"github.com/cloudquery/filetypes/json"
+	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func (c *Client) ReverseTransformValues(table *schema.Table, values []any) (schema.CQTypes, error) {
-	switch c.pluginSpec.Format {
-	case FormatTypeCSV:
-		return c.csvReverseTransformer.ReverseTransformValues(table, values)
-	case FormatTypeJSON:
-		return c.jsonReverseTransformer.ReverseTransformValues(table, values)
-	default:
-		panic("unknown format " + c.pluginSpec.Format)
-	}
+	return c.filetype.ReverseTransformValues(table, values)
 }
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
@@ -31,17 +23,10 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	}
 	defer r.Close()
 
-	switch c.pluginSpec.Format {
-	case FormatTypeCSV:
-		if err := csv.Read(r, table, sourceName, res); err != nil {
-			return err
-		}
-	case FormatTypeJSON:
-		if err := json.Read(r, table, sourceName, res); err != nil {
-			return err
-		}
-	default:
-		panic("unknown format " + c.pluginSpec.Format)
+	client, err := filetypes.NewClient(&c.pluginSpec.FileSpec)
+	if err != nil {
+		return err
 	}
-	return nil
+	return client.Read(r, table, sourceName, res)
+
 }

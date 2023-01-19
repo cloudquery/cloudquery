@@ -8,7 +8,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/google/uuid"
 )
@@ -25,11 +24,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	var b bytes.Buffer
 	w := io.Writer(&b)
 
-	client, err := filetypes.NewClient(&c.pluginSpec.FileSpec)
-	if err != nil {
-		return err
-	}
-	if err := client.WriteTableBatch(w, table, data); err != nil {
+	if err := c.filetype.WriteTableBatch(w, table, data); err != nil {
 		return err
 	}
 	// we don't upload in parallel here because AWS sdk moves the burden to the developer, and
