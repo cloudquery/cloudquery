@@ -1,0 +1,3 @@
+stripe
+/resources/testdata/*.json
+.cq

@@ -1,5 +1,7 @@
 # Table: azure_authorization_role_definitions
 
+https://learn.microsoft.com/en-us/rest/api/authorization/role-definitions/list?tabs=HTTP#roledefinition
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -10,7 +12,8 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|properties|JSON|
+|subscription_id|String|
 |id (PK)|String|
+|properties|JSON|
 |name|String|
 |type|String|

@@ -21,3 +21,4 @@ The following tables depend on datadog_roles:
 |attributes|JSON|
 |relationships|JSON|
 |type|String|
+|additional_properties|JSON|

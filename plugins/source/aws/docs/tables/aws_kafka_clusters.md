@@ -7,8 +7,8 @@ The primary key for this table is **arn**.
 ## Relations
 
 The following tables depend on aws_kafka_clusters:
-  - [aws_kafka_nodes](aws_kafka_nodes.md)
   - [aws_kafka_cluster_operations](aws_kafka_cluster_operations.md)
+  - [aws_kafka_nodes](aws_kafka_nodes.md)
 
 ## Columns
 
@@ -21,6 +21,7 @@ The following tables depend on aws_kafka_clusters:
 |account_id|String|
 |arn (PK)|String|
 |active_operation_arn|String|
+|cluster_arn|String|
 |cluster_name|String|
 |cluster_type|String|
 |creation_time|Timestamp|

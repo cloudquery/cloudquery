@@ -19,3 +19,4 @@ The primary key for this table is **id**.
 |parse_test_public_id|String|
 |tags|StringArray|
 |value|JSON|
+|additional_properties|JSON|

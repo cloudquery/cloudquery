@@ -5,8 +5,8 @@ The composite primary key for this table is (**base_url**, **id**).
 ## Relations
 
 The following tables depend on gitlab_projects:
-  - [gitlab_projects_releases](gitlab_projects_releases.md)
   - [gitlab_project_branches](gitlab_project_branches.md)
+  - [gitlab_projects_releases](gitlab_projects_releases.md)
 
 ## Columns
 
@@ -18,6 +18,7 @@ The following tables depend on gitlab_projects:
 |_cq_parent_id|UUID|
 |base_url (PK)|String|
 |id (PK)|Int|
+|marked_for_deletion_at|Timestamp|
 |description|String|
 |default_branch|String|
 |public|Bool|
@@ -52,7 +53,6 @@ The following tables depend on gitlab_projects:
 |import_status|String|
 |import_error|String|
 |permissions|JSON|
-|marked_for_deletion_at|Timestamp|
 |empty_repo|Bool|
 |archived|Bool|
 |avatar_url|String|

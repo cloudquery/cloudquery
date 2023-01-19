@@ -1,0 +1,26 @@
+package client
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/thoas/go-funk"
+)
+
+func UnixTimeResolver(fieldName string) schema.ColumnResolver {
+	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, col schema.Column) error {
+		t := funk.Get(r.Item, fieldName, funk.WithAllowZero())
+		switch v := t.(type) {
+		case int64:
+			return r.Set(col.Name, time.Unix(v, 0))
+		case int:
+			return r.Set(col.Name, time.Unix(int64(v), 0))
+		case uint64:
+			return r.Set(col.Name, time.Unix(int64(v), 0))
+		default:
+			return fmt.Errorf("unhandled UnixTimeResolver of type %T", t)
+		}
+	}
+}

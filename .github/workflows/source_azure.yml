@@ -56,6 +56,8 @@ jobs:
           version: v1.50.1
           working-directory: plugins/source/azure
           args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build

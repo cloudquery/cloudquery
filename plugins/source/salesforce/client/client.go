@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"time"
 
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -54,7 +55,7 @@ type ListObjectsResponse struct {
 	Sobject []Sobject `json:"sobjects"`
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	cqClient := Client{
 		logger: logger,
 	}

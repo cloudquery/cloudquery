@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/cloudflare/cloudflare-go"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -71,7 +72,7 @@ func (c *Client) withZoneID(accountId, zoneId string) *Client {
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	cfSpec := &Spec{}
 	if err := s.UnmarshalSpec(cfSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal cloudflare spec: %w", err)

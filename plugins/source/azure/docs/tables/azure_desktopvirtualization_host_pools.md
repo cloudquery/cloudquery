@@ -1,5 +1,7 @@
 # Table: azure_desktopvirtualization_host_pools
 
+https://learn.microsoft.com/en-us/rest/api/desktopvirtualization/host-pools/list?tabs=HTTP#hostpool
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,6 +13,7 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
+|id (PK)|String|
 |properties|JSON|
 |identity|JSON|
 |kind|String|
@@ -20,6 +23,5 @@ The primary key for this table is **id**.
 |sku|JSON|
 |tags|JSON|
 |etag|String|
-|id (PK)|String|
 |name|String|
 |type|String|

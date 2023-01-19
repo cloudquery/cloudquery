@@ -23,5 +23,6 @@ The following tables depend on aws_ecrpublic_repositories:
 |tags|JSON|
 |created_at|Timestamp|
 |registry_id|String|
+|repository_arn|String|
 |repository_name|String|
 |repository_uri|String|

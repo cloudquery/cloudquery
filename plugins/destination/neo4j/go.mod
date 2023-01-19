@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/neo4j
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.16.1
+	github.com/cloudquery/plugin-sdk v1.27.0
 	github.com/neo4j/neo4j-go-driver/v5 v5.3.0
 	github.com/rs/zerolog v1.28.0
 )

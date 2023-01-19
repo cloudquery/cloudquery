@@ -7,8 +7,8 @@ The primary key for this table is **arn**.
 ## Relations
 
 The following tables depend on aws_dynamodb_tables:
-  - [aws_dynamodb_table_replica_auto_scalings](aws_dynamodb_table_replica_auto_scalings.md)
   - [aws_dynamodb_table_continuous_backups](aws_dynamodb_table_continuous_backups.md)
+  - [aws_dynamodb_table_replica_auto_scalings](aws_dynamodb_table_replica_auto_scalings.md)
 
 ## Columns
 
@@ -38,6 +38,7 @@ The following tables depend on aws_dynamodb_tables:
 |restore_summary|JSON|
 |sse_description|JSON|
 |stream_specification|JSON|
+|table_arn|String|
 |table_class_summary|JSON|
 |table_id|String|
 |table_name|String|

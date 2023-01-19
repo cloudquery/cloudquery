@@ -73,14 +73,14 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	mockClient := NewMockHttpClient(h.Client(), h.URL)
 
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro}).Level(zerolog.DebugLevel).With().Timestamp().Logger()
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		err := createServices(router)
 		if err != nil {
 			return nil, err
 		}
 		registeredNamespaces := make(map[string]map[string]bool)
 		registeredNamespaces[TestSubscription] = make(map[string]bool)
-		for _, namespace := range allNamespaces {
+		for _, namespace := range namespaces {
 			registeredNamespaces[TestSubscription][namespace] = true
 		}
 		c := &Client{

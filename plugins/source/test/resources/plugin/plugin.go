@@ -2,7 +2,7 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/test/client"
-	"github.com/cloudquery/cloudquery/plugins/source/test/tables"
+	"github.com/cloudquery/cloudquery/plugins/source/test/resources/services"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -16,7 +16,7 @@ func Plugin() *source.Plugin {
 		"test",
 		Version,
 		[]*schema.Table{
-			tables.TestSomeTable(),
+			services.TestSomeTable(),
 		},
 		client.New,
 	)

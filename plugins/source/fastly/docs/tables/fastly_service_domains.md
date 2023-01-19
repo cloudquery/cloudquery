@@ -16,10 +16,10 @@ This table depends on [fastly_service_versions](fastly_service_versions.md).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|comment|String|
-|created_at|Timestamp|
-|deleted_at|Timestamp|
 |name (PK)|String|
 |service_id (PK)|String|
 |service_version (PK)|Int|
+|comment|String|
+|created_at|Timestamp|
+|deleted_at|Timestamp|
 |updated_at|Timestamp|

@@ -92,7 +92,8 @@ type IamOpenIdIdentityProviderWrapper struct {
 
 type IAMSAMLIdentityProviderWrapper struct {
 	*iam.GetSAMLProviderOutput
-	Arn string
+	Arn  string
+	Tags map[string]string
 }
 
 type PasswordPolicyWrapper struct {

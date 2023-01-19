@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |backup_policy_status|String|
+|tags|JSON|
 |creation_time|Timestamp|
 |creation_token|String|
 |file_system_id|String|
@@ -24,10 +25,10 @@ The primary key for this table is **arn**.
 |owner_id|String|
 |performance_mode|String|
 |size_in_bytes|JSON|
-|tags|JSON|
 |availability_zone_id|String|
 |availability_zone_name|String|
 |encrypted|Bool|
+|file_system_arn|String|
 |kms_key_id|String|
 |name|String|
 |provisioned_throughput_in_mibps|Float|

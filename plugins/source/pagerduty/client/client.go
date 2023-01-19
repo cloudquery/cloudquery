@@ -7,6 +7,7 @@ import (
 	"path"
 
 	"github.com/PagerDuty/go-pagerduty"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -21,7 +22,7 @@ type Client struct {
 	logger          zerolog.Logger
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	authToken, err := getAuthToken()
 	if err != nil {
 		return nil, err

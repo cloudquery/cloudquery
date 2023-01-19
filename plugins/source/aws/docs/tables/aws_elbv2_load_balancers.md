@@ -29,6 +29,7 @@ The following tables depend on aws_elbv2_load_balancers:
 |customer_owned_ipv4_pool|String|
 |dns_name|String|
 |ip_address_type|String|
+|load_balancer_arn|String|
 |load_balancer_name|String|
 |scheme|String|
 |security_groups|StringArray|

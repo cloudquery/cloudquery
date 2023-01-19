@@ -78,8 +78,26 @@ Specify the names of the destinations to sync the data of the source plugin to.
 
 A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
 
+### scheduler
+
+(`string`, optional, default: `dfs`, introduced in CLI `v2.0.31`, **EXPERIMENTAL**)
+
+The scheduler to use when determining the priority of resources to sync. Currently, the only supported values are `dfs` (depth-first search) and `round-robin`. This is an experimental feature, and may be removed in the future. For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
+
+### backend
+
+(`string`, optional, default: `local`, introduced in CLI `v2.1.0`)
+
+The backend to use for storing the state of incremental tables. Currently, the only supported value is `local` (store the state in the local filesystem). For more information, see [managing incremental tables](/docs/advanced-topics/managing-incremental-tables).
+
+### backend_spec
+
+(`object`, optional, introduced in CLI `v2.1.0`)
+
+The backend spec is specific to the backend used. For the `local` backend, the only option is `path`, which specifies the name of the directory to use when storing metadata files.
+
 ### spec
 
 (`object`, optional)
 
-Plugin specific configurations. Visit [source plugins](/docs/plugins/sources/overview) documentation for more information.
+Plugin-specific configurations. Visit [source plugins](/docs/plugins/sources/overview) documentation for more information.

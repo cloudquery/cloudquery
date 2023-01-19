@@ -1,5 +1,7 @@
 # Table: azure_cdn_edge_nodes
 
+https://learn.microsoft.com/en-us/rest/api/cdn/edge-nodes/list?tabs=HTTP#edgenode
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,8 +13,8 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|properties|JSON|
 |id (PK)|String|
+|properties|JSON|
 |name|String|
 |system_data|JSON|
 |type|String|

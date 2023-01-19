@@ -24,6 +24,7 @@ The primary key for this table is **arn**.
 |document_parameters|JSON|
 |force_canceled|Bool|
 |is_concurrent|Bool|
+|job_arn|String|
 |job_executions_retry_config|JSON|
 |job_executions_rollout_config|JSON|
 |job_id|String|

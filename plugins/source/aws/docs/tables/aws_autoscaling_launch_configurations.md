@@ -28,6 +28,7 @@ The primary key for this table is **arn**.
 |instance_monitoring|JSON|
 |kernel_id|String|
 |key_name|String|
+|launch_configuration_arn|String|
 |metadata_options|JSON|
 |placement_tenancy|String|
 |ramdisk_id|String|

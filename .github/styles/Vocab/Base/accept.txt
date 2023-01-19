@@ -3,6 +3,7 @@ ACLs
 Airbyte
 Ajv
 anonymized
+Alibaba
 API
 APIs
 architected
@@ -14,6 +15,7 @@ Autoscaling
 aws
 AWS
 backoff
+backend_spec
 Boldstart
 bool
 browsable
@@ -37,6 +39,7 @@ CrowdStrike
 CSPM
 CSPMs
 Cybersecurity
+deduplication
 Datadog
 datasource
 Datasource
@@ -133,6 +136,7 @@ Snyk
 SRE
 SREs
 Steampipe
+Stripe
 subfolder
 subnet
 subpolicies
@@ -165,3 +169,6 @@ Yandex
 Yevgeny
 zsh
 Zsh
+Fivetran
+Extensible
+VMs

@@ -31,6 +31,7 @@ tables:
   - gcp_kms_crypto_keys
   - gcp_kms_keyring_crypto_keys
   - gcp_kms_keyrings
+  - gcp_kms_locations
   - gcp_log_metric_filters
   - gcp_logging_metrics
   - gcp_logging_sinks

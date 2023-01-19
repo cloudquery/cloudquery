@@ -22,3 +22,4 @@ The primary key for this table is **arn**.
 |web_acl_id|String|
 |metric_name|String|
 |name|String|
+|web_acl_arn|String|

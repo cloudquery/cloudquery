@@ -19,10 +19,6 @@ gen-docs:
 lint:
 	golangci-lint run --config ../../.golangci.yml 
 
-.PHONY: gen-code
-gen-code:
-	go run codegen/main.go
-
 # All gen targets
 .PHONY: gen
-gen: gen-code generate-mocks gen-docs
+gen: generate-mocks gen-docs

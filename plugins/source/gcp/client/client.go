@@ -12,6 +12,7 @@ import (
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
 	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/googleapis/gax-go/v2"
@@ -26,6 +27,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 const maxProjectIdsToLog int = 100
@@ -42,6 +44,8 @@ type Client struct {
 	ProjectId string
 	// this is set by table client Org multiplexer
 	OrgId string
+	// this is set by table client Location multiplexer
+	Location string
 	// Logger
 	logger zerolog.Logger
 }
@@ -53,6 +57,13 @@ func (c *Client) withProject(project string) *Client {
 	newClient := *c
 	newClient.logger = c.logger.With().Str("project_id", project).Logger()
 	newClient.ProjectId = project
+	return &newClient
+}
+
+func (c *Client) withLocation(location string) *Client {
+	newClient := *c
+	newClient.logger = c.logger.With().Str("location", location).Logger()
+	newClient.Location = location
 	return &newClient
 }
 
@@ -77,14 +88,17 @@ func (c *Client) ID() string {
 	if c.OrgId != "" {
 		return "org:" + c.OrgId
 	}
-	return c.ProjectId
+	if c.Location != "" {
+		return "project:" + c.ProjectId + ":location:" + c.Location
+	}
+	return "project:" + c.ProjectId
 }
 
 func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var err error
 	c := Client{
 		logger:          logger,
@@ -201,7 +215,11 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	}
 	if gcpSpec.EnabledServicesOnly {
 		if err := c.configureEnabledServices(ctx, s.Concurrency); err != nil {
-			c.logger.Err(err).Msg("failed to list enabled services")
+			if status.Code(err) == codes.ResourceExhausted {
+				c.logger.Err(err).Msg("failed to list enabled services because of rate limiting. Consider setting larger values for `backoff_retries` and `backoff_delay`")
+			} else {
+				c.logger.Err(err).Msg("failed to list enabled services")
+			}
 			return nil, err
 		}
 	}

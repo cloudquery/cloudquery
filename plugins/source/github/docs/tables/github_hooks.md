@@ -16,10 +16,10 @@ The following tables depend on github_hooks:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |org (PK)|String|
+|id (PK)|Int|
 |created_at|Timestamp|
 |updated_at|Timestamp|
 |url|String|
-|id (PK)|Int|
 |type|String|
 |name|String|
 |test_url|String|

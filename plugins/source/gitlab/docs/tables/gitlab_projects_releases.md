@@ -16,11 +16,11 @@ This table depends on [gitlab_projects](gitlab_projects.md).
 |_cq_parent_id|UUID|
 |base_url (PK)|String|
 |project_id (PK)|Int|
+|created_at (PK)|Timestamp|
 |tag_name|String|
 |name|String|
 |description|String|
 |description_html|String|
-|created_at (PK)|Timestamp|
 |released_at|Timestamp|
 |author|JSON|
 |commit|JSON|

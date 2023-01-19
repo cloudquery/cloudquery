@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/microsoft/azure-devops-go-api/azuredevops/v6"
@@ -24,7 +25,7 @@ func (*Client) ID() string {
 	return "AzureDevOpsClient"
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var spec Spec
 	err := s.UnmarshalSpec(&spec)
 	if err != nil {

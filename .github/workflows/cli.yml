@@ -59,6 +59,8 @@ jobs:
         with:
           version: v1.50.1
           working-directory: cli
+          skip-pkg-cache: true
+          skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build

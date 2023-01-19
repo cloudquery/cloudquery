@@ -17,6 +17,10 @@ const (
 func (*Client) createResultsArray(table *schema.Table, node *neo4j.Node) []any {
 	results := make([]any, 0, len(table.Columns))
 	for _, col := range table.Columns {
+		if node.Props[col.Name] == nil {
+			results = append(results, nil)
+			continue
+		}
 		switch col.Type {
 		case schema.TypeBool:
 			r := node.Props[col.Name].(bool)

@@ -1,5 +1,7 @@
 # Table: aws_quicksight_data_sets
 
+https://docs.aws.amazon.com/quicksight/latest/APIReference/API_DataSetSummary.html
+
 The primary key for this table is **arn**.
 
 ## Relations

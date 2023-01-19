@@ -1,5 +1,7 @@
 # Table: aws_quicksight_folders
 
+https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Folder.html
+
 The primary key for this table is **arn**.
 
 ## Columns

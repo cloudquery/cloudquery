@@ -24,6 +24,7 @@ The following tables depend on aws_mq_brokers:
 |actions_required|JSON|
 |authentication_strategy|String|
 |auto_minor_version_upgrade|Bool|
+|broker_arn|String|
 |broker_id|String|
 |broker_instances|JSON|
 |broker_name|String|

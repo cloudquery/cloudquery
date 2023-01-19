@@ -17,6 +17,7 @@ The primary key for this table is **arn**.
 |arn (PK)|String|
 |tags|JSON|
 |active_nodes|Int|
+|cluster_arn|String|
 |cluster_discovery_endpoint|JSON|
 |cluster_endpoint_encryption_type|String|
 |cluster_name|String|

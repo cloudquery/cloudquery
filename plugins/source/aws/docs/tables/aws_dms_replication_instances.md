@@ -28,6 +28,7 @@ The primary key for this table is **arn**.
 |pending_modified_values|JSON|
 |preferred_maintenance_window|String|
 |publicly_accessible|Bool|
+|replication_instance_arn|String|
 |replication_instance_class|String|
 |replication_instance_identifier|String|
 |replication_instance_ipv6_addresses|StringArray|

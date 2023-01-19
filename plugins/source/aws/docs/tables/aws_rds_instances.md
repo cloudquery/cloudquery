@@ -33,11 +33,13 @@ The primary key for this table is **arn**.
 |backup_retention_period|Int|
 |backup_target|String|
 |ca_certificate_identifier|String|
+|certificate_details|JSON|
 |character_set_name|String|
 |copy_tags_to_snapshot|Bool|
 |custom_iam_instance_profile|String|
 |customer_owned_ip_enabled|Bool|
 |db_cluster_identifier|String|
+|db_instance_arn|String|
 |db_instance_automated_backups_replications|JSON|
 |db_instance_class|String|
 |db_instance_identifier|String|

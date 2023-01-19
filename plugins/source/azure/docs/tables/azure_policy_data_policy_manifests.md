@@ -1,5 +1,7 @@
 # Table: azure_policy_data_policy_manifests
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy@v0.6.0#DataPolicyManifest
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,7 +13,7 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|properties|JSON|
 |id (PK)|String|
+|properties|JSON|
 |name|String|
 |type|String|

@@ -17,5 +17,6 @@ The primary key for this table is **arn**.
 |arn (PK)|String|
 |tags|JSON|
 |filter_expression|String|
+|group_arn|String|
 |group_name|String|
 |insights_configuration|JSON|

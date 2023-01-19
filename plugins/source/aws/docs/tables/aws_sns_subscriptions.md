@@ -1,5 +1,7 @@
 # Table: aws_sns_subscriptions
 
+https://docs.aws.amazon.com/sns/latest/api/API_GetSubscriptionAttributes.html
+
 The primary key for this table is **arn**.
 
 ## Columns
@@ -20,6 +22,7 @@ The primary key for this table is **arn**.
 |endpoint|String|
 |owner|String|
 |protocol|String|
+|subscription_arn|String|
 |topic_arn|String|
 |confirmation_was_authenticated|Bool|
 |pending_confirmation|Bool|

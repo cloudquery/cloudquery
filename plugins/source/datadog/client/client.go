@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/pkg/errors"
@@ -69,7 +70,7 @@ func (c *Client) withAccount(account Account) schema.ClientMeta {
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	cfSpec := &Spec{}
 	if err := s.UnmarshalSpec(cfSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal datadog spec: %w", err)

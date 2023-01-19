@@ -4,16 +4,13 @@ go 1.19
 
 require (
 	github.com/cloudflare/cloudflare-go v0.57.1
-	github.com/cloudquery/plugin-sdk v1.17.0
-	github.com/gertd/go-pluralize v0.2.1
+	github.com/cloudquery/plugin-sdk v1.27.0
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
-	github.com/stretchr/testify v1.8.1
 	github.com/thoas/go-funk v0.9.3
 )
 
 require (
-	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.16.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
@@ -26,7 +23,6 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
-	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
@@ -42,5 +38,4 @@ require (
 	google.golang.org/grpc v1.51.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
