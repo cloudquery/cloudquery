@@ -9,11 +9,11 @@ author: hermanschaaf
 
 ## Introduction
 
-Athena is a serverless query service by AWS that allows you to query data in S3 using standard SQL. In this tutorial, we will show you how to load your cloud infrastructure data into S3 using CloudQuery and query it using Athena. This allows you to get fine-grained insight into your infrastructure data, all from the convenience of a serverless query environment running in AWS. 
+Athena is a serverless query service by AWS that allows you to query data in S3 using standard SQL. In this tutorial, we will show you how to load your cloud infrastructure data into S3 using CloudQuery and query it using Athena. This allows you to get fine-grained insight into your infrastructure data, all from the convenience of a serverless query environment running on AWS. 
 
-By the end of this post, you will be able to query your infrastructure data in Athena:
+By the end of this post, you will be able to query your AWS infrastructure data using Athena:
 
-<TODO: SCREENSHOT>
+![Athena query editor](/images/how-to-guides/how-to-load-infrastructure-data-into-athena/athena-query-editor.png)
 
 Let's get started!
 
@@ -50,7 +50,7 @@ spec:
 
 This is the most basic configuration of the AWS source plugin. It will work as long as the AWS credentials you have configured in your environment have the appropriate permissions (e.g. via `aws sso login`). For more information on configuring the AWS source plugin, see the [AWS Source Plugin](/docs/plugins/source/aws) documentation.
 
-### Step 4: Configure the CSV Destination Plugin
+### Step 4: Configure the S3 Destination Plugin
 
 Similar to the config we created for the AWS plugin, we also need a destination config that is configured to write the AWS data to JSON files in S3:
 
@@ -262,12 +262,24 @@ aws glue start-crawler --name cloudquery-athena-example
 
 ### Step 7: Query the data
 
-The crawler should have created a database and tables in the Glue Data Catalog. Now we can query the data using Athena! Let's use the AWS Console for this step. Navigate to the Athena service in the AWS Console, go to the Query Editor page, and select the database we created earlier. You should see a list of tables in the database. Let's run a simple query to see what's in the `aws_iam_users` table:
+The crawler should have created a database and tables in the Glue Data Catalog. Now we can query the data using Athena! Let's use the AWS Console for this step. Navigate to the Athena service in the AWS Console, go to the Query Editor page, and select the database we created earlier. You should see a list of tables in the database. Let's run a simple query to find all S3 buckets that are permitted to be public:
 
-![Athena query editor](/images/tutorials/how-to-load-infrastructure-data-into-athena/athena-query-editor.png)
+```sql
+-- Find all S3 buckets that are permitted to be public
+SELECT "arn", "region"
+FROM "cloudquery-athena-example"."aws_s3_buckets"
+WHERE "block_public_acls" <> TRUE
+    OR "block_public_policy" <> TRUE
+    OR "ignore_public_acls" <> TRUE
+    OR "restrict_public_buckets" <> TRUE
+```
+
+![Athena query editor](/images/how-to-guides/how-to-load-infrastructure-data-into-athena/athena-query-editor.png)
+
+Wait, isn't that the bucket we just created for this guide? Better go lock it down 😉
 
 ## Conclusion
 
 In this tutorial, we showed how to use CloudQuery to load infrastructure data into an S3 bucket, and then use Glue Crawler and Athena to query the data. This allows you to use the power of Athena to query your infrastructure data, and use the results to inform your security and compliance decisions.
 
-Going forward, we will continue making it easier to load data into Athena. One part of this will be adding support for the Parquet format soon. Stay tuned for more updates!
+Going forward, we will continue making it easier and faster to load data into Athena. Stay tuned for more updates!
