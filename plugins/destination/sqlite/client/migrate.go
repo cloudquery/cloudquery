@@ -20,7 +20,7 @@ type columnInfo struct {
 	typ          string
 	notNull      bool
 	defaultValue any
-	pk           bool
+	pk           int
 }
 
 type tableInfo struct {

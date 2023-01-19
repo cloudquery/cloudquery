@@ -1,5 +1,7 @@
 # Table: azure_hybriddatamanager_data_managers
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager@v1.0.0#DataManager
+
 The primary key for this table is **id**.
 
 ## Columns

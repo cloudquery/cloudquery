@@ -1,5 +1,7 @@
 # Table: azure_mysql_servers
 
+https://learn.microsoft.com/en-us/rest/api/mysql/singleserver/servers(2017-12-01)/list?tabs=HTTP#server
+
 The primary key for this table is **id**.
 
 ## Relations

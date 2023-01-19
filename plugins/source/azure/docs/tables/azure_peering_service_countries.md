@@ -1,5 +1,7 @@
 # Table: azure_peering_service_countries
 
+https://learn.microsoft.com/en-us/rest/api/peering/peering-service-countries/list?tabs=HTTP#peeringservicecountry
+
 The primary key for this table is **id**.
 
 ## Columns

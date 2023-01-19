@@ -1,5 +1,7 @@
 # Table: azure_hanaonazure_sap_monitors
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hanaonazure/armhanaonazure@v0.5.0#SapMonitor
+
 The primary key for this table is **id**.
 
 ## Columns

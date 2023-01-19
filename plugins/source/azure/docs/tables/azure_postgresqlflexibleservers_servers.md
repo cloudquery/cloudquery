@@ -1,5 +1,7 @@
 # Table: azure_postgresqlflexibleservers_servers
 
+https://learn.microsoft.com/en-us/rest/api/postgresql/flexibleserver/servers/list?tabs=HTTP#server
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -13,6 +15,7 @@ The primary key for this table is **id**.
 |subscription_id|String|
 |id (PK)|String|
 |location|String|
+|identity|JSON|
 |properties|JSON|
 |sku|JSON|
 |tags|JSON|

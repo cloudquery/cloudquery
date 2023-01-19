@@ -11,10 +11,11 @@ import (
 
 func Servers() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_servers",
-		Resolver:  fetchServers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_sql_servers", client.Namespacemicrosoft_sql),
-		Transform: transformers.TransformWithStruct(&armsql.Server{}),
+		Name:        "azure_sql_servers",
+		Resolver:    fetchServers,
+		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/servers/list?tabs=HTTP#server",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_sql_servers", client.Namespacemicrosoft_sql),
+		Transform:   transformers.TransformWithStruct(&armsql.Server{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -29,6 +30,13 @@ func Servers() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+		},
+		Relations: []*schema.Table{
+			server_vulnerability_assessments(),
+			server_blob_auditing_policies(),
+			server_admins(),
+			server_encryption_protectors(),
+			server_databases(),
 		},
 	}
 }

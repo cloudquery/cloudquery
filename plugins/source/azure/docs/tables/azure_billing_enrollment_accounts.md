@@ -1,5 +1,7 @@
 # Table: azure_billing_enrollment_accounts
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling@v0.5.0#EnrollmentAccountSummary
+
 The primary key for this table is **id**.
 
 ## Columns

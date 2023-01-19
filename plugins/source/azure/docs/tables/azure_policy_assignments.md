@@ -1,5 +1,7 @@
 # Table: azure_policy_assignments
 
+https://learn.microsoft.com/en-us/rest/api/policy/policy-assignments/list?tabs=HTTP#policyassignment
+
 The primary key for this table is **id**.
 
 ## Columns

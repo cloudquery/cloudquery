@@ -1,5 +1,7 @@
 # Table: azure_network_ddos_protection_plans
 
+https://learn.microsoft.com/en-us/rest/api/virtualnetwork/ddos-protection-plans/list?tabs=HTTP#ddosprotectionplan
+
 The primary key for this table is **id**.
 
 ## Columns

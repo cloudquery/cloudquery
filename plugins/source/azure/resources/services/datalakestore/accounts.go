@@ -11,10 +11,11 @@ import (
 
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_datalakestore_accounts",
-		Resolver:  fetchAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_datalakestore_accounts", client.Namespacemicrosoft_datalakestore),
-		Transform: transformers.TransformWithStruct(&armdatalakestore.AccountBasic{}),
+		Name:        "azure_datalakestore_accounts",
+		Resolver:    fetchAccounts,
+		Description: "https://learn.microsoft.com/en-us/rest/api/datalakestore/accounts/list?tabs=HTTP#datalakestoreaccountbasic",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datalakestore_accounts", client.Namespacemicrosoft_datalakestore),
+		Transform:   transformers.TransformWithStruct(&armdatalakestore.AccountBasic{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

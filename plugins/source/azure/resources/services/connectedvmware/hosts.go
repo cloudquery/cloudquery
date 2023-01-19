@@ -11,10 +11,11 @@ import (
 
 func Hosts() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_connectedvmware_hosts",
-		Resolver:  fetchHosts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_hosts", client.Namespacemicrosoft_connectedvmwarevsphere),
-		Transform: transformers.TransformWithStruct(&armconnectedvmware.Host{}),
+		Name:        "azure_connectedvmware_hosts",
+		Resolver:    fetchHosts,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#Host",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_hosts", client.Namespacemicrosoft_connectedvmwarevsphere),
+		Transform:   transformers.TransformWithStruct(&armconnectedvmware.Host{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

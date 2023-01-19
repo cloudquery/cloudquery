@@ -1,5 +1,7 @@
 # Table: azure_network_subscription_network_manager_connections
 
+https://learn.microsoft.com/en-us/rest/api/networkmanager/management-group-network-manager-connections/list?tabs=HTTP#networkmanagerconnection
+
 The primary key for this table is **id**.
 
 ## Columns

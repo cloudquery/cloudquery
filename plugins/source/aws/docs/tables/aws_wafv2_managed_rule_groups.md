@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/waf/latest/APIReference/API_ManagedRuleGroupSummary.html
 
-The composite primary key for this table is (**account_id**, **region**, **scope**).
+The composite primary key for this table is (**account_id**, **region**, **scope**, **name**, **vendor_name**).
 
 ## Columns
 
@@ -17,6 +17,6 @@ The composite primary key for this table is (**account_id**, **region**, **scope
 |scope (PK)|String|
 |properties|JSON|
 |description|String|
-|name|String|
-|vendor_name|String|
+|name (PK)|String|
+|vendor_name (PK)|String|
 |versioning_supported|Bool|

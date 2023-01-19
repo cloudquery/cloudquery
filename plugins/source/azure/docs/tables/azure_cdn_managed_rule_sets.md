@@ -1,5 +1,7 @@
 # Table: azure_cdn_managed_rule_sets
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn@v1.0.0#ManagedRuleSetDefinition
+
 The primary key for this table is **id**.
 
 ## Columns

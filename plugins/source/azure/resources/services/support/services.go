@@ -11,10 +11,11 @@ import (
 
 func Services() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_support_services",
-		Resolver:  fetchServices,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_support_services", client.Namespacemicrosoft_support),
-		Transform: transformers.TransformWithStruct(&armsupport.Service{}),
+		Name:        "azure_support_services",
+		Resolver:    fetchServices,
+		Description: "https://learn.microsoft.com/en-us/rest/api/support/services/list?tabs=HTTP#service",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_support_services", client.Namespacemicrosoft_support),
+		Transform:   transformers.TransformWithStruct(&armsupport.Service{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

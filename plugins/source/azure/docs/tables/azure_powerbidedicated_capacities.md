@@ -1,5 +1,7 @@
 # Table: azure_powerbidedicated_capacities
 
+https://learn.microsoft.com/en-us/rest/api/power-bi-embedded/capacities/list?tabs=HTTP#dedicatedcapacity
+
 The primary key for this table is **id**.
 
 ## Columns

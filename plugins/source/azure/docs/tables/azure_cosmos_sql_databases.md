@@ -1,5 +1,7 @@
 # Table: azure_cosmos_sql_databases
 
+https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/sql-resources/list-sql-databases?tabs=HTTP#sqldatabasegetresults
+
 The primary key for this table is **id**.
 
 ## Relations

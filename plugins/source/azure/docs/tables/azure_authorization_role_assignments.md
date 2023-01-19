@@ -1,5 +1,7 @@
 # Table: azure_authorization_role_assignments
 
+https://learn.microsoft.com/en-us/rest/api/authorization/role-assignments/get?tabs=HTTP#roleassignment
+
 The primary key for this table is **id**.
 
 ## Columns

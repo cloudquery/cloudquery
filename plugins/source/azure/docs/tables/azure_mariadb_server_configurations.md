@@ -1,5 +1,7 @@
 # Table: azure_mariadb_server_configurations
 
+https://learn.microsoft.com/en-us/rest/api/mariadb/configurations/list-by-server?tabs=HTTP#configuration
+
 The primary key for this table is **id**.
 
 ## Relations

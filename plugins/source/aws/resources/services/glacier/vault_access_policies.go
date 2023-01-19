@@ -9,10 +9,11 @@ import (
 
 func VaultAccessPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_glacier_vault_access_policies",
-		Resolver:  fetchGlacierVaultAccessPolicies,
-		Transform: transformers.TransformWithStruct(&types.VaultAccessPolicy{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer("glacier"),
+		Name:        "aws_glacier_vault_access_policies",
+		Description: `https://docs.aws.amazon.com/amazonglacier/latest/dev/api-GetVaultAccessPolicy.html`,
+		Resolver:    fetchGlacierVaultAccessPolicies,
+		Transform:   transformers.TransformWithStruct(&types.VaultAccessPolicy{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glacier"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

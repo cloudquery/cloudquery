@@ -11,10 +11,11 @@ import (
 
 func Monitors() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_elastic_monitors",
-		Resolver:  fetchMonitors,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_elastic_monitors", client.Namespacemicrosoft_elastic),
-		Transform: transformers.TransformWithStruct(&armelastic.MonitorResource{}),
+		Name:        "azure_elastic_monitors",
+		Resolver:    fetchMonitors,
+		Description: "https://learn.microsoft.com/en-us/rest/api/elastic/monitors/list?tabs=HTTP#elasticmonitorresource",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_elastic_monitors", client.Namespacemicrosoft_elastic),
+		Transform:   transformers.TransformWithStruct(&armelastic.MonitorResource{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

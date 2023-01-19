@@ -11,10 +11,11 @@ import (
 
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_kusto_clusters",
-		Resolver:  fetchClusters,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_kusto_clusters", client.Namespacemicrosoft_kusto),
-		Transform: transformers.TransformWithStruct(&armkusto.Cluster{}),
+		Name:        "azure_kusto_clusters",
+		Resolver:    fetchClusters,
+		Description: "https://learn.microsoft.com/en-us/rest/api/azurerekusto/clusters/list?tabs=HTTP#cluster",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_kusto_clusters", client.Namespacemicrosoft_kusto),
+		Transform:   transformers.TransformWithStruct(&armkusto.Cluster{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

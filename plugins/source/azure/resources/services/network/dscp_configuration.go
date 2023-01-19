@@ -3,7 +3,7 @@ package network
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func DscpConfiguration() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_dscp_configuration",
-		Resolver:  fetchDscpConfiguration,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_dscp_configuration", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.DscpConfiguration{}),
+		Name:        "azure_network_dscp_configuration",
+		Resolver:    fetchDscpConfiguration,
+		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/dscp-configuration/list?tabs=HTTP#dscpconfiguration",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_dscp_configuration", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.DscpConfiguration{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
