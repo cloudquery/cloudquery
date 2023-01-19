@@ -44,12 +44,12 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	}
 	r := bytes.NewReader(writerAtBuffer.Bytes())
 
-	switch c.pluginSpec.Format {
+	switch c.pluginSpec.FileSpec.Format {
 	case FormatTypeCSV:
 		opts := []csv.Options{
-			csv.WithDelimiter(c.pluginSpec.Delimiter),
+			csv.WithDelimiter(c.pluginSpec.FileSpec.Delimiter),
 		}
-		if c.pluginSpec.IncludeHeaders {
+		if c.pluginSpec.FileSpec.IncludeHeaders {
 			opts = append(opts, csv.WithHeader())
 		}
 
@@ -69,7 +69,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 			return err
 		}
 	default:
-		panic("unknown format " + c.pluginSpec.Format)
+		panic("unknown format " + c.pluginSpec.FileSpec.Format)
 	}
 	return nil
 }

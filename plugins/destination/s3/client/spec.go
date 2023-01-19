@@ -12,13 +12,17 @@ const (
 	FormatTypeJSON = "json"
 )
 
-type Spec struct {
-	Bucket         string     `json:"bucket,omitempty"`
-	Path           string     `json:"path,omitempty"`
+type FileSpec struct {
 	Format         FormatType `json:"format,omitempty"`
 	IncludeHeaders bool       `json:"include_headers,omitempty"`
 	Delimiter      rune       `json:"delimiter,omitempty"`
 	NoRotate       bool       `json:"no_rotate,omitempty"`
+}
+
+type Spec struct {
+	Bucket string `json:"bucket,omitempty"`
+	Path   string `json:"path,omitempty"`
+	FileSpec
 }
 
 func (s *Spec) SetDefaults() {
