@@ -282,4 +282,17 @@ Wait, isn't that the bucket we just created for this guide? Better go lock it do
 
 In this tutorial, we showed how to use CloudQuery to load infrastructure data into an S3 bucket, and then use Glue Crawler and Athena to query the data. This allows you to use the power of Athena to query your infrastructure data, and use the results to inform your security and compliance decisions.
 
-Going forward, we will continue making it easier and faster to load data into Athena. Stay tuned for more updates!
+One thing we haven't covered here is how data will be updated the next time you run a sync. The S3 destination plugin only supports the "append" write mode, which means it will keep adding new files and never remove the old ones. So when querying data from the second sync onwards, there will be duplicate entries. To deal with this, most queries should make use of the latest `_cq_sync_time`, a unique timestamp assigned to every sync:
+
+```sql
+-- Find all S3 buckets that are permitted to be public (updated to only use data from latest sync)
+SELECT "arn", "region"
+FROM "cloudquery-athena-example"."aws_s3_buckets"
+WHERE ("block_public_acls" <> TRUE
+    OR "block_public_policy" <> TRUE
+    OR "ignore_public_acls" <> TRUE
+    OR "restrict_public_buckets" <> TRUE)
+    AND (_cq_sync_time = (select max(_cq_sync_time) from "cloudquery-athena-example"."aws_s3_buckets"))
+```
+
+Going forward, we will continue making it easier and faster to load data into Athena, but also easier to maintain views over the latest data. Stay tuned for more updates!
