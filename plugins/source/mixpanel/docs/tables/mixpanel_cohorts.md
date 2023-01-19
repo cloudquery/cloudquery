@@ -2,6 +2,11 @@
 
 The primary key for this table is **_cq_id**.
 
+## Relations
+
+The following tables depend on mixpanel_cohorts:
+  - [mixpanel_cohort_profiles](mixpanel_cohort_profiles.md)
+
 ## Columns
 
 | Name          | Type          |

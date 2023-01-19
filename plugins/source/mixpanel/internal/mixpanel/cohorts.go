@@ -2,6 +2,7 @@ package mixpanel
 
 import (
 	"context"
+	"net/http"
 	"time"
 )
 
@@ -18,6 +19,6 @@ type Cohort struct {
 func (c *Client) ListCohorts(ctx context.Context) ([]Cohort, error) {
 	var l []Cohort
 
-	err := c.Request(ctx, "/api/2.0/cohorts/list", nil, &l)
+	err := c.Request(ctx, http.MethodGet, "/api/2.0/cohorts/list", nil, &l)
 	return l, err
 }

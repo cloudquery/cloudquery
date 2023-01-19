@@ -64,14 +64,14 @@ func New(logger zerolog.Logger, hc HTTPDoer, region Region, baseURL, apiUser, ap
 	}
 }
 
-func (v *Client) Request(ctx context.Context, path string, qp url.Values, fill any) error {
+func (v *Client) Request(ctx context.Context, method, path string, qp url.Values, fill any) error {
 	if qp == nil {
 		qp = url.Values{}
 	}
 
 	uri := v.getBaseURL() + path
 
-	body, err := v.request(ctx, uri, qp)
+	body, err := v.request(ctx, method, uri, qp)
 	if err != nil {
 		return err
 	}
@@ -83,7 +83,7 @@ func (v *Client) Request(ctx context.Context, path string, qp url.Values, fill a
 	return json.NewDecoder(body).Decode(&fill)
 }
 
-func (v *Client) request(ctx context.Context, uri string, qp url.Values) (io.ReadCloser, error) {
+func (v *Client) request(ctx context.Context, method, uri string, qp url.Values) (io.ReadCloser, error) {
 	if v.projectID > 0 {
 		qp.Set("project_id", strconv.FormatInt(v.projectID, 10))
 	}
@@ -93,7 +93,7 @@ func (v *Client) request(ctx context.Context, uri string, qp url.Values) (io.Rea
 
 	retries := int64(0)
 	for {
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, uri+"?"+qp.Encode(), nil)
+		req, err := http.NewRequestWithContext(ctx, method, uri+"?"+qp.Encode(), nil)
 		if err != nil {
 			return nil, err
 		}
@@ -114,7 +114,7 @@ func (v *Client) request(ctx context.Context, uri string, qp url.Values) (io.Rea
 			break
 		}
 
-		rateErr := fmt.Errorf("request to %s failed: %s", path, res.Status)
+		rateErr := fmt.Errorf("request to %s failed: %s", uri, res.Status)
 		if res.StatusCode != http.StatusTooManyRequests {
 			return nil, rateErr
 		}

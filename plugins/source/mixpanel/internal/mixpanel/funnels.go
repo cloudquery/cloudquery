@@ -2,6 +2,7 @@ package mixpanel
 
 import (
 	"context"
+	"net/http"
 	"net/url"
 	"strconv"
 )
@@ -19,7 +20,7 @@ type FunnelData struct {
 func (c *Client) ListFunnels(ctx context.Context) ([]Funnel, error) {
 	var l []Funnel
 
-	err := c.Request(ctx, "/api/2.0/funnels/list", nil, &l)
+	err := c.Request(ctx, http.MethodGet, "/api/2.0/funnels/list", nil, &l)
 	return l, err
 }
 
@@ -30,7 +31,7 @@ func (c *Client) QueryFunnel(ctx context.Context, id int64, startDate, endDate s
 	qp.Set("to_date", endDate)
 
 	var d FunnelData
-	err := c.Request(ctx, "/api/2.0/funnels", qp, &d)
+	err := c.Request(ctx, http.MethodPost, "/api/2.0/funnels", qp, &d)
 	if err != nil {
 		return nil, err
 	}

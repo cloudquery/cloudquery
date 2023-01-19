@@ -14,13 +14,16 @@ func Cohorts() *schema.Table {
 		Name:      "mixpanel_cohorts",
 		Resolver:  fetchCohorts,
 		Transform: transformers.TransformWithStruct(&mixpanel.Cohort{}, transformers.WithPrimaryKeys("id")),
+		Relations: []*schema.Table{
+			CohortProfiles(),
+		},
 	}
 }
 
 func fetchCohorts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 
-	ret, err := cl.Services.ListFunnels(ctx)
+	ret, err := cl.Services.ListCohorts(ctx)
 	if err != nil {
 		return err
 	}
