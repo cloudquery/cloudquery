@@ -156,8 +156,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleserv
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork v1.0.0 h1:nBy98uKOIfun5z6wx6jwWLrULcM0+cjBalBFZlEZ7CA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2 v2.1.0 h1:mk57wRUA8fyjFxVcPPGv4shLcWDXPFYokTJL9zJxQtE=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2 v2.1.0/go.mod h1:mU96hbp8qJDA9OzTV1Ji7wCyPyaqC5kI6ZPsZfJ8sE4=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction v1.0.0 h1:UVtXsUrI42NcbF2Gix72ocqrSwGGXGpyEqCRD8/R/KY=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction v1.0.0/go.mod h1:NopiK8zJllx4yy6CPbkpOIu5B+ZVYSEEbMoqoXU1Wl4=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction/v2 v2.0.0 h1:d8MBbZKQInSttOoWzoIYNbXv4b59ypYrIsC+B5r0+00=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction/v2 v2.0.0/go.mod h1:qNv7V+AlHHPwtLARdNvQjqxYlrLumlg9+Nyzq7n6Y2s=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v2 v2.0.0 h1:HwXVlgG4XaUBd0/lUGJ9lsG9pWzu7A1JpdNiy1R7UdA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v2 v2.0.0/go.mod h1:VEHdexm48gSyyFNL3OlBTwhSWpL9xeeymKeSqieivbg=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/notificationhubs/armnotificationhubs v1.0.0 h1:HEDHc0NG7a3n4W7h2ZVhHHO3mwjgmhxk4iaJ95L3P2w=
