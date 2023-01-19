@@ -6,13 +6,6 @@ import (
 	"github.com/cloudquery/filetypes"
 )
 
-type FormatType string
-
-const (
-	FormatTypeCSV  = "csv"
-	FormatTypeJSON = "json"
-)
-
 type Spec struct {
 	StorageAccount string `json:"storage_account,omitempty"`
 	Container      string `json:"container,omitempty"`
