@@ -19,7 +19,7 @@ func fetchGlossaries(ctx context.Context, meta schema.ClientMeta, parent *schema
 	}
 
 	it := gcpClient.ListGlossaries(ctx, &pb.ListGlossariesRequest{
-		Parent: "projects/" + c.ProjectId + "/locations/global",
+		Parent: "projects/" + c.ProjectId + "/locations/us-central1",
 	}, c.CallOptions...)
 	for {
 		resp, err := it.Next()
