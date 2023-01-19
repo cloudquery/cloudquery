@@ -14,19 +14,25 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 			return err
 		}
 	}
+
 	return nil
 }
 
-func (c *Client) migrate(ctx context.Context, table *schema.Table) error {
+func (c *Client) migrate(ctx context.Context, table *schema.Table) (err error) {
 	c.logger.Info().Str("table", table.Name).Msg("Migrating table started")
 	defer c.logger.Info().Str("table", table.Name).Msg("Migrating table done")
+	defer func() {
+		if err != nil {
+			c.logErr(err)
+		}
+	}()
 
 	if len(table.Columns) == 0 {
 		c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
 		return nil
 	}
 
-	switch tableExist, err := c.tableExists(ctx, table.Name); {
+	switch tableExist, err := c.tableExists(ctx, table); {
 	case err != nil:
 		return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
 	case tableExist:

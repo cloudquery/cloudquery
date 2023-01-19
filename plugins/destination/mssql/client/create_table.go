@@ -16,7 +16,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) (err erro
 		}
 	}()
 
-	_, err = c.db.ExecContext(ctx, queries.CreateTable(c.schemaName, c.pkEnabled(), table))
+	_, err = c.db.ExecContext(ctx, queries.CreateTable(c.schemaName, table, c.pkEnabled()))
 	if err != nil {
 		return fmt.Errorf("failed to create table %s: %w", table.Name, err)
 	}

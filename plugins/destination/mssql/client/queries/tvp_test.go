@@ -1,29 +1,68 @@
 package queries
 
 import (
+	"database/sql"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/stretchr/testify/require"
 )
 
-func TestTVPDrop(t *testing.T) {
+func TestTVPDropProc(t *testing.T) {
 	const (
 		schemaName = "cq"
-		expected   = `BEGIN TRY
-DROP PROCEDURE [cq].[cq_proc_table_name];
-DROP TYPE [cq].[cq_tbl_table_name];
-END TRY
-BEGIN CATCH
-END CATCH;`
+		expected   = `IF EXISTS (
+ SELECT * FROM sys.procedures p
+ INNER JOIN sys.schemas s ON p.schema_id = s.schema_id
+ WHERE s.[name] = @schemaName AND p.[name] = @procName
+)
+DROP PROCEDURE [cq].[cq_proc_table_name];`
 	)
 
-	query := TVPDrop(schemaName, &schema.Table{Name: "table_name"})
+	query, params := TVPDropProc(schemaName, &schema.Table{Name: "table_name"})
 
 	require.Equal(t, expected, query)
+	require.Equal(t, 2, len(params))
+
+	named, ok := params[0].(sql.NamedArg)
+	require.True(t, ok)
+	require.Equal(t, "schemaName", named.Name)
+	require.Equal(t, schemaName, named.Value)
+
+	named, ok = params[1].(sql.NamedArg)
+	require.True(t, ok)
+	require.Equal(t, "procName", named.Name)
+	require.Equal(t, "cq_proc_table_name", named.Value)
 }
 
-func TestTVPType(t *testing.T) {
+func TestTVPDropType(t *testing.T) {
+	const (
+		schemaName = "cq"
+		expected   = `IF EXISTS (
+ SELECT * FROM sys.table_types tt
+ INNER JOIN sys.schemas s ON tt.schema_id = s.schema_id
+ WHERE s.[name] = @schemaName AND tt.[name] = @typeName
+)
+DROP TYPE [cq].[cq_tbl_table_name];`
+	)
+
+	query, params := TVPDropType(schemaName, &schema.Table{Name: "table_name"})
+
+	require.Equal(t, expected, query)
+	require.Equal(t, 2, len(params))
+
+	named, ok := params[0].(sql.NamedArg)
+	require.True(t, ok)
+	require.Equal(t, "schemaName", named.Name)
+	require.Equal(t, schemaName, named.Value)
+
+	named, ok = params[1].(sql.NamedArg)
+	require.True(t, ok)
+	require.Equal(t, "typeName", named.Name)
+	require.Equal(t, "cq_tbl_table_name", named.Value)
+}
+
+func TestTVPAddType(t *testing.T) {
 	const (
 		schemaName = "cq"
 		expected   = `CREATE TYPE [cq].[cq_tbl_table_name] AS TABLE (
@@ -38,7 +77,7 @@ func TestTVPType(t *testing.T) {
 );`
 	)
 
-	query := TVPType(schemaName, &schema.Table{
+	query := TVPAddType(schemaName, &schema.Table{
 		Name: "table_name",
 		Columns: schema.ColumnList{
 			schema.CqIDColumn,
@@ -69,7 +108,7 @@ func TestTVPType(t *testing.T) {
 	require.Equal(t, expected, query)
 }
 
-func TestTVPProc(t *testing.T) {
+func TestTVPAddProc(t *testing.T) {
 	const (
 		schemaName = "cq"
 		expected   = `CREATE PROCEDURE [cq].[cq_proc_table_name] @TVP [cq].[cq_tbl_table_name] READONLY
@@ -92,8 +131,25 @@ BEGIN
   [tgt].[extra_col_pk2] = [src].[extra_col_pk2]
 ;
 
-INSERT [cq].[table_name]
- SELECT * FROM @TVP AS [src]
+INSERT [cq].[table_name] (
+  [_cq_id],
+  [_cq_parent_id],
+  [_cq_source_name],
+  [_cq_sync_time],
+  [extra_col_pk1],
+  [extra_col_pk2],
+  [extra_col_not_pk1],
+  [extra_col_not_pk2]
+) SELECT
+  [_cq_id],
+  [_cq_parent_id],
+  [_cq_source_name],
+  [_cq_sync_time],
+  [extra_col_pk1],
+  [extra_col_pk2],
+  [extra_col_not_pk1],
+  [extra_col_not_pk2]
+ FROM @TVP AS [src]
  WHERE NOT EXISTS (
   SELECT 1 FROM [cq].[table_name] AS [tgt]
   WHERE (
@@ -105,7 +161,7 @@ INSERT [cq].[table_name]
 END;`
 	)
 
-	query := TVPProc(schemaName, &schema.Table{
+	query := TVPAddProc(schemaName, &schema.Table{
 		Name: "table_name",
 		Columns: schema.ColumnList{
 			schema.CqIDColumn,

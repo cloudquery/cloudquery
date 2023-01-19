@@ -7,7 +7,7 @@ import (
 
 type txOp func(tx *sql.Tx) error
 
-func (c *Client) doInTx(ctx context.Context, op txOp) error {
+func (c *Client) doInTx(ctx context.Context, op txOp) (err error) {
 	tx, err := c.db.BeginTx(ctx, &sql.TxOptions{Isolation: sql.LevelSerializable})
 	if err != nil {
 		return err

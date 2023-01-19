@@ -39,8 +39,8 @@ func SQLType(t schema.ValueType) string {
 	}
 }
 
-// ColumnGoType has to be in sync with SQLType
-func ColumnGoType(t schema.ValueType) reflect.Type {
+// columnGoType has to be in sync with SQLType
+func columnGoType(t schema.ValueType) reflect.Type {
 	switch t {
 	case schema.TypeBool:
 		return reflect.TypeOf(true)
