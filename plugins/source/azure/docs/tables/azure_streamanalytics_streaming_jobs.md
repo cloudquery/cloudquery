@@ -1,5 +1,7 @@
 # Table: azure_streamanalytics_streaming_jobs
 
+https://learn.microsoft.com/en-us/rest/api/streamanalytics/2020-03-01/streaming-jobs/list?tabs=HTTP#streamingjob
+
 The primary key for this table is **id**.
 
 ## Columns

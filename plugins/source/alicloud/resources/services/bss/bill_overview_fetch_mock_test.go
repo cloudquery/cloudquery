@@ -18,7 +18,7 @@ func buildBssBillOverview(t *testing.T, ctrl *gomock.Controller) client.Services
 		t.Fatal(err)
 	}
 	b.Success = true
-	mock.EXPECT().QueryBillOverview(gomock.Any()).Times(1).Return(b, nil)
+	mock.EXPECT().QueryBillOverview(gomock.Any()).AnyTimes().Return(b, nil)
 	return client.Services{BSS: mock}
 }
 

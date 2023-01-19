@@ -9,10 +9,11 @@ import (
 
 func DeploymentChecks() *schema.Table {
 	return &schema.Table{
-		Name:      "vercel_deployment_checks",
-		Resolver:  fetchDeploymentChecks,
-		Transform: transformers.TransformWithStruct(&vercel.DeploymentCheck{}, client.SharedTransformers()...),
-		Multiplex: client.TeamMultiplex,
+		Name:          "vercel_deployment_checks",
+		Resolver:      fetchDeploymentChecks,
+		Transform:     transformers.TransformWithStruct(&vercel.DeploymentCheck{}, client.SharedTransformers()...),
+		Multiplex:     client.TeamMultiplex,
+		IsIncremental: true,
 		Columns: []schema.Column{
 			{
 				Name:     "deployment_id",

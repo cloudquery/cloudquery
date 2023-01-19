@@ -1,5 +1,7 @@
 # Table: azure_applicationinsights_components
 
+https://learn.microsoft.com/en-us/rest/api/application-insights/components/list?tabs=HTTP#applicationinsightscomponent
+
 The primary key for this table is **id**.
 
 ## Columns

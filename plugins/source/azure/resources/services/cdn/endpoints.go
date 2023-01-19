@@ -8,9 +8,10 @@ import (
 
 func endpoints() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_cdn_endpoints",
-		Resolver:  fetchEndpoints,
-		Transform: transformers.TransformWithStruct(&armcdn.Endpoint{}),
+		Name:        "azure_cdn_endpoints",
+		Resolver:    fetchEndpoints,
+		Description: "https://learn.microsoft.com/en-us/rest/api/cdn/endpoints/list-by-profile?tabs=HTTP#endpoint",
+		Transform:   transformers.TransformWithStruct(&armcdn.Endpoint{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

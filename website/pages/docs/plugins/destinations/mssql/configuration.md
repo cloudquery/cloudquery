@@ -1,0 +1,59 @@
+# Microsoft SQL Server destination plugin configuration reference
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+import { Callout } from 'nextra-theme-docs'
+
+<Badge text={"Latest: " + getLatestVersion("destination", "mssql")}/>
+
+<Callout type="info">
+Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+</Callout>
+
+## Microsoft SQL Server spec
+
+This is the (nested) spec used by the Microsoft SQL Server destination plugin.
+
+- `connection_string` (string, required)
+
+  Connection string to connect to the database.
+  See [SDK documentation](https://github.com/microsoft/go-mssqldb#connection-parameters-and-dsn) for more details.
+
+- `auth_mode` (string, optional. Default: `ms`)
+
+  If you need to authenticate via Azure Active Directory ensure you specify `azure` value.
+  See [SDK documentation](https://github.com/microsoft/go-mssqldb#azure-active-directory-authentication) for more
+  information.
+  Supported values:
+
+    - `ms` _connect to Microsoft SQL Server instance_
+    - `azure` _connect to Azure SQL Server instance_
+
+- `schema` (string, optional. Default: `dbo`)
+
+  Schema name to be used. 
+  By default, Microsoft SQL Server destination plugin will use the
+  [default](https://learn.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-and-user-schema-separation?view=sql-server-ver16#the-dbo-schema)
+  schema named `dbo`.
+
+### Verbose logging for debug
+
+The Microsoft SQL Server destination can be run in debug mode.
+To achieve this pass the `log` option to `connection_string`.
+See [SDK documentation](https://github.com/microsoft/go-mssqldb#connection-parameters-and-dsn) for more details.
+
+Note: This will use [`SDK`](https://github.com/microsoft/go-mssqldb) built-in logging
+and might output data and sensitive information to logs.
+Make sure not to use it in production environment.
+
+```yaml
+kind: destination
+spec:
+  name:     "mssql"
+  registry: "github"
+  path:     "cloudquery/mssql"
+  version:  "VERSION_DESTINATION_MSSQL"
+
+  spec:
+    connection_string: "${MS_SQL_CONN_STRING};log=255"
+```

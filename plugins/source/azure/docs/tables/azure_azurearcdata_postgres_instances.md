@@ -1,5 +1,7 @@
 # Table: azure_azurearcdata_postgres_instances
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata@v0.5.0#PostgresInstance
+
 The primary key for this table is **id**.
 
 ## Columns

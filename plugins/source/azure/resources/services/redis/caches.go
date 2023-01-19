@@ -3,7 +3,7 @@ package redis
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func Caches() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_redis_caches",
-		Resolver:  fetchCaches,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_redis_caches", client.Namespacemicrosoft_cache),
-		Transform: transformers.TransformWithStruct(&armredis.ResourceInfo{}),
+		Name:        "azure_redis_caches",
+		Resolver:    fetchCaches,
+		Description: "https://learn.microsoft.com/en-us/rest/api/redis/redis/list-by-subscription?tabs=HTTP#redisresource",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_redis_caches", client.Namespacemicrosoft_cache),
+		Transform:   transformers.TransformWithStruct(&armredis.ResourceInfo{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

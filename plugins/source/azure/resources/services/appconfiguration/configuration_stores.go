@@ -11,10 +11,11 @@ import (
 
 func ConfigurationStores() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_appconfiguration_configuration_stores",
-		Resolver:  fetchConfigurationStores,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appconfiguration_configuration_stores", client.Namespacemicrosoft_appconfiguration),
-		Transform: transformers.TransformWithStruct(&armappconfiguration.ConfigurationStore{}),
+		Name:        "azure_appconfiguration_configuration_stores",
+		Resolver:    fetchConfigurationStores,
+		Description: "https://learn.microsoft.com/en-us/rest/api/appconfiguration/stable/configuration-stores/list?tabs=HTTP#configurationstore",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appconfiguration_configuration_stores", client.Namespacemicrosoft_appconfiguration),
+		Transform:   transformers.TransformWithStruct(&armappconfiguration.ConfigurationStore{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

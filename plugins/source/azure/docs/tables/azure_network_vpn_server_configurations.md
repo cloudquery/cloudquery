@@ -1,5 +1,7 @@
 # Table: azure_network_vpn_server_configurations
 
+https://learn.microsoft.com/en-us/rest/api/virtualwan/vpn-server-configurations/list?tabs=HTTP#vpnserverconfiguration
+
 The primary key for this table is **id**.
 
 ## Columns

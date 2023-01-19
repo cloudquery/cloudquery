@@ -1,5 +1,7 @@
 # Table: azure_network_ip_groups
 
+https://learn.microsoft.com/en-us/rest/api/virtualnetwork/ip-groups/list?tabs=HTTP#ipgroup
+
 The primary key for this table is **id**.
 
 ## Columns

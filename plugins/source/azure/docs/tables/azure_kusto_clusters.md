@@ -1,5 +1,7 @@
 # Table: azure_kusto_clusters
 
+https://learn.microsoft.com/en-us/rest/api/azurerekusto/clusters/list?tabs=HTTP#cluster
+
 The primary key for this table is **id**.
 
 ## Columns

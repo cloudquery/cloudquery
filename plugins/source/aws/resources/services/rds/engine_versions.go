@@ -12,7 +12,7 @@ func EngineVersions() *schema.Table {
 		Name:        "aws_rds_engine_versions",
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html`,
 		Resolver:    fetchRdsEngineVersions,
-		Transform:   transformers.TransformWithStruct(&types.DBEngineVersion{}, transformers.WithSkipFields("TagList")),
+		Transform:   transformers.TransformWithStruct(&types.DBEngineVersion{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{
 			{
@@ -43,6 +43,14 @@ func EngineVersions() *schema.Table {
 				Name:     "engine_version",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("EngineVersion"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "db_engine_version_description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DBEngineVersionDescription"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

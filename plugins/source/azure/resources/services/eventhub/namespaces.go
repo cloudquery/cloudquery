@@ -11,10 +11,11 @@ import (
 
 func Namespaces() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_eventhub_namespaces",
-		Resolver:  fetchNamespaces,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_eventhub_namespaces", client.Namespacemicrosoft_eventhub),
-		Transform: transformers.TransformWithStruct(&armeventhub.EHNamespace{}),
+		Name:        "azure_eventhub_namespaces",
+		Resolver:    fetchNamespaces,
+		Description: "https://learn.microsoft.com/en-us/rest/api/eventhub/stable/namespaces/list?tabs=HTTP#ehnamespace",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_eventhub_namespaces", client.Namespacemicrosoft_eventhub),
+		Transform:   transformers.TransformWithStruct(&armeventhub.EHNamespace{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

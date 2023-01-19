@@ -1,5 +1,7 @@
 # Table: azure_confluent_marketplace_agreements
 
+https://learn.microsoft.com/en-us/rest/api/confluent/marketplace-agreements/list?tabs=HTTP#confluentagreementresource
+
 The primary key for this table is **id**.
 
 ## Columns

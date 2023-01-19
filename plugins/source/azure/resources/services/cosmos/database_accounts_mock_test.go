@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
 )
