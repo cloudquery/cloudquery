@@ -1,5 +1,7 @@
 # Table: azure_compute_virtual_machine_scale_sets
 
+https://learn.microsoft.com/en-us/rest/api/compute/virtual-machine-scale-sets/list?tabs=HTTP#virtualmachinescaleset
+
 The primary key for this table is **id**.
 
 ## Relations

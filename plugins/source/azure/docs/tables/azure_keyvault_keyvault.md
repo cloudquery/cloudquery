@@ -1,5 +1,7 @@
 # Table: azure_keyvault_keyvault
 
+https://learn.microsoft.com/en-us/rest/api/keyvault/keyvault/vaults/get?tabs=HTTP#vault
+
 The primary key for this table is **id**.
 
 ## Relations

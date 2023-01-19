@@ -8,9 +8,10 @@ import (
 
 func containers() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_storage_containers",
-		Resolver:  fetchContainers,
-		Transform: transformers.TransformWithStruct(&armstorage.ListContainerItem{}),
+		Name:        "azure_storage_containers",
+		Resolver:    fetchContainers,
+		Description: "https://learn.microsoft.com/en-us/rest/api/storagerp/blob-containers/list?tabs=HTTP#listcontaineritem",
+		Transform:   transformers.TransformWithStruct(&armstorage.ListContainerItem{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

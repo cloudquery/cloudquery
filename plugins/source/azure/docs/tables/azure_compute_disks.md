@@ -1,5 +1,7 @@
 # Table: azure_compute_disks
 
+https://learn.microsoft.com/en-us/rest/api/compute/disks/list?tabs=HTTP#disk
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: azure_resources_resources
 
+https://learn.microsoft.com/en-us/rest/api/resources/resources/list#genericresourceexpanded
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: azure_compute_cloud_services
 
+https://learn.microsoft.com/en-us/rest/api/compute/cloud-services/list?tabs=HTTP#cloudservice
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -14,6 +16,8 @@ The primary key for this table is **id**.
 |id (PK)|String|
 |location|String|
 |properties|JSON|
+|system_data|JSON|
 |tags|JSON|
+|zones|StringArray|
 |name|String|
 |type|String|

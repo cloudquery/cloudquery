@@ -11,10 +11,11 @@ import (
 
 func Connectors() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_connectors",
-		Resolver:  fetchConnectors,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_connectors", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.Connector{}),
+		Name:        "azure_security_connectors",
+		Resolver:    fetchConnectors,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity@v0.9.0#ConnectorSetting",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_connectors", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.Connector{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

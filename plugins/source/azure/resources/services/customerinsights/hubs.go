@@ -11,10 +11,11 @@ import (
 
 func Hubs() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_customerinsights_hubs",
-		Resolver:  fetchHubs,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_customerinsights_hubs", client.Namespacemicrosoft_customerinsights),
-		Transform: transformers.TransformWithStruct(&armcustomerinsights.Hub{}),
+		Name:        "azure_customerinsights_hubs",
+		Resolver:    fetchHubs,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights@v1.0.0#Hub",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_customerinsights_hubs", client.Namespacemicrosoft_customerinsights),
+		Transform:   transformers.TransformWithStruct(&armcustomerinsights.Hub{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

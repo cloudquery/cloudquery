@@ -3,7 +3,7 @@ package cosmos
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func Locations() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_cosmos_locations",
-		Resolver:  fetchLocations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_cosmos_locations", client.Namespacemicrosoft_documentdb),
-		Transform: transformers.TransformWithStruct(&armcosmos.LocationGetResult{}),
+		Name:        "azure_cosmos_locations",
+		Resolver:    fetchLocations,
+		Description: "https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/locations/list?tabs=HTTP#locationgetresult",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cosmos_locations", client.Namespacemicrosoft_documentdb),
+		Transform:   transformers.TransformWithStruct(&armcosmos.LocationGetResult{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

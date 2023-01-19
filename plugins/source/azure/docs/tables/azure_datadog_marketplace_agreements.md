@@ -1,5 +1,7 @@
 # Table: azure_datadog_marketplace_agreements
 
+https://learn.microsoft.com/en-us/rest/api/datadog/marketplace-agreements/list?tabs=HTTP#datadogagreementresource
+
 The primary key for this table is **id**.
 
 ## Columns

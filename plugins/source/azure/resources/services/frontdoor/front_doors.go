@@ -11,10 +11,11 @@ import (
 
 func FrontDoors() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_frontdoor_front_doors",
-		Resolver:  fetchFrontDoors,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_frontdoor_front_doors", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armfrontdoor.FrontDoor{}),
+		Name:        "azure_frontdoor_front_doors",
+		Resolver:    fetchFrontDoors,
+		Description: "https://learn.microsoft.com/en-us/rest/api/frontdoorservice/frontdoor/front-doors/list?tabs=HTTP#frontdoor",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_frontdoor_front_doors", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armfrontdoor.FrontDoor{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

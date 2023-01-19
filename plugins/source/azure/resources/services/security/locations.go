@@ -11,10 +11,11 @@ import (
 
 func Locations() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_locations",
-		Resolver:  fetchLocations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_locations", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.AscLocation{}),
+		Name:        "azure_security_locations",
+		Resolver:    fetchLocations,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/locations/get?tabs=HTTP#asclocation",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_locations", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.AscLocation{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

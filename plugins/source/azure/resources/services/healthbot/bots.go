@@ -9,10 +9,11 @@ import (
 
 func Bots() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_healthbot_bots",
-		Resolver:  fetchBots,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_healthbot_bots", client.Namespacemicrosoft_healthbot),
-		Transform: transformers.TransformWithStruct(&armhealthbot.HealthBot{}),
+		Name:        "azure_healthbot_bots",
+		Resolver:    fetchBots,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot@v1.0.0#HealthBot",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_healthbot_bots", client.Namespacemicrosoft_healthbot),
+		Transform:   transformers.TransformWithStruct(&armhealthbot.HealthBot{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

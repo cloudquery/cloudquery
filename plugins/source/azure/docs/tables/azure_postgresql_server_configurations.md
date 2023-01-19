@@ -1,5 +1,7 @@
 # Table: azure_postgresql_server_configurations
 
+https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/configurations/list-by-server?tabs=HTTP#configuration
+
 The primary key for this table is **id**.
 
 ## Relations

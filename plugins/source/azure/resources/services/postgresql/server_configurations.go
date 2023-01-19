@@ -8,9 +8,10 @@ import (
 
 func serverConfigurations() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_postgresql_server_configurations",
-		Resolver:  fetchServerConfigurations,
-		Transform: transformers.TransformWithStruct(&armpostgresql.Configuration{}),
+		Name:        "azure_postgresql_server_configurations",
+		Resolver:    fetchServerConfigurations,
+		Description: "https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/configurations/list-by-server?tabs=HTTP#configuration",
+		Transform:   transformers.TransformWithStruct(&armpostgresql.Configuration{}),
 		Columns: []schema.Column{
 			{
 				Name:     "properties",
