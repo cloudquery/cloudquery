@@ -15,7 +15,5 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 		})
 	}
 
-	return c.doInTx(ctx, func(tx *sql.Tx) error {
-		return c.insertTVP(ctx, tx, table, data)
-	})
+	return c.insertTVP(ctx, table, data)
 }

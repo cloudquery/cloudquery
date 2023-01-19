@@ -2,25 +2,27 @@ package queries
 
 import (
 	"database/sql"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-type readQueryBuilder struct {
+type deleteStaleQueryBuilder struct {
 	Table            string
-	Columns          []string
 	SourceNameColumn string
 	SyncTimeColumn   string
 }
 
-func Read(schemaName, sourceName string, table *schema.Table) (query string, params []any) {
-	return execTemplate("read.sql.tpl",
-			&readQueryBuilder{
+func DeleteStale(schemaName string, table *schema.Table, sourceName string, syncTime time.Time) (query string, params []any) {
+	return execTemplate("delete_stale.sql.tpl",
+			&deleteStaleQueryBuilder{
 				Table:            SanitizedTableName(schemaName, table),
-				Columns:          sanitized(table.Columns.Names()...),
 				SourceNameColumn: sanitizeID(schema.CqSourceNameColumn.Name),
 				SyncTimeColumn:   sanitizeID(schema.CqSyncTimeColumn.Name),
 			},
 		),
-		[]any{sql.Named("sourceName", sourceName)}
+		[]any{
+			sql.Named("sourceName", sourceName),
+			sql.Named("syncTime", syncTime),
+		}
 }
