@@ -15,12 +15,12 @@ type tvpProcQueryBuilder struct {
 
 func TVPProcName(schemaName string, tableName string) string {
 	const pfx = "cq_proc_"
-	return SanitizeID(schemaName, pfx+tableName)
+	return sanitizeID(schemaName, pfx+tableName)
 }
 
 func TVPTableType(schemaName string, tableName string) string {
 	const pfx = "cq_tbl_"
-	return SanitizeID(schemaName, pfx+tableName)
+	return sanitizeID(schemaName, pfx+tableName)
 }
 
 func TVPDrop(schemaName string, table *schema.Table) string {
@@ -36,7 +36,7 @@ func TVPProc(schemaName string, table *schema.Table) string {
 	data := &tvpProcQueryBuilder{
 		Name:   TVPProcName(schemaName, table.Name),
 		Type:   TVPTableType(schemaName, table.Name),
-		Table:  SanitizeID(schemaName, table.Name),
+		Table:  sanitizeID(schemaName, table.Name),
 		PK:     GetPKColumns(table, true),
 		Values: GetValueColumns(table.Columns),
 	}

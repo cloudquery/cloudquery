@@ -21,8 +21,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 
 	stalePks := c.getStalePks(table, pkPresent)
 	if len(stalePks) > 0 {
-		dropConstraintSQL := "ALTER TABLE " + c.tableName(table) +
-			" DROP " + queries.SanitizeID(table.Name+"_cqpk")
+		dropConstraintSQL := queries.DropPK(c.schemaName, table)
 		sep := strings.Repeat("-", len(dropConstraintSQL)+1)
 		query := fmt.Sprintf("%s\n%s;\n%s\n%s", sep, dropConstraintSQL, c.getDropNotNullQuery(table, stalePks), sep)
 		return fmt.Errorf(
@@ -56,7 +55,7 @@ func (c *Client) ensureColumns(ctx context.Context, table *schema.Table, pkPrese
 	var statements []string
 	pkEnabled := c.pkEnabled()
 	for _, column := range table.Columns {
-		def := queries.GetDefinition(column, pkEnabled)
+		def := queries.GetDefinition(&column, pkEnabled)
 		switch curr := current.Get(column.Name); {
 		case curr == nil:
 			// column doesn't exist

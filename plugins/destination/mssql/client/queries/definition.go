@@ -16,7 +16,7 @@ type Definition struct {
 // Sanitized returns definition copy with name sanitized
 func (d *Definition) Sanitized() *Definition {
 	r := *d
-	r.Name = SanitizeID(r.Name)
+	r.Name = sanitizeID(r.Name)
 	return &r
 }
 
@@ -31,6 +31,14 @@ func (d *Definition) Type() string {
 	return res
 }
 
+// Nullable returns definition copy that will allow nullable values
+func (d *Definition) Nullable() *Definition {
+	return &Definition{
+		Name: d.Name,
+		typ:  d.typ,
+	}
+}
+
 func NewDefinition(name, typ string, nullable bool) *Definition {
 	d := &Definition{
 		Name:    strings.ToLower(name),
@@ -42,7 +50,7 @@ func NewDefinition(name, typ string, nullable bool) *Definition {
 	return d
 }
 
-func GetDefinition(column schema.Column, pkEnabled bool) *Definition {
+func GetDefinition(column *schema.Column, pkEnabled bool) *Definition {
 	def := &Definition{
 		Name: column.Name,
 		typ:  SQLType(column.Type),
@@ -76,7 +84,7 @@ func GetDefinitions(columns schema.ColumnList, pkEnabled bool) Definitions {
 	definitions := make(Definitions, len(columns))
 
 	for i, col := range columns {
-		definitions[i] = GetDefinition(col, pkEnabled).Sanitized()
+		definitions[i] = GetDefinition(&col, pkEnabled).Sanitized()
 	}
 
 	return definitions

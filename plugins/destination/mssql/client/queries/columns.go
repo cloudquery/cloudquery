@@ -23,14 +23,21 @@ func DropColumn(schemaName string, table *schema.Table, definition *Definition) 
 	})
 }
 
+func AlterColumn(schemaName string, table *schema.Table, definition *Definition) string {
+	return execTemplate("col_alter.sql.tpl", &colQueryBuilder{
+		Table:      SanitizedTableName(schemaName, table),
+		Definition: definition.Sanitized(),
+	})
+}
+
 func GetPKColumns(table *schema.Table, enabled bool) []string {
 	pk := table.PrimaryKeys()
 
 	if !enabled || len(pk) == 0 {
-		return Sanitized(schema.CqIDColumn.Name)
+		return sanitized(schema.CqIDColumn.Name)
 	}
 
-	return Sanitized(pk...)
+	return sanitized(pk...)
 }
 
 func GetValueColumns(columns schema.ColumnList) []string {
@@ -42,5 +49,5 @@ func GetValueColumns(columns schema.ColumnList) []string {
 		}
 	}
 
-	return Sanitized(cols...)
+	return sanitized(cols...)
 }

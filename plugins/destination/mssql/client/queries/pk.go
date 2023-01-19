@@ -10,15 +10,16 @@ type pkQueryBuilder struct {
 	Columns []string
 }
 
-const (
-	pkSuffix = "_cqpk"
-)
+func PKConstraint(table *schema.Table) string {
+	const pkSuffix = "_cqpk"
+	return sanitizeID(table.Name + pkSuffix)
+}
 
 // AddPK should be called only for mode with PK enabled.
 func AddPK(schemaName string, table *schema.Table) string {
 	return execTemplate("pk_add.sql.tpl", &pkQueryBuilder{
-		Table:   SanitizeID(schemaName, table.Name),
-		Name:    SanitizeID(table.Name + pkSuffix),
+		Table:   sanitizeID(schemaName, table.Name),
+		Name:    PKConstraint(table),
 		Columns: GetPKColumns(table, true), // we call AddPK only for enabled
 	})
 }
@@ -26,7 +27,7 @@ func AddPK(schemaName string, table *schema.Table) string {
 // DropPK should be called only for mode with PK enabled.
 func DropPK(schemaName string, table *schema.Table) string {
 	return execTemplate("pk_drop.sql.tpl", &pkQueryBuilder{
-		Table: SanitizeID(schemaName, table.Name),
-		Name:  SanitizeID(table.Name + pkSuffix),
+		Table: sanitizeID(schemaName, table.Name),
+		Name:  PKConstraint(table),
 	})
 }

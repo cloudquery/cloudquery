@@ -10,9 +10,9 @@ type createTableQueryBuilder struct {
 	PrimaryKey  []string
 }
 
-func CreateTable(schemaName string, pkEnabled bool, table *schema.Table) string {
+func CreateTable(schemaName string, table *schema.Table, pkEnabled bool) string {
 	return execTemplate("create_table.sql.tpl", &createTableQueryBuilder{
-		Table:       SanitizeID(schemaName, table.Name),
+		Table:       SanitizedTableName(schemaName, table),
 		Definitions: GetDefinitions(table.Columns, pkEnabled),
 		PrimaryKey:  GetPKColumns(table, pkEnabled),
 	})

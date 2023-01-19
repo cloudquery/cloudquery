@@ -91,11 +91,12 @@ func (c *Client) getStalePks(table *schema.Table, primaryKey []string) []string 
 	return stale
 }
 
-func (c *Client) getDropNotNullQuery(table *schema.Table, stalePK []string) string {
-	tableName := c.tableName(table)
-	statements := make([]string, len(stalePK))
-	for i, col := range stalePK {
-		statements[i] = "ALTER TABLE " + tableName + " ALTER COLUMN " + queries.SanitizeID(col) + " DROP NOT NULL;"
+func (c *Client) getDropNotNullQuery(table *schema.Table, stale []string) string {
+	statements := make([]string, len(stale))
+	for i, name := range stale {
+		statements[i] = queries.AlterColumn(c.schemaName, table,
+			queries.GetDefinition(table.Column(name), true).Nullable(),
+		)
 	}
 
 	return strings.Join(statements, "\n")

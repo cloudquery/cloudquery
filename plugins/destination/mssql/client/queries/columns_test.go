@@ -32,3 +32,20 @@ func TestDropColumn(t *testing.T) {
 
 	require.Equal(t, expected, query)
 }
+
+func TestAlterColumn(t *testing.T) {
+	const (
+		schemaName = "cq"
+		expected   = `ALTER TABLE [cq].[table_name] ALTER COLUMN [my_col] bigint;`
+	)
+
+	query := AlterColumn(schemaName,
+		&schema.Table{Name: "table_name"},
+		&Definition{
+			Name: "my_col",
+			typ:  "bigint",
+		},
+	)
+
+	require.Equal(t, expected, query)
+}

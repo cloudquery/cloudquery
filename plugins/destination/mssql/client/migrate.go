@@ -26,7 +26,7 @@ func (c *Client) migrate(ctx context.Context, table *schema.Table) error {
 		return nil
 	}
 
-	switch tableExist, err := c.tableExists(ctx, table.Name); {
+	switch tableExist, err := c.tableExists(ctx, table); {
 	case err != nil:
 		return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
 	case tableExist:
