@@ -49,13 +49,6 @@ func (c *Client) ensureColumns(ctx context.Context, table *schema.Table, pkPrese
 
 	recreatePK := false
 
-	var updated bool
-	defer func() {
-		if err == nil && !updated {
-			c.logger.Info().Str("table", table.Name).Msg("Table is up to date, no changes were made")
-		}
-	}()
-
 	var statements []string
 	pkEnabled := c.pkEnabled()
 	for _, column := range table.Columns {
@@ -71,7 +64,6 @@ func (c *Client) ensureColumns(ctx context.Context, table *schema.Table, pkPrese
 			recreatePK = recreatePK || column.CreationOptions.PrimaryKey
 
 			statements = append(statements, queries.AddColumn(c.schemaName, table, def))
-			updated = true
 		case curr.Type() != def.Type():
 			// column exists but type is different
 			c.logger.Info().
@@ -88,7 +80,6 @@ func (c *Client) ensureColumns(ctx context.Context, table *schema.Table, pkPrese
 			// right now we will drop the column and re-create. in the future we will have an option to automigrate
 			statements = append(statements, queries.DropColumn(c.schemaName, table, def))
 			statements = append(statements, queries.AddColumn(c.schemaName, table, def))
-			updated = true
 
 		case curr.Constraint() != def.Constraint():
 			// column exists but constraint
@@ -101,7 +92,6 @@ func (c *Client) ensureColumns(ctx context.Context, table *schema.Table, pkPrese
 				Msg("Column exists but constraint is different, altering")
 
 			statements = append(statements, queries.AlterColumn(c.schemaName, table, def))
-			updated = true
 		}
 
 		// column exists and type is the same but constraints might differ
@@ -116,7 +106,6 @@ func (c *Client) ensureColumns(ctx context.Context, table *schema.Table, pkPrese
 					Bool("pk", column.CreationOptions.PrimaryKey).
 					Msg("Column exists with different primary keys")
 			}
-			updated = true
 		}
 	}
 

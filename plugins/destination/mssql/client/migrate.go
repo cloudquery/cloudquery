@@ -5,16 +5,19 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/schema"
+	"golang.org/x/sync/errgroup"
 )
 
 // Migrate relies on the CLI/client to lock before running migration.
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+	eg, _ := errgroup.WithContext(ctx)
 	for _, table := range tables {
-		if err := c.migrate(ctx, table); err != nil {
-			return err
-		}
+		table := table
+		eg.Go(func() error {
+			return c.migrate(ctx, table)
+		})
 	}
-	return nil
+	return eg.Wait()
 }
 
 func (c *Client) migrate(ctx context.Context, table *schema.Table) (err error) {
