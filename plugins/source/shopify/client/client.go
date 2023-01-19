@@ -79,16 +79,16 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*shopify.Client, error
 		spec.PageSize = 50
 	}
 
-	return shopify.New(
-		logger,
-		&http.Client{
+	return shopify.New(shopify.ClientOptions{
+		Log: logger,
+		HC: &http.Client{
 			Timeout: time.Duration(spec.Timeout) * time.Second,
 		},
-		spec.APIKey,
-		spec.APISecret,
-		spec.AccessToken,
-		spec.ShopURL,
-		spec.MaxRetries,
-		spec.PageSize,
-	)
+		ApiKey:      spec.APIKey,
+		ApiSecret:   spec.APISecret,
+		AccessToken: spec.AccessToken,
+		ShopURL:     spec.ShopURL,
+		MaxRetries:  spec.MaxRetries,
+		PageSize:    int(spec.PageSize),
+	})
 }

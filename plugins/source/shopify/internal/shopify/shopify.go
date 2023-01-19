@@ -24,42 +24,39 @@ const (
 )
 
 type Client struct {
-	log zerolog.Logger
+	opts *ClientOptions
 
-	baseURL    string
-	hc         HTTPDoer
-	maxRetries int64
-	pageSize   int
+	baseURL string
+	lim     *rate.Limiter
+}
 
-	apiKey, apiSecret, accessToken string
+type ClientOptions struct {
+	Log zerolog.Logger
 
-	lim *rate.Limiter
+	HC         HTTPDoer
+	MaxRetries int64
+	PageSize   int
+
+	ApiKey, ApiSecret, AccessToken string
+	ShopURL                        string
 }
 
 type HTTPDoer interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-func New(log zerolog.Logger, hc HTTPDoer, apiKey, apiSecret, accessToken, shopURL string, maxRetries, pageSize int64) (*Client, error) {
-	if accessToken == "" && (apiKey == "" || apiSecret == "") {
+func New(opts ClientOptions) (*Client, error) {
+	if opts.AccessToken == "" && (opts.ApiKey == "" || opts.ApiSecret == "") {
 		return nil, fmt.Errorf("missing shopify access token, api key or secret")
 	}
-	if shopURL == "" {
+	if opts.ShopURL == "" {
 		return nil, fmt.Errorf("missing shop url")
 	}
 
 	return &Client{
-		log:        log,
-		baseURL:    strings.TrimRight(shopURL, "/") + "/",
-		hc:         hc,
-		maxRetries: maxRetries,
-		pageSize:   int(pageSize),
-
-		apiKey:      apiKey,
-		apiSecret:   apiSecret,
-		accessToken: accessToken,
-
-		lim: rate.NewLimiter(rate.Limit(80), 120),
+		opts:    &opts,
+		baseURL: strings.TrimRight(opts.ShopURL, "/") + "/",
+		lim:     rate.NewLimiter(rate.Limit(80), 120),
 	}, nil
 }
 
@@ -67,11 +64,11 @@ func (s *Client) request(ctx context.Context, edge string, params url.Values) (r
 	if params == nil {
 		params = url.Values{}
 	}
-	params.Set("limit", strconv.FormatInt(int64(s.pageSize), 10))
+	params.Set("limit", strconv.FormatInt(int64(s.opts.PageSize), 10))
 
 	tries := int64(0)
 
-	log := s.log.With().Str("edge", edge).Interface("query_params", params).Logger()
+	log := s.opts.Log.With().Str("edge", edge).Interface("query_params", params).Logger()
 
 	defer func() {
 		if retErr != nil {
@@ -106,8 +103,8 @@ func (s *Client) request(ctx context.Context, edge string, params url.Values) (r
 		}
 
 		tries++
-		if tries >= s.maxRetries {
-			return nil, fmt.Errorf("exceeded max retries (%d): %w", s.maxRetries, err)
+		if tries >= s.opts.MaxRetries {
+			return nil, fmt.Errorf("exceeded max retries (%d): %w", s.opts.MaxRetries, err)
 		}
 
 		if wait == nil { // no retry-after returned, linear backoff
@@ -126,7 +123,7 @@ func (s *Client) request(ctx context.Context, edge string, params url.Values) (r
 }
 
 func (s *Client) retryableRequest(ctx context.Context, edge string, params url.Values) (*http.Response, *time.Duration, error) {
-	log := s.log.With().Str("edge", edge).Interface("query_params", params).Logger()
+	log := s.opts.Log.With().Str("edge", edge).Interface("query_params", params).Logger()
 
 	u := s.baseURL + edge + "?" + params.Encode()
 
@@ -140,14 +137,14 @@ func (s *Client) retryableRequest(ctx context.Context, edge string, params url.V
 		return nil, nil, err
 	}
 
-	if s.accessToken != "" {
-		req.Header.Add("X-Shopify-Access-Token", s.accessToken)
+	if s.opts.AccessToken != "" {
+		req.Header.Add("X-Shopify-Access-Token", s.opts.AccessToken)
 	} else {
-		req.SetBasicAuth(s.apiKey, s.apiSecret)
+		req.SetBasicAuth(s.opts.ApiKey, s.opts.ApiSecret)
 	}
 	req.Header.Add("Content-type", "application/json")
 
-	resp, err := s.hc.Do(req)
+	resp, err := s.opts.HC.Do(req)
 	if err != nil {
 		return nil, nil, fmt.Errorf("do %s: %w", edge, err)
 	}
@@ -206,7 +203,7 @@ func (s *Client) GetProducts(ctx context.Context, pageUrl string, params url.Val
 		return nil, "", err
 	}
 
-	ret.PageSize = s.pageSize
+	ret.PageSize = s.opts.PageSize
 
 	return &ret, nextPage, nil
 }
@@ -231,7 +228,7 @@ func (s *Client) GetOrders(ctx context.Context, pageUrl string, params url.Value
 		return nil, "", err
 	}
 
-	ret.PageSize = s.pageSize
+	ret.PageSize = s.opts.PageSize
 
 	return &ret, nextPage, nil
 }
@@ -256,7 +253,7 @@ func (s *Client) GetCustomers(ctx context.Context, pageUrl string, params url.Va
 		return nil, "", err
 	}
 
-	ret.PageSize = s.pageSize
+	ret.PageSize = s.opts.PageSize
 
 	return &ret, nextPage, nil
 }
@@ -281,7 +278,7 @@ func (s *Client) GetAbandonedCheckouts(ctx context.Context, pageUrl string, para
 		return nil, "", err
 	}
 
-	ret.PageSize = s.pageSize
+	ret.PageSize = s.opts.PageSize
 
 	return &ret, nextPage, nil
 }
@@ -306,7 +303,7 @@ func (s *Client) GetPriceRules(ctx context.Context, pageUrl string, params url.V
 		return nil, "", err
 	}
 
-	ret.PageSize = s.pageSize
+	ret.PageSize = s.opts.PageSize
 
 	return &ret, nextPage, nil
 }
@@ -331,7 +328,7 @@ func (s *Client) GetDiscountCodes(ctx context.Context, priceRuleID int64, pageUr
 		return nil, "", err
 	}
 
-	ret.PageSize = s.pageSize
+	ret.PageSize = s.opts.PageSize
 
 	return &ret, nextPage, nil
 }
