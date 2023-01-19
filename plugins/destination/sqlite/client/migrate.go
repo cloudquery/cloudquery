@@ -52,6 +52,29 @@ type tableChange struct {
 	columnChanges []*columnChange
 }
 
+type migrationMessage struct {
+	err  string
+	info string
+}
+
+type migrationsMessages []migrationMessage
+
+func (m migrationsMessages) Errors() []string {
+	var errs []string
+	for _, msg := range m {
+		errs = append(errs, msg.err)
+	}
+	return errs
+}
+
+func (m migrationsMessages) Infos() []string {
+	var infos []string
+	for _, msg := range m {
+		infos = append(infos, msg.info)
+	}
+	return infos
+}
+
 func (c *Client) getColumnChange(col schema.Column, sqliteColumn *columnInfo) *columnChange {
 	columnName := col.Name
 	columnType := c.SchemaTypeToSqlite(col.Type)
@@ -129,24 +152,30 @@ func (c *Client) getSchemaChanges(ctx context.Context, tables schema.Tables) ([]
 	return changes, nil
 }
 
-func getMigrationErrors(changes []*tableChange) []string {
-	var errors []string
+func getMigrationMessages(changes []*tableChange) migrationsMessages {
+	var messages migrationsMessages
 	for _, tableChange := range changes {
 		if tableChange.new {
 			continue
 		}
 		for _, colChange := range tableChange.columnChanges {
 			if colChange.new && colChange.newPk {
-				errors = append(errors, fmt.Sprintf("can't migrate table %q since adding the new PK column %q is not supported. Try dropping this table", tableChange.table.Name, colChange.name))
+				messages = append(messages, migrationMessage{
+					err:  fmt.Sprintf("can't migrate table %q since adding the new PK column %q is not supported. Try dropping this table", tableChange.table.Name, colChange.name),
+					info: fmt.Sprintf("table %q will be dropped and recreated", tableChange.table.Name),
+				})
 				// no need to report other errors as the user needs to drop the table altogether
 				break
 			}
 			if !colChange.new && colChange.oldType != colChange.newType {
-				errors = append(errors, fmt.Sprintf("can't migrate table %q since changing the type of column %q from %q to %q is not supported. Try dropping this column for this table", tableChange.table.Name, colChange.name, colChange.oldType, colChange.newType))
+				messages = append(messages, migrationMessage{
+					err:  fmt.Sprintf("can't migrate table %q since changing the type of column %q from %q to %q is not supported. Try dropping this column for this table", tableChange.table.Name, colChange.name, colChange.oldType, colChange.newType),
+					info: fmt.Sprintf("column %q of table %q will be dropped and recreated", colChange.name, tableChange.table.Name),
+				})
 			}
 		}
 	}
-	return errors
+	return messages
 }
 
 // This is the responsibility of the CLI of the client to lock before running migration
@@ -156,9 +185,14 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 		return err
 	}
 
-	migrationErrors := getMigrationErrors(schemaChanges)
-	if c.spec.MigrateMode == specs.MigrateModeSafe && len(migrationErrors) > 0 {
-		return fmt.Errorf("failed to migrate schema:\n%s\n\nTo force a migration add \"migrate_mode: %s\" to your destination spec", strings.Join(migrationErrors, "\n"), specs.MigrateModeForced.String())
+	migrationMessages := getMigrationMessages(schemaChanges)
+	if len(migrationMessages) > 0 {
+		if c.spec.MigrateMode == specs.MigrateModeSafe {
+			return fmt.Errorf("failed to migrate schema:\n%s\n\nTo force a migration add \"migrate_mode: %s\" to your destination spec", strings.Join(migrationMessages.Errors(), "\n"), specs.MigrateModeForced.String())
+		}
+		for _, msg := range migrationMessages.Infos() {
+			c.logger.Info().Msg(msg)
+		}
 	}
 
 	for _, tableChange := range schemaChanges {
