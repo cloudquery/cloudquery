@@ -21,9 +21,8 @@ const (
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
 	name := strings.ReplaceAll(c.pluginSpec.Path, PathVarTable, table.Name)
-	if !c.pluginSpec.NoRotate {
-		name = strings.ReplaceAll(name, PathVarUUID, uuid.NewString())
-	}
+	name = strings.ReplaceAll(name, PathVarUUID, uuid.NewString())
+
 	var b bytes.Buffer
 	w := io.Writer(&b)
 	switch c.pluginSpec.Format {
