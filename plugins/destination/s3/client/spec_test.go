@@ -11,8 +11,8 @@ func TestSpec_SetDefaults(t *testing.T) {
 		Give Spec
 		Want Spec
 	}{
-		{Give: Spec{Path: "test/path", Format: "json"}, Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", Format: "json"}},
-		{Give: Spec{Path: "test/path/{{TABLE}}.json"}, Want: Spec{Path: "test/path/{{TABLE}}.json"}},
+		{Give: Spec{Path: "test/path", Format: "json"}, Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", Format: "json", Delimiter: ','}},
+		{Give: Spec{Path: "test/path/{{TABLE}}.json"}, Want: Spec{Path: "test/path/{{TABLE}}.json", Delimiter: ','}},
 	}
 	for _, tc := range cases {
 		got := tc.Give
