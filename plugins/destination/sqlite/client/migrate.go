@@ -134,7 +134,7 @@ func (c *Client) getTableChange(ctx context.Context, table *schema.Table) (*tabl
 }
 
 func (c *Client) getSchemaChanges(ctx context.Context, tables schema.Tables) ([]*tableChange, error) {
-	var changes []*tableChange
+	changes := make([]*tableChange, 0, len(tables))
 	for _, table := range tables {
 		tableChange, err := c.getTableChange(ctx, table)
 		if err != nil {
