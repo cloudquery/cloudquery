@@ -3,7 +3,6 @@ package client
 import (
 	"bytes"
 	"context"
-	"fmt"
 	"io"
 	"strings"
 
@@ -21,16 +20,7 @@ const (
 )
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
-	path := c.pluginSpec.Path
-	if !strings.Contains(path, PathVarTable) {
-		// for backwards-compatibility, default to given path plus /{{TABLE}}.[format].{{UUID}} if
-		// no {{TABLE}} value is found in the path string
-		path += fmt.Sprintf("/%s.%s", PathVarTable, c.pluginSpec.Format)
-		if !c.pluginSpec.NoRotate {
-			path += "." + PathVarUUID
-		}
-	}
-	name := strings.ReplaceAll(path, PathVarTable, table.Name)
+	name := strings.ReplaceAll(c.pluginSpec.Path, PathVarTable, table.Name)
 	if !c.pluginSpec.NoRotate {
 		name = strings.ReplaceAll(name, PathVarUUID, uuid.NewString())
 	}
