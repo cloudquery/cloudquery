@@ -1,4 +1,4 @@
-name: Destination Plugin Microsoft SQl Server Workflow
+name: Destination Plugin Microsoft SQL Server Workflow
 
 on:
   pull_request:
