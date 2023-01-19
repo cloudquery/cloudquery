@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -23,10 +22,6 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	}
 	defer r.Close()
 
-	client, err := filetypes.NewClient(&c.pluginSpec.FileSpec)
-	if err != nil {
-		return err
-	}
-	return client.Read(r, table, sourceName, res)
+	return c.filetype.Read(r, table, sourceName, res)
 
 }

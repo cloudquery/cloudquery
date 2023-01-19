@@ -12,7 +12,11 @@ type Spec struct {
 	filetypes.FileSpec
 }
 
-func (*Spec) SetDefaults() {}
+func (s *Spec) SetDefaults() {
+	if s.Delimiter == 0 {
+		s.Delimiter = ','
+	}
+}
 
 func (s *Spec) Validate() error {
 	if s.Bucket == "" {
