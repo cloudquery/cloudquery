@@ -13,8 +13,8 @@ type Definition struct {
 	unique  bool
 }
 
-// Sanitized returns definition copy with name sanitized
-func (d *Definition) Sanitized() *Definition {
+// sanitized returns definition copy with name sanitized
+func (d *Definition) sanitized() *Definition {
 	r := *d
 	r.Name = sanitizeID(r.Name)
 	return &r
@@ -84,7 +84,7 @@ func GetDefinitions(columns schema.ColumnList, pkEnabled bool) Definitions {
 	definitions := make(Definitions, len(columns))
 
 	for i, col := range columns {
-		definitions[i] = GetDefinition(&col, pkEnabled).Sanitized()
+		definitions[i] = GetDefinition(&col, pkEnabled).sanitized()
 	}
 
 	return definitions
