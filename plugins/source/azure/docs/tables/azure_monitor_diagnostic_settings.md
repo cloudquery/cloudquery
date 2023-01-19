@@ -2,7 +2,7 @@
 
 https://learn.microsoft.com/en-us/rest/api/monitor/diagnostic-settings/list?tabs=HTTP#diagnosticsettingsresource
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **id**.
 
 ## Columns
 
@@ -10,8 +10,12 @@ The primary key for this table is **_cq_id**.
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|diagnostic_settings_resource|JSON|
+|properties|JSON|
+|id (PK)|String|
+|name|String|
+|system_data|JSON|
+|type|String|
 |resource_id|String|
