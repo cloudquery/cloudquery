@@ -13,20 +13,12 @@ func longTermRetentionPolicies() *schema.Table {
 		Name:      "azure_sql_database_long_term_retention_policies",
 		Resolver:  fetchLongTermRetentionPolicies,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_sql_long_term_retention_policies", client.Namespacemicrosoft_sql),
-		Transform: transformers.TransformWithStruct(&armsql.LongTermRetentionPolicy{}),
+		Transform: transformers.TransformWithStruct(&armsql.LongTermRetentionPolicy{}, transformers.WithPrimaryKeys("id")),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 		},
 	}

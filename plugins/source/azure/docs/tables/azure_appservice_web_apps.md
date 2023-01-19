@@ -1,6 +1,6 @@
 # Table: azure_appservice_web_apps
 
-The primary key for this table is **id**.
+The primary key for this table is **_cq_id**.
 
 ## Relations
 
@@ -14,15 +14,15 @@ The following tables depend on azure_appservice_web_apps:
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id|UUID|
+|_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |extended_location|JSON|
 |identity|JSON|
 |kind|String|
 |properties|JSON|
 |tags|JSON|
+|id|String|
 |name|String|
 |type|String|

@@ -12,15 +12,12 @@ func webAppAuthSettings() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_appservice_web_app_auth_settings",
 		Resolver:  fetchWebAppAuthSettings,
-		Transform: transformers.TransformWithStruct(&armappservice.SiteAuthSettings{}),
+		Transform: transformers.TransformWithStruct(&armappservice.SiteAuthSettings{}, transformers.WithPrimaryKeys("id")),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
+				Name:     "subscription_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: client.ResolveAzureSubscription,
 			},
 		},
 	}

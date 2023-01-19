@@ -21,6 +21,7 @@ The following tables depend on azure_sql_server_databases:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|subscription_id|String|
 |location|String|
 |identity|JSON|
 |properties|JSON|

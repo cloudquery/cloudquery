@@ -13,15 +13,12 @@ func VirtualMachineExtensions() *schema.Table {
 		Name:      "azure_compute_virtual_machine_extensions",
 		Resolver:  fetchVirtualMachineExtnsions,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machine_extensions", client.Namespacemicrosoft_compute),
-		Transform: transformers.TransformWithStruct(&armcompute.VirtualMachineExtension{}),
+		Transform: transformers.TransformWithStruct(&armcompute.VirtualMachineExtension{}, transformers.WithPrimaryKeys("id")),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
+				Name:     "subscription_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: client.ResolveAzureSubscription,
 			},
 		},
 	}

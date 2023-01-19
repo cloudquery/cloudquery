@@ -13,15 +13,12 @@ func webAppVnetConnections() *schema.Table {
 		Name:      "azure_appservice_web_app_vnet_connections",
 		Resolver:  fetchWebAppVnetConnections,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_web_app_vnet_connections", client.Namespacemicrosoft_web),
-		Transform: transformers.TransformWithStruct(&armappservice.VnetInfoResource{}),
+		Transform: transformers.TransformWithStruct(&armappservice.VnetInfoResource{}, transformers.WithPrimaryKeys("id")),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
+				Name:     "subscription_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: client.ResolveAzureSubscription,
 			},
 		},
 	}

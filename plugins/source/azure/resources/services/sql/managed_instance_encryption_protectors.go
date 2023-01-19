@@ -13,15 +13,12 @@ func managedInstanceEncryptionProtectors() *schema.Table {
 		Name:      "azure_sql_managed_instance_encryption_protectors",
 		Resolver:  fetchManagedInstanceEncryptionProtectors,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_sql_managed_instance_encryption_protectors", client.Namespacemicrosoft_sql),
-		Transform: transformers.TransformWithStruct(&armsql.ManagedInstanceEncryptionProtector{}),
+		Transform: transformers.TransformWithStruct(&armsql.ManagedInstanceEncryptionProtector{}, transformers.WithPrimaryKeys("id")),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
+				Name:     "subscription_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: client.ResolveAzureSubscription,
 			},
 		},
 	}

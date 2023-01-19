@@ -12,15 +12,12 @@ func locations() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_subscription_subscription_locations",
 		Resolver:  fetchLocations,
-		Transform: transformers.TransformWithStruct(&armsubscription.Location{}),
+		Transform: transformers.TransformWithStruct(&armsubscription.Location{}, transformers.WithPrimaryKeys("id")),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
+				Name:     "subscription_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: client.ResolveAzureSubscription,
 			},
 		},
 	}

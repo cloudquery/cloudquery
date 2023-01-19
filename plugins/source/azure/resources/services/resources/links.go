@@ -14,15 +14,12 @@ func Links() *schema.Table {
 		Name:      "azure_resources_links",
 		Resolver:  fetchLinks,
 		Multiplex: client.SubscriptionMultiplex,
-		Transform: transformers.TransformWithStruct(&armlinks.ResourceLink{}),
+		Transform: transformers.TransformWithStruct(&armlinks.ResourceLink{}, transformers.WithPrimaryKeys("id")),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
+				Name:     "subscription_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: client.ResolveAzureSubscription,
 			},
 		},
 	}

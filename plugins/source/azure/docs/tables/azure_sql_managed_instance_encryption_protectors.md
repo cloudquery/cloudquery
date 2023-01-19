@@ -1,6 +1,6 @@
 # Table: azure_sql_managed_instance_encryption_protectors
 
-The primary key for this table is **id**.
+The primary key for this table is **_cq_id**.
 
 ## Relations
 
@@ -12,10 +12,11 @@ This table depends on [azure_sql_managed_instances](azure_sql_managed_instances.
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id|UUID|
+|_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
-|id (PK)|String|
+|subscription_id|String|
 |properties|JSON|
+|id|String|
 |kind|String|
 |name|String|
 |type|String|

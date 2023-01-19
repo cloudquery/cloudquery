@@ -13,15 +13,12 @@ func virtualNetworkRules() *schema.Table {
 		Name:      "azure_sql_server_virtual_network_rules",
 		Resolver:  fetchVirtualNetworkRules,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_sql_virtual_network_rules", client.Namespacemicrosoft_sql),
-		Transform: transformers.TransformWithStruct(&armsql.VirtualNetworkRule{}),
+		Transform: transformers.TransformWithStruct(&armsql.VirtualNetworkRule{}, transformers.WithPrimaryKeys("id")),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
+				Name:     "subscription_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: client.ResolveAzureSubscription,
 			},
 		},
 	}

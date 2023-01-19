@@ -13,20 +13,12 @@ func ActivityLogAlerts() *schema.Table {
 		Name:      "azure_monitor_activity_log_alerts",
 		Resolver:  fetchActivityLogAlerts,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_activity_log_alerts", client.Namespacemicrosoft_insights),
-		Transform: transformers.TransformWithStruct(&armmonitor.ActivityLogAlertResource{}),
+		Transform: transformers.TransformWithStruct(&armmonitor.ActivityLogAlertResource{}, transformers.WithPrimaryKeys("id")),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 		},
 	}

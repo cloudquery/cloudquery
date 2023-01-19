@@ -21,20 +21,12 @@ func DiagnosticSettings() *schema.Table {
 		Name:      "azure_monitor_diagnostic_settings",
 		Resolver:  fetchDiagnosticSettings,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_diagnostic_settings", client.Namespacemicrosoft_insights),
-		Transform: transformers.TransformWithStruct(&diagnosticSettingsWrapper{}),
+		Transform: transformers.TransformWithStruct(&diagnosticSettingsWrapper{}, transformers.WithPrimaryKeys("id")),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "resource_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 		},
 	}

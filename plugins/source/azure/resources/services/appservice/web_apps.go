@@ -14,20 +14,12 @@ func WebApps() *schema.Table {
 		Name:      "azure_appservice_web_apps",
 		Resolver:  fetchWebApps,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_web_apps", client.Namespacemicrosoft_web),
-		Transform: transformers.TransformWithStruct(&armappservice.Site{}),
+		Transform: transformers.TransformWithStruct(&armappservice.Site{}, transformers.WithPrimaryKeys("id")),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 		},
 		Relations: []*schema.Table{

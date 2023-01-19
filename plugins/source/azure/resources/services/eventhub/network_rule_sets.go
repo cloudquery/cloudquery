@@ -13,15 +13,12 @@ func namespaceNetworkRuleSets() *schema.Table {
 		Name:      "azure_eventhub_namespace_network_rule_sets",
 		Resolver:  fetchNetworkRuleSets,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_eventhub_network_rule_sets", client.Namespacemicrosoft_eventhub),
-		Transform: transformers.TransformWithStruct(&armeventhub.NetworkRuleSet{}),
+		Transform: transformers.TransformWithStruct(&armeventhub.NetworkRuleSet{}, transformers.WithPrimaryKeys("id")),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
+				Name:     "subscription_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: client.ResolveAzureSubscription,
 			},
 		},
 	}

@@ -2,6 +2,7 @@ package sql
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
@@ -12,6 +13,11 @@ func transparentDataEncryptions() *schema.Table {
 		Resolver:  fetchTransparentDataEncryptions,
 		Transform: transformers.TransformWithStruct(&armsql.LogicalDatabaseTransparentDataEncryption{}),
 		Columns: []schema.Column{
+			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
 			{
 				Name:     "properties",
 				Type:     schema.TypeJSON,
