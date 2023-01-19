@@ -21,14 +21,21 @@ func (d *Definition) sanitized() *Definition {
 }
 
 func (d *Definition) Type() string {
-	res := d.typ
+	return d.typ
+}
+
+func (d *Definition) Constraint() string {
+	var res []string
+
 	if d.unique {
-		res += " UNIQUE"
+		res = append(res, "UNIQUE")
 	}
+
 	if d.notNull {
-		res += " NOT NULL"
+		res = append(res, "NOT NULL")
 	}
-	return res
+
+	return strings.Join(res, " ")
 }
 
 // Nullable returns definition copy that will allow nullable values

@@ -19,15 +19,20 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 		return err
 	}
 
-	stalePks := c.getStalePks(table, pkPresent)
-	if len(stalePks) > 0 {
+	stalePKs := c.getStalePKs(table, pkPresent)
+	if len(stalePKs) > 0 {
 		dropConstraintSQL := queries.DropPK(c.schemaName, table)
-		sep := strings.Repeat("-", len(dropConstraintSQL)+1)
-		query := fmt.Sprintf("%s\n%s;\n%s\n%s", sep, dropConstraintSQL, c.getDropNotNullQuery(table, stalePks), sep)
+		sep := strings.Repeat("-", len(dropConstraintSQL))
+		query := strings.Join([]string{
+			sep,
+			dropConstraintSQL,
+			c.getDropNotNullQuery(table, stalePKs),
+			sep,
+		}, "\n")
 		return fmt.Errorf(
 			`the following primary keys were removed from the schema %q for table %q.
 You can migrate the table manually by running:
-%s`, stalePks, table.Name, query)
+%s`, stalePKs, table.Name, query)
 	}
 
 	if err := c.ensureColumns(ctx, table, pkPresent); err != nil {
@@ -76,13 +81,26 @@ func (c *Client) ensureColumns(ctx context.Context, table *schema.Table, pkPrese
 				Str("new_type", def.Type()).
 				Msg("Column exists but type is different, re-creating")
 
-			// we need t check if the existing col is part of pk
+			// we need to check if the existing col is part of pk
 			// if the new PK contains this column we will need to recreate the primary key
 			recreatePK = recreatePK || column.CreationOptions.PrimaryKey
 
 			// right now we will drop the column and re-create. in the future we will have an option to automigrate
 			statements = append(statements, queries.DropColumn(c.schemaName, table, def))
 			statements = append(statements, queries.AddColumn(c.schemaName, table, def))
+			updated = true
+
+		case curr.Constraint() != def.Constraint():
+			// column exists but constraint
+			c.logger.Info().
+				Str("table", table.Name).
+				Str("column", column.Name).
+				Str("type", curr.Type()).
+				Str("old_constraint", curr.Constraint()).
+				Str("new_constraint", def.Constraint()).
+				Msg("Column exists but constraint is different, altering")
+
+			statements = append(statements, queries.AlterColumn(c.schemaName, table, def))
 			updated = true
 		}
 

@@ -74,7 +74,7 @@ func (c *Client) getTablePK(ctx context.Context, table *schema.Table) ([]string,
 	return result, nil
 }
 
-func (c *Client) getStalePks(table *schema.Table, primaryKey []string) []string {
+func (c *Client) getStalePKs(table *schema.Table, primaryKey []string) []string {
 	if !c.pkEnabled() {
 		return nil
 	}
