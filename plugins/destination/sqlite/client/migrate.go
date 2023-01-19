@@ -60,7 +60,7 @@ type migrationMessage struct {
 type migrationsMessages []migrationMessage
 
 func (m migrationsMessages) Errors() []string {
-	var errs []string
+	errs := make([]string, 0, len(m))
 	for _, msg := range m {
 		errs = append(errs, msg.err)
 	}
@@ -68,7 +68,7 @@ func (m migrationsMessages) Errors() []string {
 }
 
 func (m migrationsMessages) Infos() []string {
-	var infos []string
+	infos := make([]string, 0, len(m))
 	for _, msg := range m {
 		infos = append(infos, msg.info)
 	}
