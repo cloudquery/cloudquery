@@ -134,20 +134,18 @@ func (c *Client) getTableChange(ctx context.Context, table *schema.Table) (*tabl
 }
 
 func (c *Client) getSchemaChanges(ctx context.Context, tables schema.Tables) ([]*tableChange, error) {
-	changes := make([]*tableChange, len(tables))
-	for i, table := range tables {
+	var changes []*tableChange
+	for _, table := range tables {
 		tableChange, err := c.getTableChange(ctx, table)
 		if err != nil {
 			return nil, err
 		}
-		changes[i] = tableChange
-		for _, relation := range table.Relations {
-			relationChanges, err := c.getTableChange(ctx, relation)
-			if err != nil {
-				return nil, err
-			}
-			changes = append(changes, relationChanges)
+		changes = append(changes, tableChange)
+		relationChanges, err := c.getSchemaChanges(ctx, table.Relations)
+		if err != nil {
+			return nil, err
 		}
+		changes = append(changes, relationChanges...)
 	}
 	return changes, nil
 }
