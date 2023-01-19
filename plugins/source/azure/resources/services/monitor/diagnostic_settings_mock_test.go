@@ -37,7 +37,7 @@ func createResources(router *mux.Router) error {
 }
 
 func createDiagnosticSettings(router *mux.Router) error {
-	var item armmonitor.LogProfilesClientListResponse
+	var item armmonitor.DiagnosticSettingsClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
