@@ -63,10 +63,15 @@ func New(log zerolog.Logger, hc HTTPDoer, apiKey, apiSecret, accessToken, shopUR
 	}, nil
 }
 
-func (s *Client) request(ctx context.Context, edge string) (retResp *http.Response, retErr error) {
+func (s *Client) request(ctx context.Context, edge string, params url.Values) (retResp *http.Response, retErr error) {
+	if params == nil {
+		params = url.Values{}
+	}
+	params.Set("limit", strconv.FormatInt(int64(s.pageSize), 10))
+
 	tries := int64(0)
 
-	log := s.log.With().Str("edge", edge).Logger()
+	log := s.log.With().Str("edge", edge).Interface("query_params", params).Logger()
 
 	defer func() {
 		if retErr != nil {
@@ -76,7 +81,7 @@ func (s *Client) request(ctx context.Context, edge string) (retResp *http.Respon
 		}
 	}()
 
-	for tries < s.maxRetries {
+	for {
 		if !s.lim.Allow() {
 			log.Debug().Msg("waiting for rate limiter...")
 			if err := s.lim.Wait(ctx); err != nil {
@@ -85,11 +90,10 @@ func (s *Client) request(ctx context.Context, edge string) (retResp *http.Respon
 			log.Debug().Msg("wait complete")
 		}
 
-		r, wait, err := s.retryableRequest(ctx, edge)
+		r, wait, err := s.retryableRequest(ctx, edge, params)
 		if err == nil {
 			return r, nil
 		}
-		log.Err(err).Msg("retryable request failed")
 
 		temporary := false
 		if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
@@ -98,14 +102,20 @@ func (s *Client) request(ctx context.Context, edge string) (retResp *http.Respon
 			temporary = he.Temporary()
 		}
 		if !temporary {
-			break
+			return nil, fmt.Errorf("request failed with error: %w", err)
 		}
 
 		tries++
+		if tries >= s.maxRetries {
+			return nil, fmt.Errorf("exceeded max retries (%d): %w", s.maxRetries, err)
+		}
+
 		if wait == nil { // no retry-after returned, linear backoff
 			w := time.Duration(tries) * 1 * time.Second
 			wait = &w
 		}
+
+		log.Warn().Err(err).Float64("backoff_seconds", wait.Seconds()).Msg("retryable request failed, will retry")
 
 		select {
 		case <-ctx.Done():
@@ -113,13 +123,12 @@ func (s *Client) request(ctx context.Context, edge string) (retResp *http.Respon
 		case <-time.After(*wait):
 		}
 	}
-
-	return nil, errors.New("exceeded max retries")
 }
 
-func (s *Client) retryableRequest(ctx context.Context, edge string) (*http.Response, *time.Duration, error) {
-	u := s.baseURL + edge
-	log := s.log.With().Str("edge", edge).Logger()
+func (s *Client) retryableRequest(ctx context.Context, edge string, params url.Values) (*http.Response, *time.Duration, error) {
+	log := s.log.With().Str("edge", edge).Interface("query_params", params).Logger()
+
+	u := s.baseURL + edge + "?" + params.Encode()
 
 	var (
 		body []byte
@@ -181,10 +190,10 @@ func (s *Client) GetProducts(ctx context.Context, pageUrl string, params url.Val
 	var ret GetProductsResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/products.json?limit=%d&%s", APIVersion, s.pageSize, params.Encode())
+		pageUrl = fmt.Sprintf("admin/api/%s/products.json", APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl)
+	resp, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
@@ -206,10 +215,10 @@ func (s *Client) GetOrders(ctx context.Context, pageUrl string, params url.Value
 	var ret GetOrdersResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/orders.json?limit=%d&%s", APIVersion, s.pageSize, params.Encode())
+		pageUrl = fmt.Sprintf("admin/api/%s/orders.json", APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl)
+	resp, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
@@ -231,10 +240,10 @@ func (s *Client) GetCustomers(ctx context.Context, pageUrl string, params url.Va
 	var ret GetCustomersResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/customers.json?limit=%d&%s", APIVersion, s.pageSize, params.Encode())
+		pageUrl = fmt.Sprintf("admin/api/%s/customers.json", APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl)
+	resp, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
@@ -256,10 +265,10 @@ func (s *Client) GetAbandonedCheckouts(ctx context.Context, pageUrl string, para
 	var ret GetCheckoutsResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/checkouts.json?limit=%d&%s", APIVersion, s.pageSize, params.Encode())
+		pageUrl = fmt.Sprintf("admin/api/%s/checkouts.json", APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl)
+	resp, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
@@ -281,10 +290,10 @@ func (s *Client) GetPriceRules(ctx context.Context, pageUrl string, params url.V
 	var ret GetPriceRulesResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/price_rules.json?limit=%d&%s", APIVersion, s.pageSize, params.Encode())
+		pageUrl = fmt.Sprintf("admin/api/%s/price_rules.json", APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl)
+	resp, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
@@ -306,10 +315,10 @@ func (s *Client) GetDiscountCodes(ctx context.Context, priceRuleID int64, pageUr
 	var ret GetDiscountCodesResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/price_rules/%d/discount_codes.json?limit=%d", APIVersion, priceRuleID, s.pageSize)
+		pageUrl = fmt.Sprintf("admin/api/%s/price_rules/%d/discount_codes.json", APIVersion, priceRuleID)
 	}
 
-	resp, err := s.request(ctx, pageUrl)
+	resp, err := s.request(ctx, pageUrl, nil)
 	if err != nil {
 		return nil, "", err
 	}
