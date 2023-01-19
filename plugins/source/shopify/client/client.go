@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/internal/shopify"
+	"github.com/cloudquery/plugin-sdk/backend"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -21,14 +22,16 @@ type Client struct {
 	spSpec     Spec
 
 	Services *shopify.Client
+	Backend  backend.Backend
 }
 
-func New(logger zerolog.Logger, sourceSpec specs.Source, spSpec Spec, services *shopify.Client) Client {
+func New(logger zerolog.Logger, sourceSpec specs.Source, spSpec Spec, services *shopify.Client, bk backend.Backend) Client {
 	return Client{
 		logger:     logger,
 		sourceSpec: sourceSpec,
 		spSpec:     spSpec,
 		Services:   services,
+		Backend:    bk,
 	}
 }
 
@@ -40,7 +43,7 @@ func (c *Client) ID() string {
 	return c.sourceSpec.Name
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, o source.Options) (schema.ClientMeta, error) {
 	spSpec := &Spec{}
 	if err := s.UnmarshalSpec(spSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal shopify spec: %w", err)
@@ -51,7 +54,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 		return nil, err
 	}
 
-	cl := New(logger, s, *spSpec, services)
+	cl := New(logger, s, *spSpec, services, o.Backend)
 	return &cl, nil
 }
 
@@ -72,16 +75,20 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*shopify.Client, error
 	if spec.MaxRetries < 1 {
 		spec.MaxRetries = 30
 	}
+	if spec.PageSize < 1 {
+		spec.PageSize = 50
+	}
 
-	return shopify.New(
-		logger,
-		&http.Client{
+	return shopify.New(shopify.ClientOptions{
+		Log: logger,
+		HC: &http.Client{
 			Timeout: time.Duration(spec.Timeout) * time.Second,
 		},
-		spec.APIKey,
-		spec.APISecret,
-		spec.AccessToken,
-		spec.ShopURL,
-		spec.MaxRetries,
-	)
+		ApiKey:      spec.APIKey,
+		ApiSecret:   spec.APISecret,
+		AccessToken: spec.AccessToken,
+		ShopURL:     spec.ShopURL,
+		MaxRetries:  spec.MaxRetries,
+		PageSize:    int(spec.PageSize),
+	})
 }

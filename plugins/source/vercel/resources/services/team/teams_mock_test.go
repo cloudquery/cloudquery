@@ -70,5 +70,5 @@ func createTeams(router *mux.Router) error {
 }
 
 func TestTeams(t *testing.T) {
-	client.MockTestHelper(t, Teams(), createTeams)
+	client.MockTestHelper(t, Teams(), createTeams, client.TestOptions{})
 }

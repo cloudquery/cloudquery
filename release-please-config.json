@@ -63,6 +63,9 @@
     "plugins/destination/kafka": {
       "component": "plugins-destination-kafka"
     },
+    "plugins/destination/mssql": {
+      "component": "plugins-destination-mssql"
+    },
     "plugins/destination/test": {
       "component": "plugins-destination-test"
     }

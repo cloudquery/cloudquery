@@ -1,7 +1,7 @@
 {{- $first := true -}}
-{{- range . }}
-  {{- if $first }}{{ $first = false }}  {{else}}
+{{- range .}}
+  {{- if $first}}{{$first = false}}  {{else}}
   AND
-  {{ end -}}
+  {{end -}}
   [tgt].{{.}} = [src].{{.}}
 {{- end -}}

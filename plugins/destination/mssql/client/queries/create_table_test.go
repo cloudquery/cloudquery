@@ -16,26 +16,29 @@ func TestCreateTable(t *testing.T) {
   [_cq_source_name] varchar(8000),
   [_cq_sync_time] datetimeoffset,
   [extra_col] float NOT NULL
-  PRIMARY KEY (
+  CONSTRAINT [table_name_cqpk] PRIMARY KEY (
   [extra_col]
   )
 );`
 	)
 
-	query := CreateTable(schemaName, true, &schema.Table{
-		Name: "table_name",
-		Columns: schema.ColumnList{
-			schema.CqIDColumn,
-			schema.CqParentIDColumn,
-			schema.CqSourceNameColumn,
-			schema.CqSyncTimeColumn,
-			schema.Column{
-				Name:            "extra_col",
-				Type:            schema.TypeFloat,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+	query := CreateTable(schemaName,
+		&schema.Table{
+			Name: "table_name",
+			Columns: schema.ColumnList{
+				schema.CqIDColumn,
+				schema.CqParentIDColumn,
+				schema.CqSourceNameColumn,
+				schema.CqSyncTimeColumn,
+				schema.Column{
+					Name:            "extra_col",
+					Type:            schema.TypeFloat,
+					CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				},
 			},
 		},
-	})
+		true,
+	)
 
 	require.Equal(t, expected, query)
 }
