@@ -49,7 +49,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		opts := []csv.Options{
 			csv.WithDelimiter(c.pluginSpec.FileSpec.Delimiter),
 		}
-		if c.pluginSpec.FileSpec.IncludeHeaders {
+		if *c.pluginSpec.FileSpec.IncludeHeaders {
 			opts = append(opts, csv.WithHeader())
 		}
 

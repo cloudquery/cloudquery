@@ -14,7 +14,7 @@ const (
 
 type FileSpec struct {
 	Format         FormatType `json:"format,omitempty"`
-	IncludeHeaders bool       `json:"include_headers,omitempty"`
+	IncludeHeaders *bool      `json:"include_headers,omitempty"`
 	Delimiter      rune       `json:"delimiter,omitempty"`
 	NoRotate       bool       `json:"no_rotate,omitempty"`
 }
@@ -28,6 +28,10 @@ type Spec struct {
 func (s *Spec) SetDefaults() {
 	if s.Delimiter == 0 {
 		s.Delimiter = ','
+	}
+	if s.IncludeHeaders == nil {
+		headers := true
+		s.IncludeHeaders = &headers
 	}
 	if !strings.Contains(s.Path, PathVarTable) {
 		// for backwards-compatibility, default to given path plus /{{TABLE}}.[format].{{UUID}} if

@@ -31,7 +31,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 		opts := []csv.Options{
 			csv.WithDelimiter(c.pluginSpec.Delimiter),
 		}
-		if c.pluginSpec.IncludeHeaders {
+		if *c.pluginSpec.IncludeHeaders {
 			opts = append(opts, csv.WithHeader())
 		}
 		client, err := csv.NewClient(opts...)

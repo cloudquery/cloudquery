@@ -7,12 +7,13 @@ import (
 )
 
 func TestSpec_SetDefaults(t *testing.T) {
+	headersDefault := true
 	cases := []struct {
 		Give Spec
 		Want Spec
 	}{
-		{Give: Spec{Path: "test/path", FileSpec: FileSpec{Format: "json"}}, Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", FileSpec: FileSpec{Format: "json", Delimiter: ','}}},
-		{Give: Spec{Path: "test/path/{{TABLE}}.json"}, Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: FileSpec{Delimiter: ','}}},
+		{Give: Spec{Path: "test/path", FileSpec: FileSpec{Format: "json"}}, Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", FileSpec: FileSpec{Format: "json", Delimiter: ',', IncludeHeaders: &headersDefault}}},
+		{Give: Spec{Path: "test/path/{{TABLE}}.json"}, Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: FileSpec{Delimiter: ',', IncludeHeaders: &headersDefault}}},
 	}
 	for _, tc := range cases {
 		got := tc.Give
