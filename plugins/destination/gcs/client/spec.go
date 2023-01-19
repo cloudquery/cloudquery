@@ -13,6 +13,9 @@ type Spec struct {
 }
 
 func (s *Spec) SetDefaults() {
+	if s.FileSpec == nil {
+		s.FileSpec = &filetypes.FileSpec{}
+	}
 	s.FileSpec.SetDefaults()
 }
 

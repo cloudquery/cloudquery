@@ -23,5 +23,4 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	defer r.Close()
 
 	return c.filetype.Read(r, table, sourceName, res)
-
 }

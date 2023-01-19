@@ -22,6 +22,9 @@ func (s *Spec) SetDefaults() {
 			s.Path += "." + PathVarUUID
 		}
 	}
+	if s.FileSpec == nil {
+		s.FileSpec = &filetypes.FileSpec{}
+	}
 	s.FileSpec.SetDefaults()
 }
 
