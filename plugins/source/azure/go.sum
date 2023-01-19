@@ -170,8 +170,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal v0.5.0 h1
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal v0.5.0/go.mod h1:9fMn3cwCBhjnqXDcov+R3gToPmiQltREdqFOFhAxLqI=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql v1.0.0 h1:A6qn+g+bsKoBhFzDFXLhNAup//D+Q7+MuofypSUtNfY=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql v1.0.0/go.mod h1:GgxvszemyuFZyiw4vPxGib+Cp6z7Q3rYQb4DsKPOAAw=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers v1.1.0 h1:HzqcSJWx32XQdr8KtxAu/SZJj0PqDo9tKf2YGPdynV0=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers v1.1.0/go.mod h1:nKcJObAisSPDrO9lMuuCBoYY7Ki7ADt8p6XmBhpKNTk=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v2 v2.0.0 h1:8EgCzmuVC6DKd2R/CAay0CWXFdS79ErXv28hSGNmBvg=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v2 v2.0.0/go.mod h1:fHNywwvsPIB63hnY4r54fdommg+2HmmnJ/d4ZZ3gPpc=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc v0.5.0 h1:q7KCCFmAIvENbFEe0OIOvfBqEJ4hDB+nrYLvrj91p+E=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc v0.5.0/go.mod h1:+saCIyPTH0TLd0ZCsRe9guFs+lJatk2QZvAxfBzb8PQ=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated v1.0.0 h1:DtlyQzQwkCk7XoZxGIJtbM/Vug0UoEpSWF6XKFnERkg=
