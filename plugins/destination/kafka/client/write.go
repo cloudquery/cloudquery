@@ -44,7 +44,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 		var b bytes.Buffer
 		w := bufio.NewWriter(&b)
 		table := tables.Get(r.TableName)
-		if err := c.Client.WriteTableBatch(w, table, [][]any{r.Data}); err != nil {
+		if err := c.filetype.WriteTableBatch(w, table, [][]any{r.Data}); err != nil {
 			return err
 		}
 		w.Flush()

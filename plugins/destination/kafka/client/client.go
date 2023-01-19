@@ -24,7 +24,7 @@ type Client struct {
 	spec       specs.Destination
 	pluginSpec Spec
 	metrics    destination.Metrics
-	*filetypes.Client
+	filetype   *filetypes.Client
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -79,7 +79,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	if err != nil {
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}
-	c.Client = filetypesClient
+	c.filetype = filetypesClient
 
 	return c, nil
 }
