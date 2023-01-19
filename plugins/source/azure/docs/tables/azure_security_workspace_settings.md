@@ -1,5 +1,7 @@
 # Table: azure_security_workspace_settings
 
+https://learn.microsoft.com/en-us/rest/api/defenderforcloud/workspace-settings/list?tabs=HTTP#workspacesetting
+
 The primary key for this table is **id**.
 
 ## Columns

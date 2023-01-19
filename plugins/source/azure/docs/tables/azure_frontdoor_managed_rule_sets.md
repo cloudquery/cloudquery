@@ -1,5 +1,7 @@
 # Table: azure_frontdoor_managed_rule_sets
 
+https://learn.microsoft.com/en-us/rest/api/frontdoor/webapplicationfirewall/managed-rule-sets/list#managedrulesetdefinition
+
 The primary key for this table is **id**.
 
 ## Columns

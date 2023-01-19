@@ -1,5 +1,7 @@
 # Table: azure_containerservice_snapshots
 
+https://learn.microsoft.com/en-us/rest/api/aks/snapshots/list?tabs=HTTP#snapshot
+
 The primary key for this table is **id**.
 
 ## Columns

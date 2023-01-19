@@ -1,5 +1,7 @@
 # Table: azure_keyvault_keyvault_keys
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault@v1.0.0#Key
+
 The primary key for this table is **id**.
 
 ## Relations

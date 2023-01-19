@@ -9,9 +9,10 @@ import (
 
 func serverDatabases() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_server_databases",
-		Resolver:  fetchDatabases,
-		Transform: transformers.TransformWithStruct(&armsql.Database{}),
+		Name:        "azure_sql_server_databases",
+		Resolver:    fetchDatabases,
+		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/databases/list-by-server?tabs=HTTP#database",
+		Transform:   transformers.TransformWithStruct(&armsql.Database{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

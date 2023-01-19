@@ -3,7 +3,7 @@ package authorization
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func RoleAssignments() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_authorization_role_assignments",
-		Resolver:  fetchRoleAssignments,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_role_assignments", client.Namespacemicrosoft_authorization),
-		Transform: transformers.TransformWithStruct(&armauthorization.RoleAssignment{}),
+		Name:        "azure_authorization_role_assignments",
+		Resolver:    fetchRoleAssignments,
+		Description: "https://learn.microsoft.com/en-us/rest/api/authorization/role-assignments/get?tabs=HTTP#roleassignment",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_role_assignments", client.Namespacemicrosoft_authorization),
+		Transform:   transformers.TransformWithStruct(&armauthorization.RoleAssignment{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -39,7 +40,7 @@ func fetchRoleAssignments(ctx context.Context, meta schema.ClientMeta, parent *s
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListForSubscriptionPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

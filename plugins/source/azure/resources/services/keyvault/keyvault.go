@@ -14,6 +14,7 @@ func Keyvault() *schema.Table {
 		Name:                "azure_keyvault_keyvault",
 		PreResourceResolver: keyvaultGet,
 		Resolver:            fetchKeyvault,
+		Description:         "https://learn.microsoft.com/en-us/rest/api/keyvault/keyvault/vaults/get?tabs=HTTP#vault",
 		Multiplex:           client.SubscriptionMultiplex,
 		Transform:           transformers.TransformWithStruct(&armkeyvault.Vault{}),
 		Columns: []schema.Column{

@@ -1,5 +1,7 @@
 # Table: azure_sql_server_database_threat_protections
 
+https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/database-advanced-threat-protection-settings/list-by-database?tabs=HTTP#databaseadvancedthreatprotection
+
 The primary key for this table is **id**.
 
 ## Relations

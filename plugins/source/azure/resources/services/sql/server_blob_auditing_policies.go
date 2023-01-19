@@ -9,9 +9,10 @@ import (
 
 func server_blob_auditing_policies() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_server_blob_auditing_policies",
-		Resolver:  fetchServerBlobAuditingPolicies,
-		Transform: transformers.TransformWithStruct(&armsql.ServerBlobAuditingPolicy{}),
+		Name:        "azure_sql_server_blob_auditing_policies",
+		Resolver:    fetchServerBlobAuditingPolicies,
+		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/server-blob-auditing-policies/list-by-server?tabs=HTTP#serverblobauditingpolicy",
+		Transform:   transformers.TransformWithStruct(&armsql.ServerBlobAuditingPolicy{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

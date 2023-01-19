@@ -9,9 +9,10 @@ import (
 
 func transparentDataEncryptions() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_transparent_data_encryptions",
-		Resolver:  fetchTransparentDataEncryptions,
-		Transform: transformers.TransformWithStruct(&armsql.LogicalDatabaseTransparentDataEncryption{}),
+		Name:        "azure_sql_transparent_data_encryptions",
+		Resolver:    fetchTransparentDataEncryptions,
+		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/transparent-data-encryptions/list-by-database?tabs=HTTP#logicaldatabasetransparentdataencryption",
+		Transform:   transformers.TransformWithStruct(&armsql.LogicalDatabaseTransparentDataEncryption{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -1,5 +1,7 @@
 # Table: azure_cdn_edge_nodes
 
+https://learn.microsoft.com/en-us/rest/api/cdn/edge-nodes/list?tabs=HTTP#edgenode
+
 The primary key for this table is **id**.
 
 ## Columns

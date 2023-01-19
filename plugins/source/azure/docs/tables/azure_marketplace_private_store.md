@@ -1,5 +1,7 @@
 # Table: azure_marketplace_private_store
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace@v1.0.0#PrivateStore
+
 The primary key for this table is **id**.
 
 ## Columns

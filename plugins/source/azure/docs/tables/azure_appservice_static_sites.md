@@ -1,5 +1,7 @@
 # Table: azure_appservice_static_sites
 
+https://learn.microsoft.com/en-us/rest/api/appservice/static-sites/list?tabs=HTTP#staticsitearmresource
+
 The primary key for this table is **id**.
 
 ## Columns

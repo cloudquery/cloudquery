@@ -1,5 +1,7 @@
 # Table: azure_compute_snapshots
 
+https://learn.microsoft.com/en-us/rest/api/compute/snapshots/list?tabs=HTTP#snapshot
+
 The primary key for this table is **id**.
 
 ## Columns

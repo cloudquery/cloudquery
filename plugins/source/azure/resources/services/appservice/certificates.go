@@ -3,7 +3,7 @@ package appservice
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func Certificates() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_appservice_certificates",
-		Resolver:  fetchCertificates,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_certificates", client.Namespacemicrosoft_web),
-		Transform: transformers.TransformWithStruct(&armappservice.AppCertificate{}),
+		Name:        "azure_appservice_certificates",
+		Resolver:    fetchCertificates,
+		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/certificates/list?tabs=HTTP#certificate",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_certificates", client.Namespacemicrosoft_web),
+		Transform:   transformers.TransformWithStruct(&armappservice.AppCertificate{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -1,5 +1,7 @@
 # Table: azure_appservice_certificate_orders
 
+https://learn.microsoft.com/en-us/rest/api/appservice/app-service-certificate-orders/list?tabs=HTTP#appservicecertificateorder
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -11,10 +11,11 @@ import (
 
 func Workflow() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_devhub_workflow",
-		Resolver:  fetchWorkflow,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_devhub_workflow", client.Namespacemicrosoft_devhub),
-		Transform: transformers.TransformWithStruct(&armdevhub.Workflow{}),
+		Name:        "azure_devhub_workflow",
+		Resolver:    fetchWorkflow,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub@v0.2.0#Workflow",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_devhub_workflow", client.Namespacemicrosoft_devhub),
+		Transform:   transformers.TransformWithStruct(&armdevhub.Workflow{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

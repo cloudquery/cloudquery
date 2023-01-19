@@ -11,10 +11,11 @@ import (
 
 func Capacities() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_powerbidedicated_capacities",
-		Resolver:  fetchCapacities,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_powerbidedicated_capacities", client.Namespacemicrosoft_powerbidedicated),
-		Transform: transformers.TransformWithStruct(&armpowerbidedicated.DedicatedCapacity{}),
+		Name:        "azure_powerbidedicated_capacities",
+		Resolver:    fetchCapacities,
+		Description: "https://learn.microsoft.com/en-us/rest/api/power-bi-embedded/capacities/list?tabs=HTTP#dedicatedcapacity",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_powerbidedicated_capacities", client.Namespacemicrosoft_powerbidedicated),
+		Transform:   transformers.TransformWithStruct(&armpowerbidedicated.DedicatedCapacity{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

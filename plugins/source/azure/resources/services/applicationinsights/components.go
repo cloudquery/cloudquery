@@ -11,10 +11,11 @@ import (
 
 func Components() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_applicationinsights_components",
-		Resolver:  fetchComponents,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_applicationinsights_components", client.Namespacemicrosoft_insights),
-		Transform: transformers.TransformWithStruct(&armapplicationinsights.Component{}),
+		Name:        "azure_applicationinsights_components",
+		Resolver:    fetchComponents,
+		Description: "https://learn.microsoft.com/en-us/rest/api/application-insights/components/list?tabs=HTTP#applicationinsightscomponent",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_applicationinsights_components", client.Namespacemicrosoft_insights),
+		Transform:   transformers.TransformWithStruct(&armapplicationinsights.Component{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

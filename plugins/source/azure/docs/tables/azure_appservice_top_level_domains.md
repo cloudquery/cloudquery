@@ -1,5 +1,7 @@
 # Table: azure_appservice_top_level_domains
 
+https://learn.microsoft.com/en-us/rest/api/appservice/top-level-domains/list?tabs=HTTP#topleveldomain
+
 The primary key for this table is **id**.
 
 ## Columns

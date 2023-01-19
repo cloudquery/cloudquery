@@ -1,5 +1,7 @@
 # Table: azure_security_assessments
 
+https://learn.microsoft.com/en-us/rest/api/defenderforcloud/assessments/list?tabs=HTTP#securityassessment
+
 The primary key for this table is **id**.
 
 ## Columns

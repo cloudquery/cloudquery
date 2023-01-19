@@ -1,5 +1,7 @@
 # Table: azure_monitor_log_profiles
 
+https://learn.microsoft.com/en-us/rest/api/monitor/log-profiles/list?tabs=HTTP#logprofileresource
+
 The primary key for this table is **id**.
 
 ## Columns

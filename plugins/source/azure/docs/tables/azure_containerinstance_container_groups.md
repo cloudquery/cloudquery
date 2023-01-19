@@ -1,5 +1,7 @@
 # Table: azure_containerinstance_container_groups
 
+https://learn.microsoft.com/en-us/rest/api/container-instances/container-groups/list?tabs=HTTP#containergroup
+
 The primary key for this table is **id**.
 
 ## Columns

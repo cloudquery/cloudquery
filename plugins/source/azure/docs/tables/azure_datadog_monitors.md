@@ -1,5 +1,7 @@
 # Table: azure_datadog_monitors
 
+https://learn.microsoft.com/en-us/rest/api/datadog/monitors/list?tabs=HTTP#datadogmonitorresource
+
 The primary key for this table is **id**.
 
 ## Columns

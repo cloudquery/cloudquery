@@ -40,6 +40,11 @@ func Applications() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveElasticbeanstalkApplicationTags,
+			},
 		},
 	}
 }
