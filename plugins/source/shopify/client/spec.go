@@ -13,4 +13,5 @@ type Spec struct {
 	// Optional
 	Timeout    int64 `json:"timeout_secs,omitempty"`
 	MaxRetries int64 `json:"max_retries,omitempty"`
+	PageSize   int64 `json:"page_size,omitempty"`
 }

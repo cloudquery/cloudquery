@@ -20,6 +20,15 @@ func Customers() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "updated_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("UpdatedAt"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
+				},
+			},
 		},
+		IsIncremental: true,
 	}
 }
