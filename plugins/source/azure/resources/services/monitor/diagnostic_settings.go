@@ -22,7 +22,7 @@ func DiagnosticSettings() *schema.Table {
 		Resolver:    fetchDiagnosticSettings,
 		Description: "https://learn.microsoft.com/en-us/rest/api/monitor/diagnostic-settings/list?tabs=HTTP#diagnosticsettingsresource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_diagnostic_settings", client.Namespacemicrosoft_insights),
-		Transform:   transformers.TransformWithStruct(&diagnosticSettingsWrapper{}, transformers.WithPrimaryKeys("ID")),
+		Transform:   transformers.TransformWithStruct(&diagnosticSettingsWrapper{}, transformers.WithPrimaryKeys("ID"), transformers.WithUnwrapStructFields("DiagnosticSettingsResource")),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
