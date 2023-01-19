@@ -14,7 +14,7 @@ In order to fetch information from Vercel, `cloudquery` needs to be authenticate
 ## Incremental Syncing
 
 The Vercel plugin supports incremental syncing. This means that only new data will be fetched from Vercel and loaded into your destination for supported tables (support depending on API endpoint). This is done by keeping track of the last `paginator` for each table and only fetching data that has been updated since then.
-To enable this, `backend` option must be set in the spec (as shown in the [example](./configuration.md#Example)). This is documented in the [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) section.
+To enable this, `backend` option must be set in the spec (as shown in the [example](configuration#example)). This is documented in the [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) section.
 
 ## Query Examples
 
