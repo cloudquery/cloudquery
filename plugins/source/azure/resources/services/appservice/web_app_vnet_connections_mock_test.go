@@ -2,7 +2,7 @@ package appservice
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 	"net/http"
 
 	"github.com/cloudquery/plugin-sdk/faker"
