@@ -56,6 +56,6 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   Whether the first line of the file should be the column headers. Default value is `false`.
 
-- `delimiter` (string) (optional)
+- `delimiter` (character) (optional)
 
-  Character that should be used as the delimiter. Default values is `,`.
+  Character that should be used as the delimiter. Default value is `,`.
