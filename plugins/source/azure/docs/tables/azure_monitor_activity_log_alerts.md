@@ -1,6 +1,8 @@
 # Table: azure_monitor_activity_log_alerts
 
-The primary key for this table is **_cq_id**.
+https://learn.microsoft.com/en-us/rest/api/monitor/activity-log-alerts/list-by-subscription-id?tabs=HTTP#activitylogalertresource
+
+The primary key for this table is **id**.
 
 ## Columns
 
@@ -8,12 +10,12 @@ The primary key for this table is **_cq_id**.
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
 |location|String|
 |properties|JSON|
 |tags|JSON|
-|id|String|
+|id (PK)|String|
 |name|String|
 |type|String|

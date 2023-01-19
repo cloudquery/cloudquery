@@ -49,6 +49,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappcon
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration v1.0.0/go.mod h1:YW819qVTop21KS8LJLEf3Z47LBaRHIaz/IRLZpKqTIU=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights v1.0.0 h1:BpGGvzarSyE7kQF1x1hptUcGmNzZEE3yYI+uqBSNRxk=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights v1.0.0/go.mod h1:1ijUM40peD7YK5MFEJja2wjjp4eimFNWv0NXoY3nsZM=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice v1.0.0 h1:kRX8I0dWAcpW6Vq0m90CgV+qw4O1vXodgwrhoPr1RWs=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice v1.0.0/go.mod h1:avvc5/7qR4taCvAhOM7KFXuEHhAU0Wek9YX7sh9H3EM=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2 v2.0.0 h1:UmNl2Ud7IVziQHJvEvKL5b6JMvO8MhmMYwYC1nF63J0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2 v2.0.0/go.mod h1:q3eRORy1pK+iwccG8yKZfRjhdJXTUs5LF2j9hA/MNNs=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2 v2.0.0 h1:WJd2y/3vp3sgG1u1KfDaEyGiM9oC11cBa9rbmsSv5rQ=
@@ -69,6 +71,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn v1.0.0 h1:mZYoz
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn v1.0.0/go.mod h1:9HKN4ZiYtjIYAEsr76ecdVsMO7DdUzOGo6tgu3Olf5w=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices v1.2.0 h1:FszWbnkWCl8qO4FU7io9DPTNNGix5kyc5EKqJmPy71k=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices v1.2.0/go.mod h1:VKkzyWyKOxfIuDfw2hy56cdp8eRAXt/h9xqo5eCr1yE=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute v1.0.0 h1:/Di3vB4sNeQ+7A8efjUVENvyB945Wruvstucqp7ZArg=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute v1.0.0/go.mod h1:gM3K25LQlsET3QR+4V74zxCsFAy0r6xMNN9n80SZn+4=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v3 v3.0.1 h1:H3g2mkmu105ON0c/Gqx3Bm+bzoIijLom8LmV9Gjn7X0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4 v4.1.0 h1:Vjq3Uy3JAU1DTxbA+uX6BegIhgO2pyFltbfbmDa9KdI=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4 v4.1.0/go.mod h1:Q3u+T/qw3Kb1Wf3DFKiFwEZlyaAyPb4yBgWm9wq7yh8=

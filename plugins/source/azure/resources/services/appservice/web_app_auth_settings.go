@@ -10,10 +10,10 @@ import (
 
 func webAppAuthSettings() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_appservice_web_app_auth_settings",
-		Resolver:  fetchWebAppAuthSettings,
+		Name:        "azure_appservice_web_app_auth_settings",
+		Resolver:    fetchWebAppAuthSettings,
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/get-auth-settings#siteauthsettings",
-		Transform: transformers.TransformWithStruct(&armappservice.SiteAuthSettings{}, transformers.WithPrimaryKeys("id")),
+		Transform:   transformers.TransformWithStruct(&armappservice.SiteAuthSettings{}, transformers.WithPrimaryKeys("ID")),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -18,10 +18,11 @@ type diagnosticSettingsWrapper struct {
 
 func DiagnosticSettings() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_monitor_diagnostic_settings",
-		Resolver:  fetchDiagnosticSettings,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_diagnostic_settings", client.Namespacemicrosoft_insights),
-		Transform: transformers.TransformWithStruct(&diagnosticSettingsWrapper{}, transformers.WithPrimaryKeys("id")),
+		Name:        "azure_monitor_diagnostic_settings",
+		Resolver:    fetchDiagnosticSettings,
+		Description: "https://learn.microsoft.com/en-us/rest/api/monitor/diagnostic-settings/list?tabs=HTTP#diagnosticsettingsresource",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_diagnostic_settings", client.Namespacemicrosoft_insights),
+		Transform:   transformers.TransformWithStruct(&diagnosticSettingsWrapper{}, transformers.WithPrimaryKeys("ID")),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

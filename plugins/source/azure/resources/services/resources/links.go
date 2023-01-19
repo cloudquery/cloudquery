@@ -11,10 +11,11 @@ import (
 
 func Links() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_resources_links",
-		Resolver:  fetchLinks,
-		Multiplex: client.SubscriptionMultiplex,
-		Transform: transformers.TransformWithStruct(&armlinks.ResourceLink{}, transformers.WithPrimaryKeys("id")),
+		Name:        "azure_resources_links",
+		Resolver:    fetchLinks,
+		Description: "https://learn.microsoft.com/en-us/rest/api/resources/resource-links/list-at-subscription#resourcelink",
+		Multiplex:   client.SubscriptionMultiplex,
+		Transform:   transformers.TransformWithStruct(&armlinks.ResourceLink{}, transformers.WithPrimaryKeys("ID")),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

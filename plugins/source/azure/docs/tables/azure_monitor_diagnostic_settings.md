@@ -1,5 +1,7 @@
 # Table: azure_monitor_diagnostic_settings
 
+https://learn.microsoft.com/en-us/rest/api/monitor/diagnostic-settings/list?tabs=HTTP#diagnosticsettingsresource
+
 The primary key for this table is **_cq_id**.
 
 ## Columns

@@ -10,10 +10,11 @@ import (
 
 func namespaceNetworkRuleSets() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_eventhub_namespace_network_rule_sets",
-		Resolver:  fetchNetworkRuleSets,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_eventhub_network_rule_sets", client.Namespacemicrosoft_eventhub),
-		Transform: transformers.TransformWithStruct(&armeventhub.NetworkRuleSet{}, transformers.WithPrimaryKeys("id")),
+		Name:        "azure_eventhub_namespace_network_rule_sets",
+		Resolver:    fetchNetworkRuleSets,
+		Description: "https://learn.microsoft.com/en-us/rest/api/eventhub/stable/network-rule-sets/list-network-rule-set?tabs=HTTP#networkruleset",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_eventhub_network_rule_sets", client.Namespacemicrosoft_eventhub),
+		Transform:   transformers.TransformWithStruct(&armeventhub.NetworkRuleSet{}, transformers.WithPrimaryKeys("ID")),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

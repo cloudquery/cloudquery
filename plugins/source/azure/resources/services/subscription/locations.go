@@ -10,9 +10,10 @@ import (
 
 func locations() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_subscription_subscription_locations",
-		Resolver:  fetchLocations,
-		Transform: transformers.TransformWithStruct(&armsubscription.Location{}, transformers.WithPrimaryKeys("id")),
+		Name:        "azure_subscription_subscription_locations",
+		Resolver:    fetchLocations,
+		Description: "https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list-locations?tabs=HTTP#location",
+		Transform:   transformers.TransformWithStruct(&armsubscription.Location{}, transformers.WithPrimaryKeys("ID")),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

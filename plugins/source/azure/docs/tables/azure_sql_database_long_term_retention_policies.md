@@ -1,6 +1,8 @@
 # Table: azure_sql_database_long_term_retention_policies
 
-The primary key for this table is **_cq_id**.
+https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/long-term-retention-policies/list-by-database?tabs=HTTP#longtermretentionpolicy
+
+The primary key for this table is **id**.
 
 ## Relations
 
@@ -12,10 +14,10 @@ This table depends on [azure_sql_server_databases](azure_sql_server_databases.md
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
 |properties|JSON|
-|id|String|
+|id (PK)|String|
 |name|String|
 |type|String|
