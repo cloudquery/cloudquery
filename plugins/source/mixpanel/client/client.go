@@ -79,11 +79,11 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*mixpanel.Client, erro
 		spec.EndDate = dt
 	}
 
-	if _, err := time.Parse(spec.StartDate, dateFormat); err != nil {
+	if _, err := time.Parse(dateFormat, spec.StartDate); err != nil {
 		return nil, fmt.Errorf("invalid start date format: %w", err)
 	}
-	if _, err := time.Parse(spec.EndDate, dateFormat); err != nil {
-		return nil, fmt.Errorf("invalid start date format: %w", err)
+	if _, err := time.Parse(dateFormat, spec.EndDate); err != nil {
+		return nil, fmt.Errorf("invalid end date format: %w", err)
 	}
 
 	if spec.Timeout < 1 {

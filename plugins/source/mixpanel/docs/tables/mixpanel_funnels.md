@@ -16,5 +16,5 @@ The following tables depend on mixpanel_funnels:
 |_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
 |project_id|Int|
-|funnnel_id|Int|
+|funnel_id|Int|
 |name|String|

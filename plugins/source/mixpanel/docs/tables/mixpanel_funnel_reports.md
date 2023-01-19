@@ -16,3 +16,6 @@ This table depends on [mixpanel_funnels](mixpanel_funnels.md).
 |_cq_parent_id|UUID|
 |project_id|Int|
 |funnel_id (PK)|Int|
+|date|Timestamp|
+|steps|JSON|
+|analysis|JSON|

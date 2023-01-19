@@ -13,7 +13,7 @@ func FunnelReports() *schema.Table {
 	return &schema.Table{
 		Name:      "mixpanel_funnel_reports",
 		Resolver:  fetchFunnelReports,
-		Transform: transformers.TransformWithStruct(&mixpanel.FunnelData{}),
+		Transform: transformers.TransformWithStruct(&mixpanel.FunnelData{}, transformers.WithPrimaryKeys("date")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -23,7 +23,7 @@ func FunnelReports() *schema.Table {
 			{
 				Name:     "funnel_id",
 				Type:     schema.TypeInt,
-				Resolver: schema.ParentColumnResolver("id"),
+				Resolver: schema.ParentColumnResolver("funnel_id"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

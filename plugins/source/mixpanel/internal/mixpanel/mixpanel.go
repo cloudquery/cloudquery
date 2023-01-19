@@ -100,13 +100,15 @@ func (v *Client) request(ctx context.Context, method, uri string, qp url.Values)
 			return res.Body, nil
 		}
 
+		respText, _ := io.ReadAll(res.Body)
+
 		_ = res.Body.Close()
 		retries++
 		if retries > v.opts.MaxRetries {
 			break
 		}
 
-		rateErr := fmt.Errorf("request to %s failed: %s", uri, res.Status)
+		rateErr := fmt.Errorf("request to %s failed: %s %s", uri, res.Status, string(respText))
 		if res.StatusCode != http.StatusTooManyRequests {
 			return nil, rateErr
 		}
