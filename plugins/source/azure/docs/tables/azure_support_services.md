@@ -1,5 +1,7 @@
 # Table: azure_support_services
 
+https://learn.microsoft.com/en-us/rest/api/support/services/list?tabs=HTTP#service
+
 The primary key for this table is **id**.
 
 ## Columns

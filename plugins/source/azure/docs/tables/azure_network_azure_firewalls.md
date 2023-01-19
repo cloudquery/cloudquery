@@ -1,5 +1,7 @@
 # Table: azure_network_azure_firewalls
 
+https://learn.microsoft.com/en-us/rest/api/firewall/azure-firewalls/list?tabs=HTTP#azurefirewall
+
 The primary key for this table is **id**.
 
 ## Columns

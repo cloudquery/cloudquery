@@ -9,10 +9,11 @@ import (
 
 func ServiceProviders() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_peering_service_providers",
-		Resolver:  fetchServiceProviders,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_peering_service_providers", client.Namespacemicrosoft_peering),
-		Transform: transformers.TransformWithStruct(&armpeering.ServiceProvider{}),
+		Name:        "azure_peering_service_providers",
+		Resolver:    fetchServiceProviders,
+		Description: "https://learn.microsoft.com/en-us/rest/api/peering/peering-service-providers/list?tabs=HTTP#peeringserviceprovider",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_peering_service_providers", client.Namespacemicrosoft_peering),
+		Transform:   transformers.TransformWithStruct(&armpeering.ServiceProvider{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

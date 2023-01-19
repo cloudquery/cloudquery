@@ -1,5 +1,7 @@
 # Table: azure_security_external_security_solutions
 
+https://learn.microsoft.com/en-us/rest/api/defenderforcloud/external-security-solutions/list?tabs=HTTP#externalsecuritysolutionlist
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -3,7 +3,7 @@ package network
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func VpnGateways() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_vpn_gateways",
-		Resolver:  fetchVpnGateways,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_vpn_gateways", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.VPNGateway{}),
+		Name:        "azure_network_vpn_gateways",
+		Resolver:    fetchVpnGateways,
+		Description: "https://learn.microsoft.com/en-us/rest/api/virtualwan/vpn-gateways/list?tabs=HTTP#vpngateway",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_vpn_gateways", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.VPNGateway{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

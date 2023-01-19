@@ -1,5 +1,7 @@
 # Table: azure_network_dscp_configuration
 
+https://learn.microsoft.com/en-us/rest/api/virtualnetwork/dscp-configuration/list?tabs=HTTP#dscpconfiguration
+
 The primary key for this table is **id**.
 
 ## Columns

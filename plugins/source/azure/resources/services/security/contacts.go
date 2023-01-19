@@ -11,10 +11,11 @@ import (
 
 func Contacts() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_contacts",
-		Resolver:  fetchContacts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_contacts", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.Contact{}),
+		Name:        "azure_security_contacts",
+		Resolver:    fetchContacts,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity@v0.9.0#Contact",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_contacts", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.Contact{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

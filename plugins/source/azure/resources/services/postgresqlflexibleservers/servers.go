@@ -3,7 +3,7 @@ package postgresqlflexibleservers
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func Servers() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_postgresqlflexibleservers_servers",
-		Resolver:  fetchServers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_postgresqlflexibleservers_servers", client.Namespacemicrosoft_dbforpostgresql),
-		Transform: transformers.TransformWithStruct(&armpostgresqlflexibleservers.Server{}),
+		Name:        "azure_postgresqlflexibleservers_servers",
+		Resolver:    fetchServers,
+		Description: "https://learn.microsoft.com/en-us/rest/api/postgresql/flexibleserver/servers/list?tabs=HTTP#server",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_postgresqlflexibleservers_servers", client.Namespacemicrosoft_dbforpostgresql),
+		Transform:   transformers.TransformWithStruct(&armpostgresqlflexibleservers.Server{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -3,7 +3,7 @@ package network
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func BgpServiceCommunities() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_bgp_service_communities",
-		Resolver:  fetchBgpServiceCommunities,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_bgp_service_communities", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.BgpServiceCommunity{}),
+		Name:        "azure_network_bgp_service_communities",
+		Resolver:    fetchBgpServiceCommunities,
+		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/bgp-service-communities/list?tabs=HTTP#bgpservicecommunity",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_bgp_service_communities", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.BgpServiceCommunity{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

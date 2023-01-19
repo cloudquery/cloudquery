@@ -3,7 +3,7 @@ package storagecache
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func Caches() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_storagecache_caches",
-		Resolver:  fetchCaches,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_storagecache_caches", client.Namespacemicrosoft_storagecache),
-		Transform: transformers.TransformWithStruct(&armstoragecache.Cache{}),
+		Name:        "azure_storagecache_caches",
+		Resolver:    fetchCaches,
+		Description: "https://learn.microsoft.com/en-us/rest/api/storagecache/caches/list?tabs=HTTP#cache",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_storagecache_caches", client.Namespacemicrosoft_storagecache),
+		Transform:   transformers.TransformWithStruct(&armstoragecache.Cache{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

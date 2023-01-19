@@ -1,5 +1,7 @@
 # Table: azure_storage_blob_services
 
+https://learn.microsoft.com/en-us/rest/api/storagerp/blob-services/list?tabs=HTTP#blobserviceproperties
+
 The primary key for this table is **id**.
 
 ## Relations

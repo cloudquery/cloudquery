@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
 )

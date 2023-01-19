@@ -1,5 +1,7 @@
 # Table: azure_operationalinsights_clusters
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights@v1.0.0#Cluster
+
 The primary key for this table is **id**.
 
 ## Columns

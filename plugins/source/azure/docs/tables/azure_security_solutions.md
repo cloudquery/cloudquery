@@ -1,5 +1,7 @@
 # Table: azure_security_solutions
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity@v0.9.0#Solution
+
 The primary key for this table is **id**.
 
 ## Columns

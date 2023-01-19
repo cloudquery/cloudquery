@@ -1,5 +1,7 @@
 # Table: azure_windowsiot_services
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot@v1.0.0#DeviceService
+
 The primary key for this table is **id**.
 
 ## Columns

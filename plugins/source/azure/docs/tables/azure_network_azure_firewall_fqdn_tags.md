@@ -1,5 +1,7 @@
 # Table: azure_network_azure_firewall_fqdn_tags
 
+https://learn.microsoft.com/en-us/rest/api/firewall/azure-firewall-fqdn-tags/list-all?tabs=HTTP#azurefirewallfqdntag
+
 The primary key for this table is **id**.
 
 ## Columns

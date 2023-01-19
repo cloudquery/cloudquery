@@ -3,7 +3,7 @@ package compute
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func Disks() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_compute_disks",
-		Resolver:  fetchDisks,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_compute_disks", client.Namespacemicrosoft_compute),
-		Transform: transformers.TransformWithStruct(&armcompute.Disk{}),
+		Name:        "azure_compute_disks",
+		Resolver:    fetchDisks,
+		Description: "https://learn.microsoft.com/en-us/rest/api/compute/disks/list?tabs=HTTP#disk",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_disks", client.Namespacemicrosoft_compute),
+		Transform:   transformers.TransformWithStruct(&armcompute.Disk{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
