@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSpec_SetDefaults(t *testing.T) {
@@ -35,13 +36,10 @@ func TestSpec_Validate(t *testing.T) {
 	}
 	for _, tc := range cases {
 		err := tc.Give.Validate()
-		gotErr := err != nil
-		if diff := cmp.Diff(tc.WantErr, gotErr); diff != "" {
-			s := "nil"
-			if tc.WantErr {
-				s = "error"
-			}
-			t.Errorf("Validate(%v) got err = %v, want %v", tc.Give, err, s)
+		if tc.WantErr {
+			require.Error(t, err)
+		} else {
+			require.NoError(t, err)
 		}
 	}
 }
