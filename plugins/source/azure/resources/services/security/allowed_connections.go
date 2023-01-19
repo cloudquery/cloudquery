@@ -11,10 +11,11 @@ import (
 
 func AllowedConnections() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_allowed_connections",
-		Resolver:  fetchAllowedConnections,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_allowed_connections", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.AllowedConnectionsResource{}),
+		Name:        "azure_security_allowed_connections",
+		Resolver:    fetchAllowedConnections,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/allowed-connections/list?tabs=HTTP#allowedconnectionsresource",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_allowed_connections", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.AllowedConnectionsResource{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

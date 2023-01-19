@@ -11,10 +11,11 @@ import (
 
 func ServiceLocations() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_peering_service_locations",
-		Resolver:  fetchServiceLocations,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_peering_service_locations", client.Namespacemicrosoft_peering),
-		Transform: transformers.TransformWithStruct(&armpeering.ServiceLocation{}),
+		Name:        "azure_peering_service_locations",
+		Resolver:    fetchServiceLocations,
+		Description: "https://learn.microsoft.com/en-us/rest/api/peering/peering-service-locations/list?tabs=HTTP#peeringservicelocation",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_peering_service_locations", client.Namespacemicrosoft_peering),
+		Transform:   transformers.TransformWithStruct(&armpeering.ServiceLocation{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

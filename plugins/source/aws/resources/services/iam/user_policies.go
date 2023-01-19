@@ -10,6 +10,7 @@ import (
 func UserPolicies() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_iam_user_policies",
+		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetUserPolicy.html`,
 		Resolver:            fetchIamUserPolicies,
 		PreResourceResolver: getUserPolicy,
 		Transform:           transformers.TransformWithStruct(&iam.GetUserPolicyOutput{}),

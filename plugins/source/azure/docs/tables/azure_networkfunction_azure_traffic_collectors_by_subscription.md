@@ -1,5 +1,7 @@
 # Table: azure_networkfunction_azure_traffic_collectors_by_subscription
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction@v1.0.0#AzureTrafficCollector
+
 The primary key for this table is **id**.
 
 ## Columns

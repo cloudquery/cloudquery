@@ -11,10 +11,11 @@ import (
 
 func InstancePools() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_sql_instance_pools",
-		Resolver:  fetchInstancePools,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_sql_instance_pools", client.Namespacemicrosoft_sql),
-		Transform: transformers.TransformWithStruct(&armsql.InstancePool{}),
+		Name:        "azure_sql_instance_pools",
+		Resolver:    fetchInstancePools,
+		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/instance-pools/list?tabs=HTTP#instancepool",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_sql_instance_pools", client.Namespacemicrosoft_sql),
+		Transform:   transformers.TransformWithStruct(&armsql.InstancePool{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

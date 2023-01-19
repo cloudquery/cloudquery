@@ -11,10 +11,11 @@ import (
 
 func ReservationOrder() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_reservations_reservation_order",
-		Resolver:  fetchReservationOrder,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_reservations_reservation_order", client.Namespacemicrosoft_capacity),
-		Transform: transformers.TransformWithStruct(&armreservations.ReservationOrderResponse{}),
+		Name:        "azure_reservations_reservation_order",
+		Resolver:    fetchReservationOrder,
+		Description: "https://learn.microsoft.com/en-us/rest/api/reserved-vm-instances/reservation-order/get?tabs=HTTP#reservationorderresponse",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_reservations_reservation_order", client.Namespacemicrosoft_capacity),
+		Transform:   transformers.TransformWithStruct(&armreservations.ReservationOrderResponse{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

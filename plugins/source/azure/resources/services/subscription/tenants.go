@@ -11,10 +11,11 @@ import (
 
 func Tenants() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_subscription_tenants",
-		Resolver:  fetchTenants,
-		Multiplex: client.SingleSubscriptionMultiplex,
-		Transform: transformers.TransformWithStruct(&armsubscription.TenantIDDescription{}),
+		Name:        "azure_subscription_tenants",
+		Resolver:    fetchTenants,
+		Description: "https://learn.microsoft.com/en-us/rest/api/resources/tenants/list?tabs=HTTP#tenantiddescription",
+		Multiplex:   client.SingleSubscriptionMultiplex,
+		Transform:   transformers.TransformWithStruct(&armsubscription.TenantIDDescription{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

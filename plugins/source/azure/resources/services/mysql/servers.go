@@ -11,10 +11,11 @@ import (
 
 func Servers() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_mysql_servers",
-		Resolver:  fetchServers,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_mysql_servers", client.Namespacemicrosoft_dbformysql),
-		Transform: transformers.TransformWithStruct(&armmysql.Server{}),
+		Name:        "azure_mysql_servers",
+		Resolver:    fetchServers,
+		Description: "https://learn.microsoft.com/en-us/rest/api/mysql/singleserver/servers(2017-12-01)/list?tabs=HTTP#server",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_mysql_servers", client.Namespacemicrosoft_dbformysql),
+		Transform:   transformers.TransformWithStruct(&armmysql.Server{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -1,5 +1,7 @@
 # Table: azure_azuredata_sql_server_registrations
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata@v0.5.0#SQLServerRegistration
+
 The primary key for this table is **id**.
 
 ## Columns

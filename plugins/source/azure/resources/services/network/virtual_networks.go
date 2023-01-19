@@ -3,7 +3,7 @@ package network
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func VirtualNetworks() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_virtual_networks",
-		Resolver:  fetchVirtualNetworks,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_networks", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.VirtualNetwork{}),
+		Name:        "azure_network_virtual_networks",
+		Resolver:    fetchVirtualNetworks,
+		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/virtual-networks/list-all?tabs=HTTP#virtualnetwork",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_networks", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualNetwork{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

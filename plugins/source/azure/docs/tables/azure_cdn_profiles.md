@@ -1,5 +1,7 @@
 # Table: azure_cdn_profiles
 
+https://learn.microsoft.com/en-us/rest/api/cdn/profiles/list?tabs=HTTP#profile
+
 The primary key for this table is **id**.
 
 ## Relations

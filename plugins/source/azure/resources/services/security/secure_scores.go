@@ -11,10 +11,11 @@ import (
 
 func SecureScores() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_secure_scores",
-		Resolver:  fetchSecureScores,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_secure_scores", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.SecureScoreItem{}),
+		Name:        "azure_security_secure_scores",
+		Resolver:    fetchSecureScores,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/secure-scores/list?tabs=HTTP#securescoreitem",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_secure_scores", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.SecureScoreItem{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

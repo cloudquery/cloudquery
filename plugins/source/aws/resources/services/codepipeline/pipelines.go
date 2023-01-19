@@ -10,6 +10,7 @@ import (
 func Pipelines() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_codepipeline_pipelines",
+		Description:         `https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_GetPipeline.html`,
 		Resolver:            fetchCodepipelinePipelines,
 		PreResourceResolver: getPipeline,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("codepipeline"),

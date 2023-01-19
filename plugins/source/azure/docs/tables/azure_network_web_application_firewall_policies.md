@@ -1,5 +1,7 @@
 # Table: azure_network_web_application_firewall_policies
 
+https://learn.microsoft.com/en-us/rest/api/application-gateway/web-application-firewall-policies/list?tabs=HTTP#webapplicationfirewallpolicy
+
 The primary key for this table is **id**.
 
 ## Columns

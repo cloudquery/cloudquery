@@ -1,5 +1,7 @@
 # Table: azure_storage_tables
 
+https://learn.microsoft.com/en-us/rest/api/storagerp/table/list?tabs=HTTP#table
+
 The primary key for this table is **id**.
 
 ## Relations

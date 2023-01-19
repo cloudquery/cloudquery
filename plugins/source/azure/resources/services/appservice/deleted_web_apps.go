@@ -3,7 +3,7 @@ package appservice
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func DeletedWebApps() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_appservice_deleted_web_apps",
-		Resolver:  fetchDeletedWebApps,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_deleted_web_apps", client.Namespacemicrosoft_web),
-		Transform: transformers.TransformWithStruct(&armappservice.DeletedSite{}),
+		Name:        "azure_appservice_deleted_web_apps",
+		Resolver:    fetchDeletedWebApps,
+		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/deleted-web-apps/list#deletedsite",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_deleted_web_apps", client.Namespacemicrosoft_web),
+		Transform:   transformers.TransformWithStruct(&armappservice.DeletedSite{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

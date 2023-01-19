@@ -1,5 +1,7 @@
 # Table: azure_security_regulatory_compliance_standards
 
+https://learn.microsoft.com/en-us/rest/api/defenderforcloud/regulatory-compliance-standards/list?tabs=HTTP#regulatorycompliancestandard
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: azure_costmanagement_view_queries
 
+https://learn.microsoft.com/en-us/rest/api/cost-management/query/usage?tabs=HTTP#queryresult
+
 The primary key for this table is **id**.
 
 ## Relations

@@ -1,5 +1,7 @@
 # Table: azure_peering_service_providers
 
+https://learn.microsoft.com/en-us/rest/api/peering/peering-service-providers/list?tabs=HTTP#peeringserviceprovider
+
 The composite primary key for this table is (**subscription_id**, **name**).
 
 ## Columns

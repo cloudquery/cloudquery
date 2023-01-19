@@ -1,5 +1,7 @@
 # Table: aws_lambda_layer_version_policies
 
+https://docs.aws.amazon.com/lambda/latest/dg/API_GetLayerVersionPolicy.html
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

@@ -7,6 +7,7 @@
   "gcs": "GCS",
   "kafka": "Kafka",
   "mongodb": "MongoDB",
+  "mssql": "Microsoft SQL Server",
   "postgresql": "PostgreSQL",
   "snowflake": "Snowflake",
   "sqlite": "SQLite"

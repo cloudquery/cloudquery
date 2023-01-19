@@ -10,6 +10,7 @@ import (
 func Topics() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_sns_topics",
+		Description:         `https://docs.aws.amazon.com/sns/latest/api/API_GetTopicAttributes.html`,
 		Resolver:            fetchSnsTopics,
 		PreResourceResolver: getTopic,
 		Transform:           transformers.TransformWithStruct(&models.Topic{}),

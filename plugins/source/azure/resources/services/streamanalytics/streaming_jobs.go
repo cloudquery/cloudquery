@@ -11,10 +11,11 @@ import (
 
 func StreamingJobs() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_streamanalytics_streaming_jobs",
-		Resolver:  fetchStreamingJobs,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_streamanalytics_streaming_jobs", client.Namespacemicrosoft_streamanalytics),
-		Transform: transformers.TransformWithStruct(&armstreamanalytics.StreamingJob{}),
+		Name:        "azure_streamanalytics_streaming_jobs",
+		Resolver:    fetchStreamingJobs,
+		Description: "https://learn.microsoft.com/en-us/rest/api/streamanalytics/2020-03-01/streaming-jobs/list?tabs=HTTP#streamingjob",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_streamanalytics_streaming_jobs", client.Namespacemicrosoft_streamanalytics),
+		Transform:   transformers.TransformWithStruct(&armstreamanalytics.StreamingJob{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

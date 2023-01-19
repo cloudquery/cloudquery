@@ -1,5 +1,7 @@
 # Table: azure_compute_galleries
 
+https://learn.microsoft.com/en-us/rest/api/compute/galleries/list?tabs=HTTP#gallery
+
 The primary key for this table is **id**.
 
 ## Columns

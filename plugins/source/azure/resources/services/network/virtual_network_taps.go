@@ -3,7 +3,7 @@ package network
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func VirtualNetworkTaps() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_virtual_network_taps",
-		Resolver:  fetchVirtualNetworkTaps,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_network_taps", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.VirtualNetworkTap{}),
+		Name:        "azure_network_virtual_network_taps",
+		Resolver:    fetchVirtualNetworkTaps,
+		Description: "https://learn.microsoft.com/en-us/rest/api/network-gateway/virtual-network-taps/list-all?tabs=HTTP#virtualnetworktap",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_network_taps", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualNetworkTap{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

@@ -1,5 +1,7 @@
 # Table: azure_cosmos_locations
 
+https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/locations/list?tabs=HTTP#locationgetresult
+
 The primary key for this table is **id**.
 
 ## Columns

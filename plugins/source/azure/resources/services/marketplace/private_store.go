@@ -11,10 +11,11 @@ import (
 
 func PrivateStore() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_marketplace_private_store",
-		Resolver:  fetchPrivateStore,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_marketplace_private_store", client.Namespacemicrosoft_marketplace),
-		Transform: transformers.TransformWithStruct(&armmarketplace.PrivateStore{}),
+		Name:        "azure_marketplace_private_store",
+		Resolver:    fetchPrivateStore,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace@v1.0.0#PrivateStore",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_marketplace_private_store", client.Namespacemicrosoft_marketplace),
+		Transform:   transformers.TransformWithStruct(&armmarketplace.PrivateStore{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

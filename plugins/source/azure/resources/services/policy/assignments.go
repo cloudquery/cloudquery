@@ -11,10 +11,11 @@ import (
 
 func Assignments() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_policy_assignments",
-		Resolver:  fetchAssignments,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_policy_assignments", client.Namespacemicrosoft_authorization),
-		Transform: transformers.TransformWithStruct(&armpolicy.Assignment{}),
+		Name:        "azure_policy_assignments",
+		Resolver:    fetchAssignments,
+		Description: "https://learn.microsoft.com/en-us/rest/api/policy/policy-assignments/list?tabs=HTTP#policyassignment",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_policy_assignments", client.Namespacemicrosoft_authorization),
+		Transform:   transformers.TransformWithStruct(&armpolicy.Assignment{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

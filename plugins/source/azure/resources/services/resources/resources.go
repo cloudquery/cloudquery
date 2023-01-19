@@ -11,10 +11,11 @@ import (
 
 func Resources() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_resources_resources",
-		Resolver:  fetchResources,
-		Multiplex: client.SubscriptionMultiplex,
-		Transform: transformers.TransformWithStruct(&armresources.GenericResourceExpanded{}),
+		Name:        "azure_resources_resources",
+		Resolver:    fetchResources,
+		Description: "https://learn.microsoft.com/en-us/rest/api/resources/resources/list#genericresourceexpanded",
+		Multiplex:   client.SubscriptionMultiplex,
+		Transform:   transformers.TransformWithStruct(&armresources.GenericResourceExpanded{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

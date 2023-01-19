@@ -3,7 +3,7 @@ package network
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func DdosProtectionPlans() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_network_ddos_protection_plans",
-		Resolver:  fetchDdosProtectionPlans,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_network_ddos_protection_plans", client.Namespacemicrosoft_network),
-		Transform: transformers.TransformWithStruct(&armnetwork.DdosProtectionPlan{}),
+		Name:        "azure_network_ddos_protection_plans",
+		Resolver:    fetchDdosProtectionPlans,
+		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/ddos-protection-plans/list?tabs=HTTP#ddosprotectionplan",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_ddos_protection_plans", client.Namespacemicrosoft_network),
+		Transform:   transformers.TransformWithStruct(&armnetwork.DdosProtectionPlan{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

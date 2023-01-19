@@ -11,10 +11,11 @@ import (
 
 func Services() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_datamigration_services",
-		Resolver:  fetchServices,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_datamigration_services", client.Namespacemicrosoft_datamigration),
-		Transform: transformers.TransformWithStruct(&armdatamigration.Service{}),
+		Name:        "azure_datamigration_services",
+		Resolver:    fetchServices,
+		Description: "https://learn.microsoft.com/en-us/rest/api/datamigration/services/list?tabs=HTTP#datamigrationservice",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datamigration_services", client.Namespacemicrosoft_datamigration),
+		Transform:   transformers.TransformWithStruct(&armdatamigration.Service{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

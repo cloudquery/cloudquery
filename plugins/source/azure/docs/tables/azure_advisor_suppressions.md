@@ -1,5 +1,7 @@
 # Table: azure_advisor_suppressions
 
+https://learn.microsoft.com/en-us/rest/api/advisor/suppressions/list?tabs=HTTP#suppressioncontractlistresult
+
 The primary key for this table is **id**.
 
 ## Columns

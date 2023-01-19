@@ -1,5 +1,7 @@
 # Table: azure_network_vpn_gateways
 
+https://learn.microsoft.com/en-us/rest/api/virtualwan/vpn-gateways/list?tabs=HTTP#vpngateway
+
 The primary key for this table is **id**.
 
 ## Columns

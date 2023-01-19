@@ -1,5 +1,7 @@
 # Table: azure_appservice_domains
 
+https://learn.microsoft.com/en-us/rest/api/appservice/domains/list?tabs=HTTP#domain
+
 The primary key for this table is **id**.
 
 ## Columns

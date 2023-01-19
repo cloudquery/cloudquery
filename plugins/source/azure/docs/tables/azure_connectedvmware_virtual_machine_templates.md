@@ -1,5 +1,7 @@
 # Table: azure_connectedvmware_virtual_machine_templates
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#VirtualMachineTemplate
+
 The primary key for this table is **id**.
 
 ## Columns

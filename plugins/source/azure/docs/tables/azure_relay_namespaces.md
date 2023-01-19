@@ -1,5 +1,7 @@
 # Table: azure_relay_namespaces
 
+https://learn.microsoft.com/en-us/rest/api/relay/namespaces/list?tabs=HTTP#relaynamespace
+
 The primary key for this table is **id**.
 
 ## Columns

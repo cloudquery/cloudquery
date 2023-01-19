@@ -1,5 +1,7 @@
 # Table: azure_network_virtual_network_taps
 
+https://learn.microsoft.com/en-us/rest/api/network-gateway/virtual-network-taps/list-all?tabs=HTTP#virtualnetworktap
+
 The primary key for this table is **id**.
 
 ## Columns

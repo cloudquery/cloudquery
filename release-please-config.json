@@ -4,6 +4,7 @@
   "packages": {
     "cli": { "component": "cli" },
     "scaffold": { "component": "scaffold" },
+    "plugins/source/alicloud": { "component": "plugins-source-alicloud" },
     "plugins/source/aws": { "component": "plugins-source-aws" },
     "plugins/source/azure": { "component": "plugins-source-azure" },
     "plugins/source/azuredevops": { "component": "plugins-source-azuredevops" },
@@ -20,6 +21,7 @@
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
     "plugins/source/okta": { "component": "plugins-source-okta" },
+    "plugins/source/oracle": {"component": "plugins-source-oracle"},
     "plugins/source/salesforce": { "component": "plugins-source-salesforce" },
     "plugins/source/slack": { "component": "plugins-source-slack" },
     "plugins/source/snyk": { "component": "plugins-source-snyk" },
@@ -60,6 +62,9 @@
     },
     "plugins/destination/kafka": {
       "component": "plugins-destination-kafka"
+    },
+    "plugins/destination/mssql": {
+      "component": "plugins-destination-mssql"
     },
     "plugins/destination/test": {
       "component": "plugins-destination-test"

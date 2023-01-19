@@ -3,7 +3,7 @@ package datafactory
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func Factories() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_datafactory_factories",
-		Resolver:  fetchFactories,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_datafactory_factories", client.Namespacemicrosoft_datafactory),
-		Transform: transformers.TransformWithStruct(&armdatafactory.Factory{}, transformers.WithSkipFields("ETag")),
+		Name:        "azure_datafactory_factories",
+		Resolver:    fetchFactories,
+		Description: "https://learn.microsoft.com/en-us/rest/api/datafactory/factories/list?tabs=HTTP#factory",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datafactory_factories", client.Namespacemicrosoft_datafactory),
+		Transform:   transformers.TransformWithStruct(&armdatafactory.Factory{}, transformers.WithSkipFields("ETag")),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
