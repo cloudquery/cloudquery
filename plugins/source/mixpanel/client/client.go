@@ -105,17 +105,16 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*mixpanel.Client, erro
 	}
 
 	return mixpanel.New(
-		logger,
-		&http.Client{
-			Timeout: time.Duration(spec.Timeout) * time.Second,
-		},
-		rg,
-		"",
-		spec.Username,
-		spec.Secret,
-		spec.ProjectID,
-		spec.WorkspaceID,
-		spec.MaxRetries,
-		spec.PageSize,
-	), nil
+		mixpanel.ClientOptions{
+			Logger: logger,
+			HC: &http.Client{
+				Timeout: time.Duration(spec.Timeout) * time.Second,
+			},
+			Region:     rg,
+			APIUser:    spec.Username,
+			APISecret:  spec.Secret,
+			ProjectID:  spec.ProjectID,
+			MaxRetries: spec.MaxRetries,
+			PageSize:   spec.PageSize,
+		}), nil
 }

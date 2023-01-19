@@ -27,7 +27,7 @@ type AnnotationList struct {
 func (c *Client) ListAnnotations(ctx context.Context) (*AnnotationList, error) {
 	var l AnnotationList
 
-	if err := c.Request(ctx, http.MethodGet, "/api/app/projects/"+strconv.FormatInt(c.projectID, 10)+"/annotations", nil, &l); err != nil {
+	if err := c.Request(ctx, http.MethodGet, "/api/app/projects/"+strconv.FormatInt(c.opts.ProjectID, 10)+"/annotations", nil, &l); err != nil {
 		return nil, err
 	}
 	return &l, nil

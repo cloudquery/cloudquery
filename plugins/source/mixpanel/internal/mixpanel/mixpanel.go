@@ -15,15 +15,7 @@ import (
 )
 
 type Client struct {
-	logger                 zerolog.Logger
-	hc                     HTTPDoer
-	region                 Region
-	baseURL                string
-	apiUser, apiSecret     string
-	projectID, workspaceID int64
-
-	maxRetries int64
-	pageSize   int64
+	opts ClientOptions
 }
 
 const StatusOK = "ok"
@@ -48,19 +40,19 @@ func ParseRegion(v string) (Region, error) {
 	return r, nil
 }
 
-func New(logger zerolog.Logger, hc HTTPDoer, region Region, baseURL, apiUser, apiSecret string, projectID, workspaceID, maxRetries, pageSize int64) *Client {
-	return &Client{
-		logger:      logger,
-		hc:          hc,
-		region:      region,
-		baseURL:     baseURL,
-		apiUser:     apiUser,
-		apiSecret:   apiSecret,
-		projectID:   projectID,
-		workspaceID: workspaceID,
+type ClientOptions struct {
+	Logger                 zerolog.Logger
+	HC                     HTTPDoer
+	Region                 Region
+	BaseURL                string
+	APIUser, APISecret     string
+	ProjectID, WorkspaceID int64
+	MaxRetries, PageSize   int64
+}
 
-		maxRetries: maxRetries,
-		pageSize:   pageSize,
+func New(opts ClientOptions) *Client {
+	return &Client{
+		opts: opts,
 	}
 }
 
@@ -84,11 +76,11 @@ func (v *Client) Request(ctx context.Context, method, path string, qp url.Values
 }
 
 func (v *Client) request(ctx context.Context, method, uri string, qp url.Values) (io.ReadCloser, error) {
-	if v.projectID > 0 {
-		qp.Set("project_id", strconv.FormatInt(v.projectID, 10))
+	if v.opts.ProjectID > 0 {
+		qp.Set("project_id", strconv.FormatInt(v.opts.ProjectID, 10))
 	}
-	if v.workspaceID > 0 {
-		qp.Set("workspace_id", strconv.FormatInt(v.workspaceID, 10))
+	if v.opts.WorkspaceID > 0 {
+		qp.Set("workspace_id", strconv.FormatInt(v.opts.WorkspaceID, 10))
 	}
 
 	retries := int64(0)
@@ -97,9 +89,9 @@ func (v *Client) request(ctx context.Context, method, uri string, qp url.Values)
 		if err != nil {
 			return nil, err
 		}
-		req.SetBasicAuth(v.apiUser, v.apiSecret)
+		req.SetBasicAuth(v.opts.APIUser, v.opts.APISecret)
 		req.Header.Set("Content-Type", "application/json")
-		res, err := v.hc.Do(req)
+		res, err := v.opts.HC.Do(req)
 		if err != nil {
 			return nil, err
 		}
@@ -110,7 +102,7 @@ func (v *Client) request(ctx context.Context, method, uri string, qp url.Values)
 
 		_ = res.Body.Close()
 		retries++
-		if retries > v.maxRetries {
+		if retries > v.opts.MaxRetries {
 			break
 		}
 
@@ -120,7 +112,7 @@ func (v *Client) request(ctx context.Context, method, uri string, qp url.Values)
 		}
 
 		backoff := time.Duration(retries) * 1500 * time.Millisecond
-		v.logger.Info().Dur("wait", backoff).Msg("waiting for rate limit reset")
+		v.opts.Logger.Info().Dur("wait", backoff).Msg("waiting for rate limit reset")
 		select {
 		case <-ctx.Done():
 			return nil, rateErr
@@ -132,11 +124,11 @@ func (v *Client) request(ctx context.Context, method, uri string, qp url.Values)
 }
 
 func (v *Client) getBaseURL() string {
-	if v.baseURL != "" {
-		return v.baseURL
+	if v.opts.BaseURL != "" {
+		return v.opts.BaseURL
 	}
 
-	switch v.region {
+	switch v.opts.Region {
 	case RegionEU:
 		return "https://eu.mixpanel.com"
 	default:
