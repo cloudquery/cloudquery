@@ -9,13 +9,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func (c *Client) ensureTVP(ctx context.Context, table *schema.Table) error {
+func (c *Client) ensureTVP(ctx context.Context, table *schema.Table) (err error) {
 	if !c.pkEnabled() {
 		return nil
 	}
 
 	query, params := queries.TVPDropProc(c.schemaName, table)
-	_, err := c.db.ExecContext(ctx, query, params...)
+	_, err = c.db.ExecContext(ctx, query, params...)
 	if err != nil {
 		return fmt.Errorf("failed to drop TVP proc for table %s: %w", table.Name, err)
 	}
