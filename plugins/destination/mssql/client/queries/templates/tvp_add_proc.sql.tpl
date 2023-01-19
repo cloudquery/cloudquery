@@ -11,8 +11,11 @@ BEGIN
 {{with .PK}}{{template "tvp_cmp.sql.tpl" .}}{{end}}
 ;
 
-INSERT {{.Table}}
- SELECT * FROM @TVP AS [src]
+INSERT {{.Table}} (
+{{template "col_names.sql.tpl" .ColumnNames}}
+) SELECT
+{{template "col_names.sql.tpl" .ColumnNames}}
+ FROM @TVP AS [src]
  WHERE NOT EXISTS (
   SELECT 1 FROM {{.Table}} AS [tgt]
   WHERE (

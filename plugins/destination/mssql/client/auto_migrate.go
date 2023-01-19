@@ -41,7 +41,6 @@ func (c *Client) ensureColumns(ctx context.Context, table *schema.Table, pkPrese
 	if err != nil {
 		return err
 	}
-	c.logger.Info().Interface("defs", current).Msg("current cols")
 
 	recreatePK := false
 

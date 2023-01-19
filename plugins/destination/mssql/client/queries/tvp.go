@@ -9,12 +9,13 @@ import (
 )
 
 type tvpProcQueryBuilder struct {
-	Name    string
-	Type    string
-	Table   string
-	Columns Definitions
-	PK      []string
-	Values  []string
+	Name        string
+	Type        string
+	Table       string
+	Columns     Definitions
+	ColumnNames []string
+	PK          []string
+	Values      []string
 }
 
 func tvpProcName(table *schema.Table) string {
@@ -55,11 +56,12 @@ func TVPDropType(schemaName string, table *schema.Table) (query string, params [
 
 func TVPAddProc(schemaName string, table *schema.Table) string {
 	data := &tvpProcQueryBuilder{
-		Name:   sanitizeID(schemaName, tvpProcName(table)),
-		Type:   sanitizeID(schemaName, tvpTableType(table)),
-		Table:  sanitizeID(schemaName, table.Name),
-		PK:     GetPKColumns(table, true),
-		Values: GetValueColumns(table.Columns),
+		Name:        sanitizeID(schemaName, tvpProcName(table)),
+		Type:        sanitizeID(schemaName, tvpTableType(table)),
+		Table:       sanitizeID(schemaName, table.Name),
+		PK:          GetPKColumns(table, true),
+		Values:      GetValueColumns(table.Columns),
+		ColumnNames: sanitized(table.Columns.Names()...),
 	}
 
 	return execTemplate("tvp_add_proc.sql.tpl", data)

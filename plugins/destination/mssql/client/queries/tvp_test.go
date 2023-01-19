@@ -12,9 +12,9 @@ func TestTVPDropProc(t *testing.T) {
 	const (
 		schemaName = "cq"
 		expected   = `IF EXISTS (
-  SELECT * FROM sys.procedures p
-  INNER JOIN sys.schemas s ON p.schema_id = s.schema_id
-  WHERE s.[name] = @schemaName AND p.[name] = @procName
+ SELECT * FROM sys.procedures p
+ INNER JOIN sys.schemas s ON p.schema_id = s.schema_id
+ WHERE s.[name] = @schemaName AND p.[name] = @procName
 )
 DROP PROCEDURE [cq].[cq_proc_table_name];`
 	)
@@ -39,9 +39,9 @@ func TestTVPDropType(t *testing.T) {
 	const (
 		schemaName = "cq"
 		expected   = `IF EXISTS (
-  SELECT * FROM sys.table_types tt
-  INNER JOIN sys.schemas s ON tt.schema_id = s.schema_id
-  WHERE s.[name] = @schemaName AND tt.[name] = @typeName
+ SELECT * FROM sys.table_types tt
+ INNER JOIN sys.schemas s ON tt.schema_id = s.schema_id
+ WHERE s.[name] = @schemaName AND tt.[name] = @typeName
 )
 DROP TYPE [cq].[cq_tbl_table_name];`
 	)
@@ -131,8 +131,25 @@ BEGIN
   [tgt].[extra_col_pk2] = [src].[extra_col_pk2]
 ;
 
-INSERT [cq].[table_name]
- SELECT * FROM @TVP AS [src]
+INSERT [cq].[table_name] (
+  [_cq_id],
+  [_cq_parent_id],
+  [_cq_source_name],
+  [_cq_sync_time],
+  [extra_col_pk1],
+  [extra_col_pk2],
+  [extra_col_not_pk1],
+  [extra_col_not_pk2]
+) SELECT
+  [_cq_id],
+  [_cq_parent_id],
+  [_cq_source_name],
+  [_cq_sync_time],
+  [extra_col_pk1],
+  [extra_col_pk2],
+  [extra_col_not_pk1],
+  [extra_col_not_pk2]
+ FROM @TVP AS [src]
  WHERE NOT EXISTS (
   SELECT 1 FROM [cq].[table_name] AS [tgt]
   WHERE (
