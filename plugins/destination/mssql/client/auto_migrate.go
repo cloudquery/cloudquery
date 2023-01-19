@@ -120,9 +120,7 @@ func (c *Client) execStatements(ctx context.Context, table *schema.Table, statem
 	return c.doInTx(ctx, func(tx *sql.Tx) error {
 		query := strings.Join(statements, "\n")
 		c.logger.Debug().Str("table", table.Name).Str("query", query).Msg("exec migration statement")
-		if _, err := c.db.ExecContext(ctx, query); err != nil {
-			return err
-		}
-		return nil
+		_, err := c.db.ExecContext(ctx, query)
+		return err
 	})
 }
