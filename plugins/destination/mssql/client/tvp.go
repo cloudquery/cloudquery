@@ -14,17 +14,24 @@ func (c *Client) ensureTVP(ctx context.Context, table *schema.Table) error {
 		return nil
 	}
 
-	_, err := c.db.ExecContext(ctx, queries.TVPDrop(c.schemaName, table))
+	query, params := queries.TVPDropProc(c.schemaName, table)
+	_, err := c.db.ExecContext(ctx, query, params...)
 	if err != nil {
-		return fmt.Errorf("failed to drop TVP proc & type for table %s: %w", table.Name, err)
+		return fmt.Errorf("failed to drop TVP proc for table %s: %w", table.Name, err)
 	}
 
-	_, err = c.db.ExecContext(ctx, queries.TVPType(c.schemaName, table))
+	query, params = queries.TVPDropType(c.schemaName, table)
+	_, err = c.db.ExecContext(ctx, query, params...)
+	if err != nil {
+		return fmt.Errorf("failed to drop TVP type for table %s: %w", table.Name, err)
+	}
+
+	_, err = c.db.ExecContext(ctx, queries.TVPAddType(c.schemaName, table))
 	if err != nil {
 		return fmt.Errorf("failed to create TVP type for table %s: %w", table.Name, err)
 	}
 
-	_, err = c.db.ExecContext(ctx, queries.TVPProc(c.schemaName, table))
+	_, err = c.db.ExecContext(ctx, queries.TVPAddProc(c.schemaName, table))
 	if err != nil {
 		return fmt.Errorf("failed to create TVP proc for table %s: %w", table.Name, err)
 	}

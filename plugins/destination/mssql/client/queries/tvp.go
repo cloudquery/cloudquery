@@ -17,53 +17,70 @@ type tvpProcQueryBuilder struct {
 	Values  []string
 }
 
-func tvpProcName(schemaName string, tableName string) string {
+func tvpProcName(table *schema.Table) string {
 	const pfx = "cq_proc_"
-	return sanitizeID(schemaName, pfx+tableName)
+	return pfx + table.Name
 }
 
-func tvpTableType(schemaName string, tableName string) string {
+func tvpTableType(table *schema.Table) string {
 	const pfx = "cq_tbl_"
-	return sanitizeID(schemaName, pfx+tableName)
+	return pfx + table.Name
 }
 
-func TVPDrop(schemaName string, table *schema.Table) string {
+func TVPDropProc(schemaName string, table *schema.Table) (query string, params []any) {
+	procName := tvpProcName(table)
 	data := &tvpProcQueryBuilder{
-		Name: tvpProcName(schemaName, table.Name),
-		Type: tvpTableType(schemaName, table.Name),
+		Name: sanitizeID(schemaName, procName),
 	}
 
-	return execTemplate("tvp_drop.sql.tpl", data)
+	return execTemplate("tvp_drop_proc.sql.tpl", data),
+		[]any{
+			sql.Named("schemaName", schemaName),
+			sql.Named("procName", procName),
+		}
 }
 
-func TVPProc(schemaName string, table *schema.Table) string {
+func TVPDropType(schemaName string, table *schema.Table) (query string, params []any) {
+	typeName := tvpTableType(table)
 	data := &tvpProcQueryBuilder{
-		Name:   tvpProcName(schemaName, table.Name),
-		Type:   tvpTableType(schemaName, table.Name),
+		Type: sanitizeID(schemaName, typeName),
+	}
+
+	return execTemplate("tvp_drop_type.sql.tpl", data),
+		[]any{
+			sql.Named("schemaName", schemaName),
+			sql.Named("typeName", typeName),
+		}
+}
+
+func TVPAddProc(schemaName string, table *schema.Table) string {
+	data := &tvpProcQueryBuilder{
+		Name:   sanitizeID(schemaName, tvpProcName(table)),
+		Type:   sanitizeID(schemaName, tvpTableType(table)),
 		Table:  sanitizeID(schemaName, table.Name),
 		PK:     GetPKColumns(table, true),
 		Values: GetValueColumns(table.Columns),
 	}
 
-	return execTemplate("tvp_proc.sql.tpl", data)
+	return execTemplate("tvp_add_proc.sql.tpl", data)
 }
 
-func TVPType(schemaName string, table *schema.Table) string {
+func TVPAddType(schemaName string, table *schema.Table) string {
 	data := &tvpProcQueryBuilder{
-		Type:    tvpTableType(schemaName, table.Name),
+		Type:    sanitizeID(schemaName, tvpTableType(table)),
 		Columns: GetDefinitions(table.Columns, true),
 	}
 
-	return execTemplate("tvp_type.sql.tpl", data)
+	return execTemplate("tvp_add_type.sql.tpl", data)
 }
 
 func TVPQuery(schemaName string, table *schema.Table, data [][]any) (query string, params []any) {
 	tf := tableTransformer(table.Columns)
 
-	return "exec " + tvpProcName(schemaName, table.Name) + " @TVP;",
+	return "exec " + sanitizeID(schemaName, tvpProcName(table)) + " @TVP;",
 		[]any{
 			sql.Named("TVP", mssql.TVP{
-				TypeName: tvpTableType(schemaName, table.Name),
+				TypeName: sanitizeID(schemaName, tvpTableType(table)),
 				Value:    tf(data),
 			}),
 		}
