@@ -117,8 +117,8 @@ func (c *Client) getColumnChanges(table *schema.Table) ([]*columnChange, error) 
 	return columnChanges, nil
 }
 
-func (c *Client) getTableChange(ctx context.Context, table *schema.Table) (*tableChange, error) {
-	tableExist, err := c.isTableExistSQL(ctx, table.Name)
+func (c *Client) getTableChange(table *schema.Table) (*tableChange, error) {
+	tableExist, err := c.isTableExistSQL(table.Name)
 	if err != nil {
 		return nil, fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
 	}
@@ -133,15 +133,15 @@ func (c *Client) getTableChange(ctx context.Context, table *schema.Table) (*tabl
 	return tableChange, nil
 }
 
-func (c *Client) getSchemaChanges(ctx context.Context, tables schema.Tables) ([]*tableChange, error) {
+func (c *Client) getSchemaChanges(tables schema.Tables) ([]*tableChange, error) {
 	changes := make([]*tableChange, 0, len(tables))
 	for _, table := range tables {
-		tableChange, err := c.getTableChange(ctx, table)
+		tableChange, err := c.getTableChange(table)
 		if err != nil {
 			return nil, err
 		}
 		changes = append(changes, tableChange)
-		relationChanges, err := c.getSchemaChanges(ctx, table.Relations)
+		relationChanges, err := c.getSchemaChanges(table.Relations)
 		if err != nil {
 			return nil, err
 		}
@@ -178,7 +178,7 @@ func getMigrationMessages(changes []*tableChange) migrationsMessages {
 
 // This is the responsibility of the CLI of the client to lock before running migration
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	schemaChanges, err := c.getSchemaChanges(ctx, tables)
+	schemaChanges, err := c.getSchemaChanges(tables)
 	if err != nil {
 		return err
 	}
@@ -198,7 +198,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 		c.logger.Debug().Str("table", table.Name).Msg("Migrating table")
 		if tableChange.new {
 			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
-			err := c.createTableIfNotExist(ctx, tableChange.table)
+			err := c.createTableIfNotExist(tableChange.table)
 			if err != nil {
 				return err
 			}
@@ -210,34 +210,30 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 				columnType := colChange.newType
 				// If this is a new PK column we need to drop the table
 				if colChange.new && colChange.newPk {
-					c.logger.Debug().Str("table", table.Name).Str("column", colChange.name).Msg("New column is a primary key, dropping and adding table since in forced migrate mode")
-					sql := "drop table if exists \"" + tableName + "\""
-					if _, err := c.db.Exec(sql); err != nil {
-						return fmt.Errorf("failed to drop table %s: %w", tableName, err)
-					}
-					err := c.createTableIfNotExist(ctx, tableChange.table)
+					c.logger.Debug().Str("table", tableName).Str("column", colChange.name).Msg("New column is a primary key, dropping and adding table since in forced migrate mode")
+					err := c.recreateTable(table)
 					if err != nil {
 						return err
 					}
 					break
 				}
 				if colChange.new {
-					c.logger.Debug().Str("table", table.Name).Str("column", colChange.name).Msg("Column doesn't exist, creating")
-					sql := "alter table \"" + tableName + "\" add column \"" + columnName + "\" \"" + columnType + `"`
-					if _, err := c.db.Exec(sql); err != nil {
-						return fmt.Errorf("failed to add column %s on table %s: %w", colChange.name, tableName, err)
+					c.logger.Debug().Str("table", tableName).Str("column", colChange.name).Msg("Column doesn't exist, creating")
+					err := c.addColumn(tableName, columnName, columnType)
+					if err != nil {
+						return err
 					}
 				}
 				// if this is an existing column with type change we need to drop and add it
 				if !colChange.new && colChange.oldType != colChange.newType {
 					c.logger.Debug().Str("table", table.Name).Str("column", colChange.name).Msg("Existing column type changed, dropping and adding column since in forced migrate mode")
-					sql := "alter table " + tableName + " drop column " + columnName
-					if _, err := c.db.Exec(sql); err != nil {
-						return fmt.Errorf("failed to drop column %s on table %s: %w", columnName, tableName, err)
+					err := c.dropColumn(tableName, columnName)
+					if err != nil {
+						return err
 					}
-					sql = "alter table \"" + tableName + "\" add column \"" + columnName + "\" \"" + columnType + `"`
-					if _, err := c.db.Exec(sql); err != nil {
-						return fmt.Errorf("failed to add column %s on table %s: %w", colChange.name, tableName, err)
+					err = c.addColumn(tableName, columnName, columnType)
+					if err != nil {
+						return err
 					}
 				}
 			}
@@ -247,7 +243,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return nil
 }
 
-func (c *Client) isTableExistSQL(_ context.Context, table string) (bool, error) {
+func (c *Client) isTableExistSQL(table string) (bool, error) {
 	var tableExist int
 	if err := c.db.QueryRow(isTableExistSQL, table).Scan(&tableExist); err != nil {
 		return false, fmt.Errorf("failed to check if table %s exists: %w", table, err)
@@ -255,7 +251,31 @@ func (c *Client) isTableExistSQL(_ context.Context, table string) (bool, error) 
 	return tableExist == 1, nil
 }
 
-func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) error {
+func (c *Client) recreateTable(table *schema.Table) error {
+	sql := "drop table if exists \"" + table.Name + "\""
+	if _, err := c.db.Exec(sql); err != nil {
+		return fmt.Errorf("failed to drop table %s: %w", table.Name, err)
+	}
+	return c.createTableIfNotExist(table)
+}
+
+func (c *Client) dropColumn(tableName string, columnName string) error {
+	sql := "alter table " + tableName + " drop column " + columnName
+	if _, err := c.db.Exec(sql); err != nil {
+		return fmt.Errorf("failed to drop column %s on table %s: %w", columnName, tableName, err)
+	}
+	return nil
+}
+
+func (c *Client) addColumn(tableName string, columnName string, columnType string) error {
+	sql := "alter table \"" + tableName + "\" add column \"" + columnName + "\" \"" + columnType + `"`
+	if _, err := c.db.Exec(sql); err != nil {
+		return fmt.Errorf("failed to add column %s on table %s: %w", columnName, tableName, err)
+	}
+	return nil
+}
+
+func (c *Client) createTableIfNotExist(table *schema.Table) error {
 	var sb strings.Builder
 	// TODO sanitize tablename
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
