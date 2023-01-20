@@ -16,4 +16,5 @@ This table depends on [mixpanel_cohorts](mixpanel_cohorts.md).
 |_cq_parent_id|UUID|
 |project_id|Int|
 |cohort_id (PK)|Int|
-|data|JSON|
+|distinct_id|String|
+|properties|JSON|

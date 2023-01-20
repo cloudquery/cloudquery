@@ -8,13 +8,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/client"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/internal/mixpanel"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func CohortProfiles() *schema.Table {
 	return &schema.Table{
-		Name:     "mixpanel_cohort_profiles",
-		Resolver: fetchCohortProfiles,
-		//Transform: transformers.TransformWithStruct(&mixpanel.EngageProfile{}),
+		Name:      "mixpanel_cohort_profiles",
+		Resolver:  fetchCohortProfiles,
+		Transform: transformers.TransformWithStruct(&mixpanel.EngageProfile{}),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -28,11 +29,6 @@ func CohortProfiles() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "data",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveAny,
 			},
 		},
 	}
@@ -52,7 +48,7 @@ func fetchCohortProfiles(ctx context.Context, meta schema.ClientMeta, parent *sc
 		if err != nil {
 			return err
 		}
-		res <- ret.Results
+		res <- ret.Data
 
 		page = ret.Page + 1
 		if page > ret.TotalPages {
