@@ -13,11 +13,11 @@ func TestPluginCSV(t *testing.T) {
 	p := destination.NewPlugin("gcs", "development", New, destination.WithManagedWriter())
 
 	spec := Spec{
-		Bucket: bucket,
-		Path:   t.TempDir(),
+		Bucket:   bucket,
+		Path:     t.TempDir(),
+		NoRotate: true,
 		FileSpec: &filetypes.FileSpec{
-			Format:   filetypes.FormatTypeCSV,
-			NoRotate: true,
+			Format: filetypes.FormatTypeCSV,
 		},
 	}
 	spec.SetDefaults()
@@ -35,11 +35,11 @@ func TestPluginCSV(t *testing.T) {
 func TestPluginJSON(t *testing.T) {
 	p := destination.NewPlugin("gcs", "development", New, destination.WithManagedWriter())
 	spec := Spec{
-		Bucket: bucket,
-		Path:   t.TempDir(),
+		Bucket:   bucket,
+		Path:     t.TempDir(),
+		NoRotate: true,
 		FileSpec: &filetypes.FileSpec{
-			Format:   filetypes.FormatTypeJSON,
-			NoRotate: true,
+			Format: filetypes.FormatTypeJSON,
 		},
 	}
 	spec.SetDefaults()

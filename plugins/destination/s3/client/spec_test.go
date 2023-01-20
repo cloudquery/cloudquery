@@ -33,8 +33,8 @@ func TestSpec_Validate(t *testing.T) {
 	}{
 		{Give: Spec{Path: "test/path", FileSpec: &filetypes.FileSpec{Format: "json"}}, WantErr: true},
 		{Give: Spec{Path: "test/path", FileSpec: &filetypes.FileSpec{Format: "json"}, Bucket: "mybucket"}, WantErr: false},
-		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json", NoRotate: false}, Bucket: "mybucket"}, WantErr: false},
-		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json", NoRotate: true}, Bucket: "mybucket"}, WantErr: true},
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}, NoRotate: false, Bucket: "mybucket"}, WantErr: false},
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket"}, WantErr: true},
 	}
 	for _, tc := range cases {
 		err := tc.Give.Validate()
