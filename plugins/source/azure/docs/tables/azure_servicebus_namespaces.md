@@ -1,5 +1,7 @@
 # Table: azure_servicebus_namespaces
 
+https://learn.microsoft.com/en-us/rest/api/servicebus/stable/namespaces/list?tabs=HTTP#sbnamespace
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: azure_maintenance_public_maintenance_configurations
 
+https://learn.microsoft.com/en-us/rest/api/maintenance/public-maintenance-configurations/list?tabs=HTTP#maintenanceconfiguration
+
 The primary key for this table is **id**.
 
 ## Columns

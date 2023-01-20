@@ -1,5 +1,7 @@
 # Table: aws_ses_templates
 
+https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailTemplate.html
+
 The primary key for this table is **arn**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: azure_billing_periods
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling@v0.5.0#Period
+
 The primary key for this table is **id**.
 
 ## Columns

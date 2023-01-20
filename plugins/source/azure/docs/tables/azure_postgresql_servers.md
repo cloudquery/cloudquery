@@ -1,6 +1,14 @@
 # Table: azure_postgresql_servers
 
+https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/servers/list?tabs=HTTP#server
+
 The primary key for this table is **id**.
+
+## Relations
+
+The following tables depend on azure_postgresql_servers:
+  - [azure_postgresql_server_configurations](azure_postgresql_server_configurations.md)
+  - [azure_postgresql_server_firewall_rules](azure_postgresql_server_firewall_rules.md)
 
 ## Columns
 

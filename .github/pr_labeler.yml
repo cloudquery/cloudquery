@@ -1,3 +1,5 @@
+alicloud:
+  - plugins/source/alicloud/**/*
 aws:
   - plugins/source/aws/**/*
 azure:
@@ -14,8 +16,6 @@ datadog:
   - plugins/source/datadog/**/*
 fastly:
   - plugins/source/fastly/**/*
-fuzz:
-  - plugins/source/fuzz/**/*
 gandi:
   - plugins/source/gandi/**/*
 gcp:
@@ -32,18 +32,28 @@ heroku:
   - plugins/source/heroku/**/*
 okta:
   - plugins/source/okta/**/*
+oracle:
+  - plugins/source/oracle/**/*
 slack:
   - plugins/source/slack/**/*
 shopify:
   - plugins/source/shopify/**/*
+stripe:
+  - plugins/source/stripe/**/*
 pagerduty:
   - plugins/source/pagerduty/**/*
+snyk:
+  - plugins/source/snyk/**/*
 terraform:
   - plugins/source/terraform/**/*
+tailscale:
+  - plugins/source/tailscale/**/*
 vercel:
   - plugins/source/vercel/**/*
 salesforce:
   - plugins/source/salesforce/**/*
+azblob:
+  - plugins/destination/azblob/**/*
 postgresql:
   - plugins/destination/postgresql/**/*
 sqlite:
@@ -62,6 +72,8 @@ bigquery:
   - plugins/destination/bigquery/**/*
 mongodb:
   - plugins/destination/mongodb/**/*
+mssql:
+  - plugins/destination/mssql/**/*
 neo4j:
   - plugins/destination/neo4j/**/*
 kafka:

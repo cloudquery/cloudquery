@@ -1,5 +1,7 @@
 # Table: azure_compute_disk_encryption_sets
 
+https://learn.microsoft.com/en-us/rest/api/compute/disk-encryption-sets/list?tabs=HTTP#diskencryptionset
+
 The primary key for this table is **id**.
 
 ## Columns

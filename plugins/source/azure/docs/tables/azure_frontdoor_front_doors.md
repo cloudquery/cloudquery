@@ -1,5 +1,7 @@
 # Table: azure_frontdoor_front_doors
 
+https://learn.microsoft.com/en-us/rest/api/frontdoorservice/frontdoor/front-doors/list?tabs=HTTP#frontdoor
+
 The primary key for this table is **id**.
 
 ## Columns

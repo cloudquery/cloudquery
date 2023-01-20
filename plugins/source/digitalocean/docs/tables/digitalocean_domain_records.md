@@ -2,6 +2,10 @@
 
 The primary key for this table is **id**.
 
+## Relations
+
+This table depends on [digitalocean_domains](digitalocean_domains.md).
+
 ## Columns
 
 | Name          | Type          |

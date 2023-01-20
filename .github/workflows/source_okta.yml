@@ -34,7 +34,7 @@ jobs:
         uses: cloudquery/golangci-lint-action@master
         with:
           version: v1.50.1
-          working-directory: plugins/source/k8s
+          working-directory: plugins/source/okta
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true

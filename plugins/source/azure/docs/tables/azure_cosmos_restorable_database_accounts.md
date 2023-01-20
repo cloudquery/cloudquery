@@ -1,5 +1,7 @@
 # Table: azure_cosmos_restorable_database_accounts
 
+https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/restorable-database-accounts/list?tabs=HTTP#restorabledatabaseaccountgetresult
+
 The primary key for this table is **id**.
 
 ## Columns

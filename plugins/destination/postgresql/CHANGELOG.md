@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.5...plugins-destination-postgresql-v2.0.6) (2023-01-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.2 ([#6695](https://github.com/cloudquery/cloudquery/issues/6695)) ([694ab9f](https://github.com/cloudquery/cloudquery/commit/694ab9f3e20473146e3620d7b03bb17eb259d697))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.25.0 ([#6745](https://github.com/cloudquery/cloudquery/issues/6745)) ([9c41854](https://github.com/cloudquery/cloudquery/commit/9c418547c3bbff97449765e337182230fb5e40d5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.25.1 ([#6805](https://github.com/cloudquery/cloudquery/issues/6805)) ([9da0ce2](https://github.com/cloudquery/cloudquery/commit/9da0ce283f50410eb9274375ec1d22131a80d937))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.26.0 ([#6839](https://github.com/cloudquery/cloudquery/issues/6839)) ([6ccda8d](https://github.com/cloudquery/cloudquery/commit/6ccda8d0bc6e7ce75f4a64a18911e349ccaac277))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.27.0 ([#6856](https://github.com/cloudquery/cloudquery/issues/6856)) ([545799b](https://github.com/cloudquery/cloudquery/commit/545799bb0481087e187b5f27c88f5dde9c99f2f0))
+* Fix number of writes reported by postgresql ([#6757](https://github.com/cloudquery/cloudquery/issues/6757)) ([018edf4](https://github.com/cloudquery/cloudquery/commit/018edf44322f0ccb25fbf97ad4b8fcf0973a944e))
+
+## [2.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.4...plugins-destination-postgresql-v2.0.5) (2023-01-10)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.1 ([#6553](https://github.com/cloudquery/cloudquery/issues/6553)) ([392b848](https://github.com/cloudquery/cloudquery/commit/392b848b3124f9cf28f6234fdb9a43d671069879))
+* Error if after the migration there are `not null` columns that are not part of the new schema ([#6519](https://github.com/cloudquery/cloudquery/issues/6519)) ([566da52](https://github.com/cloudquery/cloudquery/commit/566da52d730f8ce0b88277f71d88fe0d861a336e))
+
 ## [2.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.3...plugins-destination-postgresql-v2.0.4) (2023-01-09)
 
 

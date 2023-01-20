@@ -1,5 +1,7 @@
 # Table: azure_authorization_role_definitions
 
+https://learn.microsoft.com/en-us/rest/api/authorization/role-definitions/list?tabs=HTTP#roledefinition
+
 The primary key for this table is **id**.
 
 ## Columns

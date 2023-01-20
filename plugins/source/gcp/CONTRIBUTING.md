@@ -34,6 +34,21 @@ The process to follow for adding a new recipe is:
 2. `SubService`: This will be the final part of the table name, e.g. `gcp_myservice_subservice`
 3. `Struct`: This should be a pointer to the struct that will be synced to the destination. CloudQuery's plugin-sdk code generation will read the fields of this struct and convert it to a `Table` instance with appropriate column types.
 
+
+### Choosing a Multiplexer
+
+In the GCP plugin there are three types of multiplexers. Every top level resource needs to use multiplexer:
+
+1. `ProjectMultiplex` (_default_): This is the most basic of multiplexers in that it will resolve the resource in each project that is being synced. 
+2. `ProjectMultiplexEnabledServices(serviceDNS string)`:  This multiplexer will only attempt to sync a resource if that project has the service enabled otherwise the resource will be skipped for that specific projectID. On top of this the user must also enable the feature via `enabled_services_only: true` in the spec. In order to use this multiplexer you must specify a valid `resource.ServiceDNS`
+3. `client.OrgMultiplex`: For resources that are unique across an entire Organization. In order to use this multiplexer you have to explicitly set the multiplexer `client.OrgMultiplex
+``` go
+var OrgMultiplex = "client.OrgMultiplex"
+Resource{
+	Multiplex:  &OrgMultiplex   
+}
+```
+
 #### All Available Resource Fields
 
 All available Resource fields can be seen in [base.go](codegen/recipes/base.go). See the documentation for each field for an explanation of what it does.

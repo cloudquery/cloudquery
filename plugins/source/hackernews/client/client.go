@@ -37,24 +37,27 @@ func (*Client) ID() string {
 	return "hackernews"
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, opts ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, opts source.Options) (schema.ClientMeta, error) {
 	var config Spec
 	err := sourceSpec.UnmarshalSpec(&config)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 	config.SetDefaults()
+	err = config.Validate()
+	if err != nil {
+		return nil, fmt.Errorf("failed to validate spec: %w", err)
+	}
 
 	client := hackernews.NewClient()
 	if err != nil {
 		return nil, fmt.Errorf("failed to create hackernews client: %w", err)
 	}
 
-	o := source.Options{}
-	for _, opt := range opts {
-		opt(&o)
+	be := opts.Backend
+	if be == nil {
+		be = &NopBackend{}
 	}
-
 	return &Client{
 		logger:     logger,
 		sourceSpec: sourceSpec,
@@ -62,6 +65,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Sour
 		HackerNews: client,
 		maxRetries: defaultMaxRetries,
 		backoff:    defaultBackoff,
-		Backend:    o.Backend,
+		Backend:    be,
 	}, nil
 }

@@ -11,11 +11,11 @@ This is useful in various use-cases, especially in data lakes where you can quer
 
 ## Authentication
 
-Authenitcation is similar to AWS CLI. See also [aws source plugin](../../sources/aws/overview#authentication) for more information.
+Authentication is similar to AWS CLI. See also [aws source plugin](../../sources/aws/overview#authentication) for more information.
 
 ## Example
 
-This example configures a CSV destination, to create CSV files in `s3://bucket_name/path/to/files`. Note that the S3 plugin only supports `append` write-mode.
+This example configures a CSV destination, to create CSV files in `s3://bucket_name/path/to/files`, with each table placed in its own directory. Note that the S3 plugin only supports `append` write-mode.
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
@@ -26,12 +26,15 @@ spec:
   path: "cloudquery/s3"
   version: "VERSION_DESTINATION_S3"
   write_mode: "append" # s3 only supports 'append' mode
-
+  # batch_size: 10000 # optional
+  # batch_size_bytes: 5242880 # optional
   spec:
     bucket: "bucket_name"
-    path: "path/to/files"
+    path: "path/to/files/{{TABLE}}/{{UUID}}.csv"
     format: "csv"
 ```
+
+The S3 destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
 
 ## S3 Spec
 
@@ -43,7 +46,7 @@ This is the (nested) spec used by the CSV destination Plugin.
 
 - `path` (string) (required)
 
-  Path to where the files will be uploaded in the above bucket.
+  Path to where the files will be uploaded in the above bucket. The path supports two placeholder variables: `{{TABLE}}` will be replaced with the table name, and `{{UUID}}` with a random UUID to uniquely identify each file. 
 
 - `format` (string) (required)
 

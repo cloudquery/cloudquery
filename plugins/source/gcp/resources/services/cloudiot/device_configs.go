@@ -31,6 +31,14 @@ func DeviceConfigs() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "version",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Version"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
 		},
 	}
 }

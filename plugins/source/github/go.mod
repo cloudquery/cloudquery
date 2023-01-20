@@ -3,10 +3,9 @@ module github.com/cloudquery/cloudquery/plugins/source/github
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.23.0
+	github.com/cloudquery/plugin-sdk v1.27.0
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v48 v48.2.0
-	github.com/iancoleman/strcase v0.2.0
 	github.com/rs/zerolog v1.28.0
 	github.com/thoas/go-funk v0.9.3
 	golang.org/x/oauth2 v0.2.0

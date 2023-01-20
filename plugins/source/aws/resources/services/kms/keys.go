@@ -53,6 +53,7 @@ func Keys() *schema.Table {
 
 		Relations: []*schema.Table{
 			KeyGrants(),
+			KeyPolicies(),
 		},
 	}
 }

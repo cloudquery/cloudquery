@@ -1,5 +1,7 @@
 # Table: azure_customerinsights_hubs
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights@v1.0.0#Hub
+
 The primary key for this table is **id**.
 
 ## Columns

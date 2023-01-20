@@ -1,5 +1,7 @@
 # Table: azure_apimanagement_service
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement#ServiceResource
+
 The primary key for this table is **id**.
 
 ## Columns

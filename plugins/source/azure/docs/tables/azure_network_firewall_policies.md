@@ -1,5 +1,7 @@
 # Table: azure_network_firewall_policies
 
+https://learn.microsoft.com/en-us/rest/api/virtualnetwork/firewall-policies/list-all?tabs=HTTP#firewallpolicy
+
 The primary key for this table is **id**.
 
 ## Columns

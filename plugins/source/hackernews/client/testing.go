@@ -16,7 +16,8 @@ import (
 )
 
 type TestOptions struct {
-	Backend backend.Backend
+	Backend   backend.Backend
+	StartTime time.Time
 }
 
 func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) services.HackernewsClient, opts TestOptions) {
@@ -27,12 +28,16 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+		startTime := ""
+		if !opts.StartTime.IsZero() {
+			startTime = opts.StartTime.Format(time.RFC3339)
+		}
 		return &Client{
 			logger:     l,
 			Backend:    opts.Backend,
 			HackerNews: builder(t, ctrl),
-			Spec:       Spec{ItemConcurrency: 10},
+			Spec:       Spec{ItemConcurrency: 10, StartTime: startTime},
 		}, nil
 	}
 	p := source.NewPlugin(

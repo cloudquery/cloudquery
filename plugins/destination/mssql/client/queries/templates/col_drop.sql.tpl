@@ -1,0 +1,1 @@
+ALTER TABLE {{.Table}} DROP COLUMN {{.Definition.Name}};

@@ -1,5 +1,7 @@
 # Table: azure_appservice_recommendations
 
+https://learn.microsoft.com/en-us/rest/api/appservice/recommendations/list#recommendation
+
 The primary key for this table is **id**.
 
 ## Columns

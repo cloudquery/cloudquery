@@ -5,6 +5,8 @@ package client
 var GcpServices = map[string]bool{
 	// Non discoverable services
 	"aiplatform.googleapis.com": true,
+	"vpcaccess.googleapis.com":  true,
+	"livestream.googleapis.com": true,
 	// Discoverable services
 	"abusiveexperiencereport.googleapis.com":       true,
 	"acceleratedmobilepageurl.googleapis.com":      true,
@@ -155,6 +157,7 @@ var GcpServices = map[string]bool{
 	"jobs.googleapis.com":                          true,
 	"keep.googleapis.com":                          true,
 	"kgsearch.googleapis.com":                      true,
+	"kmsinventory.googleapis.com":                  true,
 	"language.googleapis.com":                      true,
 	"libraryagent.googleapis.com":                  true,
 	"licensing.googleapis.com":                     true,

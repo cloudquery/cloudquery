@@ -1,7 +1,7 @@
 # Table: vercel_team_members
 
 The composite primary key for this table is (**team_id**, **uid**).
-
+It supports incremental syncs.
 ## Relations
 
 This table depends on [vercel_teams](vercel_teams.md).
@@ -15,6 +15,7 @@ This table depends on [vercel_teams](vercel_teams.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |team_id (PK)|String|
+|uid (PK)|String|
 |avatar|String|
 |confirmed|Bool|
 |email|String|
@@ -22,7 +23,6 @@ This table depends on [vercel_teams](vercel_teams.md).
 |gitlab|JSON|
 |bitbucket|JSON|
 |role|String|
-|uid (PK)|String|
 |username|String|
 |name|String|
 |created_at|Timestamp|

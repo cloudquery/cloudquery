@@ -1,5 +1,7 @@
 # Table: azure_advisor_recommendations
 
+https://learn.microsoft.com/en-us/rest/api/advisor/recommendations/list?tabs=HTTP#resourcerecommendationbase
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -9,10 +9,11 @@ import (
 
 func Databases() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_timestream_databases",
-		Resolver:  fetchTimestreamDatabases,
-		Transform: transformers.TransformWithStruct(&types.Database{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer("ingest.timestream"),
+		Name:        "aws_timestream_databases",
+		Description: `https://docs.aws.amazon.com/timestream/latest/developerguide/API_Database.html`,
+		Resolver:    fetchTimestreamDatabases,
+		Transform:   transformers.TransformWithStruct(&types.Database{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ingest.timestream"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

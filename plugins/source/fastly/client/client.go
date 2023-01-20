@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/client/services"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/fastly/go-fastly/v7/fastly"
@@ -56,7 +57,7 @@ func (c *Client) withServiceAndRegion(service *fastly.Service, region string) sc
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var config Spec
 	err := sourceSpec.UnmarshalSpec(&config)
 	if err != nil {

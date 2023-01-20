@@ -22,12 +22,15 @@ spec:
   path: "cloudquery/gcs"
   version: "VERSION_DESTINATION_GCS"
   write_mode: "append" # gcs only supports 'append' mode
-
+  # batch_size: 10000 # optional
+  # batch_size_bytes: 5242880 # optional
   spec:
     bucket: "bucket_name"
     path: "path/to/files"
     format: "csv"
 ```
+
+The GCS destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
 
 ## GCS Spec
 
