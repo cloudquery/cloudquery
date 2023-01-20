@@ -14,5 +14,4 @@ type Spec struct {
 	Region     string `json:"region,omitempty"`
 	Timeout    int64  `json:"timeout_secs,omitempty"`
 	MaxRetries int64  `json:"max_retries,omitempty"`
-	PageSize   int64  `json:"page_size,omitempty"`
 }

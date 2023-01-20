@@ -47,7 +47,7 @@ type ClientOptions struct {
 	BaseURL                string
 	APIUser, APISecret     string
 	ProjectID, WorkspaceID int64
-	MaxRetries, PageSize   int64
+	MaxRetries             int64
 }
 
 func New(opts ClientOptions) *Client {

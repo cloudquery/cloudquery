@@ -69,7 +69,7 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*mixpanel.Client, erro
 	const dateFormat = "2006-01-02"
 
 	if spec.StartDate == "" {
-		dt := time.Now().UTC().Add(-30 * 24 * 86400 * time.Second).Format(dateFormat)
+		dt := time.Now().UTC().Add(-30 * 86400 * time.Second).Format(dateFormat)
 		logger.Info().Str("start_date", dt).Msg("no start date provided, defaulting to 30 days ago")
 		spec.StartDate = dt
 	}
@@ -90,10 +90,7 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*mixpanel.Client, erro
 		spec.Timeout = 10
 	}
 	if spec.MaxRetries < 1 {
-		spec.MaxRetries = 30
-	}
-	if spec.PageSize < 1 {
-		spec.PageSize = 50
+		spec.MaxRetries = 5
 	}
 
 	rg, err := mixpanel.ParseRegion(spec.Region)
@@ -115,6 +112,5 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*mixpanel.Client, erro
 			APISecret:  spec.Secret,
 			ProjectID:  spec.ProjectID,
 			MaxRetries: spec.MaxRetries,
-			PageSize:   spec.PageSize,
 		}), nil
 }

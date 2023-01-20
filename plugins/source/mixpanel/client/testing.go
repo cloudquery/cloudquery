@@ -101,7 +101,6 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 				ProjectID:   testProjectID,
 				WorkspaceID: 0,
 				MaxRetries:  1,
-				PageSize:    50,
 			})
 		c := New(logger, spec, mpSpec, services, opts.Backend)
 		return &c, nil
