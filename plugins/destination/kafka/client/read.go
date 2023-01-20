@@ -13,10 +13,6 @@ const (
 	maxWaitTime = 3 * time.Second
 )
 
-func (c *Client) ReverseTransformValues(table *schema.Table, values []any) (schema.CQTypes, error) {
-	return c.filetype.ReverseTransformValues(table, values)
-}
-
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
 	consumer, err := sarama.NewConsumer(c.pluginSpec.Brokers, c.conf)
 	if err != nil {
@@ -33,7 +29,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		case <-ctx.Done():
 			return ctx.Err()
 		case msg := <-partitionConsumer.Messages():
-			if err := c.filetype.Read(bytes.NewReader(msg.Value), table, sourceName, res); err != nil {
+			if err := c.Client.Read(bytes.NewReader(msg.Value), table, sourceName, res); err != nil {
 				return err
 			}
 		case err := <-partitionConsumer.Errors():

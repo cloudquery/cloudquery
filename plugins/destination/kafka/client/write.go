@@ -44,7 +44,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 		var b bytes.Buffer
 		w := bufio.NewWriter(&b)
 		table := tables.Get(r.TableName)
-		if err := c.filetype.WriteTableBatch(w, table, [][]any{r.Data}); err != nil {
+		if err := c.Client.WriteTableBatch(w, table, [][]any{r.Data}); err != nil {
 			return err
 		}
 		w.Flush()
@@ -70,4 +70,8 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 	}
 
 	return nil
+}
+
+func (*Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
+	panic("not implemented")
 }
