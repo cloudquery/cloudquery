@@ -13,7 +13,7 @@ func EngageRevenues() *schema.Table {
 	return &schema.Table{
 		Name:      "mixpanel_engage_revenues",
 		Resolver:  fetchEngageRevenues,
-		Transform: transformers.TransformWithStruct(&mixpanel.EngageRevenue{}, client.SharedTransformers(transformers.WithPrimaryKeys("date"))...),
+		Transform: transformers.TransformWithStruct(&mixpanel.EngageRevenue{}, client.SharedTransformers(transformers.WithPrimaryKeys("Date"))...),
 		Columns: schema.ColumnList{
 			{
 				Name:     "project_id",

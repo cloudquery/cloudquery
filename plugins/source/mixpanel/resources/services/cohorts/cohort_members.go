@@ -15,7 +15,7 @@ func CohortMembers() *schema.Table {
 	return &schema.Table{
 		Name:      "mixpanel_cohort_members",
 		Resolver:  fetchCohortMembers,
-		Transform: transformers.TransformWithStruct(&mixpanel.EngageProfile{}, client.SharedTransformers()...),
+		Transform: transformers.TransformWithStruct(&mixpanel.EngageProfile{}, client.SharedTransformers(transformers.WithPrimaryKeys("DistinctID"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -39,9 +39,10 @@ func fetchCohortMembers(ctx context.Context, meta schema.ClientMeta, parent *sch
 
 	co := parent.Item.(mixpanel.Cohort)
 	qp := url.Values{}
-	qp.Add("filter_by_cohort", fmt.Sprintf(`{"id":%d}`, co.ID))
+	qp.Set("filter_by_cohort", fmt.Sprintf(`{"id":%d}`, co.ID))
+	qp.Set("include_all_users", "true")
 
-	page := int64(0)
+	var pg *mixpanel.EngagePaginator
 
 	for {
 		ret, err := cl.Services.EngageProfiles(ctx, qp)
@@ -50,8 +51,11 @@ func fetchCohortMembers(ctx context.Context, meta schema.ClientMeta, parent *sch
 		}
 		res <- ret.Data
 
-		page = ret.Page + 1
-		if page > ret.TotalPages {
+		if pg == nil {
+			pg = &ret.EngagePaginator // Only page 0 has the paginator
+		}
+		page := ret.Page + 1
+		if page > pg.TotalPages {
 			break
 		}
 

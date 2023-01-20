@@ -1,6 +1,6 @@
 # Table: mixpanel_cohort_members
 
-The primary key for this table is **cohort_id**.
+The composite primary key for this table is (**cohort_id**, **distinct_id**).
 
 ## Relations
 
@@ -16,5 +16,5 @@ This table depends on [mixpanel_cohorts](mixpanel_cohorts.md).
 |_cq_parent_id|UUID|
 |project_id|Int|
 |cohort_id (PK)|Int|
-|distinct_id|String|
+|distinct_id (PK)|String|
 |properties|JSON|

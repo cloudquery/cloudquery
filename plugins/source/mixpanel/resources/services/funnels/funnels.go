@@ -13,7 +13,7 @@ func Funnels() *schema.Table {
 	return &schema.Table{
 		Name:      "mixpanel_funnels",
 		Resolver:  fetchFunnels,
-		Transform: transformers.TransformWithStruct(&mixpanel.Funnel{}, client.SharedTransformers(transformers.WithPrimaryKeys("id"))...),
+		Transform: transformers.TransformWithStruct(&mixpanel.Funnel{}, client.SharedTransformers(transformers.WithPrimaryKeys("ID"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

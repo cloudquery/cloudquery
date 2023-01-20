@@ -1,6 +1,6 @@
 # Table: mixpanel_funnel_reports
 
-The primary key for this table is **funnel_id**.
+The composite primary key for this table is (**funnel_id**, **date**).
 
 ## Relations
 
@@ -16,6 +16,6 @@ This table depends on [mixpanel_funnels](mixpanel_funnels.md).
 |_cq_parent_id|UUID|
 |project_id|Int|
 |funnel_id (PK)|Int|
-|date|Timestamp|
+|date (PK)|Timestamp|
 |steps|JSON|
 |analysis|JSON|

@@ -14,7 +14,7 @@ func Annotations() *schema.Table {
 	return &schema.Table{
 		Name:      "mixpanel_annotations",
 		Resolver:  fetchAnnotations,
-		Transform: transformers.TransformWithStruct(&mixpanel.Cohort{}, client.SharedTransformers(transformers.WithPrimaryKeys("id"))...),
+		Transform: transformers.TransformWithStruct(&mixpanel.Annotation{}, client.SharedTransformers(transformers.WithPrimaryKeys("ID"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

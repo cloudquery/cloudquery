@@ -1,6 +1,6 @@
 # Table: mixpanel_engage_revenues
 
-The primary key for this table is **project_id**.
+The composite primary key for this table is (**project_id**, **date**).
 
 ## Columns
 
@@ -11,7 +11,7 @@ The primary key for this table is **project_id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|Int|
-|date|Timestamp|
+|date (PK)|Timestamp|
 |amount|Float|
 |count|Int|
 |paid_count|Int|
