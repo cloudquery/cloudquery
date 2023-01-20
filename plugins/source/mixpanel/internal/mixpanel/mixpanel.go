@@ -120,7 +120,7 @@ func (v *Client) request(ctx context.Context, method, uri string, qp url.Values)
 
 		saneMsg := string(respText)
 		{
-			var v map[string]interface{}
+			var v map[string]any
 			if err := json.Unmarshal(respText, &v); err == nil {
 				if msg, ok := v["error"].(string); ok {
 					saneMsg = msg
