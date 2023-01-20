@@ -1,6 +1,6 @@
 WITH
 settings_with_logs AS (
-        SELECT resource_id, JSONB_ARRAY_ELEMENTS(diagnostic_settings_resource -> 'properties' -> 'logs') AS logs FROM azure_monitor_diagnostic_settings
+        SELECT resource_id, JSONB_ARRAY_ELEMENTS(properties -> 'logs') AS logs FROM azure_monitor_diagnostic_settings
 ),
 accounts_with_logging_enabled AS (SELECT DISTINCT d._cq_id
     FROM azure_datalakestore_accounts d

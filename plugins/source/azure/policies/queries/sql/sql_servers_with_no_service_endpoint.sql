@@ -3,7 +3,7 @@ WITH subs AS (
     FROM azure_network_virtual_networks
 ), secured_servers AS (SELECT s._cq_id
                          FROM azure_sql_servers s
-                                  LEFT JOIN azure_sql_virtual_network_rules r
+                                  LEFT JOIN azure_sql_server_virtual_network_rules r
                                             ON s._cq_id = r._cq_parent_id
                                   LEFT JOIN subs
                                             ON r.properties ->> 'virtualNetworkSubnetId' = subs.subnet->>'id'

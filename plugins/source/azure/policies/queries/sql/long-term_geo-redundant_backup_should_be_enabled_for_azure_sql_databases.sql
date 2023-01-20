@@ -12,6 +12,6 @@ SELECT
       AND rp.properties ->> 'yearlyRetention' IS NOT DISTINCT FROM 'PT0S')
     then 'fail' else 'pass'
   end
-FROM azure_sql_servers s left join azure_sql_databases asd on s._cq_id = asd._cq_parent_id
-    left join azure_sql_database_long_term_retention_policies rp on asd._cq_id = rp._cq_parent_id
+FROM azure_sql_servers s left join azure_sql_server_databases asd on s._cq_id = asd._cq_parent_id
+    left join azure_sql_server_database_long_term_retention_policies rp on asd._cq_id = rp._cq_parent_id
 

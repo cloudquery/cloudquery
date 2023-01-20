@@ -11,7 +11,7 @@ SELECT
     then 'fail' else 'pass'
   end
 FROM azure_sql_servers s
-    LEFT JOIN azure_sql_databases d ON
+    LEFT JOIN azure_sql_server_databases d ON
         s._cq_id = d._cq_parent_id
-    LEFT JOIN azure_sql_database_threat_protections p ON
+    LEFT JOIN azure_sql_server_database_threat_protections p ON
         d._cq_id = p._cq_parent_id

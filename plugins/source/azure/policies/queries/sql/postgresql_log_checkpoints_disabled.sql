@@ -1,7 +1,7 @@
 WITH value_check AS (
     SELECT aps._cq_id, apsc.properties->>'value' as "value"
     FROM azure_postgresql_servers aps
-        LEFT JOIN azure_postgresql_configurations apsc ON
+        LEFT JOIN azure_postgresql_server_configurations apsc ON
             aps._cq_id = apsc._cq_parent_id
     WHERE apsc."name" = 'log_checkpoints'
 )
