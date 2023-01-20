@@ -21,7 +21,3 @@ func ResolveWorkspaceID(_ context.Context, meta schema.ClientMeta, r *schema.Res
 	}
 	return r.Set(c.Name, cl.MPSpec.WorkspaceID)
 }
-
-func ResolveAny(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-	return r.Set(c.Name, r.Item)
-}
