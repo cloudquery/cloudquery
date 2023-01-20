@@ -41,7 +41,6 @@ func createDiagnosticSettings(router *mux.Router) error {
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
-
 	router.HandleFunc("/test string/providers/Microsoft.Insights/diagnosticSettings", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
