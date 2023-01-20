@@ -9,8 +9,9 @@ import (
 
 type Spec struct {
 	*filetypes.FileSpec
-	Bucket string `json:"bucket,omitempty"`
-	Path   string `json:"path,omitempty"`
+	NoRotate bool   `json:"no_rotate,omitempty"`
+	Bucket   string `json:"bucket,omitempty"`
+	Path     string `json:"path,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {

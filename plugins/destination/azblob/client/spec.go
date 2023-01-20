@@ -10,6 +10,7 @@ type Spec struct {
 	StorageAccount string `json:"storage_account,omitempty"`
 	Container      string `json:"container,omitempty"`
 	Path           string `json:"path,omitempty"`
+	NoRotate       bool   `json:"no_rotate,omitempty"`
 	*filetypes.FileSpec
 }
 
