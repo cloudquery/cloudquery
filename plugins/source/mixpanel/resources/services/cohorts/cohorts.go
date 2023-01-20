@@ -15,7 +15,7 @@ func Cohorts() *schema.Table {
 		Resolver:  fetchCohorts,
 		Transform: transformers.TransformWithStruct(&mixpanel.Cohort{}, transformers.WithPrimaryKeys("id")),
 		Relations: []*schema.Table{
-			CohortProfiles(),
+			CohortMembers(),
 		},
 	}
 }

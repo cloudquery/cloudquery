@@ -11,10 +11,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func CohortProfiles() *schema.Table {
+func CohortMembers() *schema.Table {
 	return &schema.Table{
-		Name:      "mixpanel_cohort_profiles",
-		Resolver:  fetchCohortProfiles,
+		Name:      "mixpanel_cohort_members",
+		Resolver:  fetchCohortMembers,
 		Transform: transformers.TransformWithStruct(&mixpanel.EngageProfile{}),
 		Columns: []schema.Column{
 			{
@@ -34,7 +34,7 @@ func CohortProfiles() *schema.Table {
 	}
 }
 
-func fetchCohortProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchCohortMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 
 	co := parent.Item.(mixpanel.Cohort)

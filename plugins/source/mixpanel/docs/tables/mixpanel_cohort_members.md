@@ -1,4 +1,4 @@
-# Table: mixpanel_cohort_profiles
+# Table: mixpanel_cohort_members
 
 The primary key for this table is **cohort_id**.
 
