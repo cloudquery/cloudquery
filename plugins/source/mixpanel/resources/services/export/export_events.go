@@ -12,7 +12,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func Events() *schema.Table {
+func ExportEvents() *schema.Table {
 	return &schema.Table{
 		Name:      "mixpanel_export_events",
 		Resolver:  fetchExportEvents,

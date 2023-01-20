@@ -24,7 +24,7 @@ import (
 const (
 	testUser      = "SomeUser"
 	testSecret    = "SomeSecret"
-	testProjectID = 42
+	TestProjectID = int64(42)
 )
 
 type TestOptions struct {
@@ -86,6 +86,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 		if err := spec.UnmarshalSpec(&mpSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal mixpanel spec: %w", err)
 		}
+		mpSpec.ProjectID = TestProjectID
 
 		if err := createServices(router); err != nil {
 			return nil, err
@@ -98,8 +99,8 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 				BaseURL:     h.URL,
 				APIUser:     testUser,
 				APISecret:   testSecret,
-				ProjectID:   testProjectID,
-				WorkspaceID: 0,
+				ProjectID:   mpSpec.ProjectID,
+				WorkspaceID: mpSpec.WorkspaceID,
 				MaxRetries:  1,
 			})
 		c := New(logger, spec, mpSpec, services, opts.Backend)

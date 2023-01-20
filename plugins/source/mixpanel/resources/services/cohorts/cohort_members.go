@@ -55,7 +55,7 @@ func fetchCohortMembers(ctx context.Context, meta schema.ClientMeta, parent *sch
 			pg = &ret.EngagePaginator // Only page 0 has the paginator
 		}
 		page := ret.Page + 1
-		if page > pg.TotalPages {
+		if pg.TotalPages == 0 || page >= pg.TotalPages { // Zero based page numbers
 			break
 		}
 

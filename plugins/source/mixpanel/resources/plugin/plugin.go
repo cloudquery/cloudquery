@@ -24,7 +24,7 @@ func Plugin() *source.Plugin {
 			cohorts.Cohorts(),
 			funnels.Funnels(),
 			engage.EngageRevenues(),
-			export.Events(),
+			export.ExportEvents(),
 		},
 		client.Configure,
 	)
