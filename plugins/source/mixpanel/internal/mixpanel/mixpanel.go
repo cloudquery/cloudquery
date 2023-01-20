@@ -24,22 +24,6 @@ type HTTPDoer interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-type Region string
-
-const (
-	RegionNone = Region("")
-	RegionUS   = Region("us")
-	RegionEU   = Region("eu")
-)
-
-func ParseRegion(v string) (Region, error) {
-	r := Region(strings.ToLower(v))
-	if r != RegionNone && r != RegionUS && r != RegionEU {
-		return RegionNone, fmt.Errorf("unknown region %q", v)
-	}
-	return r, nil
-}
-
 type ClientOptions struct {
 	Logger                 zerolog.Logger
 	HC                     HTTPDoer
@@ -57,22 +41,28 @@ func New(opts ClientOptions) *Client {
 }
 
 func (v *Client) Request(ctx context.Context, method, path string, qp url.Values, fill any) error {
-	if qp == nil {
-		qp = url.Values{}
-	}
-
-	uri := v.getBaseURL() + path
-
-	body, err := v.request(ctx, method, uri, qp)
+	body, err := v.RequestWithReader(ctx, method, path, qp)
 	if err != nil {
 		return err
 	}
 	defer body.Close()
 
-	//b, _ := io.ReadAll(body)
-	//fmt.Println(path, "\n", string(b), "\n")
-	//return json.Unmarshal(b, &fill)
 	return json.NewDecoder(body).Decode(&fill)
+}
+
+func (v *Client) RequestWithReader(ctx context.Context, method, path string, qp url.Values) (io.ReadCloser, error) {
+	if qp == nil {
+		qp = url.Values{}
+	}
+
+	isExport := strings.HasPrefix(path, `/api/2.0/export`)
+	uri := v.getBaseURL(isExport) + path
+
+	body, err := v.request(ctx, method, uri, qp)
+	if err != nil {
+		return nil, err
+	}
+	return body, nil
 }
 
 func (v *Client) request(ctx context.Context, method, uri string, qp url.Values) (io.ReadCloser, error) {
@@ -125,15 +115,21 @@ func (v *Client) request(ctx context.Context, method, uri string, qp url.Values)
 	return nil, fmt.Errorf("exceeded max retries")
 }
 
-func (v *Client) getBaseURL() string {
+func (v *Client) getBaseURL(isExport bool) string {
 	if v.opts.BaseURL != "" {
 		return v.opts.BaseURL
 	}
 
 	switch v.opts.Region {
 	case RegionEU:
+		if isExport {
+			return "https://data-eu.mixpanel.com"
+		}
 		return "https://eu.mixpanel.com"
 	default:
+		if isExport {
+			return "https://data.mixpanel.com"
+		}
 		return "https://mixpanel.com"
 	}
 }

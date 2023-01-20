@@ -5,6 +5,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/resources/services/annotations"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/resources/services/cohorts"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/resources/services/engage"
+	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/resources/services/export"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/resources/services/funnels"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -23,6 +24,7 @@ func Plugin() *source.Plugin {
 			cohorts.Cohorts(),
 			funnels.Funnels(),
 			engage.EngageRevenues(),
+			export.Events(),
 		},
 		client.Configure,
 	)

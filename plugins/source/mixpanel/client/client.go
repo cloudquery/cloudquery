@@ -87,7 +87,7 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*mixpanel.Client, erro
 	}
 
 	if spec.Timeout < 1 {
-		spec.Timeout = 10
+		spec.Timeout = 30
 	}
 	if spec.MaxRetries < 1 {
 		spec.MaxRetries = 5

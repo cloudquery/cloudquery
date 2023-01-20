@@ -56,7 +56,7 @@ This is the (nested) spec used by the Stripe source plugin:
 - `region` (string, optional):
   Your Mixpanel region. Defaults to "US". Possible values are "US" and "EU".
 
-- `timeout_secs` (integer in seconds, optional. Default: 10):
+- `timeout_secs` (integer in seconds, optional. Default: 30):
   Timeout for requests against the Mixpanel API.
 
 - `max_retries` (integer, optional. Default: 5):
