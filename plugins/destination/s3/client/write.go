@@ -24,7 +24,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	var b bytes.Buffer
 	w := io.Writer(&b)
 
-	if err := c.Client.WriteTableBatch(w, table, data); err != nil {
+	if err := c.Client.WriteTableBatchFile(w, table, data); err != nil {
 		return err
 	}
 	// we don't upload in parallel here because AWS sdk moves the burden to the developer, and

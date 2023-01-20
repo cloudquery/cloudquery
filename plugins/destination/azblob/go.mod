@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.0
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v0.6.1
-	github.com/cloudquery/filetypes v1.1.1-0.20230120132921-35ea2405938e
+	github.com/cloudquery/filetypes v1.1.1-0.20230120152811-35173eefd8ee
 	github.com/cloudquery/plugin-sdk v1.27.0
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.28.0

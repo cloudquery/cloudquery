@@ -16,5 +16,5 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	w := c.gcsClient.Bucket(c.pluginSpec.Bucket).Object(name).NewWriter(ctx)
 	defer w.Close()
 
-	return c.Client.WriteTableBatch(w, table, data)
+	return c.Client.WriteTableBatchFile(w, table, data)
 }
