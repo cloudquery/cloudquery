@@ -4,14 +4,13 @@ import (
 	"context"
 	"net/http"
 	"strconv"
-	"time"
 )
 
 type Annotation struct {
-	Date        time.Time `json:"date"`
-	Description string    `json:"description"`
-	ID          int64     `json:"id"`
-	User        any       `json:"user"`
+	Date        Time   `json:"date"`
+	Description string `json:"description"`
+	ID          int64  `json:"id"`
+	User        any    `json:"user"`
 }
 
 type CommonResponse struct {

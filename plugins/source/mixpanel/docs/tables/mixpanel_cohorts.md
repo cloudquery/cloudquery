@@ -16,7 +16,7 @@ The following tables depend on mixpanel_cohorts:
 |_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
 |count|Int|
-|is_visible|Bool|
+|is_visible|Int|
 |description|String|
 |created|Timestamp|
 |project_id|Int|

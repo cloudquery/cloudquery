@@ -16,7 +16,7 @@ func Events() *schema.Table {
 	return &schema.Table{
 		Name:      "mixpanel_export_events",
 		Resolver:  fetchExportEvents,
-		Transform: transformers.TransformWithStruct(&mixpanel.ExportEvent{}),
+		Transform: transformers.TransformWithStruct(&mixpanel.ExportEvent{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

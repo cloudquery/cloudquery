@@ -15,7 +15,7 @@ func CohortMembers() *schema.Table {
 	return &schema.Table{
 		Name:      "mixpanel_cohort_members",
 		Resolver:  fetchCohortMembers,
-		Transform: transformers.TransformWithStruct(&mixpanel.EngageProfile{}),
+		Transform: transformers.TransformWithStruct(&mixpanel.EngageProfile{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

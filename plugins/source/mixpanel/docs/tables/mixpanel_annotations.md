@@ -12,7 +12,7 @@ The primary key for this table is **_cq_id**.
 |_cq_parent_id|UUID|
 |project_id|Int|
 |count|Int|
-|is_visible|Bool|
+|is_visible|Int|
 |description|String|
 |created|Timestamp|
 |id|Int|

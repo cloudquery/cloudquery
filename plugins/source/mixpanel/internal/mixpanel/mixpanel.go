@@ -12,10 +12,13 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
+	"golang.org/x/sync/semaphore"
 )
 
 type Client struct {
 	opts ClientOptions
+
+	concurrentLimit *semaphore.Weighted
 }
 
 const StatusOK = "ok"
@@ -37,6 +40,9 @@ type ClientOptions struct {
 func New(opts ClientOptions) *Client {
 	return &Client{
 		opts: opts,
+
+		// https://help.mixpanel.com/hc/en-us/articles/115004602563-Rate-Limits-for-Export-API-Endpoints
+		concurrentLimit: semaphore.NewWeighted(5),
 	}
 }
 
@@ -75,13 +81,22 @@ func (v *Client) request(ctx context.Context, method, uri string, qp url.Values)
 
 	retries := int64(0)
 	for {
-		req, err := http.NewRequestWithContext(ctx, method, uri+"?"+qp.Encode(), nil)
-		if err != nil {
+		if err := v.concurrentLimit.Acquire(ctx, 1); err != nil {
 			return nil, err
 		}
-		req.SetBasicAuth(v.opts.APIUser, v.opts.APISecret)
-		req.Header.Set("Content-Type", "application/json")
-		res, err := v.opts.HC.Do(req)
+
+		res, err := func() (*http.Response, error) {
+			defer v.concurrentLimit.Release(1)
+
+			req, err := http.NewRequestWithContext(ctx, method, uri+"?"+qp.Encode(), nil)
+			if err != nil {
+				return nil, err
+			}
+			req.SetBasicAuth(v.opts.APIUser, v.opts.APISecret)
+			req.Header.Set("Content-Type", "application/json")
+			return v.opts.HC.Do(req)
+		}()
+
 		if err != nil {
 			return nil, err
 		}
@@ -103,8 +118,18 @@ func (v *Client) request(ctx context.Context, method, uri string, qp url.Values)
 			return nil, rateErr
 		}
 
+		saneMsg := string(respText)
+		{
+			var v map[string]interface{}
+			if err := json.Unmarshal(respText, &v); err == nil {
+				if msg, ok := v["error"].(string); ok {
+					saneMsg = msg
+				}
+			}
+		}
+
 		backoff := time.Duration(retries) * 1500 * time.Millisecond
-		v.opts.Logger.Info().Dur("wait", backoff).Msg("waiting for rate limit reset")
+		v.opts.Logger.Info().Str("url", uri).Interface("query_params", qp).Dur("wait", backoff).Str("api_message", saneMsg).Msg("waiting for rate limit reset")
 		select {
 		case <-ctx.Done():
 			return nil, rateErr
