@@ -78,7 +78,7 @@ func serverDatabases() *schema.Table {
 			serverDatabaseBlobAuditingPolicies(),
 			transparentDataEncryptions(),
 			serverDatabaseThreatProtections(),
-			database_vulnerability_assessments(),
+			databaseVulnerabilityAssessments(),
 			longTermRetentionPolicies(),
 		},
 	}

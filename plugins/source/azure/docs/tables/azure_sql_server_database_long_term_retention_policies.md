@@ -1,15 +1,12 @@
-# Table: azure_sql_database_vulnerability_assessments
+# Table: azure_sql_server_database_long_term_retention_policies
 
-https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/database-vulnerability-assessments/list-by-database?tabs=HTTP#databasevulnerabilityassessment
+https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/long-term-retention-policies/list-by-database?tabs=HTTP#longtermretentionpolicy
 
 The primary key for this table is **id**.
 
 ## Relations
 
 This table depends on [azure_sql_server_databases](azure_sql_server_databases.md).
-
-The following tables depend on azure_sql_database_vulnerability_assessments:
-  - [azure_sql_database_vulnerability_assessment_scans](azure_sql_database_vulnerability_assessment_scans.md)
 
 ## Columns
 

@@ -10,7 +10,7 @@ import (
 
 func longTermRetentionPolicies() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_sql_database_long_term_retention_policies",
+		Name:        "azure_sql_server_database_long_term_retention_policies",
 		Resolver:    fetchLongTermRetentionPolicies,
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/long-term-retention-policies/list-by-database?tabs=HTTP#longtermretentionpolicy",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_sql_long_term_retention_policies", client.Namespacemicrosoft_sql),
