@@ -15,8 +15,7 @@ import (
 )
 
 type Client struct {
-	*filetypes.Client
-	*destination.UnimplementedManagedWriter
+	destination.UnimplementedManagedWriter
 
 	conf     *sarama.Config
 	producer sarama.SyncProducer
@@ -25,6 +24,8 @@ type Client struct {
 	spec       specs.Destination
 	pluginSpec Spec
 	metrics    destination.Metrics
+
+	*filetypes.Client
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -32,8 +33,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("destination only supports append mode")
 	}
 	c := &Client{
-		UnimplementedManagedWriter: &destination.UnimplementedManagedWriter{},
-		logger:                     logger.With().Str("module", "dest-kafka").Logger(),
+		logger: logger.With().Str("module", "dest-kafka").Logger(),
 	}
 
 	c.spec = spec
