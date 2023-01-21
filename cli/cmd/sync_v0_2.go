@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/clients"
+	"github.com/cloudquery/plugin-sdk/clients/source/v0"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
@@ -13,7 +13,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.SourceClient, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string, noMigrate bool) error {
+func syncConnectionV0_2(ctx context.Context, cqDir string, sourceClient *source.Client, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string, noMigrate bool) error {
 	var err error
 	destinationStrings := make([]string, len(destinationsSpecs))
 	for i := range destinationsSpecs {
@@ -24,7 +24,7 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("Start sync")
 	defer log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("End sync")
 
-	destClients, err := newDestinationClients(ctx, sourceSpec, destinationsSpecs, cqDir)
+	destClients, err := newDestinationClientsV0(ctx, sourceSpec, destinationsSpecs, cqDir)
 	if err != nil {
 		return err
 	}
@@ -176,9 +176,9 @@ func syncConnectionV2(ctx context.Context, cqDir string, sourceClient *clients.S
 
 // getTablesForSpec first tries the newer GetTablesForSpec call, but if it is not available, falls back to
 // GetTables. The returned `supported` value indicates whether GetTablesForSpec was supported by the server.
-func getTablesForSpec(ctx context.Context, sourceClient *clients.SourceClient, sourceSpec specs.Source) (tables schema.Tables, supported bool, err error) {
+func getTablesForSpec(ctx context.Context, sourceClient *source.Client, sourceSpec specs.Source) (tables schema.Tables, supported bool, err error) {
 	tables, err = sourceClient.GetTablesForSpec(ctx, &sourceSpec)
-	if clients.IsUnimplemented(err) {
+	if isUnimplemented(err) {
 		// the plugin server does not support GetTablesForSpec. Fall back to GetTables.
 		tables, err = sourceClient.GetTables(ctx)
 		return tables, false, err

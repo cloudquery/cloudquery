@@ -16,6 +16,8 @@ require (
 	google.golang.org/protobuf v1.28.1
 )
 
+replace github.com/cloudquery/plugin-sdk => ../../plugin-sdk-split
+
 require (
 	github.com/avast/retry-go/v4 v4.3.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
