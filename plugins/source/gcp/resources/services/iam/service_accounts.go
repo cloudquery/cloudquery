@@ -20,7 +20,7 @@ func ServiceAccounts() *schema.Table {
 		Description: `https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts#ServiceAccount`,
 		Resolver:    fetchServiceAccounts,
 		Multiplex:   client.ProjectMultiplexEnabledServices("iam.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.ServiceAccount{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.ServiceAccount{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

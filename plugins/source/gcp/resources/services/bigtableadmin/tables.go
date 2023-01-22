@@ -14,7 +14,7 @@ func Tables() *schema.Table {
 		PreResourceResolver: getTableInfo,
 		Resolver:            fetchTables,
 		Multiplex:           client.ProjectMultiplexEnabledServices("bigtableadmin.googleapis.com"),
-		Transform:           transformers.TransformWithStruct(&pb.TableInfo{}, client.Options()...),
+		Transform:           transformers.TransformWithStruct(&pb.TableInfo{}, append(client.Options())...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

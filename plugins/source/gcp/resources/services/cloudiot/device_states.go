@@ -13,7 +13,7 @@ func DeviceStates() *schema.Table {
 		Description: `https://cloud.google.com/iot/docs/reference/cloudiot/rest/v1/projects.locations.registries.devices.states#DeviceState`,
 		Resolver:    fetchDeviceStates,
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudiot.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.DeviceState{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.DeviceState{}, append(client.Options(), transformers.WithPrimaryKeys("UpdateTime"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -27,14 +27,6 @@ func DeviceStates() *schema.Table {
 				Name:     "device_name",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "update_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: client.ResolveProtoTimestamp("UpdateTime"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

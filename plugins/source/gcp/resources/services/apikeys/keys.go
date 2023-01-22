@@ -19,20 +19,12 @@ func Keys() *schema.Table {
 		Description: `https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key`,
 		Resolver:    fetchKeys,
 		Multiplex:   client.ProjectMultiplexEnabledServices("apikeys.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Key{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.Key{}, append(client.Options(), transformers.WithPrimaryKeys("Uid"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "uid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Uid"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
