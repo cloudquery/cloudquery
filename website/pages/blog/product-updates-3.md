@@ -1,0 +1,64 @@
+---
+title: "CloudQuery Product Updates #3"
+tag: product
+date: 2023/01/23
+description: >-
+  Monthly updates on CloudQuery product and roadmap.
+author: yevgenypats
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+Hey everyone! Our monthly round-up of CloudQuery product and roadmap updates is here! This month was packed!
+
+## SDK Updates
+
+- We now support [incremental syncing](https://www.cloudquery.io/docs/core-concepts/syncs#incremental-table-syncs) in alpha! This allow you to sync only new data from your sources. This is a huge performance improvement for large tables.
+
+## Destinations
+
+### New Destinations
+
+We've added seven new destinations to CQ!!
+
+* [MongoDB](https://www.cloudquery.io/docs/plugins/destinations/mongodb/overview)
+* [Neo4j](https://www.cloudquery.io/docs/plugins/destinations/neo4j/overview)
+* [Kafka](https://www.cloudquery.io/docs/plugins/destinations/kafka/overview)
+* [MSSQL](https://www.cloudquery.io/docs/plugins/destinations/mssql/overview)
+* [GCS](https://www.cloudquery.io/docs/plugins/destinations/gcs/overview)
+* [S3](https://www.cloudquery.io/docs/plugins/destinations/s3/overview)
+* [File](https://www.cloudquery.io/docs/plugins/destinations/file/overview)
+* [Azure Blob Storage](https://www.cloudquery.io/docs/plugins/destinations/azblob/overview)
+
+## Sources
+
+### New Sources
+
+We've added 7 new source plugins to CQ to cover the long tail of infrastructure apps!
+
+* [Slack](https://www.cloudquery.io/docs/plugins/sources/slack/overview)
+* [PagerDuty](https://www.cloudquery.io/docs/plugins/sources/pagerduty/overview)
+* [Alibaba Cloud](https://www.cloudquery.io/docs/plugins/sources/alibaba/overview)
+* [Oracle](https://www.cloudquery.io/docs/plugins/sources/oracle/overview)
+* [GitLab](https://www.cloudquery.io/docs/plugins/sources/gitlab/overview)
+* [HackNews](https://www.cloudquery.io/docs/plugins/sources/hackernews/overview)
+* [Shopify](https://www.cloudquery.io/docs/plugins/sources/shopify/overview)
+* [Stripe](https://www.cloudquery.io/docs/plugins/sources/stripe/overview)
+
+Numerous updates to [AWS](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/CHANGELOG.md), [GCP](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/CHANGELOG.md) and [Azure](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/CHANGELOG.md).
+
+## Other notable blogs and use-cases
+
+### Engineering
+
+- [Reducing Alert Fatigue with the PagerDuty Plugin](https://www.cloudquery.io/blog/announcing-pagerduty-plugin).
+
+### Security
+
+- [How to use CloudQuery for Attack Surface Management and Graph Visualization](https://www.cloudquery.io/how-to-guides/attack-surface-management-with-graph)
+
+### FinOps
+
+- [https://www.cloudquery.io/blog/azure-cost-optimization-with-cloudquery](https://www.cloudquery.io/blog/azure-cost-optimization-with-cloudquery)
