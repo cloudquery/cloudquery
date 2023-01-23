@@ -22,9 +22,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.0
-	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.24.0
+	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.19.0
-	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.0
+	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.0
@@ -38,7 +38,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.23.0
-	github.com/aws/aws-sdk-go-v2/service/efs v1.19.0
+	github.com/aws/aws-sdk-go-v2/service/efs v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/eks v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.0
@@ -82,7 +82,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.1.0
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.16.0
-	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.16.0
+	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/ses v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.16.0
@@ -94,7 +94,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/waf v1.12.0
-	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.24.1
+	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.24.2
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.28.0
 	github.com/aws/aws-sdk-go-v2/service/xray v1.16.0
 	github.com/aws/smithy-go v1.13.5
@@ -133,7 +133,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.21 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.28 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.22.0
-	github.com/aws/aws-sdk-go-v2/service/backup v1.19.0
+	github.com/aws/aws-sdk-go-v2/service/backup v1.19.1
 	github.com/aws/aws-sdk-go-v2/service/glue v1.39.0
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.21 // indirect
