@@ -31,10 +31,15 @@ To sync infrastructure data to S3, you will first need an installation of the Cl
 
 We will need to upload the sync results to S3 so that Athena can query them. We'll use the [AWS CLI](https://aws.amazon.com/cli/) to do this in this tutorial, but you can also use the AWS web console or Terraform/CloudFormation if you prefer.
 
-First, we'll create a bucket to store the data:
+Let's start by exporting the name of the bucket we'll be using in the rest of this guide as an environment variable:
 
 ```bash copy
-export BUCKET_NAME=cloudquery-athena-example
+export BUCKET_NAME=cloudquery-athena-example  # Change this to your own bucket name!
+```
+
+Now we will create a bucket to store the data:
+
+```bash copy
 aws s3 mb s3://$BUCKET_NAME
 ```
 
