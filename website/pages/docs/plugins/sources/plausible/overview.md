@@ -62,7 +62,7 @@ This is the (nested) spec used by this plugin:
 
 - `interval` (string array, optional, `date`):
     
-  Choose your reporting interval. Valid options are `date (always) and month (when specified period is longer than one calendar month).
+  Choose your reporting interval. Valid options are `date` (always) and month (when specified period is longer than one calendar month).
 
 - `base_url` (string, optional, `https://plausible.io`):
     
