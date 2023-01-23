@@ -21,7 +21,7 @@ kind: source
 spec:
   name: mixpanel
   path: cloudquery/mixpanel
-  version: "VERSION_SOURCE_STRIPE"
+  version: "VERSION_SOURCE_MIXPANEL"
   tables: ["*"]
   destinations: ["postgresql"]
   # Mixpanel specific configuration
