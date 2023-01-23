@@ -61,4 +61,4 @@ Numerous updates to [AWS](https://github.com/cloudquery/cloudquery/blob/main/plu
 
 ### FinOps
 
-- [https://www.cloudquery.io/blog/azure-cost-optimization-with-cloudquery](https://www.cloudquery.io/blog/azure-cost-optimization-with-cloudquery)
+- [Correlating Costs to Resources for Azure Cost Optimization with CloudQuery](/blog/azure-cost-optimization-with-cloudquery)
