@@ -42,7 +42,7 @@ aws s3 mb s3://$BUCKET_NAME
 
 We will configure the CloudQuery AWS source plugin to sync data from your AWS account(s). To do so, we'll create a file called `aws.yml` with the following config:
 
-```yaml title="aws.yml"
+```yaml copy title="aws.yml"
 kind: source
 spec:
   name: aws
@@ -58,7 +58,7 @@ This is the most basic configuration of the AWS source plugin. It will work as l
 
 Similar to the config we created for the AWS plugin, we also need a destination config that is configured to write the AWS data to JSON files in S3:
 
-```yaml title="s3.yml"
+```yaml copy title="s3.yml"
 kind: destination
 spec:
   name: "s3"
@@ -237,7 +237,7 @@ The crawler will also need additional permissions to perform all its tasks, such
 }
 ```
 
-```bash
+```bash copy
 aws iam put-role-policy \
     --role-name cloudquery-athena-example-crawler \
     --policy-name cloudquery-athena-example-crawler \
@@ -257,7 +257,7 @@ aws glue create-crawler \
 
 With our crawler created, we can run it on demand like this:
 
-```text
+```bash copy
 aws glue start-crawler --name cloudquery-athena-example
 ```
 
