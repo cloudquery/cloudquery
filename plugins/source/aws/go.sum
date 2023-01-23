@@ -90,8 +90,8 @@ github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.0 h1:Hdql8h9SancrQPqJoDcaJ
 github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.0/go.mod h1:1Li52ZBEvcubmtUtUFUjamRTQt4EoFzZpHDINdQ4Xso=
 github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.0 h1:GEG8nfEZ/JKZbou1O/pX2sxMifLsdI1vLVABoU0Ljw8=
 github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.0/go.mod h1:th8fks2kW4FFCUKUQenuEG9TEzMLVxeL0ckdJn/QVbI=
-github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.19.0 h1:p+OcsLTwgm2nYEohXLtvgcH85uw7hZM4RS5Q3wear6E=
-github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.19.0/go.mod h1:xHK1ta0bQEa5jL6rahKRJvsibjzDO7NTIs5itzsF4w8=
+github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.0 h1:mIvJvSPP4RS9ti1w5QVG2yGAEzu8EZHLwq2WLUfvRPE=
+github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.0/go.mod h1:xHK1ta0bQEa5jL6rahKRJvsibjzDO7NTIs5itzsF4w8=
 github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.1 h1:GNBbI19H8E9+KEBYSTS3Ye3nQLE4WmP2XXY2iv/F0s0=
 github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.1/go.mod h1:8qcyoqQjYm4jOQApmG43LtHG9ZehKXyCzAq2n+B/v2s=
 github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.0 h1:vuUng/+gXtRZ0LhMpgPy1D/yOcIo58hCQuukZhLFIEI=
