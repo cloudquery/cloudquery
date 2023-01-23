@@ -1,6 +1,6 @@
 # Table: mixpanel_export_events
 
-The composite primary key for this table is (**project_id**, **time**).
+The composite primary key for this table is (**project_id**, **time**, **distinct_id**, **event**).
 
 ## Columns
 
@@ -12,5 +12,6 @@ The composite primary key for this table is (**project_id**, **time**).
 |_cq_parent_id|UUID|
 |project_id (PK)|Int|
 |time (PK)|Timestamp|
-|event|String|
+|distinct_id (PK)|String|
+|event (PK)|String|
 |properties|JSON|

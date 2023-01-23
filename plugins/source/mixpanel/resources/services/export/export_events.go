@@ -16,7 +16,7 @@ func ExportEvents() *schema.Table {
 	return &schema.Table{
 		Name:      "mixpanel_export_events",
 		Resolver:  fetchExportEvents,
-		Transform: transformers.TransformWithStruct(&mixpanel.ExportEvent{}, client.SharedTransformers()...),
+		Transform: transformers.TransformWithStruct(&mixpanel.ExportEvent{}, client.SharedTransformers(transformers.WithPrimaryKeys("Event"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -30,6 +30,14 @@ func ExportEvents() *schema.Table {
 				Name:     "time",
 				Type:     schema.TypeTimestamp,
 				Resolver: resolveExportTime,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "distinct_id",
+				Type:     schema.TypeString,
+				Resolver: resolveDistinctID,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -60,4 +68,13 @@ func resolveExportTime(_ context.Context, meta schema.ClientMeta, r *schema.Reso
 		return fmt.Errorf("event time property is not a float: %T", ts)
 	}
 	return r.Set(c.Name, time.Unix(int64(tf), 0))
+}
+
+func resolveDistinctID(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+	e := r.Item.(mixpanel.ExportEvent)
+	val, ok := e.Properties["distinct_id"]
+	if !ok {
+		return errors.New("event does not have a distinct_id property")
+	}
+	return r.Set(c.Name, val)
 }
