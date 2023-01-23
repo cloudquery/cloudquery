@@ -74,7 +74,7 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*mixpanel.Client, erro
 		spec.StartDate = dt
 	}
 	if spec.EndDate == "" {
-		dt := time.Now().UTC().Add(-86400 * time.Second).Format(dateFormat)
+		dt := time.Now().UTC().AddDate(0, 0, -1).Format(dateFormat)
 		logger.Info().Str("end_date", dt).Msg("no end date provided, defaulting to yesterday")
 		spec.EndDate = dt
 	}
