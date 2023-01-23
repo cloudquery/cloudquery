@@ -82,5 +82,6 @@
   "plugins/source/alicloud": "1.0.0",
   "plugins/source/alicloud+FILLER": "0.0.0",
   "plugins/destination/mssql": "1.0.0",
-  "plugins/source/plausible": "1.0.0"
+  "plugins/source/plausible": "1.0.0",
+  "plugins/source/shopify": "1.0.0"
 }
