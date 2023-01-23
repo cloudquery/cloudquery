@@ -59,7 +59,7 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 	tableCount := len(tables.FlattenTables())
 
 	if !noMigrate {
-		fmt.Printf("Starting migration with %d tables for: %s -> %s\n",tableCount, sourceSpec.VersionString(), destinationStrings)
+		fmt.Printf("Starting migration with %d tables for: %s -> %s\n", tableCount, sourceSpec.VersionString(), destinationStrings)
 		log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start migration")
 		migrateStart := time.Now()
 

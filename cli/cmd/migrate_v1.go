@@ -10,7 +10,6 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-
 func migrateConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source, destinationsSpecs []specs.Destination) error {
 	destinationNames := make([]string, len(destinationsSpecs))
 	for i := range destinationsSpecs {
@@ -46,7 +45,9 @@ func migrateConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Sou
 	}
 
 	tables, err := sourceClient.GetDynamicTables(ctx)
-
+	if err != nil {
+		return fmt.Errorf("failed to get dynamic tables for source %s: %w", sourceSpec.Name, err)
+	}
 
 	tableCount := len(tables.FlattenTables())
 	fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations, "with", tableCount, "tables")

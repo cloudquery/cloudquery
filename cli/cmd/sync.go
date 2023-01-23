@@ -77,16 +77,22 @@ func sync(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to create discovery client for source %s: %w", sourceSpec.Name, err)
 		}
-		defer discoveryClient.Terminate()
+
 		versions, err := discoveryClient.GetVersions(ctx)
 		if err != nil {
+			if discoveryErr := discoveryClient.Terminate(); err != nil {
+				log.Error().Err(discoveryErr).Msg("failed to terminate discovery client")
+				fmt.Println("failed to terminate discovery client:", discoveryErr)
+			}
 			// If we get an error here, we assume that the plugin is not a v1 plugin and we try to sync it as a v0 plugin
 			if err := syncConnectionV0(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
 				return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 			}
 			return nil
 		}
-		discoveryClient.Terminate()
+		if err := discoveryClient.Terminate(); err != nil {
+			return fmt.Errorf("failed to terminate discovery client: %w", err)
+		}
 
 		if slices.Index(versions, "v1") != -1 {
 			if err := syncConnectionV1(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
@@ -96,7 +102,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 
 		if slices.Index(versions, "v0") != -1 {
-			if err := syncConnectionV1(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil{
+			if err := syncConnectionV1(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
 				return fmt.Errorf("failed to sync v0 source %s: %w", sourceSpec.Name, err)
 			}
 			return nil
@@ -107,4 +113,3 @@ func sync(cmd *cobra.Command, args []string) error {
 
 	return nil
 }
-
