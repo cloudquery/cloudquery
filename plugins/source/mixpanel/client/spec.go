@@ -36,8 +36,8 @@ func (s *Spec) SetDefaults(logger zerolog.Logger) {
 		s.StartDate = dt
 	}
 	if s.EndDate == "" {
-		dt := time.Now().UTC().AddDate(0, 0, -1).Format(dateFormat)
-		logger.Info().Str("end_date", dt).Msg("no end date provided, defaulting to yesterday")
+		dt := time.Now().UTC().Format(dateFormat)
+		logger.Info().Str("end_date", dt).Msg("no end date provided, defaulting to today")
 		s.EndDate = dt
 	}
 

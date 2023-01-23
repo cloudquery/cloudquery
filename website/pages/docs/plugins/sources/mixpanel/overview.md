@@ -51,7 +51,7 @@ This is the (nested) spec used by the Mixpanel source plugin:
   Start date to sync data from. Defaults to 30 days ago.
 
 - `end_date` (date in YYYY-MM-DD format, optional):
-  End date to sync data until. Defaults to yesterday.
+  End date to sync data until. Defaults to today.
 
 - `region` (string, optional):
   Your Mixpanel region. Defaults to "US". Possible values are "US" and "EU".

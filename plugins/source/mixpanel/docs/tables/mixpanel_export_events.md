@@ -1,6 +1,7 @@
 # Table: mixpanel_export_events
 
 The composite primary key for this table is (**project_id**, **time**, **distinct_id**, **event**).
+It supports incremental syncs based on the **time** column.
 
 ## Columns
 
@@ -11,7 +12,7 @@ The composite primary key for this table is (**project_id**, **time**, **distinc
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|Int|
-|time (PK)|Timestamp|
+|time (PK) (Incremental Key)|Timestamp|
 |distinct_id (PK)|String|
 |event (PK)|String|
 |properties|JSON|
