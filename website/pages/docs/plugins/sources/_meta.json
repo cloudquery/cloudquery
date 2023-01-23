@@ -23,6 +23,7 @@
   "snyk": "Snyk",
   "stripe": "Stripe",
   "pagerduty": "PagerDuty",
+  "plausible": "Plausible",
   "tailscale": "Tailscale",
   "terraform": "Terraform",
   "vercel": "Vercel"
