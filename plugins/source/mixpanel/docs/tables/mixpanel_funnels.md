@@ -1,6 +1,6 @@
 # Table: mixpanel_funnels
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **funnel_id**.
 
 ## Relations
 
@@ -13,8 +13,8 @@ The following tables depend on mixpanel_funnels:
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|Int|
-|funnel_id|Int|
+|funnel_id (PK)|Int|
 |name|String|
