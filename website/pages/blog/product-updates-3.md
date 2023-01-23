@@ -47,7 +47,7 @@ We've added 7 new source plugins to CQ to cover the long tail of infrastructure 
 * [Shopify](https://www.cloudquery.io/docs/plugins/sources/shopify/overview)
 * [Stripe](https://www.cloudquery.io/docs/plugins/sources/stripe/overview)
 
-Numerous updates to [AWS](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/CHANGELOG.md), [GCP](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/CHANGELOG.md) and [Azure](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/CHANGELOG.md).
+Numerous updates to [AWS](https://github.com/cloudquery/cloudquery/blob/40ff6b263b4ad0e96b00495731ed8f4247f87b52/plugins/source/aws/CHANGELOG.md), [GCP](https://github.com/cloudquery/cloudquery/blob/40ff6b263b4ad0e96b00495731ed8f4247f87b52/plugins/source/gcp/CHANGELOG.md) and [Azure](https://github.com/cloudquery/cloudquery/blob/40ff6b263b4ad0e96b00495731ed8f4247f87b52/plugins/source/azure/CHANGELOG.md).
 
 ## Other notable blogs and use-cases
 
