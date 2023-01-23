@@ -148,7 +148,7 @@ aws iam put-role-policy \
     --policy-document file://crawler-policy-s3-access.json
 ```
 
-The crawler will also need additional permissions to perform all its tasks, such as writing CloudWatch logs. We attach another policy to the role to give it these permissions. This is the same as the default policy created by AWS when creating a crawler through the console. You should review these permissions to ensure they are appropriate for your use case:
+The crawler will also need additional permissions to perform all its tasks, such as writing CloudWatch logs. We attach another policy to the role to give it these permissions. This is a simplified version of the default policy created by AWS when creating a crawler through the console. You should review these permissions to ensure they are appropriate for your use case:
 
 ```json copy title="crawler-policy.json"
 {
@@ -162,14 +162,6 @@ The crawler will also need additional permissions to perform all its tasks, such
                 "s3:ListBucket",
                 "s3:ListAllMyBuckets",
                 "s3:GetBucketAcl",
-                "ec2:DescribeVpcEndpoints",
-                "ec2:DescribeRouteTables",
-                "ec2:CreateNetworkInterface",
-                "ec2:DeleteNetworkInterface",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DescribeSecurityGroups",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeVpcAttribute",
                 "iam:ListRolePolicies",
                 "iam:GetRole",
                 "iam:GetRolePolicy",
@@ -182,62 +174,12 @@ The crawler will also need additional permissions to perform all its tasks, such
         {
             "Effect": "Allow",
             "Action": [
-                "s3:CreateBucket"
-            ],
-            "Resource": [
-                "arn:aws:s3:::aws-glue-*"
-            ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetObject",
-                "s3:PutObject",
-                "s3:DeleteObject"
-            ],
-            "Resource": [
-                "arn:aws:s3:::aws-glue-*/*",
-                "arn:aws:s3:::*/*aws-glue-*/*"
-            ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetObject"
-            ],
-            "Resource": [
-                "arn:aws:s3:::crawler-public*",
-                "arn:aws:s3:::aws-glue-*"
-            ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",
                 "logs:PutLogEvents"
             ],
             "Resource": [
                 "arn:aws:logs:*:*:/aws-glue/*"
-            ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ec2:CreateTags",
-                "ec2:DeleteTags"
-            ],
-            "Condition": {
-                "ForAllValues:StringEquals": {
-                    "aws:TagKeys": [
-                        "aws-glue-service-resource"
-                    ]
-                }
-            },
-            "Resource": [
-                "arn:aws:ec2:*:*:network-interface/*",
-                "arn:aws:ec2:*:*:security-group/*",
-                "arn:aws:ec2:*:*:instance/*"
             ]
         }
     ]
@@ -261,6 +203,12 @@ aws glue create-crawler \
     --targets "S3Targets=[{Path=s3://$BUCKET_NAME}]" \
     --schema-change-policy "UpdateBehavior=UPDATE_IN_DATABASE,DeleteBehavior=DEPRECATE_IN_DATABASE"
 ```
+
+import { Callout } from 'nextra-theme-docs'
+
+<Callout type="info">
+  If you see an error `An error occurred (AccessDeniedException) when calling the CreateCrawler operation: Cross-account pass role is not allowed`, make sure you updated the role ARN in the command above to that of the role we created earlier.
+</Callout>
 
 With our crawler created, we can run it on demand like this:
 
