@@ -33,7 +33,7 @@ spec:
 
 ## Configuration Reference
 
-This is the (nested) spec used by the Stripe source plugin:
+This is the (nested) spec used by the Mixpanel source plugin:
 
 - `username` (string, required):
   Your Service Account username from Mixpanel.
