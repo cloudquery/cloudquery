@@ -30,6 +30,8 @@ hackernews:
   - plugins/source/hackernews/**/*
 heroku:
   - plugins/source/heroku/**/*
+plausible:
+  - plugins/source/plausible/**/*
 okta:
   - plugins/source/okta/**/*
 oracle:

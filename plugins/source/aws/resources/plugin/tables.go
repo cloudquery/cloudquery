@@ -280,6 +280,7 @@ func tables() []*schema.Table {
 		iam.Accounts(),
 		iam.CredentialReports(),
 		iam.Groups(),
+		iam.InstanceProfiles(),
 		iam.OpenidConnectIdentityProviders(),
 		iam.PasswordPolicies(),
 		iam.Policies(),
