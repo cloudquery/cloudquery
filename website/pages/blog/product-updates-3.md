@@ -21,7 +21,7 @@ Hey everyone! Our monthly round-up of CloudQuery product and roadmap updates is 
 
 ### New Destinations
 
-We've added 7 new destinations to CQ!!
+We've added 8 new destinations to CQ!!
 
 * [MongoDB](/docs/plugins/destinations/mongodb/overview)
 * [Neo4j](/docs/plugins/destinations/neo4j/overview)
