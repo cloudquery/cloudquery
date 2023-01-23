@@ -108,10 +108,10 @@ func (c *Client) getColumnChange(col schema.Column, sqliteColumn *columnInfo) *c
 	columnType := c.SchemaTypeToSqlite(col.Type)
 
 	if sqliteColumn == nil {
-		return &columnChange{name: columnName, oldType: columnType, newType: columnType, new: true, oldPk: col.CreationOptions.PrimaryKey, newPk: col.CreationOptions.PrimaryKey}
+		return &columnChange{name: columnName, oldType: columnType, newType: columnType, new: true, oldPk: c.enabledPks() && col.CreationOptions.PrimaryKey, newPk: c.enabledPks() && col.CreationOptions.PrimaryKey}
 	}
 
-	return &columnChange{name: columnName, oldType: sqliteColumn.typ, newType: columnType, oldPk: sqliteColumn.pk != 0, newPk: col.CreationOptions.PrimaryKey}
+	return &columnChange{name: columnName, oldType: sqliteColumn.typ, newType: columnType, oldPk: c.enabledPks() && sqliteColumn.pk != 0, newPk: c.enabledPks() && col.CreationOptions.PrimaryKey}
 }
 
 func (c *Client) getColumnChanges(table *schema.Table) ([]*columnChange, error) {
