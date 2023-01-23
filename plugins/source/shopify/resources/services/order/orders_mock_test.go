@@ -38,5 +38,5 @@ func createOrders(router *mux.Router) error {
 }
 
 func TestOrders(t *testing.T) {
-	client.MockTestHelper(t, Orders(), createOrders)
+	client.MockTestHelper(t, Orders(), createOrders, client.TestOptions{})
 }

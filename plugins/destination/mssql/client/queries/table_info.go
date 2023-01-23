@@ -51,3 +51,15 @@ ORDER BY ic.key_ordinal`
 		sql.Named("schemaName", schemaName),
 	}
 }
+
+func TableExists(schemaName string, table *schema.Table) (query string, params []any) {
+	const tableExistsQuery = `SELECT COUNT(*)
+FROM sys.tables t
+    INNER JOIN sys.schemas s ON t.schema_id = s.schema_id
+WHERE s.[name] = @schemaName AND t.[name] = @tableName`
+
+	return tableExistsQuery, []any{
+		sql.Named("tableName", table.Name),
+		sql.Named("schemaName", schemaName),
+	}
+}

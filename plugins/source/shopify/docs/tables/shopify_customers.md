@@ -1,6 +1,7 @@
 # Table: shopify_customers
 
 The primary key for this table is **id**.
+It supports incremental syncs based on the **updated_at** column.
 
 ## Columns
 
@@ -11,10 +12,10 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|Int|
+|updated_at (Incremental Key)|Timestamp|
 |email|String|
 |accepts_marketing|Bool|
 |created_at|Timestamp|
-|updated_at|Timestamp|
 |first_name|String|
 |last_name|String|
 |orders_count|Int|

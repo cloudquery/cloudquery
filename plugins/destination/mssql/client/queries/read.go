@@ -7,19 +7,19 @@ import (
 )
 
 type readQueryBuilder struct {
-	Table              string
-	Columns            []string
-	CqSourceNameColumn string
-	CqSyncTimeColumn   string
+	Table            string
+	Columns          []string
+	SourceNameColumn string
+	SyncTimeColumn   string
 }
 
 func Read(schemaName, sourceName string, table *schema.Table) (query string, params []any) {
 	return execTemplate("read.sql.tpl",
 			&readQueryBuilder{
-				Table:              SanitizeID(schemaName, table.Name),
-				Columns:            Sanitized(table.Columns.Names()...),
-				CqSourceNameColumn: SanitizeID(schema.CqSourceNameColumn.Name),
-				CqSyncTimeColumn:   SanitizeID(schema.CqSyncTimeColumn.Name),
+				Table:            SanitizedTableName(schemaName, table),
+				Columns:          sanitized(table.Columns.Names()...),
+				SourceNameColumn: sanitizeID(schema.CqSourceNameColumn.Name),
+				SyncTimeColumn:   sanitizeID(schema.CqSyncTimeColumn.Name),
 			},
 		),
 		[]any{sql.Named("sourceName", sourceName)}

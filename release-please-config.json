@@ -28,8 +28,11 @@
     "plugins/source/tailscale": { "component": "plugins-source-tailscale" },
     "plugins/source/vercel": { "component": "plugins-source-vercel" },
     "plugins/source/pagerduty": {"component": "plugins-source-pagerduty"},
+    "plugins/source/plausible": {"component": "plugins-source-plausible"},
     "plugins/source/test": { "component": "plugins-source-test" },
     "plugins/source/terraform": { "component": "plugins-source-terraform" },
+    "plugins/source/shopify": { "component": "plugins-source-shopify" },
+    "plugins/source/stripe": { "component": "plugins-source-stripe" },
     "plugins/destination/postgresql": {
       "component": "plugins-destination-postgresql"
     },
@@ -62,6 +65,9 @@
     },
     "plugins/destination/kafka": {
       "component": "plugins-destination-kafka"
+    },
+    "plugins/destination/mssql": {
+      "component": "plugins-destination-mssql"
     },
     "plugins/destination/test": {
       "component": "plugins-destination-test"
