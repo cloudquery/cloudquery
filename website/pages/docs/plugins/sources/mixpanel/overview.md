@@ -11,6 +11,11 @@ The CloudQuery Mixpanel plugin pulls data from Mixpanel and loads it into any su
 
 In order to fetch information from Mixpanel, `cloudquery` needs to be authenticated using a [Service Account](https://developer.mixpanel.com/reference/service-accounts) from your Mixpanel account. You can view and manage your Service Accounts in Mixpanel `Organization Settings > Service Accounts`.
 
+## Incremental Syncing
+
+The Mixpanel plugin supports incremental syncing for event data. This means that only new events will be fetched from Mixpanel and loaded into your destination. This is done by keeping track of the last event fetched and only fetching events that has been created since then.
+To enable this, `backend` option must be set in the spec (as shown below). This is documented in the [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) section.
+
 ### Example
 
 This example syncs from Mixpanel to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
@@ -24,6 +29,7 @@ spec:
   version: "VERSION_SOURCE_MIXPANEL"
   tables: ["*"]
   destinations: ["postgresql"]
+  backend: local
   # Mixpanel specific configuration
   spec:
     username: "<YOUR_SERVICE_ACCOUNT_USER_HERE>"
