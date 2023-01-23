@@ -52,7 +52,7 @@ spec:
   destinations: ["s3"]
 ```
 
-This is the most basic configuration of the AWS source plugin. It will work as long as the AWS credentials you have configured in your environment have the appropriate permissions (e.g. via `aws sso login`). For more information on configuring the AWS source plugin, see the [AWS Source Plugin](/docs/plugins/source/aws) documentation.
+This is the most basic configuration of the AWS source plugin. It will work as long as the AWS credentials you have configured in your environment have the appropriate permissions (e.g. via `aws sso login`). For more information on configuring the AWS source plugin, see the [AWS Source Plugin](/docs/plugins/sources/aws/overview) documentation.
 
 ### Step 4: Configure the S3 Destination Plugin
 
@@ -71,7 +71,7 @@ spec:
     format: "json"
 ```
 
-For more information on configuring the S3 destination plugin, see the [S3 Destination Plugin](/docs/plugins/destination/s3) documentation.
+For more information on configuring the S3 destination plugin, see the [S3 Destination Plugin](/docs/plugins/destinations/s3/overview) documentation.
 
 ### Step 5: Run CloudQuery sync
 
