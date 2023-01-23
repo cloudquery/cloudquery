@@ -20,7 +20,8 @@ func NewBackendWrapper(b backend.Backend) *BackendWrapper {
 	}
 }
 
-func (b *BackendWrapper) SetIfMaximum(ctx context.Context, table, clientID string, value int64) error {
+// SetHWM sets the high watermark for the table and clientID pair.
+func (b *BackendWrapper) SetHWM(ctx context.Context, table, clientID string, value int64) error {
 	key := table + "|" + clientID
 
 	current, ok := b.lastValuePerID[key]

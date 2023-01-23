@@ -87,7 +87,7 @@ func postExportEvents(ctx context.Context, meta schema.ClientMeta, resource *sch
 		return nil
 	}
 
-	if err := cl.Backend.SetIfMaximum(ctx, key, cl.ID(), int64(ts)); err != nil {
+	if err := cl.Backend.SetHWM(ctx, key, cl.ID(), int64(ts)); err != nil {
 		return fmt.Errorf("failed to store state in backend: %w", err)
 	}
 
