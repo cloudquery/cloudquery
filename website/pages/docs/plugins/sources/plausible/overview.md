@@ -73,7 +73,7 @@ This is the (nested) spec used by this plugin:
 ### Sum all visitors since date
 
 ```sql
-select count(visitors) from plausible_stats_timeseries where date >= '2021-01-01';
+select sum(visitors) from plausible_stats_timeseries where date >= '2021-01-01';
 ```
 
 ### Select all dates where bounce rate was above 50%
