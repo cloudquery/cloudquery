@@ -1,5 +1,5 @@
 ---
-title: How to Load Infrastructure Data into Athena
+title: How to Load Infrastructure Data into AWS Athena
 tag: tutorial
 description: Load CloudQuery source data into AWS Athena.  
 author: hermanschaaf
