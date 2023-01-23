@@ -27,7 +27,7 @@ We've added 8 new destinations to CQ!!
 * [Neo4j](/docs/plugins/destinations/neo4j/overview)
 * [Kafka](/docs/plugins/destinations/kafka/overview)
 * [MSSQL](https://www.cloudquery.io/docs/plugins/destinations/mssql/overview)
-* [GCS](https://www.cloudquery.io/docs/plugins/destinations/gcs/overview)
+* [GCS](/docs/plugins/destinations/gcs/overview)
 * [S3](https://www.cloudquery.io/docs/plugins/destinations/s3/overview)
 * [File](https://www.cloudquery.io/docs/plugins/destinations/file/overview)
 * [Azure Blob Storage](https://www.cloudquery.io/docs/plugins/destinations/azblob/overview)
