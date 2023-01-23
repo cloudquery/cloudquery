@@ -43,6 +43,8 @@ Now we will create a bucket to store the data:
 aws s3 mb s3://$BUCKET_NAME
 ```
 
+This will create the bucket with default AWS SSE-S3 encryption. If you have different requirements for bucket setup and encryption, use those settings. The [s3api create-bucket command](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/create-bucket.html) has more fine-grained options.
+
 ### Step 3: Configure the AWS Source Plugin 
 
 We will configure the CloudQuery AWS source plugin to sync data from your AWS account(s). To do so, we'll create a file called `aws.yml` with the following config:
