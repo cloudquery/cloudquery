@@ -29,7 +29,7 @@ We've added 8 new destinations to CQ!!
 * [MSSQL](/docs/plugins/destinations/mssql/overview)
 * [GCS](/docs/plugins/destinations/gcs/overview)
 * [S3](/docs/plugins/destinations/s3/overview)
-* [File](https://www.cloudquery.io/docs/plugins/destinations/file/overview)
+* [File](/docs/plugins/destinations/file/overview)
 * [Azure Blob Storage](https://www.cloudquery.io/docs/plugins/destinations/azblob/overview)
 
 ## Sources
