@@ -1,1 +1,1 @@
-{{.Name }} {{ .Type }}
+{{.Name}} {{.Type}}{{with .Constraint}} {{.}}{{end}}

@@ -13,8 +13,7 @@ func TestAddPK(t *testing.T) {
 		expected   = `ALTER TABLE [cq].[table_name] ADD CONSTRAINT [table_name_cqpk]
   PRIMARY KEY (
   [_cq_id]
-  )
-);`
+  );`
 	)
 
 	query := AddPK(schemaName, &schema.Table{

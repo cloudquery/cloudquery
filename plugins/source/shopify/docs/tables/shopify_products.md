@@ -1,7 +1,7 @@
 # Table: shopify_products
 
 The primary key for this table is **id**.
-
+It supports incremental syncs based on the **updated_at** column.
 ## Relations
 
 The following tables depend on shopify_products:
@@ -17,13 +17,13 @@ The following tables depend on shopify_products:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|Int|
+|updated_at (Incremental Key)|Timestamp|
 |title|String|
 |body_html|String|
 |vendor|String|
 |product_type|String|
 |created_at|Timestamp|
 |handle|String|
-|updated_at|Timestamp|
 |published_at|Timestamp|
 |template_suffix|String|
 |status|String|
