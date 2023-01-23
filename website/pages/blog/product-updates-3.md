@@ -53,7 +53,7 @@ Numerous updates to [AWS](https://github.com/cloudquery/cloudquery/blob/main/plu
 
 ### Engineering
 
-- [Reducing Alert Fatigue with the PagerDuty Plugin](https://www.cloudquery.io/blog/announcing-pagerduty-plugin).
+- [Reducing Alert Fatigue with the PagerDuty Plugin](/blog/announcing-pagerduty-plugin).
 
 ### Security
 
