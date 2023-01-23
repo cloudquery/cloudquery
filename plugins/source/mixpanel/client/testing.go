@@ -104,7 +104,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 				MaxRetries:  1,
 			})
 		c := New(logger, spec, mpSpec, services, opts.Backend)
-		return &c, nil
+		return c, nil
 	}
 
 	p := source.NewPlugin(

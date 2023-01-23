@@ -20,17 +20,20 @@ type Client struct {
 
 	MPSpec   Spec
 	Services *mixpanel.Client
-	Backend  backend.Backend
+	Backend  *BackendWrapper
 }
 
-func New(logger zerolog.Logger, sourceSpec specs.Source, mpSpec Spec, services *mixpanel.Client, bk backend.Backend) Client {
-	return Client{
+func New(logger zerolog.Logger, sourceSpec specs.Source, mpSpec Spec, services *mixpanel.Client, bk backend.Backend) *Client {
+	c := &Client{
 		logger:     logger,
 		sourceSpec: sourceSpec,
 		MPSpec:     mpSpec,
 		Services:   services,
-		Backend:    bk,
 	}
+	if bk != nil {
+		c.Backend = NewBackendWrapper(bk)
+	}
+	return c
 }
 
 func (c *Client) Logger() *zerolog.Logger {
@@ -53,7 +56,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, o sou
 	}
 
 	cl := New(logger, s, *mpSpec, services, o.Backend)
-	return &cl, nil
+	return cl, nil
 }
 
 func getServiceClient(logger zerolog.Logger, spec *Spec) (*mixpanel.Client, error) {

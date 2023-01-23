@@ -2,6 +2,7 @@ package export
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"testing"
 	"time"
@@ -21,7 +22,7 @@ func createExportEvents(router *mux.Router) error {
 		if err := faker.FakeObject(&o[i]); err != nil {
 			return err
 		}
-		o[i].Properties = map[string]any{"time": start.Add(time.Duration(i) * time.Second).Unix()}
+		o[i].Properties = map[string]any{"time": start.Add(time.Duration(i) * time.Second).Unix(), "distinct_id": fmt.Sprintf("id%d", i)}
 	}
 
 	router.HandleFunc("/api/2.0/export", func(w http.ResponseWriter, r *http.Request) {

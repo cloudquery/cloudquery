@@ -3,6 +3,7 @@ package export
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/client"
@@ -12,11 +13,15 @@ import (
 	"github.com/pkg/errors"
 )
 
+const key = "mixpanel_export_events"
+
 func ExportEvents() *schema.Table {
 	return &schema.Table{
-		Name:      "mixpanel_export_events",
-		Resolver:  fetchExportEvents,
-		Transform: transformers.TransformWithStruct(&mixpanel.ExportEvent{}, client.SharedTransformers(transformers.WithPrimaryKeys("Event"))...),
+		Name:                 "mixpanel_export_events",
+		Resolver:             fetchExportEvents,
+		PostResourceResolver: postExportEvents,
+		Transform:            transformers.TransformWithStruct(&mixpanel.ExportEvent{}, client.SharedTransformers(transformers.WithPrimaryKeys("Event"))...),
+		IsIncremental:        true,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -31,7 +36,8 @@ func ExportEvents() *schema.Table {
 				Type:     schema.TypeTimestamp,
 				Resolver: resolveExportTime,
 				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
+					PrimaryKey:     true,
+					IncrementalKey: true,
 				},
 			},
 			{
@@ -49,11 +55,42 @@ func ExportEvents() *schema.Table {
 func fetchExportEvents(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 
-	ret, err := cl.Services.ExportData(ctx, cl.MPSpec.StartDate, cl.MPSpec.EndDate)
-	if err != nil {
-		return err
+	cursor := int64(0)
+	if cl.Backend != nil {
+		value, err := cl.Backend.Get(ctx, key, cl.ID())
+		if err != nil {
+			return fmt.Errorf("failed to retrieve state from backend: %w", err)
+		}
+		if value != "" {
+			valInt, err := strconv.ParseInt(value, 10, 64)
+			if err != nil {
+				return fmt.Errorf("retrieved invalid state value: %q %w", value, err)
+			}
+			cursor = valInt
+		}
 	}
-	res <- ret
+
+	err := cl.Services.ExportData(ctx, cl.MPSpec.StartDate, cl.MPSpec.EndDate, cursor, res)
+	return err
+}
+
+func postExportEvents(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	if cl.Backend == nil {
+		return nil
+	}
+
+	ev := resource.Item.(mixpanel.ExportEvent)
+	ts, ok := ev.Properties["time"].(float64)
+	if !ok {
+		cl.Logger().Warn().Msg("postExportEvents: event does not have a time property") // shouldn't happen as resolveExportTime would error out first
+		return nil
+	}
+
+	if err := cl.Backend.SetIfMaximum(ctx, key, cl.ID(), int64(ts)); err != nil {
+		return fmt.Errorf("failed to store state in backend: %w", err)
+	}
+
 	return nil
 }
 

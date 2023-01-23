@@ -14,32 +14,34 @@ type ExportEvent struct {
 	Properties map[string]any `json:"properties"`
 }
 
-func (c *Client) ExportData(ctx context.Context, startDate, endDate string) ([]ExportEvent, error) {
+func (c *Client) ExportData(ctx context.Context, startDate, endDate string, sinceTime int64, out chan<- any) error {
 	qp := url.Values{}
 	qp.Set("from_date", startDate)
 	qp.Set("to_date", endDate)
+	if sinceTime > 0 {
+		qp.Set("where", fmt.Sprintf(`properties["$time"]>=datetime(%d)`, sinceTime))
+	}
 
 	body, err := c.RequestWithReader(ctx, http.MethodGet, "/api/2.0/export", qp)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer body.Close()
 
-	var data []ExportEvent
 	s := bufio.NewScanner(body)
 	line := 0
 	for s.Scan() {
 		var d ExportEvent
 		if err := json.Unmarshal(s.Bytes(), &d); err != nil {
-			return nil, fmt.Errorf("error parsing line %d: %w", line, err)
+			return fmt.Errorf("error parsing line %d: %w", line, err)
 		}
 
-		data = append(data, d)
+		out <- d
 		line++
 	}
 	if err := s.Err(); err != nil {
-		return nil, fmt.Errorf("scanner failed on line %d: %w", line, err)
+		return fmt.Errorf("scanner failed on line %d: %w", line, err)
 	}
 
-	return data, nil
+	return nil
 }
