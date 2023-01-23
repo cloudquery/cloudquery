@@ -1,6 +1,6 @@
 # Mixpanel Plugin
 
-The Mixpanel Shopify plugin pulls data from Mixpanel and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+The Mixpanel plugin pulls data from Mixpanel and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
 
 ## Links
 
