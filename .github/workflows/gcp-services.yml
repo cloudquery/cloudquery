@@ -1,7 +1,7 @@
 name: Generate GCP Services
 on:
   schedule:
-    - cron: "60 * * * *"
+    - cron: "0 8 * * 1"
   workflow_dispatch:
 
 defaults:
