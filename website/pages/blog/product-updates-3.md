@@ -15,7 +15,7 @@ Hey everyone! Our monthly round-up of CloudQuery product and roadmap updates is 
 
 ## SDK Updates
 
-- We now support [incremental syncing](/docs/core-concepts/syncs#incremental-table-syncs) in alpha! This allow you to sync only new data from your sources. This is a huge performance improvement for large tables.
+- We now support [incremental syncing](/docs/core-concepts/syncs#incremental-table-syncs) in alpha! This allows you to sync only new data from your sources. This is a huge performance improvement for large tables.
 
 ## Destinations
 
