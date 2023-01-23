@@ -24,7 +24,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.19.0
-	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.0
+	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.0
@@ -133,7 +133,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.21 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.28 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.22.0
-	github.com/aws/aws-sdk-go-v2/service/backup v1.19.0
+	github.com/aws/aws-sdk-go-v2/service/backup v1.19.1
 	github.com/aws/aws-sdk-go-v2/service/glue v1.39.0
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.21 // indirect
