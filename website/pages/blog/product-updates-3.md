@@ -38,7 +38,7 @@ We've added 7 new destinations to CQ!!
 
 We've added 7 new source plugins to CQ to cover the long tail of infrastructure apps!
 
-* [Slack](https://www.cloudquery.io/docs/plugins/sources/slack/overview)
+* [Slack](/docs/plugins/sources/slack/overview)
 * [PagerDuty](https://www.cloudquery.io/docs/plugins/sources/pagerduty/overview)
 * [Alibaba Cloud](https://www.cloudquery.io/docs/plugins/sources/alicloud/overview)
 * [Oracle](https://www.cloudquery.io/docs/plugins/sources/oracle/overview)
