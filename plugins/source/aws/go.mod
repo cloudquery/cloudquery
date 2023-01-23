@@ -23,7 +23,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.0
-	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.19.0
+	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.0
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.0
@@ -34,7 +34,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.0
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.0
-	github.com/aws/aws-sdk-go-v2/service/ec2 v1.78.0
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.80.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.23.0
@@ -68,7 +68,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.15.0
-	github.com/aws/aws-sdk-go-v2/service/quicksight v1.29.0
+	github.com/aws/aws-sdk-go-v2/service/quicksight v1.30.0
 	github.com/aws/aws-sdk-go-v2/service/ram v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/rds v1.40.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.27.0
@@ -77,7 +77,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.0
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.29.0
-	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.62.0
+	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.63.0
 	github.com/aws/aws-sdk-go-v2/service/savingsplans v1.12.0
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.1.0
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.1
@@ -134,7 +134,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.28 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/backup v1.19.1
-	github.com/aws/aws-sdk-go-v2/service/glue v1.39.0
+	github.com/aws/aws-sdk-go-v2/service/glue v1.40.0
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21 // indirect
