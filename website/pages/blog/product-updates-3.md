@@ -44,7 +44,7 @@ We've added 8 new source plugins to CQ to cover the long tail of infrastructure 
 * [Oracle](/docs/plugins/sources/oracle/overview)
 * [GitLab](/docs/plugins/sources/gitlab/overview)
 * [Hacker News](/docs/plugins/sources/hackernews/overview)
-* [Shopify](https://www.cloudquery.io/docs/plugins/sources/shopify/overview)
+* [Shopify](/docs/plugins/sources/shopify/overview)
 * [Stripe](https://www.cloudquery.io/docs/plugins/sources/stripe/overview)
 
 Numerous updates to [AWS](https://github.com/cloudquery/cloudquery/blob/40ff6b263b4ad0e96b00495731ed8f4247f87b52/plugins/source/aws/CHANGELOG.md), [GCP](https://github.com/cloudquery/cloudquery/blob/40ff6b263b4ad0e96b00495731ed8f4247f87b52/plugins/source/gcp/CHANGELOG.md) and [Azure](https://github.com/cloudquery/cloudquery/blob/40ff6b263b4ad0e96b00495731ed8f4247f87b52/plugins/source/azure/CHANGELOG.md).
