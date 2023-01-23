@@ -47,7 +47,8 @@ func (*Client) TransformJSON(v *schema.JSON) any {
 	if v.Status != schema.Present {
 		return nil
 	}
-	return string(v.Bytes)
+
+	return unescape(string(v.Bytes))
 }
 
 func (*Client) TransformUUID(v *schema.UUID) any {
@@ -109,7 +110,7 @@ func (*Client) TransformText(v *schema.Text) any {
 	if v.Status != schema.Present {
 		return nil
 	}
-	return v.String()
+	return v.Str
 }
 
 func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
