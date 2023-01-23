@@ -43,7 +43,7 @@ We've added 7 new source plugins to CQ to cover the long tail of infrastructure 
 * [Alibaba Cloud](https://www.cloudquery.io/docs/plugins/sources/alicloud/overview)
 * [Oracle](https://www.cloudquery.io/docs/plugins/sources/oracle/overview)
 * [GitLab](https://www.cloudquery.io/docs/plugins/sources/gitlab/overview)
-* [HackNews](https://www.cloudquery.io/docs/plugins/sources/hackernews/overview)
+* [Hacker News](https://www.cloudquery.io/docs/plugins/sources/hackernews/overview)
 * [Shopify](https://www.cloudquery.io/docs/plugins/sources/shopify/overview)
 * [Stripe](https://www.cloudquery.io/docs/plugins/sources/stripe/overview)
 
