@@ -69,7 +69,7 @@ func getServiceClient(logger zerolog.Logger, spec *Spec) (*mixpanel.Client, erro
 	const dateFormat = "2006-01-02"
 
 	if spec.StartDate == "" {
-		dt := time.Now().UTC().Add(-30 * 86400 * time.Second).Format(dateFormat)
+		dt := time.Now().UTC().AddDate(0, 0, -30).Format(dateFormat)
 		logger.Info().Str("start_date", dt).Msg("no start date provided, defaulting to 30 days ago")
 		spec.StartDate = dt
 	}
