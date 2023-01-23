@@ -16,5 +16,6 @@ The primary key for this table is **arn**.
 |arn (PK)|String|
 |tags|JSON|
 |rule_ids|StringArray|
-|name|String|
 |rule_group_id|String|
+|metric_name|String|
+|name|String|

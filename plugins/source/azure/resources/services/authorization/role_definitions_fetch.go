@@ -3,7 +3,7 @@ package authorization
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -14,7 +14,7 @@ func fetchRoleDefinitions(ctx context.Context, meta schema.ClientMeta, parent *s
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager("global", nil)
+	pager := svc.NewListPager("subscriptions/"+cl.SubscriptionId, &armauthorization.RoleDefinitionsClientListOptions{Filter: nil})
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

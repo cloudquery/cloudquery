@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/google/go-github/v48/github"
@@ -41,7 +42,7 @@ func (c Client) WithOrg(org string) schema.ClientMeta {
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var spec Spec
 	err := s.UnmarshalSpec(&spec)
 	if err != nil {
@@ -66,11 +67,12 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 		logger: logger,
 		Github: GithubServices{
 			Actions:       c.Actions,
-			Teams:         c.Teams,
 			Billing:       c.Billing,
-			Repositories:  c.Repositories,
-			Organizations: c.Organizations,
+			Dependabot:    c.Dependabot,
 			Issues:        c.Issues,
+			Organizations: c.Organizations,
+			Repositories:  c.Repositories,
+			Teams:         c.Teams,
 		},
 		Orgs: spec.Orgs,
 	}, nil

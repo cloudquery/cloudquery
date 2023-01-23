@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strings"
 	"time"
 
 	"cloud.google.com/go/bigquery"
@@ -12,7 +13,7 @@ import (
 )
 
 const (
-	readSQL = "SELECT * FROM `%s.%s.%s` WHERE `_cq_source_name` = @cq_source_name"
+	readSQL = "SELECT %s FROM `%s.%s.%s` WHERE `_cq_source_name` = @cq_source_name order by _cq_sync_time asc"
 )
 
 func (*Client) createResultsArray(table *schema.Table) []bigquery.Value {
@@ -78,25 +79,27 @@ func (*Client) createResultsArray(table *schema.Table) []bigquery.Value {
 }
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
-	stmt := fmt.Sprintf(readSQL, c.pluginSpec.ProjectID, c.pluginSpec.DatasetID, table.Name)
-	client, err := c.bqClient(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to create client: %w", err)
+	colNames := make([]string, 0, len(table.Columns))
+	for _, col := range table.Columns {
+		colNames = append(colNames, col.Name)
 	}
-	q := client.Query(stmt)
+	cols := "`" + strings.Join(colNames, "`, `") + "`"
+	stmt := fmt.Sprintf(readSQL, cols, c.pluginSpec.ProjectID, c.pluginSpec.DatasetID, table.Name)
+	q := c.client.Query(stmt)
 	q.Parameters = []bigquery.QueryParameter{
 		{
 			Name:  "cq_source_name",
 			Value: sourceName,
 		},
 	}
+	q.Location = c.client.Location
 	it, err := q.Read(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to read table %s: %w", table.Name, err)
 	}
-	values := c.createResultsArray(table)
-	v := make([]any, len(values))
 	for {
+		values := c.createResultsArray(table)
+		v := make([]any, len(values))
 		err := it.Next(&values)
 		if err == iterator.Done {
 			break

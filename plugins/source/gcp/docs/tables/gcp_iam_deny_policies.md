@@ -2,7 +2,7 @@
 
 https://cloud.google.com/iam/docs/reference/rest/v2beta/policies#Policy
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**project_id**, **name**).
 
 ## Columns
 
@@ -10,16 +10,17 @@ The primary key for this table is **_cq_id**.
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
-|project_id|String|
-|annotations|JSON|
-|create_time|String|
-|delete_time|String|
-|display_name|String|
-|etag|String|
-|kind|String|
-|name|String|
-|rules|JSON|
+|project_id (PK)|String|
+|name (PK)|String|
 |uid|String|
-|update_time|String|
+|kind|String|
+|display_name|String|
+|annotations|JSON|
+|etag|String|
+|create_time|Timestamp|
+|update_time|Timestamp|
+|delete_time|Timestamp|
+|rules|JSON|
+|managing_authority|String|

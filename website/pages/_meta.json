@@ -13,6 +13,12 @@
     }
   },
   "docs": "Docs",
+  "how-to-guides": {
+    "title": "How-to Guides",
+    "theme": {
+      "typesetting": "article"
+    }
+  },
   "blog": {
     "title": "Blog",
     "theme": {

@@ -67,3 +67,35 @@ func (mr *MockRepositoriesServiceMockRecorder) ListByOrg(arg0, arg1, arg2 interf
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListByOrg", reflect.TypeOf((*MockRepositoriesService)(nil).ListByOrg), arg0, arg1, arg2)
 }
+
+// ListReleaseAssets mocks base method.
+func (m *MockRepositoriesService) ListReleaseAssets(arg0 context.Context, arg1, arg2 string, arg3 int64, arg4 *github.ListOptions) ([]*github.ReleaseAsset, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListReleaseAssets", arg0, arg1, arg2, arg3, arg4)
+	ret0, _ := ret[0].([]*github.ReleaseAsset)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListReleaseAssets indicates an expected call of ListReleaseAssets.
+func (mr *MockRepositoriesServiceMockRecorder) ListReleaseAssets(arg0, arg1, arg2, arg3, arg4 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListReleaseAssets", reflect.TypeOf((*MockRepositoriesService)(nil).ListReleaseAssets), arg0, arg1, arg2, arg3, arg4)
+}
+
+// ListReleases mocks base method.
+func (m *MockRepositoriesService) ListReleases(arg0 context.Context, arg1, arg2 string, arg3 *github.ListOptions) ([]*github.RepositoryRelease, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListReleases", arg0, arg1, arg2, arg3)
+	ret0, _ := ret[0].([]*github.RepositoryRelease)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListReleases indicates an expected call of ListReleases.
+func (mr *MockRepositoriesServiceMockRecorder) ListReleases(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListReleases", reflect.TypeOf((*MockRepositoriesService)(nil).ListReleases), arg0, arg1, arg2, arg3)
+}

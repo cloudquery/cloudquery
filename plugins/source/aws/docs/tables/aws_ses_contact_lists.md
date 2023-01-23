@@ -15,8 +15,9 @@ The composite primary key for this table is (**account_id**, **region**, **name*
 |account_id (PK)|String|
 |region (PK)|String|
 |name (PK)|String|
+|tags|JSON|
+|contact_list_name|String|
 |created_timestamp|Timestamp|
 |description|String|
 |last_updated_timestamp|Timestamp|
-|tags|JSON|
 |topics|JSON|

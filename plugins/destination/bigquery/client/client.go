@@ -12,18 +12,20 @@ import (
 )
 
 type Client struct {
+	destination.UnimplementedUnmanagedWriter
 	destination.DefaultReverseTransformer
 	logger     zerolog.Logger
 	spec       specs.Destination
 	metrics    destination.Metrics
-	batchSize  int
 	pluginSpec Spec
+	client     *bigquery.Client
 }
 
 func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (destination.Client, error) {
 	if destSpec.WriteMode != specs.WriteModeAppend {
 		return nil, fmt.Errorf("bigquery destination only supports append mode")
 	}
+	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "bq-dest").Logger(),
 		spec:   destSpec,
@@ -38,14 +40,14 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	}
 
 	c.pluginSpec = spec
-	c.batchSize = spec.BatchSize
-	// create a client to test that we can do it, but new clients will also be instantiated
-	// for queries so that we can use a new context there.
-	client, err := c.bqClient(ctx)
+
+	// the context here is used for token refresh so this is workaround as suggested
+	// https://github.com/googleapis/google-cloud-go/issues/946
+	// https://github.com/googleapis/google-cloud-go/commit/2d59af0cb37fb29e5b7980a15088938778f117c7
+	c.client, err = c.bqClient(context.Background())
 	if err != nil {
-		return nil, fmt.Errorf("failed to create new BigQuery client: %w", err)
+		return nil, err
 	}
-	defer client.Close()
 
 	return c, nil
 }
@@ -65,6 +67,6 @@ func (c *Client) bqClient(ctx context.Context) (*bigquery.Client, error) {
 	return client, nil
 }
 
-func (*Client) Close(_ context.Context) error {
-	return nil
+func (c *Client) Close(_ context.Context) error {
+	return c.client.Close()
 }

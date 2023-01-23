@@ -1,5 +1,7 @@
 # Table: azure_network_virtual_networks
 
+https://learn.microsoft.com/en-us/rest/api/virtualnetwork/virtual-networks/list-all?tabs=HTTP#virtualnetwork
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,8 +13,8 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|extended_location|JSON|
 |id (PK)|String|
+|extended_location|JSON|
 |location|String|
 |properties|JSON|
 |tags|JSON|

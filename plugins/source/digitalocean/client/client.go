@@ -9,6 +9,7 @@ import (
 	awscfg "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/smithy-go/logging"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/digitalocean/godo"
@@ -130,7 +131,7 @@ func (s *ServicesManager) ServicesByRegion(region string) *Services {
 	return s.services[region]
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	// providerConfig := config.(*Config)
 	var doSpec Spec
 	if err := s.UnmarshalSpec(&doSpec); err != nil {

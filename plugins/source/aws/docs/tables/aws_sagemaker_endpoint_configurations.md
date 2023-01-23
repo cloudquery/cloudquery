@@ -1,5 +1,7 @@
 # Table: aws_sagemaker_endpoint_configurations
 
+https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeEndpointConfig.html
+
 The primary key for this table is **arn**.
 
 ## Columns
@@ -15,6 +17,7 @@ The primary key for this table is **arn**.
 |arn (PK)|String|
 |tags|JSON|
 |creation_time|Timestamp|
+|endpoint_config_arn|String|
 |endpoint_config_name|String|
 |production_variants|JSON|
 |async_inference_config|JSON|

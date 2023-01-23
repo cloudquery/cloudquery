@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |administrative_actions|JSON|
+|tags|JSON|
 |creation_time|Timestamp|
 |file_system_id|String|
 |lifecycle|String|
@@ -23,6 +24,6 @@ The primary key for this table is **arn**.
 |name|String|
 |ontap_configuration|JSON|
 |open_zfs_configuration|JSON|
-|tags|JSON|
+|resource_arn|String|
 |volume_id|String|
 |volume_type|String|

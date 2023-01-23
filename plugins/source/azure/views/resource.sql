@@ -23,7 +23,7 @@ LOOP
     -- we use the double reverse here because split_part with negative indexes is not available in PostgreSQL < 14; https://pgpedia.info/postgresql-versions/postgresql-14.html#system_function_changes
     strSQL = strSQL || format('
         SELECT _cq_id, _cq_source_name, _cq_sync_time, %L as _cq_table, subscription_id, reverse(split_part(reverse(id), ''/''::TEXT, 1)) as id,
-        %s as name, %s as kind, %s as location
+        %s as name, %s as kind, %s as location, id AS full_id
         FROM %s',
         tbl,
         CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='name' AND table_name=tbl) THEN 'name' ELSE 'NULL' END,

@@ -14,10 +14,18 @@ This is a list of all official and community destination plugins.
     type="destination"
     plugins={
         [
+            { name: "Azure Blob Storage", stage:"Preview", id: `azblob` },
             { name: "BigQuery", stage:"Preview" },
-            { name: "CSV", stage:"Preview" },
+            { name: "CSV", stage:"Deprecated(Use File)" },
+            { name: "File", stage:"Preview" },
+            { name: "GCS", stage:"Preview" },
+            { name: "Kafka", stage:"Preview" },
+            { name: "MongoDB", stage:"Preview" },
+            { name: "Microsoft SQL Server", stage:"Preview", id: `mssql` },
+            { name: "Neo4j", stage:"Preview" },
             { name: "PostgreSQL", stage:"GA", meta: () => <sup>*</sup> },
             { name: "SQLite", stage:"Preview" },
+            { name: "S3", stage:"Preview" },
             { name: "Snowflake", stage:"Preview" },
         ]
     }

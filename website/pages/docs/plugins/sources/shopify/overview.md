@@ -1,0 +1,75 @@
+# Shopify Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", `shopify`)}/>
+
+The CloudQuery Shopify plugin pulls data from Shopify and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+
+## Authentication
+
+In order to fetch information from Shopify, `cloudquery` needs to be authenticated. Either an API key and password (in the case of basic custom/private apps) or an access token (for OAuth apps) is required for authentication.
+
+Refer to the Shopify Help Center article on [Custom apps](https://help.shopify.com/en/manual/apps/custom-apps) and create a custom app. Follow _Get the API credentials for a custom app_ section to get the credentials for _Admin API_ and put them in your plugin configuration as `api_key` and `api_secret`.
+
+If you have a large or busy store, API key/secret type credentials might not be enough due to the heavy rate limiting. In this case, you can use OAuth in your custom app to get an access token which allow many more requests a second. To use that token in your plugin configuration instead, just set it in `access_token` and remove `api_key` and `api_secret` sections. For more information, refer to [Shopify.dev](https://shopify.dev/apps/distribution) on the subject.
+
+## Incremental Syncing
+
+The Shopify plugin supports incremental syncing. This means that only new data will be fetched from Shopify and loaded into your destination for supported tables (support depending on API endpoint). This is done by keeping track of the last item fetched and only fetching data that has been created since then.
+To enable this, `backend` option must be set in the spec (as shown below). This is documented in the [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) section.
+
+# Configuration Reference
+
+This is the (nested) spec used by the Shopify source plugin:
+
+- `api_key` (string, required*):
+  The API Key for your custom app in your store.
+
+- `api_secret` (string, required*):
+  The API Secret for your custom app in your store.
+
+- `access_token` (string, required if api_key/secret is not used):
+  An access token for your Shopify custom app. This is an alternative way of authenticating, use either this or the ones above.
+
+- `shop_url` (string, required): The URL of your Shopify store. Must start with `https://` and end with `.myshopify.com`.
+
+- `timeout_secs` (integer in seconds, optional. Default: 10):
+  Timeout for requests against the Shopify Admin API.
+
+- `max_retries` (integer, optional. Default: 30):
+  Number of retries if a request was rate limited.
+
+- `page_size` (integer, optional. Default: 50):
+  Maximum number of items queried each request. Find an optimum value to balance amount of data fetched and requests timing out. Maximum value 250.
+
+## Example
+
+This example syncs from Shopify to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec). Incremental syncing is enabled and will be saved to a `.cq/state/` directory by default.
+
+```yaml
+kind: source
+# Common source-plugin configuration
+spec:
+  name: shopify
+  path: cloudquery/shopify
+  version: "VERSION_SOURCE_SHOPIFY"
+  tables: ["*"]
+  destinations: ["postgresql"]
+  backend: local
+  # Shopify specific configuration
+  spec:
+    api_key: "<YOUR_API_KEY_HERE>"
+    api_secret: "<YOUR_API_SECRET_HERE>"
+    shop_url: "https://<YOUR_SHOP>.myshopify.com"
+```
+
+# Query Examples
+
+## Get all your active products with a specific tag
+
+```sql copy
+SELECT * FROM shopify_products WHERE status='active' AND 'your-tag' = ANY(tags);
+```
+

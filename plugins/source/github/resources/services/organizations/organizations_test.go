@@ -33,7 +33,12 @@ func buildOrganizations(t *testing.T, ctrl *gomock.Controller) client.GithubServ
 	mock.EXPECT().GetOrgMembership(gomock.Any(), *u.Login, gomock.Any()).Return(
 		&m, &github.Response{}, nil)
 
-	return client.GithubServices{Organizations: mock}
+	dependabot := buildDependabot(t, ctrl)
+
+	return client.GithubServices{
+		Dependabot:    dependabot,
+		Organizations: mock,
+	}
 }
 
 func TestOrganizations(t *testing.T) {

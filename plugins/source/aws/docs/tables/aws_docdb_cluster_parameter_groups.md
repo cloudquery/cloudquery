@@ -19,4 +19,5 @@ The primary key for this table is **arn**.
 |parameters|JSON|
 |db_cluster_parameter_group_name|String|
 |db_parameter_group_family|String|
+|db_cluster_parameter_group_arn|String|
 |description|String|

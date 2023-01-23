@@ -1,5 +1,7 @@
 # Table: aws_glue_registry_schemas
 
+https://docs.aws.amazon.com/glue/latest/webapi/API_GetSchema.html
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
@@ -29,6 +31,7 @@ The following tables depend on aws_glue_registry_schemas:
 |next_schema_version|Int|
 |registry_arn|String|
 |registry_name|String|
+|schema_arn|String|
 |schema_checkpoint|Int|
 |schema_name|String|
 |schema_status|String|

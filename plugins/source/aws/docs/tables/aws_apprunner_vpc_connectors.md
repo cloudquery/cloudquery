@@ -21,5 +21,6 @@ The primary key for this table is **arn**.
 |security_groups|StringArray|
 |status|String|
 |subnets|StringArray|
+|vpc_connector_arn|String|
 |vpc_connector_name|String|
 |vpc_connector_revision|Int|

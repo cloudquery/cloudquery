@@ -15,4 +15,5 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 |account_id (PK)|String|
 |region (PK)|String|
 |id (PK)|String|
+|virtual_gateway_id|String|
 |virtual_gateway_state|String|

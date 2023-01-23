@@ -15,6 +15,7 @@ import (
 )
 
 type Client struct {
+	destination.UnimplementedManagedWriter
 	destination.DefaultReverseTransformer
 	db      *sql.DB
 	logger  zerolog.Logger
@@ -24,13 +25,13 @@ type Client struct {
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
 	c := &Client{
-		logger: logger.With().Str("module", "pg-dest").Logger(),
+		logger: logger.With().Str("module", "sqlite-dest").Logger(),
 	}
 
 	var sqliteSpec Spec
 	c.spec = spec
 	if err := spec.UnmarshalSpec(&sqliteSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal sqlite spec: %w", err)
 	}
 	sqliteSpec.SetDefaults()
 

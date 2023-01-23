@@ -19,4 +19,5 @@ The primary key for this table is **arn**.
 |health_check_ids|StringArray|
 |id|String|
 |name|String|
+|protection_arn|String|
 |resource_arn|String|

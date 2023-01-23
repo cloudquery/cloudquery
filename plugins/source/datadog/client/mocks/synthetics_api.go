@@ -69,9 +69,13 @@ func (mr *MockSyntheticsAPIClientMockRecorder) ListLocations(arg0 interface{}) *
 }
 
 // ListTests mocks base method.
-func (m *MockSyntheticsAPIClient) ListTests(arg0 context.Context) (datadogV1.SyntheticsListTestsResponse, *http.Response, error) {
+func (m *MockSyntheticsAPIClient) ListTests(arg0 context.Context, arg1 ...datadogV1.ListTestsOptionalParameters) (datadogV1.SyntheticsListTestsResponse, *http.Response, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListTests", arg0)
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTests", varargs...)
 	ret0, _ := ret[0].(datadogV1.SyntheticsListTestsResponse)
 	ret1, _ := ret[1].(*http.Response)
 	ret2, _ := ret[2].(error)
@@ -79,7 +83,8 @@ func (m *MockSyntheticsAPIClient) ListTests(arg0 context.Context) (datadogV1.Syn
 }
 
 // ListTests indicates an expected call of ListTests.
-func (mr *MockSyntheticsAPIClientMockRecorder) ListTests(arg0 interface{}) *gomock.Call {
+func (mr *MockSyntheticsAPIClientMockRecorder) ListTests(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTests", reflect.TypeOf((*MockSyntheticsAPIClient)(nil).ListTests), arg0)
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTests", reflect.TypeOf((*MockSyntheticsAPIClient)(nil).ListTests), varargs...)
 }

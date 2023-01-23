@@ -5,21 +5,29 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"sync"
 	"time"
 
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
+	serviceusage "cloud.google.com/go/serviceusage/apiv1"
+	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/googleapis/gax-go/v2"
 	grpczerolog "github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/rs/zerolog"
+	"golang.org/x/sync/errgroup"
+	"golang.org/x/sync/semaphore"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 const maxProjectIdsToLog int = 100
@@ -30,9 +38,14 @@ type Client struct {
 
 	ClientOptions []option.ClientOption
 	CallOptions   []gax.CallOption
-	// this is set by table client multiplexer
+
+	EnabledServices map[string]map[string]any
+	// this is set by table client project multiplexer
 	ProjectId string
-	OrgId     string
+	// this is set by table client Org multiplexer
+	OrgId string
+	// this is set by table client Location multiplexer
+	Location string
 	// Logger
 	logger zerolog.Logger
 }
@@ -44,6 +57,13 @@ func (c *Client) withProject(project string) *Client {
 	newClient := *c
 	newClient.logger = c.logger.With().Str("project_id", project).Logger()
 	newClient.ProjectId = project
+	return &newClient
+}
+
+func (c *Client) withLocation(location string) *Client {
+	newClient := *c
+	newClient.logger = c.logger.With().Str("location", location).Logger()
+	newClient.Location = location
 	return &newClient
 }
 
@@ -68,17 +88,21 @@ func (c *Client) ID() string {
 	if c.OrgId != "" {
 		return "org:" + c.OrgId
 	}
-	return c.ProjectId
+	if c.Location != "" {
+		return "project:" + c.ProjectId + ":location:" + c.Location
+	}
+	return "project:" + c.ProjectId
 }
 
 func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var err error
 	c := Client{
-		logger: logger,
+		logger:          logger,
+		EnabledServices: map[string]map[string]any{},
 	}
 	var gcpSpec Spec
 	if err := s.UnmarshalSpec(&gcpSpec); err != nil {
@@ -188,6 +212,16 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 
 	if len(projects) == 1 {
 		c.ProjectId = projects[0]
+	}
+	if gcpSpec.EnabledServicesOnly {
+		if err := c.configureEnabledServices(ctx, s.Concurrency); err != nil {
+			if status.Code(err) == codes.ResourceExhausted {
+				c.logger.Err(err).Msg("failed to list enabled services because of rate limiting. Consider setting larger values for `backoff_retries` and `backoff_delay`")
+			} else {
+				c.logger.Err(err).Msg("failed to list enabled services")
+			}
+			return nil, err
+		}
 	}
 
 	return &c, nil
@@ -368,4 +402,51 @@ func setUnion(a []string, b []string) []string {
 		union = append(union, s)
 	}
 	return union
+}
+
+func (c *Client) configureEnabledServices(ctx context.Context, concurrency uint64) error {
+	var esLock sync.Mutex
+	g, ctx := errgroup.WithContext(ctx)
+	goroutinesSem := semaphore.NewWeighted(int64(concurrency))
+	for _, p := range c.projects {
+		project := p
+		if err := goroutinesSem.Acquire(ctx, 1); err != nil {
+			return err
+		}
+		g.Go(func() error {
+			defer goroutinesSem.Release(1)
+			cl := c.withProject(project)
+			svc, err := cl.fetchEnabledServices(ctx)
+			esLock.Lock()
+			c.EnabledServices[project] = svc
+			esLock.Unlock()
+			return err
+		})
+	}
+	return g.Wait()
+}
+
+func (c *Client) fetchEnabledServices(ctx context.Context) (map[string]any, error) {
+	enabled := make(map[string]any)
+	req := &pb.ListServicesRequest{
+		Parent:   "projects/" + c.ProjectId,
+		PageSize: 200,
+		Filter:   "state:ENABLED",
+	}
+	gcpClient, err := serviceusage.NewClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return nil, err
+	}
+	it := gcpClient.ListServices(ctx, req, c.CallOptions...)
+	for {
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return nil, err
+		}
+		enabled[resp.GetConfig().Name] = resp
+	}
+	return enabled, nil
 }

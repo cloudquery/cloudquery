@@ -16,6 +16,7 @@ import (
 )
 
 type Client struct {
+	destination.UnimplementedManagedWriter
 	destination.DefaultReverseTransformer
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
@@ -73,7 +74,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
 	specPostgreSql.SetDefaults()
-	c.batchSize = specPostgreSql.BatchSize
+	c.batchSize = spec.BatchSize
 	logLevel, err := tracelog.LogLevelFromString(specPostgreSql.PgxLogLevel.String())
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", specPostgreSql.PgxLogLevel, err)

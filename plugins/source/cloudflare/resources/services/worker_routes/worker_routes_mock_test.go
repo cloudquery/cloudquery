@@ -17,10 +17,7 @@ func buildWorkerRoutes(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	if err := faker.FakeObject(&workerRoute); err != nil {
 		t.Fatal(err)
 	}
-	mock.EXPECT().ListWorkerRoutes(
-		gomock.Any(),
-		client.TestZoneID,
-	).Return(
+	mock.EXPECT().ListWorkerRoutes(gomock.Any(), cloudflare.ZoneIdentifier(client.TestZoneID), cloudflare.ListWorkerRoutesParams{}).Return(
 		cloudflare.WorkerRoutesResponse{
 			Routes: []cloudflare.WorkerRoute{workerRoute},
 		},

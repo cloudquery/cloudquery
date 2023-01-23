@@ -1,5 +1,7 @@
 # Table: aws_iam_openid_connect_identity_providers
 
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetOpenIDConnectProvider.html
+
 The primary key for this table is **arn**.
 
 ## Columns
@@ -12,9 +14,9 @@ The primary key for this table is **arn**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |arn (PK)|String|
+|tags|JSON|
 |client_id_list|StringArray|
 |create_date|Timestamp|
-|tags|JSON|
 |thumbprint_list|StringArray|
 |url|String|
 |result_metadata|JSON|

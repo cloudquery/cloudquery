@@ -31,11 +31,13 @@ jobs:
           cache: true
           cache-dependency-path: plugins/source/tailscale/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: cloudquery/golangci-lint-action@master
         with:
           version: v1.50.1
           working-directory: plugins/source/tailscale
           args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build
@@ -45,8 +47,6 @@ jobs:
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
-      - name: Cleanup after build
-        run: rm ./tailscale
       - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
         run: test "$(git status -s | wc -l)" -eq 0
@@ -65,9 +65,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.3-release-cache-${{ hashFiles('plugins/source/tailscale/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/source/tailscale/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.3-release-cache-plugins-source-tailscale
+            ${{ runner.os }}-go-1.19.4-release-cache-plugins-source-tailscale
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

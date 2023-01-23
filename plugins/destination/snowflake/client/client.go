@@ -14,6 +14,7 @@ import (
 )
 
 type Client struct {
+	destination.UnimplementedUnmanagedWriter
 	destination.DefaultReverseTransformer
 	db      *sql.DB
 	logger  zerolog.Logger
@@ -46,6 +47,12 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 		return nil, err
 	}
 	c.db = db
+	if _, err := c.db.ExecContext(ctx, createOrReplaceFileFormat); err != nil {
+		return nil, fmt.Errorf("failed to create file format %s: %w", createOrReplaceFileFormat, err)
+	}
+	if _, err := c.db.ExecContext(ctx, createOrReplaceStage); err != nil {
+		return nil, fmt.Errorf("failed to create stage %s: %w", createOrReplaceStage, err)
+	}
 	return c, nil
 }
 

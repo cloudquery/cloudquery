@@ -351,12 +351,15 @@
         },
         "api.mediatailor": {
           "regions": {
+            "af-south-1": {},
             "ap-northeast-1": {},
+            "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "eu-central-1": {},
             "eu-west-1": {},
             "us-east-1": {},
+            "us-east-2": {},
             "us-west-2": {}
           }
         },
@@ -384,6 +387,7 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -838,6 +842,7 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -901,6 +906,7 @@
             "fips-us-east-2": {},
             "fips-us-west-1": {},
             "fips-us-west-2": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -970,6 +976,21 @@
         "chime": {
           "regions": {
             "aws-global": {}
+          }
+        },
+        "cleanrooms": {
+          "regions": {
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "eu-central-1": {},
+            "eu-north-1": {},
+            "eu-west-1": {},
+            "eu-west-2": {},
+            "us-east-1": {},
+            "us-east-2": {},
+            "us-west-2": {}
           }
         },
         "cloud9": {
@@ -1200,6 +1221,7 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -2055,13 +2077,16 @@
             "ap-northeast-2": {},
             "ap-northeast-3": {},
             "ap-south-1": {},
+            "ap-south-2": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
+            "eu-south-2": {},
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
@@ -2270,6 +2295,7 @@
             "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
+            "eu-south-2": {},
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
@@ -2287,6 +2313,7 @@
             "fips-eu-central-2": {},
             "fips-eu-north-1": {},
             "fips-eu-south-1": {},
+            "fips-eu-south-2": {},
             "fips-eu-west-1": {},
             "fips-eu-west-2": {},
             "fips-eu-west-3": {},
@@ -2955,16 +2982,22 @@
         },
         "identitystore": {
           "regions": {
+            "af-south-1": {},
             "ap-northeast-1": {},
             "ap-northeast-2": {},
+            "ap-northeast-3": {},
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
+            "eu-south-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
+            "eu-west-3": {},
+            "sa-east-1": {},
             "us-east-1": {},
             "us-east-2": {},
             "us-west-2": {}
@@ -3272,6 +3305,7 @@
         },
         "kendra": {
           "regions": {
+            "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ca-central-1": {},
@@ -3281,6 +3315,34 @@
             "fips-us-west-2": {},
             "us-east-1": {},
             "us-east-2": {},
+            "us-west-2": {}
+          }
+        },
+        "kendra-ranking": {
+          "regions": {
+            "af-south-1": {},
+            "ap-east-1": {},
+            "ap-northeast-2": {},
+            "ap-northeast-3": {},
+            "ap-south-2": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "ap-southeast-3": {},
+            "ca-central-1": {},
+            "eu-central-1": {},
+            "eu-central-2": {},
+            "eu-north-1": {},
+            "eu-south-1": {},
+            "eu-south-2": {},
+            "eu-west-1": {},
+            "eu-west-2": {},
+            "eu-west-3": {},
+            "me-central-1": {},
+            "me-south-1": {},
+            "sa-east-1": {},
+            "us-east-1": {},
+            "us-east-2": {},
+            "us-west-1": {},
             "us-west-2": {}
           }
         },
@@ -3515,6 +3577,31 @@
             "us-west-2": {}
           }
         },
+        "license-manager-linux-subscriptions": {
+          "regions": {
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-northeast-3": {},
+            "ap-south-1": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "ca-central-1": {},
+            "eu-central-1": {},
+            "eu-north-1": {},
+            "eu-west-1": {},
+            "eu-west-2": {},
+            "eu-west-3": {},
+            "fips-us-east-1": {},
+            "fips-us-east-2": {},
+            "fips-us-west-1": {},
+            "fips-us-west-2": {},
+            "sa-east-1": {},
+            "us-east-1": {},
+            "us-east-2": {},
+            "us-west-1": {},
+            "us-west-2": {}
+          }
+        },
         "license-manager-user-subscriptions": {
           "regions": {
             "af-south-1": {},
@@ -3630,6 +3717,7 @@
         "m2": {
           "regions": {
             "ap-northeast-1": {},
+            "ap-northeast-2": {},
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
@@ -3640,9 +3728,13 @@
             "eu-west-3": {},
             "fips-ca-central-1": {},
             "fips-us-east-1": {},
+            "fips-us-east-2": {},
+            "fips-us-west-1": {},
             "fips-us-west-2": {},
             "sa-east-1": {},
             "us-east-1": {},
+            "us-east-2": {},
+            "us-west-1": {},
             "us-west-2": {}
           }
         },
@@ -3736,6 +3828,7 @@
         },
         "mediaconvert": {
           "regions": {
+            "af-south-1": {},
             "ap-northeast-1": {},
             "ap-northeast-2": {},
             "ap-south-1": {},
@@ -3956,6 +4049,10 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "fips-us-east-1": {},
+            "fips-us-east-2": {},
+            "fips-us-west-1": {},
+            "fips-us-west-2": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -4123,6 +4220,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
@@ -4893,6 +4991,7 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -4962,6 +5061,7 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -5181,6 +5281,7 @@
             "fips-us-east-2": {},
             "fips-us-west-1": {},
             "fips-us-west-2": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -5275,6 +5376,7 @@
             "fips-us-east-2": {},
             "fips-us-west-1": {},
             "fips-us-west-2": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -5291,14 +5393,17 @@
             "ap-northeast-2": {},
             "ap-northeast-3": {},
             "ap-south-1": {},
+            "ap-south-2": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ap-southeast-3": {},
             "ca-central-1": {},
             "ca-central-1-fips": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
+            "eu-south-2": {},
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
@@ -5418,6 +5523,9 @@
             "eu-central-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
+            "fips-ca-central-1": {},
+            "fips-us-east-1": {},
+            "fips-us-west-2": {},
             "us-east-1": {},
             "us-west-2": {}
           }
@@ -5579,6 +5687,32 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "sa-east-1": {},
+            "us-east-1": {},
+            "us-east-2": {},
+            "us-west-1": {},
+            "us-west-2": {}
+          }
+        },
+        "ssm-sap": {
+          "regions": {
+            "af-south-1": {},
+            "ap-east-1": {},
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-northeast-3": {},
+            "ap-south-1": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "ap-southeast-3": {},
+            "ca-central-1": {},
+            "eu-central-1": {},
+            "eu-north-1": {},
+            "eu-south-1": {},
+            "eu-west-1": {},
+            "eu-west-2": {},
+            "eu-west-3": {},
+            "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
             "us-east-2": {},
@@ -5988,6 +6122,7 @@
             "ap-northeast-2": {},
             "ap-southeast-1": {},
             "ca-central-1": {},
+            "ca-central-1-fips": {},
             "eu-central-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
@@ -6054,12 +6189,14 @@
             "fips-eu-west-1": {},
             "fips-eu-west-2": {},
             "fips-eu-west-3": {},
+            "fips-me-central-1": {},
             "fips-me-south-1": {},
             "fips-sa-east-1": {},
             "fips-us-east-1": {},
             "fips-us-east-2": {},
             "fips-us-west-1": {},
             "fips-us-west-2": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -6102,12 +6239,14 @@
             "fips-eu-west-1": {},
             "fips-eu-west-2": {},
             "fips-eu-west-3": {},
+            "fips-me-central-1": {},
             "fips-me-south-1": {},
             "fips-sa-east-1": {},
             "fips-us-east-1": {},
             "fips-us-east-2": {},
             "fips-us-west-1": {},
             "fips-us-west-2": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -6680,6 +6819,12 @@
             "cn-northwest-1": {}
           }
         },
+        "kendra-ranking": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
         "kinesis": {
           "regions": {
             "cn-north-1": {},
@@ -6690,6 +6835,11 @@
           "regions": {
             "cn-north-1": {},
             "cn-northwest-1": {}
+          }
+        },
+        "kinesisvideo": {
+          "regions": {
+            "cn-north-1": {}
           }
         },
         "kms": {
@@ -7940,6 +8090,7 @@
         },
         "databrew": {
           "regions": {
+            "fips-us-gov-west-1": {},
             "us-gov-west-1": {}
           }
         },
@@ -8223,6 +8374,12 @@
             "us-gov-west-1": {}
           }
         },
+        "kendra-ranking": {
+          "regions": {
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
         "kinesis": {
           "regions": {
             "us-gov-east-1": {},
@@ -8367,6 +8524,12 @@
         },
         "participant.connect": {
           "regions": {
+            "us-gov-west-1": {}
+          }
+        },
+        "pi": {
+          "regions": {
+            "us-gov-east-1": {},
             "us-gov-west-1": {}
           }
         },
@@ -8563,6 +8726,7 @@
         },
         "sms-voice": {
           "regions": {
+            "fips-us-gov-west-1": {},
             "us-gov-west-1": {}
           }
         },

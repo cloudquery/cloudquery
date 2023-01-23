@@ -10,12 +10,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchIncidentAlerts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchIncidentAlerts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cqClient := meta.(*client.Client)
 	concreteParent := parent.Item.(pagerduty.Incident)
 
 	more := true
-	var offset uint = 0
+	var offset uint
 	for more {
 		response, err := cqClient.PagerdutyClient.ListIncidentAlertsWithContext(ctx, concreteParent.ID, pagerduty.ListIncidentAlertsOptions{
 			Limit:  client.MaxPaginationLimit,

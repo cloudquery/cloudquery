@@ -13,6 +13,7 @@ func fetchSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *sch
 	// if we already fetched it then no need to run it again.
 	if len(cl.SubscriptionsObjects) != 0 {
 		res <- cl.SubscriptionsObjects
+		return nil
 	}
 
 	svc, err := armsubscription.NewSubscriptionsClient(cl.Creds, cl.Options)

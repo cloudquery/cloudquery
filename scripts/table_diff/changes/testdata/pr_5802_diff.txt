@@ -1,0 +1,27 @@
+diff --git a/plugins/source/aws/docs/tables/aws_ses_configuration_sets.md b/plugins/source/aws/docs/tables/aws_ses_configuration_sets.md
+index 50bd17719fbe..4f9c86fcc68b 100644
+--- a/plugins/source/aws/docs/tables/aws_ses_configuration_sets.md
++++ b/plugins/source/aws/docs/tables/aws_ses_configuration_sets.md
+@@ -2,7 +2,7 @@
+ 
+ https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetConfigurationSet.html
+ 
+-The composite primary key for this table is (**account_id**, **region**, **name**).
++The primary key for this table is **arn**.
+ 
+ ## Relations
+ 
+@@ -17,9 +17,10 @@ The following tables depend on aws_ses_configuration_sets:
+ |_cq_sync_time|Timestamp|
+ |_cq_id|UUID|
+ |_cq_parent_id|UUID|
+-|account_id (PK)|String|
+-|region (PK)|String|
+-|name (PK)|String|
++|account_id|String|
++|region|String|
++|arn (PK)|String|
++|name|String|
+ |delivery_options|JSON|
+ |reputation_options|JSON|
+ |sending_options|JSON|

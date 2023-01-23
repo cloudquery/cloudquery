@@ -15,8 +15,8 @@ This table depends on [github_organizations](github_organizations.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |org (PK)|String|
-|id (PK)|Int|
 |membership|JSON|
+|id (PK)|Int|
 |login|String|
 |node_id|String|
 |avatar_url|String|

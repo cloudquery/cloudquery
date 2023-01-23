@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/okta/okta-sdk-golang/v3/okta"
@@ -41,7 +42,7 @@ func New(logger zerolog.Logger, s specs.Source, okt *okta.APIClient) *Client {
 	}
 }
 
-func Configure(_ context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+func Configure(_ context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	oktaSpec := &Spec{}
 	if err := s.UnmarshalSpec(oktaSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal okta spec: %w", err)

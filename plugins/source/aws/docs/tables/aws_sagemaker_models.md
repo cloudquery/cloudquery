@@ -1,5 +1,7 @@
 # Table: aws_sagemaker_models
 
+https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeModel.html
+
 The primary key for this table is **arn**.
 
 ## Columns
@@ -16,6 +18,7 @@ The primary key for this table is **arn**.
 |tags|JSON|
 |creation_time|Timestamp|
 |execution_role_arn|String|
+|model_arn|String|
 |model_name|String|
 |containers|JSON|
 |enable_network_isolation|Bool|

@@ -54,6 +54,13 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 	return nil
 }
 
+func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, res [][]any) error {
+	if c.spec.ErrorOnWrite {
+		return errors.New("error_on_write is true")
+	}
+	return nil
+}
+
 func (*Client) Close(ctx context.Context) error {
 	return nil
 }

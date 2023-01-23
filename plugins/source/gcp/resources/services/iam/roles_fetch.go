@@ -2,30 +2,40 @@ package iam
 
 import (
 	"context"
+	"fmt"
 
+	iamadmin "cloud.google.com/go/iam/admin/apiv1"
+	iampb "cloud.google.com/go/iam/admin/apiv1/adminpb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"google.golang.org/api/iam/v1"
 )
 
 func fetchRoles(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
-	iamClient, err := iam.NewService(ctx, c.ClientOptions...)
+
+	iamClient, err := iamadmin.NewIamClient(ctx, c.ClientOptions...)
 	if err != nil {
 		return err
 	}
+	iamClient.CallOptions = &iamadmin.IamCallOptions{}
+
 	for {
-		output, err := iamClient.Projects.Roles.List("projects/" + c.ProjectId).PageSize(1000).PageToken(nextPageToken).Do()
+		req := &iampb.ListRolesRequest{
+			PageSize:  1000,
+			PageToken: nextPageToken,
+			Parent:    fmt.Sprintf("projects/%s", c.ProjectId),
+		}
+		resp, err := iamClient.ListRoles(ctx, req, c.CallOptions...)
 		if err != nil {
 			return err
 		}
-		res <- output.Roles
+		res <- resp.Roles
 
-		if output.NextPageToken == "" {
+		if resp.NextPageToken == "" {
 			break
 		}
-		nextPageToken = output.NextPageToken
+		nextPageToken = resp.NextPageToken
 	}
 	return nil
 }

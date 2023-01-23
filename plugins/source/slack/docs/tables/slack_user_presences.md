@@ -17,9 +17,9 @@ This table depends on [slack_users](slack_users.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |user_id (PK)|String|
+|last_activity|Timestamp|
 |presence|String|
 |online|Bool|
 |auto_away|Bool|
 |manual_away|Bool|
 |connection_count|Int|
-|last_activity|Timestamp|

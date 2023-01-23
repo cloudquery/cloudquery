@@ -3,32 +3,47 @@
   "release-type": "go",
   "packages": {
     "cli": { "component": "cli" },
+    "scaffold": { "component": "scaffold" },
+    "plugins/source/alicloud": { "component": "plugins-source-alicloud" },
     "plugins/source/aws": { "component": "plugins-source-aws" },
     "plugins/source/azure": { "component": "plugins-source-azure" },
     "plugins/source/azuredevops": { "component": "plugins-source-azuredevops" },
     "plugins/source/cloudflare": { "component": "plugins-source-cloudflare" },
     "plugins/source/crowdstrike": { "component": "plugins-source-crowdstrike" },
     "plugins/source/datadog": { "component": "plugins-source-datadog" },
-    "plugins/source/digitalocean": {
-      "component": "plugins-source-digitalocean"
-    },
+    "plugins/source/digitalocean": { "component": "plugins-source-digitalocean" },
+    "plugins/source/fastly": { "component": "plugins-source-fastly" },
     "plugins/source/gandi": { "component": "plugins-source-gandi" },
     "plugins/source/gcp": { "component": "plugins-source-gcp" },
     "plugins/source/github": { "component": "plugins-source-github" },
+    "plugins/source/gitlab": { "component": "plugins-source-gitlab" },
+    "plugins/source/hackernews": { "component": "plugins-source-hackernews" },
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
     "plugins/source/okta": { "component": "plugins-source-okta" },
+    "plugins/source/oracle": {"component": "plugins-source-oracle"},
+    "plugins/source/salesforce": { "component": "plugins-source-salesforce" },
     "plugins/source/slack": { "component": "plugins-source-slack" },
+    "plugins/source/snyk": { "component": "plugins-source-snyk" },
     "plugins/source/tailscale": { "component": "plugins-source-tailscale" },
     "plugins/source/vercel": { "component": "plugins-source-vercel" },
     "plugins/source/pagerduty": {"component": "plugins-source-pagerduty"},
+    "plugins/source/plausible": {"component": "plugins-source-plausible"},
     "plugins/source/test": { "component": "plugins-source-test" },
     "plugins/source/terraform": { "component": "plugins-source-terraform" },
+    "plugins/source/shopify": { "component": "plugins-source-shopify" },
+    "plugins/source/stripe": { "component": "plugins-source-stripe" },
     "plugins/destination/postgresql": {
       "component": "plugins-destination-postgresql"
     },
-    "plugins/destination/csv": {
-      "component": "plugins-destination-csv"
+    "plugins/destination/s3": {
+      "component": "plugins-destination-s3"
+    },
+    "plugins/destination/file": {
+      "component": "plugins-destination-file"
+    },
+    "plugins/destination/gcs": {
+      "component": "plugins-destination-gcs"
     },
     "plugins/destination/sqlite": {
       "component": "plugins-destination-sqlite"
@@ -38,6 +53,21 @@
     },
     "plugins/destination/bigquery": {
       "component": "plugins-destination-bigquery"
+    },
+    "plugins/destination/mongodb": {
+      "component": "plugins-destination-mongodb"
+    },
+    "plugins/destination/neo4j": {
+      "component": "plugins-destination-neo4j"
+    },
+    "plugins/destination/azblob": {
+      "component": "plugins-destination-azblob"
+    },
+    "plugins/destination/kafka": {
+      "component": "plugins-destination-kafka"
+    },
+    "plugins/destination/mssql": {
+      "component": "plugins-destination-mssql"
     },
     "plugins/destination/test": {
       "component": "plugins-destination-test"

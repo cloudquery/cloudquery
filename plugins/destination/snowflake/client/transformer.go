@@ -24,9 +24,9 @@ func (*Client) TransformInt8(v *schema.Int8) any {
 }
 
 func (*Client) TransformInt8Array(v *schema.Int8Array) any {
-	res := make([]string, len(v.Elements))
+	res := make([]int64, len(v.Elements))
 	for i, e := range v.Elements {
-		res[i] = e.String()
+		res[i] = e.Int
 	}
 	return res
 }

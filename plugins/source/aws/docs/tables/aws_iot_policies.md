@@ -16,4 +16,5 @@ The primary key for this table is **arn**.
 |region|String|
 |tags|JSON|
 |arn (PK)|String|
+|policy_arn|String|
 |policy_name|String|

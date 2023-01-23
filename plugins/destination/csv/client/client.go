@@ -40,6 +40,7 @@ type closeMsg struct {
 }
 
 type Client struct {
+	destination.UnimplementedManagedWriter
 	destination.DefaultReverseTransformer
 	logger  zerolog.Logger
 	spec    specs.Destination

@@ -31,29 +31,6 @@ function parseName(name) {
   return parts[0];
 }
 
-function isUnreleasedPlugin(key, name) {
-  if (key === "cli") {
-    return false;
-  }
-  const pluginDir = path.resolve("..", "plugins", key.slice(0, -1), name);
-  try {
-    // check that this is a plugin
-    fs.accessSync(path.resolve(pluginDir, "go.mod"), fs.constants.F_OK);
-  } catch (e) {
-    return false;
-  }
-
-  const changelogPath = path.resolve(pluginDir, "CHANGELOG.md");
-  try {
-    const changelogContent = fs.readFileSync(changelogPath, "utf8");
-    const emptyChangelog = !changelogContent.includes("1.0.0");
-    return emptyChangelog;
-  } catch (err) {
-    // no Changelog, this is new plugin
-    return true;
-  }
-}
-
 function getVersionsForPrefix(prefix, files) {
   return Object.fromEntries(
     files
@@ -87,12 +64,8 @@ const replaceMdxCodeVersions = (node) => {
       const match = node.value.match(pattern);
       if (match && match.length >= 1) {
         const name = match[1].toLowerCase();
-        const version = versions[key][name];
-        if (version !== undefined || isUnreleasedPlugin(key, name)) {
-          node.value = node.value.replace(pattern, version || "v1.0.0");
-        } else {
-          throw new Error(`Could not find version for ${key} ${name}`);
-        }
+        const version = versions[key][name] || "Unpublished";
+        node.value = node.value.replace(pattern, version);
       }
     });
   }

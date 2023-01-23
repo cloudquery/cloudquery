@@ -1,40 +1,36 @@
 package iam
 
 import (
-	"encoding/json"
-	"net/http"
+	"context"
+	"fmt"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/julienschmidt/httprouter"
+	"google.golang.org/grpc"
 
-	iam "google.golang.org/api/iam/v2beta"
+	pb "google.golang.org/genproto/googleapis/iam/v2"
 )
 
-func createDenyPolicies(mux *httprouter.Router) error {
-	var item iam.GoogleIamV2betaPolicy
-	if err := faker.FakeObject(&item); err != nil {
-		return err
-	}
-
-	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &iam.GoogleIamV2betaListPoliciesResponse{
-			Policies: []*iam.GoogleIamV2betaPolicy{&item},
-		}
-		b, err := json.Marshal(resp)
-		if err != nil {
-			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
-			return
-		}
-		if _, err := w.Write(b); err != nil {
-			http.Error(w, "failed to write", http.StatusBadRequest)
-			return
-		}
-	})
+func createDenyPolicies(gsrv *grpc.Server) error {
+	fakeServer := &fakeDenyPoliciesServer{}
+	pb.RegisterPoliciesServer(gsrv, fakeServer)
 	return nil
 }
 
+type fakeDenyPoliciesServer struct {
+	pb.UnimplementedPoliciesServer
+}
+
+func (*fakeDenyPoliciesServer) ListPolicies(context.Context, *pb.ListPoliciesRequest) (*pb.ListPoliciesResponse, error) {
+	resp := pb.ListPoliciesResponse{}
+	if err := faker.FakeObject(&resp); err != nil {
+		return nil, fmt.Errorf("failed to fake data: %w", err)
+	}
+	resp.NextPageToken = ""
+	return &resp, nil
+}
+
 func TestDenyPolicies(t *testing.T) {
-	client.MockTestRestHelper(t, DenyPolicies(), createDenyPolicies, client.TestOptions{})
+	client.MockTestGrpcHelper(t, DenyPolicies(), createDenyPolicies, client.TestOptions{})
 }

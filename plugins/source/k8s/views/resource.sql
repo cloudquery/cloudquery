@@ -19,7 +19,7 @@ BEGIN
             strSQL = strSQL || ' UNION ALL ';
         END IF;
         -- create an SQL query to select from table and transform it into our resources view schema
-        strSQL = strSQL || format('SELECT _cq_id, _cq_source_name, _cq_sync_time, %L AS cq_table, context, uid FROM %s', tbl, tbl);
+        strSQL = strSQL || format('SELECT _cq_id, _cq_source_name, _cq_sync_time, %L AS _cq_table, context, uid FROM %s', tbl, tbl);
     END LOOP;
     IF strSQL = ''::TEXT THEN
         RAISE EXCEPTION 'No tables found with UID and CONTEXT columns. Run a sync first and try again.';

@@ -15,9 +15,6 @@ The following tables depend on digitalocean_droplets:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|backup_ids|IntArray|
-|snapshot_ids|IntArray|
-|volume_ids|StringArray|
 |id (PK)|Int|
 |name|String|
 |memory|Int|
@@ -27,7 +24,9 @@ The following tables depend on digitalocean_droplets:
 |image|JSON|
 |size|JSON|
 |size_slug|String|
+|backup_ids|IntArray|
 |next_backup_window|JSON|
+|snapshot_ids|IntArray|
 |features|StringArray|
 |locked|Bool|
 |status|String|
@@ -35,4 +34,5 @@ The following tables depend on digitalocean_droplets:
 |created_at|String|
 |kernel|JSON|
 |tags|StringArray|
+|volume_ids|StringArray|
 |vpc_uuid|String|

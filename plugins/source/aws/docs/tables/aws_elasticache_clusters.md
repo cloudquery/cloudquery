@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |at_rest_encryption_enabled|Bool|
 |auth_token_enabled|Bool|
 |auth_token_last_modified_date|Timestamp|
@@ -46,3 +47,4 @@ The primary key for this table is **arn**.
 |snapshot_retention_limit|Int|
 |snapshot_window|String|
 |transit_encryption_enabled|Bool|
+|transit_encryption_mode|String|

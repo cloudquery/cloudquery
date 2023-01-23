@@ -1,5 +1,7 @@
 # Table: aws_ecr_registry_policies
 
+https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_GetRegistryPolicy.html
+
 The composite primary key for this table is (**account_id**, **region**, **registry_id**).
 
 ## Columns
@@ -14,3 +16,4 @@ The composite primary key for this table is (**account_id**, **region**, **regis
 |region (PK)|String|
 |registry_id (PK)|String|
 |policy_text|JSON|
+|result_metadata|JSON|

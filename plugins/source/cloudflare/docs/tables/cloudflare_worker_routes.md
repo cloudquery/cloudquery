@@ -14,5 +14,4 @@ The primary key for this table is **id**.
 |zone_id|String|
 |id (PK)|String|
 |pattern|String|
-|enabled|Bool|
 |script|String|

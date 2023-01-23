@@ -1,0 +1,14 @@
+variables:
+  component: destination/kafka
+  binary: kafka
+
+project_name: plugins/destination/kafka
+
+monorepo:
+  tag_prefix: plugins-destination-kafka-
+  dir: plugins/destination/kafka
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml
