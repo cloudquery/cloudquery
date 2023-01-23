@@ -41,7 +41,7 @@ We've added 8 new source plugins to CQ to cover the long tail of infrastructure 
 * [Slack](/docs/plugins/sources/slack/overview)
 * [PagerDuty](/docs/plugins/sources/pagerduty/overview)
 * [Alibaba Cloud](/docs/plugins/sources/alicloud/overview)
-* [Oracle](https://www.cloudquery.io/docs/plugins/sources/oracle/overview)
+* [Oracle](/docs/plugins/sources/oracle/overview)
 * [GitLab](https://www.cloudquery.io/docs/plugins/sources/gitlab/overview)
 * [Hacker News](/docs/plugins/sources/hackernews/overview)
 * [Shopify](https://www.cloudquery.io/docs/plugins/sources/shopify/overview)
