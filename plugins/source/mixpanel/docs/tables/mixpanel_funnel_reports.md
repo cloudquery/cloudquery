@@ -1,5 +1,7 @@
 # Table: mixpanel_funnel_reports
 
+https://developer.mixpanel.com/reference/funnels-query
+
 The composite primary key for this table is (**funnel_id**, **date**).
 
 ## Relations

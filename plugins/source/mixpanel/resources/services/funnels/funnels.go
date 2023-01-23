@@ -11,9 +11,10 @@ import (
 
 func Funnels() *schema.Table {
 	return &schema.Table{
-		Name:      "mixpanel_funnels",
-		Resolver:  fetchFunnels,
-		Transform: transformers.TransformWithStruct(&mixpanel.Funnel{}, client.SharedTransformers(transformers.WithPrimaryKeys("FunnelID"))...),
+		Name:        "mixpanel_funnels",
+		Description: `https://developer.mixpanel.com/reference/funnels-list-saved`,
+		Resolver:    fetchFunnels,
+		Transform:   transformers.TransformWithStruct(&mixpanel.Funnel{}, client.SharedTransformers(transformers.WithPrimaryKeys("FunnelID"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

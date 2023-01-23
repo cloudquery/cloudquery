@@ -1,5 +1,7 @@
 # Table: mixpanel_cohorts
 
+https://developer.mixpanel.com/reference/cohorts-list
+
 The primary key for this table is **id**.
 
 ## Relations

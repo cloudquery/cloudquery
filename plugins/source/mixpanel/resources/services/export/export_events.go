@@ -18,6 +18,7 @@ const key = "mixpanel_export_events"
 func ExportEvents() *schema.Table {
 	return &schema.Table{
 		Name:                 "mixpanel_export_events",
+		Description:          `https://developer.mixpanel.com/reference/raw-event-export`,
 		Resolver:             fetchExportEvents,
 		PostResourceResolver: postExportEvents,
 		Transform:            transformers.TransformWithStruct(&mixpanel.ExportEvent{}, client.SharedTransformers(transformers.WithPrimaryKeys("Event"))...),

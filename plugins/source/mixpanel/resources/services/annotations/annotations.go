@@ -12,9 +12,10 @@ import (
 
 func Annotations() *schema.Table {
 	return &schema.Table{
-		Name:      "mixpanel_annotations",
-		Resolver:  fetchAnnotations,
-		Transform: transformers.TransformWithStruct(&mixpanel.Annotation{}, client.SharedTransformers(transformers.WithPrimaryKeys("ID"))...),
+		Name:        "mixpanel_annotations",
+		Description: `https://developer.mixpanel.com/reference/list-all-annotations-for-project`,
+		Resolver:    fetchAnnotations,
+		Transform:   transformers.TransformWithStruct(&mixpanel.Annotation{}, client.SharedTransformers(transformers.WithPrimaryKeys("ID"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

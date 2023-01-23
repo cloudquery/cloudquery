@@ -1,5 +1,7 @@
 # Table: mixpanel_annotations
 
+https://developer.mixpanel.com/reference/list-all-annotations-for-project
+
 The primary key for this table is **id**.
 
 ## Columns
