@@ -57,7 +57,7 @@ Numerous updates to [AWS](https://github.com/cloudquery/cloudquery/blob/main/plu
 
 ### Security
 
-- [How to use CloudQuery for Attack Surface Management and Graph Visualization](https://www.cloudquery.io/how-to-guides/attack-surface-management-with-graph)
+- [How to use CloudQuery for Attack Surface Management and Graph Visualization](/how-to-guides/attack-surface-management-with-graph)
 
 ### FinOps
 
