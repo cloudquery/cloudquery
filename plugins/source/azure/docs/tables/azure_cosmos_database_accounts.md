@@ -18,6 +18,7 @@ The following tables depend on azure_cosmos_database_accounts:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|subscription_id|String|
 |id (PK)|String|
 |identity|JSON|
 |kind|String|

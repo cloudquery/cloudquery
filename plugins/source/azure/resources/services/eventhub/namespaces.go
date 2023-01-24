@@ -31,6 +31,9 @@ func Namespaces() *schema.Table {
 				},
 			},
 		},
+		Relations: []*schema.Table{
+			namespaceNetworkRuleSets(),
+		},
 	}
 }
 
