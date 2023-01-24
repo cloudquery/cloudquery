@@ -46,8 +46,6 @@ func (s *Spec) Validate() error {
 		return fmt.Errorf("path should not start with a slash")
 	}
 
-	
-
 	if s.Path != path.Clean(s.Path) {
 		return fmt.Errorf("path should not contain relative paths or duplicate slashes")
 	}
