@@ -34,8 +34,8 @@ END AS "execution_time"  \gset
 \set check_id "2.7"
 \echo "Executing check 2.7"
 \ir ../queries/security/defender_on_for_container_registeries.sql
-\set check_id "2.9"
-\echo "Executing check 2.9"
+\set check_id "2.8"
+\echo "Executing check 2.8"
 \ir ../queries/security/defender_on_for_key_vault.sql
 \set check_id "2.10"
 \echo "Executing check 2.10"
