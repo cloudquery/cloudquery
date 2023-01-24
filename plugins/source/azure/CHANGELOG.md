@@ -5,6 +5,37 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v3.4.0...plugins-source-azure-v3.5.0) (2023-01-24)
+
+
+### Features
+
+* **docs:** Add descriptions to tables `a-b` ([cf8de61](https://github.com/cloudquery/cloudquery/commit/cf8de61f40733ba1bcafde0100941c9efcf14b81))
+* **docs:** Add descriptions to tables `c` ([#6932](https://github.com/cloudquery/cloudquery/issues/6932)) ([3152fcb](https://github.com/cloudquery/cloudquery/commit/3152fcb4097b9ac2dbcc8070030a194f793dbf74))
+* **docs:** Add descriptions to tables `d-m` ([#6934](https://github.com/cloudquery/cloudquery/issues/6934)) ([93b41c2](https://github.com/cloudquery/cloudquery/commit/93b41c2bc1d991c42882e0e4d9fc21ba0e813e8e))
+* **docs:** Add descriptions to tables `n-w` ([#6936](https://github.com/cloudquery/cloudquery/issues/6936)) ([d473aae](https://github.com/cloudquery/cloudquery/commit/d473aae7bcf5ad55d74ae22476185941b56413ae))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azcore to v1.3.0 ([#6955](https://github.com/cloudquery/cloudquery/issues/6955)) ([66bfdf3](https://github.com/cloudquery/cloudquery/commit/66bfdf30343f6d8fc1b8cac9675631095ebfc01e))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice to v2 ([#6937](https://github.com/cloudquery/cloudquery/issues/6937)) ([b5245cf](https://github.com/cloudquery/cloudquery/commit/b5245cf4c28f6442c67b9c8d275d4d5c1afd806b))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization to v2 ([#6938](https://github.com/cloudquery/cloudquery/issues/6938)) ([8e96e67](https://github.com/cloudquery/cloudquery/commit/8e96e6750046c1d9a764e38f513f85b70989f128))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice to v1 ([#6939](https://github.com/cloudquery/cloudquery/issues/6939)) ([7c2ab93](https://github.com/cloudquery/cloudquery/commit/7c2ab936875d66f4093a08b228b59e006f6d2ac3))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute to v4 ([#6554](https://github.com/cloudquery/cloudquery/issues/6554)) ([b6c2936](https://github.com/cloudquery/cloudquery/commit/b6c29362681d7ddd3f33aac79f40ae7ef0fb1192))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance to v2 ([#6940](https://github.com/cloudquery/cloudquery/issues/6940)) ([726d86e](https://github.com/cloudquery/cloudquery/commit/726d86ec2fa53bf8620430b08c9efd4af0488594))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice to v2 ([#6941](https://github.com/cloudquery/cloudquery/issues/6941)) ([3310640](https://github.com/cloudquery/cloudquery/commit/331064075142d23ea63cf9857417b99d2e743e85))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos to v2 ([#6942](https://github.com/cloudquery/cloudquery/issues/6942)) ([99bf26b](https://github.com/cloudquery/cloudquery/commit/99bf26bda157da2c874fe07be170ac85927c530e))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory to v3 ([#6943](https://github.com/cloudquery/cloudquery/issues/6943)) ([70bba7c](https://github.com/cloudquery/cloudquery/commit/70bba7c49df0739ae90d690fd138f18bd7294ca6))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid to v2 ([#6944](https://github.com/cloudquery/cloudquery/issues/6944)) ([01ba430](https://github.com/cloudquery/cloudquery/commit/01ba430f5773de967bc591f27e349326f5312dbe))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork to v2 ([#6945](https://github.com/cloudquery/cloudquery/issues/6945)) ([aabf093](https://github.com/cloudquery/cloudquery/commit/aabf09369fd56023420c422cce101fdaf636a870))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction to v2 ([#6946](https://github.com/cloudquery/cloudquery/issues/6946)) ([2ba9008](https://github.com/cloudquery/cloudquery/commit/2ba90088c0519d3fdc193f61bbf81f0798fcaee3))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers to v2 ([#6947](https://github.com/cloudquery/cloudquery/issues/6947)) ([4a35095](https://github.com/cloudquery/cloudquery/commit/4a35095d9c7063f5c36ce7ff00289058d3da54b9))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis to v2 ([#6948](https://github.com/cloudquery/cloudquery/issues/6948)) ([d9f0d02](https://github.com/cloudquery/cloudquery/commit/d9f0d020a8dc9ea984b1b51e0f9b00cff845b997))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache to v2 ([#6949](https://github.com/cloudquery/cloudquery/issues/6949)) ([869021e](https://github.com/cloudquery/cloudquery/commit/869021e8283d7abde7776a0e85c2cd1c7a0b5706))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.28.0 ([#7009](https://github.com/cloudquery/cloudquery/issues/7009)) ([12ac005](https://github.com/cloudquery/cloudquery/commit/12ac005428a355d06a5939fbe06a82d49533e662))
+* Rules for azure ([#7056](https://github.com/cloudquery/cloudquery/issues/7056)) ([5999548](https://github.com/cloudquery/cloudquery/commit/5999548516182019c4bff62ec2fe1a188ef10605))
+
 ## [3.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v3.3.1...plugins-source-azure-v3.4.0) (2023-01-17)
 
 
