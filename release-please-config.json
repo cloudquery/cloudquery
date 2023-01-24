@@ -33,6 +33,7 @@
     "plugins/source/terraform": { "component": "plugins-source-terraform" },
     "plugins/source/shopify": { "component": "plugins-source-shopify" },
     "plugins/source/stripe": { "component": "plugins-source-stripe" },
+    "plugins/source/mixpanel": { "component": "plugins-source-mixpanel" },
     "plugins/destination/postgresql": {
       "component": "plugins-destination-postgresql"
     },
