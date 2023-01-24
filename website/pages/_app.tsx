@@ -39,6 +39,7 @@ export default function Nextra({ Component, pageProps }) {
                 : (window.sa_event.q = [a]);
             })}
       </Script>
+      <Script defer data-domain="cloudquery.io" src="https://plausible.io/js/script.js"></Script>
       <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
       <noscript>
         {/* eslint-disable @next/next/no-img-element */}

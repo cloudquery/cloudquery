@@ -3,14 +3,15 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"github.com/cloudquery/plugin-sdk/clients"
+
+	destination "github.com/cloudquery/plugin-sdk/clients/destination/v0"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
 )
 
-type destinationClients []*clients.DestinationClient
+type destinationClients []*destination.Client
 
-func newDestinationClients(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, cqDir string) (destinationClients, error) {
+func newDestinationClientsV0(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, cqDir string) (destinationClients, error) {
 	var err error
 	destClients := make(destinationClients, len(sourceSpec.Destinations))
 	defer func() {
@@ -22,14 +23,14 @@ func newDestinationClients(ctx context.Context, sourceSpec specs.Source, destina
 	}()
 
 	for i, destinationSpec := range destinationsSpecs {
-		opts := []clients.DestinationClientOption{
-			clients.WithDestinationLogger(log.Logger),
-			clients.WithDestinationDirectory(cqDir),
+		opts := []destination.ClientOption{
+			destination.WithLogger(log.Logger),
+			destination.WithDirectory(cqDir),
 		}
 		if disableSentry {
-			opts = append(opts, clients.WithDestinationNoSentry())
+			opts = append(opts, destination.WithNoSentry())
 		}
-		destClients[i], err = clients.NewDestinationClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version, opts...)
+		destClients[i], err = destination.NewClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version, opts...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create destination plugin client for %s: %w", destinationSpec.Name, err)
 		}

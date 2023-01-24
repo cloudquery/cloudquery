@@ -269,6 +269,7 @@
 - [aws_iam_credential_reports](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_credential_reports.md)
 - [aws_iam_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_groups.md)
   - [aws_iam_group_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_group_policies.md)
+- [aws_iam_instance_profiles](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_instance_profiles.md)
 - [aws_iam_openid_connect_identity_providers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_openid_connect_identity_providers.md)
 - [aws_iam_password_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_password_policies.md)
 - [aws_iam_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_policies.md)
