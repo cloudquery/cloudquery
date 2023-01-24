@@ -14,12 +14,11 @@ BEGIN
 INSERT {{.Table}} (
 {{template "col_names.sql.tpl" .ColumnNames}}
 ) SELECT
-{{template "col_names.sql.tpl" .ColumnNames}}
+{{template "tvp_col_names.sql.tpl" .ColumnNames}}
  FROM @TVP AS [src]
- WHERE NOT EXISTS (
-  SELECT 1 FROM {{.Table}} AS [tgt]
-  WHERE (
+ LEFT JOIN {{.Table}} AS [tgt] ON (
 {{with .PK}}{{template "tvp_cmp.sql.tpl" .}}{{end}}
-  )
+ ) WHERE (
+{{with .PK}}{{template "tvp_null.sql.tpl" .}}{{end}}
 );
 END;
