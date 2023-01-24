@@ -34,10 +34,6 @@ This is the (nested) plugin spec
 
   list of brokers to connect to.
 
-- `format` (string) (required)
-
-  Format of the output file. `json` and `csv` are supported.
-
 - `sasl_username` (string) (optional)
 
   If connecting via SASL/PLAIN, the username to use.
@@ -49,3 +45,21 @@ This is the (nested) plugin spec
 - `verbose` (bool) (optional)
 
   If true, the plugin will log all underlying Kafka client messages to the log.
+
+- `format` (string) (required)
+
+  Format of the output file. `json` and `csv` are supported.
+
+- `format_spec` (map [format_spec](#format_spec)) (default: current account)
+
+  Optional parameters to change the format of the file
+
+## format_spec
+
+- `delimiter` (string) (optional) (default: `,`)
+
+  Character that will be used as want to use as the delimiter if the format type is `csv`
+
+- `include_headers` (bool) (optional) (default: true)
+
+  Specifies if the first header of a file should be the headers.  

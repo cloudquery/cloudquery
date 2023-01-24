@@ -48,17 +48,24 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   Path to where the files will be uploaded in the above bucket. The path supports two placeholder variables: `{{TABLE}}` will be replaced with the table name, and `{{UUID}}` with a random UUID to uniquely identify each file. 
 
+- `athena` (boolean) (optional, default `false`)
+
+  When `athena` is set to `true`, the S3 plugin will sanitize keys in JSON columns to be compatible with the Hive Metastore / Athena. This allows tables to be created with a Glue Crawler and then queried via Athena, without changes to the table schema.
+
 - `format` (string) (required)
 
   Format of the output file. `json` and `csv` are supported.
 
-- `include_headers` (boolean) (optional)
+- `format_spec` (map [format_spec](#format_spec)) (default: current account)
 
-  Whether the first line of the file should be the column headers. Default value is `false`.
+  Optional parameters to change the format of the file
 
-- `delimiter` (character) (optional)
+## format_spec
 
-  Character that should be used as the delimiter. Default value is `,`.
-- `athena` (boolean) (optional, default `false`)
+- `delimiter` (string) (optional) (default: `,`)
 
-  When `athena` is set to `true`, the S3 plugin will sanitize keys in JSON columns to be compatible with the Hive Metastore / Athena. This allows tables to be created with a Glue Crawler and then queried via Athena, without changes to the table schema.
+  Character that will be used as want to use as the delimiter if the format type is `csv`
+
+- `include_headers` (bool) (optional) (default: true)
+
+  Specifies if the first header of a file should be the headers.
