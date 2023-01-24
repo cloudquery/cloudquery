@@ -141,22 +141,23 @@ INSERT [cq].[table_name] (
   [extra_col_not_pk1],
   [extra_col_not_pk2]
 ) SELECT
-  [_cq_id],
-  [_cq_parent_id],
-  [_cq_source_name],
-  [_cq_sync_time],
-  [extra_col_pk1],
-  [extra_col_pk2],
-  [extra_col_not_pk1],
-  [extra_col_not_pk2]
+  [src].[_cq_id],
+  [src].[_cq_parent_id],
+  [src].[_cq_source_name],
+  [src].[_cq_sync_time],
+  [src].[extra_col_pk1],
+  [src].[extra_col_pk2],
+  [src].[extra_col_not_pk1],
+  [src].[extra_col_not_pk2]
  FROM @TVP AS [src]
- WHERE NOT EXISTS (
-  SELECT 1 FROM [cq].[table_name] AS [tgt]
-  WHERE (
+ LEFT JOIN [cq].[table_name] AS [tgt] ON (
   [tgt].[extra_col_pk1] = [src].[extra_col_pk1]
   AND
   [tgt].[extra_col_pk2] = [src].[extra_col_pk2]
-  )
+ ) WHERE (
+  [tgt].[extra_col_pk1] IS NULL
+  AND
+  [tgt].[extra_col_pk2] IS NULL
 );
 END;`
 	)
