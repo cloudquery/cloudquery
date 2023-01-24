@@ -2,6 +2,7 @@ package sql
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
@@ -13,6 +14,11 @@ func server_blob_auditing_policies() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/server-blob-auditing-policies/list-by-server?tabs=HTTP#serverblobauditingpolicy",
 		Transform:   transformers.TransformWithStruct(&armsql.ServerBlobAuditingPolicy{}),
 		Columns: []schema.Column{
+			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
 			{
 				Name:     "properties",
 				Type:     schema.TypeJSON,
