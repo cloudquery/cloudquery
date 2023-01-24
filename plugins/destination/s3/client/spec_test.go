@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudquery/filetypes"
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/require"
 )
 
@@ -14,13 +15,13 @@ func TestSpec_SetDefaults(t *testing.T) {
 		Want Spec
 	}{
 
-		{Give: Spec{Path: "test/path", FileSpec: &filetypes.FileSpec{Format: "json"}}, Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json", Delimiter: ','}}},
-		{Give: Spec{Path: "test/path/{{TABLE}}.json"}, Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Delimiter: ','}}},
+		{Give: Spec{Path: "test/path", FileSpec: &filetypes.FileSpec{Format: "json"}}, Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}}},
+		{Give: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}}, Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}}},
 	}
 	for _, tc := range cases {
 		got := tc.Give
 		got.SetDefaults()
-		if diff := cmp.Diff(tc.Want, got); diff != "" {
+		if diff := cmp.Diff(tc.Want, got, cmpopts.IgnoreUnexported(filetypes.FileSpec{})); diff != "" {
 			t.Errorf("SetDefaults() mismatch (-want +got):\n%s", diff)
 		}
 	}

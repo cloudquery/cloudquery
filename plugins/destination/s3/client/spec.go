@@ -12,7 +12,7 @@ type Spec struct {
 	NoRotate bool   `json:"no_rotate,omitempty"`
 	Bucket   string `json:"bucket,omitempty"`
 	Path     string `json:"path,omitempty"`
-  Athena   bool       `json:"athena,omitempty"`
+	Athena   bool   `json:"athena,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -24,10 +24,6 @@ func (s *Spec) SetDefaults() {
 			s.Path += "." + PathVarUUID
 		}
 	}
-	if s.FileSpec == nil {
-		s.FileSpec = &filetypes.FileSpec{}
-	}
-	s.FileSpec.SetDefaults()
 }
 
 func (s *Spec) Validate() error {
