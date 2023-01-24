@@ -13,7 +13,7 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 ## Introduction
 
-In a previous guide [insert link here], we talked about how to load infrastructure data into Amazon Athena.  In this tutorial, we will show you how to load AWS's Cost and Usage Reports into Amazon Athena and enrich infrastructure data with the data provided by Cost and Usage Reports.  This will enable you to query your data and execute different cost optimization and FinOps use cases to understand financials of your cloud infrastructure.
+In a (previous guide)[www.cloudquery.io/how-to-guides/how-to-load-infrastructure-data-into-athena], we talked about how to load infrastructure data into Amazon Athena.  In this tutorial, we will show you how to load AWS's Cost and Usage Reports into Amazon Athena and enrich infrastructure data with the data provided by Cost and Usage Reports.  This will enable you to query your data and execute different cost optimization and FinOps use cases to understand financials of your cloud infrastructure.
 
 ## Steps
 
