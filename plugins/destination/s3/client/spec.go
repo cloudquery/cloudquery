@@ -43,7 +43,7 @@ func (s *Spec) Validate() error {
 		return fmt.Errorf("path should not contain %s when no_rotate = true", PathVarUUID)
 	}
 	if path.IsAbs(s.Path) {
-		return fmt.Errorf("path should not start with a slash")
+		return fmt.Errorf("path should not start with a `/`")
 	}
 
 	if s.Path != path.Clean(s.Path) {
