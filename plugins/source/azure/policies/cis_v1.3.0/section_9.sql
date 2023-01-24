@@ -6,7 +6,7 @@
 \ir ../queries/web/app_allow_http.sql
 \set check_id '9.3'
 \echo "Executing check 9.3"
-\ir ../queries/web/app_allow_http.sql
+\ir ../queries/web/app_using_old_tls.sql
 \set check_id '9.4'
 \echo "Executing check 9.4"
 \ir ../queries/web/app_client_cert_disabled.sql
