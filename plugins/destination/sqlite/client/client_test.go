@@ -120,7 +120,7 @@ can't migrate table "table_with_non_pk_type_change" since changing the type of c
 				t.Fatal(err)
 			}
 
-			// Add a new column to the table is the only safe migratable change in SQLite
+			// Adding a new column to the table is the only safe migratable change in SQLite
 			beforeSchema[0].Columns = append(beforeSchema[0].Columns, schema.Column{Name: "new_column", Type: schema.TypeString})
 			if err := p.Migrate(ctx, beforeSchema); err != nil {
 				t.Fatal(err)
