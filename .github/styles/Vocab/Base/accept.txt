@@ -91,6 +91,7 @@ Lightsail
 Mailchimp
 Metabase
 Mixpanel
+Metastore
 Monorepo
 NACL
 NACLs
