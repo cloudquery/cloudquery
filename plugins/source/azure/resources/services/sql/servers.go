@@ -32,16 +32,17 @@ func Servers() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			server_vulnerability_assessments(),
+			serverVulnerabilityAssessments(),
 			server_blob_auditing_policies(),
-			server_admins(),
-			server_encryption_protectors(),
-			server_databases(),
+			serverAdmins(),
+			serverEncryptionProtectors(),
+			serverDatabases(),
+			virtualNetworkRules(),
 		},
 	}
 }
 
-func fetchServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchServers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsql.NewServersClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
