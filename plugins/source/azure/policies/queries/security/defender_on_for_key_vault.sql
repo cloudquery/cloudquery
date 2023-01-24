@@ -3,7 +3,7 @@ SELECT
   :'execution_time' as execution_time,
   :'framework' as framework,
   :'check_id' as check_id,
-  'Ensure that Windows Defender ATP (WDATP) integration with Security Center is selected (Automatic)' as title,
+  'Ensure that Azure Defender is set to On for Key Vault (Manual)' as title,
   subscription_id,
   id,
   case

@@ -69,6 +69,7 @@ jobs:
                            "plugins/source/terraform",
                            "plugins/source/test",
                            "plugins/source/vercel",
+                           "plugins/source/plausible",
                            
                            "plugins/destination/postgresql",
                            "plugins/destination/test",
