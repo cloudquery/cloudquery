@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-vercel-v1.1.0...plugins-source-vercel-v1.2.0) (2023-01-24)
+
+
+### Features
+
+* **vercel:** Incremental syncs ([#6782](https://github.com/cloudquery/cloudquery/issues/6782)) ([e1685e2](https://github.com/cloudquery/cloudquery/commit/e1685e29b9471ad58437b27c8ef324a796ebff1a))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.28.0 ([#7009](https://github.com/cloudquery/cloudquery/issues/7009)) ([12ac005](https://github.com/cloudquery/cloudquery/commit/12ac005428a355d06a5939fbe06a82d49533e662))
+
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-vercel-v1.0.4...plugins-source-vercel-v1.1.0) (2023-01-17)
 
 
