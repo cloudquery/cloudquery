@@ -3,7 +3,7 @@ package networkfunction
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func AzureTrafficCollectorsBySubscription() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_networkfunction_azure_traffic_collectors_by_subscription",
-		Resolver:  fetchAzureTrafficCollectorsBySubscription,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_networkfunction_azure_traffic_collectors_by_subscription", client.Namespacemicrosoft_networkfunction),
-		Transform: transformers.TransformWithStruct(&armnetworkfunction.AzureTrafficCollector{}),
+		Name:        "azure_networkfunction_azure_traffic_collectors_by_subscription",
+		Resolver:    fetchAzureTrafficCollectorsBySubscription,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction@v1.0.0#AzureTrafficCollector",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_networkfunction_azure_traffic_collectors_by_subscription", client.Namespacemicrosoft_networkfunction),
+		Transform:   transformers.TransformWithStruct(&armnetworkfunction.AzureTrafficCollector{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

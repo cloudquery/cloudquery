@@ -3,7 +3,7 @@ package compute
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,10 +11,11 @@ import (
 
 func RestorePointCollections() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_compute_restore_point_collections",
-		Resolver:  fetchRestorePointCollections,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_compute_restore_point_collections", client.Namespacemicrosoft_compute),
-		Transform: transformers.TransformWithStruct(&armcompute.RestorePointCollection{}),
+		Name:        "azure_compute_restore_point_collections",
+		Resolver:    fetchRestorePointCollections,
+		Description: "https://learn.microsoft.com/en-us/rest/api/compute/restore-point-collections/list?tabs=HTTP#restorepointcollection",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_restore_point_collections", client.Namespacemicrosoft_compute),
+		Transform:   transformers.TransformWithStruct(&armcompute.RestorePointCollection{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

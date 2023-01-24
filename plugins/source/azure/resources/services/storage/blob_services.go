@@ -8,9 +8,10 @@ import (
 
 func blob_services() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_storage_blob_services",
-		Resolver:  fetchBlobServices,
-		Transform: transformers.TransformWithStruct(&armstorage.BlobServiceProperties{}),
+		Name:        "azure_storage_blob_services",
+		Resolver:    fetchBlobServices,
+		Description: "https://learn.microsoft.com/en-us/rest/api/storagerp/blob-services/list?tabs=HTTP#blobserviceproperties",
+		Transform:   transformers.TransformWithStruct(&armstorage.BlobServiceProperties{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

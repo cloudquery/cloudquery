@@ -69,6 +69,7 @@ jobs:
                            "plugins/source/terraform",
                            "plugins/source/test",
                            "plugins/source/vercel",
+                           "plugins/source/plausible",
                            
                            "plugins/destination/postgresql",
                            "plugins/destination/test",
@@ -83,6 +84,7 @@ jobs:
                            "plugins/destination/s3",
                            "plugins/destination/neo4j",
                            "plugins/destination/kafka",
+                           "plugins/destination/mssql",
                            ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")

@@ -11,10 +11,11 @@ import (
 
 func SecureScoreControlDefinitions() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_secure_score_control_definitions",
-		Resolver:  fetchSecureScoreControlDefinitions,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_secure_score_control_definitions", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.SecureScoreControlDefinitionItem{}),
+		Name:        "azure_security_secure_score_control_definitions",
+		Resolver:    fetchSecureScoreControlDefinitions,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/secure-score-control-definitions/list?tabs=HTTP#securescorecontroldefinitionitem",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_secure_score_control_definitions", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.SecureScoreControlDefinitionItem{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

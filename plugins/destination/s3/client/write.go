@@ -3,8 +3,10 @@ package client
 import (
 	"bytes"
 	"context"
-	"fmt"
 	"io"
+	"reflect"
+	"regexp"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -14,11 +16,28 @@ import (
 	"github.com/google/uuid"
 )
 
+const (
+	PathVarTable = "{{TABLE}}"
+	PathVarUUID  = "{{UUID}}"
+)
+
+var reInvalidJSONKey = regexp.MustCompile(`\W`)
+
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
-	name := fmt.Sprintf("%s/%s.%s.%s", c.pluginSpec.Path, table.Name, c.pluginSpec.Format, uuid.NewString())
-	if c.pluginSpec.NoRotate {
-		name = fmt.Sprintf("%s/%s.%s", c.pluginSpec.Path, table.Name, c.pluginSpec.Format)
+	name := strings.ReplaceAll(c.pluginSpec.Path, PathVarTable, table.Name)
+	name = strings.ReplaceAll(name, PathVarUUID, uuid.NewString())
+
+	if c.pluginSpec.Athena {
+		for _, resource := range data {
+			for u := range resource {
+				if table.Columns[u].Type != schema.TypeJSON {
+					continue
+				}
+				sanitizeJSONKeys(resource[u])
+			}
+		}
 	}
+
 	var b bytes.Buffer
 	w := io.Writer(&b)
 	switch c.pluginSpec.Format {
@@ -33,8 +52,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
-	// we don't do that in parallel here because aws sdk moves the burden to the devleoper and
-	// we don't want to deal with that yet. in the future maybe we can run some benchmarks and see if adding parralization helps.
+	// we don't upload in parallel here because AWS sdk moves the burden to the developer, and
+	// we don't want to deal with that yet. in the future maybe we can run some benchmarks and see if adding parallelization helps.
 	r := io.Reader(&b)
 	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
 		Bucket: aws.String(c.pluginSpec.Bucket),
@@ -45,4 +64,29 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	}
 
 	return nil
+}
+
+// sanitizeJSONKeys replaces all invalid characters in JSON keys with underscores.
+// It does the replacement in-place, modifying the original object. This is required
+// for compatibility with Athena.
+func sanitizeJSONKeys(obj any) {
+	value := reflect.ValueOf(obj)
+	switch value.Kind() {
+	case reflect.Map:
+		iter := value.MapRange()
+		for iter.Next() {
+			k := iter.Key()
+			if k.Kind() == reflect.String {
+				nk := reInvalidJSONKey.ReplaceAllString(k.String(), "_")
+				v := iter.Value()
+				sanitizeJSONKeys(v.Interface())
+				value.SetMapIndex(k, reflect.Value{})
+				value.SetMapIndex(reflect.ValueOf(nk), v)
+			}
+		}
+	case reflect.Slice:
+		for i := 0; i < value.Len(); i++ {
+			sanitizeJSONKeys(value.Index(i).Interface())
+		}
+	}
 }

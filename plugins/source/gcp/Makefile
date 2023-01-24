@@ -21,10 +21,10 @@ gen-docs:
 	go run scripts/policy_docs/main.go gcp policies ../../../website/pages/docs/plugins/sources/gcp/policies.md docs/__tables.json
 	rm docs/__tables.json
 
-.PHONY: gen-code
-gen-code:
+.PHONY: gen-services
+gen-services:
 	go run codegen/main.go
 
 # All gen targets
 .PHONY: gen
-gen: gen-code gen-docs
+gen: gen-services gen-docs

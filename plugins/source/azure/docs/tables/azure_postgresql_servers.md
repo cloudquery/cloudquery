@@ -1,5 +1,7 @@
 # Table: azure_postgresql_servers
 
+https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/servers/list?tabs=HTTP#server
+
 The primary key for this table is **id**.
 
 ## Relations

@@ -11,10 +11,11 @@ import (
 
 func RegulatoryComplianceStandards() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_security_regulatory_compliance_standards",
-		Resolver:  fetchRegulatoryComplianceStandards,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace("azure_security_regulatory_compliance_standards", client.Namespacemicrosoft_security),
-		Transform: transformers.TransformWithStruct(&armsecurity.RegulatoryComplianceStandard{}),
+		Name:        "azure_security_regulatory_compliance_standards",
+		Resolver:    fetchRegulatoryComplianceStandards,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/regulatory-compliance-standards/list?tabs=HTTP#regulatorycompliancestandard",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_regulatory_compliance_standards", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.RegulatoryComplianceStandard{}),
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",

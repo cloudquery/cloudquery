@@ -1,7 +1,7 @@
 # Table: vercel_domains
 
 The primary key for this table is **id**.
-
+It supports incremental syncs.
 ## Relations
 
 The following tables depend on vercel_domains:

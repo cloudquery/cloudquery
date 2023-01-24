@@ -1,5 +1,7 @@
 # Table: azure_cosmos_mongo_db_databases
 
+https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/mongo-db-resources/list-mongo-db-databases?tabs=HTTP#mongodbdatabasegetresults
+
 The primary key for this table is **id**.
 
 ## Relations
