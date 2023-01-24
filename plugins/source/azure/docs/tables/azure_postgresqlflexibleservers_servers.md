@@ -15,6 +15,7 @@ The primary key for this table is **id**.
 |subscription_id|String|
 |id (PK)|String|
 |location|String|
+|identity|JSON|
 |properties|JSON|
 |sku|JSON|
 |tags|JSON|

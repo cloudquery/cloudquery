@@ -269,6 +269,7 @@
 - [aws_iam_credential_reports](aws_iam_credential_reports.md)
 - [aws_iam_groups](aws_iam_groups.md)
   - [aws_iam_group_policies](aws_iam_group_policies.md)
+- [aws_iam_instance_profiles](aws_iam_instance_profiles.md)
 - [aws_iam_openid_connect_identity_providers](aws_iam_openid_connect_identity_providers.md)
 - [aws_iam_password_policies](aws_iam_password_policies.md)
 - [aws_iam_policies](aws_iam_policies.md)

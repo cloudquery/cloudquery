@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v1.1.0...plugins-destination-s3-v1.1.1) (2023-01-24)
+
+
+### Bug Fixes
+
+* **s3:** Use reflection for sanitizeJSONKeys to cover more cases ([#7104](https://github.com/cloudquery/cloudquery/issues/7104)) ([a6608fe](https://github.com/cloudquery/cloudquery/commit/a6608feeec42d299b0beb4e7d00a6b27e8e71966))
+
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v1.0.5...plugins-destination-s3-v1.1.0) (2023-01-24)
+
+
+### Features
+
+* Add support for {{TABLE}} and {{UUID}} placeholders in S3 plugin path ([#6951](https://github.com/cloudquery/cloudquery/issues/6951)) ([4dee50a](https://github.com/cloudquery/cloudquery/commit/4dee50ae128f2290f0bc1aefee9368b2c762642c))
+* **s3:** Add Athena flag to S3 destination ([#7079](https://github.com/cloudquery/cloudquery/issues/7079)) ([eef5823](https://github.com/cloudquery/cloudquery/commit/eef5823fc629decadbed8a742a078e8847cd146b))
+* **s3:** Automatically discover bucket location ([#6793](https://github.com/cloudquery/cloudquery/issues/6793)) ([1fea90c](https://github.com/cloudquery/cloudquery/commit/1fea90ccaa1441809c025d14c0b0fd178a253455))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.28.0 ([#7009](https://github.com/cloudquery/cloudquery/issues/7009)) ([12ac005](https://github.com/cloudquery/cloudquery/commit/12ac005428a355d06a5939fbe06a82d49533e662))
+
 ## [1.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v1.0.4...plugins-destination-s3-v1.0.5) (2023-01-17)
 
 

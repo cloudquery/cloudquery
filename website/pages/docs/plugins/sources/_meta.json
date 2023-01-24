@@ -15,6 +15,7 @@
   "hackernews": "Hacker News",
   "heroku": "Heroku",
   "k8s": "Kubernetes",
+  "mixpanel": "Mixpanel",
   "okta": "Okta",
   "oracle": "Oracle",
   "salesforce": "Salesforce",
@@ -23,6 +24,7 @@
   "snyk": "Snyk",
   "stripe": "Stripe",
   "pagerduty": "PagerDuty",
+  "plausible": "Plausible",
   "tailscale": "Tailscale",
   "terraform": "Terraform",
   "vercel": "Vercel"

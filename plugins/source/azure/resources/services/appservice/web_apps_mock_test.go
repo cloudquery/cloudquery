@@ -34,6 +34,10 @@ func createWebApps(router *mux.Router) error {
 		}
 	})
 
+	if err := createVnetConnections(router); err != nil {
+		return err
+	}
+
 	return createWebAppAuthSettings(router)
 }
 
