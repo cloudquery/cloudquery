@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.0
 	github.com/cloudquery/filetypes v1.2.0
 	github.com/cloudquery/plugin-sdk v1.28.0
-  github.com/google/go-cmp v0.5.9
+	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.28.0
 	github.com/stretchr/testify v1.8.1
