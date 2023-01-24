@@ -21,20 +21,18 @@ By the end of this post, you will be able to query your AWS infrastructure data 
 
 Let's get started!
 
-## Steps
-
-### Step 1: Install CloudQuery
+## Step 1: Install CloudQuery
 
 To sync infrastructure data to S3, you will first need an installation of the CloudQuery CLI (or Docker image). See our [Quickstart](/docs/quickstart) for detailed instructions.
 
-### Step 2: Create a Bucket for the Data
+## Step 2: Create a Bucket for the Data
 
 We will need to upload the sync results to S3 so that Athena can query them. We'll use the [AWS CLI](https://aws.amazon.com/cli/) to do this in this tutorial, but you can also use the AWS web console or Terraform/CloudFormation if you prefer.
 
 Let's start by exporting the name of the bucket we'll be using in the rest of this guide as an environment variable:
 
 ```bash copy
-export BUCKET_NAME=cloudquery-athena-example  # Change this to your own bucket name!
+export BUCKET_NAME=cloudquery-athena-example  # Change this to your own bucket name
 ```
 
 Now we will create a bucket to store the data:
@@ -45,7 +43,7 @@ aws s3 mb s3://$BUCKET_NAME
 
 This will create the bucket with default AWS SSE-S3 encryption. If you have different requirements for bucket setup and encryption, use those settings. The [s3api create-bucket command](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/create-bucket.html) has more fine-grained options.
 
-### Step 3: Configure the AWS Source Plugin 
+## Step 3: Configure the AWS Source Plugin 
 
 We will configure the CloudQuery AWS source plugin to sync data from your AWS account(s). To do so, we'll create a file called `aws.yml` with the following config:
 
@@ -61,7 +59,7 @@ spec:
 
 This is the most basic configuration of the AWS source plugin. It will work as long as the AWS credentials you have configured in your environment have the appropriate permissions (e.g. via `aws sso login`). For more information on configuring the AWS source plugin, see the [AWS Source Plugin](/docs/plugins/sources/aws/overview) documentation.
 
-### Step 4: Configure the S3 Destination Plugin
+## Step 4: Configure the S3 Destination Plugin
 
 Similar to the config we created for the AWS plugin, we also need a destination config that is configured to write the AWS data to JSON files in S3:
 
@@ -76,11 +74,12 @@ spec:
     bucket: "${BUCKET_NAME}"
     path: "cloudquery/{{TABLE}}/{{UUID}}.json"
     format: "json"
+    athena: true
 ```
 
-For more information on configuring the S3 destination plugin, see the [S3 Destination Plugin](/docs/plugins/destinations/s3/overview) documentation.
+Take special note of the `athena: true` flag: this is important, as it will tell the S3 destination to sanitize JSON columns for use with Glue & Athena. For more information on configuring the S3 destination plugin, see the [S3 Destination Plugin](/docs/plugins/destinations/s3/overview) documentation.
 
-### Step 5: Run CloudQuery sync
+## Step 5: Run CloudQuery sync
 
 With the CLI installed, these two files in place, and an environment authenticated to AWS, we can now run the following command to sync our AWS infrastructure data to S3:
 
@@ -90,7 +89,7 @@ cloudquery sync aws.yml s3.yml
 
 This will write the AWS data as JSON files to the S3 bucket. You can see the files that were created by running `aws s3 ls s3://$BUCKET_NAME`.
 
-### Step 6: Create a Glue Crawler
+## Step 6: Create a Glue Crawler
 
 Athena can query data in S3, but it needs to know the schema of the data in order to do so. We can use a Glue Crawler to automatically infer the schema of the data and create a table in the Athena database we created in the previous step. We'll use the AWS CLI again.
 
@@ -207,7 +206,7 @@ aws glue create-crawler \
 import { Callout } from 'nextra-theme-docs'
 
 <Callout type="info">
-  If you see an error `An error occurred (AccessDeniedException) when calling the CreateCrawler operation: Cross-account pass role is not allowed`, make sure you updated the role ARN in the command above to that of the role we created earlier.
+  If you see `An error occurred (AccessDeniedException) when calling the CreateCrawler operation: Cross-account pass role is not allowed`, make sure you updated the role ARN in the command above to that of the role we created earlier.
 </Callout>
 
 With our crawler created, we can run it on demand like this:
@@ -218,7 +217,7 @@ aws glue start-crawler --name cloudquery-athena-example
 
 (You can also run the crawler on a schedule, but we won't cover that here.)
 
-### Step 7: Query the data
+## Step 7: Query the data
 
 The crawler should have created a database and tables in the Glue Data Catalog. Now we can query the data using Athena! Let's use the AWS Console for this step. Navigate to the Athena service in the AWS Console, go to the Query Editor page, and select the database we created earlier. You should see a list of tables in the database. Let's run a simple query to find all S3 buckets that are permitted to be public:
 
