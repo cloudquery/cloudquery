@@ -45,6 +45,9 @@ func createServers(router *mux.Router) error {
 	if err := createEncryptionProtectors(router); err != nil {
 		return err
 	}
+	if err := createVirtualNetworkRules(router); err != nil {
+		return err
+	}
 	return createDatabases(router)
 }
 

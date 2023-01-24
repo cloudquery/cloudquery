@@ -31,10 +31,14 @@ func ManagedInstances() *schema.Table {
 				},
 			},
 		},
+		Relations: []*schema.Table{
+			managedInstanceEncryptionProtectors(),
+			managedInstanceVulnerabilityAssessments(),
+		},
 	}
 }
 
-func fetchManagedInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchManagedInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsql.NewManagedInstancesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
