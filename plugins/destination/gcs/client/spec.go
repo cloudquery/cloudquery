@@ -13,12 +13,7 @@ type Spec struct {
 	*filetypes.FileSpec
 }
 
-func (s *Spec) SetDefaults() {
-	if s.FileSpec == nil {
-		s.FileSpec = &filetypes.FileSpec{}
-	}
-	s.FileSpec.SetDefaults()
-}
+func (s *Spec) SetDefaults() {}
 
 func (s *Spec) Validate() error {
 	if s.Bucket == "" {
