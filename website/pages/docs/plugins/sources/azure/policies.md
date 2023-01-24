@@ -54,7 +54,7 @@ Azure CIS v1.3.0 performs the following checks:
   - Ensure that Azure Defender is set to On for Storage (Automatic)
   - Ensure that Azure Defender is set to On for Kubernetes (Automatic)
   - Ensure that Azure Defender is set to On for Container Registries (Automatic)
-  - Ensure that Windows Defender ATP (WDATP) integration with Security Center is selected (Automatic)
+  - Ensure that Azure Defender is set to On for Key Vault (Manual)
   - Ensure that Microsoft Cloud App Security (MCAS) integration with Security Center is selected (Automatic)
   - Ensure that "Automatic provisioning of monitoring agent" is set to "On" (Automated)
   - Ensure any of the ASC Default policy setting is not set to "Disabled" (Automated)
