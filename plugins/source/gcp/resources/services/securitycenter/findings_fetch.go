@@ -16,7 +16,8 @@ func fetchFindings(parent string) func(ctx context.Context, meta schema.ClientMe
 	return func(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 		c := meta.(*client.Client)
 		req := &pb.ListFindingsRequest{
-			Parent: parent,
+			Parent:   parent,
+			PageSize: 1000,
 		}
 		gcpClient, err := securitycenter.NewClient(ctx, c.ClientOptions...)
 		if err != nil {
