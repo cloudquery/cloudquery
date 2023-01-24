@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v2.0.0...plugins-destination-mssql-v2.1.0) (2023-01-24)
+
+
+### Features
+
+* **mssql:** Use `LEFT JOIN` for overwrite ([#7086](https://github.com/cloudquery/cloudquery/issues/7086)) ([97c7981](https://github.com/cloudquery/cloudquery/commit/97c79816850b62989670916fd93f4f52528ce2b3))
+
 ## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v1.0.0...plugins-destination-mssql-v2.0.0) (2023-01-23)
 
 
