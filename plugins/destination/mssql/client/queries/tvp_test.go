@@ -68,7 +68,7 @@ func TestTVPAddType(t *testing.T) {
 		expected   = `CREATE TYPE [cq].[cq_tbl_table_name] AS TABLE (
   [_cq_id] uniqueidentifier UNIQUE NOT NULL,
   [_cq_parent_id] uniqueidentifier,
-  [_cq_source_name] varchar(8000),
+  [_cq_source_name] nvarchar(4000),
   [_cq_sync_time] datetimeoffset,
   [extra_col_pk1] float NOT NULL,
   [extra_col_pk2] bit NOT NULL,
