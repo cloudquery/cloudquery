@@ -120,7 +120,6 @@ func resolveRuntimeManagementConfig(ctx context.Context, meta schema.ClientMeta,
 	}
 
 	return resource.Set("update_runtime_on", runtimeManagementConfig.UpdateRuntimeOn)
-
 }
 
 func resolveCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
