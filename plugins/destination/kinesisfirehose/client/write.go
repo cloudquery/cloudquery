@@ -21,6 +21,8 @@ import (
 // TODO: Verify errors are propagated
 // TODO: Clean up send batch and retry logic
 
+const MAX_RECORD_SIZE = 1024000
+
 func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
 	parsedARN, err := arn.Parse(c.pluginSpec.StreamARN)
 	if err != nil {
@@ -58,76 +60,51 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 		if err != nil {
 			return err
 		}
-		if len(dst.Bytes()) < 1024000 {
+		if len(dst.Bytes()) < MAX_RECORD_SIZE {
 			recordsBatchInput.Records = append(recordsBatchInput.Records, types.Record{
 				Data: dst.Bytes(),
 			})
 		} else {
-			// log that skipping because record is too large
 			c.logger.Warn().Msgf("skipping record because it is too large: %s", string(b))
 		}
 		if len(recordsBatchInput.Records) == 500 {
-			c.sendBatch(ctx, recordsBatchInput)
-			atomic.AddUint64(&c.metrics.Writes, uint64(len(recordsBatchInput.Records)))
+			err := c.sendBatch(ctx, recordsBatchInput, 0)
+			if err != nil {
+				return err
+			}
 			recordsBatchInput.Records = nil
 		}
 	}
 
-	if len(recordsBatchInput.Records) > 0 {
-		c.sendBatch(ctx, recordsBatchInput)
-		atomic.AddUint64(&c.metrics.Writes, uint64(len(recordsBatchInput.Records)))
-	}
-
-	return nil
+	return c.sendBatch(ctx, recordsBatchInput, 0)
 }
 
-func (c *Client) sendBatch(ctx context.Context, recordsBatchInput *firehose.PutRecordBatchInput) error {
+func (c *Client) sendBatch(ctx context.Context, recordsBatchInput *firehose.PutRecordBatchInput, count int) error {
+	if count == *c.pluginSpec.MaxRetries {
+		return fmt.Errorf("max retries reached")
+	}
+	if recordsBatchInput == nil || len(recordsBatchInput.Records) == 0 {
+		return nil
+	}
+	time.Sleep(time.Duration(count) * time.Second)
 	resp, err := c.firehoseClient.PutRecordBatch(ctx, recordsBatchInput)
 	if err != nil {
 		c.logger.Error().Err(err).Msg("failed to write to firehose")
 		return err
 	}
-	if aws.ToInt32(resp.FailedPutCount) > int32(0) {
-		// Handle partial success
-		c.logger.Warn().Msg("partial success in writing to firehose")
-		retryRecords := &firehose.PutRecordBatchInput{
-			DeliveryStreamName: recordsBatchInput.DeliveryStreamName,
-		}
-		for i, r := range resp.RequestResponses {
-			if r.RecordId == nil {
-				retryRecords.Records = append(retryRecords.Records, recordsBatchInput.Records[i])
-			}
-		}
-		return c.retryBatch(ctx, retryRecords, 1)
-	} else {
-		c.logger.Warn().Msgf("wrote: %d records", len(recordsBatchInput.Records))
-	}
-
-	return nil
+	retryRecords := getFailedRecords(recordsBatchInput, resp)
+	atomic.AddUint64(&c.metrics.Writes, uint64(len(recordsBatchInput.Records)-len(retryRecords.Records)))
+	return c.sendBatch(ctx, retryRecords, count+1)
 }
 
-func (c *Client) retryBatch(ctx context.Context, recordsBatchInput *firehose.PutRecordBatchInput, count int) error {
-	if count == 5 {
-		return fmt.Errorf("max retries reached")
-	}
-
-	time.Sleep(time.Duration(count) * time.Second)
+func getFailedRecords(recordsBatchInput *firehose.PutRecordBatchInput, resp *firehose.PutRecordBatchOutput) *firehose.PutRecordBatchInput {
 	retryRecords := &firehose.PutRecordBatchInput{
 		DeliveryStreamName: recordsBatchInput.DeliveryStreamName,
 	}
-	resp, err := c.firehoseClient.PutRecordBatch(ctx, recordsBatchInput)
-	if err != nil {
-		c.logger.Error().Err(err).Msg("failed to write to firehose")
-		return err
-	}
-	if aws.ToInt32(resp.FailedPutCount) > int32(0) {
-		for i, r := range resp.RequestResponses {
-			if r.RecordId == nil {
-				retryRecords.Records = append(retryRecords.Records, recordsBatchInput.Records[i])
-			}
+	for i, r := range resp.RequestResponses {
+		if r.RecordId == nil {
+			retryRecords.Records = append(retryRecords.Records, recordsBatchInput.Records[i])
 		}
-		return c.retryBatch(ctx, retryRecords, count+1)
 	}
-	return nil
-
+	return retryRecords
 }
