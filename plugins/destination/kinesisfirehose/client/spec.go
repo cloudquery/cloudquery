@@ -7,11 +7,17 @@ import (
 )
 
 type Spec struct {
-	StreamARN string `json:"stream_arn,omitempty"`
-	NoRotate  bool   `json:"no_rotate,omitempty"`
+	StreamARN  string `json:"stream_arn,omitempty"`
+	NoRotate   bool   `json:"no_rotate,omitempty"`
+	MaxRetries *int   `json:"max_retries,omitempty"`
 }
 
-func (*Spec) SetDefaults() {}
+func (s *Spec) SetDefaults() {
+	if s.MaxRetries == nil {
+		s.MaxRetries = new(int)
+		*s.MaxRetries = 5
+	}
+}
 
 func (s *Spec) Validate() error {
 	if s.StreamARN == "" {
