@@ -3,24 +3,19 @@ package resourcemanager
 import (
 	"context"
 
-	"cloud.google.com/go/iam/apiv1/iampb"
-	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+	pb "google.golang.org/api/cloudresourcemanager/v3"
 )
 
 func fetchProjectPolicies(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	projectsClient, err := resourcemanager.NewProjectsClient(ctx, c.ClientOptions...)
+	projectsClient, err := pb.NewService(ctx, c.ClientOptions...)
 	if err != nil {
 		return err
 	}
-	output, err := projectsClient.GetIamPolicy(
-		ctx,
-		&iampb.GetIamPolicyRequest{
-			Resource: "projects/" + c.ProjectId,
-		},
-	)
+	// We need to use the protobut client to get the current version of the policy struct (v3)
+	output, err := projectsClient.Projects.GetIamPolicy("projects/"+c.ProjectId, &pb.GetIamPolicyRequest{}).Context(ctx).Do()
 	if err != nil {
 		return err
 	}
