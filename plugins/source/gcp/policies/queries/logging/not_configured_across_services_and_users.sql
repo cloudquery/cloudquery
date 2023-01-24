@@ -29,7 +29,13 @@ WITH project_policy_audit_configs AS (SELECT project_id,
                           audit_config ->> 'service'                                                    AS "service",
                           jsonb_array_elements(audit_config -> 'auditLogConfigs') ->> 'logType'         AS logs,
                           jsonb_array_elements(audit_config -> 'auditLogConfigs') ->> 'exemptedMembers' AS exempted
-                   FROM project_policy_audit_configs)
+                   FROM project_policy_audit_configs),
+     valid_log_types AS (SELECT project_id, service, count(*) as valid_types
+                        FROM log_types
+                        WHERE exempted IS NULL
+                        AND logs IN ('ADMIN_READ', 'DATA_READ', 'DATA_WRITE')
+                        AND service = 'allServices'
+                        GROUP BY project_id, service)
 SELECT service                                                                                                               AS resource_id,
        :'execution_time'::timestamp                                                                                          AS execution_time,
        :'framework'                                                                                                          AS framework,
@@ -38,10 +44,8 @@ SELECT service                                                                  
        "project_id"                                                                                                          AS project_id,
        CASE
            WHEN
-                   exempted IS NULL
-                   AND logs IN ('DATA_READ', 'DATA_WRITE')
-                   AND service = 'allServices'
-               THEN 'fail'
-           ELSE 'pass'
+                   valid_types = 3
+               THEN 'pass'
+           ELSE 'fail'
            END                                                                                                               AS status
-FROM log_types;
+FROM valid_log_types;

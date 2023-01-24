@@ -1,5 +1,5 @@
 {
-  "cli": "2.2.0",
+  "cli": "2.3.0",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "12.0.0",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -45,7 +45,7 @@
   "plugins/source/vercel+FILLER": "0.0.0",
   "plugins/source/slack": "1.1.1",
   "plugins/source/slack+FILLER": "0.0.0",
-  "plugins/source/crowdstrike": "1.1.1",
+  "plugins/source/crowdstrike": "1.1.2",
   "plugins/source/crowdstrike+FILLER": "0.0.0",
   "plugins/source/pagerduty": "1.2.1",
   "plugins/source/pagerduty+FILLER": "0.0.0",
