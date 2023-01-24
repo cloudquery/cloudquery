@@ -46,6 +46,34 @@ type columnChange struct {
 	newPk   bool
 }
 
+func (c *columnChange) isNonPKTypeChange() bool {
+	return !c.new && c.oldType != c.newType && !c.newPk
+}
+
+func (c *columnChange) isPKTypeChange() bool {
+	return !c.new && c.oldType != c.newType && c.newPk
+}
+
+func (c *columnChange) isNewPKColumn() bool {
+	return c.new && c.newPk
+}
+
+func (c *columnChange) isPKAddToExistingColumn() bool {
+	return !c.new && !c.oldPk && c.newPk
+}
+
+func (c *columnChange) isPKRemoveFromExistingColumn() bool {
+	return !c.new && c.oldPk && !c.newPk
+}
+
+func (c *columnChange) needsTableDrop() bool {
+	return c.isNewPKColumn() || c.isPKAddToExistingColumn() || c.isPKRemoveFromExistingColumn() || c.isPKTypeChange()
+}
+
+func (c *columnChange) isInternal() bool {
+	return strings.HasPrefix(c.name, "_cq_")
+}
+
 type tableChange struct {
 	table         *schema.Table
 	new           bool
@@ -80,10 +108,10 @@ func (c *Client) getColumnChange(col schema.Column, sqliteColumn *columnInfo) *c
 	columnType := c.SchemaTypeToSqlite(col.Type)
 
 	if sqliteColumn == nil {
-		return &columnChange{name: columnName, oldType: columnType, newType: columnType, new: true, newPk: col.CreationOptions.PrimaryKey}
+		return &columnChange{name: columnName, oldType: columnType, newType: columnType, new: true, oldPk: c.enabledPks() && col.CreationOptions.PrimaryKey, newPk: c.enabledPks() && col.CreationOptions.PrimaryKey}
 	}
 
-	return &columnChange{name: columnName, oldType: sqliteColumn.typ, newType: columnType, oldPk: sqliteColumn.pk != 0, newPk: col.CreationOptions.PrimaryKey}
+	return &columnChange{name: columnName, oldType: sqliteColumn.typ, newType: columnType, oldPk: c.enabledPks() && sqliteColumn.pk != 0, newPk: c.enabledPks() && col.CreationOptions.PrimaryKey}
 }
 
 func (c *Client) getColumnChanges(table *schema.Table) ([]*columnChange, error) {
@@ -98,17 +126,26 @@ func (c *Client) getColumnChanges(table *schema.Table) ([]*columnChange, error) 
 		columnChanges[i] = c.getColumnChange(col, info.getColumn(col.Name))
 	}
 
-	// Changes that require dropping the table comes first
 	sort.SliceStable(columnChanges, func(i, j int) bool {
 		change1 := columnChanges[i]
 		change2 := columnChanges[j]
 
-		if change1.new && change1.newPk && !(change2.new && change2.newPk) {
+		// Changes that require dropping the table comes first
+		if change1.needsTableDrop() && !(change2.needsTableDrop()) {
 			return true
 		}
 
-		if !(change1.new && change1.newPk) && change2.new && change2.newPk {
+		if !(change1.needsTableDrop()) && change2.needsTableDrop() {
 			return false
+		}
+
+		// Internal columns come last
+		if change1.isInternal() && !change2.isInternal() {
+			return false
+		}
+
+		if !change1.isInternal() && change2.isInternal() {
+			return true
 		}
 
 		return change1.name < change2.name
@@ -157,15 +194,39 @@ func getMigrationMessages(changes []*tableChange) migrationsMessages {
 			continue
 		}
 		for _, colChange := range tableChange.columnChanges {
-			if colChange.new && colChange.newPk {
+			if colChange.isNewPKColumn() {
 				messages = append(messages, migrationMessage{
 					err:  fmt.Sprintf("can't migrate table %q since adding the new PK column %q is not supported. Try dropping this table", tableChange.table.Name, colChange.name),
-					info: fmt.Sprintf("table %q will be dropped and recreated", tableChange.table.Name),
+					info: fmt.Sprintf("table %q will be dropped and recreated due to adding %q as a PK", tableChange.table.Name, colChange.name),
 				})
 				// no need to report other errors as the user needs to drop the table altogether
 				break
 			}
-			if !colChange.new && colChange.oldType != colChange.newType {
+			if colChange.isPKAddToExistingColumn() {
+				messages = append(messages, migrationMessage{
+					err:  fmt.Sprintf("can't migrate table %q since making the existing column %q a PK is not supported. Try dropping this table", tableChange.table.Name, colChange.name),
+					info: fmt.Sprintf("table %q will be dropped and recreated due to adding %q as a PK", tableChange.table.Name, colChange.name),
+				})
+				// no need to report other errors as the user needs to drop the table altogether
+				break
+			}
+			if colChange.isPKRemoveFromExistingColumn() {
+				messages = append(messages, migrationMessage{
+					err:  fmt.Sprintf("can't migrate table %q since removing an existing column %q as a PK is not supported. Try dropping this table", tableChange.table.Name, colChange.name),
+					info: fmt.Sprintf("table %q will be dropped and recreated due to removing %q as a PK", tableChange.table.Name, colChange.name),
+				})
+				// no need to report other errors as the user needs to drop the table altogether
+				break
+			}
+			if colChange.isPKTypeChange() {
+				messages = append(messages, migrationMessage{
+					err:  fmt.Sprintf("can't migrate table %q since changing the type of the PK column %q from %q to %q is not supported. Try dropping this table", tableChange.table.Name, colChange.name, colChange.oldType, colChange.newType),
+					info: fmt.Sprintf("table %q will be dropped and recreated due to the type change of the PK column %q", tableChange.table.Name, colChange.name),
+				})
+				// no need to report other errors as the user needs to drop the table altogether
+				break
+			}
+			if colChange.isNonPKTypeChange() {
 				messages = append(messages, migrationMessage{
 					err:  fmt.Sprintf("can't migrate table %q since changing the type of column %q from %q to %q is not supported. Try dropping this column for this table", tableChange.table.Name, colChange.name, colChange.oldType, colChange.newType),
 					info: fmt.Sprintf("column %q of table %q will be dropped and recreated", colChange.name, tableChange.table.Name),
@@ -209,7 +270,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 				columnName := colChange.name
 				columnType := colChange.newType
 				// If this is a new PK column we need to drop the table
-				if colChange.new && colChange.newPk {
+				if colChange.isNewPKColumn() {
 					c.logger.Debug().Str("table", tableName).Str("column", colChange.name).Msg("New column is a primary key, dropping and adding table since in forced migrate mode")
 					err := c.recreateTable(table)
 					if err != nil {
@@ -217,15 +278,35 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 					}
 					break
 				}
-				if colChange.new {
-					c.logger.Debug().Str("table", tableName).Str("column", colChange.name).Msg("Column doesn't exist, creating")
-					err := c.addColumn(tableName, columnName, columnType)
+				// SQLite doesn't support PK additions on tables so we need to drop and add the table
+				if colChange.isPKAddToExistingColumn() {
+					c.logger.Debug().Str("table", table.Name).Str("column", colChange.name).Msg("Primary key added for existing column, dropping and adding table since in forced migrate mode")
+					err := c.recreateTable(table)
 					if err != nil {
 						return err
 					}
+					break
+				}
+				// SQLite doesn't support PK removals on tables so we need to drop and add the table
+				if colChange.isPKRemoveFromExistingColumn() {
+					c.logger.Debug().Str("table", table.Name).Str("column", colChange.name).Msg("Primary key removed for existing column, dropping and adding table since in forced migrate mode")
+					err := c.recreateTable(table)
+					if err != nil {
+						return err
+					}
+					break
+				}
+				// Since we can't recreate a PK column in SQLite we need to drop and add the table if a type changed for an existing PK column
+				if colChange.isPKTypeChange() {
+					c.logger.Debug().Str("table", table.Name).Str("column", colChange.name).Msg("Type changed for existing primary key column, dropping and adding table since in forced migrate mode")
+					err := c.recreateTable(table)
+					if err != nil {
+						return err
+					}
+					break
 				}
 				// if this is an existing column with type change we need to drop and add it
-				if !colChange.new && colChange.oldType != colChange.newType {
+				if colChange.isNonPKTypeChange() {
 					c.logger.Debug().Str("table", table.Name).Str("column", colChange.name).Msg("Existing column type changed, dropping and adding column since in forced migrate mode")
 					err := c.dropColumn(tableName, columnName)
 					if err != nil {
@@ -235,6 +316,15 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 					if err != nil {
 						return err
 					}
+					continue
+				}
+				if colChange.new {
+					c.logger.Debug().Str("table", tableName).Str("column", colChange.name).Msg("Column doesn't exist, creating")
+					err := c.addColumn(tableName, columnName, columnType)
+					if err != nil {
+						return err
+					}
+					continue
 				}
 			}
 		}

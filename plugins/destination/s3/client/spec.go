@@ -12,6 +12,7 @@ type Spec struct {
 	NoRotate bool   `json:"no_rotate,omitempty"`
 	Bucket   string `json:"bucket,omitempty"`
 	Path     string `json:"path,omitempty"`
+  Athena   bool       `json:"athena,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {

@@ -4,8 +4,8 @@ go 1.19
 
 require (
 	cloud.google.com/go/storage v1.27.0
-	github.com/cloudquery/filetypes v1.1.1-0.20230120152811-35173eefd8ee
-	github.com/cloudquery/plugin-sdk v1.27.0
+	github.com/cloudquery/filetypes v1.2.0
+	github.com/cloudquery/plugin-sdk v1.28.0
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.28.0
 )

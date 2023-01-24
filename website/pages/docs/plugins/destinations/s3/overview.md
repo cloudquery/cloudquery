@@ -59,3 +59,6 @@ This is the (nested) spec used by the CSV destination Plugin.
 - `delimiter` (character) (optional)
 
   Character that should be used as the delimiter. Default value is `,`.
+- `athena` (boolean) (optional, default `false`)
+
+  When `athena` is set to `true`, the S3 plugin will sanitize keys in JSON columns to be compatible with the Hive Metastore / Athena. This allows tables to be created with a Glue Crawler and then queried via Athena, without changes to the table schema.

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"io"
+	"regexp"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -17,9 +18,22 @@ const (
 	PathVarUUID  = "{{UUID}}"
 )
 
+var reInvalidJSONKey = regexp.MustCompile(`\W`)
+
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
 	name := strings.ReplaceAll(c.pluginSpec.Path, PathVarTable, table.Name)
 	name = strings.ReplaceAll(name, PathVarUUID, uuid.NewString())
+
+	if c.pluginSpec.Athena {
+		for _, resource := range data {
+			for u := range resource {
+				if table.Columns[u].Type != schema.TypeJSON {
+					continue
+				}
+				sanitizeJSONKeys(resource[u])
+			}
+		}
+	}
 
 	var b bytes.Buffer
 	w := io.Writer(&b)
@@ -39,4 +53,25 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	}
 
 	return nil
+}
+
+// sanitizeJSONKeys replaces all invalid characters in JSON keys with underscores.
+// It does the replacement in-place, modifying the original object. This is required
+// for compatibility with Athena.
+func sanitizeJSONKeys(obj any) {
+	switch m := obj.(type) {
+	case map[string]any:
+		for k, v := range m {
+			nk := reInvalidJSONKey.ReplaceAllString(k, "_")
+			// if a duplicate key is created by the replacement, it will be overwritten,
+			// but we consider this highly unlikely
+			delete(m, k)
+			m[nk] = v
+			sanitizeJSONKeys(v)
+		}
+	case []any:
+		for _, v := range m {
+			sanitizeJSONKeys(v)
+		}
+	}
 }
