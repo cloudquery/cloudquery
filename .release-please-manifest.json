@@ -29,7 +29,7 @@
   "plugins/destination/test+FILLER": "0.0.0",
   "plugins/destination/csv": "1.2.2",
   "plugins/destination/csv+FILLER": "0.0.0",
-  "plugins/destination/sqlite": "1.1.6",
+  "plugins/destination/sqlite": "1.2.0",
   "plugins/destination/sqlite+FILLER": "0.0.0",
   "plugins/destination/snowflake": "1.1.7",
   "plugins/destination/snowflake+FILLER": "0.0.0",
