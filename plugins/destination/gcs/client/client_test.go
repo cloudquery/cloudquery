@@ -14,7 +14,7 @@ func TestPluginCSV(t *testing.T) {
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{
 			Bucket:   bucket,
-			Path:     t.TempDir(),
+			Path:     t.TempDir()[1:],
 			Format:   FormatTypeCSV,
 			NoRotate: true,
 		},
@@ -33,7 +33,7 @@ func TestPluginJSON(t *testing.T) {
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{
 			Bucket:   bucket,
-			Path:     t.TempDir(),
+			Path:     t.TempDir()[1:],
 			Format:   FormatTypeJSON,
 			NoRotate: true,
 		},
