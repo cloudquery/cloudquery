@@ -131,7 +131,7 @@ We should also attach a policy to the role that gives it access to the S3 bucket
                 "s3:PutObject"
             ],
             "Resource": [
-                "arn:aws:s3:::cloudquery-athena-example*"
+                "arn:aws:s3:::cloudquery-athena-example/*"
             ]
         }
     ]
