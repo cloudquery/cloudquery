@@ -25,7 +25,7 @@ func SQLType(t schema.ValueType) string {
 		schema.TypeCIDR,
 		schema.TypeMacAddr,
 		schema.TypeInet:
-		return "varchar(8000)" // feasible to see these as PK, so need to limit the value
+		return "nvarchar(4000)" // feasible to see these as PK, so need to limit the value
 	case schema.TypeStringArray,
 		schema.TypeJSON,
 		schema.TypeUUIDArray,
@@ -33,7 +33,7 @@ func SQLType(t schema.ValueType) string {
 		schema.TypeMacAddrArray,
 		schema.TypeInetArray,
 		schema.TypeIntArray:
-		return "varchar(max)"
+		return "nvarchar(max)"
 	default:
 		panic("unknown type " + t.String())
 	}
