@@ -17,6 +17,7 @@ type Spec struct {
 	Path     string     `json:"path,omitempty"`
 	Format   FormatType `json:"format,omitempty"`
 	NoRotate bool       `json:"no_rotate,omitempty"`
+	Athena   bool       `json:"athena,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {
