@@ -23,7 +23,7 @@ jobs:
           cache: true
           cache-dependency-path: go.sum
       - name: golangci-lint
-        uses: cloudquery/golangci-lint-action@master
+        uses: golangci/golangci-lint-action@v3
         with:
           version: v1.50.1
           args: "--config .golangci.yml"
