@@ -20,7 +20,7 @@ type Client struct {
 
 	LDSpec   Spec
 	Services *ldapi.APIClient
-	Backend  *BackendWrapper
+	Backend  backend.Backend
 }
 
 func New(logger zerolog.Logger, sourceSpec specs.Source, ldSpec Spec, services *ldapi.APIClient, bk backend.Backend) *Client {
@@ -29,9 +29,7 @@ func New(logger zerolog.Logger, sourceSpec specs.Source, ldSpec Spec, services *
 		sourceSpec: sourceSpec,
 		LDSpec:     ldSpec,
 		Services:   services,
-	}
-	if bk != nil {
-		c.Backend = NewBackendWrapper(bk)
+		Backend:    bk,
 	}
 	return c
 }
