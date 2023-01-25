@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"io"
+	"path"
 	"reflect"
 	"regexp"
 	"strings"
@@ -24,9 +25,6 @@ const (
 var reInvalidJSONKey = regexp.MustCompile(`\W`)
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
-	name := strings.ReplaceAll(c.pluginSpec.Path, PathVarTable, table.Name)
-	name = strings.ReplaceAll(name, PathVarUUID, uuid.NewString())
-
 	if c.pluginSpec.Athena {
 		for _, resource := range data {
 			for u := range resource {
@@ -57,7 +55,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	r := io.Reader(&b)
 	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
 		Bucket: aws.String(c.pluginSpec.Bucket),
-		Key:    aws.String(name),
+		Key:    aws.String(replacePathVariables(c.pluginSpec.Path, table.Name, uuid.NewString())),
 		Body:   r,
 	}); err != nil {
 		return err
@@ -89,4 +87,10 @@ func sanitizeJSONKeys(obj any) {
 			sanitizeJSONKeys(value.Index(i).Interface())
 		}
 	}
+}
+
+func replacePathVariables(specPath, table, uuid string) string {
+	name := strings.ReplaceAll(specPath, PathVarTable, table)
+	name = strings.ReplaceAll(name, PathVarUUID, uuid)
+	return path.Clean(name)
 }

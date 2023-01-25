@@ -46,3 +46,42 @@ func TestSanitizeJSONKeys(t *testing.T) {
 		t.Errorf("sanitizeJSONKeys() mismatch (-want +got):\n%s", diff)
 	}
 }
+
+func TestReplacPathVariables(t *testing.T) {
+	cases := []struct {
+		inputPath    string
+		uuid         string
+		tableName    string
+		expectedPath string
+	}{
+		{
+			inputPath:    "test/test/{{TABLE}}/{{UUID}}",
+			uuid:         "",
+			tableName:    "",
+			expectedPath: "test/test",
+		},
+		{
+			inputPath:    "test/test/{{TABLE}}/{{UUID}}.json",
+			tableName:    "test-table",
+			uuid:         "",
+			expectedPath: "test/test/test-table/.json",
+		},
+		{
+			inputPath:    "test/test/{{TABLE}}/{{UUID}}.json",
+			tableName:    "test-table",
+			uuid:         "FAKE-UUID",
+			expectedPath: "test/test/test-table/FAKE-UUID.json",
+		},
+		{
+			inputPath:    "test/test/{{TABLE}}/{{UUID}}.json",
+			tableName:    "",
+			uuid:         "FAKE-UUID",
+			expectedPath: "test/test/FAKE-UUID.json",
+		},
+	}
+	for _, tc := range cases {
+		if diff := cmp.Diff(tc.expectedPath, replacePathVariables(tc.inputPath, tc.tableName, tc.uuid)); diff != "" {
+			t.Errorf("unexpected Path Substitution (-want +got):\n%s", diff)
+		}
+	}
+}
