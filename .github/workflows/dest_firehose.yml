@@ -1,4 +1,4 @@
-name: Destination Plugin S3 Workflow
+name: Destination Plugin Kinesis Firehose Workflow
 
 on:
   pull_request:
@@ -37,12 +37,12 @@ jobs:
         with:
           go-version-file: plugins/destination/firehose/go.mod
           cache: true
-          cache-dependency-path: plugins/destination/s3/go.sum
+          cache-dependency-path: plugins/destination/firehose/go.sum
       - name: golangci-lint
         uses: cloudquery/golangci-lint-action@master
         with:
           version: v1.50.1
-          working-directory: plugins/destination/s3
+          working-directory: plugins/destination/firehose
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true
