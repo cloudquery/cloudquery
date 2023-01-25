@@ -5,6 +5,18 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.2.1...plugins-source-gcp-v7.3.0) (2023-01-25)
+
+
+### Features
+
+* **gcp-resources:** Add Security Center projects and organizations findings ([#7089](https://github.com/cloudquery/cloudquery/issues/7089)) ([e849caf](https://github.com/cloudquery/cloudquery/commit/e849caf1915eb7f811e9e8edfc94009f6e710229))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.29.0 ([#7121](https://github.com/cloudquery/cloudquery/issues/7121)) ([b7441c9](https://github.com/cloudquery/cloudquery/commit/b7441c93c274ae3a6009474a2b28f44a172dd6dc))
+
 ## [7.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.2.0...plugins-source-gcp-v7.2.1) (2023-01-24)
 
 
