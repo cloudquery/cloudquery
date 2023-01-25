@@ -13,7 +13,7 @@ func TestPluginCSV(t *testing.T) {
 	p := destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
 	spec := Spec{
 		Bucket:   bucket,
-		Path:     t.TempDir(),
+		Path:     t.TempDir()[1:],
 		NoRotate: true,
 		FileSpec: &filetypes.FileSpec{
 			Format: filetypes.FormatTypeCSV,
@@ -23,10 +23,11 @@ func TestPluginCSV(t *testing.T) {
 	destination.PluginTestSuiteRunner(t, p,
 		spec,
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:     true,
-			SkipDeleteStale:   true,
-			SkipSecondAppend:  true,
-			SkipMigrateAppend: true,
+			SkipOverwrite:        true,
+			SkipDeleteStale:      true,
+			SkipSecondAppend:     true,
+			SkipMigrateAppend:    true,
+			SkipMigrateOverwrite: true,
 		},
 	)
 }
@@ -35,7 +36,7 @@ func TestPluginJSON(t *testing.T) {
 	p := destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
 	spec := Spec{
 		Bucket:   bucket,
-		Path:     t.TempDir(),
+		Path:     t.TempDir()[1:],
 		NoRotate: true,
 		FileSpec: &filetypes.FileSpec{
 			Format: filetypes.FormatTypeJSON,
@@ -45,10 +46,11 @@ func TestPluginJSON(t *testing.T) {
 	destination.PluginTestSuiteRunner(t, p,
 		spec,
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:     true,
-			SkipDeleteStale:   true,
-			SkipSecondAppend:  true,
-			SkipMigrateAppend: true,
+			SkipOverwrite:        true,
+			SkipDeleteStale:      true,
+			SkipSecondAppend:     true,
+			SkipMigrateAppend:    true,
+			SkipMigrateOverwrite: true,
 		},
 	)
 }

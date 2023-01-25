@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"context"
 	"io"
+	"path"
+	"reflect"
 	"regexp"
 	"strings"
 
@@ -21,9 +23,6 @@ const (
 var reInvalidJSONKey = regexp.MustCompile(`\W`)
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
-	name := strings.ReplaceAll(c.pluginSpec.Path, PathVarTable, table.Name)
-	name = strings.ReplaceAll(name, PathVarUUID, uuid.NewString())
-
 	if c.pluginSpec.Athena {
 		for _, resource := range data {
 			for u := range resource {
@@ -46,7 +45,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	r := io.Reader(&b)
 	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
 		Bucket: aws.String(c.pluginSpec.Bucket),
-		Key:    aws.String(name),
+		Key:    aws.String(replacePathVariables(c.pluginSpec.Path, table.Name, uuid.NewString())),
 		Body:   r,
 	}); err != nil {
 		return err
@@ -59,19 +58,29 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 // It does the replacement in-place, modifying the original object. This is required
 // for compatibility with Athena.
 func sanitizeJSONKeys(obj any) {
-	switch m := obj.(type) {
-	case map[string]any:
-		for k, v := range m {
-			nk := reInvalidJSONKey.ReplaceAllString(k, "_")
-			// if a duplicate key is created by the replacement, it will be overwritten,
-			// but we consider this highly unlikely
-			delete(m, k)
-			m[nk] = v
-			sanitizeJSONKeys(v)
+	value := reflect.ValueOf(obj)
+	switch value.Kind() {
+	case reflect.Map:
+		iter := value.MapRange()
+		for iter.Next() {
+			k := iter.Key()
+			if k.Kind() == reflect.String {
+				nk := reInvalidJSONKey.ReplaceAllString(k.String(), "_")
+				v := iter.Value()
+				sanitizeJSONKeys(v.Interface())
+				value.SetMapIndex(k, reflect.Value{})
+				value.SetMapIndex(reflect.ValueOf(nk), v)
+			}
 		}
-	case []any:
-		for _, v := range m {
-			sanitizeJSONKeys(v)
+	case reflect.Slice:
+		for i := 0; i < value.Len(); i++ {
+			sanitizeJSONKeys(value.Index(i).Interface())
 		}
 	}
+}
+
+func replacePathVariables(specPath, table, fileIdentifier string) string {
+	name := strings.ReplaceAll(specPath, PathVarTable, table)
+	name = strings.ReplaceAll(name, PathVarUUID, fileIdentifier)
+	return path.Clean(name)
 }
