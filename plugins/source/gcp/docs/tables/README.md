@@ -141,6 +141,8 @@
 - [gcp_run_locations](gcp_run_locations.md)
   - [gcp_run_services](gcp_run_services.md)
 - [gcp_secretmanager_secrets](gcp_secretmanager_secrets.md)
+- [gcp_securitycenter_organization_findings](gcp_securitycenter_organization_findings.md)
+- [gcp_securitycenter_project_findings](gcp_securitycenter_project_findings.md)
 - [gcp_serviceusage_services](gcp_serviceusage_services.md)
 - [gcp_sql_instances](gcp_sql_instances.md)
   - [gcp_sql_users](gcp_sql_users.md)
