@@ -89,8 +89,8 @@ func sanitizeJSONKeys(obj any) {
 	}
 }
 
-func replacePathVariables(specPath, table, uuid string) string {
+func replacePathVariables(specPath, table, fileIdentifier string) string {
 	name := strings.ReplaceAll(specPath, PathVarTable, table)
-	name = strings.ReplaceAll(name, PathVarUUID, uuid)
+	name = strings.ReplaceAll(name, PathVarUUID, fileIdentifier)
 	return path.Clean(name)
 }
