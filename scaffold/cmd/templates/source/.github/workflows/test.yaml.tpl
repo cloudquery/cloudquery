@@ -5,12 +5,11 @@ on:
     branches:
       - main
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
     timeout-minutes: 30
-    name: "test"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -21,14 +20,10 @@ jobs:
         with:
           go-version-file: go.mod
           cache: true
-          cache-dependency-path: go.sum
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.50.1
-          args: "--config .golangci.yml"
-          skip-pkg-cache: true
-          skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build
