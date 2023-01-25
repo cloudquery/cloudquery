@@ -20,10 +20,11 @@ func TestPluginCSV(t *testing.T) {
 	destination.PluginTestSuiteRunner(t, p,
 		spec,
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:     true,
-			SkipDeleteStale:   true,
-			SkipSecondAppend:  true,
-			SkipMigrateAppend: true,
+			SkipOverwrite:        true,
+			SkipDeleteStale:      true,
+			SkipSecondAppend:     true,
+			SkipMigrateAppend:    true,
+			SkipMigrateOverwrite: true,
 		},
 	)
 }
@@ -40,10 +41,11 @@ func TestPluginJSON(t *testing.T) {
 	destination.PluginTestSuiteRunner(t, p,
 		spec,
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:     true,
-			SkipDeleteStale:   true,
-			SkipSecondAppend:  true,
-			SkipMigrateAppend: true,
+			SkipOverwrite:        true,
+			SkipDeleteStale:      true,
+			SkipSecondAppend:     true,
+			SkipMigrateAppend:    true,
+			SkipMigrateOverwrite: true,
 		},
 	)
 }

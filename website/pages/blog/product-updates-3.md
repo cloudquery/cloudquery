@@ -26,7 +26,7 @@ We've added 8 new destinations to CQ!!
 * [MongoDB](/docs/plugins/destinations/mongodb/overview)
 * [Neo4j](/docs/plugins/destinations/neo4j/overview)
 * [Kafka](/docs/plugins/destinations/kafka/overview)
-* [MSSQL](/docs/plugins/destinations/mssql/overview)
+* [Microsoft SQL Server](/docs/plugins/destinations/mssql/overview)
 * [GCS](/docs/plugins/destinations/gcs/overview)
 * [S3](/docs/plugins/destinations/s3/overview)
 * [File](/docs/plugins/destinations/file/overview)

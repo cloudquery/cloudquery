@@ -35,9 +35,11 @@ func newCmdScaffoldSource() *cobra.Command {
 
 var scaffoldTemplates = map[string]string{
 	"release.yaml.tpl":     ".github/workflows/release.yaml",
+	"test.yaml.tpl":        ".github/workflows/test.yaml",
 	".goreleaser.yaml.tpl": ".goreleaser.yaml",
 	"go.mod.tpl":           "go.mod",
 	"main.go.tpl":          "main.go",
+	"Makefile.tpl":         "Makefile",
 	"README.md.tpl":        "README.md",
 	"client.go.tpl":        "client/client.go",
 	"spec.go.tpl":          "client/spec.go",

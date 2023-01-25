@@ -9,8 +9,6 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 <HowToGuideHeader/>
 
-# How to Load Infrastructure Data into Athena  
-
 ## Introduction
 
 Athena is a serverless query service by AWS that allows you to query data in S3 using standard SQL. In this tutorial, we will show you how to load your cloud infrastructure data into S3 using CloudQuery and query it using Athena. This allows you to get fine-grained insights into your infrastructure data, all from the convenience of a serverless query environment running on AWS. 
@@ -19,13 +17,9 @@ By the end of this post, you will be able to query your AWS infrastructure data 
 
 ![Athena query editor](/images/how-to-guides/how-to-load-infrastructure-data-into-athena/athena-query-editor.png)
 
-Let's get started!
+To accomplish this we will load data into S3 using CloudQuery, set up a Glue Crawler to automatically create the database and tables in a Glue Catalog, and then query those tables using Athena. Let's get started!
 
-## Step 1: Install CloudQuery
-
-To sync infrastructure data to S3, you will first need an installation of the CloudQuery CLI (or Docker image). See our [Quickstart](/docs/quickstart) for detailed instructions.
-
-## Step 2: Create a Bucket for the Data
+## Step 1: Create a Bucket for the Data
 
 We will need to upload the sync results to S3 so that Athena can query them. We'll use the [AWS CLI](https://aws.amazon.com/cli/) to do this in this tutorial, but you can also use the AWS web console or Terraform/CloudFormation if you prefer.
 
@@ -41,7 +35,22 @@ Now we will create a bucket to store the data:
 aws s3 mb s3://$BUCKET_NAME
 ```
 
-This will create the bucket with default AWS SSE-S3 encryption. If you have different requirements for bucket setup and encryption, use those settings. The [s3api create-bucket command](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/create-bucket.html) has more fine-grained options.
+This will create the bucket with default AWS SSE-S3 encryption. If you have different requirements for bucket setup and encryption, you may use the [s3api create-bucket command](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/create-bucket.html) to set more fine-grained options.
+
+## Step 2: Install CloudQuery
+
+To sync infrastructure data to S3, we will need an installation of the CloudQuery CLI (or Docker image). See our [Quickstart](/docs/quickstart) for detailed instructions.
+
+When this step is complete, you should be able to run `cloudquery --help` and see the help output:
+
+```bash
+$ cloudquery --help
+CloudQuery CLI
+
+Open source data integration at scale.
+
+[...]
+```
 
 ## Step 3: Configure the AWS Source Plugin 
 
