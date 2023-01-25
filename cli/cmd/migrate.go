@@ -72,7 +72,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 			if err := migrateConnectionV0(ctx, cqDir, *sourceSpec, destinationsSpecs); err != nil {
 				return fmt.Errorf("failed to migrate source %s: %w", sourceSpec.Name, err)
 			}
-			return nil
+			continue
 		}
 
 		if err := discoveryClient.Terminate(); err != nil {
@@ -83,14 +83,14 @@ func migrate(cmd *cobra.Command, args []string) error {
 			if err := migrateConnectionV1(ctx, cqDir, *sourceSpec, destinationsSpecs); err != nil {
 				return fmt.Errorf("failed to migrate source %s: %w", sourceSpec.Name, err)
 			}
-			return nil
+			continue
 		}
 
 		if slices.Index(versions, "v0") != -1 {
 			if err := migrateConnectionV0(ctx, cqDir, *sourceSpec, destinationsSpecs); err != nil {
 				return fmt.Errorf("failed to migrate source %s: %w", sourceSpec.Name, err)
 			}
-			return nil
+			continue
 		}
 
 		return fmt.Errorf("failed to migrate source %s, unknown versions %v", sourceSpec.Name, versions)
