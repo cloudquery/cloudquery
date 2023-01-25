@@ -47,7 +47,7 @@ func TestSanitizeJSONKeys(t *testing.T) {
 	}
 }
 
-func TestReplacPathVariables(t *testing.T) {
+func TestReplacePathVariables(t *testing.T) {
 	cases := []struct {
 		inputPath    string
 		uuid         string
