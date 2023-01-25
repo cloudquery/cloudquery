@@ -6,6 +6,7 @@
   "file": "File",
   "gcs": "GCS",
   "kafka": "Kafka",
+  "firehose": "Amazon Kinesis Firehose",
   "mongodb": "MongoDB",
   "mssql": "Microsoft SQL Server",
   "postgresql": "PostgreSQL",
