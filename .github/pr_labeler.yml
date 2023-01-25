@@ -28,6 +28,8 @@ hackernews:
   - plugins/source/hackernews/**/*
 heroku:
   - plugins/source/heroku/**/*
+hubspot:
+  - plugins/source/hubspot/**/*
 plausible:
   - plugins/source/plausible/**/*
 k8s:

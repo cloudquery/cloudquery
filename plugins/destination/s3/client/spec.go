@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"path"
 	"strings"
 )
 
@@ -41,6 +42,14 @@ func (s *Spec) Validate() error {
 	if s.NoRotate && strings.Contains(s.Path, PathVarUUID) {
 		return fmt.Errorf("path should not contain %s when no_rotate = true", PathVarUUID)
 	}
+	if path.IsAbs(s.Path) {
+		return fmt.Errorf(`path should not start with a "/"`)
+	}
+
+	if s.Path != path.Clean(s.Path) {
+		return fmt.Errorf("path should not contain relative paths or duplicate slashes")
+	}
+
 	if s.Format == "" {
 		return fmt.Errorf("format is required")
 	}

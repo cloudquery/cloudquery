@@ -141,6 +141,8 @@
 - [gcp_run_locations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_run_locations.md)
   - [gcp_run_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_run_services.md)
 - [gcp_secretmanager_secrets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_secretmanager_secrets.md)
+- [gcp_securitycenter_organization_findings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_securitycenter_organization_findings.md)
+- [gcp_securitycenter_project_findings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_securitycenter_project_findings.md)
 - [gcp_serviceusage_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_serviceusage_services.md)
 - [gcp_sql_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_sql_instances.md)
   - [gcp_sql_users](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_sql_users.md)
