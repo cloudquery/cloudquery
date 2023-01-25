@@ -34,7 +34,11 @@ func createManagedInstances(router *mux.Router) error {
 		}
 	})
 
-	return nil
+	if err := createManagedInstanceVulnerabilityAssessments(router); err != nil {
+		return err
+	}
+
+	return createManagedInstanceEncryptionProtectors(router)
 }
 
 func TestManagedInstances(t *testing.T) {

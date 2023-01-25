@@ -16,8 +16,9 @@ This table depends on [azure_appservice_web_apps](azure_appservice_web_apps.md).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|id (PK)|String|
+|subscription_id|String|
 |kind|String|
 |properties|JSON|
+|id (PK)|String|
 |name|String|
 |type|String|
