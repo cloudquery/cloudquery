@@ -82,6 +82,8 @@ neo4j:
   - plugins/destination/neo4j/**/*
 kafka:
   - plugins/destination/kafka/**/*
+firehose:
+  - plugins/destination/firehose/**/*  
 website:
   - website/**/*
 cli:
