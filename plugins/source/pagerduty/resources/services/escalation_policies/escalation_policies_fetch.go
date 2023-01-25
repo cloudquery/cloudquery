@@ -15,8 +15,9 @@ func fetchEscalationPolicies(ctx context.Context, meta schema.ClientMeta, parent
 	var offset uint
 	for more {
 		response, err := cqClient.PagerdutyClient.ListEscalationPoliciesWithContext(ctx, pagerduty.ListEscalationPoliciesOptions{
-			Limit:  client.MaxPaginationLimit,
-			Offset: offset,
+			Limit:   client.MaxPaginationLimit,
+			Offset:  offset,
+			TeamIDs: cqClient.Spec.TeamIds,
 		})
 		if err != nil {
 			return err

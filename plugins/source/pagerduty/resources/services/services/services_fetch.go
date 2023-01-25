@@ -15,8 +15,9 @@ func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	var offset uint
 	for more {
 		response, err := cqClient.PagerdutyClient.ListServicesWithContext(ctx, pagerduty.ListServiceOptions{
-			Limit:  client.MaxPaginationLimit,
-			Offset: offset,
+			Limit:   client.MaxPaginationLimit,
+			Offset:  offset,
+			TeamIDs: cqClient.Spec.TeamIds,
 		})
 		if err != nil {
 			return err

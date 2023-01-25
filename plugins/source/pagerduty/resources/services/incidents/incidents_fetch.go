@@ -18,6 +18,7 @@ func fetchIncidents(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			Limit:     client.MaxPaginationLimit,
 			Offset:    offset,
 			DateRange: "all",
+			TeamIDs:   cqClient.Spec.TeamIds,
 		})
 		if err != nil {
 			return err
