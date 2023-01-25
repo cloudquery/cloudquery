@@ -17,10 +17,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-// TODO: Verify that metrics are being updated correctly
-// TODO: Verify errors are propagated
-// TODO: Clean up send batch and retry logic
-
 const MAX_RECORD_SIZE = 1024000
 
 func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {

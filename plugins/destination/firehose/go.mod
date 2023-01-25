@@ -5,8 +5,8 @@ go 1.19
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.3
 	github.com/aws/aws-sdk-go-v2/config v1.18.8
-	github.com/cloudquery/filetypes v1.0.6
-	github.com/cloudquery/plugin-sdk v1.27.0
+	github.com/cloudquery/filetypes v1.2.0
+	github.com/cloudquery/plugin-sdk v1.28.0
 	github.com/rs/zerolog v1.28.0
 )
 

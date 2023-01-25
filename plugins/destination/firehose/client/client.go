@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 
-	"github.com/cloudquery/filetypes/json"
+	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -16,15 +16,12 @@ import (
 
 type Client struct {
 	destination.UnimplementedManagedWriter
-	destination.DefaultReverseTransformer
 	logger         zerolog.Logger
 	spec           specs.Destination
 	pluginSpec     Spec
 	metrics        destination.Metrics
 	firehoseClient *firehose.Client
-
-	jsonTransformer        *json.Transformer
-	jsonReverseTransformer *json.ReverseTransformer
+	*filetypes.Client
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -32,10 +29,8 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("destination only supports append mode")
 	}
 	c := &Client{
-		logger:                 logger.With().Str("module", "firehose").Logger(),
-		spec:                   spec,
-		jsonTransformer:        &json.Transformer{},
-		jsonReverseTransformer: &json.ReverseTransformer{},
+		logger: logger.With().Str("module", "firehose").Logger(),
+		spec:   spec,
 	}
 
 	if err := spec.UnmarshalSpec(&c.pluginSpec); err != nil {
@@ -55,6 +50,13 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 
 	c.firehoseClient = firehose.NewFromConfig(cfg)
+
+	filetypesClient, err := filetypes.NewClient(c.pluginSpec.FileSpec)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
+	}
+	c.Client = filetypesClient
+
 	return c, nil
 }
 
