@@ -3,25 +3,23 @@ name: Destination Plugin S3 Workflow
 on:
   pull_request:
     paths:
-      - "plugins/destination/filetypes/**"
-      - "plugins/destination/s3/**"
-      - ".github/workflows/dest_s3.yml"
+      - "plugins/destination/firehose/**"
+      - ".github/workflows/dest_firehose.yml"
   push:
     branches:
       - main
     paths:
-      - "plugins/destination/filetypes/**"
-      - "plugins/destination/s3/**"
-      - ".github/workflows/dest_s3.yml"
+      - "plugins/destination/firehose/**"
+      - ".github/workflows/dest_firehose.yml"
 
 jobs:
-  plugins-destination-s3:
+  plugins-destination-firehose:
     timeout-minutes: 30
-    name: "plugins/destination/s3"
+    name: "plugins/destination/firehose"
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./plugins/destination/s3
+        working-directory: ./plugins/destination/firehose
     permissions:
       id-token: write
       contents: read # This is required for actions/checkout@v3
@@ -37,7 +35,7 @@ jobs:
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
-          go-version-file: plugins/destination/s3/go.mod
+          go-version-file: plugins/destination/firehose/go.mod
           cache: true
           cache-dependency-path: plugins/destination/s3/go.sum
       - name: golangci-lint
