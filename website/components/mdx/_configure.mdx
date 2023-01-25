@@ -57,7 +57,8 @@ that every plugin configuration has a unique `name` (e.g. `postgres1`, `postgres
 
 Source plugins define the APIs you want to sync from (See [available sources](/docs/plugins/sources/overview)).
 
-For example, let's configure the [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws) source plugin.
+For example, let's configure the [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws) source plugin
+ to sync all `s3` and `ec2` information.
 Create an `aws.yml` file in your `cloudquery-config` directory:
 
 ```yaml
@@ -78,10 +79,9 @@ spec:
   ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws&expanded=true
   version: "VERSION_SOURCE_AWS"
 
-  ## Optional. Default: ["*"] - all tables. We recommend to specify specific tables that you need to sync as this
-  ## will reduce the amount of data synced and improve performance.
+  ## Optional. Default: ["*"] - all tables. Syncing "*" may take longer than syncing only specific services/tables.
   ## See all tables: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/README.md
-  # tables: ["*"]
+  tables: ["aws_ec2_*", "aws_s3_*"]
 
   ## Required. all destinations you want to sync data to.
   destinations: ["postgresql"]
