@@ -13,9 +13,9 @@ func ResolveAWSAccount(_ context.Context, meta schema.ClientMeta, r *schema.Reso
 	return r.Set("account_id", client.AccountID)
 }
 
-func ResolveAWSRegion(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {
+func ResolveAWSRegion(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	client := meta.(*Client)
-	return r.Set("region", client.Region)
+	return r.Set(c.Name, client.Region)
 }
 
 func ResolveAWSNamespace(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {
