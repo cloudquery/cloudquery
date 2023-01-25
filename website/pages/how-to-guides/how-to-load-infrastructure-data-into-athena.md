@@ -17,7 +17,7 @@ By the end of this post, you will be able to query your AWS infrastructure data 
 
 ![Athena query editor](/images/how-to-guides/how-to-load-infrastructure-data-into-athena/athena-query-editor.png)
 
-Let's get started!
+To accomplish this we will load data into S3 using CloudQuery, set up a Glue Crawler to automatically create the database and tables in a Glue Catalog, and then query those tables using Athena. Let's get started!
 
 ## Step 1: Create a Bucket for the Data
 
