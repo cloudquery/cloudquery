@@ -37,6 +37,7 @@ func Functions() *schema.Table {
 			{
 				Name: "policy_revision_id",
 				Type: schema.TypeString,
+				// resolved in resolveResourcePolicy
 			},
 			{
 				Name:     "policy_document",
@@ -56,6 +57,7 @@ func Functions() *schema.Table {
 			{
 				Name: "update_runtime_on",
 				Type: schema.TypeString,
+				// resolved in resolveRuntimeManagementConfig
 			},
 			{
 				Name:     "runtime_version_arn",
