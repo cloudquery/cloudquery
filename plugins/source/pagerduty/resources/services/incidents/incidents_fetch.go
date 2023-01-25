@@ -19,6 +19,7 @@ func fetchIncidents(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		response, err := cqClient.PagerdutyClient.ListIncidentsWithContext(ctx, pagerduty.ListIncidentsOptions{
 			Limit:  client.MaxPaginationLimit,
 			Offset: offset,
+			DateRange: "all",
 		})
 		if err != nil {
 			return err
