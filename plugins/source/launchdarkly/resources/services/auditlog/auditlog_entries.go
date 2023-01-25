@@ -1,0 +1,84 @@
+package auditlog
+
+import (
+	"context"
+	"fmt"
+	"strconv"
+
+	"github.com/cloudquery/cloudquery/plugins/source/launchdarkly/client"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
+	ldapi "github.com/launchdarkly/api-client-go/v11"
+)
+
+func AuditLogEntries() *schema.Table {
+	return &schema.Table{
+		Name:        "launchdarkly_auditlog_entries",
+		Description: `https://apidocs.launchdarkly.com/tag/Audit-log#operation/getAuditLogEntries`,
+		Resolver:    fetchAuditLogEntries,
+		Transform:   transformers.TransformWithStruct(&ldapi.AuditLogEntryListingRep{}, transformers.WithSkipFields("Id", "Date"), transformers.WithSkipFields("Links")),
+		Columns: schema.ColumnList{
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "date",
+				Type:     schema.TypeTimestamp,
+				Resolver: client.UnixTimeResolver("Date"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
+				},
+			},
+		},
+		IsIncremental: true,
+	}
+}
+
+const key = "auditlog_entries"
+
+func fetchAuditLogEntries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
+
+	cursor := int64(0)
+	if cl.Backend != nil {
+		value, err := cl.Backend.Get(ctx, key, cl.ID())
+		if err != nil {
+			return fmt.Errorf("failed to retrieve state from backend: %w", err)
+		}
+		if value != "" {
+			valInt, err := strconv.ParseInt(value, 10, 64)
+			if err != nil {
+				return fmt.Errorf("retrieved invalid state value: %q %w", value, err)
+			}
+			cursor = valInt
+		}
+	}
+
+	const limit = 20
+	for {
+		list, _, err := cl.Services.AuditLogApi.GetAuditLogEntries(ctx).Limit(limit).After(cursor).Execute()
+		if err != nil {
+			return err
+		}
+		res <- list.Items
+
+		if len(list.Items) < limit {
+			break
+		}
+
+		cursor = list.Items[len(list.Items)-1].Date
+	}
+
+	if cl.Backend != nil {
+		if err := cl.Backend.Set(ctx, key, cl.ID(), strconv.FormatInt(cursor, 10)); err != nil {
+			return fmt.Errorf("failed to store state in backend: %w", err)
+		}
+	}
+
+	return nil
+}

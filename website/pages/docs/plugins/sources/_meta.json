@@ -15,6 +15,7 @@
   "hackernews": "Hacker News",
   "heroku": "Heroku",
   "k8s": "Kubernetes",
+  "launchdarkly": "LaunchDarkly",
   "mixpanel": "Mixpanel",
   "okta": "Okta",
   "oracle": "Oracle",

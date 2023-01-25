@@ -57,6 +57,7 @@ jobs:
                            "plugins/source/hackernews",
                            "plugins/source/heroku",
                            "plugins/source/k8s",
+                           "plugins/source/launchdarkly",
                            "plugins/source/okta",
                            "plugins/source/shopify",
                            "plugins/source/oracle",
