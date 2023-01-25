@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/kinesisfirehose
+module github.com/cloudquery/cloudquery/plugins/destination/firehose
 
 go 1.19
 
