@@ -21,9 +21,6 @@ spec:
   name: "{{.Name}}"
   path: "{{.Org}}/{{.Name}}"
   version: "${VERSION}"
-  backend: "local" # remove this to disable incremental syncing
-  tables:
-    ["*"]
   destinations:
     - "postgresql"
   spec:
