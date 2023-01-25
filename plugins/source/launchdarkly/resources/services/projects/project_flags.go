@@ -34,10 +34,12 @@ func fetchProjectFlags(ctx context.Context, meta schema.ClientMeta, parent *sche
 	p := parent.Item.(ldapi.Project)
 
 	for _, arch := range []bool{false, true} {
-		list, _, err := cl.Services.FeatureFlagsApi.GetFeatureFlags(ctx, p.Key).Archived(arch).Execute()
+		list, b, err := cl.Services.FeatureFlagsApi.GetFeatureFlags(ctx, p.Key).Archived(arch).Execute()
 		if err != nil {
 			return err
 		}
+		b.Body.Close()
+
 		res <- list.Items
 	}
 

@@ -33,10 +33,12 @@ func fetchProjectMetrics(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 	p := parent.Item.(ldapi.Project)
 
-	list, _, err := cl.Services.MetricsApi.GetMetrics(ctx, p.Key).Expand("experimentCount").Execute()
+	list, b, err := cl.Services.MetricsApi.GetMetrics(ctx, p.Key).Expand("experimentCount").Execute()
 	if err != nil {
 		return err
 	}
+	b.Body.Close()
+
 	res <- list.Items
 
 	return nil

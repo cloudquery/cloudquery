@@ -33,10 +33,12 @@ func fetchProjectFlagDefaults(ctx context.Context, meta schema.ClientMeta, paren
 
 	p := parent.Item.(ldapi.Project)
 
-	list, _, err := cl.Services.ProjectsApi.GetFlagDefaultsByProject(ctx, p.Key).Execute()
+	list, b, err := cl.Services.ProjectsApi.GetFlagDefaultsByProject(ctx, p.Key).Execute()
 	if err != nil {
 		return err
 	}
+	b.Body.Close()
+
 	res <- list
 
 	return nil

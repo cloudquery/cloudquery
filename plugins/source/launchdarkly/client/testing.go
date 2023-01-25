@@ -38,6 +38,16 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 		t.Logf("Router received request to %s", r.URL.String())
 		http.Error(w, "not found", http.StatusNotFound)
 	})
+	router.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.Header.Get("Authorization") != testToken {
+				w.WriteHeader(http.StatusUnauthorized)
+				return
+			}
+
+			next.ServeHTTP(w, r)
+		})
+	})
 
 	h := httptest.NewServer(router)
 	defer h.Close()

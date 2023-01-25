@@ -40,10 +40,12 @@ func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	const limit = 20
 	ofs := int64(0)
 	for {
-		list, _, err := cl.Services.ProjectsApi.GetProjects(ctx).Sort("createdOn").Expand("environments").Offset(ofs).Limit(limit).Execute()
+		list, b, err := cl.Services.ProjectsApi.GetProjects(ctx).Sort("createdOn").Expand("environments").Offset(ofs).Limit(limit).Execute()
 		if err != nil {
 			return err
 		}
+		b.Body.Close()
+
 		res <- list.Items
 
 		if len(list.Items) < limit {

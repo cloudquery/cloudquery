@@ -61,10 +61,11 @@ func fetchAuditLogEntries(ctx context.Context, meta schema.ClientMeta, parent *s
 
 	const limit = 20
 	for {
-		list, _, err := cl.Services.AuditLogApi.GetAuditLogEntries(ctx).Limit(limit).After(cursor).Execute()
+		list, b, err := cl.Services.AuditLogApi.GetAuditLogEntries(ctx).Limit(limit).After(cursor).Execute()
 		if err != nil {
 			return err
 		}
+		b.Body.Close()
 		res <- list.Items
 
 		if l := len(list.Items); l > 0 {
@@ -74,7 +75,6 @@ func fetchAuditLogEntries(ctx context.Context, meta schema.ClientMeta, parent *s
 		if len(list.Items) < limit {
 			break
 		}
-
 	}
 
 	if cl.Backend != nil {
