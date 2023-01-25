@@ -32,7 +32,8 @@ func createSubscriptions(router *mux.Router) error {
 			return
 		}
 	})
-	return nil
+
+	return createLocations(router)
 }
 
 func TestSubscriptions(t *testing.T) {

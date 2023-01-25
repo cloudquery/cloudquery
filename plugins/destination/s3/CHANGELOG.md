@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v1.1.0...plugins-destination-s3-v1.1.1) (2023-01-24)
+
+
+### Bug Fixes
+
+* **s3:** Use reflection for sanitizeJSONKeys to cover more cases ([#7104](https://github.com/cloudquery/cloudquery/issues/7104)) ([a6608fe](https://github.com/cloudquery/cloudquery/commit/a6608feeec42d299b0beb4e7d00a6b27e8e71966))
+
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v1.0.5...plugins-destination-s3-v1.1.0) (2023-01-24)
 
 
