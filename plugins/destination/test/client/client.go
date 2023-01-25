@@ -6,17 +6,18 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/cloudquery/cloudquery/plugins/destination/test/pk"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 )
 
 type Client struct {
 	destination.DefaultReverseTransformer
 	logger zerolog.Logger
 	spec   Spec
+	pks    pk.Store
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -26,8 +27,9 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 	return &Client{
-		logger: log.With().Str("module", "test").Logger(),
+		logger: logger.With().Str("module", "test").Logger(),
 		spec:   testConfig,
+		pks:    pk.NewStore(),
 	}, nil
 }
 
@@ -43,13 +45,25 @@ func (*Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return nil
 }
 
-//revive:disable We need to range over the channel to clear it, but revive thinks it can be removed
+func (c *Client) checkPKViolation(table *schema.Table, res []any) {
+	if c.pks.IsDuplicate(table, res) {
+		c.logger.Error().
+			Str("table", table.Name).
+			Str("columns", "("+pk.Columns(table)+")").
+			Str("value", "("+pk.Convert(table, res)+")").
+			Msg("Duplicate PK")
+	}
+}
+
 func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
 	if c.spec.ErrorOnWrite {
 		return errors.New("error_on_write is true")
 	}
-	for range res {
-		// do nothing
+	for r := range res {
+		// check for PK issues
+		table := tables.Get(r.TableName)
+
+		c.checkPKViolation(table, r.Data)
 	}
 	return nil
 }
@@ -58,6 +72,11 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, res [
 	if c.spec.ErrorOnWrite {
 		return errors.New("error_on_write is true")
 	}
+
+	for _, r := range res {
+		c.checkPKViolation(table, r)
+	}
+
 	return nil
 }
 
