@@ -12,7 +12,7 @@ func Findings() *schema.Table {
 		Name:        "aws_securityhub_findings",
 		Description: `https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html`,
 		Resolver:    fetchFindings,
-		Transform:   transformers.TransformWithStruct(&types.AwsSecurityFinding{}, transformers.WithPrimaryKeys("AwsAccountId", "Region", "CreatedAt", "Description", "GeneratorId,Id", "ProductArn", "SchemaVersion", "Title")),
+		Transform:   transformers.TransformWithStruct(&types.AwsSecurityFinding{}, transformers.WithPrimaryKeys("AwsAccountId", "Region", "CreatedAt", "Description", "GeneratorId", "Id", "ProductArn", "SchemaVersion", "Title")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("securityhub"),
 		Columns: []schema.Column{
 			{
