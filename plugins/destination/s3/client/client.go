@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"path"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -72,7 +71,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	// we want to run this test because we want it to fail early if the bucket is not accessible
 	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
 		Bucket: aws.String(c.pluginSpec.Bucket),
-		Key:    aws.String(path.Join(replacePathVariables(spec.Path, "", ""), ".cq-test-file")),
+		Key:    aws.String(replacePathVariables(spec.Path, "TEST_TABLE", "TEST_UUID")),
 		Body:   bytes.NewReader([]byte("")),
 	}); err != nil {
 		return nil, fmt.Errorf("failed to write test file to S3: %w", err)
