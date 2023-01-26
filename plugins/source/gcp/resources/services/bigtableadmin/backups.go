@@ -13,20 +13,12 @@ func Backups() *schema.Table {
 		Description: `https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances.clusters.backups#Backup`,
 		Resolver:    fetchBackups,
 		Multiplex:   client.ProjectMultiplexEnabledServices("bigtableadmin.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.BackupInfo{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.BackupInfo{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

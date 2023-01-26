@@ -17,20 +17,12 @@ func Products() *schema.Table {
 			[]string{
 				"us-west1", "us-east1", "asia-east1", "europe-west1",
 			}),
-		Transform: transformers.TransformWithStruct(&pb.Product{}, client.Options()...),
+		Transform: transformers.TransformWithStruct(&pb.Product{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
