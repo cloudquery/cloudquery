@@ -1,7 +1,6 @@
 package bigtableadmin
 
 import (
-	pb "cloud.google.com/go/bigtable"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
@@ -14,7 +13,7 @@ func Tables() *schema.Table {
 		PreResourceResolver: getTableInfo,
 		Resolver:            fetchTables,
 		Multiplex:           client.ProjectMultiplexEnabledServices("bigtableadmin.googleapis.com"),
-		Transform:           transformers.TransformWithStruct(&pb.TableInfo{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:           transformers.TransformWithStruct(&tableInfoWithName{}, append(client.Options(), transformers.WithUnwrapStructFields("TableInfo"), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
