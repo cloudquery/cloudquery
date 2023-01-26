@@ -945,6 +945,8 @@
         },
         "cases": {
           "regions": {
+            "fips-us-east-1": {},
+            "fips-us-west-2": {},
             "us-east-1": {},
             "us-west-2": {}
           }
@@ -5844,8 +5846,10 @@
             "ca-central-1": {},
             "ca-central-1-fips": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
+            "eu-south-2": {},
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
@@ -7636,6 +7640,11 @@
           }
         },
         "directconnect": {
+          "regions": {
+            "us-isob-east-1": {}
+          }
+        },
+        "dlm": {
           "regions": {
             "us-isob-east-1": {}
           }
