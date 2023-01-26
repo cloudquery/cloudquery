@@ -4,6 +4,11 @@ https://learn.microsoft.com/en-us/rest/api/eventhub/stable/namespaces/list?tabs=
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on azure_eventhub_namespaces:
+  - [azure_eventhub_namespace_network_rule_sets](azure_eventhub_namespace_network_rule_sets.md)
+
 ## Columns
 
 | Name          | Type          |

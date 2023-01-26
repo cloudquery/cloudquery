@@ -19,6 +19,7 @@
     "plugins/source/gitlab": { "component": "plugins-source-gitlab" },
     "plugins/source/hackernews": { "component": "plugins-source-hackernews" },
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
+    "plugins/source/hubspot": { "component": "plugins-source-hubspot" },
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
     "plugins/source/launchdarkly": { "component": "plugins-source-launchdarkly" },
     "plugins/source/okta": { "component": "plugins-source-okta" },
@@ -77,5 +78,7 @@
   },
   "tag-separator": "-",
   "separate-pull-requests": true,
-  "pull-request-title-pattern": "chore${scope}: Release${component} v${version}"
+  "pull-request-title-pattern": "chore${scope}: Release${component} v${version}",
+  "sequential-calls": true
 }
+

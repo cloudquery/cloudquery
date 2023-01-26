@@ -7,9 +7,9 @@ SELECT
   s.subscription_id,
   s.id AS server_id,
   case
-    when a.storage_container_path IS NULL OR a.storage_container_path = ''
+    when a.properties->>'storageContainerPath' IS NULL OR a.properties->>'storageContainerPath' = ''
       then 'fail' else 'pass'
   end
 FROM azure_sql_servers s
     LEFT JOIN azure_sql_server_vulnerability_assessments a ON
-        s.id = a.sql_server_id
+        s._cq_id = a._cq_parent_id

@@ -18,7 +18,6 @@ The following tables depend on gcp_sql_instances:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|self_link (PK)|String|
 |available_maintenance_versions|StringArray|
 |backend_type|String|
 |connection_name|String|
@@ -49,6 +48,7 @@ The following tables depend on gcp_sql_instances:
 |satisfies_pzs|Bool|
 |scheduled_maintenance|JSON|
 |secondary_gce_zone|String|
+|self_link (PK)|String|
 |server_ca_cert|JSON|
 |service_account_email_address|String|
 |settings|JSON|

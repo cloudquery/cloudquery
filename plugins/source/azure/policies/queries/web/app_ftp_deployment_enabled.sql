@@ -10,6 +10,6 @@ SELECT :'execution_time'                                 AS execution_time,
                THEN 'fail'
            ELSE 'pass'
            END                                           AS status
-FROM azure_web_apps a
+FROM azure_appservice_web_apps a
          LEFT JOIN azure_web_publishing_profiles p ON
     a.id = p.web_app_id
