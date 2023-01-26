@@ -62,6 +62,7 @@ faceprints
 failover
 Fargate
 Fastly
+firehose
 Firehose
 Gandi
 gcp
