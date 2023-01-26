@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/rds"
-	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/mitchellh/hashstructure/v2"
@@ -28,8 +27,7 @@ func fetchRdsEngineVersions(ctx context.Context, meta schema.ClientMeta, _ *sche
 	return nil
 }
 func calculateUniqueHash(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	f := resource.Item.(types.DBEngineVersion)
-	hash, err := hashstructure.Hash(f, hashstructure.FormatV2, nil)
+	hash, err := hashstructure.Hash(resource.Item, hashstructure.FormatV2, nil)
 	if err != nil {
 		return err
 	}
