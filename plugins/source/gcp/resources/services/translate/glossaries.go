@@ -13,20 +13,12 @@ func Glossaries() *schema.Table {
 		Description: `https://cloud.google.com/translate/docs/reference/rest/v3/projects.locations.glossaries#resource:-glossary`,
 		Resolver:    fetchGlossaries,
 		Multiplex:   client.ProjectMultiplexEnabledServices("translate.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Glossary{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.Glossary{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

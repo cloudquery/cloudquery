@@ -13,7 +13,6 @@ The primary key for this table is **self_link**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|self_link (PK)|String|
 |name|String|
 |description|String|
 |initial_node_count|Int|
@@ -52,6 +51,7 @@ The primary key for this table is **self_link**.
 |notification_config|JSON|
 |confidential_nodes|JSON|
 |identity_service_config|JSON|
+|self_link (PK)|String|
 |zone|String|
 |endpoint|String|
 |initial_cluster_version|String|

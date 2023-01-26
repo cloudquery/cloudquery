@@ -1,19 +1,19 @@
 WITH alert_condition AS (
-	SELECT
-		subscription_id
-	FROM
-		azure_monitor_activity_log_alerts,
-		jsonb_array_elements_text ( to_jsonb ( scopes ) ) SCOPE
-	WHERE
-		LOCATION = 'Global'
-		AND enabled
-		AND SCOPE = '/subscriptions/' || subscription_id
-		AND _cq_id IN (
-		SELECT op._cq_id
-		FROM
-			azure_monitor_activity_log_alerts op, jsonb_array_elements(op.condition) AS opcond,
-			azure_monitor_activity_log_alerts cat, jsonb_array_elements(cat.condition) AS catcond
-		WHERE
+    SELECT
+        subscription_id
+    FROM
+        azure_monitor_activity_log_alerts,
+        jsonb_array_elements_text ( to_jsonb ( properties -> 'scopes' ) ) SCOPE
+    WHERE
+            location = 'Global'
+      AND (properties ->> 'enabled')::boolean
+    AND SCOPE = '/subscriptions/' || subscription_id
+    AND _cq_id IN (
+    SELECT op._cq_id
+    FROM
+    azure_monitor_activity_log_alerts op, jsonb_array_elements(op.properties -> 'condition') AS opcond,
+    azure_monitor_activity_log_alerts cat, jsonb_array_elements(cat.properties -> 'condition') AS catcond
+    WHERE
 			    -- TODO check
 			catcond->>'equals' = 'Administrative'
 			AND catcond->>'field' = 'category'
@@ -29,13 +29,13 @@ SELECT
   :'framework',
   :'check_id',
   'An activity log alert should exist for specific Administrative operations',
-	azure_subscriptions.id,
-	azure_subscriptions.id
+  sub.id,
+  sub.id
 FROM
-	azure_subscriptions
-	LEFT JOIN alert_condition A ON azure_subscriptions.id = A.subscription_id
+    azure_subscription_subscriptions sub
+	LEFT JOIN alert_condition A ON sub.id = A.subscription_id
 WHERE
 	A.subscription_id IS NULL
 GROUP BY
-	azure_subscriptions.id,
+    sub.id,
 	display_name;

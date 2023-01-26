@@ -7,8 +7,8 @@ SELECT
     subscription_id,
 	id,
   case
-    when encryption_state IS DISTINCT FROM 'Enabled'
+    when properties ->> 'encryptionState' IS DISTINCT FROM 'Enabled'
     then 'fail' else 'pass'
   end
 FROM
-	azure_datalake_store_accounts
+	azure_datalakestore_accounts

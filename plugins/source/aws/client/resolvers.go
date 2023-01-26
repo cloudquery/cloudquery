@@ -5,26 +5,25 @@ import (
 	"reflect"
 
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
-func ResolveAWSAccount(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {
+func ResolveAWSAccount(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	client := meta.(*Client)
-	return r.Set("account_id", client.AccountID)
+	return r.Set(c.Name, client.AccountID)
 }
 
-func ResolveAWSRegion(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {
+func ResolveAWSRegion(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	client := meta.(*Client)
-	return r.Set("region", client.Region)
+	return r.Set(c.Name, client.Region)
 }
 
-func ResolveAWSNamespace(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {
+func ResolveAWSNamespace(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	client := meta.(*Client)
-	return r.Set("namespace", client.AutoscalingNamespace)
+	return r.Set(c.Name, client.AutoscalingNamespace)
 }
 
 func ResolveWAFScope(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-	return errors.WithStack(r.Set(c.Name, meta.(*Client).WAFScope))
+	return r.Set(c.Name, meta.(*Client).WAFScope)
 }
 
 func ResolveTags(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
@@ -46,11 +45,11 @@ func ResolveTagField(fieldName string) func(context.Context, schema.ClientMeta, 
 		}
 		f := val.FieldByName(fieldName)
 		if f.IsNil() {
-			return errors.WithStack(r.Set(c.Name, map[string]string{})) // can't have nil or the integration test will make a fuss
+			return r.Set(c.Name, map[string]string{}) // can't have nil or the integration test will make a fuss
 		} else if f.IsZero() {
 			panic("no such field " + fieldName)
 		}
 		data := TagsToMap(f.Interface())
-		return errors.WithStack(r.Set(c.Name, data))
+		return r.Set(c.Name, data)
 	}
 }
