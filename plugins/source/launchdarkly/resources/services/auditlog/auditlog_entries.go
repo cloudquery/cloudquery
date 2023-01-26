@@ -60,8 +60,10 @@ func fetchAuditLogEntries(ctx context.Context, meta schema.ClientMeta, parent *s
 		b.Body.Close()
 		res <- list.Items
 
-		if l := len(list.Items); l > 0 {
-			cursor = list.Items[l-1].Date
+		for i := range list.Items {
+			if d := list.Items[i].Date; d > cursor {
+				cursor = d
+			}
 		}
 
 		if len(list.Items) < limit {
