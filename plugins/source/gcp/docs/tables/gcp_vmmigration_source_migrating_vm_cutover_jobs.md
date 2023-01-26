@@ -17,9 +17,9 @@ This table depends on [gcp_vmmigration_source_migrating_vms](gcp_vmmigration_sou
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
-|name (PK)|String|
 |create_time|Timestamp|
 |end_time|Timestamp|
+|name (PK)|String|
 |state|String|
 |state_time|Timestamp|
 |progress_percent|Int|

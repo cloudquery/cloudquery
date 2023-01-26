@@ -13,7 +13,6 @@ The composite primary key for this table is (**project_id**, **name**).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
-|name (PK)|String|
 |classification|JSON|
 |create_time|String|
 |creator|JSON|
@@ -21,6 +20,7 @@ The composite primary key for this table is (**project_id**, **name**).
 |display_name|String|
 |escalated|Bool|
 |language_code|String|
+|name (PK)|String|
 |priority|String|
 |severity|String|
 |state|String|

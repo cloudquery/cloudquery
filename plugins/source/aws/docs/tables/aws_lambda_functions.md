@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/lambda/latest/dg/API_GetFunction.html
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **arn**.
 
 ## Relations
 
@@ -19,15 +19,17 @@ The following tables depend on aws_lambda_functions:
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|arn|String|
+|arn (PK)|String|
 |policy_revision_id|String|
 |policy_document|JSON|
 |code_signing_config|JSON|
 |code_repository_type|String|
+|update_runtime_on|String|
+|runtime_version_arn|String|
 |code|JSON|
 |concurrency|JSON|
 |configuration|JSON|

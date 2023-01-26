@@ -6,8 +6,8 @@ SELECT :'execution_time'                                                        
        subscription_id                                                        AS subscription_id,
        id                                                                     AS resource_id,
        CASE
-           WHEN site_config -> 'minTlsVersion' IS NULL OR site_config -> 'minTlsVersion' != '1.2'
+           WHEN properties -> 'siteConfig' -> 'minTlsVersion' IS NULL OR properties -> 'siteConfig' ->> 'minTlsVersion' is distinct from '1.2'
                THEN 'fail'
            ELSE 'pass'
            END                                                                    AS status
-FROM azure_web_apps
+FROM azure_appservice_web_apps
