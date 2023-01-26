@@ -13,20 +13,12 @@ func Findings() *schema.Table {
 		Description: `https://cloud.google.com/security-command-center/docs/reference/web-security-scanner/rest/v1/projects.scanConfigs.scanRuns.findings`,
 		Resolver:    fetchFindings,
 		Multiplex:   client.ProjectMultiplexEnabledServices("websecurityscanner.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Finding{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.Finding{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

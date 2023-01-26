@@ -20,8 +20,8 @@ The following tables depend on gcp_kms_crypto_keys:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
-|name (PK)|String|
 |rotation_period|Int|
+|name (PK)|String|
 |primary|JSON|
 |purpose|String|
 |create_time|Timestamp|

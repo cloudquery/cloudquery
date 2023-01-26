@@ -13,7 +13,7 @@ func DeviceConfigs() *schema.Table {
 		Description: `https://cloud.google.com/iot/docs/reference/cloudiot/rest/v1/projects.locations.registries.devices.configVersions#DeviceConfig`,
 		Resolver:    fetchDeviceConfigs,
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudiot.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.DeviceConfig{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.DeviceConfig{}, append(client.Options(), transformers.WithPrimaryKeys("Version"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -27,14 +27,6 @@ func DeviceConfigs() *schema.Table {
 				Name:     "device_name",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "version",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Version"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

@@ -102,7 +102,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 
 		if slices.Index(versions, "v0") != -1 {
-			if err := syncConnectionV1(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
+			if err := syncConnectionV0(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
 				return fmt.Errorf("failed to sync v0 source %s: %w", sourceSpec.Name, err)
 			}
 			continue

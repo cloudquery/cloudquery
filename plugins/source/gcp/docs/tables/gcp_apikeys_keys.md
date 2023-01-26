@@ -13,8 +13,8 @@ The composite primary key for this table is (**project_id**, **uid**).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
-|uid (PK)|String|
 |name|String|
+|uid (PK)|String|
 |display_name|String|
 |key_string|String|
 |create_time|Timestamp|
