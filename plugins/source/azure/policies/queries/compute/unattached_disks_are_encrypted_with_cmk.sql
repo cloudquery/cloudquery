@@ -7,9 +7,9 @@ SELECT :'execution_time'                                                     AS 
        subscription_id                                                       AS subscription_id,
        id                                                                    AS resource_id,
        CASE
-           WHEN encryption->>'type' NOT LIKE '%CustomerKey%'
+           WHEN properties -> 'encryption'->>'type' NOT LIKE '%CustomerKey%'
                THEN 'fail'
            ELSE 'pass'
            END                                                               AS status
 FROM azure_compute_disks
-WHERE disk_state = 'Unattached'
+WHERE properties ->> 'diskState' = 'Unattached'

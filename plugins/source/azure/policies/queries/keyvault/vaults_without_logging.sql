@@ -1,11 +1,11 @@
 WITH
     settings_with_logs AS (
-        SELECT resource_uri, storage_account_id, JSONB_ARRAY_ELEMENTS(logs) AS logs FROM azure_monitor_diagnostic_settings
+        SELECT resource_id, properties ->> 'storageAccountId' as storage_account_id, JSONB_ARRAY_ELEMENTS(properties -> 'logs') AS logs FROM azure_monitor_diagnostic_settings
     ),
     logging_enabled AS (
         SELECT DISTINCT a._cq_id
-  FROM azure_keyvault_vaults a
-    LEFT JOIN settings_with_logs s ON a.id = s.resource_uri
+  FROM azure_keyvault_keyvault a
+    LEFT JOIN settings_with_logs s ON a.id = s.resource_id
     WHERE (s.logs->>'enabled')::boolean IS TRUE
     AND s.logs->>'category' = 'AuditEvent'
     AND (s.storage_account_id IS NOT NULL OR s.storage_account_id IS DISTINCT FROM '')
@@ -22,5 +22,5 @@ SELECT
   case
     when e._cq_id is null then 'fail' else 'pass'
   end
-FROM azure_keyvault_vaults a
+FROM azure_keyvault_keyvault a
   LEFT JOIN logging_enabled e ON a._cq_id = e._cq_id

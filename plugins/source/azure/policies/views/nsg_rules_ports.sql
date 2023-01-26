@@ -1,6 +1,6 @@
 create or replace view view_azure_nsg_rules as
 WITH tmp AS (
-    SELECT subscription_id, id, name, rls FROM azure_network_security_groups, jsonb_array_elements(security_rules) AS rls
+    SELECT subscription_id, id, name, rls FROM azure_network_security_groups, jsonb_array_elements(properties -> 'securityRules') AS rls
 ),
 ansg AS (
     SELECT tmp.*, dprs FROM tmp, jsonb_array_elements_text(rls->'destinationPortRanges') AS dprs
