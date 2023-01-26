@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/scaffold-v1.2.0...scaffold-v1.3.0) (2023-01-26)
+
+
+### Features
+
+* **scaffold-go-releaser:** Use go version from `go.mod`, add `cache: true` ([#7058](https://github.com/cloudquery/cloudquery/issues/7058)) ([946d643](https://github.com/cloudquery/cloudquery/commit/946d643476b7b741ee10650edcc7243878e65fe9))
+
 ## [1.2.0](https://github.com/cloudquery/cloudquery/compare/scaffold-v1.1.0...scaffold-v1.2.0) (2023-01-25)
 
 
