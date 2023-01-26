@@ -17,7 +17,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-const MAX_RECORD_SIZE = 1024000
+const MAX_RECORD_SIZE_BYTES = 1024000
+const MAX_BATCH_RECORDS = 500
+const MAX_BATCH_SIZE_BYTES = 4194000
 
 func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
 	parsedARN, err := arn.Parse(c.pluginSpec.StreamARN)
@@ -33,6 +35,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 	recordsBatchInput := &firehose.PutRecordBatchInput{
 		DeliveryStreamName: aws.String(resource[1]),
 	}
+	batchSize := 0
 
 	for resource := range res {
 		table := tables.Get(resource.TableName)
@@ -56,22 +59,39 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 		if err != nil {
 			return err
 		}
-		if len(dst.Bytes()) < MAX_RECORD_SIZE {
-			recordsBatchInput.Records = append(recordsBatchInput.Records, types.Record{
-				Data: dst.Bytes(),
-			})
-		} else {
+		if len(dst.Bytes()) > MAX_RECORD_SIZE_BYTES {
 			c.logger.Warn().Msgf("skipping record because it is too large: %s", string(b))
+			continue
 		}
-		if len(recordsBatchInput.Records) == 500 {
+
+		// If adding this record would exceed the batch size, send the batch
+		if len(dst.Bytes())+batchSize > min(c.spec.BatchSizeBytes, MAX_BATCH_SIZE_BYTES) {
 			err := c.sendBatch(ctx, recordsBatchInput, 0)
 			if err != nil {
 				return err
 			}
 			recordsBatchInput.Records = nil
+			batchSize = 0
+		}
+
+		recordsBatchInput.Records = append(recordsBatchInput.Records, types.Record{
+			Data: dst.Bytes(),
+		})
+		// Store a running total of the batch size
+		batchSize += len(dst.Bytes())
+
+		// Send the batch if it is full
+		if len(recordsBatchInput.Records) == min(c.spec.BatchSize, MAX_BATCH_RECORDS) {
+			err := c.sendBatch(ctx, recordsBatchInput, 0)
+			if err != nil {
+				return err
+			}
+			// Reset the batch
+			recordsBatchInput.Records = nil
+			batchSize = 0
 		}
 	}
-
+	// Send the last batch
 	return c.sendBatch(ctx, recordsBatchInput, 0)
 }
 
@@ -103,4 +123,11 @@ func getFailedRecords(recordsBatchInput *firehose.PutRecordBatchInput, resp *fir
 		}
 	}
 	return retryRecords
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }
