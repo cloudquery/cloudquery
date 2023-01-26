@@ -17,24 +17,6 @@ CloudQuery supports two methods of reading the authorization token:
   ```
 - From an environment variable `PAGERDUTY_AUTH_TOKEN`.
 
-## Configuration
-
-In order to get started with the PagerDuty plugin, you need to create a YAML file in your CloudQuery configuration directory (e.g. named `pagerduty.yml`).
-
-The following example sets up the PagerDuty plugin, and connects it to a postgresql destination:
-
-```yaml
-kind: source
-spec:
-  name: "pagerduty"
-  path: cloudquery/pagerduty
-  version: "VERSION_SOURCE_PAGERDUTY" 
-  destinations: ["postgresql"]
-  tables: ["*"]
-
-  spec:
-```
-
 ## Example Queries
 
 The following example queries are SQL queries in the PostgreSQL flavour (i.e. can be used with the 
