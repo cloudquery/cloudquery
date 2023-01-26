@@ -6,8 +6,8 @@ SELECT :'execution_time'                                                        
        subscription_id                                                                   AS subscription_id,
        id                                                                                AS resource_id,
        CASE
-           WHEN https_only IS NULL OR https_only != TRUE
+           WHEN (properties ->> 'httpsOnly')::boolean IS  distinct from TRUE
                THEN 'fail'
            ELSE 'pass'
            END                                                                               AS status
-FROM azure_web_apps
+FROM azure_appservice_web_apps
