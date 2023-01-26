@@ -45,6 +45,5 @@ This is the (nested) spec used by the LaunchDarkly source plugin:
 
 - `access_token` (string, required):
   Your access token from LaunchDarkly.
-- 
 - `timeout_secs` (integer in seconds, optional. Default: 30):
   Timeout for requests against the LaunchDarkly API.
