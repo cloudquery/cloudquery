@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html
 
-The composite primary key for this table is (**aws_account_id**, **created_at**, **description**, **product_arn**, **schema_version**, **title**, **region**).
+The composite primary key for this table is (**aws_account_id**, **created_at**, **description**, **generator_id**, **id**, **product_arn**, **schema_version**, **title**, **region**).
 
 ## Columns
 
@@ -17,8 +17,8 @@ The composite primary key for this table is (**aws_account_id**, **created_at**,
 |aws_account_id (PK)|String|
 |created_at (PK)|String|
 |description (PK)|String|
-|generator_id|String|
-|id|String|
+|generator_id (PK)|String|
+|id (PK)|String|
 |product_arn (PK)|String|
 |resources|JSON|
 |schema_version (PK)|String|
