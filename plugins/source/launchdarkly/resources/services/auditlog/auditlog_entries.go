@@ -60,20 +60,22 @@ func fetchAuditLogEntries(ctx context.Context, meta schema.ClientMeta, parent *s
 		b.Body.Close()
 		res <- list.Items
 
+		changed := false
 		for i := range list.Items {
 			if d := list.Items[i].Date; d > cursor {
 				cursor = d
+				changed = true
+			}
+		}
+
+		if cl.Backend != nil && changed {
+			if err := cl.Backend.Set(ctx, key, cl.ID(), strconv.FormatInt(cursor, 10)); err != nil {
+				return fmt.Errorf("failed to store state in backend: %w", err)
 			}
 		}
 
 		if len(list.Items) < limit {
 			break
-		}
-	}
-
-	if cl.Backend != nil {
-		if err := cl.Backend.Set(ctx, key, cl.ID(), strconv.FormatInt(cursor, 10)); err != nil {
-			return fmt.Errorf("failed to store state in backend: %w", err)
 		}
 	}
 
