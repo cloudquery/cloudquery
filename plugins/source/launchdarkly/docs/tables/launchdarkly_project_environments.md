@@ -2,7 +2,7 @@
 
 https://apidocs.launchdarkly.com/tag/Environments#operation/getEnvironment
 
-The composite primary key for this table is (**project_id**, **_id**).
+The composite primary key for this table is (**project_id**, **id**).
 
 ## Relations
 
@@ -17,7 +17,7 @@ This table depends on [launchdarkly_projects](launchdarkly_projects.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
-|_id (PK)|String|
+|id (PK)|String|
 |key|String|
 |name|String|
 |api_key|String|

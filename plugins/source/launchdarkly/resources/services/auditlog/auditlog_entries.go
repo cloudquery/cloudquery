@@ -16,16 +16,8 @@ func AuditLogEntries() *schema.Table {
 		Name:        "launchdarkly_auditlog_entries",
 		Description: `https://apidocs.launchdarkly.com/tag/Audit-log#operation/getAuditLogEntries`,
 		Resolver:    fetchAuditLogEntries,
-		Transform:   transformers.TransformWithStruct(&ldapi.AuditLogEntryListingRep{}, transformers.WithSkipFields("Id", "Date"), transformers.WithSkipFields("Links")),
+		Transform:   transformers.TransformWithStruct(&ldapi.AuditLogEntryListingRep{}, client.SharedTransformers(transformers.WithPrimaryKeys("Id"), transformers.WithSkipFields("Date", "Links"))...),
 		Columns: schema.ColumnList{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
 			{
 				Name:     "date",
 				Type:     schema.TypeTimestamp,

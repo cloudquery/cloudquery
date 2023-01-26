@@ -13,10 +13,9 @@ It supports incremental syncs based on the **date** column.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|id (PK)|String|
 |date (Incremental Key)|Timestamp|
-|_id|String|
-|_account_id|String|
+|id (PK)|String|
+|account_id|String|
 |accesses|JSON|
 |kind|String|
 |name|String|

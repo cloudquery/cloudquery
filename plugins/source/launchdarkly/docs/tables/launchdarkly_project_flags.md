@@ -21,7 +21,7 @@ This table depends on [launchdarkly_projects](launchdarkly_projects.md).
 |kind|String|
 |description|String|
 |key (PK)|String|
-|_version|Int|
+|version|Int|
 |creation_date|Int|
 |include_in_snippet|Bool|
 |client_side_availability|JSON|
@@ -29,7 +29,7 @@ This table depends on [launchdarkly_projects](launchdarkly_projects.md).
 |temporary|Bool|
 |tags|StringArray|
 |maintainer_id|String|
-|_maintainer|JSON|
+|maintainer|JSON|
 |goal_ids|StringArray|
 |experiments|JSON|
 |custom_properties|JSON|

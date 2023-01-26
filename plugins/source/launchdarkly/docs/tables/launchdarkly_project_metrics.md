@@ -2,7 +2,7 @@
 
 https://apidocs.launchdarkly.com/tag/Metrics#operation/getMetrics
 
-The composite primary key for this table is (**project_id**, **_id**).
+The composite primary key for this table is (**project_id**, **id**).
 
 ## Relations
 
@@ -18,17 +18,17 @@ This table depends on [launchdarkly_projects](launchdarkly_projects.md).
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
 |experiment_count|Int|
-|_id (PK)|String|
+|id (PK)|String|
 |key|String|
 |name|String|
 |kind|String|
-|_attached_flag_count|Int|
-|_access|JSON|
+|attached_flag_count|Int|
+|access|JSON|
 |tags|StringArray|
-|_creation_date|Int|
+|creation_date|Int|
 |last_modified|JSON|
 |maintainer_id|String|
-|_maintainer|JSON|
+|maintainer|JSON|
 |description|String|
 |is_numeric|Bool|
 |success_criteria|String|

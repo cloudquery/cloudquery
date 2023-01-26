@@ -21,7 +21,6 @@ The following tables depend on launchdarkly_projects:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|String|
-|_links|JSON|
 |key|String|
 |include_in_snippet_by_default|Bool|
 |default_client_side_availability|JSON|
