@@ -62,6 +62,7 @@ faceprints
 failover
 Fargate
 Fastly
+Firehose
 Gandi
 gcp
 GCP
@@ -85,6 +86,7 @@ implementor
 Inforce
 IPs
 jsonb
+Kinesis
 LaunchDarkly
 learnings
 licensors
