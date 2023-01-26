@@ -32,12 +32,17 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 		return nil, fmt.Errorf("failed to unmarshal pagerduty spec: %w", err)
 	}
 
+	pagerdutySpec.setDefaults()
+
 	authToken, err := getAuthToken()
 	if err != nil {
 		return nil, err
 	}
 
 	pagerdutyClient := pagerduty.NewClient(authToken)
+	pagerdutyClient.HTTPClient = newRateLimitedHttpClient(
+		pagerdutyClient.HTTPClient,
+		*pagerdutySpec.MaxRequestsPerSecond)
 
 	cqClient := Client{
 		PagerdutyClient: pagerdutyClient,
