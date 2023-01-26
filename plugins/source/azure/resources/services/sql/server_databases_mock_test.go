@@ -35,6 +35,11 @@ func createDatabases(router *mux.Router) error {
 	if err := createTransparentDataEncryptions(router); err != nil {
 		return err
 	}
-
+	if err := createDatabaseVulnerabillityAssesments(router); err != nil {
+		return err
+	}
+	if err := createLongTermRetentionPolicies(router); err != nil {
+		return err
+	}
 	return createDatabaseThreatProtections(router)
 }

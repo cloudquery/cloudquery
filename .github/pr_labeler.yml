@@ -10,10 +10,10 @@ cloudflare:
   - plugins/source/cloudflare/**/*
 crowdstrike:
   - plugins/source/crowdstrike/**/*
-digitalocean:
-  - plugins/source/digitalocean/**/*
 datadog:
   - plugins/source/datadog/**/*
+digitalocean:
+  - plugins/source/digitalocean/**/*
 fastly:
   - plugins/source/fastly/**/*
 gandi:
@@ -24,18 +24,24 @@ github:
   - plugins/source/github/**/*
 gitlab:
   - plugins/source/gitlab/**/*
-k8s:
-  - plugins/source/k8s/**/*
 hackernews:
   - plugins/source/hackernews/**/*
 heroku:
   - plugins/source/heroku/**/*
+hubspot:
+  - plugins/source/hubspot/**/*
 plausible:
   - plugins/source/plausible/**/*
+k8s:
+  - plugins/source/k8s/**/*
+mixpanel:
+  - plugins/source/mixpanel/**/*
 okta:
   - plugins/source/okta/**/*
 oracle:
   - plugins/source/oracle/**/*
+salesforce:
+  - plugins/source/salesforce/**/*
 slack:
   - plugins/source/slack/**/*
 shopify:
@@ -52,8 +58,6 @@ tailscale:
   - plugins/source/tailscale/**/*
 vercel:
   - plugins/source/vercel/**/*
-salesforce:
-  - plugins/source/salesforce/**/*
 azblob:
   - plugins/destination/azblob/**/*
 postgresql:

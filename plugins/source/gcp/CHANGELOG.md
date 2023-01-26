@@ -5,6 +5,28 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.2.1...plugins-source-gcp-v7.3.0) (2023-01-25)
+
+
+### Features
+
+* **gcp-resources:** Add Security Center projects and organizations findings ([#7089](https://github.com/cloudquery/cloudquery/issues/7089)) ([e849caf](https://github.com/cloudquery/cloudquery/commit/e849caf1915eb7f811e9e8edfc94009f6e710229))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.29.0 ([#7121](https://github.com/cloudquery/cloudquery/issues/7121)) ([b7441c9](https://github.com/cloudquery/cloudquery/commit/b7441c93c274ae3a6009474a2b28f44a172dd6dc))
+
+## [7.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.2.0...plugins-source-gcp-v7.2.1) (2023-01-24)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.28.0 ([#7009](https://github.com/cloudquery/cloudquery/issues/7009)) ([12ac005](https://github.com/cloudquery/cloudquery/commit/12ac005428a355d06a5939fbe06a82d49533e662))
+* **gcp-project-policies:** Use correct API to get Policy v3, fix policy 2.1 query ([#7053](https://github.com/cloudquery/cloudquery/issues/7053)) ([2f17a4d](https://github.com/cloudquery/cloudquery/commit/2f17a4dccc69d18b19cabceee754e7d9141cd46a))
+* Hardcode `us-central1` instead of `global` when fetching glossaries ([#6968](https://github.com/cloudquery/cloudquery/issues/6968)) ([0d76c62](https://github.com/cloudquery/cloudquery/commit/0d76c62a6c12296638af8183d169c7917a9fab7b))
+* **services:** Update GCP Services ([#7057](https://github.com/cloudquery/cloudquery/issues/7057)) ([7cc65a4](https://github.com/cloudquery/cloudquery/commit/7cc65a43bba9d5ca1528c6346cd016ce453b666d))
+
 ## [7.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.1.1...plugins-source-gcp-v7.2.0) (2023-01-17)
 
 
