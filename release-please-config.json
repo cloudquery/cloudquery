@@ -19,6 +19,7 @@
     "plugins/source/gitlab": { "component": "plugins-source-gitlab" },
     "plugins/source/hackernews": { "component": "plugins-source-hackernews" },
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
+    "plugins/source/hubspot": { "component": "plugins-source-hubspot" },
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
     "plugins/source/okta": { "component": "plugins-source-okta" },
     "plugins/source/oracle": {"component": "plugins-source-oracle"},
@@ -28,8 +29,12 @@
     "plugins/source/tailscale": { "component": "plugins-source-tailscale" },
     "plugins/source/vercel": { "component": "plugins-source-vercel" },
     "plugins/source/pagerduty": {"component": "plugins-source-pagerduty"},
+    "plugins/source/plausible": {"component": "plugins-source-plausible"},
     "plugins/source/test": { "component": "plugins-source-test" },
     "plugins/source/terraform": { "component": "plugins-source-terraform" },
+    "plugins/source/shopify": { "component": "plugins-source-shopify" },
+    "plugins/source/stripe": { "component": "plugins-source-stripe" },
+    "plugins/source/mixpanel": { "component": "plugins-source-mixpanel" },
     "plugins/destination/postgresql": {
       "component": "plugins-destination-postgresql"
     },
@@ -72,5 +77,7 @@
   },
   "tag-separator": "-",
   "separate-pull-requests": true,
-  "pull-request-title-pattern": "chore${scope}: Release${component} v${version}"
+  "pull-request-title-pattern": "chore${scope}: Release${component} v${version}",
+  "sequential-calls": true
 }
+

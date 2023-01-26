@@ -1,7 +1,7 @@
 WITH vulnerability_emails AS (
     SELECT
         id,
-        UNNEST((recurring_scans->>'emails')::text[]) AS emails
+        UNNEST((v.properties->'recurringScans'->>'emails')::text[]) AS emails
     FROM azure_sql_server_vulnerability_assessments v
 ),
 emails_count AS (
@@ -25,6 +25,6 @@ SELECT
   end
 FROM azure_sql_servers s
     LEFT JOIN azure_sql_server_vulnerability_assessments sv ON
-        s.id = sv.sql_server_id
+        s._cq_id = sv._cq_parent_id
     LEFT JOIN emails_count c ON
         sv.id = c.id

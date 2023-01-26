@@ -29,10 +29,13 @@ func TestSpec_Validate(t *testing.T) {
 		Give    Spec
 		WantErr bool
 	}{
-		{Give: Spec{Path: "test/path", Format: "json"}, WantErr: true},
 		{Give: Spec{Path: "test/path", Format: "json", Bucket: "mybucket"}, WantErr: false},
-		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", Format: "json", Bucket: "mybucket", NoRotate: false}, WantErr: false},
-		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", Format: "json", Bucket: "mybucket", NoRotate: true}, WantErr: true},
+		{Give: Spec{Path: "test/path", Format: "json"}, WantErr: true}, // no bucket
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", Format: "json", NoRotate: false, Bucket: "mybucket"}, WantErr: false},
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", Format: "json", NoRotate: true, Bucket: "mybucket"}, WantErr: true},   // can't have no_rotate and {{UUID}}
+		{Give: Spec{Path: "/test/path/{{TABLE}}.{{UUID}}", Format: "json", NoRotate: true, Bucket: "mybucket"}, WantErr: true},  // begins with a a slash
+		{Give: Spec{Path: "//test/path/{{TABLE}}.{{UUID}}", Format: "json", NoRotate: true, Bucket: "mybucket"}, WantErr: true}, // duplicate slashes
+		{Give: Spec{Path: "test//path", Format: "json", Bucket: "mybucket"}, WantErr: true},                                     // duplicate slashes
 	}
 	for _, tc := range cases {
 		err := tc.Give.Validate()

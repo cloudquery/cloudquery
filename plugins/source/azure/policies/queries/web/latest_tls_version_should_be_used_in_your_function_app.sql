@@ -7,8 +7,8 @@ SELECT
   subscription_id,
   id,
   case
-    when kind LIKE 'functionapp%' AND (site_config ->> 'minTlsVersion' IS NULL
-       OR site_config ->> 'minTlsVersion' != '1.2')
+    when kind LIKE 'functionapp%' AND (properties -> 'siteConfig' -> 'minTlsVersion' IS NULL
+       OR properties -> 'siteConfig' ->> 'minTlsVersion' is distinct from '1.2')
     then 'fail' else 'pass'
   end
-FROM azure_web_apps
+FROM azure_appservice_web_apps

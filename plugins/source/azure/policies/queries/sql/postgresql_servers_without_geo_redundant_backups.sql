@@ -7,7 +7,7 @@ SELECT
   subscription_id,
   id,
   case
-    when storage_profile->>'geoRedundantBackup' IS DISTINCT FROM 'Enabled'
+    when properties -> 'storageProfile'->>'geoRedundantBackup' IS DISTINCT FROM 'Enabled'
       then 'fail' else 'pass'
   end
 FROM azure_postgresql_servers

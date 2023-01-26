@@ -52,6 +52,7 @@ func PagerdutyMockTestHelper(t *testing.T, table *schema.Table, buildMockHttpCli
 
 		cqClient := Client{
 			PagerdutyClient: pagerdutyClient,
+			Spec:            &Spec{},
 			logger:          logger,
 		}
 
