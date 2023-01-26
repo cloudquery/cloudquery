@@ -2,23 +2,21 @@ package client
 
 import (
 	"fmt"
+	"github.com/cloudquery/filetypes"
 )
 
 type FormatType string
 
-const (
-	FormatTypeCSV  = "csv"
-	FormatTypeJSON = "json"
-)
-
 type Spec struct {
-	Bucket   string     `json:"bucket,omitempty"`
-	Path     string     `json:"path,omitempty"`
-	Format   FormatType `json:"format,omitempty"`
-	NoRotate bool       `json:"no_rotate,omitempty"`
+	Bucket   string `json:"bucket,omitempty"`
+	Path     string `json:"path,omitempty"`
+	NoRotate bool   `json:"no_rotate,omitempty"`
+	filetypes.FileSpec
 }
 
-func (*Spec) SetDefaults() {}
+func (s *Spec) SetDefaults() {
+	s.FileSpec.SetDefaults()
+}
 
 func (s *Spec) Validate() error {
 	if s.Bucket == "" {
@@ -27,9 +25,6 @@ func (s *Spec) Validate() error {
 	if s.Path == "" {
 		return fmt.Errorf("path is required")
 	}
-	if s.Format == "" {
-		return fmt.Errorf("format is required")
-	}
 
-	return nil
+	return s.FileSpec.Validate()
 }

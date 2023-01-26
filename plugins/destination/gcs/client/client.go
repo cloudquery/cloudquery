@@ -6,8 +6,7 @@ import (
 
 	"cloud.google.com/go/storage"
 
-	"github.com/cloudquery/filetypes/csv"
-	"github.com/cloudquery/filetypes/json"
+	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/google/uuid"
@@ -23,10 +22,7 @@ type Client struct {
 	gcsClient *storage.Client
 	bucket    *storage.BucketHandle
 
-	csvTransformer         *csv.Transformer
-	csvReverseTransformer  *csv.ReverseTransformer
-	jsonTransformer        *json.Transformer
-	jsonReverseTransformer *json.ReverseTransformer
+	*filetypes.Client
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -35,12 +31,8 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("destination only supports append mode")
 	}
 	c := &Client{
-		logger:                 logger.With().Str("module", "gcs").Logger(),
-		spec:                   spec,
-		csvTransformer:         &csv.Transformer{},
-		jsonTransformer:        &json.Transformer{},
-		csvReverseTransformer:  &csv.ReverseTransformer{},
-		jsonReverseTransformer: &json.ReverseTransformer{},
+		logger: logger.With().Str("module", "gcs").Logger(),
+		spec:   spec,
 	}
 
 	if err := spec.UnmarshalSpec(&c.pluginSpec); err != nil {
@@ -51,6 +43,10 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 	c.pluginSpec.SetDefaults()
 
+	c.Client, err = filetypes.NewClient(&c.pluginSpec.FileSpec)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create file client: %w", err)
+	}
 	c.gcsClient, err = storage.NewClient(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create GCP storage client: %w", err)
