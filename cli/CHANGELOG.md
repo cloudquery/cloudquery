@@ -5,6 +5,30 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.2](https://github.com/cloudquery/cloudquery/compare/cli-v2.3.1...cli-v2.3.2) (2023-01-26)
+
+
+### Bug Fixes
+
+* **cli:** Use `syncConnectionV0` for `v0` plugins ([942675b](https://github.com/cloudquery/cloudquery/commit/942675b12058376167e17a9c3f92dc0b170d743c))
+
+## [2.3.1](https://github.com/cloudquery/cloudquery/compare/cli-v2.3.0...cli-v2.3.1) (2023-01-25)
+
+
+### Bug Fixes
+
+* **cli:** Continue to next source after successful sync/migrate ([#7192](https://github.com/cloudquery/cloudquery/issues/7192)) ([02a405f](https://github.com/cloudquery/cloudquery/commit/02a405f4420477ba95b089e0e6f3c8ab8cb4af79))
+* **cli:** Continue to next source after successful sync/migrate ([#7192](https://github.com/cloudquery/cloudquery/issues/7192)) ([e50123c](https://github.com/cloudquery/cloudquery/commit/e50123c22c576d69d6f636a4eb99c945f769fb37))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.29.0 ([#7121](https://github.com/cloudquery/cloudquery/issues/7121)) ([b7441c9](https://github.com/cloudquery/cloudquery/commit/b7441c93c274ae3a6009474a2b28f44a172dd6dc))
+
+## [2.3.0](https://github.com/cloudquery/cloudquery/compare/cli-v2.2.0...cli-v2.3.0) (2023-01-24)
+
+
+### Features
+
+* **cli:** Update CLI to support source v1 protocol ([#6986](https://github.com/cloudquery/cloudquery/issues/6986)) ([fe8ff12](https://github.com/cloudquery/cloudquery/commit/fe8ff127bc0ee7f36d2004ee30745e28edf2e8d0))
+* Log received signal when shutting down ([#6933](https://github.com/cloudquery/cloudquery/issues/6933)) ([7d9d8cd](https://github.com/cloudquery/cloudquery/commit/7d9d8cd51ecf6d2206f4d13fada307952a0cf56c))
+
 ## [2.2.0](https://github.com/cloudquery/cloudquery/compare/cli-v2.1.1...cli-v2.2.0) (2023-01-17)
 
 

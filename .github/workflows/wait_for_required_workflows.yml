@@ -56,7 +56,9 @@ jobs:
                            "plugins/source/gitlab",
                            "plugins/source/hackernews",
                            "plugins/source/heroku",
+                           "plugins/source/hubspot",
                            "plugins/source/k8s",
+                           "plugins/source/launchdarkly",
                            "plugins/source/okta",
                            "plugins/source/shopify",
                            "plugins/source/oracle",
@@ -103,7 +105,7 @@ jobs:
             }
 
             // Enforce policy tests for AWS,GCP and K8s plugins
-            const pluginsWithPolicyTests = ["plugins/source/aws", "plugins/source/gcp", "plugins/source/k8s"]
+            const pluginsWithPolicyTests = ["plugins/source/aws", "plugins/source/azure", "plugins/source/gcp", "plugins/source/k8s"]
             for (const plugin of pluginsWithPolicyTests) {
               if (actions.includes(plugin)) {
                 actions = [...actions, 'test-policies']

@@ -23,7 +23,8 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18
+          go-version-file: go.mod
+          cache: true
       - name: Run GoReleaser Dry-Run
         uses: goreleaser/goreleaser-action@v3
         with:

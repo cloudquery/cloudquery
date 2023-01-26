@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-pagerduty-v1.2.2...plugins-source-pagerduty-v1.3.0) (2023-01-26)
+
+
+### Features
+
+* Pagerduty `team_ids` config ([#7206](https://github.com/cloudquery/cloudquery/issues/7206)) ([29832cf](https://github.com/cloudquery/cloudquery/commit/29832cfa249925ae2f9af2645a53254400b8eca7))
+* Pagerduty `team_ids` config ([#7206](https://github.com/cloudquery/cloudquery/issues/7206)) ([883f6e6](https://github.com/cloudquery/cloudquery/commit/883f6e6df47d08402f472bc3e78fad9679c40c7b))
+* PagerDuty Rate Limiting ([#7218](https://github.com/cloudquery/cloudquery/issues/7218)) ([09fb388](https://github.com/cloudquery/cloudquery/commit/09fb388337af48691f6335417ef8181ffb20393f))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.29.0 ([#7121](https://github.com/cloudquery/cloudquery/issues/7121)) ([b7441c9](https://github.com/cloudquery/cloudquery/commit/b7441c93c274ae3a6009474a2b28f44a172dd6dc))
+* Fetch incidents with `dateRange="all"`, and add query examples to docs ([#7184](https://github.com/cloudquery/cloudquery/issues/7184)) ([0d84525](https://github.com/cloudquery/cloudquery/commit/0d84525f97915db94969af71a45144b89d062740))
+
+## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-pagerduty-v1.2.1...plugins-source-pagerduty-v1.2.2) (2023-01-24)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.28.0 ([#7009](https://github.com/cloudquery/cloudquery/issues/7009)) ([12ac005](https://github.com/cloudquery/cloudquery/commit/12ac005428a355d06a5939fbe06a82d49533e662))
+
 ## [1.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-pagerduty-v1.2.0...plugins-source-pagerduty-v1.2.1) (2023-01-17)
 
 

@@ -2,7 +2,6 @@ package appservice
 
 import (
 	"context"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -14,15 +13,12 @@ func webAppAuthSettings() *schema.Table {
 		Name:        "azure_appservice_web_app_auth_settings",
 		Resolver:    fetchWebAppAuthSettings,
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/get-auth-settings#siteauthsettings",
-		Transform:   transformers.TransformWithStruct(&armappservice.SiteAuthSettings{}),
+		Transform:   transformers.TransformWithStruct(&armappservice.SiteAuthSettings{}, transformers.WithPrimaryKeys("ID")),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
+				Name:     "subscription_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: client.ResolveAzureSubscription,
 			},
 		},
 	}

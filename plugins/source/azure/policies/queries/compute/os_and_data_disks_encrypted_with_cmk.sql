@@ -7,10 +7,10 @@ SELECT :'execution_time'                                                      AS
        v.subscription_id                                                      AS subscription_id,
        v.id                                                                   AS resource_id,
        CASE
-           WHEN d.encryption->>'type' NOT LIKE '%CustomerKey%'
+           WHEN d.properties -> 'encryption' ->> 'type' NOT LIKE '%CustomerKey%'
                THEN 'fail'
            ELSE 'pass'
            END                                                                AS status
 FROM azure_compute_virtual_machines v
          JOIN azure_compute_disks d ON
-    LOWER(v.id) = LOWER(d.managed_by);
+    LOWER(v.id) = LOWER(d.properties ->> 'managedBy')
