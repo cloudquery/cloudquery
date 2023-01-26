@@ -14,7 +14,7 @@ func Tables() *schema.Table {
 		PreResourceResolver: getTableInfo,
 		Resolver:            fetchTables,
 		Multiplex:           client.ProjectMultiplexEnabledServices("bigtableadmin.googleapis.com"),
-		Transform:           transformers.TransformWithStruct(&pb.TableInfo{}, append(client.Options())...),
+		Transform:           transformers.TransformWithStruct(&pb.TableInfo{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -28,14 +28,6 @@ func Tables() *schema.Table {
 				Name:     "instance_name",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
