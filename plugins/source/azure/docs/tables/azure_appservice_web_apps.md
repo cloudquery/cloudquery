@@ -8,6 +8,7 @@ The primary key for this table is **id**.
 
 The following tables depend on azure_appservice_web_apps:
   - [azure_appservice_web_app_auth_settings](azure_appservice_web_app_auth_settings.md)
+  - [azure_appservice_web_app_vnet_connections](azure_appservice_web_app_vnet_connections.md)
 
 ## Columns
 
@@ -18,12 +19,12 @@ The following tables depend on azure_appservice_web_apps:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |extended_location|JSON|
 |identity|JSON|
 |kind|String|
 |properties|JSON|
 |tags|JSON|
+|id (PK)|String|
 |name|String|
 |type|String|

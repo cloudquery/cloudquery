@@ -19,20 +19,12 @@ func InstanceGroups() *schema.Table {
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/instanceGroups#InstanceGroup`,
 		Resolver:    fetchInstanceGroups,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.InstanceGroup{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.InstanceGroup{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name:     "self_link",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SelfLink"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 		},
 	}

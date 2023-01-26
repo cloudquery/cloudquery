@@ -18,6 +18,11 @@ func Workflows() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armlogic.Workflow{}),
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ID"),

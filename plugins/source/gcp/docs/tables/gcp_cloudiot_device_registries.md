@@ -18,8 +18,8 @@ The following tables depend on gcp_cloudiot_device_registries:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
-|name (PK)|String|
 |id|String|
+|name (PK)|String|
 |event_notification_configs|JSON|
 |state_notification_config|JSON|
 |mqtt_config|JSON|

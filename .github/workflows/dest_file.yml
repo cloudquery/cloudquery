@@ -33,7 +33,7 @@ jobs:
           cache: true
           cache-dependency-path: plugins/destination/file/go.sum
       - name: golangci-lint
-        uses: cloudquery/golangci-lint-action@master
+        uses: golangci/golangci-lint-action@v3.4.0
         with:
           version: v1.50.1
           working-directory: plugins/destination/file
