@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [12.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v12.1.0...plugins-source-aws-v12.2.0) (2023-01-26)
+
+
+### Features
+
+* **aws:** Add support for Lambda Runtime Management ([#7152](https://github.com/cloudquery/cloudquery/issues/7152)) ([888e6e2](https://github.com/cloudquery/cloudquery/commit/888e6e201996f512ee277bab81fec2e60b51331c))
+
+
+### Bug Fixes
+
+* **aws:** Built in Resolvers ([#7203](https://github.com/cloudquery/cloudquery/issues/7203)) ([6b32744](https://github.com/cloudquery/cloudquery/commit/6b32744654b22122b9b1225683122509c945cf9b))
+* **aws:** Cloudtrail pks ([#7199](https://github.com/cloudquery/cloudquery/issues/7199)) ([06d8ff6](https://github.com/cloudquery/cloudquery/commit/06d8ff60dda19c6c7c325bd5e7cf10b3121bd524))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.29.0 ([#7121](https://github.com/cloudquery/cloudquery/issues/7121)) ([b7441c9](https://github.com/cloudquery/cloudquery/commit/b7441c93c274ae3a6009474a2b28f44a172dd6dc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.30.0 ([#7222](https://github.com/cloudquery/cloudquery/issues/7222)) ([73ca21c](https://github.com/cloudquery/cloudquery/commit/73ca21c4259545f7e949c9d780d8184db475d2ac))
+* Update endpoints ([#7142](https://github.com/cloudquery/cloudquery/issues/7142)) ([7116865](https://github.com/cloudquery/cloudquery/commit/7116865aa5eebfeec864acd33c983cd72dbe355b))
+* Update endpoints ([#7198](https://github.com/cloudquery/cloudquery/issues/7198)) ([506392f](https://github.com/cloudquery/cloudquery/commit/506392f8a125ab7ffcfdd577d2f8333d6394973e))
+
 ## [12.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v12.0.0...plugins-source-aws-v12.1.0) (2023-01-24)
 
 
