@@ -2,7 +2,9 @@ package security
 
 import (
 	"context"
+	"errors"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -20,7 +22,7 @@ func RegulatoryComplianceStandards() *schema.Table {
 	}
 }
 
-func fetchRegulatoryComplianceStandards(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchRegulatoryComplianceStandards(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armsecurity.NewRegulatoryComplianceStandardsClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
@@ -30,9 +32,23 @@ func fetchRegulatoryComplianceStandards(ctx context.Context, meta schema.ClientM
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {
-			return err
+			return checkNoStandardPricingBundle(err)
 		}
 		res <- p.Value
 	}
+	return nil
+}
+
+func checkNoStandardPricingBundle(err error) error {
+	var respErr *azcore.ResponseError
+	if !errors.As(err, &respErr) {
+		return err
+	}
+
+	const noStdPricingBundleErrorCode = `Subscription with no standard pricing bundle`
+	if respErr.ErrorCode != noStdPricingBundleErrorCode {
+		return err
+	}
+
 	return nil
 }
