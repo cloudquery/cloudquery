@@ -30,8 +30,6 @@ heroku:
   - plugins/source/heroku/**/*
 hubspot:
   - plugins/source/hubspot/**/*
-plausible:
-  - plugins/source/plausible/**/*
 k8s:
   - plugins/source/k8s/**/*
 launchdarkly:
@@ -42,50 +40,52 @@ okta:
   - plugins/source/okta/**/*
 oracle:
   - plugins/source/oracle/**/*
+pagerduty:
+  - plugins/source/pagerduty/**/*
+plausible:
+  - plugins/source/plausible/**/*
 salesforce:
   - plugins/source/salesforce/**/*
 slack:
   - plugins/source/slack/**/*
 shopify:
   - plugins/source/shopify/**/*
-stripe:
-  - plugins/source/stripe/**/*
-pagerduty:
-  - plugins/source/pagerduty/**/*
 snyk:
   - plugins/source/snyk/**/*
-terraform:
-  - plugins/source/terraform/**/*
+stripe:
+  - plugins/source/stripe/**/*
 tailscale:
   - plugins/source/tailscale/**/*
+terraform:
+  - plugins/source/terraform/**/*
 vercel:
   - plugins/source/vercel/**/*
 azblob:
   - plugins/destination/azblob/**/*
-postgresql:
-  - plugins/destination/postgresql/**/*
-sqlite:
-  - plugins/destination/sqlite/**/*
-s3:
-  - plugins/destination/s3/**/*
+bigquery:
+  - plugins/destination/bigquery/**/*
 csv:
   - plugins/destination/csv/**/*
 file:
   - plugins/destination/file/**/*
 gcs:
   - plugins/destination/gcs/**/*
-snowflake:
-  - plugins/destination/snowflake/**/*
-bigquery:
-  - plugins/destination/bigquery/**/*
+kafka:
+  - plugins/destination/kafka/**/*
 mongodb:
   - plugins/destination/mongodb/**/*
 mssql:
   - plugins/destination/mssql/**/*
 neo4j:
   - plugins/destination/neo4j/**/*
-kafka:
-  - plugins/destination/kafka/**/*
+postgresql:
+  - plugins/destination/postgresql/**/*
+s3:
+  - plugins/destination/s3/**/*
+snowflake:
+  - plugins/destination/snowflake/**/*
+sqlite:
+  - plugins/destination/sqlite/**/*
 website:
   - website/**/*
 cli:
