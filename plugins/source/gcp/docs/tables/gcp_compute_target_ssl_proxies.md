@@ -11,7 +11,6 @@ The primary key for this table is **self_link**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|self_link (PK)|String|
 |certificate_map|String|
 |creation_timestamp|String|
 |description|String|
@@ -19,6 +18,7 @@ The primary key for this table is **self_link**.
 |kind|String|
 |name|String|
 |proxy_header|String|
+|self_link (PK)|String|
 |service|String|
 |ssl_certificates|StringArray|
 |ssl_policy|String|

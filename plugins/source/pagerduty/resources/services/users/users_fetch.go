@@ -15,8 +15,9 @@ func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	var offset uint
 	for more {
 		response, err := cqClient.PagerdutyClient.ListUsersWithContext(ctx, pagerduty.ListUsersOptions{
-			Limit:  client.MaxPaginationLimit,
-			Offset: offset,
+			Limit:   client.MaxPaginationLimit,
+			Offset:  offset,
+			TeamIDs: cqClient.Spec.TeamIds,
 		})
 		if err != nil {
 			return err

@@ -16,6 +16,7 @@
   "heroku": "Heroku",
   "hubspot": "HubSpot",
   "k8s": "Kubernetes",
+  "launchdarkly": "LaunchDarkly",
   "mixpanel": "Mixpanel",
   "okta": "Okta",
   "oracle": "Oracle",
