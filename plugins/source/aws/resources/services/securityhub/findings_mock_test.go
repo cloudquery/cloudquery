@@ -21,7 +21,9 @@ func buildFindings(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	shMock.EXPECT().GetFindings(
 		gomock.Any(),
-		&securityhub.GetFindingsInput{},
+		&securityhub.GetFindingsInput{
+			MaxResults: 100,
+		},
 	).Return(
 		&securityhub.GetFindingsOutput{
 			Findings: []types.AwsSecurityFinding{findings},
