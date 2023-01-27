@@ -19,7 +19,6 @@ The following tables depend on azure_compute_virtual_machines:
 |_cq_parent_id|UUID|
 |subscription_id|String|
 |instance_view|JSON|
-|id (PK)|String|
 |location|String|
 |extended_location|JSON|
 |identity|JSON|
@@ -27,6 +26,7 @@ The following tables depend on azure_compute_virtual_machines:
 |properties|JSON|
 |tags|JSON|
 |zones|StringArray|
+|id (PK)|String|
 |name|String|
 |resources|JSON|
 |type|String|

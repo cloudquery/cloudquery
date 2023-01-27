@@ -15,22 +15,8 @@ func Hubs() *schema.Table {
 		Resolver:    fetchHubs,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights@v1.0.0#Hub",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_customerinsights_hubs", client.Namespacemicrosoft_customerinsights),
-		Transform:   transformers.TransformWithStruct(&armcustomerinsights.Hub{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armcustomerinsights.Hub{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

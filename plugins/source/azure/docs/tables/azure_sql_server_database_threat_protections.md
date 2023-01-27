@@ -19,6 +19,6 @@ This table depends on [azure_sql_server_databases](azure_sql_server_databases.md
 |subscription_id|String|
 |properties|JSON|
 |id (PK)|String|
-|system_data|JSON|
 |name|String|
+|system_data|JSON|
 |type|String|

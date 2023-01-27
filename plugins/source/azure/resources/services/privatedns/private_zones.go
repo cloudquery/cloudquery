@@ -15,22 +15,8 @@ func PrivateZones() *schema.Table {
 		Resolver:    fetchPrivateZones,
 		Description: "https://learn.microsoft.com/en-us/rest/api/dns/privatedns/private-zones/list?tabs=HTTP#privatezone",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_privatedns_private_zones", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armprivatedns.PrivateZone{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armprivatedns.PrivateZone{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

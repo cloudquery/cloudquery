@@ -15,22 +15,8 @@ func Caches() *schema.Table {
 		Resolver:    fetchCaches,
 		Description: "https://learn.microsoft.com/en-us/rest/api/storagecache/caches/list?tabs=HTTP#cache",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_storagecache_caches", client.Namespacemicrosoft_storagecache),
-		Transform:   transformers.TransformWithStruct(&armstoragecache.Cache{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armstoragecache.Cache{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 
