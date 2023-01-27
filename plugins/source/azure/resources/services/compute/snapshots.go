@@ -15,8 +15,8 @@ func Snapshots() *schema.Table {
 		Resolver:    fetchSnapshots,
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/snapshots/list?tabs=HTTP#snapshot",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_snapshots", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.Snapshot{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armcompute.Snapshot{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

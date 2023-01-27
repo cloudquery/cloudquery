@@ -15,8 +15,8 @@ func Servers() *schema.Table {
 		Resolver:    fetchServers,
 		Description: "https://learn.microsoft.com/en-us/rest/api/mysql/flexibleserver/servers/list?tabs=HTTP#server",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_mysqlflexibleservers_servers", client.Namespacemicrosoft_dbformysql),
-		Transform:   transformers.TransformWithStruct(&armmysqlflexibleservers.Server{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armmysqlflexibleservers.Server{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

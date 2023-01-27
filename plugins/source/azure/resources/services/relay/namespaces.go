@@ -15,8 +15,8 @@ func Namespaces() *schema.Table {
 		Resolver:    fetchNamespaces,
 		Description: "https://learn.microsoft.com/en-us/rest/api/relay/namespaces/list?tabs=HTTP#relaynamespace",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_relay_namespaces", client.Namespacemicrosoft_relay),
-		Transform:   transformers.TransformWithStruct(&armrelay.Namespace{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armrelay.Namespace{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

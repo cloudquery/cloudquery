@@ -15,8 +15,8 @@ func StreamingJobs() *schema.Table {
 		Resolver:    fetchStreamingJobs,
 		Description: "https://learn.microsoft.com/en-us/rest/api/streamanalytics/2020-03-01/streaming-jobs/list?tabs=HTTP#streamingjob",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_streamanalytics_streaming_jobs", client.Namespacemicrosoft_streamanalytics),
-		Transform:   transformers.TransformWithStruct(&armstreamanalytics.StreamingJob{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armstreamanalytics.StreamingJob{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

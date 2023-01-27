@@ -15,8 +15,8 @@ func Recommendations() *schema.Table {
 		Resolver:    fetchRecommendations,
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/recommendations/list#recommendation",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_recommendations", client.Namespacemicrosoft_web),
-		Transform:   transformers.TransformWithStruct(&armappservice.Recommendation{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armappservice.Recommendation{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

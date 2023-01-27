@@ -15,8 +15,8 @@ func DiskEncryptionSets() *schema.Table {
 		Resolver:    fetchDiskEncryptionSets,
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/disk-encryption-sets/list?tabs=HTTP#diskencryptionset",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_disk_encryption_sets", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.DiskEncryptionSet{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armcompute.DiskEncryptionSet{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

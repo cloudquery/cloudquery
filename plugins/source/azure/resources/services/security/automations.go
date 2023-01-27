@@ -15,8 +15,8 @@ func Automations() *schema.Table {
 		Resolver:    fetchAutomations,
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/automations/list?tabs=HTTP#automation",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_automations", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.Automation{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armsecurity.Automation{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

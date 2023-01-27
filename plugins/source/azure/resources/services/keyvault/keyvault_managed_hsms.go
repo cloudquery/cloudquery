@@ -15,8 +15,8 @@ func KeyvaultManagedHsms() *schema.Table {
 		Resolver:    fetchKeyvaultManagedHsms,
 		Description: "https://learn.microsoft.com/en-us/rest/api/keyvault/managedhsm/managed-hsms/list-by-subscription?tabs=HTTP#managedhsm",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_keyvault_keyvault_managed_hsms", client.Namespacemicrosoft_keyvault),
-		Transform:   transformers.TransformWithStruct(&armkeyvault.ManagedHsm{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armkeyvault.ManagedHsm{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

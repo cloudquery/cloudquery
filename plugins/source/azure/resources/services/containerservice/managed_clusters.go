@@ -15,8 +15,8 @@ func ManagedClusters() *schema.Table {
 		Resolver:    fetchManagedClusters,
 		Description: "https://learn.microsoft.com/en-us/rest/api/aks/managed-clusters/list?tabs=HTTP#managedcluster",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_containerservice_managed_clusters", client.Namespacemicrosoft_containerservice),
-		Transform:   transformers.TransformWithStruct(&armcontainerservice.ManagedCluster{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armcontainerservice.ManagedCluster{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

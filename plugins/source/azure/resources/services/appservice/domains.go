@@ -15,8 +15,8 @@ func Domains() *schema.Table {
 		Resolver:    fetchDomains,
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/domains/list?tabs=HTTP#domain",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_domains", client.Namespacemicrosoft_domainregistration),
-		Transform:   transformers.TransformWithStruct(&armappservice.Domain{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armappservice.Domain{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

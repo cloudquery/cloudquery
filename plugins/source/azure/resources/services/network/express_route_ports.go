@@ -15,8 +15,8 @@ func ExpressRoutePorts() *schema.Table {
 		Resolver:    fetchExpressRoutePorts,
 		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-ports/list?tabs=HTTP#expressrouteport",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_express_route_ports", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRoutePort{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRoutePort{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

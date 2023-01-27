@@ -15,8 +15,8 @@ func Alerts() *schema.Table {
 		Resolver:    fetchAlerts,
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/alerts/list?tabs=HTTP#alert",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_alerts", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.Alert{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armsecurity.Alert{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

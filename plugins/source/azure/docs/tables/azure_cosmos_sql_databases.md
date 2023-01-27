@@ -16,9 +16,9 @@ This table depends on [azure_cosmos_database_accounts](azure_cosmos_database_acc
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|id (PK)|String|
 |location|String|
 |properties|JSON|
 |tags|JSON|
+|id (PK)|String|
 |name|String|
 |type|String|

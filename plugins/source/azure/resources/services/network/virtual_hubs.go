@@ -15,8 +15,8 @@ func VirtualHubs() *schema.Table {
 		Resolver:    fetchVirtualHubs,
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualwan/virtual-hubs/list?tabs=HTTP#virtualhub",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_hubs", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualHub{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualHub{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

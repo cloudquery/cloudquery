@@ -15,8 +15,8 @@ func Services() *schema.Table {
 		Resolver:    fetchServices,
 		Description: "https://learn.microsoft.com/en-us/rest/api/datamigration/services/list?tabs=HTTP#datamigrationservice",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datamigration_services", client.Namespacemicrosoft_datamigration),
-		Transform:   transformers.TransformWithStruct(&armdatamigration.Service{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armdatamigration.Service{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

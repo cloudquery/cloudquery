@@ -15,8 +15,8 @@ func WorkspaceSettings() *schema.Table {
 		Resolver:    fetchWorkspaceSettings,
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/workspace-settings/list?tabs=HTTP#workspacesetting",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_workspace_settings", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.WorkspaceSetting{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armsecurity.WorkspaceSetting{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

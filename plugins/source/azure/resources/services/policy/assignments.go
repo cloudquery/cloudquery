@@ -15,8 +15,8 @@ func Assignments() *schema.Table {
 		Resolver:    fetchAssignments,
 		Description: "https://learn.microsoft.com/en-us/rest/api/policy/policy-assignments/list?tabs=HTTP#policyassignment",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_policy_assignments", client.Namespacemicrosoft_authorization),
-		Transform:   transformers.TransformWithStruct(&armpolicy.Assignment{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armpolicy.Assignment{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

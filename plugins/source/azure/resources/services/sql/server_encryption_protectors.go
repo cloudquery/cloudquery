@@ -12,7 +12,7 @@ func serverEncryptionProtectors() *schema.Table {
 		Name:        "azure_sql_server_encryption_protectors",
 		Resolver:    fetchEncryptionProtectors,
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/encryption-protectors/list-by-server?tabs=HTTP#encryptionprotector",
-		Transform:   transformers.TransformWithStruct(&armsql.EncryptionProtector{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armsql.EncryptionProtector{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }

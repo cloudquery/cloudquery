@@ -15,8 +15,8 @@ func DataPolicyManifests() *schema.Table {
 		Resolver:    fetchDataPolicyManifests,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy@v0.6.0#DataPolicyManifest",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_policy_data_policy_manifests", client.Namespacemicrosoft_authorization),
-		Transform:   transformers.TransformWithStruct(&armpolicy.DataPolicyManifest{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armpolicy.DataPolicyManifest{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

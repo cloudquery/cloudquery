@@ -15,8 +15,8 @@ func ManagedRuleSets() *schema.Table {
 		Resolver:    fetchManagedRuleSets,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn@v1.0.0#ManagedRuleSetDefinition",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cdn_managed_rule_sets", client.Namespacemicrosoft_cdn),
-		Transform:   transformers.TransformWithStruct(&armcdn.ManagedRuleSetDefinition{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armcdn.ManagedRuleSetDefinition{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

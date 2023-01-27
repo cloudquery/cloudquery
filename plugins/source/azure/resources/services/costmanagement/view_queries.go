@@ -14,7 +14,7 @@ func view_queries() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/cost-management/query/usage?tabs=HTTP#queryresult",
 		Transform: transformers.TransformWithStruct(&armcostmanagement.QueryResult{},
 			transformers.WithNameTransformer(client.ETagNameTransformer),
+			transformers.WithPrimaryKeys("ID"),
 		),
-		Columns: schema.ColumnList{client.IDColumn},
 	}
 }

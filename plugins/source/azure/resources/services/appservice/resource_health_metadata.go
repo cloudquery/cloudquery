@@ -15,8 +15,8 @@ func ResourceHealthMetadata() *schema.Table {
 		Resolver:    fetchResourceHealthMetadata,
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/resource-health-metadata/list?tabs=HTTP#resourcehealthmetadata",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_resource_health_metadata", client.Namespacemicrosoft_web),
-		Transform:   transformers.TransformWithStruct(&armappservice.ResourceHealthMetadata{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armappservice.ResourceHealthMetadata{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

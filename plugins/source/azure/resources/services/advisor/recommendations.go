@@ -15,8 +15,8 @@ func Recommendations() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/advisor/recommendations/list?tabs=HTTP#resourcerecommendationbase",
 		Resolver:    fetchRecommendations,
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_advisor_recommendations", client.Namespacemicrosoft_advisor),
-		Transform:   transformers.TransformWithStruct(&armadvisor.ResourceRecommendationBase{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armadvisor.ResourceRecommendationBase{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

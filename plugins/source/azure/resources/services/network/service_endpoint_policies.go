@@ -15,8 +15,8 @@ func ServiceEndpointPolicies() *schema.Table {
 		Resolver:    fetchServiceEndpointPolicies,
 		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/service-endpoint-policies/list?tabs=HTTP#serviceendpointpolicy",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_service_endpoint_policies", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.ServiceEndpointPolicy{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armnetwork.ServiceEndpointPolicy{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

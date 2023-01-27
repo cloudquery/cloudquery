@@ -15,8 +15,8 @@ func LoadBalancers() *schema.Table {
 		Resolver:    fetchLoadBalancers,
 		Description: "https://learn.microsoft.com/en-us/rest/api/load-balancer/load-balancers/list?tabs=HTTP#loadbalancer",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_load_balancers", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.LoadBalancer{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armnetwork.LoadBalancer{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

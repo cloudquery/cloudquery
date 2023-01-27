@@ -17,8 +17,9 @@ func Views() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_costmanagement_views", client.Namespacemicrosoft_costmanagement),
 		Transform: transformers.TransformWithStruct(&armcostmanagement.View{},
 			transformers.WithNameTransformer(client.ETagNameTransformer),
+			transformers.WithPrimaryKeys("ID"),
 		),
-		Columns: schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Columns: schema.ColumnList{client.SubscriptionID},
 		Relations: []*schema.Table{
 			view_queries(),
 		},

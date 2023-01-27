@@ -13,7 +13,7 @@ func Pricings() *schema.Table {
 		Resolver:    fetchPricings,
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/pricings/list?tabs=HTTP#pricing",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_pricings", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.Pricing{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armsecurity.Pricing{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }

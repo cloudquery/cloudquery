@@ -15,8 +15,8 @@ func VirtualMachines() *schema.Table {
 		Resolver:    fetchVirtualMachines,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#VirtualMachine",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_virtual_machines", client.Namespacemicrosoft_connectedvmwarevsphere),
-		Transform:   transformers.TransformWithStruct(&armconnectedvmware.VirtualMachine{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armconnectedvmware.VirtualMachine{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

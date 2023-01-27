@@ -15,8 +15,8 @@ func HostPools() *schema.Table {
 		Resolver:    fetchHostPools,
 		Description: "https://learn.microsoft.com/en-us/rest/api/desktopvirtualization/host-pools/list?tabs=HTTP#hostpool",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_desktopvirtualization_host_pools", client.Namespacemicrosoft_desktopvirtualization),
-		Transform:   transformers.TransformWithStruct(&armdesktopvirtualization.HostPool{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armdesktopvirtualization.HostPool{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

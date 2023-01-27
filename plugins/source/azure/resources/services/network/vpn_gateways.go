@@ -15,8 +15,8 @@ func VpnGateways() *schema.Table {
 		Resolver:    fetchVpnGateways,
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualwan/vpn-gateways/list?tabs=HTTP#vpngateway",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_vpn_gateways", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.VPNGateway{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armnetwork.VPNGateway{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

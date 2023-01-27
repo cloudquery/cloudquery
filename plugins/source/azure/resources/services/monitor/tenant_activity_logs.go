@@ -15,8 +15,8 @@ func TenantActivityLogs() *schema.Table {
 		Resolver:    fetchTenantActivityLogs,
 		Description: "https://learn.microsoft.com/en-us/rest/api/monitor/tenant-activity-logs/list?tabs=HTTP#eventdata",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_tenant_activity_logs", client.Namespacemicrosoft_insights),
-		Transform:   transformers.TransformWithStruct(&armmonitor.EventData{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armmonitor.EventData{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

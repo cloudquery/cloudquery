@@ -15,8 +15,8 @@ func VpnServerConfigurations() *schema.Table {
 		Resolver:    fetchVpnServerConfigurations,
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualwan/vpn-server-configurations/list?tabs=HTTP#vpnserverconfiguration",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_vpn_server_configurations", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.VPNServerConfiguration{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armnetwork.VPNServerConfiguration{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

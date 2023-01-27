@@ -15,8 +15,8 @@ func Solutions() *schema.Table {
 		Resolver:    fetchSolutions,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity@v0.9.0#Solution",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_solutions", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.Solution{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armsecurity.Solution{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

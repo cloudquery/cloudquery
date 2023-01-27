@@ -12,8 +12,8 @@ func serverDatabases() *schema.Table {
 		Name:        "azure_sql_server_databases",
 		Resolver:    fetchDatabases,
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/databases/list-by-server?tabs=HTTP#database",
-		Transform:   transformers.TransformWithStruct(&armsql.Database{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armsql.Database{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 
 		Relations: []*schema.Table{
 			serverDatabaseBlobAuditingPolicies(),

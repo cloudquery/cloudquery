@@ -15,8 +15,8 @@ func Resources() *schema.Table {
 		Resolver:    fetchResources,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas@v0.5.0#Resource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_saas_resources", client.Namespacemicrosoft_saas),
-		Transform:   transformers.TransformWithStruct(&armsaas.Resource{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armsaas.Resource{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

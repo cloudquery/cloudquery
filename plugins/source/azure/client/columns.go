@@ -5,12 +5,6 @@ import (
 )
 
 var (
-	IDColumn = schema.Column{
-		Name:            "id",
-		Type:            schema.TypeString,
-		Resolver:        schema.PathResolver("ID"),
-		CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-	}
 	SubscriptionID = schema.Column{
 		Name:     "subscription_id",
 		Type:     schema.TypeString,

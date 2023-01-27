@@ -15,8 +15,8 @@ func Workflows() *schema.Table {
 		Resolver:    fetchWorkflows,
 		Description: "https://learn.microsoft.com/en-us/rest/api/logic/workflows/list-by-subscription?tabs=HTTP#workflow",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_logic_workflows", client.Namespacemicrosoft_logic),
-		Transform:   transformers.TransformWithStruct(&armlogic.Workflow{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armlogic.Workflow{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

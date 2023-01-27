@@ -15,8 +15,8 @@ func ProviderRegistrations() *schema.Table {
 		Resolver:    fetchProviderRegistrations,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub@v1.0.0#ProviderRegistration",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_providerhub_provider_registrations", client.Namespacemicrosoft_providerhub),
-		Transform:   transformers.TransformWithStruct(&armproviderhub.ProviderRegistration{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armproviderhub.ProviderRegistration{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

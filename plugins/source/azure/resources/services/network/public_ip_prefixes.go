@@ -15,8 +15,8 @@ func PublicIpPrefixes() *schema.Table {
 		Resolver:    fetchPublicIpPrefixes,
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/public-ip-prefixes/list?tabs=HTTP#publicipprefix",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_public_ip_prefixes", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.PublicIPPrefix{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armnetwork.PublicIPPrefix{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

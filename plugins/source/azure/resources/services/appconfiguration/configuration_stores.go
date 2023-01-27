@@ -15,8 +15,8 @@ func ConfigurationStores() *schema.Table {
 		Resolver:    fetchConfigurationStores,
 		Description: "https://learn.microsoft.com/en-us/rest/api/appconfiguration/stable/configuration-stores/list?tabs=HTTP#configurationstore",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appconfiguration_configuration_stores", client.Namespacemicrosoft_appconfiguration),
-		Transform:   transformers.TransformWithStruct(&armappconfiguration.ConfigurationStore{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armappconfiguration.ConfigurationStore{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

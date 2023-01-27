@@ -15,8 +15,8 @@ func Clusters() *schema.Table {
 		Resolver:    fetchClusters,
 		Description: "https://learn.microsoft.com/en-us/rest/api/hdinsight/2021-06-01/clusters/list?tabs=HTTP#cluster",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_hdinsight_clusters", client.Namespacemicrosoft_hdinsight),
-		Transform:   transformers.TransformWithStruct(&armhdinsight.Cluster{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armhdinsight.Cluster{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

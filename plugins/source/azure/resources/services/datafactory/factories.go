@@ -17,8 +17,9 @@ func Factories() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datafactory_factories", client.Namespacemicrosoft_datafactory),
 		Transform: transformers.TransformWithStruct(&armdatafactory.Factory{},
 			transformers.WithNameTransformer(client.ETagNameTransformer),
+			transformers.WithPrimaryKeys("ID"),
 		),
-		Columns: schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Columns: schema.ColumnList{client.SubscriptionID},
 	}
 }
 

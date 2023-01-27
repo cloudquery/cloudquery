@@ -15,8 +15,8 @@ func Clusters() *schema.Table {
 		Resolver:    fetchClusters,
 		Description: "https://learn.microsoft.com/en-us/rest/api/azurerekusto/clusters/list?tabs=HTTP#cluster",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_kusto_clusters", client.Namespacemicrosoft_kusto),
-		Transform:   transformers.TransformWithStruct(&armkusto.Cluster{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armkusto.Cluster{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

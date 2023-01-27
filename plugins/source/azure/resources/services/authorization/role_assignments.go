@@ -15,8 +15,8 @@ func RoleAssignments() *schema.Table {
 		Resolver:    fetchRoleAssignments,
 		Description: "https://learn.microsoft.com/en-us/rest/api/authorization/role-assignments/get?tabs=HTTP#roleassignment",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_role_assignments", client.Namespacemicrosoft_authorization),
-		Transform:   transformers.TransformWithStruct(&armauthorization.RoleAssignment{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armauthorization.RoleAssignment{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

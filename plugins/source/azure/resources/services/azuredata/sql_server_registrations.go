@@ -13,7 +13,7 @@ func SqlServerRegistrations() *schema.Table {
 		Resolver:    fetchSqlServerRegistrations,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata@v0.5.0#SQLServerRegistration",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_azuredata_sql_server_registrations", client.Namespacemicrosoft_azuredata),
-		Transform:   transformers.TransformWithStruct(&armazuredata.SQLServerRegistration{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armazuredata.SQLServerRegistration{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }

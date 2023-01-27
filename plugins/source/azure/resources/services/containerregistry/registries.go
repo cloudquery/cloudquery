@@ -15,8 +15,8 @@ func Registries() *schema.Table {
 		Resolver:    fetchRegistries,
 		Description: "https://learn.microsoft.com/en-us/rest/api/containerregistry/registries/list?tabs=HTTP#registry",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_containerregistry_registries", client.Namespacemicrosoft_containerregistry),
-		Transform:   transformers.TransformWithStruct(&armcontainerregistry.Registry{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armcontainerregistry.Registry{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

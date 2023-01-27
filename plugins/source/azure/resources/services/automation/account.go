@@ -15,8 +15,8 @@ func Account() *schema.Table {
 		Resolver:    fetchAccount,
 		Description: "https://learn.microsoft.com/en-us/rest/api/automation/automation-account/list?tabs=HTTP#automationaccount",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_automation_account", client.Namespacemicrosoft_automation),
-		Transform:   transformers.TransformWithStruct(&armautomation.Account{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armautomation.Account{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

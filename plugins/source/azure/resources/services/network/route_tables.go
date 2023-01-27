@@ -15,8 +15,8 @@ func RouteTables() *schema.Table {
 		Resolver:    fetchRouteTables,
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/route-tables/list?tabs=HTTP#routetable",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_route_tables", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.RouteTable{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armnetwork.RouteTable{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

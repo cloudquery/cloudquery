@@ -15,8 +15,8 @@ func VirtualMachineTemplates() *schema.Table {
 		Resolver:    fetchVirtualMachineTemplates,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#VirtualMachineTemplate",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_virtual_machine_templates", client.Namespacemicrosoft_connectedvmwarevsphere),
-		Transform:   transformers.TransformWithStruct(&armconnectedvmware.VirtualMachineTemplate{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armconnectedvmware.VirtualMachineTemplate{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

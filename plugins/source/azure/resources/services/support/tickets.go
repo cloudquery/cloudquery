@@ -15,8 +15,8 @@ func Tickets() *schema.Table {
 		Resolver:    fetchTickets,
 		Description: "https://learn.microsoft.com/en-us/rest/api/support/support-tickets/list?tabs=HTTP#supportticketdetails",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_support_tickets", client.Namespacemicrosoft_support),
-		Transform:   transformers.TransformWithStruct(&armsupport.TicketDetails{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armsupport.TicketDetails{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

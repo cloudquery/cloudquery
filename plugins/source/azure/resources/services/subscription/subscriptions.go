@@ -13,8 +13,8 @@ func Subscriptions() *schema.Table {
 		Resolver:    fetchSubscriptions,
 		Description: "https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list?tabs=HTTP#subscription",
 		Multiplex:   client.SingleSubscriptionMultiplex,
-		Transform:   transformers.TransformWithStruct(&armsubscription.Subscription{}),
-		Columns:     schema.ColumnList{client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armsubscription.Subscription{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{},
 		Relations: []*schema.Table{
 			locations(),
 		},

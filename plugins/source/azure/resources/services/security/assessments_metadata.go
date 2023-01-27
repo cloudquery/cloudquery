@@ -15,8 +15,8 @@ func AssessmentsMetadata() *schema.Table {
 		Resolver:    fetchAssessmentsMetadata,
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/assessments-metadata/list?tabs=HTTP#securityassessmentmetadata",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_assessments_metadata", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.AssessmentMetadataResponse{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armsecurity.AssessmentMetadataResponse{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

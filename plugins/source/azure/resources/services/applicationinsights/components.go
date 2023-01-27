@@ -15,8 +15,8 @@ func Components() *schema.Table {
 		Resolver:    fetchComponents,
 		Description: "https://learn.microsoft.com/en-us/rest/api/application-insights/components/list?tabs=HTTP#applicationinsightscomponent",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_applicationinsights_components", client.Namespacemicrosoft_insights),
-		Transform:   transformers.TransformWithStruct(&armapplicationinsights.Component{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armapplicationinsights.Component{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

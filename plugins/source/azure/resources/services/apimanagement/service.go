@@ -15,8 +15,8 @@ func Service() *schema.Table {
 		Resolver:    fetchService,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement#ServiceResource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_apimanagement_service", client.Namespacemicrosoft_apimanagement),
-		Transform:   transformers.TransformWithStruct(&armapimanagement.ServiceResource{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armapimanagement.ServiceResource{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

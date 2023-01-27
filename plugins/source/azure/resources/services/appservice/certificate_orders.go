@@ -15,8 +15,8 @@ func CertificateOrders() *schema.Table {
 		Resolver:    fetchCertificateOrders,
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/app-service-certificate-orders/list?tabs=HTTP#appservicecertificateorder",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_certificate_orders", client.Namespacemicrosoft_certificateregistration),
-		Transform:   transformers.TransformWithStruct(&armappservice.CertificateOrder{}),
-		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
+		Transform:   transformers.TransformWithStruct(&armappservice.CertificateOrder{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 
