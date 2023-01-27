@@ -16,10 +16,7 @@ func DiscoveredSecuritySolutions() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/discovered-security-solutions/list?tabs=HTTP#discoveredsecuritysolution",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_discovered_security_solutions", client.Namespacemicrosoft_security),
 		Transform:   transformers.TransformWithStruct(&armsecurity.DiscoveredSecuritySolution{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

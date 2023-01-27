@@ -16,10 +16,7 @@ func WebTests() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/application-insights/web-tests/list?tabs=HTTP#webtest",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_applicationinsights_web_tests", client.Namespacemicrosoft_insights),
 		Transform:   transformers.TransformWithStruct(&armapplicationinsights.WebTest{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

@@ -14,9 +14,6 @@ func Services() *schema.Table {
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch@v1.0.0#Service",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_search_services", client.Namespacemicrosoft_search),
 		Transform:   transformers.TransformWithStruct(&armsearch.Service{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }

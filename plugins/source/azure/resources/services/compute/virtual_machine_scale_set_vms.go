@@ -16,10 +16,7 @@ func VirtualMachineScaleSetsVMs() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machine-scale-set-vms/list?tabs=HTTP#virtualmachinescalesetvm",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machine_scale_sets_vms", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.VirtualMachineScaleSetVM{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

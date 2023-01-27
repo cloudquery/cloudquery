@@ -16,10 +16,7 @@ func Clusters() *schema.Table {
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#Cluster",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_clusters", client.Namespacemicrosoft_connectedvmwarevsphere),
 		Transform:   transformers.TransformWithStruct(&armconnectedvmware.Cluster{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

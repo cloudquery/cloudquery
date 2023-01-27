@@ -16,10 +16,7 @@ func IpGroups() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/ip-groups/list?tabs=HTTP#ipgroup",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_ip_groups", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.IPGroup{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

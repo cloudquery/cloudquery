@@ -16,10 +16,7 @@ func Locations() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/locations/get?tabs=HTTP#asclocation",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_locations", client.Namespacemicrosoft_security),
 		Transform:   transformers.TransformWithStruct(&armsecurity.AscLocation{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

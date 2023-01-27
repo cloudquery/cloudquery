@@ -16,10 +16,7 @@ func Accounts() *schema.Table {
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric@v0.1.0#Account",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_engagementfabric_accounts", client.Namespacemicrosoft_engagementfabric),
 		Transform:   transformers.TransformWithStruct(&armengagementfabric.Account{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

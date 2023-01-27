@@ -16,10 +16,7 @@ func Clusters() *schema.Table {
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights@v1.0.0#Cluster",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_operationalinsights_clusters", client.Namespacemicrosoft_operationalinsights),
 		Transform:   transformers.TransformWithStruct(&armoperationalinsights.Cluster{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

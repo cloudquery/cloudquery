@@ -16,10 +16,7 @@ func ExpressRoutePortsLocations() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-ports-locations/list?tabs=HTTP#expressrouteportslocation",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_express_route_ports_locations", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRoutePortsLocation{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

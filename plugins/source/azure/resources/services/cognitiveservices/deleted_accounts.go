@@ -16,10 +16,7 @@ func DeletedAccounts() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/deleted-accounts/list?tabs=HTTP#account",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cognitiveservices_deleted_accounts", client.Namespacemicrosoft_cognitiveservices),
 		Transform:   transformers.TransformWithStruct(&armcognitiveservices.Account{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

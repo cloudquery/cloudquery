@@ -16,10 +16,7 @@ func DatabaseAccounts() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/database-accounts/list?tabs=HTTP#databaseaccountgetresults",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cosmos_database_accounts", client.Namespacemicrosoft_documentdb),
 		Transform:   transformers.TransformWithStruct(&armcosmos.DatabaseAccountGetResults{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 
 		Relations: []*schema.Table{
 			mongo_db_databases(),

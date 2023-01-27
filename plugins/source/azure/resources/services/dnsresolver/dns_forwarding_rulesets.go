@@ -16,10 +16,7 @@ func DnsForwardingRulesets() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/dns/dnsresolver/dns-forwarding-rulesets/list?tabs=HTTP#dnsforwardingruleset",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_dnsresolver_dns_forwarding_rulesets", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armdnsresolver.DNSForwardingRuleset{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

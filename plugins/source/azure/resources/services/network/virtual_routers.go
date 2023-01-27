@@ -16,10 +16,7 @@ func VirtualRouters() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/virtual-routers/list?tabs=HTTP#virtualrouter",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_routers", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualRouter{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

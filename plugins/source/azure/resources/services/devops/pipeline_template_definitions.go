@@ -16,10 +16,7 @@ func PipelineTemplateDefinitions() *schema.Table {
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops@v0.5.0#PipelineTemplateDefinition",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_devops_pipeline_template_definitions", client.Namespacemicrosoft_devops),
 		Transform:   transformers.TransformWithStruct(&armdevops.PipelineTemplateDefinition{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

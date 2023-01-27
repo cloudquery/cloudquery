@@ -17,10 +17,7 @@ func Keyvault() *schema.Table {
 		Description:         "https://learn.microsoft.com/en-us/rest/api/keyvault/keyvault/vaults/get?tabs=HTTP#vault",
 		Multiplex:           client.SubscriptionMultiplex,
 		Transform:           transformers.TransformWithStruct(&armkeyvault.Vault{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:             schema.ColumnList{client.SubscriptionID, client.IDColumn},
 
 		Relations: []*schema.Table{
 			keyvault_keys(),

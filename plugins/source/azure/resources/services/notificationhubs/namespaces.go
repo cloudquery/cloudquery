@@ -16,10 +16,7 @@ func Namespaces() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/notificationhubs/namespaces/list?tabs=HTTP#namespaceresource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_notificationhubs_namespaces", client.Namespacemicrosoft_notificationhubs),
 		Transform:   transformers.TransformWithStruct(&armnotificationhubs.NamespaceResource{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

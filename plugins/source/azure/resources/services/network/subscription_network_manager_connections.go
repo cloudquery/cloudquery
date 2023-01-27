@@ -16,10 +16,7 @@ func SubscriptionNetworkManagerConnections() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/networkmanager/management-group-network-manager-connections/list?tabs=HTTP#networkmanagerconnection",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_subscription_network_manager_connections", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.ManagerConnection{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

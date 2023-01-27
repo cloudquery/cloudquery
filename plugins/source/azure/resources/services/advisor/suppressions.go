@@ -16,10 +16,7 @@ func Suppressions() *schema.Table {
 		Resolver:    fetchSuppressions,
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_advisor_suppressions", client.Namespacemicrosoft_advisor),
 		Transform:   transformers.TransformWithStruct(&armadvisor.SuppressionContract{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

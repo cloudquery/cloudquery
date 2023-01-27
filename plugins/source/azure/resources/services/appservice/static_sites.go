@@ -16,10 +16,7 @@ func StaticSites() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/static-sites/list?tabs=HTTP#staticsitearmresource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_static_sites", client.Namespacemicrosoft_web),
 		Transform:   transformers.TransformWithStruct(&armappservice.StaticSiteARMResource{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

@@ -16,10 +16,7 @@ func WebApplicationFirewallPolicies() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/application-gateway/web-application-firewall-policies/list?tabs=HTTP#webapplicationfirewallpolicy",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_web_application_firewall_policies", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.WebApplicationFirewallPolicy{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

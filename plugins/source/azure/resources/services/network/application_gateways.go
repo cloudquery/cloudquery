@@ -16,10 +16,7 @@ func ApplicationGateways() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/application-gateway/application-gateways/list?tabs=HTTP#applicationgateway",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_application_gateways", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.ApplicationGateway{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

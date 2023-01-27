@@ -16,10 +16,7 @@ func NatGateways() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/nat-gateways/list?tabs=HTTP#natgateway",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_nat_gateways", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.NatGateway{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

@@ -16,10 +16,7 @@ func ServiceLocations() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/peering/peering-service-locations/list?tabs=HTTP#peeringservicelocation",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_peering_service_locations", client.Namespacemicrosoft_peering),
 		Transform:   transformers.TransformWithStruct(&armpeering.ServiceLocation{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

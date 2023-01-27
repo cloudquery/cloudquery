@@ -16,10 +16,7 @@ func Zones() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/dns/zones/list?tabs=HTTP#zone",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_dns_zones", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armdns.Zone{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

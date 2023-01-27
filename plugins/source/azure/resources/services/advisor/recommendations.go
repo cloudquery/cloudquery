@@ -16,10 +16,7 @@ func Recommendations() *schema.Table {
 		Resolver:    fetchRecommendations,
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_advisor_recommendations", client.Namespacemicrosoft_advisor),
 		Transform:   transformers.TransformWithStruct(&armadvisor.ResourceRecommendationBase{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

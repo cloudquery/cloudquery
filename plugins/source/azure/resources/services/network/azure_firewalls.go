@@ -16,10 +16,7 @@ func AzureFirewalls() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/firewall/azure-firewalls/list?tabs=HTTP#azurefirewall",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_azure_firewalls", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.AzureFirewall{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

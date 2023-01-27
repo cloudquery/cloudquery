@@ -16,10 +16,7 @@ func Disks() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/disks/list?tabs=HTTP#disk",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_disks", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.Disk{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

@@ -16,10 +16,7 @@ func SecurityPartnerProviders() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/security-partner-providers/list?tabs=HTTP#securitypartnerprovider",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_security_partner_providers", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.SecurityPartnerProvider{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

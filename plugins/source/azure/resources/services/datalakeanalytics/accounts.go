@@ -16,10 +16,7 @@ func Accounts() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/datalakeanalytics/accounts/list?tabs=HTTP#datalakeanalyticsaccountbasic",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datalakeanalytics_accounts", client.Namespacemicrosoft_datalakeanalytics),
 		Transform:   transformers.TransformWithStruct(&armdatalakeanalytics.AccountBasic{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

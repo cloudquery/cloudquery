@@ -16,10 +16,7 @@ func Caches() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/redis/redis/list-by-subscription?tabs=HTTP#redisresource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_redis_caches", client.Namespacemicrosoft_cache),
 		Transform:   transformers.TransformWithStruct(&armredis.ResourceInfo{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

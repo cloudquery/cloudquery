@@ -16,10 +16,7 @@ func Servers() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/servers/list?tabs=HTTP#server",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_postgresql_servers", client.Namespacemicrosoft_dbforpostgresql),
 		Transform:   transformers.TransformWithStruct(&armpostgresql.Server{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 
 		Relations: []*schema.Table{
 			serverConfigurations(),

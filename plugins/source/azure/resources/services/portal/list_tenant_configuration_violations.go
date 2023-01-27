@@ -16,10 +16,7 @@ func ListTenantConfigurationViolations() *schema.Table {
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal@v0.5.0#Violation",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_portal_list_tenant_configuration_violations", client.Namespacemicrosoft_portal),
 		Transform:   transformers.TransformWithStruct(&armportal.Violation{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

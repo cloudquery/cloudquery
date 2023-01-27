@@ -16,10 +16,7 @@ func ServiceCountries() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/peering/peering-service-countries/list?tabs=HTTP#peeringservicecountry",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_peering_service_countries", client.Namespacemicrosoft_peering),
 		Transform:   transformers.TransformWithStruct(&armpeering.ServiceCountry{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

@@ -14,9 +14,6 @@ func RoleDefinitions() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/authorization/role-definitions/list?tabs=HTTP#roledefinition",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_role_definitions", client.Namespacemicrosoft_authorization),
 		Transform:   transformers.TransformWithStruct(&armauthorization.RoleDefinition{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }

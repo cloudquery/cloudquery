@@ -14,9 +14,6 @@ func ExpressRouteGateways() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-gateways/list-by-subscription?tabs=HTTP#expressroutegateway",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_express_route_gateways", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRouteGateway{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }

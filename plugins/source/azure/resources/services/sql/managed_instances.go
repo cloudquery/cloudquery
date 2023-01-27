@@ -16,10 +16,7 @@ func ManagedInstances() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/managed-instances/list?tabs=HTTP#managedinstance",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_sql_managed_instances", client.Namespacemicrosoft_sql),
 		Transform:   transformers.TransformWithStruct(&armsql.ManagedInstance{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 		Relations: []*schema.Table{
 			managedInstanceEncryptionProtectors(),
 			managedInstanceVulnerabilityAssessments(),

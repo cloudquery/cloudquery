@@ -16,10 +16,7 @@ func VCenters() *schema.Table {
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#VCenter",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_v_centers", client.Namespacemicrosoft_connectedvmwarevsphere),
 		Transform:   transformers.TransformWithStruct(&armconnectedvmware.VCenter{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

@@ -16,10 +16,7 @@ func Grafana() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/managed-grafana/grafana/list-by-resource-group?tabs=HTTP#managedgrafana",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_dashboard_grafana", client.Namespacemicrosoft_dashboard),
 		Transform:   transformers.TransformWithStruct(&armdashboard.ManagedGrafana{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

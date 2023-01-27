@@ -16,10 +16,7 @@ func Servers() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/mariadb/servers/list?tabs=HTTP#server",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_mariadb_servers", client.Namespacemicrosoft_dbformariadb),
 		Transform:   transformers.TransformWithStruct(&armmariadb.Server{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 
 		Relations: []*schema.Table{
 			server_configurations(),

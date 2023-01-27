@@ -16,10 +16,7 @@ func Workspaces() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/synapse/workspaces/list?tabs=HTTP#workspace",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_synapse_workspaces", client.Namespacemicrosoft_synapse),
 		Transform:   transformers.TransformWithStruct(&armsynapse.Workspace{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

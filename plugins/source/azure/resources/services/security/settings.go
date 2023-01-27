@@ -16,10 +16,7 @@ func Settings() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/settings/list?tabs=HTTP#settingslist",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_settings", client.Namespacemicrosoft_security),
 		Transform:   transformers.TransformWithStruct(&armsecurity.Setting{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

@@ -16,10 +16,7 @@ func DeletedWebApps() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/deleted-web-apps/list#deletedsite",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_deleted_web_apps", client.Namespacemicrosoft_web),
 		Transform:   transformers.TransformWithStruct(&armappservice.DeletedSite{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

@@ -16,10 +16,7 @@ func FrontDoors() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/frontdoorservice/frontdoor/front-doors/list?tabs=HTTP#frontdoor",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_frontdoor_front_doors", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armfrontdoor.FrontDoor{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

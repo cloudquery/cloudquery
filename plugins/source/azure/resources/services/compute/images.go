@@ -16,10 +16,7 @@ func Images() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/images/list?tabs=HTTP#image",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_images", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.Image{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

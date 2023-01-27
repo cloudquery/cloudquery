@@ -16,10 +16,7 @@ func VpnSites() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualwan/vpn-sites/list?tabs=HTTP#vpnsite",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_vpn_sites", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.VPNSite{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

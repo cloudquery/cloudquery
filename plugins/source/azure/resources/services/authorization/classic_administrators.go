@@ -16,10 +16,7 @@ func ClassicAdministrators() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/authorization/classic-administrators/list?tabs=HTTP#classicadministrator",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_classic_administrators", client.Namespacemicrosoft_authorization),
 		Transform:   transformers.TransformWithStruct(&armauthorization.ClassicAdministrator{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

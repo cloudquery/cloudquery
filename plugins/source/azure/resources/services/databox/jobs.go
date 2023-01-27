@@ -16,10 +16,7 @@ func Jobs() *schema.Table {
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox@v1.0.0#JobResource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_databox_jobs", client.Namespacemicrosoft_databox),
 		Transform:   transformers.TransformWithStruct(&armdatabox.JobResource{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

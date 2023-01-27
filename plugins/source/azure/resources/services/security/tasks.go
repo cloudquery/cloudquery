@@ -16,10 +16,7 @@ func Tasks() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/tasks/list?tabs=HTTP#securitytask",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_tasks", client.Namespacemicrosoft_security),
 		Transform:   transformers.TransformWithStruct(&armsecurity.Task{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

@@ -16,10 +16,7 @@ func ContainerGroups() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/container-instances/container-groups/list?tabs=HTTP#containergroup",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_containerinstance_container_groups", client.Namespacemicrosoft_containerinstance),
 		Transform:   transformers.TransformWithStruct(&armcontainerinstance.ContainerGroup{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

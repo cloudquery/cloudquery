@@ -16,10 +16,7 @@ func PublicIpAddresses() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/public-ip-addresses/list?tabs=HTTP#publicipaddress",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_public_ip_addresses", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.PublicIPAddress{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

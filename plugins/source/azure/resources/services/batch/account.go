@@ -16,10 +16,7 @@ func Account() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/batchmanagement/batch-account/list?tabs=HTTP#batchaccount",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_batch_account", client.Namespacemicrosoft_batch),
 		Transform:   transformers.TransformWithStruct(&armbatch.Account{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

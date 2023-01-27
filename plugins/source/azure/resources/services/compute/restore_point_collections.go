@@ -16,10 +16,7 @@ func RestorePointCollections() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/restore-point-collections/list?tabs=HTTP#restorepointcollection",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_restore_point_collections", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.RestorePointCollection{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

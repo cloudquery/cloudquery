@@ -16,10 +16,7 @@ func Certificates() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/certificates/list?tabs=HTTP#certificate",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_certificates", client.Namespacemicrosoft_web),
 		Transform:   transformers.TransformWithStruct(&armappservice.AppCertificate{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

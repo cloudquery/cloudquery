@@ -16,10 +16,7 @@ func Namespaces() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/eventhub/stable/namespaces/list?tabs=HTTP#ehnamespace",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_eventhub_namespaces", client.Namespacemicrosoft_eventhub),
 		Transform:   transformers.TransformWithStruct(&armeventhub.EHNamespace{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 		Relations: []*schema.Table{
 			namespaceNetworkRuleSets(),
 		},

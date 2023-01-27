@@ -16,10 +16,7 @@ func AutoProvisioningSettings() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/auto-provisioning-settings/list?tabs=HTTP#autoprovisioningsetting",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_auto_provisioning_settings", client.Namespacemicrosoft_security),
 		Transform:   transformers.TransformWithStruct(&armsecurity.AutoProvisioningSetting{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

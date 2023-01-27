@@ -16,10 +16,7 @@ func Periods() *schema.Table {
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling@v0.5.0#Period",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_billing_periods", client.Namespacemicrosoft_billing),
 		Transform:   transformers.TransformWithStruct(&armbilling.Period{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

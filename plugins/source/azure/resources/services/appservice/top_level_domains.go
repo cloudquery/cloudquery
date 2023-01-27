@@ -16,10 +16,7 @@ func TopLevelDomains() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/top-level-domains/list?tabs=HTTP#topleveldomain",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_top_level_domains", client.Namespacemicrosoft_domainregistration),
 		Transform:   transformers.TransformWithStruct(&armappservice.TopLevelDomain{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

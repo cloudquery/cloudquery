@@ -16,10 +16,7 @@ func SecureScoreControls() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/secure-score-controls/list?tabs=HTTP#securescorecontroldetails",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_secure_score_controls", client.Namespacemicrosoft_security),
 		Transform:   transformers.TransformWithStruct(&armsecurity.SecureScoreControlDetails{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

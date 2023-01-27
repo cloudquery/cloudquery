@@ -16,10 +16,7 @@ func Topology() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/topology/list?tabs=HTTP#topologyresource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_topology", client.Namespacemicrosoft_security),
 		Transform:   transformers.TransformWithStruct(&armsecurity.TopologyResource{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

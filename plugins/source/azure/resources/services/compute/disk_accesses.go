@@ -16,10 +16,7 @@ func DiskAccesses() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/disk-accesses/list?tabs=HTTP#diskaccess",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_disk_accesses", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.DiskAccess{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

@@ -16,10 +16,7 @@ func TenantConfigurations() *schema.Table {
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal@v0.5.0#Configuration",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_portal_tenant_configurations", client.Namespacemicrosoft_portal),
 		Transform:   transformers.TransformWithStruct(&armportal.Configuration{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

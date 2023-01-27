@@ -16,10 +16,7 @@ func Watchers() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/network-watcher/network-watchers/list-all?tabs=HTTP#networkwatcher",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_watchers", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.Watcher{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

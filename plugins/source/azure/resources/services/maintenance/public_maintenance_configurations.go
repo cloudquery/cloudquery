@@ -16,10 +16,7 @@ func PublicMaintenanceConfigurations() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/maintenance/public-maintenance-configurations/list?tabs=HTTP#maintenanceconfiguration",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_maintenance_public_maintenance_configurations", client.Namespacemicrosoft_maintenance),
 		Transform:   transformers.TransformWithStruct(&armmaintenance.Configuration{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

@@ -16,10 +16,7 @@ func RouteFilters() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/route-filters/list?tabs=HTTP#routefilter",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_route_filters", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.RouteFilter{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

@@ -16,10 +16,7 @@ func MarketplaceAgreements() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/datadog/marketplace-agreements/list?tabs=HTTP#datadogagreementresource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datadog_marketplace_agreements", client.Namespacemicrosoft_datadog),
 		Transform:   transformers.TransformWithStruct(&armdatadog.AgreementResource{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

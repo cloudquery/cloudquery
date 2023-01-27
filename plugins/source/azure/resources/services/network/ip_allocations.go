@@ -16,10 +16,7 @@ func IpAllocations() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/ip-allocations/list?tabs=HTTP#ipallocation",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_ip_allocations", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.IPAllocation{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 

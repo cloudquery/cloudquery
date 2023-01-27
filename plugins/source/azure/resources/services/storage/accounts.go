@@ -16,10 +16,7 @@ func Accounts() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/storagerp/storage-accounts/list?tabs=HTTP#storageaccount",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_storage_accounts", client.Namespacemicrosoft_storage),
 		Transform:   transformers.TransformWithStruct(&armstorage.Account{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 
 		Relations: []*schema.Table{
 			tables(),

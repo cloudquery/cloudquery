@@ -16,10 +16,7 @@ func GovernanceRule() *schema.Table {
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity@v0.9.0#GovernanceRule",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_governance_rule", client.Namespacemicrosoft_security),
 		Transform:   transformers.TransformWithStruct(&armsecurity.GovernanceRule{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
 
