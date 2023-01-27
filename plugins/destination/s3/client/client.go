@@ -10,8 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 
-	"github.com/cloudquery/filetypes/csv"
-	"github.com/cloudquery/filetypes/json"
+	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -26,11 +25,7 @@ type Client struct {
 	s3Client   *s3.Client
 	uploader   *manager.Uploader
 	downloader *manager.Downloader
-
-	csvTransformer         *csv.Transformer
-	csvReverseTransformer  *csv.ReverseTransformer
-	jsonTransformer        *json.Transformer
-	jsonReverseTransformer *json.ReverseTransformer
+	*filetypes.Client
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -38,21 +33,23 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("destination only supports append mode")
 	}
 	c := &Client{
-		logger:                 logger.With().Str("module", "s3").Logger(),
-		spec:                   spec,
-		csvTransformer:         &csv.Transformer{},
-		jsonTransformer:        &json.Transformer{},
-		csvReverseTransformer:  &csv.ReverseTransformer{},
-		jsonReverseTransformer: &json.ReverseTransformer{},
+		logger: logger.With().Str("module", "s3").Logger(),
+		spec:   spec,
 	}
 
 	if err := spec.UnmarshalSpec(&c.pluginSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal s3 spec: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
 	if err := c.pluginSpec.Validate(); err != nil {
 		return nil, err
 	}
 	c.pluginSpec.SetDefaults()
+
+	filetypesClient, err := filetypes.NewClient(c.pluginSpec.FileSpec)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
+	}
+	c.Client = filetypesClient
 
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithDefaultRegion("us-east-1"))
 	if err != nil {
