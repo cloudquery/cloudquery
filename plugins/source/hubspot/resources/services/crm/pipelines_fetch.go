@@ -13,6 +13,10 @@ func fetchPipelines(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	hubspotClient := pipelines.NewAPIClient(pipelines.NewConfiguration())
 	cqClient := meta.(*client.Client)
 
+	if err := cqClient.RateLimiter.Wait(ctx); err != nil {
+		return nil
+	}
+
 	out, _, err := hubspotClient.PipelinesApi.GetAll(
 		hubspot.WithAuthorizer(ctx, cqClient.Authorizer),
 		cqClient.ObjectType).Execute()
