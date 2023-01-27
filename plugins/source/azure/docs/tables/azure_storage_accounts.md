@@ -20,12 +20,12 @@ The following tables depend on azure_storage_accounts:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |extended_location|JSON|
 |identity|JSON|
 |properties|JSON|
 |tags|JSON|
+|id (PK)|String|
 |kind|String|
 |name|String|
 |sku|JSON|

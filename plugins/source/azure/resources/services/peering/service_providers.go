@@ -13,24 +13,7 @@ func ServiceProviders() *schema.Table {
 		Resolver:    fetchServiceProviders,
 		Description: "https://learn.microsoft.com/en-us/rest/api/peering/peering-service-providers/list?tabs=HTTP#peeringserviceprovider",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_peering_service_providers", client.Namespacemicrosoft_peering),
-		Transform:   transformers.TransformWithStruct(&armpeering.ServiceProvider{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armpeering.ServiceProvider{}, transformers.WithPrimaryKeys("Name")),
+		Columns:     schema.ColumnList{client.SubscriptionIDPK},
 	}
 }

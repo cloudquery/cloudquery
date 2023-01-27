@@ -62,6 +62,7 @@ faceprints
 failover
 Fargate
 Fastly
+format_spec
 Gandi
 gcp
 GCP
