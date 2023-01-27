@@ -16,7 +16,7 @@ func ExpressRouteServiceProviders() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-service-providers/list?tabs=HTTP#expressrouteserviceprovider",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_express_route_service_providers", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRouteServiceProvider{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Columns:     schema.ColumnList{client.SubscriptionIDPK},
 	}
 }
 

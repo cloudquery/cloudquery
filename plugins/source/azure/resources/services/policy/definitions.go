@@ -16,7 +16,7 @@ func Definitions() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/policy/policy-definitions/list?tabs=HTTP#policydefinition",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_policy_definitions", client.Namespacemicrosoft_authorization),
 		Transform:   transformers.TransformWithStruct(&armpolicy.Definition{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Columns:     schema.ColumnList{client.SubscriptionIDPK},
 	}
 }
 

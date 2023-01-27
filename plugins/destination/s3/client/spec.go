@@ -4,21 +4,16 @@ import (
 	"fmt"
 	"path"
 	"strings"
-)
 
-type FormatType string
-
-const (
-	FormatTypeCSV  = "csv"
-	FormatTypeJSON = "json"
+	"github.com/cloudquery/filetypes"
 )
 
 type Spec struct {
-	Bucket   string     `json:"bucket,omitempty"`
-	Path     string     `json:"path,omitempty"`
-	Format   FormatType `json:"format,omitempty"`
-	NoRotate bool       `json:"no_rotate,omitempty"`
-	Athena   bool       `json:"athena,omitempty"`
+	*filetypes.FileSpec
+	NoRotate bool   `json:"no_rotate,omitempty"`
+	Bucket   string `json:"bucket,omitempty"`
+	Path     string `json:"path,omitempty"`
+	Athena   bool   `json:"athena,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {
