@@ -15,18 +15,8 @@ func SecurityGroups() *schema.Table {
 		Resolver:    fetchSecurityGroups,
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-security-groups/list?tabs=HTTP#networksecuritygroup",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_security_groups", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.SecurityGroup{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armnetwork.SecurityGroup{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

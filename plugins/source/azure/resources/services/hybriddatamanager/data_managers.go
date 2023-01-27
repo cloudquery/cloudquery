@@ -15,18 +15,8 @@ func DataManagers() *schema.Table {
 		Resolver:    fetchDataManagers,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager@v1.0.0#DataManager",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_hybriddatamanager_data_managers", client.Namespacemicrosoft_hybriddata),
-		Transform:   transformers.TransformWithStruct(&armhybriddatamanager.DataManager{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armhybriddatamanager.DataManager{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

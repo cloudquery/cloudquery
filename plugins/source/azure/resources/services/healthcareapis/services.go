@@ -15,18 +15,8 @@ func Services() *schema.Table {
 		Resolver:    fetchServices,
 		Description: "https://learn.microsoft.com/en-us/rest/api/healthcareapis/services/list?tabs=HTTP#servicesdescription",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_healthcareapis_services", client.Namespacemicrosoft_healthcareapis),
-		Transform:   transformers.TransformWithStruct(&armhealthcareapis.ServicesDescription{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armhealthcareapis.ServicesDescription{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

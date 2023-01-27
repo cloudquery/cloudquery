@@ -15,7 +15,7 @@ func locations() *schema.Table {
 		Resolver:    fetchLocations,
 		Description: "https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list-locations?tabs=HTTP#location",
 		Transform:   transformers.TransformWithStruct(&armsubscription.Location{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     []schema.Column{client.SubscriptionID},
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

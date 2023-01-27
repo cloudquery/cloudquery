@@ -15,18 +15,8 @@ func DscpConfiguration() *schema.Table {
 		Resolver:    fetchDscpConfiguration,
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/dscp-configuration/list?tabs=HTTP#dscpconfiguration",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_dscp_configuration", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.DscpConfiguration{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armnetwork.DscpConfiguration{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

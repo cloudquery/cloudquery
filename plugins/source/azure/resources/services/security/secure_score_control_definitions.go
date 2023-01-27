@@ -15,18 +15,8 @@ func SecureScoreControlDefinitions() *schema.Table {
 		Resolver:    fetchSecureScoreControlDefinitions,
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/secure-score-control-definitions/list?tabs=HTTP#securescorecontroldefinitionitem",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_secure_score_control_definitions", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.SecureScoreControlDefinitionItem{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armsecurity.SecureScoreControlDefinitionItem{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

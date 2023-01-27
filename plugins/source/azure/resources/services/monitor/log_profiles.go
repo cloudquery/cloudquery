@@ -15,18 +15,8 @@ func LogProfiles() *schema.Table {
 		Resolver:    fetchLogProfiles,
 		Description: "https://learn.microsoft.com/en-us/rest/api/monitor/log-profiles/list?tabs=HTTP#logprofileresource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_log_profiles", client.Namespacemicrosoft_insights),
-		Transform:   transformers.TransformWithStruct(&armmonitor.LogProfileResource{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armmonitor.LogProfileResource{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

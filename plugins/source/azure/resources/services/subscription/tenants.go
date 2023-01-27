@@ -15,17 +15,8 @@ func Tenants() *schema.Table {
 		Resolver:    fetchTenants,
 		Description: "https://learn.microsoft.com/en-us/rest/api/resources/tenants/list?tabs=HTTP#tenantiddescription",
 		Multiplex:   client.SingleSubscriptionMultiplex,
-		Transform:   transformers.TransformWithStruct(&armsubscription.TenantIDDescription{}),
-		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armsubscription.TenantIDDescription{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{},
 	}
 }
 

@@ -15,18 +15,8 @@ func AzureTrafficCollectorsBySubscription() *schema.Table {
 		Resolver:    fetchAzureTrafficCollectorsBySubscription,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction@v1.0.0#AzureTrafficCollector",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_networkfunction_azure_traffic_collectors_by_subscription", client.Namespacemicrosoft_networkfunction),
-		Transform:   transformers.TransformWithStruct(&armnetworkfunction.AzureTrafficCollector{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armnetworkfunction.AzureTrafficCollector{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

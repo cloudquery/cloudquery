@@ -15,18 +15,8 @@ func DdosProtectionPlans() *schema.Table {
 		Resolver:    fetchDdosProtectionPlans,
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/ddos-protection-plans/list?tabs=HTTP#ddosprotectionplan",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_ddos_protection_plans", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.DdosProtectionPlan{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armnetwork.DdosProtectionPlan{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

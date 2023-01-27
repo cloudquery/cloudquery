@@ -16,7 +16,7 @@ func managedInstanceEncryptionProtectors() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/managed-instance-encryption-protectors/list-by-instance?tabs=HTTP#managedinstanceencryptionprotector",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_sql_managed_instance_encryption_protectors", client.Namespacemicrosoft_sql),
 		Transform:   transformers.TransformWithStruct(&armsql.ManagedInstanceEncryptionProtector{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     []schema.Column{client.SubscriptionID},
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

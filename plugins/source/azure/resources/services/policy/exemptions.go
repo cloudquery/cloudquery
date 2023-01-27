@@ -15,18 +15,8 @@ func Exemptions() *schema.Table {
 		Resolver:    fetchExemptions,
 		Description: "https://learn.microsoft.com/en-us/rest/api/policy/policy-exemptions/list?tabs=HTTP#policyexemption",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_policy_exemptions", client.Namespacemicrosoft_authorization),
-		Transform:   transformers.TransformWithStruct(&armpolicy.Exemption{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armpolicy.Exemption{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

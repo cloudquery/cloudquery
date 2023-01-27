@@ -15,18 +15,8 @@ func Galleries() *schema.Table {
 		Resolver:    fetchGalleries,
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/galleries/list?tabs=HTTP#gallery",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_galleries", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.Gallery{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armcompute.Gallery{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

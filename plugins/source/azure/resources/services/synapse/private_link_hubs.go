@@ -15,18 +15,8 @@ func PrivateLinkHubs() *schema.Table {
 		Resolver:    fetchPrivateLinkHubs,
 		Description: "https://learn.microsoft.com/en-us/rest/api/synapse/private-link-hubs/list?tabs=HTTP#privatelinkhub",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_synapse_private_link_hubs", client.Namespacemicrosoft_synapse),
-		Transform:   transformers.TransformWithStruct(&armsynapse.PrivateLinkHub{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armsynapse.PrivateLinkHub{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

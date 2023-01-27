@@ -15,18 +15,8 @@ func Accounts() *schema.Table {
 		Resolver:    fetchAccounts,
 		Description: "https://learn.microsoft.com/en-us/rest/api/datalakestore/accounts/list?tabs=HTTP#datalakestoreaccountbasic",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datalakestore_accounts", client.Namespacemicrosoft_datalakestore),
-		Transform:   transformers.TransformWithStruct(&armdatalakestore.AccountBasic{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armdatalakestore.AccountBasic{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

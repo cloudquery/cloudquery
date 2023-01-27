@@ -16,7 +16,7 @@ func VirtualMachineExtensions() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machine-extensions/list?tabs=HTTP#virtualmachineextension",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machine_extensions", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.VirtualMachineExtension{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     []schema.Column{client.SubscriptionID},
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

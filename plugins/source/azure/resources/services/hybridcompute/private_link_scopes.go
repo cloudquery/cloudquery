@@ -15,18 +15,8 @@ func PrivateLinkScopes() *schema.Table {
 		Resolver:    fetchPrivateLinkScopes,
 		Description: "https://learn.microsoft.com/en-us/rest/api/hybridcompute/private-link-scopes/list?tabs=HTTP#hybridcomputeprivatelinkscope",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_hybridcompute_private_link_scopes", client.Namespacemicrosoft_hybridcompute),
-		Transform:   transformers.TransformWithStruct(&armhybridcompute.PrivateLinkScope{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armhybridcompute.PrivateLinkScope{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

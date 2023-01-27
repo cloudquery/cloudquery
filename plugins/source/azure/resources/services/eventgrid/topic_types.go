@@ -15,18 +15,8 @@ func TopicTypes() *schema.Table {
 		Resolver:    fetchTopicTypes,
 		Description: "https://learn.microsoft.com/en-us/rest/api/eventgrid/controlplane-version2022-06-15/topic-types/list?tabs=HTTP#topictypeinfo",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_eventgrid_topic_types", client.Namespacemicrosoft_eventgrid),
-		Transform:   transformers.TransformWithStruct(&armeventgrid.TopicTypeInfo{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armeventgrid.TopicTypeInfo{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

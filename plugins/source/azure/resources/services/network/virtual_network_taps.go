@@ -15,18 +15,8 @@ func VirtualNetworkTaps() *schema.Table {
 		Resolver:    fetchVirtualNetworkTaps,
 		Description: "https://learn.microsoft.com/en-us/rest/api/network-gateway/virtual-network-taps/list-all?tabs=HTTP#virtualnetworktap",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_network_taps", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualNetworkTap{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualNetworkTap{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

@@ -15,18 +15,8 @@ func RegulatoryComplianceStandards() *schema.Table {
 		Resolver:    fetchRegulatoryComplianceStandards,
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/regulatory-compliance-standards/list?tabs=HTTP#regulatorycompliancestandard",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_regulatory_compliance_standards", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.RegulatoryComplianceStandard{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armsecurity.RegulatoryComplianceStandard{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

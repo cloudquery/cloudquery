@@ -15,18 +15,8 @@ func SqlManagedInstances() *schema.Table {
 		Resolver:    fetchSqlManagedInstances,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata@v0.5.0#SQLManagedInstance",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_azurearcdata_sql_managed_instances", client.Namespacemicrosoft_azurearcdata),
-		Transform:   transformers.TransformWithStruct(&armazurearcdata.SQLManagedInstance{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armazurearcdata.SQLManagedInstance{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

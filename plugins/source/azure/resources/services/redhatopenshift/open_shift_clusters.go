@@ -15,18 +15,8 @@ func OpenShiftClusters() *schema.Table {
 		Resolver:    fetchOpenShiftClusters,
 		Description: "https://learn.microsoft.com/en-us/rest/api/openshift/open-shift-clusters/list?tabs=HTTP#openshiftcluster",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_redhatopenshift_open_shift_clusters", client.Namespacemicrosoft_redhatopenshift),
-		Transform:   transformers.TransformWithStruct(&armredhatopenshift.OpenShiftCluster{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armredhatopenshift.OpenShiftCluster{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

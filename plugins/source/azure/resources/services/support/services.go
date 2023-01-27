@@ -15,18 +15,8 @@ func Services() *schema.Table {
 		Resolver:    fetchServices,
 		Description: "https://learn.microsoft.com/en-us/rest/api/support/services/list?tabs=HTTP#service",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_support_services", client.Namespacemicrosoft_support),
-		Transform:   transformers.TransformWithStruct(&armsupport.Service{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armsupport.Service{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

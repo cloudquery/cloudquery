@@ -15,18 +15,8 @@ func ReservationOrder() *schema.Table {
 		Resolver:    fetchReservationOrder,
 		Description: "https://learn.microsoft.com/en-us/rest/api/reserved-vm-instances/reservation-order/get?tabs=HTTP#reservationorderresponse",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_reservations_reservation_order", client.Namespacemicrosoft_capacity),
-		Transform:   transformers.TransformWithStruct(&armreservations.ReservationOrderResponse{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armreservations.ReservationOrderResponse{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 
