@@ -17,11 +17,7 @@ func DiskAccesses() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_disk_accesses", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.DiskAccess{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

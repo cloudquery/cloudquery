@@ -17,11 +17,7 @@ func Tickets() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_support_tickets", client.Namespacemicrosoft_support),
 		Transform:   transformers.TransformWithStruct(&armsupport.TicketDetails{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

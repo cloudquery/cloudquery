@@ -17,11 +17,7 @@ func VirtualClusters() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_sql_virtual_clusters", client.Namespacemicrosoft_sql),
 		Transform:   transformers.TransformWithStruct(&armsql.VirtualCluster{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

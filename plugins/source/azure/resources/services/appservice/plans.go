@@ -17,11 +17,7 @@ func Plans() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_plans", client.Namespacemicrosoft_web),
 		Transform:   transformers.TransformWithStruct(&armappservice.Plan{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

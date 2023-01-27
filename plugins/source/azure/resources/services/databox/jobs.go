@@ -17,11 +17,7 @@ func Jobs() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_databox_jobs", client.Namespacemicrosoft_databox),
 		Transform:   transformers.TransformWithStruct(&armdatabox.JobResource{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

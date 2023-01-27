@@ -17,11 +17,7 @@ func AzureFirewallFqdnTags() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_azure_firewall_fqdn_tags", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.AzureFirewallFqdnTag{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

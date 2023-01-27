@@ -17,11 +17,7 @@ func VpnServerConfigurations() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_vpn_server_configurations", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.VPNServerConfiguration{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

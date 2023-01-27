@@ -17,11 +17,7 @@ func NetworkExperimentProfiles() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_frontdoor_network_experiment_profiles", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armfrontdoor.Profile{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

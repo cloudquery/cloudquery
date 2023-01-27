@@ -17,11 +17,7 @@ func ResourceHealthMetadata() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_resource_health_metadata", client.Namespacemicrosoft_web),
 		Transform:   transformers.TransformWithStruct(&armappservice.ResourceHealthMetadata{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

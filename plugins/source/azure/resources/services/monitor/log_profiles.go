@@ -17,11 +17,7 @@ func LogProfiles() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_log_profiles", client.Namespacemicrosoft_insights),
 		Transform:   transformers.TransformWithStruct(&armmonitor.LogProfileResource{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

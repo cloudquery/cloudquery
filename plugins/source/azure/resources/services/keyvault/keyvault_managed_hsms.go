@@ -17,11 +17,7 @@ func KeyvaultManagedHsms() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_keyvault_keyvault_managed_hsms", client.Namespacemicrosoft_keyvault),
 		Transform:   transformers.TransformWithStruct(&armkeyvault.ManagedHsm{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

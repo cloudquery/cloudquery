@@ -14,11 +14,7 @@ func serverAdmins() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/server-azure-ad-administrators/list-by-server?tabs=HTTP#serverazureadadministrator",
 		Transform:   transformers.TransformWithStruct(&armsql.ServerAzureADAdministrator{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "properties",
 				Type:     schema.TypeJSON,

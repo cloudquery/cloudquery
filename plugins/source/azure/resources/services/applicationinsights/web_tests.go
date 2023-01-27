@@ -17,11 +17,7 @@ func WebTests() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_applicationinsights_web_tests", client.Namespacemicrosoft_insights),
 		Transform:   transformers.TransformWithStruct(&armapplicationinsights.WebTest{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

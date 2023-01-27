@@ -17,11 +17,7 @@ func PublicMaintenanceConfigurations() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_maintenance_public_maintenance_configurations", client.Namespacemicrosoft_maintenance),
 		Transform:   transformers.TransformWithStruct(&armmaintenance.Configuration{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

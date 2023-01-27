@@ -17,11 +17,7 @@ func SecurityPartnerProviders() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_security_partner_providers", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.SecurityPartnerProvider{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

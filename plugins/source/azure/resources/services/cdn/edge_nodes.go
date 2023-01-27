@@ -17,11 +17,7 @@ func EdgeNodes() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cdn_edge_nodes", client.Namespacemicrosoft_cdn),
 		Transform:   transformers.TransformWithStruct(&armcdn.EdgeNode{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

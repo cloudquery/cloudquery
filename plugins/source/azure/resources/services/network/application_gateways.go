@@ -17,11 +17,7 @@ func ApplicationGateways() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_application_gateways", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.ApplicationGateway{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

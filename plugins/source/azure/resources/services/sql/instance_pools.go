@@ -17,11 +17,7 @@ func InstancePools() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_sql_instance_pools", client.Namespacemicrosoft_sql),
 		Transform:   transformers.TransformWithStruct(&armsql.InstancePool{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

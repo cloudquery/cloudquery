@@ -17,11 +17,7 @@ func Views() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_costmanagement_views", client.Namespacemicrosoft_costmanagement),
 		Transform:   transformers.TransformWithStruct(&armcostmanagement.View{}, transformers.WithSkipFields("ETag")),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

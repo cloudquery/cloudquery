@@ -17,11 +17,7 @@ func Snapshots() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_containerservice_snapshots", client.Namespacemicrosoft_containerservice),
 		Transform:   transformers.TransformWithStruct(&armcontainerservice.Snapshot{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

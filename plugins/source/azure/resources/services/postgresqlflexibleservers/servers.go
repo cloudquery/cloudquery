@@ -17,11 +17,7 @@ func Servers() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_postgresqlflexibleservers_servers", client.Namespacemicrosoft_dbforpostgresql),
 		Transform:   transformers.TransformWithStruct(&armpostgresqlflexibleservers.Server{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

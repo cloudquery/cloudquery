@@ -17,11 +17,7 @@ func ContainerGroups() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_containerinstance_container_groups", client.Namespacemicrosoft_containerinstance),
 		Transform:   transformers.TransformWithStruct(&armcontainerinstance.ContainerGroup{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

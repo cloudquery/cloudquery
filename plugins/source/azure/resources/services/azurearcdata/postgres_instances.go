@@ -17,11 +17,7 @@ func PostgresInstances() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_azurearcdata_postgres_instances", client.Namespacemicrosoft_azurearcdata),
 		Transform:   transformers.TransformWithStruct(&armazurearcdata.PostgresInstance{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

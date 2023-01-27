@@ -17,11 +17,7 @@ func ManagedClusters() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_containerservice_managed_clusters", client.Namespacemicrosoft_containerservice),
 		Transform:   transformers.TransformWithStruct(&armcontainerservice.ManagedCluster{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

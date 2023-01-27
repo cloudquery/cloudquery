@@ -17,11 +17,7 @@ func VCenters() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_v_centers", client.Namespacemicrosoft_connectedvmwarevsphere),
 		Transform:   transformers.TransformWithStruct(&armconnectedvmware.VCenter{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

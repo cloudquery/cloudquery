@@ -17,11 +17,7 @@ func Namespaces() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_eventhub_namespaces", client.Namespacemicrosoft_eventhub),
 		Transform:   transformers.TransformWithStruct(&armeventhub.EHNamespace{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

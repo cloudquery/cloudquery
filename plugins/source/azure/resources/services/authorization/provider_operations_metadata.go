@@ -17,11 +17,7 @@ func ProviderOperationsMetadata() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_provider_operations_metadata", client.Namespacemicrosoft_authorization),
 		Transform:   transformers.TransformWithStruct(&armauthorization.ProviderOperationsMetadata{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

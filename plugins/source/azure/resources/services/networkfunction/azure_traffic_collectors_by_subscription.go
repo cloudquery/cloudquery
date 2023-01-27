@@ -17,11 +17,7 @@ func AzureTrafficCollectorsBySubscription() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_networkfunction_azure_traffic_collectors_by_subscription", client.Namespacemicrosoft_networkfunction),
 		Transform:   transformers.TransformWithStruct(&armnetworkfunction.AzureTrafficCollector{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

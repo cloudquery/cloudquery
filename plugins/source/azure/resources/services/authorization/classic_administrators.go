@@ -17,11 +17,7 @@ func ClassicAdministrators() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_classic_administrators", client.Namespacemicrosoft_authorization),
 		Transform:   transformers.TransformWithStruct(&armauthorization.ClassicAdministrator{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
