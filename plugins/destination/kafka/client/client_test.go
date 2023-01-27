@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 )
 
@@ -27,9 +28,11 @@ func TestPgPlugin(t *testing.T) {
 			Brokers:            strings.Split(getenv("CQ_DEST_KAFKA_CONNECTION_STRING", defaultConnectionString), ","),
 			SaslUsername:       getenv("CQ_DEST_KAFKA_SASL_USERNAME", ""),
 			SaslPassword:       getenv("CQ_DEST_KAFKA_SASL_PASSWORD", ""),
-			Format:             FormatTypeJSON,
 			Verbose:            true,
 			MaxMetadataRetries: 15,
+			FileSpec: &filetypes.FileSpec{
+				Format: filetypes.FormatTypeJSON,
+			},
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:        true,

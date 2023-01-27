@@ -3,6 +3,7 @@ package compute
 import (
 	"context"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -15,18 +16,10 @@ func SKUs() *schema.Table {
 		Resolver:    fetchResourceSKUs,
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list?tabs=HTTP#resourceskusresult",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_skus", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.ResourceSKU{}),
-		Columns: schema.ColumnList{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform: transformers.TransformWithStruct(&armcompute.ResourceSKU{},
+			transformers.WithPrimaryKeys("Family", "Kind", "Name"),
+		),
+		Columns: schema.ColumnList{client.SubscriptionIDPK},
 	}
 }
 
@@ -36,7 +29,7 @@ func fetchResourceSKUs(ctx context.Context, meta schema.ClientMeta, parent *sche
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(&armcompute.ResourceSKUsClientListOptions{IncludeExtendedLocations: to.Ptr("true")})
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {
