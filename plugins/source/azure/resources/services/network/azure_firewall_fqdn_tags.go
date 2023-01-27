@@ -16,7 +16,7 @@ func AzureFirewallFqdnTags() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/firewall/azure-firewall-fqdn-tags/list-all?tabs=HTTP#azurefirewallfqdntag",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_azure_firewall_fqdn_tags", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.AzureFirewallFqdnTag{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Columns:     schema.ColumnList{client.SubscriptionIDPK},
 	}
 }
 
