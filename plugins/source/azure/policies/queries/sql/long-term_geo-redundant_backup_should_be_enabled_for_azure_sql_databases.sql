@@ -4,13 +4,14 @@ SELECT
   :'framework' as framework,
   :'check_id' as check_id,
   'Long-term geo-redundant backup should be enabled for Azure SQL Databases' as title,
-  asd.subscription_id,
+  s.subscription_id,
   rp.id,
   case
-    when rp.id IS NULL OR (rp.weekly_retention IS NOT DISTINCT FROM 'PT0S'
-      AND rp.monthly_retention IS NOT DISTINCT FROM 'PT0S'
-      AND rp.yearly_retention IS NOT DISTINCT FROM 'PT0S')
+    when rp.id IS NULL OR (rp.properties ->> 'weeklyRetention' IS NOT DISTINCT FROM 'PT0S'
+      AND rp.properties ->> 'monthlyRetention' IS NOT DISTINCT FROM 'PT0S'
+      AND rp.properties ->> 'yearlyRetention' IS NOT DISTINCT FROM 'PT0S')
     then 'fail' else 'pass'
   end
-FROM azure_sql_databases asd
-    LEFT JOIN azure_sql_backup_long_term_retention_policies rp ON asd.long_term_retention_backup_resource_id = rp.id AND asd.id = rp.sql_database_id
+FROM azure_sql_servers s left join azure_sql_server_databases asd on s._cq_id = asd._cq_parent_id
+    left join azure_sql_server_database_long_term_retention_policies rp on asd._cq_id = rp._cq_parent_id
+

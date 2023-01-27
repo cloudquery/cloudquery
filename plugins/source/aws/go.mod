@@ -61,7 +61,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/kms v1.20.0
-	github.com/aws/aws-sdk-go-v2/service/lambda v1.28.0
+	github.com/aws/aws-sdk-go-v2/service/lambda v1.29.0
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.25.0
 	github.com/aws/aws-sdk-go-v2/service/mq v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.14.0
@@ -100,7 +100,7 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.0
-	github.com/cloudquery/plugin-sdk v1.29.0
+	github.com/cloudquery/plugin-sdk v1.31.0
 	github.com/gocarina/gocsv v0.0.0-20221216233619-1fea7ae8d380
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9

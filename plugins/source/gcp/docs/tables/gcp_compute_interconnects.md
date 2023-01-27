@@ -11,7 +11,6 @@ The primary key for this table is **self_link**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|self_link (PK)|String|
 |admin_enabled|Bool|
 |circuit_infos|JSON|
 |creation_timestamp|String|
@@ -33,4 +32,5 @@ The primary key for this table is **self_link**.
 |provisioned_link_count|Int|
 |requested_link_count|Int|
 |satisfies_pzs|Bool|
+|self_link (PK)|String|
 |state|String|

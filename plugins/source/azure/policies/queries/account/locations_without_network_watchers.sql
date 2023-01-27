@@ -9,5 +9,5 @@ select
   case
     when anw._cq_id is null then 'fail' else 'pass'
   end
-from azure_subscriptions_locations l
+from azure_subscription_subscription_locations l
   left join azure_network_watchers anw on l.name = anw.location

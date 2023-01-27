@@ -19,20 +19,12 @@ func ClientGateways() *schema.Table {
 		Description: `https://cloud.google.com/beyondcorp/docs/reference/rest/v1/projects.locations.clientGateways#ClientGateway`,
 		Resolver:    fetchClientGateways,
 		Multiplex:   client.ProjectMultiplexEnabledServices("beyondcorp.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.ClientGateway{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.ClientGateway{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
