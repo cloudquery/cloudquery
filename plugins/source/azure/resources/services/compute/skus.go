@@ -15,18 +15,8 @@ func SKUs() *schema.Table {
 		Resolver:    fetchResourceSKUs,
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list?tabs=HTTP#resourceskusresult",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_skus", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.ResourceSKU{}),
-		Columns: schema.ColumnList{
-			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armcompute.ResourceSKU{}, transformers.WithPrimaryKeys("Name")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 
