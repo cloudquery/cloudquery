@@ -17,14 +17,7 @@ func Profiles() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cdn_profiles", client.Namespacemicrosoft_cdn),
 		Transform:   transformers.TransformWithStruct(&armcdn.Profile{}),
 		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 
 		Relations: []*schema.Table{

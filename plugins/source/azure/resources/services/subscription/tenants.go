@@ -17,14 +17,7 @@ func Tenants() *schema.Table {
 		Multiplex:   client.SingleSubscriptionMultiplex,
 		Transform:   transformers.TransformWithStruct(&armsubscription.TenantIDDescription{}),
 		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

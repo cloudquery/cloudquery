@@ -17,14 +17,7 @@ func Resources() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplex,
 		Transform:   transformers.TransformWithStruct(&armresources.GenericResourceExpanded{}),
 		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

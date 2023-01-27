@@ -13,14 +13,7 @@ func view_queries() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/cost-management/query/usage?tabs=HTTP#queryresult",
 		Transform:   transformers.TransformWithStruct(&armcostmanagement.QueryResult{}, transformers.WithSkipFields("ETag")),
 		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 			{
 				Name:     "etag",
 				Type:     schema.TypeString,

@@ -16,14 +16,7 @@ func RoleDefinitions() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armauthorization.RoleDefinition{}),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

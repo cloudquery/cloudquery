@@ -18,14 +18,7 @@ func Snapshots() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armcontainerservice.Snapshot{}),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

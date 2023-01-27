@@ -17,14 +17,7 @@ func TenantActivityLogAlerts() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_tenant_activity_log_alerts", client.Namespacemicrosoft_insights),
 		Transform:   transformers.TransformWithStruct(&armmonitor.ActivityLogAlertResource{}),
 		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

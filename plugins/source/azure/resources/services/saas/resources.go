@@ -18,14 +18,7 @@ func Resources() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armsaas.Resource{}),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

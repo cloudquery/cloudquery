@@ -20,14 +20,7 @@ func transparentDataEncryptions() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Properties"),
 			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 			{
 				Name:     "name",
 				Type:     schema.TypeString,

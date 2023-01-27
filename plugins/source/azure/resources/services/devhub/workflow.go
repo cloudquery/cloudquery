@@ -18,14 +18,7 @@ func Workflow() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armdevhub.Workflow{}),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

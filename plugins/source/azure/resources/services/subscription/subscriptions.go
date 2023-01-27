@@ -15,14 +15,7 @@ func Subscriptions() *schema.Table {
 		Multiplex:   client.SingleSubscriptionMultiplex,
 		Transform:   transformers.TransformWithStruct(&armsubscription.Subscription{}),
 		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 		Relations: []*schema.Table{
 			locations(),

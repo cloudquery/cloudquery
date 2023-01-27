@@ -18,14 +18,7 @@ func ServiceCountries() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armpeering.ServiceCountry{}),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

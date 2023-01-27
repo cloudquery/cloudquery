@@ -13,14 +13,7 @@ func tables() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/storagerp/table/list?tabs=HTTP#table",
 		Transform:   transformers.TransformWithStruct(&armstorage.Table{}),
 		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

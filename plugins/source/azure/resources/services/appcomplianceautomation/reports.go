@@ -18,14 +18,7 @@ func Reports() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armappcomplianceautomation.ReportResource{}),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

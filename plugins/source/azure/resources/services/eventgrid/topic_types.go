@@ -18,14 +18,7 @@ func TopicTypes() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armeventgrid.TopicTypeInfo{}),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

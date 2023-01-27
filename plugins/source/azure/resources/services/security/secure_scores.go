@@ -18,14 +18,7 @@ func SecureScores() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armsecurity.SecureScoreItem{}),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

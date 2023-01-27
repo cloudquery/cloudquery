@@ -18,14 +18,7 @@ func ManagedInstances() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armsql.ManagedInstance{}),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 		Relations: []*schema.Table{
 			managedInstanceEncryptionProtectors(),

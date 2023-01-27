@@ -18,14 +18,7 @@ func VpnSites() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armnetwork.VPNSite{}),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

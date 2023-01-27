@@ -18,14 +18,7 @@ func PrivateZones() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armprivatedns.PrivateZone{}),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

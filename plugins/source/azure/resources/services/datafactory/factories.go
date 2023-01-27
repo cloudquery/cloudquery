@@ -18,14 +18,7 @@ func Factories() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armdatafactory.Factory{}, transformers.WithSkipFields("ETag")),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 			{
 				Name:     "etag",
 				Type:     schema.TypeString,

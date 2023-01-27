@@ -23,14 +23,7 @@ func VirtualMachines() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: getInstanceView,
 			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 		Relations: []*schema.Table{
 			VirtualMachineExtensions(),

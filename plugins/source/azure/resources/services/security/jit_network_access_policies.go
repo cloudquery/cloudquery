@@ -18,14 +18,7 @@ func JitNetworkAccessPolicies() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armsecurity.JitNetworkAccessPolicy{}),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

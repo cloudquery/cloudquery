@@ -18,14 +18,7 @@ func ClassicAdministrators() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armauthorization.ClassicAdministrator{}),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }

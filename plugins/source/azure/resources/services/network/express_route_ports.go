@@ -18,14 +18,7 @@ func ExpressRoutePorts() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRoutePort{}),
 		Columns: []schema.Column{
 			client.SubscriptionID,
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.IDColumn,
 		},
 	}
 }
