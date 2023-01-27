@@ -58,6 +58,7 @@ jobs:
                            "plugins/source/heroku",
                            "plugins/source/hubspot",
                            "plugins/source/k8s",
+                           "plugins/source/launchdarkly",
                            "plugins/source/okta",
                            "plugins/source/shopify",
                            "plugins/source/oracle",
