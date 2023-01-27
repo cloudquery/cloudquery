@@ -16,9 +16,7 @@ func Profiles() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/cdn/profiles/list?tabs=HTTP#profile",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cdn_profiles", client.Namespacemicrosoft_cdn),
 		Transform:   transformers.TransformWithStruct(&armcdn.Profile{}),
-		Columns: []schema.Column{
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.IDColumn},
 
 		Relations: []*schema.Table{
 			endpoints(),

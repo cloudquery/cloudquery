@@ -15,7 +15,7 @@ func webAppAuthSettings() *schema.Table {
 		Resolver:    fetchWebAppAuthSettings,
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/get-auth-settings#siteauthsettings",
 		Transform:   transformers.TransformWithStruct(&armappservice.SiteAuthSettings{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     []schema.Column{client.SubscriptionID},
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

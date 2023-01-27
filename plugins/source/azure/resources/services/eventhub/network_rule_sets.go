@@ -16,7 +16,7 @@ func namespaceNetworkRuleSets() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/eventhub/stable/network-rule-sets/list-network-rule-set?tabs=HTTP#networkruleset",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_eventhub_network_rule_sets", client.Namespacemicrosoft_eventhub),
 		Transform:   transformers.TransformWithStruct(&armeventhub.NetworkRuleSet{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     []schema.Column{client.SubscriptionID},
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

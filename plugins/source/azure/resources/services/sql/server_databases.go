@@ -13,55 +13,7 @@ func serverDatabases() *schema.Table {
 		Resolver:    fetchDatabases,
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/databases/list-by-server?tabs=HTTP#database",
 		Transform:   transformers.TransformWithStruct(&armsql.Database{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "identity",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Identity"),
-			},
-			{
-				Name:     "properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties"),
-			},
-			{
-				Name:     "sku",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SKU"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
-			client.IDColumn,
-			{
-				Name:     "kind",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Kind"),
-			},
-			{
-				Name:     "managed_by",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ManagedBy"),
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
-			},
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 
 		Relations: []*schema.Table{
 			serverDatabaseBlobAuditingPolicies(),

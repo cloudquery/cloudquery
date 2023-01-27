@@ -16,9 +16,7 @@ func TenantActivityLogAlerts() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/monitor/activity-log-alerts/list-by-subscription-id?tabs=HTTP#activitylogalertresource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_tenant_activity_log_alerts", client.Namespacemicrosoft_insights),
 		Transform:   transformers.TransformWithStruct(&armmonitor.ActivityLogAlertResource{}),
-		Columns: []schema.Column{
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.IDColumn},
 	}
 }
 

@@ -16,7 +16,7 @@ func SKUs() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list?tabs=HTTP#resourceskusresult",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_skus", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.ResourceSKU{}),
-		Columns: []schema.Column{
+		Columns: schema.ColumnList{
 			client.SubscriptionID,
 			{
 				Name:     "id",

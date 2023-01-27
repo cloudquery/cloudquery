@@ -2,6 +2,7 @@ package keyvault
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
@@ -12,8 +13,6 @@ func keyvault_keys() *schema.Table {
 		Resolver:    fetchKeyvaultKeys,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault@v1.0.0#Key",
 		Transform:   transformers.TransformWithStruct(&armkeyvault.Key{}),
-		Columns: []schema.Column{
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.IDColumn},
 	}
 }

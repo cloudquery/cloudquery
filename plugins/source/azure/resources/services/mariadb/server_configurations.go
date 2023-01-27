@@ -2,6 +2,7 @@ package mariadb
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
@@ -12,8 +13,6 @@ func server_configurations() *schema.Table {
 		Resolver:    fetchServerConfigurations,
 		Description: "https://learn.microsoft.com/en-us/rest/api/mariadb/configurations/list-by-server?tabs=HTTP#configuration",
 		Transform:   transformers.TransformWithStruct(&armmariadb.Configuration{}),
-		Columns: []schema.Column{
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.IDColumn},
 	}
 }

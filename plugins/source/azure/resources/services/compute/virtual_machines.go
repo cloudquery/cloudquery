@@ -16,7 +16,7 @@ func VirtualMachines() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machines/list?tabs=HTTP#virtualmachine",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machines", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.VirtualMachine{}),
-		Columns: []schema.Column{
+		Columns: schema.ColumnList{
 			client.SubscriptionID,
 			{
 				Name:     "instance_view",

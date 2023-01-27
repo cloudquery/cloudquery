@@ -16,7 +16,7 @@ func webAppVnetConnections() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/list-vnet-connections#vnetinforesource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_web_app_vnet_connections", client.Namespacemicrosoft_web),
 		Transform:   transformers.TransformWithStruct(&armappservice.VnetInfoResource{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     []schema.Column{client.SubscriptionID},
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

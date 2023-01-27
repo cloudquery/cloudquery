@@ -16,7 +16,7 @@ func Factories() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/datafactory/factories/list?tabs=HTTP#factory",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datafactory_factories", client.Namespacemicrosoft_datafactory),
 		Transform:   transformers.TransformWithStruct(&armdatafactory.Factory{}, transformers.WithSkipFields("ETag")),
-		Columns: []schema.Column{
+		Columns: schema.ColumnList{
 			client.SubscriptionID,
 			client.IDColumn,
 			{

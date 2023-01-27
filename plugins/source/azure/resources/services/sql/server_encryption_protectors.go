@@ -13,34 +13,6 @@ func serverEncryptionProtectors() *schema.Table {
 		Resolver:    fetchEncryptionProtectors,
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/encryption-protectors/list-by-server?tabs=HTTP#encryptionprotector",
 		Transform:   transformers.TransformWithStruct(&armsql.EncryptionProtector{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties"),
-			},
-			client.IDColumn,
-			{
-				Name:     "kind",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Kind"),
-			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
-			},
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }

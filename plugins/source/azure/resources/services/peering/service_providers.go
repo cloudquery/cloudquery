@@ -14,15 +14,8 @@ func ServiceProviders() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/peering/peering-service-providers/list?tabs=HTTP#peeringserviceprovider",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_peering_service_providers", client.Namespacemicrosoft_peering),
 		Transform:   transformers.TransformWithStruct(&armpeering.ServiceProvider{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+		Columns: schema.ColumnList{
+			client.SubscriptionIDPK,
 			{
 				Name:     "name",
 				Type:     schema.TypeString,

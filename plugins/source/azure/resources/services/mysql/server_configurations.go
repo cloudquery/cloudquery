@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
@@ -12,8 +13,6 @@ func server_configurations() *schema.Table {
 		Resolver:    fetchServerConfigurations,
 		Description: "https://learn.microsoft.com/en-us/rest/api/mysql/singleserver/configurations/list-by-server?tabs=HTTP#configuration",
 		Transform:   transformers.TransformWithStruct(&armmysql.Configuration{}),
-		Columns: []schema.Column{
-			client.IDColumn,
-		},
+		Columns:     schema.ColumnList{client.IDColumn},
 	}
 }

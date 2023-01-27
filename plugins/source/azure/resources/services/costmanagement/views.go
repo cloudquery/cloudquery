@@ -16,7 +16,7 @@ func Views() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/cost-management/views/list?tabs=HTTP#view",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_costmanagement_views", client.Namespacemicrosoft_costmanagement),
 		Transform:   transformers.TransformWithStruct(&armcostmanagement.View{}, transformers.WithSkipFields("ETag")),
-		Columns: []schema.Column{
+		Columns: schema.ColumnList{
 			client.SubscriptionID,
 			client.IDColumn,
 			{

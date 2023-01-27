@@ -13,24 +13,6 @@ func transparentDataEncryptions() *schema.Table {
 		Resolver:    fetchTransparentDataEncryptions,
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/transparent-data-encryptions/list-by-database?tabs=HTTP#logicaldatabasetransparentdataencryption",
 		Transform:   transformers.TransformWithStruct(&armsql.LogicalDatabaseTransparentDataEncryption{}),
-		Columns: []schema.Column{
-			client.SubscriptionID,
-			{
-				Name:     "properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties"),
-			},
-			client.IDColumn,
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
-			},
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }
