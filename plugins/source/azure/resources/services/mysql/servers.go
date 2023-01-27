@@ -15,22 +15,8 @@ func Servers() *schema.Table {
 		Resolver:    fetchServers,
 		Description: "https://learn.microsoft.com/en-us/rest/api/mysql/singleserver/servers(2017-12-01)/list?tabs=HTTP#server",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_mysql_servers", client.Namespacemicrosoft_dbformysql),
-		Transform:   transformers.TransformWithStruct(&armmysql.Server{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armmysql.Server{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 
 		Relations: []*schema.Table{
 			server_configurations(),

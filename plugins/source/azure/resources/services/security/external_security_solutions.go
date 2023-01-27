@@ -15,22 +15,8 @@ func ExternalSecuritySolutions() *schema.Table {
 		Resolver:    fetchExternalSecuritySolutions,
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/external-security-solutions/list?tabs=HTTP#externalsecuritysolutionlist",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_external_security_solutions", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.ExternalSecuritySolution{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armsecurity.ExternalSecuritySolution{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

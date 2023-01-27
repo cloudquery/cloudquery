@@ -15,22 +15,8 @@ func RecommendationMetadata() *schema.Table {
 		Resolver:    fetchRecommendationMetadata,
 		Description: "https://learn.microsoft.com/en-us/rest/api/advisor/recommendation-metadata/list?tabs=HTTP#metadataentity",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_advisor_recommendation_metadata", client.Namespacemicrosoft_advisor),
-		Transform:   transformers.TransformWithStruct(&armadvisor.MetadataEntity{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armadvisor.MetadataEntity{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

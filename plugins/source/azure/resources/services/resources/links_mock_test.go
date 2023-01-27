@@ -2,9 +2,10 @@ package resources
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlinks"
 	"net/http"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlinks"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 

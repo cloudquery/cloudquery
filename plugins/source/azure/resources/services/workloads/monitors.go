@@ -15,22 +15,8 @@ func Monitors() *schema.Table {
 		Resolver:    fetchMonitors,
 		Description: "https://learn.microsoft.com/en-us/rest/api/workloads/sap-monitor/list?tabs=HTTP#monitor",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_workloads_monitors", client.Namespacemicrosoft_workloads),
-		Transform:   transformers.TransformWithStruct(&armworkloads.Monitor{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armworkloads.Monitor{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 
