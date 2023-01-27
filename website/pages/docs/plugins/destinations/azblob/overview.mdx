@@ -32,6 +32,8 @@ spec:
     container: "test"
     path: "path/to/files"
     format: "csv"
+    format_spec:
+      delimiter: ","
 ```
 
 The Azure blob destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes). 
