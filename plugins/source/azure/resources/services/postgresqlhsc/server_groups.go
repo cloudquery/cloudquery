@@ -17,11 +17,7 @@ func ServerGroups() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_postgresqlhsc_server_groups", client.Namespacemicrosoft_dbforpostgresql),
 		Transform:   transformers.TransformWithStruct(&armpostgresqlhsc.ServerGroup{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

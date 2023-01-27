@@ -17,11 +17,7 @@ func VirtualMachines() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machines", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.VirtualMachine{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "instance_view",
 				Type:     schema.TypeJSON,

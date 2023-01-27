@@ -17,11 +17,7 @@ func CertificateOrders() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_certificate_orders", client.Namespacemicrosoft_certificateregistration),
 		Transform:   transformers.TransformWithStruct(&armappservice.CertificateOrder{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

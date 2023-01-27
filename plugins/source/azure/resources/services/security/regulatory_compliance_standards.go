@@ -17,11 +17,7 @@ func RegulatoryComplianceStandards() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_regulatory_compliance_standards", client.Namespacemicrosoft_security),
 		Transform:   transformers.TransformWithStruct(&armsecurity.RegulatoryComplianceStandard{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

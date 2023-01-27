@@ -18,11 +18,7 @@ func Keyvault() *schema.Table {
 		Multiplex:           client.SubscriptionMultiplex,
 		Transform:           transformers.TransformWithStruct(&armkeyvault.Vault{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

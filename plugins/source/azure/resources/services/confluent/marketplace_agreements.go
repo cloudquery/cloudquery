@@ -17,11 +17,7 @@ func MarketplaceAgreements() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_confluent_marketplace_agreements", client.Namespacemicrosoft_confluent),
 		Transform:   transformers.TransformWithStruct(&armconfluent.AgreementResource{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

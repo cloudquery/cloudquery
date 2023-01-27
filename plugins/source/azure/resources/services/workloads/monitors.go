@@ -17,11 +17,7 @@ func Monitors() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_workloads_monitors", client.Namespacemicrosoft_workloads),
 		Transform:   transformers.TransformWithStruct(&armworkloads.Monitor{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

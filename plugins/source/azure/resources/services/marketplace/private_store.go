@@ -17,11 +17,7 @@ func PrivateStore() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_marketplace_private_store", client.Namespacemicrosoft_marketplace),
 		Transform:   transformers.TransformWithStruct(&armmarketplace.PrivateStore{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

@@ -17,11 +17,7 @@ func Registries() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_containerregistry_registries", client.Namespacemicrosoft_containerregistry),
 		Transform:   transformers.TransformWithStruct(&armcontainerregistry.Registry{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

@@ -17,11 +17,7 @@ func IpAllocations() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_ip_allocations", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.IPAllocation{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

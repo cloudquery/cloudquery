@@ -17,11 +17,7 @@ func Interfaces() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_interfaces", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.Interface{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

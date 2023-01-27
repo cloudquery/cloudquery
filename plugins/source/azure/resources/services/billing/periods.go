@@ -17,11 +17,7 @@ func Periods() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_billing_periods", client.Namespacemicrosoft_billing),
 		Transform:   transformers.TransformWithStruct(&armbilling.Period{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

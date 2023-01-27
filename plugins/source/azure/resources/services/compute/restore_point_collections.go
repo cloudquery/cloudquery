@@ -17,11 +17,7 @@ func RestorePointCollections() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_restore_point_collections", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.RestorePointCollection{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

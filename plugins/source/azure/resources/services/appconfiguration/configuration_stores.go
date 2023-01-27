@@ -17,11 +17,7 @@ func ConfigurationStores() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appconfiguration_configuration_stores", client.Namespacemicrosoft_appconfiguration),
 		Transform:   transformers.TransformWithStruct(&armappconfiguration.ConfigurationStore{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

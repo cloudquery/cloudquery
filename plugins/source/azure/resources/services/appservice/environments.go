@@ -17,11 +17,7 @@ func Environments() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_environments", client.Namespacemicrosoft_web),
 		Transform:   transformers.TransformWithStruct(&armappservice.EnvironmentResource{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

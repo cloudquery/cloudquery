@@ -17,11 +17,7 @@ func Clusters() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_hdinsight_clusters", client.Namespacemicrosoft_hdinsight),
 		Transform:   transformers.TransformWithStruct(&armhdinsight.Cluster{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

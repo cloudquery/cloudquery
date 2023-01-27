@@ -17,11 +17,7 @@ func DataManagers() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_hybriddatamanager_data_managers", client.Namespacemicrosoft_hybriddata),
 		Transform:   transformers.TransformWithStruct(&armhybriddatamanager.DataManager{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

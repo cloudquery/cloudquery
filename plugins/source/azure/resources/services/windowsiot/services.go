@@ -17,11 +17,7 @@ func Services() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_windowsiot_services", client.Namespacemicrosoft_windowsiot),
 		Transform:   transformers.TransformWithStruct(&armwindowsiot.DeviceService{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

@@ -14,11 +14,7 @@ func serverDatabases() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/databases/list-by-server?tabs=HTTP#database",
 		Transform:   transformers.TransformWithStruct(&armsql.Database{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "location",
 				Type:     schema.TypeString,

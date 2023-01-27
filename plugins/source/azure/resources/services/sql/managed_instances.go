@@ -17,11 +17,7 @@ func ManagedInstances() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_sql_managed_instances", client.Namespacemicrosoft_sql),
 		Transform:   transformers.TransformWithStruct(&armsql.ManagedInstance{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

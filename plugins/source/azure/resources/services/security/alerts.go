@@ -17,11 +17,7 @@ func Alerts() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_alerts", client.Namespacemicrosoft_security),
 		Transform:   transformers.TransformWithStruct(&armsecurity.Alert{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

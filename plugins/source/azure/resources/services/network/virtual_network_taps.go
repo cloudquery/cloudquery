@@ -17,11 +17,7 @@ func VirtualNetworkTaps() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_network_taps", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualNetworkTap{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

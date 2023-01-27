@@ -17,11 +17,7 @@ func Monitors() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datadog_monitors", client.Namespacemicrosoft_datadog),
 		Transform:   transformers.TransformWithStruct(&armdatadog.MonitorResource{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

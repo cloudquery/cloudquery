@@ -17,11 +17,7 @@ func DatabaseAccounts() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cosmos_database_accounts", client.Namespacemicrosoft_documentdb),
 		Transform:   transformers.TransformWithStruct(&armcosmos.DatabaseAccountGetResults{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

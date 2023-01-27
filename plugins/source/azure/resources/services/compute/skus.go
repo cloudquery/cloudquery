@@ -17,11 +17,7 @@ func SKUs() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_skus", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.ResourceSKU{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

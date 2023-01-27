@@ -17,11 +17,7 @@ func CloudServices() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_cloud_services", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.CloudService{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

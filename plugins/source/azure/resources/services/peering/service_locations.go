@@ -17,11 +17,7 @@ func ServiceLocations() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_peering_service_locations", client.Namespacemicrosoft_peering),
 		Transform:   transformers.TransformWithStruct(&armpeering.ServiceLocation{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

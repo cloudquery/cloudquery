@@ -14,11 +14,7 @@ func transparentDataEncryptions() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/transparent-data-encryptions/list-by-database?tabs=HTTP#logicaldatabasetransparentdataencryption",
 		Transform:   transformers.TransformWithStruct(&armsql.LogicalDatabaseTransparentDataEncryption{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "properties",
 				Type:     schema.TypeJSON,

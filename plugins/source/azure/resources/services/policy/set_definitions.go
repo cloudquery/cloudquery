@@ -17,11 +17,7 @@ func SetDefinitions() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_policy_set_definitions", client.Namespacemicrosoft_authorization),
 		Transform:   transformers.TransformWithStruct(&armpolicy.SetDefinition{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

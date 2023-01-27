@@ -17,11 +17,7 @@ func Servers() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_analysisservices_servers", client.Namespacemicrosoft_analysisservices),
 		Transform:   transformers.TransformWithStruct(&armanalysisservices.Server{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

@@ -17,11 +17,7 @@ func Capacities() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_powerbidedicated_capacities", client.Namespacemicrosoft_powerbidedicated),
 		Transform:   transformers.TransformWithStruct(&armpowerbidedicated.DedicatedCapacity{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

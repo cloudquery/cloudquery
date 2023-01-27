@@ -17,11 +17,7 @@ func Services() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_healthcareapis_services", client.Namespacemicrosoft_healthcareapis),
 		Transform:   transformers.TransformWithStruct(&armhealthcareapis.ServicesDescription{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

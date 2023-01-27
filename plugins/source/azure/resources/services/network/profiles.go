@@ -17,11 +17,7 @@ func Profiles() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_profiles", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.Profile{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

@@ -17,11 +17,7 @@ func SecurityGroups() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_security_groups", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.SecurityGroup{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

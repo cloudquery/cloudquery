@@ -17,11 +17,7 @@ func RestorableDatabaseAccounts() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cosmos_restorable_database_accounts", client.Namespacemicrosoft_documentdb),
 		Transform:   transformers.TransformWithStruct(&armcosmos.RestorableDatabaseAccountGetResult{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

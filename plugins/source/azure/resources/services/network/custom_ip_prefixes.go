@@ -17,11 +17,7 @@ func CustomIpPrefixes() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_custom_ip_prefixes", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.CustomIPPrefix{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

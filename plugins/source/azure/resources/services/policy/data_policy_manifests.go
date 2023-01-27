@@ -17,11 +17,7 @@ func DataPolicyManifests() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_policy_data_policy_manifests", client.Namespacemicrosoft_authorization),
 		Transform:   transformers.TransformWithStruct(&armpolicy.DataPolicyManifest{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

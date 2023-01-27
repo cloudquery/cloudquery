@@ -17,11 +17,7 @@ func AllowedConnections() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_allowed_connections", client.Namespacemicrosoft_security),
 		Transform:   transformers.TransformWithStruct(&armsecurity.AllowedConnectionsResource{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

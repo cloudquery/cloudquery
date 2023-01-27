@@ -17,11 +17,7 @@ func Servers() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_mariadb_servers", client.Namespacemicrosoft_dbformariadb),
 		Transform:   transformers.TransformWithStruct(&armmariadb.Server{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

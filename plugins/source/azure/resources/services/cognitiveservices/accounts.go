@@ -17,11 +17,7 @@ func Accounts() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cognitiveservices_accounts", client.Namespacemicrosoft_cognitiveservices),
 		Transform:   transformers.TransformWithStruct(&armcognitiveservices.Account{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

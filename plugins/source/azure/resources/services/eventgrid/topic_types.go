@@ -17,11 +17,7 @@ func TopicTypes() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_eventgrid_topic_types", client.Namespacemicrosoft_eventgrid),
 		Transform:   transformers.TransformWithStruct(&armeventgrid.TopicTypeInfo{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

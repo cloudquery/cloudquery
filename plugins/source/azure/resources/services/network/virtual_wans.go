@@ -17,11 +17,7 @@ func VirtualWans() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_wans", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualWAN{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

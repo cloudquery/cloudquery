@@ -17,11 +17,7 @@ func LoadBalancers() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_load_balancers", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.LoadBalancer{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

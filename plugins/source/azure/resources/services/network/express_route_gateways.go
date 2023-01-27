@@ -15,11 +15,7 @@ func ExpressRouteGateways() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_express_route_gateways", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRouteGateway{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

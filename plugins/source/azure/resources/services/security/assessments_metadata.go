@@ -17,11 +17,7 @@ func AssessmentsMetadata() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_assessments_metadata", client.Namespacemicrosoft_security),
 		Transform:   transformers.TransformWithStruct(&armsecurity.AssessmentMetadataResponse{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

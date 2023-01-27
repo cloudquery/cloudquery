@@ -17,11 +17,7 @@ func DnsResolvers() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_dnsresolver_dns_resolvers", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armdnsresolver.DNSResolver{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

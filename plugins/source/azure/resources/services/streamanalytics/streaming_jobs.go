@@ -17,11 +17,7 @@ func StreamingJobs() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_streamanalytics_streaming_jobs", client.Namespacemicrosoft_streamanalytics),
 		Transform:   transformers.TransformWithStruct(&armstreamanalytics.StreamingJob{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

@@ -17,11 +17,7 @@ func Clusters() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_operationalinsights_clusters", client.Namespacemicrosoft_operationalinsights),
 		Transform:   transformers.TransformWithStruct(&armoperationalinsights.Cluster{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

@@ -15,11 +15,7 @@ func Bots() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_healthbot_bots", client.Namespacemicrosoft_healthbot),
 		Transform:   transformers.TransformWithStruct(&armhealthbot.HealthBot{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

@@ -17,11 +17,7 @@ func PrivateLinkHubs() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_synapse_private_link_hubs", client.Namespacemicrosoft_synapse),
 		Transform:   transformers.TransformWithStruct(&armsynapse.PrivateLinkHub{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

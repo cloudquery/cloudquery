@@ -17,11 +17,7 @@ func VpnGateways() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_vpn_gateways", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.VPNGateway{}),
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
+			client.SubscriptionID,
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
