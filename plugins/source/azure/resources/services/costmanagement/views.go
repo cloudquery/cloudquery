@@ -15,27 +15,11 @@ func Views() *schema.Table {
 		Resolver:    fetchViews,
 		Description: "https://learn.microsoft.com/en-us/rest/api/cost-management/views/list?tabs=HTTP#view",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_costmanagement_views", client.Namespacemicrosoft_costmanagement),
-		Transform:   transformers.TransformWithStruct(&armcostmanagement.View{}, transformers.WithSkipFields("ETag")),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ETag"),
-			},
-		},
+		Transform: transformers.TransformWithStruct(&armcostmanagement.View{},
+			transformers.WithNameTransformer(client.ETagNameTransformer),
+			transformers.WithPrimaryKeys("ID"),
+		),
+		Columns: schema.ColumnList{client.SubscriptionID},
 		Relations: []*schema.Table{
 			view_queries(),
 		},

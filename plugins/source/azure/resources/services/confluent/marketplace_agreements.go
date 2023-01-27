@@ -15,22 +15,8 @@ func MarketplaceAgreements() *schema.Table {
 		Resolver:    fetchMarketplaceAgreements,
 		Description: "https://learn.microsoft.com/en-us/rest/api/confluent/marketplace-agreements/list?tabs=HTTP#confluentagreementresource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_confluent_marketplace_agreements", client.Namespacemicrosoft_confluent),
-		Transform:   transformers.TransformWithStruct(&armconfluent.AgreementResource{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armconfluent.AgreementResource{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

@@ -11,16 +11,7 @@ func containers() *schema.Table {
 		Name:        "azure_storage_containers",
 		Resolver:    fetchContainers,
 		Description: "https://learn.microsoft.com/en-us/rest/api/storagerp/blob-containers/list?tabs=HTTP#listcontaineritem",
-		Transform:   transformers.TransformWithStruct(&armstorage.ListContainerItem{}),
-		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armstorage.ListContainerItem{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{},
 	}
 }

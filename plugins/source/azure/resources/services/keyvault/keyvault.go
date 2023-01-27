@@ -16,22 +16,8 @@ func Keyvault() *schema.Table {
 		Resolver:            fetchKeyvault,
 		Description:         "https://learn.microsoft.com/en-us/rest/api/keyvault/keyvault/vaults/get?tabs=HTTP#vault",
 		Multiplex:           client.SubscriptionMultiplex,
-		Transform:           transformers.TransformWithStruct(&armkeyvault.Vault{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:           transformers.TransformWithStruct(&armkeyvault.Vault{}, transformers.WithPrimaryKeys("ID")),
+		Columns:             schema.ColumnList{client.SubscriptionID},
 
 		Relations: []*schema.Table{
 			keyvault_keys(),
