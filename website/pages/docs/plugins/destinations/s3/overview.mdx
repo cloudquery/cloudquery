@@ -32,6 +32,8 @@ spec:
     bucket: "bucket_name"
     path: "path/to/files/{{TABLE}}/{{UUID}}.csv"
     format: "csv"
+    format_spec:
+      delimiter: ","
 ```
 
 The S3 destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
