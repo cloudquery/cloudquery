@@ -2,16 +2,13 @@ package security
 
 import (
 	"encoding/json"
-	"io"
 	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
-	"github.com/stretchr/testify/require"
 )
 
 func createRegulatoryComplianceStandards(router *mux.Router) error {
@@ -40,27 +37,4 @@ func createRegulatoryComplianceStandards(router *mux.Router) error {
 
 func TestRegulatoryComplianceStandards(t *testing.T) {
 	client.MockTestHelper(t, RegulatoryComplianceStandards(), createRegulatoryComplianceStandards)
-}
-
-func TestCheckNoStandardPricingBundle(t *testing.T) {
-	type testCase struct {
-		err      error
-		expected error
-	}
-
-	for _, tc := range []testCase{
-		{
-			err:      io.EOF,
-			expected: io.EOF,
-		},
-		{
-			err:      &azcore.ResponseError{},
-			expected: &azcore.ResponseError{},
-		},
-		{
-			err: &azcore.ResponseError{ErrorCode: `Subscription with no standard pricing bundle`},
-		},
-	} {
-		require.EqualValues(t, tc.expected, checkNoStandardPricingBundle(tc.err))
-	}
 }

@@ -32,22 +32,21 @@ func fetchRegulatoryComplianceStandards(ctx context.Context, meta schema.ClientM
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {
-			return checkNoStandardPricingBundle(err)
+			// check if we encountered err we can skip
+			var respErr *azcore.ResponseError
+			if !errors.As(err, &respErr) {
+				return err
+			}
+
+			const noStdPricingBundleErrorCode = `Subscription with no standard pricing bundle`
+			if respErr.ErrorCode != noStdPricingBundleErrorCode {
+				return err
+			}
+
+			cl.Logger().Warn().Err(err).Msg("skip fetch due to err from Azure")
+			return nil
 		}
 		res <- p.Value
-	}
-	return nil
-}
-
-func checkNoStandardPricingBundle(err error) error {
-	var respErr *azcore.ResponseError
-	if !errors.As(err, &respErr) {
-		return err
-	}
-
-	const noStdPricingBundleErrorCode = `Subscription with no standard pricing bundle`
-	if respErr.ErrorCode != noStdPricingBundleErrorCode {
-		return err
 	}
 
 	return nil
