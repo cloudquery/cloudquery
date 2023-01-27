@@ -8,8 +8,6 @@ import (
 	"sync/atomic"
 
 	"github.com/Shopify/sarama"
-	"github.com/cloudquery/filetypes/csv"
-	"github.com/cloudquery/filetypes/json"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -46,17 +44,8 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 		var b bytes.Buffer
 		w := bufio.NewWriter(&b)
 		table := tables.Get(r.TableName)
-		switch c.pluginSpec.Format {
-		case FormatTypeCSV:
-			if err := csv.WriteTableBatch(w, table, [][]any{r.Data}); err != nil {
-				return err
-			}
-		case FormatTypeJSON:
-			if err := json.WriteTableBatch(w, table, [][]any{r.Data}); err != nil {
-				return err
-			}
-		default:
-			panic("unknown format " + c.pluginSpec.Format)
+		if err := c.Client.WriteTableBatchFile(w, table, [][]any{r.Data}); err != nil {
+			return err
 		}
 		w.Flush()
 		messages = append(messages, &sarama.ProducerMessage{
