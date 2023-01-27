@@ -12,14 +12,9 @@ func view_queries() *schema.Table {
 		Name:        "azure_costmanagement_view_queries",
 		Resolver:    fetchViewQueries,
 		Description: "https://learn.microsoft.com/en-us/rest/api/cost-management/query/usage?tabs=HTTP#queryresult",
-		Transform:   transformers.TransformWithStruct(&armcostmanagement.QueryResult{}, transformers.WithSkipFields("ETag")),
-		Columns: schema.ColumnList{
-			client.IDColumn,
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ETag"),
-			},
-		},
+		Transform: transformers.TransformWithStruct(&armcostmanagement.QueryResult{},
+			transformers.WithNameTransformer(client.ETagNameTransformer),
+		),
+		Columns: schema.ColumnList{client.IDColumn},
 	}
 }
