@@ -29,7 +29,7 @@ Now, let's get started!
 
 ### Step 1.1: Add the workflow file
 
-Inside your GitHub repository, create a new file called `.github/workflows/sync_simple_analytics_to_bigquery.yml` and add the following content:
+Inside your git repository, create a new file called `.github/workflows/sync_simple_analytics_to_bigquery.yml` and add the following content:
 
 ```yaml copy
 name: Sync Simple Analytics to BigQuery
@@ -68,7 +68,7 @@ jobs:
           SA_BIGQUERY_DATASET_ID: ${{ secrets.SA_BIGQUERY_DATASET_ID }}
 ```
 
-This configuration allows us to run the workflow manually or on a schedule. The workflow will run on a self-hosted runner, which is a virtual machine hosted by GitHub. The workflow will run the following steps:
+This configuration allows us to run the workflow manually or on a schedule. The example above is configured to run daily at 2am UTC. The workflow will run on a self-hosted runner, which is a virtual machine hosted by GitHub. The workflow will run the following steps:
  1. Check out the repository
  2. Authenticate to Google Cloud using the [google-github-actions/auth](https://github.com/google-github-actions/auth) Action
  3. Setup CloudQuery using the [cloudquery/setup-cloudquery](https://github.com/cloudquery/setup-cloudquery) Action
@@ -88,7 +88,7 @@ In the GitHub repository, go to `Settings > Secrets` and add the following repos
 
 ### Step 1.3: Add the Simple Analytics source plugin configuration file
 
-In the GitHub repository, create a new file called `simple-analytics.yml` and add the following content:
+In the git repository, create a new file called `simple-analytics.yml` and add the following content:
 
 ```yaml copy
 kind: source
@@ -107,21 +107,33 @@ spec:
       - hostname: <your-website-hostname>
 ```
 
-You may find the latest version on the releases page. Replace `<your-website-hostname>` with the hostname of your website as defined on Simple Analytics, e.g. `mywebsite.com`.
+You may find the latest version on the releases page. Replace `<your-website-hostname>` with the hostname of your website as defined on Simple Analytics, e.g. `mywebsite.com`. You can also add more than one website, specify additional metadata that should be fetched or a period of days to fetch data for. See the Simple Analytics source plugin documentation for all the details.
 
 ### Step 1.4: Add the BigQuery destination plugin configuration file
 
-In the GitHub repository, create a new file called `bigquery.yml` and add the following content:
+Now, let's set up the BigQuery destination. In the git repository, create a new file called `bigquery.yml` and add the following content:
 
 ```yaml copy
-
-TODO CONTINUE HERE
-
+kind: destination
+spec:
+  name: bigquery
+  path: cloudquery/bigquery
+  version: "v2.1.2"
+  write_mode: "append"
+  spec:
+    project_id: ${SA_BIGQUERY_PROJECT_ID}
+    dataset_id: ${SA_BIGQUERY_DATASET_ID}
 ```
 
-## Step 3: Set up Workload Identity
+You can find the latest version in the [BigQuery destination plugin documentation](https://www.cloudquery.io/docs/plugins/destinations/bigquery/overview). There are also a few more configuration options you may want to consider, like partitioning.
 
-### Step 3.1: Set Environment Variables
+### Push to the repository
+
+With all this in place, make sure you to push the files to the GitHub repo. You can now run the workflow manually by going to `Actions > Sync Simple Analytics to BigQuery > Run workflow` and clicking the `Run workflow` button. It won't work yet, because we still need to set up the Workload Identity to authenticate with BigQuery.
+
+## Step 2: Set up Workload Identity
+
+### Step 2.1: Set Environment Variables
 
 First, let's set a few environment variables that we'll use throughout the guide. Set the following variables, replacing `<your-project-id>` and `<your-repo>` with your own values:
 
@@ -130,7 +142,7 @@ export PROJECT_ID=<your-project-id> # The ID of your Google Cloud project, e.g. 
 export REPO=<your-repo> # e.g. cloudquery/simple-analytics-to-bigquery
 ```
 
-### Step 3.2: Create a Service Account
+### Step 2.2: Create a Service Account
 
 We will need a service account that can write to BigQuery. We will use the `gcloud` CLI to create the service account and grant it the necessary permissions. Run the following commands:
 
@@ -154,7 +166,7 @@ We will assign the service account the `BigQuery Data Editor` role:
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:cloudquery-service-account@${PROJECT_ID}.iam.gserviceaccount.com" --role=roles/bigquery.dataEditor
 ```
 
-### Step 3.3: Create a Workload Identity Pool and Provider
+### Step 2.3: Create a Workload Identity Pool and Provider
 
 We will now set up Workload Identity, which the GitHub action will rely on to authenticate itself without the need for keys. You can read more about keyless authentication with GCP and GitHub Actions [here](https://cloud.google.com/blog/products/identity-security/enabling-keyless-authentication-from-github-actions).
 
@@ -203,3 +215,18 @@ gcloud iam service-accounts add-iam-policy-binding "cloudquery-service-account@$
   --role="roles/iam.workloadIdentityUser" \
   --member="principalSet://iam.googleapis.com/${WORKLOAD_IDENTITY_POOL_ID}/attribute.repository/${REPO}"
 ```
+
+## Step 3: Query the data!
+
+Now that we have set up the Workload Identity, we can run the workflow again. Go to `Actions > Sync Simple Analytics to BigQuery > Run workflow` and click the `Run workflow` button. You should see the workflow run successfully. You can also check the logs to see that the data was successfully written to BigQuery, or get messages about any errors that occurred. Hopefully it worked the first time, in which case you can now query the data in BigQuery!
+
+Let's head over to the BigQuery console and run the following query to test it out:
+
+```sql copy
+SELECT * FROM `cq-analytics-v1.simple_analytics.simple_analytics_page_views` LIMIT 10
+```
+
+![BigQuery query results](/images/how-to-guides/simple-analytics-to-bigquery/querying-simple-analytics-from-bigquery.png)
+
+## Conclusion
+
