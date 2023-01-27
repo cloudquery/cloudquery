@@ -91,5 +91,6 @@
   "plugins/source/stripe+FILLER": "0.0.0",
   "plugins/source/mixpanel": "1.0.0",
   "plugins/source/hubspot": "1.0.0",
-  "plugins/source/launchdarkly": "1.0.0"
+  "plugins/source/launchdarkly": "1.0.0",
+  "plugins/source/launchdarkly+FILLER": "0.0.0"
 }
