@@ -12,7 +12,7 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 ## Introduction
 
-In this how-to guide, we will show you how you can load page views and events from Simple Analytics into BigQuery on regular schedule. We will use GitHub Actions to automate the process. This is a very convenient, simple and reliable way to load data into BigQuery.
+In this how-to guide, we will show you how you can load page views and events from Simple Analytics into BigQuery on regular schedule. We will use GitHub Actions to automate the process. This is a simple, reliable (and potentially free!) way to load Simple Analytics data into BigQuery on a regular basis.
 
 ## Prerequisites
 
@@ -285,4 +285,4 @@ Now we can add these queries to the workflow. We'll add a few steps to the workf
 
 ## Conclusion
 
-That's it! Now we have a fully automated pipeline that extracts data from Simple Analytics, loads it into BigQuery, and deduplicates it on a regular basis. We can now use this data to build dashboards, reports, and more.
+That's it! Now we have a fully automated pipeline that extracts data from Simple Analytics, loads it into BigQuery, and deduplicates it on a regular basis. We can now use this data to build dashboards, reports, and more. To see a live repo employing this workflow, check out [the cloudquery/recipes repo](https://github.com/cloudquery/recipes).
