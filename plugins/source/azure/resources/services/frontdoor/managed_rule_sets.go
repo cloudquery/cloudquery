@@ -16,7 +16,7 @@ func ManagedRuleSets() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/frontdoor/webapplicationfirewall/managed-rule-sets/list#managedrulesetdefinition",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_frontdoor_managed_rule_sets", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armfrontdoor.ManagedRuleSetDefinition{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Columns:     schema.ColumnList{client.SubscriptionIDPK},
 	}
 }
 

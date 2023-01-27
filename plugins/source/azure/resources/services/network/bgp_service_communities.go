@@ -16,7 +16,7 @@ func BgpServiceCommunities() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/bgp-service-communities/list?tabs=HTTP#bgpservicecommunity",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_bgp_service_communities", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.BgpServiceCommunity{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Columns:     schema.ColumnList{client.SubscriptionIDPK},
 	}
 }
 
