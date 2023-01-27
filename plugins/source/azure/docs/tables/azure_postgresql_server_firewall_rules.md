@@ -16,7 +16,7 @@ This table depends on [azure_postgresql_servers](azure_postgresql_servers.md).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|properties|JSON|
 |id (PK)|String|
+|properties|JSON|
 |name|String|
 |type|String|

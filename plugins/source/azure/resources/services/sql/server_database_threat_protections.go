@@ -13,29 +13,6 @@ func serverDatabaseThreatProtections() *schema.Table {
 		Resolver:    fetchDatabaseThreatProtections,
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/database-advanced-threat-protection-settings/list-by-database?tabs=HTTP#databaseadvancedthreatprotection",
 		Transform:   transformers.TransformWithStruct(&armsql.DatabaseAdvancedThreatProtection{}),
-		Columns: schema.ColumnList{
-			client.SubscriptionID,
-			{
-				Name:     "properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties"),
-			},
-			client.IDColumn,
-			{
-				Name:     "system_data",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SystemData"),
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
-			},
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }

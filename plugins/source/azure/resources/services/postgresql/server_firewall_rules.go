@@ -13,23 +13,6 @@ func firewall_rules() *schema.Table {
 		Resolver:    fetchFirewallRules,
 		Description: "https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/firewall-rules/list-by-server?tabs=HTTP#firewallrule",
 		Transform:   transformers.TransformWithStruct(&armpostgresql.FirewallRule{}),
-		Columns: schema.ColumnList{
-			{
-				Name:     "properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties"),
-			},
-			client.IDColumn,
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
-			},
-		},
+		Columns:     schema.ColumnList{client.IDColumn},
 	}
 }

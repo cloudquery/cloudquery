@@ -13,29 +13,6 @@ func serverDatabaseBlobAuditingPolicies() *schema.Table {
 		Resolver:    fetchDatabaseBlobAuditingPolicies,
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/database-blob-auditing-policies/list-by-database?tabs=HTTP#databaseblobauditingpolicy",
 		Transform:   transformers.TransformWithStruct(&armsql.DatabaseBlobAuditingPolicy{}),
-		Columns: schema.ColumnList{
-			client.SubscriptionID,
-			{
-				Name:     "properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties"),
-			},
-			client.IDColumn,
-			{
-				Name:     "kind",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Kind"),
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
-			},
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }

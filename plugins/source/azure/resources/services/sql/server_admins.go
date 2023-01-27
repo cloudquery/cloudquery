@@ -13,24 +13,6 @@ func serverAdmins() *schema.Table {
 		Resolver:    fetchServerAdmins,
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/server-azure-ad-administrators/list-by-server?tabs=HTTP#serverazureadadministrator",
 		Transform:   transformers.TransformWithStruct(&armsql.ServerAzureADAdministrator{}),
-		Columns: schema.ColumnList{
-			client.SubscriptionID,
-			{
-				Name:     "properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties"),
-			},
-			client.IDColumn,
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
-			},
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID, client.IDColumn},
 	}
 }

@@ -17,7 +17,7 @@ This table depends on [azure_sql_server_databases](azure_sql_server_databases.md
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|properties|JSON|
 |id (PK)|String|
+|properties|JSON|
 |name|String|
 |type|String|
