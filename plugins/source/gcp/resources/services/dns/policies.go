@@ -13,20 +13,12 @@ func Policies() *schema.Table {
 		Description: `https://cloud.google.com/dns/docs/reference/v1/policies#resource`,
 		Resolver:    fetchPolicies,
 		Multiplex:   client.ProjectMultiplexEnabledServices("dns.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Policy{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.Policy{}, append(client.Options(), transformers.WithPrimaryKeys("Id"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 		},
 	}

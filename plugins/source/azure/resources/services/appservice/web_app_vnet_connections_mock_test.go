@@ -2,8 +2,9 @@ package appservice
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"

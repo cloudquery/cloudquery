@@ -3,6 +3,7 @@ package monitor
 import (
 	"context"
 	"errors"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
@@ -23,13 +24,7 @@ func DiagnosticSettings() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/monitor/diagnostic-settings/list?tabs=HTTP#diagnosticsettingsresource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_diagnostic_settings", client.Namespacemicrosoft_insights),
 		Transform:   transformers.TransformWithStruct(&diagnosticSettingsWrapper{}, transformers.WithPrimaryKeys("ID"), transformers.WithUnwrapStructFields("DiagnosticSettingsResource")),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

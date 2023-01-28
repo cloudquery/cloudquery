@@ -7,11 +7,11 @@ select
   awa.subscription_id AS subscription_id,
   awa.id,
   case
-    when vnet_resource_id is null
+    when vnet.properties -> 'vnetResourceId' is null
     then 'fail' else 'pass'
   end
 from
-    azure_web_apps awa
+    azure_appservice_web_apps awa
 left join
-    azure_web_vnet_connections as vnet
-on vnet.web_app_id = awa.id
+    azure_appservice_web_app_vnet_connections as vnet
+on vnet._cq_parent_id = awa._cq_id

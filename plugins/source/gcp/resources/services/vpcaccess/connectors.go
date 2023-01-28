@@ -14,20 +14,12 @@ func Connectors() *schema.Table {
 		Description: `https://cloud.google.com/vpc/docs/reference/vpcaccess/rest/v1/projects.locations.connectors`,
 		Resolver:    fetchConnectors,
 		Multiplex:   client.ProjectMultiplexEnabledServices("vpcaccess.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Connector{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.Connector{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

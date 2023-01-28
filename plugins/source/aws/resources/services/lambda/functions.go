@@ -9,13 +9,12 @@ import (
 
 func Functions() *schema.Table {
 	return &schema.Table{
-		Name:                 "aws_lambda_functions",
-		Description:          `https://docs.aws.amazon.com/lambda/latest/dg/API_GetFunction.html`,
-		Resolver:             fetchLambdaFunctions,
-		PreResourceResolver:  getFunction,
-		PostResourceResolver: resolvePolicyCodeSigningConfig,
-		Transform:            transformers.TransformWithStruct(&lambda.GetFunctionOutput{}),
-		Multiplex:            client.ServiceAccountRegionMultiplexer("lambda"),
+		Name:                "aws_lambda_functions",
+		Description:         `https://docs.aws.amazon.com/lambda/latest/dg/API_GetFunction.html`,
+		Resolver:            fetchLambdaFunctions,
+		PreResourceResolver: getFunction,
+		Transform:           transformers.TransformWithStruct(&lambda.GetFunctionOutput{}),
+		Multiplex:           client.ServiceAccountRegionMultiplexer("lambda"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -31,23 +30,39 @@ func Functions() *schema.Table {
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Configuration.FunctionArn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name: "policy_revision_id",
 				Type: schema.TypeString,
+				// resolved in resolveResourcePolicy
 			},
 			{
-				Name: "policy_document",
-				Type: schema.TypeJSON,
+				Name:     "policy_document",
+				Type:     schema.TypeJSON,
+				Resolver: resolveResourcePolicy,
 			},
 			{
-				Name: "code_signing_config",
-				Type: schema.TypeJSON,
+				Name:     "code_signing_config",
+				Type:     schema.TypeJSON,
+				Resolver: resolveCodeSigningConfig,
 			},
 			{
 				Name:     "code_repository_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Code.RepositoryType"),
+			},
+			{
+				Name: "update_runtime_on",
+				Type: schema.TypeString,
+				// resolved in resolveRuntimeManagementConfig
+			},
+			{
+				Name:     "runtime_version_arn",
+				Type:     schema.TypeString,
+				Resolver: resolveRuntimeManagementConfig,
 			},
 		},
 
