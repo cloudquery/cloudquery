@@ -21,6 +21,11 @@ In a [previous guide](www.cloudquery.io/how-to-guides/how-to-load-infrastructure
 
 We've already followed the previous guide to load infrastructure data into Amazon Athena via CloudQuery.  If you haven't done so already, follow the [CloudQuery guide](www.cloudquery.io/how-to-guides/how-to-load-infrastructure-data-into-athena).  
 
+After completing the guide above, you should have the following completed:
+
+* CloudQuery syncing data from AWS to S3.
+* The ability to query data in Athena.
+
 ### 2. Start Gathering Cost and Usage Reports
 
 To set up Cost and Usage Reports, we'll follow AWS documentation for how to set up the infrastructure necessary for Cost and Usage Reports.
@@ -31,15 +36,40 @@ By the end of this step, we'll have created the following:
 
 Let's start by [creating a new S3 bucket](https://docs.aws.amazon.com/cur/latest/userguide/cur-s3.html) for our Cost and Usage Reports.  AWS's `billingreports.amazonaws.com` will deliver these reports to our new S3 Bucket.  Keep in mind that it may take up to 24 hours for AWS to start delivering reports to the Amazon S3 bucket.  If you are creating a fresh S3 bucket, we suggest creating the bucket and coming back the next day to complete the rest of this guide!  Storing the billing reports data in Amazon S3 will incur standard [S3 costs](https://docs.aws.amazon.com/cur/latest/userguide/billing-cur-limits.html).  
 
+You should see multiple files in the S3 bucket once the cost and usage reports have been successfully delivered to your S3 bucket. In the billing console, the cost and usage report created will also show a time stamp for `Data last refreshed` such as the screenshot below.
 
-
-https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html
+![Cost and Usage Reports in the Billing Console](/images/how-to-guides/query-aws-cost-and-usage-athena/jason-demo-cur.png)
 
 ### 3. Sync Cost and Usage Reports to Athena
 
+Now that we have successfully created an S3 Bucket to receive Cost and Usage Reports
 
-### 4. Optional: Set up multi account Cost and Usage Report informatino
 
+For this step, we'll use the CloudFormation template that [AWS generates](https://docs.aws.amazon.com/cur/latest/userguide/use-athena-cf.html) in the bucket we previously created for Cost and Usage Reports.
+
+```bash copy
+aws cloudformation create-stack \
+--stack-name cost-and-usage-crawler \
+--template-url https://cq-demo-cur.s3.amazonaws.com/cost-and-usage/jason-demo-reports/crawler-cfn.yml \
+--capabilities CAPABILITY_IAM 
+--region us-east-1
+```
+
+Remember to replace the `template-url` parameter with the object URL for the CloudFormation template that AWS created in the Cost and Usage S3 Bucket.  
+
+This template creates the following resources: 
+* 3 IAM Roles, 
+* An AWS Glue Database
+* An AWS Glue crawler
+* Two Lambda functions
+* An Amazon S3 notification.
+
+As needed, adjust the CloudFormation template depending on your organizational requirements such as required IAM controls, tags, and encryption settings.
+
+
+You should now see 2 databases loaded in Amazon Athena:
+* Loaded CloudQuery Data
+* Loaded AWS Cost and Usage Reports
 
 ### 5. Run Athena Queries on Infrastructure and Cost Data
 
