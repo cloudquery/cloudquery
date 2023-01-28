@@ -1,12 +1,12 @@
 variables:
-  component: source/tailscale
-  binary: tailscale
+  component: source/postgresql
+  binary: postgresql
 
-project_name: plugins/source/tailscale
+project_name: plugins/source/postgresql
 
 monorepo:
-  tag_prefix: plugins-source-tailscale-
-  dir: plugins/source/tailscale
+  tag_prefix: plugins-source-postgresql-
+  dir: plugins/source/postgresql
 
 includes:
   - from_file:

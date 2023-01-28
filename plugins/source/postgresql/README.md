@@ -1,7 +1,7 @@
-# Tailscale Plugin
+# Postgresql source Plugin
 
-The CloudQuery Tailscale plugin pulls configuration out of Tailscale and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+The CloudQuery Postgresql source plugin replicates a Postgresql database to any supported CloudQuery destination.
 
 ## Links
 
-- [User Guide](https://docs.cloudquery.io/docs/plugins/sources/tailscale/overview)
+- [User Guide](https://docs.cloudquery.io/docs/plugins/sources/postgresql/overview)
