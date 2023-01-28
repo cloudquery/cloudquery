@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 	"path"
 	"reflect"
 	"runtime"
@@ -174,6 +175,7 @@ var clients = []any{
 	&rds.Client{},
 	&redshift.Client{},
 	&resourcegroups.Client{},
+	&resiliencehub.Client{},
 	&route53.Client{},
 	&route53domains.Client{},
 	&s3.Client{},

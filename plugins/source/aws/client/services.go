@@ -71,6 +71,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ram"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
+	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
@@ -175,6 +176,7 @@ func initServices(region string, c aws.Config) Services {
 		Rds:                       rds.NewFromConfig(awsCfg),
 		Redshift:                  redshift.NewFromConfig(awsCfg),
 		Resourcegroups:            resourcegroups.NewFromConfig(awsCfg),
+		Resiliencehub:             resiliencehub.NewFromConfig(awsCfg),
 		Route53:                   route53.NewFromConfig(awsCfg),
 		Route53domains:            route53domains.NewFromConfig(awsCfg),
 		S3:                        s3.NewFromConfig(awsCfg),
@@ -275,6 +277,7 @@ type Services struct {
 	Rds                       services.RdsClient
 	Redshift                  services.RedshiftClient
 	Resourcegroups            services.ResourcegroupsClient
+	Resiliencehub             services.ResiliencehubClient
 	Route53                   services.Route53Client
 	Route53domains            services.Route53domainsClient
 	S3                        services.S3Client
