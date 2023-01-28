@@ -3,10 +3,10 @@ title: How to Query AWS Cost and Usage Data with Amazon Athena
 tag: tutorial
 date: 2022/12/15
 description: >-
-  
+  How to Query and Correlate AWS Cost and Usage Data with CloudQuery synced data from AWS.
 author: jsonkao
 ---
-import { BlogHeader } from "../../components/BlogHeader"
+
 import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 <HowToGuideHeader/>
@@ -58,11 +58,11 @@ aws cloudformation create-stack \
 Remember to replace the `template-url` parameter with the object URL for the CloudFormation template that AWS created in the Cost and Usage S3 Bucket.  
 
 This template creates the following resources: 
-* 3 IAM Roles, 
+* 3 IAM Roles
 * An AWS Glue Database
 * An AWS Glue crawler
 * Two Lambda functions
-* An Amazon S3 notification.
+* An Amazon S3 notification
 
 As needed, adjust the CloudFormation template depending on your organizational requirements such as required IAM controls, tags, and encryption settings.
 
