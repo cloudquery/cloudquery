@@ -1,6 +1,7 @@
 # Table: aws_securityhub_findings
 
-https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html
+https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html. 
+The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from. This is useful when multi region and account aggregation is enabled.
 
 The composite primary key for this table is (**aws_account_id**, **created_at**, **description**, **generator_id**, **id**, **product_arn**, **schema_version**, **title**, **region**).
 
