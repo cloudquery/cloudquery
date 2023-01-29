@@ -15,22 +15,8 @@ func AlertsSuppressionRules() *schema.Table {
 		Resolver:    fetchAlertsSuppressionRules,
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/alerts-suppression-rules/list?tabs=HTTP#alertssuppressionrule",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_alerts_suppression_rules", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.AlertsSuppressionRule{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armsecurity.AlertsSuppressionRule{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

@@ -15,22 +15,8 @@ func Accounts() *schema.Table {
 		Resolver:    fetchAccounts,
 		Description: "https://learn.microsoft.com/en-us/rest/api/billing/2020-05-01/billing-accounts/list?tabs=HTTP#billingaccount",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_billing_accounts", client.Namespacemicrosoft_billing),
-		Transform:   transformers.TransformWithStruct(&armbilling.Account{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armbilling.Account{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

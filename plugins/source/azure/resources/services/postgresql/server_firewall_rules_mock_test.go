@@ -2,10 +2,11 @@ package postgresql
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
-	"net/http"
 )
 
 func createFirewallRules(router *mux.Router) error {

@@ -23,11 +23,11 @@ The following tables depend on azure_sql_servers:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |identity|JSON|
 |properties|JSON|
 |tags|JSON|
+|id (PK)|String|
 |kind|String|
 |name|String|
 |type|String|

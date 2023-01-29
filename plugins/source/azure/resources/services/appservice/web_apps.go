@@ -16,13 +16,7 @@ func WebApps() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/list#site",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_web_apps", client.Namespacemicrosoft_web),
 		Transform:   transformers.TransformWithStruct(&armappservice.Site{}, transformers.WithPrimaryKeys("ID")),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID},
 		Relations: []*schema.Table{
 			webAppAuthSettings(),
 			webAppVnetConnections(),

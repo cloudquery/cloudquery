@@ -15,22 +15,8 @@ func RestorableDatabaseAccounts() *schema.Table {
 		Resolver:    fetchRestorableDatabaseAccounts,
 		Description: "https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/restorable-database-accounts/list?tabs=HTTP#restorabledatabaseaccountgetresult",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cosmos_restorable_database_accounts", client.Namespacemicrosoft_documentdb),
-		Transform:   transformers.TransformWithStruct(&armcosmos.RestorableDatabaseAccountGetResult{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armcosmos.RestorableDatabaseAccountGetResult{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 
