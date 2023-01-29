@@ -14,6 +14,8 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 In a [previous guide](www.cloudquery.io/how-to-guides/how-to-load-infrastructure-data-into-athena), we talked about how to load infrastructure data into Amazon Athena.  In this tutorial, we will show you how to load AWS's Cost and Usage Reports into Amazon Athena and enrich infrastructure data with the data provided by Cost and Usage Reports.  This will enable you to query your data and execute different cost optimization and FinOps use cases to understand and manage the financials of your cloud infrastructure.
 
+![GP2 EBS Volumes in Athena with CloudQuery Data](/images/how-to-guides/query-aws-cost-and-usage-athena/athena-gp2.png)
+
 ## Walkthrough
 
 ### 1. Infrastructure Data Prerequisites
@@ -102,6 +104,42 @@ Now let's look at one straightforward method to reduce costs by using more cost-
 
 ** Use gp3 volumes instead of gp2 volumes for Amazon EBS.
 https://aws.amazon.com/blogs/storage/migrate-your-amazon-ebs-volumes-from-gp2-to-gp3-and-save-up-to-20-on-costs/
+
+```sql copy
+SELECT 
+  costquery.line_item_resource_id, 
+  costquery.cost, 
+  vols.volume_type, 
+  vols.attachments, 
+  vols.arn, 
+  vols.tags, 
+  vols.state, 
+  vols.snapshot_id, 
+  vols.size, 
+  vols.create_time
+FROM (
+	SELECT 
+	  line_item_resource_id, line_item_product_code, 
+    SUM(line_item_blended_cost) AS cost, month
+	FROM "athenacurcfn_jason_demo_reports"."jason_demo_reports"
+	WHERE 
+    year='2023' and line_item_resource_id!='' and line_item_resource_id LIKE 'vol-%'
+	GROUP BY 
+    line_item_resource_id, line_item_product_code, 
+    month
+	HAVING SUM(line_item_blended_cost) > 0
+	ORDER BY cost DESC
+) as costquery 
+LEFT JOIN
+"cloudquery-athena-example-json"."aws_ec2_ebs_volumes" as vols
+ON costquery.line_item_resource_id = vols.volume_id
+WHERE vols.volume_type = 'gp2'
+```
+
+![GP2 EBS Volumes in Athena with CloudQuery Data](/images/how-to-guides/query-aws-cost-and-usage-athena/athena-gp2.png)
+
+
+
 
 ** Correlate Groups of Resources based off Tags
 
