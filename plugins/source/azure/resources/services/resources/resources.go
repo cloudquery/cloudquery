@@ -15,17 +15,8 @@ func Resources() *schema.Table {
 		Resolver:    fetchResources,
 		Description: "https://learn.microsoft.com/en-us/rest/api/resources/resources/list#genericresourceexpanded",
 		Multiplex:   client.SubscriptionMultiplex,
-		Transform:   transformers.TransformWithStruct(&armresources.GenericResourceExpanded{}),
-		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armresources.GenericResourceExpanded{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{},
 	}
 }
 

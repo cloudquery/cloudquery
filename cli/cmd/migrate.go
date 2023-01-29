@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	discovery "github.com/cloudquery/plugin-sdk/clients/discovery/v0"
+	"github.com/cloudquery/plugin-sdk/clients/discovery/v0"
 	"github.com/cloudquery/plugin-sdk/registry"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
@@ -65,7 +65,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 		}
 		versions, err := discoveryClient.GetVersions(ctx)
 		if err != nil {
-			if discoveryErr := discoveryClient.Terminate(); err != nil {
+			if discoveryErr := discoveryClient.Terminate(); discoveryErr != nil {
 				log.Error().Err(discoveryErr).Msg("failed to terminate discovery client")
 				fmt.Println("failed to terminate discovery client:", discoveryErr)
 			}

@@ -11,16 +11,7 @@ func server_configurations() *schema.Table {
 		Name:        "azure_mysql_server_configurations",
 		Resolver:    fetchServerConfigurations,
 		Description: "https://learn.microsoft.com/en-us/rest/api/mysql/singleserver/configurations/list-by-server?tabs=HTTP#configuration",
-		Transform:   transformers.TransformWithStruct(&armmysql.Configuration{}),
-		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armmysql.Configuration{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{},
 	}
 }
