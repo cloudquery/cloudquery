@@ -28,13 +28,13 @@ In this mode, the CLI will run the binary for you and connect to it.
 This is useful if you want to run the plugin in a debugger, or if you want to run the plugin in a different way than the CLI would run it.
 First of all, run your plugin with the `serve` argument:
 
-```bash
+```bash copy
 /path/to/plugin serve
 ```
 
 If you are running multiple plugins this way simultaneously, you will need to specify a different port for each one. You can do this with the `--address` flag:
 
-```bash
+```bash copy
 /path/to/plugin serve --address localhost:7778
 ```
 

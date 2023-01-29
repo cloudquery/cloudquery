@@ -24,7 +24,7 @@ For this example we will be using `yourStrongP@ssword` as a password.
 
 ### Start Microsoft SQL Server locally
 
-```sh
+```sh copy
 docker run \
   -e "ACCEPT_EULA=Y" \
   -e "MSSQL_SA_PASSWORD=yourStrongP@ssword" \
@@ -37,7 +37,7 @@ docker run \
 
 We will be using `cloudquery` for database name in this example.
 
-```sh
+```sh copy
 docker exec $(docker ps -alq) \
   /opt/mssql-tools/bin/sqlcmd \
   -U "SA" \
@@ -54,14 +54,14 @@ Once you've completed the steps from [Prerequisites](#prerequisites) section
 you should be able to connect to the local `cloudquery` Microsoft SQL Server database
 via the following connection string:
 
-```text
+```text copy
 server=localhost;user id=SA;password=yourStrongP@ssword;port=1433;database=cloudquery;
 ```
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 The full configuration for Microsoft SQL Server destination plugin will look like this:
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name:     "mssql"
