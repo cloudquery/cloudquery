@@ -29,7 +29,7 @@ V1 introduces a new config format that is closely related to the old one, but an
 
 The new config format for source plugins are as follows:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   ## Required. name of the plugin to use
@@ -61,7 +61,7 @@ Check the [source spec documentation](/docs/reference/source-spec) for general l
 
 The new config format for destination plugins (e.g. PostgreSQL) is as follows:
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   ## Required. name of the plugin
@@ -101,7 +101,7 @@ tables: ["*"]
 
 in the source configuration file. This can also be combined with the `skip_tables` option to fetch all tables except some subset:
 
-```yaml
+```yaml copy
 tables: ["*"]
 skip_tables: ["aws_accessanalyzer_analyzers", "aws_acm_certificates"]
 ```
@@ -114,13 +114,13 @@ Functionally it is still the same: it loads data from a source to a destination,
 
 `cloudquery sync` needs to be passed a path to a config file or directory containing config files. So for example, to sync using all `.yml` files in a directory named `config`:
 
-```bash
+```bash copy
 cloudquery sync config/
 ```
 
 Or to sync using a single YAML file named `config.yml`:
 
-```bash
+```bash copy
 cloudquery sync config.yml
 ```
 
@@ -132,7 +132,7 @@ See `cloudquery sync --help` for more details, or check our [online reference](/
 
 The `sync` command supports loading config from files or directories, and you may choose to combine multiple source- and destination- configs in a single file using `---` on its own line to separate different sections. For example:
 
-```yaml
+```yaml copy
 kind: source
 spec:
     name: "aws"

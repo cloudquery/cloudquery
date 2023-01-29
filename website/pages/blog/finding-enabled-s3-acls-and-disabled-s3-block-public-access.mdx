@@ -43,7 +43,7 @@ There are 4 different components for S3 Block Public Access Settings:
 
 The below query will check for any S3 bucket where 1 or more of those 4 components are set to false (and thus where block public access is not fully enabled).
 
-```sql
+```sql copy
 SELECT * 
 FROM aws_s3_buckets 
 where block_public_acls is false 
@@ -60,7 +60,7 @@ Block Public Access can also be set at the Account level, which we recommend as 
 
 To check for this setting on accounts in CloudQuery, we can use the following query:
 
-```sql
+```sql copy
 SELECT * 
 FROM aws_s3_accounts 
 WHERE block_public_acls is false 
@@ -83,7 +83,7 @@ There are 3 different settings for object ownership:
 
 To check for buckets with enabled ACLs (without disabled ACLs), we will look for bucket owner preferred, object writer settings, and empty values for object ownership.  The empty values for object ownership currently correlate to object writer.
 
-```sql
+```sql copy
 SELECT * 
 FROM aws_s3_buckets 
 WHERE ownership_controls &&'{"BucketOwnerPreferred", "ObjectWriter"}' 
@@ -92,7 +92,7 @@ or ownership_controls is NULL;
 
 Note: Buckets created via Console with ObjectWriter Object Ownership Settings and Buckets created via CLI without the Object Ownership option specified will result in an empty Object Ownership `ownership_controls` field.  This seems to be a default setting and we're following up with AWS on this discrepancy.
 
-```bash
+```bash copy
 aws s3api create-bucket --bucket test-json-bucket  --profile myprofile --region us-east-1
  
 {
@@ -108,7 +108,7 @@ An error occurred (OwnershipControlsNotFoundError) when calling the GetBucketOwn
 
 To look for grants within resource ACLs that are associated with S3 buckets with enabled ACLs (without disabled ACLs), we will cross reference our S3 buckets from the above query with S3 grants.
 
-```sql
+```sql copy
 SELECT * 
 FROM aws_s3_bucket_grants 
 LEFT JOIN aws_s3_buckets 
