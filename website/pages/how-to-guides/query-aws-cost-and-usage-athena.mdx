@@ -60,15 +60,21 @@ This template creates the following resources:
 * 3 IAM Roles
 * An AWS Glue Database
 * An AWS Glue crawler
-* Two Lambda functions
+* 2 Lambda functions
 * An Amazon S3 notification
 
 As needed, adjust the CloudFormation template depending on your organizational requirements such as required IAM controls, tags, and encryption settings.
 
-
 You should now see 2 databases loaded in Amazon Athena:
-* Loaded CloudQuery Data
-* Loaded AWS Cost and Usage Reports
+* CloudQuery Data
+* AWS Cost and Usage Reports
+
+We can run the following query [to validate that Athena is ready](https://docs.aws.amazon.com/cur/latest/userguide/cur-ate-run.html) for queries on the Cost and Usage data.  A status of `READY` means we can query the Athena database.  If the status is `UPDATING`, Athena may return incomplete results.
+
+```sql copy
+SELECT * 
+FROM "athenacurcfn_jason_demo_reports"."cost_and_usage_data_status"
+```
 
 ### 4. Run Athena Queries on Infrastructure and Cost Data
 
@@ -77,11 +83,14 @@ Let's start by looking at our biggest expenses:
 ** Show biggest expenses and correlate with resources.  Note, by including the `line_item_resource_id!=''` in our Athena query, we exclude cost of items that are not directly associated with resource IDs such as cost for AWS Support.
 
 ```sql copy
-SELECT line_item_resource_id, line_item_product_code,
-sum(line_item_blended_cost) AS cost, month
+SELECT 
+  line_item_resource_id, 
+  line_item_product_code,
+  sum(line_item_blended_cost) AS cost, 
+  month
 FROM "athenacurcfn_jason_demo_reports"."jason_demo_reports"
 WHERE year='2023' and line_item_resource_id!=''
-GROUP BY line_item_resource_id, month, line_item_product_code
+GROUP BY line_item_resource_id, line_item_product_code, month
 HAVING sum(line_item_blended_cost) > 0
 ORDER BY cost DESC;
 ```
