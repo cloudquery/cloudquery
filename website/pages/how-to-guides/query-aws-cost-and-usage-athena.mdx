@@ -155,11 +155,9 @@ ON costquery.line_item_resource_id = vols.volume_id
 WHERE vols.volume_type = 'gp2'
 ```
 
-The above query will return all gp2 EBS volumes in 2023 and show the cost as well as useful characteristics we synced from AWS with CloudQuery including attachment information and the state of the EBS volume.
+The above query will return all gp2 EBS volumes in 2023 and show the cost as well as useful characteristics we synced from AWS with CloudQuery including attachment information and the state of the EBS volume.  We can see the current and historical cost, evaluate the potential cost savings, and decide whether these are good candidates for migration from gp2 to gp3 while avoiding potential impact to applications based off the infrastructure details added to the cost and usage data.  
 
 ![GP2 EBS Volumes in Athena with CloudQuery Data](/images/how-to-guides/query-aws-cost-and-usage-athena/athena-gp2.png)
-
-With that EBS volume information, we can decide whether these are good candidates for migration from gp2 to gp3 while avoiding potential impact to applications.
 
 For more information on how to migrate from gp2 to gp3 volumes, see [the AWS blog post](https://aws.amazon.com/blogs/storage/migrate-your-amazon-ebs-volumes-from-gp2-to-gp3-and-save-up-to-20-on-costs/)
 
