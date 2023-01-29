@@ -62,12 +62,10 @@ kind:       ClusterRoleBinding
 metadata:
   name: cloudquery-cluster-read-binding
 subjects:
-- kind:     ServiceAccount
-  name:     cloudquery-sa
-  apiGroup: rbac.authorization.k8s.io
+- kind: ServiceAccount
+  name: cloudquery-sa
 roleRef:
-  kind:     ClusterRole
-  name:     cloudquery-cluster-read
-  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cloudquery-cluster-read
 EOF
 ```
