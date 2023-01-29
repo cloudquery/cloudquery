@@ -1,4 +1,4 @@
-# Contribution Guide to CloudQuery PostgreSQL Destination Plugin
+# Contribution Guide to CloudQuery PostgreSQL Source Plugin
 
 ## Running in Debug mode
 
@@ -29,9 +29,9 @@ To change that you will need to set/export the environment variable `CQ_DEST_PG_
 
 ```bash
 # for the above postgresql
-# export CQ_DEST_PG_TEST_CONN="postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
+# export CQ_SOURCE_PG_TEST_CONN="postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
 # for the above cockroachdb
-# export CQ_DEST_PG_TEST_CONN="postgresql://root@localhost:26257/postgres?sslmode=disable"
+# export CQ_SOURCE_PG_TEST_CONN="postgresql://root@localhost:26257/postgres?sslmode=disable"
 make test
 ```
 

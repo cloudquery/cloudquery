@@ -56,6 +56,24 @@ ORDER BY
 attnum ASC;
 `
 
+const tmp = `
+SELECT
+pg_class.relname AS table_name,
+pg_attribute.attname AS column_name,
+pg_catalog.format_type(pg_attribute.atttypid, pg_attribute.atttypmod) AS data_type
+FROM
+pg_catalog.pg_attribute
+INNER JOIN
+pg_catalog.pg_class ON pg_class.oid = pg_attribute.attrelid
+INNER JOIN
+pg_catalog.pg_namespace ON pg_namespace.oid = pg_class.relnamespace
+WHERE
+pg_attribute.attnum > 0
+AND NOT pg_attribute.attisdropped
+ORDER BY
+attnum ASC;
+`
+
 type pgType int
 
 const (
