@@ -423,6 +423,7 @@
 - [aws_scheduler_schedule_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_scheduler_schedule_groups.md)
 - [aws_scheduler_schedules](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_scheduler_schedules.md)
 - [aws_secretsmanager_secrets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_secretsmanager_secrets.md)
+- [aws_securityhub_findings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_securityhub_findings.md)
 - [aws_servicecatalog_portfolios](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_servicecatalog_portfolios.md)
 - [aws_servicecatalog_products](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_servicecatalog_products.md)
 - [aws_servicecatalog_provisioned_products](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_servicecatalog_provisioned_products.md)
