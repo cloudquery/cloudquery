@@ -38,7 +38,7 @@ You can also use this as a reference to create your own policies, which can be c
 One best practice in AWS is to enable MFA (on your root account) and create an IAM admin user to handle all your day-to-day work immediately after you open an account.
 List root accounts that were accessed in the last 30 days:
 
-```sql
+```sql copy
 SELECT account_id, arn, password_last_used, user_name FROM aws_iam_users
 WHERE user_name = '<root_account>' AND password_last_used > (now() - '30 days'::interval)
 ```
@@ -46,7 +46,7 @@ WHERE user_name = '<root_account>' AND password_last_used > (now() - '30 days'::
 Also, it is strongly advised not to create any access keys for the root account.
 To list root accounts with access keys:
 
-```sql
+```sql copy
 select * from aws_iam_users
    JOIN aws_iam_user_access_keys keys on aws_iam_users.id = keys.user_id
 WHERE user_name = '<root>'
@@ -57,7 +57,7 @@ WHERE user_name = '<root>'
 Instead of attaching IAM policies to users it is advised to attach IAM policies to groups and roles, and then to assign the groups and roles to users.
 To list accounts with IAM policies attached directly:
 
-```sql
+```sql copy
 SELECT aws_iam_users.account_id, arn, user_name FROM aws_iam_users
 JOIN aws_iam_user_attached_policies policies on aws_iam_users.id = policies.user_id
 ```
@@ -72,7 +72,7 @@ We will cover this in a follow-up post!
 If you allow users to change their own password, then creating a password policy is highly recommended.
 This snippet is taken from AWS CIS benchmark. It provides a good example of a strong password policy and offers a way to check that it is enabled in all accounts.
 
-```sql
+```sql copy
 - name: "AWS CIS 1.5  Ensure IAM password policy requires at least one uppercase letter"
  query: >
    SELECT account_id, require_uppercase_characters FROM aws_iam_password_policies
@@ -108,7 +108,7 @@ This snippet is taken from AWS CIS benchmark. It provides a good example of a st
 AWS recommends that MFA be enabled for the root account, as well as any other privileged IAM users.
 To list all accounts with MFA disabled:
 
-```sql
+```sql copy
 SELECT account_id, arn, password_last_used, user_name, mfa_active FROM aws_iam_users WHERE NOT mfa_active
 ```
 
@@ -119,7 +119,7 @@ Or you can go even further by joining on the permissions table and alerting on a
 
 To list all access keys that weren’t rotated in the last 90 days you can run the following:
 
-```sql
+```sql copy
 SELECT aws_iam_users.account_id, aws_iam_users.arn AS user_arn, aws_iam_users.user_name, aws_iam_user_access_keys.access_key_id, MAX(last_rotated) FROM aws_iam_users
  JOIN aws_iam_user_access_keys on aws_iam_users.id = aws_iam_user_access_keys.user_id
 WHERE last_rotated < (now() - '90 days'::interval)
@@ -130,7 +130,7 @@ GROUP BY aws_iam_users.account_id, aws_iam_users.arn, aws_iam_users.user_name, a
 
 To list all IAM access keys that haven’t been used for more than 90 days:
 
-```sql
+```sql copy
 SELECT aws_iam_users.account_id, aws_iam_users.arn AS user_arn, aws_iam_users.user_name, aws_iam_user_access_keys.access_key_id, MAX(last_used) FROM aws_iam_users
  JOIN aws_iam_user_access_keys on aws_iam_users.id = aws_iam_user_access_keys.user_id
 WHERE last_used < (now() - '90 days'::interval)

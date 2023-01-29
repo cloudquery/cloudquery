@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
+	"golang.org/x/time/rate"
 )
 
 // Empirically tested that this is the largest page size that HubSpot allows.
@@ -17,6 +18,10 @@ const DefaultPageSize = 100
 
 type Client struct {
 	Authorizer *hubspot.TokenAuthorizer
+
+	Spec Spec
+
+	RateLimiter *rate.Limiter
 
 	// Used for multiplexing when fetching `crm_pipelines`.
 	ObjectType string
@@ -40,11 +45,13 @@ func (c *Client) withObjectType(objectType string) *Client {
 }
 
 func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	var pluginSpec Spec
+	var hubspotSpec Spec
 
-	if err := s.UnmarshalSpec(&pluginSpec); err != nil {
+	if err := s.UnmarshalSpec(&hubspotSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal plugin spec: %w", err)
 	}
+
+	hubspotSpec.setDefaults()
 
 	authToken := os.Getenv("HUBSPOT_APP_TOKEN")
 	if authToken == "" {
@@ -54,5 +61,10 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 	return &Client{
 		Logger:     logger,
 		Authorizer: hubspot.NewTokenAuthorizer(authToken),
+		Spec:       hubspotSpec,
+		RateLimiter: rate.NewLimiter(
+			/*r=*/ rate.Limit(*hubspotSpec.MaxRequestsPerSecond),
+			/*b=*/ 1,
+		),
 	}, nil
 }

@@ -42,7 +42,7 @@ For more information on configuration files, see [AWS source configuration](/doc
 The configuration we're running locally looks like this:
 
 Example aws-neo.yml source configuration file:
-```yaml
+```yaml copy
 kind: source
 spec:
   name: "aws"
@@ -59,7 +59,7 @@ spec:
 ```
 
 Example neo4j.yml destination configuration file:
-```yaml
+```yaml copy
   kind: destination
   spec:
     name: "neo4j"
@@ -98,7 +98,7 @@ An IAM User can be granted permissions from:
 
 By running the following command, we create a relationship between IAM User nodes and IAM User Access Key nodes.
 
-```sql 
+```sql  copy
 MATCH
   (a:aws_iam_user_access_keys),
   (b:aws_iam_users)
@@ -109,7 +109,7 @@ RETURN type(r)
 
 Next, let's create a relationship between IAM Users and IAM Groups.  In AWS, IAM Users can be members of IAM Groups and inherit their IAM policies.
 
-```sql
+```sql copy
 MATCH
   (iamusers:aws_iam_users),
   (usergroups:aws_iam_user_groups),
@@ -121,7 +121,7 @@ RETURN type(r)
 
 Now, we'll create relationships between IAM Users and all IAM User inline policies.
 
-```sql
+```sql copy
 MATCH 
   (iamusers:aws_iam_users),
   (inlinep:aws_iam_user_policies)
@@ -132,7 +132,7 @@ RETURN type(r)
 
 Now, we'll create relationships between IAM Users and directly attached managed policies. 
 
-```sql
+```sql copy
 MATCH 
   (iamusers:aws_iam_users), 
   (attachp:aws_iam_user_attached_policies)
@@ -143,7 +143,7 @@ RETURN type(r)
 
 Next, we'll create relationships between IAM Groups and their inline policies.
 
-```sql
+```sql copy
 MATCH 
   (iamgroups:aws_iam_groups),
   (groupinline:aws_iam_group_policies)
@@ -154,7 +154,7 @@ RETURN type(r)
 
 Lastly, we'll create relationships between IAM Groups and their attached managed policies.
 
-```sql
+```sql copy
 MATCH 
   (n:aws_iam_groups), 
   (policies:aws_iam_policies) 
@@ -186,7 +186,7 @@ In this example, we will focus on Relational Databases (AWS RDS) and their data.
 
 Let's first create relationships between RDS instances and their encryption from KMS Keys.
 
-```sql
+```sql copy
 MATCH 
   (rdsinstances:aws_rds_instances), 
   (kmskeys:aws_kms_keys)
@@ -197,7 +197,7 @@ RETURN type(r)
 
 Let's connect KMS Keys with all their Key Grants and the [access that the Key Grants may permit](/blog/aws-kms-key-grants-deep-dive) to those KMS Keys and data.
 
-```sql
+```sql copy
 MATCH 
   (keygrants:aws_kms_key_grants),
   (kmskeys:aws_kms_keys)
@@ -208,7 +208,7 @@ RETURN type(r)
 
 Let's now link Security Groups to the RDS instances.
 
-```sql
+```sql copy
 MATCH 
   (rds_is:aws_rds_instances), 
   (sgs:aws_ec2_security_groups) 
@@ -223,7 +223,7 @@ RETURN type(r)
 
 In the next cypher query, we will connect KMS Keys with their KMS Key Policies.
 
-```sql 
+```sql copy
 MATCH 
   (keypolicies:aws_kms_key_policies),
   (keys:aws_kms_keys) 
@@ -234,7 +234,7 @@ RETURN type(r)
 
 Now, we'll create relationships between RDS Instances and the VPC networks they belong to.
 
-```sql
+```sql copy
 MATCH 
   (rds_is:aws_rds_instances), 
   (vpcs:aws_ec2_vpcs) 
@@ -245,7 +245,7 @@ return type(r)
 
 Lastly, we'll create relationships between Internet Gateways and their VPCs.  In this cypher query, we use `[0]` to pull the first item in the list.  Internet Gateways can only be attached to 1 VPC, so this will return the only attachment in the attachment properties of the Internet Gateway resource.
 
-```sql
+```sql copy
 MATCH 
   (igws:aws_ec2_internet_gateways), 
   (vpcs:aws_ec2_vpcs)

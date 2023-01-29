@@ -28,7 +28,7 @@ Exporting [GCP billing data to BigQuery](https://cloud.google.com/billing/docs/h
 
 First, we need to sync our GCP data with CloudQuery to the same BigQuery dataset we synced our billing data to. To do that we will use the following CloudQuery configuration file (For full config reference, checkout the [GCP Source Plugin](https://www.cloudquery.io/docs/plugins/sources/gcp/overview) and [BigQuery Destination Plugin](https://www.cloudquery.io/docs/plugins/destinations/bigquery/overview)):
 
-```yaml
+```yaml copy
 kind: source
 spec:
   # Source spec section
@@ -69,13 +69,13 @@ Let's say we want to find all unattached disks and figure out how much they cost
 First let's find all unattached disks by query all disks with `users` field is null (which per [gcp documentation](https://cloud.google.com/compute/docs/reference/rest/v1/disks/get) is the case for unattached disks):
 
 
-```sql
+```sql copy
 select * from gcp_compute_disks where users is null
 ```
 
 Now let's join with the GCP billing data.
 
-```sql
+```sql copy
 SELECT sum(cost) FROM `cq-playground.costdata.gcp_billing_export_resource_v1_0183D4_4E0A4D_60E401` gcp_billing_export_resource 
   join `cq-playground.costdata.gcp_compute_disks` gcp_compute_disks on 
   gcp_billing_export_resource.resource.name = gcp_compute_disks.name 
@@ -91,7 +91,7 @@ Let's say we are running an experiment of migrating our workloads to different a
 
 Calculate cost for `Intel Broadwell` CPU:
 
-```sql
+```sql copy
 SELECT sum(cost) FROM `cq-playground.costdata.gcp_billing_export_resource_v1_0183D4_4E0A4D_60E401` gcp_billing_export_resource 
   join `cq-playground.costdata.gcp_compute_instances` gcp_compute_instances on gcp_billing_export_resource.resource.name = gcp_compute_instances.name 
 

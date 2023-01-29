@@ -1,3 +1,6 @@
+---
+name: HubSpot
+---
 # HubSpot Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -10,8 +13,9 @@ The CloudQuery HubSpot plugin extracts HubSpot information into your destination
 
 <Callout type="warning">
 
-The HubSpot API is heavily [rate limited](https://developers.hubspot.com/docs/api/usage-details#rate-limits). If you encounter 
-rate limit errors when running the HubSpot plugin, please let us know by opening an issue on our [GitHub repository](https://github.com/cloudquery/cloudquery) or by contacting us on [Discord](https://www.cloudquery.io/discord).
+The HubSpot REST API is [rate limited](https://developers.hubspot.com/docs/api/usage-details#rate-limits).
+By default, CloudQuery makes up to 5 API requests per second - but you may need to increase/decrease this value depending on your HubSpot subscription.
+You can use the `max_requests_per_second` configuration option to change this value (see below).
 
 </Callout>
 
@@ -19,7 +23,7 @@ rate limit errors when running the HubSpot plugin, please let us know by opening
 
 In Order for CloudQuery to sync resources from your HubSpot setup, you will need to authenticate with your HubSpot account. You will need to create a [HubSpot Private App](https://developers.hubspot.com/docs/api/private-apps), and export the App Token in `HUBSPOT_APP_TOKEN` environment variable.
 
-```bash
+```bash copy
 export HUBSPOT_APP_TOKEN=<your_app_token>
 ```
 
@@ -29,7 +33,7 @@ In order to get started with the HubSpot plugin, you need to create a YAML file 
 
 The following example sets up the HubSpot plugin, and connects it to a postgresql destination:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: "hubspot"
@@ -37,5 +41,9 @@ spec:
   version: "VERSION_SOURCE_HUBSPOT" 
   destinations: ["postgresql"]
   tables: ["*"]
+  
   spec:
+    # optional, default is 5.
+    # See https://developers.hubspot.com/docs/api/usage-details#rate-limits
+    max_requests_per_second: 5
 ```

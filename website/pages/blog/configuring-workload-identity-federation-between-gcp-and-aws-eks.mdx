@@ -24,7 +24,7 @@ In our example we run CloudQuery on AWS EKS with the official [CloudQuery Helm C
 
 The [Security Token Service API](https://cloud.google.com/iam/docs/reference/sts/rest) and the [IAM Service Account Credentials API](https://cloud.google.com/iam/docs/reference/credentials/rest) need to be enabled in our GCP project.
 
-```bash
+```bash copy
 gcloud services enable sts.googleapis.com
 gcloud services enable iamcredentials.googleapis.com
 ```
@@ -34,7 +34,7 @@ gcloud services enable iamcredentials.googleapis.com
 
 Now we need to create the GCP Service Account which CloudQuery will authenticate with in order to fetch the GCP resources.
 
-```bash
+```bash copy
 gcloud iam service-accounts create cq-fetcher \
     --description="CloudQuery fetcher which runs on AWS." \
     --display-name="cq-fetcher"
@@ -47,7 +47,7 @@ We need to ensure that the new Service Account has the appropriate permissions t
 
 Next, we need to create the GCP Workload Identity Pool.
 
-```bash
+```bash copy
 gcloud iam workload-identity-pools create cq-aws-pool \
     --description="Workload Identity Pool for CloudQuery on AWS." \
     --display-name="CloudQuery GCP AWS Workload Identity Pool" \
@@ -61,7 +61,7 @@ gcloud iam workload-identity-pools create cq-aws-pool \
 
 After creating the GCP Workload Identity Pool we need to create the Workload Identity Provider. This example does not cover how to harden the Identity Provider, which can be achieved by passing the `--attribute-condition` flag.
 
-```bash
+```bash copy
 gcloud iam workload-identity-pools \
     providers create-aws cq-aws-provider  \
     --account-id=123456789012 \
@@ -78,7 +78,7 @@ gcloud iam workload-identity-pools \
 
 Now we allow any AWS role from this pool to impersonate the GCP Service Account we created earlier by binding the IAM role `roles/iam.workloadIdentityUser` to the GCP service account. The number in the `-member` flag needs to be the GCP Project number. Please consider adjusting the `-member` flag as well for additional security. More information can be found in the [Service account impersonation](https://cloud.google.com/iam/docs/workload-identity-federation#impersonation) section of Google Cloud Docs.
 
-```bash
+```bash copy
 gcloud iam service-accounts add-iam-policy-binding \
     cq-fetcher@example-project.iam.gserviceaccount.com \
     --member "principalSet://iam.googleapis.com/projects/123456789012/locations/global/workloadIdentityPools/cq-aws-pool/*" \
@@ -97,7 +97,7 @@ The Client library config needs to be downloaded, this can be achieved by naviga
 
 The downloaded Client library config needs to be uploaded to our Kubernetes as a config map.
 
-```bash
+```bash copy
 kubectl -ncloudquery create configmap \
     cq-gcp-application-default-credentials \
     --from-file=./application_default_credentials.json

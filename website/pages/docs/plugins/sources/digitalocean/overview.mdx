@@ -1,3 +1,7 @@
+---
+name: DigitalOcean
+stage: GA
+---
 # DigitalOcean Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -23,7 +27,7 @@ In order to get started with the DigitalOcean plugin, you need to create a YAML 
 
 The following example sets up the DigitalOcean plugin, and connects it to a postgresql destination:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   # Source spec section
@@ -38,14 +42,14 @@ spec:
 
 ### Find public facing spaces
 
-```sql
+```sql copy
 --  public facing spaces are accessible by anyone, easily query which space is public facing in your account
 SELECT bucket->>'Name',location,public FROM digitalocean_spaces WHERE public = true;
 ```
 
 ### List Droplets with public facing ipv4 or ipv6
 
-```sql
+```sql copy
 -- Find any droplets that have a public ipv6 or ipv4 IP
 SELECT id, name, v4->>'ip_address' AS address_v4, v4->>'netmask' AS netmask_v4, v4->>'gateway' AS gateway_v4,
        v6->>'ip_address' AS address_v6, v6->>'netmask' AS netmask_v6, v6->>'gateway' AS gateway_v6

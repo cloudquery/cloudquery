@@ -37,7 +37,7 @@ For full details, check out the [PostGraphile](https://www.graphile.org/postgrap
 
 To run PostGraphile locally all you need to do is the following (adjust the Postgres URL accordingly):
 
-```bash
+```bash copy
 postgraphile -c "postgres://postgres:pass@localhost:5432/postgres" --enhance-graphiql --skip-plugins graphile-build:NodePlugin --simple-collections only -p 6060
 ```
 
@@ -45,7 +45,7 @@ postgraphile -c "postgres://postgres:pass@localhost:5432/postgres" --enhance-gra
 
 That’s it! The output of a successful run is presented below:
 
-```bash
+```bash copy
 PostGraphile v4.12.9 server listening on port 6060 🚀
 
   ‣ GraphQL API:         http://localhost:6060/graphql
