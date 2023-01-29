@@ -21,7 +21,7 @@ In this tutorial, we will show you how to load AWS's Cost and Usage Reports into
 ## Walkthrough
 
 ### 1. Infrastructure Data Prerequisites
-In a [previous guide](www.cloudquery.io/how-to-guides/how-to-load-infrastructure-data-into-athena), we talked about how to load infrastructure data into Amazon Athena.  If you haven't done so already, follow the guide to setup CloudQuery to sync infrastructure data into S3 and query that data with Amazon Athena.
+In a [previous guide](/how-to-guides/how-to-load-infrastructure-data-into-athena), we talked about how to load infrastructure data into Amazon Athena.  If you haven't done so already, follow the guide to setup CloudQuery to sync infrastructure data into S3 and query that data with Amazon Athena.
 
 After completing the guide above, you should have the following completed:
 
@@ -36,7 +36,7 @@ By the end of this step, we'll have created the following:
 * A S3 Bucket to hold our Cost and Usage Reports.
 * A new Cost and Usage Report.
 
-Let's start by [creating a new S3 bucket](https://docs.aws.amazon.com/cur/latest/userguide/cur-s3.html) for our Cost and Usage Reports.  To do so in AWS console, navigate to https://us-east-1.console.aws.amazon.com/billing/home?region=us-east-1&skipRegion=true#/reports/create (use the region of your choice) and select the following options:
+Let's start by [creating a new S3 bucket](https://docs.aws.amazon.com/cur/latest/userguide/cur-s3.html) for our Cost and Usage Reports.  To do so in AWS console, navigate to the Cost and Usage Reports page of the [AWS Billing Console](https://aws.amazon.com/aws-cost-management/aws-billing/) (use the region of your choice) and select the following options:
 
 * Include resource IDs
 * Enable Data Refresh
@@ -55,7 +55,7 @@ Once the bucket has been confirmed with the default bucket policy, select the fo
 
 After verifying the settings of the Cost and Usage Report, select create report!
 
-For the CLI equivalent, please see https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cur/put-report-definition.html.
+Please see [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cur/put-report-definition.html) for the CLI equivalent.
 
 AWS's `billingreports.amazonaws.com` will deliver these reports to our new S3 Bucket.  Keep in mind that it may take up to 24 hours for AWS to start delivering reports to the Amazon S3 bucket.  If you are creating a fresh S3 bucket, we suggest creating the bucket and coming back the next day to complete the rest of this guide!  Storing the billing reports data in Amazon S3 will incur standard [S3 costs](https://docs.aws.amazon.com/cur/latest/userguide/billing-cur-limits.html).  
 
@@ -173,7 +173,7 @@ We'd love to see what more you do with cost optimization and FinOps with CloudQu
 
 ## References
 
-[CloudQuery: AWS Source Plugin](https://www.cloudquery.io/docs/plugins/sources/aws/overview)
+[CloudQuery: AWS Source Plugin](/docs/plugins/sources/aws/overview)
 
 [AWS: Querying Cost and Usage Reports using Amazon Athena](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html)
 
