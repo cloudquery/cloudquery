@@ -67,7 +67,7 @@ We’ll go into detail on some of these permissions later in this post.
 
 A sample key policy that allows for a key administrator to Create Grants is as follows.  Note with this policy, we’ve modified the default key policy from AWS so that it does not [enable IAM policies](https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html).  If you plan on using this key policy, ensure that any other permissions necessary are either explicitly allowed on the key policy or are enabled in IAM similar to the `Allow access to key metadata to the account` statement.
 
-```json
+```json copy
 {
     "Sid": "AllowRootAccountAccess",
     "Effect": "Allow",
@@ -108,7 +108,7 @@ A sample key policy that allows for a key administrator to Create Grants is as f
 
 ### Creating Grants
 
-```bash
+```bash copy
 aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-1234-1234-1234-123412341234 --grantee-principal arn:aws:iam::123412341234:user/sample-user --operations DescribeKey --profile yourprofile --region us-east-1
 ```
 
@@ -125,7 +125,7 @@ The permission to [create a grant](https://docs.aws.amazon.com/kms/latest/develo
 
 A Grantee Principal that was granted access to `CreateGrant` via a Grant can then create child grants.  
 
-```bash
+```bash copy
 aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-1234-1234-1234-123412341234 --grantee-principal arn:aws:iam::123412341234:user/hugh-grant --operations DescribeKey CreateGrant --profile myprofilewithoutpermpolicy --region us-east-1
 ```
 In the above code snippet, we've granted our `hugh-grant` user the permissions to `DescribeKey` and `CreateGrant`.
@@ -133,17 +133,17 @@ In the above code snippet, we've granted our `hugh-grant` user the permissions t
 Now, we’ll try the following 3 use cases:
 
 - Creating a Grant with more operations than the parent grant.
-```bash
+```bash copy
 aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-1234-1234-1234-123412341234 --grantee-principal arn:aws:iam::123412341234:user/sample-user --operations DescribeKey Decrypt CreateGrant --profile hughgrant --region us-east-1
 ```
 
 - Creating a Grant with the same operations as the parent grant.
-```bash
+```bash copy
 aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-1234-1234-1234-123412341234 --grantee-principal arn:aws:iam::123412341234:user/sample-user --operations DescribeKey CreateGrant --profile hughgrant --region us-east-1
 ```
 
 - Creating a Grant with fewer operations as the parent grant.
-```bash
+```bash copy
 aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-1234-1234-1234-123412341234 --grantee-principal arn:aws:iam::123412341234:user/sample-user --operations DescribeKey --profile hughgrant --region us-east-1
 ```
 
@@ -186,11 +186,11 @@ A few key differences include:
 
 - RetireGrant can be granted by specifying a retiring principal when creating the grant.  RetireGrant can also be granted to the Grantee Principal similar to other available operations in CreateGrant.  Principals specified in the grant can then retire a grant without the `kms:RetireGrant` permission explicitly allowed in either a key policy or an identity policy.
 
-```bash
+```bash copy
 aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-1234-1234-1234-123412341234 --grantee-principal arn:aws:iam::123412341234:user/sample-user --retiring-principal arn:aws:iam::123412341234:user/sample-principal --operations DescribeKey --profile testprofile --region us-east-1
 ```
 
-```bash
+```bash copy
 aws kms create-grant --key-id arn:aws:kms:us-east-1:123412341234:key/aaaaaaaa-1234-1234-1234-123412341234 --grantee-principal arn:aws:iam::123412341234:user/sample-user --operations DescribeKey RetireGrant --profile testprofile --region us-east-1
 ```
 
@@ -206,7 +206,7 @@ Along with [AWS Best Practices for KMS Key Grants](https://docs.aws.amazon.com/k
 
 * We recommend limiting the ability to delegate access to the KMS key to only Key Administrators and Services.  This includes the `kms:CreateGrant` permission and the `kms:PutKeyPolicy`.  Below is an example key policy that limits key delegation abilities to the root account user and to the KeyAdminRole, but does not enable IAM policy access. 
 
-```json
+```json copy
 {
     "Sid": "AllowRootAccountAccess",
     "Effect": "Allow",
@@ -236,7 +236,7 @@ Along with [AWS Best Practices for KMS Key Grants](https://docs.aws.amazon.com/k
 
 * This can be done by the `kms:GrantIsForAWSResource` Condition Key here.  An example key policy for EC2 Autoscaling with encrypted volumes is below.
 
-```json
+```json copy
 {
    "Sid": "Allow service-linked role use of the customer managed key",
    "Effect": "Allow",
@@ -281,7 +281,7 @@ Along with [AWS Best Practices for KMS Key Grants](https://docs.aws.amazon.com/k
 5. Take inventory of KMS Key Grants and validate usage of KMS Key Grants.
 
 * The following CloudQuery query in postgresql finds grants where the grantee principal is not an AWS service.
-```sql
+```sql copy
 SELECT * from aws_kms_key_grants where (grantee_principal NOT LIKE '%.amazonaws.com' AND grantee_principal NOT LIKE 'AWS Internal');
 ```
 
