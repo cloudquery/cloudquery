@@ -1,7 +1,6 @@
 ---
 title: How to Query AWS Cost and Usage Data with Amazon Athena
 tag: tutorial
-date: 2022/12/15
 description: >-
   How to Query and Correlate AWS Cost and Usage Data with CloudQuery synced data from AWS.
 author: jsonkao
@@ -15,7 +14,7 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 In a [previous guide](www.cloudquery.io/how-to-guides/how-to-load-infrastructure-data-into-athena), we talked about how to load infrastructure data into Amazon Athena.  In this tutorial, we will show you how to load AWS's Cost and Usage Reports into Amazon Athena and enrich infrastructure data with the data provided by Cost and Usage Reports.  This will enable you to query your data and execute different cost optimization and FinOps use cases to understand and manage the financials of your cloud infrastructure.
 
-## Steps
+## Walkthrough
 
 ### 1. Infrastructure Data Prerequisites
 
@@ -71,11 +70,24 @@ You should now see 2 databases loaded in Amazon Athena:
 * Loaded CloudQuery Data
 * Loaded AWS Cost and Usage Reports
 
-### 5. Run Athena Queries on Infrastructure and Cost Data
+### 4. Run Athena Queries on Infrastructure and Cost Data
 
 Let's start by looking at our biggest expenses:
 
-** Show biggest expenses and correlate with resources.
+** Show biggest expenses and correlate with resources.  Note, by including the `line_item_resource_id!=''` in our Athena query, we exclude cost of items that are not directly associated with resource IDs such as cost for AWS Support.
+
+```sql copy
+SELECT line_item_resource_id, line_item_product_code,
+sum(line_item_blended_cost) AS cost, month
+FROM "athenacurcfn_jason_demo_reports"."jason_demo_reports"
+WHERE year='2023' and line_item_resource_id!=''
+GROUP BY line_item_resource_id, month, line_item_product_code
+HAVING sum(line_item_blended_cost) > 0
+ORDER BY cost DESC;
+```
+
+![Results from Athena Query showing resources correlated with most expensive cost per month](/images/how-to-guides/query-aws-cost-and-usage-athena/athena-cost-usage.png)
+
 
 Now let's look at one straightforward method to reduce costs by using more cost-effective EBS volume types.
 
