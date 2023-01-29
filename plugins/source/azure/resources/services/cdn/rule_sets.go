@@ -11,16 +11,7 @@ func rule_sets() *schema.Table {
 		Name:        "azure_cdn_rule_sets",
 		Resolver:    fetchRuleSets,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn@v1.0.0#RuleSet",
-		Transform:   transformers.TransformWithStruct(&armcdn.RuleSet{}),
-		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armcdn.RuleSet{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{},
 	}
 }

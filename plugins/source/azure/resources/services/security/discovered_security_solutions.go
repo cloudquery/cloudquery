@@ -15,22 +15,8 @@ func DiscoveredSecuritySolutions() *schema.Table {
 		Resolver:    fetchDiscoveredSecuritySolutions,
 		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/discovered-security-solutions/list?tabs=HTTP#discoveredsecuritysolution",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_discovered_security_solutions", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.DiscoveredSecuritySolution{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armsecurity.DiscoveredSecuritySolution{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

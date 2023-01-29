@@ -2,7 +2,7 @@
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn@v1.0.0#ManagedRuleSetDefinition
 
-The primary key for this table is **id**.
+The composite primary key for this table is (**subscription_id**, **id**).
 
 ## Columns
 
@@ -12,10 +12,10 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
-|id (PK)|String|
+|subscription_id (PK)|String|
 |properties|JSON|
 |sku|JSON|
+|id (PK)|String|
 |name|String|
 |system_data|JSON|
 |type|String|

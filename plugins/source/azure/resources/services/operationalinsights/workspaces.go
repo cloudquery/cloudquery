@@ -15,22 +15,8 @@ func Workspaces() *schema.Table {
 		Resolver:    fetchWorkspaces,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights@v1.0.0#Workspace",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_operationalinsights_workspaces", client.Namespacemicrosoft_operationalinsights),
-		Transform:   transformers.TransformWithStruct(&armoperationalinsights.Workspace{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armoperationalinsights.Workspace{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 
