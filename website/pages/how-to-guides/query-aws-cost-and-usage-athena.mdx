@@ -142,7 +142,7 @@ FROM (
     SUM(line_item_blended_cost) AS cost, month
 	FROM "athenacurcfn_jason_demo_reports"."jason_demo_reports"
 	WHERE 
-    year='2023' and line_item_resource_id!='' and line_item_resource_id LIKE 'vol-%'
+    line_item_resource_id LIKE 'vol-%'
 	GROUP BY 
     line_item_resource_id, line_item_product_code, 
     month
