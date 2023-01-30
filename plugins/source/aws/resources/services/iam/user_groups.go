@@ -12,7 +12,7 @@ func UserGroups() *schema.Table {
 		Name:        "aws_iam_user_groups",
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html`,
 		Resolver:    fetchIamUserGroups,
-		Transform:   transformers.TransformWithStruct(&types.Group{}),
+		Transform:   transformers.TransformWithStruct(&types.Group{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
@@ -24,14 +24,14 @@ func UserGroups() *schema.Table {
 				Name:     "user_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "user_id",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 		},
 	}
