@@ -83,6 +83,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/savingsplans"
 	"github.com/aws/aws-sdk-go-v2/service/scheduler"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
@@ -184,6 +185,7 @@ var clients = []any{
 	&savingsplans.Client{},
 	&scheduler.Client{},
 	&secretsmanager.Client{},
+	&securityhub.Client{},
 	&servicecatalog.Client{},
 	&servicecatalogappregistry.Client{},
 	&servicequotas.Client{},

@@ -4,7 +4,7 @@
 
 This example connects a single GCP project to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml
+```yaml copy
 kind: source
 spec:
   # Source spec section
@@ -59,7 +59,7 @@ If enabled CloudQuery will skip any resources that belong to a service that has 
 
 ## GCP + Kubernetes (GKE)
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: gcp

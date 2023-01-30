@@ -1,3 +1,6 @@
+---
+name: Fastly
+---
 # Fastly Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -11,7 +14,7 @@ The CloudQuery Fastly plugin reads information from your Fastly account(s) and l
 
 This example syncs from Fastly to a Postgres destination, using the token provided in an environment variable called `FASTLY_API_KEY`. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml
+```yaml copy
 kind: source
 # Common source-plugin configuration
 spec:
@@ -48,7 +51,7 @@ This is the (nested) spec used by the Fastly source plugin.
 select name, id, type, active_version from fastly_services;
 ```
 
-```text
+```text copy
 +----------------------+------------------------+------+----------------+
 | name                 | id                     | type | active_version |
 |----------------------+------------------------+------+----------------|
@@ -71,7 +74,7 @@ FROM fastly_service_domains d
 ORDER BY service_name;
 ```
 
-```text
+```text copy
 +------------------------+----------------------+----------------+--------------------------------------+
 | service_id             | service_name         | active_version | domain_name                          |
 |------------------------+----------------------+----------------+--------------------------------------|
@@ -95,7 +98,7 @@ WHERE  service_id = '1234567890abcdefghijkl'
 ORDER  BY service_version DESC; 
 ```
 
-```text
+```text copy
 +-----------------------+--------+--------+-----------+-----------------+----------------+
 | host                  | path   | method | threshold | service_version | check_interval |
 |-----------------------+--------+--------+-----------+-----------------+----------------|
@@ -123,7 +126,7 @@ GROUP BY date_trunc('month', start_time)
 ORDER BY date_trunc('month', start_time) ASC
 ```
 
-```text
+```text copy
 +-----------+----------+------------+------------+------------+------------+
 | month     | requests | resp_bytes | status_2xx | status_4xx | status_5xx |
 |-----------+----------+------------+------------+------------+------------|
@@ -152,7 +155,7 @@ FROM   fastly_account_users
 WHERE  two_factor_auth_enabled IS FALSE
 ```
 
-```text
+```text copy
 +---------------+---------------------------+-------------------------+
 | name          | login                     | two_factor_auth_enabled |
 |---------------+---------------------------+-------------------------|
@@ -172,7 +175,7 @@ SELECT NAME,
 FROM   fastly_auth_tokens 
 ```
 
-```text
+```text copy
 +-----------------------------------+-------------+---------------------+---------------------+---------------------+
 | name                              | scope       | created_at          | last_used_at        | expires_at          |
 |-----------------------------------+-------------+---------------------+---------------------+---------------------|

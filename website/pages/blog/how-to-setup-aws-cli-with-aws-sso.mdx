@@ -46,7 +46,7 @@ SSO Region [None]: us-east-1
 
 ![](/images/blog/how-to-setup-aws-cli-with-aws-sso/aws-authorize-request.png)
 
-```bash
+```bash copy
 # This will suggest to choose an account from which are available to you
 There are 6 AWS accounts available to you.
 
@@ -69,7 +69,7 @@ CLI profile name [AdministratorAccess-345990386405]: cq-dev-admin
 
 That’s it you configured a new profile (in that case named `cq-dev-admin`) and to test it run the following command:
 
-```bash
+```bash copy
 aws s3 ls --profile cq-dev-admin
 ## wil output available s3 buckets
 ```
@@ -78,7 +78,7 @@ aws s3 ls --profile cq-dev-admin
 
 It is common to have multiple accounts available to you via SSO and the neat thing is that you only need to login **once** to any of those **accounts** and you can use any of them in the CLI. The only thing that you will need to do is to add the additional profiles either manually (which will probably be faster) or through the interactive CLI. In either your `~/.aws/config` should look something like the following:
 
-```bash
+```ini copy
 [profile profile-name-1]
 sso_start_url = https://xxxxxx.awsapps.com/start
 sso_region = us-east-1
@@ -95,13 +95,13 @@ region = eu-central-1
 
 Once you logged in with any of those profiles (as long as the `sso_start_url` and `sso_region` are the same) with the following command:
 
-```bash
+```bash copy
 aws sso login --profile profile-name-1
 ```
 
 you can run also without logging in specifically to other profiles!
 
-```bash
+```bash copy
 aws s3 ls --profile profile-name-2
 ```
 

@@ -35,7 +35,7 @@ CloudQuery is an open-source framework that transforms your cloud infrastructure
 
 You can download the pre-compiled binary from [releases](https://github.com/cloudquery/cloudquery/releases), or using CLI:
 
-```powershell
+```powershell copy
 export OS=darwin # Possible values: linux,windows,darwin
 curl -L https://versions.cloudquery.io/latest/v2/cloudquery_${OS}_amd64 -o cloudquery
 chmod a+x cloudquery
@@ -43,7 +43,7 @@ chmod a+x cloudquery
 
 For mac you can use `homebrew`:
 
-```powershell
+```powershell copy
 brew install cloudquery/tap/cloudquery
 # After initial install you can upgrade the version via:
 brew upgrade cloudquery
@@ -79,7 +79,7 @@ Now run `cloudquery policy run aws//cis_v1.2.0` to see results!
 
 Here is a snippet of the report:
 
-```powershell
+```powershell copy
 ✓ policy "cloudquery-policies-aws" -  evaluating -                0s   Finished Queries: 85/85
 
 📋 cloudquery-policies-aws Results:

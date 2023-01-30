@@ -1,3 +1,6 @@
+---
+name: Hacker News
+---
 # Hacker News Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -13,7 +16,7 @@ It can be used for real applications, but is mainly intended to serve as an exam
 
 The following configuration syncs from Hacker News to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/quickstart) if you need help setting up the destination.
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: "hackernews"
@@ -45,7 +48,7 @@ Note that if `backend: local` is not specified, the default will be no backend. 
 
 ### Compare the number of mentions for two terms 
 
-```sql
+```sql copy
 SELECT 'data engineer' AS NAME,
        count(*)        AS mentions
 FROM   hackernews_items
@@ -59,7 +62,7 @@ WHERE  title ilike '%software engineer%'
 OR     text ilike '%software engineer%';
 ```
 
-```text
+```text copy
 +-------------------+----------+
 | name              | mentions |
 |-------------------+----------|
@@ -70,7 +73,7 @@ OR     text ilike '%software engineer%';
 
 ### List the top stories for a given domain in 2022 
 
-```sql
+```sql copy
 SELECT   h.url,
          h.score
 FROM     hackernews_items h
@@ -79,7 +82,7 @@ AND      h.time BETWEEN date '2022-01-01' AND date '2023-01-01'
 ORDER BY h.score DESC limit 5
 ```
 
-```text
+```text copy
 +-------------------------------+-------+
 | url                           | score |
 |-------------------------------+-------|
@@ -93,7 +96,7 @@ ORDER BY h.score DESC limit 5
 
 ### List the top 3 users by number of comments in 2022
 
-```sql
+```sql copy
 SELECT   h.by     AS USER,
          count(*) AS comments
 FROM     hackernews_items h
@@ -104,7 +107,7 @@ GROUP BY h.by
 ORDER BY comments DESC limit 3;
 ```
 
-```text
+```text copy
 +---------+----------+
 | user    | comments |
 |---------+----------|
@@ -116,7 +119,7 @@ ORDER BY comments DESC limit 3;
 
 ### List recently posted remote-friendly YC startup jobs
 
-```sql
+```sql copy
 SELECT   h.time,
          h.title
 FROM     hackernews_items h
@@ -125,7 +128,7 @@ AND      h.title ilike '%remote%'
 ORDER BY h.time DESC limit 3;
 ```
 
-```text
+```text copy
 +---------------------+---------------------------------------------------------------------+
 | time                | title                                                               |
 |---------------------+---------------------------------------------------------------------|

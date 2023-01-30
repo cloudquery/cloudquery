@@ -4,7 +4,7 @@
 
 This example connects a single Datadog account to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml
+```yaml copy
 kind: source
 spec:
   # Source spec section
