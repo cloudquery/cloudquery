@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_BasePathMapping.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**account_id**, **arn**).
 
 ## Relations
 
@@ -16,7 +16,7 @@ This table depends on [aws_apigateway_domain_names](aws_apigateway_domain_names.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
+|account_id (PK)|String|
 |region|String|
 |domain_name_arn|String|
 |arn (PK)|String|
