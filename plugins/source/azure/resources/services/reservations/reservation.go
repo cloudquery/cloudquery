@@ -13,7 +13,7 @@ func Reservation() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_reservations_reservation",
 		Resolver:    fetchReservation,
-		Description: "https://learn.microsoft.com/en-us/rest/api/reserved-vm-instances/reservation/get?tabs=HTTP#reservationresponse",
+		Description: "https://learn.microsoft.com/en-us/rest/api/reserved-vm-instances/reservation/list-all?tabs=HTTP#reservationresponse",
 		Transform:   transformers.TransformWithStruct(&armreservations.ReservationResponse{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
