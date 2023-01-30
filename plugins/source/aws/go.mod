@@ -72,6 +72,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ram v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/rds v1.40.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.27.0
+	github.com/aws/aws-sdk-go-v2/service/resiliencehub v1.8.0
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0
@@ -115,7 +116,6 @@ require (
 require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.18 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.22 // indirect
-	github.com/aws/aws-sdk-go-v2/service/resiliencehub v1.8.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.0 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/getsentry/sentry-go v0.16.0 // indirect
