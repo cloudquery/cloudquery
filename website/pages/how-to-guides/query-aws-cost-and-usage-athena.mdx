@@ -72,7 +72,7 @@ For this step, we'll use the CloudFormation template that [AWS generates](https:
 ```bash copy
 aws cloudformation create-stack \
 --stack-name cost-and-usage-crawler \
---template-url https://cq-demo-cur.s3.amazonaws.com/cost-and-usage/jason-demo-reports/crawler-cfn.yml \
+--template-url https://cq-demo-cur.s3.amazonaws.com/cost-and-usage/cloudquery-demo-reports/crawler-cfn.yml \
 --capabilities CAPABILITY_IAM 
 --region us-east-1
 ```
@@ -96,7 +96,7 @@ We can run the following query [to validate that Athena is ready](https://docs.a
 
 ```sql copy
 SELECT * 
-FROM "athenacurcfn_jason_demo_reports"."cost_and_usage_data_status"
+FROM "athenacurcfn_cloudquery_demo_reports"."cost_and_usage_data_status"
 ```
 
 ### 4. Run Athena Queries on Infrastructure and Cost Data
@@ -111,7 +111,7 @@ SELECT
   line_item_product_code,
   sum(line_item_blended_cost) AS cost, 
   month
-FROM "athenacurcfn_jason_demo_reports"."jason_demo_reports"
+FROM "athenacurcfn_cloudquery_demo_reports"."cloudquery_demo_reports"
 WHERE year='2023' and line_item_resource_id!=''
 GROUP BY line_item_resource_id, line_item_product_code, month
 HAVING sum(line_item_blended_cost) > 0
@@ -140,7 +140,7 @@ FROM (
 	SELECT 
 	  line_item_resource_id, line_item_product_code, 
     SUM(line_item_blended_cost) AS cost, month
-	FROM "athenacurcfn_jason_demo_reports"."jason_demo_reports"
+	FROM "athenacurcfn_cloudquery_demo_reports"."cloudquery_demo_reports"
 	WHERE 
     line_item_resource_id LIKE 'vol-%'
 	GROUP BY 
