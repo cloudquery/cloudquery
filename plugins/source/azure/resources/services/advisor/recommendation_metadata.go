@@ -16,7 +16,6 @@ func RecommendationMetadata() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/advisor/recommendation-metadata/list?tabs=HTTP#metadataentity",
 		Multiplex:   client.SingleSubscriptionMultiplex,
 		Transform:   transformers.TransformWithStruct(&armadvisor.MetadataEntity{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 
