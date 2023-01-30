@@ -176,3 +176,4 @@ Zsh
 Fivetran
 Extensible
 VMs
+financials
