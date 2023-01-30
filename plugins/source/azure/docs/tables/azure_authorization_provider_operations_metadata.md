@@ -2,7 +2,7 @@
 
 https://learn.microsoft.com/en-us/rest/api/authorization/provider-operations-metadata/list?tabs=HTTP#provideroperationsmetadata
 
-The composite primary key for this table is (**subscription_id**, **id**).
+The primary key for this table is **id**.
 
 ## Columns
 
@@ -12,7 +12,6 @@ The composite primary key for this table is (**subscription_id**, **id**).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id (PK)|String|
 |display_name|String|
 |id (PK)|String|
 |name|String|
