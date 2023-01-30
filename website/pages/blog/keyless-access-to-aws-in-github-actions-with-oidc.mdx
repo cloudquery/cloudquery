@@ -84,7 +84,7 @@ Using the IAM suite of commands we run `create-open-id-connect-provider` and pro
 
 This will give you a response object that looks like this:
 
-```json
+```json copy
 {
   "OpenIDConnectProviderArn": "arn:aws:iam::000000000000:oidc-provider/token.actions.githubusercontent.com"
 }
@@ -94,7 +94,7 @@ Now the OpenID Connect Identity provider exists, you need to create a role for i
 
 Let’s start with the trust policy `githubactionawstrustpolicy.json`
 
-```json
+```json copy
 {
   "Version": "2012-10-17",
   "Statement": {
@@ -115,7 +115,7 @@ Let’s start with the trust policy `githubactionawstrustpolicy.json`
 
 This trust policy is allowing a connection from GitHub via the OpenID Connect we created earlier to assume the role, and to set this up we use the following command:
 
-```bash
+```bash copy
 aws iam create-role --role-name GitHub-Action-Role --assume-role-policy-document <pathto>/githubactionawstrustpolicy.json
 ```
 
@@ -123,7 +123,7 @@ Using the `aws iam create-role` command we are creating the `GitHub-Action-Role`
 
 Here is an example permissions JSON in the form of `permissionsforgithubactions.json`
 
-```json
+```json copy
 {
   "Version": "2012-10-17",
   "Statement": {
@@ -138,7 +138,7 @@ The permission we are granting here is that the GitHub Action may run `ListBucke
 
 To attach this to our new role you will need to run the command:
 
-```bash
+```bash copy
 aws iam put-role-policy --role-name GitHub-Action-Role --policy-name Perms-Policy-For-GitHub-Actions --policy-document <pathto>/permissionsforgithubactions.json
 ```
 
@@ -148,7 +148,7 @@ With this command, we’re attaching the `Perms-Policy-For-GitHub-Actions` to ou
 
 If you’re using [Terraform](https://www.terraform.io/) already, it’s quite a straightforward terraform script to create an OpenID Connect Identity provider with its required role and permissions. Luckily, the Terraform registry contains a complete [AWS provider](https://registry.terraform.io/providers/hashicorp/aws/latest) to use. The script is as follows:
 
-```hcl
+```hcl copy
 provider "aws" {}
 
 resource "aws_iam_openid_connect_provider" "default" {
@@ -211,7 +211,7 @@ Let’s break this down, as we’re using `AWS` you will need to make sure you h
 
 The next block is actually configuring the OpenID Connect Identity provider
 
-```hcl
+```hcl copy
 resource "aws_iam_openid_connect_provider" "default" {
   url = "https://token.actions.githubusercontent.com"
 
@@ -233,7 +233,7 @@ The individual parts of this are
 
 Once we have an OIDC we will need to grant it a role to assume within AWS, the block for this is:
 
-```hcl
+```hcl copy
 resource "aws_iam_role" "github_action_role" {
   name = "github_actions_role"
 
@@ -262,7 +262,7 @@ resource "aws_iam_role" "github_action_role" {
 
 Here we are simply naming the role `github_actions_role` and then giving it a role policy, once we have this role policy the final block is used to grant said role permissions:
 
-```hcl
+```hcl copy
 resource "aws_iam_role_policy" "github_actions_policy" {
   name = "github-actions-policy"
   role = aws_iam_role.github_action_role.id

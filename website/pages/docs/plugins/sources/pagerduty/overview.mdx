@@ -1,7 +1,11 @@
+---
+name: PagerDuty
+---
 # PagerDuty Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import { Callout } from 'nextra-theme-docs';
 
 <Badge text={"Latest: " + getLatestVersion("source", "pagerduty")}/>
 
@@ -12,10 +16,46 @@ The CloudQuery PagerDuty plugin extracts PagerDuty resources. It is based on [Th
 In order to authenticate with your PagerDuty account, you will need a [PagerDuty authorization token](https://support.pagerduty.com/docs/api-access-keys#section-generating-a-general-access-rest-api-key).
 CloudQuery supports two methods of reading the authorization token:
 - From a `~/.pd.yml` file, such as:
-  ```yaml
+  ```yaml copy
   authtoken: <YOUR_AUTH_TOKEN>
   ```
 - From an environment variable `PAGERDUTY_AUTH_TOKEN`.
+
+## Rate Limiting
+
+The PagerDuty REST API is [rate limited](https://developer.pagerduty.com/docs/ZG9jOjExMDI5NTUz-rate-limiting#what-are-our-limits) to 900 requests per minute per organization (15 requests per second).
+Because of this, PagerDuty plugin syncs may take relatively long. This may fit your use case if you sync 
+on something like a nightly cadence - but there are a few things you can do to speed this up:
+
+<Callout type="info">
+
+Because the PagerDuty API is limited **per organization**, it's important to make sure CloudQuery doesn't use
+up too much of the quota and disturbs other processes in your organization. By default CloudQuery makes 10 requests
+per second (66% of the quota), but you can reduce/increase this number by setting the `max_requests_per_second`
+[configuration parameter](/docs/plugins/sources/pagerduty/configuration).
+
+</Callout>
+
+- Relational tables (e.g. `pagerduty_incident_notes`, `pagerduty_incident_alerts`) require the most API calls, because
+  they require an API call per resource (e.g. incident). You may be able to speed up the sync by skipping these relational
+  tables:
+  ```yaml
+  skip_tables: [
+    "pagerduty_incident_alerts",
+    "pagerduty_incident_notes",
+    "pagerduty_incident_log_entries",
+    "pagerduty_ruleset_rules",
+    "pagerduty_user_contact_methods",
+    "pagerduty_user_notification_rules"
+  ]
+  ```
+
+- If you are only interested in some of the teams in your organization, you can filter to only sync their resources with
+  ```yaml
+    team_ids: ["<team_id>"]
+  ```
+
+See the [PagerDuty Configuration Page](/docs/plugins/sources/pagerduty/configuration) for more info.
 
 ## Example Queries
 
@@ -24,7 +64,7 @@ The following example queries are SQL queries in the PostgreSQL flavour (i.e. ca
 
 ### Top 10 services that generate the most incidents (last 3 months)
 
-```sql
+```sql copy
   SELECT pagerduty_services.id AS service_id,
          pagerduty_services.name AS service_name,
          COUNT(pagerduty_incidents.id) AS incident_count
@@ -37,7 +77,7 @@ The following example queries are SQL queries in the PostgreSQL flavour (i.e. ca
   LIMIT 10
 ```
 
-```text
+```text copy
  service_id |  service_name   | incident_count
 ------------+-----------------+----------------
  PYS6MP5    | UnstableService | 25   
@@ -46,7 +86,7 @@ The following example queries are SQL queries in the PostgreSQL flavour (i.e. ca
 
 ### Average time to respond to a query, grouped by priority (last 3 months)
 
-```sql
+```sql copy
 WITH incident_ack_logs AS (
   SELECT pagerduty_incidents.id AS incident_id,
          pagerduty_incidents.priority->>'name' AS priority,
@@ -69,7 +109,7 @@ FROM incident_ack_time
 GROUP BY priority
 ```
 
-```text
+```text copy
 priority | average_time_to_ack
 ----------+---------------------
 P1       | 00:05:10
@@ -79,7 +119,7 @@ P3       | 06:20:00
 
 ### Which users acknowledged the most incidents (last 3 months)
 
-```sql
+```sql copy
   WITH incident_ack_logs AS (
     SELECT pagerduty_incidents.id AS incident_id,
            pagerduty_incident_log_entries.agent->>'id' AS agent_id
@@ -98,7 +138,7 @@ P3       | 06:20:00
   ORDER BY acknowledge_count DESC
 ```
 
-```text
+```text copy
  user_id |  user_name  | acknowledge_count
 ---------+-------------+-------------------
  PDYR2Y8 | John        | 15

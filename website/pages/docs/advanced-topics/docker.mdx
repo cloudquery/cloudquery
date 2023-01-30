@@ -16,7 +16,7 @@ It is possible to use CloudQuery in an isolated container. You can pull the rele
 
 CloudQuery uses YAML files as the primary means of configuration. A simple example `config.yml` file would look like:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: aws
@@ -38,7 +38,7 @@ spec:
 
 For the CloudQuery docker container to use this configuration file you will need to mount the volume to the container like so:
 
-```bash 
+```bash copy
 docker run --pull always \
   -v <ABSOLUTE_PATH_TO_CONFIG_FILE>:/config.yml \
   # set any env variable with -e <ENV_VAR_NAME>=<ENV_VAR_VALUE>
@@ -60,7 +60,7 @@ If you are running Docker on an ARM Apple device and you see a segmentation faul
 
 Due to the way `cloudquery` is [designed](/docs/developers/architecture) it downloads all the components to interact with source and destination plugins. This means that with a docker container it runs the download step each time, as the local cache is lost between executions. To avoid this we recommend mounting a volume to cache the data and configuring `cloudquery` to use this via the `--cq-dir` optional flag. An example of this would be:
 
-```bash
+```bash copy
 docker run --pull always \
   -v <ABSOLUTE_PATH_TO_CONFIG_FILE>:/config.yml \
   -v <ABSOLUTE_PATH_TO_CACHE_DIRECTORY>:/cache/.cq \

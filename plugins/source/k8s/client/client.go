@@ -13,6 +13,7 @@ import (
 
 	// import all k8s auth options
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
+	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/tools/clientcmd/api"
 )
@@ -109,7 +110,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 
 	for _, ctxName := range contexts {
 		logger.Info().Str("context", ctxName).Msg("creating k8s client for context")
-		kClient, err := buildKubeClient(rawKubeConfig, ctxName)
+		kClient, err := buildKubeClient(logger, rawKubeConfig, ctxName)
 		if err != nil {
 			return nil, fmt.Errorf("failed to build k8s client for context %q: %w", ctxName, err)
 		}
@@ -124,7 +125,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 }
 
 // buildKubeClient creates a k8s client from the given config and context name.
-func buildKubeClient(kubeConfig api.Config, ctx string) (*kubernetes.Clientset, error) {
+func buildKubeClient(logger zerolog.Logger, kubeConfig api.Config, ctx string) (*kubernetes.Clientset, error) {
 	override := &clientcmd.ConfigOverrides{CurrentContext: ctx}
 	clientConfig := clientcmd.NewNonInteractiveClientConfig(
 		kubeConfig,
@@ -134,7 +135,11 @@ func buildKubeClient(kubeConfig api.Config, ctx string) (*kubernetes.Clientset, 
 	)
 	restConfig, err := clientConfig.ClientConfig()
 	if err != nil {
-		return nil, err
+		logger.Warn().Msg("Failed to create k8s client, fallback to use the in-cluster config")
+		restConfig, err = rest.InClusterConfig()
+		if err != nil {
+			return nil, err
+		}
 	}
 	return kubernetes.NewForConfig(restConfig)
 }

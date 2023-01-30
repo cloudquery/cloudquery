@@ -5,6 +5,23 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.4](https://github.com/cloudquery/cloudquery/compare/cli-v2.3.3...cli-v2.3.4) (2023-01-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.32.0 ([#7334](https://github.com/cloudquery/cloudquery/issues/7334)) ([b684122](https://github.com/cloudquery/cloudquery/commit/b68412222219f9ca160c0753290709d52de7fcd6))
+
+## [2.3.3](https://github.com/cloudquery/cloudquery/compare/cli-v2.3.2...cli-v2.3.3) (2023-01-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.30.0 ([#7222](https://github.com/cloudquery/cloudquery/issues/7222)) ([73ca21c](https://github.com/cloudquery/cloudquery/commit/73ca21c4259545f7e949c9d780d8184db475d2ac))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.31.0 ([#7228](https://github.com/cloudquery/cloudquery/issues/7228)) ([36e8549](https://github.com/cloudquery/cloudquery/commit/36e8549f722658d909865723630fad1b2821db62))
+* Fix discovery error check ([#7288](https://github.com/cloudquery/cloudquery/issues/7288)) ([f0d5c24](https://github.com/cloudquery/cloudquery/commit/f0d5c24486414c93461d9d00eca238cf96079249))
+* Pass cq-dir in to discovery client ([#7291](https://github.com/cloudquery/cloudquery/issues/7291)) ([30698f7](https://github.com/cloudquery/cloudquery/commit/30698f7efe2e9349faec234603afaf229ab111c9))
+
 ## [2.3.2](https://github.com/cloudquery/cloudquery/compare/cli-v2.3.1...cli-v2.3.2) (2023-01-26)
 
 

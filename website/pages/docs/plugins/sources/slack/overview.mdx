@@ -1,3 +1,6 @@
+---
+name: Slack
+---
 # Slack Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -37,13 +40,13 @@ The Slack source plugin supports syncing of message histories, but **only for ch
 
 ### List all active users in the Slack workspace
 
-```sql
+```sql copy
 select id, name from slack_users where deleted is not true;
 ```
 
 ### Rank users by number of messages sent in public channels
 
-```sql
+```sql copy
 select 
     u.name, count(h.user) 
 from slack_conversation_histories h 
@@ -54,19 +57,19 @@ group by u.name order by count desc;
 
 ### List all bookmarks
 
-```sql
+```sql copy
 select title, link from slack_conversation_bookmarks;
 ```
 
 
 ### List URLs to all uploaded files
 
-```sql
+```sql copy
 select title, url_private from slack_files;
 ```
 
 ### List all external files
 
-```sql
+```sql copy
 select title, url_private from slack_files where is_external is true;
 ``` 

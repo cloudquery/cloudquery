@@ -1,3 +1,6 @@
+---
+name: Okta
+---
 # Okta Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -17,7 +20,7 @@ In order to get started with the Okta plugin, you need to create a YAML file in 
 
 The following example sets up the Okta plugin, and connects it to a postgresql destination:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   # Source spec section
@@ -42,7 +45,7 @@ spec:
 
 ### List all users in Okta
 
-```sql
+```sql copy
 select 
   id,
   profile->>'firstName' as first_name,
@@ -54,7 +57,7 @@ from okta_users;
 
 ### List all active users
 
-```sql
+```sql copy
 select
   id,
   profile->>'firstName' as first_name,
@@ -67,7 +70,7 @@ where
 
 ### List active Okta applications
 
-```sql
+```sql copy
 select
   id,
   name
@@ -78,7 +81,7 @@ where status = 'ACTIVE';
 
 ### List active Okta applications, ordered by number of users
 
-```sql
+```sql copy
 select 
   a.id,
   a.name,

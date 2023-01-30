@@ -85,7 +85,7 @@ func Test_getChanges(t *testing.T) {
 					Breaking: true,
 				},
 				{
-					Text:     "Table `azure_appservice_functions`: column removed `web_app_id` from table",
+					Text:     "Table `azure_appservice_functions`: column `web_app_id` removed from table",
 					Breaking: true,
 				},
 				{
@@ -141,19 +141,19 @@ func Test_getChanges(t *testing.T) {
 					Breaking: true,
 				},
 				{
-					Text:     "Table `azure_subscription_tenants`: column removed `name` from table",
+					Text:     "Table `azure_subscription_tenants`: column `name` removed from table",
 					Breaking: true,
 				},
 				{
-					Text:     "Table `azure_subscription_tenants`: column removed `properties_notes` from table",
+					Text:     "Table `azure_subscription_tenants`: column `properties_notes` removed from table",
 					Breaking: true,
 				},
 				{
-					Text:     "Table `azure_subscription_tenants`: column removed `properties_source_id` from table",
+					Text:     "Table `azure_subscription_tenants`: column `properties_source_id` removed from table",
 					Breaking: true,
 				},
 				{
-					Text:     "Table `azure_subscription_tenants`: column removed `properties_target_id` from table",
+					Text:     "Table `azure_subscription_tenants`: column `properties_target_id` removed from table",
 					Breaking: true,
 				},
 				{
@@ -161,15 +161,15 @@ func Test_getChanges(t *testing.T) {
 					Breaking: false,
 				},
 				{
-					Text:     "Table `azure_subscriptions`: column removed `managed_by_tenants` from table",
+					Text:     "Table `azure_subscriptions`: column `managed_by_tenants` removed from table",
 					Breaking: true,
 				},
 				{
-					Text:     "Table `azure_subscriptions`: column removed `tags` from table",
+					Text:     "Table `azure_subscriptions`: column `tags` removed from table",
 					Breaking: true,
 				},
 				{
-					Text:     "Table `azure_subscriptions`: column removed `tenant_id` from table",
+					Text:     "Table `azure_subscriptions`: column `tenant_id` removed from table",
 					Breaking: true,
 				},
 				{

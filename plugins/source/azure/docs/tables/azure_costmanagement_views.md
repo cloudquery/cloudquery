@@ -18,8 +18,8 @@ The following tables depend on azure_costmanagement_views:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |etag|String|
 |properties|JSON|
+|id (PK)|String|
 |name|String|
 |type|String|

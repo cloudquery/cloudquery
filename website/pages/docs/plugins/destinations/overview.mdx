@@ -3,6 +3,21 @@ title: Destinations
 ---
 
 import { PluginsTable } from "../../../../components/PluginsTable";
+import { getPluginsData } from '../../../../utils/plugins'
+import { useSSG } from 'nextra/ssg'
+
+{/* <!-- vale off --> */}
+export const getStaticProps = () => {
+  return {
+    props: {
+      ssg: {
+        plugins: getPluginsData("destinations")
+      }
+    }
+  }
+}
+
+{/* <!-- vale on --> */}
 
 # Destination Plugins
 
@@ -10,25 +25,6 @@ This is a list of all official and community destination plugins.
 
 ## Official
 
-<PluginsTable
-    type="destination"
-    plugins={
-        [
-            { name: "Azure Blob Storage", stage:"Preview", id: `azblob` },
-            { name: "BigQuery", stage:"Preview" },
-            { name: "CSV", stage:"Deprecated(Use File)" },
-            { name: "File", stage:"Preview" },
-            { name: "GCS", stage:"Preview" },
-            { name: "Kafka", stage:"Preview" },
-            { name: "MongoDB", stage:"Preview" },
-            { name: "Microsoft SQL Server", stage:"Preview", id: `mssql` },
-            { name: "Neo4j", stage:"Preview" },
-            { name: "PostgreSQL", stage:"GA", meta: () => <sup>*</sup> },
-            { name: "SQLite", stage:"Preview" },
-            { name: "S3", stage:"Preview" },
-            { name: "Snowflake", stage:"Preview" },
-        ]
-    }
-/>
+<PluginsTable type="destination" plugins={Object.values(useSSG().plugins)}/>
 
 <sup>*</sup> The PostgreSQL plugin also supports writing to CockroachDB.

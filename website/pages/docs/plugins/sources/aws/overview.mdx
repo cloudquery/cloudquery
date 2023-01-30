@@ -1,3 +1,7 @@
+---
+name: AWS
+stage: GA
+---
 # AWS Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -30,7 +34,7 @@ CloudQuery can use the credentials from the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACC
 
 To export the environment variables (On Linux/Mac - similar for Windows):
 
-```bash
+```bash copy
 export AWS_ACCESS_KEY_ID={Your AWS Access Key ID}
 export AWS_SECRET_ACCESS_KEY={Your AWS secret access key}
 export AWS_SESSION_TOKEN={Your AWS session token}
@@ -46,7 +50,7 @@ For information about obtaining credentials, see the
 
 Here are example contents for a `credentials` file:
 
-```toml title="~/.aws/credentials"
+```toml copy
 [default]
 aws_access_key_id = YOUR_ACCESS_KEY_ID
 aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
@@ -56,7 +60,7 @@ You can also specify credentials for a different profile, and instruct CloudQuer
 
 For example:
 
-```toml title="~/.aws/credentials"
+```toml copy
 [myprofile]
 aws_access_key_id = YOUR_ACCESS_KEY_ID
 aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
@@ -64,13 +68,13 @@ aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
 
 Then, you can either export the `AWS_PROFILE` environment variable (On Linux/Mac, similar for Windows):
 
-```bash
+```bash copy
 export AWS_PROFILE=myprofile
 ```
 
 or, configure your desired profile in the `local_profile` field:
 
-```yaml title="aws.yml"
+```yaml copy
 accounts:
   id: <account_alias>
   local_profile: myprofile
@@ -86,13 +90,13 @@ For more information on configuring IAM, see the AWS docs [here](https://docs.aw
 
 In order to leverage IAM User credentials with MFA, the STS "get-session-token" command may be used with the IAM User's long-term security credentials (Access Key and Secret Access Key).  For more information, see [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sts/get-session-token.html).
 
-```bash
+```bash copy
 aws sts get-session-token --serial-number <YOUR_MFA_SERIAL_NUMBER> --token-code <YOUR_MFA_TOKEN_CODE> --duration-seconds 3600
 ```
 
 Then export the temporary credentials to your environment variables.
 
-```bash
+```bash copy
 export AWS_ACCESS_KEY_ID=<YOUR_ACCESS_KEY_ID>
 export AWS_SECRET_ACCESS_KEY=<YOUR_SECRET_ACCESS_KEY>
 export AWS_SESSION_TOKEN=<YOUR_SESSION_TOKEN>
@@ -102,19 +106,19 @@ export AWS_SESSION_TOKEN=<YOUR_SESSION_TOKEN>
 
 ### Find all public-facing load balancers
 
-```sql
+```sql copy
 SELECT * FROM aws_elbv2_load_balancers WHERE scheme = 'internet-facing';
 ```
 
 ### Find all unencrypted RDS instances
 
-```sql
+```sql copy
 SELECT * FROM aws_rds_clusters WHERE storage_encrypted IS FALSE;
 ```
 
 ### Find all S3 buckets that are permitted to be public
 
-```sql
+```sql copy
 SELECT arn, region
 FROM aws_s3_buckets
 WHERE block_public_acls IS NOT TRUE

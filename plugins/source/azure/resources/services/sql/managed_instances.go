@@ -15,22 +15,8 @@ func ManagedInstances() *schema.Table {
 		Resolver:    fetchManagedInstances,
 		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/managed-instances/list?tabs=HTTP#managedinstance",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_sql_managed_instances", client.Namespacemicrosoft_sql),
-		Transform:   transformers.TransformWithStruct(&armsql.ManagedInstance{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armsql.ManagedInstance{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 		Relations: []*schema.Table{
 			managedInstanceEncryptionProtectors(),
 			managedInstanceVulnerabilityAssessments(),

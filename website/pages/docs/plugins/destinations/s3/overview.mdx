@@ -1,3 +1,6 @@
+---
+name: S3
+---
 # S3 Destination Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -19,7 +22,7 @@ This example configures a CSV destination, to create CSV files in `s3://bucket_n
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: "s3"
@@ -32,6 +35,8 @@ spec:
     bucket: "bucket_name"
     path: "path/to/files/{{TABLE}}/{{UUID}}.csv"
     format: "csv"
+    format_spec:
+      delimiter: ","
 ```
 
 The S3 destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
@@ -48,10 +53,23 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   Path to where the files will be uploaded in the above bucket. The path supports two placeholder variables: `{{TABLE}}` will be replaced with the table name, and `{{UUID}}` with a random UUID to uniquely identify each file. 
 
+- `athena` (boolean) (optional, default `false`)
+
+  When `athena` is set to `true`, the S3 plugin will sanitize keys in JSON columns to be compatible with the Hive Metastore / Athena. This allows tables to be created with a Glue Crawler and then queried via Athena, without changes to the table schema.
+
 - `format` (string) (required)
 
   Format of the output file. `json` and `csv` are supported.
 
-- `athena` (boolean) (optional, default `false`)
+- `format_spec` (map [format_spec](#format_spec)) (optional)
+  Optional parameters to change the format of the file
 
-  When `athena` is set to `true`, the S3 plugin will sanitize keys in JSON columns to be compatible with the Hive Metastore / Athena. This allows tables to be created with a Glue Crawler and then queried via Athena, without changes to the table schema.
+## format_spec
+
+- `delimiter` (string) (optional) (default: `,`)
+
+  Character that will be used as want to use as the delimiter if the format type is `csv`
+
+- `skip_header` (bool) (optional) (default: false)
+
+  Specifies if the first line of a file should be the headers (when format is `csv`).

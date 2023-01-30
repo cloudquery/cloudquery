@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [12.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v12.2.0...plugins-source-aws-v12.2.1) (2023-01-27)
+
+
+### Bug Fixes
+
+* Cloudfront Policy PK ([#7294](https://github.com/cloudquery/cloudquery/issues/7294)) ([7949fff](https://github.com/cloudquery/cloudquery/commit/7949fff3be36663e36e8b6020c0c1639b44d9aa4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.31.0 ([#7228](https://github.com/cloudquery/cloudquery/issues/7228)) ([36e8549](https://github.com/cloudquery/cloudquery/commit/36e8549f722658d909865723630fad1b2821db62))
+* Update endpoints ([#7232](https://github.com/cloudquery/cloudquery/issues/7232)) ([8b7a8d0](https://github.com/cloudquery/cloudquery/commit/8b7a8d0cad158276e8eddc7bf02c408c15d6fc46))
+
 ## [12.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v12.1.0...plugins-source-aws-v12.2.0) (2023-01-26)
 
 

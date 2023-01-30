@@ -1,3 +1,6 @@
+---
+name: LaunchDarkly
+---
 # LaunchDarkly Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -9,7 +12,7 @@ The CloudQuery LaunchDarkly plugin pulls data from LaunchDarkly and loads it int
 
 ## Authentication
 
-In order to fetch information from LaunchDarkly, `cloudquery` needs to be authenticated using a [Service Account](https://developer.launchdarkly.com/reference/service-accounts) from your LaunchDarkly account. You can view and manage your access tokens in LaunchDarkly `Account settings > Authorization`. Refer to [REST API Authentication](https://apidocs.launchdarkly.com/#section/Overview/Authentication) for more information.
+In order to fetch information from LaunchDarkly, `cloudquery` needs to be authenticated using an Access Token from your LaunchDarkly account. You can view and manage your access tokens in LaunchDarkly `Account settings > Authorization`. Refer to [REST API Authentication](https://apidocs.launchdarkly.com/#section/Overview/Authentication) for more information.
 
 ### Access Token API Version
 
@@ -24,7 +27,7 @@ To enable this, `backend` option must be set in the spec (as shown below). This 
 
 This example syncs from LaunchDarkly to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml
+```yaml copy
 kind: source
 # Common source-plugin configuration
 spec:
