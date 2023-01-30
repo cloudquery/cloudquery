@@ -106,7 +106,7 @@ func resolveApiRouteResponseArn(ctx context.Context, meta schema.ClientMeta, res
 	cl := meta.(*client.Client)
 	r := resource.Item.(types.RouteResponse)
 	route := resource.Parent.Item.(types.Route)
-	p := resource.Parent.Item.(types.Api)
+	p := resource.Parent.Parent.Item.(types.Api)
 	return resource.Set(c.Name, arn.ARN{
 		Partition: cl.Partition,
 		Service:   string(client.ApigatewayService),
