@@ -4,9 +4,9 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.3
-	github.com/aws/aws-sdk-go-v2/config v1.18.8
-	github.com/aws/aws-sdk-go-v2/credentials v1.13.8
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.47
+	github.com/aws/aws-sdk-go-v2/config v1.18.10
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.10
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.49
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.1
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.0
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.1
@@ -75,7 +75,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.0
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.1
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.29.0
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.63.0
 	github.com/aws/aws-sdk-go-v2/service/savingsplans v1.12.0
@@ -92,7 +92,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.20.0
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.35.0
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.16.0
-	github.com/aws/aws-sdk-go-v2/service/sts v1.18.0
+	github.com/aws/aws-sdk-go-v2/service/sts v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/waf v1.12.0
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.24.2
