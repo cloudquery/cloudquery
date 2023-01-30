@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/stripe
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.31.0
+	github.com/cloudquery/plugin-sdk v1.32.0
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/rs/zerolog v1.28.0
 	github.com/stripe/stripe-go/v74 v74.4.0
