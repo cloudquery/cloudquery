@@ -17,12 +17,12 @@ This table depends on [azure_compute_virtual_machine_scale_sets](azure_compute_v
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |identity|JSON|
 |plan|JSON|
 |properties|JSON|
 |tags|JSON|
+|id (PK)|String|
 |instance_id|String|
 |name|String|
 |resources|JSON|

@@ -27,13 +27,13 @@ Below are some query examples to get you started.
 
 If you have more than just one domain, keeping track of which one will expire soon can be a problem. Here's a query to check how many days there are left on each registration:
 
-```sql
+```sql copy
 select fqdn, dates->>'registry_ends_at' as registry_ends_at, date_trunc('day', (dates->>'registry_ends_at')::timestamp - current_timestamp) as days_left from gandi_domains where ((dates->>'registry_ends_at')::timestamp - interval '90 day') < current_timestamp order by 1;
 ```
 
 This query would output a table of domain names that are going to expire within the next 90 days:
 
-```bash
+```bash copy
       fqdn      |   registry_ends_at   | days_left
 ----------------+----------------------+-----------
  yourdomain.co  | 2023-01-28T08:09:41Z | 58 days
@@ -47,13 +47,13 @@ You can now put this in a dashboard or set up an alert on it.
 
 Automatic snapshots is a Gandi LiveDNS feature to ensure you always have a backup to a previous state of the domain configuration. With the following query it's possible to list any domains you manage, but which don't have automatic snapshots enabled for some reason.
 
-```sql
+```sql copy
 select d.fqdn from gandi_livedns_domains d left join gandi_livedns_snapshots s on s.fqdn=d.fqdn and s.automatic where s.fqdn is null;
 ```
 
 This will return a list of domain names that don't have the automatic snapshots feature enabled. You can set up an alert on this query and make sure your domain configurations are automatically backed up.
 
-```bash
+```bash copy
      fqdn
 ---------------
  yourdomain.co
@@ -65,13 +65,13 @@ This will return a list of domain names that don't have the automatic snapshots 
 
 Glue records are used to solve circular dependencies in DNS and are crucial to set up correctly and maintain. The following query will list all glue records in your Gandi account.
 
-```sql
+```sql copy
 select fqdn, name, ips from gandi_domain_glue_records order by 1, 2;
 ```
 
 This will return:
 
-```bash
+```bash copy
      fqdn       | name |       ips
 ----------------+------+------------------
 yourdomain.com | ns1  | {8.8.8.8}
@@ -83,13 +83,13 @@ yourdomain.com | ns2  | {8.8.4.4}
 
 Using the following query it's possible to check which domains 'live' LiveDNS (and which don't) and get their configured name servers.
 
-```sql
+```sql copy
 select fqdn, current, nameservers from gandi_domain_live_dns order by 1;
 ```
 
 The results look like:
 
-```bash
+```bash copy
        fqdn        | current |                        nameservers
 -------------------+---------+------------------------------------------------------------
  yourcomain.com    | livedns | {ns-168-a.gandi.net,ns-16-b.gandi.net,ns-53-c.gandi.net}

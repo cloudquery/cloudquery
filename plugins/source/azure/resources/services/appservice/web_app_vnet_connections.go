@@ -2,6 +2,7 @@ package appservice
 
 import (
 	"context"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -15,13 +16,7 @@ func webAppVnetConnections() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/list-vnet-connections#vnetinforesource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_web_app_vnet_connections", client.Namespacemicrosoft_web),
 		Transform:   transformers.TransformWithStruct(&armappservice.VnetInfoResource{}, transformers.WithPrimaryKeys("ID")),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

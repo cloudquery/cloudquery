@@ -98,6 +98,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads v0.2.0
 	github.com/cloudquery/plugin-sdk v1.31.0
 	github.com/gorilla/mux v1.8.0
+	github.com/mitchellh/hashstructure/v2 v2.0.2
 	github.com/rs/zerolog v1.28.0
 )
 

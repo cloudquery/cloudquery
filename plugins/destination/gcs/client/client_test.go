@@ -3,6 +3,7 @@ package client
 import (
 	"testing"
 
+	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 )
 
@@ -11,13 +12,17 @@ const bucket = "cq-dest-gcs"
 func TestPluginCSV(t *testing.T) {
 	p := destination.NewPlugin("gcs", "development", New, destination.WithManagedWriter())
 
-	destination.PluginTestSuiteRunner(t, p,
-		Spec{
-			Bucket:   bucket,
-			Path:     t.TempDir(),
-			Format:   FormatTypeCSV,
-			NoRotate: true,
+	spec := Spec{
+		Bucket:   bucket,
+		Path:     t.TempDir(),
+		NoRotate: true,
+		FileSpec: &filetypes.FileSpec{
+			Format: filetypes.FormatTypeCSV,
 		},
+	}
+	spec.SetDefaults()
+	destination.PluginTestSuiteRunner(t, p,
+		spec,
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:        true,
 			SkipDeleteStale:      true,
@@ -30,14 +35,17 @@ func TestPluginCSV(t *testing.T) {
 
 func TestPluginJSON(t *testing.T) {
 	p := destination.NewPlugin("gcs", "development", New, destination.WithManagedWriter())
-
-	destination.PluginTestSuiteRunner(t, p,
-		Spec{
-			Bucket:   bucket,
-			Path:     t.TempDir(),
-			Format:   FormatTypeJSON,
-			NoRotate: true,
+	spec := Spec{
+		Bucket:   bucket,
+		Path:     t.TempDir(),
+		NoRotate: true,
+		FileSpec: &filetypes.FileSpec{
+			Format: filetypes.FormatTypeJSON,
 		},
+	}
+	spec.SetDefaults()
+	destination.PluginTestSuiteRunner(t, p,
+		spec,
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:        true,
 			SkipDeleteStale:      true,

@@ -1,3 +1,6 @@
+---
+name: Salesforce
+---
 # Salesforce Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -16,7 +19,7 @@ First you must create a Salesforce Connected App. This is a Salesforce app that 
 
 This example syncs from Salesforce to a specified CQ destination.
 
-```yaml
+```yaml copy
 kind: source
 # Common source-plugin configuration
 spec:
@@ -72,12 +75,12 @@ This is the (nested) spec used by the Slack source plugin.
 
 ### List all Salesforce objects
 
-```sql
+```sql copy
 select distinct(object_type) from salesforce_objects;
 ```
 
 ### List all Accounts
 
-```sql
+```sql copy
 select * from salesforce_objects where object_type = 'Account';
 ```

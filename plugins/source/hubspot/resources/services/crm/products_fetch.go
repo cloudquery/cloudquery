@@ -15,6 +15,10 @@ func fetchProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 
 	var after string
 	for {
+		if err := cqClient.RateLimiter.Wait(ctx); err != nil {
+			return nil
+		}
+
 		req := hubspotClient.BasicApi.GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).Limit(client.DefaultPageSize)
 
 		if len(after) > 0 {

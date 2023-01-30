@@ -13,7 +13,7 @@ The composite primary key for this table is (**subscription_id**, **name**).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id (PK)|String|
-|name (PK)|String|
 |properties|JSON|
 |id|String|
+|name (PK)|String|
 |type|String|

@@ -1,3 +1,6 @@
+---
+name: Stripe
+---
 # Stripe Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -20,7 +23,7 @@ To enable this, `backend` option must be set in the spec (as shown below). This 
 
 This example syncs from Stripe to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec). Incremental syncing is enabled and will be saved to a `.cq/state/` directory by default.
 
-```yaml
+```yaml copy
 kind: source
 # Common source-plugin configuration
 spec:

@@ -2,10 +2,11 @@ package subscription
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
-	"net/http"
 )
 
 func createLocations(router *mux.Router) error {

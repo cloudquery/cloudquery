@@ -13,7 +13,6 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |properties|JSON|
 |identity|JSON|
 |kind|String|
@@ -23,5 +22,6 @@ The primary key for this table is **id**.
 |sku|JSON|
 |tags|JSON|
 |etag|String|
+|id (PK)|String|
 |name|String|
 |type|String|

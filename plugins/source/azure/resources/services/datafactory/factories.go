@@ -15,27 +15,11 @@ func Factories() *schema.Table {
 		Resolver:    fetchFactories,
 		Description: "https://learn.microsoft.com/en-us/rest/api/datafactory/factories/list?tabs=HTTP#factory",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datafactory_factories", client.Namespacemicrosoft_datafactory),
-		Transform:   transformers.TransformWithStruct(&armdatafactory.Factory{}, transformers.WithSkipFields("ETag")),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ETag"),
-			},
-		},
+		Transform: transformers.TransformWithStruct(&armdatafactory.Factory{},
+			transformers.WithNameTransformer(client.ETagNameTransformer),
+			transformers.WithPrimaryKeys("ID"),
+		),
+		Columns: schema.ColumnList{client.SubscriptionID},
 	}
 }
 

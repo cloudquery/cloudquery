@@ -1,3 +1,6 @@
+---
+name: SQLite
+---
 # SQLite Destination Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -11,7 +14,7 @@ This destination plugin lets you sync data from a CloudQuery source to a SQLite 
 
 This is a basic configuration that will save all your sync resources to `db.sql`.
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: sqlite

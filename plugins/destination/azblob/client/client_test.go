@@ -3,6 +3,7 @@ package client
 import (
 	"testing"
 
+	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 )
 
@@ -11,15 +12,18 @@ const container = "test"
 
 func TestPluginCSV(t *testing.T) {
 	p := destination.NewPlugin("azblob", "development", New, destination.WithManagedWriter())
-
-	destination.PluginTestSuiteRunner(t, p,
-		Spec{
-			StorageAccount: storage_account,
-			Container:      container,
-			Path:           t.TempDir(),
-			Format:         FormatTypeCSV,
-			NoRotate:       true,
+	spec := Spec{
+		StorageAccount: storage_account,
+		Container:      container,
+		Path:           t.TempDir(),
+		NoRotate:       true,
+		FileSpec: &filetypes.FileSpec{
+			Format: filetypes.FormatTypeCSV,
 		},
+	}
+	spec.SetDefaults()
+	destination.PluginTestSuiteRunner(t, p,
+		spec,
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:        true,
 			SkipDeleteStale:      true,
@@ -32,15 +36,18 @@ func TestPluginCSV(t *testing.T) {
 
 func TestPluginJSON(t *testing.T) {
 	p := destination.NewPlugin("azblob", "development", New, destination.WithManagedWriter())
-
-	destination.PluginTestSuiteRunner(t, p,
-		Spec{
-			StorageAccount: storage_account,
-			Container:      container,
-			Path:           t.TempDir(),
-			Format:         FormatTypeJSON,
-			NoRotate:       true,
+	spec := Spec{
+		StorageAccount: storage_account,
+		Container:      container,
+		Path:           t.TempDir(),
+		NoRotate:       true,
+		FileSpec: &filetypes.FileSpec{
+			Format: filetypes.FormatTypeJSON,
 		},
+	}
+	spec.SetDefaults()
+	destination.PluginTestSuiteRunner(t, p,
+		spec,
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:        true,
 			SkipDeleteStale:      true,

@@ -47,7 +47,7 @@ Following is a query to identify all security groups with unrestricted outbound 
 - Run `cloudquery sync` (See our [quickstart guide](https://www.cloudquery.io/docs/quickstart))
 - Create this view
 
-```sql
+```sql copy
 -- Create Temporary View
 create temporary view view_aws_security_group_egress_rules as
 select
@@ -69,7 +69,7 @@ from aws_ec2_security_groups, JSONB_ARRAY_ELEMENTS(aws_ec2_security_groups.ip_pe
 
 - Run the following query
 
-```sql
+```sql copy
 -- Find all AWS instances that have a security group that allows unrestricted egress
 select aws_ec2_instances.account_id, 
        aws_ec2_instances.region, 
@@ -83,7 +83,7 @@ where (ip = '0.0.0.0/0' or ip6 = '::/0');
 
 You can also run the `public_egress` query straight from the policy pack located on our [GitHub](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/policies)
 
-```bash
+```bash copy
 cloudquery policy run aws//public_egress
 ```
 
@@ -104,7 +104,7 @@ The second requirement for outbound access is an internet gateway. Here is a que
 - Run `cloudquery sync` (See our [quickstart guide](https://www.cloudquery.io/docs/quickstart))
 - Create this view
 
-```sql
+```sql copy
 -- Create Temporary View
 create temporary view view_aws_security_group_egress_rules as
 select
@@ -126,7 +126,7 @@ from aws_ec2_security_groups, JSONB_ARRAY_ELEMENTS(aws_ec2_security_groups.ip_pe
 
 - Run the following query
 
-```sql
+```sql copy
 -- Find all AWS instances that have a security group that allows unrestricted egress, and are in a VPC with an internet gateway
 select aws_ec2_instances.account_id, 
        aws_ec2_instances.region, 
