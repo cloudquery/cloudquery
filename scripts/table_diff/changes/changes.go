@@ -155,7 +155,7 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 			}
 		} else {
 			changes = append(changes, change{
-				Text:     fmt.Sprintf("Table %s: column removed %s from table", backtickStrings(table, deletedName)...),
+				Text:     fmt.Sprintf("Table %s: column %s removed from table", backtickStrings(table, deletedName)...),
 				Breaking: true,
 			})
 		}
