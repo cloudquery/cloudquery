@@ -37,16 +37,16 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.80.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.15.0
-	github.com/aws/aws-sdk-go-v2/service/ecs v1.23.0
+	github.com/aws/aws-sdk-go-v2/service/ecs v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/efs v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/eks v1.27.0
-	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.0
+	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.1
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.0
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.0
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.1
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.0
-	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.0
+	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.0
-	github.com/aws/aws-sdk-go-v2/service/emr v1.22.0
+	github.com/aws/aws-sdk-go-v2/service/emr v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.21.0
