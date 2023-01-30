@@ -92,7 +92,7 @@ You should now see 2 databases loaded in Amazon Athena:
 * CloudQuery Data
 * AWS Cost and Usage Reports
 
-We can run the following query [to validate that Athena is ready](https://docs.aws.amazon.com/cur/latest/userguide/cur-ate-run.html) for queries on the Cost and Usage data.  A status of `READY` means we can query the Athena database.  If the status is `UPDATING`, Athena may return incomplete results.
+We can run the following query [to validate that Athena is ready](https://docs.aws.amazon.com/cur/latest/userguide/cur-ate-run.html) for queries on the Cost and Usage data, replacing`athenacurcfn_cloudquery_demo_reports` with your own database name.    A status of `READY` means we can query the Athena database.  If the status is `UPDATING`, Athena may return incomplete results.
 
 ```sql copy
 SELECT * 
