@@ -14,9 +14,7 @@ func EdgeNodes() *schema.Table {
 		Name:        "azure_cdn_edge_nodes",
 		Resolver:    fetchEdgeNodes,
 		Description: "https://learn.microsoft.com/en-us/rest/api/cdn/edge-nodes/list?tabs=HTTP#edgenode",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cdn_edge_nodes", client.Namespacemicrosoft_cdn),
 		Transform:   transformers.TransformWithStruct(&armcdn.EdgeNode{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionIDPK},
 	}
 }
 
