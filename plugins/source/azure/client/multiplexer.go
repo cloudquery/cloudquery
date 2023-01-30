@@ -48,7 +48,7 @@ func SubscriptionMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 // This can reduce the number of API calls.
 func SingleSubscriptionMultiplexRegisteredNamespace(table, namespace string) schema.Multiplexer {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
-		clients := SingleSubscriptionMultiplexRegisteredNamespace(table, namespace)(meta)
+		clients := SubscriptionMultiplexRegisteredNamespace(table, namespace)(meta)
 		if len(clients) > 0 {
 			return []schema.ClientMeta{clients[0]}
 		}
