@@ -35,6 +35,13 @@ func EventBusRules() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: resolveEventbridgeEventBusRuleTags,
 			},
+			{
+				Name: "arn",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
 		},
 	}
 }
