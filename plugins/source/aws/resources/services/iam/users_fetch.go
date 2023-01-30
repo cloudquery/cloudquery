@@ -51,7 +51,6 @@ func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 			return err
 		}
 		res <- output.Groups
-
 	}
 	return nil
 }
