@@ -33,7 +33,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.0
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.0
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.0
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.80.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.15.0
