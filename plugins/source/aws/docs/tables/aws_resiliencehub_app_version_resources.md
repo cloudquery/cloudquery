@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_PhysicalResource.html
 
-The primary key for this table is **physical_resource_id**.
+The composite primary key for this table is (**account_id**, **region**, **physical_resource_id**).
 
 ## Relations
 
@@ -16,8 +16,8 @@ This table depends on [aws_resiliencehub_app_versions](aws_resiliencehub_app_ver
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
+|account_id (PK)|String|
+|region (PK)|String|
 |logical_resource_id|JSON|
 |physical_resource_id (PK)|JSON|
 |resource_type|String|
