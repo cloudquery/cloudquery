@@ -18,21 +18,21 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.26.1
-	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.25.0
+	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.1
-	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.0
+	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.29.1
-	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.0
+	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.0
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.1
-	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.0
+	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.80.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.1
