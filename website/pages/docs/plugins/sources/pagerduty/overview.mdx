@@ -5,6 +5,7 @@ name: PagerDuty
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import { Callout } from 'nextra-theme-docs';
 
 <Badge text={"Latest: " + getLatestVersion("source", "pagerduty")}/>
 
@@ -19,6 +20,42 @@ CloudQuery supports two methods of reading the authorization token:
   authtoken: <YOUR_AUTH_TOKEN>
   ```
 - From an environment variable `PAGERDUTY_AUTH_TOKEN`.
+
+## Rate Limiting
+
+The PagerDuty REST API is [rate limited](https://developer.pagerduty.com/docs/ZG9jOjExMDI5NTUz-rate-limiting#what-are-our-limits) to 900 requests per minute per organization (15 requests per second).
+Because of this, PagerDuty plugin syncs may take relatively long. This may fit your use case if you sync 
+on something like a nightly cadence - but there are a few things you can do to speed this up:
+
+<Callout type="info">
+
+Because the PagerDuty API is limited **per organization**, it's important to make sure CloudQuery doesn't use
+up too much of the quota and disturbs other processes in your organization. By default CloudQuery makes 10 requests
+per second (66% of the quota), but you can reduce/increase this number by setting the `max_requests_per_second`
+[configuration parameter](/docs/plugins/sources/pagerduty/configuration).
+
+</Callout>
+
+- Relational tables (e.g. `pagerduty_incident_notes`, `pagerduty_incident_alerts`) require the most API calls, because
+  they require an API call per resource (e.g. incident). You may be able to speed up the sync by skipping these relational
+  tables:
+  ```yaml
+  skip_tables: [
+    "pagerduty_incident_alerts",
+    "pagerduty_incident_notes",
+    "pagerduty_incident_log_entries",
+    "pagerduty_ruleset_rules",
+    "pagerduty_user_contact_methods",
+    "pagerduty_user_notification_rules"
+  ]
+  ```
+
+- If you are only interested in some of the teams in your organization, you can filter to only sync their resources with
+  ```yaml
+    team_ids: ["<team_id>"]
+  ```
+
+See the [PagerDuty Configuration Page](/docs/plugins/sources/pagerduty/configuration) for more info.
 
 ## Example Queries
 
