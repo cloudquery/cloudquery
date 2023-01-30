@@ -1,70 +1,33 @@
 package client
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
-type TimePartitioningOption string
-
-const (
-	TimePartitioningOptionNone = "none"
-	TimePartitioningOptionHour = "hour"
-	TimePartitioningOptionDay  = "day"
-)
-
-var TimePartitioningOptions = []TimePartitioningOption{
-	TimePartitioningOptionNone,
-	TimePartitioningOptionHour,
-	TimePartitioningOptionDay,
-}
-
-func (t TimePartitioningOption) Validate() error {
-	for _, v := range TimePartitioningOptions {
-		if t == v {
-			return nil
-		}
-	}
-	return fmt.Errorf("%v is not a valid option for time partitioning. Options are: %v", string(t), TimePartitioningOptions)
-}
+import "runtime"
 
 type Spec struct {
-	ProjectID             string                 `json:"project_id"`
-	DatasetID             string                 `json:"dataset_id"`
-	DatasetLocation       string                 `json:"dataset_location"`
-	TimePartitioning      TimePartitioningOption `json:"time_partitioning"`
-	ServiceAccountKeyJSON string                 `json:"service_account_key_json"`
+	Addresses []string // A list of Elasticsearch nodes to use.
+	Username  string   // Username for HTTP Basic Authentication.
+	Password  string   // Password for HTTP Basic Authentication.
+
+	CloudID                string // Endpoint for the Elastic Service (https://elastic.co/cloud).
+	APIKey                 string // Base64-encoded token for authorization; if set, overrides username/password and service token.
+	ServiceToken           string // Service token for authorization; if set, overrides username/password.
+	CertificateFingerprint string // SHA256 hex fingerprint given by Elasticsearch on first launch.
+
+	// PEM-encoded certificate authorities.
+	// When set, an empty certificate pool will be created, and the certificates will be appended to it.
+	CACert string
+
+	Concurrency int // Number of concurrent worker goroutines to use for indexing. (Default: number of CPUs)
 }
 
 func (s *Spec) SetDefaults() {
-	if s.TimePartitioning == "" {
-		s.TimePartitioning = TimePartitioningOptionNone
+	if len(s.Addresses) == 0 {
+		s.Addresses = []string{"http://localhost:9200"}
+	}
+	if s.Concurrency == 0 {
+		s.Concurrency = runtime.NumCPU()
 	}
 }
 
 func (s *Spec) Validate() error {
-	if s.ProjectID == "" {
-		return fmt.Errorf("project_id is required")
-	}
-	if s.DatasetID == "" {
-		return fmt.Errorf("dataset_id is required")
-	}
-	if err := s.TimePartitioning.Validate(); err != nil {
-		return fmt.Errorf("time_partitioning: %w", err)
-	}
-	if len(s.ServiceAccountKeyJSON) > 0 {
-		if err := isValidJson(s.ServiceAccountKeyJSON); err != nil {
-			return fmt.Errorf("invalid json for service_account_key_json: %w", err)
-		}
-	}
-	return nil
-}
-
-func isValidJson(content string) error {
-	var v map[string]any
-	err := json.Unmarshal([]byte(content), &v)
-	if err != nil {
-		return err
-	}
 	return nil
 }

@@ -1,60 +1,81 @@
 package client
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
-	"cloud.google.com/go/elasticsearch"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"google.golang.org/api/googleapi"
+	"github.com/elastic/go-elasticsearch/v8/esutil"
+	"github.com/segmentio/fasthash/fnv1a"
 )
 
-const (
-	writeTimeout = 5 * time.Minute
-)
-
-type item struct {
-	cols map[string]elasticsearch.Value
-}
-
-func (i *item) Save() (map[string]elasticsearch.Value, string, error) {
-	// we're not doing de-dup at the moment
-	return i.cols, elasticsearch.NoDedupeID, nil
-}
-
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
-	inserter := c.client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Inserter()
-	inserter.IgnoreUnknownValues = true
-	inserter.SkipInvalidRows = false
-	batch := make([]*item, 0)
-	for _, cols := range resources {
-		saver := &item{
-			cols: make(map[string]elasticsearch.Value, len(table.Columns)),
-		}
-		for i := range cols {
-			if cols[i] == nil {
-				// save some bandwidth by not sending nil values
-				continue
-			}
-			saver.cols[table.Columns[i].Name] = cols[i]
-		}
-		batch = append(batch, saver)
+func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) (err error) {
+	bi, err := esutil.NewBulkIndexer(esutil.BulkIndexerConfig{
+		Index:         fmt.Sprintf("%s-%s", table.Name, time.Now().Format("2006-01-02")), // The default index name
+		Client:        c.client,                                                          // The Elasticsearch client
+		NumWorkers:    c.pluginSpec.Concurrency,                                          // The number of worker goroutines
+		FlushBytes:    c.spec.BatchSizeBytes,                                             // The flush threshold in bytes
+		FlushInterval: 30 * time.Second,                                                  // The periodic flush interval
+	})
+	if err != nil {
+		return err
 	}
-	// flush final rows
-	timeoutCtx, cancel := context.WithTimeout(ctx, writeTimeout)
-	defer cancel()
+	defer func() {
+		err = bi.Close(ctx)
+	}()
+	failed := false
+	for _, r := range resources {
+		if failed {
+			break
+		}
+		doc := map[string]any{}
+		for i, col := range table.Columns {
+			doc[col.Name] = r[i]
+		}
+		data, err := json.Marshal(doc)
+		if err != nil {
+			return fmt.Errorf("failed to marshal JSON: %w", err)
+		}
+		docID := resourceID(table, r)
+		c.logger.Info().Msgf("Writing resource %s/%d", table.Name, docID)
+		err = bi.Add(
+			context.Background(),
+			esutil.BulkIndexerItem{
+				Action:     "index",
+				DocumentID: fmt.Sprintf("%d", docID),
+				Body:       bytes.NewReader(data),
+				OnFailure: func(ctx context.Context, item esutil.BulkIndexerItem, res esutil.BulkIndexerResponseItem, err error) {
+					failed = true
+					l := c.logger.Error().Err(err)
+					if err != nil {
+						l.Err(err)
+					} else {
+						c.logger.Error().Str("error_type", res.Error.Type).Str("error_reason", res.Error.Reason)
+					}
+					l.Msg("Unexpected error while indexing document")
+				},
+			},
+		)
+		if err != nil {
+			return fmt.Errorf("failed to add item to bulk indexer: %w", err)
+		}
+	}
+	return
+}
 
-	for err := inserter.Put(timeoutCtx, batch); err != nil; err = inserter.Put(timeoutCtx, batch) {
-		// check if elasticsearch error is 404 (table does not exist yet), then wait a bit and retry until it does exist
-		if e, ok := err.(*googleapi.Error); ok && e.Code == 404 {
-			// retry
-			c.logger.Info().Str("table", table.Name).Msg("Table does not exist yet, waiting for it to be created before retrying write")
-			time.Sleep(1 * time.Second)
+// elasticsearch IDs are limited to 512 bytes, so we hash the resource PK to make sure it's within the limit
+func resourceID(table *schema.Table, resource []any) uint64 {
+	parts := make([]string, 0, len(table.PrimaryKeys()))
+	for i, col := range table.Columns {
+		if !col.CreationOptions.PrimaryKey {
 			continue
 		}
-		return fmt.Errorf("failed to put item into Elasticsearch table %s: %w", table.Name, err)
+		parts = append(parts, fmt.Sprint(resource[i]))
 	}
-
-	return nil
+	h1 := fnv1a.HashString64(strings.Join(parts, "-"))
+	return h1
 }
