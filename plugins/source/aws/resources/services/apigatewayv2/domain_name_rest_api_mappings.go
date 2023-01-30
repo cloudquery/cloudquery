@@ -33,7 +33,7 @@ func DomainNameRestApiMappings() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveDomainNameRestApiMappingArn(),
+				Resolver: resolveDomainNameRestApiMappingArn,
 			},
 		},
 	}
