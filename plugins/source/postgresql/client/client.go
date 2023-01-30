@@ -8,8 +8,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/jackc/pglogrepl"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jackc/pgx/v5/tracelog"
 	"github.com/rs/zerolog"
@@ -19,9 +21,12 @@ type Client struct {
 	Conn                *pgxpool.Pool
 	logger              zerolog.Logger
 	spec                specs.Source
+	pluginSpec          Spec
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
+	tables              schema.Tables
+	createReplicationSlotResult pglogrepl.CreateReplicationSlotResult
 }
 
 type pgType int
@@ -48,6 +53,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
 	pluginSpec.SetDefaults()
+	c.pluginSpec = pluginSpec
 	logLevel, err := tracelog.LogLevelFromString(pluginSpec.PgxLogLevel.String())
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", pluginSpec.PgxLogLevel, err)
@@ -80,6 +86,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	c.pgType, err = c.getPgType(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
+	}
+	c.tables, err = c.ListTables(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list tables: %w", err)
 	}
 	return c, nil
 }
@@ -115,4 +125,41 @@ func (c *Client) currentDatabase(ctx context.Context) (string, error) {
 		return "", err
 	}
 	return db, nil
+}
+
+func (c *Client) createReplication(ctx context.Context) error {
+	cfg, err := pgconn.ParseConfig(c.pluginSpec.ConnectionString)
+	if err != nil {
+		return err
+	}
+	conn, err := pgconn.ConnectConfig(ctx, cfg)
+	if err != nil {
+		return err
+	}
+	tables := strings.Join(c.tables.TableNames(), ",")
+	reader := conn.Exec(ctx, fmt.Sprintf("CREATE PUBLICATION %s FOR TABLE %s;", pgx.Identifier{c.spec.Name}.Sanitize(), tables))
+	_, err = reader.ReadAll()
+	if err != nil {
+		return fmt.Errorf("failed to create publication: %w", err)
+	}
+
+	sysident, err := pglogrepl.IdentifySystem(ctx, conn)
+	if err != nil {
+		return fmt.Errorf("failed to identify system: %w", err)
+	}
+
+	sql := fmt.Sprintf("CREATE_REPLICATION_SLOT %s LOGICAL pgoutput EXPORT_SNAPSHOT", c.spec.Name)
+	c.createReplicationSlotResult, err = pglogrepl.ParseCreateReplicationSlot(conn.Exec(ctx, sql))
+	if err != nil {
+		return fmt.Errorf("failed to create replication slot: %w", err)
+	}
+
+	if err := pglogrepl.StartReplication(ctx, conn, c.createReplicationSlotResult.SlotName, sysident.XLogPos,
+		pglogrepl.StartReplicationOptions{
+			PluginArgs: []string{"proto_version '1'", "publication_names '" + c.spec.Name + "'"},
+		}); err != nil {
+		return fmt.Errorf("failed to start replication: %w", err)
+	}
+
+	return nil
 }
