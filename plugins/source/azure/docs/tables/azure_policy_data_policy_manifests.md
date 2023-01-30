@@ -2,7 +2,7 @@
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy@v0.6.0#DataPolicyManifest
 
-The composite primary key for this table is (**subscription_id**, **id**).
+The primary key for this table is **id**.
 
 ## Columns
 
@@ -12,7 +12,6 @@ The composite primary key for this table is (**subscription_id**, **id**).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id (PK)|String|
 |properties|JSON|
 |id (PK)|String|
 |name|String|
