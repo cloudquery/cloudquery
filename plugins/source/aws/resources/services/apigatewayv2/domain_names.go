@@ -28,7 +28,7 @@ func DomainNames() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveDomainNameArn(),
+				Resolver: resolveDomainNameArn,
 			},
 		},
 		Relations: []*schema.Table{
