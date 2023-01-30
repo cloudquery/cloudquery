@@ -4,8 +4,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-// SingleSubscriptionMultiplex can be used in cases where any single subscription would do. This can reduce the number
-// of API calls.
+// SingleSubscriptionMultiplex can be used in cases where any single subscription would do.
+// This can reduce the number of API calls.
 func SingleSubscriptionMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	client := meta.(*Client)
 	if len(client.subscriptions) == 0 {
@@ -16,7 +16,7 @@ func SingleSubscriptionMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	}
 }
 
-func SubscriptionMultiplexRegisteredNamespace(table, namespace string) func(schema.ClientMeta) []schema.ClientMeta {
+func SubscriptionMultiplexRegisteredNamespace(table, namespace string) schema.Multiplexer {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
 		client := meta.(*Client)
 		var c = make([]schema.ClientMeta, 0)
@@ -42,4 +42,16 @@ func SubscriptionMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 		c[i] = client.withSubscription(subId)
 	}
 	return c
+}
+
+// SingleSubscriptionMultiplexRegisteredNamespace can be used in cases where any single subscription with registered namespace would do.
+// This can reduce the number of API calls.
+func SingleSubscriptionMultiplexRegisteredNamespace(table, namespace string) schema.Multiplexer {
+	return func(meta schema.ClientMeta) []schema.ClientMeta {
+		clients := SingleSubscriptionMultiplexRegisteredNamespace(table, namespace)(meta)
+		if len(clients) > 0 {
+			return []schema.ClientMeta{clients[0]}
+		}
+		return nil
+	}
 }
