@@ -32,25 +32,9 @@ func EngineVersions() *schema.Table {
 				},
 			},
 			{
-				Name:     "engine",
+				Name:     "_engine_version_hash",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Engine"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "engine_version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EngineVersion"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "db_engine_version_description",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DBEngineVersionDescription"),
+				Resolver: calculateUniqueHash,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
