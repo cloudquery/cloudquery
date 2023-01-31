@@ -1,3 +1,6 @@
+---
+name: Neo4j
+---
 # Neo4j Destination Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -20,7 +23,7 @@ As a side note graph databases can be quite useful for various networking use-ca
 
 This example configures a Neo4j destination, located at `bolt://localhost:7687`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: "neo4j"

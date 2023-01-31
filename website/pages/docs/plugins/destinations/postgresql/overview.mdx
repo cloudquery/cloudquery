@@ -1,3 +1,7 @@
+---
+name: PostgreSQL
+stage: GA
+---
 # PostgreSQL Destination Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -19,7 +23,7 @@ Supported database versions:
 
 This example configures a Postgresql destination, located at `localhost:5432`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: "postgresql"
@@ -63,7 +67,7 @@ The PostgreSQL destination can be run in debug mode.
 
 Note: This will use [`pgx`](https://github.com/jackc/pgx) built-in logging and might output data/sensitive information to logs so make sure to not use it in production but only for debugging.
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: postgresql

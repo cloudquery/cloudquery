@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/snowflake
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.31.0
+	github.com/cloudquery/plugin-sdk v1.32.0
 	github.com/rs/zerolog v1.28.0
 	github.com/snowflakedb/gosnowflake v1.6.16
 )
@@ -16,8 +16,8 @@ require (
 	github.com/apache/arrow/go/arrow v0.0.0-20211112161151-bc219186db40 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.17.3 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.13.8 // indirect
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.47 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.10 // indirect
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.49 // indirect; indirect // indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.27 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.21 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.18 // indirect; indirect // indirect
@@ -25,7 +25,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.22 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.21 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.1 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
 	github.com/danieljoos/wincred v1.1.2 // indirect
 	github.com/dvsekhvalnov/jose2go v1.5.0 // indirect

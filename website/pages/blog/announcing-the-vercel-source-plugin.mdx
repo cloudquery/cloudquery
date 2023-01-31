@@ -27,13 +27,13 @@ Below are some query examples to get you started.
 
 If you have more than just one domain, keeping track of which one will expire soon can be a problem. Here's a query to check how many days there are left on each registration:
 
-```sql
+```sql copy
 select name, expires_at, date_trunc('day', expires_at - current_timestamp) as days_left from vercel_domains where (expires_at - interval '90 day') < current_timestamp order by 1;
 ```
 
 This query would output a table of domain names that are going to expire within the next 90 days:
 
-```bash
+```bash copy
       name      |   expires_at         | days_left
 ----------------+----------------------+-----------
  yourdomain.co  | 2023-01-28T08:09:41Z | 44 days
@@ -48,13 +48,13 @@ Vercel also provides an [auto-renewal facility](https://vercel.com/docs/concepts
 
 Using the query below you can list all Vercel team members across multiple teams.
 
-```sql
+```sql copy
 select t.name AS team, u.username, u.name, u.role from vercel_teams t join vercel_team_members u on u.team_id=t.id order by 1, 2;
 ```
 
 This will return list of users per team and their role:
 
-```bash
+```bash copy
    name   |   username   | name         |  role
 ------------+--------------+------------+--------
  yourteam | user1        | User Name    | MEMBER
@@ -66,7 +66,7 @@ This will return list of users per team and their role:
 
 ## Get a list of name servers
 
-```sql
+```sql copy
 select name, intended_nameservers, custom_nameservers, nameservers from vercel_domains order by 1;
 ```
 

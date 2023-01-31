@@ -3,7 +3,21 @@ title: Sources
 ---
 
 import { PluginsTable } from "../../../../components/PluginsTable";
+import { getPluginsData } from '../../../../utils/plugins'
+import { useSSG } from 'nextra/ssg'
 
+{/* <!-- vale off --> */}
+export const getStaticProps = () => {
+  return {
+    props: {
+      ssg: {
+        plugins: getPluginsData("sources")
+      }
+    }
+  }
+}
+
+{/* <!-- vale on --> */}
 # Source Plugins
 
 ## Official
@@ -12,43 +26,7 @@ Documentation, configuration and available tables for every plugin are available
 
 Official source plugins follow [release stages](#source-plugin-release-stages).
 
-<PluginsTable
-    type="source"
-    plugins={
-        [
-            { name: "Alibaba Cloud", stage: "Preview", id: `alicloud` },
-            { name: "AWS", stage: "GA" },
-            { name: "Azure", stage: "GA" },
-            { name: "GCP", stage: "GA" },
-            { name: "DigitalOcean", stage: "GA" },
-            { name: "Fastly", stage: "Preview" },
-            { name: "GitHub", stage: "GA" },
-            { name: "GitLab", stage: "Preview" },
-            { name: "Hacker News", stage: "Preview", id: `hackernews` },
-            { name: "Heroku", stage: "Preview" },
-            { name: "HubSpot", stage: "Preview" },
-            { name: "k8s", stage: "Preview" },
-            { name: "LaunchDarkly", stage: "Preview" },
-            { name: "Okta", stage: "Preview" },
-            { name: "Oracle", stage: "Preview" },
-            { name: "Terraform", stage: "Preview" },
-            { name: "Cloudflare", stage: "Preview" },
-            { name: "Gandi", stage: "Preview" },
-            { name: "Datadog", stage: "Preview" },
-            { name: "Salesforce", stage: "Preview" },
-            { name: "Slack", stage: "Preview" },
-            { name: "Shopify", stage: "Preview" },
-            { name: "Stripe", stage: "Preview" },
-            { name: "PagerDuty", stage: "Preview"},
-            { name: "Tailscale", stage: "Preview" },
-            { name: "Vercel", stage: "Preview" },
-            { name: "Snyk", stage: "Preview" },
-            { name: "Azure DevOps", stage: "Preview", id: `azuredevops` },
-            { name: "Plausible Analytics", stage: "Preview", id: `plausible` },
-            { name: "Mixpanel", stage: "Preview" },
-        ]
-    }
-/>
+<PluginsTable type="source" plugins={Object.values(useSSG().plugins)}/>
 
 ## Community
 

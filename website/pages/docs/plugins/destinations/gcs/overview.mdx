@@ -1,3 +1,6 @@
+---
+name: GCS
+---
 # GCS (Google Cloud Storage) Destination Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -15,7 +18,7 @@ This example configures a GCS destination, to create CSV files in `gcs://bucket_
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: "gcs"
@@ -28,6 +31,8 @@ spec:
     bucket: "bucket_name"
     path: "path/to/files"
     format: "csv"
+    format_spec:
+      delimiter: ","
 ```
 
 The GCS destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).

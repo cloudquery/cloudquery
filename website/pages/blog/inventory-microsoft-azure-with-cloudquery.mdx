@@ -20,7 +20,7 @@ I have recently discovered a tool that in different scenarios, especially in the
 
 The first thing you need to do is install the CloudQuery tool on your machine. In my case I am using Mac, so I have run the following command using [Homebrew](https://brew.sh/):
 
-```bash
+```bash copy
 brew install cloudquery/tap/cloudquery
 ```
 
@@ -30,7 +30,7 @@ If you use another operating system you can see the different [releases here](ht
 
 Now that you have the CloudQuery tool installed on your machine, create a directory, I have called it **cloudquery**, and initialize the configuration within it, with the following command:
 
-```bash
+```bash copy
 cloudquery init azure
 ```
 
@@ -44,7 +44,7 @@ If we do not modify anything, all the resources of all the subscriptions to whic
 
 As I already mentioned at the beginning of this article, the information retrieved is exported to a **Postgres**-type database , so we will need one. The simple way is using a [Docker](https://www.returngis.net/2019/02/hoy-empiezo-con-docker/) container:
 
-```bash
+```bash copy
 #Create a database in Docker
 docker run -d --name postgresdb \
 -p 5432:5432 \
@@ -56,7 +56,7 @@ postgres
 
 Now that we know that we want to retrieve the information from Azure, in order to do so we need to create a main service that has access to the subscriptions we want to export:
 
-```bash
+```bash copy
 SUBSCRIPTION_ID=<YOUR_SUBSCRIPTION_ID>
 az account set --subscription $SUBSCRIPTION_ID
 
@@ -69,7 +69,7 @@ az ad sp create-for-rbac --name cloudquery --scopes /subscriptions/$SUBSCRIPTION
 
 Once the response is created, and stored in the auth.json file , I use the `jq` tool to store the main service information in these environment variables:
 
-```bash
+```bash copy
 #Set variables
 export AZURE_TENANT_ID=$(jq -r '.tenant' auth.json)
 export AZURE_CLIENT_ID=$(jq -r '.appId' auth.json)
@@ -91,7 +91,7 @@ Once in it, look for the main service that we have called **cloudquery**, throug
 
 Now the only thing left is to retrieve the information with CloudQuery. To do this, you only have to execute a single command:
 
-```bash
+```bash copy
 #Fetch the information into the database
 cloudquery fetch --dsn "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 ```
@@ -102,7 +102,7 @@ This uses the environment variables that we have previously configured, with the
 
 You can make queries like these, simply to retrieve resources of a specific type:
 
-```sql
+```sql copy
 SELECT * from azure_compute_virtual_machines;
 
 SELECT * from azure_web_apps;
@@ -110,7 +110,7 @@ SELECT * from azure_web_apps;
 
 Or go further and consult about these aspects that may be important to you and you need to validate or generate a report on them. For example: "Tell me which storage accounts have public access enabled." It would be something as simple as this:
 
-```sql
+```sql copy
 SELECT * from azure_storage_accounts where allow_blob_public_access is null
 ```
 

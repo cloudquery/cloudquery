@@ -79,7 +79,7 @@ Now, after ensuring that we’ve properly configured the IAM policies attached t
 
 In this case, due to the key being an AWS Managed KMS Key, we’re unable to access the KMS Key due to the following KMS Key Policy.
 
-```json
+```json copy
 {
     "Version": "2012-10-17",
     "Id": "auto-s3-2",
@@ -126,7 +126,7 @@ Let’s take a deeper look at this key policy and what this statement does.  Sin
 
 - “Allow access through S3 for all principals in the account that are authorized to use S3”
 
-```json
+```json copy
 {
             "Sid": "Allow access through S3 for all principals in the account that are authorized to use S3",
             "Effect": "Allow",
@@ -159,7 +159,7 @@ By combining the kms:CallerAccount condition with a Principal element that speci
 
 - “Allow direct access to key metadata to the account”
 
-```json
+```json copy
 {
             "Sid": "Allow direct access to key metadata to the account",
             "Effect": "Allow",
@@ -185,7 +185,7 @@ Due to the nature and setup of the AWS provided AWS Managed KMS Keys, which are 
 
 Access for both usage and management of KMS Keys can be governed by a couple different mechanisms.  At a high level, there are IAM Policies, KMS Key Grants, and KMS Key Policies (Resource-Based Policies) where a combination of them could grant access.  We will do a deep dive into these concepts and complexities in a later post.
 
-```json
+```json copy
 {
     "Id": "cloudquery-sample-cmk-policy",
     "Version": "2012-10-17",

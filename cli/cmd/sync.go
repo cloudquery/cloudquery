@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/clients/discovery/v0"
 	"github.com/google/uuid"
 	"golang.org/x/exp/slices"
 
@@ -73,7 +72,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			}
 			destinationsSpecs = append(destinationsSpecs, *spec)
 		}
-		discoveryClient, err := discovery.NewClient(ctx, cqDir, sourceSpec.Registry, registry.PluginTypeSource, sourceSpec.Path, sourceSpec.Version)
+		discoveryClient, err := discovery.NewClient(ctx, sourceSpec.Registry, registry.PluginTypeSource, sourceSpec.Path, sourceSpec.Version, discovery.WithDirectory(cqDir))
 		if err != nil {
 			return fmt.Errorf("failed to create discovery client for source %s: %w", sourceSpec.Name, err)
 		}

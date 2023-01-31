@@ -41,7 +41,7 @@ Full full details, checkout [PostgREST](https://postgrest.org/en/stable/tutorial
 
 To run it locally, all you need is the following `cq.conf` file as input for PostgREST (adjust the PG URL accordingly):
 
-```ini
+```ini copy
 db-uri = "postgres://postgres:pass@localhost:5432/postgres"
 db-schemas = "public"
 db-anon-role = "postgres"
@@ -49,7 +49,7 @@ db-anon-role = "postgres"
 
 and run the following
 
-```bash
+```bash copy
 postgrest cq.confg
 ```
 
@@ -57,7 +57,7 @@ postgrest cq.confg
 
 That’s it! You should see something like the following in the output if all is well:
 
-```bash
+```bash copy
 12/Jun/2022:23:36:20 +0300: Attempting to connect to the database...
 12/Jun/2022:23:36:20 +0300: Connection successful
 12/Jun/2022:23:36:20 +0300: Listening on port 3000
@@ -68,13 +68,13 @@ That’s it! You should see something like the following in the output if all is
 
 Now you can query the endpoint with `curl` or any other API browser/UI, Swagger UI.
 
-```bash
+```bash copy
 curl "http://localhost:3000/aws_ec2_instances"
 ```
 
 You can also use any filter on any of the fields which PostgREST automatically exposes.
 
-```bash
+```bash copy
 curl "http://localhost:3000/aws_ec2_instances?arn=eq.arnsomething"
 ```
 

@@ -1,5 +1,5 @@
 ---
-title: Introducing the GitHub CloudQuery Provider
+title: Introducing the GitHub CloudQuery Plugin
 tag: announcement
 date: 2022/08/08
 description: >-
@@ -24,13 +24,13 @@ In this tutorial, we will install CloudQuery and use it to fetch GitHub resource
 - [Download CloudQuery](https://www.cloudquery.io/docs/quickstart).
 - Acquire a GitHub (personal access token)[https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token]
   with the scopes:
-  ```ini
+  ```ini copy
     read:org
     read:project
     public_repo
   ```.
 - Create a `cloudquery.yml` file, similar to the following:
-  ```yaml
+  ```yaml copy
   kind: source
   spec:
     name: github
@@ -54,7 +54,7 @@ In this tutorial, we will install CloudQuery and use it to fetch GitHub resource
       connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
   ```
 - Run
-  ```bash
+  ```bash copy
   cloudquery sync cloudquery.yml
   ```
 
@@ -64,7 +64,7 @@ After we finish fetching our config data we can make queries for security, compl
 
 ### Find all Public Repositories
 
-```sql
+```sql copy
 -- Query all repositories in the organizations that are public
 SELECT id, org, name, description FROM github_repositories
 WHERE private = false
@@ -72,7 +72,7 @@ WHERE private = false
 
 ### Organization Billing
 
-```sql
+```sql copy
 -- Get billing information state for actions, packages and storage
 SELECT * FROM github_billing_action
 
@@ -83,7 +83,7 @@ SELECT * FROM github_billing_storage
 
 ### Long Standing Open Issues
 
-```sql
+```sql copy
 -- Find all open issues that have been open for more than 7 days
 SELECT gr.org, gr.name, gi.id, gi.state, gi.created_at, gi.updated_at
 FROM github_issues gi
@@ -93,4 +93,4 @@ WHERE state = 'open' AND NOW() - interval '7 days' > gi.created_at
 
 ## What's next
 
-We are going to continue expanding the GitHub Provider, adding support for more resources. Interested in seeing another provider? Check out [Developing New Provider](/docs/developers/creating-new-plugin) and/or open an issue on our [GitHub](https://github.com/cloudquery/cloudquery).
+We are going to continue expanding the GitHub Provider, adding support for more resources. Interested in seeing another plugin? Check out [Developing New plugin](/docs/developers/creating-new-plugin) and/or open an issue on our [GitHub](https://github.com/cloudquery/cloudquery).

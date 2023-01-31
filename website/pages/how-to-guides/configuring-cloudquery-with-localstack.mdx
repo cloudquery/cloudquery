@@ -59,7 +59,7 @@ postgres
 
 Configure a destination for CloudQuery to use to store the data. For this tutorial we will use Postgresql, but many other destinations are [available here](/docs/plugins/destinations/overview)
 
-```yaml
+```yaml copy
 # destination.yml
 kind: destination
 spec:
@@ -77,7 +77,7 @@ spec:
 Configure CloudQuery's AWS [source plugin](/docs/plugins/sources/aws/overview) to use the LocalStack endpoint.
 
 
-```yaml
+```yaml copy
 # source.yml
 kind: source
 spec:
@@ -128,7 +128,7 @@ You can inject the desired AWS Account ID by setting it as the `AWS_ACCESS_KEY_I
 
 Query the data you just synced!
 
-```sql
+```sql copy
 select * from aws_ec2_vpcs;
 
 -- or

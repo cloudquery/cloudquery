@@ -1,3 +1,6 @@
+---
+name: Datadog
+---
 # Datadog Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -18,7 +21,7 @@ so, following the principle of the least privilege, it's recommended to grant it
 
 ### Find all not verified users
 
-```sql
+```sql copy
 SELECT 
     "attributes" ->> 'name' AS username
 FROM
