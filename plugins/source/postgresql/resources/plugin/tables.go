@@ -9,5 +9,5 @@ import (
 
 func getDynamicTables(ctx context.Context, c schema.ClientMeta) (schema.Tables, error) {
 	cl := c.(*client.Client)
-	return cl.ListTables(ctx)
+	return cl.Tables, nil
 }

@@ -25,7 +25,7 @@ type Client struct {
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
-	tables              schema.Tables
+	Tables              schema.Tables
 	createReplicationSlotResult pglogrepl.CreateReplicationSlotResult
 }
 
@@ -87,7 +87,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
 	}
-	c.tables, err = c.ListTables(ctx)
+	c.Tables, err = c.listTables(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)
 	}
@@ -136,7 +136,7 @@ func (c *Client) createReplication(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	tables := strings.Join(c.tables.TableNames(), ",")
+	tables := strings.Join(c.Tables.TableNames(), ",")
 	reader := conn.Exec(ctx, fmt.Sprintf("CREATE PUBLICATION %s FOR TABLE %s;", pgx.Identifier{c.spec.Name}.Sanitize(), tables))
 	_, err = reader.ReadAll()
 	if err != nil {

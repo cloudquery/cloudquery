@@ -2,10 +2,8 @@ package client
 
 import (
 	"context"
-	"strings"
 
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/jackc/pgx/v5"
 )
 
 // this returns the following table in sorted manner:
@@ -46,7 +44,7 @@ ORDER BY
 table_name ASC , ordinal_position ASC;
 `
 
-func (c *Client) ListTables(ctx context.Context) (schema.Tables, error) {
+func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 	var tables schema.Tables
 	rows, err := c.Conn.Query(ctx, selectTables)
 	if err != nil {
@@ -81,32 +79,5 @@ func (c *Client) ListTables(ctx context.Context) (schema.Tables, error) {
 			Type: c.PgToSchemaType(columnType),
 		})
 	}
-	for i := range tables {
-		tables[i].Resolver = createTableResolver(tables[i])
-	}
 	return tables, nil
-}
-
-func createTableResolver(table *schema.Table) schema.TableResolver {
-	colNames := make([]string, len(table.Columns))
-	for i, col := range table.Columns {
-		colNames[i] = pgx.Identifier{col.Name}.Sanitize()
-	}
-	query := "SELECT " + strings.Join(colNames, ",") + " FROM " + pgx.Identifier{table.Name}.Sanitize()
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-		c := meta.(*Client)
-		rows, err := c.Conn.Query(ctx, query)
-		if err != nil {
-			return err
-		}
-		defer rows.Close()
-		for rows.Next() {
-			values, err := rows.Values()
-			if err != nil {
-				return err
-			}
-			res <- []interface{}{values}
-		}
-		return nil
-	}
 }
