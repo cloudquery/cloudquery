@@ -34,7 +34,7 @@ spec:
   path: "cloudquery/firehose"
   version: "VERSION_DESTINATION_FIREHOSE"
   write_mode: "append" # this plugin only supports 'append' mode
-  # batch_size: 10000 # optional
+  # batch_size: 500 # optional
   # batch_size_bytes: 5242880 # optional
   spec:
     stream_arn: "arn:aws:firehose:us-east-1:111122223333:deliverystream/TestRedshiftStream"
