@@ -11,9 +11,9 @@ import (
 func (c *Client) ReverseTransformValues(table *schema.Table, values []any) (schema.CQTypes, error) {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.CSVReverseTransformer.ReverseTransformValues(table, values)
+		return c.csvReverseTransformer.ReverseTransformValues(table, values)
 	case FormatTypeJSON:
-		return c.JSONReverseTransformer.ReverseTransformValues(table, values)
+		return c.jsonReverseTransformer.ReverseTransformValues(table, values)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}

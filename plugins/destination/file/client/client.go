@@ -19,11 +19,11 @@ type Client struct {
 	pluginSpec Spec
 
 	CSVClient              *csv.Client
-	CSVTransformer         csv.Transformer
-	CSVReverseTransformer  csv.ReverseTransformer
 	JSONClient             *json.Client
-	JSONTransformer        json.Transformer
-	JSONReverseTransformer json.ReverseTransformer
+	csvTransformer         *csv.Transformer
+	csvReverseTransformer  *csv.ReverseTransformer
+	jsonTransformer        *json.Transformer
+	jsonReverseTransformer *json.ReverseTransformer
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -31,8 +31,12 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("file destination only supports append mode")
 	}
 	c := &Client{
-		logger: logger.With().Str("module", "file").Logger(),
-		spec:   spec,
+		logger:                 logger.With().Str("module", "file").Logger(),
+		spec:                   spec,
+		csvTransformer:         &csv.Transformer{},
+		jsonTransformer:        &json.Transformer{},
+		csvReverseTransformer:  &csv.ReverseTransformer{},
+		jsonReverseTransformer: &json.ReverseTransformer{},
 	}
 
 	if err := spec.UnmarshalSpec(&c.pluginSpec); err != nil {
