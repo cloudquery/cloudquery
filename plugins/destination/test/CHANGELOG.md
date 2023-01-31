@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.3.17...plugins-destination-test-v2.0.0) (2023-01-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** PK for `aws_apigateway_rest_api_deployments` ([#7357](https://github.com/cloudquery/cloudquery/issues/7357))
+
+### Bug Fixes
+
+* **aws:** PK for `aws_apigateway_rest_api_deployments` ([#7357](https://github.com/cloudquery/cloudquery/issues/7357)) ([9fbc2f9](https://github.com/cloudquery/cloudquery/commit/9fbc2f96988783cdb61408b53f0beeef8f90e61c))
+
 ## [1.3.17](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.3.16...plugins-destination-test-v1.3.17) (2023-01-31)
 
 
