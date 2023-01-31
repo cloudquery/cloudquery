@@ -5,9 +5,9 @@ import "github.com/cloudquery/plugin-sdk/schema"
 func (c *Client) TransformBool(v *schema.Bool) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformBool(v)
+		return c.CSVTransformer.TransformBool(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformBool(v)
+		return c.JSONTransformer.TransformBool(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -16,9 +16,9 @@ func (c *Client) TransformBool(v *schema.Bool) any {
 func (c *Client) TransformBytea(v *schema.Bytea) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformBytea(v)
+		return c.CSVTransformer.TransformBytea(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformBytea(v)
+		return c.JSONTransformer.TransformBytea(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -27,9 +27,9 @@ func (c *Client) TransformBytea(v *schema.Bytea) any {
 func (c *Client) TransformFloat8(v *schema.Float8) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformFloat8(v)
+		return c.CSVTransformer.TransformFloat8(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformFloat8(v)
+		return c.JSONTransformer.TransformFloat8(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -38,9 +38,9 @@ func (c *Client) TransformFloat8(v *schema.Float8) any {
 func (c *Client) TransformInt8(v *schema.Int8) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformInt8(v)
+		return c.CSVTransformer.TransformInt8(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformInt8(v)
+		return c.JSONTransformer.TransformInt8(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -49,9 +49,9 @@ func (c *Client) TransformInt8(v *schema.Int8) any {
 func (c *Client) TransformInt8Array(v *schema.Int8Array) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformInt8Array(v)
+		return c.CSVTransformer.TransformInt8Array(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformInt8Array(v)
+		return c.JSONTransformer.TransformInt8Array(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -60,9 +60,9 @@ func (c *Client) TransformInt8Array(v *schema.Int8Array) any {
 func (c *Client) TransformJSON(v *schema.JSON) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformJSON(v)
+		return c.CSVTransformer.TransformJSON(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformJSON(v)
+		return c.JSONTransformer.TransformJSON(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -71,9 +71,9 @@ func (c *Client) TransformJSON(v *schema.JSON) any {
 func (c *Client) TransformText(v *schema.Text) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformText(v)
+		return c.CSVTransformer.TransformText(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformText(v)
+		return c.JSONTransformer.TransformText(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -82,9 +82,9 @@ func (c *Client) TransformText(v *schema.Text) any {
 func (c *Client) TransformTextArray(v *schema.TextArray) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformTextArray(v)
+		return c.CSVTransformer.TransformTextArray(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformTextArray(v)
+		return c.JSONTransformer.TransformTextArray(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -93,9 +93,9 @@ func (c *Client) TransformTextArray(v *schema.TextArray) any {
 func (c *Client) TransformTimestamptz(v *schema.Timestamptz) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformTimestamptz(v)
+		return c.CSVTransformer.TransformTimestamptz(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformTimestamptz(v)
+		return c.JSONTransformer.TransformTimestamptz(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -104,9 +104,9 @@ func (c *Client) TransformTimestamptz(v *schema.Timestamptz) any {
 func (c *Client) TransformUUID(v *schema.UUID) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformUUID(v)
+		return c.CSVTransformer.TransformUUID(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformUUID(v)
+		return c.JSONTransformer.TransformUUID(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -115,9 +115,9 @@ func (c *Client) TransformUUID(v *schema.UUID) any {
 func (c *Client) TransformUUIDArray(v *schema.UUIDArray) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformUUIDArray(v)
+		return c.CSVTransformer.TransformUUIDArray(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformUUIDArray(v)
+		return c.JSONTransformer.TransformUUIDArray(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -126,9 +126,9 @@ func (c *Client) TransformUUIDArray(v *schema.UUIDArray) any {
 func (c *Client) TransformCIDR(v *schema.CIDR) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformCIDR(v)
+		return c.CSVTransformer.TransformCIDR(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformCIDR(v)
+		return c.JSONTransformer.TransformCIDR(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -137,9 +137,9 @@ func (c *Client) TransformCIDR(v *schema.CIDR) any {
 func (c *Client) TransformCIDRArray(v *schema.CIDRArray) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformCIDRArray(v)
+		return c.CSVTransformer.TransformCIDRArray(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformCIDRArray(v)
+		return c.JSONTransformer.TransformCIDRArray(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -148,9 +148,9 @@ func (c *Client) TransformCIDRArray(v *schema.CIDRArray) any {
 func (c *Client) TransformInet(v *schema.Inet) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformInet(v)
+		return c.CSVTransformer.TransformInet(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformInet(v)
+		return c.JSONTransformer.TransformInet(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -159,9 +159,9 @@ func (c *Client) TransformInet(v *schema.Inet) any {
 func (c *Client) TransformInetArray(v *schema.InetArray) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformInetArray(v)
+		return c.CSVTransformer.TransformInetArray(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformInetArray(v)
+		return c.JSONTransformer.TransformInetArray(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -170,9 +170,9 @@ func (c *Client) TransformInetArray(v *schema.InetArray) any {
 func (c *Client) TransformMacaddr(v *schema.Macaddr) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformMacaddr(v)
+		return c.CSVTransformer.TransformMacaddr(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformMacaddr(v)
+		return c.JSONTransformer.TransformMacaddr(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
@@ -181,9 +181,9 @@ func (c *Client) TransformMacaddr(v *schema.Macaddr) any {
 func (c *Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
-		return c.csvTransformer.TransformMacaddrArray(v)
+		return c.CSVTransformer.TransformMacaddrArray(v)
 	case FormatTypeJSON:
-		return c.jsonTransformer.TransformMacaddrArray(v)
+		return c.JSONTransformer.TransformMacaddrArray(v)
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}

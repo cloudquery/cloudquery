@@ -18,10 +18,12 @@ type Client struct {
 	spec       specs.Destination
 	pluginSpec Spec
 
-	csvTransformer         *csv.Transformer
-	csvReverseTransformer  *csv.ReverseTransformer
-	jsonTransformer        *json.Transformer
-	jsonReverseTransformer *json.ReverseTransformer
+	CSVClient              *csv.Client
+	CSVTransformer         csv.Transformer
+	CSVReverseTransformer  csv.ReverseTransformer
+	JSONClient             *json.Client
+	JSONTransformer        json.Transformer
+	JSONReverseTransformer json.ReverseTransformer
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -29,12 +31,8 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("file destination only supports append mode")
 	}
 	c := &Client{
-		logger:                 logger.With().Str("module", "file").Logger(),
-		spec:                   spec,
-		csvTransformer:         &csv.Transformer{},
-		jsonTransformer:        &json.Transformer{},
-		csvReverseTransformer:  &csv.ReverseTransformer{},
-		jsonReverseTransformer: &json.ReverseTransformer{},
+		logger: logger.With().Str("module", "file").Logger(),
+		spec:   spec,
 	}
 
 	if err := spec.UnmarshalSpec(&c.pluginSpec); err != nil {
@@ -44,6 +42,18 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, err
 	}
 	c.pluginSpec.SetDefaults()
+
+	csvClient, err := csv.NewClient()
+	if err != nil {
+		return nil, fmt.Errorf("failed to create CSV client: %w", err)
+	}
+	c.CSVClient = csvClient
+
+	jsonClient, err := json.NewClient()
+	if err != nil {
+		return nil, fmt.Errorf("failed to create JSON client: %w", err)
+	}
+	c.JSONClient = jsonClient
 
 	if err := os.MkdirAll(c.pluginSpec.Directory, 0755); err != nil {
 		return nil, fmt.Errorf("failed to create directory: %w", err)
