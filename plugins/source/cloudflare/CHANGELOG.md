@@ -5,6 +5,17 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v3.1.3...plugins-source-cloudflare-v4.0.0) (2023-01-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** PK for `aws_apigateway_rest_api_deployments` ([#7357](https://github.com/cloudquery/cloudquery/issues/7357))
+
+### Bug Fixes
+
+* **aws:** PK for `aws_apigateway_rest_api_deployments` ([#7357](https://github.com/cloudquery/cloudquery/issues/7357)) ([9fbc2f9](https://github.com/cloudquery/cloudquery/commit/9fbc2f96988783cdb61408b53f0beeef8f90e61c))
+
 ## [3.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v3.1.2...plugins-source-cloudflare-v3.1.3) (2023-01-31)
 
 
