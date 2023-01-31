@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/core/deletebyquery"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
+	"golang.org/x/sync/errgroup"
 )
 
 type deleteByQueryErrorResponse struct {
@@ -21,6 +22,8 @@ type deleteByQueryErrorResponse struct {
 		} `json:"root_cause"`
 	} `json:"error"`
 }
+
+const maxConcurrentDeletes = 10
 
 // DeleteStale removes entries from previous syncs
 func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
@@ -47,25 +50,34 @@ func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source s
 	}
 	req := deletebyquery.NewRequest()
 	req.Query = &q
-	var qResp deleteByQueryErrorResponse
+
+	g, gctx := errgroup.WithContext(ctx)
+	g.SetLimit(maxConcurrentDeletes)
 	for _, table := range tables {
-		index := table.Name + "-*"
-		resp, err := c.typedClient.DeleteByQuery(index).Request(req).Do(ctx)
-		if err != nil {
-			return fmt.Errorf("failed to delete stale entries: %w", err)
+		g.Go(func() error {
+			return c.deleteStaleTable(gctx, table, req)
+		})
+	}
+	return g.Wait()
+}
+
+func (c *Client) deleteStaleTable(ctx context.Context, table *schema.Table, req *deletebyquery.Request) error {
+	index := table.Name + "-*"
+	resp, err := c.typedClient.DeleteByQuery(index).Request(req).Do(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to delete stale entries: %w", err)
+	}
+	defer resp.Body.Close()
+	var qResp deleteByQueryErrorResponse
+	b, _ := io.ReadAll(resp.Body)
+	if err := json.Unmarshal(b, &qResp); err != nil {
+		return fmt.Errorf("failed to unmarshal: %w", err)
+	}
+	if qResp.Status != 0 {
+		if len(qResp.Error.RootCause) > 0 {
+			return fmt.Errorf("failed to delete stale entries: %s", qResp.Error.RootCause[0].Reason)
 		}
-		b, _ := io.ReadAll(resp.Body)
-		if err := json.Unmarshal(b, &qResp); err != nil {
-			return fmt.Errorf("failed to unmarshal: %w", err)
-		}
-		if qResp.Status != 0 {
-			if len(qResp.Error.RootCause) > 0 {
-				return fmt.Errorf("failed to delete stale entries: %s", qResp.Error.RootCause[0].Reason)
-			}
-			return fmt.Errorf("failed to delete stale entries: status %d", qResp.Status)
-		}
-		// io.Copy(io.Discard, resp.Body)
-		resp.Body.Close()
+		return fmt.Errorf("failed to delete stale entries: status %d", qResp.Status)
 	}
 	return nil
 }

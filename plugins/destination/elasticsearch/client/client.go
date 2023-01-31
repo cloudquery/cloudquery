@@ -57,7 +57,6 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 		// Retry on 429 TooManyRequests statuses
 		RetryOnStatus: []int{502, 503, 504, 429},
 		// Configure the backoff function
-		//
 		RetryBackoff: func(i int) time.Duration {
 			if i == 1 {
 				retryBackoff.Reset()
@@ -65,7 +64,6 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 			return retryBackoff.NextBackOff()
 		},
 		// Retry up to 5 attempts
-		//
 		MaxRetries: 5,
 	}
 	es, err := elasticsearch.NewTypedClient(cfg)
