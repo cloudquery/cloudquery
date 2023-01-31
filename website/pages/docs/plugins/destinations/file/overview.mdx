@@ -29,6 +29,8 @@ spec:
   spec:
     directory: "./cq_csv_output"
     format: "csv"
+    format_spec:
+      delimiter: ","
 ```
 
 ## File Spec
@@ -39,11 +41,24 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   Directory where all CSV files will be written. A CSV file will be created per table.
 
-- `format` (string) (required)
-
-  Format of the output file. `json` and `csv` are supported.
-
 - `no_rotate` (bool) (optional)
 
   If set to true, the plugin will write to one file per table.
   Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
+
+- `format` (string) (required)
+
+  Format of the output file. `json` and `csv` are supported.
+
+- `format_spec` (map [format_spec](#format_spec)) (optional)
+  Optional parameters to change the format of the file
+
+## format_spec
+
+- `delimiter` (string) (optional) (default: `,`)
+
+  Character that will be used as want to use as the delimiter if the format type is `csv`
+
+- `skip_header` (bool) (optional) (default: false)
+
+  Specifies if the first line of a file should be the headers if the format type is `csv`

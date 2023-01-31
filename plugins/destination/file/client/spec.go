@@ -2,6 +2,8 @@ package client
 
 import (
 	"fmt"
+
+	"github.com/cloudquery/filetypes"
 )
 
 type FormatType string
@@ -12,9 +14,9 @@ const (
 )
 
 type Spec struct {
-	Directory string     `json:"directory,omitempty"`
-	Format    FormatType `json:"format,omitempty"`
-	NoRotate  bool       `json:"no_rotate,omitempty"`
+	Directory string `json:"directory,omitempty"`
+	NoRotate  bool   `json:"no_rotate,omitempty"`
+	*filetypes.FileSpec
 }
 
 func (*Spec) SetDefaults() {}
