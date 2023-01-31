@@ -8,8 +8,7 @@ import (
 )
 
 const (
-	// TODO: Add Sentry DSN
-	sentryDSN = ""
+	sentryDSN = "https://03ef940ae6064ae8a69fa5e1ad74d3f2@o1396617.ingest.sentry.io/4504600056299520"
 )
 
 func main() {
