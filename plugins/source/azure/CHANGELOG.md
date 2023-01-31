@@ -5,6 +5,65 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v3.5.0...plugins-source-azure-v4.0.0) (2023-01-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* **azure:** Drop `subscription_id` from `azure_reservations_reservation` ([#7345](https://github.com/cloudquery/cloudquery/issues/7345))
+* **azure:** Drop `subscription_id` from `azure_support_services` ([#7351](https://github.com/cloudquery/cloudquery/issues/7351))
+* **azure:** Drop `subscription_id` from `azure_policy_data_policy_manifests` ([#7344](https://github.com/cloudquery/cloudquery/issues/7344))
+* **azure:** Drop `subscription_id` from `azure_eventgrid_topic_types` ([#7343](https://github.com/cloudquery/cloudquery/issues/7343))
+* **azure:** Drop `subscription_id` from `azure_cdn_edge_nodes` ([#7342](https://github.com/cloudquery/cloudquery/issues/7342))
+* **azure:** Drop `subscription_id` from `azure_authorization_provider_operations_metadata` ([#7341](https://github.com/cloudquery/cloudquery/issues/7341))
+* **azure:** Drop `subscription_id` column from `azure_advisor_recommendation_metadata` ([#7337](https://github.com/cloudquery/cloudquery/issues/7337))
+* **azure:** Change `azure_compute_skus` PK to `(subscription_id, name, _sku_hash)` ([#7305](https://github.com/cloudquery/cloudquery/issues/7305))
+* **azure:** Add `subscription_id` to `azure_security_secure_score_control_definitions` PK ([#7285](https://github.com/cloudquery/cloudquery/issues/7285))
+* **azure:** Add `subscription_id` to `azure_security_topology` PK ([#7280](https://github.com/cloudquery/cloudquery/issues/7280))
+* **azure:** Add `subscription_id` to `azure_policy_set_definitions` PK ([#7283](https://github.com/cloudquery/cloudquery/issues/7283))
+* **azure:** Add `subscription_id` to `azure_security_assessments_metadata` PK ([#7281](https://github.com/cloudquery/cloudquery/issues/7281))
+* **azure:** Change `azure_compute_skus` PK from `id` to `(subscription_id, family, kind, name)` ([#7267](https://github.com/cloudquery/cloudquery/issues/7267))
+* **azure:** Add `subscription_id` to `azure_network_express_route_service_providers` PK ([#7279](https://github.com/cloudquery/cloudquery/issues/7279))
+* **azure:** Add `subscription_id` to `azure_network_bgp_service_communities` PK ([#7277](https://github.com/cloudquery/cloudquery/issues/7277))
+* **azure:** Add `subscription_id` to `azure_policy_definitions` PK ([#7264](https://github.com/cloudquery/cloudquery/issues/7264))
+* **azure:** Add `subscription_id` to `azure_network_azure_firewall_fqdn_tags` PK ([#7278](https://github.com/cloudquery/cloudquery/issues/7278))
+* **azure:** Add `subscription_id` to `azure_frontdoor_managed_rule_sets` PK ([#7276](https://github.com/cloudquery/cloudquery/issues/7276))
+* **azure:** Add `subscription_id` to `azure_authorization_role_assignments` ([#7270](https://github.com/cloudquery/cloudquery/issues/7270))
+* **azure:** Add `subscription_id` to `azure_cdn_managed_rule_sets` PK ([#7272](https://github.com/cloudquery/cloudquery/issues/7272))
+
+### Features
+
+* Azure policy implementaion for v2  ([#6557](https://github.com/cloudquery/cloudquery/issues/6557)) ([0768fe6](https://github.com/cloudquery/cloudquery/commit/0768fe60441ad1e570cc1cf8a6373405030f84b9))
+* Azure resources for policy implementation v2 ([#6677](https://github.com/cloudquery/cloudquery/issues/6677)) ([581eb7d](https://github.com/cloudquery/cloudquery/commit/581eb7d60acf1450b6ccd8bae602a95093cb319b))
+
+
+### Bug Fixes
+
+* **azure:** Add `subscription_id` to `azure_authorization_role_assignments` ([#7270](https://github.com/cloudquery/cloudquery/issues/7270)) ([2d7492d](https://github.com/cloudquery/cloudquery/commit/2d7492d1a6e9e53f289656a7ccb9a095f6d69caa)), closes [#7242](https://github.com/cloudquery/cloudquery/issues/7242)
+* **azure:** Add `subscription_id` to `azure_cdn_managed_rule_sets` PK ([#7272](https://github.com/cloudquery/cloudquery/issues/7272)) ([cc9b5af](https://github.com/cloudquery/cloudquery/commit/cc9b5afb6debf3dade83ca760df6ac29719bd390)), closes [#7244](https://github.com/cloudquery/cloudquery/issues/7244)
+* **azure:** Add `subscription_id` to `azure_frontdoor_managed_rule_sets` PK ([#7276](https://github.com/cloudquery/cloudquery/issues/7276)) ([830d669](https://github.com/cloudquery/cloudquery/commit/830d669128099e2eb2235bf09d79c5acd66b3d62)), closes [#7247](https://github.com/cloudquery/cloudquery/issues/7247)
+* **azure:** Add `subscription_id` to `azure_network_azure_firewall_fqdn_tags` PK ([#7278](https://github.com/cloudquery/cloudquery/issues/7278)) ([2b31fa4](https://github.com/cloudquery/cloudquery/commit/2b31fa471039b3896e6be62f3eb93136a0f42982)), closes [#7248](https://github.com/cloudquery/cloudquery/issues/7248)
+* **azure:** Add `subscription_id` to `azure_network_bgp_service_communities` PK ([#7277](https://github.com/cloudquery/cloudquery/issues/7277)) ([50088a0](https://github.com/cloudquery/cloudquery/commit/50088a0ca818b376a07bc68b5f179fa2bb0e58e8)), closes [#7249](https://github.com/cloudquery/cloudquery/issues/7249)
+* **azure:** Add `subscription_id` to `azure_network_express_route_service_providers` PK ([#7279](https://github.com/cloudquery/cloudquery/issues/7279)) ([ea5b468](https://github.com/cloudquery/cloudquery/commit/ea5b468506357a4309c030d7c433851c760b093b)), closes [#7250](https://github.com/cloudquery/cloudquery/issues/7250)
+* **azure:** Add `subscription_id` to `azure_policy_definitions` PK ([#7264](https://github.com/cloudquery/cloudquery/issues/7264)) ([809ebbd](https://github.com/cloudquery/cloudquery/commit/809ebbd28d612f2d411f64db2a54975c04255dbb)), closes [#7252](https://github.com/cloudquery/cloudquery/issues/7252)
+* **azure:** Add `subscription_id` to `azure_policy_set_definitions` PK ([#7283](https://github.com/cloudquery/cloudquery/issues/7283)) ([96ba863](https://github.com/cloudquery/cloudquery/commit/96ba863da220694abe3e05ccded39ad37d9f223c)), closes [#7253](https://github.com/cloudquery/cloudquery/issues/7253)
+* **azure:** Add `subscription_id` to `azure_security_assessments_metadata` PK ([#7281](https://github.com/cloudquery/cloudquery/issues/7281)) ([8b0f3ed](https://github.com/cloudquery/cloudquery/commit/8b0f3ed3327a73cca3762804cff22deab395faaf)), closes [#7255](https://github.com/cloudquery/cloudquery/issues/7255)
+* **azure:** Add `subscription_id` to `azure_security_secure_score_control_definitions` PK ([#7285](https://github.com/cloudquery/cloudquery/issues/7285)) ([1344bd3](https://github.com/cloudquery/cloudquery/commit/1344bd3b917639aaf28eb170a28ed106f54af7d2)), closes [#7256](https://github.com/cloudquery/cloudquery/issues/7256)
+* **azure:** Add `subscription_id` to `azure_security_topology` PK ([#7280](https://github.com/cloudquery/cloudquery/issues/7280)) ([3e06103](https://github.com/cloudquery/cloudquery/commit/3e06103521cd8cb2057c637fb0102d93ef4f434f)), closes [#7257](https://github.com/cloudquery/cloudquery/issues/7257)
+* **azure:** Change `azure_compute_skus` PK from `id` to `(subscription_id, family, kind, name)` ([#7267](https://github.com/cloudquery/cloudquery/issues/7267)) ([f0fd5fb](https://github.com/cloudquery/cloudquery/commit/f0fd5fb686952f5dbada3e7a7845d090b24a8122)), closes [#7245](https://github.com/cloudquery/cloudquery/issues/7245)
+* **azure:** Change `azure_compute_skus` PK to `(subscription_id, name, _sku_hash)` ([#7305](https://github.com/cloudquery/cloudquery/issues/7305)) ([e8e049c](https://github.com/cloudquery/cloudquery/commit/e8e049c9e2aa2f5eee2c5755532bbdeb6b880db9)), closes [#7245](https://github.com/cloudquery/cloudquery/issues/7245)
+* **azure:** Drop `subscription_id` column from `azure_advisor_recommendation_metadata` ([#7337](https://github.com/cloudquery/cloudquery/issues/7337)) ([e6d8f14](https://github.com/cloudquery/cloudquery/commit/e6d8f149120fc0f49696cc8f4d4bd5b0ffdd9641))
+* **azure:** Drop `subscription_id` from `azure_authorization_provider_operations_metadata` ([#7341](https://github.com/cloudquery/cloudquery/issues/7341)) ([4d84e8e](https://github.com/cloudquery/cloudquery/commit/4d84e8e916d084a8af7ec1e48c90efd717bf481f))
+* **azure:** Drop `subscription_id` from `azure_cdn_edge_nodes` ([#7342](https://github.com/cloudquery/cloudquery/issues/7342)) ([0616f9b](https://github.com/cloudquery/cloudquery/commit/0616f9b0afad52d2d6785df4f0abc1453883ddbf))
+* **azure:** Drop `subscription_id` from `azure_eventgrid_topic_types` ([#7343](https://github.com/cloudquery/cloudquery/issues/7343)) ([c603801](https://github.com/cloudquery/cloudquery/commit/c603801ffc59e8e05e0a25cae4d65750b105697a))
+* **azure:** Drop `subscription_id` from `azure_policy_data_policy_manifests` ([#7344](https://github.com/cloudquery/cloudquery/issues/7344)) ([31a6040](https://github.com/cloudquery/cloudquery/commit/31a604062fff5637373337310fc872714f9856ea))
+* **azure:** Drop `subscription_id` from `azure_reservations_reservation` ([#7345](https://github.com/cloudquery/cloudquery/issues/7345)) ([daf7249](https://github.com/cloudquery/cloudquery/commit/daf7249ff0335df9dd973c6e62a65bf68cdce653))
+* **azure:** Drop `subscription_id` from `azure_support_services` ([#7351](https://github.com/cloudquery/cloudquery/issues/7351)) ([2a91922](https://github.com/cloudquery/cloudquery/commit/2a919222e0af91d631a0c7ed5c87748cba9f2c53))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.29.0 ([#7121](https://github.com/cloudquery/cloudquery/issues/7121)) ([b7441c9](https://github.com/cloudquery/cloudquery/commit/b7441c93c274ae3a6009474a2b28f44a172dd6dc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.30.0 ([#7222](https://github.com/cloudquery/cloudquery/issues/7222)) ([73ca21c](https://github.com/cloudquery/cloudquery/commit/73ca21c4259545f7e949c9d780d8184db475d2ac))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.31.0 ([#7228](https://github.com/cloudquery/cloudquery/issues/7228)) ([36e8549](https://github.com/cloudquery/cloudquery/commit/36e8549f722658d909865723630fad1b2821db62))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.32.0 ([#7334](https://github.com/cloudquery/cloudquery/issues/7334)) ([b684122](https://github.com/cloudquery/cloudquery/commit/b68412222219f9ca160c0753290709d52de7fcd6))
+
 ## [3.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v3.4.0...plugins-source-azure-v3.5.0) (2023-01-24)
 
 
