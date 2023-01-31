@@ -7,5 +7,5 @@ import (
 )
 
 func (*Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
-	panic("not implemented ")
+	panic("not implemented")
 }
