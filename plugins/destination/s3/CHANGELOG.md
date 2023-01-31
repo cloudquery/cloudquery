@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v1.1.1...plugins-destination-s3-v2.0.0) (2023-01-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* Add ability to override CSV File options (headers and delimiters) ([#6958](https://github.com/cloudquery/cloudquery/issues/6958))
+* **s3:** Clean inputs ([#7116](https://github.com/cloudquery/cloudquery/issues/7116))
+
+### Features
+
+* Add ability to override CSV File options (headers and delimiters) ([#6958](https://github.com/cloudquery/cloudquery/issues/6958)) ([d03819c](https://github.com/cloudquery/cloudquery/commit/d03819ce1439e5f0509eb128da5c6ed75acf416b))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.49 ([#7309](https://github.com/cloudquery/cloudquery/issues/7309)) ([16da39d](https://github.com/cloudquery/cloudquery/commit/16da39d4bd8a6851329cbd25c2d80801b1872663))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.29.0 ([#7121](https://github.com/cloudquery/cloudquery/issues/7121)) ([b7441c9](https://github.com/cloudquery/cloudquery/commit/b7441c93c274ae3a6009474a2b28f44a172dd6dc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.30.0 ([#7222](https://github.com/cloudquery/cloudquery/issues/7222)) ([73ca21c](https://github.com/cloudquery/cloudquery/commit/73ca21c4259545f7e949c9d780d8184db475d2ac))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.31.0 ([#7228](https://github.com/cloudquery/cloudquery/issues/7228)) ([36e8549](https://github.com/cloudquery/cloudquery/commit/36e8549f722658d909865723630fad1b2821db62))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.32.0 ([#7334](https://github.com/cloudquery/cloudquery/issues/7334)) ([b684122](https://github.com/cloudquery/cloudquery/commit/b68412222219f9ca160c0753290709d52de7fcd6))
+* **s3:** Clean inputs ([#7116](https://github.com/cloudquery/cloudquery/issues/7116)) ([0132fb4](https://github.com/cloudquery/cloudquery/commit/0132fb4782399f25fcc42eddca6174eebae61dcf))
+
 ## [1.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v1.1.0...plugins-destination-s3-v1.1.1) (2023-01-24)
 
 
