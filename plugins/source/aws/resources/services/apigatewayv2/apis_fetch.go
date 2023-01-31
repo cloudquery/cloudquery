@@ -98,7 +98,7 @@ func resolveApiRouteArn(ctx context.Context, meta schema.ClientMeta, resource *s
 		Service:   string(client.ApigatewayService),
 		Region:    cl.Region,
 		AccountID: "",
-		Resource:  fmt.Sprintf("/apis/%s/resolveApiRouteResponseArn/%s", aws.ToString(p.ApiId), aws.ToString(r.RouteId)),
+		Resource:  fmt.Sprintf("/apis/%s/routes/%s", aws.ToString(p.ApiId), aws.ToString(r.RouteId)),
 	}.String())
 }
 
