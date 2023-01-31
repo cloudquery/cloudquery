@@ -10,7 +10,15 @@ go run main.go serve
 
 ## Testing
 
-To run the tests, you will need a running Elasticsearch instance. You can use the docker-compose file in the root of the repository to start one, or use the `ELASTICSEARCH_ADDRESS` environment variable to point to an existing instance. The default is `localhost:9200`.
+To run the tests, you will need a running Elasticsearch instance. You can use the docker-compose file in the root of the repository to start one:
+ 
+```bash
+docker-compose up -d
+```
+
+This will also start a Kibana instance at `localhost:5601`. Or use the `ELASTICSEARCH_ADDRESS` environment variable to point to an existing instance. The default is `localhost:9200`.
+
+To run the tests:
 
 ```bash
 make test

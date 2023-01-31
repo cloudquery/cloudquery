@@ -88,6 +88,6 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	return c, nil
 }
 
-func (c *Client) Close(_ context.Context) error {
+func (*Client) Close(_ context.Context) error {
 	return nil
 }

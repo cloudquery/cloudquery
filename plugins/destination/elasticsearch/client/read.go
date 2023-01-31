@@ -20,6 +20,8 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	if err != nil {
 		return fmt.Errorf("failed to refresh index before read: %w", err)
 	}
+	io.Copy(io.Discard, resp.Body)
+	resp.Body.Close()
 
 	// do the read
 	resp, err = c.typedClient.Search().Index(index).Request(&search.Request{
@@ -39,17 +41,13 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	var result struct {
 		Hits struct {
 			Hits []struct {
-				Source map[string]interface{} `json:"_source"`
+				Source map[string]any `json:"_source"`
 			}
 		}
 	}
-	b, _ := io.ReadAll(resp.Body)
-	if err := json.Unmarshal(b, &result); err != nil {
-		return fmt.Errorf("failed to unmarshal: %w", err)
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return fmt.Errorf("failed to decode response body: %w", err)
 	}
-	//if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-	//	return fmt.Errorf("failed to decode response body: %w", err)
-	//}
 
 	for _, hit := range result.Hits.Hits {
 		values := make([]any, len(table.Columns))

@@ -13,7 +13,7 @@ import (
 	"github.com/segmentio/fasthash/fnv1a"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) (err error) {
+func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
 	var buf bytes.Buffer
 	pks := pkIndexes(table) // do some work up front to avoid doing it for every resource
 	for _, r := range resources {
@@ -50,8 +50,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 	if resp.IsError() {
 		return fmt.Errorf("bulk request failed: %s", resp.String())
 	}
-
-	return
+	return err
 }
 
 func pkIndexes(table *schema.Table) []int {

@@ -54,6 +54,7 @@ func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source s
 	g, gctx := errgroup.WithContext(ctx)
 	g.SetLimit(maxConcurrentDeletes)
 	for _, table := range tables {
+		table := table
 		g.Go(func() error {
 			return c.deleteStaleTable(gctx, table, req)
 		})
