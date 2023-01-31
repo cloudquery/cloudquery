@@ -1,6 +1,8 @@
 package client
 
 import (
+	"encoding/json"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -32,7 +34,9 @@ func (*Client) TransformJSON(v *schema.JSON) any {
 	if v.Status != schema.Present {
 		return nil
 	}
-	return string(v.Bytes)
+	var j map[string]any
+	_ = json.Unmarshal(v.Bytes, &j)
+	return j
 }
 
 func (*Client) TransformText(v *schema.Text) any {

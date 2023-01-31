@@ -9,29 +9,14 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/elastic/go-elasticsearch/v8/esutil"
+	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/segmentio/fasthash/fnv1a"
 )
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) (err error) {
-	bi, err := esutil.NewBulkIndexer(esutil.BulkIndexerConfig{
-		Index:         fmt.Sprintf("%s-%s", table.Name, time.Now().Format("2006-01-02")), // The default index name
-		Client:        c.client,                                                          // The Elasticsearch client
-		NumWorkers:    c.pluginSpec.Concurrency,                                          // The number of worker goroutines
-		FlushBytes:    c.spec.BatchSizeBytes,                                             // The flush threshold in bytes
-		FlushInterval: 30 * time.Second,                                                  // The periodic flush interval
-	})
-	if err != nil {
-		return err
-	}
-	defer func() {
-		err = bi.Close(ctx)
-	}()
-	failed := false
+	var buf bytes.Buffer
+	pks := pkIndexes(table) // do some work up front to avoid doing it for every resource
 	for _, r := range resources {
-		if failed {
-			break
-		}
 		doc := map[string]any{}
 		for i, col := range table.Columns {
 			doc[col.Name] = r[i]
@@ -40,40 +25,48 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 		if err != nil {
 			return fmt.Errorf("failed to marshal JSON: %w", err)
 		}
-		docID := resourceID(table, r)
-		c.logger.Info().Msgf("Writing resource %s/%d", table.Name, docID)
-		err = bi.Add(
-			context.Background(),
-			esutil.BulkIndexerItem{
-				Action:     "index",
-				DocumentID: fmt.Sprintf("%d", docID),
-				Body:       bytes.NewReader(data),
-				OnFailure: func(ctx context.Context, item esutil.BulkIndexerItem, res esutil.BulkIndexerResponseItem, err error) {
-					failed = true
-					l := c.logger.Error().Err(err)
-					if err != nil {
-						l.Err(err)
-					} else {
-						c.logger.Error().Str("error_type", res.Error.Type).Str("error_reason", res.Error.Reason)
-					}
-					l.Msg("Unexpected error while indexing document")
-				},
-			},
-		)
-		if err != nil {
-			return fmt.Errorf("failed to add item to bulk indexer: %w", err)
+
+		var meta []byte
+		if c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale {
+			docID := fmt.Sprint(resourceID(r, pks))
+			meta = []byte(fmt.Sprintf(`{"index":{"_id":"%s"}}%s`, docID, "\n"))
+		} else {
+			meta = []byte(`{"index":{}}` + "\n")
 		}
+		data = append(data, "\n"...)
+		buf.Grow(len(meta) + len(data))
+		buf.Write(meta)
+		buf.Write(data)
 	}
+	index := fmt.Sprintf("%s-%s", table.Name, time.Now().Format("2006-01-02"))
+	resp, err := c.client.Bulk(bytes.NewReader(buf.Bytes()),
+		c.client.Bulk.WithContext(ctx),
+		c.client.Bulk.WithIndex(index),
+	)
+	if err != nil {
+		return fmt.Errorf("failed to create bulk request: %w", err)
+	}
+	defer resp.Body.Close()
+	if resp.IsError() {
+		return fmt.Errorf("bulk request failed: %s", resp.String())
+	}
+
 	return
 }
 
+func pkIndexes(table *schema.Table) []int {
+	pks := table.PrimaryKeys()
+	inds := make([]int, 0, len(pks))
+	for _, col := range pks {
+		inds = append(inds, table.Columns.Index(col))
+	}
+	return inds
+}
+
 // elasticsearch IDs are limited to 512 bytes, so we hash the resource PK to make sure it's within the limit
-func resourceID(table *schema.Table, resource []any) uint64 {
-	parts := make([]string, 0, len(table.PrimaryKeys()))
-	for i, col := range table.Columns {
-		if !col.CreationOptions.PrimaryKey {
-			continue
-		}
+func resourceID(resource []any, inds []int) uint64 {
+	parts := make([]string, 0, len(inds))
+	for _, i := range inds {
 		parts = append(parts, fmt.Sprint(resource[i]))
 	}
 	h1 := fnv1a.HashString64(strings.Join(parts, "-"))

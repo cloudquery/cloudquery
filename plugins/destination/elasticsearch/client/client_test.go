@@ -8,15 +8,14 @@ import (
 )
 
 func TestPlugin(t *testing.T) {
+	address := os.Getenv("ELASTICSEARCH_ADDRESS")
+	if address == "" {
+		address = "http://localhost:9200"
+	}
 	p := destination.NewPlugin("elasticsearch", "development", New, destination.WithManagedWriter())
 	destination.PluginTestSuiteRunner(t, p,
 		Spec{
-			ProjectID:        os.Getenv("BIGQUERY_PROJECT_ID"),
-			DatasetID:        os.Getenv("BIGQUERY_DATASET_ID"),
-			TimePartitioning: "none",
+			Addresses: []string{address},
 		},
-		destination.PluginTestSuiteTests{
-			SkipOverwrite:        true,
-			SkipMigrateOverwrite: true,
-		})
+		destination.PluginTestSuiteTests{})
 }

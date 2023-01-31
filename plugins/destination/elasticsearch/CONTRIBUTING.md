@@ -10,6 +10,8 @@ go run main.go serve
 
 ## Testing
 
+To run the tests, you will need a running Elasticsearch instance. You can use the docker-compose file in the root of the repository to start one, or use the `ELASTICSEARCH_ADDRESS` environment variable to point to an existing instance. The default is `localhost:9200`.
+
 ```bash
 make test
 ```

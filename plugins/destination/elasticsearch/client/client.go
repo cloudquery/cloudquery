@@ -16,11 +16,12 @@ import (
 type Client struct {
 	destination.UnimplementedUnmanagedWriter
 	destination.DefaultReverseTransformer
-	logger     zerolog.Logger
-	spec       specs.Destination
-	metrics    destination.Metrics
-	pluginSpec Spec
-	client     *elasticsearch.Client
+	logger      zerolog.Logger
+	spec        specs.Destination
+	metrics     destination.Metrics
+	pluginSpec  Spec
+	client      *elasticsearch.Client
+	typedClient *elasticsearch.TypedClient
 }
 
 func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (destination.Client, error) {
@@ -67,11 +68,11 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 		//
 		MaxRetries: 5,
 	}
-	es, err := elasticsearch.NewClient(cfg)
+	es, err := elasticsearch.NewTypedClient(cfg)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Elasticsearch client: %w", err)
 	}
-	info, err := es.Info()
+	info, err := es.Info().Do(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get Elasticsearch cluster info: %w", err)
 	}
@@ -81,7 +82,11 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 		return nil, fmt.Errorf("failed to read Elasticsearch cluster info response: %w", err)
 	}
 	c.logger.Debug().Str("cluster_info", string(b)).Msg("Elasticsearch cluster info")
-	c.client = es
+	c.typedClient = es
+	c.client, err = elasticsearch.NewClient(cfg)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create untyped Elasticsearch client: %w", err)
+	}
 	return c, nil
 }
 

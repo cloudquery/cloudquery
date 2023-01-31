@@ -43,7 +43,7 @@ func getIndexTemplate(table *schema.Table) (string, error) {
 		case schema.TypeString:
 			properties[col.Name] = types.NewTextProperty()
 		case schema.TypeByteArray:
-			properties[col.Name] = types.NewTextProperty()
+			properties[col.Name] = types.NewBinaryProperty()
 		case schema.TypeStringArray:
 			properties[col.Name] = types.NewTextProperty()
 		case schema.TypeTimestamp:
@@ -64,9 +64,9 @@ func getIndexTemplate(table *schema.Table) (string, error) {
 		case schema.TypeMacAddrArray:
 			properties[col.Name] = types.NewTextProperty()
 		case schema.TypeInet:
-			properties[col.Name] = types.NewIpProperty()
+			properties[col.Name] = types.NewIpRangeProperty()
 		case schema.TypeInetArray:
-			properties[col.Name] = types.NewIpProperty()
+			properties[col.Name] = types.NewIpRangeProperty()
 		case schema.TypeIntArray:
 			properties[col.Name] = types.NewIntegerNumberProperty()
 		}
