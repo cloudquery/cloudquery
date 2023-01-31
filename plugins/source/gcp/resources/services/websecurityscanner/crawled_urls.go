@@ -13,7 +13,7 @@ func CrawledUrls() *schema.Table {
 		Description: `https://cloud.google.com/security-command-center/docs/reference/web-security-scanner/rest/v1/projects.scanConfigs.scanRuns.crawledUrls/list#CrawledUrl`,
 		Resolver:    fetchCrawledUrls,
 		Multiplex:   client.ProjectMultiplexEnabledServices("websecurityscanner.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.CrawledUrl{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   transformers.TransformWithStruct(&pb.CrawledUrl{}, client.Options()...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
