@@ -9,9 +9,10 @@ import (
 
 func Deliveries() *schema.Table {
 	return &schema.Table{
-		Name:      "github_hook_deliveries",
-		Resolver:  fetchDeliveries,
-		Transform: transformers.TransformWithStruct(&github.HookDelivery{}, client.SharedTransformers()...),
+		Name:                "github_hook_deliveries",
+		Resolver:            fetchDeliveries,
+		PreResourceResolver: hooksGet,
+		Transform:           transformers.TransformWithStruct(&github.HookDelivery{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
 			{
 				Name:        "org",
@@ -30,16 +31,6 @@ func Deliveries() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "request",
-				Type:     schema.TypeString,
-				Resolver: resolveRequest,
-			},
-			{
-				Name:     "response",
-				Type:     schema.TypeString,
-				Resolver: resolveResponse,
 			},
 			{
 				Name:     "id",
