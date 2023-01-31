@@ -1,0 +1,3 @@
+# Used by .github/workflows/auto_merge.yml
+githubToken: GITHUB_TOKEN_VALUE
+repoSearch: repo:cloudquery/cloudquery
