@@ -83,7 +83,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 
 	if err := spec.UnmarshalSpec(&c.csvSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal csv spec: %w", err)
 	}
 	c.csvSpec.SetDefaults()
 
