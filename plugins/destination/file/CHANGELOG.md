@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v1.0.7...plugins-destination-file-v1.0.8) (2023-01-31)
+
+
+### Bug Fixes
+
+* **destinations:** Unmarshal spec error messages ([#7463](https://github.com/cloudquery/cloudquery/issues/7463)) ([85450ad](https://github.com/cloudquery/cloudquery/commit/85450adcc6a73e230a70ef2f56aff3d93dada185))
+
 ## [1.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v1.0.6...plugins-destination-file-v1.0.7) (2023-01-31)
 
 
