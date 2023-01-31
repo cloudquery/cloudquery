@@ -29,6 +29,9 @@ func LayerVersions() *schema.Table {
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("LayerVersionArn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "layer_arn",
