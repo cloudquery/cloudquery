@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Trail.html
 
-The composite primary key for this table is (**region**, **arn**).
+The composite primary key for this table is (**account_id**, **region**, **arn**).
 
 ## Relations
 
@@ -17,7 +17,7 @@ The following tables depend on aws_cloudtrail_trails:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
+|account_id (PK)|String|
 |region (PK)|String|
 |cloudwatch_logs_log_group_name|String|
 |arn (PK)|String|
