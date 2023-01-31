@@ -44,16 +44,13 @@ func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 	p := parent.Item.(*types.User)
 	svc := meta.(*client.Client).Services().Iam
 	config.UserName = p.UserName
-	for {
-		output, err := svc.ListGroupsForUser(ctx, &config)
+	paginator := iam.NewListGroupsForUserPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		output, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 		res <- output.Groups
-		if output.Marker == nil {
-			break
-		}
-		config.Marker = output.Marker
 	}
 	return nil
 }
@@ -111,20 +108,18 @@ func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, r
 }
 
 func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var config iam.ListAttachedUserPoliciesInput
 	p := parent.Item.(*types.User)
 	svc := meta.(*client.Client).Services().Iam
-	config.UserName = p.UserName
-	for {
-		output, err := svc.ListAttachedUserPolicies(ctx, &config)
+	config := iam.ListAttachedUserPoliciesInput{
+		UserName: p.UserName,
+	}
+	paginator := iam.NewListAttachedUserPoliciesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		output, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 		res <- output.AttachedPolicies
-		if output.Marker == nil {
-			break
-		}
-		config.Marker = output.Marker
 	}
 	return nil
 }
