@@ -24,13 +24,13 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-openapi/analysis v0.21.4 // indirect; indirect // indirect
 	github.com/go-openapi/errors v0.20.3 // indirect
-	github.com/go-openapi/jsonpointer v0.19.5 // indirect
-	github.com/go-openapi/jsonreference v0.20.0 // indirect; indirect // indirect
+	github.com/go-openapi/jsonpointer v0.19.6 // indirect; indirect // indirect
+	github.com/go-openapi/jsonreference v0.20.2 // indirect; indirect // indirect // indirect
 	github.com/go-openapi/loads v0.21.2 // indirect; indirect // indirect
-	github.com/go-openapi/spec v0.20.7 // indirect; indirect // indirect
+	github.com/go-openapi/spec v0.20.8 // indirect; indirect // indirect // indirect
 	github.com/go-openapi/strfmt v0.21.3 // indirect
 	github.com/go-openapi/swag v0.22.3 // indirect
-	github.com/go-openapi/validate v0.22.0 // indirect
+	github.com/go-openapi/validate v0.22.1 // indirect; indirect // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
