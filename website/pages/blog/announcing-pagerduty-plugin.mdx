@@ -28,7 +28,7 @@ that show month-by-month progress in the metrics.
 - Create a [PagerDuty authorization token](https://support.pagerduty.com/docs/api-access-keys#section-generating-a-general-access-rest-api-key).
 - Follow our [quickstart](/docs/quickstart) guide, and create a `pagerduty.yml` configuration file:
   
-  ```yaml
+  ```yaml copy
   kind: source
   spec:
     name: "pagerduty"
@@ -39,7 +39,7 @@ that show month-by-month progress in the metrics.
   ```
 
 - Export your PagerDuty authorization token, and run `cloudquery`.
-  ```bash
+  ```bash copy
   PAGERDUTY_AUTH_TOKEN=<YOUR_AUTH_TOKEN>
   cloudquery sync .
   ```
@@ -51,7 +51,7 @@ Here are a few SQL queries and ideas on insight you can gain from your PagerDuty
 
 The average time it takes to respond and resolve incidents can be a good indicator of how well your team is handling incidents.
 - This query calculates the average time it took to respond to incidents in the last 3 months, grouped by priority:
-  ```sql
+  ```sql copy
   WITH incident_ack_logs AS (
     SELECT pagerduty_incidents.id AS incident_id,
            pagerduty_incidents.priority->>'name' AS priority,
@@ -73,7 +73,8 @@ The average time it takes to respond and resolve incidents can be a good indicat
   FROM incident_ack_time
   GROUP BY priority
   ```
-  ```text
+
+  ```text copy
   priority | average_time_to_ack
   ----------+---------------------
   P1       | 00:05:10
@@ -82,7 +83,7 @@ The average time it takes to respond and resolve incidents can be a good indicat
   ```
 
 - This query calculates the average time it takes to resolve incidents, grouped by priority:
-  ```sql
+  ```sql copy
   WITH incident_resolution_logs AS (
     SELECT pagerduty_incidents.id,
            pagerduty_incidents.priority->>'name' AS priority,
@@ -104,7 +105,8 @@ The average time it takes to respond and resolve incidents can be a good indicat
   FROM incident_resolution_time
   GROUP BY priority
   ```
-  ```text
+
+  ```text copy
   priority | average_time_to_resolve
   ---------+-------------------------
   P1       | 08:12:37
@@ -117,7 +119,7 @@ The average time it takes to respond and resolve incidents can be a good indicat
 The following query finds out which members of your team take most of the load on working on incidents,
 by finding out which users acknowledge the most incidents.
 
-```sql
+```sql copy
   WITH incident_ack_logs AS (
     SELECT pagerduty_incidents.id AS incident_id,
            pagerduty_incident_log_entries.agent->>'id' AS agent_id
@@ -135,7 +137,8 @@ by finding out which users acknowledge the most incidents.
   GROUP BY user_id, user_name
   ORDER BY acknowledge_count DESC
 ```
-```text
+
+```text copy
  user_id |  user_name  | acknowledge_count
 ---------+-------------+-------------------
  PDYR2Y8 | John        | 15
@@ -147,7 +150,7 @@ by finding out which users acknowledge the most incidents.
 
 This query finds out which services generated the most incidents in the last 3 months.
 
-```sql
+```sql copy
   SELECT pagerduty_services.id AS service_id,
          pagerduty_services.name AS service_name,
          COUNT(pagerduty_incidents.id) AS incident_count
@@ -159,7 +162,8 @@ This query finds out which services generated the most incidents in the last 3 m
   ORDER BY incident_count DESC
   LIMIT 10
 ```
-```text
+
+```text copy
  service_id |  service_name   | incident_count
 ------------+-----------------+----------------
  PYS6MP5    | UnstableService | 25   

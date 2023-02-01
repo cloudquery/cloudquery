@@ -1,3 +1,6 @@
+---
+name: Alibaba Cloud
+---
 # Alibaba Cloud Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -11,7 +14,7 @@ The Alibaba Cloud source plugin for CloudQuery extracts configuration from the [
 
 The following configuration syncs from Alibaba Cloud to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/quickstart) if you need help setting up the destination.
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: "alicloud"
@@ -52,7 +55,7 @@ See the [Alibaba documentation](https://www.alibabacloud.com/help/en/basics-for-
 
 ### Find all ECS instances in a region
 
-```sql
+```sql copy
 select 
   instance_id, 
   os_name, 
@@ -65,7 +68,7 @@ where
   region_id = 'eu-west-1';
 ```
 
-```text
+```text copy
 +------------------------+--------------------------------------+-----------+-------------------+---------------+
 | instance_id            | os_name                              | region_id | start_time        | tags          |
 |------------------------+--------------------------------------+-----------+-------------------+---------------|
@@ -75,7 +78,7 @@ where
 
 ### Query past bills
 
-```sql
+```sql copy
 select 
   product_name, 
   item, 
@@ -86,7 +89,7 @@ from
   alicloud_bss_bill_overview;
 ```
 
-```text
+```text copy
 +------------------------+----------------+----------+----------+---------------+
 | product_name           | item           | pip_code | currency | adjust_amount |
 |------------------------+----------------+----------+----------+---------------|
@@ -96,7 +99,7 @@ from
 
 ### Query bucket stats
 
-```sql
+```sql copy
 select 
   account_id, 
   bucket_name, 
@@ -106,7 +109,7 @@ from
   alicloud_oss_bucket_stats;
 ```
 
-```text
+```text copy
 +------------+-------------+--------------+---------+
 | account_id | bucket_name | object_count | storage |
 |------------+-------------+--------------+---------|

@@ -8,9 +8,9 @@ const TableLink = ({ text, href, target = undefined }) => {
       href={href}
       className="nx-text-primary-500 nx-underline nx-decoration-from-font [text-underline-position:under]"
       target={target}
-      >
-        {text}
-      </Link>
+    >
+      {text}
+    </Link>
   );
 };
 
@@ -54,23 +54,27 @@ export const PluginsTable = ({ plugins, type }) => {
   const sortedPlugins = plugins.sort((a, b) => a.name.localeCompare(b.name));
   return (
     <Table className="nx-mt-6">
-      <Th>
-        <strong>Name</strong>
-      </Th>
-      <Th>Latest Version</Th>
-      <Th>Changelog</Th>
-      {type === "source" && <Th>Tables</Th>}
-      <Th>Stage</Th>
-      {sortedPlugins.map(({ name, stage, meta, id = name }) => (
-        <TableRow
-          key={id}
-          type={type}
-          name={name}
-          id={id.toLowerCase()}
-          stage={stage}
-          meta={meta}
-        />
-      ))}
+      <thead>
+        <Th>
+          <strong>Name</strong>
+        </Th>
+        <Th>Latest Version</Th>
+        <Th>Changelog</Th>
+        {type === "source" && <Th>Tables</Th>}
+        <Th>Stage</Th>
+      </thead>
+      <tbody>
+        {sortedPlugins.map(({ name, stage, meta, id = name }) => (
+          <TableRow
+            key={id}
+            type={type}
+            name={name}
+            id={id.toLowerCase()}
+            stage={stage}
+            meta={meta}
+          />
+        ))}
+      </tbody>
     </Table>
   );
 };
