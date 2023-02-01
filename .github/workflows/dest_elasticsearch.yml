@@ -26,12 +26,13 @@ jobs:
         ports:
           - 9200:9200
         options: >-
-          --health-cmd "curl -s -f http://localhost:9200/_cluster/health || exit 1"
+          --health-cmd "curl -s -f http://localhost:9200/_cluster/health"
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 5
+          --health-retries 10
         env:
           discovery.type: single-node
+          xpack.security.enabled: false
           ES_JAVA_OPTS: -Xms512m -Xmx512m
     steps:
       - uses: actions/checkout@v3
