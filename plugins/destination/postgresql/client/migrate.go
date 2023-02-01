@@ -65,9 +65,9 @@ func (c *Client) isTableExistSQL(ctx context.Context, table string) (bool, error
 
 func (c *Client) getStalePks(pgPKs map[string]bool, table *schema.Table) []string {
 	stalePks := []string{}
-	sortedPKs := maps.Keys(pgPKs)
-	sort.Strings(sortedPKs)
 	if c.enabledPks() {
+		sortedPKs := maps.Keys(pgPKs)
+		sort.Strings(sortedPKs)
 		for _, pk := range sortedPKs {
 			stalePk := true
 			for _, col := range table.Columns {
