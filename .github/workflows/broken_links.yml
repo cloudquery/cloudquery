@@ -48,7 +48,7 @@ jobs:
 
       - name: Waiting for Vercel Preview
         if: github.event_name == 'pull_request' && steps.broken-links.outputs.check != 'false'
-        uses: patrickedqvist/wait-for-vercel-preview@1d4a973cb668249d5fb0e34d04be05634e396a8b
+        uses: patrickedqvist/wait-for-vercel-preview@bfdff514ff78a669f2536e9f4dd4ef5813a704a2
         id: preview-deployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
