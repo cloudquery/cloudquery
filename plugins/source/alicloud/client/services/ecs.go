@@ -55,9 +55,6 @@ type EcsClient interface {
 	DescribeCommands(*ecs.DescribeCommandsRequest) (*ecs.DescribeCommandsResponse, error)
 	DescribeCommandsWithCallback(*ecs.DescribeCommandsRequest, func(*ecs.DescribeCommandsResponse, error)) <-chan int
 	DescribeCommandsWithChan(*ecs.DescribeCommandsRequest) (<-chan *ecs.DescribeCommandsResponse, <-chan error)
-	DescribeDedicatedBlockStorageClusters(*ecs.DescribeDedicatedBlockStorageClustersRequest) (*ecs.DescribeDedicatedBlockStorageClustersResponse, error)
-	DescribeDedicatedBlockStorageClustersWithCallback(*ecs.DescribeDedicatedBlockStorageClustersRequest, func(*ecs.DescribeDedicatedBlockStorageClustersResponse, error)) <-chan int
-	DescribeDedicatedBlockStorageClustersWithChan(*ecs.DescribeDedicatedBlockStorageClustersRequest) (<-chan *ecs.DescribeDedicatedBlockStorageClustersResponse, <-chan error)
 	DescribeDedicatedHostAutoRenew(*ecs.DescribeDedicatedHostAutoRenewRequest) (*ecs.DescribeDedicatedHostAutoRenewResponse, error)
 	DescribeDedicatedHostAutoRenewWithCallback(*ecs.DescribeDedicatedHostAutoRenewRequest, func(*ecs.DescribeDedicatedHostAutoRenewResponse, error)) <-chan int
 	DescribeDedicatedHostAutoRenewWithChan(*ecs.DescribeDedicatedHostAutoRenewRequest) (<-chan *ecs.DescribeDedicatedHostAutoRenewResponse, <-chan error)
@@ -85,6 +82,9 @@ type EcsClient interface {
 	DescribeDiagnosticMetrics(*ecs.DescribeDiagnosticMetricsRequest) (*ecs.DescribeDiagnosticMetricsResponse, error)
 	DescribeDiagnosticMetricsWithCallback(*ecs.DescribeDiagnosticMetricsRequest, func(*ecs.DescribeDiagnosticMetricsResponse, error)) <-chan int
 	DescribeDiagnosticMetricsWithChan(*ecs.DescribeDiagnosticMetricsRequest) (<-chan *ecs.DescribeDiagnosticMetricsResponse, <-chan error)
+	DescribeDiagnosticReportAttributes(*ecs.DescribeDiagnosticReportAttributesRequest) (*ecs.DescribeDiagnosticReportAttributesResponse, error)
+	DescribeDiagnosticReportAttributesWithCallback(*ecs.DescribeDiagnosticReportAttributesRequest, func(*ecs.DescribeDiagnosticReportAttributesResponse, error)) <-chan int
+	DescribeDiagnosticReportAttributesWithChan(*ecs.DescribeDiagnosticReportAttributesRequest) (<-chan *ecs.DescribeDiagnosticReportAttributesResponse, <-chan error)
 	DescribeDiagnosticReports(*ecs.DescribeDiagnosticReportsRequest) (*ecs.DescribeDiagnosticReportsResponse, error)
 	DescribeDiagnosticReportsWithCallback(*ecs.DescribeDiagnosticReportsRequest, func(*ecs.DescribeDiagnosticReportsResponse, error)) <-chan int
 	DescribeDiagnosticReportsWithChan(*ecs.DescribeDiagnosticReportsRequest) (<-chan *ecs.DescribeDiagnosticReportsResponse, <-chan error)
