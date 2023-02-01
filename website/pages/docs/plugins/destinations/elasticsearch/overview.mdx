@@ -75,7 +75,7 @@ This is the spec used by the Elasticsearch destination plugin.
 
 ## Index Creation
 
-The Elasticsearch destination will, by default, create an index template for every table. This template will then be used to create indexes with the format `<table_name>-<YYYY-MM-DD>`. It is recommended that you use the default index template, as it will automatically create indexes with the correct mappings for the table. However, to skip index template creation, you may use the `--no-migrate` option when running `cloudquery sync`.
+The Elasticsearch destination will, by default, create an index template for every table. This template will then be used to create indexes with the format `<table_name>-<YYYY-MM-DD>`. It is recommended that you use the generated index templates, as it will automatically create indexes with the correct mappings for the table. However, to skip index template creation (or use your own), you may use the `--no-migrate` option when running `cloudquery sync`.
 
 ## Querying From Kibana
 
