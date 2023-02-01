@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/mssql/client/queries"
+	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
