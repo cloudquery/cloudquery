@@ -79,9 +79,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/destination/neo4j/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/destination/neo4j/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.4-release-cache-plugins-destination-neo4j
+            ${{ runner.os }}-go-1.19.5-release-cache-plugins-destination-neo4j
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
@@ -96,6 +96,6 @@ jobs:
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/neo4j/.goreleaser.yaml
+        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/destination/neo4j/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

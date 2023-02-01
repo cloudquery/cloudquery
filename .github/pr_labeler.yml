@@ -70,6 +70,8 @@ s3:
   - plugins/destination/s3/**/*
 csv:
   - plugins/destination/csv/**/*
+elasticsearch:
+  - plugins/destination/elasticsearch/**/*
 file:
   - plugins/destination/file/**/*
 gcs:
@@ -86,6 +88,8 @@ neo4j:
   - plugins/destination/neo4j/**/*
 kafka:
   - plugins/destination/kafka/**/*
+firehose:
+  - plugins/destination/firehose/**/*  
 website:
   - website/**/*
 cli:
