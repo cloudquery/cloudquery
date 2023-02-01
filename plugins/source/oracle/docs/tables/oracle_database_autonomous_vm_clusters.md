@@ -22,6 +22,7 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 |time_zone|String|
 |is_local_backup_enabled|Bool|
 |cpus_enabled|Int|
+|compute_model|String|
 |ocpus_enabled|Float|
 |available_cpus|Int|
 |total_container_databases|Int|

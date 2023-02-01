@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/cloudquery/plugin-sdk v1.32.0
 	github.com/iancoleman/strcase v0.2.0
-	github.com/oracle/oci-go-sdk/v65 v65.28.0
+	github.com/oracle/oci-go-sdk/v65 v65.28.3
 	github.com/rs/zerolog v1.28.0
 	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201
 )
