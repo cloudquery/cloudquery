@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_ResiliencyPolicy.html
 
-The composite primary key for this table is (**account_id**, **region**, **arn**).
+The primary key for this table is **arn**.
 
 ## Columns
 
@@ -12,8 +12,8 @@ The composite primary key for this table is (**account_id**, **region**, **arn**
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
+|account_id|String|
+|region|String|
 |arn (PK)|String|
 |creation_time|Timestamp|
 |data_location_constraint|String|
