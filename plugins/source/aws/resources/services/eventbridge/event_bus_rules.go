@@ -13,7 +13,7 @@ func EventBusRules() *schema.Table {
 		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Rule.html`,
 		Resolver:    fetchEventbridgeEventBusRules,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
-		Transform:   transformers.TransformWithStruct(&types.Rule{}),
+		Transform:   transformers.TransformWithStruct(&types.Rule{}, transformers.WithPrimaryKeys("Arn")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -34,13 +34,6 @@ func EventBusRules() *schema.Table {
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: resolveEventbridgeEventBusRuleTags,
-			},
-			{
-				Name: "arn",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 		},
 	}
