@@ -129,12 +129,13 @@ jobs:
               if (failedRuns.length > 0) {
                 throw new Error(`The following required workflows failed: ${failedRuns.map(({ name }) => name).join(", ")}`)
               }
-              
-              pendingActions = actions.filter(action => !runs.some(({ name }) => name === action))
-              if (pendingActions.length === 0) {
+              if (matchingRuns.length === actions.length) {
                 console.log("All required workflows have passed")
                 return
               }
+              console.log(`Matching runs: ${matchingRuns}`)
+              console.log(`Actions: ${actions}`)
+              pendingActions = actions.filter(action => !runs.some(({ name }) => name === action))
               console.log(`Waiting for ${pendingActions.join(", ")}`)
               await new Promise(r => setTimeout(r, 5000));
               now = new Date().getTime()
