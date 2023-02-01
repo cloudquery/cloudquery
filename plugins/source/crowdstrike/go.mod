@@ -24,13 +24,13 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-openapi/analysis v0.21.4 // indirect; indirect // indirect
 	github.com/go-openapi/errors v0.20.3 // indirect
-	github.com/go-openapi/jsonpointer v0.19.5 // indirect
-	github.com/go-openapi/jsonreference v0.20.0 // indirect; indirect // indirect
+	github.com/go-openapi/jsonpointer v0.19.6 // indirect; indirect // indirect
+	github.com/go-openapi/jsonreference v0.20.2 // indirect; indirect // indirect // indirect
 	github.com/go-openapi/loads v0.21.2 // indirect; indirect // indirect
-	github.com/go-openapi/spec v0.20.7 // indirect; indirect // indirect
+	github.com/go-openapi/spec v0.20.8 // indirect; indirect // indirect // indirect
 	github.com/go-openapi/strfmt v0.21.3 // indirect
 	github.com/go-openapi/swag v0.22.3 // indirect
-	github.com/go-openapi/validate v0.22.0 // indirect
+	github.com/go-openapi/validate v0.22.1 // indirect; indirect // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
@@ -49,7 +49,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	go.mongodb.org/mongo-driver v1.11.0 // indirect
-	golang.org/x/exp v0.0.0-20221230185412-738e83a70c30 // indirect
+	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201 // indirect; indirect // indirect
 	golang.org/x/net v0.4.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20220822191816-0ebed06d0094 // indirect
 	golang.org/x/sync v0.1.0 // indirect

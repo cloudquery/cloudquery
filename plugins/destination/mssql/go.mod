@@ -7,7 +7,7 @@ require (
 	github.com/microsoft/go-mssqldb v0.19.0
 	github.com/rs/zerolog v1.28.0
 	github.com/stretchr/testify v1.8.1
-	golang.org/x/exp v0.0.0-20230118134722-a68e582fa157
+	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201
 )
 
 require (
