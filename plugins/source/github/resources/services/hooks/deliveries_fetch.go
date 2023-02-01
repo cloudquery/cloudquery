@@ -28,12 +28,16 @@ func fetchDeliveries(ctx context.Context, meta schema.ClientMeta, parent *schema
 	}
 }
 
-func resolveRequest(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	delivery := resource.Item.(*github.HookDelivery)
-	return resource.Set(c.Name, delivery.Request.String())
-}
+func hooksGet(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
+	hook := *r.Parent.Item.(*github.Hook)
+	delivery := r.Item.(*github.HookDelivery)
+	c := meta.(*client.Client)
 
-func resolveResponse(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	delivery := resource.Item.(*github.HookDelivery)
-	return resource.Set(c.Name, delivery.Response.String())
+	deliveryWithRequestResponse, _, err := c.Github.Organizations.GetHookDelivery(ctx, c.Org, *hook.ID, *delivery.ID)
+	if err != nil {
+		return err
+	}
+
+	r.SetItem(deliveryWithRequestResponse)
+	return nil
 }

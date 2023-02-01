@@ -19,6 +19,9 @@ func ApiIntegrations() *schema.Table {
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "region",
@@ -38,7 +41,10 @@ func ApiIntegrations() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveApiIntegrationArn(),
+				Resolver: resolveApiIntegrationArn,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 		},
 		Relations: []*schema.Table{

@@ -12,7 +12,7 @@ func Databases() *schema.Table {
 		Name:        "aws_lightsail_databases",
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabase.html`,
 		Resolver:    fetchLightsailDatabases,
-		Transform:   transformers.TransformWithStruct(&types.RelationalDatabase{}),
+		Transform:   transformers.TransformWithStruct(&types.RelationalDatabase{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
@@ -24,11 +24,6 @@ func Databases() *schema.Table {
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSRegion,
-			},
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
 			},
 			{
 				Name:     "tags",
