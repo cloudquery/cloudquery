@@ -19,6 +19,9 @@ func DomainNameRestApiMappings() *schema.Table {
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "region",
@@ -33,7 +36,10 @@ func DomainNameRestApiMappings() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveDomainNameRestApiMappingArn(),
+				Resolver: resolveDomainNameRestApiMappingArn,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 		},
 	}

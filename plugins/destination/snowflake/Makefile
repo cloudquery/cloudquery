@@ -20,4 +20,4 @@ release-dry-run:
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \
 		ghcr.io/cloudquery/golang-cross:v10.0.0 \
-		--rm-dist --skip-validate --snapshot --skip-publish
+		--clean --skip-validate --snapshot --skip-publish

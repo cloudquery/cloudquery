@@ -20,7 +20,7 @@ jobs:
       # Fail if not a valid SemVer string
       - name: Parse semver string
         id: semver_parser
-        uses: booxmedialtd/ws-action-parse-semver@e81ad80123156d7ddd4f6c8383e63f497f857deb
+        uses: booxmedialtd/ws-action-parse-semver@7784200024d6b3fc01253e617ec0168daf603de3
         with:
           input_string: ${{steps.split.outputs.version}}
       - name: Checkout
@@ -32,9 +32,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('scaffold/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('scaffold/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.4-release-cache-scaffold
+            ${{ runner.os }}-go-1.19.5-release-cache-scaffold
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
@@ -46,7 +46,7 @@ jobs:
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish -f ./scaffold/.goreleaser.yaml
+        run: goreleaser release --snapshot --clean --skip-validate --skip-publish -f ./scaffold/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
@@ -54,7 +54,7 @@ jobs:
       # Publish to GitHub and Homebrew
       - name: Run GoReleaser Release
         if: steps.semver_parser.outputs.prerelease == ''
-        run: goreleaser release --rm-dist -f ./scaffold/.goreleaser.yaml
+        run: goreleaser release --clean -f ./scaffold/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
@@ -64,7 +64,7 @@ jobs:
       # Publish only to GitHub
       - name: Run GoReleaser PreRelease
         if: steps.semver_parser.outputs.prerelease != ''
-        run: goreleaser release --rm-dist -f ./scaffold/.goreleaser.prerelease.yaml
+        run: goreleaser release --clean -f ./scaffold/.goreleaser.prerelease.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}

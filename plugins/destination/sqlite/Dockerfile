@@ -1,4 +1,4 @@
-FROM ghcr.io/gythialy/golang-cross:1.19.4-0
+FROM ghcr.io/gythialy/golang-cross:1.19.5-0
 
 # install goreleaser
 # https://github.com/goreleaser/goreleaser-pro/releases/download/v1.12.3-pro/goreleaser-pro_Linux_x86_64.tar.gz

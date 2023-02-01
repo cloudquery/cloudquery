@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicyInstance.html
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**account_id**, **arn**).
 
 ## Relations
 
@@ -14,10 +14,10 @@ This table depends on [aws_route53_hosted_zones](aws_route53_hosted_zones.md).
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
-|arn|String|
+|account_id (PK)|String|
+|arn (PK)|String|
 |hosted_zone_arn|String|
 |hosted_zone_id|String|
 |id|String|
