@@ -738,50 +738,6 @@ func (mr *MockEcsClientMockRecorder) DescribeCommandsWithChan(arg0 interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeCommandsWithChan", reflect.TypeOf((*MockEcsClient)(nil).DescribeCommandsWithChan), arg0)
 }
 
-// DescribeDedicatedBlockStorageClusters mocks base method.
-func (m *MockEcsClient) DescribeDedicatedBlockStorageClusters(arg0 *ecs.DescribeDedicatedBlockStorageClustersRequest) (*ecs.DescribeDedicatedBlockStorageClustersResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DescribeDedicatedBlockStorageClusters", arg0)
-	ret0, _ := ret[0].(*ecs.DescribeDedicatedBlockStorageClustersResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribeDedicatedBlockStorageClusters indicates an expected call of DescribeDedicatedBlockStorageClusters.
-func (mr *MockEcsClientMockRecorder) DescribeDedicatedBlockStorageClusters(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDedicatedBlockStorageClusters", reflect.TypeOf((*MockEcsClient)(nil).DescribeDedicatedBlockStorageClusters), arg0)
-}
-
-// DescribeDedicatedBlockStorageClustersWithCallback mocks base method.
-func (m *MockEcsClient) DescribeDedicatedBlockStorageClustersWithCallback(arg0 *ecs.DescribeDedicatedBlockStorageClustersRequest, arg1 func(*ecs.DescribeDedicatedBlockStorageClustersResponse, error)) <-chan int {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DescribeDedicatedBlockStorageClustersWithCallback", arg0, arg1)
-	ret0, _ := ret[0].(<-chan int)
-	return ret0
-}
-
-// DescribeDedicatedBlockStorageClustersWithCallback indicates an expected call of DescribeDedicatedBlockStorageClustersWithCallback.
-func (mr *MockEcsClientMockRecorder) DescribeDedicatedBlockStorageClustersWithCallback(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDedicatedBlockStorageClustersWithCallback", reflect.TypeOf((*MockEcsClient)(nil).DescribeDedicatedBlockStorageClustersWithCallback), arg0, arg1)
-}
-
-// DescribeDedicatedBlockStorageClustersWithChan mocks base method.
-func (m *MockEcsClient) DescribeDedicatedBlockStorageClustersWithChan(arg0 *ecs.DescribeDedicatedBlockStorageClustersRequest) (<-chan *ecs.DescribeDedicatedBlockStorageClustersResponse, <-chan error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DescribeDedicatedBlockStorageClustersWithChan", arg0)
-	ret0, _ := ret[0].(<-chan *ecs.DescribeDedicatedBlockStorageClustersResponse)
-	ret1, _ := ret[1].(<-chan error)
-	return ret0, ret1
-}
-
-// DescribeDedicatedBlockStorageClustersWithChan indicates an expected call of DescribeDedicatedBlockStorageClustersWithChan.
-func (mr *MockEcsClientMockRecorder) DescribeDedicatedBlockStorageClustersWithChan(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDedicatedBlockStorageClustersWithChan", reflect.TypeOf((*MockEcsClient)(nil).DescribeDedicatedBlockStorageClustersWithChan), arg0)
-}
-
 // DescribeDedicatedHostAutoRenew mocks base method.
 func (m *MockEcsClient) DescribeDedicatedHostAutoRenew(arg0 *ecs.DescribeDedicatedHostAutoRenewRequest) (*ecs.DescribeDedicatedHostAutoRenewResponse, error) {
 	m.ctrl.T.Helper()
@@ -1176,6 +1132,50 @@ func (m *MockEcsClient) DescribeDiagnosticMetricsWithChan(arg0 *ecs.DescribeDiag
 func (mr *MockEcsClientMockRecorder) DescribeDiagnosticMetricsWithChan(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDiagnosticMetricsWithChan", reflect.TypeOf((*MockEcsClient)(nil).DescribeDiagnosticMetricsWithChan), arg0)
+}
+
+// DescribeDiagnosticReportAttributes mocks base method.
+func (m *MockEcsClient) DescribeDiagnosticReportAttributes(arg0 *ecs.DescribeDiagnosticReportAttributesRequest) (*ecs.DescribeDiagnosticReportAttributesResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeDiagnosticReportAttributes", arg0)
+	ret0, _ := ret[0].(*ecs.DescribeDiagnosticReportAttributesResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDiagnosticReportAttributes indicates an expected call of DescribeDiagnosticReportAttributes.
+func (mr *MockEcsClientMockRecorder) DescribeDiagnosticReportAttributes(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDiagnosticReportAttributes", reflect.TypeOf((*MockEcsClient)(nil).DescribeDiagnosticReportAttributes), arg0)
+}
+
+// DescribeDiagnosticReportAttributesWithCallback mocks base method.
+func (m *MockEcsClient) DescribeDiagnosticReportAttributesWithCallback(arg0 *ecs.DescribeDiagnosticReportAttributesRequest, arg1 func(*ecs.DescribeDiagnosticReportAttributesResponse, error)) <-chan int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeDiagnosticReportAttributesWithCallback", arg0, arg1)
+	ret0, _ := ret[0].(<-chan int)
+	return ret0
+}
+
+// DescribeDiagnosticReportAttributesWithCallback indicates an expected call of DescribeDiagnosticReportAttributesWithCallback.
+func (mr *MockEcsClientMockRecorder) DescribeDiagnosticReportAttributesWithCallback(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDiagnosticReportAttributesWithCallback", reflect.TypeOf((*MockEcsClient)(nil).DescribeDiagnosticReportAttributesWithCallback), arg0, arg1)
+}
+
+// DescribeDiagnosticReportAttributesWithChan mocks base method.
+func (m *MockEcsClient) DescribeDiagnosticReportAttributesWithChan(arg0 *ecs.DescribeDiagnosticReportAttributesRequest) (<-chan *ecs.DescribeDiagnosticReportAttributesResponse, <-chan error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeDiagnosticReportAttributesWithChan", arg0)
+	ret0, _ := ret[0].(<-chan *ecs.DescribeDiagnosticReportAttributesResponse)
+	ret1, _ := ret[1].(<-chan error)
+	return ret0, ret1
+}
+
+// DescribeDiagnosticReportAttributesWithChan indicates an expected call of DescribeDiagnosticReportAttributesWithChan.
+func (mr *MockEcsClientMockRecorder) DescribeDiagnosticReportAttributesWithChan(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDiagnosticReportAttributesWithChan", reflect.TypeOf((*MockEcsClient)(nil).DescribeDiagnosticReportAttributesWithChan), arg0)
 }
 
 // DescribeDiagnosticReports mocks base method.

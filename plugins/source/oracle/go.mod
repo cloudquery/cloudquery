@@ -5,9 +5,9 @@ go 1.19
 require (
 	github.com/cloudquery/plugin-sdk v1.32.0
 	github.com/iancoleman/strcase v0.2.0
-	github.com/oracle/oci-go-sdk/v65 v65.28.0
+	github.com/oracle/oci-go-sdk/v65 v65.28.3
 	github.com/rs/zerolog v1.28.0
-	golang.org/x/exp v0.0.0-20221230185412-738e83a70c30
+	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201
 )
 
 require (
@@ -30,7 +30,7 @@ require (
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.3.0 // indirect
 	golang.org/x/text v0.5.0 // indirect
-	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef // indirect
+	google.golang.org/genproto v0.0.0-20230131230820-1c016267d619 // indirect; indirect // indirect
 	google.golang.org/grpc v1.51.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
