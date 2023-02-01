@@ -23,16 +23,17 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18
+          go-version-file: go.mod
+          cache: true
       - name: Run GoReleaser Dry-Run
         uses: goreleaser/goreleaser-action@v3
         with:
           version: latest
-          args: release --rm-dist --skip-validate --skip-publish --skip-sign
+          args: release --clean --skip-validate --skip-publish --skip-sign
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v3
         with:
           version: latest
-          args: release --rm-dist --skip-sign
+          args: release --clean --skip-sign
         env:
           GITHUB_TOKEN: ${{"{{"}} secrets.GITHUB_TOKEN {{"}}"}}

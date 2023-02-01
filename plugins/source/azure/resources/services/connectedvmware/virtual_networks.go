@@ -15,22 +15,8 @@ func VirtualNetworks() *schema.Table {
 		Resolver:    fetchVirtualNetworks,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#VirtualNetwork",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_virtual_networks", client.Namespacemicrosoft_connectedvmwarevsphere),
-		Transform:   transformers.TransformWithStruct(&armconnectedvmware.VirtualNetwork{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armconnectedvmware.VirtualNetwork{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

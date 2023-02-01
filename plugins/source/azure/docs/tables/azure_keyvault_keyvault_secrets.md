@@ -16,8 +16,8 @@ This table depends on [azure_keyvault_keyvault](azure_keyvault_keyvault.md).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|id (PK)|String|
 |properties|JSON|
+|id (PK)|String|
 |location|String|
 |name|String|
 |tags|JSON|

@@ -8,7 +8,7 @@ For example, let's configure the [PostgreSQL](https://github.com/cloudquery/clou
 (See all available versions [here](https://github.com/cloudquery/cloudquery/releases?q=plugins-destination-postgresql&expanded=true)).
 Create a file in a new directory `cloudquery-config/postgresql.yml`: 
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   ## Required. name of the plugin.
@@ -60,7 +60,7 @@ Source plugins define the APIs you want to sync from (See [available sources](/d
 For example, let's configure the [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws) source plugin.
 Create an `aws.yml` file in your `cloudquery-config` directory:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   ## Required. name of the plugin to use.

@@ -4,7 +4,7 @@
 
 This example connects a single AWS account in one region to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml
+```yaml copy
 kind: source
 spec:
   # Source spec section
@@ -27,7 +27,7 @@ spec:
 
 Some tables document the parameters and options available to your AWS accounts and don't correspond to real resources. If you don't need these tables, the time it takes to sync can be reduced by skipping these tables: 
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: aws
@@ -59,7 +59,7 @@ spec:
 
 CloudQuery supports discovery of AWS Accounts via AWS Organizations. This means that as Accounts get added or removed from your organization CloudQuery will be able to handle new or removed accounts without any configuration changes.
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: aws
@@ -138,7 +138,7 @@ This is used to specify one or more accounts to extract information from. Note t
   [Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) to use to authenticate this account with.
   Please note this should be set to the name of the profile. For example, with the following credentials file:
 
-  ```ini
+  ```ini copy
   [default]
   aws_access_key_id=xxxx
   aws_secret_access_key=xxxx

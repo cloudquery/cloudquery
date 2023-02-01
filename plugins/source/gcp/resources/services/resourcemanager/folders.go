@@ -13,20 +13,12 @@ func Folders() *schema.Table {
 		Description: `https://cloud.google.com/resource-manager/reference/rest/v3/folders#Folder`,
 		Resolver:    fetchFolders,
 		Multiplex:   client.OrgMultiplex,
-		Transform:   transformers.TransformWithStruct(&pb.Folder{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.Folder{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "organization_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveOrganization,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

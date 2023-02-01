@@ -5,6 +5,32 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.3.0...plugins-source-gcp-v7.4.0) (2023-01-31)
+
+
+### Features
+
+* New plugin-sdk features used for GCP ([#7208](https://github.com/cloudquery/cloudquery/issues/7208)) ([bb9e9e0](https://github.com/cloudquery/cloudquery/commit/bb9e9e050f9904eb5bf613541e45d67da081f326))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.30.0 ([#7222](https://github.com/cloudquery/cloudquery/issues/7222)) ([73ca21c](https://github.com/cloudquery/cloudquery/commit/73ca21c4259545f7e949c9d780d8184db475d2ac))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.31.0 ([#7228](https://github.com/cloudquery/cloudquery/issues/7228)) ([36e8549](https://github.com/cloudquery/cloudquery/commit/36e8549f722658d909865723630fad1b2821db62))
+* Remove primary keys options for non existent fields ([#7371](https://github.com/cloudquery/cloudquery/issues/7371)) ([8f875c5](https://github.com/cloudquery/cloudquery/commit/8f875c52137d6a27906bcd6f4feca2d31559f479))
+
+## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.2.1...plugins-source-gcp-v7.3.0) (2023-01-25)
+
+
+### Features
+
+* **gcp-resources:** Add Security Center projects and organizations findings ([#7089](https://github.com/cloudquery/cloudquery/issues/7089)) ([e849caf](https://github.com/cloudquery/cloudquery/commit/e849caf1915eb7f811e9e8edfc94009f6e710229))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.29.0 ([#7121](https://github.com/cloudquery/cloudquery/issues/7121)) ([b7441c9](https://github.com/cloudquery/cloudquery/commit/b7441c93c274ae3a6009474a2b28f44a172dd6dc))
+
 ## [7.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.2.0...plugins-source-gcp-v7.2.1) (2023-01-24)
 
 

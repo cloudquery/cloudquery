@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.3.1](https://github.com/cloudquery/cloudquery/compare/scaffold-v1.3.0...scaffold-v1.3.1) (2023-01-31)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.30.0 ([#7222](https://github.com/cloudquery/cloudquery/issues/7222)) ([73ca21c](https://github.com/cloudquery/cloudquery/commit/73ca21c4259545f7e949c9d780d8184db475d2ac))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.31.0 ([#7228](https://github.com/cloudquery/cloudquery/issues/7228)) ([36e8549](https://github.com/cloudquery/cloudquery/commit/36e8549f722658d909865723630fad1b2821db62))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.32.0 ([#7334](https://github.com/cloudquery/cloudquery/issues/7334)) ([b684122](https://github.com/cloudquery/cloudquery/commit/b68412222219f9ca160c0753290709d52de7fcd6))
+
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/scaffold-v1.2.0...scaffold-v1.3.0) (2023-01-26)
+
+
+### Features
+
+* **scaffold-go-releaser:** Use go version from `go.mod`, add `cache: true` ([#7058](https://github.com/cloudquery/cloudquery/issues/7058)) ([946d643](https://github.com/cloudquery/cloudquery/commit/946d643476b7b741ee10650edcc7243878e65fe9))
+
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/scaffold-v1.1.0...scaffold-v1.2.0) (2023-01-25)
+
+
+### Features
+
+* **scaffold:** Add Makefile and test workflow to scaffold, and flesh out readme ([#7118](https://github.com/cloudquery/cloudquery/issues/7118)) ([d75df29](https://github.com/cloudquery/cloudquery/commit/d75df29d468a84724229ecef6ce558d31e665707))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.29.0 ([#7121](https://github.com/cloudquery/cloudquery/issues/7121)) ([b7441c9](https://github.com/cloudquery/cloudquery/commit/b7441c93c274ae3a6009474a2b28f44a172dd6dc))
+
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/scaffold-v1.0.0...scaffold-v1.1.0) (2023-01-24)
 
 

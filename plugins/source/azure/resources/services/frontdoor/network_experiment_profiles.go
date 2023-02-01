@@ -15,22 +15,8 @@ func NetworkExperimentProfiles() *schema.Table {
 		Resolver:    fetchNetworkExperimentProfiles,
 		Description: "https://learn.microsoft.com/en-us/rest/api/internetanalyzer/network-experiment-profiles/list?tabs=HTTP#profile",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_frontdoor_network_experiment_profiles", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armfrontdoor.Profile{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armfrontdoor.Profile{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

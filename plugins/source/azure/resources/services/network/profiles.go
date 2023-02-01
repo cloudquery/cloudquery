@@ -15,22 +15,8 @@ func Profiles() *schema.Table {
 		Resolver:    fetchProfiles,
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-profiles/list?tabs=HTTP#networkprofile",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_profiles", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.Profile{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armnetwork.Profile{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

@@ -7,10 +7,10 @@ SELECT
   s.subscription_id,
   s.id AS server_id,
   case
-    when assdbap.state != 'Enabled'
+    when assdbap.properties->>'state' != 'Enabled'
       then 'fail'
       else 'pass'
   end
 FROM azure_sql_servers s
-    LEFT JOIN azure_sql_database_blob_auditing_policies assdbap ON
-        s.id = assdbap.sql_database_id
+    LEFT JOIN azure_sql_server_database_blob_auditing_policies assdbap ON
+        s._cq_id = assdbap._cq_parent_id

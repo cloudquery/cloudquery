@@ -15,22 +15,8 @@ func FirewallPolicies() *schema.Table {
 		Resolver:    fetchFirewallPolicies,
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/firewall-policies/list-all?tabs=HTTP#firewallpolicy",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_firewall_policies", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.FirewallPolicy{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armnetwork.FirewallPolicy{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

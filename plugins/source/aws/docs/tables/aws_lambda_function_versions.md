@@ -42,6 +42,7 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 |revision_id|String|
 |role|String|
 |runtime|String|
+|runtime_version_config|JSON|
 |signing_job_arn|String|
 |signing_profile_version_arn|String|
 |snap_start|JSON|

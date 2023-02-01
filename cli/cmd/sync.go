@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 	"golang.org/x/exp/slices"
 
-	discovery "github.com/cloudquery/plugin-sdk/clients/discovery/v0"
+	"github.com/cloudquery/plugin-sdk/clients/discovery/v0"
 	"github.com/cloudquery/plugin-sdk/registry"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
@@ -73,14 +73,15 @@ func sync(cmd *cobra.Command, args []string) error {
 			}
 			destinationsSpecs = append(destinationsSpecs, *spec)
 		}
-		discoveryClient, err := discovery.NewClient(ctx, sourceSpec.Registry, registry.PluginTypeSource, sourceSpec.Path, sourceSpec.Version)
+
+		discoveryClient, err := discovery.NewClient(ctx, sourceSpec.Registry, registry.PluginTypeSource, sourceSpec.Path, sourceSpec.Version, discovery.WithDirectory(cqDir))
 		if err != nil {
 			return fmt.Errorf("failed to create discovery client for source %s: %w", sourceSpec.Name, err)
 		}
 
 		versions, err := discoveryClient.GetVersions(ctx)
 		if err != nil {
-			if discoveryErr := discoveryClient.Terminate(); err != nil {
+			if discoveryErr := discoveryClient.Terminate(); discoveryErr != nil {
 				log.Error().Err(discoveryErr).Msg("failed to terminate discovery client")
 				fmt.Println("failed to terminate discovery client:", discoveryErr)
 			}
@@ -88,7 +89,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			if err := syncConnectionV0(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
 				return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 			}
-			return nil
+			continue
 		}
 		if err := discoveryClient.Terminate(); err != nil {
 			return fmt.Errorf("failed to terminate discovery client: %w", err)
@@ -98,14 +99,14 @@ func sync(cmd *cobra.Command, args []string) error {
 			if err := syncConnectionV1(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
 				return fmt.Errorf("failed to sync v1 source %s: %w", sourceSpec.Name, err)
 			}
-			return nil
+			continue
 		}
 
 		if slices.Index(versions, "v0") != -1 {
-			if err := syncConnectionV1(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
+			if err := syncConnectionV0(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
 				return fmt.Errorf("failed to sync v0 source %s: %w", sourceSpec.Name, err)
 			}
-			return nil
+			continue
 		}
 
 		return fmt.Errorf("failed to sync source %s, unknown versions %v", sourceSpec.Name, versions)
