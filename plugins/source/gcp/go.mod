@@ -35,7 +35,7 @@ require (
 	cloud.google.com/go/secretmanager v1.9.0
 	cloud.google.com/go/securitycenter v1.18.1
 	cloud.google.com/go/serviceusage v1.4.0
-	cloud.google.com/go/storage v1.28.0
+	cloud.google.com/go/storage v1.28.1
 	cloud.google.com/go/translate v1.4.0
 	cloud.google.com/go/video v1.9.0
 	cloud.google.com/go/vision/v2 v2.5.0
@@ -63,7 +63,7 @@ require (
 )
 
 require (
-	cloud.google.com/go v0.107.0 // indirect
+	cloud.google.com/go v0.109.0 // indirect; indirect // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/vision v1.2.0 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.2.1 // indirect
