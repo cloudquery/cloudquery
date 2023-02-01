@@ -1,0 +1,90 @@
+name: Destination Plugin Kinesis Firehose Workflow
+
+on:
+  pull_request:
+    paths:
+      - "plugins/destination/firehose/**"
+      - ".github/workflows/dest_firehose.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/destination/firehose/**"
+      - ".github/workflows/dest_firehose.yml"
+
+jobs:
+  plugins-destination-firehose:
+    timeout-minutes: 30
+    name: "plugins/destination/firehose"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/destination/firehose
+    permissions:
+      id-token: write
+      contents: read # This is required for actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+     
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/firehose/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/firehose/go.sum
+      - name: golangci-lint
+        uses: cloudquery/golangci-lint-action@master
+        with:
+          version: v1.50.1
+          working-directory: plugins/destination/firehose
+          args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     role-to-assume: arn:aws:iam::615713231484:role/destination-s3
+      #     aws-region: us-east-1        
+      # - name: Test firehose plugin
+      #   run: make test
+  validate-release:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    env:
+      CGO_ENABLED: 0
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/destination/firehose/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.4-release-cache-plugins-destination-firehose
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/firehose/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/firehose/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

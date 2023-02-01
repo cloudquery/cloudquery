@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"sync/atomic"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/clients/source/v1"
@@ -122,7 +123,7 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 			if err := destClients[i].Close(ctx); err != nil {
 				return fmt.Errorf("failed to close destination client for %s -> %s: %w", sourceSpec.VersionString(), destination.VersionString(), err)
 			}
-			failedWrites += destFailedWrites
+			atomic.AddUint64(&failedWrites, destFailedWrites)
 			return nil
 		})
 	}
