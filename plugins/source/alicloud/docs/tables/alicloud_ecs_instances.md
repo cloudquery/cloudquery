@@ -88,6 +88,6 @@ The composite primary key for this table is (**account_id**, **region_id**, **in
 |metadata_options|JSON|
 |cpu_options|JSON|
 |vpc_attributes|JSON|
-|tags|JSON|
 |network_interfaces|JSON|
+|tags|JSON|
 |operation_locks|JSON|
