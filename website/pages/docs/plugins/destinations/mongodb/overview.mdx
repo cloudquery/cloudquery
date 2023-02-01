@@ -1,3 +1,6 @@
+---
+name: MongoDB
+---
 # MongoDB Destination Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -18,7 +21,7 @@ Supported database versions:
 
 This example configures a MongoDB destination, located at `localhost:27017`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: "mongodb"

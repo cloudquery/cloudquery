@@ -74,6 +74,9 @@
     },
     "plugins/destination/test": {
       "component": "plugins-destination-test"
+    },
+    "plugins/destination/elasticsearch": {
+      "component": "plugins-destination-elasticsearch"
     }
   },
   "tag-separator": "-",

@@ -1,3 +1,6 @@
+---
+name: Azure Blob Storage
+---
 # Azure Blob Storage Destination Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -18,7 +21,7 @@ This example configures an Azure blob storage destination, to create CSV files i
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: "azblob"
@@ -32,6 +35,8 @@ spec:
     container: "test"
     path: "path/to/files"
     format: "csv"
+    format_spec:
+      delimiter: ","
 ```
 
 The Azure blob destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes). 
@@ -55,3 +60,17 @@ This is the (nested) spec used by the Azure blob destination Plugin.
 - `format` (string) (required)
 
   Format of the output file. `json` and `csv` are supported.
+
+- `format_spec` (map [format_spec](#format_spec)) (optional)
+
+  Optional parameters to change the format of the file
+
+## format_spec
+
+- `delimiter` (string) (optional) (default: `,`)
+
+  Character that will be used as want to use as the delimiter if the format type is `csv`
+
+- `skip_header` (bool) (optional) (default: false)
+
+  Specifies if the first line of a file should be the headers (when format is `csv`).

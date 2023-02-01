@@ -1,3 +1,6 @@
+---
+name: Plausible
+---
 # Plausible Analytics Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -16,7 +19,7 @@ First you must have a [Plausible Analytics](https://plausible.io/sites) account 
 
 This example syncs analytics from plausible API to a specified CQ destination. Running the following job on a daily basis will keep your db up to date with the latest events and without duplicates (as long as you use `overwrite` write mode).
 
-```yaml
+```yaml copy
 kind: source
 # Common source-plugin configuration
 spec:
@@ -72,12 +75,12 @@ This is the (nested) spec used by this plugin:
 
 ### Sum all visitors since date
 
-```sql
+```sql copy
 select sum(visitors) from plausible_stats_timeseries where date >= '2021-01-01';
 ```
 
 ### Select all dates where bounce rate was above 50%
 
-```sql
+```sql copy
 select date, bounce_rate from plausible_stats_timeseries where bounce_rate > 50;
 ```

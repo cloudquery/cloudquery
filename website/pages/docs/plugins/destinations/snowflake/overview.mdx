@@ -1,3 +1,6 @@
+---
+name: Snowflake
+---
 # Snowflake Destination Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -17,7 +20,7 @@ There are two ways to sync data to Snowflake:
 
 This example sets the connection string to a value read from the `SNOWFLAKE_CONNECTION_STRING` environment variable:
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: snowflake
@@ -42,7 +45,7 @@ This is the top level spec used by the Snowflake destination plugin.
 
   Example `connection_string`:
 
-  ```yaml
+  ```yaml copy
   # user[:password]@account/database/schema[?param1=value1&paramN=valueN]
   # or
   # user[:password]@account/database[?param1=value1&paramN=valueN]

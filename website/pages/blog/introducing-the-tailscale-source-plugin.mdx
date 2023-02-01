@@ -31,7 +31,7 @@ If you have added some devices but haven't authorized them you will not be able 
 It's best practice to keep your inventory clean, as Tailscale limits the amount of devices.
 Here's a query to check for unauthorized devices:
 
-```sql
+```sql copy
 select dev.id, dev.user
 from tailscale_devices as dev
 where not dev.authorized
@@ -40,7 +40,7 @@ order by id;
 
 This query would output a table of device IDs and corresponding users for unauthorized devices:
 
-```bash
+```bash copy
         id         |       user             
 -------------------+------------------
  12345678901234567 | user@example.com
@@ -54,7 +54,7 @@ You can now put this in a dashboard or set up an alert on it.
 To keep your infrastructure secure it's best practice to make device keys expire.
 Here's a query to check for devices that have disabled key expiry.
 
-```sql
+```sql copy
 select dev.id, dev.user
 from tailscale_devices as dev
 where dev.key_expiry_disabled
@@ -63,7 +63,7 @@ order by id;
 
 This query would output a table of device IDs and corresponding users for devices that have key expiry disabled:
 
-```bash
+```bash copy
         id         |       user             
 -------------------+------------------
  12345678901234567 | user@example.com

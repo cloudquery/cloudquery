@@ -51,7 +51,7 @@ export default function Home() {
       <div className="flex flex-col justify-between md:mr-4">
         <div>
           <h1 className="max-w-5xl mx-auto nx-text-6xl font-extrabold tracking-tighter leading-[1.1] sm:text-7xl lg:nx-text-8xl xl:nx-text-8xl">
-             Frustratingly
+             Finally,
              <br className="hidden lg:block" />
              <span className="pr-1 inline-block text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500 ">
              reliable

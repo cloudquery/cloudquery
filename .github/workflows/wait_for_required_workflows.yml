@@ -88,6 +88,7 @@ jobs:
                            "plugins/destination/neo4j",
                            "plugins/destination/kafka",
                            "plugins/destination/mssql",
+                           "plugins/destination/elasticsearch",
                            ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")

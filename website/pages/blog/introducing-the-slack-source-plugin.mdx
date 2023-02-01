@@ -32,13 +32,13 @@ Let's look at a two use cases for the Slack plugin: one serious, one fun.
 
 It's important to make sure that your Slack workspace is secure and that you have visibility into who has access to your workspace. The Slack source plugin can help you with this task. With our data loaded into Postgres, we can start by writing a query to find out who has access to our workspace:
 
-```sql
+```sql copy
 select name, profile->>'email' as email from slack_users
 ```
 
 Now, let's filter this list down to users who don't have a company email address (in our case `@cloudquery.io`), and check whether these users are properly restricted:
 
-```sql
+```sql copy
 select 
     name, 
     profile->>'email' as email, 
@@ -55,7 +55,7 @@ select
 
 We can also cross-reference user accounts against data from the [Okta plugin](/docs/plugins/sources/okta/overview) to see if they should still have Slack access:
 
-```sql
+```sql copy
 select 
     su.name as name, 
     su.profile->>'email' as email 
@@ -75,7 +75,7 @@ The output of the above query will show us all Slack users who don't have an act
 
 The Slack plugin can also be used to build custom analytics on top of your Slack workspace data. For example, let's say we want to find out which channels are the most active in our workspace. We can do this by writing a query that counts the number of messages in each channel:
 
-```sql
+```sql copy
 select
      c.name as channel,
      count(r.*) as messages
@@ -92,7 +92,7 @@ select
 
 Or, perhaps we are curious about the most active users in our workspace. We can write a query that counts the number of messages sent in public channels by each user:
 
-```sql
+```sql copy
 select 
     u.name, count(h.user) 
 from slack_conversation_histories h 
@@ -103,7 +103,7 @@ group by u.name order by count desc
 
 We can even break this down by day, week, or month to graph how active users are over time:
 
-```sql
+```sql copy
 select
      u.name,
      date_trunc('day', to_timestamp(round(h.ts::float))) as day,

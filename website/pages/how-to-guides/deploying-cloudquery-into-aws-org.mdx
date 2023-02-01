@@ -70,7 +70,7 @@ aws cloudformation describe-stacks \
 
 where the output should be a string like this:
 
-```bash
+```bash copy
 "arn:aws:iam::<REDACTED>:role/cloudquery-ro"
 ```
 
@@ -84,7 +84,7 @@ aws sts assume-role \
 
 The output should look something like this:
 
-```bash
+```json copy
 {
     "Credentials": {
         "AccessKeyId": "ASIA...",
@@ -111,7 +111,7 @@ aws cloudformation describe-stacks \
 
 Where the output should be in this form:
 
-```bash
+```json copy
 [
     [
         {
@@ -151,7 +151,7 @@ spec:
 
 Now you are all set to be able to execute a fetch and grab resources from your whole AWS Organization
 
-```bash
+```bash copy
 cloudquery sync
 ```
 

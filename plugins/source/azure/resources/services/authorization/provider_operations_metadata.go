@@ -14,27 +14,11 @@ func ProviderOperationsMetadata() *schema.Table {
 		Name:        "azure_authorization_provider_operations_metadata",
 		Resolver:    fetchProviderOperationsMetadata,
 		Description: "https://learn.microsoft.com/en-us/rest/api/authorization/provider-operations-metadata/list?tabs=HTTP#provideroperationsmetadata",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_provider_operations_metadata", client.Namespacemicrosoft_authorization),
-		Transform:   transformers.TransformWithStruct(&armauthorization.ProviderOperationsMetadata{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armauthorization.ProviderOperationsMetadata{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 
-func fetchProviderOperationsMetadata(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchProviderOperationsMetadata(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armauthorization.NewProviderOperationsMetadataClient(cl.Creds, cl.Options)
 	if err != nil {

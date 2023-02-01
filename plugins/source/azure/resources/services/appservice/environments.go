@@ -15,22 +15,8 @@ func Environments() *schema.Table {
 		Resolver:    fetchEnvironments,
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/app-service-environments/list?tabs=HTTP#appserviceenvironmentresource",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_environments", client.Namespacemicrosoft_web),
-		Transform:   transformers.TransformWithStruct(&armappservice.EnvironmentResource{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armappservice.EnvironmentResource{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

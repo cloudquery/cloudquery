@@ -30,6 +30,8 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 |additional_storage_count|Int|
 |activated_storage_count|Int|
 |compute_count|Int|
+|is_multi_rack_deployment|Bool|
+|multi_rack_configuration_file|ByteArray|
 |additional_compute_count|Int|
 |additional_compute_system_model|String|
 |cloud_control_plane_server1|String|

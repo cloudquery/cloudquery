@@ -5,7 +5,7 @@
 This example syncs from Tailscale to a Postgres destination, using `api_key` authentication.
 The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml
+```yaml copy
 kind: source
 # Common source-plugin configuration
 spec:

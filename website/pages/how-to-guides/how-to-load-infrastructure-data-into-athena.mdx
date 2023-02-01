@@ -43,7 +43,7 @@ To sync infrastructure data to S3, we will need an installation of the CloudQuer
 
 When this step is complete, you should be able to run `cloudquery --help` and see the help output:
 
-```bash
+```bash copy
 $ cloudquery --help
 CloudQuery CLI
 
@@ -56,7 +56,7 @@ Open source data integration at scale.
 
 We will configure the CloudQuery AWS source plugin to sync data from your AWS account(s). To do so, we'll create a file called `aws.yml` with the following config:
 
-```yaml copy title="aws.yml"
+```yaml copy
 kind: source
 spec:
   name: aws
@@ -70,9 +70,9 @@ This is the most basic configuration of the AWS source plugin. It will work as l
 
 ## Step 4: Configure the S3 Destination Plugin
 
-Similar to the config we created for the AWS plugin, we also need a destination config that is configured to write the AWS data to JSON files in S3:
+Similar to the config we created for the AWS plugin, we also need a destination config that is configured to write the AWS data to JSON files in S3. We'll call this file `s3.yml`:
 
-```yaml copy title="s3.yml"
+```yaml copy
 kind: destination
 spec:
   name: "s3"
@@ -104,7 +104,7 @@ Athena can query data in S3, but it needs to know the schema of the data in orde
 
 First we'll create a role for the crawler to use. It will need access to the S3 bucket we created in the previous step. The following trust policy will give the role what it needs:
 
-```json copy title="crawler-trust-policy.json"
+```json copy
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -129,7 +129,7 @@ aws iam create-role \
 
 We should also attach a policy to the role that gives it access to the S3 bucket we created in the previous step. The following policy will give the crawler access to the S3 bucket. Make sure to update the bucket name to the value of `BUCKET_NAME` you chose earlier (in our example, `cloudquery-athena-example`):
 
-```json copy title="crawler-policy-s3-access.json"
+```json copy
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -149,7 +149,7 @@ We should also attach a policy to the role that gives it access to the S3 bucket
 
 Let's attach this policy to the role:
 
-```bash
+```bash copy
 aws iam put-role-policy \
     --role-name cloudquery-athena-example-crawler \
     --policy-name cloudquery-athena-example-crawler-s3-access \
@@ -158,7 +158,7 @@ aws iam put-role-policy \
 
 The crawler will also need additional permissions to perform all its tasks, such as writing CloudWatch logs. We attach another policy to the role to give it these permissions. This is a simplified version of the default policy created by AWS when creating a crawler through the console. You should review these permissions to ensure they are appropriate for your use case:
 
-```json copy title="crawler-policy.json"
+```json copy
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -230,7 +230,7 @@ aws glue start-crawler --name cloudquery-athena-example
 
 The crawler should have created a database and tables in the Glue Data Catalog. Now we can query the data using Athena! Let's use the AWS Console for this step. Navigate to the Athena service in the AWS Console, go to the Query Editor page, and select the database we created earlier. You should see a list of tables in the database. Let's run a simple query to find all S3 buckets that are permitted to be public:
 
-```sql
+```sql copy
 -- Find all S3 buckets that are permitted to be public
 SELECT "arn", "region"
 FROM "cloudquery-athena-example"."aws_s3_buckets"
@@ -250,7 +250,7 @@ In this tutorial, we showed how to use CloudQuery to load infrastructure data in
 
 One thing we haven't covered here is how data will be updated the next time you run a sync. The S3 destination plugin only supports the "append" write mode, which means it will keep adding new files and never remove the old ones. When querying data from the second sync onward, there will be duplicate entries. To deal with this, most queries should make use of the latest `_cq_sync_time`, a unique timestamp assigned to every sync:
 
-```sql
+```sql copy
 -- Find all S3 buckets that are permitted to be public (updated to only use data from latest sync)
 SELECT "arn", "region"
 FROM "cloudquery-athena-example"."aws_s3_buckets"

@@ -15,22 +15,8 @@ func Plans() *schema.Table {
 		Resolver:    fetchPlans,
 		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/app-service-environments/list-app-service-plans?tabs=HTTP#appserviceplan",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_plans", client.Namespacemicrosoft_web),
-		Transform:   transformers.TransformWithStruct(&armappservice.Plan{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armappservice.Plan{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

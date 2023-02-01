@@ -1,3 +1,7 @@
+---
+name: GCP
+stage: GA
+---
 # GCP Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -41,6 +45,6 @@ On-premises or another cloud provider
 
 ### Find all buckets without uniform bucket-level access
 
-```sql
+```sql copy
 select project_id, name from gcp_storage_buckets where uniform_bucket_level_access->>'Enabled' = 'true';
 ```

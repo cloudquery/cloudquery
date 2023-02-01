@@ -15,22 +15,8 @@ func ServerGroups() *schema.Table {
 		Resolver:    fetchServerGroups,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc@v0.5.0#ServerGroup",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_postgresqlhsc_server_groups", client.Namespacemicrosoft_dbforpostgresql),
-		Transform:   transformers.TransformWithStruct(&armpostgresqlhsc.ServerGroup{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armpostgresqlhsc.ServerGroup{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

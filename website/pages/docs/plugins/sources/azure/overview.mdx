@@ -1,3 +1,7 @@
+---
+name: Azure
+stage: GA
+---
 # Azure Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -19,7 +23,7 @@ You can find out more about authentication with Azure at Azure's [documentation]
 
 First, install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (`az`). Then, login with the Azure CLI:
 
-```bash
+```bash copy
 az login
 ```
 
@@ -35,7 +39,7 @@ First, install the Azure CLI (`az`).
 
 Then, login with the Azure CLI:
 
-```bash
+```bash copy
 az login
 ```
 
@@ -43,7 +47,7 @@ Then, create the service principal the plugin will use to access your cloud depl
 `az ad sp create-for-rbac` contains credentials that you must protect - Make sure to handle with appropriate care.
 This example uses bash - The commands for CMD and PowerShell are similar.
 
-```bash
+```bash copy
 export SUBSCRIPTION_ID=<YOUR_SUBSCRIPTION_ID>
 az account set --subscription $SUBSCRIPTION_ID
 az provider register --namespace 'Microsoft.Security'
@@ -57,7 +61,7 @@ If the service principal doesn't exist it will create a new one, otherwise it wi
 
 The output of `az ad sp create-for-rbac` should look like this:
 
-```json
+```json copy
 {
   "appId": "YOUR AZURE_CLIENT_ID",
   "displayName": "cloudquery-sp",
@@ -76,7 +80,7 @@ The example shows how to export environment variables for Linux - exporting for 
 - `AZURE_CLIENT_ID` is `appId` in the JSON.
 - `AZURE_CLIENT_SECRET` is `password` in the JSON.
 
-```bash
+```bash copy
 export AZURE_TENANT_ID=<YOUR AZURE_TENANT_ID>
 export AZURE_CLIENT_ID=<YOUR AZURE_CLIENT_ID>
 export AZURE_CLIENT_SECRET=<YOUR AZURE_CLIENT_SECRET>
@@ -87,18 +91,18 @@ export AZURE_SUBSCRIPTION_ID=$SUBSCRIPTION_ID
 
 ### Find all MySQL servers
 
-```sql
+```sql copy
 SELECT * FROM azure_mysql_servers;
 ```
 
 ### Find storage accounts that are allowing non-HTTPS traffic
 
-```sql
+```sql copy
 SELECT * from azure_storage_accounts where enable_https_traffic_only = false;
 ```
 
 ### Find all expired key vaults
 
-```sql
+```sql copy
 SELECT * from azure_keyvault_vault_keys where attributes_expires >= extract(epoch from now()) * 1000;
 ```

@@ -15,22 +15,8 @@ func Disks() *schema.Table {
 		Resolver:    fetchDisks,
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/disks/list?tabs=HTTP#disk",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_disks", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.Disk{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armcompute.Disk{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

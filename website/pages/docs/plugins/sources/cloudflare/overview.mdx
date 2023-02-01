@@ -1,3 +1,6 @@
+---
+name: Cloudflare
+---
 # Cloudflare Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -19,12 +22,12 @@ In order to fetch information from Cloudflare, `cloudquery` needs to be authenti
 
 ### Find all zones with `dev_mode` enabled
 
-```sql
+```sql copy
 SELECT id, account_id, host_name, name, original_ns FROM cloudflare_zones WHERE dev_mode = true;
 ```
 
 ### Find all DNS records
 
-```sql
+```sql copy
 SELECT id, account_id, zone_id, name, type FROM cloudflare_dns_records;
 ```
