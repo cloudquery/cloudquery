@@ -15,22 +15,8 @@ func EnrollmentAccounts() *schema.Table {
 		Resolver:    fetchEnrollmentAccounts,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling@v0.5.0#EnrollmentAccountSummary",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_billing_enrollment_accounts", client.Namespacemicrosoft_billing),
-		Transform:   transformers.TransformWithStruct(&armbilling.EnrollmentAccountSummary{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armbilling.EnrollmentAccountSummary{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

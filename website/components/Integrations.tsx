@@ -1,6 +1,7 @@
 import { INTEGRATIONS } from "./integrationsData";
 
 const LogoContainer: React.FC<{
+  children?: React.ReactNode;
   title: string;
   href: string;
   external: boolean;

@@ -75,6 +75,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/savingsplans"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/scheduler"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/secretsmanager"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/securityhub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicecatalog"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicequotas"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses"
@@ -383,6 +384,7 @@ func tables() []*schema.Table {
 		scheduler.ScheduleGroups(),
 		scheduler.Schedules(),
 		secretsmanager.Secrets(),
+		securityhub.Findings(),
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),

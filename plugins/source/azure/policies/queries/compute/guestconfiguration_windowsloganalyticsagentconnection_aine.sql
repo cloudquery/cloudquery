@@ -15,9 +15,9 @@ SELECT
   :'check_id',
   'Audit Windows machines on which the Log Analytics agent is not connected as expected',
   azure_compute_virtual_machines.subscription_id,
-  azure_compute_virtual_machines.vm_id AS id,
+  azure_compute_virtual_machines.id AS id,
   case
-    when azure_compute_virtual_machines.storage_profile -> 'osDisk' ->> 'osType' = 'Windows'
+    when azure_compute_virtual_machines.properties -> 'storageProfile' -> 'osDisk' ->> 'osType' = 'Windows'
       AND installed._cq_id IS NULL
     then 'fail'
     else 'pass'

@@ -15,22 +15,8 @@ func BastionHosts() *schema.Table {
 		Resolver:    fetchBastionHosts,
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/bastion-hosts/list?tabs=HTTP#bastionhost",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_bastion_hosts", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.BastionHost{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armnetwork.BastionHost{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

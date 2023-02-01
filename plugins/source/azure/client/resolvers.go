@@ -6,7 +6,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func ResolveAzureSubscription(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {
-	cl := meta.(*Client)
-	return r.Set("subscription_id", cl.SubscriptionId)
+func ResolveAzureSubscription(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+	return r.Set(c.Name, meta.(*Client).SubscriptionId)
 }

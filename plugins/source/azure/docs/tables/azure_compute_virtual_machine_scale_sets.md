@@ -18,7 +18,6 @@ The following tables depend on azure_compute_virtual_machine_scale_sets:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |extended_location|JSON|
 |identity|JSON|
@@ -27,5 +26,6 @@ The following tables depend on azure_compute_virtual_machine_scale_sets:
 |sku|JSON|
 |tags|JSON|
 |zones|StringArray|
+|id (PK)|String|
 |name|String|
 |type|String|

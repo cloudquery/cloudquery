@@ -13,21 +13,7 @@ func Deployments() *schema.Table {
 		Resolver:    fetchDeployments,
 		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v2@v2.0.0#Deployment",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_nginx_deployments", client.Namespacenginx_nginxplus),
-		Transform:   transformers.TransformWithStruct(&armnginx.Deployment{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armnginx.Deployment{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }

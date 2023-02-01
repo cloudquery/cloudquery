@@ -58,6 +58,7 @@ jobs:
                            "plugins/source/heroku",
                            "plugins/source/hubspot",
                            "plugins/source/k8s",
+                           "plugins/source/launchdarkly",
                            "plugins/source/okta",
                            "plugins/source/shopify",
                            "plugins/source/oracle",
@@ -83,9 +84,11 @@ jobs:
                            "plugins/destination/azblob",
                            "plugins/destination/gcs",
                            "plugins/destination/s3",
+                           "plugins/destination/firehose",
                            "plugins/destination/neo4j",
                            "plugins/destination/kafka",
                            "plugins/destination/mssql",
+                           "plugins/destination/elasticsearch",
                            ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")
@@ -104,7 +107,7 @@ jobs:
             }
 
             // Enforce policy tests for AWS,GCP and K8s plugins
-            const pluginsWithPolicyTests = ["plugins/source/aws", "plugins/source/gcp", "plugins/source/k8s"]
+            const pluginsWithPolicyTests = ["plugins/source/aws", "plugins/source/azure", "plugins/source/gcp", "plugins/source/k8s"]
             for (const plugin of pluginsWithPolicyTests) {
               if (actions.includes(plugin)) {
                 actions = [...actions, 'test-policies']
@@ -128,11 +131,12 @@ jobs:
               if (failedRuns.length > 0) {
                 throw new Error(`The following required workflows failed: ${failedRuns.map(({ name }) => name).join(", ")}`)
               }
+              console.log(`Matching runs: ${matchingRuns.map(({ name }) => name).join(", ")}`)
+              console.log(`Actions: ${actions.join(", ")}`)
               if (matchingRuns.length === actions.length) {
                 console.log("All required workflows have passed")
                 return
               }
-              
               pendingActions = actions.filter(action => !runs.some(({ name }) => name === action))
               console.log(`Waiting for ${pendingActions.join(", ")}`)
               await new Promise(r => setTimeout(r, 5000));

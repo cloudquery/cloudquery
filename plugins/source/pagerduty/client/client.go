@@ -19,19 +19,34 @@ const MaxPaginationLimit = 100
 
 type Client struct {
 	PagerdutyClient *pagerduty.Client
-	logger          zerolog.Logger
+
+	Spec *Spec
+
+	logger zerolog.Logger
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+	var pagerdutySpec Spec
+
+	if err := spec.UnmarshalSpec(&pagerdutySpec); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal pagerduty spec: %w", err)
+	}
+
+	pagerdutySpec.setDefaults()
+
 	authToken, err := getAuthToken()
 	if err != nil {
 		return nil, err
 	}
 
 	pagerdutyClient := pagerduty.NewClient(authToken)
+	pagerdutyClient.HTTPClient = newRateLimitedHttpClient(
+		pagerdutyClient.HTTPClient,
+		*pagerdutySpec.MaxRequestsPerSecond)
 
 	cqClient := Client{
 		PagerdutyClient: pagerdutyClient,
+		Spec:            &pagerdutySpec,
 		logger:          logger,
 	}
 
