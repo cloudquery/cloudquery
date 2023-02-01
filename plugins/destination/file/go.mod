@@ -3,10 +3,21 @@ module github.com/cloudquery/cloudquery/plugins/destination/file
 go 1.19
 
 require (
-	github.com/cloudquery/filetypes v1.3.2
+	github.com/cloudquery/filetypes v1.3.3-0.20230201133243-0617856b865b
 	github.com/cloudquery/plugin-sdk v1.33.1
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
+)
+
+require (
+	github.com/andybalholm/brotli v1.0.4 // indirect
+	github.com/klauspost/compress v1.15.11 // indirect
+	github.com/mattn/go-runewidth v0.0.14 // indirect
+	github.com/olekukonko/tablewriter v0.0.5 // indirect
+	github.com/pierrec/lz4/v4 v4.1.9 // indirect
+	github.com/rivo/uniseg v0.4.3 // indirect
+	github.com/segmentio/encoding v0.3.5 // indirect
+	github.com/segmentio/parquet-go v0.0.0-20230120165150-63d6a781234f // indirect
 )
 
 require (
@@ -31,3 +42,5 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+//replace github.com/cloudquery/filetypes => ../../../../filetypes

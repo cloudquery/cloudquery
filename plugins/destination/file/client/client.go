@@ -7,6 +7,7 @@ import (
 
 	"github.com/cloudquery/filetypes/csv"
 	"github.com/cloudquery/filetypes/json"
+	"github.com/cloudquery/filetypes/parquet"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -18,12 +19,15 @@ type Client struct {
 	spec       specs.Destination
 	pluginSpec Spec
 
-	CSVClient              *csv.Client
-	JSONClient             *json.Client
-	csvTransformer         *csv.Transformer
-	csvReverseTransformer  *csv.ReverseTransformer
-	jsonTransformer        *json.Transformer
-	jsonReverseTransformer *json.ReverseTransformer
+	CSVClient                 *csv.Client
+	JSONClient                *json.Client
+	ParquetClient             *parquet.Client
+	csvTransformer            *csv.Transformer
+	csvReverseTransformer     *csv.ReverseTransformer
+	jsonTransformer           *json.Transformer
+	jsonReverseTransformer    *json.ReverseTransformer
+	parquetTransformer        *parquet.Transformer
+	parquetReverseTransformer *parquet.ReverseTransformer
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -31,12 +35,14 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("file destination only supports append mode")
 	}
 	c := &Client{
-		logger:                 logger.With().Str("module", "file").Logger(),
-		spec:                   spec,
-		csvTransformer:         &csv.Transformer{},
-		jsonTransformer:        &json.Transformer{},
-		csvReverseTransformer:  &csv.ReverseTransformer{},
-		jsonReverseTransformer: &json.ReverseTransformer{},
+		logger:                    logger.With().Str("module", "file").Logger(),
+		spec:                      spec,
+		csvTransformer:            &csv.Transformer{},
+		jsonTransformer:           &json.Transformer{},
+		parquetTransformer:        &parquet.Transformer{},
+		csvReverseTransformer:     &csv.ReverseTransformer{},
+		jsonReverseTransformer:    &json.ReverseTransformer{},
+		parquetReverseTransformer: &parquet.ReverseTransformer{},
 	}
 
 	if err := spec.UnmarshalSpec(&c.pluginSpec); err != nil {
@@ -58,6 +64,12 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("failed to create JSON client: %w", err)
 	}
 	c.JSONClient = jsonClient
+
+	parquetClient, err := parquet.NewClient()
+	if err != nil {
+		return nil, fmt.Errorf("failed to create Parquet client: %w", err)
+	}
+	c.ParquetClient = parquetClient
 
 	if err := os.MkdirAll(c.pluginSpec.Directory, 0755); err != nil {
 		return nil, fmt.Errorf("failed to create directory: %w", err)

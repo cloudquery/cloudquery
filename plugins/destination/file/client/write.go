@@ -28,6 +28,10 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 		if err := c.JSONClient.WriteTableBatch(f, table, data); err != nil {
 			return err
 		}
+	case FormatTypeParquet:
+		if err := c.ParquetClient.WriteTableBatch(f, table, data); err != nil {
+			return err
+		}
 	default:
 		panic("unknown format " + c.pluginSpec.Format)
 	}
