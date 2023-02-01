@@ -46,3 +46,4 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 |total_cpus|Int|
 |reclaimable_cpus|Float|
 |provisionable_cpus|JSON|
+|compute_model|String|
