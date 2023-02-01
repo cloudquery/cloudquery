@@ -54,7 +54,7 @@ jobs:
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        run: goreleaser release --timeout 50m --rm-dist --skip-validate --skip-publish --skip-sign -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
+        run: goreleaser release --timeout 50m --clean --skip-validate --skip-publish --skip-sign -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
@@ -64,7 +64,7 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Run GoReleaser
-        run: goreleaser release --timeout 50m --rm-dist -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
+        run: goreleaser release --timeout 50m --clean -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}

@@ -103,7 +103,7 @@ jobs:
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/source/gcp/.goreleaser.yaml
+        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/gcp/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
   test-policies:
