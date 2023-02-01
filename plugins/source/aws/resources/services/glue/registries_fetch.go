@@ -50,17 +50,13 @@ func fetchGlueRegistrySchemas(ctx context.Context, meta schema.ClientMeta, paren
 		RegistryId: &types.RegistryId{RegistryArn: r.RegistryArn},
 		MaxResults: aws.Int32(100),
 	}
-	for {
-		result, err := svc.ListSchemas(ctx, &input)
+	paginator := glue.NewListSchemasPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		result, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 		res <- result.Schemas
-
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
 	}
 	return nil
 }
@@ -99,24 +95,19 @@ func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta
 	cl := meta.(*client.Client)
 	s := parent.Item.(*glue.GetSchemaOutput)
 	svc := cl.Services().Glue
-	schemaId := types.SchemaId{
-		SchemaArn: s.SchemaArn,
-	}
 	input := glue.ListSchemaVersionsInput{
-		SchemaId:   &schemaId,
+		SchemaId: &types.SchemaId{
+			SchemaArn: s.SchemaArn,
+		},
 		MaxResults: aws.Int32(100),
 	}
-	for {
-		result, err := svc.ListSchemaVersions(ctx, &input)
+	paginator := glue.NewListSchemaVersionsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		result, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 		res <- result.Schemas
-
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
 	}
 	return nil
 }

@@ -70,6 +70,8 @@ s3:
   - plugins/destination/s3/**/*
 csv:
   - plugins/destination/csv/**/*
+elasticsearch:
+  - plugins/destination/elasticsearch/**/*
 file:
   - plugins/destination/file/**/*
 gcs:

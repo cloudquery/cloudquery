@@ -16,8 +16,6 @@ This table depends on [github_hooks](github_hooks.md).
 |_cq_parent_id|UUID|
 |org (PK)|String|
 |hook_id (PK)|Int|
-|request|String|
-|response|String|
 |id (PK)|Int|
 |guid|String|
 |delivered_at|Timestamp|
@@ -29,3 +27,5 @@ This table depends on [github_hooks](github_hooks.md).
 |action|String|
 |installation_id|Int|
 |repository_id|Int|
+|request|JSON|
+|response|JSON|

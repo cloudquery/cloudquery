@@ -2,88 +2,144 @@ package apigatewayv2
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-const (
-	apiIDPart            = "/apis"
-	apiRouteIDPart       = "routes"
-	apiIntegrationIDPart = "integrations"
-)
+func resolveApiArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/apis/%s", aws.ToString(resource.Item.(types.Api).ApiId)),
+	}.String())
+}
 
-func resolveApiArn() schema.ColumnResolver {
-	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
-		return []string{apiIDPart, *resource.Item.(types.Api).ApiId}, nil
-	})
+func resolveApiAuthorizerArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	r := resource.Item.(types.Authorizer)
+	p := resource.Parent.Item.(types.Api)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/apis/%s/authorizers/%s", aws.ToString(p.ApiId), aws.ToString(r.AuthorizerId)),
+	}.String())
 }
-func resolveApiAuthorizerArn() schema.ColumnResolver {
-	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
-		r := resource.Item.(types.Authorizer)
-		p := resource.Parent.Item.(types.Api)
-		return []string{apiIDPart, *p.ApiId, "authorizers", *r.AuthorizerId}, nil
-	})
+
+func resolveApiDeploymentArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	r := resource.Item.(types.Deployment)
+	p := resource.Parent.Item.(types.Api)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/apis/%s/deployments/%s", aws.ToString(p.ApiId), aws.ToString(r.DeploymentId)),
+	}.String())
 }
-func resolveApiDeploymentArn() schema.ColumnResolver {
-	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
-		r := resource.Item.(types.Deployment)
-		p := resource.Parent.Item.(types.Api)
-		return []string{apiIDPart, *p.ApiId, "deployments", *r.DeploymentId}, nil
-	})
+
+func resolveApiIntegrationArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	r := resource.Item.(types.Integration)
+	p := resource.Parent.Item.(types.Api)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/apis/%s/integrations/%s", aws.ToString(p.ApiId), aws.ToString(r.IntegrationId)),
+	}.String())
 }
-func resolveApiIntegrationArn() schema.ColumnResolver {
-	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
-		r := resource.Item.(types.Integration)
-		p := resource.Parent.Item.(types.Api)
-		return []string{apiIDPart, *p.ApiId, apiIntegrationIDPart, *r.IntegrationId}, nil
-	})
+
+func resolveApiIntegrationResponseArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	r := resource.Item.(types.IntegrationResponse)
+	i := resource.Parent.Item.(types.Integration)
+	api := resource.Parent.Parent.Item.(types.Api)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/apis/%s/integrations/%s/integrationresponses/%s", aws.ToString(api.ApiId), aws.ToString(i.IntegrationId), aws.ToString(r.IntegrationResponseId)),
+	}.String())
 }
-func resolveApiIntegrationResponseArn() schema.ColumnResolver {
-	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
-		r := resource.Item.(types.IntegrationResponse)
-		i := resource.Parent.Item.(types.Integration)
-		api := resource.Parent.Parent.Item.(types.Api)
-		return []string{apiIDPart, *api.ApiId, apiIntegrationIDPart, *i.IntegrationId, "integrationresponses", *r.IntegrationResponseId}, nil
-	})
+
+func resolveApiModelArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	r := resource.Item.(types.Model)
+	p := resource.Parent.Item.(types.Api)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/apis/%s/models/%s", aws.ToString(p.ApiId), aws.ToString(r.ModelId)),
+	}.String())
 }
-func resolveApiModelArn() schema.ColumnResolver {
-	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
-		r := resource.Item.(types.Model)
-		p := resource.Parent.Item.(types.Api)
-		return []string{apiIDPart, *p.ApiId, "models", *r.ModelId}, nil
-	})
+
+func resolveApiRouteArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	r := resource.Item.(types.Route)
+	p := resource.Parent.Item.(types.Api)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/apis/%s/routes/%s", aws.ToString(p.ApiId), aws.ToString(r.RouteId)),
+	}.String())
 }
-func resolveApiRouteArn() schema.ColumnResolver {
-	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
-		r := resource.Item.(types.Route)
-		p := resource.Parent.Item.(types.Api)
-		return []string{apiIDPart, *p.ApiId, apiRouteIDPart, *r.RouteId}, nil
-	})
+
+func resolveApiRouteResponseArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	r := resource.Item.(types.RouteResponse)
+	route := resource.Parent.Item.(types.Route)
+	p := resource.Parent.Parent.Item.(types.Api)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/apis/%s/routes/%s/routeresponses/%s", aws.ToString(p.ApiId), aws.ToString(route.RouteId), aws.ToString(r.RouteResponseId)),
+	}.String())
 }
-func resolveApiRouteResponseArn() schema.ColumnResolver {
-	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
-		r := resource.Item.(types.RouteResponse)
-		route := resource.Parent.Item.(types.Route)
-		api := resource.Parent.Parent.Item.(types.Api)
-		return []string{apiIDPart, *api.ApiId, apiRouteIDPart, *route.RouteId, "routeresponses", *r.RouteResponseId}, nil
-	})
+
+func resolveApiStageArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	r := resource.Item.(types.Stage)
+	p := resource.Parent.Item.(types.Api)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/apis/%s/stages/%s", aws.ToString(p.ApiId), aws.ToString(r.StageName)),
+	}.String())
 }
-func resolveApiStageArn() schema.ColumnResolver {
-	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
-		r := resource.Item.(types.Stage)
-		p := resource.Parent.Item.(types.Api)
-		return []string{apiIDPart, *p.ApiId, "stages", *r.StageName}, nil
-	})
+
+func resolveVpcLinkArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/vpclinks/%s", aws.ToString(resource.Item.(types.VpcLink).VpcLinkId)),
+	}.String())
 }
-func resolveVpcLinkArn() schema.ColumnResolver {
-	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
-		return []string{"vpclinks", *resource.Item.(types.VpcLink).VpcLinkId}, nil
-	})
-}
+
 func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apigatewayv2.GetApisInput
 	c := meta.(*client.Client)
