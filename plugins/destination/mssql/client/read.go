@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/mssql/client/queries"
+	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
 	"github.com/cloudquery/plugin-sdk/schema"
 	mssql "github.com/microsoft/go-mssqldb"
 )
