@@ -6,7 +6,7 @@ require (
 	github.com/cloudquery/plugin-sdk v1.32.0
 	github.com/gorilla/mux v1.8.0
 	github.com/rs/zerolog v1.28.0
-	golang.org/x/exp v0.0.0-20221230185412-738e83a70c30
+	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201
 )
 
 require (
