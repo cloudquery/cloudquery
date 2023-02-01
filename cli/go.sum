@@ -1,5 +1,5 @@
-github.com/avast/retry-go/v4 v4.3.1 h1:Mtg11F9PdAIMkMiio2RKcYauoVHjl2aB3zQJJlzD4cE=
-github.com/avast/retry-go/v4 v4.3.1/go.mod h1:rg6XFaiuFYII0Xu3RDbZQkxCofFwruZKW8oEF1jpWiU=
+github.com/avast/retry-go/v4 v4.3.2 h1:x4sTEu3jSwr7zNjya8NTdIN+U88u/jtO/q3OupBoDtM=
+github.com/avast/retry-go/v4 v4.3.2/go.mod h1:rg6XFaiuFYII0Xu3RDbZQkxCofFwruZKW8oEF1jpWiU=
 github.com/bradleyjkemp/cupaloy/v2 v2.8.0 h1:any4BmKE+jGIaMpnU8YgH/I2LPiLBufr6oMMlVBbn9M=
 github.com/cloudquery/plugin-sdk v1.32.0 h1:QvKyqq2TdM/MELLK5F78wp1ay2Xu76YhNoEjgI/B2dU=
 github.com/cloudquery/plugin-sdk v1.32.0/go.mod h1:teMPyCON3uPdMsHvzpSiOg+IK2sOR5Tf9dYLreoURzI=
