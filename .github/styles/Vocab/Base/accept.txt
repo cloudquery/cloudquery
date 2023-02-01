@@ -86,6 +86,7 @@ implementor
 Inforce
 IPs
 jsonb
+Kibana
 LaunchDarkly
 learnings
 licensors
