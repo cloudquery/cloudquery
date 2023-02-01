@@ -32,7 +32,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.0
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.1
-	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.0
+	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.80.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.1
@@ -102,10 +102,11 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.0
-	github.com/cloudquery/plugin-sdk v1.31.0
+	github.com/cloudquery/plugin-sdk v1.32.0
 	github.com/gocarina/gocsv v0.0.0-20221216233619-1fea7ae8d380
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
+	github.com/mitchellh/hashstructure/v2 v2.0.2
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/rs/zerolog v1.28.0
 	github.com/stretchr/testify v1.8.1

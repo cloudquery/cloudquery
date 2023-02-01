@@ -1,5 +1,5 @@
 {
-  "cli": "2.3.3",
+  "cli": "2.3.4",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "12.2.1",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -15,7 +15,7 @@
   "plugins/source/github+FILLER": "0.0.0",
   "plugins/source/heroku": "3.1.7",
   "plugins/source/heroku+FILLER": "0.0.0",
-  "plugins/source/k8s": "3.0.2",
+  "plugins/source/k8s": "3.1.0",
   "plugins/source/k8s+FILLER": "0.0.0",
   "plugins/source/okta": "2.1.2",
   "plugins/source/okta+FILLER": "0.0.0",
