@@ -35,7 +35,7 @@ require (
 	cloud.google.com/go/secretmanager v1.9.0
 	cloud.google.com/go/securitycenter v1.18.1
 	cloud.google.com/go/serviceusage v1.4.0
-	cloud.google.com/go/storage v1.28.0
+	cloud.google.com/go/storage v1.28.1
 	cloud.google.com/go/translate v1.4.0
 	cloud.google.com/go/video v1.9.0
 	cloud.google.com/go/vision/v2 v2.5.0
@@ -57,13 +57,13 @@ require (
 	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201
 	golang.org/x/sync v0.1.0
 	google.golang.org/api v0.107.0
-	google.golang.org/genproto v0.0.0-20230113154510-dbe35b8444a5
+	google.golang.org/genproto v0.0.0-20230131230820-1c016267d619
 	google.golang.org/grpc v1.51.0
 	google.golang.org/protobuf v1.28.1
 )
 
 require (
-	cloud.google.com/go v0.107.0 // indirect
+	cloud.google.com/go v0.109.0 // indirect; indirect // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/vision v1.2.0 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.2.1 // indirect
