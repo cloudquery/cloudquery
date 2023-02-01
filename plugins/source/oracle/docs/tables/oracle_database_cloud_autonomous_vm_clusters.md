@@ -33,6 +33,7 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 |data_storage_size_in_g_bs|Float|
 |cpu_core_count|Int|
 |ocpu_count|Float|
+|compute_model|String|
 |cpu_core_count_per_node|Int|
 |memory_size_in_g_bs|Int|
 |license_model|String|

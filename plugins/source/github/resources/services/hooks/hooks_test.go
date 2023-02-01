@@ -1,6 +1,7 @@
 package hooks
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
@@ -25,7 +26,20 @@ func buildHooks(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
 	if err := faker.FakeObject(&hd); err != nil {
 		t.Fatal(err)
 	}
+	hd.Request = nil
+	hd.Response = nil
 	mock.EXPECT().ListHookDeliveries(gomock.Any(), "testorg", *cs.ID, gomock.Any()).Return([]*github.HookDelivery{hd}, &github.Response{}, nil)
+
+	var hdGet *github.HookDelivery
+	if err := faker.FakeObject(&hdGet); err != nil {
+		t.Fatal(err)
+	}
+	rawRequest := json.RawMessage("{}")
+	rawResponse := json.RawMessage("{}")
+	hdGet.Request = &github.HookRequest{Headers: make(map[string]string), RawPayload: &rawRequest}
+	hdGet.Response = &github.HookResponse{Headers: make(map[string]string), RawPayload: &rawResponse}
+	mock.EXPECT().GetHookDelivery(gomock.Any(), "testorg", *cs.ID, *hd.ID).Return(hdGet, &github.Response{}, nil)
+
 	return client.GithubServices{Organizations: mock}
 }
 

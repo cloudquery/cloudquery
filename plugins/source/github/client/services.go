@@ -45,6 +45,7 @@ type OrganizationsService interface {
 	Get(ctx context.Context, org string) (*github.Organization, *github.Response, error)
 	GetOrgMembership(ctx context.Context, user, org string) (*github.Membership, *github.Response, error)
 	ListHookDeliveries(ctx context.Context, org string, id int64, opts *github.ListCursorOptions) ([]*github.HookDelivery, *github.Response, error)
+	GetHookDelivery(ctx context.Context, owner string, hookID, deliveryID int64) (*github.HookDelivery, *github.Response, error)
 	ListHooks(ctx context.Context, org string, opts *github.ListOptions) ([]*github.Hook, *github.Response, error)
 	ListInstallations(ctx context.Context, org string, opts *github.ListOptions) (*github.OrganizationInstallations, *github.Response, error)
 	ListMembers(ctx context.Context, org string, opts *github.ListMembersOptions) ([]*github.User, *github.Response, error)
