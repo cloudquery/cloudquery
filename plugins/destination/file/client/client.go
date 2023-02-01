@@ -18,6 +18,8 @@ type Client struct {
 	spec       specs.Destination
 	pluginSpec Spec
 
+	CSVClient              *csv.Client
+	JSONClient             *json.Client
 	csvTransformer         *csv.Transformer
 	csvReverseTransformer  *csv.ReverseTransformer
 	jsonTransformer        *json.Transformer
@@ -38,12 +40,24 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 
 	if err := spec.UnmarshalSpec(&c.pluginSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal file spec: %w", err)
 	}
 	if err := c.pluginSpec.Validate(); err != nil {
 		return nil, err
 	}
 	c.pluginSpec.SetDefaults()
+
+	csvClient, err := csv.NewClient()
+	if err != nil {
+		return nil, fmt.Errorf("failed to create CSV client: %w", err)
+	}
+	c.CSVClient = csvClient
+
+	jsonClient, err := json.NewClient()
+	if err != nil {
+		return nil, fmt.Errorf("failed to create JSON client: %w", err)
+	}
+	c.JSONClient = jsonClient
 
 	if err := os.MkdirAll(c.pluginSpec.Directory, 0755); err != nil {
 		return nil, fmt.Errorf("failed to create directory: %w", err)

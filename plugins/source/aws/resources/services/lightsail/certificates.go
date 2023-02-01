@@ -12,7 +12,7 @@ func Certificates() *schema.Table {
 		Name:        "aws_lightsail_certificates",
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Certificate.html`,
 		Resolver:    fetchLightsailCertificates,
-		Transform:   transformers.TransformWithStruct(&types.Certificate{}),
+		Transform:   transformers.TransformWithStruct(&types.Certificate{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{

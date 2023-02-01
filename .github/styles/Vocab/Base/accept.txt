@@ -32,6 +32,8 @@ CMKs
 compinit
 config
 Config
+CPU
+CPUs
 CQProvider
 cron
 crowdstrike
@@ -86,6 +88,7 @@ implementor
 Inforce
 IPs
 jsonb
+Kibana
 LaunchDarkly
 learnings
 licensors

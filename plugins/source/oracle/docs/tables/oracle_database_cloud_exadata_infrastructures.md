@@ -39,3 +39,7 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 |freeform_tags|JSON|
 |defined_tags|JSON|
 |customer_contacts|JSON|
+|storage_server_version|String|
+|db_server_version|String|
+|monthly_storage_server_version|String|
+|monthly_db_server_version|String|

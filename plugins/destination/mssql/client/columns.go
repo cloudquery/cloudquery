@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/mssql/client/queries"
+	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"golang.org/x/exp/slices"
