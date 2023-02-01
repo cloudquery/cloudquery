@@ -19,22 +19,6 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 		return err
 	}
 	defer f.Close()
-	switch c.pluginSpec.Format {
-	case FormatTypeCSV:
-		if err := c.CSVClient.WriteTableBatch(f, table, data); err != nil {
-			return err
-		}
-	case FormatTypeJSON:
-		if err := c.JSONClient.WriteTableBatch(f, table, data); err != nil {
-			return err
-		}
-	case FormatTypeParquet:
-		if err := c.ParquetClient.WriteTableBatch(f, table, data); err != nil {
-			return err
-		}
-	default:
-		panic("unknown format " + c.pluginSpec.Format)
-	}
 
-	return nil
+	return c.formatClient.WriteTableBatch(f, table, data)
 }
