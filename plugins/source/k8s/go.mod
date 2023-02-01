@@ -8,9 +8,9 @@ require (
 	github.com/google/gnostic v0.6.9
 	github.com/rs/zerolog v1.28.0
 	github.com/thoas/go-funk v0.9.3
-	k8s.io/api v0.26.0
-	k8s.io/apimachinery v0.26.0
-	k8s.io/client-go v0.26.0
+	k8s.io/api v0.26.1
+	k8s.io/apimachinery v0.26.1
+	k8s.io/client-go v0.26.1
 )
 
 require github.com/google/go-cmp v0.5.9 // indirect
