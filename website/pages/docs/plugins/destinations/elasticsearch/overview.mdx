@@ -79,7 +79,7 @@ The Elasticsearch destination will, by default, create an index template for eve
 
 ## Querying From Kibana
 
-To query data from Kibana, you will need to create [data views](https://www.elastic.co/guide/en/kibana/8.6/data-views.html) (previously also known as "index patterns"). To query a specific table, the data view's index pattern should be in the format `<table_name>-*`. For example, if you have a table named `aws_ec2_instances`, you should create a data view with index pattern named `aws_ec2_instances-*`. One very useful feature of Kibana, however, is the ability to query across all data. To do this for the `aws` source plugin, for example, you may use an index pattern named `aws_*`. This will then allow queries across all tables synced by the `aws` source plugin.
+To query data from Kibana, you will need to create [data views](https://www.elastic.co/guide/en/kibana/8.6/data-views.html) (previously also known as "index patterns"). To query a specific table, the data view's index pattern should be in the format `<table_name>-*`. For example, if you have a table named `aws_ec2_instances`, you should create a data view with index pattern named `aws_ec2_instances-*`. One useful feature of Elasticsearch and Kibana, however, is the ability to query across all data. To do this for the `aws` source plugin, for example, you may use an index pattern named `aws_*`. This will then allow queries across all tables synced by the `aws` source plugin.
 
 ## Underlying library
 

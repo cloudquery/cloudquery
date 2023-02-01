@@ -32,6 +32,8 @@ CMKs
 compinit
 config
 Config
+CPU
+CPUs
 CQProvider
 cron
 crowdstrike
