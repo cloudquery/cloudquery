@@ -6,6 +6,98 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [13.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v12.2.1...plugins-source-aws-v13.0.0) (2023-02-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** PK for `aws_eventbridge_event_bus_rules` ([#7394](https://github.com/cloudquery/cloudquery/issues/7394))
+* **aws:** PKs for `aws_apigatewayv2_*` ([#7380](https://github.com/cloudquery/cloudquery/issues/7380))
+* **aws:** PK for `aws_cloudtrail_trails` ([#7467](https://github.com/cloudquery/cloudquery/issues/7467))
+* **aws:** PK for `aws_route53_hosted_zone_traffic_policy_instances` ([#7412](https://github.com/cloudquery/cloudquery/issues/7412))
+* **aws:** PK for `aws_qldb_ledger_journal_kinesis_streams` ([#7409](https://github.com/cloudquery/cloudquery/issues/7409))
+* **aws:** PK for `aws_mq_broker_configurations` ([#7407](https://github.com/cloudquery/cloudquery/issues/7407))
+* **aws:** PKs for `aws_lightsail_` tables ([#7401](https://github.com/cloudquery/cloudquery/issues/7401))
+* **aws:** PK for `aws_lambda_layer_versions` ([#7399](https://github.com/cloudquery/cloudquery/issues/7399))
+* **aws:** PK for `aws_iam_user_groups` ([#7397](https://github.com/cloudquery/cloudquery/issues/7397))
+* **aws:** PK for `aws_glue_registry_schemas` ([#7395](https://github.com/cloudquery/cloudquery/issues/7395))
+* **aws:** PK for `aws_apigateway_vpc_links` ([#7379](https://github.com/cloudquery/cloudquery/issues/7379))
+* **aws:** PK for `aws_apigateway_usage_plan_keys` ([#7376](https://github.com/cloudquery/cloudquery/issues/7376))
+* **aws:** PK for `aws_apigateway_usage_plans` ([#7375](https://github.com/cloudquery/cloudquery/issues/7375))
+* **aws:** PK for `aws_apigateway_rest_api_stages` ([#7373](https://github.com/cloudquery/cloudquery/issues/7373))
+* **aws:** PK for `aws_apigateway_rest_api_resources` ([#7369](https://github.com/cloudquery/cloudquery/issues/7369))
+* **aws:** PK for `aws_apigateway_rest_api_request_validators` ([#7368](https://github.com/cloudquery/cloudquery/issues/7368))
+* **aws:** PK for `aws_apigateway_rest_api_models` ([#7366](https://github.com/cloudquery/cloudquery/issues/7366))
+* **aws:** PK for `aws_apigateway_rest_api_gateway_responses` ([#7364](https://github.com/cloudquery/cloudquery/issues/7364))
+* **aws:** PK for `aws_apigateway_rest_api_documentation_versions` ([#7360](https://github.com/cloudquery/cloudquery/issues/7360))
+* **aws:** PK for `aws_apigateway_rest_api_deployments` ([#7356](https://github.com/cloudquery/cloudquery/issues/7356))
+* **aws:** PK for `aws_apigateway_rest_api_documentation_parts` ([#7355](https://github.com/cloudquery/cloudquery/issues/7355))
+* **aws:** PK for `aws_apigateway_rest_api_authorizers` ([#7350](https://github.com/cloudquery/cloudquery/issues/7350))
+* **aws:** PK for `aws_apigateway_domain_name_base_path_mappings`
+* **aws:** RDS Engine Version PKs ([#7202](https://github.com/cloudquery/cloudquery/issues/7202))
+
+### Features
+
+* **aws:** Add Support for Securityhub findings ([#7204](https://github.com/cloudquery/cloudquery/issues/7204)) ([d96496a](https://github.com/cloudquery/cloudquery/commit/d96496a8b78b23fbcba48bab408d43f4f2a4304c))
+
+
+### Bug Fixes
+
+* **aws:** PK for `aws_apigateway_domain_name_base_path_mappings` ([8a945be](https://github.com/cloudquery/cloudquery/commit/8a945be178b94a74fdeb215adabb3ff859f409b4))
+* **aws:** PK for `aws_apigateway_rest_api_authorizers` ([#7350](https://github.com/cloudquery/cloudquery/issues/7350)) ([33e110f](https://github.com/cloudquery/cloudquery/commit/33e110fe88061d17f83bbcb48800e789318c98a7))
+* **aws:** PK for `aws_apigateway_rest_api_deployments` ([#7356](https://github.com/cloudquery/cloudquery/issues/7356)) ([d5f6fd5](https://github.com/cloudquery/cloudquery/commit/d5f6fd518cb4768c205abfe16ef067eae43dce5b))
+* **aws:** PK for `aws_apigateway_rest_api_documentation_parts` ([#7355](https://github.com/cloudquery/cloudquery/issues/7355)) ([2d81f86](https://github.com/cloudquery/cloudquery/commit/2d81f86aae5a891cca167495a90a4d17d4d229f5))
+* **aws:** PK for `aws_apigateway_rest_api_documentation_versions` ([#7360](https://github.com/cloudquery/cloudquery/issues/7360)) ([d6a5aea](https://github.com/cloudquery/cloudquery/commit/d6a5aead9ef2dc3a517c81c6d294b5f67cf96584))
+* **aws:** PK for `aws_apigateway_rest_api_gateway_responses` ([#7364](https://github.com/cloudquery/cloudquery/issues/7364)) ([6e779ac](https://github.com/cloudquery/cloudquery/commit/6e779ac8338f24c3eeff417a53cc63ad12f82416))
+* **aws:** PK for `aws_apigateway_rest_api_models` ([#7366](https://github.com/cloudquery/cloudquery/issues/7366)) ([aad7dd6](https://github.com/cloudquery/cloudquery/commit/aad7dd66ae22c56319655a7575858b36a7086cd2))
+* **aws:** PK for `aws_apigateway_rest_api_request_validators` ([#7368](https://github.com/cloudquery/cloudquery/issues/7368)) ([0394e31](https://github.com/cloudquery/cloudquery/commit/0394e31b3a461b316abe6ace8f4bcb688577e3aa))
+* **aws:** PK for `aws_apigateway_rest_api_resources` ([#7369](https://github.com/cloudquery/cloudquery/issues/7369)) ([0c8fa30](https://github.com/cloudquery/cloudquery/commit/0c8fa3057c0d2699fcc002cb4ea84a5d43f63151))
+* **aws:** PK for `aws_apigateway_rest_api_stages` ([#7373](https://github.com/cloudquery/cloudquery/issues/7373)) ([b49ee55](https://github.com/cloudquery/cloudquery/commit/b49ee55c425ad2801483ff1a01def52e8477091b))
+* **aws:** PK for `aws_apigateway_usage_plan_keys` ([#7376](https://github.com/cloudquery/cloudquery/issues/7376)) ([4d7a76f](https://github.com/cloudquery/cloudquery/commit/4d7a76f36804df040bb0a49eed0979792e728b0d))
+* **aws:** PK for `aws_apigateway_usage_plans` ([#7375](https://github.com/cloudquery/cloudquery/issues/7375)) ([bac329d](https://github.com/cloudquery/cloudquery/commit/bac329db0573516ecf0c43cc0b6c145654da2169))
+* **aws:** PK for `aws_apigateway_vpc_links` ([#7379](https://github.com/cloudquery/cloudquery/issues/7379)) ([60bd130](https://github.com/cloudquery/cloudquery/commit/60bd13095a3894f22234fcfd926ec64804b76b37))
+* **aws:** PK for `aws_cloudtrail_trails` ([#7467](https://github.com/cloudquery/cloudquery/issues/7467)) ([f580207](https://github.com/cloudquery/cloudquery/commit/f580207491ad0dd6e6d3e51109c9fec11751a590))
+* **aws:** PK for `aws_eventbridge_event_bus_rules` ([#7394](https://github.com/cloudquery/cloudquery/issues/7394)) ([e1e7405](https://github.com/cloudquery/cloudquery/commit/e1e7405035dce99a7770a0a0cf434b6cdc39454f))
+* **aws:** PK for `aws_glue_registry_schemas` ([#7395](https://github.com/cloudquery/cloudquery/issues/7395)) ([de43500](https://github.com/cloudquery/cloudquery/commit/de4350070bb724db9680aca132306d9fad16e7c1))
+* **aws:** PK for `aws_iam_user_groups` ([#7397](https://github.com/cloudquery/cloudquery/issues/7397)) ([ced05f6](https://github.com/cloudquery/cloudquery/commit/ced05f6ea4f0f0da6d0a7bfbcad670b646565559))
+* **aws:** PK for `aws_lambda_layer_versions` ([#7399](https://github.com/cloudquery/cloudquery/issues/7399)) ([744c124](https://github.com/cloudquery/cloudquery/commit/744c124b90c5ba82b4ba5b7a7080053a65a38bb6))
+* **aws:** PK for `aws_mq_broker_configurations` ([#7407](https://github.com/cloudquery/cloudquery/issues/7407)) ([3b6f383](https://github.com/cloudquery/cloudquery/commit/3b6f383d55cac085be447d1b84829e4e065d620b))
+* **aws:** PK for `aws_qldb_ledger_journal_kinesis_streams` ([#7409](https://github.com/cloudquery/cloudquery/issues/7409)) ([101cdb6](https://github.com/cloudquery/cloudquery/commit/101cdb65d2f8ae67990ea45fa01584a439035820))
+* **aws:** PK for `aws_route53_hosted_zone_traffic_policy_instances` ([#7412](https://github.com/cloudquery/cloudquery/issues/7412)) ([4bf36e7](https://github.com/cloudquery/cloudquery/commit/4bf36e72dbc2579add6c4feb2c8a6ab12a2bafa5))
+* **aws:** PKs for `aws_apigatewayv2_*` ([#7380](https://github.com/cloudquery/cloudquery/issues/7380)) ([48f5463](https://github.com/cloudquery/cloudquery/commit/48f5463f6e8452930b55a866218d404b63e1818b))
+* **aws:** PKs for `aws_lightsail_` tables ([#7401](https://github.com/cloudquery/cloudquery/issues/7401)) ([0b218b0](https://github.com/cloudquery/cloudquery/commit/0b218b08cfa7592276eb05a882ee1d78a6faccec))
+* **aws:** RDS Engine Version PKs ([#7202](https://github.com/cloudquery/cloudquery/issues/7202)) ([a49984e](https://github.com/cloudquery/cloudquery/commit/a49984e381e23e7d3e419e9dbf3bf3e652be3e0b))
+* **deps:** Update github.com/gocarina/gocsv digest to 763e25b ([#7529](https://github.com/cloudquery/cloudquery/issues/7529)) ([9aaa696](https://github.com/cloudquery/cloudquery/commit/9aaa696877cb2657bd6a26579a5b33594b11b829))
+* **deps:** Update golang.org/x/exp digest to f062dba ([#7531](https://github.com/cloudquery/cloudquery/issues/7531)) ([59d5575](https://github.com/cloudquery/cloudquery/commit/59d55758b0951553b8d246d1e78b4e3917ff1976))
+* **deps:** Update google.golang.org/genproto digest to 1c01626 ([#7533](https://github.com/cloudquery/cloudquery/issues/7533)) ([c549c27](https://github.com/cloudquery/cloudquery/commit/c549c275077f1cdfb9df0b3f3c129cbf0b150552))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.49 ([#7309](https://github.com/cloudquery/cloudquery/issues/7309)) ([16da39d](https://github.com/cloudquery/cloudquery/commit/16da39d4bd8a6851329cbd25c2d80801b1872663))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/accessanalyzer to v1.19.1 ([#7310](https://github.com/cloudquery/cloudquery/issues/7310)) ([3bb3d78](https://github.com/cloudquery/cloudquery/commit/3bb3d78e0cb0bccd2ada91faa033cf330355fe14))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/acm to v1.17.1 ([#7311](https://github.com/cloudquery/cloudquery/issues/7311)) ([829e2c0](https://github.com/cloudquery/cloudquery/commit/829e2c00f5f0609f5d2144bb4ddef4d707cf6c5e))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/apigateway to v1.16.1 ([#7312](https://github.com/cloudquery/cloudquery/issues/7312)) ([1fd914d](https://github.com/cloudquery/cloudquery/commit/1fd914d6115006d5e40ed6529ccf4b57157b6360))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/apigatewayv2 to v1.13.1 ([#7313](https://github.com/cloudquery/cloudquery/issues/7313)) ([b454a62](https://github.com/cloudquery/cloudquery/commit/b454a621138d8380b6b0da0e687ad8c5e01c1050))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/applicationautoscaling to v1.17.1 ([#7314](https://github.com/cloudquery/cloudquery/issues/7314)) ([b6a0807](https://github.com/cloudquery/cloudquery/commit/b6a08073e398bdb0398c8fb698bc6f18b3ae41ab))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/autoscaling to v1.26.1 ([#7315](https://github.com/cloudquery/cloudquery/issues/7315)) ([956fddc](https://github.com/cloudquery/cloudquery/commit/956fddc71193c9bbfb1f7d5601231d7c68cc23ab))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/cloudformation to v1.25.1 ([#7316](https://github.com/cloudquery/cloudquery/issues/7316)) ([de1cb2d](https://github.com/cloudquery/cloudquery/commit/de1cb2d2697224b6dfdbcf84d3ced6fa603d0c27))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/cloudtrail to v1.22.1 ([#7317](https://github.com/cloudquery/cloudquery/issues/7317)) ([3a454c4](https://github.com/cloudquery/cloudquery/commit/3a454c4b3e54bd233c73da66891443bd409c8f8a))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/cloudwatch to v1.25.1 ([#7318](https://github.com/cloudquery/cloudquery/issues/7318)) ([4103fb9](https://github.com/cloudquery/cloudquery/commit/4103fb960e1139d38e6b11ea0ba2666ee773251c))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs to v1.20.1 ([#7319](https://github.com/cloudquery/cloudquery/issues/7319)) ([12cdbdb](https://github.com/cloudquery/cloudquery/commit/12cdbdb25e9200a9c5b5e415550031fab7786d4e))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/configservice to v1.29.1 ([#7320](https://github.com/cloudquery/cloudquery/issues/7320)) ([3535303](https://github.com/cloudquery/cloudquery/commit/3535303b8e2918bf9a739b6471ced7254ee9f3f6))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/databasemigrationservice to v1.23.1 ([#7321](https://github.com/cloudquery/cloudquery/issues/7321)) ([4c3f0ae](https://github.com/cloudquery/cloudquery/commit/4c3f0ae36592586f81cc0f2bfc4b06bc593e0827))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/directconnect to v1.18.1 ([#7322](https://github.com/cloudquery/cloudquery/issues/7322)) ([0ea2664](https://github.com/cloudquery/cloudquery/commit/0ea2664f14eba40d0a111e36e833079fb88d843e))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/docdb to v1.20.1 ([#7323](https://github.com/cloudquery/cloudquery/issues/7323)) ([03ca605](https://github.com/cloudquery/cloudquery/commit/03ca6051fd1e3ff2cc07897a0cd3411c798cdf79))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/dynamodb to v1.18.1 ([#7324](https://github.com/cloudquery/cloudquery/issues/7324)) ([6097895](https://github.com/cloudquery/cloudquery/commit/60978956c6a414b6e6e03157b2f9693536d4a65d))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/ecr to v1.18.1 ([#7325](https://github.com/cloudquery/cloudquery/issues/7325)) ([66cd4f7](https://github.com/cloudquery/cloudquery/commit/66cd4f7441296bb8d82ed18b1e48fb93242714f0))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/ecs to v1.23.1 ([#7326](https://github.com/cloudquery/cloudquery/issues/7326)) ([7794001](https://github.com/cloudquery/cloudquery/commit/7794001930ac968fa7c67bb62a16824102359762))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/elasticache to v1.26.1 ([#7327](https://github.com/cloudquery/cloudquery/issues/7327)) ([4c203a5](https://github.com/cloudquery/cloudquery/commit/4c203a5237b0047001cc4456512cf31f3008726b))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing to v1.15.1 ([#7328](https://github.com/cloudquery/cloudquery/issues/7328)) ([7393b13](https://github.com/cloudquery/cloudquery/commit/7393b132576e087010dab20048bd517646f2e8d7))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 to v1.19.1 ([#7329](https://github.com/cloudquery/cloudquery/issues/7329)) ([d288551](https://github.com/cloudquery/cloudquery/commit/d288551fdcc079356a4d9c051db41746a5d552b6))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/elasticsearchservice to v1.18.1 ([#7330](https://github.com/cloudquery/cloudquery/issues/7330)) ([5e8e42c](https://github.com/cloudquery/cloudquery/commit/5e8e42cb4e2ac9eb9f5665fbab53e0dfcf30a3ad))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/emr to v1.22.1 ([#7331](https://github.com/cloudquery/cloudquery/issues/7331)) ([d914db7](https://github.com/cloudquery/cloudquery/commit/d914db792548a118b4b2d1c9b4cf4a12c29ecc2e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.32.0 ([#7334](https://github.com/cloudquery/cloudquery/issues/7334)) ([b684122](https://github.com/cloudquery/cloudquery/commit/b68412222219f9ca160c0753290709d52de7fcd6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.0 ([#7595](https://github.com/cloudquery/cloudquery/issues/7595)) ([c5adc75](https://github.com/cloudquery/cloudquery/commit/c5adc750d4b0242563997c04c582f8da27913095))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.1 ([#7614](https://github.com/cloudquery/cloudquery/issues/7614)) ([2fe665c](https://github.com/cloudquery/cloudquery/commit/2fe665cdd80d88c5699bb203bd7accd604dfba99))
+* Update endpoints ([#7521](https://github.com/cloudquery/cloudquery/issues/7521)) ([004d433](https://github.com/cloudquery/cloudquery/commit/004d433b82b03e4b69eb33233bfc693f1ef2ad36))
+
 ## [12.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v12.2.0...plugins-source-aws-v12.2.1) (2023-01-27)
 
 
