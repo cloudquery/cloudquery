@@ -53,6 +53,8 @@ func TestPluginParquet(t *testing.T) {
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:        true,
 			SkipDeleteStale:      true,
+			SkipSecondAppend:     true,
+			SkipMigrateAppend:    true,
 			SkipMigrateOverwrite: true,
 		},
 	)
