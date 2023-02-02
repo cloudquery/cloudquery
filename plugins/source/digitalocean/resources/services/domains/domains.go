@@ -23,7 +23,7 @@ func Domains() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			Records(),
+			records(),
 		},
 	}
 }
