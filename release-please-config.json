@@ -76,12 +76,12 @@
       "component": "plugins-destination-test"
     },
     "plugins/destination/elasticsearch": {
-      "component": "plugins-destination-elasticsearch"
+      "component": "plugins-destination-elasticsearch" 
     }
   },
   "tag-separator": "-",
   "separate-pull-requests": true,
-  "pull-request-title-pattern": "chore${scope}: Release${component} v${version} test",
+  "pull-request-title-pattern": "chore${scope}: Release${component} v${version}",
   "sequential-calls": true
 }
 
