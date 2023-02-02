@@ -23,11 +23,13 @@ type Client struct {
 	SubscriptionsObjects []*armsubscription.Subscription
 	logger               zerolog.Logger
 	registeredNamespaces map[string]map[string]bool
-	resourceGroups       map[string][]*armresources.GenericResourceExpanded
+	resourceGroups       map[string][]string
 	// this is set by table client multiplexer
 	SubscriptionId string
-	Creds          azcore.TokenCredential
-	Options        *arm.ClientOptions
+	// this is set by table client multiplexer (SubscriptionResourceGroupMultiplexRegisteredNamespace)
+	ResourceGroup string
+	Creds         azcore.TokenCredential
+	Options       *arm.ClientOptions
 }
 
 func (c *Client) discoverSubscriptions(ctx context.Context) error {
@@ -54,20 +56,25 @@ func (c *Client) discoverSubscriptions(ctx context.Context) error {
 	return nil
 }
 
+func getResourceGroupNames(resourceGroups []*armresources.ResourceGroup) []string {
+	names := make([]string, len(resourceGroups))
+	for i, rg := range resourceGroups {
+		names[i] = *rg.Name
+	}
+	return names
+}
+
 func (c *Client) disocverResourceGroups(ctx context.Context) error {
-	c.resourceGroups = make(map[string][]*armresources.GenericResourceExpanded, len(c.subscriptions))
-	filter := "resourceType eq 'Microsoft.Resources/resourceGroups'"
+	c.resourceGroups = make(map[string][]string, len(c.subscriptions))
 	c.registeredNamespaces = make(map[string]map[string]bool, len(c.subscriptions))
 
 	for _, subID := range c.subscriptions {
 		c.registeredNamespaces[subID] = make(map[string]bool)
-		cl, err := armresources.NewClient(subID, c.Creds, nil)
+		cl, err := armresources.NewResourceGroupsClient(subID, c.Creds, nil)
 		if err != nil {
 			return fmt.Errorf("failed to create resource group client: %w", err)
 		}
-		pager := cl.NewListPager(&armresources.ClientListOptions{
-			Filter: &filter,
-		})
+		pager := cl.NewListPager(&armresources.ResourceGroupsClientListOptions{})
 		for pager.More() {
 			page, err := pager.NextPage(ctx)
 			if err != nil {
@@ -76,7 +83,7 @@ func (c *Client) disocverResourceGroups(ctx context.Context) error {
 			if len(page.Value) == 0 {
 				continue
 			}
-			c.resourceGroups[subID] = append(c.resourceGroups[subID], page.Value...)
+			c.resourceGroups[subID] = append(c.resourceGroups[subID], getResourceGroupNames(page.Value)...)
 		}
 
 		providerClient, err := armresources.NewProvidersClient(subID, c.Creds, nil)
@@ -143,7 +150,10 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func (c *Client) ID() string {
-	return c.SubscriptionId
+	if c.ResourceGroup != "" {
+		return fmt.Sprintf("subscriptions/%s/resourceGroups/%s", c.SubscriptionId, c.ResourceGroup)
+	}
+	return fmt.Sprintf("subscriptions/%s", c.SubscriptionId)
 }
 
 // withSubscription allows multiplexer to create a new client with given subscriptionId
@@ -151,5 +161,12 @@ func (c *Client) withSubscription(subscriptionId string) *Client {
 	newC := *c
 	newC.logger = c.logger.With().Str("subscription_id", subscriptionId).Logger()
 	newC.SubscriptionId = subscriptionId
+	return &newC
+}
+
+func (c *Client) withResourceGroup(resourceGroup string) *Client {
+	newC := *c
+	newC.logger = c.logger.With().Str("resource_group", resourceGroup).Logger()
+	newC.ResourceGroup = resourceGroup
 	return &newC
 }

@@ -159,6 +159,8 @@
 - [azure_network_subscription_network_manager_connections](azure_network_subscription_network_manager_connections.md)
 - [azure_network_virtual_appliances](azure_network_virtual_appliances.md)
 - [azure_network_virtual_hubs](azure_network_virtual_hubs.md)
+- [azure_network_virtual_network_gateway_connections](azure_network_virtual_network_gateway_connections.md)
+- [azure_network_virtual_network_gateways](azure_network_virtual_network_gateways.md)
 - [azure_network_virtual_network_taps](azure_network_virtual_network_taps.md)
 - [azure_network_virtual_networks](azure_network_virtual_networks.md)
 - [azure_network_virtual_routers](azure_network_virtual_routers.md)
