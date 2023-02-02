@@ -30,6 +30,8 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 |time_deletion_of_free_autonomous_database|Timestamp|
 |backup_config|JSON|
 |key_history_entry|JSON|
+|compute_model|String|
+|compute_count|Float|
 |ocpu_count|Float|
 |provisionable_cpus|JSON|
 |memory_per_oracle_compute_unit_in_g_bs|Int|
@@ -102,3 +104,4 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 |actual_used_data_storage_size_in_t_bs|Float|
 |max_cpu_core_count|Int|
 |database_edition|String|
+|db_tools_details|JSON|
