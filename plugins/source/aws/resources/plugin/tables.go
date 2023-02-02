@@ -177,6 +177,7 @@ func tables() []*schema.Table {
 		ec2.CustomerGateways(),
 		ec2.EbsSnapshots(),
 		ec2.EbsVolumes(),
+		ec2.EbsVolumesStatuses(),
 		ec2.EgressOnlyInternetGateways(),
 		ec2.Eips(),
 		ec2.FlowLogs(),
