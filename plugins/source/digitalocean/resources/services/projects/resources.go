@@ -6,7 +6,7 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func Resources() *schema.Table {
+func resources() *schema.Table {
 	return &schema.Table{
 		Name:      "digitalocean_project_resources",
 		Resolver:  fetchProjectsResources,

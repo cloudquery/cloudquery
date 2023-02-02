@@ -6,7 +6,7 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func Members() *schema.Table {
+func members() *schema.Table {
 	return &schema.Table{
 		Name:      "digitalocean_vpc_members",
 		Resolver:  fetchVpcsMembers,
