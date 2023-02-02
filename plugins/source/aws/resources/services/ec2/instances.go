@@ -39,6 +39,11 @@ func Instances() *schema.Table {
 				Resolver:      resolveEc2InstanceStateTransitionReasonTime,
 				IgnoreInTests: true,
 			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
 		},
 	}
 }
