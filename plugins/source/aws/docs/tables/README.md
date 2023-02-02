@@ -132,6 +132,7 @@
 - [aws_ec2_byoip_cidrs](aws_ec2_byoip_cidrs.md)
 - [aws_ec2_customer_gateways](aws_ec2_customer_gateways.md)
 - [aws_ec2_ebs_snapshots](aws_ec2_ebs_snapshots.md)
+- [aws_ec2_ebs_volume_statuses](aws_ec2_ebs_volume_statuses.md)
 - [aws_ec2_ebs_volumes](aws_ec2_ebs_volumes.md)
 - [aws_ec2_egress_only_internet_gateways](aws_ec2_egress_only_internet_gateways.md)
 - [aws_ec2_eips](aws_ec2_eips.md)
