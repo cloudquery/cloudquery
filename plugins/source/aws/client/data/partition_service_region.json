@@ -8144,6 +8144,12 @@
             "us-gov-west-1": {}
           }
         },
+        "compute-optimizer": {
+          "regions": {
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
         "config": {
           "regions": {
             "fips-us-gov-east-1": {},
@@ -8416,7 +8422,8 @@
         },
         "ingest.timestream": {
           "regions": {
-            "us-gov-west-1": {}
+            "us-gov-west-1": {},
+            "us-gov-west-1-fips": {}
           }
         },
         "inspector": {
