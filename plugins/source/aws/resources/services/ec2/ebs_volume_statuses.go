@@ -7,13 +7,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Instances() *schema.Table {
+func EbsVolumesStatuses() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_ec2_instances",
-		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Instance.html`,
-		Resolver:    fetchEc2Instances,
+		Name:        "aws_ec2_ebs_volume_statuses",
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VolumeStatusItem.html`,
+		Resolver:    fetchEc2EbsVolumeStatuses,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform:   transformers.TransformWithStruct(&types.Instance{}),
+		Transform:   transformers.TransformWithStruct(&types.VolumeStatusItem{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -26,23 +26,12 @@ func Instances() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
+				Name:     "volume_arn",
 				Type:     schema.TypeString,
-				Resolver: resolveInstanceArn,
+				Resolver: resolveEbsVolumeStatusArn,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:          "state_transition_reason_time",
-				Type:          schema.TypeTimestamp,
-				Resolver:      resolveEc2InstanceStateTransitionReasonTime,
-				IgnoreInTests: true,
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: client.ResolveTags,
 			},
 		},
 	}

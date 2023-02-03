@@ -38,7 +38,7 @@ func Spaces() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			Cors(),
+			cors(),
 		},
 	}
 }

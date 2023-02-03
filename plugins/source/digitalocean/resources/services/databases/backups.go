@@ -6,7 +6,7 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func Backups() *schema.Table {
+func backups() *schema.Table {
 	return &schema.Table{
 		Name:      "digitalocean_database_backups",
 		Resolver:  fetchDatabasesBackups,

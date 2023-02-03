@@ -45,6 +45,7 @@ var scaffoldTemplates = map[string]string{
 	"spec.go.tpl":          "client/spec.go",
 	"plugin.go.tpl":        "plugin/plugin.go",
 	"table.go.tpl":         "resources/table.go",
+	".gitignore.tpl":       ".gitignore",
 }
 
 //go:embed templates/source/*
