@@ -132,6 +132,7 @@
 - [aws_ec2_byoip_cidrs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_byoip_cidrs.md)
 - [aws_ec2_customer_gateways](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_customer_gateways.md)
 - [aws_ec2_ebs_snapshots](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_ebs_snapshots.md)
+- [aws_ec2_ebs_volume_statuses](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_ebs_volume_statuses.md)
 - [aws_ec2_ebs_volumes](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_ebs_volumes.md)
 - [aws_ec2_egress_only_internet_gateways](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_egress_only_internet_gateways.md)
 - [aws_ec2_eips](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_eips.md)
