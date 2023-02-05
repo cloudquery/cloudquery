@@ -51,5 +51,39 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		Version:      version,
 		Tables:       []string{table.Name},
 		Destinations: []string{"mock-destination"},
-	})
+	}, source.WithTestPluginAdditionalValidators(TagCheck))
+}
+
+func TagCheck(t *testing.T, tables schema.Tables, resources []*schema.Resource) {
+	for _, table := range tables {
+		t.Run(table.Name, func(t *testing.T) {
+			for i, column := range table.Columns {
+				if column.Name == "tags" {
+					for _, resource := range resources {
+						if resource.Table.Name != table.Name {
+							continue
+						}
+
+						for iResource, value := range resource.GetValues() {
+							if iResource != i {
+								continue
+							}
+							if value.Get() != nil && value.Get() != schema.Undefined {
+								_, ok := value.Get().(map[string]interface{})
+								if !ok {
+									t.Fatalf("unexpected value for tags column")
+								}
+							}
+						}
+					}
+
+					if column.Type != schema.TypeJSON {
+						t.Fatalf("tags column should be of type JSON")
+						fmt.Println(resources)
+					}
+
+				}
+			}
+		})
+	}
 }
