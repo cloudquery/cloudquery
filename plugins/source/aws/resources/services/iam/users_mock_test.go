@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
@@ -99,6 +100,18 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().ListSSHPublicKeys(gomock.Any(), gomock.Any()).Return(
 		&iam.ListSSHPublicKeysOutput{
 			SSHPublicKeys: []iamTypes.SSHPublicKeyMetadata{sshPublicKey},
+		}, nil)
+
+	// get signing key
+
+	sc := types.SigningCertificate{}
+	err = faker.FakeObject(&sc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListSigningCertificates(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&iam.ListSigningCertificatesOutput{
+			Certificates: []types.SigningCertificate{sc},
 		}, nil)
 
 	return client.Services{
