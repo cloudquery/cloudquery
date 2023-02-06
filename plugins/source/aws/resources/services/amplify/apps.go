@@ -1,4 +1,4 @@
-package amp
+package amplify
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/amplify/types"

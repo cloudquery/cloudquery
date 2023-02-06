@@ -10,6 +10,7 @@
 - [aws_acm_certificates](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_acm_certificates.md)
 - [aws_amp_workspaces](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_amp_workspaces.md)
   - [aws_amp_rule_groups_namespaces](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_amp_rule_groups_namespaces.md)
+- [aws_amplify_apps](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_amplify_apps.md)
 - [aws_apigateway_api_keys](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_apigateway_api_keys.md)
 - [aws_apigateway_client_certificates](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_apigateway_client_certificates.md)
 - [aws_apigateway_domain_names](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_apigateway_domain_names.md)

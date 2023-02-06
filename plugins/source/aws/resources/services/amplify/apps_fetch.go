@@ -1,4 +1,4 @@
-package amp
+package amplify
 
 import (
 	"context"
