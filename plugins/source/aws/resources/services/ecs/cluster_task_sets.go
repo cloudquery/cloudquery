@@ -7,13 +7,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ClusterServices() *schema.Table {
+func ClusterTaskSets() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_ecs_cluster_services",
-		Description: `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Service.html`,
-		Resolver:    fetchEcsClusterServices,
+		Name:        "aws_ecs_cluster_task_sets",
+		Description: `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_TaskSet.html`,
+		Resolver:    fetchEcsClusterTaskSets,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ecs"),
-		Transform:   transformers.TransformWithStruct(&types.Service{}),
+		Transform:   transformers.TransformWithStruct(&types.TaskSet{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -28,7 +28,7 @@ func ClusterServices() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceArn"),
+				Resolver: schema.PathResolver("TaskSetArn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -38,9 +38,6 @@ func ClusterServices() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: client.ResolveTags,
 			},
-		},
-		Relations: []*schema.Table{
-			ClusterTaskSets(),
 		},
 	}
 }

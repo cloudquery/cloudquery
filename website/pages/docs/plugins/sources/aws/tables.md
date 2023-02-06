@@ -174,6 +174,7 @@
 - [aws_ecs_clusters](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ecs_clusters.md)
   - [aws_ecs_cluster_container_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ecs_cluster_container_instances.md)
   - [aws_ecs_cluster_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ecs_cluster_services.md)
+    - [aws_ecs_cluster_task_sets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ecs_cluster_task_sets.md)
   - [aws_ecs_cluster_tasks](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ecs_cluster_tasks.md)
 - [aws_ecs_task_definitions](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ecs_task_definitions.md)
 - [aws_efs_filesystems](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_efs_filesystems.md)

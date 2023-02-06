@@ -174,6 +174,7 @@
 - [aws_ecs_clusters](aws_ecs_clusters.md)
   - [aws_ecs_cluster_container_instances](aws_ecs_cluster_container_instances.md)
   - [aws_ecs_cluster_services](aws_ecs_cluster_services.md)
+    - [aws_ecs_cluster_task_sets](aws_ecs_cluster_task_sets.md)
   - [aws_ecs_cluster_tasks](aws_ecs_cluster_tasks.md)
 - [aws_ecs_task_definitions](aws_ecs_task_definitions.md)
 - [aws_efs_filesystems](aws_efs_filesystems.md)
