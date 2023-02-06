@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
-	ecsTypes "github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
@@ -17,13 +16,13 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	services := client.Services{
 		Ecs: m,
 	}
-	c := ecsTypes.Cluster{}
+	c := types.Cluster{}
 	err := faker.FakeObject(&c)
 	if err != nil {
 		t.Fatal(err)
 	}
 	ecsOutput := &ecs.DescribeClustersOutput{
-		Clusters: []ecsTypes.Cluster{c},
+		Clusters: []types.Cluster{c},
 	}
 	m.EXPECT().DescribeClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(ecsOutput, nil)
 	ecsListOutput := &ecs.ListClustersOutput{
