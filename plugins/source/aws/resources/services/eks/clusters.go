@@ -37,8 +37,6 @@ func Clusters() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			NodeGroups(),
-		},
-		Relations: []*schema.Table{
 			FargateProfiles(),
 		},
 	}
