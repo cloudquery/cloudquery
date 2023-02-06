@@ -181,6 +181,7 @@
 - [aws_efs_filesystems](aws_efs_filesystems.md)
 - [aws_eks_clusters](aws_eks_clusters.md)
   - [aws_eks_cluster_node_groups](aws_eks_cluster_node_groups.md)
+  - [aws_eks_fargate_profiles](aws_eks_fargate_profiles.md)
 - [aws_elasticache_clusters](aws_elasticache_clusters.md)
 - [aws_elasticache_engine_versions](aws_elasticache_engine_versions.md)
 - [aws_elasticache_global_replication_groups](aws_elasticache_global_replication_groups.md)

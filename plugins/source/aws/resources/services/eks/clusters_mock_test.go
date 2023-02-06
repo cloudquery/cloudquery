@@ -26,6 +26,18 @@ func buildEksClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().DescribeCluster(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&l, nil)
 
+	fp := types.FargateProfile{}
+	err = faker.FakeObject(&fp)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListFargateProfiles(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&eks.ListFargateProfilesOutput{
+			FargateProfileNames: []string{"test-profile"},
+		}, nil)
+	m.EXPECT().DescribeFargateProfile(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&eks.DescribeFargateProfileOutput{FargateProfile: &fp}, nil)
+
 	ng := types.Nodegroup{}
 	err = faker.FakeObject(&ng)
 	if err != nil {
