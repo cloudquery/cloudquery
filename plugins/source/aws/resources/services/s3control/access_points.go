@@ -9,7 +9,7 @@ import (
 
 func AccessPoints() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_s3_access_points",
+		Name:      "aws_s3control_access_points",
 		Resolver:  fetchAccessPoints,
 		Transform: transformers.TransformWithStruct(&types.AccessPoint{}),
 		Multiplex: client.AccountMultiplex,
