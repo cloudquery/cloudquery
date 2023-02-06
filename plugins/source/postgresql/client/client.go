@@ -91,6 +91,15 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)
 	}
+
+	// if c.pluginSpec.CDC {
+	// 	if _, err := c.Conn.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cq_source_pg_cdc"); err != nil {
+	// 		return nil, fmt.Errorf("failed to create cq_source_pg_cdc schema: %w", err)
+	// 	}
+	// 	if _, err := c.Conn.Exec(ctx, "CREATE TABLE IF NOT EXISTS cq_source_pg_cdc.state (slot_name text PRIMARY KEY, lsn pg_lsn)"); err != nil {
+	// 		return nil, fmt.Errorf("failed to create cq_source_pg_cdc.state table: %w", err)
+	// 	}
+	// }
 	return c, nil
 }
 

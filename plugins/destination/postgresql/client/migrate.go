@@ -23,6 +23,35 @@ JOIN   pg_attribute a ON a.attrelid = i.indrelid
 WHERE  i.indrelid = $1::regclass
 AND    i.indisprimary;
 `
+
+		sqlSelectAllTables = `
+SELECT
+	columns.ordinal_position AS ordinal_position,
+	pg_class.relname AS table_name,
+	pg_attribute.attname AS column_name,
+	pg_catalog.format_type(pg_attribute.atttypid, pg_attribute.atttypmod) AS data_type,
+	CASE
+	WHEN contype = 'p' THEN 'YES'
+	ELSE 'NO'
+	END AS is_primary_key,
+	pg_constraint.conname AS unique_constraint_name
+FROM
+	pg_catalog.pg_attribute
+INNER JOIN
+	pg_catalog.pg_class ON pg_class.oid = pg_attribute.attrelid
+INNER JOIN
+	pg_catalog.pg_namespace ON pg_namespace.oid = pg_class.relnamespace
+LEFT JOIN
+	pg_catalog.pg_constraint ON pg_constraint.conrelid = pg_attribute.attrelid
+	AND pg_constraint.conkey[1] = pg_attribute.attnum
+INNER JOIN
+	information_schema.columns ON columns.table_name = pg_class.relname AND columns.column_name = pg_attribute.attname AND columns.table_schema = pg_catalog.pg_namespace.nspname
+WHERE
+	pg_attribute.attnum > 0
+	AND NOT pg_attribute.attisdropped
+	AND pg_catalog.pg_namespace.nspname in (SELECT TRIM(BOTH from unnest(string_to_array(reset_val,','))) FROM pg_settings WHERE name='search_path')
+ORDER BY table_name ASC , ordinal_position ASC;		
+`
 )
 
 // This is the responsibility of the CLI of the client to lock before running migration
