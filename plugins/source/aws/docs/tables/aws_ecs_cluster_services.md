@@ -8,6 +8,9 @@ The primary key for this table is **arn**.
 
 This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 
+The following tables depend on aws_ecs_cluster_services:
+  - [aws_ecs_cluster_task_sets](aws_ecs_cluster_task_sets.md)
+
 ## Columns
 
 | Name          | Type          |

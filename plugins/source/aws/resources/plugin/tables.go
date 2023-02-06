@@ -5,6 +5,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/account"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acm"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amp"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amplify"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
@@ -103,6 +104,7 @@ func tables() []*schema.Table {
 		account.Contacts(),
 		acm.Certificates(),
 		amp.Workspaces(),
+		amplify.Apps(),
 		apigateway.ApiKeys(),
 		apigateway.ClientCertificates(),
 		apigateway.DomainNames(),

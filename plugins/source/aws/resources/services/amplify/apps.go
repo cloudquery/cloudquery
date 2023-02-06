@@ -1,20 +1,19 @@
-package eks
+package amplify
 
 import (
-	"github.com/aws/aws-sdk-go-v2/service/eks/types"
+	"github.com/aws/aws-sdk-go-v2/service/amplify/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Clusters() *schema.Table {
+func Apps() *schema.Table {
 	return &schema.Table{
-		Name:                "aws_eks_clusters",
-		Description:         `https://docs.aws.amazon.com/eks/latest/APIReference/API_Cluster.html`,
-		Resolver:            fetchEksClusters,
-		PreResourceResolver: getEksCluster,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("eks"),
-		Transform:           transformers.TransformWithStruct(&types.Cluster{}),
+		Name:        "aws_amplify_apps",
+		Description: `https://docs.aws.amazon.com/amplify/latest/APIReference/API_ListApps.html`,
+		Resolver:    fetchApps,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("amplify"),
+		Transform:   transformers.TransformWithStruct(&types.App{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -29,14 +28,11 @@ func Clusters() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
+				Resolver: schema.PathResolver("AppArn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
 			},
-		},
-		Relations: []*schema.Table{
-			NodeGroups(),
 		},
 	}
 }
