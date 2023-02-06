@@ -73,6 +73,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3control"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/savingsplans"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/scheduler"
@@ -383,6 +384,7 @@ func tables() []*schema.Table {
 		route53.TrafficPolicies(),
 		s3.Accounts(),
 		s3.Buckets(),
+		s3control.AccessPoints(),
 		sagemaker.EndpointConfigurations(),
 		sagemaker.Models(),
 		sagemaker.NotebookInstances(),

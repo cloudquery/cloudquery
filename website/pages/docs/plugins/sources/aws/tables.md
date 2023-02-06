@@ -427,6 +427,7 @@
   - [aws_route53_hosted_zone_traffic_policy_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_route53_hosted_zone_traffic_policy_instances.md)
 - [aws_route53_traffic_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_route53_traffic_policies.md)
   - [aws_route53_traffic_policy_versions](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_route53_traffic_policy_versions.md)
+- [aws_s3_access_points](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_s3_access_points.md)
 - [aws_s3_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_s3_accounts.md)
 - [aws_s3_buckets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_s3_buckets.md)
   - [aws_s3_bucket_cors_rules](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_s3_bucket_cors_rules.md)

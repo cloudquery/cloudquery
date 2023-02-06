@@ -1,4 +1,4 @@
-package s3
+package s3control
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/s3control/types"
