@@ -69,6 +69,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ram"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/rds"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/redshift"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resiliencehub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
@@ -372,6 +373,9 @@ func tables() []*schema.Table {
 		redshift.EventSubscriptions(),
 		redshift.SubnetGroups(),
 		resourcegroups.ResourceGroups(),
+		resiliencehub.Apps(),
+		resiliencehub.ResiliencyPolicies(),
+		resiliencehub.SuggestedResiliencyPolicies(),
 		route53.DelegationSets(),
 		route53.Domains(),
 		route53.HealthChecks(),
