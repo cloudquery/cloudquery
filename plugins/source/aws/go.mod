@@ -114,7 +114,7 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.18 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.19 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.22 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.1 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
