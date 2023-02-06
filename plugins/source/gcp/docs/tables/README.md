@@ -106,6 +106,8 @@
 - [gcp_compute_interconnects](gcp_compute_interconnects.md)
 - [gcp_compute_networks](gcp_compute_networks.md)
 - [gcp_compute_projects](gcp_compute_projects.md)
+- [gcp_compute_routers](gcp_compute_routers.md)
+  - [gcp_compute_router_nat_mapping_infos](gcp_compute_router_nat_mapping_infos.md)
 - [gcp_compute_ssl_certificates](gcp_compute_ssl_certificates.md)
 - [gcp_compute_ssl_policies](gcp_compute_ssl_policies.md)
 - [gcp_compute_subnetworks](gcp_compute_subnetworks.md)

@@ -106,6 +106,8 @@
 - [gcp_compute_interconnects](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_interconnects.md)
 - [gcp_compute_networks](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_networks.md)
 - [gcp_compute_projects](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_projects.md)
+- [gcp_compute_routers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_routers.md)
+  - [gcp_compute_router_nat_mapping_infos](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_router_nat_mapping_infos.md)
 - [gcp_compute_ssl_certificates](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_ssl_certificates.md)
 - [gcp_compute_ssl_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_ssl_policies.md)
 - [gcp_compute_subnetworks](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_subnetworks.md)
