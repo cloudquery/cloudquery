@@ -10,6 +10,7 @@
 - [aws_acm_certificates](aws_acm_certificates.md)
 - [aws_amp_workspaces](aws_amp_workspaces.md)
   - [aws_amp_rule_groups_namespaces](aws_amp_rule_groups_namespaces.md)
+- [aws_amplify_apps](aws_amplify_apps.md)
 - [aws_apigateway_api_keys](aws_apigateway_api_keys.md)
 - [aws_apigateway_client_certificates](aws_apigateway_client_certificates.md)
 - [aws_apigateway_domain_names](aws_apigateway_domain_names.md)
