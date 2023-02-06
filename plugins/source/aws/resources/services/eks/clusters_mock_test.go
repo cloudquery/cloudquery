@@ -38,6 +38,20 @@ func buildEksClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().DescribeFargateProfile(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&eks.DescribeFargateProfileOutput{FargateProfile: &fp}, nil)
 
+	ng := types.Nodegroup{}
+	err = faker.FakeObject(&ng)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().ListNodegroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&eks.ListNodegroupsOutput{
+			Nodegroups: []string{"test-nodegroup"},
+		}, nil)
+	m.EXPECT().DescribeNodegroup(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&eks.DescribeNodegroupOutput{
+			Nodegroup: &ng,
+		}, nil)
 	return client.Services{
 		Eks: m,
 	}
