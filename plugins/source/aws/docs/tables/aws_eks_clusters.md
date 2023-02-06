@@ -20,7 +20,6 @@ The following tables depend on aws_eks_clusters:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |certificate_authority|JSON|
 |client_request_token|String|
 |connector_config|JSON|
@@ -38,4 +37,5 @@ The following tables depend on aws_eks_clusters:
 |resources_vpc_config|JSON|
 |role_arn|String|
 |status|String|
+|tags|JSON|
 |version|String|

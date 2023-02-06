@@ -35,6 +35,5 @@ func NodeGroups() *schema.Table {
 				},
 			},
 		},
-		Relations: []*schema.Table{},
 	}
 }
