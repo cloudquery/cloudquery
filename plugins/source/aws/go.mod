@@ -113,6 +113,8 @@ require (
 	golang.org/x/sync v0.1.0
 )
 
+require github.com/aws/aws-sdk-go-v2/service/amplify v1.13.1
+
 require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.19 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.23 // indirect
