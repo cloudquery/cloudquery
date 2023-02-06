@@ -22,7 +22,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.1
-	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.1
+	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.2
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.0
@@ -131,8 +131,8 @@ require (
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.12.22 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.27 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.21 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.28 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.22 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.29 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/backup v1.19.1
