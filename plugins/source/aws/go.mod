@@ -7,23 +7,23 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.12
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.12
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.49
-	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.1
+	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.0
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.2
-	github.com/aws/aws-sdk-go-v2/service/amp v1.16.0
+	github.com/aws/aws-sdk-go-v2/service/amp v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.2
-	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.1
+	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.2
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.17.2
-	github.com/aws/aws-sdk-go-v2/service/apprunner v1.16.0
+	github.com/aws/aws-sdk-go-v2/service/apprunner v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.18.0
-	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.26.1
+	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.26.2
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.1
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.1
-	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.1
+	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.2
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.0
