@@ -4,6 +4,11 @@ https://docs.aws.amazon.com/eks/latest/APIReference/API_Cluster.html
 
 The primary key for this table is **arn**.
 
+## Relations
+
+The following tables depend on aws_eks_clusters:
+  - [aws_eks_fargate_profiles](aws_eks_fargate_profiles.md)
+
 ## Columns
 
 | Name          | Type          |
