@@ -16,16 +16,8 @@ import (
 )
 
 func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string, noMigrate bool) error {
-	startTime := time.Now()
-	metrics := &pluginsSource.Metrics{
-		TableClient: map[string]map[string]*pluginsSource.TableClientMetrics{
-			"": {"": &pluginsSource.TableClientMetrics{
-				StartTime: startTime,
-			}},
-		},
-	}
-
-	exitReason := "cancelled"
+	var metrics *pluginsSource.Metrics
+	exitReason := "unknown"
 	defer func() {
 		// Send analytics, if activated. We only send if the source plugin registry is GitHub, mostly to avoid sending data from development machines.
 		if analyticsClient != nil && sourceSpec.Registry == specs.RegistryGithub {
@@ -43,17 +35,27 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 	if disableSentry {
 		opts = append(opts, source.WithNoSentry())
 	}
-	sourceClient, err := source.NewClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version, opts...)
+	sourceCtx, sourceCancel := context.WithCancel(context.Background())
+	sourceClient, err := source.NewClient(sourceCtx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version, opts...)
 	if err != nil {
 		exitReason = "failed to get client"
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
 	}
 	//nolint:revive
 	defer func() {
+		if metrics == nil {
+			// If we didn't get metrics (maybe because sync got interrupted), try to get them
+			// now, before closing the source client.
+			metrics, err = sourceClient.GetMetrics(sourceCtx)
+			if err != nil {
+				log.Error().Err(err).Msg("Failed to get metrics")
+			}
+		}
 		if err := sourceClient.Terminate(); err != nil {
 			log.Error().Err(err).Msg("Failed to terminate source client")
 			fmt.Println("failed to terminate source client: ", err)
 		}
+		sourceCancel()
 	}()
 
 	syncTime := time.Now().UTC()
@@ -65,11 +67,15 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("Start sync")
 	defer log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("End sync")
 
-	destClients, err := newDestinationClientsV0(ctx, sourceSpec, destinationsSpecs, cqDir)
+	destCtx, destCancel := context.WithCancel(context.Background())
+	destClients, err := newDestinationClientsV0(destCtx, sourceSpec, destinationsSpecs, cqDir)
 	if err != nil {
 		return err
 	}
-	defer destClients.Close()
+	defer func() {
+		destClients.Close()
+		destCancel()
+	}()
 
 	if err := sourceClient.Init(ctx, sourceSpec); err != nil {
 		exitReason = "failed to init"
@@ -78,7 +84,7 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 
 	tables, err := sourceClient.GetDynamicTables(ctx)
 	if err != nil {
-		exitReason = "failed to get dynamic tables"
+		exitReason = "failed to get tables"
 		return fmt.Errorf("failed to get dynamic tables for source %s: %w", sourceSpec.VersionString(), err)
 	}
 
@@ -108,7 +114,7 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 	}
 
 	resources := make(chan []byte)
-	g, gctx := errgroup.WithContext(ctx)
+	g, gctx := errgroup.WithContext(sourceCtx)
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start fetching resources")
 	fmt.Printf("Starting sync for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 	g.Go(func() error {

@@ -2,19 +2,18 @@ package cmd
 
 import (
 	"context"
-	"crypto/tls"
-	"crypto/x509"
 
 	"github.com/cloudquery/cloudquery/cli/internal/pb"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 const (
-	analyticsHost = "analyticsv1.cloudquery.io:443"
+	// analyticsHost = "analyticsv1.cloudquery.io:443"
+	analyticsHost = "localhost:8080"
 )
 
 type AnalyticsClient struct {
@@ -23,14 +22,14 @@ type AnalyticsClient struct {
 }
 
 func initAnalytics() (*AnalyticsClient, error) {
-	systemRoots, err := x509.SystemCertPool()
-	if err != nil {
-		return nil, err
-	}
-	cred := credentials.NewTLS(&tls.Config{
-		RootCAs: systemRoots,
-	})
-	conn, err := grpc.Dial(analyticsHost, grpc.WithAuthority(analyticsHost), grpc.WithTransportCredentials(cred))
+	//systemRoots, err := x509.SystemCertPool()
+	//if err != nil {
+	//	return nil, err
+	//}
+	//cred := credentials.NewTLS(&tls.Config{
+	//	RootCAs: systemRoots,
+	//})
+	conn, err := grpc.Dial(analyticsHost, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, err
 	}
@@ -42,6 +41,10 @@ func initAnalytics() (*AnalyticsClient, error) {
 }
 
 func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, metrics *source.Metrics, exitReason string) error {
+	if metrics == nil {
+		// handle nil metrics
+		metrics = &source.Metrics{TableClient: map[string]map[string]*source.TableClientMetrics{}}
+	}
 	if c.client != nil {
 		syncSummary := &pb.SyncSummary{
 			Invocation_UUID: invocationUUID,
