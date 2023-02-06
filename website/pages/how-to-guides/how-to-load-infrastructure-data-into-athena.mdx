@@ -244,6 +244,10 @@ WHERE "block_public_acls" <> TRUE
 
 Wait, isn't that the bucket we just created for this guide? Better go lock it down 😉
 
+<Callout type="info">
+  Athena is case-insensitive. If you see an error like `Row is not a valid JSON Object - JSONException: Duplicate key`, this means some of the data in a JSON column contained keys where only the case differed (e.g. `Name` and `name`). AWS tags are case sensitive, so this can be a common cause. For more information about ways to address this issue, see [this Github comment](https://github.com/cloudquery/cloudquery/issues/7639#issuecomment-1419082572).
+</Callout>
+
 ## Conclusion
 
 In this tutorial, we showed how to use CloudQuery to load infrastructure data into an S3 bucket, and then use Glue Crawler and Athena to query the data. This allows you to use the power of Athena to query your infrastructure data, and use the results to inform your security and compliance decisions.
