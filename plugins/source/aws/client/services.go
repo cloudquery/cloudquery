@@ -111,7 +111,7 @@ func initServices(region string, c aws.Config) Services {
 		Account:                   account.NewFromConfig(awsCfg),
 		Acm:                       acm.NewFromConfig(awsCfg),
 		Amp:                       amp.NewFromConfig(awsCfg),
-		Amplfiy:                   amplify.NewFromConfig(awsCfg),
+		Amplify:                   amplify.NewFromConfig(awsCfg),
 		Apigateway:                apigateway.NewFromConfig(awsCfg),
 		Apigatewayv2:              apigatewayv2.NewFromConfig(awsCfg),
 		Applicationautoscaling:    applicationautoscaling.NewFromConfig(awsCfg),
@@ -213,7 +213,7 @@ type Services struct {
 	Account                   services.AccountClient
 	Acm                       services.AcmClient
 	Amp                       services.AmpClient
-	Amplfiy                   services.AmplifyClient
+	Amplify                   services.AmplifyClient
 	Apigateway                services.ApigatewayClient
 	Apigatewayv2              services.Apigatewayv2Client
 	Applicationautoscaling    services.ApplicationautoscalingClient
