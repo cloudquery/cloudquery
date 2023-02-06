@@ -2,11 +2,13 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sync/atomic"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/clients/source/v1"
+	pluginsSource "github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
@@ -14,6 +16,26 @@ import (
 )
 
 func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string, noMigrate bool) error {
+	startTime := time.Now()
+	metrics := &pluginsSource.Metrics{
+		TableClient: map[string]map[string]*pluginsSource.TableClientMetrics{
+			"": {"": &pluginsSource.TableClientMetrics{
+				StartTime: startTime,
+			}},
+		},
+	}
+
+	exitReason := "cancelled"
+	defer func() {
+		// Send analytics, if activated. We only send if the source plugin registry is GitHub, mostly to avoid sending data from development machines.
+		if analyticsClient != nil && sourceSpec.Registry == specs.RegistryGithub {
+			log.Info().Msg("Sending sync summary to " + analyticsHost)
+
+			if err := analyticsClient.SendSyncMetrics(context.Background(), sourceSpec, destinationsSpecs, uid, metrics, exitReason); err != nil {
+				log.Warn().Err(err).Msg("Failed to send sync summary")
+			}
+		}
+	}()
 	opts := []source.ClientOption{
 		source.WithLogger(log.Logger),
 		source.WithDirectory(cqDir),
@@ -23,6 +45,7 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 	}
 	sourceClient, err := source.NewClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version, opts...)
 	if err != nil {
+		exitReason = "failed to get client"
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
 	}
 	//nolint:revive
@@ -49,11 +72,13 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 	defer destClients.Close()
 
 	if err := sourceClient.Init(ctx, sourceSpec); err != nil {
+		exitReason = "failed to init"
 		return fmt.Errorf("failed to init source %s: %w", sourceSpec.VersionString(), err)
 	}
 
 	tables, err := sourceClient.GetDynamicTables(ctx)
 	if err != nil {
+		exitReason = "failed to get dynamic tables"
 		return fmt.Errorf("failed to get dynamic tables for source %s: %w", sourceSpec.VersionString(), err)
 	}
 
@@ -68,6 +93,7 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 			// Currently we migrate all tables, but this is subject to change once policies
 			// are adapted to handle non-existent tables in some way.
 			if err := destClients[i].Migrate(ctx, tables); err != nil {
+				exitReason = "failed to migrate"
 				return fmt.Errorf("failed to migrate source %s on destination %s : %w", sourceSpec.VersionString(), destinationSpec.VersionString(), err)
 			}
 		}
@@ -160,25 +186,23 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 	})
 
 	if err := g.Wait(); err != nil {
+		exitReason = "sync failed"
+		if errors.Is(err, context.Canceled) {
+			exitReason = "sync cancelled"
+		}
 		_ = bar.Finish()
 		return err
 	}
 	_ = bar.Finish()
 	syncTimeTook := time.Since(syncTime)
 
-	metrics, err := sourceClient.GetMetrics(ctx)
+	metrics, err = sourceClient.GetMetrics(ctx)
 	if err != nil {
+		exitReason = "failed to get metrics"
 		return fmt.Errorf("failed to get metrics for source %s: %w", sourceSpec.VersionString(), err)
 	}
 
+	exitReason = "success"
 	fmt.Printf("Sync completed successfully. Resources: %d, Errors: %d, Panics: %d, Time: %s\n", metrics.TotalResources(), metrics.TotalErrors(), metrics.TotalPanics(), syncTimeTook.Truncate(time.Second).String())
-
-	// Send analytics, if activated. We only send if the source plugin registry is GitHub, mostly to avoid sending data from development machines.
-	if analyticsClient != nil && sourceSpec.Registry == specs.RegistryGithub {
-		log.Info().Msg("Sending sync summary to " + analyticsHost)
-		if err := analyticsClient.SendSyncMetrics(ctx, sourceSpec, destinationsSpecs, uid, metrics); err != nil {
-			log.Warn().Err(err).Msg("Failed to send sync summary")
-		}
-	}
 	return nil
 }

@@ -41,7 +41,7 @@ func initAnalytics() (*AnalyticsClient, error) {
 	}, nil
 }
 
-func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, metrics *source.Metrics) error {
+func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, metrics *source.Metrics, exitReason string) error {
 	if c.client != nil {
 		syncSummary := &pb.SyncSummary{
 			Invocation_UUID: invocationUUID,
@@ -52,6 +52,7 @@ func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.
 			Errors:          int64(metrics.TotalErrors()),
 			Panics:          int64(metrics.TotalPanics()),
 			ClientVersion:   Version,
+			ExitReason:      exitReason,
 		}
 		for _, destinationSpec := range destinationsSpecs {
 			syncSummary.Destinations = append(syncSummary.Destinations, &pb.Destination{
