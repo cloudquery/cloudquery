@@ -41,5 +41,5 @@ func fetchFolderFindings(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 	// FolderId is already in the format "folders/{id}"
 	p := c.FolderId + "/sources/-"
-	return fetchFindings(p)(ctx, meta, parent, res)
+	return fetchFindings("gcp_securitycenter_folder_findings", p)(ctx, meta, parent, res)
 }

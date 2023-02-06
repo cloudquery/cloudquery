@@ -12,6 +12,7 @@ import (
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
 	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
+	"github.com/cloudquery/plugin-sdk/backend"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -51,6 +52,8 @@ type Client struct {
 	Location string
 	// Logger
 	logger zerolog.Logger
+
+	Backend backend.Backend
 }
 
 //revive:disable:modifies-value-receiver
@@ -112,11 +115,12 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source.Options) (schema.ClientMeta, error) {
 	var err error
 	c := Client{
 		logger:          logger,
 		EnabledServices: map[string]map[string]any{},
+		Backend:         opts.Backend,
 	}
 	var gcpSpec Spec
 	if err := s.UnmarshalSpec(&gcpSpec); err != nil {
