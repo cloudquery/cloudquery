@@ -20,7 +20,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.49 // indirect; indirect // indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.27 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.21 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.18 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.19 // indirect; indirect // indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.22 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21 // indirect; indirect // indirect
