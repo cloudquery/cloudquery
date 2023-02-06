@@ -40,6 +40,11 @@ func Clusters() *schema.Table {
 				Resolver:    resolveRedshiftClusterLoggingStatus,
 				Description: `Describes the status of logging for a cluster.`,
 			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
 		},
 
 		Relations: []*schema.Table{

@@ -22,6 +22,7 @@ The following tables depend on aws_redshift_clusters:
 |region|String|
 |arn (PK)|String|
 |logging_status|JSON|
+|tags|JSON|
 |allow_version_upgrade|Bool|
 |aqua_configuration|JSON|
 |automated_snapshot_retention_period|Int|
@@ -69,7 +70,6 @@ The following tables depend on aws_redshift_clusters:
 |restore_status|JSON|
 |snapshot_schedule_identifier|String|
 |snapshot_schedule_state|String|
-|tags|JSON|
 |total_storage_capacity_in_mega_bytes|Int|
 |vpc_id|String|
 |vpc_security_groups|JSON|
