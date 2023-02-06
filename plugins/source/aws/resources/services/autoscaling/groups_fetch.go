@@ -102,6 +102,16 @@ func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.Clien
 	}
 	return resource.Set(c.Name, j)
 }
+
+func resolveCleanTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p := resource.Item.(models.AutoScalingGroupWrapper)
+	tags := make(map[string]string)
+	for _, t := range p.Tags {
+		tags[*t.Key] = *t.Value
+	}
+	return resource.Set(c.Name, tags)
+}
+
 func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(models.AutoScalingGroupWrapper)
 	cl := meta.(*client.Client)
