@@ -20,3 +20,4 @@
 cq-source-{{.Name}}
 
 dist
+*.log
