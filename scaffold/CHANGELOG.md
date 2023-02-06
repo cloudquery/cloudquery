@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/cloudquery/cloudquery/compare/scaffold-v1.4.0...scaffold-v1.5.0) (2023-02-06)
+
+
+### Features
+
+* Add *.log to gitignore template ([#7680](https://github.com/cloudquery/cloudquery/issues/7680)) ([6f5586a](https://github.com/cloudquery/cloudquery/commit/6f5586aa323678b3b92c9aeb48ed630192e3345c))
+
 ## [1.4.0](https://github.com/cloudquery/cloudquery/compare/scaffold-v1.3.1...scaffold-v1.4.0) (2023-02-02)
 
 
