@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
+	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	ecsTypes "github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
@@ -76,6 +77,16 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	}
 	protection.Failures = nil
 	m.EXPECT().GetTaskProtection(gomock.Any(), gomock.Any(), gomock.Any()).Return(&protection, nil)
+
+	taskSet := types.TaskSet{}
+	err = faker.FakeObject(&taskSet)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().DescribeTaskSets(gomock.Any(), gomock.Any(), gomock.Any()).Return(&ecs.DescribeTaskSetsOutput{
+		TaskSets: []types.TaskSet{taskSet},
+		Failures: nil,
+	}, nil)
 
 	return services
 }
