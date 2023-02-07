@@ -1,4 +1,4 @@
-# Table: aws_s3control_access_points
+# Table: aws_s3_access_points
 
 The primary key for this table is **arn**.
 
