@@ -13,7 +13,7 @@ func fetchRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 	device := parent.Item.(tailscale.Device)
 
-	result, err := c.DeviceSubnetRoutes(ctx, device.ID)
+	result, err := c.TailscaleClient.DeviceSubnetRoutes(ctx, device.ID)
 	if err != nil {
 		return err
 	}
