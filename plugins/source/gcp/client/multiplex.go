@@ -45,6 +45,16 @@ func OrgMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	return l
 }
 
+func FolderMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
+	client := meta.(*Client)
+
+	l := make([]schema.ClientMeta, len(client.folderIds))
+	for i, folderId := range client.folderIds {
+		l[i] = client.withFolder(folderId)
+	}
+	return l
+}
+
 func ProjectLocationMultiplexEnabledServices(service string, locations []string) func(schema.ClientMeta) []schema.ClientMeta {
 	if _, ok := GcpServices[service]; !ok {
 		panic("unknown service: " + service)

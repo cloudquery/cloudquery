@@ -8,8 +8,7 @@ import { Badge } from "../../../../../components/Badge";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "azblob")}/>
 
-This destination plugin lets you sync data from a CloudQuery source to remote Azure Blob Storage storage in various formats such as CSV, JSON.
-
+This destination plugin lets you sync data from a CloudQuery source to remote Azure Blob Storage storage in various formats such as CSV, JSON and Parquet.
 
 ## Authentication
 
@@ -59,7 +58,7 @@ This is the (nested) spec used by the Azure blob destination Plugin.
 
 - `format` (string) (required)
 
-  Format of the output file. `json` and `csv` are supported.
+  Format of the output file. Supported values are `csv`, `json` and `parquet`.
 
 - `format_spec` (map [format_spec](#format_spec)) (optional)
 

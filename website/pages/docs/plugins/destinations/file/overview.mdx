@@ -8,7 +8,7 @@ import { Badge } from "../../../../../components/Badge";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "file")}/>
 
-This destination plugin lets you sync data from a CloudQuery source to local files in various formats such as CSV, JSON.
+This destination plugin lets you sync data from a CloudQuery source to local files in various formats such as CSV, JSON, Parquet.
 
 This is useful in local environments, but also in production environments where scalability, performance and cost are requirements. For example, this plugin can be used as part of a system that syncs sources across multiple virtual machines, uploads CSV files to a remote storage (such as S3 or GCS), and finally loads them to data lakes such as BigQuery or Athena in batch mode.
 
@@ -41,7 +41,7 @@ This is the (nested) spec used by the CSV destination Plugin.
 
 - `format` (string) (required)
 
-  Format of the output file. `json` and `csv` are supported.
+  Format of the output file.  Supported values are `csv`, `json` and `parquet`.
 
 - `no_rotate` (bool) (optional)
 
