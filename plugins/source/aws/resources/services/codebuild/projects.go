@@ -33,6 +33,11 @@ func Projects() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
 		},
 	}
 }

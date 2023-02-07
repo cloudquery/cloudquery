@@ -38,6 +38,11 @@ func Stacks() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
 		},
 
 		Relations: []*schema.Table{
