@@ -5,14 +5,14 @@ import (
 )
 
 type Spec struct {
-	ClientID 		string `json:"client_id,omitempty"`
+	ClientID     string `json:"client_id,omitempty"`
 	ClientSecret string `json:"client_secret,omitempty"`
 	APIKey       string `json:"api_key,omitempty"`
-	Tailnet     string `json:"tailnet,omitempty"`
-	EndpointURL string `json:"endpoint_url,omitempty"`
+	Tailnet      string `json:"tailnet,omitempty"`
+	EndpointURL  string `json:"endpoint_url,omitempty"`
 }
 
-func (s *Spec) Validate() ( error) {
+func (s *Spec) Validate() error {
 	if len(s.Tailnet) == 0 {
 		return fmt.Errorf("missing tailnet")
 	}

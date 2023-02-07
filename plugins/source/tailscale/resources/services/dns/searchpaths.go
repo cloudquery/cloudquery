@@ -22,8 +22,8 @@ func Searchpaths() *schema.Table {
 				},
 			},
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
+				Name: "name",
+				Type: schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

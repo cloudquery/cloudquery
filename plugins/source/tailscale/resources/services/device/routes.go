@@ -12,7 +12,7 @@ func routes() *schema.Table {
 		Name:        "tailscale_device_routes",
 		Description: `https://github.com/tailscale/tailscale/blob/main/api.md#device-routes-get`,
 		Resolver:    fetchRoutes,
-		Transform: transformers.TransformWithStruct(&tailscale.DeviceRoutes{}),
+		Transform:   transformers.TransformWithStruct(&tailscale.DeviceRoutes{}),
 		Columns: []schema.Column{
 			{
 				Name:     "tailnet",

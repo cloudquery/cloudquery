@@ -12,7 +12,7 @@ func Acls() *schema.Table {
 		Name:        "tailscale_acls",
 		Description: `https://github.com/tailscale/tailscale/blob/main/api.md#acl`,
 		Resolver:    fetchAcls,
-		Transform: transformers.TransformWithStruct(&tailscale.ACL{}, transformers.WithSkipFields("ACLs", "DERPMap", "SSH", "DisableIPv4", "OneCGNATRoute")),
+		Transform:   transformers.TransformWithStruct(&tailscale.ACL{}, transformers.WithSkipFields("ACLs", "DERPMap", "SSH", "DisableIPv4", "OneCGNATRoute")),
 		Columns: []schema.Column{
 			{
 				Name:     "tailnet",

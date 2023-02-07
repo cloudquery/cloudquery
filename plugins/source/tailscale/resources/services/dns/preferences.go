@@ -25,8 +25,8 @@ func Preferences() *schema.Table {
 				},
 			},
 			{
-				Name:     "magic_dns",
-				Type:     schema.TypeBool,
+				Name: "magic_dns",
+				Type: schema.TypeBool,
 			},
 		},
 	}
