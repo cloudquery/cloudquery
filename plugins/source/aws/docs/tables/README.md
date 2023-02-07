@@ -441,6 +441,7 @@
 - [aws_scheduler_schedule_groups](aws_scheduler_schedule_groups.md)
 - [aws_scheduler_schedules](aws_scheduler_schedules.md)
 - [aws_secretsmanager_secrets](aws_secretsmanager_secrets.md)
+  - [aws_secretsmanager_secret_versions](aws_secretsmanager_secret_versions.md)
 - [aws_securityhub_findings](aws_securityhub_findings.md)
 - [aws_servicecatalog_portfolios](aws_servicecatalog_portfolios.md)
 - [aws_servicecatalog_products](aws_servicecatalog_products.md)
