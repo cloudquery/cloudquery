@@ -49,7 +49,7 @@
   "plugins/source/crowdstrike+FILLER": "0.0.0",
   "plugins/source/pagerduty": "1.3.1",
   "plugins/source/pagerduty+FILLER": "0.0.0",
-  "plugins/destination/mongodb": "1.0.8",
+  "plugins/destination/mongodb": "1.0.9",
   "plugins/destination/mongodb+FILLTER": "0.0.0",
   "plugins/source/gitlab": "2.1.2",
   "plugins/source/gitlab+FILLER": "0.0.0",
