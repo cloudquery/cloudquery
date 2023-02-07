@@ -7,6 +7,7 @@ The composite primary key for this table is (**id**, **account_id**).
 ## Relations
 
 The following tables depend on aws_iam_users:
+  - [aws_iam_signing_certificates](aws_iam_signing_certificates.md)
   - [aws_iam_ssh_public_keys](aws_iam_ssh_public_keys.md)
   - [aws_iam_user_access_keys](aws_iam_user_access_keys.md)
   - [aws_iam_user_attached_policies](aws_iam_user_attached_policies.md)
