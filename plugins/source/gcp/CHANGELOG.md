@@ -5,6 +5,32 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.5.0...plugins-source-gcp-v7.6.0) (2023-02-07)
+
+
+### Features
+
+* **gcp-resources:** Add Security Center folders findings ([#7624](https://github.com/cloudquery/cloudquery/issues/7624)) ([3ec2255](https://github.com/cloudquery/cloudquery/commit/3ec22552d31fe920f264dcb5f4638c16a355372d))
+
+## [7.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.4.0...plugins-source-gcp-v7.5.0) (2023-02-07)
+
+
+### Features
+
+* **gcp-resources:** Add Compute Routers and NAT Mappings ([#7691](https://github.com/cloudquery/cloudquery/issues/7691)) ([73c653e](https://github.com/cloudquery/cloudquery/commit/73c653ebbe3093a85dfa74ae5065c18d8fff15c5))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cncf/udpa/go digest to c52dc94 ([#7526](https://github.com/cloudquery/cloudquery/issues/7526)) ([2c31906](https://github.com/cloudquery/cloudquery/commit/2c31906c4623c62ebe669a6beb81aec1fd1e9bb7))
+* **deps:** Update github.com/cncf/xds/go digest to 46e39c7 ([#7527](https://github.com/cloudquery/cloudquery/issues/7527)) ([9e94369](https://github.com/cloudquery/cloudquery/commit/9e943696e901a29cca53e05e95e2dd5edefb947b))
+* **deps:** Update golang.org/x/exp digest to f062dba ([#7531](https://github.com/cloudquery/cloudquery/issues/7531)) ([59d5575](https://github.com/cloudquery/cloudquery/commit/59d55758b0951553b8d246d1e78b4e3917ff1976))
+* **deps:** Update google.golang.org/genproto digest to 1c01626 ([#7533](https://github.com/cloudquery/cloudquery/issues/7533)) ([c549c27](https://github.com/cloudquery/cloudquery/commit/c549c275077f1cdfb9df0b3f3c129cbf0b150552))
+* **deps:** Update module cloud.google.com/go to v0.109.0 ([#7584](https://github.com/cloudquery/cloudquery/issues/7584)) ([f95de44](https://github.com/cloudquery/cloudquery/commit/f95de44b6c8392c4b572444f1cb80f3e7e8febda))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.0 ([#7595](https://github.com/cloudquery/cloudquery/issues/7595)) ([c5adc75](https://github.com/cloudquery/cloudquery/commit/c5adc750d4b0242563997c04c582f8da27913095))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.1 ([#7614](https://github.com/cloudquery/cloudquery/issues/7614)) ([2fe665c](https://github.com/cloudquery/cloudquery/commit/2fe665cdd80d88c5699bb203bd7accd604dfba99))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.34.0 ([#7719](https://github.com/cloudquery/cloudquery/issues/7719)) ([6a33085](https://github.com/cloudquery/cloudquery/commit/6a33085c75adcf2387f7bbb5aa4f7a84ce7e2957))
+
 ## [7.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.3.0...plugins-source-gcp-v7.4.0) (2023-01-31)
 
 
