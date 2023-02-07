@@ -2055,13 +2055,16 @@
             "ap-northeast-2": {},
             "ap-northeast-3": {},
             "ap-south-1": {},
+            "ap-south-2": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
+            "eu-south-2": {},
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
@@ -2659,13 +2662,16 @@
             "ap-northeast-2": {},
             "ap-northeast-3": {},
             "ap-south-1": {},
+            "ap-south-2": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
+            "eu-south-2": {},
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
@@ -8141,6 +8147,12 @@
             "us-gov-west-1": {}
           }
         },
+        "compute-optimizer": {
+          "regions": {
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
         "config": {
           "regions": {
             "fips-us-gov-east-1": {},
@@ -8413,13 +8425,20 @@
         },
         "ingest.timestream": {
           "regions": {
-            "us-gov-west-1": {}
+            "us-gov-west-1": {},
+            "us-gov-west-1-fips": {}
           }
         },
         "inspector": {
           "regions": {
             "fips-us-gov-east-1": {},
             "fips-us-gov-west-1": {},
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
+        "inspector2": {
+          "regions": {
             "us-gov-east-1": {},
             "us-gov-west-1": {}
           }

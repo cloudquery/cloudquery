@@ -6,7 +6,7 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func Records() *schema.Table {
+func records() *schema.Table {
 	return &schema.Table{
 		Name:      "digitalocean_domain_records",
 		Resolver:  fetchDomainsRecords,

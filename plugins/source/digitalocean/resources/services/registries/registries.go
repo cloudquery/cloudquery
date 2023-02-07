@@ -23,7 +23,7 @@ func Registries() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			Repositories(),
+			repositories(),
 		},
 	}
 }

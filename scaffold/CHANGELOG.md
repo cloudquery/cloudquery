@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.5.0](https://github.com/cloudquery/cloudquery/compare/scaffold-v1.4.0...scaffold-v1.5.0) (2023-02-06)
+
+
+### Features
+
+* Add *.log to gitignore template ([#7680](https://github.com/cloudquery/cloudquery/issues/7680)) ([6f5586a](https://github.com/cloudquery/cloudquery/commit/6f5586aa323678b3b92c9aeb48ed630192e3345c))
+
+## [1.4.0](https://github.com/cloudquery/cloudquery/compare/scaffold-v1.3.1...scaffold-v1.4.0) (2023-02-02)
+
+
+### Features
+
+* Add `.gitignore` template ([#7608](https://github.com/cloudquery/cloudquery/issues/7608)) ([76b7c09](https://github.com/cloudquery/cloudquery/commit/76b7c0942883df7d4132aade63bea4e241da1561))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.0 ([#7595](https://github.com/cloudquery/cloudquery/issues/7595)) ([c5adc75](https://github.com/cloudquery/cloudquery/commit/c5adc750d4b0242563997c04c582f8da27913095))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.1 ([#7614](https://github.com/cloudquery/cloudquery/issues/7614)) ([2fe665c](https://github.com/cloudquery/cloudquery/commit/2fe665cdd80d88c5699bb203bd7accd604dfba99))
+* **goreleaser:** Use `clean` instead of `rm-dist` ([#7606](https://github.com/cloudquery/cloudquery/issues/7606)) ([c7e166d](https://github.com/cloudquery/cloudquery/commit/c7e166dbb99b53ee67c4ea178cafdcdf4feddb17))
+
 ## [1.3.1](https://github.com/cloudquery/cloudquery/compare/scaffold-v1.3.0...scaffold-v1.3.1) (2023-01-31)
 
 
