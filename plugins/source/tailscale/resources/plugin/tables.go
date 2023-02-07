@@ -14,7 +14,9 @@ func tables() []*schema.Table {
 	return []*schema.Table{
 		acl.Acls(),
 		device.Devices(),
-		dns.Dns(),
+		dns.Nameservers(),
+		dns.Preferences(),
+		dns.Searchpaths(),
 		key.Keys(),
 	}
 }

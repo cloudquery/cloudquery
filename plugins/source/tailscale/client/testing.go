@@ -1,18 +1,20 @@
 package client
 
 import (
-	"context"
-	"fmt"
+	"encoding/json"
+	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
 
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/zerolog"
+	"github.com/tailscale/tailscale-client-go/tailscale"
 )
 
 func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httprouter.Router) error) {
@@ -23,31 +25,26 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 	mux := httprouter.New()
 	ts := httptest.NewUnstartedServer(mux)
 	defer ts.Close()
-
-	newTestExecutionClient := func(_ context.Context, logger zerolog.Logger, _ specs.Source, _ source.Options) (schema.ClientMeta, error) {
-		err := createService(mux)
-		if err != nil {
-			return nil, fmt.Errorf("failed to createService: %w", err)
-		}
-		ts.Start()
-
-		tsClient, err := (&Spec{
-			APIKey:      "test-key",
-			Tailnet:     "test-tailnet",
-			EndpointURL: ts.URL,
-		}).getClient()
-		if err != nil {
-			return nil, fmt.Errorf("failed to create client: %w", err)
-		}
-
-		c := &Client{
-			Client:  tsClient,
-			logger:  logger,
-			tailnet: "test",
-		}
-
-		return c, nil
+	if err := createService(mux); err != nil {
+		t.Fatalf("failed to createService: %v", err)
 	}
+	var acl tailscale.ACL
+	if err := faker.FakeObject(&acl); err != nil {
+		t.Fatalf("failed to fake ACL: %v", err)
+	}
+
+	mux.GET("/api/v2/tailnet/:tailnet/acl", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		b, err := json.Marshal(acl)
+		if err != nil {
+			http.Error(w, "unable to marshal response: "+err.Error(), http.StatusBadRequest)
+			return
+		}
+		if _, err := w.Write(b); err != nil {
+			http.Error(w, "failed to write", http.StatusBadRequest)
+			return
+		}
+	})
+	ts.Start()
 
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
@@ -59,7 +56,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 		[]*schema.Table{
 			table,
 		},
-		newTestExecutionClient)
+		Configure)
 	p.SetLogger(l)
 
 	source.TestPluginSync(t, p, specs.Source{
@@ -67,6 +64,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 		Path:         "cloudquery/dev",
 		Version:      version,
 		Tables:       []string{table.Name},
+		Spec:   &Spec{APIKey: "test", Tailnet: "test", EndpointURL: ts.URL},
 		Destinations: []string{"mock-destination"},
 	})
 }
