@@ -192,6 +192,10 @@
     {
       "source": "/blog/open-source-cspm",
       "destination": "/how-to-guides/open-source-cspm"
+    },
+    {
+      "source": "/docs/plugins/sources/tailscale/configuration",
+      "destination": "/docs/plugins/sources/tailscale/overview"
     }
   ]
 }
