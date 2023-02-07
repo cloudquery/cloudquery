@@ -10,7 +10,7 @@ import (
 func Keys() *schema.Table {
 	return &schema.Table{
 		Name:                "tailscale_keys",
-		Description:         `https://pkg.go.dev/github.com/tailscale/tailscale-client-go/tailscale#Key`,
+		Description:         `https://github.com/tailscale/tailscale/blob/main/api.md#keys`,
 		Resolver:            fetchKeys,
 		PreResourceResolver: getKey,
 		Transform:           transformers.TransformWithStruct(&tailscale.Key{}),
