@@ -159,6 +159,8 @@
 - [azure_network_subscription_network_manager_connections](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_subscription_network_manager_connections.md)
 - [azure_network_virtual_appliances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_virtual_appliances.md)
 - [azure_network_virtual_hubs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_virtual_hubs.md)
+- [azure_network_virtual_network_gateway_connections](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_virtual_network_gateway_connections.md)
+- [azure_network_virtual_network_gateways](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_virtual_network_gateways.md)
 - [azure_network_virtual_network_taps](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_virtual_network_taps.md)
 - [azure_network_virtual_networks](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_virtual_networks.md)
 - [azure_network_virtual_routers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_virtual_routers.md)
