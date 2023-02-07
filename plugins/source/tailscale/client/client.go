@@ -2,7 +2,11 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
+	"net/url"
 
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -12,35 +16,70 @@ import (
 )
 
 type Client struct {
-	*tailscale.Client
-	tailnet string
-	logger  zerolog.Logger
+	TailscaleClient *tailscale.Client
+	pluginSpec      *Spec
+	Logger          zerolog.Logger
 }
 
 var _ schema.ClientMeta = (*Client)(nil)
 
 func (c *Client) ID() string {
-	return c.tailnet
+	return c.pluginSpec.Tailnet
 }
 
-func (c *Client) Logger() *zerolog.Logger {
-	return &c.logger
+type oauthResponse struct {
+	TokenType   string `json:"token_type"`
+	AccessToken string `json:"access_token"`
+	ExpiredIn   int    `json:"expired_in"`
 }
 
-func Configure(_ context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	tsSpec := new(Spec)
-	err := spec.UnmarshalSpec(tsSpec)
-	if err != nil {
+func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+	pluginSpec := new(Spec)
+	if err := spec.UnmarshalSpec(pluginSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
-
-	client, err := tsSpec.getClient()
-	if err != nil {
-		return nil, fmt.Errorf("failed to create Tailscale client: %w", err)
+	if err := pluginSpec.Validate(); err != nil {
+		return nil, fmt.Errorf("failed to validate spec: %w", err)
 	}
+
+	// using the new oauth mechanism
+	if pluginSpec.APIKey == "" {
+		oatuhURL := "https://api.tailscale.com/api/v2/oauth/token"
+		resp, err := http.DefaultClient.PostForm("https://api.tailscale.com/api/v2/oauth/token", url.Values{
+			"client_id":     {pluginSpec.ClientID},
+			"client_secret": {pluginSpec.ClientSecret},
+		})
+		if err != nil {
+			return nil, fmt.Errorf("error getting keys from %s: %w", oatuhURL, err)
+		}
+		defer resp.Body.Close()
+
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return nil, fmt.Errorf("error reading response body from %s: %w", oatuhURL, err)
+		}
+
+		res := oauthResponse{}
+		if err := json.Unmarshal(body, &res); err != nil {
+			return nil, fmt.Errorf("error unmarshalling response body from %s: %w", oatuhURL, err)
+		}
+
+		pluginSpec.APIKey = res.AccessToken
+	}
+
+	var options []tailscale.ClientOption
+	if len(pluginSpec.EndpointURL) > 0 {
+		options = append(options, tailscale.WithBaseURL(pluginSpec.EndpointURL))
+	}
+
+	tailscaleClient, err := tailscale.NewClient(pluginSpec.APIKey, pluginSpec.Tailnet, options...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create tailscale client: %w", err)
+	}
+
 	return &Client{
-		Client:  client,
-		tailnet: tsSpec.Tailnet,
-		logger:  logger,
+		TailscaleClient: tailscaleClient,
+		pluginSpec:      pluginSpec,
+		Logger:          logger,
 	}, nil
 }
