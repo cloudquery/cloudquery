@@ -7,5 +7,5 @@ import (
 )
 
 func ResolveTailnet(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return resource.Set(c.Name, meta.(*Client).tailnet)
+	return resource.Set(c.Name, meta.(*Client).pluginSpec.Tailnet)
 }

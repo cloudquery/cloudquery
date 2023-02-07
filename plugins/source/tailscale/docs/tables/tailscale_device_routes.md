@@ -1,8 +1,8 @@
 # Table: tailscale_device_routes
 
-https://pkg.go.dev/github.com/tailscale/tailscale-client-go/tailscale#DeviceRoutes
+https://github.com/tailscale/tailscale/blob/main/api.md#device-routes-get
 
-The composite primary key for this table is (**tailnet**, **device_id**).
+The primary key for this table is **_cq_id**.
 
 ## Relations
 
@@ -14,9 +14,9 @@ This table depends on [tailscale_devices](tailscale_devices.md).
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id|UUID|
+|_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
-|tailnet (PK)|String|
-|device_id (PK)|String|
-|advertised|StringArray|
-|enabled|StringArray|
+|tailnet|String|
+|device_id|String|
+|advertised_routes|StringArray|
+|enabled_routes|StringArray|
