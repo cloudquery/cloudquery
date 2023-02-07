@@ -20,7 +20,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 'lts/*'
-          cache: 'npm'
 
       - run: npm install -g @google/repo@6.1.2
 
