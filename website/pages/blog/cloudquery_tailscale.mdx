@@ -16,7 +16,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 Tailscale source plugin for CloudQuery is now officially maintained by Tailscale - Big thanks for the Tailscale team!.
 
 With the new Tailscale plugin you can now easily query Tailscale config and bring config data to your infrastructure/operational lake
-so you can have all your infrastructure data in one place and corrolate between different services.
+so you can have all your infrastructure data in one place and correlate between different services.
 
 
 As part of its initial release, the Tailscale plugin supports pulling data for the following APIs:
@@ -51,7 +51,7 @@ spec:
 
 ## Example Queries
 
-Let's look at a few useful queries we can do just with the tailscale tables.
+Let's look at a few useful queries we can do just with the Tailscale tables.
 
 ### Unseen devices
 
@@ -69,7 +69,7 @@ select name, id, last_seen from tailscale_devices where last_seen < NOW() - INTE
 
 ### Key expiry disabled
 
-Find all devices with key expiary disabled
+Find all devices with key expiry disabled
 
 ```sql
 select name, id, last_seen from tailscale_devices where key_expiry_disabled;
@@ -83,7 +83,7 @@ select name, id, last_seen from tailscale_devices where key_expiry_disabled;
 
 ### Distribution of devices
 
-Learn about how tailscale client are distributed in your org across devices
+Learn about how Tailscale client are distributed in your org across devices
 
 ```sql
 select count(*), os from tailscale_devices group by os;
@@ -113,4 +113,4 @@ where ou.stats != 'ACTIVE'
 
 ## Summary
 
-You can slice and dice tailscale config data in many ways but this hopefully gives you a great starting point!
+You can slice and dice Tailscale config data in many ways but this should give you a great starting point!
