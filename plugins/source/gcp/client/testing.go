@@ -58,6 +58,7 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 			ClientOptions: clientOptions,
 			projects:      []string{"testProject"},
 			orgs:          []string{"testOrg"},
+			folderIds:     []string{"testFolder"},
 		}
 
 		return c, nil

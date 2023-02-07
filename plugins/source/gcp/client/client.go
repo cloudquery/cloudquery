@@ -33,8 +33,9 @@ import (
 const maxProjectIdsToLog int = 100
 
 type Client struct {
-	projects []string
-	orgs     []string
+	projects  []string
+	orgs      []string
+	folderIds []string
 
 	ClientOptions []option.ClientOption
 	CallOptions   []gax.CallOption
@@ -44,6 +45,8 @@ type Client struct {
 	ProjectId string
 	// this is set by table client Org multiplexer
 	OrgId string
+	// this is set by table client Folder multiplexer
+	FolderId string
 	// this is set by table client Location multiplexer
 	Location string
 	// Logger
@@ -75,6 +78,14 @@ func (c *Client) withOrg(org string) *Client {
 	return &newClient
 }
 
+// withFolder allows multiplexer to create a new client with given folderId
+func (c *Client) withFolder(folder string) *Client {
+	newClient := *c
+	newClient.logger = c.logger.With().Str("folder_id", folder).Logger()
+	newClient.FolderId = folder
+	return &newClient
+}
+
 func isValidJson(content []byte) error {
 	var v map[string]any
 	err := json.Unmarshal(content, &v)
@@ -87,6 +98,9 @@ func isValidJson(content []byte) error {
 func (c *Client) ID() string {
 	if c.OrgId != "" {
 		return "org:" + c.OrgId
+	}
+	if c.FolderId != "" {
+		return "folder:" + c.FolderId
 	}
 	if c.Location != "" {
 		return "project:" + c.ProjectId + ":location:" + c.Location
@@ -203,7 +217,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 	}
 
 	c.projects = projects
-
+	c.folderIds = gcpSpec.FolderIDs
 	c.orgs, err = getOrganizations(ctx, c.ClientOptions...)
 	if err != nil {
 		c.logger.Err(err).Msg("failed to get organizations")

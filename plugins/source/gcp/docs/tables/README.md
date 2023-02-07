@@ -143,6 +143,7 @@
 - [gcp_run_locations](gcp_run_locations.md)
   - [gcp_run_services](gcp_run_services.md)
 - [gcp_secretmanager_secrets](gcp_secretmanager_secrets.md)
+- [gcp_securitycenter_folder_findings](gcp_securitycenter_folder_findings.md)
 - [gcp_securitycenter_organization_findings](gcp_securitycenter_organization_findings.md)
 - [gcp_securitycenter_project_findings](gcp_securitycenter_project_findings.md)
 - [gcp_serviceusage_services](gcp_serviceusage_services.md)
