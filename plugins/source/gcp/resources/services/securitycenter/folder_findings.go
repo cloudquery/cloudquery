@@ -11,11 +11,12 @@ import (
 
 func FolderFindings() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_securitycenter_folder_findings",
-		Description: `https://cloud.google.com/security-command-center/docs/reference/rest/v1/ListFindingsResponse#ListFindingsResult`,
-		Resolver:    fetchFolderFindings,
-		Multiplex:   client.FolderMultiplex,
-		Transform:   transformers.TransformWithStruct(&pb.ListFindingsResponse_ListFindingsResult{}, client.Options()...),
+		Name:          "gcp_securitycenter_folder_findings",
+		Description:   `https://cloud.google.com/security-command-center/docs/reference/rest/v1/ListFindingsResponse#ListFindingsResult`,
+		Resolver:      fetchFolderFindings,
+		Multiplex:     client.FolderMultiplex,
+		IsIncremental: true,
+		Transform:     transformers.TransformWithStruct(&pb.ListFindingsResponse_ListFindingsResult{}, client.Options()...),
 		Columns: []schema.Column{
 			{
 				Name:     "folder_id",
