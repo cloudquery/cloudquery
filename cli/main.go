@@ -16,9 +16,8 @@ import (
 )
 
 func executeRootCmdWithContext() error {
-	ctx := context.Background()
 	// trap Ctrl+C and other signals, then call cancel on the context
-	ctx, cancel := context.WithCancel(ctx)
+	ctx, cancel := context.WithCancel(context.Background())
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	defer func() {

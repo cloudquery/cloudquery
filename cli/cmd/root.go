@@ -75,13 +75,14 @@ func NewCmdRoot() *cobra.Command {
 				log.Warn().Msg("The CQ_NO_TELEMETRY environment variable will be deprecated, please use CQ_TELEMETRY_LEVEL=none instead.")
 			}
 
-			//sendStats := funk.ContainsString([]string{"all", "stats"}, telemetryLevel.String())
-			//if Version != "development" && sendStats {
-			analyticsClient, err = initAnalytics()
-			if err != nil {
-				log.Warn().Err(err).Msg("failed to initialize analytics client")
+			sendStats := funk.ContainsString([]string{"all", "stats"}, telemetryLevel.String())
+			customAnalyticsHost := os.Getenv("CQ_ANALYTICS_HOST") != ""
+			if (Version != "development" || customAnalyticsHost) && sendStats {
+				analyticsClient, err = initAnalytics()
+				if err != nil {
+					log.Warn().Err(err).Msg("failed to initialize analytics client")
+				}
 			}
-			//}
 
 			sendErrors := funk.ContainsString([]string{"all", "errors"}, telemetryLevel.String())
 			if sentryDsn != "" && Version != "development" && sendErrors {

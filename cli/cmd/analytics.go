@@ -2,41 +2,54 @@ package cmd
 
 import (
 	"context"
+	"crypto/tls"
+	"crypto/x509"
+	"fmt"
+	"path"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/internal/pb"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
 const (
-	// analyticsHost = "analyticsv1.cloudquery.io:443"
-	analyticsHost = "localhost:8080"
+	defaultAnalyticsHost = "analyticsv1.cloudquery.io:443"
 )
 
 type AnalyticsClient struct {
 	client pb.AnalyticsClient
 	conn   *grpc.ClientConn
+	host   string
 }
 
 func initAnalytics() (*AnalyticsClient, error) {
-	//systemRoots, err := x509.SystemCertPool()
-	//if err != nil {
-	//	return nil, err
-	//}
-	//cred := credentials.NewTLS(&tls.Config{
-	//	RootCAs: systemRoots,
-	//})
-	conn, err := grpc.Dial(analyticsHost, grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		return nil, err
+	host := getEnvOrDefault("CQ_ANALYTICS_HOST", defaultAnalyticsHost)
+	var opts []grpc.DialOption
+	if strings.HasSuffix(host, ":443") {
+		systemRoots, err := x509.SystemCertPool()
+		if err != nil {
+			return nil, err
+		}
+		cred := credentials.NewTLS(&tls.Config{
+			RootCAs: systemRoots,
+		})
+		opts = []grpc.DialOption{grpc.WithAuthority(host), grpc.WithTransportCredentials(cred)}
+	} else {
+		opts = []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	}
-
+	conn, err := grpc.Dial(host, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to dial analytics host %v: %w", host, err)
+	}
 	return &AnalyticsClient{
 		client: pb.NewAnalyticsClient(conn),
 		conn:   conn,
+		host:   host,
 	}, nil
 }
 
@@ -46,9 +59,13 @@ func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.
 		metrics = &source.Metrics{TableClient: map[string]map[string]*source.TableClientMetrics{}}
 	}
 	if c.client != nil {
+		sourcePath := sourceSpec.Path
+		if sourceSpec.Registry == specs.RegistryLocal || sourceSpec.Registry == specs.RegistryGrpc {
+			_, sourcePath = path.Split(sourceSpec.Path)
+		}
 		syncSummary := &pb.SyncSummary{
 			Invocation_UUID: invocationUUID,
-			SourcePath:      sourceSpec.Path,
+			SourcePath:      sourcePath,
 			SourceVersion:   sourceSpec.Version,
 			Destinations:    make([]*pb.Destination, 0, 1),
 			Resources:       int64(metrics.TotalResources()),
@@ -58,8 +75,12 @@ func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.
 			ExitReason:      exitReason,
 		}
 		for _, destinationSpec := range destinationsSpecs {
+			destPath := destinationSpec.Path
+			if destinationSpec.Registry == specs.RegistryLocal || destinationSpec.Registry == specs.RegistryGrpc {
+				_, destPath = path.Split(destinationSpec.Path)
+			}
 			syncSummary.Destinations = append(syncSummary.Destinations, &pb.Destination{
-				Path:    destinationSpec.Path,
+				Path:    destPath,
 				Version: destinationSpec.Version,
 			})
 		}
@@ -97,6 +118,10 @@ func (c *AnalyticsClient) SendSyncSummary(ctx context.Context, sourceSpec specs.
 		return err
 	}
 	return nil
+}
+
+func (c *AnalyticsClient) Host() string {
+	return c.host
 }
 
 func (c *AnalyticsClient) Close() error {
