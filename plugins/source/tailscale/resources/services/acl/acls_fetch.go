@@ -9,8 +9,7 @@ import (
 
 func fetchAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-
-	result, err := c.ACL(ctx)
+	result, err := c.TailscaleClient.ACL(ctx)
 	if err != nil {
 		return err
 	}
