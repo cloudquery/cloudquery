@@ -61,7 +61,7 @@ Find all devices that weren't seen for more than 30 days:
 select name, id, last_seen from tailscale_devices where last_seen < NOW() - INTERVAL '30 DAY';
 ```
 
-```
+```text
     tailnet    |             name              |        id         |      last_seen      
 ---------------+-------------------------------+-------------------+---------------------
  cloudquery.io | example-name.tail341.ts.net   | 12345678082367896 | 2023-01-07 12:43:18
