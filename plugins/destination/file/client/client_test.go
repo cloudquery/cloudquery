@@ -40,3 +40,22 @@ func TestPluginJSON(t *testing.T) {
 		},
 	)
 }
+
+func TestPluginParquet(t *testing.T) {
+	p := destination.NewPlugin("file", "development", New, destination.WithManagedWriter())
+
+	destination.PluginTestSuiteRunner(t, p,
+		Spec{
+			Directory: t.TempDir(),
+			Format:    FormatTypeParquet,
+			NoRotate:  true,
+		},
+		destination.PluginTestSuiteTests{
+			SkipOverwrite:        true,
+			SkipDeleteStale:      true,
+			SkipSecondAppend:     true,
+			SkipMigrateAppend:    true,
+			SkipMigrateOverwrite: true,
+		},
+	)
+}
