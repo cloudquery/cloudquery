@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
-	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
+	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
@@ -13,22 +13,22 @@ import (
 
 func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
-	u := iamTypes.User{}
+	u := types.User{}
 	err := faker.FakeObject(&u)
 	if err != nil {
 		t.Fatal(err)
 	}
-	g := iamTypes.Group{}
+	g := types.Group{}
 	err = faker.FakeObject(&g)
 	if err != nil {
 		t.Fatal(err)
 	}
-	km := iamTypes.AccessKeyMetadata{}
+	km := types.AccessKeyMetadata{}
 	err = faker.FakeObject(&km)
 	if err != nil {
 		t.Fatal(err)
 	}
-	aup := iamTypes.AttachedPolicy{}
+	aup := types.AttachedPolicy{}
 	err = faker.FakeObject(&aup)
 	if err != nil {
 		t.Fatal(err)
@@ -39,13 +39,13 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	sshPublicKey := iamTypes.SSHPublicKeyMetadata{}
+	sshPublicKey := types.SSHPublicKeyMetadata{}
 	err = faker.FakeObject(&sshPublicKey)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	var tags []iamTypes.Tag
+	var tags []types.Tag
 	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
@@ -53,7 +53,7 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	m.EXPECT().ListUsers(gomock.Any(), gomock.Any()).Return(
 		&iam.ListUsersOutput{
-			Users: []iamTypes.User{u},
+			Users: []types.User{u},
 		}, nil)
 	m.EXPECT().GetUser(gomock.Any(), gomock.Any()).Return(
 		&iam.GetUserOutput{
@@ -61,15 +61,15 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 	m.EXPECT().ListGroupsForUser(gomock.Any(), gomock.Any()).Return(
 		&iam.ListGroupsForUserOutput{
-			Groups: []iamTypes.Group{g},
+			Groups: []types.Group{g},
 		}, nil)
 	m.EXPECT().ListAccessKeys(gomock.Any(), gomock.Any()).Return(
 		&iam.ListAccessKeysOutput{
-			AccessKeyMetadata: []iamTypes.AccessKeyMetadata{km},
+			AccessKeyMetadata: []types.AccessKeyMetadata{km},
 		}, nil)
 	m.EXPECT().ListAttachedUserPolicies(gomock.Any(), gomock.Any()).Return(
 		&iam.ListAttachedUserPoliciesOutput{
-			AttachedPolicies: []iamTypes.AttachedPolicy{aup},
+			AttachedPolicies: []types.AttachedPolicy{aup},
 		}, nil)
 	m.EXPECT().GetAccessKeyLastUsed(gomock.Any(), gomock.Any()).Return(
 		&akl, nil)
@@ -98,7 +98,19 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	m.EXPECT().ListSSHPublicKeys(gomock.Any(), gomock.Any()).Return(
 		&iam.ListSSHPublicKeysOutput{
-			SSHPublicKeys: []iamTypes.SSHPublicKeyMetadata{sshPublicKey},
+			SSHPublicKeys: []types.SSHPublicKeyMetadata{sshPublicKey},
+		}, nil)
+
+	// get signing key
+
+	sc := types.SigningCertificate{}
+	err = faker.FakeObject(&sc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListSigningCertificates(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&iam.ListSigningCertificatesOutput{
+			Certificates: []types.SigningCertificate{sc},
 		}, nil)
 
 	return client.Services{
