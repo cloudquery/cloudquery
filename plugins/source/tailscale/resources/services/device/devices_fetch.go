@@ -10,7 +10,7 @@ import (
 func fetchDevices(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 
-	result, err := c.Devices(ctx)
+	result, err := c.TailscaleClient.Devices(ctx)
 	if err != nil {
 		return err
 	}
