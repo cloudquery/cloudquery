@@ -36,7 +36,7 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 	}
 	defer gsrv.Stop()
 	eg := &errgroup.Group{}
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, opts source.Options) (schema.ClientMeta, error) {
 		err := createService(gsrv)
 		if err != nil {
 			return nil, fmt.Errorf("failed to createService: %w", err)
@@ -58,6 +58,8 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 			ClientOptions: clientOptions,
 			projects:      []string{"testProject"},
 			orgs:          []string{"testOrg"},
+			folderIds:     []string{"testFolder"},
+			Backend:       opts.Backend,
 		}
 
 		return c, nil
