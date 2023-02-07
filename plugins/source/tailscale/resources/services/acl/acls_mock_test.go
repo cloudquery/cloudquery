@@ -2,6 +2,7 @@ package acl
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"testing"
 
@@ -14,7 +15,7 @@ import (
 func createAcls(mux *httprouter.Router) error {
 	var acl tailscale.ACL
 	if err := faker.FakeObject(&acl); err != nil {
-		return err
+		return fmt.Errorf("failed to fake ACL: %w", err)
 	}
 
 	mux.GET("/api/v2/tailnet/:tailnet/acl", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -28,7 +29,6 @@ func createAcls(mux *httprouter.Router) error {
 			return
 		}
 	})
-
 	return nil
 }
 
