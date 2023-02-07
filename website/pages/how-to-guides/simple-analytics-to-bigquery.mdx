@@ -68,7 +68,7 @@ jobs:
           SA_BIGQUERY_DATASET_ID: ${{ secrets.SA_BIGQUERY_DATASET_ID }}
 ```
 
-This configuration allows us to run the workflow manually or on a schedule. The example above is configured to run daily at 2am UTC. The workflow will run on a self-hosted runner, which is a virtual machine hosted by GitHub. The workflow will run the following steps:
+This configuration allows us to run the workflow manually or on a schedule. The example above is configured to run daily at 2 a.m. UTC. The workflow will run on a self-hosted runner, which is a virtual machine hosted by GitHub. The workflow will run the following steps:
  1. Check out the repository
  2. Authenticate to Google Cloud using the [google-github-actions/auth](https://github.com/google-github-actions/auth) Action
  3. Setup CloudQuery using the [cloudquery/setup-cloudquery](https://github.com/cloudquery/setup-cloudquery) Action
@@ -129,7 +129,7 @@ You can find the latest version in the [BigQuery destination plugin documentatio
 
 ### Step 1.5: Push to the repository
 
-With all this in place, make sure you to push the files to the GitHub repo. You can now run the workflow manually by going to `Actions > Sync Simple Analytics to BigQuery > Run workflow` and clicking the `Run workflow` button. It will run, but probably end with an error, because we still need to set up the Workload Identity to authenticate with BigQuery. Let's do that next.
+With all this in place, make sure you to push the files to the GitHub repository. You can now run the workflow manually by going to `Actions > Sync Simple Analytics to BigQuery > Run workflow` and clicking the `Run workflow` button. It will run, but probably end with an error, because we still need to set up the Workload Identity to authenticate with BigQuery. Let's do that next.
 
 ## Step 2: Set up Workload Identity
 
@@ -220,7 +220,7 @@ gcloud iam service-accounts add-iam-policy-binding "cloudquery-service-account@$
 
 ## Step 3: Query the data!
 
-Now that we have set up the Workload Identity, we can run the workflow again. Go to `Actions > Sync Simple Analytics to BigQuery > Run workflow` and click the `Run workflow` button. You should see the workflow run successfully. You can also check the logs to see that the data was successfully written to BigQuery, or get messages about any errors that occurred. Hopefully it worked the first time, in which case you can now query the data in BigQuery!
+Now that we have set up the Workload Identity, we can run the workflow again. Go to `Actions > Sync Simple Analytics to BigQuery > Run workflow` and click the `Run workflow` button. You should see the workflow run successfully. You can also check the logs to see that the data was successfully written to BigQuery, or get messages about any errors that occurred. After a successful workflow run you should be able to query the data in BigQuery!
 
 Let's head over to the BigQuery console and run the following query to test it out:
 
@@ -285,4 +285,4 @@ Now we can add these queries to the workflow. We'll add a few steps to the workf
 
 ## Conclusion
 
-That's it! Now we have a fully automated pipeline that extracts data from Simple Analytics, loads it into BigQuery, and deduplicates it on a regular basis. We can now use this data to build dashboards, reports, and more. To see a live repo employing this workflow, check out [the cloudquery/recipes repo](https://github.com/cloudquery/recipes).
+That's it! Now we have a fully automated pipeline that extracts data from Simple Analytics, loads it into BigQuery, and deduplicates it on a regular basis. We can now use this data to build dashboards, reports, and more. To see a live repository employing this workflow, check out [the cloudquery/recipes repository](https://github.com/cloudquery/recipes).
