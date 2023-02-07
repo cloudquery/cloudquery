@@ -5,6 +5,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/account"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acm"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amp"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amplify"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
@@ -68,6 +69,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ram"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/rds"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/redshift"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resiliencehub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
@@ -75,6 +77,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/savingsplans"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/scheduler"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/secretsmanager"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/securityhub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicecatalog"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicequotas"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses"
@@ -101,6 +104,7 @@ func tables() []*schema.Table {
 		account.Contacts(),
 		acm.Certificates(),
 		amp.Workspaces(),
+		amplify.Apps(),
 		apigateway.ApiKeys(),
 		apigateway.ClientCertificates(),
 		apigateway.DomainNames(),
@@ -176,6 +180,7 @@ func tables() []*schema.Table {
 		ec2.CustomerGateways(),
 		ec2.EbsSnapshots(),
 		ec2.EbsVolumes(),
+		ec2.EbsVolumesStatuses(),
 		ec2.EgressOnlyInternetGateways(),
 		ec2.Eips(),
 		ec2.FlowLogs(),
@@ -368,6 +373,9 @@ func tables() []*schema.Table {
 		redshift.EventSubscriptions(),
 		redshift.SubnetGroups(),
 		resourcegroups.ResourceGroups(),
+		resiliencehub.Apps(),
+		resiliencehub.ResiliencyPolicies(),
+		resiliencehub.SuggestedResiliencyPolicies(),
 		route53.DelegationSets(),
 		route53.Domains(),
 		route53.HealthChecks(),
@@ -383,6 +391,7 @@ func tables() []*schema.Table {
 		scheduler.ScheduleGroups(),
 		scheduler.Schedules(),
 		secretsmanager.Secrets(),
+		securityhub.Findings(),
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),

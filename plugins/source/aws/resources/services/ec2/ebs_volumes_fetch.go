@@ -29,15 +29,20 @@ func fetchEc2EbsVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 	return nil
 }
 
+func resolveVolumeARN(partition string, region string, accountID string, volumeId string) string {
+	a := arn.ARN{
+		Partition: partition,
+		Service:   "ec2",
+		Region:    region,
+		AccountID: accountID,
+		Resource:  "volume/" + volumeId,
+	}
+	return a.String()
+}
+
 func resolveEbsVolumeArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	volume := resource.Item.(types.Volume)
-	a := arn.ARN{
-		Partition: cl.Partition,
-		Service:   "ec2",
-		Region:    cl.Region,
-		AccountID: cl.AccountID,
-		Resource:  "volume/" + aws.ToString(volume.VolumeId),
-	}
-	return resource.Set(c.Name, a.String())
+	a := resolveVolumeARN(cl.Partition, cl.Region, cl.AccountID, aws.ToString(volume.VolumeId))
+	return resource.Set(c.Name, a)
 }

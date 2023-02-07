@@ -39,5 +39,8 @@ func ClusterServices() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 		},
+		Relations: []*schema.Table{
+			ClusterTaskSets(),
+		},
 	}
 }

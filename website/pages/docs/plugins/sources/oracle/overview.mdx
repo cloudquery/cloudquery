@@ -1,3 +1,6 @@
+---
+name: Oracle
+---
 # Oracle Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -15,7 +18,7 @@ CloudQuery supports the same authentication methods as the OCI Go SDK, and uses 
 
 An example configuration file (e.g. in `~/.oci/config`) looks like this:
 
-```ini
+```ini copy
 [DEFAULT]
 user=ocid1.user.oc1..<unique_ID>
 fingerprint=<your_fingerprint>
@@ -34,7 +37,7 @@ In order to get started with the Oracle plugin, you need to create a YAML file i
 
 The following example sets up the Oracle plugin, and connects it to a postgresql destination:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: "oracle"

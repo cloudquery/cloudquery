@@ -43,7 +43,7 @@ To sync infrastructure data to S3, we will need an installation of the CloudQuer
 
 When this step is complete, you should be able to run `cloudquery --help` and see the help output:
 
-```bash
+```bash copy
 $ cloudquery --help
 CloudQuery CLI
 
@@ -243,6 +243,12 @@ WHERE "block_public_acls" <> TRUE
 ![Athena query editor](/images/how-to-guides/how-to-load-infrastructure-data-into-athena/athena-query-editor.png)
 
 Wait, isn't that the bucket we just created for this guide? Better go lock it down 😉
+
+{/*<!-- vale off -->*/}
+<Callout type="info">
+  Athena is case-insensitive. If you see an error like `Row is not a valid JSON Object - JSONException: Duplicate key`, this means some of the data in a JSON column contained keys where only the case differed (e.g. `Name` and `name`). AWS tags are case sensitive, so this can be a common cause. For more information about ways to address this issue, see [this GitHub comment](https://github.com/cloudquery/cloudquery/issues/7639#issuecomment-1419082572).
+</Callout>
+{/*<!-- vale on -->*/}
 
 ## Conclusion
 

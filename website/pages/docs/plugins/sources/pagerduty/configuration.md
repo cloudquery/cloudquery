@@ -6,7 +6,7 @@ In order to get started with the PagerDuty plugin, you need to create a YAML fil
 
 This example connects a single PagerDuty subscription to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml
+```yaml copy
 kind: source
 spec:
   # Source spec section

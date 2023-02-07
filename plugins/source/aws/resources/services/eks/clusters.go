@@ -34,11 +34,10 @@ func Clusters() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
+		},
+		Relations: []*schema.Table{
+			NodeGroups(),
+			FargateProfiles(),
 		},
 	}
 }

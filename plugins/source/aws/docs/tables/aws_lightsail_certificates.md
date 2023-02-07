@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Certificate.html
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **arn**.
 
 ## Columns
 
@@ -10,12 +10,12 @@ The primary key for this table is **_cq_id**.
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |tags|JSON|
-|arn|String|
+|arn (PK)|String|
 |created_at|Timestamp|
 |domain_name|String|
 |domain_validation_records|JSON|

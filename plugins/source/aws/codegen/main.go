@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 	"path"
 	"reflect"
 	"runtime"
@@ -9,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/account"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/amp"
+	"github.com/aws/aws-sdk-go-v2/service/amplify"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
@@ -82,6 +84,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/savingsplans"
 	"github.com/aws/aws-sdk-go-v2/service/scheduler"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
@@ -109,6 +112,7 @@ var clients = []any{
 	&account.Client{},
 	&acm.Client{},
 	&amp.Client{},
+	&amplify.Client{},
 	&apigateway.Client{},
 	&apigatewayv2.Client{},
 	&applicationautoscaling.Client{},
@@ -174,6 +178,7 @@ var clients = []any{
 	&rds.Client{},
 	&redshift.Client{},
 	&resourcegroups.Client{},
+	&resiliencehub.Client{},
 	&route53.Client{},
 	&route53domains.Client{},
 	&s3.Client{},
@@ -182,6 +187,7 @@ var clients = []any{
 	&savingsplans.Client{},
 	&scheduler.Client{},
 	&secretsmanager.Client{},
+	&securityhub.Client{},
 	&servicecatalog.Client{},
 	&servicecatalogappregistry.Client{},
 	&servicequotas.Client{},

@@ -3,11 +3,13 @@ package client
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/jackc/pgx/v5"
+	"golang.org/x/exp/maps"
 )
 
 const (
@@ -64,7 +66,9 @@ func (c *Client) isTableExistSQL(ctx context.Context, table string) (bool, error
 func (c *Client) getStalePks(pgPKs map[string]bool, table *schema.Table) []string {
 	stalePks := []string{}
 	if c.enabledPks() {
-		for pk := range pgPKs {
+		sortedPKs := maps.Keys(pgPKs)
+		sort.Strings(sortedPKs)
+		for _, pk := range sortedPKs {
 			stalePk := true
 			for _, col := range table.Columns {
 				if col.Name == pk && col.CreationOptions.PrimaryKey {

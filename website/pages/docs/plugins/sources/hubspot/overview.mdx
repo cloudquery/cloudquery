@@ -1,3 +1,6 @@
+---
+name: HubSpot
+---
 # HubSpot Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -20,7 +23,7 @@ You can use the `max_requests_per_second` configuration option to change this va
 
 In Order for CloudQuery to sync resources from your HubSpot setup, you will need to authenticate with your HubSpot account. You will need to create a [HubSpot Private App](https://developers.hubspot.com/docs/api/private-apps), and export the App Token in `HUBSPOT_APP_TOKEN` environment variable.
 
-```bash
+```bash copy
 export HUBSPOT_APP_TOKEN=<your_app_token>
 ```
 
@@ -30,7 +33,7 @@ In order to get started with the HubSpot plugin, you need to create a YAML file 
 
 The following example sets up the HubSpot plugin, and connects it to a postgresql destination:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: "hubspot"

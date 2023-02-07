@@ -29,11 +29,11 @@ jobs:
         uses: goreleaser/goreleaser-action@v3
         with:
           version: latest
-          args: release --rm-dist --skip-validate --skip-publish --skip-sign
+          args: release --clean --skip-validate --skip-publish --skip-sign
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v3
         with:
           version: latest
-          args: release --rm-dist --skip-sign
+          args: release --clean --skip-sign
         env:
           GITHUB_TOKEN: ${{"{{"}} secrets.GITHUB_TOKEN {{"}}"}}
