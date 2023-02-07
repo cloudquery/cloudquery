@@ -51,7 +51,6 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 			log.Error().Err(err).Msg("Failed to terminate source client")
 			fmt.Println("failed to terminate source client: ", err)
 		}
-		sourceCancel()
 	}()
 
 	syncTime := time.Now().UTC()
@@ -68,7 +67,6 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 
 	destClients, err := newDestinationClientsV0(destCtx, sourceSpec, destinationsSpecs, cqDir)
 	if err != nil {
-		destCancel()
 		exitReason = "failed to get destination plugin client"
 		return err
 	}
@@ -77,7 +75,6 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 			return
 		}
 		destClients.Close()
-		destCancel()
 	}()
 
 	go func() {
