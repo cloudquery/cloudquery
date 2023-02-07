@@ -22,20 +22,14 @@ func getRequest(ctx context.Context, c *client.Client, table string, parent stri
 	if err != nil {
 		c.Logger().Warn().Str("table", table).Msgf("failed to get filter %s", err.Error())
 	}
-	var req *pb.ListFindingsRequest
-	if filter == "" || err != nil {
-		req = &pb.ListFindingsRequest{
-			Parent:   parent,
-			OrderBy:  "event_time",
-			PageSize: pageSize,
-		}
-	} else {
-		req = &pb.ListFindingsRequest{
-			Parent:   parent,
-			OrderBy:  "event_time",
-			PageSize: pageSize,
-			Filter:   filter,
-		}
+	req := &pb.ListFindingsRequest{
+		Parent:   parent,
+		OrderBy:  "event_time",
+		PageSize: pageSize,
+	}
+	if filter != "" && err == nil {
+		req.Filter = filter
+
 	}
 	return req
 }
