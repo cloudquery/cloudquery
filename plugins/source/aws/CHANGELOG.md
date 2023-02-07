@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [13.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v13.1.0...plugins-source-aws-v13.2.0) (2023-02-07)
+
+
+### Features
+
+* Add Resilience Hub resources ([#7299](https://github.com/cloudquery/cloudquery/issues/7299)) ([1b54e7e](https://github.com/cloudquery/cloudquery/commit/1b54e7e9a910801617937cdbf74fa3be31a2b496))
+* **aws:** Add support for Amplify Apps ([#7695](https://github.com/cloudquery/cloudquery/issues/7695)) ([8ee00c5](https://github.com/cloudquery/cloudquery/commit/8ee00c5d1077905d798bb70521a40cc6143e0e1d))
+* **aws:** Add support for ECS Tasksets ([#7688](https://github.com/cloudquery/cloudquery/issues/7688)) ([b77e8b5](https://github.com/cloudquery/cloudquery/commit/b77e8b5f6e59b08d07c4467e32206a2174303c0d))
+* **aws:** Add support for EKS Fargate Profiles ([#7693](https://github.com/cloudquery/cloudquery/issues/7693)) ([1f668db](https://github.com/cloudquery/cloudquery/commit/1f668db8e8e0ebe289131124c03cd2cee8a92165))
+* **AWS:** Add support for EKS Node Groups ([#7692](https://github.com/cloudquery/cloudquery/issues/7692)) ([4a5650e](https://github.com/cloudquery/cloudquery/commit/4a5650e3136030438265dd8d11e3149a0652d81c))
+* **aws:** Add Support for Secrets Manager Secret Versions ([#7701](https://github.com/cloudquery/cloudquery/issues/7701)) ([041c341](https://github.com/cloudquery/cloudquery/commit/041c3412b9afa20331c49dc6e12a65e3de6fe4cd))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.34.0 ([#7719](https://github.com/cloudquery/cloudquery/issues/7719)) ([6a33085](https://github.com/cloudquery/cloudquery/commit/6a33085c75adcf2387f7bbb5aa4f7a84ce7e2957))
+* Update endpoints ([#7702](https://github.com/cloudquery/cloudquery/issues/7702)) ([03d1eeb](https://github.com/cloudquery/cloudquery/commit/03d1eeb30cfb2c4657ce254751b4b8d4823b6bde))
+
 ## [13.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v13.0.0...plugins-source-aws-v13.1.0) (2023-02-06)
 
 
