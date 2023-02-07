@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_SigningCertificate.html
 
-The primary key for this table is **certificate_id**.
+The composite primary key for this table is (**user_arn**, **certificate_id**).
 
 ## Relations
 
@@ -17,7 +17,7 @@ This table depends on [aws_iam_users](aws_iam_users.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
-|user_arn|String|
+|user_arn (PK)|String|
 |user_id|String|
 |certificate_body|String|
 |certificate_id (PK)|String|
