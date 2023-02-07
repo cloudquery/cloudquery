@@ -46,5 +46,8 @@ func Secrets() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 		},
+		Relations: []*schema.Table{
+			SecretVersions(),
+		},
 	}
 }
