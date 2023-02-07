@@ -7,8 +7,9 @@ import (
 type FormatType string
 
 const (
-	FormatTypeCSV  = "csv"
-	FormatTypeJSON = "json"
+	FormatTypeCSV     = "csv"
+	FormatTypeJSON    = "json"
+	FormatTypeParquet = "parquet"
 )
 
 type Spec struct {

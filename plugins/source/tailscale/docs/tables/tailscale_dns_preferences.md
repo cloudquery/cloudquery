@@ -1,6 +1,6 @@
-# Table: tailscale_dns
+# Table: tailscale_dns_preferences
 
-https://pkg.go.dev/github.com/tailscale/tailscale-client-go/tailscale#DNSPreferences
+https://github.com/tailscale/tailscale/blob/main/api.md#tailnet-dns-preferences-get
 
 The primary key for this table is **tailnet**.
 
@@ -13,6 +13,4 @@ The primary key for this table is **tailnet**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |tailnet (PK)|String|
-|nameservers|StringArray|
-|search_paths|StringArray|
 |magic_dns|Bool|
