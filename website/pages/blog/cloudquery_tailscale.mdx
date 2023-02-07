@@ -103,7 +103,7 @@ Other cool things once you have Tailscale configuration in your database/datalak
 
 For example, the following will show all devices of users that were deactivated on Okta:
 
-```
+```sql copy
 select td.tailnet, td.name, td.id, td.user, td.last_seen
 from tailscale_devices td
     left join okta_users ou 
