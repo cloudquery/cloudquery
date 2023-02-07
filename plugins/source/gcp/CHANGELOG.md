@@ -5,6 +5,17 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.6.0...plugins-source-gcp-v8.0.0) (2023-02-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **gcp-resources:** Make Security Center Tables Incremental ([#7696](https://github.com/cloudquery/cloudquery/issues/7696))
+
+### Features
+
+* **gcp-resources:** Make Security Center Tables Incremental ([#7696](https://github.com/cloudquery/cloudquery/issues/7696)) ([50f5102](https://github.com/cloudquery/cloudquery/commit/50f51029da7fdc582eb2945f591831d65043e92f))
+
 ## [7.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.5.0...plugins-source-gcp-v7.6.0) (2023-02-07)
 
 
