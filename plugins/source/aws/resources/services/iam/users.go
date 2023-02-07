@@ -50,6 +50,7 @@ func Users() *schema.Table {
 			UserAttachedPolicies(),
 			UserPolicies(),
 			SshPublicKeys(),
+			SigningCertificates(),
 		},
 	}
 }
