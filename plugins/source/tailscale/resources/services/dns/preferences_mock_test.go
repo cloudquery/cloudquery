@@ -1,8 +1,7 @@
-package acl
+package dns
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"testing"
 
@@ -12,14 +11,14 @@ import (
 	"github.com/tailscale/tailscale-client-go/tailscale"
 )
 
-func createAcls(mux *httprouter.Router) error {
-	var acl tailscale.ACL
-	if err := faker.FakeObject(&acl); err != nil {
-		return fmt.Errorf("failed to fake ACL: %w", err)
+func createPreferences(mux *httprouter.Router) error {
+	var preferences tailscale.DNSPreferences
+	if err := faker.FakeObject(&preferences); err != nil {
+		return err
 	}
 
-	mux.GET("/api/v2/tailnet/:tailnet/acl", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		b, err := json.Marshal(acl)
+	mux.GET("/api/v2/tailnet/:tailnet/dns/preferences", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		b, err := json.Marshal(preferences)
 		if err != nil {
 			http.Error(w, "unable to marshal response: "+err.Error(), http.StatusBadRequest)
 			return
@@ -29,9 +28,10 @@ func createAcls(mux *httprouter.Router) error {
 			return
 		}
 	})
+
 	return nil
 }
 
-func TestAcls(t *testing.T) {
-	client.MockTestHelper(t, Acls(), createAcls)
+func TestPreferences(t *testing.T) {
+	client.MockTestHelper(t, Preferences(), createPreferences)
 }

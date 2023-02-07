@@ -1,6 +1,6 @@
 # Table: tailscale_acls
 
-https://pkg.go.dev/github.com/tailscale/tailscale-client-go/tailscale#ACL
+https://github.com/tailscale/tailscale/blob/main/api.md#acl
 
 The primary key for this table is **tailnet**.
 
@@ -14,14 +14,14 @@ The primary key for this table is **tailnet**.
 |_cq_parent_id|UUID|
 |tailnet (PK)|String|
 |acls|JSON|
-|auto_approvers|JSON|
-|groups|JSON|
-|hosts|JSON|
-|tag_owners|JSON|
 |derp_map|JSON|
-|tests|JSON|
 |ssh|JSON|
-|node_attrs|JSON|
 |disable_ipv4|Bool|
 |one_cgnat_route|String|
+|autoapprovers|JSON|
+|groups|JSON|
+|hosts|JSON|
+|tagowners|JSON|
+|tests|JSON|
+|node_attrs|JSON|
 |randomize_client_port|Bool|
