@@ -39,6 +39,7 @@ func FolderFindings() *schema.Table {
 
 func fetchFolderFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	p := "folders/" + c.FolderId + "/sources/-"
+	// FolderId is already in the format "folders/{id}"
+	p := c.FolderId + "/sources/-"
 	return fetchFindings(p)(ctx, meta, parent, res)
 }
