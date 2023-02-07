@@ -72,6 +72,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ram v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/rds v1.40.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.27.0
+	github.com/aws/aws-sdk-go-v2/service/resiliencehub v1.8.0
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0
@@ -101,7 +102,7 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.0
-	github.com/cloudquery/plugin-sdk v1.33.1
+	github.com/cloudquery/plugin-sdk v1.34.0
 	github.com/gocarina/gocsv v0.0.0-20230123225133-763e25b40669
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
@@ -112,6 +113,8 @@ require (
 	github.com/thoas/go-funk v0.9.3
 	golang.org/x/sync v0.1.0
 )
+
+require github.com/aws/aws-sdk-go-v2/service/amplify v1.13.1
 
 require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.19 // indirect; indirect // indirect
