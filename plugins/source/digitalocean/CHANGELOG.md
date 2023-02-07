@@ -5,6 +5,24 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v4.1.3...plugins-source-digitalocean-v4.1.4) (2023-02-07)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to f062dba ([#7531](https://github.com/cloudquery/cloudquery/issues/7531)) ([59d5575](https://github.com/cloudquery/cloudquery/commit/59d55758b0951553b8d246d1e78b4e3917ff1976))
+* **deps:** Update google.golang.org/genproto digest to 1c01626 ([#7533](https://github.com/cloudquery/cloudquery/issues/7533)) ([c549c27](https://github.com/cloudquery/cloudquery/commit/c549c275077f1cdfb9df0b3f3c129cbf0b150552))
+* **deps:** Update module github.com/avast/retry-go/v4 to v4.3.2 ([#7542](https://github.com/cloudquery/cloudquery/issues/7542)) ([7219fc0](https://github.com/cloudquery/cloudquery/commit/7219fc0f0f968812f511f2cf0412f4fd8f3594af))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.17.4 ([#7652](https://github.com/cloudquery/cloudquery/issues/7652)) ([2196050](https://github.com/cloudquery/cloudquery/commit/2196050848b7abdafa9174af97151d0dbdf629c4))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.12 ([#7653](https://github.com/cloudquery/cloudquery/issues/7653)) ([59daf42](https://github.com/cloudquery/cloudquery/commit/59daf423f2992c89db3db542c000286800d4ca61))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/ec2/imds to v1.12.22 ([#7655](https://github.com/cloudquery/cloudquery/issues/7655)) ([4e56621](https://github.com/cloudquery/cloudquery/commit/4e56621f73f515874c15eddb6da8b349d0889d6c))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/internal/ini to v1.3.29 ([#7659](https://github.com/cloudquery/cloudquery/issues/7659)) ([60f15d7](https://github.com/cloudquery/cloudquery/commit/60f15d7cadfb3323c9b072869e252cdc7dfb0aab))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/internal/v4a to v1.0.19 ([#7660](https://github.com/cloudquery/cloudquery/issues/7660)) ([9035012](https://github.com/cloudquery/cloudquery/commit/9035012d6ac2d41bdbdf0e2bf6f025f1bbac058b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.0 ([#7595](https://github.com/cloudquery/cloudquery/issues/7595)) ([c5adc75](https://github.com/cloudquery/cloudquery/commit/c5adc750d4b0242563997c04c582f8da27913095))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.1 ([#7614](https://github.com/cloudquery/cloudquery/issues/7614)) ([2fe665c](https://github.com/cloudquery/cloudquery/commit/2fe665cdd80d88c5699bb203bd7accd604dfba99))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.34.0 ([#7719](https://github.com/cloudquery/cloudquery/issues/7719)) ([6a33085](https://github.com/cloudquery/cloudquery/commit/6a33085c75adcf2387f7bbb5aa4f7a84ce7e2957))
+* **digitalocean-resources:** Remove relational tables from top level list ([#7632](https://github.com/cloudquery/cloudquery/issues/7632)) ([db53d6d](https://github.com/cloudquery/cloudquery/commit/db53d6da57428748a26911a9843668ae8d32117c))
+
 ## [4.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v4.1.2...plugins-source-digitalocean-v4.1.3) (2023-01-31)
 
 
