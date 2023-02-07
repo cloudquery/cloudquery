@@ -2,7 +2,7 @@
 
 https://github.com/tailscale/tailscale/blob/main/api.md#keys
 
-The primary key for this table is **tailnet**.
+The composite primary key for this table is (**tailnet**, **id**).
 
 ## Columns
 
@@ -13,7 +13,7 @@ The primary key for this table is **tailnet**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |tailnet (PK)|String|
-|id|String|
+|id (PK)|String|
 |key|String|
 |created|Timestamp|
 |expires|Timestamp|

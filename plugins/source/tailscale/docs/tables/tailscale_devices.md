@@ -27,11 +27,11 @@ The following tables depend on tailscale_devices:
 |key_expiry_disabled|Bool|
 |blocks_incoming_connections|Bool|
 |client_version|String|
-|created|JSON|
-|expires|JSON|
+|created|Timestamp|
+|expires|Timestamp|
 |hostname|String|
 |is_external|Bool|
-|last_seen|JSON|
+|last_seen|Timestamp|
 |machine_key|String|
 |node_key|String|
 |os|String|
