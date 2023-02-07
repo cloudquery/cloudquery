@@ -428,6 +428,7 @@
   - [aws_route53_hosted_zone_traffic_policy_instances](aws_route53_hosted_zone_traffic_policy_instances.md)
 - [aws_route53_traffic_policies](aws_route53_traffic_policies.md)
   - [aws_route53_traffic_policy_versions](aws_route53_traffic_policy_versions.md)
+- [aws_s3_access_points](aws_s3_access_points.md)
 - [aws_s3_accounts](aws_s3_accounts.md)
 - [aws_s3_buckets](aws_s3_buckets.md)
   - [aws_s3_bucket_cors_rules](aws_s3_bucket_cors_rules.md)
