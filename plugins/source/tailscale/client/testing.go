@@ -1,8 +1,6 @@
 package client
 
 import (
-	"context"
-	"fmt"
 	"net/http/httptest"
 	"os"
 	"testing"
@@ -23,31 +21,10 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 	mux := httprouter.New()
 	ts := httptest.NewUnstartedServer(mux)
 	defer ts.Close()
-
-	newTestExecutionClient := func(_ context.Context, logger zerolog.Logger, _ specs.Source, _ source.Options) (schema.ClientMeta, error) {
-		err := createService(mux)
-		if err != nil {
-			return nil, fmt.Errorf("failed to createService: %w", err)
-		}
-		ts.Start()
-
-		tsClient, err := (&Spec{
-			APIKey:      "test-key",
-			Tailnet:     "test-tailnet",
-			EndpointURL: ts.URL,
-		}).getClient()
-		if err != nil {
-			return nil, fmt.Errorf("failed to create client: %w", err)
-		}
-
-		c := &Client{
-			Client:  tsClient,
-			logger:  logger,
-			tailnet: "test",
-		}
-
-		return c, nil
+	if err := createService(mux); err != nil {
+		t.Fatalf("failed to createService: %v", err)
 	}
+	ts.Start()
 
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
@@ -59,7 +36,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 		[]*schema.Table{
 			table,
 		},
-		newTestExecutionClient)
+		Configure)
 	p.SetLogger(l)
 
 	source.TestPluginSync(t, p, specs.Source{
@@ -67,6 +44,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 		Path:         "cloudquery/dev",
 		Version:      version,
 		Tables:       []string{table.Name},
+		Spec:         &Spec{APIKey: "test", Tailnet: "test", EndpointURL: ts.URL},
 		Destinations: []string{"mock-destination"},
 	})
 }
