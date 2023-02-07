@@ -8,7 +8,7 @@ import { Badge } from "../../../../../components/Badge";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "gcs")}/>
 
-This destination plugin lets you sync data from a CloudQuery source to remote GCS (Google Cloud Storage) storage in various formats such as CSV, JSON.
+This destination plugin lets you sync data from a CloudQuery source to remote GCS (Google Cloud Storage) storage in various formats such as CSV, JSON and Parquet.
 
 This is useful in various use-cases, especially in data lakes where you can query the data direct from Athena or load it to various data warehouses such as BigQuery, RedShift, Snowflake and others.
 
@@ -51,7 +51,7 @@ This is the (nested) spec used by the CSV destination Plugin.
 
 - `format` (string) (required)
 
-  Format of the output file. `json` and `csv` are supported.
+  Format of the output file. Supported values are `csv`, `json` and `parquet`.
 
 - `format_spec` (map [format_spec](#format_spec)) (optional)
   Optional parameters to change the format of the file
