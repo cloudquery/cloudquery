@@ -45,6 +45,16 @@ func buildSecretsmanagerModels(t *testing.T, ctrl *gomock.Controller) client.Ser
 		nil,
 	)
 
+	version := secretsmanager.ListSecretVersionIdsOutput{}
+	if err := faker.FakeObject(&version); err != nil {
+		t.Fatal(err)
+	}
+	version.NextToken = nil
+	m.EXPECT().ListSecretVersionIds(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(
+		&version,
+		nil,
+	)
+
 	return client.Services{
 		Secretsmanager: m,
 	}
