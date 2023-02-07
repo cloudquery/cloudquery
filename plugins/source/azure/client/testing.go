@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -93,12 +92,8 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			registeredNamespaces: registeredNamespaces,
 			Creds:                creds,
 			subscriptions:        []string{TestSubscription},
-			resourceGroups: map[string][]*armresources.GenericResourceExpanded{
-				TestSubscription: {
-					{
-						Name: &testResourceGroup,
-					},
-				},
+			resourceGroups: map[string][]string{
+				TestSubscription: {testResourceGroup},
 			},
 		}
 
