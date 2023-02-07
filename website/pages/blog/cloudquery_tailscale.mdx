@@ -101,7 +101,7 @@ select count(*), os from tailscale_devices group by os;
 
 Other cool things once you have Tailscale configuration in your database/datalake is that you can join and query it with other CloudQuery [source plugins](https://www.cloudquery.io/docs/plugins/sources/overview).
 
-For example the following will show all devices of users that were deactivated on Okta.
+For example, the following will show all devices of users that were deactivated on Okta:
 
 ```
 select td.tailnet, td.name, td.id, td.user, td.last_seen
