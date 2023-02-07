@@ -283,6 +283,7 @@
 - [aws_iam_saml_identity_providers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_saml_identity_providers.md)
 - [aws_iam_server_certificates](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_server_certificates.md)
 - [aws_iam_users](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_users.md)
+  - [aws_iam_signing_certificates](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_signing_certificates.md)
   - [aws_iam_ssh_public_keys](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_ssh_public_keys.md)
   - [aws_iam_user_access_keys](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_user_access_keys.md)
   - [aws_iam_user_attached_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_user_attached_policies.md)

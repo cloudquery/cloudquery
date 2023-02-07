@@ -283,6 +283,7 @@
 - [aws_iam_saml_identity_providers](aws_iam_saml_identity_providers.md)
 - [aws_iam_server_certificates](aws_iam_server_certificates.md)
 - [aws_iam_users](aws_iam_users.md)
+  - [aws_iam_signing_certificates](aws_iam_signing_certificates.md)
   - [aws_iam_ssh_public_keys](aws_iam_ssh_public_keys.md)
   - [aws_iam_user_access_keys](aws_iam_user_access_keys.md)
   - [aws_iam_user_attached_policies](aws_iam_user_attached_policies.md)
