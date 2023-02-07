@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-tailscale-v1.2.4...plugins-source-tailscale-v2.0.0) (2023-02-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **tailscale:** Update tailscale to Oauth ([#7741](https://github.com/cloudquery/cloudquery/issues/7741))
+
+### Features
+
+* **tailscale:** Update tailscale to Oauth ([#7741](https://github.com/cloudquery/cloudquery/issues/7741)) ([4cc8c0f](https://github.com/cloudquery/cloudquery/commit/4cc8c0f871e0af704e7618563292c618593c7bfb))
+
+
+### Bug Fixes
+
+* **tailscale:** Support timestamps ([#7758](https://github.com/cloudquery/cloudquery/issues/7758)) ([9c84e56](https://github.com/cloudquery/cloudquery/commit/9c84e567487ef8dc216c4886d45bc151082006ad))
+
 ## [1.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-tailscale-v1.2.3...plugins-source-tailscale-v1.2.4) (2023-02-07)
 
 

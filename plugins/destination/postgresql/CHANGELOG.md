@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.0.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.8...plugins-destination-postgresql-v2.0.9) (2023-02-07)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/jackc/pgx-zerolog digest to 7c83b3e ([#7530](https://github.com/cloudquery/cloudquery/issues/7530)) ([4d2617e](https://github.com/cloudquery/cloudquery/commit/4d2617ec722c28370fa2af77595be427c0350822))
+* **deps:** Update google.golang.org/genproto digest to 1c01626 ([#7533](https://github.com/cloudquery/cloudquery/issues/7533)) ([c549c27](https://github.com/cloudquery/cloudquery/commit/c549c275077f1cdfb9df0b3f3c129cbf0b150552))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.0 ([#7595](https://github.com/cloudquery/cloudquery/issues/7595)) ([c5adc75](https://github.com/cloudquery/cloudquery/commit/c5adc750d4b0242563997c04c582f8da27913095))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.1 ([#7614](https://github.com/cloudquery/cloudquery/issues/7614)) ([2fe665c](https://github.com/cloudquery/cloudquery/commit/2fe665cdd80d88c5699bb203bd7accd604dfba99))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.34.0 ([#7719](https://github.com/cloudquery/cloudquery/issues/7719)) ([6a33085](https://github.com/cloudquery/cloudquery/commit/6a33085c75adcf2387f7bbb5aa4f7a84ce7e2957))
+* Sort PKs before reporting stale PKs error ([#7620](https://github.com/cloudquery/cloudquery/issues/7620)) ([2d9e196](https://github.com/cloudquery/cloudquery/commit/2d9e19686c1c6aedb90ef45e8058795131165e8e))
+
 ## [2.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.7...plugins-destination-postgresql-v2.0.8) (2023-01-31)
 
 
