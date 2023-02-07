@@ -27,7 +27,7 @@ func getRequest(ctx context.Context, c *client.Client, table string, parent stri
 		OrderBy:  "event_time",
 		PageSize: pageSize,
 	}
-	if filter != "" && err == nil {
+	if filter != "" {
 		req.Filter = filter
 	}
 	return req, nil
