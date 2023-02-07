@@ -9,19 +9,19 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
-func ProjectFindings() *schema.Table {
+func FolderFindings() *schema.Table {
 	return &schema.Table{
-		Name:          "gcp_securitycenter_project_findings",
+		Name:          "gcp_securitycenter_folder_findings",
 		Description:   `https://cloud.google.com/security-command-center/docs/reference/rest/v1/ListFindingsResponse#ListFindingsResult`,
-		Resolver:      fetchProjectFindings,
+		Resolver:      fetchFolderFindings,
+		Multiplex:     client.FolderMultiplex,
 		IsIncremental: true,
-		Multiplex:     client.ProjectMultiplexEnabledServices("securitycenter.googleapis.com"),
 		Transform:     transformers.TransformWithStruct(&pb.ListFindingsResponse_ListFindingsResult{}, client.Options()...),
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
+				Name:     "folder_id",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveProject,
+				Resolver: client.ResolveFolder,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -38,8 +38,9 @@ func ProjectFindings() *schema.Table {
 	}
 }
 
-func fetchProjectFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchFolderFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	p := "projects/" + c.ProjectId + "/sources/-"
-	return fetchFindings("gcp_securitycenter_project_findings", p)(ctx, meta, parent, res)
+	// FolderId is already in the format "folders/{id}"
+	p := c.FolderId + "/sources/-"
+	return fetchFindings("gcp_securitycenter_folder_findings", p)(ctx, meta, parent, res)
 }
