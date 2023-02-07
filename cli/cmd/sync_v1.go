@@ -37,7 +37,7 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 	sourceCtx, sourceCancel := context.WithCancel(context.Background())
 	sourceClient, err := source.NewClient(sourceCtx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version, opts...)
 	if err != nil {
-		exitReason = "failed to get client"
+		exitReason = "failed to get source plugin client"
 		sourceCancel()
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
 	}
@@ -65,6 +65,7 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 	destClients, err := newDestinationClientsV0(destCtx, sourceSpec, destinationsSpecs, cqDir)
 	if err != nil {
 		destCancel()
+		exitReason = "failed to get destination plugin client"
 		return err
 	}
 	defer func() {
