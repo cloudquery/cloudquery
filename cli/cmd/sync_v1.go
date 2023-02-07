@@ -36,7 +36,7 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 	}
 	sourceCtx, sourceCancel := context.WithCancel(context.Background())
 	defer sourceCancel()
-	
+
 	sourceClient, err := source.NewClient(sourceCtx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version, opts...)
 	if err != nil {
 		exitReason = "failed to get source plugin client"
