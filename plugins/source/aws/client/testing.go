@@ -51,7 +51,7 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		Version:      version,
 		Tables:       []string{table.Name},
 		Destinations: []string{"mock-destination"},
-	}, source.WithTestPluginAdditionalValidators(tagCheck))
+	}, source.WithTestPluginAdditionalValidators(validateTagStructure))
 }
 func extractTables(tables schema.Tables) []*schema.Table {
 	result := make([]*schema.Table, 0)
@@ -62,7 +62,7 @@ func extractTables(tables schema.Tables) []*schema.Table {
 	return result
 }
 
-func tagCheck(t *testing.T, plugin *source.Plugin, resources []*schema.Resource) {
+func validateTagStructure(t *testing.T, plugin *source.Plugin, resources []*schema.Resource) {
 	for _, table := range extractTables(plugin.Tables()) {
 		t.Run(table.Name, func(t *testing.T) {
 			for i, column := range table.Columns {
