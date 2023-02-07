@@ -53,9 +53,17 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		Destinations: []string{"mock-destination"},
 	}, source.WithTestPluginAdditionalValidators(tagCheck))
 }
-
-func tagCheck(t *testing.T, tables schema.Tables, resources []*schema.Resource) {
+func extractTables(tables schema.Tables) []*schema.Table {
+	result := make([]*schema.Table, 0)
 	for _, table := range tables {
+		result = append(result, table)
+		result = append(result, extractTables(table.Relations)...)
+	}
+	return result
+}
+
+func tagCheck(t *testing.T, plugin *source.Plugin, resources []*schema.Resource) {
+	for _, table := range extractTables(plugin.Tables()) {
 		t.Run(table.Name, func(t *testing.T) {
 			for i, column := range table.Columns {
 				if column.Name != "tags" {
