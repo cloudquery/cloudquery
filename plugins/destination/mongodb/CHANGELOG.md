@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v1.0.8...plugins-destination-mongodb-v1.0.9) (2023-02-07)
+
+
+### Bug Fixes
+
+* **deps:** Update google.golang.org/genproto digest to 1c01626 ([#7533](https://github.com/cloudquery/cloudquery/issues/7533)) ([c549c27](https://github.com/cloudquery/cloudquery/commit/c549c275077f1cdfb9df0b3f3c129cbf0b150552))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.0 ([#7595](https://github.com/cloudquery/cloudquery/issues/7595)) ([c5adc75](https://github.com/cloudquery/cloudquery/commit/c5adc750d4b0242563997c04c582f8da27913095))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.1 ([#7614](https://github.com/cloudquery/cloudquery/issues/7614)) ([2fe665c](https://github.com/cloudquery/cloudquery/commit/2fe665cdd80d88c5699bb203bd7accd604dfba99))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.34.0 ([#7719](https://github.com/cloudquery/cloudquery/issues/7719)) ([6a33085](https://github.com/cloudquery/cloudquery/commit/6a33085c75adcf2387f7bbb5aa4f7a84ce7e2957))
+* **deps:** Update module github.com/klauspost/compress to v1.15.15 ([#7575](https://github.com/cloudquery/cloudquery/issues/7575)) ([622be2b](https://github.com/cloudquery/cloudquery/commit/622be2b35de050fc013ae4bde3c3465a644dddd8))
+* **deps:** Update module github.com/xdg-go/scram to v1.1.2 ([#7579](https://github.com/cloudquery/cloudquery/issues/7579)) ([d48b0d7](https://github.com/cloudquery/cloudquery/commit/d48b0d78b003f0370c4533be92c5fa70e383c325))
+
 ## [1.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v1.0.7...plugins-destination-mongodb-v1.0.8) (2023-01-31)
 
 
