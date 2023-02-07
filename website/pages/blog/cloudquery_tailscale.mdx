@@ -85,7 +85,7 @@ select name, id, last_seen from tailscale_devices where key_expiry_disabled;
 
 Learn about how Tailscale client are distributed in your org across devices
 
-```sql
+```sql copy
 select count(*), os from tailscale_devices group by os;
 ```
 
