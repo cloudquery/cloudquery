@@ -9,17 +9,16 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchIamSshPublicKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchUserSigningCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	config := &iam.ListSigningCertificatesInput{UserName: parent.Item.(*types.User).UserName}
 	svc := meta.(*client.Client).Services().Iam
-	paginator := iam.NewListSSHPublicKeysPaginator(svc, &iam.ListSSHPublicKeysInput{
-		UserName: parent.Item.(*types.User).UserName,
-	})
+	paginator := iam.NewListSigningCertificatesPaginator(svc, config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- page.SSHPublicKeys
+		res <- page.Certificates
 	}
 	return nil
 }
