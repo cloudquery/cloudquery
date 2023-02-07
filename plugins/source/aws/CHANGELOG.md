@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [13.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v13.2.0...plugins-source-aws-v13.3.0) (2023-02-07)
+
+
+### Features
+
+* **aws:** Add IAM Signing Certificate ([#7699](https://github.com/cloudquery/cloudquery/issues/7699)) ([35344f3](https://github.com/cloudquery/cloudquery/commit/35344f3ed590da7a5256c45de3e7d8c0d51a6229))
+* **aws:** Add Support for S3 Accesspoints ([#7704](https://github.com/cloudquery/cloudquery/issues/7704)) ([0c792f9](https://github.com/cloudquery/cloudquery/commit/0c792f9caf74d9e39720783b3ffafb5eccd285db))
+
 ## [13.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v13.1.0...plugins-source-aws-v13.2.0) (2023-02-07)
 
 
