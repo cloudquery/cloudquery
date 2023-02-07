@@ -381,6 +381,7 @@ func tables() []*schema.Table {
 		route53.HealthChecks(),
 		route53.HostedZones(),
 		route53.TrafficPolicies(),
+		s3.AccessPoints(),
 		s3.Accounts(),
 		s3.Buckets(),
 		sagemaker.EndpointConfigurations(),
