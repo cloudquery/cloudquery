@@ -53,10 +53,11 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 			return nil, fmt.Errorf("error getting keys from %s: %w", oatuhURL, err)
 		}
 	
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return nil, fmt.Errorf("error reading response body from %s: %w", oatuhURL, err)
 		}
+		defer body.Close()
 
 		res := oauthResponse{}
 		if err := json.Unmarshal(body, &res); err != nil {
