@@ -29,7 +29,6 @@ func getRequest(ctx context.Context, c *client.Client, table string, parent stri
 	}
 	if filter != "" && err == nil {
 		req.Filter = filter
-
 	}
 	return req
 }
