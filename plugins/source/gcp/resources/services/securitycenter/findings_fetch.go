@@ -10,6 +10,7 @@ import (
 	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	securitycenter "cloud.google.com/go/securitycenter/apiv1"
 )
@@ -25,11 +26,13 @@ func getRequest(ctx context.Context, c *client.Client, table string, parent stri
 	if filter == "" || err != nil {
 		req = &pb.ListFindingsRequest{
 			Parent:   parent,
+			OrderBy:  "event_time",
 			PageSize: pageSize,
 		}
 	} else {
 		req = &pb.ListFindingsRequest{
 			Parent:   parent,
+			OrderBy:  "event_time",
 			PageSize: pageSize,
 			Filter:   filter,
 		}
@@ -37,8 +40,8 @@ func getRequest(ctx context.Context, c *client.Client, table string, parent stri
 	return req
 }
 
-func setBackendState(ctx context.Context, c *client.Client, table string) {
-	err := c.Backend.Set(ctx, table, c.ID(), fmt.Sprintf(`event_time >= "%s"`, time.Now().UTC().AddDate(0, 0, -1).Format(time.RFC3339)))
+func setBackendState(ctx context.Context, c *client.Client, table string, lastEventTime *timestamppb.Timestamp) {
+	err := c.Backend.Set(ctx, table, c.ID(), fmt.Sprintf(`event_time >= "%s"`, lastEventTime.AsTime().Format(time.RFC3339)))
 	if err != nil {
 		c.Logger().Warn().Str("table", table).Msgf("failed to set filter %s", err.Error())
 	}
@@ -54,23 +57,27 @@ func fetchFindings(table string, parent string) func(ctx context.Context, meta s
 		}
 		it := gcpClient.ListFindings(ctx, req, c.CallOptions...)
 		itemInPage := 0
+		var lastEventTime *timestamppb.Timestamp
 		for {
 			resp, err := it.Next()
 			if err == iterator.Done {
-				setBackendState(ctx, c, table)
 				break
 			}
 			if err != nil {
 				return err
 			}
 
+			lastEventTime = resp.Finding.EventTime
 			if itemInPage >= pageSize {
 				// When paginating over a huge result set, we might error out before getting all the results, so we need to set the filter periodically
-				setBackendState(ctx, c, table)
+				setBackendState(ctx, c, table, lastEventTime)
 				itemInPage = 0
 			}
 			itemInPage++
 			res <- resp
+		}
+		if lastEventTime != nil {
+			setBackendState(ctx, c, table, lastEventTime)
 		}
 		return nil
 	}
