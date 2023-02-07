@@ -71,7 +71,7 @@ select name, id, last_seen from tailscale_devices where last_seen < NOW() - INTE
 
 Find all devices with key expiry disabled
 
-```sql
+```sql copy
 select name, id, last_seen from tailscale_devices where key_expiry_disabled;
 ```
 
