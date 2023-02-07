@@ -17,10 +17,10 @@ import (
 
 const pageSize = 1000
 
-func getRequest(ctx context.Context, c *client.Client, table string, parent string) *pb.ListFindingsRequest {
+func getRequest(ctx context.Context, c *client.Client, table string, parent string) (*pb.ListFindingsRequest, error) {
 	filter, err := c.Backend.Get(ctx, table, c.ID())
 	if err != nil {
-		c.Logger().Warn().Str("table", table).Msgf("failed to get filter %s", err.Error())
+		return nil, fmt.Errorf("failed to get filter state %w for table %q", err, table)
 	}
 	req := &pb.ListFindingsRequest{
 		Parent:   parent,
@@ -30,20 +30,24 @@ func getRequest(ctx context.Context, c *client.Client, table string, parent stri
 	if filter != "" && err == nil {
 		req.Filter = filter
 	}
-	return req
+	return req, nil
 }
 
-func setBackendState(ctx context.Context, c *client.Client, table string, lastEventTime *timestamppb.Timestamp) {
+func setBackendState(ctx context.Context, c *client.Client, table string, lastEventTime *timestamppb.Timestamp) error {
 	err := c.Backend.Set(ctx, table, c.ID(), fmt.Sprintf(`event_time >= "%s"`, lastEventTime.AsTime().Format(time.RFC3339)))
 	if err != nil {
-		c.Logger().Warn().Str("table", table).Msgf("failed to set filter %s", err.Error())
+		return fmt.Errorf("failed to set filter state %w for table %q", err, table)
 	}
+	return nil
 }
 
 func fetchFindings(table string, parent string) func(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	return func(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 		c := meta.(*client.Client)
-		req := getRequest(ctx, c, table, parent)
+		req, err := getRequest(ctx, c, table, parent)
+		if err != nil {
+			return err
+		}
 		gcpClient, err := securitycenter.NewClient(ctx, c.ClientOptions...)
 		if err != nil {
 			return err
@@ -63,14 +67,20 @@ func fetchFindings(table string, parent string) func(ctx context.Context, meta s
 			lastEventTime = resp.Finding.EventTime
 			if itemInPage >= pageSize {
 				// When paginating over a huge result set, we might error out before getting all the results, so we need to set the filter periodically
-				setBackendState(ctx, c, table, lastEventTime)
+				err = setBackendState(ctx, c, table, lastEventTime)
+				if err != nil {
+					return err
+				}
 				itemInPage = 0
 			}
 			itemInPage++
 			res <- resp
 		}
 		if lastEventTime != nil {
-			setBackendState(ctx, c, table, lastEventTime)
+			err = setBackendState(ctx, c, table, lastEventTime)
+			if err != nil {
+				return err
+			}
 		}
 		return nil
 	}
