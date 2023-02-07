@@ -1,4 +1,4 @@
-package s3control
+package s3
 
 import (
 	"testing"

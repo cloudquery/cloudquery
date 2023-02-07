@@ -1,4 +1,4 @@
-package s3control
+package s3
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/s3control/types"
@@ -9,10 +9,10 @@ import (
 
 func AccessPoints() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_s3control_access_points",
+		Name:      "aws_s3_access_points",
 		Resolver:  fetchAccessPoints,
 		Transform: transformers.TransformWithStruct(&types.AccessPoint{}),
-		Multiplex: client.AccountMultiplex,
+		Multiplex: client.ServiceAccountRegionMultiplexer("s3-control"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
