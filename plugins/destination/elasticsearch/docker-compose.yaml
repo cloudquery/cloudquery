@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   elasticsearch:
     image: elasticsearch:8.6.0

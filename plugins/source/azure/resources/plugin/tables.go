@@ -243,6 +243,8 @@ func tables() []*schema.Table {
 		network.VirtualHubs(),
 		network.VirtualNetworkTaps(),
 		network.VirtualNetworks(),
+		network.VirtualNetworkGateways(),
+		network.VirtualNetworkGatewayConnections(),
 		network.VirtualRouters(),
 		network.VirtualWans(),
 		network.Watchers(),
