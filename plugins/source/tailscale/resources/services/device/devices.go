@@ -61,8 +61,5 @@ func postDeviceFetch(ctx context.Context, meta schema.ClientMeta, resource *sche
 	if err := resource.Set("advertised_routes", result.Advertised); err != nil {
 		return err
 	}
-	if err := resource.Set("enabled_routes", result.Enabled); err != nil {
-		return err
-	}
-	return nil
+	return resource.Set("enabled_routes", result.Enabled);
 }
