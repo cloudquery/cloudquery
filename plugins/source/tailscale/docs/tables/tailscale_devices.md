@@ -1,8 +1,8 @@
 # Table: tailscale_devices
 
-https://pkg.go.dev/github.com/tailscale/tailscale-client-go/tailscale#Device
+https://github.com/tailscale/tailscale/blob/main/api.md#tailnet-devices-get
 
-The primary key for this table is **tailnet**.
+The composite primary key for this table is (**tailnet**, **id**).
 
 ## Relations
 
@@ -20,7 +20,7 @@ The following tables depend on tailscale_devices:
 |tailnet (PK)|String|
 |addresses|StringArray|
 |name|String|
-|id|String|
+|id (PK)|String|
 |authorized|Bool|
 |user|String|
 |tags|StringArray|
