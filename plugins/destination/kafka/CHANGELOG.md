@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v2.0.0...plugins-destination-kafka-v2.0.1) (2023-02-07)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/eapache/go-xerial-snappy digest to bf00bc1 ([#7528](https://github.com/cloudquery/cloudquery/issues/7528)) ([03f7f32](https://github.com/cloudquery/cloudquery/commit/03f7f32fd574391456fe46d1890b143c079b2642))
+* **deps:** Update google.golang.org/genproto digest to 1c01626 ([#7533](https://github.com/cloudquery/cloudquery/issues/7533)) ([c549c27](https://github.com/cloudquery/cloudquery/commit/c549c275077f1cdfb9df0b3f3c129cbf0b150552))
+* **deps:** Update module github.com/cloudquery/filetypes to v1.3.1 ([#7274](https://github.com/cloudquery/cloudquery/issues/7274)) ([d0b6df8](https://github.com/cloudquery/cloudquery/commit/d0b6df81915bb4d623f0580516f600144c78340d))
+* **deps:** Update module github.com/cloudquery/filetypes to v1.3.2 ([#7598](https://github.com/cloudquery/cloudquery/issues/7598)) ([0a7a1a8](https://github.com/cloudquery/cloudquery/commit/0a7a1a839e78e8b4f8e30c284d43d9901d626af9))
+* **deps:** Update module github.com/cloudquery/filetypes to v1.4.0 ([#7720](https://github.com/cloudquery/cloudquery/issues/7720)) ([20c2d88](https://github.com/cloudquery/cloudquery/commit/20c2d88727a9a64ee98be482c21ef8ca77c68a6c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.1 ([#7614](https://github.com/cloudquery/cloudquery/issues/7614)) ([2fe665c](https://github.com/cloudquery/cloudquery/commit/2fe665cdd80d88c5699bb203bd7accd604dfba99))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.34.0 ([#7719](https://github.com/cloudquery/cloudquery/issues/7719)) ([6a33085](https://github.com/cloudquery/cloudquery/commit/6a33085c75adcf2387f7bbb5aa4f7a84ce7e2957))
+* **deps:** Update module github.com/klauspost/compress to v1.15.15 ([#7575](https://github.com/cloudquery/cloudquery/issues/7575)) ([622be2b](https://github.com/cloudquery/cloudquery/commit/622be2b35de050fc013ae4bde3c3465a644dddd8))
+
 ## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v1.0.4...plugins-destination-kafka-v2.0.0) (2023-01-31)
 
 

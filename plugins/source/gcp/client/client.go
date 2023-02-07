@@ -12,6 +12,7 @@ import (
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
 	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
+	"github.com/cloudquery/plugin-sdk/backend"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -33,8 +34,9 @@ import (
 const maxProjectIdsToLog int = 100
 
 type Client struct {
-	projects []string
-	orgs     []string
+	projects  []string
+	orgs      []string
+	folderIds []string
 
 	ClientOptions []option.ClientOption
 	CallOptions   []gax.CallOption
@@ -44,10 +46,14 @@ type Client struct {
 	ProjectId string
 	// this is set by table client Org multiplexer
 	OrgId string
+	// this is set by table client Folder multiplexer
+	FolderId string
 	// this is set by table client Location multiplexer
 	Location string
 	// Logger
 	logger zerolog.Logger
+
+	Backend backend.Backend
 }
 
 //revive:disable:modifies-value-receiver
@@ -75,6 +81,14 @@ func (c *Client) withOrg(org string) *Client {
 	return &newClient
 }
 
+// withFolder allows multiplexer to create a new client with given folderId
+func (c *Client) withFolder(folder string) *Client {
+	newClient := *c
+	newClient.logger = c.logger.With().Str("folder_id", folder).Logger()
+	newClient.FolderId = folder
+	return &newClient
+}
+
 func isValidJson(content []byte) error {
 	var v map[string]any
 	err := json.Unmarshal(content, &v)
@@ -88,6 +102,9 @@ func (c *Client) ID() string {
 	if c.OrgId != "" {
 		return "org:" + c.OrgId
 	}
+	if c.FolderId != "" {
+		return "folder:" + c.FolderId
+	}
 	if c.Location != "" {
 		return "project:" + c.ProjectId + ":location:" + c.Location
 	}
@@ -98,11 +115,12 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source.Options) (schema.ClientMeta, error) {
 	var err error
 	c := Client{
 		logger:          logger,
 		EnabledServices: map[string]map[string]any{},
+		Backend:         opts.Backend,
 	}
 	var gcpSpec Spec
 	if err := s.UnmarshalSpec(&gcpSpec); err != nil {
@@ -203,7 +221,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 	}
 
 	c.projects = projects
-
+	c.folderIds = gcpSpec.FolderIDs
 	c.orgs, err = getOrganizations(ctx, c.ClientOptions...)
 	if err != nil {
 		c.logger.Err(err).Msg("failed to get organizations")
