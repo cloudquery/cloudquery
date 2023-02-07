@@ -4,11 +4,6 @@ https://github.com/tailscale/tailscale/blob/main/api.md#tailnet-devices-get
 
 The composite primary key for this table is (**tailnet**, **id**).
 
-## Relations
-
-The following tables depend on tailscale_devices:
-  - [tailscale_device_routes](tailscale_device_routes.md)
-
 ## Columns
 
 | Name          | Type          |
@@ -18,6 +13,8 @@ The following tables depend on tailscale_devices:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |tailnet (PK)|String|
+|advertised_routes|StringArray|
+|enabled_routes|StringArray|
 |addresses|StringArray|
 |name|String|
 |id (PK)|String|
