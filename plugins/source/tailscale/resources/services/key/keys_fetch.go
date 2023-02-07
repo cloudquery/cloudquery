@@ -11,7 +11,7 @@ import (
 func fetchKeys(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 
-	result, err := c.Keys(ctx)
+	result, err := c.TailscaleClient.Keys(ctx)
 	if err != nil {
 		return err
 	}
@@ -23,8 +23,7 @@ func fetchKeys(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, 
 func getKey(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	key := resource.Item.(tailscale.Key)
-
-	result, err := c.GetKey(ctx, key.ID)
+	result, err := c.TailscaleClient.GetKey(ctx, key.ID)
 	if err != nil {
 		return err
 	}
