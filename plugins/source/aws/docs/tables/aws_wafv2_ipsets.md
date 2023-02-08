@@ -14,9 +14,9 @@ The primary key for this table is **arn**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|addresses|InetArray|
 |tags|JSON|
 |arn (PK)|String|
+|addresses|InetArray|
 |ip_address_version|String|
 |id|String|
 |name|String|
