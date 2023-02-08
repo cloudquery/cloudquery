@@ -239,9 +239,9 @@ func (h Hub) downloadProvider(ctx context.Context, organization, providerName, p
 		return ProviderDetails{}, fmt.Errorf("plugin %s/%s@%s failed to download: %w", organization, providerName, providerVersion, err)
 	}
 
-	if ok := h.VerifyProvider(ctx, organization, providerName, providerVersion); !ok {
-		return ProviderDetails{}, fmt.Errorf("plugin %s/%s@%s failed to verify", organization, providerName, providerVersion)
-	}
+	//if ok := h.VerifyProvider(ctx, organization, providerName, providerVersion); !ok {
+	//	return ProviderDetails{}, fmt.Errorf("plugin %s/%s@%s failed to verify", organization, providerName, providerVersion)
+	//}
 
 	if err := osFs.Chmod(providerPath, 0754); err != nil {
 		return ProviderDetails{}, err
