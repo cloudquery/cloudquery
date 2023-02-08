@@ -216,6 +216,8 @@
   - [aws_elbv2_target_group_target_health_descriptions](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_elbv2_target_group_target_health_descriptions.md)
 - [aws_emr_block_public_access_configs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_emr_block_public_access_configs.md)
 - [aws_emr_clusters](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_emr_clusters.md)
+  - [aws_emr_cluster_instance_fleets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_emr_cluster_instance_fleets.md)
+  - [aws_emr_cluster_instance_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_emr_cluster_instance_groups.md)
 - [aws_eventbridge_api_destinations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_eventbridge_api_destinations.md)
 - [aws_eventbridge_archives](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_eventbridge_archives.md)
 - [aws_eventbridge_connections](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_eventbridge_connections.md)
