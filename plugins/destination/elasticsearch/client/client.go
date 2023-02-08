@@ -91,3 +91,29 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 func (*Client) Close(_ context.Context) error {
 	return nil
 }
+
+func (c *Client) getIndexNamePattern(tableName string) string {
+	switch c.spec.WriteMode {
+	case specs.WriteModeAppend:
+		return tableName + "-*"
+	case specs.WriteModeOverwrite:
+		return tableName
+	case specs.WriteModeOverwriteDeleteStale:
+		return tableName
+	default:
+		return ""
+	}
+}
+
+func (c *Client) getIndexName(tableName string, t time.Time) string {
+	switch c.spec.WriteMode {
+	case specs.WriteModeAppend:
+		return tableName + "-" + t.Format("2006-01-02")
+	case specs.WriteModeOverwrite:
+		return tableName
+	case specs.WriteModeOverwriteDeleteStale:
+		return tableName
+	default:
+		return ""
+	}
+}
