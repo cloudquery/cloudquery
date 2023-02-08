@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.9...plugins-destination-postgresql-v2.0.10) (2023-02-08)
+
+
+### Bug Fixes
+
+* **postgresql:** Sanitize JSONs ([#7801](https://github.com/cloudquery/cloudquery/issues/7801)) ([8705c9a](https://github.com/cloudquery/cloudquery/commit/8705c9a658210294ede67e56d83612de4f14b3b1))
+
 ## [2.0.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.8...plugins-destination-postgresql-v2.0.9) (2023-02-07)
 
 
