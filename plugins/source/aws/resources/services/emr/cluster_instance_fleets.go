@@ -1,27 +1,24 @@
-package docdb
+package emr
 
 import (
-	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
+	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Certificates() *schema.Table {
+func clusterInstanceFleets() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_docdb_certificates",
-		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Certificate.html`,
-		Resolver:    fetchDocdbCertificates,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
-		Transform:   transformers.TransformWithStruct(&types.Certificate{}),
+		Name:        "aws_emr_cluster_instance_fleets",
+		Description: `https://docs.aws.amazon.com/emr/latest/APIReference/API_InstanceFleet.html`,
+		Resolver:    fetchClusterInstanceFleets,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
+		Transform:   transformers.TransformWithStruct(&types.InstanceFleet{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "region",
@@ -29,9 +26,9 @@ func Certificates() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
+				Name:     "cluster_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CertificateArn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
