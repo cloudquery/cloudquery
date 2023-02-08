@@ -7,8 +7,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.12
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.51
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.2
-	github.com/cloudquery/filetypes v1.3.2
-	github.com/cloudquery/plugin-sdk v1.33.1
+	github.com/cloudquery/filetypes v1.4.0
+	github.com/cloudquery/plugin-sdk v1.34.0
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
@@ -16,8 +16,16 @@ require (
 )
 
 require (
+	github.com/apache/arrow/go/arrow v0.0.0-20200730104253-651201b0f516 // indirect
+	github.com/apache/thrift v0.14.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/golang/snappy v0.0.4 // indirect
+	github.com/klauspost/compress v1.15.11 // indirect
+	github.com/pierrec/lz4/v4 v4.1.9 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/xitongsys/parquet-go v1.6.2 // indirect
+	github.com/xitongsys/parquet-go-source v0.0.0-20221025031416-9877e685ef65 // indirect
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 

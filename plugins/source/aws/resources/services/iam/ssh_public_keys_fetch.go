@@ -3,7 +3,6 @@ package iam
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -11,19 +10,16 @@ import (
 )
 
 func fetchIamSshPublicKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	user := parent.Item.(*types.User)
-	config := iam.ListSSHPublicKeysInput{UserName: user.UserName}
 	svc := meta.(*client.Client).Services().Iam
-	for {
-		response, err := svc.ListSSHPublicKeys(ctx, &config)
+	paginator := iam.NewListSSHPublicKeysPaginator(svc, &iam.ListSSHPublicKeysInput{
+		UserName: parent.Item.(*types.User).UserName,
+	})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.SSHPublicKeys
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
+		res <- page.SSHPublicKeys
 	}
 	return nil
 }

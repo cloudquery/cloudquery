@@ -72,6 +72,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ram v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/rds v1.40.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.27.0
+	github.com/aws/aws-sdk-go-v2/service/resiliencehub v1.8.0
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0
@@ -112,6 +113,8 @@ require (
 	github.com/thoas/go-funk v0.9.3
 	golang.org/x/sync v0.1.0
 )
+
+require github.com/aws/aws-sdk-go-v2/service/amplify v1.13.1
 
 require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.19 // indirect; indirect // indirect
@@ -156,7 +159,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.org/x/mod v0.6.0 // indirect
 	golang.org/x/net v0.5.0 // indirect
-	golang.org/x/sys v0.4.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
 	golang.org/x/tools v0.2.0 // indirect
 	google.golang.org/genproto v0.0.0-20230131230820-1c016267d619 // indirect; indirect // indirect

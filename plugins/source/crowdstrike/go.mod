@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/crowdstrike
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.33.1
+	github.com/cloudquery/plugin-sdk v1.34.0
 	github.com/crowdstrike/gofalcon v0.2.32
 	github.com/go-openapi/runtime v0.25.0
 	github.com/golang/mock v1.6.0
