@@ -7,6 +7,7 @@ require (
 	github.com/jackc/pgx-zerolog v0.0.0-20230124015146-7c83b3e9b2bd
 	github.com/jackc/pgx/v5 v5.2.0
 	github.com/rs/zerolog v1.29.0
+	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201
 )
 
 require (
