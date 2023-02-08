@@ -216,6 +216,8 @@
   - [aws_elbv2_target_group_target_health_descriptions](aws_elbv2_target_group_target_health_descriptions.md)
 - [aws_emr_block_public_access_configs](aws_emr_block_public_access_configs.md)
 - [aws_emr_clusters](aws_emr_clusters.md)
+  - [aws_emr_cluster_instance_fleets](aws_emr_cluster_instance_fleets.md)
+  - [aws_emr_cluster_instance_groups](aws_emr_cluster_instance_groups.md)
 - [aws_eventbridge_api_destinations](aws_eventbridge_api_destinations.md)
 - [aws_eventbridge_archives](aws_eventbridge_archives.md)
 - [aws_eventbridge_connections](aws_eventbridge_connections.md)

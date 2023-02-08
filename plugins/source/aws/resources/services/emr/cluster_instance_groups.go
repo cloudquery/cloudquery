@@ -1,27 +1,24 @@
-package rds
+package emr
 
 import (
-	"github.com/aws/aws-sdk-go-v2/service/rds/types"
+	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Certificates() *schema.Table {
+func clusterInstanceGroups() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_rds_certificates",
-		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Certificate.html`,
-		Resolver:    fetchRdsCertificates,
-		Transform:   transformers.TransformWithStruct(&types.Certificate{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+		Name:        "aws_emr_cluster_instance_groups",
+		Description: `https://docs.aws.amazon.com/emr/latest/APIReference/API_InstanceGroup.html`,
+		Resolver:    fetchClusterInstanceGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
+		Transform:   transformers.TransformWithStruct(&types.InstanceGroup{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "region",
@@ -29,9 +26,9 @@ func Certificates() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
+				Name:     "cluster_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CertificateArn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
