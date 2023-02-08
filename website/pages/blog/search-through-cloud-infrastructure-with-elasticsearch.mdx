@@ -1,0 +1,51 @@
+---
+title: Search Through Your Cloud Infrastructure with CloudQuery and Elasticsearch
+tag: tutorial
+date: 2023/02/08
+description: >-
+  This tutorial will show you how you can search through your cloud infrastructure by using the CloudQuery Elasticsearch destination.
+author: hermanschaaf
+---
+
+![Search your AWS Infrastructure with Elasticsearch](/images/blog/search-through-cloud-infrastructure-with-elasticsearch/elasticsearch-screenshot.png)
+
+import { BlogHeader } from "../../components/BlogHeader"
+import { Callout } from 'nextra-theme-docs';
+
+<BlogHeader/>
+
+## Introduction
+
+Have you ever wished you could enter the IP of an EC2 instance into the search bar and get a list of all the resources that are related to it? Or search by tag across all your accounts and regions? Well, now you can.
+
+Using the CloudQuery Elasticsearch destination, you can search through your cloud infrastructure and get a list of all the resources that are related to your search query, and in this article we will show you what this looks like.
+
+## Getting Started
+
+To get started, you will need to have CloudQuery installed. If you haven't already, you can do so by following the instructions in the [Quickstart](/docs/quickstart) guide.
+
+You will also need a running Elasticsearch instance. If you don't have one, you can either create one locally using Docker, or use the [Elastic Cloud](https://www.elastic.co/cloud) service, which offers a free trial. This [`docker-compose` file](https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/elasticsearch/docker-compose.yaml) will get you started with local Elasticsearch and Kibana services (download the file, then run `docker compose up`). Once it's up, you should be able to visit `localhost:5601` and see the Kibana interface.
+
+## Configuring the Elasticsearch Destination
+
+Now that you have CloudQuery and Elasticsearch running, you can configure the Elasticsearch destination. To do this, follow the instructions in the [Elasticsearch Destination guide](/docs/plugins/destinations/elasticsearch/overview) to create a configuration file called `elasticsearch.yml`.
+
+You also need to create a configuration file for the AWS provider. Again, follow the instructions in the [AWS Source guide](/docs/plugins/sources/aws/overview) to create a configuration file called `aws.yml`.
+
+Finally, you can run the CloudQuery command to sync your AWS infrastructure data to Elasticsearch:
+
+```bash
+cloudquery sync aws.yml elasticsearch.yml
+```
+
+## Setting up the Data Views in Kibana
+
+When the sync completes, head over to the "Stack Management" section of Kibana and click on "Data Views" under "Kibana". Click "Create data view" and enter `aws*` as the index pattern. Select "_cq_sync_time" as the time field. Click "Save data view to Kibana" to finish.
+
+![Create a data view in Kibana](/images/blog/search-through-cloud-infrastructure-with-elasticsearch/create-data-view.png)
+
+<Callout type="info">
+  This article is using Elasticsearch 8.6.0. In previous versions of Elasticsearch, "Data Views" were called "Index Patterns".
+</Callout>
+
+## Searching Through Your Cloud Infrastructure
