@@ -241,6 +241,7 @@ func tables() []*schema.Table {
 		elbv2.TargetGroups(),
 		emr.BlockPublicAccessConfigs(),
 		emr.Clusters(),
+		emr.SecurityConfigurations(),
 		eventbridge.EventBuses(),
 		eventbridge.ApiDestinations(),
 		eventbridge.Archives(),
