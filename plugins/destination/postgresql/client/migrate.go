@@ -5,23 +5,22 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/jackc/pgx/v5"
 )
 
 const (
-// this returns the following table in sorted manner:
-// +----------------+-------------+-------------+------------+---------------+-----------+---------------------+
-// | ordinal_position | table_name | column_name | data_type | is_primary_key| not_null  | pk_constraint_name  |
-// +----------------+-------------+-------------+------------+---------------+-----------+---------------------+
-// |              1 | users       | id          | bigint     | YES           | true 		 | cq_users_pk 	  	   |
-// |              2 | users       | name        | text       | NO            | false 	   | 					           |
-// |              3 | users       | email       | text       | NO            | true 		 | cq_users_pk         |
-// |              1 | posts       | id          | bigint     | YES           | true 		 | cq_posts_pk			   |
-// |              2 | posts       | title       | text       | NO            | false 	   | 					           |
- selectAllTables = `
+	// this returns the following table in sorted manner:
+	// +----------------+-------------+-------------+------------+---------------+-----------+---------------------+
+	// | ordinal_position | table_name | column_name | data_type | is_primary_key| not_null  | pk_constraint_name  |
+	// +----------------+-------------+-------------+------------+---------------+-----------+---------------------+
+	// |              1 | users       | id          | bigint     | YES           | true 		 | cq_users_pk 	  	   |
+	// |              2 | users       | name        | text       | NO            | false 	   | 					           |
+	// |              3 | users       | email       | text       | NO            | true 		 | cq_users_pk         |
+	// |              1 | posts       | id          | bigint     | YES           | true 		 | cq_posts_pk			   |
+	// |              2 | posts       | title       | text       | NO            | false 	   | 					           |
+	selectAllTables = `
  SELECT
  columns.ordinal_position AS ordinal_position,
  pg_class.relname AS table_name,
@@ -89,7 +88,7 @@ func (c *Client) listPgTables(ctx context.Context, pluginTables schema.Tables) (
 			Name: columnName,
 			CreationOptions: schema.ColumnCreationOptions{
 				PrimaryKey: isPrimaryKey,
-				NotNull: 	notNull,
+				NotNull:    notNull,
 			},
 			Resolver: func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 				return resource.Set(columnName, resource.Item.([]interface{})[ordinalPosition-1])
@@ -101,8 +100,7 @@ func (c *Client) listPgTables(ctx context.Context, pluginTables schema.Tables) (
 }
 
 // This is the responsibility of the CLI of the client to lock before running migration
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables, options destination.MigrateOptions) error {
-	options.Force = true
+func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	pgTables, err := c.listPgTables(ctx, tables)
 	if err != nil {
 		return fmt.Errorf("failed listing postgres tables: %w", err)
@@ -126,7 +124,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables, options dest
 		pgTable := pgTables.Get(table.Name)
 		if pgTable != nil {
 			c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
-			if err := c.autoMigrateTable(ctx, pgTable, table, options); err != nil {
+			if err := c.autoMigrateTable(ctx, pgTable, table); err != nil {
 				return err
 			}
 		} else {
@@ -183,7 +181,7 @@ func (c *Client) alterPKConstraint(ctx context.Context, pgTable *schema.Table, t
 		}
 		return fmt.Errorf("failed to drop primary key constraint on table %s: %w", table.Name, err)
 	}
-	
+
 	sql := "alter table " + tableName + " add constraint primary key (" + strings.Join(table.PrimaryKeys(), ",") + ")"
 	if _, err := tx.Exec(ctx, sql); err != nil {
 		if err := tx.Rollback(ctx); err != nil {
@@ -197,9 +195,9 @@ func (c *Client) alterPKConstraint(ctx context.Context, pgTable *schema.Table, t
 	return nil
 }
 
-func (c *Client) autoMigrateTable(ctx context.Context, pgTable *schema.Table, table *schema.Table, options destination.MigrateOptions) error {
+func (c *Client) autoMigrateTable(ctx context.Context, pgTable *schema.Table, table *schema.Table) error {
 	if changedColumns := table.GetChangedColumns(pgTable); changedColumns != nil {
-		if !options.Force {
+		if c.spec.MigrateMode != specs.MigrateModeForced {
 			return fmt.Errorf("postgres table %s has changed %v columns, use --force to drop the column", table.Name, changedColumns)
 		}
 		for _, col := range changedColumns {
@@ -217,8 +215,8 @@ func (c *Client) autoMigrateTable(ctx context.Context, pgTable *schema.Table, ta
 		}
 	}
 
-	if c.enabledPks() && !table.IsPkEqual(pgTable) {
-		if !options.Force {
+	if c.enabledPks() && !table.IsPrimaryKeyEqual(pgTable) {
+		if c.spec.MigrateMode != specs.MigrateModeForced {
 			return fmt.Errorf("postgres table %s primary key is different from the schema, use --force to drop the constraint", table.Name)
 		}
 		if err := c.alterPKConstraint(ctx, pgTable, table); err != nil {
@@ -228,7 +226,6 @@ func (c *Client) autoMigrateTable(ctx context.Context, pgTable *schema.Table, ta
 
 	return nil
 }
-
 
 func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table) error {
 	var sb strings.Builder

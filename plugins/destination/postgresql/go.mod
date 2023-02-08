@@ -7,16 +7,6 @@ require (
 	github.com/jackc/pgx-zerolog v0.0.0-20230124015146-7c83b3e9b2bd
 	github.com/jackc/pgx/v5 v5.2.0
 	github.com/rs/zerolog v1.29.0
-	github.com/stretchr/testify v1.8.1
-	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201
-)
-
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
-
-require (
-	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/pmezard/go-difflib v1.0.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 require (
