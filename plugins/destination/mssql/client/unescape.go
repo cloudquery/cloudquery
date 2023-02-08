@@ -23,10 +23,13 @@ func unescape(str string) string {
 	}
 
 	// check for unquote, too
-	if strings.Contains(out, `\"`) || strings.Contains(out, `\n`) {
-		if unquoted, err := strconv.Unquote(`"` + out + `"`); err == nil {
-			return unquoted
-		}
+	if !strings.Contains(out, `\"`) && !strings.Contains(out, `\n`) {
+		return out
 	}
+
+	if unquoted, err := strconv.Unquote(`"` + out + `"`); err == nil {
+		return unquoted
+	}
+
 	return out
 }
