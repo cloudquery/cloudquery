@@ -83,7 +83,11 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 		if c.spec.WriteMode == specs.WriteModeAppend {
 			sql = c.insert(table)
 		} else {
-			sql = c.upsert(table)
+			if len(table.PrimaryKeys()) > 0 {
+				sql = c.upsert(table)
+			} else {
+				sql = c.insert(table)
+			}
 		}
 		batch.Queue(sql, r.Data...)
 		batchSize := batch.Len()

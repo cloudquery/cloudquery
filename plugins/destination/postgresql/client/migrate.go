@@ -264,11 +264,6 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		sb.WriteString("_cqpk PRIMARY KEY (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
-	} else {
-		// if no primary keys are defined, add a PK constraint for _cq_id
-		sb.WriteString(", CONSTRAINT ")
-		sb.WriteString(table.Name)
-		sb.WriteString("_cqpk PRIMARY KEY (_cq_id)")
 	}
 	sb.WriteString(")")
 	_, err := c.conn.Exec(ctx, sb.String())
