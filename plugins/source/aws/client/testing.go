@@ -53,8 +53,8 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		Destinations: []string{"mock-destination"},
 	}, source.WithTestPluginAdditionalValidators(validateTagStructure))
 }
-func extractTables(tables schema.Tables) []*schema.Table {
-	result := make([]*schema.Table, 0)
+func extractTables(tables schema.Tables) schema.Tables {
+	result := make(schema.Tables, 0)
 	for _, table := range tables {
 		result = append(result, table)
 		result = append(result, extractTables(table.Relations)...)
@@ -65,7 +65,7 @@ func extractTables(tables schema.Tables) []*schema.Table {
 func validateTagStructure(t *testing.T, plugin *source.Plugin, resources []*schema.Resource) {
 	for _, table := range extractTables(plugin.Tables()) {
 		t.Run(table.Name, func(t *testing.T) {
-			for i, column := range table.Columns {
+			for _, column := range table.Columns {
 				if column.Name != "tags" {
 					continue
 				}
@@ -76,14 +76,10 @@ func validateTagStructure(t *testing.T, plugin *source.Plugin, resources []*sche
 					if resource.Table.Name != table.Name {
 						continue
 					}
-					for iResource, value := range resource.GetValues() {
-						if iResource != i {
-							continue
-						}
-						_, ok := value.Get().(map[string]any)
-						if !ok {
-							t.Fatalf("unexpected type for tags column: got %v, want type map[string]any", value.Get())
-						}
+					value := resource.Get(column.Name)
+					val, ok := value.Get().(map[string]any)
+					if !ok {
+						t.Fatalf("unexpected type for tags column: got %v, want type map[string]any", val)
 					}
 				}
 			}
