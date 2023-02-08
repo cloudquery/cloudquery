@@ -102,7 +102,6 @@ func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.Clien
 	}
 	return resource.Set(c.Name, j)
 }
-
 func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(models.AutoScalingGroupWrapper)
 	cl := meta.(*client.Client)
