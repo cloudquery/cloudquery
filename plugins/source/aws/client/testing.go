@@ -69,11 +69,13 @@ func validateTagStructure(t *testing.T, plugin *source.Plugin, resources []*sche
 				if column.Name != "tags" {
 					continue
 				}
+				if column.Type != schema.TypeJSON {
+					t.Fatalf("tags column in %s should be of type JSON", table.Name)
+				}
 				for _, resource := range resources {
 					if resource.Table.Name != table.Name {
 						continue
 					}
-
 					for iResource, value := range resource.GetValues() {
 						if iResource != i {
 							continue
@@ -85,10 +87,6 @@ func validateTagStructure(t *testing.T, plugin *source.Plugin, resources []*sche
 							}
 						}
 					}
-				}
-
-				if column.Type != schema.TypeJSON {
-					t.Fatalf("tags column in %s should be of type JSON", table.Name)
 				}
 			}
 		})
