@@ -19,7 +19,6 @@ This table depends on [aws_lightsail_disks](aws_lightsail_disks.md).
 |account_id|String|
 |region|String|
 |disk_arn|String|
-|tags|JSON|
 |arn (PK)|String|
 |created_at|Timestamp|
 |from_disk_arn|String|
@@ -34,3 +33,4 @@ This table depends on [aws_lightsail_disks](aws_lightsail_disks.md).
 |size_in_gb|Int|
 |state|String|
 |support_code|String|
+|tags|JSON|

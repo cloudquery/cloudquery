@@ -19,7 +19,7 @@ This table depends on [aws_iam_groups](aws_iam_groups.md).
 |account_id|String|
 |group_arn|String|
 |group_id|String|
-|policy_document|JSON|
 |group_name|String|
+|policy_document|JSON|
 |policy_name|String|
 |result_metadata|JSON|

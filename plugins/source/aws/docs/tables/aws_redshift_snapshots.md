@@ -19,7 +19,6 @@ This table depends on [aws_redshift_clusters](aws_redshift_clusters.md).
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |accounts_with_restore_access|JSON|
 |actual_incremental_backup_size_in_mega_bytes|Float|
 |availability_zone|String|
@@ -51,5 +50,6 @@ This table depends on [aws_redshift_clusters](aws_redshift_clusters.md).
 |snapshot_type|String|
 |source_region|String|
 |status|String|
+|tags|JSON|
 |total_backup_size_in_mega_bytes|Float|
 |vpc_id|String|

@@ -25,11 +25,11 @@ The following tables depend on aws_ec2_transit_gateways:
 |region|String|
 |id|String|
 |arn (PK)|String|
-|tags|JSON|
 |creation_time|Timestamp|
 |description|String|
 |options|JSON|
 |owner_id|String|
 |state|String|
+|tags|JSON|
 |transit_gateway_arn|String|
 |transit_gateway_id|String|

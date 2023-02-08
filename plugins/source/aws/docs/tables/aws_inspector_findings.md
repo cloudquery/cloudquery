@@ -16,9 +16,9 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |attributes|JSON|
-|user_attributes|JSON|
 |created_at|Timestamp|
 |updated_at|Timestamp|
+|user_attributes|JSON|
 |asset_attributes|JSON|
 |asset_type|String|
 |confidence|Int|

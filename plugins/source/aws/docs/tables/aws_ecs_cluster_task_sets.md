@@ -19,7 +19,6 @@ This table depends on [aws_ecs_cluster_services](aws_ecs_cluster_services.md).
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |capacity_provider_strategy|JSON|
 |cluster_arn|String|
 |computed_desired_count|Int|
@@ -40,6 +39,7 @@ This table depends on [aws_ecs_cluster_services](aws_ecs_cluster_services.md).
 |stability_status_at|Timestamp|
 |started_by|String|
 |status|String|
+|tags|JSON|
 |task_definition|String|
 |task_set_arn|String|
 |updated_at|Timestamp|

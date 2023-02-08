@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |acceptance_required|Bool|
 |availability_zones|StringArray|
 |base_endpoint_dns_names|StringArray|
@@ -30,3 +29,4 @@ The primary key for this table is **arn**.
 |service_state|String|
 |service_type|JSON|
 |supported_ip_address_types|StringArray|
+|tags|JSON|

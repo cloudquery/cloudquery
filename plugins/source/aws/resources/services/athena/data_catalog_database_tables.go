@@ -16,9 +16,10 @@ func DataCatalogDatabaseTables() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.TableMetadata{}),
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Type:        schema.TypeString,
+				RetainOrder: true,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
 				Name:     "region",

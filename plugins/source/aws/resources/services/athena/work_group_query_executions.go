@@ -17,9 +17,10 @@ func WorkGroupQueryExecutions() *schema.Table {
 		Transform:           transformers.TransformWithStruct(&types.QueryExecution{}),
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Type:        schema.TypeString,
+				RetainOrder: true,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
 				Name:     "region",

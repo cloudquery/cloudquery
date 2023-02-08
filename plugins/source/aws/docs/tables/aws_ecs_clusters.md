@@ -22,7 +22,6 @@ The following tables depend on aws_ecs_clusters:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |active_services_count|Int|
 |attachments|JSON|
 |attachments_status|String|
@@ -38,3 +37,4 @@ The following tables depend on aws_ecs_clusters:
 |settings|JSON|
 |statistics|JSON|
 |status|String|
+|tags|JSON|

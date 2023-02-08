@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |identity_name|String|
 |sending_enabled|Bool|
 |configuration_set_name|String|
@@ -24,5 +23,6 @@ The primary key for this table is **arn**.
 |identity_type|String|
 |mail_from_attributes|JSON|
 |policies|JSON|
+|tags|JSON|
 |verification_status|String|
 |verified_for_sending_status|Bool|

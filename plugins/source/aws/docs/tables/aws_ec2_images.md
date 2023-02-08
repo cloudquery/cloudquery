@@ -15,7 +15,6 @@ The composite primary key for this table is (**account_id**, **region**, **arn**
 |account_id (PK)|String|
 |region (PK)|String|
 |arn (PK)|String|
-|tags|JSON|
 |architecture|String|
 |block_device_mappings|JSON|
 |boot_mode|String|
@@ -42,6 +41,7 @@ The composite primary key for this table is (**account_id**, **region**, **arn**
 |sriov_net_support|String|
 |state|String|
 |state_reason|JSON|
+|tags|JSON|
 |tpm_support|String|
 |usage_operation|String|
 |virtualization_type|String|

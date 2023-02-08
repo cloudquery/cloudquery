@@ -13,10 +13,8 @@ The primary key for this table is **arn**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
-|region|String|
 |arn (PK)|String|
 |id|String|
-|tags|JSON|
 |address_family|String|
 |amazon_address|String|
 |amazon_side_asn|Int|
@@ -33,8 +31,10 @@ The primary key for this table is **arn**.
 |location|String|
 |mtu|Int|
 |owner_account|String|
+|region|String|
 |route_filter_prefixes|JSON|
 |site_link_enabled|Bool|
+|tags|JSON|
 |virtual_gateway_id|String|
 |virtual_interface_id|String|
 |virtual_interface_name|String|

@@ -14,7 +14,6 @@ The primary key for this table is **arn**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|tags|JSON|
 |arn (PK)|String|
 |created_at|Timestamp|
 |domain_name|String|
@@ -35,3 +34,4 @@ The primary key for this table is **arn**.
 |status|String|
 |subject_alternative_names|StringArray|
 |support_code|String|
+|tags|JSON|

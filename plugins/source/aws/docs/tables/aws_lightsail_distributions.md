@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |able_to_update_bundle|Bool|
 |alternative_domain_names|StringArray|
 |bundle_id|String|
@@ -34,4 +33,5 @@ The primary key for this table is **arn**.
 |resource_type|String|
 |status|String|
 |support_code|String|
+|tags|JSON|
 |latest_cache_reset|JSON|

@@ -16,7 +16,6 @@ The primary key for this table is **arn**.
 |region|String|
 |tags|JSON|
 |arn (PK)|String|
-|dimensions|JSON|
 |actions_enabled|Bool|
 |alarm_actions|StringArray|
 |alarm_arn|String|
@@ -25,6 +24,7 @@ The primary key for this table is **arn**.
 |alarm_name|String|
 |comparison_operator|String|
 |datapoints_to_alarm|Int|
+|dimensions|JSON|
 |evaluate_low_sample_count_percentile|String|
 |evaluation_periods|Int|
 |evaluation_state|String|

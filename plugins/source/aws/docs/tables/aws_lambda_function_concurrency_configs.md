@@ -18,9 +18,9 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|function_arn|String|
 |allocated_provisioned_concurrent_executions|Int|
 |available_provisioned_concurrent_executions|Int|
+|function_arn|String|
 |last_modified|String|
 |requested_provisioned_concurrent_executions|Int|
 |status|String|

@@ -20,7 +20,6 @@ The following tables depend on aws_lightsail_disks:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |add_ons|JSON|
 |attached_to|String|
 |attachment_state|String|
@@ -36,3 +35,4 @@ The following tables depend on aws_lightsail_disks:
 |size_in_gb|Int|
 |state|String|
 |support_code|String|
+|tags|JSON|

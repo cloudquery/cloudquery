@@ -15,9 +15,10 @@ func RegionalConfigs() *schema.Table {
 		Transform: transformers.TransformWithStruct(&models.RegionalConfig{}),
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Type:        schema.TypeString,
+				RetainOrder: true,
+				Resolver:    client.ResolveAWSAccount,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

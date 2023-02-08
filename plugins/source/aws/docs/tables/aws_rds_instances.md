@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|processor_features|JSON|
 |tags|JSON|
 |activity_stream_engine_native_audit_fields_included|Bool|
 |activity_stream_kinesis_stream_name|String|
@@ -80,6 +79,7 @@ The primary key for this table is **arn**.
 |performance_insights_retention_period|Int|
 |preferred_backup_window|String|
 |preferred_maintenance_window|String|
+|processor_features|JSON|
 |promotion_tier|Int|
 |publicly_accessible|Bool|
 |read_replica_db_cluster_identifiers|StringArray|

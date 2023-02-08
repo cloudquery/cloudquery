@@ -16,5 +16,5 @@ The primary key for this table is **arn**.
 |arn (PK)|String|
 |create_date|Timestamp|
 |saml_metadata_document|String|
-|tags|JSON|
 |valid_until|Timestamp|
+|tags|JSON|

@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |administrative_actions|JSON|
 |creation_time|Timestamp|
 |dns_name|String|
@@ -34,5 +33,6 @@ The primary key for this table is **arn**.
 |storage_capacity|Int|
 |storage_type|String|
 |subnet_ids|StringArray|
+|tags|JSON|
 |vpc_id|String|
 |windows_configuration|JSON|

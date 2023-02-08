@@ -19,8 +19,8 @@ This table depends on [aws_mq_broker_configurations](aws_mq_broker_configuration
 |account_id|String|
 |region|String|
 |broker_configuration_arn|String|
-|data|JSON|
 |configuration_id|String|
 |created|Timestamp|
+|data|JSON|
 |description|String|
 |result_metadata|JSON|

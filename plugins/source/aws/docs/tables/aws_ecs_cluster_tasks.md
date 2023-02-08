@@ -19,7 +19,6 @@ This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |task_protection|JSON|
 |attachments|JSON|
 |attributes|JSON|
@@ -53,6 +52,7 @@ This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 |stopped_at|Timestamp|
 |stopped_reason|String|
 |stopping_at|Timestamp|
+|tags|JSON|
 |task_arn|String|
 |task_definition_arn|String|
 |version|Int|

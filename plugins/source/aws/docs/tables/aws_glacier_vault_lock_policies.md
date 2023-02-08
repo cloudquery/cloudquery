@@ -19,7 +19,7 @@ This table depends on [aws_glacier_vaults](aws_glacier_vaults.md).
 |account_id|String|
 |region|String|
 |vault_arn (PK)|String|
-|policy|JSON|
 |creation_date|String|
 |expiration_date|String|
+|policy|JSON|
 |state|String|

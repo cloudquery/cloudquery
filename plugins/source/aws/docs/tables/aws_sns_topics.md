@@ -17,13 +17,13 @@ The primary key for this table is **arn**.
 |arn (PK)|String|
 |tags|JSON|
 |delivery_policy|JSON|
-|policy|JSON|
-|effective_delivery_policy|JSON|
 |display_name|String|
 |owner|String|
+|policy|JSON|
 |subscriptions_confirmed|Int|
 |subscriptions_deleted|Int|
 |subscriptions_pending|Int|
+|effective_delivery_policy|JSON|
 |kms_master_key_id|String|
 |fifo_topic|Bool|
 |content_based_deduplication|Bool|

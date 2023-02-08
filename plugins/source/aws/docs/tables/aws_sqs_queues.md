@@ -15,9 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|policy|JSON|
-|redrive_policy|JSON|
-|redrive_allow_policy|JSON|
 |tags|JSON|
 |url|String|
 |approximate_number_of_messages|Int|
@@ -28,7 +25,9 @@ The primary key for this table is **arn**.
 |last_modified_timestamp|Int|
 |maximum_message_size|Int|
 |message_retention_period|Int|
+|policy|JSON|
 |receive_message_wait_time_seconds|Int|
+|redrive_policy|JSON|
 |visibility_timeout|Int|
 |kms_master_key_id|String|
 |kms_data_key_reuse_period_seconds|Int|
@@ -37,4 +36,5 @@ The primary key for this table is **arn**.
 |content_based_deduplication|Bool|
 |deduplication_scope|String|
 |fifo_throughput_limit|String|
+|redrive_allow_policy|JSON|
 |unknown_fields|JSON|

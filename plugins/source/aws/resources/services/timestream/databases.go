@@ -16,9 +16,10 @@ func Databases() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ingest.timestream"),
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Type:        schema.TypeString,
+				RetainOrder: true,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
 				Name:     "region",

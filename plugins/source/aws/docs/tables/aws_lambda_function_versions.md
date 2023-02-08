@@ -18,7 +18,6 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|function_arn|String|
 |architectures|StringArray|
 |code_sha256|String|
 |code_size|Int|
@@ -27,6 +26,7 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 |environment|JSON|
 |ephemeral_storage|JSON|
 |file_system_configs|JSON|
+|function_arn|String|
 |function_name|String|
 |handler|String|
 |image_config_response|JSON|

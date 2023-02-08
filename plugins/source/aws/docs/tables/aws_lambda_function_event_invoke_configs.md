@@ -18,8 +18,8 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|function_arn|String|
 |destination_config|JSON|
+|function_arn|String|
 |last_modified|Timestamp|
 |maximum_event_age_in_seconds|Int|
 |maximum_retry_attempts|Int|

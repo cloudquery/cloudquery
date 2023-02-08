@@ -13,10 +13,8 @@ The primary key for this table is **arn**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
-|region|String|
 |arn (PK)|String|
 |id|String|
-|tags|JSON|
 |allows_hosted_connections|Bool|
 |aws_device|String|
 |aws_device_v2|String|
@@ -36,3 +34,5 @@ The primary key for this table is **arn**.
 |number_of_connections|Int|
 |owner_account|String|
 |provider_name|String|
+|region|String|
+|tags|JSON|

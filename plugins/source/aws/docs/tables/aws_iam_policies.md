@@ -15,7 +15,6 @@ The composite primary key for this table is (**account_id**, **id**).
 |account_id (PK)|String|
 |id (PK)|String|
 |tags|JSON|
-|policy_version_list|JSON|
 |arn|String|
 |attachment_count|Int|
 |create_date|Timestamp|
@@ -26,4 +25,5 @@ The composite primary key for this table is (**account_id**, **id**).
 |permissions_boundary_usage_count|Int|
 |policy_id|String|
 |policy_name|String|
+|policy_version_list|JSON|
 |update_date|Timestamp|

@@ -17,9 +17,10 @@ func Clusters() *schema.Table {
 		Multiplex:           client.ServiceAccountRegionMultiplexer("kafka"),
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Type:        schema.TypeString,
+				RetainOrder: true,
+				Resolver:    client.ResolveAWSAccount,
 			},
 			{
 				Name:     "arn",

@@ -18,13 +18,13 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|function_arn|String|
 |amazon_managed_kafka_event_source_config|JSON|
 |batch_size|Int|
 |bisect_batch_on_function_error|Bool|
 |destination_config|JSON|
 |event_source_arn|String|
 |filter_criteria|JSON|
+|function_arn|String|
 |function_response_types|StringArray|
 |last_modified|Timestamp|
 |last_processing_result|String|

@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |certificate|String|
 |domain|String|
 |endpoint_details|JSON|
@@ -31,5 +30,6 @@ The primary key for this table is **arn**.
 |security_policy_name|String|
 |server_id|String|
 |state|String|
+|tags|JSON|
 |user_count|Int|
 |workflow_details|JSON|

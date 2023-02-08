@@ -21,7 +21,6 @@ The following tables depend on aws_glue_ml_transforms:
 |region|String|
 |arn (PK)|String|
 |tags|JSON|
-|schema|JSON|
 |created_on|Timestamp|
 |description|String|
 |evaluation_metrics|JSON|
@@ -35,6 +34,7 @@ The following tables depend on aws_glue_ml_transforms:
 |number_of_workers|Int|
 |parameters|JSON|
 |role|String|
+|schema|JSON|
 |status|String|
 |timeout|Int|
 |transform_encryption|JSON|

@@ -22,13 +22,13 @@ The following tables depend on aws_iam_users:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|arn|String|
 |id (PK)|String|
 |account_id (PK)|String|
-|tags|JSON|
+|arn|String|
 |create_date|Timestamp|
 |path|String|
 |user_id|String|
 |user_name|String|
 |password_last_used|Timestamp|
 |permissions_boundary|JSON|
+|tags|JSON|

@@ -14,7 +14,6 @@ The primary key for this table is **arn**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |arn (PK)|String|
-|tags|JSON|
 |created_time|Timestamp|
 |id|String|
 |idempotency_token|String|
@@ -29,6 +28,7 @@ The primary key for this table is **arn**.
 |provisioning_artifact_name|String|
 |status|String|
 |status_message|String|
+|tags|JSON|
 |type|String|
 |user_arn|String|
 |user_arn_session|String|

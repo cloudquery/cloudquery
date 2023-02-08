@@ -14,7 +14,6 @@ The primary key for this table is **arn**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |arn (PK)|String|
-|tags|JSON|
 |cloud_watch_alarm_configuration_dimensions|JSON|
 |caller_reference|String|
 |health_check_config|JSON|
@@ -22,3 +21,4 @@ The primary key for this table is **arn**.
 |id|String|
 |cloud_watch_alarm_configuration|JSON|
 |linked_service|JSON|
+|tags|JSON|

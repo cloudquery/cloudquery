@@ -20,7 +20,6 @@ The following tables depend on aws_lightsail_load_balancers:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|JSON|
 |configuration_options|JSON|
 |created_at|Timestamp|
 |dns_name|String|
@@ -36,5 +35,6 @@ The following tables depend on aws_lightsail_load_balancers:
 |resource_type|String|
 |state|String|
 |support_code|String|
+|tags|JSON|
 |tls_certificate_summaries|JSON|
 |tls_policy_name|String|
