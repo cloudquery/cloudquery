@@ -46,7 +46,7 @@ func Groups() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: resolveCleanTags,
+				Resolver: client.ResolveTags,
 			},
 			{
 				Name:     "tags_raw",
