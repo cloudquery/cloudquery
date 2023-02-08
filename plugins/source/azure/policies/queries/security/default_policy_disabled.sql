@@ -5,7 +5,7 @@ SELECT
   :'check_id' as check_id,
   'Ensure any of the ASC Default policy setting is not set to "Disabled" (Automated)' as title,
   subscription_id,
-  id,
+  concat(id, '/', param),
   case
     when value = 'Disabled'
     then 'fail' else 'pass'
