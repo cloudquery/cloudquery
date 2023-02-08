@@ -80,11 +80,9 @@ func validateTagStructure(t *testing.T, plugin *source.Plugin, resources []*sche
 						if iResource != i {
 							continue
 						}
-						if value.Get() != nil && value.Get() != schema.Undefined {
-							_, ok := value.Get().(map[string]any)
-							if !ok {
-								t.Fatalf("unexpected type for tags column: got %v, want type map[string]any", value.Get())
-							}
+						_, ok := value.Get().(map[string]any)
+						if !ok {
+							t.Fatalf("unexpected type for tags column: got %v, want type map[string]any", value.Get())
 						}
 					}
 				}
