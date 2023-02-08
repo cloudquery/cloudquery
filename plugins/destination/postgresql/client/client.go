@@ -108,14 +108,11 @@ func (c *Client) currentDatabase(ctx context.Context) (string, error) {
 }
 
 func (c *Client) currentSchema(ctx context.Context) (string, error) {
-	var resetVal string
-	err := c.conn.QueryRow(ctx, "select reset_val from pg_settings where name='search_path'").Scan(&resetVal)
+	var schema string
+	err := c.conn.QueryRow(ctx, "select current_schema()").Scan(&schema)
 	if err != nil {
 		return "", err
 	}
-	schemaTokens := strings.Split(resetVal, ",")
-	schema := schemaTokens[len(schemaTokens)-1]
-	schema = strings.Trim(schema, " ")
 
 	return schema, nil
 }

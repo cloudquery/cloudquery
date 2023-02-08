@@ -90,9 +90,6 @@ func (c *Client) listPgTables(ctx context.Context, pluginTables schema.Tables) (
 				PrimaryKey: isPrimaryKey,
 				NotNull:    notNull,
 			},
-			Resolver: func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-				return resource.Set(columnName, resource.Item.([]interface{})[ordinalPosition-1])
-			},
 			Type: c.PgToSchemaType(columnType),
 		})
 	}
