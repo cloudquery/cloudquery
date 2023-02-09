@@ -44,7 +44,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 				AccessToken: "SomeTestToken",
 				InstanceUrl: h.URL,
 			},
-			HTTPDataEndpoint: h.URL + "/services/data/" + ApiVersion,
+			HTTPDataEndpoint: h.URL + "/services/data/" + pluginSpec.SFAPIVersion,
 			ListObjectsResponse: ListObjectsResponse{
 				Sobject: []Sobject{
 					{

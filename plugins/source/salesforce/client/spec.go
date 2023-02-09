@@ -7,8 +7,10 @@ type Spec struct {
 	ClientSecret   string   `json:"client_secret"`
 	Username       string   `json:"username"`
 	Password       string   `json:"password"`
+	SFAPIVersion   string   `json:"api_version"`
 	IncludeObjects []string `json:"include_objects"`
 	ExcludeObjects []string `json:"exclude_objects"`
+	OAuthURL       string   `json:"oauth_url"`
 }
 
 func (s *Spec) Validate() error {
@@ -24,6 +26,9 @@ func (s *Spec) Validate() error {
 	if s.Password == "" {
 		return fmt.Errorf("password is required")
 	}
+	if s.SFAPIVersion == "" {
+		return fmt.Errorf("api_version is required")
+	}
 	return nil
 }
 
@@ -33,5 +38,8 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.ExcludeObjects == nil {
 		s.ExcludeObjects = []string{}
+	}
+	if s.OAuthURL == "" {
+		s.OAuthURL = "https://login.salesforce.com/services/oauth2/token"
 	}
 }
