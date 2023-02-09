@@ -68,8 +68,10 @@ func (*Client) TransformTextArray(v *schema.TextArray) any {
 }
 
 func (*Client) TransformTimestamptz(v *schema.Timestamptz) any {
+	// In postgresql, our underlyting type for timestamps is 'timestamp without timezone', so we have to
+	// convert it to UTC here (to avoid stripping the timezone information on INSERT).
 	return &pgtype.Timestamptz{
-		Time:  v.Time,
+		Time:  v.Time.UTC(),
 		Valid: v.Status == schema.Present,
 	}
 }
