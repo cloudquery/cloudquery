@@ -9,9 +9,10 @@ import (
 )
 
 const (
-	isTableExistSQL = "SELECT count(*) FROM information_schema.tables WHERE table_name='?';"
+	// Use ILIKE for case insensitivity.
 
-	sqlTableInfo = "select column_name, data_type, is_nullable from information_schema.columns where table_name='?';"
+	isTableExistSQL = "SELECT count(*) FROM information_schema.tables WHERE table_name ILIKE '?';"
+	sqlTableInfo    = "select column_name, data_type, is_nullable from information_schema.columns where table_name ILIKE '?';"
 )
 
 type columnInfo struct {
