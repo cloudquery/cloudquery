@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/AmazonS3/latest/API/API_Grant.html
 
-The composite primary key for this table is (**bucket_arn**, **grantee_type**, **grantee_id**).
+The composite primary key for this table is (**bucket_arn**, **grantee_type**, **grantee_id**, **permission**).
 
 ## Relations
 
@@ -20,5 +20,5 @@ This table depends on [aws_s3_buckets](aws_s3_buckets.md).
 |bucket_arn (PK)|String|
 |grantee_type (PK)|String|
 |grantee_id (PK)|String|
+|permission (PK)|String|
 |grantee|JSON|
-|permission|String|
