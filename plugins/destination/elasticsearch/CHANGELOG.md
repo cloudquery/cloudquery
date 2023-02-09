@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v1.0.2...plugins-destination-elasticsearch-v1.0.3) (2023-02-09)
+
+
+### Bug Fixes
+
+* Ignore delete stale error when index does not exist ([#7891](https://github.com/cloudquery/cloudquery/issues/7891)) ([7481b7f](https://github.com/cloudquery/cloudquery/commit/7481b7f98f2de61843b0a402e6eb94b1e9af7632))
+
 ## [1.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v1.0.1...plugins-destination-elasticsearch-v1.0.2) (2023-02-09)
 
 
