@@ -23,6 +23,8 @@ The following tables depend on aws_autoscaling_groups:
 |load_balancers|JSON|
 |load_balancer_target_groups|JSON|
 |arn (PK)|String|
+|tags|JSON|
+|tags_raw|JSON|
 |auto_scaling_group_name|String|
 |availability_zones|StringArray|
 |created_time|Timestamp|
@@ -50,7 +52,6 @@ The following tables depend on aws_autoscaling_groups:
 |service_linked_role_arn|String|
 |status|String|
 |suspended_processes|JSON|
-|tags|JSON|
 |target_group_ar_ns|StringArray|
 |termination_policies|StringArray|
 |traffic_sources|JSON|
