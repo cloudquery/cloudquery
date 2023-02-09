@@ -3,6 +3,7 @@ package client
 import (
 	"encoding/hex"
 	"encoding/json"
+	"strings"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -43,13 +44,13 @@ func (*Client) TransformJSON(v *schema.JSON) any {
 }
 
 func (*Client) TransformText(v *schema.Text) any {
-	return v.String()
+	return stripNulls(v.String())
 }
 
 func (*Client) TransformTextArray(v *schema.TextArray) any {
 	res := make([]string, len(v.Elements))
 	for i, e := range v.Elements {
-		res[i] = e.String()
+		res[i] = stripNulls(e.String())
 	}
 	return res
 }
@@ -107,4 +108,8 @@ func (*Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
 		res[i] = e.String()
 	}
 	return res
+}
+
+func stripNulls(s string) string {
+	return strings.ReplaceAll(s, "\x00", "")
 }
