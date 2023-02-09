@@ -122,7 +122,7 @@ func resolveImageArn(ctx context.Context, meta schema.ClientMeta, resource *sche
 		Service:   "ecr",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "repository_image/" + *item.RegistryId + "/" + *item.ImageDigest,
+		Resource:  "repository_image/" + *item.RepositoryName + "/" + *item.ImageDigest,
 	}
 	return resource.Set(c.Name, a.String())
 }
