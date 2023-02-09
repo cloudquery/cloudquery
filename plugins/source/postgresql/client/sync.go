@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/jackc/pgconn"
 	"github.com/jackc/pglogrepl"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgproto3"
@@ -15,11 +17,13 @@ import (
 )
 
 func (c *Client) Sync(ctx context.Context, res chan<- *schema.Resource) error {
+	var sysident pglogrepl.IdentifySystemResult
 	if c.pluginSpec.CDC {
 		connPool, err := c.Conn.Acquire(ctx)
 		if err != nil {
 			return fmt.Errorf("failed to acquire connection: %w", err)
 		}
+		// this must be closed only at the end of the sync process
 		defer connPool.Release()
 		conn := connPool.Conn().PgConn()
 	
@@ -30,7 +34,7 @@ func (c *Client) Sync(ctx context.Context, res chan<- *schema.Resource) error {
 			return fmt.Errorf("failed to create publication: %w", err)
 		}
 	
-		sysident, err := pglogrepl.IdentifySystem(ctx, conn)
+		sysident, err = pglogrepl.IdentifySystem(ctx, conn)
 		if err != nil {
 			return fmt.Errorf("failed to identify system: %w", err)
 		}
@@ -98,16 +102,34 @@ func (c *Client) Sync(ctx context.Context, res chan<- *schema.Resource) error {
 	if !c.pluginSpec.CDC {
 		return nil
 	}
-	// clientXLogPos := sysident.XLogPos
-	// standbyMessageTimeout := time.Second * 10
-	// nextStandbyMessageDeadline := time.Now().Add(standbyMessageTimeout)
+	
+	clientXLogPos := sysident.XLogPos
+	standbyMessageTimeout := time.Second * 10
+	nextStandbyMessageDeadline := time.Now().Add(standbyMessageTimeout)
 	relations := map[uint32]*pglogrepl.RelationMessage{}
 	typeMap := pgtype.NewMap()
 
 	conn := tx.Conn().PgConn()
-
 	for {
+		if time.Now().After(nextStandbyMessageDeadline) {
+			err = pglogrepl.SendStandbyStatusUpdate(context.Background(), conn, pglogrepl.StandbyStatusUpdate{WALWritePosition: clientXLogPos})
+			if err != nil {
+				log.Fatalln("SendStandbyStatusUpdate failed:", err)
+			}
+			log.Println("Sent Standby status message")
+			nextStandbyMessageDeadline = time.Now().Add(standbyMessageTimeout)
+		}
+
+		ctx, cancel := context.WithDeadline(context.Background(), nextStandbyMessageDeadline)
 		rawMsg, err := conn.ReceiveMessage(ctx)
+		cancel()
+		if err != nil {
+			if pgconn.Timeout(err) {
+				continue
+			}
+			log.Fatalln("ReceiveMessage failed:", err)
+		}
+
 		if errMsg, ok := rawMsg.(*pgproto3.ErrorResponse); ok {
 			return fmt.Errorf("received Postgres WAL error: %+v", errMsg)
 		}
@@ -126,12 +148,10 @@ func (c *Client) Sync(ctx context.Context, res chan<- *schema.Resource) error {
 			if err != nil {
 				return fmt.Errorf("ParsePrimaryKeepaliveMessage failed: %w", err)
 			}
-			c.logger.Info().Msgf("Primary Keepalive Message =>", "ServerWALEnd:", pkm.ServerWALEnd, "ServerTime:", pkm.ServerTime, "ReplyRequested:", pkm.ReplyRequested)
-	
-			// if pkm.ReplyRequested {
-			// 	nextStandbyMessageDeadline = time.Time{}
-			// }
-	
+			c.logger.Info().Msgf("Primary Keepalive Message =>", "ServerWALEnd:", pkm.ServerWALEnd, "ServerTime:", pkm.ServerTime, "ReplyRequested:", pkm.ReplyRequested)	
+			if pkm.ReplyRequested {
+				nextStandbyMessageDeadline = time.Time{}
+			}
 		case pglogrepl.XLogDataByteID:
 			xld, err := pglogrepl.ParseXLogData(msg.Data[1:])
 			if err != nil {
@@ -146,12 +166,8 @@ func (c *Client) Sync(ctx context.Context, res chan<- *schema.Resource) error {
 			switch logicalMsg := logicalMsg.(type) {
 			case *pglogrepl.RelationMessage:
 				relations[logicalMsg.RelationID] = logicalMsg
-	
 			case *pglogrepl.BeginMessage:
-				// Indicates the beginning of a group of changes in a transaction. This is only sent for committed transactions. You won't get any events from rolled back transactions.
-	
 			case *pglogrepl.CommitMessage:
-	
 			case *pglogrepl.InsertMessage:
 				rel, ok := relations[logicalMsg.RelationID]
 				if !ok {
@@ -208,15 +224,13 @@ func (c *Client) Sync(ctx context.Context, res chan<- *schema.Resource) error {
 				}
 				res <- resource
 			case *pglogrepl.DeleteMessage:
-				// ...
-			case *pglogrepl.TruncateMessage:
-				// ...
-	
+			case *pglogrepl.TruncateMessage:	
 			case *pglogrepl.TypeMessage:
 			case *pglogrepl.OriginMessage:
 			default:
 				log.Printf("Unknown message type in pgoutput stream: %T", logicalMsg)
 			}
+			clientXLogPos = xld.WALStart + pglogrepl.LSN(len(xld.WALData))
 		}		
 	}
 }

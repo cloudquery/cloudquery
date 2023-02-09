@@ -11,7 +11,6 @@ import (
 	"github.com/jackc/pglogrepl"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jackc/pgx/v5/tracelog"
 	"github.com/rs/zerolog"
@@ -45,7 +44,7 @@ func (*Client) ID() string {
 
 func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	c := &Client{
-		logger: logger.With().Str("module", "pg-dest").Logger(),
+		logger: logger.With().Str("module", "pg-source").Logger(),
 	}
 	var pluginSpec Spec
 	c.spec = spec
@@ -82,7 +81,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	if err != nil {
 		return nil, fmt.Errorf("failed to get current database: %w", err)
 	}
-	c.currentSchemaName = "public"
+	c.currentSchemaName, err = c.currentSchema(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get current schema: %w", err)
+	}
 	c.pgType, err = c.getPgType(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
@@ -136,39 +138,49 @@ func (c *Client) currentDatabase(ctx context.Context) (string, error) {
 	return db, nil
 }
 
-func (c *Client) createReplication(ctx context.Context) error {
-	cfg, err := pgconn.ParseConfig(c.pluginSpec.ConnectionString)
+func (c *Client) currentSchema(ctx context.Context) (string, error) {
+	var schema string
+	err := c.Conn.QueryRow(ctx, "select current_schema()").Scan(&schema)
 	if err != nil {
-		return err
-	}
-	conn, err := pgconn.ConnectConfig(ctx, cfg)
-	if err != nil {
-		return err
-	}
-	tables := strings.Join(c.Tables.TableNames(), ",")
-	reader := conn.Exec(ctx, fmt.Sprintf("CREATE PUBLICATION %s FOR TABLE %s;", pgx.Identifier{c.spec.Name}.Sanitize(), tables))
-	_, err = reader.ReadAll()
-	if err != nil {
-		return fmt.Errorf("failed to create publication: %w", err)
+		return "", err
 	}
 
-	sysident, err := pglogrepl.IdentifySystem(ctx, conn)
-	if err != nil {
-		return fmt.Errorf("failed to identify system: %w", err)
-	}
-
-	sql := fmt.Sprintf("CREATE_REPLICATION_SLOT %s LOGICAL pgoutput EXPORT_SNAPSHOT", c.spec.Name)
-	c.createReplicationSlotResult, err = pglogrepl.ParseCreateReplicationSlot(conn.Exec(ctx, sql))
-	if err != nil {
-		return fmt.Errorf("failed to create replication slot: %w", err)
-	}
-
-	if err := pglogrepl.StartReplication(ctx, conn, c.createReplicationSlotResult.SlotName, sysident.XLogPos,
-		pglogrepl.StartReplicationOptions{
-			PluginArgs: []string{"proto_version '1'", "publication_names '" + c.spec.Name + "'"},
-		}); err != nil {
-		return fmt.Errorf("failed to start replication: %w", err)
-	}
-
-	return nil
+	return schema, nil
 }
+
+// func (c *Client) createReplication(ctx context.Context) error {
+// 	cfg, err := pgconn.ParseConfig(c.pluginSpec.ConnectionString)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	conn, err := pgconn.ConnectConfig(ctx, cfg)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	tables := strings.Join(c.Tables.TableNames(), ",")
+// 	reader := conn.Exec(ctx, fmt.Sprintf("CREATE PUBLICATION %s FOR TABLE %s;", pgx.Identifier{c.spec.Name}.Sanitize(), tables))
+// 	_, err = reader.ReadAll()
+// 	if err != nil {
+// 		return fmt.Errorf("failed to create publication: %w", err)
+// 	}
+
+// 	sysident, err := pglogrepl.IdentifySystem(ctx, conn)
+// 	if err != nil {
+// 		return fmt.Errorf("failed to identify system: %w", err)
+// 	}
+
+// 	sql := fmt.Sprintf("CREATE_REPLICATION_SLOT %s LOGICAL pgoutput EXPORT_SNAPSHOT", c.spec.Name)
+// 	c.createReplicationSlotResult, err = pglogrepl.ParseCreateReplicationSlot(conn.Exec(ctx, sql))
+// 	if err != nil {
+// 		return fmt.Errorf("failed to create replication slot: %w", err)
+// 	}
+
+// 	if err := pglogrepl.StartReplication(ctx, conn, c.createReplicationSlotResult.SlotName, sysident.XLogPos,
+// 		pglogrepl.StartReplicationOptions{
+// 			PluginArgs: []string{"proto_version '1'", "publication_names '" + c.spec.Name + "'"},
+// 		}); err != nil {
+// 		return fmt.Errorf("failed to start replication: %w", err)
+// 	}
+
+// 	return nil
+// }
