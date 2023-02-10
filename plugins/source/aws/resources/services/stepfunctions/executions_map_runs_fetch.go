@@ -13,7 +13,7 @@ func fetchStepfunctionsMapRuns(ctx context.Context, meta schema.ClientMeta, pare
 	svc := meta.(*client.Client).Services().Sfn
 	config := sfn.ListMapRunsInput{
 		MaxResults:   1000,
-		ExecutionArn: parent.Item.(types.ExecutionListItem).ExecutionArn,
+		ExecutionArn: parent.Item.(*sfn.DescribeExecutionOutput).ExecutionArn,
 	}
 	paginator := sfn.NewListMapRunsPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -23,5 +23,18 @@ func fetchStepfunctionsMapRuns(ctx context.Context, meta schema.ClientMeta, pare
 		}
 		res <- output.MapRuns
 	}
+	return nil
+}
+
+func getMapRun(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	svc := meta.(*client.Client).Services().Sfn
+	config := sfn.DescribeMapRunInput{
+		MapRunArn: resource.Item.(types.MapRunListItem).MapRunArn,
+	}
+	output, err := svc.DescribeMapRun(ctx, &config)
+	if err != nil {
+		return err
+	}
+	resource.Item = output
 	return nil
 }

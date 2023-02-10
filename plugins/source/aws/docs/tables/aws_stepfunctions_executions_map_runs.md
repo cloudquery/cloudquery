@@ -1,6 +1,6 @@
 # Table: aws_stepfunctions_executions_map_runs
 
-https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeStateMachine.html
+https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeMapRun.html
 
 The primary key for this table is **arn**.
 
@@ -20,7 +20,12 @@ This table depends on [aws_stepfunctions_executions](aws_stepfunctions_execution
 |region|String|
 |arn (PK)|String|
 |execution_arn|String|
+|execution_counts|JSON|
+|item_counts|JSON|
 |map_run_arn|String|
+|max_concurrency|Int|
 |start_date|Timestamp|
-|state_machine_arn|String|
+|status|String|
+|tolerated_failure_count|Int|
+|tolerated_failure_percentage|Float|
 |stop_date|Timestamp|

@@ -1,6 +1,6 @@
 # Table: aws_stepfunctions_executions
 
-https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeStateMachine.html
+https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeExecution.html
 
 The primary key for this table is **arn**.
 
@@ -21,10 +21,16 @@ The following tables depend on aws_stepfunctions_executions:
 |region|String|
 |arn (PK)|String|
 |execution_arn|String|
-|name|String|
 |start_date|Timestamp|
 |state_machine_arn|String|
 |status|String|
-|item_count|Int|
+|cause|String|
+|error|String|
+|input|String|
+|input_details|JSON|
 |map_run_arn|String|
+|name|String|
+|output|String|
+|output_details|JSON|
 |stop_date|Timestamp|
+|trace_header|String|

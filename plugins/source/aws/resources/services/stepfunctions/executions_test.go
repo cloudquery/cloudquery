@@ -24,15 +24,28 @@ func buildExecutions(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Executions: []types.ExecutionListItem{eli},
 		}, nil)
 
+	execOut := sfn.DescribeExecutionOutput{}
+	if err := faker.FakeObject(&execOut); err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().DescribeExecution(gomock.Any(), gomock.Any(), gomock.Any()).Return(&execOut, nil)
+
 	mrli := types.MapRunListItem{}
-	err = faker.FakeObject(&mrli)
-	if err != nil {
+	if err = faker.FakeObject(&mrli); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListMapRuns(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&sfn.ListMapRunsOutput{
 			MapRuns: []types.MapRunListItem{mrli},
 		}, nil)
+
+	mapRunOut := sfn.DescribeMapRunOutput{}
+	if err := faker.FakeObject(&mapRunOut); err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().DescribeMapRun(gomock.Any(), gomock.Any(), gomock.Any()).Return(&mapRunOut, nil)
 
 	return client.Services{
 		Sfn: m,

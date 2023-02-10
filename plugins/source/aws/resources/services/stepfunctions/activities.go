@@ -10,7 +10,7 @@ import (
 func Activities() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_stepfunctions_activities",
-		Description: `https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeStateMachine.html`,
+		Description: `https://docs.aws.amazon.com/step-functions/latest/apireference/API_ListActivities.html`,
 		Resolver:    fetchStepfunctionsActivities,
 		Transform:   transformers.TransformWithStruct(&types.ActivityListItem{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("states"),
