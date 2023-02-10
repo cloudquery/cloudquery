@@ -9,7 +9,7 @@ import (
 )
 
 func fetchLambdaRuntimes(_ context.Context, _ schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	for _, runtime := range types.RuntimeProvided.Values() {
+	for _, runtime := range types.Runtime("").Values() {
 		res <- &models.RuntimeWrapper{Name: string(runtime)}
 	}
 	return nil
