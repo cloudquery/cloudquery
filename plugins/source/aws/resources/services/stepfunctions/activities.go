@@ -26,6 +26,5 @@ func Activities() *schema.Table {
 				},
 			},
 		},
-		Relations: []*schema.Table{},
 	}
 }

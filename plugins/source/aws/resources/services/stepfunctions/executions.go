@@ -27,7 +27,7 @@ func Executions() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			MapRuns(),
+			mapRuns(),
 		},
 	}
 }

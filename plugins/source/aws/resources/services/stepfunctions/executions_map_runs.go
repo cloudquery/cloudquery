@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func MapRuns() *schema.Table {
+func mapRuns() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_stepfunctions_executions_map_runs",
 		Description: `https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeStateMachine.html`,
