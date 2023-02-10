@@ -15,16 +15,8 @@ func GroupLifecycleHooks() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
 		Transform:   transformers.TransformWithStruct(&types.LifecycleHook{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "group_arn",
 				Type:     schema.TypeString,
