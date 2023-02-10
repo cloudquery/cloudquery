@@ -3,7 +3,6 @@ package cloudformation
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -14,16 +13,13 @@ func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *s
 	var config cloudformation.DescribeStacksInput
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudformation
-	for {
-		output, err := svc.DescribeStacks(ctx, &config)
+	paginator := cloudformation.NewDescribeStacksPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.Stacks
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
+		res <- page.Stacks
 	}
 	return nil
 }
@@ -32,18 +28,14 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 	config := cloudformation.ListStackResourcesInput{
 		StackName: stack.StackName,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudformation
-	for {
-		output, err := svc.ListStackResources(ctx, &config)
+	svc := meta.(*client.Client).Services().Cloudformation
+	paginator := cloudformation.NewListStackResourcesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.StackResourceSummaries
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
+		res <- page.StackResourceSummaries
 	}
 	return nil
 }

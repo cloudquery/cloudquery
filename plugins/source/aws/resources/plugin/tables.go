@@ -141,6 +141,7 @@ func tables() []*schema.Table {
 		backup.RegionSettings(),
 		backup.Vaults(),
 		cloudformation.Stacks(),
+		cloudformation.StackSets(),
 		cloudfront.CachePolicies(),
 		cloudfront.Distributions(),
 		cloudhsmv2.Clusters(),
