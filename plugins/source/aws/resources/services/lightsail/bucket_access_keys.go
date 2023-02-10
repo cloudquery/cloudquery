@@ -15,16 +15,8 @@ func BucketAccessKeys() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.AccessKey{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "bucket_arn",
 				Type:     schema.TypeString,

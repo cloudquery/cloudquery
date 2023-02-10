@@ -14,11 +14,7 @@ func BucketEncryptionRules() *schema.Table {
 		Resolver:    fetchS3BucketEncryptionRules,
 		Transform:   transformers.TransformWithStruct(&types.ServerSideEncryptionRule{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "bucket_arn",
 				Type:     schema.TypeString,

@@ -15,22 +15,8 @@ func Registries() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("api.ecr"),
 		Transform:   transformers.TransformWithStruct(&ecr.DescribeRegistryOutput{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:     "registry_id",
 				Type:     schema.TypeString,

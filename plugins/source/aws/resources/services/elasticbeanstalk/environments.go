@@ -15,24 +15,13 @@ func Environments() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
 		Transform:   transformers.TransformWithStruct(&types.EnvironmentDescription{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("EnvironmentArn"),
 			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,

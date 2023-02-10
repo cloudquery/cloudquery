@@ -15,16 +15,8 @@ func ApplicationFleetAssociations() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
 		Transform:   transformers.TransformWithStruct(&types.ApplicationFleetAssociation{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "application_arn",
 				Type:     schema.TypeString,

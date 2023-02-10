@@ -15,11 +15,7 @@ func VirtualMfaDevices() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.VirtualMFADevice{}),
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name: "serial_number",
 				Type: schema.TypeString,
