@@ -16,16 +16,8 @@ func Analyses() *schema.Table {
 		Transform:           transformers.TransformWithStruct(&types.Analysis{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer("quicksight"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,

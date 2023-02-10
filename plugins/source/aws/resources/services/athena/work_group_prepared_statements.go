@@ -16,16 +16,8 @@ func WorkGroupPreparedStatements() *schema.Table {
 		Multiplex:           client.ServiceAccountRegionMultiplexer("athena"),
 		Transform:           transformers.TransformWithStruct(&types.PreparedStatement{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "work_group_arn",
 				Type:     schema.TypeString,

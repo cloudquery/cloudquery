@@ -15,16 +15,8 @@ func GraphqlApis() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appsync"),
 		Transform:   transformers.TransformWithStruct(&types.GraphqlApi{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

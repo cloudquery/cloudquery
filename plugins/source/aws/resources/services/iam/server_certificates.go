@@ -15,14 +15,7 @@ func ServerCertificates() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.ServerCertificateMetadata{}),
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

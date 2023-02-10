@@ -15,14 +15,7 @@ func AlternateContacts() *schema.Table {
 		Multiplex:   client.AccountMultiplex,
 		Transform:   transformers.TransformWithStruct(&types.AlternateContact{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "alternate_contact_type",
 				Type:     schema.TypeString,
