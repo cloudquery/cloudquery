@@ -16,9 +16,9 @@ import { Callout } from 'nextra-theme-docs';
 
 ## Introduction
 
-Have you ever wished you could enter the ID of an EC2 instance into the search bar and get a list of all the resources that are related to it? Or search by tag across all your accounts and regions? Or search for resources by keyword? Well, now you can do all this, and more.
+Have you ever wished you could enter the ID of an EC2 instance into the search bar and get a list of all the related resources? Or search by tag across all your accounts and regions? Or search for resources by keyword? With the new CloudQuery Elasticsearch destination, you can do all this, and more.
 
-Using the CloudQuery Elasticsearch destination, you can search through your cloud infrastructure, create visualizations and dashboards, and generally explore your infrastructure data in a way that wasn't possible before. In this article we will show you how to get started and a few examples of the things you can do.
+Using the Elasticsearch destination, you can search through your cloud infrastructure, create visualizations and dashboards, and generally explore your infrastructure data in a way that wasn't possible before. In this article we will show you how to get started and a few examples of the things you can do.
 
 ## Why Elasticsearch?
 
@@ -34,7 +34,7 @@ You will also need a running Elasticsearch instance. If you don't have one, you 
 
 Now that you have CloudQuery and Elasticsearch running, you can configure the Elasticsearch destination. To do this, follow the instructions in the [Elasticsearch Destination guide](/docs/plugins/destinations/elasticsearch/overview) to create a configuration file called `elasticsearch.yml`.
 
-You also need to create a configuration file for the AWS provider. Again, follow the instructions in the [AWS Source guide](/docs/plugins/sources/aws/overview) to create a configuration file called `aws.yml`.
+Assuming you want to browse AWS infrastructure data, you also need to create a configuration file for the AWS provider. Again, follow the instructions in the [AWS Source guide](/docs/plugins/sources/aws/overview) to create a configuration file called `aws.yml`.
 
 Finally, you can run the CloudQuery command to sync your AWS infrastructure data to Elasticsearch:
 
@@ -70,4 +70,12 @@ We can also build visualizations and dashboards using the data in Elasticsearch.
 
 ![EC2 instance type pie chart](/images/blog/search-through-cloud-infrastructure-with-elasticsearch/ec2-instance-type-pie-chart.png)
 
+(Note: To create this particular visualization with the current version of the AWS and Elasticsearch plugins, we had to change the type of the `instance_type` field from `text` to `keyword` in the "Index Patterns" section of Kibana. This can be done by first doing a migration, which creates the index templates, editing the template, and then running a new sync.)
+
 ## Building an Historical View of Your Infrastructure
+
+One of the great things about Elasticsearch is that it is designed to be used with time series data, and therefore a final thing we wanted to note in this post is the ability to view historical snapshots of your infrastructure from Elasticsearch. The CloudQuery Elasticsearch destination currently supports three write modes: `overwrite`, `overwrite-delete-stale` (the default) and `append`. You can read more about these in the [plugin documentation](/docs/plugins/destinations/elasticsearch/overview), but in short, when using `append` mode, CloudQuery will never delete data, so you can build an historical view of your infrastructure over time. For example, by running a sync in `append` mode every day, you can build a visualization that shows the number of EC2 instances over time, or more generally track how your organization's security posture is (hopefully!) improving over time.
+
+## Conclusion
+
+In this article we showed you how to get started with the CloudQuery Elasticsearch destination. We also showed you a few examples of the things you can do with the data in Elasticsearch in combination with the AWS source plugin, including searching through your cloud infrastructure, building visualizations and dashboards, and building an historical view of your infrastructure. But don't think that it's limited to AWS! The Elasticsearch destination works with all [CloudQuery source plugins](/docs/plugins/sources/overview), so you can search through your Azure, GCP, Kubernetes, or even Marketing and FinOps data as well. We hope you find this new destination useful, and we look forward to seeing what you build with it! If you have any feedback on the Elasticsearch destination, or any other part of CloudQuery, please let us know on [Discord](https://www.cloudquery.io/discord) or by opening an [issue on GitHub](https://github.com/cloudquery/cloudquery). We look forward to seeing how you use this!
