@@ -93,7 +93,7 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
    aws iam put-role-policy --role-name lambda-ex --policy-name athena-policy --policy-document file://athena-policy.json
    ```
 
-5. Finally, create the function (replace `<your-role-arn>` with the ARN of the role you created in step 2):
+4. Create the function (replace `<your-role-arn>` with the ARN of the role you created in step 2):
 
    ```shell
    aws lambda create-function --function-name athena-resources-view --zip-file fileb://main.zip --handler main --runtime go1.x --role <your-role-arn>
@@ -105,10 +105,13 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
    aws lambda update-function-configuration --function-name athena-resources-view --timeout 300
    ```
    
-6. Finally, run the function. This might be easier from the console, but here is an example of how to do it from the command line (you will need to modify the values in the payload for your environment):
+5. Finally, run the function. This might be easier from the console, but here is an example of how to do it from the command line (you will need to modify the values in the payload for your environment):
 
    ```shell
    aws lambda invoke --cli-binary-format raw-in-base64-out --function-name athena-resources-view --invocation-type Event --payload '{"catalog": "awsdatacatalog", "database": "athena-example", "output": "s3://cloudquery-athena-example/output", "view": "aws_resources", "region": "us-east-1"}' response.json
    ```
+   
+   If any errors occur, you should be able to see them in the "Recent Queries" tab in the Athena console. Also check the logs for the function itself for any clues.
 
+With the Lambda created, you are free to then schedule it to run on a regular basis, or after a CloudQuery run.
 
