@@ -16,13 +16,17 @@ import { Callout } from 'nextra-theme-docs';
 
 ## Introduction
 
-Have you ever wished you could enter the IP of an EC2 instance into the search bar and get a list of all the resources that are related to it? Or search by tag across all your accounts and regions? Well, now you can.
+Have you ever wished you could enter the ID of an EC2 instance into the search bar and get a list of all the resources that are related to it? Or search by tag across all your accounts and regions? Or search for resources by keyword? Well, now you can do all this, and more.
 
-Using the CloudQuery Elasticsearch destination, you can search through your cloud infrastructure and get a list of all the resources that are related to your search query, and in this article we will show you what this looks like.
+Using the CloudQuery Elasticsearch destination, you can search through your cloud infrastructure, create visualizations and dashboards, and generally explore your infrastructure data in a way that wasn't possible before. In this article we will show you how to get started and a few examples of the things you can do.
+
+## Why Elasticsearch?
+
+Elasticsearch is a popular open source search engine built on top of Lucene. It is a distributed, RESTful search and analytics engine that is capable of storing and searching terabytes of data. As datasets grow over time, managing a SQL database can become more and more difficult, but Elasticsearch offers a great alternative here. It is schemaless and has built-in support for scaling, sharding and replication. Its fulltext search capabilities also make it a great fit for searching through unstructured data, especially JSON columns.
 
 ## Getting Started
 
-To get started, you will need to have CloudQuery installed. If you haven't already, you can do so by following the instructions in the [Quickstart](/docs/quickstart) guide.
+First, you will need to have CloudQuery installed. If you haven't already, you can do so by following the instructions in the [Quickstart](/docs/quickstart) guide.
 
 You will also need a running Elasticsearch instance. If you don't have one, you can either create one locally using Docker, or use the [Elastic Cloud](https://www.elastic.co/cloud) service, which offers a free trial. This [`docker-compose` file](https://github.com/cloudquery/cloudquery/blob/main/plugins/destination/elasticsearch/docker-compose.yaml) will get you started with local Elasticsearch and Kibana services (download the file, then run `docker compose up`). Once it's up, you should be able to visit `localhost:5601` and see the Kibana interface.
 
@@ -40,7 +44,7 @@ cloudquery sync aws.yml elasticsearch.yml
 
 ## Setting up the Data Views in Kibana
 
-When the sync completes, head over to the "Stack Management" section of Kibana and click on "Data Views" under "Kibana". Click "Create data view" and enter `aws*` as the index pattern. Select "_cq_sync_time" as the time field. Click "Save data view to Kibana" to finish.
+When the sync completes, head over to the "Stack Management" section of Kibana and click on "Data Views" under "Kibana". Click "Create data view" and enter `aws*` as the index pattern. Select `_cq_sync_time` as the time field (you can change this later, if you want). Click "Save data view to Kibana" to finish.
 
 ![Create a data view in Kibana](/images/blog/search-through-cloud-infrastructure-with-elasticsearch/create-data-view.png)
 
@@ -49,3 +53,21 @@ When the sync completes, head over to the "Stack Management" section of Kibana a
 </Callout>
 
 ## Searching Through Your Cloud Infrastructure
+
+Now that you have your data in Elasticsearch, you can start searching through it. To do this, head over to the "Discover" section of Kibana and enter a search query. For example, we can search by IP address:
+
+![Search by IP address](/images/blog/search-through-cloud-infrastructure-with-elasticsearch/search-by-ip.png)
+
+Or by tag:
+
+![Search by tag](/images/blog/search-through-cloud-infrastructure-with-elasticsearch/search-by-tag.png)
+
+Or we can use the native JSON object support to search through nested JSON objects. This query will find EC2 instances that have their monitoring state set to "disabled":
+
+![Search by JSON object](/images/blog/search-through-cloud-infrastructure-with-elasticsearch/search-by-json-object.png)
+
+We can also build visualizations and dashboards using the data in Elasticsearch. For example, we can create a pie chart that shows the distribution of EC2 instance types:
+
+![EC2 instance type pie chart](/images/blog/search-through-cloud-infrastructure-with-elasticsearch/ec2-instance-type-pie-chart.png)
+
+## Building an Historical View of Your Infrastructure
