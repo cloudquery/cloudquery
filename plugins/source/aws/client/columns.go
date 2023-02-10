@@ -9,7 +9,7 @@ func AccountPKColumn(pk bool) schema.Column {
 		Name:        "account_id",
 		Type:        schema.TypeString,
 		Resolver:    ResolveAWSAccount,
-		RetainOrder: true,
+		RetainOrder: false,
 		CreationOptions: schema.ColumnCreationOptions{
 			PrimaryKey: pk,
 		},
@@ -21,7 +21,7 @@ func RegionPKColumn(pk bool) schema.Column {
 		Name:        "region",
 		Type:        schema.TypeString,
 		Resolver:    ResolveAWSRegion,
-		RetainOrder: true,
+		RetainOrder: false,
 		CreationOptions: schema.ColumnCreationOptions{
 			PrimaryKey: pk,
 		},
