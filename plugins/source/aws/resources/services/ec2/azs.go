@@ -7,19 +7,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Regions() *schema.Table {
+func AvailabilityZones() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_regions",
+		Name:        "aws_availability_zones",
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Region.html`,
-		Resolver:    fetchEc2Regions,
+		Resolver:    fetchAvailabilityZones,
 		Multiplex:   client.AccountMultiplex,
-		Transform:   transformers.TransformWithStruct(&types.Region{}),
+		Transform:   transformers.TransformWithStruct(&types.AvailabilityZone{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "enabled",
 				Type:     schema.TypeBool,
-				Resolver: resolveRegionEnabled,
+				Resolver: resolveAZEnabled,
 			},
 			{
 				Name:     "partition",
