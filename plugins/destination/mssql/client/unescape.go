@@ -2,6 +2,7 @@ package client
 
 import (
 	"strconv"
+	"strings"
 )
 
 func unescape(str string) string {
@@ -19,6 +20,15 @@ func unescape(str string) string {
 		}
 		out += str[:1]
 		str = str[1:]
+	}
+
+	// check for unquote, too
+	if !strings.Contains(out, `\"`) && !strings.Contains(out, `\n`) {
+		return out
+	}
+
+	if unquoted, err := strconv.Unquote(`"` + out + `"`); err == nil {
+		return unquoted
 	}
 
 	return out

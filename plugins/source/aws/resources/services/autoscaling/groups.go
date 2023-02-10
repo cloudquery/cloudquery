@@ -43,6 +43,16 @@ func Groups() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
+			{
+				Name:     "tags_raw",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
+			},
 		},
 		Relations: []*schema.Table{
 			GroupScalingPolicies(),
