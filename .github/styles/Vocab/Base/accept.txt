@@ -189,4 +189,3 @@ Lucene
 schemaless
 sharding
 RESTful
-fulltext
