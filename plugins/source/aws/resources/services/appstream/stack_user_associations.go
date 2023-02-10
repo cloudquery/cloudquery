@@ -15,23 +15,8 @@ func StackUserAssociations() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
 		Transform:   transformers.TransformWithStruct(&types.UserStackAssociation{}),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.AccountPKColumn(true),
+			client.RegionPKColumn(true),
 			{
 				Name:     "stack_name",
 				Type:     schema.TypeString,

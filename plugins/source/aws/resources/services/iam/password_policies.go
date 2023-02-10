@@ -15,15 +15,7 @@ func PasswordPolicies() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&models.PasswordPolicyWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.AccountPKColumn(true),
 		},
 	}
 }

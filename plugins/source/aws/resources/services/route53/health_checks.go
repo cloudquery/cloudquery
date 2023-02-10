@@ -14,12 +14,7 @@ func HealthChecks() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&Route53HealthCheckWrapper{}, transformers.WithUnwrapStructFields("HealthCheck")),
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
+			client.AccountPKColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

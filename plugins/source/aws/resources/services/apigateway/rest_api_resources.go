@@ -15,20 +15,8 @@ func RestApiResources() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Resource{}),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.AccountPKColumn(true),
+			client.RegionPKColumn(false),
 			{
 				Name:     "rest_api_arn",
 				Type:     schema.TypeString,

@@ -15,17 +15,8 @@ func Certificates() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Certificate{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.AccountPKColumn(false),
+			client.RegionPKColumn(false),
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,

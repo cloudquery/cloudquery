@@ -15,17 +15,8 @@ func BrokerConfigurations() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&mq.DescribeConfigurationOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("mq"),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.AccountPKColumn(false),
+			client.RegionPKColumn(false),
 			{
 				Name:     "broker_arn",
 				Type:     schema.TypeString,

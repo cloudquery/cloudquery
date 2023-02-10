@@ -16,12 +16,7 @@ func Distributions() *schema.Table {
 		Multiplex:           client.AccountMultiplex,
 		Transform:           transformers.TransformWithStruct(&types.Distribution{}),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
+			client.AccountPKColumn(false),
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,

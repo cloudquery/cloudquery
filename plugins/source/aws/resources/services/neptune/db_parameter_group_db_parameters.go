@@ -15,17 +15,8 @@ func DbParameterGroupDbParameters() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("neptune"),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.AccountPKColumn(false),
+			client.RegionPKColumn(false),
 			{
 				Name:     "db_parameter_group_arn",
 				Type:     schema.TypeString,

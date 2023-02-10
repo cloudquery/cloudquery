@@ -14,17 +14,8 @@ func AnalyzerFindings() *schema.Table {
 		Resolver:    fetchAccessanalyzerAnalyzerFindings,
 		Transform:   transformers.TransformWithStruct(&types.FindingSummary{}),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.AccountPKColumn(false),
+			client.RegionPKColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

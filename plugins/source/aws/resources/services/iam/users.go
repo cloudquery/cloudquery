@@ -29,15 +29,7 @@ func Users() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.AccountPKColumn(true),
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,

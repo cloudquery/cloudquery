@@ -15,12 +15,7 @@ func RuleGroups() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.RuleGroup{}),
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
+			client.AccountPKColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

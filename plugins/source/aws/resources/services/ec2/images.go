@@ -16,28 +16,15 @@ func Images() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Image{}),
 		Columns: []schema.Column{
 			{
-<<<<<<< Updated upstream
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-=======
 				Name:        "account_id",
 				Type:        schema.TypeString,
-				RetainOrder: true,
 				Resolver:    client.ResolveAWSAccount,
->>>>>>> Stashed changes
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				RetainOrder: true,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
 			},
+			client.RegionPKColumn(true),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

@@ -16,23 +16,8 @@ func ContactLists() *schema.Table {
 		Transform:           transformers.TransformWithStruct(&sesv2.GetContactListOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer("email"),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.AccountPKColumn(true),
+			client.RegionPKColumn(true),
 			{
 				Name:     "name",
 				Type:     schema.TypeString,

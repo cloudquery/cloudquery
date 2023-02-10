@@ -14,12 +14,7 @@ func BucketLifecycles() *schema.Table {
 		Resolver:    fetchS3BucketLifecycles,
 		Transform:   transformers.TransformWithStruct(&types.LifecycleRule{}),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
+			client.AccountPKColumn(false),
 			{
 				Name:     "bucket_arn",
 				Type:     schema.TypeString,

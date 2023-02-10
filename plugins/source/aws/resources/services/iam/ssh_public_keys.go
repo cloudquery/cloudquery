@@ -15,12 +15,7 @@ func SshPublicKeys() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.SSHPublicKeyMetadata{}),
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
+			client.AccountPKColumn(false),
 			{
 				Name:     "user_arn",
 				Type:     schema.TypeString,

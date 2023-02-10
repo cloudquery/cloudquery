@@ -15,12 +15,7 @@ func EventCategories() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
 		Transform:   transformers.TransformWithStruct(&types.EventCategoriesMap{}),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
+			client.AccountPKColumn(false),
 			{
 				Name:     "event_categories",
 				Type:     schema.TypeStringArray,

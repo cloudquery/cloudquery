@@ -15,17 +15,8 @@ func TableReplicaAutoScalings() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("dynamodb"),
 		Transform:   transformers.TransformWithStruct(&types.ReplicaAutoScalingDescription{}),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.AccountPKColumn(false),
+			client.RegionPKColumn(false),
 			{
 				Name:     "table_arn",
 				Type:     schema.TypeString,

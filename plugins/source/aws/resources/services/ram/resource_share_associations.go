@@ -15,17 +15,8 @@ func ResourceShareAssociations() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.ResourceShareAssociation{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ram"),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.AccountPKColumn(false),
+			client.RegionPKColumn(false),
 			{
 				Name:     "associated_entity",
 				Type:     schema.TypeString,

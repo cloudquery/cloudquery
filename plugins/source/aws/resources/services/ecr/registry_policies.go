@@ -15,23 +15,8 @@ func RegistryPolicies() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("api.ecr"),
 		Transform:   transformers.TransformWithStruct(&ecr.GetRegistryPolicyOutput{}),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.AccountPKColumn(true),
+			client.RegionPKColumn(true),
 			{
 				Name:     "registry_id",
 				Type:     schema.TypeString,

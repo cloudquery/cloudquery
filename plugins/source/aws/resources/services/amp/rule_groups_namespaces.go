@@ -15,17 +15,8 @@ func RuleGroupsNamespaces() *schema.Table {
 		PreResourceResolver: describeRuleGroupsNamespace,
 		Transform:           transformers.TransformWithStruct(&types.RuleGroupsNamespaceDescription{}),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.AccountPKColumn(false),
+			client.RegionPKColumn(false),
 			{
 				Name:     "workspace_arn",
 				Type:     schema.TypeString,

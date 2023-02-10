@@ -15,17 +15,8 @@ func ClusterContainerInstances() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ecs"),
 		Transform:   transformers.TransformWithStruct(&types.ContainerInstance{}),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.AccountPKColumn(false),
+			client.RegionPKColumn(false),
 			{
 				Name:     "cluster_arn",
 				Type:     schema.TypeString,

@@ -15,17 +15,8 @@ func Stacks() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudformation"),
 		Transform:   transformers.TransformWithStruct(&types.Stack{}),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.AccountPKColumn(false),
+			client.RegionPKColumn(false),
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

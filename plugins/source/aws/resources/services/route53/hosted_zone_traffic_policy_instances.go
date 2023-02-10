@@ -15,15 +15,7 @@ func HostedZoneTrafficPolicyInstances() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.TrafficPolicyInstance{}),
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.AccountPKColumn(true),
 			{
 				Name:        "arn",
 				Type:        schema.TypeString,

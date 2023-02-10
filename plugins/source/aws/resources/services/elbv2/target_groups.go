@@ -15,17 +15,8 @@ func TargetGroups() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.TargetGroup{}),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.AccountPKColumn(false),
+			client.RegionPKColumn(false),
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,

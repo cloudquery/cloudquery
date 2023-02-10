@@ -15,12 +15,7 @@ func Endpoints() *schema.Table {
 		Multiplex:   client.AccountMultiplex,
 		Transform:   transformers.TransformWithStruct(&types.Endpoint{}),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
+			client.AccountPKColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

@@ -15,23 +15,8 @@ func ManagedRuleGroups() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.ManagedRuleGroupSummary{}, transformers.WithPrimaryKeys("Name", "VendorName")),
 		Multiplex:   client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.AccountPKColumn(true),
+			client.RegionPKColumn(true),
 			{
 				Name:     "scope",
 				Type:     schema.TypeString,

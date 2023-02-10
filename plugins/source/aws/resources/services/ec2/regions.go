@@ -15,12 +15,7 @@ func Regions() *schema.Table {
 		Multiplex:   client.AccountMultiplex,
 		Transform:   transformers.TransformWithStruct(&types.Region{}),
 		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				RetainOrder: true,
-				Resolver:    client.ResolveAWSAccount,
-			},
+			client.AccountPKColumn(false),
 			{
 				Name:     "enabled",
 				Type:     schema.TypeBool,
