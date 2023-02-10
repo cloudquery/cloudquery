@@ -15,11 +15,11 @@ The primary key for this table is **arn**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
 |region|String|
 |arn (PK)|String|
 |source_account_id|String|
 |tags|JSON|
+|account_id|String|
 |created_at|Timestamp|
 |deleted_at|Timestamp|
 |domain_name|String|
