@@ -40,7 +40,7 @@ func fetchApigatewayDomainNameBasePathMappings(ctx context.Context, meta schema.
 	r := parent.Item.(types.DomainName)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
-	config := apigateway.GetBasePathMappingsInput{DomainName: r.DomainName}
+	config := apigateway.GetBasePathMappingsInput{DomainName: r.DomainName, Limit: aws.Int32(500)}
 	for p := apigateway.NewGetBasePathMappingsPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx)
 		if err != nil {
