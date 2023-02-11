@@ -118,6 +118,14 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 					table.Columns[i].CreationOptions.NotNull = true
 				}
 			}
+			// this is for backward compatibility as I believe this is as of right now defined on the source
+			if len(table.PrimaryKeys()) == 0 {
+				cqIdColumn := table.Columns.Get(schema.CqIDColumn.Name)
+				if cqIdColumn != nil {
+					cqIdColumn.CreationOptions.PrimaryKey = true
+					cqIdColumn.CreationOptions.NotNull = true
+				}
+			}
 		}
 
 		pgTable := pgTables.Get(table.Name)
