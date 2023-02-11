@@ -25,6 +25,11 @@ func ReplicationGroups() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveElasticacheReplicationGroupTags,
+			},
 		},
 	}
 }
