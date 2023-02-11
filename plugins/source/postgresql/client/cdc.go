@@ -17,20 +17,10 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-
-func (c *Client) startCDC(ctx context.Context) error {
-	connPool, err := c.Conn.Acquire(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to acquire connection: %w", err)
-	}
-	// this must be closed only at the end of the sync process
-	defer connPool.Release()
-	conn := connPool.Conn().PgConn()
-	tables := strings.Join(c.Tables.TableNames(), ",")
-	sql := fmt.Sprintf("CREATE PUBLICATION %s FOR TABLE %s", pgx.Identifier{c.spec.Name}.Sanitize(), tables)
+func (c *Client) createPublicationForTables(ctx context.Context, conn *pgconn.PgConn) error {
+	sql := fmt.Sprintf("CREATE PUBLICATION %s FOR TABLE %s", pgx.Identifier{c.spec.Name}.Sanitize(), strings.Join(c.Tables.TableNames(), ","))
 	reader := conn.Exec(ctx, sql)
-	_, err = reader.ReadAll()
-	if err != nil {
+	if _, err := reader.ReadAll(); err != nil {
 		var pgErr *pgconn.PgError
 		if !errors.As(err, &pgErr) {
 			// not recoverable error
@@ -40,6 +30,25 @@ func (c *Client) startCDC(ctx context.Context) error {
 			// not recoverable error
 			return fmt.Errorf("failed to create publication with pgerror %s: %w", pgErrToStr(pgErr), err)
 		}
+		sql = fmt.Sprintf("ALTER PUBLICATION %s SET TABLE %s", pgx.Identifier{c.spec.Name}.Sanitize(), strings.Join(c.Tables.TableNames(), ","))
+		reader := conn.Exec(ctx, sql)
+		if _, err := reader.ReadAll(); err != nil {
+			return fmt.Errorf("failed to alter publication: %w", err)
+		}
+	}
+	return nil
+}
+
+func (c *Client) startCDC(ctx context.Context) error {
+	connPool, err := c.Conn.Acquire(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to acquire connection: %w", err)
+	}
+	// this must be closed only at the end of the sync process
+	defer connPool.Release()
+	conn := connPool.Conn().PgConn()
+	if err := c.createPublicationForTables(ctx, conn); err != nil {
+		return err
 	}
 
 	clientXLogPos, err := c.getLastXlogPos(ctx)
@@ -55,7 +64,7 @@ func (c *Client) startCDC(ctx context.Context) error {
 		return fmt.Errorf("failed to identify system: %w", err)
 	}
 
-	sql = fmt.Sprintf("CREATE_REPLICATION_SLOT %s LOGICAL pgoutput EXPORT_SNAPSHOT", c.spec.Name)
+	sql := fmt.Sprintf("CREATE_REPLICATION_SLOT %s LOGICAL pgoutput EXPORT_SNAPSHOT", c.spec.Name)
 	c.createReplicationSlotResult, err = pglogrepl.ParseCreateReplicationSlot(conn.Exec(ctx, sql))
 	if err != nil {
 		var pgErr *pgconn.PgError
@@ -67,13 +76,6 @@ func (c *Client) startCDC(ctx context.Context) error {
 			// not recoverable error
 			return fmt.Errorf("failed to create replication slot %s with pgerror %s: %w", c.spec.Name, pgErrToStr(pgErr), err)
 		}
-	}
-
-	if err := pglogrepl.StartReplication(ctx, conn, c.spec.Name, sysident.XLogPos,
-		pglogrepl.StartReplicationOptions{
-			PluginArgs: []string{"proto_version '1'", "publication_names '" + c.spec.Name + "'"},
-		}); err != nil {
-		return fmt.Errorf("failed to start replication: %w", err)
 	}
 
 	if err := c.setLastXlogPos(ctx, sysident.XLogPos); err != nil {
@@ -98,6 +100,14 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 	if clientXLogPos == 0 {
 		return fmt.Errorf("didn't find last xlog pos")
 	}
+
+	if err := pglogrepl.StartReplication(ctx, conn, c.spec.Name, clientXLogPos,
+		pglogrepl.StartReplicationOptions{
+			PluginArgs: []string{"proto_version '1'", "publication_names '" + c.spec.Name + "'"},
+		}); err != nil {
+		return fmt.Errorf("failed to start replication: %w", err)
+	}
+
 	standbyMessageTimeout := time.Second * 10
 	nextStandbyMessageDeadline := time.Now().Add(standbyMessageTimeout)
 	relations := map[uint32]*pglogrepl.RelationMessage{}
@@ -116,14 +126,14 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 			nextStandbyMessageDeadline = time.Now().Add(standbyMessageTimeout)
 		}
 
-		ctx, cancel := context.WithDeadline(context.Background(), nextStandbyMessageDeadline)
+		ctx, cancel := context.WithDeadline(ctx, nextStandbyMessageDeadline)
 		rawMsg, err := conn.ReceiveMessage(ctx)
 		cancel()
 		if err != nil {
 			if pgconn.Timeout(err) {
 				continue
 			}
-			log.Fatalln("ReceiveMessage failed:", err)
+			return fmt.Errorf("ReceiveMessage failed: %w", err)
 		}
 
 		if errMsg, ok := rawMsg.(*pgproto3.ErrorResponse); ok {
@@ -144,7 +154,6 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 			if err != nil {
 				return fmt.Errorf("ParsePrimaryKeepaliveMessage failed: %w", err)
 			}
-			// c.logger.Info().Msgf("Primary Keepalive Message =>", "ServerWALEnd:", pkm.ServerWALEnd, "ServerTime:", pkm.ServerTime, "ReplyRequested:", pkm.ReplyRequested)	
 			if pkm.ReplyRequested {
 				nextStandbyMessageDeadline = time.Time{}
 			}
@@ -164,7 +173,6 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 				relations[logicalMsg.RelationID] = logicalMsg
 			case *pglogrepl.BeginMessage:
 			case *pglogrepl.CommitMessage:
-				// logicalMsg.
 			case *pglogrepl.InsertMessage:
 				rel, ok := relations[logicalMsg.RelationID]
 				if !ok {
