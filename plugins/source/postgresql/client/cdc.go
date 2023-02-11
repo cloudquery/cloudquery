@@ -51,19 +51,6 @@ func (c *Client) startCDC(ctx context.Context) error {
 		return err
 	}
 
-	clientXLogPos, err := c.getLastXlogPos(ctx)
-	if err != nil {
-		return err
-	}
-	if clientXLogPos != 0 {
-		return nil
-	}
-
-	sysident, err := pglogrepl.IdentifySystem(ctx, conn)
-	if err != nil {
-		return fmt.Errorf("failed to identify system: %w", err)
-	}
-
 	sql := fmt.Sprintf("CREATE_REPLICATION_SLOT %s LOGICAL pgoutput EXPORT_SNAPSHOT", c.spec.Name)
 	c.createReplicationSlotResult, err = pglogrepl.ParseCreateReplicationSlot(conn.Exec(ctx, sql))
 	if err != nil {
@@ -76,10 +63,8 @@ func (c *Client) startCDC(ctx context.Context) error {
 			// not recoverable error
 			return fmt.Errorf("failed to create replication slot %s with pgerror %s: %w", c.spec.Name, pgErrToStr(pgErr), err)
 		}
-	}
-
-	if err := c.setLastXlogPos(ctx, sysident.XLogPos); err != nil {
-		return fmt.Errorf("failed to set last xlog pos: %w", err)
+		// replication slot already exists
+		return nil
 	}
 	
 	return nil
@@ -119,10 +104,6 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 			if err != nil {
 				return fmt.Errorf("failed to send standby status update: %w", err)
 			}
-			if err := c.setLastXlogPos(ctx, clientXLogPos); err != nil {
-				return fmt.Errorf("failed to set last xlog pos: %w", err)
-			}
-			// log.Println("Sent Standby status message")
 			nextStandbyMessageDeadline = time.Now().Add(standbyMessageTimeout)
 		}
 
@@ -277,19 +258,16 @@ func (c *Client) createCDCStateTable(ctx context.Context) error {
 }
 
 func (c *Client) getLastXlogPos(ctx context.Context) (pglogrepl.LSN, error) {
-	var xLogPos uint64
-	if err := c.Conn.QueryRow(ctx, "SELECT x_log_pos FROM cq_source_pg_cdc.state WHERE slot_name = $1", c.spec.Name).Scan(&xLogPos); err != nil {
+	var xLogPosStr string
+	if err := c.Conn.QueryRow(ctx, "SELECT confirmed_flush_lsn FROM pg_replication_slots WHERE slot_name = $1", c.spec.Name).Scan(&xLogPosStr); err != nil {
 		if err == pgx.ErrNoRows {
-			return 0, nil
+			return 0, fmt.Errorf("slot not found: %w", err)
 		}
 		return 0, fmt.Errorf("failed to get last xlog pos: %w", err)
 	}
-	return pglogrepl.LSN(xLogPos), nil
-}
-
-func (c *Client) setLastXlogPos(ctx context.Context, xLogPos pglogrepl.LSN) error {
-	if _, err := c.Conn.Exec(ctx, "INSERT INTO cq_source_pg_cdc.state (slot_name, x_log_pos) VALUES ($1, $2) ON CONFLICT (slot_name) DO UPDATE SET x_log_pos = $2", c.spec.Name, uint64(xLogPos)); err != nil {
-		return fmt.Errorf("failed to set last xlog pos: %w", err)
+	xLogPos, err := pglogrepl.ParseLSN(xLogPosStr)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse last xlog pos: %w", err)
 	}
-	return nil
+	return xLogPos, nil
 }
