@@ -10,6 +10,8 @@ require (
 	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201
 )
 
+replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
+
 require (
 	github.com/getsentry/sentry-go v0.17.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect

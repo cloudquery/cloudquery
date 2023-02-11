@@ -2,12 +2,14 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
 const (
@@ -21,38 +23,38 @@ const (
 	// |              1 | posts       | id          | bigint     | YES           | true 		 | cq_posts_pk			   |
 	// |              2 | posts       | title       | text       | NO            | false 	   | 					           |
 	selectAllTables = `
- SELECT
- columns.ordinal_position AS ordinal_position,
- pg_class.relname AS table_name,
- pg_attribute.attname AS column_name,
- pg_catalog.format_type(pg_attribute.atttypid, pg_attribute.atttypmod) AS data_type,
- CASE 
-		 WHEN contype = 'p' THEN true
-		 ELSE false
- END AS is_primary_key,
- CASE 
-		 WHEN pg_attribute.attnotnull THEN true
-		 ELSE false
- END AS not_null,
- COALESCE(pg_constraint.conname, '') AS primary_key_constraint_name
- FROM
- pg_catalog.pg_attribute
- INNER JOIN
- pg_catalog.pg_class ON pg_class.oid = pg_attribute.attrelid
- INNER JOIN
- pg_catalog.pg_namespace ON pg_namespace.oid = pg_class.relnamespace
- LEFT JOIN
- pg_catalog.pg_constraint ON pg_constraint.conrelid = pg_attribute.attrelid
- AND pg_constraint.conkey[1] = pg_attribute.attnum
- AND contype = 'p'
- INNER JOIN
- information_schema.columns ON columns.table_name = pg_class.relname AND columns.column_name = pg_attribute.attname AND columns.table_schema = pg_catalog.pg_namespace.nspname
- WHERE
- pg_attribute.attnum > 0
- AND NOT pg_attribute.attisdropped
- AND pg_catalog.pg_namespace.nspname = '%s'
- ORDER BY
- table_name ASC , ordinal_position ASC;
+SELECT
+	columns.ordinal_position AS ordinal_position,
+	pg_class.relname AS table_name,
+	pg_attribute.attname AS column_name,
+	pg_catalog.format_type(pg_attribute.atttypid, pg_attribute.atttypmod) AS data_type,
+	CASE 
+		WHEN conkey IS NOT NULL AND array_position(conkey, pg_attribute.attnum) > 0 THEN true
+		ELSE false
+	END AS is_primary_key,
+	CASE 
+		WHEN pg_attribute.attnotnull THEN true
+		ELSE false
+	END AS not_null,
+	COALESCE(pg_constraint.conname, '') AS primary_key_constraint_name
+FROM
+	pg_catalog.pg_attribute
+	INNER JOIN
+	pg_catalog.pg_class ON pg_class.oid = pg_attribute.attrelid
+	INNER JOIN
+	pg_catalog.pg_namespace ON pg_namespace.oid = pg_class.relnamespace
+	LEFT JOIN
+	pg_catalog.pg_constraint ON pg_constraint.conrelid = pg_attribute.attrelid
+	AND conkey IS NOT NULL AND array_position(conkey, pg_attribute.attnum) > 0
+	AND contype = 'p'
+	INNER JOIN
+	information_schema.columns ON columns.table_name = pg_class.relname AND columns.column_name = pg_attribute.attname AND columns.table_schema = pg_catalog.pg_namespace.nspname
+WHERE
+	pg_attribute.attnum > 0
+	AND NOT pg_attribute.attisdropped
+	AND pg_catalog.pg_namespace.nspname = '%s'
+ORDER BY
+	table_name ASC , ordinal_position ASC;
 `
 )
 
@@ -137,17 +139,48 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 func (c *Client) alterColumn(ctx context.Context, tableName string, column schema.Column) error {
 	columnName := pgx.Identifier{column.Name}.Sanitize()
 	columnType := c.SchemaTypeToPg(column.Type)
-	sql := "alter table " + tableName + " drop column " + columnName
-	// right now we will drop the column and re-create. in the future we will have an option to automigrate
+	// try alter column in place first
+	sql := "alter table " + tableName + " alter column " + columnName + " type " + columnType
+	if column.CreationOptions.NotNull {
+		sql += " set not null"
+	}
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
-		return fmt.Errorf("failed to drop column %s on table %s: %w", column.Name, tableName, err)
+		c.logger.Warn().Err(err).Str("table", tableName).Str("column", column.Name).Msg("Column type changed in place failed.")
+	}
+	tx, err := c.conn.BeginTx(ctx, pgx.TxOptions{})
+	if err != nil {
+		return fmt.Errorf("failed to start alter column transaction: %w", err)
+	}
+	defer func() {
+		if err := tx.Rollback(ctx); err != nil {
+			c.logger.Error().Err(err).Msg("Failed to rollback alter column transaction")
+		}
+	}()
+
+	sql = "alter table " + tableName + " drop column " + columnName
+	// right now we will drop the column and re-create. in the future we will have an option to automigrate
+	if _, err := tx.Exec(ctx, sql); err != nil {
+		return fmt.Errorf("failed to drop column %s.%s: %w", column.Name, tableName, err)
 	}
 	sql = "alter table " + tableName + " add column " + columnName + " " + columnType
 	if column.CreationOptions.NotNull {
 		sql += " not null"
 	}
-	if _, err := c.conn.Exec(ctx, sql); err != nil {
-		return fmt.Errorf("failed to add column %s on table %s: %w", column.Name, tableName, err)
+	if _, err := tx.Exec(ctx, sql); err != nil {
+		var pgErr *pgconn.PgError
+		if !errors.As(err, &pgErr) {
+			return fmt.Errorf("failed to add column %s.%s: %w", column.Name, tableName, err)
+		}
+		// this means the column contains null value and we cannot recreate it without knowing what is the default
+		// This is usually the case when the column is a primary key
+		// the user will have to drop and recreate the table
+		if pgErr.Code == "23502" {
+			return fmt.Errorf("column %s.%s contains null values, please drop the table manually via 'drop table %s'", tableName, column.Name, tableName)
+		}
+		return fmt.Errorf("failed to add column %s.%s with pgerror %s: %w", column.Name, tableName, pgErrToStr(pgErr), err)
+	}
+	if err := tx.Commit(ctx); err != nil {
+		return fmt.Errorf("failed to commit alter column transaction: %w", err)
 	}
 	return nil
 }
@@ -193,14 +226,19 @@ func (c *Client) alterPKConstraint(ctx context.Context, pgTable *schema.Table, t
 }
 
 func (c *Client) autoMigrateTable(ctx context.Context, pgTable *schema.Table, table *schema.Table) error {
-	if changedColumns := table.GetChangedColumns(pgTable); changedColumns != nil {
-		if c.spec.MigrateMode != specs.MigrateModeForced {
-			return fmt.Errorf("postgres table %s has changed %v columns, use --force to drop the column", table.Name, changedColumns)
+	changedColumns, changedPgColumns := table.GetChangedColumns(pgTable)
+	if c.spec.MigrateMode != specs.MigrateModeForced {
+		if changedColumns != nil {
+			return fmt.Errorf("postgres table %s has different types for columns %v but schema wants %v , use --force to drop the column", table.Name, changedPgColumns, changedColumns)
 		}
-		for _, col := range changedColumns {
-			if err := c.alterColumn(ctx, table.Name, col); err != nil {
-				return err
-			}
+		if c.enabledPks() && !table.IsPrimaryKeyEqual(pgTable) {
+			return fmt.Errorf("postgres table %s has different primary keys %v but schema wants %v , use --force to drop the column", table.Name, pgTable.PrimaryKeys(), table.PrimaryKeys())
+		}
+	}
+
+	for _, col := range changedColumns {
+		if err := c.alterColumn(ctx, table.Name, col); err != nil {
+			return err
 		}
 	}
 
@@ -213,9 +251,6 @@ func (c *Client) autoMigrateTable(ctx context.Context, pgTable *schema.Table, ta
 	}
 
 	if c.enabledPks() && !table.IsPrimaryKeyEqual(pgTable) {
-		if c.spec.MigrateMode != specs.MigrateModeForced {
-			return fmt.Errorf("postgres table %s primary key is different from the schema, use --force to drop the constraint", table.Name)
-		}
 		if err := c.alterPKConstraint(ctx, pgTable, table); err != nil {
 			return err
 		}
@@ -241,9 +276,8 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		}
 		columnName := pgx.Identifier{col.Name}.Sanitize()
 		fieldDef := columnName + " " + pgType
-		if col.Name == "_cq_id" {
-			// _cq_id column should always have a "unique not null" constraint
-			fieldDef += " UNIQUE NOT NULL"
+		if col.CreationOptions.NotNull {
+			fieldDef += " NOT NULL"
 		}
 		sb.WriteString(fieldDef)
 		if i != totalColumns-1 {
