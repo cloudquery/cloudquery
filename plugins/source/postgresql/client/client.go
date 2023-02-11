@@ -20,6 +20,7 @@ type Client struct {
 	Conn                *pgxpool.Pool
 	logger              zerolog.Logger
 	spec                specs.Source
+	metrics *source.Metrics
 	pluginSpec          Spec
 	currentDatabaseName string
 	currentSchemaName   string
@@ -52,6 +53,9 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
 	pluginSpec.SetDefaults()
+	if err := pluginSpec.Validate(); err != nil {
+		return nil, err
+	}
 	c.pluginSpec = pluginSpec
 	logLevel, err := tracelog.LogLevelFromString(pluginSpec.PgxLogLevel.String())
 	if err != nil {
@@ -65,7 +69,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	pgxConfig.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
 		return nil
 	}
-
+	pgxConfig.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
 	pgxConfig.ConnConfig.Tracer = &tracelog.TraceLog{
 		Logger:   pgx_zero_log.NewLogger(c.logger),
 		LogLevel: logLevel,
@@ -93,15 +97,12 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)
 	}
-
-	// if c.pluginSpec.CDC {
-	// 	if _, err := c.Conn.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cq_source_pg_cdc"); err != nil {
-	// 		return nil, fmt.Errorf("failed to create cq_source_pg_cdc schema: %w", err)
-	// 	}
-	// 	if _, err := c.Conn.Exec(ctx, "CREATE TABLE IF NOT EXISTS cq_source_pg_cdc.state (slot_name text PRIMARY KEY, lsn pg_lsn)"); err != nil {
-	// 		return nil, fmt.Errorf("failed to create cq_source_pg_cdc.state table: %w", err)
-	// 	}
-	// }
+	
+	if c.pluginSpec.CDC {
+		if err := c.createCDCStateTable(ctx); err != nil {
+			return nil, err
+		}
+	}
 	return c, nil
 }
 

@@ -8,3 +8,7 @@ type Spec struct {
 
 func (*Spec) SetDefaults() {
 }
+
+func (s *Spec) Validate() error {
+	return nil
+}
