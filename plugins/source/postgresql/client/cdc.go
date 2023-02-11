@@ -240,16 +240,6 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 	}
 }
 
-// func (c *Client) createCDCStateTable(ctx context.Context) error {
-// 	if _, err := c.Conn.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cq_source_pg_cdc"); err != nil {
-// 		return fmt.Errorf("failed to create cq_source_pg_cdc schema: %w", err)
-// 	}
-// 	if _, err := c.Conn.Exec(ctx, "CREATE TABLE IF NOT EXISTS cq_source_pg_cdc.state (slot_name text PRIMARY KEY, x_log_pos bigint)"); err != nil {
-// 		return fmt.Errorf("failed to create cq_source_pg_cdc.state table: %w", err)
-// 	}
-// 	return nil
-// }
-
 func (c *Client) getLastXlogPos(ctx context.Context) (pglogrepl.LSN, error) {
 	var xLogPosStr string
 	if err := c.Conn.QueryRow(ctx, "SELECT confirmed_flush_lsn FROM pg_replication_slots WHERE slot_name = $1", c.spec.Name).Scan(&xLogPosStr); err != nil {
@@ -263,4 +253,22 @@ func (c *Client) getLastXlogPos(ctx context.Context) (pglogrepl.LSN, error) {
 		return 0, fmt.Errorf("failed to parse last xlog pos: %w", err)
 	}
 	return xLogPos, nil
+}
+
+func decodeTextColumnData(mi *pgtype.Map, data []byte, dataType uint32) (interface{}, error) {
+	if dt, ok := mi.TypeForOID(dataType); ok {
+		return dt.Codec.DecodeValue(mi, dataType, pgtype.TextFormatCode, data)
+	}
+	return string(data), nil
+}
+
+func (c *Client) resourceFromCDCValues(tableName string, values map[string]interface{}) (*schema.Resource, error) {
+	table := c.Tables.Get(tableName)
+	resource := schema.NewResourceData(table, nil, values)
+	for _, col := range table.Columns {
+		if err := resource.Set(col.Name, values[col.Name]); err != nil {
+			return nil, err
+		}
+	}
+	return resource, nil
 }

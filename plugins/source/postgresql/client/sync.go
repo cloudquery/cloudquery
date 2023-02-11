@@ -8,7 +8,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *schema.Resource) error {
@@ -38,8 +37,12 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 		}
 	}
 
-	if err := c.syncTables(ctx, snapshotName, res); err != nil {
-		return err
+	if c.pluginSpec.CDC && snapshotName == "" {
+		c.logger.Info().Msg("cdc is enabled but replication slot already exists, skipping initial sync")
+	} else {
+		if err := c.syncTables(ctx, snapshotName, res); err != nil {
+			return err
+		}
 	}
 
 	if !c.pluginSpec.CDC {
@@ -115,21 +118,5 @@ func (c *Client) resourceFromValues(tableName string, values []interface{}) (*sc
 	return resource, nil
 }
 
-func (c *Client) resourceFromCDCValues(tableName string, values map[string]interface{}) (*schema.Resource, error) {
-	table := c.Tables.Get(tableName)
-	resource := schema.NewResourceData(table, nil, values)
-	for _, col := range table.Columns {
-		if err := resource.Set(col.Name, values[col.Name]); err != nil {
-			return nil, err
-		}
-	}
-	return resource, nil
-}
 
 
-func decodeTextColumnData(mi *pgtype.Map, data []byte, dataType uint32) (interface{}, error) {
-	if dt, ok := mi.TypeForOID(dataType); ok {
-		return dt.Codec.DecodeValue(mi, dataType, pgtype.TextFormatCode, data)
-	}
-	return string(data), nil
-}
