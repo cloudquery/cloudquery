@@ -39,35 +39,28 @@ func (c *Client) createPublicationForTables(ctx context.Context, conn *pgconn.Pg
 	return nil
 }
 
-func (c *Client) startCDC(ctx context.Context) error {
-	connPool, err := c.Conn.Acquire(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to acquire connection: %w", err)
-	}
-	// this must be closed only at the end of the sync process
-	defer connPool.Release()
-	conn := connPool.Conn().PgConn()
+func (c *Client) startCDC(ctx context.Context, conn *pgconn.PgConn) (string, error) {
+	var err error
 	if err := c.createPublicationForTables(ctx, conn); err != nil {
-		return err
+		return "", err
 	}
 
 	sql := fmt.Sprintf("CREATE_REPLICATION_SLOT %s LOGICAL pgoutput EXPORT_SNAPSHOT", c.spec.Name)
-	c.createReplicationSlotResult, err = pglogrepl.ParseCreateReplicationSlot(conn.Exec(ctx, sql))
+	createReplicationSlotResult, err := pglogrepl.ParseCreateReplicationSlot(conn.Exec(ctx, sql))
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if !errors.As(err, &pgErr) {
 			// not recoverable error
-			return fmt.Errorf("failed to create publication: %w", err)
+			return "", fmt.Errorf("failed to create publication: %w", err)
 		}
 		if pgErr.Code != "42710" {
 			// not recoverable error
-			return fmt.Errorf("failed to create replication slot %s with pgerror %s: %w", c.spec.Name, pgErrToStr(pgErr), err)
+			return "", fmt.Errorf("failed to create replication slot %s with pgerror %s: %w", c.spec.Name, pgErrToStr(pgErr), err)
 		}
 		// replication slot already exists
-		return nil
+		return "", nil
 	}
-	
-	return nil
+	return createReplicationSlotResult.SnapshotName, nil
 }
 
 func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) error {
@@ -247,15 +240,15 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 	}
 }
 
-func (c *Client) createCDCStateTable(ctx context.Context) error {
-	if _, err := c.Conn.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cq_source_pg_cdc"); err != nil {
-		return fmt.Errorf("failed to create cq_source_pg_cdc schema: %w", err)
-	}
-	if _, err := c.Conn.Exec(ctx, "CREATE TABLE IF NOT EXISTS cq_source_pg_cdc.state (slot_name text PRIMARY KEY, x_log_pos bigint)"); err != nil {
-		return fmt.Errorf("failed to create cq_source_pg_cdc.state table: %w", err)
-	}
-	return nil
-}
+// func (c *Client) createCDCStateTable(ctx context.Context) error {
+// 	if _, err := c.Conn.Exec(ctx, "CREATE SCHEMA IF NOT EXISTS cq_source_pg_cdc"); err != nil {
+// 		return fmt.Errorf("failed to create cq_source_pg_cdc schema: %w", err)
+// 	}
+// 	if _, err := c.Conn.Exec(ctx, "CREATE TABLE IF NOT EXISTS cq_source_pg_cdc.state (slot_name text PRIMARY KEY, x_log_pos bigint)"); err != nil {
+// 		return fmt.Errorf("failed to create cq_source_pg_cdc.state table: %w", err)
+// 	}
+// 	return nil
+// }
 
 func (c *Client) getLastXlogPos(ctx context.Context) (pglogrepl.LSN, error) {
 	var xLogPosStr string

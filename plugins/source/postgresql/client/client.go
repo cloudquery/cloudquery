@@ -98,11 +98,11 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 		return nil, fmt.Errorf("failed to list tables: %w", err)
 	}
 	
-	if c.pluginSpec.CDC {
-		if err := c.createCDCStateTable(ctx); err != nil {
-			return nil, err
-		}
-	}
+	// if c.pluginSpec.CDC {
+	// 	if err := c.createCDCStateTable(ctx); err != nil {
+	// 		return nil, err
+	// 	}
+	// }
 	return c, nil
 }
 

@@ -2,14 +2,19 @@ package client
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
 func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *schema.Resource) error {
 	// var conn *pgconn.PgConn
+	var err error
+	var snapshotName string
 	c.metrics = metrics
 	for _, table := range c.Tables {
 		if c.metrics.TableClient[table.Name] == nil {
@@ -18,66 +23,82 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 		}
 	}
 
+	connPool, err := c.Conn.Acquire(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to acquire connection: %w", err)
+	}
+	// this must be closed only at the end of the sync process
+	defer connPool.Release()
+	conn := connPool.Conn().PgConn()
+
 	if c.pluginSpec.CDC {
-		if err := c.startCDC(ctx); err != nil {
+		snapshotName, err = c.startCDC(ctx, conn)
+		if err != nil {
 			return err
 		}
 	}
 
-	// tx, err := c.Conn.BeginTx(ctx, pgx.TxOptions{
-	// 	// this transaction is needed for us to take a snapshot and we need to close it only at the end of the initial sync
-	// 	IsoLevel: pgx.RepeatableRead,
-	// 	AccessMode: pgx.ReadOnly,
-	// })
-	// if err != nil {
-	// 	return err
-	// }
-	// defer tx.Commit(ctx)
-	// if err != nil {
-	// 	return err
-	// }
-	// if c.pluginSpec.CDC {
-	// 	// if we use cdc we need to set the snapshot that was exported when we started the logical
-	// 	// replication stream
-	// 	if _, err := tx.Exec(ctx, "SET TRANSACTION SNAPSHOT '" + c.createReplicationSlotResult.SnapshotName + "'"); err != nil {
-	// 		return fmt.Errorf("failed to 'SET TRANSACTION SNAPSHOT %s': %w", c.createReplicationSlotResult.SnapshotName, err)
-	// 	}
-	// }
-	// for _, table := range c.Tables {
-	// 	colNames := make([]string, len(table.Columns))
-	// 	for i, col := range table.Columns {
-	// 		colNames[i] = pgx.Identifier{col.Name}.Sanitize()
-	// 	}
-	// 	query := "SELECT " + strings.Join(colNames, ",") + " FROM " + pgx.Identifier{table.Name}.Sanitize()
-	// 	rows, err := c.Conn.Query(ctx, query)
-	// 	if err != nil {
-	// 		c.metrics.TableClient[table.Name][c.ID()].Errors++
-	// 		return err
-	// 	}
-	// 	defer rows.Close()
-	// 	for rows.Next() {
-	// 		values, err := rows.Values()
-	// 		if err != nil {
-	// 			c.metrics.TableClient[table.Name][c.ID()].Errors++
-	// 			return err
-	// 		}
-	// 		resource, err := c.resourceFromValues(table.Name, values)
-	// 		if err != nil {
-	// 			c.metrics.TableClient[table.Name][c.ID()].Errors++
-	// 			return err
-	// 		}
-	// 		c.metrics.TableClient[table.Name][c.ID()].Resources++
-	// 		res <- resource
-	// 	}
-	// }
-	// if err := tx.Commit(ctx); err != nil {
-	// 	return err
-	// }
+	if err := c.syncTables(ctx, snapshotName, res); err != nil {
+		return err
+	}
+
 	if !c.pluginSpec.CDC {
 		return nil
 	}
 	
 	if err := c.listenCDC(ctx, res); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<- *schema.Resource) error {
+	tx, err := c.Conn.BeginTx(ctx, pgx.TxOptions{
+		// this transaction is needed for us to take a snapshot and we need to close it only at the end of the initial sync
+		IsoLevel: pgx.RepeatableRead,
+		AccessMode: pgx.ReadOnly,
+	})
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(ctx)
+
+	if snapshotName != "" {
+		// if we use cdc we need to set the snapshot that was exported when we started the logical
+		// replication stream
+		if _, err := tx.Exec(ctx, "SET TRANSACTION SNAPSHOT '" + snapshotName + "'"); err != nil {
+			return fmt.Errorf("failed to 'SET TRANSACTION SNAPSHOT %s': %w", c.createReplicationSlotResult.SnapshotName, err)
+		}
+	}
+
+	for _, table := range c.Tables {
+		colNames := make([]string, len(table.Columns))
+		for i, col := range table.Columns {
+			colNames[i] = pgx.Identifier{col.Name}.Sanitize()
+		}
+		query := "SELECT " + strings.Join(colNames, ",") + " FROM " + pgx.Identifier{table.Name}.Sanitize()
+		rows, err := c.Conn.Query(ctx, query)
+		if err != nil {
+			c.metrics.TableClient[table.Name][c.ID()].Errors++
+			return err
+		}
+		defer rows.Close()
+		for rows.Next() {
+			values, err := rows.Values()
+			if err != nil {
+				c.metrics.TableClient[table.Name][c.ID()].Errors++
+				return err
+			}
+			resource, err := c.resourceFromValues(table.Name, values)
+			if err != nil {
+				c.metrics.TableClient[table.Name][c.ID()].Errors++
+				return err
+			}
+			c.metrics.TableClient[table.Name][c.ID()].Resources++
+			res <- resource
+		}
+	}
+	if err := tx.Commit(ctx); err != nil {
 		return err
 	}
 	return nil
