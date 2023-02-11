@@ -16,11 +16,7 @@ func UserPolicies() *schema.Table {
 		Transform:           transformers.TransformWithStruct(&iam.GetUserPolicyOutput{}),
 		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "user_arn",
 				Type:     schema.TypeString,

@@ -15,16 +15,8 @@ func Repositories() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("api.ecr-public"),
 		Transform:   transformers.TransformWithStruct(&types.Repository{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

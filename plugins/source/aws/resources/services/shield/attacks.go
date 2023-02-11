@@ -16,11 +16,7 @@ func Attacks() *schema.Table {
 		Transform:           transformers.TransformWithStruct(&types.AttackDetail{}),
 		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:        "id",
 				Type:        schema.TypeString,

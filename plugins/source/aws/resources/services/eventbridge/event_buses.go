@@ -15,16 +15,8 @@ func EventBuses() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
 		Transform:   transformers.TransformWithStruct(&types.EventBus{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,

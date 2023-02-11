@@ -15,11 +15,7 @@ func Products() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.ProductViewDetail{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("servicecatalog"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

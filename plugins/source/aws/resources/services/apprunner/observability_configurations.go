@@ -16,16 +16,8 @@ func ObservabilityConfigurations() *schema.Table {
 		Multiplex:           client.ServiceAccountRegionMultiplexer("apprunner"),
 		Transform:           transformers.TransformWithStruct(&types.ObservabilityConfiguration{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

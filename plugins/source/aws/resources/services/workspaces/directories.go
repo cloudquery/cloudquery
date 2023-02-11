@@ -15,11 +15,7 @@ func Directories() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.WorkspaceDirectory{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("workspaces"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

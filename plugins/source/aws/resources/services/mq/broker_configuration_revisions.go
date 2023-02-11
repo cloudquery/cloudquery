@@ -16,16 +16,8 @@ func BrokerConfigurationRevisions() *schema.Table {
 		Transform:           transformers.TransformWithStruct(&mq.DescribeConfigurationRevisionOutput{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer("mq"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "broker_configuration_arn",
 				Type:     schema.TypeString,
