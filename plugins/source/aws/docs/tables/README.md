@@ -24,6 +24,8 @@
   - [aws_apigateway_rest_api_models](aws_apigateway_rest_api_models.md)
   - [aws_apigateway_rest_api_request_validators](aws_apigateway_rest_api_request_validators.md)
   - [aws_apigateway_rest_api_resources](aws_apigateway_rest_api_resources.md)
+    - [aws_apigateway_rest_api_resource_methods](aws_apigateway_rest_api_resource_methods.md)
+      - [aws_apigateway_rest_api_resource_method_integrations](aws_apigateway_rest_api_resource_method_integrations.md)
   - [aws_apigateway_rest_api_stages](aws_apigateway_rest_api_stages.md)
 - [aws_apigateway_usage_plans](aws_apigateway_usage_plans.md)
   - [aws_apigateway_usage_plan_keys](aws_apigateway_usage_plan_keys.md)

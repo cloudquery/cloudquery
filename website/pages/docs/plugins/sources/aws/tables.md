@@ -24,6 +24,8 @@
   - [aws_apigateway_rest_api_models](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_apigateway_rest_api_models.md)
   - [aws_apigateway_rest_api_request_validators](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_apigateway_rest_api_request_validators.md)
   - [aws_apigateway_rest_api_resources](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_apigateway_rest_api_resources.md)
+    - [aws_apigateway_rest_api_resource_methods](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_apigateway_rest_api_resource_methods.md)
+      - [aws_apigateway_rest_api_resource_method_integrations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_apigateway_rest_api_resource_method_integrations.md)
   - [aws_apigateway_rest_api_stages](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_apigateway_rest_api_stages.md)
 - [aws_apigateway_usage_plans](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_apigateway_usage_plans.md)
   - [aws_apigateway_usage_plan_keys](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_apigateway_usage_plan_keys.md)

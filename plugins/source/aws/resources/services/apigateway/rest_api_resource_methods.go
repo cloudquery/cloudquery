@@ -40,5 +40,4 @@ func restApiResourceMethods() *schema.Table {
 			restApiResourceMethodIntegrations(),
 		},
 	}
-
 }

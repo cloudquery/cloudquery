@@ -35,5 +35,4 @@ func RestApiResources() *schema.Table {
 			restApiResourceMethods(),
 		},
 	}
-
 }
