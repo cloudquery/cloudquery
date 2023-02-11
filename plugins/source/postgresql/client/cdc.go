@@ -17,8 +17,19 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+func (c *Client) tablesWithPks() []string {
+	var tables []string
+	for _, table := range c.Tables {
+		if len(table.PrimaryKeys()) > 0 {
+			tables = append(tables, table.Name)
+		}
+	}
+	return tables
+}
+
 func (c *Client) createPublicationForTables(ctx context.Context, conn *pgconn.PgConn) error {
-	sql := fmt.Sprintf("CREATE PUBLICATION %s FOR TABLE %s", pgx.Identifier{c.spec.Name}.Sanitize(), strings.Join(c.Tables.TableNames(), ","))
+	tables := c.tablesWithPks()
+	sql := fmt.Sprintf("CREATE PUBLICATION %s FOR TABLE %s", pgx.Identifier{c.spec.Name}.Sanitize(), strings.Join(tables, ","))
 	reader := conn.Exec(ctx, sql)
 	if _, err := reader.ReadAll(); err != nil {
 		var pgErr *pgconn.PgError
@@ -30,7 +41,7 @@ func (c *Client) createPublicationForTables(ctx context.Context, conn *pgconn.Pg
 			// not recoverable error
 			return fmt.Errorf("failed to create publication with pgerror %s: %w", pgErrToStr(pgErr), err)
 		}
-		sql = fmt.Sprintf("ALTER PUBLICATION %s SET TABLE %s", pgx.Identifier{c.spec.Name}.Sanitize(), strings.Join(c.Tables.TableNames(), ","))
+		sql = fmt.Sprintf("ALTER PUBLICATION %s SET TABLE %s", pgx.Identifier{c.spec.Name}.Sanitize(), strings.Join(tables, ","))
 		reader := conn.Exec(ctx, sql)
 		if _, err := reader.ReadAll(); err != nil {
 			return fmt.Errorf("failed to alter publication: %w", err)

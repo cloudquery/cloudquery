@@ -8,7 +8,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/jackc/pglogrepl"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -26,7 +25,6 @@ type Client struct {
 	currentSchemaName   string
 	pgType              pgType
 	Tables              schema.Tables
-	createReplicationSlotResult pglogrepl.CreateReplicationSlotResult
 }
 
 type pgType int
@@ -97,12 +95,9 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)
 	}
-	
-	// if c.pluginSpec.CDC {
-	// 	if err := c.createCDCStateTable(ctx); err != nil {
-	// 		return nil, err
-	// 	}
-	// }
+	if c.pluginSpec.CDC && len(c.tablesWithPks()) == 0 {
+		return nil, fmt.Errorf("cdc is enabled but no tables with primary keys were found")
+	}
 	return c, nil
 }
 

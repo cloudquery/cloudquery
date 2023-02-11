@@ -26,7 +26,8 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 	if err != nil {
 		return fmt.Errorf("failed to acquire connection: %w", err)
 	}
-	// this must be closed only at the end of the sync process
+	// this must be closed only at the end of the initial sync process otherwise the snapshot
+	// used to sync the initial data will be released
 	defer connPool.Release()
 	conn := connPool.Conn().PgConn()
 
@@ -70,7 +71,7 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<-
 		// if we use cdc we need to set the snapshot that was exported when we started the logical
 		// replication stream
 		if _, err := tx.Exec(ctx, "SET TRANSACTION SNAPSHOT '" + snapshotName + "'"); err != nil {
-			return fmt.Errorf("failed to 'SET TRANSACTION SNAPSHOT %s': %w", c.createReplicationSlotResult.SnapshotName, err)
+			return fmt.Errorf("failed to 'SET TRANSACTION SNAPSHOT %s': %w", snapshotName, err)
 		}
 	}
 
