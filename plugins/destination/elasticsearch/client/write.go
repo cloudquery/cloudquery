@@ -14,8 +14,15 @@ import (
 )
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
+	if len(resources) == 0 {
+		return nil
+	}
+
 	var buf bytes.Buffer
 	pks := pkIndexes(table) // do some work up front to avoid doing it for every resource
+	// get the sync time from the first resource in the batch (here we assume that all resources in the batch
+	// have the same sync time. At the moment this assumption holds.)
+	syncTime := resources[0][table.Columns.Index(schema.CqSyncTimeColumn.Name)].(time.Time)
 	for _, r := range resources {
 		doc := map[string]any{}
 		for i, col := range table.Columns {
@@ -38,7 +45,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 		buf.Write(meta)
 		buf.Write(data)
 	}
-	index := fmt.Sprintf("%s-%s", table.Name, time.Now().Format("2006-01-02"))
+	index := c.getIndexName(table.Name, syncTime)
 	resp, err := c.client.Bulk(bytes.NewReader(buf.Bytes()),
 		c.client.Bulk.WithContext(ctx),
 		c.client.Bulk.WithIndex(index),

@@ -15,11 +15,7 @@ func TrafficPolicyVersions() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.TrafficPolicy{}),
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "traffic_policy_arn",
 				Type:     schema.TypeString,

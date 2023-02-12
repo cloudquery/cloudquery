@@ -13,7 +13,9 @@ import (
 )
 
 func fetchApigatewayRestApis(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var config apigateway.GetRestApisInput
+	config := apigateway.GetRestApisInput{
+		Limit: aws.Int32(500),
+	}
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
 	for p := apigateway.NewGetRestApisPaginator(svc, &config); p.HasMorePages(); {
@@ -40,7 +42,7 @@ func fetchApigatewayRestApiAuthorizers(ctx context.Context, meta schema.ClientMe
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
-	config := apigateway.GetAuthorizersInput{RestApiId: r.Id}
+	config := apigateway.GetAuthorizersInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	for {
 		response, err := svc.GetAuthorizers(ctx, &config)
 		if err != nil {
@@ -73,7 +75,7 @@ func fetchApigatewayRestApiDeployments(ctx context.Context, meta schema.ClientMe
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
-	config := apigateway.GetDeploymentsInput{RestApiId: r.Id}
+	config := apigateway.GetDeploymentsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	for p := apigateway.NewGetDeploymentsPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx)
 		if err != nil {
@@ -102,7 +104,7 @@ func fetchApigatewayRestApiDocumentationParts(ctx context.Context, meta schema.C
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
-	config := apigateway.GetDocumentationPartsInput{RestApiId: r.Id}
+	config := apigateway.GetDocumentationPartsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	for {
 		response, err := svc.GetDocumentationParts(ctx, &config)
 		if err != nil {
@@ -135,7 +137,7 @@ func fetchApigatewayRestApiDocumentationVersions(ctx context.Context, meta schem
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
-	config := apigateway.GetDocumentationVersionsInput{RestApiId: r.Id}
+	config := apigateway.GetDocumentationVersionsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	for {
 		response, err := svc.GetDocumentationVersions(ctx, &config)
 		if err != nil {
@@ -168,7 +170,7 @@ func fetchApigatewayRestApiGatewayResponses(ctx context.Context, meta schema.Cli
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
-	config := apigateway.GetGatewayResponsesInput{RestApiId: r.Id}
+	config := apigateway.GetGatewayResponsesInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	for {
 		response, err := svc.GetGatewayResponses(ctx, &config)
 		if err != nil {
@@ -201,7 +203,7 @@ func fetchApigatewayRestApiModels(ctx context.Context, meta schema.ClientMeta, p
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
-	config := apigateway.GetModelsInput{RestApiId: r.Id}
+	config := apigateway.GetModelsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	for p := apigateway.NewGetModelsPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx)
 		if err != nil {
@@ -261,7 +263,7 @@ func fetchApigatewayRestApiRequestValidators(ctx context.Context, meta schema.Cl
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
-	config := apigateway.GetRequestValidatorsInput{RestApiId: r.Id}
+	config := apigateway.GetRequestValidatorsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	for {
 		response, err := svc.GetRequestValidators(ctx, &config)
 		if err != nil {
@@ -294,7 +296,7 @@ func fetchApigatewayRestApiResources(ctx context.Context, meta schema.ClientMeta
 	r := parent.Item.(types.RestApi)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
-	config := apigateway.GetResourcesInput{RestApiId: r.Id}
+	config := apigateway.GetResourcesInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	for p := apigateway.NewGetResourcesPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx)
 		if err != nil {
@@ -317,6 +319,65 @@ func resolveApigatewayRestAPIResourceArn(ctx context.Context, meta schema.Client
 		Region:    cl.Region,
 		AccountID: "",
 		Resource:  fmt.Sprintf("/restapis/%s/resources/%s", aws.ToString(rapi.Id), aws.ToString(r.Id)),
+	}.String())
+}
+
+func fetchApigatewayRestApiResourceMethods(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	api := parent.Parent.Item.(types.RestApi)
+	resource := parent.Item.(types.Resource)
+	c := meta.(*client.Client)
+	svc := c.Services().Apigateway
+	for method := range resource.ResourceMethods {
+		config := apigateway.GetMethodInput{RestApiId: api.Id, ResourceId: resource.Id, HttpMethod: aws.String(method)}
+		resp, err := svc.GetMethod(ctx, &config)
+		if err != nil {
+			return err
+		}
+		res <- resp
+	}
+	return nil
+}
+
+func resolveApigatewayRestAPIResourceMethodArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	r := resource.Parent.Item.(types.Resource)
+	method := resource.Item.(*apigateway.GetMethodOutput)
+	rapi := resource.Parent.Parent.Item.(types.RestApi)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/restapis/%s/resources/%s/methods/%s", aws.ToString(rapi.Id), aws.ToString(r.Id), aws.ToString(method.HttpMethod)),
+	}.String())
+}
+
+func fetchApigatewayRestApiResourceMethodIntegration(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	resource := parent.Parent.Item.(types.Resource)
+	method := parent.Item.(*apigateway.GetMethodOutput)
+	api := parent.Parent.Parent.Item.(types.RestApi)
+
+	c := meta.(*client.Client)
+	svc := c.Services().Apigateway
+	config := apigateway.GetIntegrationInput{RestApiId: api.Id, ResourceId: resource.Id, HttpMethod: method.HttpMethod}
+	resp, err := svc.GetIntegration(ctx, &config)
+	if err != nil {
+		return err
+	}
+	res <- resp
+	return nil
+}
+func resolveApigatewayRestAPIResourceMethodIntegrationArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	r := resource.Parent.Parent.Item.(types.Resource)
+	method := resource.Parent.Item.(*apigateway.GetMethodOutput)
+	rapi := resource.Parent.Parent.Parent.Item.(types.RestApi)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/restapis/%s/resources/%s/methods/%s/integration", aws.ToString(rapi.Id), aws.ToString(r.Id), aws.ToString(method.HttpMethod)),
 	}.String())
 }
 func fetchApigatewayRestApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {

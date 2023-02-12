@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/gitlab
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.34.0
+	github.com/cloudquery/plugin-sdk v1.36.0
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/rs/zerolog v1.29.0
 	github.com/xanzy/go-gitlab v0.74.0
@@ -31,7 +31,7 @@ require (
 	golang.org/x/net v0.5.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.4.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
 	golang.org/x/time v0.0.0-20220922220347-f3bd1da661af // indirect
 	google.golang.org/appengine v1.6.7 // indirect

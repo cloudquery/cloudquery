@@ -15,16 +15,8 @@ func TargetGroupTargetHealthDescriptions() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.TargetHealthDescription{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "target_group_arn",
 				Type:     schema.TypeString,

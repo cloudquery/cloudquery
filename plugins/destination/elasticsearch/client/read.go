@@ -13,7 +13,7 @@ import (
 )
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
-	index := table.Name + "-*"
+	index := c.getIndexNamePattern(table.Name)
 
 	// refresh index before read, to ensure all written data is available
 	resp, err := c.typedClient.Indices.Refresh().Index(index).Do(ctx)

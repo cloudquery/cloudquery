@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.51
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.2
 	github.com/cloudquery/filetypes v1.4.0
-	github.com/cloudquery/plugin-sdk v1.34.0
+	github.com/cloudquery/plugin-sdk v1.36.0
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
@@ -60,7 +60,7 @@ require (
 	github.com/thoas/go-funk v0.9.3 // indirect; indirect // indirect
 	golang.org/x/net v0.5.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.4.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
 	google.golang.org/genproto v0.0.0-20230131230820-1c016267d619 // indirect; indirect // indirect
 	google.golang.org/grpc v1.52.3 // indirect
