@@ -1,13 +1,12 @@
-# Build From Source
+# Building From Source
 
-The preferred way to use CloudQuery is through the available distribution, see the Quickstart section on the [Docs](https://www.cloudquery.io/docs)
+The preferred way to use CloudQuery is through the available distribution, see the [Quickstart](/docs/quickstart) section of the [Docs](/docs)
 
-If you want to build it from the source, follow the steps:
+To build CloudQuery from source, follow the steps:
 
-1. Cloudquery is developed in GO. Ensure you have a working [GO runtime](https://go.dev/)
-2. Clone or download the [code repository](https://github.com/cloudquery/cloudquery)
-3. On the source code root directory execute (it will recursively run GO in all subdirectories)
->./scripts/build.sh
+1. CloudQuery is developed in Go. Ensure you have a working [Go runtime](https://go.dev/)
+2. First, fork and clone the repository. If you’re not sure how to do this, please watch [these videos](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github).
+3. On the cloned repository root directory run `./scripts/build.sh` to build all CloudQuery modules (CLI, source and destination plugins)
 
-Cloudquery binaries will be created in a new folder *"bin"* in the root directory
+CloudQuery binaries will be created in a new `bin` directory in the root directory
 

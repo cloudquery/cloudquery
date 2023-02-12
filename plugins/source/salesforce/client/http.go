@@ -9,7 +9,7 @@ import (
 )
 
 func (c *Client) GetHTTPDataEndpoint() string {
-	return c.LoginResponse.InstanceUrl + "/services/data/" + c.pluginSpec.SFAPIVersion
+	return c.LoginResponse.InstanceUrl + "/services/data/" + ApiVersion
 }
 
 func (c *Client) Get(ctx context.Context, url string, res any) error {

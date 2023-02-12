@@ -16,6 +16,8 @@ import (
 	"github.com/rs/zerolog"
 )
 
+const ApiVersion = "v56.0"
+
 const defaultHTTPTimeout = 30 * time.Second
 
 type Client struct {
@@ -72,7 +74,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	if err := cqClient.login(ctx); err != nil {
 		return nil, err
 	}
-	cqClient.HTTPDataEndpoint = cqClient.LoginResponse.InstanceUrl + "/services/data/" + cqClient.pluginSpec.SFAPIVersion
+	cqClient.HTTPDataEndpoint = cqClient.LoginResponse.InstanceUrl + "/services/data/" + ApiVersion
 
 	if err := cqClient.listObjects(ctx); err != nil {
 		return nil, err
@@ -89,7 +91,7 @@ func (c *Client) ID() string {
 }
 
 func (c *Client) listObjects(ctx context.Context) error {
-	request, err := http.NewRequest("GET", c.LoginResponse.InstanceUrl+"/services/data/"+c.pluginSpec.SFAPIVersion+"/sobjects", nil)
+	request, err := http.NewRequest("GET", c.LoginResponse.InstanceUrl+"/services/data/v56.0/sobjects", nil)
 	if err != nil {
 		return err
 	}
@@ -134,7 +136,7 @@ func (c *Client) login(ctx context.Context) error {
 		"password":      {c.pluginSpec.Password},
 	}
 
-	request, err := http.NewRequestWithContext(ctx, "POST", c.pluginSpec.OAuthURL, bytes.NewBufferString(data.Encode()))
+	request, err := http.NewRequestWithContext(ctx, "POST", "https://login.salesforce.com/services/oauth2/token", bytes.NewBufferString(data.Encode()))
 	if err != nil {
 		return err
 	}
