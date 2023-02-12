@@ -14,11 +14,7 @@ func BucketGrants() *schema.Table {
 		Resolver:    fetchS3BucketGrants,
 		Transform:   transformers.TransformWithStruct(&types.Grant{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:            "bucket_arn",
 				Type:            schema.TypeString,
@@ -35,6 +31,12 @@ func BucketGrants() *schema.Table {
 				Name:            "grantee_id",
 				Type:            schema.TypeString,
 				Resolver:        resolveBucketGranteeID,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+			{
+				Name:            "permission",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("Permission"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},

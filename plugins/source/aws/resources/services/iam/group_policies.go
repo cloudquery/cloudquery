@@ -16,11 +16,7 @@ func GroupPolicies() *schema.Table {
 		Transform:           transformers.TransformWithStruct(&iam.GetGroupPolicyOutput{}),
 		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "group_arn",
 				Type:     schema.TypeString,

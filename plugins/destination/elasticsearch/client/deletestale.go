@@ -56,14 +56,14 @@ func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source s
 	for _, table := range tables {
 		table := table
 		g.Go(func() error {
-			return c.deleteStaleTable(gctx, table, req)
+			return c.deleteStaleTable(gctx, table, req, syncTime)
 		})
 	}
 	return g.Wait()
 }
 
-func (c *Client) deleteStaleTable(ctx context.Context, table *schema.Table, req *deletebyquery.Request) error {
-	index := table.Name + "-*"
+func (c *Client) deleteStaleTable(ctx context.Context, table *schema.Table, req *deletebyquery.Request, syncTime time.Time) error {
+	index := c.getIndexName(table.Name, syncTime)
 	resp, err := c.typedClient.DeleteByQuery(index).Request(req).Do(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to delete stale entries: %w", err)
@@ -76,6 +76,9 @@ func (c *Client) deleteStaleTable(ctx context.Context, table *schema.Table, req 
 	}
 	if qResp.Status != 0 {
 		if len(qResp.Error.RootCause) > 0 {
+			if qResp.Error.RootCause[0].Type == "index_not_found_exception" {
+				return nil
+			}
 			return fmt.Errorf("failed to delete stale entries: %s", qResp.Error.RootCause[0].Reason)
 		}
 		return fmt.Errorf("failed to delete stale entries: status %d", qResp.Status)

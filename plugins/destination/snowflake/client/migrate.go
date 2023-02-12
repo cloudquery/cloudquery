@@ -9,9 +9,10 @@ import (
 )
 
 const (
-	isTableExistSQL = "SELECT count(*) FROM information_schema.tables WHERE table_name='?';"
+	// Use ILIKE for case insensitivity
 
-	sqlTableInfo = "select column_name, data_type, is_nullable from information_schema.columns where table_name='?';"
+	isTableExistSQL = "SELECT count(*) FROM information_schema.tables WHERE table_name ILIKE ?;"
+	sqlTableInfo    = "select column_name, data_type, is_nullable from information_schema.columns where table_name ILIKE ?;"
 )
 
 type columnInfo struct {
@@ -83,11 +84,12 @@ func (c *Client) autoMigrateTable(_ context.Context, table *schema.Table) error 
 		switch {
 		case snowflakeColumn == nil:
 			c.logger.Debug().Str("table", table.Name).Str("column", col.Name).Msg("Column doesn't exist, creating")
-			sql := "alter table " + table.Name + " add column \"" + columnName + "\" \"" + columnType + `"`
+			sql := "alter table " + table.Name + " add column \"" + columnName + "\"" + columnType
+			fmt.Println(sql)
 			if _, err := c.db.Exec(sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
 			}
-		case snowflakeColumn.typ != columnType:
+		case !strings.EqualFold(snowflakeColumn.typ, columnType):
 			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. Try dropping the column and re-running", col.Name, table.Name, columnType, snowflakeColumn.typ)
 		}
 	}
@@ -137,12 +139,23 @@ func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 	defer rows.Close()
 	for rows.Next() {
 		colInfo := columnInfo{}
+
+		// 'information_schema.is_nullable' is a string containing 'YES' or 'NO'.
+		// We save it here as a string, and parse it later.
+		var isNullableTemp string
+
 		if err := rows.Scan(
 			&colInfo.name,
 			&colInfo.typ,
-			&colInfo.notNull); err != nil {
+			&isNullableTemp); err != nil {
 			return nil, err
 		}
+
+		colInfo.notNull, err = parseYesNoString(isNullableTemp)
+		if err != nil {
+			return nil, err
+		}
+
 		colInfo.typ = strings.ToLower(colInfo.typ)
 		info.columns = append(info.columns, colInfo)
 	}
@@ -150,4 +163,15 @@ func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 		return nil, err
 	}
 	return &info, nil
+}
+
+func parseYesNoString(str string) (bool, error) {
+	switch str {
+	case "YES":
+		return true, nil
+	case "NO":
+		return false, nil
+	default:
+		return false, fmt.Errorf("failed to parse yes/no string: %s", str)
+	}
 }

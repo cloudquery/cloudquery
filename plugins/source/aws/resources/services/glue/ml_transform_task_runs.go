@@ -15,16 +15,8 @@ func MlTransformTaskRuns() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.TaskRun{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "ml_transform_arn",
 				Type:     schema.TypeString,

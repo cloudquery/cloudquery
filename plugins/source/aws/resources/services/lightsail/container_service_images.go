@@ -15,16 +15,8 @@ func ContainerServiceImages() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.ContainerImage{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "container_service_arn",
 				Type:     schema.TypeString,

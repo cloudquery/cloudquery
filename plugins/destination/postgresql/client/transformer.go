@@ -1,6 +1,7 @@
 package client
 
 import (
+	"encoding/json"
 	"net"
 	"strings"
 
@@ -46,7 +47,7 @@ func (*Client) TransformInt8Array(v *schema.Int8Array) any {
 
 func (*Client) TransformJSON(v *schema.JSON) any {
 	if v.Status == schema.Present {
-		return v.Bytes
+		return stripNullsFromMarshalledJson(v.Bytes)
 	}
 	return nil
 }
@@ -67,8 +68,10 @@ func (*Client) TransformTextArray(v *schema.TextArray) any {
 }
 
 func (*Client) TransformTimestamptz(v *schema.Timestamptz) any {
+	// In postgresql, our underlyting type for timestamps is 'timestamp without timezone', so we have to
+	// convert it to UTC here (to avoid stripping the timezone information on INSERT).
 	return &pgtype.Timestamptz{
-		Time:  v.Time,
+		Time:  v.Time.UTC(),
 		Valid: v.Status == schema.Present,
 	}
 }
@@ -142,4 +145,42 @@ func (c *Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
 
 func stripNulls(s string) string {
 	return strings.ReplaceAll(s, "\x00", "")
+}
+
+// Best effort to strip nulls from json. In case of an error, we fallback to returning the input.
+// We only strip the nulls from the values (i.e. never from the keys).
+// In some far-fetched case a JSON like this may happen, but we ignore this for now: `{"key\u0000": "v1", "key\u0000\u0000": "v2"}`
+func stripNullsFromMarshalledJson(inputJsonMarshaled []byte) []byte {
+	var m any
+	err := json.Unmarshal(inputJsonMarshaled, &m)
+	if err != nil {
+		return inputJsonMarshaled
+	}
+
+	m = stripNullsFromJsonValue(m)
+	outputJsonMarshaled, err := json.Marshal(m)
+	if err != nil {
+		return inputJsonMarshaled
+	}
+
+	return outputJsonMarshaled
+}
+
+func stripNullsFromJsonValue(val any) any {
+	switch concreteVal := val.(type) {
+	case string:
+		return stripNulls(concreteVal)
+	case map[string]any:
+		for k := range concreteVal {
+			concreteVal[k] = stripNullsFromJsonValue(concreteVal[k])
+		}
+		return concreteVal
+	case []any:
+		for i := range concreteVal {
+			concreteVal[i] = stripNullsFromJsonValue(concreteVal[i])
+		}
+		return concreteVal
+	default:
+		return val
+	}
 }
