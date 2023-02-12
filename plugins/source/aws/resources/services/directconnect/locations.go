@@ -10,7 +10,7 @@ import (
 func Locations() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_directconnect_locations",
-		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.html`,
+		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Location.html`,
 		Resolver:    fetchDirectConnectLocations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("directconnect"),
 		Transform:   transformers.TransformWithStruct(&types.Location{}),
