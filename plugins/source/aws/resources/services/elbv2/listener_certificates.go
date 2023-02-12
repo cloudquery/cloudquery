@@ -15,16 +15,8 @@ func ListenerCertificates() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.Certificate{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "listener_arn",
 				Type:     schema.TypeString,

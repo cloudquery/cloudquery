@@ -15,16 +15,8 @@ func ClusterParameters() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
 		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 		},
 	}
 }

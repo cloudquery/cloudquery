@@ -15,16 +15,8 @@ func ThingGroups() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&iot.DescribeThingGroupOutput{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "things_in_group",
 				Type:     schema.TypeStringArray,

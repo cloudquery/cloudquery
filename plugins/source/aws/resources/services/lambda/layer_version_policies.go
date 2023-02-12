@@ -15,16 +15,8 @@ func LayerVersionPolicies() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&lambda.GetLayerVersionPolicyOutput{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("lambda"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "layer_version_arn",
 				Type:     schema.TypeString,
