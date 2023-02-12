@@ -141,6 +141,14 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 			}
 		}
 	}
+	conn, err := c.conn.Acquire(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to acquire connection: %w", err)
+	}
+	defer conn.Release()
+	if err := conn.Conn().DeallocateAll(ctx); err != nil {
+		return fmt.Errorf("failed to deallocate all prepared statements: %w", err)
+	}
 	return nil
 }
 
