@@ -89,6 +89,11 @@ func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	mock.EXPECT().ListInstances(gomock.Any(), &emr.ListInstancesInput{ClusterId: summary2.Id}, gomock.Any()).Return(
+		&emr.ListInstancesOutput{Instances: []types.Instance{instance}},
+		nil,
+	)
+
 	return client.Services{Emr: mock}
 }
 
