@@ -420,6 +420,8 @@ func tables() []*schema.Table {
 		ssm.InventorySchemas(),
 		ssm.PatchBaselines(),
 		ssoadmin.Instances(),
+		stepfunctions.Activities(),
+		stepfunctions.Executions(),
 		stepfunctions.StateMachines(),
 		timestream.Databases(),
 		transfer.Servers(),
