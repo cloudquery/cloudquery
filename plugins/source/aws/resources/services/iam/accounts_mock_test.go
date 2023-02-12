@@ -15,32 +15,32 @@ func buildAccount(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 
 	acc := struct {
-		Users                             int32 `json:"users,omitempty"`
-		UsersQuota                        int32 `json:"users_quota,omitempty"`
-		Groups                            int32 `json:"groups,omitempty"`
-		GroupsQuota                       int32 `json:"groups_quota,omitempty"`
-		ServerCertificates                int32 `json:"server_certificates,omitempty"`
-		ServerCertificatesQuota           int32 `json:"server_certificates_quota,omitempty"`
-		UserPolicySizeQuota               int32 `json:"user_policy_size_quota,omitempty"`
-		GroupPolicySizeQuota              int32 `json:"group_policy_size_quota,omitempty"`
-		GroupsPerUserQuota                int32 `json:"groups_per_user_quota,omitempty"`
-		SigningCertificatesPerUserQuota   int32 `json:"signing_certificates_per_user_quota,omitempty"`
-		AccessKeysPerUserQuota            int32 `json:"access_keys_per_user_quota,omitempty"`
-		MFADevices                        int32 `json:"mfa_devices"`
-		MFADevicesInUse                   int32 `json:"mfa_devices_in_use"`
-		AccountMFAEnabled                 int32 `json:"account_mfa_enabled,omitempty"`
-		AccountAccessKeysPresent          int32 `json:"account_access_keys_present,omitempty"`
-		AccountSigningCertificatesPresent int32 `json:"account_signing_certificates_present,omitempty"`
-		AttachedPoliciesPerGroupQuota     int32 `json:"attached_policies_per_group_quota,omitempty"`
-		AttachedPoliciesPerRoleQuota      int32 `json:"attached_policies_per_role_quota,omitempty"`
-		AttachedPoliciesPerUserQuota      int32 `json:"attached_policies_per_user_quota,omitempty"`
-		Policies                          int32 `json:"policies,omitempty"`
-		PoliciesQuota                     int32 `json:"policies_quota,omitempty"`
-		PolicySizeQuota                   int32 `json:"policy_size_quota,omitempty"`
-		PolicyVersionsInUse               int32 `json:"policy_versions_in_use,omitempty"`
-		PolicyVersionsInUseQuota          int32 `json:"policy_versions_in_use_quota,omitempty"`
-		VersionsPerPolicyQuota            int32 `json:"versions_per_policy_quota,omitempty"`
-		GlobalEndpointTokenVersion        int32 `json:"global_endpoint_token_version,omitempty"`
+		Users                             int32
+		UsersQuota                        int32
+		Groups                            int32
+		GroupsQuota                       int32
+		ServerCertificates                int32
+		ServerCertificatesQuota           int32
+		UserPolicySizeQuota               int32
+		GroupPolicySizeQuota              int32
+		GroupsPerUserQuota                int32
+		SigningCertificatesPerUserQuota   int32
+		AccessKeysPerUserQuota            int32
+		MFADevices                        int32
+		MFADevicesInUse                   int32
+		AccountMFAEnabled                 int32
+		AccountAccessKeysPresent          int32
+		AccountSigningCertificatesPresent int32
+		AttachedPoliciesPerGroupQuota     int32
+		AttachedPoliciesPerRoleQuota      int32
+		AttachedPoliciesPerUserQuota      int32
+		Policies                          int32
+		PoliciesQuota                     int32
+		PolicySizeQuota                   int32
+		PolicyVersionsInUse               int32
+		PolicyVersionsInUseQuota          int32
+		VersionsPerPolicyQuota            int32
+		GlobalEndpointTokenVersion        int32
 	}{}
 
 	if err := faker.FakeObject(&acc); err != nil {
