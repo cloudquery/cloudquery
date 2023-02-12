@@ -24,6 +24,7 @@ func Servers() *schema.Table {
 			serverEncryptionProtectors(),
 			serverDatabases(),
 			virtualNetworkRules(),
+			serverSecurityAlertPolicies(),
 		},
 	}
 }
