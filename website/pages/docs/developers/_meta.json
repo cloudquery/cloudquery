@@ -2,5 +2,6 @@
   "architecture": "Architecture",
   "creating-new-plugin": "Creating a New Plugin",
   "codegen": "Generating Resources",
-  "running-locally": "Running Plugins Locally"
+  "running-locally": "Running Plugins Locally",
+  "build": "Building From Source"
 }
