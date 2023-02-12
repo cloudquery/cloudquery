@@ -31,5 +31,8 @@ func RestApiResources() *schema.Table {
 				},
 			},
 		},
+		Relations: []*schema.Table{
+			restApiResourceMethods(),
+		},
 	}
 }

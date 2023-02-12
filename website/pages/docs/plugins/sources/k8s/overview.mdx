@@ -26,10 +26,9 @@ export KUBECONFIG="<PATH_TO_YOUR_CONFIG_FILE>"
 
 ### Kubernetes Service Account
 
-When `cloudquery` is syncing the Kubernetes cluster information where it is running in a pod,
-the Kubernetes Service Account can be used for direct authentication.
+If `cloudquery` is running in a pod of the Kubernetes cluster, the Kubernetes Service Account can be used for direct authentication. To use the Kubernetes Service Account for direct authentication, a cluster role with all get and list privileges will need to be used.
 
-To achieve that you need to create a cluster role with all `get` and `list` privileges:
+The below command creates a new cluster role with `get` and `list` privileges.
 
 ```bash copy
 kubectl apply -f - <<EOF
@@ -53,7 +52,8 @@ rules:
 EOF
 ```
 
-Then, create a cluster role binding for that role and the service account the `cloudquery` pod uses:
+Next, the cluster role and service account will need to be linked via a cluster role binding.
+The following creates a cluster role binding for the role we created above and the service account for the `cloudquery` pod.
 
 ```bash copy
 kubectl apply -f - <<EOF
