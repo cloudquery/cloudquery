@@ -57,7 +57,7 @@ Let's look at a few useful queries we can do just with the Tailscale tables.
 
 Find all devices that weren't seen for more than 30 days:
 
-```sql
+```sql copy
 select name, id, last_seen from tailscale_devices where last_seen < NOW() - INTERVAL '30 DAY';
 ```
 
