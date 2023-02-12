@@ -39,7 +39,7 @@ The process to follow for adding a new table is:
    
    You may use a type assertion on `meta` to obtain a reference to your interface functions, e.g.:
    ```go
-   svc := c.Services().MyService
+   svc := meta.(*client.Client).Services().MyService
    ```
    
    With this in hand, complete the resolver function to fetch all resources. After resources are retrieved, send them to the `res` channel for the SDK to deliver to all destinations.
