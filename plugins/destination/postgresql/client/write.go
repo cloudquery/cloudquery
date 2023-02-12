@@ -79,6 +79,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 	if err != nil {
 		return err
 	}
+	defer conn.Release()
 	for r := range res {
 		table := tables.Get(r.TableName)
 		if table == nil {
