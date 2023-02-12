@@ -74,6 +74,7 @@
   - [aws_autoscaling_group_scaling_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_autoscaling_group_scaling_policies.md)
 - [aws_autoscaling_launch_configurations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_autoscaling_launch_configurations.md)
 - [aws_autoscaling_scheduled_actions](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_autoscaling_scheduled_actions.md)
+- [aws_availability_zones](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_availability_zones.md)
 - [aws_backup_global_settings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_backup_global_settings.md)
 - [aws_backup_plans](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_backup_plans.md)
   - [aws_backup_plan_selections](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_backup_plan_selections.md)

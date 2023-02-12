@@ -74,6 +74,7 @@
   - [aws_autoscaling_group_scaling_policies](aws_autoscaling_group_scaling_policies.md)
 - [aws_autoscaling_launch_configurations](aws_autoscaling_launch_configurations.md)
 - [aws_autoscaling_scheduled_actions](aws_autoscaling_scheduled_actions.md)
+- [aws_availability_zones](aws_availability_zones.md)
 - [aws_backup_global_settings](aws_backup_global_settings.md)
 - [aws_backup_plans](aws_backup_plans.md)
   - [aws_backup_plan_selections](aws_backup_plan_selections.md)
