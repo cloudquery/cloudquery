@@ -10,19 +10,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchEc2Regions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchAvailabilityZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	output, err := c.Services().Ec2.DescribeRegions(ctx, &ec2.DescribeRegionsInput{AllRegions: aws.Bool(true)})
+	output, err := c.Services().Ec2.DescribeAvailabilityZones(ctx, &ec2.DescribeAvailabilityZonesInput{AllAvailabilityZones: aws.Bool(true)})
 	if err != nil {
 		return err
 	}
-	res <- output.Regions
+	res <- output.AvailabilityZones
 	return nil
 }
 
-func resolveRegionEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	region := resource.Item.(types.Region)
-	switch *region.OptInStatus {
+func resolveAZEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	region := resource.Item.(types.AvailabilityZone)
+	switch region.OptInStatus {
 	case "opt-in-not-required", "opted-in":
 		return resource.Set(c.Name, true)
 	case "not-opted-in":
