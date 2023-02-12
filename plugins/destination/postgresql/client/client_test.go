@@ -23,8 +23,8 @@ func TestPgPlugin(t *testing.T) {
 			PgxLogLevel:      LogLevelTrace,
 		},
 		destination.PluginTestSuiteTests{
-			SkipMigrateAppendForce: true,
-			SkipMigrateOverwriteForce:      true,
+			SkipMigrateAppendForce:    true,
+			SkipMigrateOverwriteForce: true,
 		})
 }
 
