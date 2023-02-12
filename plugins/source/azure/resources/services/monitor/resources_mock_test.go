@@ -58,6 +58,6 @@ func createDiagnosticSettings(router *mux.Router) error {
 	return createResources(router)
 }
 
-func TestDiagnosticSettings(t *testing.T) {
-	client.MockTestHelper(t, DiagnosticSettings(), createDiagnosticSettings)
+func TestResources(t *testing.T) {
+	client.MockTestHelper(t, Resources(), createDiagnosticSettings)
 }

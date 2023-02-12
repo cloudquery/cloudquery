@@ -17,7 +17,7 @@ type diagnosticSettingsWrapper struct {
 	ResourceId string
 }
 
-func DiagnosticSettings() *schema.Table {
+func diagnosticSettings() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_monitor_diagnostic_settings",
 		Resolver:    fetchDiagnosticSettings,
@@ -38,36 +38,24 @@ func isResourceTypeNotSupported(err error) bool {
 
 func fetchDiagnosticSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc, err := armresources.NewClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	r := parent.Item.(*armresources.GenericResourceExpanded)
+	svc, err := armmonitor.NewDiagnosticSettingsClient(cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(*r.ID, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {
+			if isResourceTypeNotSupported(err) {
+				break
+			}
 			return err
 		}
-		for _, r := range p.Value {
-			svc, err := armmonitor.NewDiagnosticSettingsClient(cl.Creds, cl.Options)
-			if err != nil {
-				return err
-			}
-			pager := svc.NewListPager(*r.ID, nil)
-			for pager.More() {
-				p, err := pager.NextPage(ctx)
-				if err != nil {
-					if isResourceTypeNotSupported(err) {
-						break
-					}
-					return err
-				}
-				for _, ds := range p.Value {
-					res <- diagnosticSettingsWrapper{
-						ds,
-						*r.ID,
-					}
-				}
+		for _, ds := range p.Value {
+			res <- diagnosticSettingsWrapper{
+				ds,
+				*r.ID,
 			}
 		}
 	}
