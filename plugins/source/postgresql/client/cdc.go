@@ -104,21 +104,21 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 	
 	for {
 		if time.Now().After(nextStandbyMessageDeadline) {
-			err := pglogrepl.SendStandbyStatusUpdate(context.Background(), conn, pglogrepl.StandbyStatusUpdate{WALWritePosition: clientXLogPos})
+			err := pglogrepl.SendStandbyStatusUpdate(ctx, conn, pglogrepl.StandbyStatusUpdate{WALWritePosition: clientXLogPos})
 			if err != nil {
 				return fmt.Errorf("failed to send standby status update: %w", err)
 			}
 			nextStandbyMessageDeadline = time.Now().Add(standbyMessageTimeout)
 		}
 
-		ctx, cancel := context.WithDeadline(ctx, nextStandbyMessageDeadline)
 		rawMsg, err := conn.ReceiveMessage(ctx)
-		cancel()
 		if err != nil {
-			if pgconn.Timeout(err) {
-				continue
+			// send update with latest xlog pos
+			pglogreplErr := pglogrepl.SendStandbyStatusUpdate(ctx, conn, pglogrepl.StandbyStatusUpdate{WALWritePosition: clientXLogPos})
+			if pglogreplErr != nil {
+				c.logger.Error().Err(pglogreplErr).Msg("failed to send standby status update")
 			}
-			return fmt.Errorf("ReceiveMessage failed: %w", err)
+			return err
 		}
 
 		if errMsg, ok := rawMsg.(*pgproto3.ErrorResponse); ok {
@@ -140,7 +140,11 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 				return fmt.Errorf("ParsePrimaryKeepaliveMessage failed: %w", err)
 			}
 			if pkm.ReplyRequested {
-				nextStandbyMessageDeadline = time.Time{}
+				err := pglogrepl.SendStandbyStatusUpdate(ctx, conn, pglogrepl.StandbyStatusUpdate{WALWritePosition: clientXLogPos})
+				if err != nil {
+					return fmt.Errorf("failed to send standby status update: %w", err)
+				}
+				nextStandbyMessageDeadline = time.Now().Add(standbyMessageTimeout)
 			}
 		case pglogrepl.XLogDataByteID:
 			xld, err := pglogrepl.ParseXLogData(msg.Data[1:])

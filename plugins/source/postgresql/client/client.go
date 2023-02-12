@@ -64,6 +64,11 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse connection string %w", err)
 	}
+	if c.pluginSpec.CDC {
+		// if cdc is specified the connection must be in replication mode
+		// https://www.postgresql.org/docs/current/libpq-connect.html
+		pgxConfig.ConnConfig.RuntimeParams["replication"] = "database"
+	}
 	pgxConfig.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
 		return nil
 	}
@@ -98,6 +103,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	if c.pluginSpec.CDC && len(c.tablesWithPks()) == 0 {
 		return nil, fmt.Errorf("cdc is enabled but no tables with primary keys were found")
 	}
+
 	return c, nil
 }
 
