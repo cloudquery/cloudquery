@@ -98,6 +98,33 @@ func (c *Client) listPgTables(ctx context.Context, pluginTables schema.Tables) (
 	return tables, nil
 }
 
+func (*Client) normalizeTableCockroach(table *schema.Table) *schema.Table {
+	for i := range table.Columns {
+		switch table.Columns[i].Type {
+		case schema.TypeCIDR:
+			table.Columns[i].Type = schema.TypeInet
+		case schema.TypeCIDRArray:
+			table.Columns[i].Type = schema.TypeInetArray
+		case schema.TypeMacAddr:
+			table.Columns[i].Type = schema.TypeString
+		case schema.TypeMacAddrArray:
+			table.Columns[i].Type = schema.TypeStringArray
+		}
+	}
+	return table
+}
+
+func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
+	switch c.pgType {
+	case pgTypeCockroachDB:
+		return c.normalizeTableCockroach(table)
+	case pgTypePostgreSQL:
+		return table
+	default:
+		panic("unknown pg type")
+	}
+}
+
 // This is the responsibility of the CLI of the client to lock before running migration
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	pgTables, err := c.listPgTables(ctx, tables)
@@ -105,6 +132,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 		return fmt.Errorf("failed listing postgres tables: %w", err)
 	}
 	for _, table := range tables.FlattenTables() {
+		table := c.normalizeTable(table)
 		c.logger.Info().Str("table", table.Name).Msg("Migrating table")
 		if len(table.Columns) == 0 {
 			c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
@@ -153,6 +181,60 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 }
 
 func (c *Client) alterColumn(ctx context.Context, tableName string, column schema.Column) error {
+	switch c.pgType {
+	case pgTypeCockroachDB:
+		return c.alterColumnCockroachDB(ctx, tableName, column)
+	case pgTypePostgreSQL:
+		return c.alterColumnPg(ctx, tableName, column)
+	default:
+		return fmt.Errorf("unknown pg type: %v", c.pgType)
+	}
+}
+
+func (c *Client) alterColumnCockroachDB(ctx context.Context, tableName string, column schema.Column) error {
+	columnName := pgx.Identifier{column.Name}.Sanitize()
+	columnType := c.SchemaTypeToPg(column.Type)
+	// try alter column in place first
+	sql := "alter table " + tableName + " alter column " + columnName + " type " + columnType
+	if column.CreationOptions.NotNull {
+		sql += " set not null"
+	}
+	if _, err := c.conn.Exec(ctx, sql); err != nil {
+		c.logger.Warn().Err(err).Str("table", tableName).Str("column", column.Name).Msg("Column type changed in place failed.")
+	}
+
+	sql = "alter table " + tableName + " drop column " + columnName
+	// right now we will drop the column and re-create. in the future we will have an option to automigrate
+	if _, err := c.conn.Exec(ctx, sql); err != nil {
+		return fmt.Errorf("failed to drop column %s.%s: %w", column.Name, tableName, err)
+	}
+	sql = "alter table " + tableName + " add column " + columnName + " " + columnType
+	if column.CreationOptions.NotNull {
+		sql += " not null"
+	}
+	if _, err := c.conn.Exec(ctx, sql); err != nil {
+		var pgErr *pgconn.PgError
+		if !errors.As(err, &pgErr) {
+			return fmt.Errorf("failed to add column %s.%s: %w", tableName, column.Name, err)
+		}
+		// this means the column contains null value and we cannot recreate it without knowing what is the default
+		// This is usually the case when the column is a primary key
+		// the user will have to drop and recreate the table
+		if pgErr.Code == "23502" {
+			return fmt.Errorf("column %s.%s contains null values, please drop the table manually via 'drop table %s'", tableName, column.Name, tableName)
+		}
+		// this is a weird CockroachDB error code that means we need to retry.
+		if pgErr.Code != "55000" {
+			return fmt.Errorf("failed to add column %s.%s with pgerror %s: %w", tableName, column.Name, pgErrToStr(pgErr), err)
+		}
+		if _, err := c.conn.Exec(ctx, sql); err != nil {
+			return fmt.Errorf("failed to retry adding column %s.%s with pgerror %s: %w", tableName, column.Name, pgErrToStr(pgErr), err)
+		}
+	}
+	return nil
+}
+
+func (c *Client) alterColumnPg(ctx context.Context, tableName string, column schema.Column) error {
 	columnName := pgx.Identifier{column.Name}.Sanitize()
 	columnType := c.SchemaTypeToPg(column.Type)
 	// try alter column in place first
@@ -185,7 +267,7 @@ func (c *Client) alterColumn(ctx context.Context, tableName string, column schem
 	if _, err := tx.Exec(ctx, sql); err != nil {
 		var pgErr *pgconn.PgError
 		if !errors.As(err, &pgErr) {
-			return fmt.Errorf("failed to add column %s.%s: %w", column.Name, tableName, err)
+			return fmt.Errorf("failed to add column %s.%s: %w", tableName, column.Name, err)
 		}
 		// this means the column contains null value and we cannot recreate it without knowing what is the default
 		// This is usually the case when the column is a primary key
@@ -193,7 +275,7 @@ func (c *Client) alterColumn(ctx context.Context, tableName string, column schem
 		if pgErr.Code == "23502" {
 			return fmt.Errorf("column %s.%s contains null values, please drop the table manually via 'drop table %s'", tableName, column.Name, tableName)
 		}
-		return fmt.Errorf("failed to add column %s.%s with pgerror %s: %w", column.Name, tableName, pgErrToStr(pgErr), err)
+		return fmt.Errorf("failed to add column %s.%s with pgerror %s: %w", tableName, column.Name, pgErrToStr(pgErr), err)
 	}
 	if err := tx.Commit(ctx); err != nil {
 		return fmt.Errorf("failed to commit alter column transaction: %w", err)
