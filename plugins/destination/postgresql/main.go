@@ -12,6 +12,6 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("postgresql", plugin.Version, client.New, destination.WithDefaultBatchSize(1000))
+	p := destination.NewPlugin("postgresqll", plugin.Version, client.New, destination.WithDefaultBatchSize(1000))
 	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
 }
