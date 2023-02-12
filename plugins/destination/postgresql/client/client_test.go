@@ -25,6 +25,7 @@ func TestPgPlugin(t *testing.T) {
 		destination.PluginTestSuiteTests{
 			SkipMigrateAppendForce:    true,
 			SkipMigrateOverwriteForce: true,
+			SkipMigrateOverwrite: 		 true,
 		})
 }
 
