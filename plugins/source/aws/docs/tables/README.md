@@ -148,6 +148,7 @@
 - [aws_ec2_instances](aws_ec2_instances.md)
 - [aws_ec2_internet_gateways](aws_ec2_internet_gateways.md)
 - [aws_ec2_key_pairs](aws_ec2_key_pairs.md)
+- [aws_ec2_managed_prefix_lists](aws_ec2_managed_prefix_lists.md)
 - [aws_ec2_nat_gateways](aws_ec2_nat_gateways.md)
 - [aws_ec2_network_acls](aws_ec2_network_acls.md)
 - [aws_ec2_network_interfaces](aws_ec2_network_interfaces.md)
