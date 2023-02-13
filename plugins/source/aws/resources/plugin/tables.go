@@ -162,6 +162,7 @@ func tables() []*schema.Table {
 		directconnect.Connections(),
 		directconnect.Gateways(),
 		directconnect.Lags(),
+		directconnect.Locations(),
 		directconnect.VirtualGateways(),
 		directconnect.VirtualInterfaces(),
 		dms.ReplicationInstances(),
