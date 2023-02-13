@@ -76,7 +76,6 @@ func resolveGatewayARN(_ context.Context, meta schema.ClientMeta, resource *sche
 		Partition: cl.Partition,
 		Service:   "directconnect",
 		AccountID: *gw.OwnerAccount,
-		Region:    cl.Region,
 		Resource:  strings.Join([]string{"dx-gateway", *gw.DirectConnectGatewayId}, "/"),
 	}.String())
 }

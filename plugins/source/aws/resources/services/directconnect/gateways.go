@@ -16,7 +16,7 @@ func Gateways() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.DirectConnectGateway{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(false),
+			client.DefaultRegionColumn(true),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
