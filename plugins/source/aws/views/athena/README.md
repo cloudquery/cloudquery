@@ -87,7 +87,7 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
    }
    ```
 
-   Save this as `athena-policy.json`, make appropriate edits for your environment (e.g. replacing `bucket_name` with the bucket where query results should be written), and then run:
+   Save this as `athena-policy.json`, make appropriate edits for your environment (e.g. replacing `cloudquery-athena-example/output` with the bucket and directory where query results should be written), and then run:
 
    ```shell
    aws iam put-role-policy --role-name lambda-ex --policy-name athena-policy --policy-document file://athena-policy.json
