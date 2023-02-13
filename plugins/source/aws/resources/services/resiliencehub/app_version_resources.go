@@ -17,6 +17,18 @@ func appVersionResources() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
+			{
+				Name:            "app_arn",
+				Type:            schema.TypeString,
+				Resolver:        schema.ParentColumnResolver("app_arn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+			{
+				Name:            "app_version",
+				Type:            schema.TypeString,
+				Resolver:        schema.ParentColumnResolver("app_version"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
 		},
 	}
 }

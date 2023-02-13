@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_AppVersionSummary.html
 
-The composite primary key for this table is (**account_id**, **region**, **app_version**).
+The composite primary key for this table is (**account_id**, **region**, **app_arn**, **app_version**).
 
 ## Relations
 
@@ -22,4 +22,5 @@ The following tables depend on aws_resiliencehub_app_versions:
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
 |region (PK)|String|
+|app_arn (PK)|String|
 |app_version (PK)|String|
