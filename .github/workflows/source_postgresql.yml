@@ -24,10 +24,13 @@ jobs:
       # Label used to access the service container
       postgres:
         image: postgres:10
+        # command: psql -c "wal_level=logical"
         env:
           POSTGRES_PASSWORD: pass
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
+          POSTGRES_MAX_REPLICATION_SLOTS: 1
+          POSTGRES_WAL_LEVEL: logical
         ports:
           - 5432:5432
         # Set health checks to wait until postgres has started
