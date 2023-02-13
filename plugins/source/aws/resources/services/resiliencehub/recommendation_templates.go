@@ -14,6 +14,6 @@ func recommendationTemplates() *schema.Table {
 		Resolver:    fetchRecommendationTemplates,
 		Transform:   transformers.TransformWithStruct(&types.RecommendationTemplate{}, transformers.WithPrimaryKeys("AppArn", "AssessmentArn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("resiliencehub"),
-		Columns:     []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true), arnColumn("RecommendationTemplateArn")},
+		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), arnColumn("RecommendationTemplateArn")},
 	}
 }
