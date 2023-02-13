@@ -37,6 +37,7 @@ func (c *Client) createPublicationForTables(ctx context.Context, conn *pgconn.Pg
 			// not recoverable error
 			return fmt.Errorf("failed to create publication: %w", err)
 		}
+                // 42710 means publication already exists
 		if pgErr.Code != "42710" {
 			// not recoverable error
 			return fmt.Errorf("failed to create publication with pgerror %s: %w", pgErrToStr(pgErr), err)
