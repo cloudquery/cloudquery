@@ -33,6 +33,7 @@
 - [k8s_networking_ingresses](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/tables/k8s_networking_ingresses.md)
 - [k8s_networking_network_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/tables/k8s_networking_network_policies.md)
 - [k8s_nodes_runtime_classes](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/tables/k8s_nodes_runtime_classes.md)
+- [k8s_policy_pod_disruption_budgets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/tables/k8s_policy_pod_disruption_budgets.md)
 - [k8s_rbac_cluster_role_bindings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/tables/k8s_rbac_cluster_role_bindings.md)
 - [k8s_rbac_cluster_roles](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/tables/k8s_rbac_cluster_roles.md)
 - [k8s_rbac_role_bindings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/tables/k8s_rbac_role_bindings.md)
