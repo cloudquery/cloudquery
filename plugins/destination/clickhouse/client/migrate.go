@@ -58,7 +58,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, current, table *schema.Ta
 
 	have, want := current.GetChangedColumns(table)
 	if len(have) > 0 && c.spec.MigrateMode != specs.MigrateModeForced {
-		return fmt.Errorf("table %s has different types for columns %v but schema wants %v , use --force to drop the columns", table.Name, have, want)
+		return fmt.Errorf("table %s has different types for columns %v but schema wants %v , add `migrate_mode: forced` to the destination spec to drop the columns", table.Name, have, want)
 	}
 
 	for _, column := range want {
