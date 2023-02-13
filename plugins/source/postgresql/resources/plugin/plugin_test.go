@@ -47,7 +47,7 @@ func getTestConnection(ctx context.Context, logger zerolog.Logger, connectionStr
 func getTestConnectionString() string {
 	testConn := os.Getenv("CQ_SOURCE_PG_TEST_CONN")
 	if testConn == "" {
-		return "postgresql://postgres:pass@localhost:5433/postgres?sslmode=disable"
+		return "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
 	}
 	return testConn
 }
