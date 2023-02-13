@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGatewayAttachment.html
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **account_id**.
 
 ## Relations
 
@@ -14,9 +14,9 @@ This table depends on [aws_directconnect_gateways](aws_directconnect_gateways.md
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
+|account_id (PK)|String|
 |region|String|
 |gateway_arn|String|
 |gateway_id|String|
