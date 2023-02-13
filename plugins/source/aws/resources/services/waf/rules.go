@@ -15,11 +15,7 @@ func Rules() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Rule{}),
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

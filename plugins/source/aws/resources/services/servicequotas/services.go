@@ -15,22 +15,8 @@ func Services() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.ServiceInfo{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("servicequotas"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:     "service_code",
 				Type:     schema.TypeString,

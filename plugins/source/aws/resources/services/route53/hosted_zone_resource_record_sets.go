@@ -15,11 +15,7 @@ func HostedZoneResourceRecordSets() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.ResourceRecordSet{}),
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "hosted_zone_arn",
 				Type:     schema.TypeString,

@@ -10,7 +10,7 @@ One option is to maintain configuration for your source and destination plugins 
 
 Here is a simple example with only one source and one destination plugin:
 
-```yaml copy
+```yaml copy filename="aws.yml"
 kind: source
 spec:
   name: aws
@@ -20,7 +20,7 @@ spec:
   destinations: ["postgresql"]
 ```
 
-```yaml copy
+```yaml copy filename="postgresql.yml"
 kind: destination
 spec:
   name: postgresql
@@ -40,7 +40,7 @@ cloudquery sync aws.yml postgresql.yml
 
 Let's imagine we now wanted to add a `gcp` source as well. We can add its configuration in a new file:
 
-```yaml copy
+```yaml copy filename="gcp.yml"
 kind: source
 spec:
   name: gcp
@@ -60,7 +60,7 @@ cloudquery sync aws.yml gcp.yml postgresql.yml
 
 You can also combine sources and destinations into a single file by separating the sections with `---`:
 
-```yaml copy
+```yaml copy filename="config.yml"
 kind: source
 spec:
   name: aws
