@@ -151,7 +151,6 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 				cqIdColumn := table.Columns.Get(schema.CqIDColumn.Name)
 				if cqIdColumn != nil {
 					cqIdColumn.CreationOptions.PrimaryKey = true
-					cqIdColumn.CreationOptions.NotNull = true
 				}
 			}
 		}
