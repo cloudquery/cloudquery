@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_ResiliencyPolicy.html
 
-The primary key for this table is **policy_arn**.
+The primary key for this table is **arn**.
 
 ## Columns
 
@@ -18,7 +18,7 @@ The primary key for this table is **policy_arn**.
 |data_location_constraint|String|
 |estimated_cost_tier|String|
 |policy|JSON|
-|policy_arn (PK)|String|
+|arn (PK)|String|
 |policy_description|String|
 |policy_name|String|
 |tags|JSON|

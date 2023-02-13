@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_App.html
 
-The primary key for this table is **app_arn**.
+The primary key for this table is **arn**.
 
 ## Relations
 
@@ -20,7 +20,7 @@ The following tables depend on aws_resiliencehub_apps:
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|app_arn (PK)|String|
+|arn (PK)|String|
 |creation_time|Timestamp|
 |name|String|
 |assessment_schedule|String|
