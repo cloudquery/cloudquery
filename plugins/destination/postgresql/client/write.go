@@ -75,11 +75,6 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 	if err := c.populateConstraintNames(ctx, tables); err != nil {
 		return err
 	}
-	conn, err := c.conn.Acquire(ctx)
-	if err != nil {
-		return err
-	}
-	defer conn.Release()
 	for r := range res {
 		table := tables.Get(r.TableName)
 		if table == nil {
@@ -98,7 +93,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 		fmt.Println(r.Data[len(r.Data)-1])
 		batchSize := batch.Len()
 		if batchSize >= c.batchSize {
-			br := conn.SendBatch(ctx, batch)
+			br := c.conn.SendBatch(ctx, batch)
 			if err := br.Close(); err != nil {
 				var pgErr *pgconn.PgError
 				if !errors.As(err, &pgErr) {
@@ -114,7 +109,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 
 	batchSize := batch.Len()
 	if batchSize > 0 {
-		br := conn.SendBatch(ctx, batch)
+		br := c.conn.SendBatch(ctx, batch)
 		if err := br.Close(); err != nil {
 			var pgErr *pgconn.PgError
 			if !errors.As(err, &pgErr) {
