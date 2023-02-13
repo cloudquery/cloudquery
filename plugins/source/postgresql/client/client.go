@@ -100,8 +100,17 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)
 	}
-	if c.pluginSpec.CDC && len(c.tablesWithPks()) == 0 {
-		return nil, fmt.Errorf("cdc is enabled but no tables with primary keys were found")
+	if c.pluginSpec.CDC {
+		if len(c.tablesWithPks()) == 0 {
+			return nil, fmt.Errorf("cdc is enabled but no tables with primary keys were found")
+		}
+		walLevel, err := c.walLevel(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get wal_level: %w", err)
+		}
+		if walLevel != "logical" {
+			return nil, fmt.Errorf("cdc is enabled but wal_level is not logical")
+		}
 	}
 
 	return c, nil
@@ -129,6 +138,15 @@ func (c *Client) getPgType(ctx context.Context) (pgType, error) {
 	}
 
 	return typ, nil
+}
+
+func (c *Client) walLevel(ctx context.Context) (string, error) {
+	var walLevel string
+	err := c.Conn.QueryRow(ctx, "SELECT setting FROM pg_settings WHERE name='wal_level'").Scan(&walLevel)
+	if err != nil {
+		return "", err
+	}
+	return walLevel, nil
 }
 
 func (c *Client) currentDatabase(ctx context.Context) (string, error) {
