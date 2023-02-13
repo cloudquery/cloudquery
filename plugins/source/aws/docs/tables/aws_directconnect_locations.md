@@ -1,6 +1,6 @@
 # Table: aws_directconnect_locations
 
-https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.html
+https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Location.html
 
 The primary key for this table is **_cq_id**.
 
