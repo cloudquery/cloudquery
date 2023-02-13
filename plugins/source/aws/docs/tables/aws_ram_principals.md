@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/ram/latest/APIReference/API_Principal.html
 
-The composite primary key for this table is (**account_id**, **id**, **resource_share_arn**).
+The composite primary key for this table is (**account_id**, **region**, **id**, **resource_share_arn**).
 
 ## Columns
 
@@ -13,7 +13,7 @@ The composite primary key for this table is (**account_id**, **id**, **resource_
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
-|region|String|
+|region (PK)|String|
 |creation_time|Timestamp|
 |external|Bool|
 |id (PK)|String|

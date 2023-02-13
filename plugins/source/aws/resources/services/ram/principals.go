@@ -19,7 +19,7 @@ func Principals() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("ram"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(false),
+			client.DefaultRegionColumn(true),
 		},
 	}
 }
