@@ -61,49 +61,49 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
 
    Make a note of your role ARN. You will need this to create your function.
 
-   1. Add permissions to the role to allow it to execute Athena queries. You can use the following policy document as a template:
+4. Add permissions to the role to allow it to execute Athena queries. You can use the following policy document as a template:
 
-      ```json
-      {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "athena:StartQueryExecution",
-                "athena:GetQueryExecution",
-                "athena:GetQueryResults",
-                "glue:GetDatabases",
-                "glue:GetTables",
-                "glue:GetTable",
-                "glue:UpdateTable"
-              ],
-              "Resource": "*"
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "s3:GetObject",
-                "s3:ListBucket",
-                "s3:PutObject",
-                "s3:GetBucketLocation"
-              ],
-              "Resource": [
-                "arn:aws:s3:::cloudquery-athena-example",
-                "arn:aws:s3:::cloudquery-athena-example/output/*"
-              ]
-            }
-          ]
-      }
-      ```
+   ```json
+   {
+       "Version": "2012-10-17",
+       "Statement": [
+         {
+           "Effect": "Allow",
+           "Action": [
+             "athena:StartQueryExecution",
+             "athena:GetQueryExecution",
+             "athena:GetQueryResults",
+             "glue:GetDatabases",
+             "glue:GetTables",
+             "glue:GetTable",
+             "glue:UpdateTable"
+           ],
+           "Resource": "*"
+         },
+         {
+           "Effect": "Allow",
+           "Action": [
+             "s3:GetObject",
+             "s3:ListBucket",
+             "s3:PutObject",
+             "s3:GetBucketLocation"
+           ],
+           "Resource": [
+             "arn:aws:s3:::cloudquery-athena-example",
+             "arn:aws:s3:::cloudquery-athena-example/output/*"
+           ]
+         }
+       ]
+   }
+   ```
 
-      Save this as `athena-policy.json`, make appropriate edits for your environment (e.g. replacing `cloudquery-athena-example/output` with the bucket and directory where query results should be written), and then run:
+   Save this as `athena-policy.json`, make appropriate edits for your environment (e.g. replacing `cloudquery-athena-example/output` with the bucket and directory where query results should be written), and then run:
 
-      ```shell
-      aws iam put-role-policy --role-name lambda-ex --policy-name athena-policy --policy-document file://athena-policy.json
-      ```
+   ```shell
+   aws iam put-role-policy --role-name lambda-ex --policy-name athena-policy --policy-document file://athena-policy.json
+   ```
 
-4. Create the function (replace `<your-role-arn>` with the ARN of the role you created in step 2):
+5. Create the function (replace `<your-role-arn>` with the ARN of the role you created in step 2):
 
    ```shell
    aws lambda create-function --function-name athena-resources-view --zip-file fileb://main.zip --handler main --runtime go1.x --role <your-role-arn>
@@ -115,7 +115,7 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
    aws lambda update-function-configuration --function-name athena-resources-view --timeout 300
    ```
    
-5. Finally, run the function. This might be easier from the console, but here is an example of how to do it from the command line (you will need to modify the values in the payload for your environment):
+6. Finally, run the function. This might be easier from the console, but here is an example of how to do it from the command line (you will need to modify the values in the payload for your environment):
 
    ```shell
    aws lambda invoke --cli-binary-format raw-in-base64-out --function-name athena-resources-view --invocation-type Event --payload '{"catalog": "awsdatacatalog", "database": "athena-example", "output": "s3://cloudquery-athena-example/output", "view": "aws_resources", "region": "us-east-1"}' response.json
