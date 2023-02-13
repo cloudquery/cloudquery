@@ -222,6 +222,7 @@
 - [aws_emr_clusters](aws_emr_clusters.md)
   - [aws_emr_cluster_instance_fleets](aws_emr_cluster_instance_fleets.md)
   - [aws_emr_cluster_instance_groups](aws_emr_cluster_instance_groups.md)
+  - [aws_emr_cluster_instances](aws_emr_cluster_instances.md)
 - [aws_emr_security_configurations](aws_emr_security_configurations.md)
 - [aws_eventbridge_api_destinations](aws_eventbridge_api_destinations.md)
 - [aws_eventbridge_archives](aws_eventbridge_archives.md)
