@@ -43,3 +43,25 @@ spec:
   spec:
     connection_string: "clickhouse://${CH_USER}:${CH_PASSWORD}@localhost:9000/${CH_DATABASE}"
 ```
+
+### Verbose logging for debug
+
+The ClickHouse destination can be run in debug mode.
+To achieve this pass the `debug=true` option to `connection_string`.
+See [SDK documentation](https://github.com/ClickHouse/clickhouse-go#dsn) for more details.
+
+Note: This will use [SDK](https://github.com/ClickHouse/clickhouse-go) built-in logging
+and might output data and sensitive information to logs.
+Make sure not to use it in production environment.
+
+```yaml copy
+kind: destination
+spec:
+  name:     "clickhouse"
+  registry: "github"
+  path:     "cloudquery/clickhouse"
+  version:  "VERSION_DESTINATION_CLICKHOUSE"
+
+  spec:
+    connection_string: "clickhouse://${CH_USER}:${CH_PASSWORD}@localhost:9000/${CH_DATABASE}?debug=true"
+```
