@@ -113,6 +113,7 @@
   - [aws_directconnect_gateway_associations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_directconnect_gateway_associations.md)
   - [aws_directconnect_gateway_attachments](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_directconnect_gateway_attachments.md)
 - [aws_directconnect_lags](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_directconnect_lags.md)
+- [aws_directconnect_locations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_directconnect_locations.md)
 - [aws_directconnect_virtual_gateways](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_directconnect_virtual_gateways.md)
 - [aws_directconnect_virtual_interfaces](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_directconnect_virtual_interfaces.md)
 - [aws_dms_replication_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_dms_replication_instances.md)

@@ -113,6 +113,7 @@
   - [aws_directconnect_gateway_associations](aws_directconnect_gateway_associations.md)
   - [aws_directconnect_gateway_attachments](aws_directconnect_gateway_attachments.md)
 - [aws_directconnect_lags](aws_directconnect_lags.md)
+- [aws_directconnect_locations](aws_directconnect_locations.md)
 - [aws_directconnect_virtual_gateways](aws_directconnect_virtual_gateways.md)
 - [aws_directconnect_virtual_interfaces](aws_directconnect_virtual_interfaces.md)
 - [aws_dms_replication_instances](aws_dms_replication_instances.md)
