@@ -1,10 +1,7 @@
 package resiliencehub
 
 import (
-	"reflect"
-
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 var (
@@ -34,11 +31,11 @@ var (
 	}
 )
 
-func transformARN(path string) transformers.NameTransformer {
-	return func(field reflect.StructField) (string, error) {
-		if field.Name == path {
-			return "arn", nil
-		}
-		return transformers.DefaultNameTransformer(field)
+func arnColumn(path string) schema.Column {
+	return schema.Column{
+		Name:            "arn",
+		Type:            schema.TypeString,
+		Resolver:        schema.PathResolver(path),
+		CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 	}
 }

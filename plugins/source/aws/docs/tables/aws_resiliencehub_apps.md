@@ -21,6 +21,7 @@ The following tables depend on aws_resiliencehub_apps:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|app_arn|String|
 |creation_time|Timestamp|
 |name|String|
 |assessment_schedule|String|

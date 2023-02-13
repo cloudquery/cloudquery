@@ -13,12 +13,9 @@ func Apps() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_App.html`,
 		Resolver:            fetchApps,
 		PreResourceResolver: describeApp,
-		Transform: transformers.TransformWithStruct(&types.App{},
-			transformers.WithNameTransformer(transformARN("AppArn")),
-			transformers.WithPrimaryKeys("AppArn"),
-		),
-		Multiplex: client.ServiceAccountRegionMultiplexer("resiliencehub"),
-		Columns:   []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false)},
-		Relations: []*schema.Table{appAssesments(), appVersions()},
+		Transform:           transformers.TransformWithStruct(&types.App{}),
+		Multiplex:           client.ServiceAccountRegionMultiplexer("resiliencehub"),
+		Columns:             []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), arnColumn("AppArn")},
+		Relations:           []*schema.Table{appAssesments(), appVersions()},
 	}
 }

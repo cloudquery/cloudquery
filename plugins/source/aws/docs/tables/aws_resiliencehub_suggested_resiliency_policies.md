@@ -14,11 +14,12 @@ The primary key for this table is **arn**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
+|arn (PK)|String|
 |creation_time|Timestamp|
 |data_location_constraint|String|
 |estimated_cost_tier|String|
 |policy|JSON|
-|arn (PK)|String|
+|policy_arn|String|
 |policy_description|String|
 |policy_name|String|
 |tags|JSON|

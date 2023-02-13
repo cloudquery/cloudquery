@@ -28,6 +28,7 @@ The following tables depend on aws_resiliencehub_app_assessments:
 |region (PK)|String|
 |app_arn (PK)|String|
 |arn (PK)|String|
+|assessment_arn|String|
 |assessment_status|String|
 |invoker|String|
 |app_version|String|
