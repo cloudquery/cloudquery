@@ -15,7 +15,7 @@ func GatewayAssociations() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("directconnect"),
 		Transform:   transformers.TransformWithStruct(&types.DirectConnectGatewayAssociation{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
+			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "gateway_arn",
