@@ -45,11 +45,13 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
    GOOS=linux GOARCH=amd64 go build -o main main.go
    ```
 
-2. Zip the binary:
+2. Zip the binary. On Linux or Mac, you can use the `zip` command:
 
    ```shell
    zip main.zip main
    ```
+   
+   On Windows, follow the instructions [here](https://docs.aws.amazon.com/lambda/latest/dg/golang-package.html#golang-package-windows) to create a zip file using the `build-lambda-zip` tool.
 
 3. Create the execution role:
 
@@ -83,9 +85,11 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
            "Action": [
              "s3:GetObject",
              "s3:ListBucket",
-             "s3:PutObject"
+             "s3:PutObject",
+             "s3:GetBucketLocation"
            ],
            "Resource": [
+             "arn:aws:s3:::cloudquery-athena-example",
              "arn:aws:s3:::cloudquery-athena-example/output/*"
            ]
          }
