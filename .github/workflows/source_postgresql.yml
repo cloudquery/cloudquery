@@ -22,7 +22,7 @@ jobs:
         working-directory: ./plugins/source/postgresql
     services:
       # Label used to access the service container
-      postgres:ß
+      postgres:
         image: postgres:10
         command:
           - "postgres"
