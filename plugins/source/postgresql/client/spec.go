@@ -9,6 +9,6 @@ type Spec struct {
 func (*Spec) SetDefaults() {
 }
 
-func (s *Spec) Validate() error {
+func (*Spec) Validate() error {
 	return nil
 }

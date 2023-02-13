@@ -19,7 +19,7 @@ type Client struct {
 	Conn                *pgxpool.Pool
 	logger              zerolog.Logger
 	spec                specs.Source
-	metrics *source.Metrics
+	metrics             *source.Metrics
 	pluginSpec          Spec
 	currentDatabaseName string
 	currentSchemaName   string
@@ -141,11 +141,11 @@ func (c *Client) currentDatabase(ctx context.Context) (string, error) {
 }
 
 func (c *Client) currentSchema(ctx context.Context) (string, error) {
-	var schema string
-	err := c.Conn.QueryRow(ctx, "select current_schema()").Scan(&schema)
+	var schemaName string
+	err := c.Conn.QueryRow(ctx, "select current_schema()").Scan(&schemaName)
 	if err != nil {
 		return "", err
 	}
 
-	return schema, nil
+	return schemaName, nil
 }

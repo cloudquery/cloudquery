@@ -16,7 +16,7 @@ import (
 // |              3 | users       | email       | text       | NO            | true 		 | cq_users_pk         |
 // |              1 | posts       | id          | bigint     | YES           | true 		 | cq_posts_pk			   |
 // |              2 | posts       | title       | text       | NO            | false 	   | 					           |
-const	selectTables = `
+const selectTables = `
  SELECT
  columns.ordinal_position AS ordinal_position,
  pg_class.relname AS table_name,
@@ -51,7 +51,7 @@ const	selectTables = `
  table_name ASC , ordinal_position ASC;
  `
 
- func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
+func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 	var tables schema.Tables
 	rows, err := c.Conn.Query(ctx, fmt.Sprintf(selectTables, c.currentSchemaName))
 	if err != nil {

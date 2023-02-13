@@ -223,7 +223,7 @@ func TestPluginCDC(t *testing.T) {
 	res := make(chan *schema.Resource, 10)
 	var wg sync.WaitGroup
 	var syncErr error
-	syncCtx, cancel := context.WithTimeout(ctx, 15 * time.Second)
+	syncCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
 	wg.Add(1)
 
@@ -232,7 +232,7 @@ func TestPluginCDC(t *testing.T) {
 		defer close(res)
 		syncErr = p.Sync(syncCtx, res)
 	}()
-	time.AfterFunc(2*time.Second, func(){
+	time.AfterFunc(2*time.Second, func() {
 		if err := insert_test_table(ctx, conn, testTable, data2); err != nil {
 			t.Fatal(err)
 		}

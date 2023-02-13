@@ -101,7 +101,7 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 	nextStandbyMessageDeadline := time.Now().Add(standbyMessageTimeout)
 	relations := map[uint32]*pglogrepl.RelationMessage{}
 	typeMap := pgtype.NewMap()
-	
+
 	for {
 		if time.Now().After(nextStandbyMessageDeadline) {
 			err := pglogrepl.SendStandbyStatusUpdate(ctx, conn, pglogrepl.StandbyStatusUpdate{WALWritePosition: clientXLogPos})
@@ -127,12 +127,12 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 		if err != nil {
 			return err
 		}
-	
+
 		msg, ok := rawMsg.(*pgproto3.CopyData)
 		if !ok {
 			return fmt.Errorf("received unexpected message: %T", rawMsg)
 		}
-	
+
 		switch msg.Data[0] {
 		case pglogrepl.PrimaryKeepaliveMessageByteID:
 			pkm, err := pglogrepl.ParsePrimaryKeepaliveMessage(msg.Data[1:])
@@ -189,7 +189,7 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 					return err
 				}
 				res <- resource
-	
+
 			case *pglogrepl.UpdateMessage:
 				rel, ok := relations[logicalMsg.RelationID]
 				if !ok {
@@ -244,14 +244,14 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 					return err
 				}
 				res <- resource
-			case *pglogrepl.TruncateMessage:	
+			case *pglogrepl.TruncateMessage:
 			case *pglogrepl.TypeMessage:
 			case *pglogrepl.OriginMessage:
 			default:
 				log.Printf("Unknown message type in pgoutput stream: %T", logicalMsg)
 			}
 			clientXLogPos = xld.WALStart + pglogrepl.LSN(len(xld.WALData))
-		}		
+		}
 	}
 }
 
