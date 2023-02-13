@@ -148,6 +148,7 @@
 - [aws_ec2_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_instances.md)
 - [aws_ec2_internet_gateways](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_internet_gateways.md)
 - [aws_ec2_key_pairs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_key_pairs.md)
+- [aws_ec2_managed_prefix_lists](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_managed_prefix_lists.md)
 - [aws_ec2_nat_gateways](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_nat_gateways.md)
 - [aws_ec2_network_acls](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_network_acls.md)
 - [aws_ec2_network_interfaces](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_network_interfaces.md)
