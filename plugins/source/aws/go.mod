@@ -41,14 +41,14 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/efs v1.19.3
 	github.com/aws/aws-sdk-go-v2/service/eks v1.27.2
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.2
-	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.0
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.1
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.1
-	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.1
+	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.1
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.2
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.3
+	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.2
 	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.1
 	github.com/aws/aws-sdk-go-v2/service/emr v1.22.2
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.17.0
-	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.0
+	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.28.2
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.2

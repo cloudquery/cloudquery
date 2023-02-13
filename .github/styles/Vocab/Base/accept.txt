@@ -185,3 +185,7 @@ zsh
 Zsh
 keyless
 deduplicates
+Lucene
+schemaless
+sharding
+RESTful
