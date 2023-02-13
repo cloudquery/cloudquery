@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -96,7 +97,9 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<-
 	}
 	defer func() {
 		if err := tx.Rollback(ctx); err != nil {
-			c.logger.Error().Err(err).Msg("failed to rollback sync transaction")
+			if !errors.Is(err, pgx.ErrTxClosed) {
+				c.logger.Error().Err(err).Msg("failed to rollback sync transaction")
+			}
 		}
 	}()
 
