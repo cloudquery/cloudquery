@@ -2,5 +2,5 @@
 {{- range .}}
   {{- if $first}}{{$first = false}}  {{else}},
   {{end -}}
-  {{.Name | sanitize}} {{.Type}}
+  {{.Name | sanitize}} {{. | type}}
 {{- end -}}

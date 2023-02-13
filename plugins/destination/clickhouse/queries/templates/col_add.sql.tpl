@@ -1,1 +1,1 @@
-ALTER TABLE {{.Table | sanitize}} ADD COLUMN {{with .Column}}{{.Name | sanitize}} {{.Type}}{{end}}
+ALTER TABLE {{.Table | sanitize}} ADD COLUMN {{with .Column}}{{.Name | sanitize}} {{. | type}}{{end}}

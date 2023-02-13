@@ -4,9 +4,10 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func (c *Client) getTableDefinitions(ctx context.Context) (queries.TableDefinitions, error) {
+func (c *Client) getTableDefinitions(ctx context.Context) (schema.Tables, error) {
 	query, params := queries.GetTablesSchema(c.database)
 	rows, err := c.conn.Query(ctx, query, params...)
 	if err != nil {

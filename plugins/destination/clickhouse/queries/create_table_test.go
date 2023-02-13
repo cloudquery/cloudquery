@@ -7,7 +7,7 @@ import (
 )
 
 func TestCreateTable(t *testing.T) {
-	query := CreateTable(getTableDefinition(&schema.Table{
+	query := CreateTable(&schema.Table{
 		Name: "table_name",
 		Columns: schema.ColumnList{
 			schema.CqIDColumn,
@@ -22,7 +22,7 @@ func TestCreateTable(t *testing.T) {
 			schema.Column{Name: "extra_inet_col", Type: schema.TypeInet},
 			schema.Column{Name: "extra_inet_arr_col", Type: schema.TypeInetArray},
 		},
-	}))
+	})
 
 	ensureContents(t, query, "create_table.sql")
 }

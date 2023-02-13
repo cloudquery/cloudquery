@@ -1,1 +1,0 @@
-ALTER TABLE {{.Table | sanitize}} MODIFY COLUMN {{with .Column}}{{.Name | sanitize}} {{.Type}}{{end}}
