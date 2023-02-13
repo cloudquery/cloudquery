@@ -15,7 +15,7 @@ func appVersionResourceMappings() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.ResourceMapping{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("resiliencehub"),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true), appARN, appVersion,
+			client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, appVersion,
 			{
 				Name:            "physical_resource_identifier",
 				Type:            schema.TypeString,
