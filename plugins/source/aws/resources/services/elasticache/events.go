@@ -7,28 +7,23 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ReplicationGroups() *schema.Table {
+func Events() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_elasticache_replication_groups",
-		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ReplicationGroup.html`,
-		Resolver:    fetchElasticacheReplicationGroups,
+		Name:        "aws_elasticache_events",
+		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_Event.html`,
+		Resolver:    fetchElasticacheEvents,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
-		Transform:   transformers.TransformWithStruct(&types.ReplicationGroup{}),
+		Transform:   transformers.TransformWithStruct(&types.Event{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
+				Name:     "_event_hash",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ARN"),
+				Resolver: client.ResolveObjectHash,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveElasticacheReplicationGroupTags,
 			},
 		},
 	}
