@@ -72,7 +72,7 @@ func (c *Client) listPgTables(ctx context.Context, pluginTables schema.Tables) (
 		if err := rows.Scan(&ordinalPosition, &tableName, &columnName, &columnType, &isPrimaryKey, &notNull, &pkName); err != nil {
 			return nil, err
 		}
-		// This is a small optimization to hold only the tables that are in the plugin
+		// We don't want to migrate tables that are not a part of the spec, or non CloudQuery tables
 		if pluginTables.Get(tableName) == nil {
 			continue
 		}
