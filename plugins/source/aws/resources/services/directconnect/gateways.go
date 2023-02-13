@@ -20,7 +20,7 @@ func Gateways() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveGatewayARN(),
+				Resolver: resolveGatewayARN,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
