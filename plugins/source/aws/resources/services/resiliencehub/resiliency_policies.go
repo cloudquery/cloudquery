@@ -12,19 +12,8 @@ func ResiliencyPolicies() *schema.Table {
 		Name:        "aws_resiliencehub_resiliency_policies",
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_ResiliencyPolicy.html`,
 		Resolver:    fetchResiliencyPolicies,
-		Transform:   transformers.TransformWithStruct(&types.ResiliencyPolicy{}),
+		Transform:   transformers.TransformWithStruct(&types.ResiliencyPolicy{}, transformers.WithPrimaryKeys("PolicyArn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("resiliencehub"),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicyArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false)},
 	}
 }

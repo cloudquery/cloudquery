@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_SopRecommendation.html
 
-The composite primary key for this table is (**account_id**, **region**, **recommendation_id**).
+The composite primary key for this table is (**account_id**, **region**, **app_arn**, **assessment_arn**, **recommendation_id**).
 
 ## Relations
 
@@ -18,6 +18,8 @@ This table depends on [aws_resiliencehub_app_assessments](aws_resiliencehub_app_
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
 |region (PK)|String|
+|app_arn (PK)|String|
+|assessment_arn (PK)|String|
 |recommendation_id (PK)|String|
 |reference_id|String|
 |service_type|String|

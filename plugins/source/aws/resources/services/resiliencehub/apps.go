@@ -13,23 +13,9 @@ func Apps() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_App.html`,
 		Resolver:            fetchApps,
 		PreResourceResolver: describeApp,
-		Transform:           transformers.TransformWithStruct(&types.App{}),
+		Transform:           transformers.TransformWithStruct(&types.App{}, transformers.WithPrimaryKeys("AppArn")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer("resiliencehub"),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AppArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
-		Relations: []*schema.Table{
-			appAssesments(),
-			appVersions(),
-		},
+		Columns:             []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false)},
+		Relations:           []*schema.Table{appAssesments(), appVersions()},
 	}
 }

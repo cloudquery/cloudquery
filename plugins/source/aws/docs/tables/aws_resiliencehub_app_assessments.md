@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_AppAssessment.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**account_id**, **region**, **app_arn**, **assessment_arn**).
 
 ## Relations
 
@@ -24,13 +24,12 @@ The following tables depend on aws_resiliencehub_app_assessments:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|assessment_arn|String|
+|account_id (PK)|String|
+|region (PK)|String|
+|app_arn (PK)|String|
+|assessment_arn (PK)|String|
 |assessment_status|String|
 |invoker|String|
-|app_arn|String|
 |app_version|String|
 |assessment_name|String|
 |compliance|JSON|
