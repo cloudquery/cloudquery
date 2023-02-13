@@ -24,7 +24,7 @@ func Regions() *schema.Table {
 			{
 				Name:     "partition",
 				Type:     schema.TypeString,
-				Resolver: resolveRegionPartition,
+				Resolver: client.ResolveAWSPartition,
 			},
 			{
 				Name:     "region",

@@ -19,7 +19,7 @@ func fetchIamAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 		return err
 	}
 	var accSummary models.Account
-	decoder, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{TagName: "json", WeaklyTypedInput: true, Result: &accSummary})
+	decoder, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &accSummary})
 	if err != nil {
 		return err
 	}

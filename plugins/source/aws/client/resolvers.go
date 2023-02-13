@@ -22,6 +22,11 @@ func ResolveAWSNamespace(_ context.Context, meta schema.ClientMeta, r *schema.Re
 	return r.Set(c.Name, client.AutoscalingNamespace)
 }
 
+func ResolveAWSPartition(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+	client := meta.(*Client)
+	return r.Set(c.Name, client.Partition)
+}
+
 func ResolveWAFScope(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	return r.Set(c.Name, meta.(*Client).WAFScope)
 }
