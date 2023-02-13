@@ -1,0 +1,106 @@
+name: Source Plugin Postgresql Workflow
+
+on:
+  pull_request:
+    paths:
+      - "plugins/source/postgresql/**"
+      - ".github/workflows/source_postgresql.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/postgresql/**"
+      - ".github/workflows/source_postgresql.yml"
+
+jobs:
+  plugins-source-postgresql:
+    timeout-minutes: 30
+    name: "plugins/source/postgresql"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/postgresql
+    services:
+      # Label used to access the service container
+      postgres:
+        image: postgres:10
+        env:
+          POSTGRES_PASSWORD: pass
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/postgresql/go.mod
+          cache: true
+          cache-dependency-path: plugins/source/postgresql/go.sum
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.50.1
+          working-directory: plugins/source/postgresql
+          args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      - name: Test PG
+        run: make test
+      # cockroachdb doesn't support services right now
+      # https://stackoverflow.com/questions/73648218/github-action-setup-secure-cockroachdb
+      # - name: Spin up CockroachDB
+      #   run: |
+      #     docker run -d -p 26257:26257 cockroachdb/cockroach:v22.1.8 start-single-node --insecure
+      #     sudo apt update && sudo apt install wait-for-it -y
+      #     wait-for-it -h localhost -p 26257
+      # - name: Test CockroachDB
+      #   run: CQ_DEST_PG_TEST_CONN="postgresql://root@localhost:26257/postgres?sslmode=disable" make test
+  validate-release:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    env:
+      CGO_ENABLED: 0
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/postgresql/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-postgresql
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/postgresql/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/postgresql/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

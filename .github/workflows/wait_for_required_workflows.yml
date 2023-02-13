@@ -71,6 +71,7 @@ jobs:
                            "plugins/source/test",
                            "plugins/source/vercel",
                            "plugins/source/plausible",
+                           "plugins/source/postgresql",
                            
                            "plugins/destination/postgresql",
                            "plugins/destination/test",
