@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_Event.html
 
-The composite primary key for this table is (**date**, **source_identifier**, **source_type**).
+The primary key for this table is **_event_hash**.
 
 ## Columns
 
@@ -14,7 +14,8 @@ The composite primary key for this table is (**date**, **source_identifier**, **
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|date (PK)|Timestamp|
+|_event_hash (PK)|String|
+|date|Timestamp|
 |message|String|
-|source_identifier (PK)|String|
-|source_type (PK)|String|
+|source_identifier|String|
+|source_type|String|

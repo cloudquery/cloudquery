@@ -13,10 +13,18 @@ func Events() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_Event.html`,
 		Resolver:    fetchElasticacheEvents,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
-		Transform:   transformers.TransformWithStruct(&types.Event{}, transformers.WithPrimaryKeys("Date", "SourceIdentifier", "SourceType")),
+		Transform:   transformers.TransformWithStruct(&types.Event{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
+			{
+				Name:     "_event_hash",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveObjectHash,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
 		},
 	}
 }
