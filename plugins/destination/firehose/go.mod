@@ -22,7 +22,7 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.0
+	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.2
 	github.com/google/uuid v1.3.0 // indirect
 )
 
