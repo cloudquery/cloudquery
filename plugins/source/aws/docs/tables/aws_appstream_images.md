@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Image.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**account_id**, **region**, **arn**).
 
 ## Columns
 
@@ -12,12 +12,12 @@ The primary key for this table is **arn**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
+|account_id (PK)|String|
+|region (PK)|String|
 |name|String|
 |applications|JSON|
 |appstream_agent_version|String|
+|arn (PK)|String|
 |base_image_arn|String|
 |created_time|Timestamp|
 |description|String|
