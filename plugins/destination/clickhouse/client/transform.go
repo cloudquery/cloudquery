@@ -1,6 +1,8 @@
 package client
 
 import (
+	"time"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/google/uuid"
 )
@@ -93,8 +95,16 @@ func (*Client) TransformTextArray(v *schema.TextArray) any {
 	return res
 }
 
+var (
+	minDateTime64, _ = time.Parse("2006-01-02 15:04:05", "1925-01-01 00:00:00")
+	maxDateTime64, _ = time.Parse("2006-01-02 15:04:05", "2262-04-11 23:47:16")
+)
+
 func (*Client) TransformTimestamptz(v *schema.Timestamptz) any {
 	if v.Status != schema.Present {
+		return nil
+	}
+	if v.Time.Before(minDateTime64) || v.Time.After(maxDateTime64) {
 		return nil
 	}
 	return v.Time
