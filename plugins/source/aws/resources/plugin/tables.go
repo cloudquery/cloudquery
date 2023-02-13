@@ -382,6 +382,7 @@ func tables() []*schema.Table {
 		route53.Domains(),
 		route53.HealthChecks(),
 		route53.HostedZones(),
+		route53.Operations(),
 		route53.TrafficPolicies(),
 		s3.AccessPoints(),
 		s3.Accounts(),
