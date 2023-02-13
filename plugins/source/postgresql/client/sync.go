@@ -119,7 +119,7 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<-
 	return nil
 }
 
-func (c *Client) resourceFromValues(tableName string, values []interface{}) (*schema.Resource, error) {
+func (c *Client) resourceFromValues(tableName string, values []any) (*schema.Resource, error) {
 	table := c.Tables.Get(tableName)
 	resource := schema.NewResourceData(table, nil, values)
 	for i, col := range table.Columns {

@@ -167,7 +167,7 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 				if !ok {
 					return fmt.Errorf("unknown relation ID %d", logicalMsg.RelationID)
 				}
-				values := map[string]interface{}{}
+				values := map[string]any{}
 				for idx, col := range logicalMsg.Tuple.Columns {
 					colName := rel.Columns[idx].Name
 					switch col.DataType {
@@ -195,7 +195,7 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 				if !ok {
 					return fmt.Errorf("unknown relation ID %d", logicalMsg.RelationID)
 				}
-				values := map[string]interface{}{}
+				values := map[string]any{}
 				for idx, col := range logicalMsg.NewTuple.Columns {
 					colName := rel.Columns[idx].Name
 					switch col.DataType {
@@ -222,7 +222,7 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 				if !ok {
 					return fmt.Errorf("unknown relation ID %d", logicalMsg.RelationID)
 				}
-				values := map[string]interface{}{}
+				values := map[string]any{}
 				for idx, col := range logicalMsg.OldTuple.Columns {
 					colName := rel.Columns[idx].Name
 					switch col.DataType {
@@ -270,14 +270,14 @@ func (c *Client) getLastXlogPos(ctx context.Context) (pglogrepl.LSN, error) {
 	return xLogPos, nil
 }
 
-func decodeTextColumnData(mi *pgtype.Map, data []byte, dataType uint32) (interface{}, error) {
+func decodeTextColumnData(mi *pgtype.Map, data []byte, dataType uint32) (any, error) {
 	if dt, ok := mi.TypeForOID(dataType); ok {
 		return dt.Codec.DecodeValue(mi, dataType, pgtype.TextFormatCode, data)
 	}
 	return string(data), nil
 }
 
-func (c *Client) resourceFromCDCValues(tableName string, values map[string]interface{}) (*schema.Resource, error) {
+func (c *Client) resourceFromCDCValues(tableName string, values map[string]any) (*schema.Resource, error) {
 	table := c.Tables.Get(tableName)
 	resource := schema.NewResourceData(table, nil, values)
 	for _, col := range table.Columns {
