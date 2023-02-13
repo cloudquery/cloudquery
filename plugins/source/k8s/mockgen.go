@@ -107,3 +107,6 @@ package main
 //go:generate mockgen --destination=mocks/storage/v1/csistoragecapacity.go --package=v1 "k8s.io/client-go/kubernetes/typed/storage/v1" CSIStorageCapacitiesGetter,CSIStorageCapacityInterface
 //go:generate mockgen --destination=mocks/storage/v1/storageclass.go --package=v1 "k8s.io/client-go/kubernetes/typed/storage/v1" StorageClassesGetter,StorageClassInterface
 //go:generate mockgen --destination=mocks/storage/v1/volumeattachment.go --package=v1 "k8s.io/client-go/kubernetes/typed/storage/v1" VolumeAttachmentsGetter,VolumeAttachmentInterface
+
+//go:generate mockgen --destination=mocks/policy/v1/client.go --package=v1 "k8s.io/client-go/kubernetes/typed/policy/v1" PolicyV1Interface
+//go:generate mockgen --destination=mocks/policy/v1/poddisruptionbudgets.go --package=v1 "k8s.io/client-go/kubernetes/typed/policy/v1" PodDisruptionBudgetsGetter,PodDisruptionBudgetInterface
