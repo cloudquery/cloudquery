@@ -8,6 +8,7 @@ import (
 	"reflect"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -18,11 +19,20 @@ import (
 const (
 	PathVarTable = "{{TABLE}}"
 	PathVarUUID  = "{{UUID}}"
+	YearVar      = "{{YEAR}}"
+	MonthVar     = "{{MONTH}}"
+	DayVar       = "{{DAY}}"
+	HourVar      = "{{HOUR}}"
+	MinuteVar    = "{{MINUTE}}"
 )
 
 var reInvalidJSONKey = regexp.MustCompile(`\W`)
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
+	if len(data) == 0 {
+		return nil
+	}
+
 	if c.pluginSpec.Athena {
 		for _, resource := range data {
 			for u := range resource {
@@ -37,6 +47,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	var b bytes.Buffer
 	w := io.Writer(&b)
 
+	timeNow := time.Now().UTC()
+
 	if err := c.Client.WriteTableBatchFile(w, table, data); err != nil {
 		return err
 	}
@@ -45,7 +57,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	r := io.Reader(&b)
 	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
 		Bucket: aws.String(c.pluginSpec.Bucket),
-		Key:    aws.String(replacePathVariables(c.pluginSpec.Path, table.Name, uuid.NewString())),
+		Key:    aws.String(replacePathVariables(c.pluginSpec.Path, table.Name, uuid.NewString(), timeNow)),
 		Body:   r,
 	}); err != nil {
 		return err
@@ -79,8 +91,13 @@ func sanitizeJSONKeys(obj any) {
 	}
 }
 
-func replacePathVariables(specPath, table, fileIdentifier string) string {
+func replacePathVariables(specPath, table, fileIdentifier string, t time.Time) string {
 	name := strings.ReplaceAll(specPath, PathVarTable, table)
 	name = strings.ReplaceAll(name, PathVarUUID, fileIdentifier)
+	name = strings.ReplaceAll(name, YearVar, t.Format("2006"))
+	name = strings.ReplaceAll(name, MonthVar, t.Format("01"))
+	name = strings.ReplaceAll(name, DayVar, t.Format("02"))
+	name = strings.ReplaceAll(name, HourVar, t.Format("15"))
+	name = strings.ReplaceAll(name, MinuteVar, t.Format("04"))
 	return path.Clean(name)
 }
