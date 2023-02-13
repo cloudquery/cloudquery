@@ -155,8 +155,8 @@ func normalizeColumn(column schema.Column) schema.Column {
 	}
 
 	res.CreationOptions = column.CreationOptions
-	if column.Name == schema.CqIDColumn.Name || column.CreationOptions.PrimaryKey {
-		res.CreationOptions.NotNull = true
+	if !res.CreationOptions.NotNull {
+		res.CreationOptions.NotNull = column.CreationOptions.PrimaryKey
 	}
 
 	return res
