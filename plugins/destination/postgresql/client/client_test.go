@@ -24,10 +24,8 @@ func getTestConnection() string {
 }
 
 func TestPgPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("postgresql", "development", New)
-		},
+	p := destination.NewPlugin("postgresql", "development", New)
+	destination.PluginTestSuiteRunner(t, p,
 		Spec{
 			ConnectionString: getTestConnection(),
 			PgxLogLevel:      LogLevelTrace,

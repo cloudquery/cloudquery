@@ -21,5 +21,6 @@ func TestPlugin(t *testing.T) {
 			SkipOverwrite:             true,
 			SkipMigrateOverwrite:      true,
 			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		})
 }

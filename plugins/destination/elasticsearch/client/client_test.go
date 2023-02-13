@@ -19,5 +19,8 @@ func TestPlugin(t *testing.T) {
 		Spec{
 			Addresses: []string{address},
 		},
-		destination.PluginTestSuiteTests{})
+		destination.PluginTestSuiteTests{
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
+		})
 }

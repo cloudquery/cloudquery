@@ -31,6 +31,7 @@ func TestPluginCSV(t *testing.T) {
 			SkipMigrateAppend:         true,
 			SkipMigrateOverwrite:      true,
 			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		},
 	)
 }
@@ -57,6 +58,7 @@ func TestPluginJSON(t *testing.T) {
 			SkipMigrateAppend:         true,
 			SkipMigrateOverwrite:      true,
 			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		},
 	)
 }

@@ -41,5 +41,6 @@ func TestPgPlugin(t *testing.T) {
 			SkipMigrateAppend:         true,
 			SkipMigrateOverwrite:      true,
 			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		})
 }

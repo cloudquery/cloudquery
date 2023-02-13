@@ -20,5 +20,6 @@ func TestPlugin(t *testing.T) {
 			SkipMigrateAppend:         true, // fails with `invalid identifier '"new_column"'`, maybe because delays in schema propagation?
 			SkipMigrateOverwrite:      true,
 			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		})
 }
