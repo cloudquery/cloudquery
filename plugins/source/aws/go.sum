@@ -102,8 +102,8 @@ github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.2 h1:P1qnEcfRnlQFooy4oJY5Lx
 github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.2/go.mod h1:ub+L0UGvsBHE2oYw1aiTBz6ObCFd8BUV9wKQYEQGvA4=
 github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.1 h1:Bk5B4gks/2JGQL8m8of+XP5MRQXD8j36saZApxbMuO8=
 github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.1/go.mod h1:c2gf68qwDSM+pmvXT0Hj+7+UDReZHiDFVVLNXwC/bLQ=
-github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.0 h1:gEO985266S4UHk317zoxb8w1Ng0cF9+ICf0R8daHNTE=
-github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.0/go.mod h1:Aih6A0KgGM80Igtyh4HZeKAaH7uuHpK0peQU1Z5+T4U=
+github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.1 h1:lEmZ2KrVLoSCZqugJXxc8ckenLtLp0J72RUx50Fg/Sc=
+github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.1/go.mod h1:JIHsygiDiivhB2Rr077N1uso4l9FVwzzM3lcscS8hUQ=
 github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.1 h1:pGTNqXTEJUkxzWZOFtMCyiaSFdWP3V+Dozk1m52PhuQ=
 github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.1/go.mod h1:SbWXSrT+zM2C8uZzZ8fLEsE3VNar9rg77PdgbGspyHQ=
 github.com/aws/aws-sdk-go-v2/service/configservice v1.29.1 h1:xUaQ7NhFtJ5q7Iq6R0r1njb+Rq+vpwYWb3VDMaFKKjs=
