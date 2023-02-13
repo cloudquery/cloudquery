@@ -90,7 +90,6 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 			}
 		}
 		batch.Queue(sql, r.Data...)
-		fmt.Println(r.Data[len(r.Data)-1])
 		batchSize := batch.Len()
 		if batchSize >= c.batchSize {
 			br := c.conn.SendBatch(ctx, batch)
