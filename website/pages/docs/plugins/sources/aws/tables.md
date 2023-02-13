@@ -222,6 +222,7 @@
 - [aws_emr_clusters](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_emr_clusters.md)
   - [aws_emr_cluster_instance_fleets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_emr_cluster_instance_fleets.md)
   - [aws_emr_cluster_instance_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_emr_cluster_instance_groups.md)
+- [aws_emr_security_configurations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_emr_security_configurations.md)
 - [aws_eventbridge_api_destinations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_eventbridge_api_destinations.md)
 - [aws_eventbridge_archives](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_eventbridge_archives.md)
 - [aws_eventbridge_connections](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_eventbridge_connections.md)
