@@ -22,9 +22,12 @@ jobs:
         working-directory: ./plugins/source/postgresql
     services:
       # Label used to access the service container
-      postgres:
+      postgres:ß
         image: postgres:10
-        command: psql -c "wal_level=logical"
+        command:
+          - "postgres"
+          - "-c"
+          - "wal_level=logical"
         env:
           POSTGRES_PASSWORD: pass
           POSTGRES_USER: postgres
