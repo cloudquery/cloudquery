@@ -89,6 +89,7 @@ func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, 
 func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<- *schema.Resource) error {
 	tx, err := c.Conn.BeginTx(ctx, pgx.TxOptions{
 		// this transaction is needed for us to take a snapshot and we need to close it only at the end of the initial sync
+		// https://www.postgresql.org/docs/current/transaction-iso.html
 		IsoLevel:   pgx.RepeatableRead,
 		AccessMode: pgx.ReadOnly,
 	})
