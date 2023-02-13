@@ -136,6 +136,7 @@
 - [gcp_logging_metrics](gcp_logging_metrics.md)
 - [gcp_logging_sinks](gcp_logging_sinks.md)
 - [gcp_monitoring_alert_policies](gcp_monitoring_alert_policies.md)
+- [gcp_projects](gcp_projects.md)
 - [gcp_redis_instances](gcp_redis_instances.md)
 - [gcp_resourcemanager_folders](gcp_resourcemanager_folders.md)
 - [gcp_resourcemanager_project_policies](gcp_resourcemanager_project_policies.md)
