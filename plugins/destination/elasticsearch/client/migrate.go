@@ -13,7 +13,7 @@ import (
 // Migrate creates or updates index templates.
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	for _, table := range tables {
-		tmpl, err := getIndexTemplate(table)
+		tmpl, err := c.getIndexTemplate(table)
 		if err != nil {
 			return fmt.Errorf("failed to generate index template: %w", err)
 		}
@@ -28,7 +28,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return nil
 }
 
-func getIndexTemplate(table *schema.Table) (string, error) {
+func (c *Client) getIndexTemplate(table *schema.Table) (string, error) {
 	properties := map[string]types.Property{}
 	for _, col := range table.Columns {
 		switch col.Type {
@@ -75,7 +75,7 @@ func getIndexTemplate(table *schema.Table) (string, error) {
 		AllowAutoCreate: nil,
 		ComposedOf:      []string{},
 		DataStream:      nil,
-		IndexPatterns:   []string{table.Name + "-*"},
+		IndexPatterns:   []string{c.getIndexNamePattern(table.Name)},
 		Meta_:           nil,
 		Priority:        nil,
 		Template: &types.IndexTemplateSummary{

@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/gandi
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.34.0
+	github.com/cloudquery/plugin-sdk v1.36.1
 	github.com/go-gandi/go-gandi v0.5.1-0.20221118201059-f69b292fa399
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.29.0
@@ -31,7 +31,7 @@ require (
 	golang.org/x/exp v0.0.0-20230131160201-f062dba9d201 // indirect; indirect // indirect
 	golang.org/x/net v0.5.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.4.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
 	google.golang.org/genproto v0.0.0-20230131230820-1c016267d619 // indirect; indirect // indirect
 	google.golang.org/grpc v1.52.3 // indirect

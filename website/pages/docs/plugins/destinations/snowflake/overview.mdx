@@ -46,13 +46,13 @@ This is the top level spec used by the Snowflake destination plugin.
   Example `connection_string`:
 
   ```yaml copy
-  # user[:password]@account/database/schema[?param1=value1&paramN=valueN]
+  # user[:password]@account/database/schema?warehouse=user_warehouse[&param1=value1&paramN=valueN]
   # or
-  # user[:password]@account/database[?param1=value1&paramN=valueN]
+  # user[:password]@account/database?warehouse=user_warehouse[&param1=value1&paramN=valueN]
   # or
-  # user[:password]@host:port/database/schema?account=user_account[?param1=value1&paramN=valueN]
+  # user[:password]@host:port/database/schema?account=user_account&warehouse=user_warehouse[&param1=value1&paramN=valueN]
   # or
-  # host:port/database/schema?account=user_account[?param1=value1&paramN=valueN]
+  # host:port/database/schema?account=user_account&warehouse=user_warehouse[&param1=value1&paramN=valueN]
   ```
 
   From Snowflake documentation:

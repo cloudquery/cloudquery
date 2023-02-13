@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/clarkmcc/go-hubspot v0.0.0-20221010213350-20c2f9cbf936
-	github.com/cloudquery/plugin-sdk v1.34.0
+	github.com/cloudquery/plugin-sdk v1.36.1
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/time v0.0.0-20220922220347-f3bd1da661af
 )
@@ -27,7 +27,7 @@ require (
 	golang.org/x/net v0.5.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.4.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect; indirect // indirect
 	google.golang.org/genproto v0.0.0-20230131230820-1c016267d619 // indirect; indirect // indirect

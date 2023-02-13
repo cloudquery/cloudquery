@@ -15,16 +15,8 @@ func Certificates() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
 		Transform:   transformers.TransformWithStruct(&types.Certificate{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

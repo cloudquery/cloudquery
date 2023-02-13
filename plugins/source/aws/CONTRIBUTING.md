@@ -17,7 +17,7 @@ As a prerequisite, in [aws-sdk-go-v2](https://pkg.go.dev/github.com/aws/aws-sdk-
 ### Generate the Service Interface (if it doesn't exist)
 
 1. Check in [client/services.go](client/services.go) that the service you need has an interface defined. If it does, you can skip to [Step 2](#step-2-add-a-new-table). If not, read on to learn how to generate the interface.
-2. Inside [codegen/services/clients.go](codegen/services/clients.go), add the client for the AWS SDK you need to the `clients` slice. You may need to run `go get github.com/aws/aws-sdk-go-v2/service/<service-name>` (e.g. `go get github.com/aws/aws-sdk-go-v2/service/dynamodb`) to add the dependency first.
+2. Inside [codegen/main.go](codegen/main.go), add the client for the AWS SDK you need to the `clients` slice. You may need to run `go get github.com/aws/aws-sdk-go-v2/service/<service-name>` (e.g. `go get github.com/aws/aws-sdk-go-v2/service/dynamodb`) to add the dependency first.
 3. Run `make gen-mocks`. This takes a few seconds, but it should add the interface for your client to [client/services.go](client/services.go) and create a mock for it that will be used in unit tests later.
 
 ### Step 2. Add a New Table
