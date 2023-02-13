@@ -7,5 +7,6 @@ import (
 )
 
 func Insert(table *schema.Table) string {
-	return `INSERT INTO ` + sanitizeID(table.Name) + `(` + strings.Join(sanitized(table.Columns.Names()...), `, `) + `)`
+	return `INSERT INTO ` + sanitizeID(table.Name) +
+		`(` + strings.Join(sanitized(table.Columns.Names()...), `, `) + `)`
 }

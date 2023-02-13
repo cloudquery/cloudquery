@@ -1,1 +1,0 @@
-ALTER TABLE {{.Table | sanitize}} DROP COLUMN {{with .Column}}{{.Name | sanitize}}{{end}}

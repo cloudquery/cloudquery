@@ -1,17 +1,25 @@
 package queries
 
 import (
+	"strings"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-type createTableQueryBuilder struct {
-	Table      *schema.Table
-	SortingKey []string
+func CreateTable(table *schema.Table) string {
+	normalized := normalizeTable(table)
+	return "CREATE TABLE " + sanitizeID(normalized.Name) + ` (
+  ` + strings.Join(definitions(normalized.Columns), `,
+  `) + `
+) ENGINE = MergeTree ORDER BY (` + sanitizeID(schema.CqIDColumn.Name) + `)`
 }
 
-func CreateTable(table *schema.Table) string {
-	return execTemplate("create_table.sql.tpl", &createTableQueryBuilder{
-		Table:      normalizeTable(table),
-		SortingKey: []string{schema.CqIDColumn.Name}, // only _cq_id for now
-	})
+func definitions(columns schema.ColumnList) []string {
+	res := make([]string, len(columns))
+
+	for i, col := range columns {
+		res[i] = sanitizeID(col.Name) + " " + chType(&col)
+	}
+
+	return res
 }
