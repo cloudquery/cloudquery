@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/postgresql
 go 1.19
 
 require (
-	// github.com/cloudquery/plugin-sdk v1.31.0
+	github.com/cloudquery/plugin-sdk v1.36.4-0.20230213084508-f3e2b1d98226
 	github.com/jackc/pglogrepl v0.0.0-20221125161640-1e972958ba03
 	github.com/jackc/pgx-zerolog v0.0.0-20230124015146-7c83b3e9b2bd
 	github.com/jackc/pgx/v5 v5.3.0
@@ -18,10 +18,7 @@ require (
 	golang.org/x/sync v0.1.0 // indirect
 )
 
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk-split
-
 require (
-	github.com/cloudquery/plugin-sdk v1.36.4-0.20230213084612-ff68223a42a1 // indirect
 	github.com/getsentry/sentry-go v0.18.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
