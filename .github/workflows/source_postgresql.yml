@@ -20,28 +20,28 @@ jobs:
     defaults:
       run:
         working-directory: ./plugins/source/postgresql
-    services:
-      # Label used to access the service container
-      postgres:
-        image: postgres:10
-        command:
-          - "postgres"
-          - "-c"
-          - "wal_level=logical"
-        env:
-          POSTGRES_PASSWORD: pass
-          POSTGRES_USER: postgres
-          POSTGRES_DB: postgres
-          # POSTGRES_MAX_REPLICATION_SLOTS: 1
-          # POSTGRES_WAL_LEVEL: logical
-        ports:
-          - 5432:5432
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    # services:
+    #   # Label used to access the service container
+    #   postgres:
+    #     image: postgres:10
+    #     command:
+    #       - "postgres"
+    #       - "-c"
+    #       - "wal_level=logical"
+    #     env:
+    #       POSTGRES_PASSWORD: pass
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_DB: postgres
+    #       # POSTGRES_MAX_REPLICATION_SLOTS: 1
+    #       # POSTGRES_WAL_LEVEL: logical
+    #     ports:
+    #       - 5432:5432
+    #     # Set health checks to wait until postgres has started
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
     steps:
       - uses: actions/checkout@v3
         with:
@@ -64,17 +64,14 @@ jobs:
         run: go get -t -d ./...
       - name: Build
         run: go build .
-      - name: Test PG
+      # github actions built-in service doesn't support logical replication yet (as far as I was able to find out)
+      - name: Spin up PostgreSQL with logical replication
+        run: |
+          docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres:11 -c "wal_level=logical"
+          sudo apt update && sudo apt install wait-for-it -y
+          wait-for-it -h localhost -p 5432
+      - name: Test PostgreSQL
         run: make test
-      # cockroachdb doesn't support services right now
-      # https://stackoverflow.com/questions/73648218/github-action-setup-secure-cockroachdb
-      # - name: Spin up CockroachDB
-      #   run: |
-      #     docker run -d -p 26257:26257 cockroachdb/cockroach:v22.1.8 start-single-node --insecure
-      #     sudo apt update && sudo apt install wait-for-it -y
-      #     wait-for-it -h localhost -p 26257
-      # - name: Test CockroachDB
-      #   run: CQ_DEST_PG_TEST_CONN="postgresql://root@localhost:26257/postgres?sslmode=disable" make test
   validate-release:
     timeout-minutes: 30
     runs-on: ubuntu-latest
