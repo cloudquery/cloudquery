@@ -33,7 +33,14 @@ func fetchRamPrincipalsByOwner(ctx context.Context, meta schema.ClientMeta, shar
 		if err != nil {
 			return err
 		}
-		res <- response.Principals
+		plist := make([]principalWrapper, len(response.Principals))
+		for i := range response.Principals {
+			plist[i] = principalWrapper{
+				ResourceOwner: shareType,
+				Principal:     response.Principals[i],
+			}
+		}
+		res <- plist
 	}
 	return nil
 }
