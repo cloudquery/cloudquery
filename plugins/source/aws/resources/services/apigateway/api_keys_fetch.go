@@ -15,6 +15,7 @@ import (
 func fetchApigatewayApiKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := apigateway.GetApiKeysInput{
 		IncludeValues: aws.Bool(true),
+		Limit:         aws.Int32(500),
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway

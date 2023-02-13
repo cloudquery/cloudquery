@@ -33,6 +33,7 @@
 - [k8s_networking_ingresses](k8s_networking_ingresses.md)
 - [k8s_networking_network_policies](k8s_networking_network_policies.md)
 - [k8s_nodes_runtime_classes](k8s_nodes_runtime_classes.md)
+- [k8s_policy_pod_disruption_budgets](k8s_policy_pod_disruption_budgets.md)
 - [k8s_rbac_cluster_role_bindings](k8s_rbac_cluster_role_bindings.md)
 - [k8s_rbac_cluster_roles](k8s_rbac_cluster_roles.md)
 - [k8s_rbac_role_bindings](k8s_rbac_role_bindings.md)

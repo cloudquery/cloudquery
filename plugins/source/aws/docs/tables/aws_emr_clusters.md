@@ -9,6 +9,7 @@ The primary key for this table is **arn**.
 The following tables depend on aws_emr_clusters:
   - [aws_emr_cluster_instance_fleets](aws_emr_cluster_instance_fleets.md)
   - [aws_emr_cluster_instance_groups](aws_emr_cluster_instance_groups.md)
+  - [aws_emr_cluster_instances](aws_emr_cluster_instances.md)
 
 ## Columns
 

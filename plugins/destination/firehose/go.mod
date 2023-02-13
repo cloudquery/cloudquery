@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.4
 	github.com/aws/aws-sdk-go-v2/config v1.18.12
 	github.com/cloudquery/filetypes v1.4.0
-	github.com/cloudquery/plugin-sdk v1.36.0
+	github.com/cloudquery/plugin-sdk v1.36.3
 	github.com/rs/zerolog v1.29.0
 )
 
@@ -22,7 +22,7 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.0
+	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.2
 	github.com/google/uuid v1.3.0 // indirect
 )
 
