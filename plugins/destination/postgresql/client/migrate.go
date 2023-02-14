@@ -216,12 +216,6 @@ func (c *Client) alterColumnCockroachDB(ctx context.Context, tableName string, c
 		if !errors.As(err, &pgErr) {
 			return fmt.Errorf("failed to add column %s.%s: %w", tableName, column.Name, err)
 		}
-		// this means the column contains null value and we cannot recreate it without knowing what is the default
-		// This is usually the case when the column is a primary key
-		// the user will have to drop and recreate the table
-		if pgErr.Code == "23502" {
-			return fmt.Errorf("column %s.%s contains null values, please drop the table manually via 'drop table %s'", tableName, column.Name, tableName)
-		}
 		// this is a weird CockroachDB error code that means we need to retry.
 		if pgErr.Code != "55000" {
 			return fmt.Errorf("failed to add column %s.%s with pgerror %s: %w", tableName, column.Name, pgErrToStr(pgErr), err)
@@ -250,7 +244,9 @@ func (c *Client) alterColumnPg(ctx context.Context, tableName string, column sch
 	}
 	defer func() {
 		if err := tx.Rollback(ctx); err != nil {
-			c.logger.Error().Err(err).Msg("Failed to rollback alter column transaction")
+			if !errors.Is(err, pgx.ErrTxClosed) {
+				c.logger.Error().Err(err).Msg("Failed to rollback alter column transaction")
+			}
 		}
 	}()
 
@@ -267,12 +263,6 @@ func (c *Client) alterColumnPg(ctx context.Context, tableName string, column sch
 		var pgErr *pgconn.PgError
 		if !errors.As(err, &pgErr) {
 			return fmt.Errorf("failed to add column %s.%s: %w", tableName, column.Name, err)
-		}
-		// this means the column contains null value and we cannot recreate it without knowing what is the default
-		// This is usually the case when the column is a primary key
-		// the user will have to drop and recreate the table
-		if pgErr.Code == "23502" {
-			return fmt.Errorf("column %s.%s contains null values, please drop the table manually via 'drop table %s'", tableName, column.Name, tableName)
 		}
 		return fmt.Errorf("failed to add column %s.%s with pgerror %s: %w", tableName, column.Name, pgErrToStr(pgErr), err)
 	}
@@ -301,19 +291,20 @@ func (c *Client) alterPKConstraint(ctx context.Context, pgTable *schema.Table, t
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction to recreate primary keys: %w", err)
 	}
+	defer func() {
+		if err := tx.Rollback(ctx); err != nil {
+			if !errors.Is(err, pgx.ErrTxClosed) {
+				c.logger.Error().Err(err).Msg("failed to rollback transaction")
+			}
+		}
+	}()
 	dropConstraintSQL := "alter table " + tableName + " drop constraint if exists " + pgTable.PkConstraintName
 	if _, err := tx.Exec(ctx, dropConstraintSQL); err != nil {
-		if err := tx.Rollback(ctx); err != nil {
-			c.logger.Error().Err(err).Msg("failed to rollback transaction")
-		}
 		return fmt.Errorf("failed to drop primary key constraint on table %s: %w", table.Name, err)
 	}
 
 	sql := "alter table " + tableName + " add primary key (" + strings.Join(table.PrimaryKeys(), ",") + ")"
 	if _, err := tx.Exec(ctx, sql); err != nil {
-		if err := tx.Rollback(ctx); err != nil {
-			c.logger.Error().Err(err).Msg("failed to rollback transaction")
-		}
 		return fmt.Errorf("failed to add primary key constraint on table %s: %w", table.Name, err)
 	}
 	if err := tx.Commit(ctx); err != nil {
