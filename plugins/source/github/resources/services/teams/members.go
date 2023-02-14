@@ -7,41 +7,19 @@ import (
 	"github.com/google/go-github/v48/github"
 )
 
-func Members() *schema.Table {
+func members() *schema.Table {
 	return &schema.Table{
-		Name:      "github_team_members",
-		Resolver:  fetchMembers,
-		Transform: transformers.TransformWithStruct(&github.User{}, client.SharedTransformers()...),
+		Name:     "github_team_members",
+		Resolver: fetchMembers,
+		Transform: transformers.TransformWithStruct(&github.User{},
+			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
 		Columns: []schema.Column{
-			{
-				Name:        "org",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
-				Description: `The Github Organization of the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "team_id",
-				Type:     schema.TypeInt,
-				Resolver: client.ResolveParentColumn("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.OrgColumn,
+			teamIDColumn,
 			{
 				Name:     "membership",
 				Type:     schema.TypeJSON,
 				Resolver: resolveMembership,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 		},
 	}
