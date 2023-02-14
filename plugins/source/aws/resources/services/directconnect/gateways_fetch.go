@@ -2,8 +2,10 @@ package directconnect
 
 import (
 	"context"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -66,8 +68,14 @@ func fetchDirectconnectGatewayAttachments(ctx context.Context, meta schema.Clien
 	return nil
 }
 
-func resolveGatewayARN() schema.ColumnResolver {
-	return client.ResolveARNWithAccount(client.DirectConnectService, func(resource *schema.Resource) ([]string, error) {
-		return []string{"dx-gateway", *resource.Item.(types.DirectConnectGateway).DirectConnectGatewayId}, nil
-	})
+func resolveGatewayARN(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	gw := resource.Item.(types.DirectConnectGateway)
+
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   "directconnect",
+		AccountID: *gw.OwnerAccount,
+		Resource:  strings.Join([]string{"dx-gateway", *gw.DirectConnectGatewayId}, "/"),
+	}.String())
 }
