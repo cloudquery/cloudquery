@@ -6,8 +6,7 @@ The primary key for this table is **arn**.
 
 ## Relations
 
-The following tables depend on aws_stepfunctions_executions:
-  - [aws_stepfunctions_executions_map_runs](aws_stepfunctions_executions_map_runs.md)
+This table depends on [aws_stepfunctions_executions_map_runs](aws_stepfunctions_executions_map_runs.md).
 
 ## Columns
 
@@ -20,9 +19,9 @@ The following tables depend on aws_stepfunctions_executions:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|state_machine_arn|String|
 |execution_arn|String|
 |start_date|Timestamp|
-|state_machine_arn|String|
 |status|String|
 |cause|String|
 |error|String|
