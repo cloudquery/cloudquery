@@ -15,18 +15,7 @@ func appAssesments() *schema.Table {
 		PreResourceResolver: describeAppAssessments,
 		Transform:           transformers.TransformWithStruct(&types.AppAssessment{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer("resiliencehub"),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AssessmentArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Columns:             []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARNTop, arnColumn("AssessmentArn")},
 		Relations: []*schema.Table{
 			appComponentCompliances(),
 			appComponentRecommendations(),
