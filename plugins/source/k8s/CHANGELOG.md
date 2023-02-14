@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v3.1.1...plugins-source-k8s-v3.2.0) (2023-02-14)
+
+
+### Features
+
+* **k8s-resources:** Add Pod Disruption Budgets ([#7792](https://github.com/cloudquery/cloudquery/issues/7792)) ([5c8eae4](https://github.com/cloudquery/cloudquery/commit/5c8eae48fa18c1bbb5066992b02a1a47516c923a))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.36.0 ([#7809](https://github.com/cloudquery/cloudquery/issues/7809)) ([c85a9cb](https://github.com/cloudquery/cloudquery/commit/c85a9cb697477520e94a1fd260c56b89da62fc87))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.36.1 ([#7930](https://github.com/cloudquery/cloudquery/issues/7930)) ([39dccc1](https://github.com/cloudquery/cloudquery/commit/39dccc1bf81f4eb02d181ba0c47b37038a4c5455))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.0 ([#7933](https://github.com/cloudquery/cloudquery/issues/7933)) ([dc9cffb](https://github.com/cloudquery/cloudquery/commit/dc9cffbf37bbc6fae73a20bf47e6bbf17e74d1f9))
+
 ## [3.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v3.1.0...plugins-source-k8s-v3.1.1) (2023-02-07)
 
 
