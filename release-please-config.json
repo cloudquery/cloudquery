@@ -72,6 +72,9 @@
     "plugins/destination/mssql": {
       "component": "plugins-destination-mssql"
     },
+    "plugins/destination/clickhouse": {
+      "component": "plugins-destination-clickhouse"
+    },
     "plugins/destination/test": {
       "component": "plugins-destination-test"
     },
