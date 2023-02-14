@@ -33,7 +33,7 @@ func (c *Client) Logger() *zerolog.Logger {
 
 func (c *Client) ID() string {
 	if c.Repository != nil {
-		return fmt.Sprintf("org: %s:repo %s/%s", c.Org, c.Repository.Owner.GetLogin(), c.Repository.GetName())
+		return fmt.Sprintf("org: %s repo: %s/%s", c.Org, c.Repository.Owner.GetLogin(), c.Repository.GetName())
 	}
 	return fmt.Sprintf("org:%s", c.Org)
 }
