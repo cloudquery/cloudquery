@@ -22,4 +22,8 @@
 - [github_teams](github_teams.md)
   - [github_team_members](github_team_members.md)
   - [github_team_repositories](github_team_repositories.md)
+- [github_traffic_clones](github_traffic_clones.md)
+- [github_traffic_paths](github_traffic_paths.md)
+- [github_traffic_referrers](github_traffic_referrers.md)
+- [github_traffic_views](github_traffic_views.md)
 - [github_workflows](github_workflows.md)

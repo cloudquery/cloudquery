@@ -17,30 +17,18 @@ type Workflow struct {
 
 func fetchWorkflows(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	opts := &github.RepositoryListByOrgOptions{ListOptions: github.ListOptions{PerPage: 100}}
+	repo := c.Repository
+	actionOpts := &github.ListOptions{PerPage: 100}
 	for {
-		repos, resp, err := c.Github.Repositories.ListByOrg(ctx, c.Org, opts)
+		workflows, resp, err := c.Github.Actions.ListWorkflows(ctx, *repo.Owner.Login, *repo.Name, actionOpts)
 		if err != nil {
 			return err
 		}
-		for _, repo := range repos {
-			actionOpts := &github.ListOptions{PerPage: 100}
-			for {
-				workflows, resp, err := c.Github.Actions.ListWorkflows(ctx, *repo.Owner.Login, *repo.Name, actionOpts)
-				if err != nil {
-					return err
-				}
-				for _, w := range workflows.Workflows {
-					res <- Workflow{Workflow: w, Repository: *repo.Name}
-				}
-				opts.Page = resp.NextPage
-				if opts.Page == resp.LastPage {
-					break
-				}
-			}
+		for _, w := range workflows.Workflows {
+			res <- Workflow{Workflow: w, Repository: *repo.Name}
 		}
-		opts.Page = resp.NextPage
-		if opts.Page == resp.LastPage {
+		actionOpts.Page = resp.NextPage
+		if actionOpts.Page == resp.LastPage {
 			break
 		}
 	}
