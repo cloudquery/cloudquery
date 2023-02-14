@@ -7,29 +7,12 @@ import (
 	"github.com/google/go-github/v48/github"
 )
 
-func Secrets() *schema.Table {
+func secrets() *schema.Table {
 	return &schema.Table{
-		Name:      "github_organization_dependabot_secrets",
-		Resolver:  fetchSecrets,
-		Transform: transformers.TransformWithStruct(&github.Secret{}, client.SharedTransformers()...),
-		Columns: []schema.Column{
-			{
-				Name:        "org",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
-				Description: `The Github Organization of the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Name:     "github_organization_dependabot_secrets",
+		Resolver: fetchSecrets,
+		Transform: transformers.TransformWithStruct(&github.Secret{},
+			append(client.SharedTransformers(), transformers.WithPrimaryKeys("Name"))...),
+		Columns: []schema.Column{client.OrgColumn},
 	}
 }
