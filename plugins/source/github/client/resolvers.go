@@ -12,6 +12,11 @@ func ResolveOrg(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _
 	return r.Set("org", client.Org)
 }
 
+func ResolveRepositoryId(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {
+	client := meta.(*Client)
+	return r.Set("repository_id", client.Repository.ID)
+}
+
 func ResolveParentColumn(field string) schema.ColumnResolver {
 	return func(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		return r.Set(c.Name, funk.Get(r.Parent.Item, field))
