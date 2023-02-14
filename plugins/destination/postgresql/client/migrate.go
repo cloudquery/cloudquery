@@ -325,11 +325,11 @@ func (c *Client) alterPKConstraint(ctx context.Context, pgTable *schema.Table, t
 func (c *Client) autoMigrateTable(ctx context.Context, pgTable *schema.Table, table *schema.Table) error {
 	changedColumns, changedPgColumns := table.GetChangedColumns(pgTable)
 	if c.spec.MigrateMode != specs.MigrateModeForced {
-		if changedColumns != nil {
-			return fmt.Errorf("postgres table %s has different types for columns %v but schema wants %v , add `migrate_mode: forced` to the destination spec to drop the column", table.Name, changedPgColumns, changedColumns)
-		}
 		if c.enabledPks() && !table.IsPrimaryKeyEqual(pgTable) {
 			return fmt.Errorf("postgres table %s has different primary keys %v but schema wants %v , add `migrate_mode: forced` to the destination spec to drop the column", table.Name, pgTable.PrimaryKeys(), table.PrimaryKeys())
+		}
+		if changedColumns != nil {
+			return fmt.Errorf("postgres table %s has different types for columns %v but schema wants %v , add `migrate_mode: forced` to the destination spec to drop the column", table.Name, changedPgColumns, changedColumns)
 		}
 	}
 
