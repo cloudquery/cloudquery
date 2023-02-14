@@ -89,6 +89,7 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
             "athena:GetQueryExecution",
             "athena:GetQueryResults",
             "glue:GetDatabases",
+            "glue:GetDatabase",
             "glue:GetTables",
             "glue:GetTable",
             "glue:UpdateTable"

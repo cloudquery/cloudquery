@@ -135,7 +135,7 @@ FROM tables t;`
 		if !t.hasRegion {
 			region = "''"
 		}
-		tags := "tags"
+		tags := "cast(tags as varchar)"
 		if !t.hasTags {
 			tags = "'{}'"
 		}
