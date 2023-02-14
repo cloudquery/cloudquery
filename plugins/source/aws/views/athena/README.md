@@ -1,12 +1,23 @@
 # Athena Resources View
 
-You can create and `aws_resources` view for Athena, similar to the equivalent [Postgres version](../resources.sql). This allows you to query resources across all tables by tag or ARN.
+You can create an `aws_resources` view for Athena, similar to the [equivalent Postgres version](../resources.sql). This allows you to query resources across all tables by tag or ARN.
 
-There are currently two methods to create this view as follows
+There are currently two methods to create this view:
 
-## **Athena Resources View Creation Tool**
+1. a query that that outputs a `CREATE VIEW` statement you can run in the Athena console (easiest, lowest effort)
+2. a Go script that will create the view for you. This can be run as a binary or as a Lambda function (can be automated to run periodically)
+
+## Option 1: Standalone SQL script
+
+### Usage
+
+Execute the [`resources.sql`](./resources.sql) script in Athena. The output of this execution will be a `CREATE OR REPLACE VIEW` statement.
+
+Copy the full `CREATE OR REPLACE VIEW` output statement and execute it in Athena.
+
+## Option 2: **Athena Resources View Creation Tool**
    
-## Usage
+### Usage
 
 The script can be run as a standalone script or as an AWS Lambda function. In either case, you will need a working installation of Go.
 
@@ -139,12 +150,3 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
   If any query errors occur, you should be able to see them in the "Recent Queries" tab in the Athena console. Also check the logs for the function itself for any clues.
 
 With the Lambda created, you are free to then schedule it to run on a regular basis, or after a CloudQuery run.
-
-## **Standalone SQL script**
-
-## Usage
-
-Execute the `resources.sql` script in Athena. The output of this exection will be the `create view` statement.
-
-Copy the full `create view` output statement and execute it in Athena
-

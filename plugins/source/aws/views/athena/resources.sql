@@ -47,7 +47,7 @@ select_statements as (
     from aws_tables
 )
 
-select concat('create view aws_resources as (',
+select concat('create or replace view aws_resources as (',
     array_join(array_agg(select_statement), ' union all '),
     ');') as create_view_statement
 from select_statements;
