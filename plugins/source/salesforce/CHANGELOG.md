@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-salesforce-v1.0.7...plugins-source-salesforce-v1.0.8) (2023-02-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.1 ([#8008](https://github.com/cloudquery/cloudquery/issues/8008)) ([c47aac0](https://github.com/cloudquery/cloudquery/commit/c47aac0b5e3190a04299713651b97e360043911f))
+
 ## [1.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-salesforce-v1.0.6...plugins-source-salesforce-v1.0.7) (2023-02-14)
 
 
