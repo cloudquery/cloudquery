@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/ram/latest/APIReference/API_Resource.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**arn**, **resource_share_arn**).
 
 ## Columns
 
@@ -19,7 +19,7 @@ The primary key for this table is **arn**.
 |last_updated_time|Timestamp|
 |resource_group_arn|String|
 |resource_region_scope|String|
-|resource_share_arn|String|
+|resource_share_arn (PK)|String|
 |status|String|
 |status_message|String|
 |type|String|
