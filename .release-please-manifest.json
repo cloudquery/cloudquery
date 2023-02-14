@@ -96,5 +96,6 @@
   "plugins/source/launchdarkly": "1.0.3",
   "plugins/source/launchdarkly+FILLER": "0.0.0",
   "plugins/destination/elasticsearch": "1.0.4",
-  "plugins/destination/elasticsearch+FILLER": "0.0.0"
+  "plugins/destination/elasticsearch+FILLER": "0.0.0",
+  "plugins/destination/clickhouse": "1.0.0"
 }
