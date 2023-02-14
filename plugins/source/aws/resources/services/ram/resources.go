@@ -15,8 +15,8 @@ func Resources() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Resource{}, transformers.WithPrimaryKeys("Arn", "ResourceShareArn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ram"),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 		},
 	}
 }
