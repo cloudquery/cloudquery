@@ -93,6 +93,7 @@
   - [aws_cloudtrail_trail_event_selectors](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_cloudtrail_trail_event_selectors.md)
 - [aws_cloudwatch_alarms](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_cloudwatch_alarms.md)
 - [aws_cloudwatchlogs_log_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_cloudwatchlogs_log_groups.md)
+  - [aws_cloudwatchlogs_log_group_subscription_filters](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_cloudwatchlogs_log_group_subscription_filters.md)
 - [aws_cloudwatchlogs_metric_filters](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_cloudwatchlogs_metric_filters.md)
 - [aws_cloudwatchlogs_resource_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_cloudwatchlogs_resource_policies.md)
 - [aws_codebuild_projects](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_codebuild_projects.md)
