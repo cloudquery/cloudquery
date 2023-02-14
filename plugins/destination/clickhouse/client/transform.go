@@ -37,7 +37,7 @@ func (*Client) TransformInt8(v *schema.Int8) any {
 
 func (*Client) TransformInt8Array(v *schema.Int8Array) any {
 	if v.Status != schema.Present {
-		return []*int64(nil)
+		return []int64(nil)
 	}
 
 	res := make([]int64, len(v.Elements))
@@ -64,7 +64,7 @@ func (*Client) TransformMacaddr(v *schema.Macaddr) any {
 
 func (*Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
 	if v.Status != schema.Present {
-		return []*string(nil)
+		return []string(nil)
 	}
 
 	res := make([]string, len(v.Elements))
@@ -84,7 +84,7 @@ func (*Client) TransformText(v *schema.Text) any {
 
 func (*Client) TransformTextArray(v *schema.TextArray) any {
 	if v.Status != schema.Present {
-		return []*string(nil)
+		return []string(nil)
 	}
 
 	res := make([]string, len(v.Elements))
@@ -119,7 +119,7 @@ func (*Client) TransformUUID(v *schema.UUID) any {
 
 func (*Client) TransformUUIDArray(v *schema.UUIDArray) any {
 	if v.Status != schema.Present {
-		return []*uuid.UUID(nil)
+		return []uuid.UUID(nil)
 	}
 
 	res := make([]uuid.UUID, len(v.Elements))
@@ -139,7 +139,7 @@ func (*Client) TransformCIDR(v *schema.CIDR) any {
 
 func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
 	if v.Status != schema.Present {
-		return []*string(nil)
+		return []string(nil)
 	}
 
 	res := make([]string, len(v.Elements))
@@ -159,7 +159,7 @@ func (*Client) TransformInet(v *schema.Inet) any {
 
 func (*Client) TransformInetArray(v *schema.InetArray) any {
 	if v.Status != schema.Present {
-		return []*string(nil)
+		return []string(nil)
 	}
 
 	res := make([]string, len(v.Elements))
