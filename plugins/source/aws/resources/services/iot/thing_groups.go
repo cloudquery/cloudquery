@@ -23,10 +23,9 @@ func ThingGroups() *schema.Table {
 				Resolver: ResolveIotThingGroupThingsInGroup,
 			},
 			{
-				Name:          "policies",
-				Type:          schema.TypeStringArray,
-				Resolver:      ResolveIotThingGroupPolicies,
-				IgnoreInTests: true,
+				Name:     "policies",
+				Type:     schema.TypeStringArray,
+				Resolver: ResolveIotThingGroupPolicies,
 			},
 			{
 				Name:     "tags",
