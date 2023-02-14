@@ -15,15 +15,9 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 ## Overview
 
-AWS Identity and Access Management (IAM) is used to securely control access to AWS resources.  The 
-[IAM policy language](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html) used 
-is expressed in JSON with a formal grammar for the language used to craft these JSON policies in IAM.
+AWS Identity and Access Management (IAM) is used to securely control access to AWS resources.  The [IAM policy language](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html) used is expressed in JSON with a formal grammar for the language used to craft these JSON policies in IAM.
 
-A lesser known detail about IAM Policy grammar is the Policy `Version element`.  This is not the different 
-[versions of IAM policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-versioning.html) 
-that can be created for managed policies via `CreatePolicyVersion`.  We're referring to the small snippet of `"Version": "2008-10-17"`
-or `"Version": "2012-10-17"` that may be included in an IAM policy.  This `Version` specifies which language
-syntax rules are used when processing the policy.
+A lesser known detail about IAM Policy grammar is the Policy `Version element`.  This is not the different [versions of IAM policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-versioning.html) that can be created for managed policies via `CreatePolicyVersion`.  We're referring to the small snippet of `"Version": "2008-10-17"` or `"Version": "2012-10-17"` that may be included in an IAM policy.  This `Version` specifies which language syntax rules are used when processing the policy.
 
 ```json copy
   "Version": "2008-10-17",
@@ -41,53 +35,114 @@ syntax rules are used when processing the policy.
     ...
 ```
 
-In AWS Console and even in the CLI/API, there are default and example policies that leverage the 
-legacy interpretation of the IAM policy language which can create issues for developers.  
+In AWS Console and even in the CLI/API, there are default and example policies that leverage the legacy interpretation of the IAM policy language which can create issues for developers.  
 
 There are 3 different implicit and explicit settings for the `Version` and thus the syntax rules used when processing IAM policies:
 * Explicit `2012-10-17`
 * Explicit `2008-10-17`
 * Implicit `2008-10-17`: No `Version` specified.
 
-After going through all services that support IAM Resource policies and Identity policies, we found multiple services that used `2008-10-17` policy versions, including Gateway VPC Endpoint Policies, 
-SNS Topic Policies, and SQS Queue Policies.
+After going through all services that support IAM Resource policies and Identity policies, we found multiple services that used `2008-10-17` policy versions, including Gateway VPC Endpoint Policies, SNS Topic Policies, and SQS Queue Policies.
 
 * Aid with developer turnaround and developing policies.
 * Reduce confusion and issues with IAM Policies.
 
-We sent details and our thoughts regarding developer experience on outdated policy 
-versions and default behavior to the AWS Security team on February 8th, 2023.  This came up as a 
-discussion point in an AWS Security online community regarding SNS Topic policies and we did further research
-on other default and example policies across all AWS services.  TODO: Callout to Seth Art for starting thread.
+We sent details and our thoughts regarding developer experience on outdated policy versions and default behavior to the AWS Security team on February 8th, 2023.  This came up as a discussion point in an AWS Security online community regarding SNS Topic policies and we did further research on other default and example policies across all AWS services.  TODO: Callout to Seth Art for starting thread.
 
-CloudQuery recommends explicitly setting IAM Policy Versions to `2012-10-17` whenever possible
-and recommends for Platform teams and development teams to require using `2012-10-17` as a developer
-default.
+CloudQuery recommends explicitly setting IAM Policy Versions to `2012-10-17` whenever possible and recommends for Platform teams and development teams to require using `2012-10-17` as a developer default.
 
 ## IAM Policy Fundamentals
 
 Identity Policies and Resource-Based Policies
 https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_access-management.html
 
-## Finding Identity Policies with CloudQuery
+## Outdated Identity Policies
 
-AWS has controls that block the creation of IAM Managed Policies with 
-legacy policy versions.  However, inline policies still can be created 
-with legacy policy versions.
+There are 4 types of Identity-based Policies that we'll take a look at:
+
+* [IAM Customer Managed Policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_policies.md) 
+* [Inline IAM Group policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_group_policies.md)
+* [Inline IAM User policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_user_policies.md)
+* [Inline IAM Role policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_iam_role_policies.md)
+
+AWS has controls that block the creation of IAM Managed Policies with legacy policy versions.  The following screenshots show the mechanisms for blocking a policy created without `2012-10-17` specified in the policy version.  In Console, an error message pops up about the version string.
+
+![AWS Console Message for Policy Version](/images/blog/finding-outdated-aws-iam-policy-version-elements/invalid-policy.png)
+
+With the AWS CLI, we get a `MalformedPolicyDocument`` error:
+
+![AWS CLI Error for Policy Version](/images/blog/finding-outdated-aws-iam-policy-version-elements/cli-invalid-policy.png)
+
+However, these controls are inconsistent and do not apply to inline policies.  Inline policies still can be created with legacy policy versions of `2008-10-17` or with no `Version` specified.    
+
+We used the following json as our policy json:
+```json copy
+{
+    "Version": "2008-10-17",
+    "Statement": [
+        {
+            "Sid": "ListPolicies",
+            "Effect": "Allow",
+            "Action": [
+                "iam:ListPolicies"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+The following command to put an inline policy on our `cloudquery-user` user succeeded:
+
+```bash copy
+aws iam put-user-policy \
+    --user-name cloudquery-user \
+    --policy-name test-cq-policy \
+    --policy-document file://2008policyversion.json                      
+```
+
+### Finding Identity Policies with CloudQuery
+
+```sql copy
+SELECT * FROM
+    (
+        SELECT *, policy_document ->> 'Version' as version 
+        FROM aws_iam_user_policies   
+    ) as user_policies
+WHERE version = '2008-10-17' 
+OR version is NULL; 
+ 
+SELECT * FROM
+    (
+        SELECT *, policy_document ->> 'Version' as version 
+        FROM aws_iam_group_policies   
+    ) as group_policies
+WHERE version = '2008-10-17' 
+OR version is NULL; 
+
+SELECT * FROM
+    (
+        SELECT *, policy_document ->> 'Version' as version 
+        FROM aws_iam_role_policies   
+    ) as role_policies
+WHERE version = '2008-10-17' 
+OR version is NULL; 
+```
 
 
 
 
-* IAM Customer Managed Policies
-* Inline IAM Group policies
-* Inline IAM User policies
-* Inline IAM Role policies
+## Outdated Resource-based Policies 
 
-## Finding Resource-based Policies with CloudQuery
+### Finding Resource-based Policies with CloudQuery
 
 
 
 ## Conclusion
+
+CloudQuery recommends scanning AWS environments and switching over to the `2012-10-17` policy version wherever possible.  
+
+We'd like to see a consistent experience with AWS where the default policy version is `2012-10-17` and not `2008-10-17`.
 
 ## References and Useful Links
 
