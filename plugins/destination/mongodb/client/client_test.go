@@ -16,8 +16,10 @@ func getTestConnection() string {
 }
 
 func TestPlugin(t *testing.T) {
-	p := destination.NewPlugin("mongodb", "development", New, destination.WithManagedWriter())
-	destination.PluginTestSuiteRunner(t, p,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("mongodb", "development", New, destination.WithManagedWriter())
+		},
 		Spec{
 			ConnectionString: getTestConnection(),
 			Database:         "destination_mongodb_test",

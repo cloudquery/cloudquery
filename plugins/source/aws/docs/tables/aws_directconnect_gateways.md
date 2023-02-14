@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGateway.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**account_id**, **region**, **arn**).
 
 ## Relations
 
@@ -18,8 +18,8 @@ The following tables depend on aws_directconnect_gateways:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
+|account_id (PK)|String|
+|region (PK)|String|
 |arn (PK)|String|
 |id|String|
 |amazon_side_asn|Int|
