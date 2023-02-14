@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-tailscale-v2.0.1...plugins-source-tailscale-v2.0.2) (2023-02-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.1 ([#8008](https://github.com/cloudquery/cloudquery/issues/8008)) ([c47aac0](https://github.com/cloudquery/cloudquery/commit/c47aac0b5e3190a04299713651b97e360043911f))
+
 ## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-tailscale-v2.0.0...plugins-source-tailscale-v2.0.1) (2023-02-14)
 
 
