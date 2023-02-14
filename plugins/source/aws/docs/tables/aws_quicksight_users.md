@@ -15,8 +15,8 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |tags|JSON|
-|arn (PK)|String|
 |active|Bool|
+|arn (PK)|String|
 |custom_permissions_name|String|
 |email|String|
 |external_login_federation_provider_type|String|
