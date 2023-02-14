@@ -7,6 +7,8 @@ There are currently two methods to create this view:
 1. a query that outputs a `CREATE VIEW` statement you can run in the Athena console (easiest, lowest effort)
 2. a Go script that will create the view for you. This can be run as a binary or as a Lambda function (can be automated to run periodically)
 
+Note that in both cases, the view works best when the underlying format is **parquet**. JSON and CSV formats are not supported.
+
 ## Option 1: Standalone SQL script
 
 ### Usage
@@ -89,6 +91,7 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
             "athena:GetQueryExecution",
             "athena:GetQueryResults",
             "glue:GetDatabases",
+            "glue:GetDatabase",
             "glue:GetTables",
             "glue:GetTable",
             "glue:UpdateTable"
