@@ -61,17 +61,17 @@ Specifies the update method to use when inserting rows. The exact semantics depe
 - `overwrite`: Same as `overwrite-delete-stale`, but doesn't delete stale rows from previous `sync`s.
 - `append`: Rows are never overwritten or deleted, only appended.
 
-{/*<!-- vale off -->*/}
+<!-- vale off -->
 ### batch_size
-{/*<!-- vale on -->*/}
+<!-- vale on -->
 
 (`int`, optional)
 
 The number of resources to insert in a single batch. Only applies to plugins that utilize batching. This setting works in conjunction with `batch_size_bytes`, and batches are written whenever either `batch_size` or `batch_size_bytes` is reached. Every plugin has its own default value for `batch_size`.
 
-{/*<!-- vale off -->*/}
+<!-- vale off -->
 ### batch_size_bytes
-{/*<!-- vale on -->*/}
+<!-- vale on -->
 
 (`int`, optional)
 
