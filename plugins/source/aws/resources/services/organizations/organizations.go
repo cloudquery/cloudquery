@@ -20,10 +20,10 @@ func Organizations() *schema.Table {
 			transformers.WithSkipFields(
 				"AvailablePolicyTypes", // deprecated and misleading field according to docs
 			),
-			transformers.WithPrimaryKeys("Arn")
+			transformers.WithPrimaryKeys("Arn"),
 		),
 		Multiplex: client.AccountMultiplex,
-		Columns: []schema.Column{client.DefaultAccountIDColumn(true)},
+		Columns:   []schema.Column{client.DefaultAccountIDColumn(true)},
 	}
 }
 
