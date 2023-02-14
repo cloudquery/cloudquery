@@ -15,8 +15,8 @@ func groupMembers() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.GroupMember{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("quicksight"),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:            "group_arn",
 				Type:            schema.TypeString,

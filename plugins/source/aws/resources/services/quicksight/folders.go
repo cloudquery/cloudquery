@@ -15,6 +15,6 @@ func Folders() *schema.Table {
 		PreResourceResolver: getFolder,
 		Transform:           transformers.TransformWithStruct(&types.Folder{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer("quicksight"),
-		Columns:             []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), tagsCol},
+		Columns:             []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true), tagsCol},
 	}
 }

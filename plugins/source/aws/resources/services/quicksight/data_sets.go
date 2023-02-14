@@ -14,7 +14,7 @@ func DataSets() *schema.Table {
 		Resolver:    fetchQuicksightDataSets,
 		Transform:   transformers.TransformWithStruct(&types.DataSetSummary{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("quicksight"),
-		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), tagsCol},
+		Columns:     []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true), tagsCol},
 		Relations:   []*schema.Table{ingestions()},
 	}
 }

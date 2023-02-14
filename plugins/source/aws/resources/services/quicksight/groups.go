@@ -14,7 +14,7 @@ func Groups() *schema.Table {
 		Resolver:    fetchQuicksightGroups,
 		Transform:   transformers.TransformWithStruct(&types.Group{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("quicksight"),
-		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), tagsCol},
+		Columns:     []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true), tagsCol},
 		Relations:   []*schema.Table{groupMembers()},
 	}
 }
