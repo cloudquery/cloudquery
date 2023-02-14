@@ -63,7 +63,7 @@
   "plugins/source/snyk+FILLER": "0.0.0",
   "plugins/destination/gcs": "2.1.0",
   "plugins/destination/gcs+FILLER": "0.0.0",
-  "plugins/destination/s3": "2.1.0",
+  "plugins/destination/s3": "2.2.0",
   "plugins/destination/s3+FILLER": "0.0.0",
   "plugins/destination/file": "1.1.0",
   "plugins/destination/file+FILLER": "0.0.0",
@@ -95,6 +95,6 @@
   "plugins/source/hubspot+FILLER": "0.0.0",
   "plugins/source/launchdarkly": "1.0.2",
   "plugins/source/launchdarkly+FILLER": "0.0.0",
-  "plugins/destination/elasticsearch": "1.0.3",
+  "plugins/destination/elasticsearch": "1.0.4",
   "plugins/destination/elasticsearch+FILLER": "0.0.0"
 }

@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v2.1.0...plugins-destination-s3-v2.2.0) (2023-02-14)
+
+
+### Features
+
+* Add support for date placeholders in S3 plugin ([#7981](https://github.com/cloudquery/cloudquery/issues/7981)) ([7d3c25f](https://github.com/cloudquery/cloudquery/commit/7d3c25fccd829595d1725097a8c6e034353b8ec5))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.36.0 ([#7809](https://github.com/cloudquery/cloudquery/issues/7809)) ([c85a9cb](https://github.com/cloudquery/cloudquery/commit/c85a9cb697477520e94a1fd260c56b89da62fc87))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.0 ([#7933](https://github.com/cloudquery/cloudquery/issues/7933)) ([dc9cffb](https://github.com/cloudquery/cloudquery/commit/dc9cffbf37bbc6fae73a20bf47e6bbf17e74d1f9))
+
 ## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v2.0.0...plugins-destination-s3-v2.1.0) (2023-02-07)
 
 
