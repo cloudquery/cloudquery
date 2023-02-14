@@ -14,8 +14,8 @@ func ResourceSharePermissions() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.ResourceSharePermissionSummary{}),
 		Resolver:    fetchRamResourceSharePermissions,
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:     "permission",
 				Type:     schema.TypeJSON,
