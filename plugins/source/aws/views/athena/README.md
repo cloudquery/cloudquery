@@ -4,7 +4,7 @@ You can create an `aws_resources` view for Athena, similar to the [equivalent Po
 
 There are currently two methods to create this view:
 
-1. a query that that outputs a `CREATE VIEW` statement you can run in the Athena console (easiest, lowest effort)
+1. a query that outputs a `CREATE VIEW` statement you can run in the Athena console (easiest, lowest effort)
 2. a Go script that will create the view for you. This can be run as a binary or as a Lambda function (can be automated to run periodically)
 
 ## Option 1: Standalone SQL script
