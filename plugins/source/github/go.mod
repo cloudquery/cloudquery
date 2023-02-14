@@ -11,6 +11,8 @@ require (
 	golang.org/x/oauth2 v0.4.0
 )
 
+require github.com/gofri/go-github-ratelimit v1.0.2
+
 require (
 	github.com/getsentry/sentry-go v0.18.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
