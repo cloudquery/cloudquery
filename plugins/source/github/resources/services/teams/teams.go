@@ -12,30 +12,16 @@ func Teams() *schema.Table {
 		Name:      "github_teams",
 		Resolver:  fetchTeams,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.Team{}, client.SharedTransformers()...),
-		Columns: []schema.Column{
-			{
-				Name:        "org",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
-				Description: `The Github Organization of the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
-
-		Relations: []*schema.Table{
-			Members(),
-			Repositories(),
-		},
+		Transform: transformers.TransformWithStruct(&github.Team{},
+			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
+		Columns:   []schema.Column{client.OrgColumn},
+		Relations: []*schema.Table{members(), repositories()},
 	}
+}
+
+var teamIDColumn = schema.Column{
+	Name:            "team_id",
+	Type:            schema.TypeInt,
+	Resolver:        client.ResolveParentColumn("ID"),
+	CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 }
