@@ -8,8 +8,6 @@ azuredevops:
   - plugins/source/azuredevops/**/*
 cloudflare:
   - plugins/source/cloudflare/**/*
-crowdstrike:
-  - plugins/source/crowdstrike/**/*
 datadog:
   - plugins/source/datadog/**/*
 digitalocean:

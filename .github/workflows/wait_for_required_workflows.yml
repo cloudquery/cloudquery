@@ -46,7 +46,6 @@ jobs:
                            "plugins/source/azure",
                            "plugins/source/azuredevops",
                            "plugins/source/cloudflare",
-                           "plugins/source/crowdstrike",
                            "plugins/source/digitalocean",
                            "plugins/source/datadog",
                            "plugins/source/fastly",
