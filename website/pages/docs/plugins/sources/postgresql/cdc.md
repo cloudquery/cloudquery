@@ -8,7 +8,7 @@ In PostgreSQL CDC can be implemented using [Logical Replication](https://www.pos
 
 Logical Replication is a feature of PostgreSQL that allows you to stream changes from a database to another database, file or custom handler. It is also used to keep a copy of a database up to date with the original database in an efficient manner (Internally it is implemented by the so called [Write-Ahead Log](https://www.postgresql.org/docs/current/wal-intro.html)).
 
-In this documented we wont go into details of how Logical Replication works internally, but we will show you how to enable it in number of environments and how to configure CloudQuery PostgreSQL source plugin that can stream the changes to any of [CloudQuery supported destinations](../../destinations/overview).
+In this document we won't go into details of how Logical Replication works internally, but we will show you how to enable it in number of environments and how to configure CloudQuery PostgreSQL source plugin that can stream the changes to any of [CloudQuery supported destinations](../../destinations/overview).
 
 Also, CloudQuery source plugin streams the changes directly to any of CQ destinaions without any need for additional infrastructure (e.g. Kafka, RabbitMQ, etc). This means the setup is much easier.
 
