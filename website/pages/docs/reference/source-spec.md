@@ -66,9 +66,9 @@ Tables to sync from the source plugin. It accepts wildcards. For example, to mat
 
 Specify which tables to skip when syncing the source plugin. It accepts wildcards. This config is useful when using wildcards in `tables`, or when you wish to skip dependent tables. Note that if a table with dependencies is skipped, all its dependant tables will also be skipped.
 
-{/*<!-- vale off -->*/}
+<!-- vale off -->
 ### skip_dependent_tables
-{/*<!-- vale on -->*/}
+<!-- vale on -->
 
 (`bool`, optional, default: `false`, introduced in CLI `v2.3.7`)
 
