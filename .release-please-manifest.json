@@ -1,5 +1,5 @@
 {
-  "cli": "2.3.8",
+  "cli": "2.3.9",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "13.3.0",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -7,9 +7,9 @@
   "plugins/source/azure+FILLER": "0.0.0",
   "plugins/source/cloudflare": "3.1.5",
   "plugins/source/cloudflare+FILLER": "0.0.0",
-  "plugins/source/digitalocean": "4.1.4",
+  "plugins/source/digitalocean": "4.1.5",
   "plugins/source/digitalocean+FILLER": "0.0.0",
-  "plugins/source/gcp": "8.0.0",
+  "plugins/source/gcp": "8.1.0",
   "plugins/source/gcp+FILLER": "0.0.0",
   "plugins/source/github": "3.0.0",
   "plugins/source/github+FILLER": "0.0.0",
