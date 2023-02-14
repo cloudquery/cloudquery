@@ -8,8 +8,6 @@ azuredevops:
   - plugins/source/azuredevops/**/*
 cloudflare:
   - plugins/source/cloudflare/**/*
-crowdstrike:
-  - plugins/source/crowdstrike/**/*
 datadog:
   - plugins/source/datadog/**/*
 digitalocean:
@@ -90,6 +88,8 @@ kafka:
   - plugins/destination/kafka/**/*
 firehose:
   - plugins/destination/firehose/**/*  
+clickhouse:
+  - plugins/destination/clickhouse/**/*
 website:
   - website/**/*
 cli:
