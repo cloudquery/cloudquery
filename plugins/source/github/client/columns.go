@@ -11,3 +11,12 @@ var OrgColumn = schema.Column{
 	Description:     `The Github Organization of the resource.`,
 	CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 }
+
+var RepositoryIdColumn = schema.Column{
+	Name:     "repository_id",
+	Type:     schema.TypeInt,
+	Resolver: ResolveRepositoryId,
+	CreationOptions: schema.ColumnCreationOptions{
+		PrimaryKey: true,
+	},
+}
