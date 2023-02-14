@@ -14,9 +14,6 @@ func appComponentRecommendations() *schema.Table {
 		Resolver:    fetchComponentRecommendations,
 		Transform:   transformers.TransformWithStruct(&types.ComponentRecommendation{}, transformers.WithPrimaryKeys("AppComponentName")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("resiliencehub"),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
-		},
+		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, assessmentARN},
 	}
 }

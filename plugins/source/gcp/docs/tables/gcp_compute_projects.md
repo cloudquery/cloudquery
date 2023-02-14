@@ -23,4 +23,5 @@ The primary key for this table is **self_link**.
 |quotas|JSON|
 |self_link (PK)|String|
 |usage_export_location|JSON|
+|vm_dns_setting|String|
 |xpn_project_status|String|

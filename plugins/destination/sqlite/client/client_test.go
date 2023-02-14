@@ -12,9 +12,10 @@ import (
 )
 
 func TestPlugin(t *testing.T) {
-	p := destination.NewPlugin("sqlite", "development", New)
-
-	destination.PluginTestSuiteRunner(t, p,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("sqlite", "development", New)
+		},
 		Spec{
 			ConnectionString: ":memory:",
 		},
