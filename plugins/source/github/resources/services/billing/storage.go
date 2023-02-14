@@ -13,16 +13,6 @@ func Storage() *schema.Table {
 		Resolver:  fetchStorage,
 		Multiplex: client.OrgMultiplex,
 		Transform: transformers.TransformWithStruct(&github.StorageBilling{}, client.SharedTransformers()...),
-		Columns: []schema.Column{
-			{
-				Name:        "org",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
-				Description: `The Github Organization of the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Columns:   []schema.Column{client.OrgColumn},
 	}
 }
