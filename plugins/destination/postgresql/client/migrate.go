@@ -309,7 +309,7 @@ func (c *Client) alterPKConstraint(ctx context.Context, pgTable *schema.Table, t
 		return fmt.Errorf("failed to drop primary key constraint on table %s: %w", table.Name, err)
 	}
 
-	sql := "alter table " + tableName + " add constraint primary key (" + strings.Join(table.PrimaryKeys(), ",") + ")"
+	sql := "alter table " + tableName + " add primary key (" + strings.Join(table.PrimaryKeys(), ",") + ")"
 	if _, err := tx.Exec(ctx, sql); err != nil {
 		if err := tx.Rollback(ctx); err != nil {
 			c.logger.Error().Err(err).Msg("failed to rollback transaction")
