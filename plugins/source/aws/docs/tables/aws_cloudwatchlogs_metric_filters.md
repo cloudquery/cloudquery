@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_MetricFilter.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**log_group_arn**, **filter_name**).
 
 ## Columns
 
@@ -14,9 +14,9 @@ The primary key for this table is **arn**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
-|arn (PK)|String|
+|log_group_arn (PK)|String|
 |creation_time|Int|
-|filter_name|String|
+|filter_name (PK)|String|
 |filter_pattern|String|
 |log_group_name|String|
 |metric_transformations|JSON|
