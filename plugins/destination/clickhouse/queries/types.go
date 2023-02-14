@@ -72,6 +72,8 @@ func cqCol(name, typ string) schema.Column {
 			res.Type = schema.TypeStringArray
 		case "Array(Nullable(UUID))":
 			res.Type = schema.TypeUUIDArray
+		default:
+			panic("unsupported type " + typ)
 		}
 		return res
 	}
