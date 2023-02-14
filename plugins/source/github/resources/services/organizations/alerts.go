@@ -7,29 +7,12 @@ import (
 	"github.com/google/go-github/v48/github"
 )
 
-func Alerts() *schema.Table {
+func alerts() *schema.Table {
 	return &schema.Table{
-		Name:      "github_organization_dependabot_alerts",
-		Resolver:  fetchAlerts,
-		Transform: transformers.TransformWithStruct(&github.DependabotAlert{}, client.SharedTransformers()...),
-		Columns: []schema.Column{
-			{
-				Name:        "org",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
-				Description: `The Github Organization of the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "number",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Number"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Name:     "github_organization_dependabot_alerts",
+		Resolver: fetchAlerts,
+		Transform: transformers.TransformWithStruct(&github.DependabotAlert{},
+			append(client.SharedTransformers(), transformers.WithPrimaryKeys("HTMLURL"))...),
+		Columns: []schema.Column{client.OrgColumn},
 	}
 }

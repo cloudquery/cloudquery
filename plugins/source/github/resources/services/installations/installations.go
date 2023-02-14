@@ -12,25 +12,8 @@ func Installations() *schema.Table {
 		Name:      "github_installations",
 		Resolver:  fetchInstallations,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.Installation{}, client.SharedTransformers()...),
-		Columns: []schema.Column{
-			{
-				Name:        "org",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
-				Description: `The Github Organization of the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform: transformers.TransformWithStruct(&github.Installation{},
+			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
+		Columns: []schema.Column{client.OrgColumn},
 	}
 }
