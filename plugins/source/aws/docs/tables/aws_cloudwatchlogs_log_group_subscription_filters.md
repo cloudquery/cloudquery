@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_SubscriptionFilter.html
 
-The composite primary key for this table is (**account_id**, **region**, **creation_time**, **filter_name**).
+The composite primary key for this table is (**creation_time**, **filter_name**).
 
 ## Relations
 
@@ -16,8 +16,9 @@ This table depends on [aws_cloudwatchlogs_log_groups](aws_cloudwatchlogs_log_gro
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
+|account_id|String|
+|region|String|
+|log_group_arn|String|
 |creation_time (PK)|Int|
 |destination_arn|String|
 |distribution|String|

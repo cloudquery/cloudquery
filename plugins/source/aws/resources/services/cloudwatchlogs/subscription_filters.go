@@ -18,13 +18,21 @@ func subscriptionFilters() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("logs"),
 		Transform:   transformers.TransformWithStruct(&types.SubscriptionFilter{}, transformers.WithPrimaryKeys("FilterName", "CreationTime")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
+			{
+				Name:        "log_group_arn",
+				Description: "The Amazon Resource Name (ARN) of the log group.",
+				Type:        schema.TypeString,
+				Resolver:    schema.ParentColumnResolver("arn"),
+			},
 		},
 	}
 }
 func fetchCloudwatchlogsSubscriptionFilters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var config cloudwatchlogs.DescribeSubscriptionFiltersInput
+	config := cloudwatchlogs.DescribeSubscriptionFiltersInput{
+		LogGroupName: parent.Item.(types.LogGroup).LogGroupName,
+	}
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudwatchlogs
 	paginator := cloudwatchlogs.NewDescribeSubscriptionFiltersPaginator(svc, &config)
