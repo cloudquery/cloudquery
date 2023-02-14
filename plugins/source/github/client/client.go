@@ -3,10 +3,12 @@ package client
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/gofri/go-github-ratelimit/github_ratelimit"
 	"github.com/google/go-github/v48/github"
 	"github.com/rs/zerolog"
 	"golang.org/x/oauth2"
@@ -52,6 +54,12 @@ func (c *Client) WithRepository(repository *github.Repository) *Client {
 	return &newC
 }
 
+func limitDetectedCallback(logger zerolog.Logger) github_ratelimit.OnLimitDetected {
+	return func(callbackContext *github_ratelimit.CallbackContext) {
+		logger.Warn().Msgf("GitHub secondary rate limit detected. Sleeping until %s", callbackContext.SleepUntil.Format(time.RFC3339))
+	}
+}
+
 func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var spec Spec
 	err := s.UnmarshalSpec(&spec)
@@ -69,7 +77,11 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 
 	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: spec.AccessToken})
 	tc := oauth2.NewClient(ctx, ts)
-	c := github.NewClient(tc)
+	rateLimiter, err := github_ratelimit.NewRateLimitWaiterClient(tc.Transport, github_ratelimit.WithLimitDetectedCallback(limitDetectedCallback(logger)))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create rate limiter: %w", err)
+	}
+	c := github.NewClient(rateLimiter)
 
 	logger.Info().Msg("Discovering organizations repositories")
 	orgRepositories, err := discoverRepositories(ctx, c, spec.Orgs)
