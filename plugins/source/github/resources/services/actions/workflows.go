@@ -10,16 +10,14 @@ func Workflows() *schema.Table {
 	return &schema.Table{
 		Name:      "github_workflows",
 		Resolver:  fetchWorkflows,
-		Multiplex: client.OrgMultiplex,
+		Multiplex: client.OrgRepositoryMultiplex,
 		Transform: transformers.TransformWithStruct(&Workflow{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
+			client.OrgColumn,
 			{
-				Name:     "org",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveOrg,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:     "repository_id",
+				Type:     schema.TypeInt,
+				Resolver: client.ResolveRepositoryId,
 			},
 			{
 				Name:     "contents",
