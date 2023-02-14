@@ -93,6 +93,7 @@
   - [aws_cloudtrail_trail_event_selectors](aws_cloudtrail_trail_event_selectors.md)
 - [aws_cloudwatch_alarms](aws_cloudwatch_alarms.md)
 - [aws_cloudwatchlogs_log_groups](aws_cloudwatchlogs_log_groups.md)
+  - [aws_cloudwatchlogs_log_group_subscription_filters](aws_cloudwatchlogs_log_group_subscription_filters.md)
 - [aws_cloudwatchlogs_metric_filters](aws_cloudwatchlogs_metric_filters.md)
 - [aws_cloudwatchlogs_resource_policies](aws_cloudwatchlogs_resource_policies.md)
 - [aws_codebuild_projects](aws_codebuild_projects.md)
