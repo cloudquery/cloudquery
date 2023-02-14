@@ -200,6 +200,8 @@ func (c *Client) alterColumnCockroachDB(ctx context.Context, tableName string, c
 	}
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
 		c.logger.Warn().Err(err).Str("table", tableName).Str("column", column.Name).Msg("Column type changed in place failed.")
+	} else {
+		return nil
 	}
 
 	sql = "alter table " + tableName + " drop column " + columnName
@@ -237,6 +239,8 @@ func (c *Client) alterColumnPg(ctx context.Context, tableName string, column sch
 	}
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
 		c.logger.Warn().Err(err).Str("table", tableName).Str("column", column.Name).Msg("Column type changed in place failed.")
+	} else {
+		return nil
 	}
 	tx, err := c.conn.BeginTx(ctx, pgx.TxOptions{})
 	if err != nil {
