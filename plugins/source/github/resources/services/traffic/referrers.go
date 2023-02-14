@@ -17,23 +17,8 @@ func Referrers() *schema.Table {
 		Multiplex:   client.OrgRepositoryMultiplex,
 		Transform:   transformers.TransformWithStruct(&github.TrafficReferrer{}, append(client.SharedTransformers(), transformers.WithPrimaryKeys("Referrer"))...),
 		Columns: []schema.Column{
-			{
-				Name:        "org",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
-				Description: `The Github Organization of the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "repository_id",
-				Type:     schema.TypeInt,
-				Resolver: client.ResolveRepositoryId,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.OrgColumn,
+			client.RepositoryIdColumn,
 		},
 	}
 }
