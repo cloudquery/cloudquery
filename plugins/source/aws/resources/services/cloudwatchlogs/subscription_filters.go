@@ -25,6 +25,9 @@ func subscriptionFilters() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) of the log group.",
 				Type:        schema.TypeString,
 				Resolver:    schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 		},
 	}
