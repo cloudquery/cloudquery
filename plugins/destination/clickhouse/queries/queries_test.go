@@ -8,7 +8,7 @@ import (
 )
 
 func ensureContents(t *testing.T, data string, path string) {
-	contents, err := os.ReadFile("test_data/" + path)
+	contents, err := os.ReadFile("testdata/" + path)
 	require.NoError(t, err)
 	require.Equal(t, string(contents), data)
 }
