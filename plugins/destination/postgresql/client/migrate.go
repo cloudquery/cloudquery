@@ -196,7 +196,7 @@ func (c *Client) alterColumnCockroachDB(ctx context.Context, tableName string, c
 	// try alter column in place first
 	sql := "alter table " + tableName + " alter column " + columnName + " type " + columnType
 	if column.CreationOptions.NotNull {
-		sql += " set not null"
+		sql += ", ALTER " + columnName + " set not null"
 	}
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
 		c.logger.Warn().Err(err).Str("table", tableName).Str("column", column.Name).Msg("Column type changed in place failed.")
