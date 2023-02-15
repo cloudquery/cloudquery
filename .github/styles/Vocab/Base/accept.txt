@@ -93,6 +93,7 @@ implementor
 Inforce
 IPs
 JSON
+json
 jsonb
 Kibana
 Kinesis
