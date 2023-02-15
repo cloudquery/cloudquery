@@ -350,6 +350,7 @@ func tables() []*schema.Table {
 		organizations.Policies(),
 		organizations.ResourcePolicies(),
 		organizations.Roots(),
+		organizations.OrganizationalUnits(),
 		qldb.Ledgers(),
 		quicksight.Analyses(),
 		quicksight.Dashboards(),
