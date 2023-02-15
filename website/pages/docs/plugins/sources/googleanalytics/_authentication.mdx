@@ -1,0 +1,46 @@
+[Google Analytics Data API v1](https://developers.google.com/analytics/devguides/reporting/data/v1)
+authentication is based on [OAuth 2.0 authorization](https://developers.google.com/identity/protocols/oauth2).
+The following methods are supported:
+
+- OAuth 2.0
+
+  The following options are available when using OAuth:
+
+  - Using already available access token
+    This token should be authorized for `https://www.googleapis.com/auth/analytics.readonly` scope
+    (e.g., by using [OAuth 2.0 Playground](https://developers.google.com/oauthplayground/)).
+
+  - Using OAuth client ID & client secret
+    You can get your own OAuth credentials using
+    [this guide](https://developers.google.com/identity/protocols/oauth2#1.-obtain-oauth-2.0-credentials-from-the-dynamic_data.setvar.console_name-.).
+
+- [Application Default Credentials](https://cloud.google.com/sdk/gcloud/reference/auth/application-default).
+  **Note**: You will still need to authorize these credentials for `https://www.googleapis.com/auth/analytics.readonly` scope.
+
+  Available options are all the same options described [here](https://cloud.google.com/docs/authentication/provide-credentials-adc) in detail:
+
+  - Local Environment:
+    ```bash
+    gcloud auth application-default login \
+    --scopes=https://www.googleapis.com/auth/analytics.readonly \
+    --client-id-file=[PATH/TO/credentials.json]
+    ```
+  See [this guide](https://developers.google.com/analytics/devguides/reporting/data/v1/quickstart-cli) for local environment to get you started.
+
+  - Google Cloud cloud-based development environment:
+
+    - When you run on Cloud Shell or Cloud Code credentials are already available.
+
+  - Google Cloud containerized environment:
+
+    - When running on GKE use [workload identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity).
+
+  - [Google Cloud services that support attaching a service account](https://cloud.google.com/docs/authentication/provide-credentials-adc#attached-sa):
+
+    - Services such as Compute Engine, App Engine and functions supporting attaching a user-managed service account which will CloudQuery will be able to utilize.
+
+  - On-premises or another cloud provider
+
+    - The suggested way is to use [Workload identity federation](https://cloud.google.com/iam/docs/workload-identity-federation)
+    - If not available you can always use service account keys and export the location of the key via `GOOGLE_APPLICATION_CREDENTIALS`.
+      **Highly not recommended as long-lived keys are a security risk**.

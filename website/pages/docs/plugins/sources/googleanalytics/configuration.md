@@ -1,0 +1,127 @@
+# Google Analytics Source Plugin Configuration Reference
+
+## Example
+
+This example syncs from Google Analytics to a Postgres destination.
+The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
+
+```yaml copy
+kind: source
+# Common source-plugin configuration
+spec:
+  name: googleanalytics
+  path: cloudquery/googleanalytics
+  version: "VERSION_SOURCE_GOOGLEANALYTICS"
+  tables: ["*"]
+  destinations: ["postgresql"]
+  
+  # Google Analytics specific configuration
+  spec:
+    property_id: "<YOUR_PROPERTY_ID_HERE>"
+    oauth:
+      access_token: "<YOUR_OAUTH_ACCESS_TOKEN>"
+    reports:
+    - name: example
+      dimensions:
+      - date
+      - language
+      - country
+      - city
+      - browser
+      - operatingSystem
+      - year
+      - month
+      - hour
+      metrics:
+      - name: totalUsers
+      - name: new_users
+        expression: newUsers
+      - name: new_users2
+        expression: "newUsers + totalUsers"
+        invisible: true
+      keep_empty_rows: true
+```
+
+## Google Analytics Spec
+
+This is the (nested) spec used by the Google Analytics source plugin:
+
+- `property_id` (string, required):
+
+  A Google Analytics GA4 [property](https://support.google.com/analytics/answer/9304153#property) identifier whose events are tracked.
+  To learn more, see where to [find your Property ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
+
+  Supported formats:
+
+  - A plain property ID (example: `1234`)
+
+  - Prefixed with `properties/` (example: `properties/1234`)
+
+- `start_date` (string, optional. Default: date 7 days prior to the sync start):
+
+  A date in `YYYY-MM-DD` format (example: `2023-05-15`).
+  If not specified, the start date will be the one that is 7 days prior to the sync start date.
+
+- `oauth` (optional, structure described [below](#googleanalytics-oauth-spec). Default: empty)
+
+- `reports` (required, array of reports specifications, structure described [below](#google-analytics-report-spec))
+
+### Google Analytics OAuth spec
+
+[Google Analytics Data API v1](https://developers.google.com/analytics/devguides/reporting/data/v1)
+requires OAuth authorization for `https://www.googleapis.com/auth/analytics.readonly` scope to run reports.
+
+- `access_token` (string, optional. Default: `""`)
+
+  An access token that you generated authorizing for `https://www.googleapis.com/auth/analytics.readonly` scope
+  (e.g., by using [OAuth 2.0 Playground](https://developers.google.com/oauthplayground/)).
+
+- `client_id` (string, optional. Default: `""`)
+
+  OAuth 2.0 Client ID.
+
+- `client_secret` (string, optional. Default: `""`)
+
+  OAuth 2.0 Client secret.
+
+### Google Analytics Report spec
+
+Report specification will be transformed into a Google Analytics Data API v1
+[report](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#reports).
+The option structure follows:
+
+- `name` (string, required)
+
+  Name of the report. It will be translated into a table name as `ga_` prefix followed by report name in snake case.
+
+- `dimensions` (string array, optional. Default: empty)
+
+  A list of Google Analytics Data API v1 [dimensions](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions).
+  At most 9 dimensions can be specified per report.
+
+- `metrics` (array of metrics requested, required, structure documented [below](#google-analytics-metric-spec)
+
+  A list of Google Analytics Data API v1 [metrics](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics).
+  Expressions are supported, too.
+
+- `keep_empty_rows` (bool, optional. Default: `false`)
+
+  Whether empty rows should be captured, too.
+
+#### Google Analytics metric spec
+
+Metric spec that is based on Google Analytics Data API v1
+[Metric](https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/Metric) parameter.
+
+- `name` (string, required)
+
+  A name or alias (if `expression` is specified) of the requested metric.
+
+- `expression` (string, optional. Default: `""`)
+
+  A mathematical expression for derived metrics.
+
+- `invisible` (boolean, optional. Default: `false`)
+
+  Indicates if a metric is invisible in the report response.
+  This allows creating more complex requests, while also not saving the intermediate results.

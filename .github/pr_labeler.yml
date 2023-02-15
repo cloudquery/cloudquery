@@ -44,6 +44,8 @@ github:
   - plugins/source/github/**/*
 gitlab:
   - plugins/source/gitlab/**/*
+googleanalytics:
+- plugins/destination/googleanalytics/**/*
 hackernews:
   - plugins/source/hackernews/**/*
 heroku:
