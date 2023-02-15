@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/specs"
 )
 
 func getTestConnection() string {
@@ -13,6 +14,14 @@ func getTestConnection() string {
 		return "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
 	}
 	return testConn
+}
+
+var strategy = destination.MigrateStrategy{
+	AddColumn: specs.MigrateModeSafe,
+	AddColumnNotNull: specs.MigrateModeForced,
+	RemoveColumn: specs.MigrateModeSafe,
+	RemoveColumnNotNull: specs.MigrateModeForced,
+	ChangeColumn: specs.MigrateModeForced,
 }
 
 func TestPgPlugin(t *testing.T) {
@@ -24,5 +33,8 @@ func TestPgPlugin(t *testing.T) {
 			ConnectionString: getTestConnection(),
 			PgxLogLevel:      LogLevelTrace,
 		},
-		destination.PluginTestSuiteTests{})
+		destination.PluginTestSuiteTests{
+			MigrateStrategyOverwrite: strategy,
+			MigrateStrategyAppend: strategy,
+		})
 }

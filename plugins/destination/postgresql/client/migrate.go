@@ -2,14 +2,12 @@ package client
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgconn"
 )
 
 const (
@@ -98,8 +96,11 @@ func (c *Client) listPgTables(ctx context.Context, pluginTables schema.Tables) (
 	return tables, nil
 }
 
-func (*Client) normalizeTableCockroach(table *schema.Table) *schema.Table {
+func (c *Client) normalizeTableCockroach(table *schema.Table) *schema.Table {
 	for i := range table.Columns {
+		if !c.enabledPks() {
+			table.Columns[i].CreationOptions.PrimaryKey = false
+		}
 		switch table.Columns[i].Type {
 		case schema.TypeCIDR:
 			table.Columns[i].Type = schema.TypeInet
@@ -110,6 +111,28 @@ func (*Client) normalizeTableCockroach(table *schema.Table) *schema.Table {
 		case schema.TypeMacAddrArray:
 			table.Columns[i].Type = schema.TypeStringArray
 		}
+		if table.Columns[i].CreationOptions.PrimaryKey {
+			table.Columns[i].CreationOptions.NotNull = true
+		}
+	}
+	return table
+}
+
+func (c *Client) normalizeTablePg(table *schema.Table) *schema.Table {
+	for i := range table.Columns {
+		if !c.enabledPks() {
+			table.Columns[i].CreationOptions.PrimaryKey = false
+		}
+		if table.Columns[i].CreationOptions.PrimaryKey {
+			table.Columns[i].CreationOptions.NotNull = true
+		}
+		// this is for backward compatibility as I believe this is as of right now defined on the source
+		if c.enabledPks() && len(table.PrimaryKeys()) == 0 {
+			cqIdColumn := table.Columns.Get(schema.CqIDColumn.Name)
+			if cqIdColumn != nil {
+				cqIdColumn.CreationOptions.PrimaryKey = true
+			}
+		}
 	}
 	return table
 }
@@ -119,10 +142,72 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 	case pgTypeCockroachDB:
 		return c.normalizeTableCockroach(table)
 	case pgTypePostgreSQL:
-		return table
+		return c.normalizeTablePg(table)
 	default:
 		panic("unknown pg type")
 	}
+}
+
+func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
+	for _, change := range changes {
+		switch change.Type {
+		case schema.TableColumnChangeTypeAdd:
+			if err := c.addColumn(ctx, table.Name, change.Current); err != nil {
+				return err
+			}
+		case schema.TableColumnChangeTypeRemove:
+			continue
+		default:
+			panic("unknown change type")
+		}
+	}
+	return nil
+}
+
+func (c *Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
+	result := true
+	for _, change := range changes {
+		switch change.Type {
+		case schema.TableColumnChangeTypeAdd:
+			if change.Current.CreationOptions.PrimaryKey || change.Current.CreationOptions.NotNull {
+				result = false
+			}
+		case schema.TableColumnChangeTypeRemove:
+			if change.Previous.CreationOptions.PrimaryKey || change.Previous.CreationOptions.NotNull {
+				result = false
+			}
+		case schema.TableColumnChangeTypeUpdate:
+			result = false
+		default:
+			panic("unknown change type")
+		}
+	}
+	return result
+}
+
+// normalize the requested schema to be compatible with what Postgres supports
+func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
+	for _, table := range tables.FlattenTables() {
+		c.normalizeTable(table)
+	}
+	return tables
+}
+
+func (c *Client) nonAutoMigrableTables(tables schema.Tables, pgTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
+	var result []string
+	var tableChanges [][]schema.TableColumnChange
+	for _, t := range tables {
+		pgTable := pgTables.Get(t.Name)
+		if pgTable == nil {
+			continue
+		}
+		changes := t.GetChanges(pgTable)
+		if !c.canAutoMigrate(changes) {
+			result = append(result, t.Name)
+			tableChanges = append(tableChanges, changes)
+		}
+	}
+	return result, tableChanges
 }
 
 // This is the responsibility of the CLI of the client to lock before running migration
@@ -131,40 +216,41 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	if err != nil {
 		return fmt.Errorf("failed listing postgres tables: %w", err)
 	}
-	for _, table := range tables.FlattenTables() {
-		table := c.normalizeTable(table)
+	tables = c.normalizeTables(tables)
+	if c.spec.MigrateMode != specs.MigrateModeForced {
+		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(tables, pgTables)
+		if len(nonAutoMigrableTables) > 0 {
+			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigrableTables, ","), changes)
+		}
+	}
+
+	for _, table := range tables {
 		c.logger.Info().Str("table", table.Name).Msg("Migrating table")
 		if len(table.Columns) == 0 {
 			c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
 			continue
 		}
-
-		// In postgres if column is primary key, it can't be null
-		if c.enabledPks() {
-			for i := range table.Columns {
-				if table.Columns[i].CreationOptions.PrimaryKey {
-					table.Columns[i].CreationOptions.NotNull = true
-				}
-			}
-			// this is for backward compatibility as I believe this is as of right now defined on the source
-			if len(table.PrimaryKeys()) == 0 {
-				cqIdColumn := table.Columns.Get(schema.CqIDColumn.Name)
-				if cqIdColumn != nil {
-					cqIdColumn.CreationOptions.PrimaryKey = true
-				}
-			}
-		}
-
 		pgTable := pgTables.Get(table.Name)
-		if pgTable != nil {
-			c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
-			if err := c.autoMigrateTable(ctx, pgTable, table); err != nil {
-				return err
-			}
-		} else {
+		if pgTable == nil {
 			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
 			if err := c.createTableIfNotExist(ctx, table); err != nil {
 				return err
+			}
+		} else {
+			changes := table.GetChanges(pgTable)
+			if c.canAutoMigrate(changes) {
+				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
+				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
+					return err
+				}
+			} else {
+				c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
+				if err := c.dropTable(ctx, table.Name); err != nil {
+					return err
+				}
+				if err := c.createTableIfNotExist(ctx, table); err != nil {
+					return err
+				}
 			}
 		}
 	}
@@ -179,99 +265,11 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return nil
 }
 
-func (c *Client) alterColumn(ctx context.Context, tableName string, column schema.Column) error {
-	switch c.pgType {
-	case pgTypeCockroachDB:
-		return c.alterColumnCockroachDB(ctx, tableName, column)
-	case pgTypePostgreSQL:
-		return c.alterColumnPg(ctx, tableName, column)
-	default:
-		return fmt.Errorf("unknown pg type: %v", c.pgType)
-	}
-}
-
-func (c *Client) alterColumnCockroachDB(ctx context.Context, tableName string, column schema.Column) error {
-	columnName := pgx.Identifier{column.Name}.Sanitize()
-	columnType := c.SchemaTypeToPg(column.Type)
-	// try alter column in place first
-	sql := "alter table " + tableName + " alter column " + columnName + " type " + columnType
-	if column.CreationOptions.NotNull {
-		sql += ", ALTER " + columnName + " set not null"
-	}
+func (c *Client) dropTable(ctx context.Context, tableName string) error {
+	c.logger.Info().Str("table", tableName).Msg("Dropping table")
+	sql := "drop table " + tableName
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
-		c.logger.Warn().Err(err).Str("table", tableName).Str("column", column.Name).Msg("Column type changed in place failed.")
-	} else {
-		return nil
-	}
-
-	sql = "alter table " + tableName + " drop column " + columnName
-	// right now we will drop the column and re-create. in the future we will have an option to automigrate
-	if _, err := c.conn.Exec(ctx, sql); err != nil {
-		return fmt.Errorf("failed to drop column %s.%s: %w", column.Name, tableName, err)
-	}
-	sql = "alter table " + tableName + " add column " + columnName + " " + columnType
-	if column.CreationOptions.NotNull {
-		sql += " not null"
-	}
-	if _, err := c.conn.Exec(ctx, sql); err != nil {
-		var pgErr *pgconn.PgError
-		if !errors.As(err, &pgErr) {
-			return fmt.Errorf("failed to add column %s.%s: %w", tableName, column.Name, err)
-		}
-		// this is a weird CockroachDB error code that means we need to retry.
-		if pgErr.Code != "55000" {
-			return fmt.Errorf("failed to add column %s.%s with pgerror %s: %w", tableName, column.Name, pgErrToStr(pgErr), err)
-		}
-		if _, err := c.conn.Exec(ctx, sql); err != nil {
-			return fmt.Errorf("failed to retry adding column %s.%s with pgerror %s: %w", tableName, column.Name, pgErrToStr(pgErr), err)
-		}
-	}
-	return nil
-}
-
-func (c *Client) alterColumnPg(ctx context.Context, tableName string, column schema.Column) error {
-	columnName := pgx.Identifier{column.Name}.Sanitize()
-	columnType := c.SchemaTypeToPg(column.Type)
-	// try alter column in place first
-	sql := "alter table " + tableName + " alter column " + columnName + " type " + columnType
-	if column.CreationOptions.NotNull {
-		sql += ", ALTER " + columnName + " set not null"
-	}
-	if _, err := c.conn.Exec(ctx, sql); err != nil {
-		c.logger.Warn().Err(err).Str("table", tableName).Str("column", column.Name).Msg("Column type changed in place failed.")
-	} else {
-		return nil
-	}
-	tx, err := c.conn.BeginTx(ctx, pgx.TxOptions{})
-	if err != nil {
-		return fmt.Errorf("failed to start alter column transaction: %w", err)
-	}
-	defer func() {
-		if err := tx.Rollback(ctx); err != nil {
-			if !errors.Is(err, pgx.ErrTxClosed) {
-				c.logger.Error().Err(err).Msg("Failed to rollback alter column transaction")
-			}
-		}
-	}()
-
-	sql = "alter table " + tableName + " drop column " + columnName
-	// right now we will drop the column and re-create. in the future we will have an option to automigrate
-	if _, err := tx.Exec(ctx, sql); err != nil {
-		return fmt.Errorf("failed to drop column %s.%s: %w", column.Name, tableName, err)
-	}
-	sql = "alter table " + tableName + " add column " + columnName + " " + columnType
-	if column.CreationOptions.NotNull {
-		sql += " not null"
-	}
-	if _, err := tx.Exec(ctx, sql); err != nil {
-		var pgErr *pgconn.PgError
-		if !errors.As(err, &pgErr) {
-			return fmt.Errorf("failed to add column %s.%s: %w", tableName, column.Name, err)
-		}
-		return fmt.Errorf("failed to add column %s.%s with pgerror %s: %w", tableName, column.Name, pgErrToStr(pgErr), err)
-	}
-	if err := tx.Commit(ctx); err != nil {
-		return fmt.Errorf("failed to commit alter column transaction: %w", err)
+		return fmt.Errorf("failed to drop table %s: %w", tableName, err)
 	}
 	return nil
 }
@@ -284,70 +282,6 @@ func (c *Client) addColumn(ctx context.Context, tableName string, column schema.
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
 		return fmt.Errorf("failed to add column %s on table %s: %w", column.Name, tableName, err)
 	}
-	return nil
-}
-
-func (c *Client) alterPKConstraint(ctx context.Context, pgTable *schema.Table, table *schema.Table) error {
-	c.logger.Info().Str("table", table.Name).Msg("Recreating primary keys")
-	tableName := pgx.Identifier{table.Name}.Sanitize()
-
-	tx, err := c.conn.Begin(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to begin transaction to recreate primary keys: %w", err)
-	}
-	defer func() {
-		if err := tx.Rollback(ctx); err != nil {
-			if !errors.Is(err, pgx.ErrTxClosed) {
-				c.logger.Error().Err(err).Msg("failed to rollback transaction")
-			}
-		}
-	}()
-	dropConstraintSQL := "alter table " + tableName + " drop constraint if exists " + pgTable.PkConstraintName
-	if _, err := tx.Exec(ctx, dropConstraintSQL); err != nil {
-		return fmt.Errorf("failed to drop primary key constraint on table %s: %w", table.Name, err)
-	}
-
-	sql := "alter table " + tableName + " add primary key (" + strings.Join(table.PrimaryKeys(), ",") + ")"
-	if _, err := tx.Exec(ctx, sql); err != nil {
-		return fmt.Errorf("failed to add primary key constraint on table %s: %w", table.Name, err)
-	}
-	if err := tx.Commit(ctx); err != nil {
-		return fmt.Errorf("failed to commit transaction to recreate primary keys: %w", err)
-	}
-	return nil
-}
-
-func (c *Client) autoMigrateTable(ctx context.Context, pgTable *schema.Table, table *schema.Table) error {
-	changedColumns, changedPgColumns := table.GetChangedColumns(pgTable)
-	if c.spec.MigrateMode != specs.MigrateModeForced {
-		if c.enabledPks() && !table.IsPrimaryKeyEqual(pgTable) {
-			return fmt.Errorf("postgres table %s has different primary keys %v but schema wants %v , add `migrate_mode: forced` to the destination spec to drop the column", table.Name, pgTable.PrimaryKeys(), table.PrimaryKeys())
-		}
-		if changedColumns != nil {
-			return fmt.Errorf("postgres table %s has different types for columns %v but schema wants %v , add `migrate_mode: forced` to the destination spec to drop the column", table.Name, changedPgColumns, changedColumns)
-		}
-	}
-
-	for _, col := range changedColumns {
-		if err := c.alterColumn(ctx, table.Name, col); err != nil {
-			return err
-		}
-	}
-
-	if addedColumns := table.GetAddedColumns(pgTable); addedColumns != nil {
-		for _, col := range addedColumns {
-			if err := c.addColumn(ctx, table.Name, col); err != nil {
-				return err
-			}
-		}
-	}
-
-	if c.enabledPks() && !table.IsPrimaryKeyEqual(pgTable) {
-		if err := c.alterPKConstraint(ctx, pgTable, table); err != nil {
-			return err
-		}
-	}
-
 	return nil
 }
 
