@@ -1,6 +1,6 @@
 # Table: azure_postgresql_databases
 
-https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/databases/list-by-server?tabs=HTTP
+https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/databases/list-by-server?tabs=HTTP#database
 
 The composite primary key for this table is (**server_name**, **id**).
 
