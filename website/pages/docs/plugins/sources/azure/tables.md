@@ -138,6 +138,8 @@
 - [azure_network_ddos_protection_plans](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_ddos_protection_plans.md)
 - [azure_network_dscp_configuration](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_dscp_configuration.md)
 - [azure_network_express_route_circuits](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_express_route_circuits.md)
+  - [azure_network_express_route_circuit_authorizations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_express_route_circuit_authorizations.md)
+  - [azure_network_express_route_circuit_peerings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_express_route_circuit_peerings.md)
 - [azure_network_express_route_gateways](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_express_route_gateways.md)
 - [azure_network_express_route_ports](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_express_route_ports.md)
 - [azure_network_express_route_ports_locations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_network_express_route_ports_locations.md)

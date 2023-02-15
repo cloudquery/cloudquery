@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -19,9 +21,9 @@ func Repositories() *schema.Table {
 	}
 }
 
-var repoIDColumn = schema.Column{
-	Name:            "repository_id",
-	Type:            schema.TypeInt,
-	Resolver:        client.ResolveParentColumn("ID"),
-	CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+func fetchRepositories(_ context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	// Repositories are synced during init and multiplexed
+	res <- c.Repository
+	return nil
 }
