@@ -11,7 +11,7 @@ import (
 
 func mapRunExecutions() *schema.Table {
 	return &schema.Table{
-		Name:                "aws_stepfunctions_executions",
+		Name:                "aws_stepfunctions_execution_map_run_executions",
 		Description:         `https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeExecution.html`,
 		Resolver:            fetchStepfunctionsMapRunExecutions,
 		PreResourceResolver: getExecution,
@@ -29,9 +29,14 @@ func mapRunExecutions() *schema.Table {
 				},
 			},
 			{
-				Name:     "state_machine_arn",
+				Name:     "map_run_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
+			},
+			{
+				Name:     "state_machine_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("state_machine_arn"),
 			},
 		},
 	}
@@ -41,6 +46,7 @@ func fetchStepfunctionsMapRunExecutions(ctx context.Context, meta schema.ClientM
 	svc := meta.(*client.Client).Services().Sfn
 	config := sfn.ListExecutionsInput{
 		MaxResults: 1000,
+		MapRunArn:  parent.Item.(*sfn.DescribeMapRunOutput).MapRunArn,
 	}
 	paginator := sfn.NewListExecutionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
