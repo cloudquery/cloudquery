@@ -3,17 +3,14 @@ package network
 import (
 	"encoding/json"
 	"net/http"
-	"testing"
-
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
 )
 
-func createInterfaces(router *mux.Router) error {
-	var item armnetwork.InterfacesClientListAllResponse
+func createExpressRouteCircuitAuthorizations(router *mux.Router) error {
+	var item armnetwork.ExpressRouteCircuitAuthorizationsClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -21,7 +18,7 @@ func createInterfaces(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkInterfaces", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/debug/providers/Microsoft.Network/expressRouteCircuits/test string/authorizations", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -33,9 +30,5 @@ func createInterfaces(router *mux.Router) error {
 		}
 	})
 
-	return createInterfaceIPConfigurations(router)
-}
-
-func TestInterfaces(t *testing.T) {
-	client.MockTestHelper(t, Interfaces(), createInterfaces)
+	return nil
 }
