@@ -8,7 +8,7 @@ Though you by no means need to be an expert, you will also need some familiarity
 
 ## Core Concepts
 
-This section will cover some core concepts of CloudQuery plugins.
+Before we dive in, let's quickly cover some core concepts of CloudQuery plugins, so that they're familiar when we see our first example.
 
 ### Syncs
 
