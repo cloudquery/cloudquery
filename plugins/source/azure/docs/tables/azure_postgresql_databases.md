@@ -2,7 +2,7 @@
 
 https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/databases/list-by-server?tabs=HTTP#database
 
-The composite primary key for this table is (**server_name**, **id**).
+The primary key for this table is **id**.
 
 ## Relations
 
@@ -17,7 +17,6 @@ This table depends on [azure_postgresql_servers](azure_postgresql_servers.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|server_name (PK)|String|
 |properties|JSON|
 |id (PK)|String|
 |name|String|
