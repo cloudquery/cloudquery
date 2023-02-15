@@ -88,6 +88,8 @@ kafka:
   - plugins/destination/kafka/**/*
 firehose:
   - plugins/destination/firehose/**/*  
+clickhouse:
+  - plugins/destination/clickhouse/**/*
 website:
   - website/**/*
 cli:

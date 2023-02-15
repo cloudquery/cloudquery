@@ -13,14 +13,7 @@ func Workflows() *schema.Table {
 		Multiplex: client.OrgRepositoryMultiplex,
 		Transform: transformers.TransformWithStruct(&Workflow{}, client.SharedTransformers()...),
 		Columns: []schema.Column{
-			{
-				Name:     "org",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveOrg,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.OrgColumn,
 			{
 				Name:     "repository_id",
 				Type:     schema.TypeInt,

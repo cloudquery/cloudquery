@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/organizations"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/repositories"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/teams"
+	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/traffic"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -26,5 +27,9 @@ func Tables() []*schema.Table {
 		organizations.Organizations(),
 		repositories.Repositories(),
 		teams.Teams(),
+		traffic.Clones(),
+		traffic.Paths(),
+		traffic.Views(),
+		traffic.Referrers(),
 	}
 }
