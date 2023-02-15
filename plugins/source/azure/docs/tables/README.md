@@ -186,6 +186,7 @@
 - [azure_portal_list_tenant_configuration_violations](azure_portal_list_tenant_configuration_violations.md)
 - [azure_portal_tenant_configurations](azure_portal_tenant_configurations.md)
 - [azure_postgresql_servers](azure_postgresql_servers.md)
+  - [azure_postgresql_databases](azure_postgresql_databases.md)
   - [azure_postgresql_server_configurations](azure_postgresql_server_configurations.md)
   - [azure_postgresql_server_firewall_rules](azure_postgresql_server_firewall_rules.md)
 - [azure_postgresqlflexibleservers_servers](azure_postgresqlflexibleservers_servers.md)

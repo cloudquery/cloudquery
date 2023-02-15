@@ -186,6 +186,7 @@
 - [azure_portal_list_tenant_configuration_violations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_portal_list_tenant_configuration_violations.md)
 - [azure_portal_tenant_configurations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_portal_tenant_configurations.md)
 - [azure_postgresql_servers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_postgresql_servers.md)
+  - [azure_postgresql_databases](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_postgresql_databases.md)
   - [azure_postgresql_server_configurations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_postgresql_server_configurations.md)
   - [azure_postgresql_server_firewall_rules](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_postgresql_server_firewall_rules.md)
 - [azure_postgresqlflexibleservers_servers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_postgresqlflexibleservers_servers.md)
