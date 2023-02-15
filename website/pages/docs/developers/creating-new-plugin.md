@@ -46,7 +46,7 @@ Incremental tables are great for efficiency, but add some additional complexity 
 
 ## Creating Your First Plugin
 
-In this section we will go through all the steps of building a simple source plugin. We will start by creating a new plugin from scratch, then we will add a table to it. To serve as a fun real-world example, we will create a plugin that fetches comic data from the [xkcd API](https://xkcd.com/json.html).
+In this section we will go through all the steps of building a simple source plugin. We will start by creating a new plugin from scratch, then we will add a table to it. To serve as a fun real-world example, we will create a plugin that fetches comic data from the [XKCD API](https://xkcd.com/json.html).
 
 ### Initializing Your Plugin with the `scaffold` Tool
 
@@ -88,7 +88,7 @@ At the time of writing, the scaffold creates a directory structure that looks li
 
 ### Creating a Table
 
-The scaffold tool creates a single table in the `resources` directory. Let's take a look at the code in `resources/table.go` that was generated for a new "xkcd" source plugin:
+The scaffold tool creates a single table in the `resources` directory. Let's take a look at the code in `resources/table.go` that was generated for a new XKCD source plugin:
 
 ```go
 package resources
@@ -316,7 +316,7 @@ func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 
 This also requires a new `WithAccount` method on the Client struct that sets an Account property on the client:
 
-```
+```go
 func (c *Client) WithAccount(account string) *Client {
 	newC := *c
 	newC.logger = c.logger.With().Str("account", account).Logger()
