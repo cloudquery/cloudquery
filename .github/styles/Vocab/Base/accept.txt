@@ -92,7 +92,7 @@ hyperscale
 implementor
 Inforce
 IPs
-json
+JSON
 jsonb
 Kibana
 Kinesis
