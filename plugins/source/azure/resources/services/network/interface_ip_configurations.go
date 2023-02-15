@@ -15,17 +15,7 @@ func interfaceIPConfigurations() *schema.Table {
 		Resolver:    fetchInterfaceIPConfigurations,
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-interface-ip-configurations/list?tabs=HTTP#ipconfiguration",
 		Transform:   transformers.TransformWithStruct(&armnetwork.InterfaceIPConfiguration{}, transformers.WithPrimaryKeys("ID")),
-		Columns: schema.ColumnList{
-			client.SubscriptionID,
-			{
-				Name:     "network_interface_name",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

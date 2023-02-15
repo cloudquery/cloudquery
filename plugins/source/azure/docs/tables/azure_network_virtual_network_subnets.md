@@ -2,7 +2,7 @@
 
 https://learn.microsoft.com/en-us/rest/api/virtualnetwork/subnets/list?tabs=HTTP#subnet
 
-The composite primary key for this table is (**virtual_network_name**, **id**).
+The primary key for this table is **id**.
 
 ## Relations
 
@@ -17,7 +17,6 @@ This table depends on [azure_network_virtual_networks](azure_network_virtual_net
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|virtual_network_name (PK)|String|
 |id (PK)|String|
 |name|String|
 |properties|JSON|

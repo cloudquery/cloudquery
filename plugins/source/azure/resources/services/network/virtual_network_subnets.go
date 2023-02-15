@@ -15,17 +15,7 @@ func virtualNetworkSubnets() *schema.Table {
 		Resolver:    fetchVirtualNetworkSubnets,
 		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/subnets/list?tabs=HTTP#subnet",
 		Transform:   transformers.TransformWithStruct(&armnetwork.Subnet{}, transformers.WithPrimaryKeys("ID")),
-		Columns: schema.ColumnList{
-			client.SubscriptionID,
-			{
-				Name:     "virtual_network_name",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 
