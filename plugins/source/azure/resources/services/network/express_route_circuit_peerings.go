@@ -15,17 +15,7 @@ func expressRouteCircuitPeerings() *schema.Table {
 		Resolver:    fetchExpressRouteCircuitPeerings,
 		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuit-peerings/list?tabs=HTTP#expressroutecircuitpeering",
 		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRouteCircuitPeering{}, transformers.WithPrimaryKeys("ID")),
-		Columns: schema.ColumnList{
-			client.SubscriptionID,
-			{
-				Name:     "express_route_circuit_name",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

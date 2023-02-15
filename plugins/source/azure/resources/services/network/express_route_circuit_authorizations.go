@@ -15,17 +15,7 @@ func expressRouteCircuitAuthorizations() *schema.Table {
 		Resolver:    fetchExpressRouteCircuitAuthorizations,
 		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuit-authorizations/list?tabs=HTTP#expressroutecircuitauthorization",
 		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRouteCircuitAuthorization{}, transformers.WithPrimaryKeys("ID")),
-		Columns: schema.ColumnList{
-			client.SubscriptionID,
-			{
-				Name:     "express_route_circuit_name",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 
