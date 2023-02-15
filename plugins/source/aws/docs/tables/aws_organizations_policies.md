@@ -1,8 +1,8 @@
-# Table: aws_organization_policies
+# Table: aws_organizations_policies
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_Policy.html
 
-The primary key for this table is **account_id**.
+The composite primary key for this table is (**account_id**, **arn**).
 
 ## Columns
 
@@ -13,5 +13,10 @@ The primary key for this table is **account_id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
-|content|String|
-|policy_summary|JSON|
+|content|JSON|
+|arn (PK)|String|
+|aws_managed|Bool|
+|description|String|
+|id|String|
+|name|String|
+|type|String|
