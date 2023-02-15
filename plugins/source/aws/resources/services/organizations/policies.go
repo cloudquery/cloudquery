@@ -18,7 +18,8 @@ func Policies() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Policy{}),
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			// This is needed as a PK because aws managed policies don't have an account_id in the ARN
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
@@ -31,9 +32,9 @@ func Policies() *schema.Table {
 func fetchOrganizationsPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 
-	for _, policy_type := range []types.PolicyType{types.PolicyTypeServiceControlPolicy, types.PolicyTypeTagPolicy, types.PolicyTypeBackupPolicy, types.PolicyTypeAiservicesOptOutPolicy} {
+	for _, policyType := range types.PolicyType("").Values() { {
 		paginator := organizations.NewListPoliciesPaginator(c.Services().Organizations, &organizations.ListPoliciesInput{
-			Filter: policy_type,
+			Filter: policyType,
 		})
 
 		for paginator.HasMorePages() {
