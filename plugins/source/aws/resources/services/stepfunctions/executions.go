@@ -43,8 +43,10 @@ func executions() *schema.Table {
 
 func fetchStepfunctionsExecutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client).Services().Sfn
+	sfnOutput := parent.Item.(*sfn.DescribeStateMachineOutput)
 	config := sfn.ListExecutionsInput{
-		MaxResults: 1000,
+		MaxResults:      1000,
+		StateMachineArn: sfnOutput.StateMachineArn,
 	}
 	paginator := sfn.NewListExecutionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
