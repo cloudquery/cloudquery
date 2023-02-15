@@ -16,10 +16,7 @@ func Views() *schema.Table {
 		Resolver:    fetchViews,
 		Multiplex:   client.OrgRepositoryMultiplex,
 		Transform:   transformers.TransformWithStruct(&github.TrafficViews{}, client.SharedTransformers()...),
-		Columns: []schema.Column{
-			client.OrgColumn,
-			client.RepositoryIdColumn,
-		},
+		Columns:     []schema.Column{client.OrgColumn, client.RepositoryIDColumn},
 	}
 }
 
