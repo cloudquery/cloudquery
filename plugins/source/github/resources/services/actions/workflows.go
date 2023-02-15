@@ -20,7 +20,11 @@ func Workflows() *schema.Table {
 			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
 		Columns: []schema.Column{
 			client.OrgColumn,
-			client.RepositoryIDColumn,
+			{
+				Name:     "repository_id",
+				Type:     schema.TypeInt,
+				Resolver: client.ResolveRepositoryID,
+			},
 			{
 				Name:     "contents",
 				Type:     schema.TypeString,

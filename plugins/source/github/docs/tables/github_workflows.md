@@ -1,6 +1,6 @@
 # Table: github_workflows
 
-The composite primary key for this table is (**org**, **repository_id**, **id**).
+The composite primary key for this table is (**org**, **id**).
 
 ## Columns
 
@@ -11,7 +11,7 @@ The composite primary key for this table is (**org**, **repository_id**, **id**)
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |org (PK)|String|
-|repository_id (PK)|Int|
+|repository_id|Int|
 |contents|String|
 |id (PK)|Int|
 |node_id|String|
