@@ -46,9 +46,6 @@ There are 3 different implicit and explicit settings for the `Version` and thus 
     ...
 ```
 
-* Aid with developer turnaround and developing policies.
-* Reduce confusion and issues with IAM Policies.
-
 CloudQuery recommends explicitly setting IAM Policy Versions to `2012-10-17` whenever possible and recommends for Platform teams and development teams to require using `2012-10-17` as a developer default.
 
 ### IAM Policy Language Version
@@ -104,6 +101,10 @@ aws iam put-user-policy \
 ```
 
 ### Finding Identity Policies with CloudQuery
+
+The below queries have a prerequisite to use CloudQuery to sync AWS data to PostgreSQL.  For a guide, see our [quickstart guide](https://www.cloudquery.io/docs/quickstart/macOS).
+
+We'll use CloudQuery to check for identity-based with `2008-10-17` explicitly set as the version or for identity-based policies without an explicit version set.
 
 #### Finding IAM User Inline Policies
 
@@ -165,7 +166,7 @@ The below table shows the AWS services we tested based on [AWS Services that wor
 | AWS Private CA | ? | API/CLI Only |
 | AWS API Gateway | 2012 | Console |
 | VPC Endpoints | 2008 | Gateway Endpoints Only |
-| VPC Endpoints | 2012 | Interface Endpoints (Did not test all) |
+| VPC Endpoints | 2012 | Interface Endpoints (Did not test all Interface Endpoints) |
 | AWS SAM | ? | - | 
 | AWS Backup | None | - |
 | AWS S3 Glacier | Empty | Console |
@@ -222,7 +223,7 @@ We would like to see the following from AWS:
 * Not specifying a policy version should also default to `2012-10-17` once enough warning has been given to AWS customers.
 * In the interim, more controls similar to the IAM Managed Policy creation experience that block creation of new policies without `2012-10-17` specified.
 
-We have the following recommendations for AWS end users:
+In the interim, we have the following recommendations for AWS end users:
 * Scan AWS environments for any legacy usage of the `2008-10-17` policy language version.
 * If possible, update legacy policies to use the `2012-10-17` policy language version. 
 * Ensure all new policies leverage the newer `2012-10-17` policy language version.
@@ -230,6 +231,7 @@ We have the following recommendations for AWS end users:
 Stay tuned for more use cases we can build with CloudQuery on top of the infrastructure data we loaded from AWS!
 
 ### Contact Us
+
 If you have comments or questions about IAM, CloudQuery, or potential partnerships with us, we would love to hear from you! Reach out to us on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord)!
 
 ## References and Useful Links
