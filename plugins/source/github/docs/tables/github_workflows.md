@@ -13,6 +13,7 @@ The composite primary key for this table is (**org**, **id**).
 |org (PK)|String|
 |repository_id|Int|
 |contents|String|
+|repository|JSON|
 |id (PK)|Int|
 |node_id|String|
 |name|String|

@@ -30,6 +30,11 @@ func Workflows() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: resolveContents,
 			},
+			{
+				Name:     "repository",
+				Type:     schema.TypeJSON,
+				Resolver: resolveRepository,
+			},
 		},
 	}
 }
@@ -88,4 +93,8 @@ func resolveContents(ctx context.Context, meta schema.ClientMeta, resource *sche
 		return err
 	}
 	return resource.Set(c.Name, content)
+}
+
+func resolveRepository(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	return resource.Set(c.Name, meta.(*client.Client).Repository)
 }
