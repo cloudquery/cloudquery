@@ -22,8 +22,10 @@ func getenv(key, fallback string) string {
 }
 
 func TestPgPlugin(t *testing.T) {
-	p := destination.NewPlugin("kafka", "development", New)
-	destination.PluginTestSuiteRunner(t, p,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("kafka", "development", New)
+		},
 		Spec{
 			Brokers:            strings.Split(getenv("CQ_DEST_KAFKA_CONNECTION_STRING", defaultConnectionString), ","),
 			SaslUsername:       getenv("CQ_DEST_KAFKA_SASL_USERNAME", ""),
@@ -35,8 +37,10 @@ func TestPgPlugin(t *testing.T) {
 			},
 		},
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:        true,
-			SkipMigrateAppend:    true,
-			SkipMigrateOverwrite: true,
+			SkipOverwrite:             true,
+			SkipMigrateAppend:         true,
+			SkipMigrateOverwrite:      true,
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		})
 }

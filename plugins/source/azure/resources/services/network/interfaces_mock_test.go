@@ -3,7 +3,6 @@ package network
 import (
 	"encoding/json"
 	"net/http"
-
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
@@ -34,7 +33,7 @@ func createInterfaces(router *mux.Router) error {
 		}
 	})
 
-	return nil
+	return createInterfaceIPConfigurations(router)
 }
 
 func TestInterfaces(t *testing.T) {

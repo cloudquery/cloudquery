@@ -99,3 +99,67 @@ func (mr *MockRepositoriesServiceMockRecorder) ListReleases(arg0, arg1, arg2, ar
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListReleases", reflect.TypeOf((*MockRepositoriesService)(nil).ListReleases), arg0, arg1, arg2, arg3)
 }
+
+// ListTrafficClones mocks base method.
+func (m *MockRepositoriesService) ListTrafficClones(arg0 context.Context, arg1, arg2 string, arg3 *github.TrafficBreakdownOptions) (*github.TrafficClones, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListTrafficClones", arg0, arg1, arg2, arg3)
+	ret0, _ := ret[0].(*github.TrafficClones)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListTrafficClones indicates an expected call of ListTrafficClones.
+func (mr *MockRepositoriesServiceMockRecorder) ListTrafficClones(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTrafficClones", reflect.TypeOf((*MockRepositoriesService)(nil).ListTrafficClones), arg0, arg1, arg2, arg3)
+}
+
+// ListTrafficPaths mocks base method.
+func (m *MockRepositoriesService) ListTrafficPaths(arg0 context.Context, arg1, arg2 string) ([]*github.TrafficPath, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListTrafficPaths", arg0, arg1, arg2)
+	ret0, _ := ret[0].([]*github.TrafficPath)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListTrafficPaths indicates an expected call of ListTrafficPaths.
+func (mr *MockRepositoriesServiceMockRecorder) ListTrafficPaths(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTrafficPaths", reflect.TypeOf((*MockRepositoriesService)(nil).ListTrafficPaths), arg0, arg1, arg2)
+}
+
+// ListTrafficReferrers mocks base method.
+func (m *MockRepositoriesService) ListTrafficReferrers(arg0 context.Context, arg1, arg2 string) ([]*github.TrafficReferrer, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListTrafficReferrers", arg0, arg1, arg2)
+	ret0, _ := ret[0].([]*github.TrafficReferrer)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListTrafficReferrers indicates an expected call of ListTrafficReferrers.
+func (mr *MockRepositoriesServiceMockRecorder) ListTrafficReferrers(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTrafficReferrers", reflect.TypeOf((*MockRepositoriesService)(nil).ListTrafficReferrers), arg0, arg1, arg2)
+}
+
+// ListTrafficViews mocks base method.
+func (m *MockRepositoriesService) ListTrafficViews(arg0 context.Context, arg1, arg2 string, arg3 *github.TrafficBreakdownOptions) (*github.TrafficViews, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListTrafficViews", arg0, arg1, arg2, arg3)
+	ret0, _ := ret[0].(*github.TrafficViews)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListTrafficViews indicates an expected call of ListTrafficViews.
+func (mr *MockRepositoriesServiceMockRecorder) ListTrafficViews(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTrafficViews", reflect.TypeOf((*MockRepositoriesService)(nil).ListTrafficViews), arg0, arg1, arg2, arg3)
+}
