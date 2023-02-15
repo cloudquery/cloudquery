@@ -138,6 +138,8 @@
 - [azure_network_ddos_protection_plans](azure_network_ddos_protection_plans.md)
 - [azure_network_dscp_configuration](azure_network_dscp_configuration.md)
 - [azure_network_express_route_circuits](azure_network_express_route_circuits.md)
+  - [azure_network_express_route_circuit_authorizations](azure_network_express_route_circuit_authorizations.md)
+  - [azure_network_express_route_circuit_peerings](azure_network_express_route_circuit_peerings.md)
 - [azure_network_express_route_gateways](azure_network_express_route_gateways.md)
 - [azure_network_express_route_ports](azure_network_express_route_ports.md)
 - [azure_network_express_route_ports_locations](azure_network_express_route_ports_locations.md)
