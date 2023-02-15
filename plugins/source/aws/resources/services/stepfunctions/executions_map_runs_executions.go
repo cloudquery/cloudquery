@@ -11,7 +11,7 @@ import (
 
 func mapRunExecutions() *schema.Table {
 	return &schema.Table{
-		Name:                "aws_stepfunctions_execution_map_run_executions",
+		Name:                "aws_stepfunctions_map_run_executions",
 		Description:         `https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeExecution.html`,
 		Resolver:            fetchStepfunctionsMapRunExecutions,
 		PreResourceResolver: getExecution,

@@ -9,7 +9,7 @@ The primary key for this table is **arn**.
 This table depends on [aws_stepfunctions_state_machines](aws_stepfunctions_state_machines.md).
 
 The following tables depend on aws_stepfunctions_executions:
-  - [aws_stepfunctions_executions_map_runs](aws_stepfunctions_executions_map_runs.md)
+  - [aws_stepfunctions_map_runs](aws_stepfunctions_map_runs.md)
 
 ## Columns
 

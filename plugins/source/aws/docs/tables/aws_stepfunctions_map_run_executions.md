@@ -1,4 +1,4 @@
-# Table: aws_stepfunctions_execution_map_run_executions
+# Table: aws_stepfunctions_map_run_executions
 
 https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeExecution.html
 
@@ -6,7 +6,7 @@ The primary key for this table is **arn**.
 
 ## Relations
 
-This table depends on [aws_stepfunctions_executions_map_runs](aws_stepfunctions_executions_map_runs.md).
+This table depends on [aws_stepfunctions_map_runs](aws_stepfunctions_map_runs.md).
 
 ## Columns
 

@@ -12,7 +12,7 @@ import (
 
 func mapRuns() *schema.Table {
 	return &schema.Table{
-		Name:                "aws_stepfunctions_executions_map_runs",
+		Name:                "aws_stepfunctions_map_runs",
 		Description:         `https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeMapRun.html`,
 		Resolver:            fetchStepfunctionsMapRuns,
 		PreResourceResolver: getMapRun,
