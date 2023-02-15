@@ -58,5 +58,4 @@ func resolvePolicyContent(ctx context.Context, meta schema.ClientMeta, resource 
 		return err
 	}
 	return resource.Set(c.Name, resp.Policy.Content)
-
 }
