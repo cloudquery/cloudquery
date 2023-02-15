@@ -12,36 +12,9 @@ func Groups() *schema.Table {
 		Name:        "aws_quicksight_groups",
 		Description: "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Group.html",
 		Resolver:    fetchQuicksightGroups,
-		Transform:   transformers.TransformWithStruct(&types.Group{}),
+		Transform:   transformers.TransformWithStruct(&types.Group{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("quicksight"),
-		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveTags(),
-			},
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
-
-		Relations: []*schema.Table{
-			GroupMembers(),
-		},
+		Columns:     []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true), tagsCol},
+		Relations:   []*schema.Table{groupMembers()},
 	}
 }

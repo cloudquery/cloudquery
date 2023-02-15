@@ -16,16 +16,8 @@ func Streams() *schema.Table {
 		Transform:           transformers.TransformWithStruct(&types.StreamDescriptionSummary{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer("kinesis"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

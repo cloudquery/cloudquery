@@ -15,20 +15,20 @@ func ResourceShareInvitations() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.ResourceShareInvitation{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ram"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ResourceShareInvitationArn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "receiver_combined",
+				Type:     schema.TypeString,
+				Resolver: resolveResourceShareInvitationReceiver,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

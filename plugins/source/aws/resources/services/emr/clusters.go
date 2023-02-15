@@ -16,16 +16,8 @@ func Clusters() *schema.Table {
 		Multiplex:           client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
 		Transform:           transformers.TransformWithStruct(&types.Cluster{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
@@ -40,6 +32,6 @@ func Clusters() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 		},
-		Relations: []*schema.Table{clusterInstanceFleets(), clusterInstanceGroups()},
+		Relations: []*schema.Table{clusterInstanceFleets(), clusterInstanceGroups(), clusterInstances()},
 	}
 }

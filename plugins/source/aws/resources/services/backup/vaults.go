@@ -15,16 +15,8 @@ func Vaults() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("backup"),
 		Transform:   transformers.TransformWithStruct(&types.BackupVaultListMember{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
@@ -34,16 +26,14 @@ func Vaults() *schema.Table {
 				},
 			},
 			{
-				Name:          "access_policy",
-				Type:          schema.TypeJSON,
-				Resolver:      resolveVaultAccessPolicy,
-				IgnoreInTests: true,
+				Name:     "access_policy",
+				Type:     schema.TypeJSON,
+				Resolver: resolveVaultAccessPolicy,
 			},
 			{
-				Name:          "notifications",
-				Type:          schema.TypeJSON,
-				Resolver:      resolveVaultNotifications,
-				IgnoreInTests: true,
+				Name:     "notifications",
+				Type:     schema.TypeJSON,
+				Resolver: resolveVaultNotifications,
 			},
 			{
 				Name:     "tags",

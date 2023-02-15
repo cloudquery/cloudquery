@@ -30,8 +30,3 @@ func resolveRegionEnabled(ctx context.Context, meta schema.ClientMeta, resource 
 	}
 	return nil
 }
-
-func resolveRegionPartition(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	return resource.Set(c.Name, cl.Partition)
-}

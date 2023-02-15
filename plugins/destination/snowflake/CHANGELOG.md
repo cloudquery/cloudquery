@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.1.10...plugins-destination-snowflake-v1.1.11) (2023-02-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.36.0 ([#7809](https://github.com/cloudquery/cloudquery/issues/7809)) ([c85a9cb](https://github.com/cloudquery/cloudquery/commit/c85a9cb697477520e94a1fd260c56b89da62fc87))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.0 ([#7933](https://github.com/cloudquery/cloudquery/issues/7933)) ([dc9cffb](https://github.com/cloudquery/cloudquery/commit/dc9cffbf37bbc6fae73a20bf47e6bbf17e74d1f9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.1 ([#8008](https://github.com/cloudquery/cloudquery/issues/8008)) ([c47aac0](https://github.com/cloudquery/cloudquery/commit/c47aac0b5e3190a04299713651b97e360043911f))
+* Snowflake migration ([#7833](https://github.com/cloudquery/cloudquery/issues/7833)) ([e738bdd](https://github.com/cloudquery/cloudquery/commit/e738bddb6bb5608e6649ec6438f364a0e098c681))
+* Snowflake migrations ([#7844](https://github.com/cloudquery/cloudquery/issues/7844)) ([26f65bc](https://github.com/cloudquery/cloudquery/commit/26f65bc874748b3271bf773116546b556b028242))
+* **snowflake:** Strip nulls ([#7836](https://github.com/cloudquery/cloudquery/issues/7836)) ([b5b02b0](https://github.com/cloudquery/cloudquery/commit/b5b02b0b38b8935e00d480a7d7b29e49c2af64d3))
+
 ## [1.1.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.1.9...plugins-destination-snowflake-v1.1.10) (2023-02-07)
 
 

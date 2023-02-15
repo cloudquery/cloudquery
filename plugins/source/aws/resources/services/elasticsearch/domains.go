@@ -16,16 +16,8 @@ func Domains() *schema.Table {
 		Multiplex:           client.ServiceAccountRegionMultiplexer("es"),
 		Transform:           transformers.TransformWithStruct(&types.ElasticsearchDomainStatus{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "authorized_principals",
 				Type:     schema.TypeJSON,
