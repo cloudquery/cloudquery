@@ -12,18 +12,18 @@ import (
 
 func Policies() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_organization_policies",
+		Name:        "aws_organizations_policies",
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Policy.html`,
 		Resolver:    fetchOrganizationsPolicies,
-		Transform:   transformers.TransformWithStruct(&types.Policy{}),
+		Transform:   transformers.TransformWithStruct(&types.PolicySummary{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			// This is needed as a PK because aws managed policies don't have an account_id in the ARN
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicySummary.Arn"),
+				Name:     "content",
+				Type:     schema.TypeJSON,
+				Resolver: resolvePolicyContent,
 			},
 		},
 	}
@@ -31,8 +31,7 @@ func Policies() *schema.Table {
 
 func fetchOrganizationsPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-
-	for _, policyType := range types.PolicyType("").Values() { {
+	for _, policyType := range types.PolicyType("").Values() {
 		paginator := organizations.NewListPoliciesPaginator(c.Services().Organizations, &organizations.ListPoliciesInput{
 			Filter: policyType,
 		})
@@ -45,6 +44,19 @@ func fetchOrganizationsPolicies(ctx context.Context, meta schema.ClientMeta, _ *
 			res <- page.Policies
 		}
 	}
-
 	return nil
+}
+
+func resolvePolicyContent(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	r := resource.Item.(types.PolicySummary)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Organizations
+	resp, err := svc.DescribePolicy(ctx, &organizations.DescribePolicyInput{
+		PolicyId: r.Id,
+	})
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, resp.Policy.Content)
+
 }
