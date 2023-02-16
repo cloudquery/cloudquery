@@ -13,7 +13,7 @@ func Plans() *schema.Table {
 		Description: `https://docs.aws.amazon.com/savingsplans/latest/APIReference/API_SavingsPlan.html`,
 		Resolver:    fetchSavingsPlans,
 		Transform:   transformers.TransformWithStruct(&types.SavingsPlan{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("savingsplans"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

@@ -22,7 +22,7 @@ func CredentialReports() *schema.Table {
 				"Cert2LastRotated",
 			),
 		),
-		Multiplex: client.AccountMultiplex,
+		Multiplex: client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
 			{
 				Name:     "arn",

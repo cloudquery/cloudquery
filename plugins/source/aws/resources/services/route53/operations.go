@@ -17,7 +17,7 @@ func Operations() *schema.Table {
 		Resolver:            fetchRoute53Operations,
 		PreResourceResolver: getOperation,
 		Transform:           transformers.TransformWithStruct(&route53domains.GetOperationDetailOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeys("OperationId", "Status", "SubmittedDate", "Type")),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("route53domains"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},
@@ -43,7 +43,7 @@ func getOperation(ctx context.Context, meta schema.ClientMeta, resource *schema.
 	svc := c.Services().Route53domains
 	v := resource.Item.(types.OperationSummary)
 
-	d, err := svc.GetOperationDetail(ctx, &route53domains.GetOperationDetailInput{OperationId: v.OperationId}, domainClientOpts)
+	d, err := svc.GetOperationDetail(ctx, &route53domains.GetOperationDetailInput{OperationId: v.OperationId})
 	if err != nil {
 		return err
 	}
