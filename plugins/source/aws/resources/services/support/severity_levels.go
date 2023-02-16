@@ -27,9 +27,9 @@ func SeverityLevels() *schema.Table {
 }
 
 func fetchSeverityLevels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	client := meta.(*client.Client)
-	svc := client.Services().Support
-	input := support.DescribeSeverityLevelsInput{Language: aws.String(client.LanguageCode)}
+	c := meta.(*client.Client)
+	svc := c.Services().Support
+	input := support.DescribeSeverityLevelsInput{Language: aws.String(c.LanguageCode)}
 
 	response, err := svc.DescribeSeverityLevels(ctx, &input)
 	if err != nil {
