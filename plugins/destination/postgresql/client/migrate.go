@@ -204,7 +204,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 	return nil
 }
 
-func (Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
+func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 	result := true
 	for _, change := range changes {
 		switch change.Type {
