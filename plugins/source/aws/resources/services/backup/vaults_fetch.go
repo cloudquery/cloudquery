@@ -102,10 +102,10 @@ func resolveVaultNotifications(ctx context.Context, meta schema.ClientMeta, reso
 	if err != nil {
 		// This is a service/SDK issue.
 		// Workaround is suggested here https://github.com/aws/aws-sdk-go-v2/issues/1885#issuecomment-1282663934
-		if !strings.Contains(err.Error(), " Failed reading notifications from database for Backup vault ") {
-			return err
+		if strings.Contains(err.Error(), " Failed reading notifications from database for Backup vault ") {
+			return nil
 		}
-		result = &backup.GetBackupVaultNotificationsOutput{}
+		return err
 	}
 	return resource.Set(col.Name, result)
 }
