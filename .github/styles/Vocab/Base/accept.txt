@@ -166,6 +166,7 @@ TFState
 trojan
 unbundle
 unencrypted
+unmanaged
 unmarshalling
 upsert
 upserted
