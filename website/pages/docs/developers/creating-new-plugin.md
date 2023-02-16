@@ -42,7 +42,7 @@ Multiplexers are a way to parallelize the fetching of data from the third-party 
 
 Some APIs lend themselves to being synced incrementally: rather than fetch all past data on every sync, an incremental table will only fetch data that has changed since the last sync. This is done by storing some metadata in a state **backend**. The metadata is known as a **cursor**, and it marks where the last sync ended, so that the next sync can resume from the same point. Incremental syncs can be vastly more efficient than full syncs, especially for tables with large amounts of data. This is because only the data that's changed since the last sync needs to be retrieved, and in many cases this is a small subset of the overall dataset.
 
-Incremental tables are great for efficiency, but add some additional complexity both on you and on your users. As the plugin author, you should consider first whether the table needs to be incremental, then whether it can be made to be incremental.
+Incremental tables are great for efficiency, but add some additional complexity both on you and on your users. As the plugin author, you should consider first whether the table needs to be incremental, then whether it can be made to be incremental. You can also [read more about managing incremental tables](/docs/advanced-topics/managing-incremental-tables).
 
 ## Creating Your First Plugin
 
@@ -184,7 +184,7 @@ In the above example, we used a `Client` struct that we haven't talked about yet
  
 ### Testing the Plugin
 
-There are two options for running a plugin before as a developer before it is released: as a gRPC server, or as a standalone binary.
+There are two options for running a plugin before as a developer before it is released: as a gRPC server, or as a standalone binary. We will briefly summarize both options here, or you can read about them in more detail in [Running Locally](/docs/developers/running-locally).
 
 #### Run the Plugin as a gRPC Server
 
@@ -272,18 +272,18 @@ Sometimes it is necessary, or useful, to add some additional information to a ta
 
 ```go
 func Comics() *schema.Table {
-    return &schema.Table{
-        Name:     "xkcd_comics",
-        Resolver: fetchComics,
-        Transform: transformers.TransformWithStruct(&xkcd.Comic{}),
-        Columns: []schema.Column{
-            {
-                Name:     "is_good",
-                Type:     schema.TypeBool,
-                Resolver: resolveComicIsGood,
-            },
-        },
-    }
+	return &schema.Table{
+		Name:     "xkcd_comics",
+		Resolver: fetchComics,
+		Transform: transformers.TransformWithStruct(&xkcd.Comic{}),
+		Columns: []schema.Column{
+			{
+				Name:     "is_good",
+				Type:     schema.TypeBool,
+				Resolver: resolveComicIsGood,
+			},
+		},
+	}
 }
 ```
 
@@ -291,9 +291,9 @@ The `Resolver` property is the function that will be called to resolve the colum
 
 ```go
 func resolveComicIsGood(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-    comic := resource.Item.(xkcd.Comic)
-    resource.Set(c.Name, strings.Contains(comic.Title, "XKCD"))
-    return nil
+	comic := resource.Item.(xkcd.Comic)
+	resource.Set(c.Name, strings.Contains(comic.Title, "XKCD"))
+	return nil
 }
 ```
 
@@ -333,18 +333,18 @@ func (c *Client) ID() string {
 }
 ```
 
-The exact format doesn't matter, as long as it is unique for every multiplexed value.
+The exact format doesn't matter, as long as it is unique for every multiplexed value. Some plugins also put include `spec.Name` in the ID, to help identify the plugin in scenarios where multiple instances are run in parallel.
 
 Now we can instruct the plugin SDK to use this multiplexer, where appropriate, by setting the `Multiplex` property on the table to `client.AccountMultiplex`:
 
 ```go
 func MyTable() *schema.Table {
-    return &schema.Table{
-        Name:     "sample_table",
-        Resolver: fetchSampleTable,
+	return &schema.Table{
+		Name:     "sample_table",
+		Resolver: fetchSampleTable,
 		Multiplex: client.AccountMultiplex,
 		// other properties ...
-    }
+	}
 }
 ```
 
@@ -352,9 +352,9 @@ Inside the `fetchSampleTable` resolver, we would then be able to get the current
 
 ```go
 func fetchSampleTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-    client := meta.(*Client)
-    account := client.Account
-    // ...
+	client := meta.(*Client)
+	account := client.Account
+	// ...
 }
 ``` 
 
