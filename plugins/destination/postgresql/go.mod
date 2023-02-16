@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/postgresql
 go 1.19
 
 require (
-	// github.com/cloudquery/plugin-sdk v1.37.1
+	github.com/cloudquery/plugin-sdk v1.38.0
 	github.com/jackc/pgx-zerolog v0.0.0-20230124015146-7c83b3e9b2bd
 	github.com/jackc/pgx/v5 v5.3.0
 	github.com/rs/zerolog v1.29.0
@@ -37,5 +37,3 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
-
-require github.com/cloudquery/plugin-sdk v1.37.2-0.20230216114250-dc3bedf7af75

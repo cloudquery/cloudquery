@@ -205,24 +205,23 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 }
 
 func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
-	result := true
 	for _, change := range changes {
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
 			if change.Current.CreationOptions.PrimaryKey || change.Current.CreationOptions.NotNull {
-				result = false
+				return false
 			}
 		case schema.TableColumnChangeTypeRemove:
 			if change.Previous.CreationOptions.PrimaryKey || change.Previous.CreationOptions.NotNull {
-				result = false
+				return false
 			}
 		case schema.TableColumnChangeTypeUpdate:
-			result = false
+			return false
 		default:
 			panic("unknown change type")
 		}
 	}
-	return result
+	return true
 }
 
 // normalize the requested schema to be compatible with what Postgres supports
