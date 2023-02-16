@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeTrustedAdvisorCheckResult.html
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **check_id**.
 
 ## Relations
 
@@ -14,11 +14,11 @@ This table depends on [aws_support_trusted_advisor_checks](aws_support_trusted_a
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
 |category_specific_summary|JSON|
-|check_id|String|
+|check_id (PK)|String|
 |flagged_resources|JSON|
 |resources_summary|JSON|
 |status|String|
