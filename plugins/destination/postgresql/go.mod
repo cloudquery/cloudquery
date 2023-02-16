@@ -38,4 +38,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-require github.com/cloudquery/plugin-sdk v1.37.2-0.20230216114250-dc3bedf7af75 // indirect
+require github.com/cloudquery/plugin-sdk v1.37.2-0.20230216114250-dc3bedf7af75
