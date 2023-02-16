@@ -14,7 +14,7 @@ func Users() *schema.Table {
 		Resolver:            fetchIamUsers,
 		PreResourceResolver: getUser,
 		Transform:           transformers.TransformWithStruct(&types.User{}),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
 			{
 				Name:     "arn",

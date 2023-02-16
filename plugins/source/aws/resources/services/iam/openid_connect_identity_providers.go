@@ -14,7 +14,7 @@ func OpenidConnectIdentityProviders() *schema.Table {
 		Resolver:            fetchIamOpenidConnectIdentityProviders,
 		PreResourceResolver: getOpenIdConnectIdentityProvider,
 		Transform:           transformers.TransformWithStruct(&models.IamOpenIdIdentityProviderWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
