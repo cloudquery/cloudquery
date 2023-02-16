@@ -13,7 +13,7 @@ func InstanceProfiles() *schema.Table {
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_InstanceProfile.html`,
 		Resolver:    fetchIamInstanceProfiles,
 		Transform:   transformers.TransformWithStruct(&types.InstanceProfile{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{

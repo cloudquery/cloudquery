@@ -13,7 +13,7 @@ func Accounts() *schema.Table {
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html`,
 		Resolver:    fetchOrganizationsAccounts,
 		Transform:   transformers.TransformWithStruct(&types.Account{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("organizations"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

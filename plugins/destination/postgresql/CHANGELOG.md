@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.10...plugins-destination-postgresql-v2.1.0) (2023-02-16)
+
+
+### Features
+
+* **pg:** Faster migrations ([#7819](https://github.com/cloudquery/cloudquery/issues/7819)) ([8f51733](https://github.com/cloudquery/cloudquery/commit/8f517337a48c25aa7471b7d1e9381a3188dc3c3b))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.36.0 ([#7809](https://github.com/cloudquery/cloudquery/issues/7809)) ([c85a9cb](https://github.com/cloudquery/cloudquery/commit/c85a9cb697477520e94a1fd260c56b89da62fc87))
+* Postgresql timestamps ([#7840](https://github.com/cloudquery/cloudquery/issues/7840)) ([e2c8b61](https://github.com/cloudquery/cloudquery/commit/e2c8b613696447602d052d0686b643a38694573c))
+
 ## [2.0.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.9...plugins-destination-postgresql-v2.0.10) (2023-02-08)
 
 
