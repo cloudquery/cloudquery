@@ -18,6 +18,9 @@ func fetchAccountAlternateContacts(ctx context.Context, meta schema.ClientMeta, 
 		input.AlternateContactType = acType
 		output, err := svc.GetAlternateContact(ctx, &input)
 		if err != nil {
+			if client.IsAWSError(err, "ResourceNotFoundException") {
+				continue
+			}
 			return err
 		}
 		res <- output.AlternateContact
