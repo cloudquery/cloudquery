@@ -17,7 +17,7 @@ func Operations() *schema.Table {
 		Resolver:            fetchRoute53Operations,
 		PreResourceResolver: getOperation,
 		Transform:           transformers.TransformWithStruct(&route53domains.GetOperationDetailOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeys("OperationId", "Status", "SubmittedDate", "Type")),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("route53domains"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},
