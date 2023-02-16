@@ -226,10 +226,11 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 
 // normalize the requested schema to be compatible with what Postgres supports
 func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
-	for _, table := range tables.FlattenTables() {
+	flattenedTables := tables.FlattenTables()
+	for _, table := range flattenedTables {
 		c.normalizeTable(table)
 	}
-	return tables
+	return flattenedTables
 }
 
 func (c *Client) nonAutoMigrableTables(tables schema.Tables, pgTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
