@@ -142,7 +142,7 @@ In our research, we found 3 types of resource-based policies with default versio
 * [AWS SNS Topics](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_sns_topics.md)
 * [AWS VPC Endpoints (Gateway Endpoint Policies only)](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_vpc_endpoints.md)
 
-The below table shows the AWS services we tested based on [AWS Services that work with IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-services-that-work-with-iam.html).  
+The below table shows the AWS services we tested based on [AWS Services that work with IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-services-that-work-with-iam.html).  From our research, we found some services default to `2012-10-17`, some services default to `2008-10-17`, some services default to empty policies (Empty), and some services did not support writing full IAM policy JSON.
 
 | AWS Service | Default Policy Version Element | Comments |
 | --------| ------------------------- | -------- |
@@ -171,7 +171,7 @@ The below table shows the AWS services we tested based on [AWS Services that wor
 | AWS Lex v2 | Empty | Console |
 | AWS OpenSearch | 2012 | Console |
 | AWS EventBridge Schemas | 2012 | Console |
-| AWS EventBridge | 2012 | Console |
+| AWS EventBridge Event Buses | 2012 | Console |
 | AWS Elemental MediaStore | 2012 | Console |
 | AWS CloudTrail | 2012| Console |
 
