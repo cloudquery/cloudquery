@@ -10,7 +10,7 @@ Logical Replication is a feature of PostgreSQL that allows you to stream changes
 
 In this document we won't go into details of how Logical Replication works internally, but we will show you how to enable it in number of environments and how to configure CloudQuery PostgreSQL source plugin that can stream the changes to any of [CloudQuery supported destinations](../../destinations/overview).
 
-Also, CloudQuery source plugin streams the changes directly to any of CQ destinaions without any need for additional infrastructure (e.g. Kafka, RabbitMQ, etc). This means the setup is much easier.
+Also, CloudQuery source plugin streams the changes directly to any of CQ destinations without any need for additional infrastructure (e.g. Kafka, RabbitMQ, etc). This means the setup is much easier.
 
 ## PSQL Test
 
@@ -46,11 +46,11 @@ You will need to create a custom RDS parameter group, associate it with your RDS
 
 See full resolution on [AWS documentation](https://aws.amazon.com/premiumsupport/knowledge-center/rds-postgresql-use-logical-replication/)
 
-## AWS Aurrora Serverless (V2)
+## AWS Aurora serverless (V2)
 
-AWS Aurrora Serverless V1 doesn't support Logical Replication, but V2 does.
+AWS Aurora serverless V1 doesn't support Logical Replication, but V2 does.
 
-Similar to RDS, you will need to create a custom parameter group, associate it with your Aurrora Serverless instance, set `rds.logical_replication` to `1` and restart the database.
+Similar to RDS, you will need to create a custom parameter group, associate it with your Aurora serverless instance, set `rds.logical_replication` to `1` and restart the database.
 
 See full resolution on [AWS documentation](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraPostgreSQL.Replication.Logical.html)
 
