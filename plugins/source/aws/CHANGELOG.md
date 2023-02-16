@@ -6,6 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [15.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v15.0.0...plugins-source-aws-v15.0.1) (2023-02-16)
+
+
+### Bug Fixes
+
+* **aws:** Use `credentialScope.region` if exists when generating regions data ([#8131](https://github.com/cloudquery/cloudquery/issues/8131)) ([915e829](https://github.com/cloudquery/cloudquery/commit/915e829e84bc8ff38dfe46c0288d5d90e93103e2))
+
+## [15.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v14.0.0...plugins-source-aws-v15.0.0) (2023-02-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** Step Function Executions And MapRuns ([#8130](https://github.com/cloudquery/cloudquery/issues/8130))
+* **aws:** Add `arn` to `aws_ec2_managed_prefix_lists` PK ([#8119](https://github.com/cloudquery/cloudquery/issues/8119))
+
+### Bug Fixes
+
+* **aws:** Add `arn` to `aws_ec2_managed_prefix_lists` PK ([#8119](https://github.com/cloudquery/cloudquery/issues/8119)) ([148b06c](https://github.com/cloudquery/cloudquery/commit/148b06ce82be72bc9cf78af95743c2988d4a8263))
+* **aws:** Step Function Executions And MapRuns ([#8130](https://github.com/cloudquery/cloudquery/issues/8130)) ([21e4ea1](https://github.com/cloudquery/cloudquery/commit/21e4ea1cbcfe0ca1112ea7f2a01c9a860e72d2e2))
+
 ## [14.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v13.3.0...plugins-source-aws-v14.0.0) (2023-02-14)
 
 

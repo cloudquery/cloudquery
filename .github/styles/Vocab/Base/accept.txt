@@ -136,6 +136,7 @@ README
 recurse
 runtime
 runtimes
+Scaleway
 SCP
 SCPs
 sdk
@@ -156,6 +157,7 @@ subpolicies
 subpolicy
 subquery
 Superset
+Swetrix
 tailnet
 Tailscale
 tfstate
