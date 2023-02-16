@@ -1,6 +1,8 @@
 package organizations
 
 import (
+	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -12,31 +14,19 @@ func Organizations() *schema.Table {
 		Name:      "github_organizations",
 		Resolver:  fetchOrganizations,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.Organization{}, client.SharedTransformers()...),
-		Columns: []schema.Column{
-			{
-				Name:        "org",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
-				Description: `The Github Organization of the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
-
-		Relations: []*schema.Table{
-			Alerts(),
-			Secrets(),
-			Members(),
-		},
+		Transform: transformers.TransformWithStruct(&github.Organization{},
+			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
+		Columns:   []schema.Column{client.OrgColumn},
+		Relations: []*schema.Table{alerts(), members(), secrets()},
 	}
+}
+
+func fetchOrganizations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	org, _, err := c.Github.Organizations.Get(ctx, c.Org)
+	if err != nil {
+		return err
+	}
+	res <- org
+	return nil
 }

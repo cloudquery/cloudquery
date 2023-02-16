@@ -2,6 +2,7 @@ package client
 
 import (
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -78,9 +79,17 @@ func TestReplacePathVariables(t *testing.T) {
 			uuid:         "FAKE-UUID",
 			expectedPath: "test/test/FAKE-UUID.json",
 		},
+		{
+			inputPath:    "test/test/{{TABLE}}/year={{YEAR}}/month={{MONTH}}/day={{DAY}}/hour={{HOUR}}/minute={{MINUTE}}/{{UUID}}.json",
+			tableName:    "test-table",
+			uuid:         "FAKE-UUID",
+			expectedPath: "test/test/test-table/year=2021/month=03/day=05/hour=04/minute=01/FAKE-UUID.json",
+		},
 	}
+
+	tm := time.Date(2021, 3, 5, 4, 1, 2, 3, time.UTC)
 	for _, tc := range cases {
-		if diff := cmp.Diff(tc.expectedPath, replacePathVariables(tc.inputPath, tc.tableName, tc.uuid)); diff != "" {
+		if diff := cmp.Diff(tc.expectedPath, replacePathVariables(tc.inputPath, tc.tableName, tc.uuid, tm)); diff != "" {
 			t.Errorf("unexpected Path Substitution (-want +got):\n%s", diff)
 		}
 	}

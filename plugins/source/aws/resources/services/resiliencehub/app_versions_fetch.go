@@ -2,6 +2,7 @@ package resiliencehub
 
 import (
 	"context"
+
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"

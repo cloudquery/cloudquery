@@ -2,12 +2,10 @@ package rds
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/mitchellh/hashstructure/v2"
 )
 
 func fetchRdsEngineVersions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
@@ -25,11 +23,4 @@ func fetchRdsEngineVersions(ctx context.Context, meta schema.ClientMeta, _ *sche
 		res <- response.DBEngineVersions
 	}
 	return nil
-}
-func calculateUniqueHash(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	hash, err := hashstructure.Hash(resource.Item, hashstructure.FormatV2, nil)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, fmt.Sprint(hash))
 }
