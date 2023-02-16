@@ -22,11 +22,6 @@ func stackResources() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("id"),
 			},
-			{
-				Name:     "stack_name",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("stack_name"),
-			},
 		},
 	}
 }
