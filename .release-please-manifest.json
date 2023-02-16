@@ -1,7 +1,7 @@
 {
   "cli": "2.3.9",
   "cli+FILLER": "0.0.0",
-  "plugins/source/aws": "15.0.0",
+  "plugins/source/aws": "15.0.1",
   "plugins/source/aws+FILLER": "0.0.0",
   "plugins/source/aws-pricing": "0.0.0",
   "plugins/source/aws-pricing+FILLER": "0.0.0",  
