@@ -1,6 +1,6 @@
 # Okta Plugin
 
-The CloudQuery Okta plugin extracts Okta resources configurations and loads them into any supported CloudQuery destination (e.g. PostgreSQL).
+The CloudQuery Okta plugin extracts Okta resources configurations and loads them into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://www.cloudquery.io/docs/plugins/destinations/overview)).
 
 ## Links
 
