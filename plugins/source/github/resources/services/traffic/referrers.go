@@ -15,11 +15,9 @@ func Referrers() *schema.Table {
 		Description: "https://docs.github.com/en/rest/metrics/traffic?apiVersion=2022-11-28#get-top-referral-sources",
 		Resolver:    fetchReferrers,
 		Multiplex:   client.OrgRepositoryMultiplex,
-		Transform:   transformers.TransformWithStruct(&github.TrafficReferrer{}, append(client.SharedTransformers(), transformers.WithPrimaryKeys("Referrer"))...),
-		Columns: []schema.Column{
-			client.OrgColumn,
-			client.RepositoryIdColumn,
-		},
+		Transform: transformers.TransformWithStruct(&github.TrafficReferrer{},
+			append(client.SharedTransformers(), transformers.WithPrimaryKeys("Referrer"))...),
+		Columns: []schema.Column{client.OrgColumn, client.RepositoryIDColumn},
 	}
 }
 

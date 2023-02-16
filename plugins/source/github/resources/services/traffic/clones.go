@@ -16,10 +16,7 @@ func Clones() *schema.Table {
 		Resolver:    fetchClones,
 		Multiplex:   client.OrgRepositoryMultiplex,
 		Transform:   transformers.TransformWithStruct(&github.TrafficClones{}, client.SharedTransformers()...),
-		Columns: []schema.Column{
-			client.OrgColumn,
-			client.RepositoryIdColumn,
-		},
+		Columns:     []schema.Column{client.OrgColumn, client.RepositoryIDColumn},
 	}
 }
 

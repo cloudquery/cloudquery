@@ -17,6 +17,9 @@ func VirtualNetworks() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_networks", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualNetwork{}, transformers.WithPrimaryKeys("ID")),
 		Columns:     schema.ColumnList{client.SubscriptionID},
+		Relations: []*schema.Table{
+			virtualNetworkSubnets(),
+		},
 	}
 }
 

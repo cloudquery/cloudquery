@@ -427,7 +427,6 @@ func tables() []*schema.Table {
 		ssm.PatchBaselines(),
 		ssoadmin.Instances(),
 		stepfunctions.Activities(),
-		stepfunctions.Executions(),
 		stepfunctions.StateMachines(),
 		timestream.Databases(),
 		transfer.Servers(),

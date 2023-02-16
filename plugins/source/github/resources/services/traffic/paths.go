@@ -16,10 +16,7 @@ func Paths() *schema.Table {
 		Resolver:    fetchPaths,
 		Multiplex:   client.OrgRepositoryMultiplex,
 		Transform:   transformers.TransformWithStruct(&github.TrafficPath{}, append(client.SharedTransformers(), transformers.WithPrimaryKeys("Path"))...),
-		Columns: []schema.Column{
-			client.OrgColumn,
-			client.RepositoryIdColumn,
-		},
+		Columns:     []schema.Column{client.OrgColumn, client.RepositoryIDColumn},
 	}
 }
 
