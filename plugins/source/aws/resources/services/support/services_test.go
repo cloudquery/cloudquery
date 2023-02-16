@@ -20,8 +20,7 @@ func buildServices(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	supportLanguageCodes := []string{"en", "ja"}
-	for _, languageCode := range supportLanguageCodes {
+	for _, languageCode := range servicesSupportedLanguageCodes {
 		m.EXPECT().DescribeServices(gomock.Any(), &support.DescribeServicesInput{Language: aws.String(languageCode)}).Return(&support.DescribeServicesOutput{Services: services}, nil)
 	}
 

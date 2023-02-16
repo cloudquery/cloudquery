@@ -11,13 +11,15 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
+var servicesSupportedLanguageCodes = []string{"en", "ja"}
+
 func Services() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_support_services",
 		Description: `https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeServices.html`,
 		Resolver:    fetchServices,
 		Transform:   transformers.TransformWithStruct(&types.Service{}, transformers.WithPrimaryKeys("Code")),
-		Multiplex:   client.ServiceAccountRegionsLanguageCodeMultiplex("support", []string{"en", "ja"}),
+		Multiplex:   client.ServiceAccountRegionsLanguageCodeMultiplex("support", servicesSupportedLanguageCodes),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

@@ -20,8 +20,7 @@ func buildSeverityLevels(t *testing.T, ctrl *gomock.Controller) client.Services 
 		t.Fatal(err)
 	}
 
-	supportLanguageCodes := []string{"en", "ja"}
-	for _, languageCode := range supportLanguageCodes {
+	for _, languageCode := range severitySupportedLanguageCodes {
 		m.EXPECT().DescribeSeverityLevels(gomock.Any(), &support.DescribeSeverityLevelsInput{Language: aws.String(languageCode)}).Return(&support.DescribeSeverityLevelsOutput{SeverityLevels: levels}, nil)
 	}
 

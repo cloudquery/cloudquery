@@ -20,8 +20,7 @@ func buildTrustedAdvisorChecks(t *testing.T, ctrl *gomock.Controller) client.Ser
 		t.Fatal(err)
 	}
 
-	supportLanguageCodes := []string{"en", "fr", "de", "id", "it", "ja", "ko", "pt_BR", "es", "zh", "zh_TW"}
-	for _, languageCode := range supportLanguageCodes {
+	for _, languageCode := range checksSupportedLanguageCodes {
 		m.EXPECT().DescribeTrustedAdvisorChecks(gomock.Any(), &support.DescribeTrustedAdvisorChecksInput{Language: aws.String(languageCode)}).
 			Return(&support.DescribeTrustedAdvisorChecksOutput{Checks: checks}, nil)
 	}

@@ -122,10 +122,9 @@ func (c *Client) ID() string {
 		c.Region,
 		c.AutoscalingNamespace,
 		string(c.WAFScope),
+		c.LanguageCode,
 	}
-	if c.LanguageCode != "" {
-		idStrings = append(idStrings, c.LanguageCode)
-	}
+
 	return strings.TrimRight(strings.Join(idStrings, ":"), ":")
 }
 

@@ -11,13 +11,15 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
+var severitySupportedLanguageCodes = []string{"en", "ja"}
+
 func SeverityLevels() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_support_severity_levels",
 		Description: `https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeSeverityLevels.html`,
 		Resolver:    fetchSeverityLevels,
 		Transform:   transformers.TransformWithStruct(&types.SeverityLevel{}, transformers.WithPrimaryKeys("Code")),
-		Multiplex:   client.ServiceAccountRegionsLanguageCodeMultiplex("support", []string{"en", "ja"}),
+		Multiplex:   client.ServiceAccountRegionsLanguageCodeMultiplex("support", severitySupportedLanguageCodes),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

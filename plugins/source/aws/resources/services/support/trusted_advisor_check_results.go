@@ -20,7 +20,9 @@ func trustedAdvisorCheckResults() *schema.Table {
 		Resolver:    fetchTrustedAdvisorCheckResults,
 		Transform:   transformers.TransformWithStruct(&types.TrustedAdvisorCheckResult{}, transformers.WithPrimaryKeys("CheckId")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
+			client.LanguageCodeColumn(true),
 		},
 	}
 }
