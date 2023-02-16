@@ -13,7 +13,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 ## Overview
 
-The AWS Identity and Access Management (IAM) service is used to securely control access to AWS resources and can be expressed in JSON as [IAM policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html).  used is expressed in JSON.  The `Version` element of the JSON policy specifies which language syntax rules are used when processing the policy.  
+The AWS Identity and Access Management (IAM) service is used to securely control access to AWS resources and can be expressed in JSON as [IAM policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html).  The `Version` element of the JSON policy specifies which language syntax rules are used when processing the policy.  
 
 There are 2 possible `Version` element values: `2012-10-17` and `2008-10-17`.  The `2008-10-17` version is an earlier version that does not support newer features such as policy variables and AWS [recommends not to use this version for any new policies or when updating existing policies.](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_version.html)  After going through all services that support IAM resource-based policies and identity-based policies, we found multiple AWS services that used the legacy `2008-10-17` policy version, including Gateway VPC Endpoint Policies, SNS Topic Policies, and SQS Queue Policies.
 
