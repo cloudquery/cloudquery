@@ -17,11 +17,11 @@ func getTestConnection() string {
 }
 
 var strategy = destination.MigrateStrategy{
-	AddColumn: specs.MigrateModeSafe,
-	AddColumnNotNull: specs.MigrateModeForced,
-	RemoveColumn: specs.MigrateModeSafe,
+	AddColumn:           specs.MigrateModeSafe,
+	AddColumnNotNull:    specs.MigrateModeForced,
+	RemoveColumn:        specs.MigrateModeSafe,
 	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn: specs.MigrateModeForced,
+	ChangeColumn:        specs.MigrateModeForced,
 }
 
 func TestPgPlugin(t *testing.T) {
@@ -35,6 +35,6 @@ func TestPgPlugin(t *testing.T) {
 		},
 		destination.PluginTestSuiteTests{
 			MigrateStrategyOverwrite: strategy,
-			MigrateStrategyAppend: strategy,
+			MigrateStrategyAppend:    strategy,
 		})
 }
