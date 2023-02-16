@@ -25,3 +25,14 @@ func DefaultRegionColumn(pk bool) schema.Column {
 		},
 	}
 }
+
+func LanguageCodeColumn(pk bool) schema.Column {
+	return schema.Column{
+		Name:     "language_code",
+		Type:     schema.TypeString,
+		Resolver: ResolveLanguageCode,
+		CreationOptions: schema.ColumnCreationOptions{
+			PrimaryKey: pk,
+		},
+	}
+}
