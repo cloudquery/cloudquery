@@ -333,7 +333,7 @@ func (c *Client) ID() string {
 }
 ```
 
-The exact format doesn't matter, as long as it is unique for every multiplexed value. Some plugins also put include `spec.Name` in the ID, to help identify the plugin in scenarios where multiple instances are run in parallel.
+The exact format doesn't matter, as long as it is unique for every multiplexed value. Some plugins also include `spec.Name` in the ID, to help identify the plugin in scenarios where multiple instances are run in parallel.
 
 Now we can instruct the plugin SDK to use this multiplexer, where appropriate, by setting the `Multiplex` property on the table to `client.AccountMultiplex`:
 
