@@ -48,7 +48,7 @@ func resolveRoute53DomainTags(ctx context.Context, meta schema.ClientMeta, resou
 	c := meta.(*client.Client)
 	svc := c.Services().Route53domains
 	d := resource.Item.(*route53domains.GetDomainDetailOutput)
-	out, err := svc.ListTagsForDomain(ctx, &route53domains.ListTagsForDomainInput{DomainName: d.DomainName}, domainClientOpts)
+	out, err := svc.ListTagsForDomain(ctx, &route53domains.ListTagsForDomainInput{DomainName: d.DomainName})
 	if err != nil {
 		return err
 	}
