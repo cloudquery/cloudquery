@@ -61,11 +61,11 @@ There are 4 types of identity-based policies that we will take a look at:
 
 AWS has controls that block the creation of IAM managed policies with legacy policy versions.  The following screenshots show the mechanisms for blocking a policy created without `2012-10-17` specified in the policy version.  In console, an error message pops up about the version string.
 
-![AWS Console Message for Policy Version](/images/blog/finding-outdated-aws-iam-policy-version-elements/invalid-policy.png)
+![AWS Console Message for Policy Version](/images/blog/outdated-aws-iam-policy-language/invalid-policy.png)
 
 With the AWS CLI, we get a `MalformedPolicyDocument`` error:
 
-![AWS CLI Error for Policy Version](/images/blog/finding-outdated-aws-iam-policy-version-elements/cli-invalid-policy.png)
+![AWS CLI Error for Policy Version](/images/blog/outdated-aws-iam-policy-language/cli-invalid-policy.png)
 
 However, these controls are inconsistent and do not apply to inline policies.  Inline policies still can be created with legacy policy versions of `2008-10-17` or with no `Version` specified.    
 
