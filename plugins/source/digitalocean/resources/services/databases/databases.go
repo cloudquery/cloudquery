@@ -23,9 +23,9 @@ func Databases() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			FirewallRules(),
-			Replicas(),
-			Backups(),
+			firewallRules(),
+			replicas(),
+			backups(),
 		},
 	}
 }

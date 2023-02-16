@@ -18,16 +18,9 @@ func Organizations() *schema.Table {
 				"AvailablePolicyTypes", // deprecated and misleading field according to docs
 			),
 		),
-		Multiplex: client.AccountMultiplex,
+		Multiplex: client.ServiceAccountRegionMultiplexer("organizations"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

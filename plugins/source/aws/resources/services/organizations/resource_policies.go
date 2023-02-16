@@ -13,16 +13,9 @@ func ResourcePolicies() *schema.Table {
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_DescribeResourcePolicy.html`,
 		Resolver:    fetchOrganizationsResourcePolicies,
 		Transform:   transformers.TransformWithStruct(&types.ResourcePolicy{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("organizations"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
 		},
 	}
 }

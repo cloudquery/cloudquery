@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |state_transition_reason_time|Timestamp|
+|tags|JSON|
 |ami_launch_index|Int|
 |architecture|String|
 |block_device_mappings|JSON|
@@ -66,7 +67,6 @@ The primary key for this table is **arn**.
 |state_reason|JSON|
 |state_transition_reason|String|
 |subnet_id|String|
-|tags|JSON|
 |tpm_support|String|
 |usage_operation|String|
 |usage_operation_update_time|Timestamp|

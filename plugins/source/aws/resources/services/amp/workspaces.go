@@ -16,16 +16,8 @@ func Workspaces() *schema.Table {
 		Multiplex:           client.ServiceAccountRegionMultiplexer("amp"),
 		Transform:           transformers.TransformWithStruct(&types.WorkspaceDescription{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "alert_manager_definition",
 				Type:     schema.TypeJSON,

@@ -13,13 +13,9 @@ func UserGroups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html`,
 		Resolver:    fetchIamUserGroups,
 		Transform:   transformers.TransformWithStruct(&types.Group{}, transformers.WithPrimaryKeys("Arn")),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "user_arn",
 				Type:     schema.TypeString,

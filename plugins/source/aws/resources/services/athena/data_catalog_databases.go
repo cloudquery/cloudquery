@@ -15,16 +15,8 @@ func DataCatalogDatabases() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("athena"),
 		Transform:   transformers.TransformWithStruct(&types.Database{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "data_catalog_arn",
 				Type:     schema.TypeString,

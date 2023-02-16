@@ -14,16 +14,9 @@ func Roles() *schema.Table {
 		Resolver:            fetchIamRoles,
 		PreResourceResolver: getRole,
 		Transform:           transformers.TransformWithStruct(&types.Role{}),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "policies",
 				Type:     schema.TypeJSON,

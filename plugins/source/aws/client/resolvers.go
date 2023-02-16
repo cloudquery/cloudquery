@@ -2,9 +2,11 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"reflect"
 
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/mitchellh/hashstructure/v2"
 )
 
 func ResolveAWSAccount(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
@@ -22,8 +24,18 @@ func ResolveAWSNamespace(_ context.Context, meta schema.ClientMeta, r *schema.Re
 	return r.Set(c.Name, client.AutoscalingNamespace)
 }
 
+func ResolveAWSPartition(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+	client := meta.(*Client)
+	return r.Set(c.Name, client.Partition)
+}
+
 func ResolveWAFScope(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	return r.Set(c.Name, meta.(*Client).WAFScope)
+}
+
+func ResolveLanguageCode(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+	client := meta.(*Client)
+	return r.Set(c.Name, client.LanguageCode)
 }
 
 func ResolveTags(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
@@ -52,4 +64,12 @@ func ResolveTagField(fieldName string) func(context.Context, schema.ClientMeta, 
 		data := TagsToMap(f.Interface())
 		return r.Set(c.Name, data)
 	}
+}
+
+func ResolveObjectHash(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+	hash, err := hashstructure.Hash(r.Item, hashstructure.FormatV2, nil)
+	if err != nil {
+		return err
+	}
+	return r.Set(c.Name, fmt.Sprint(hash))
 }

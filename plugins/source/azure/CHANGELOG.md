@@ -5,6 +5,37 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v4.1.0...plugins-source-azure-v4.1.1) (2023-02-14)
+
+
+### Bug Fixes
+
+* **azure:** Fix detecting logic for CIS Azure Benchmark v1.3.0 - 2.12 ([#7807](https://github.com/cloudquery/cloudquery/issues/7807)) ([56b7ee2](https://github.com/cloudquery/cloudquery/commit/56b7ee2736e1fb267098eba4dd13bd27301cf7c3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.36.0 ([#7809](https://github.com/cloudquery/cloudquery/issues/7809)) ([c85a9cb](https://github.com/cloudquery/cloudquery/commit/c85a9cb697477520e94a1fd260c56b89da62fc87))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.36.1 ([#7930](https://github.com/cloudquery/cloudquery/issues/7930)) ([39dccc1](https://github.com/cloudquery/cloudquery/commit/39dccc1bf81f4eb02d181ba0c47b37038a4c5455))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.0 ([#7933](https://github.com/cloudquery/cloudquery/issues/7933)) ([dc9cffb](https://github.com/cloudquery/cloudquery/commit/dc9cffbf37bbc6fae73a20bf47e6bbf17e74d1f9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.1 ([#8008](https://github.com/cloudquery/cloudquery/issues/8008)) ([c47aac0](https://github.com/cloudquery/cloudquery/commit/c47aac0b5e3190a04299713651b97e360043911f))
+
+## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v4.0.0...plugins-source-azure-v4.1.0) (2023-02-07)
+
+
+### Features
+
+* **azure-resources:** Add Virtual Network Gateways and Connections ([#7636](https://github.com/cloudquery/cloudquery/issues/7636)) ([97a9254](https://github.com/cloudquery/cloudquery/commit/97a9254ba557d2920c5780c9d5c1bd527ab00571))
+
+
+### Bug Fixes
+
+* **azure-resources:** Use default API version of `armhealthbot` bots client ([#7177](https://github.com/cloudquery/cloudquery/issues/7177)) ([e24af94](https://github.com/cloudquery/cloudquery/commit/e24af94dd8b10056a1ef7a48111236d903dcb025))
+* **azure:** Fix Azure CIS Policies in Section 2 ([#7718](https://github.com/cloudquery/cloudquery/issues/7718)) ([3c77b2c](https://github.com/cloudquery/cloudquery/commit/3c77b2c68ba0b8eb2d13e5a3d421d3f9874cbb1e))
+* **deps:** Update golang.org/x/exp digest to f062dba ([#7531](https://github.com/cloudquery/cloudquery/issues/7531)) ([59d5575](https://github.com/cloudquery/cloudquery/commit/59d55758b0951553b8d246d1e78b4e3917ff1976))
+* **deps:** Update google.golang.org/genproto digest to 1c01626 ([#7533](https://github.com/cloudquery/cloudquery/issues/7533)) ([c549c27](https://github.com/cloudquery/cloudquery/commit/c549c275077f1cdfb9df0b3f3c129cbf0b150552))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azidentity to v1.2.1 ([#7540](https://github.com/cloudquery/cloudquery/issues/7540)) ([3b5c838](https://github.com/cloudquery/cloudquery/commit/3b5c83832064d729ad1097728f7d12aedbbb9400))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.0 ([#7595](https://github.com/cloudquery/cloudquery/issues/7595)) ([c5adc75](https://github.com/cloudquery/cloudquery/commit/c5adc750d4b0242563997c04c582f8da27913095))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.1 ([#7614](https://github.com/cloudquery/cloudquery/issues/7614)) ([2fe665c](https://github.com/cloudquery/cloudquery/commit/2fe665cdd80d88c5699bb203bd7accd604dfba99))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.34.0 ([#7719](https://github.com/cloudquery/cloudquery/issues/7719)) ([6a33085](https://github.com/cloudquery/cloudquery/commit/6a33085c75adcf2387f7bbb5aa4f7a84ce7e2957))
+* **deps:** Update module github.com/golang-jwt/jwt/v4 to v4.4.3 ([#7543](https://github.com/cloudquery/cloudquery/issues/7543)) ([0607454](https://github.com/cloudquery/cloudquery/commit/060745428eda5839be801c153c2f7261fcc54abd))
+
 ## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v3.5.0...plugins-source-azure-v4.0.0) (2023-01-31)
 
 

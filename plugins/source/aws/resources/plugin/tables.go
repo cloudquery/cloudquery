@@ -5,6 +5,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/account"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acm"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amp"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amplify"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
@@ -68,6 +69,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ram"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/rds"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/redshift"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resiliencehub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
@@ -85,6 +87,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssm"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssoadmin"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/stepfunctions"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/support"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/timestream"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/transfer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/waf"
@@ -102,6 +105,7 @@ func tables() []*schema.Table {
 		account.Contacts(),
 		acm.Certificates(),
 		amp.Workspaces(),
+		amplify.Apps(),
 		apigateway.ApiKeys(),
 		apigateway.ClientCertificates(),
 		apigateway.DomainNames(),
@@ -159,6 +163,7 @@ func tables() []*schema.Table {
 		directconnect.Connections(),
 		directconnect.Gateways(),
 		directconnect.Lags(),
+		directconnect.Locations(),
 		directconnect.VirtualGateways(),
 		directconnect.VirtualInterfaces(),
 		dms.ReplicationInstances(),
@@ -173,33 +178,36 @@ func tables() []*schema.Table {
 		docdb.EventCategories(),
 		docdb.PendingMaintenanceActions(),
 		dynamodb.Tables(),
+		ec2.AvailabilityZones(),
 		ec2.ByoipCidrs(),
 		ec2.CustomerGateways(),
 		ec2.EbsSnapshots(),
 		ec2.EbsVolumes(),
+		ec2.EbsVolumesStatuses(),
 		ec2.EgressOnlyInternetGateways(),
 		ec2.Eips(),
 		ec2.FlowLogs(),
 		ec2.Hosts(),
 		ec2.Images(),
-		ec2.InstanceStatuses(),
 		ec2.Instances(),
+		ec2.InstanceStatuses(),
 		ec2.InstanceTypes(),
 		ec2.InternetGateways(),
 		ec2.KeyPairs(),
+		ec2.ManagedPrefixLists(),
 		ec2.NatGateways(),
 		ec2.NetworkAcls(),
 		ec2.NetworkInterfaces(),
-		ec2.Regions(),
 		ec2.RegionalConfigs(),
+		ec2.Regions(),
 		ec2.ReservedInstances(),
 		ec2.RouteTables(),
 		ec2.SecurityGroups(),
 		ec2.Subnets(),
 		ec2.TransitGateways(),
+		ec2.VpcEndpoints(),
 		ec2.VpcEndpointServiceConfigurations(),
 		ec2.VpcEndpointServices(),
-		ec2.VpcEndpoints(),
 		ec2.VpcPeeringConnections(),
 		ec2.Vpcs(),
 		ec2.VpnGateways(),
@@ -213,16 +221,18 @@ func tables() []*schema.Table {
 		eks.Clusters(),
 		elasticache.Clusters(),
 		elasticache.EngineVersions(),
+		elasticache.Events(),
 		elasticache.GlobalReplicationGroups(),
 		elasticache.ParameterGroups(),
 		elasticache.ReplicationGroups(),
-		elasticache.ReservedCacheNodesOfferings(),
 		elasticache.ReservedCacheNodes(),
+		elasticache.ReservedCacheNodesOfferings(),
 		elasticache.ServiceUpdates(),
 		elasticache.Snapshots(),
+		elasticache.SubnetGroups(),
+		elasticache.UpdateActions(),
 		elasticache.UserGroups(),
 		elasticache.Users(),
-		elasticache.SubnetGroups(),
 		elasticbeanstalk.ApplicationVersions(),
 		elasticbeanstalk.Applications(),
 		elasticbeanstalk.Environments(),
@@ -237,6 +247,7 @@ func tables() []*schema.Table {
 		elbv2.TargetGroups(),
 		emr.BlockPublicAccessConfigs(),
 		emr.Clusters(),
+		emr.SecurityConfigurations(),
 		eventbridge.EventBuses(),
 		eventbridge.ApiDestinations(),
 		eventbridge.Archives(),
@@ -369,11 +380,16 @@ func tables() []*schema.Table {
 		redshift.EventSubscriptions(),
 		redshift.SubnetGroups(),
 		resourcegroups.ResourceGroups(),
+		resiliencehub.Apps(),
+		resiliencehub.ResiliencyPolicies(),
+		resiliencehub.SuggestedResiliencyPolicies(),
 		route53.DelegationSets(),
 		route53.Domains(),
 		route53.HealthChecks(),
 		route53.HostedZones(),
+		route53.Operations(),
 		route53.TrafficPolicies(),
+		s3.AccessPoints(),
 		s3.Accounts(),
 		s3.Buckets(),
 		sagemaker.EndpointConfigurations(),
@@ -411,7 +427,12 @@ func tables() []*schema.Table {
 		ssm.InventorySchemas(),
 		ssm.PatchBaselines(),
 		ssoadmin.Instances(),
+		stepfunctions.Activities(),
 		stepfunctions.StateMachines(),
+		support.Cases(),
+		support.Services(),
+		support.SeverityLevels(),
+		support.TrustedAdvisorChecks(),
 		timestream.Databases(),
 		transfer.Servers(),
 		wafregional.RateBasedRules(),

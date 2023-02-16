@@ -5,10 +5,13 @@ import (
 	"reflect"
 	"runtime"
 
+	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
+
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/account"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/amp"
+	"github.com/aws/aws-sdk-go-v2/service/amplify"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
@@ -94,6 +97,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
+	"github.com/aws/aws-sdk-go-v2/service/support"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
@@ -110,6 +114,7 @@ var clients = []any{
 	&account.Client{},
 	&acm.Client{},
 	&amp.Client{},
+	&amplify.Client{},
 	&apigateway.Client{},
 	&apigatewayv2.Client{},
 	&applicationautoscaling.Client{},
@@ -175,6 +180,7 @@ var clients = []any{
 	&rds.Client{},
 	&redshift.Client{},
 	&resourcegroups.Client{},
+	&resiliencehub.Client{},
 	&route53.Client{},
 	&route53domains.Client{},
 	&s3.Client{},
@@ -195,6 +201,7 @@ var clients = []any{
 	&sqs.Client{},
 	&ssm.Client{},
 	&ssoadmin.Client{},
+	&support.Client{},
 	&timestreamwrite.Client{},
 	&transfer.Client{},
 	&waf.Client{},

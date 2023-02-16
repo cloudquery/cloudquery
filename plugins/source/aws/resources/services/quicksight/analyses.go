@@ -13,32 +13,8 @@ func Analyses() *schema.Table {
 		Description:         "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Analysis.html",
 		Resolver:            fetchQuicksightAnalyses,
 		PreResourceResolver: getAnalysis,
-		Transform:           transformers.TransformWithStruct(&types.Analysis{}),
+		Transform:           transformers.TransformWithStruct(&types.Analysis{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer("quicksight"),
-		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveTags(),
-			},
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Columns:             []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true), tagsCol},
 	}
 }

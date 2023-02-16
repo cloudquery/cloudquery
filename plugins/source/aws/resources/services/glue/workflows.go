@@ -16,16 +16,8 @@ func Workflows() *schema.Table {
 		Transform:           transformers.TransformWithStruct(&types.Workflow{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer("glue"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

@@ -15,16 +15,8 @@ func Stacks() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudformation"),
 		Transform:   transformers.TransformWithStruct(&types.Stack{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
@@ -37,6 +29,11 @@ func Stacks() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 

@@ -13,13 +13,9 @@ func HostedZoneResourceRecordSets() *schema.Table {
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_ResourceRecordSet.html`,
 		Resolver:    fetchRoute53HostedZoneResourceRecordSets,
 		Transform:   transformers.TransformWithStruct(&types.ResourceRecordSet{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("route53"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "hosted_zone_arn",
 				Type:     schema.TypeString,

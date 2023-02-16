@@ -13,13 +13,9 @@ func Protections() *schema.Table {
 		Description: `https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_Protection.html`,
 		Resolver:    fetchShieldProtections,
 		Transform:   transformers.TransformWithStruct(&types.Protection{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("shield"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

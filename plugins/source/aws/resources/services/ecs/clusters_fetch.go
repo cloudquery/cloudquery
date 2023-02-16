@@ -77,6 +77,26 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 	return nil
 }
 
+func fetchEcsClusterTaskSets(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- any) error {
+	cluster := resource.Parent.Item.(types.Cluster)
+	service := resource.Item.(types.Service)
+
+	svc := meta.(*client.Client).Services().Ecs
+	config := ecs.DescribeTaskSetsInput{
+		Cluster: cluster.ClusterArn,
+		Service: service.ServiceArn,
+		Include: []types.TaskSetField{types.TaskSetFieldTags},
+	}
+
+	taskSets, err := svc.DescribeTaskSets(ctx, &config)
+	if err != nil {
+		return err
+	}
+
+	res <- taskSets.TaskSets
+	return nil
+}
+
 func getEcsTaskProtection(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	svc := meta.(*client.Client).Services().Ecs
 	task := resource.Item.(types.Task)

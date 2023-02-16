@@ -64,7 +64,15 @@ Tables to sync from the source plugin. It accepts wildcards. For example, to mat
 
 (`[]string`, optional, default: `[]`)
 
-Useful when using wildcards in `tables`. Specify which tables to skip when syncing the source plugin. Note that if a table with dependencies is skipped, all its dependant tables will also be skipped.
+Specify which tables to skip when syncing the source plugin. It accepts wildcards. This config is useful when using wildcards in `tables`, or when you wish to skip dependent tables. Note that if a table with dependencies is skipped, all its dependant tables will also be skipped.
+
+<!-- vale off -->
+### skip_dependent_tables
+<!-- vale on -->
+
+(`bool`, optional, default: `false`, introduced in CLI `v2.3.7`)
+
+If set to `true`, tables that depend on the tables specified in `tables` will not be synced, unless specifically selected themselves. This allows you to choose precisely which tables to sync, and prevents automatically syncing new dependent tables that may be added to the plugin in future versions.
 
 ### destinations
 

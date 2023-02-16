@@ -1,5 +1,37 @@
 # Changelog
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.10...plugins-destination-postgresql-v2.1.0) (2023-02-16)
+
+
+### Features
+
+* **pg:** Faster migrations ([#7819](https://github.com/cloudquery/cloudquery/issues/7819)) ([8f51733](https://github.com/cloudquery/cloudquery/commit/8f517337a48c25aa7471b7d1e9381a3188dc3c3b))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.36.0 ([#7809](https://github.com/cloudquery/cloudquery/issues/7809)) ([c85a9cb](https://github.com/cloudquery/cloudquery/commit/c85a9cb697477520e94a1fd260c56b89da62fc87))
+* Postgresql timestamps ([#7840](https://github.com/cloudquery/cloudquery/issues/7840)) ([e2c8b61](https://github.com/cloudquery/cloudquery/commit/e2c8b613696447602d052d0686b643a38694573c))
+
+## [2.0.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.9...plugins-destination-postgresql-v2.0.10) (2023-02-08)
+
+
+### Bug Fixes
+
+* **postgresql:** Sanitize JSONs ([#7801](https://github.com/cloudquery/cloudquery/issues/7801)) ([8705c9a](https://github.com/cloudquery/cloudquery/commit/8705c9a658210294ede67e56d83612de4f14b3b1))
+
+## [2.0.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.8...plugins-destination-postgresql-v2.0.9) (2023-02-07)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/jackc/pgx-zerolog digest to 7c83b3e ([#7530](https://github.com/cloudquery/cloudquery/issues/7530)) ([4d2617e](https://github.com/cloudquery/cloudquery/commit/4d2617ec722c28370fa2af77595be427c0350822))
+* **deps:** Update google.golang.org/genproto digest to 1c01626 ([#7533](https://github.com/cloudquery/cloudquery/issues/7533)) ([c549c27](https://github.com/cloudquery/cloudquery/commit/c549c275077f1cdfb9df0b3f3c129cbf0b150552))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.0 ([#7595](https://github.com/cloudquery/cloudquery/issues/7595)) ([c5adc75](https://github.com/cloudquery/cloudquery/commit/c5adc750d4b0242563997c04c582f8da27913095))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.1 ([#7614](https://github.com/cloudquery/cloudquery/issues/7614)) ([2fe665c](https://github.com/cloudquery/cloudquery/commit/2fe665cdd80d88c5699bb203bd7accd604dfba99))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.34.0 ([#7719](https://github.com/cloudquery/cloudquery/issues/7719)) ([6a33085](https://github.com/cloudquery/cloudquery/commit/6a33085c75adcf2387f7bbb5aa4f7a84ce7e2957))
+* Sort PKs before reporting stale PKs error ([#7620](https://github.com/cloudquery/cloudquery/issues/7620)) ([2d9e196](https://github.com/cloudquery/cloudquery/commit/2d9e19686c1c6aedb90ef45e8058795131165e8e))
+
 ## [2.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.7...plugins-destination-postgresql-v2.0.8) (2023-01-31)
 
 

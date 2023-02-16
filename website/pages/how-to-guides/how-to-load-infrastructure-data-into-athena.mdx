@@ -56,7 +56,7 @@ Open source data integration at scale.
 
 We will configure the CloudQuery AWS source plugin to sync data from your AWS account(s). To do so, we'll create a file called `aws.yml` with the following config:
 
-```yaml copy
+```yaml copy filename="aws.yml"
 kind: source
 spec:
   name: aws
@@ -72,7 +72,7 @@ This is the most basic configuration of the AWS source plugin. It will work as l
 
 Similar to the config we created for the AWS plugin, we also need a destination config that is configured to write the AWS data to JSON files in S3. We'll call this file `s3.yml`:
 
-```yaml copy
+```yaml copy filename="s3.yml"
 kind: destination
 spec:
   name: "s3"
@@ -104,7 +104,7 @@ Athena can query data in S3, but it needs to know the schema of the data in orde
 
 First we'll create a role for the crawler to use. It will need access to the S3 bucket we created in the previous step. The following trust policy will give the role what it needs:
 
-```json copy
+```json copy filename="crawler-trust-policy.json"
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -129,7 +129,7 @@ aws iam create-role \
 
 We should also attach a policy to the role that gives it access to the S3 bucket we created in the previous step. The following policy will give the crawler access to the S3 bucket. Make sure to update the bucket name to the value of `BUCKET_NAME` you chose earlier (in our example, `cloudquery-athena-example`):
 
-```json copy
+```json copy filename="crawler-policy-s3-access.json"
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -158,7 +158,7 @@ aws iam put-role-policy \
 
 The crawler will also need additional permissions to perform all its tasks, such as writing CloudWatch logs. We attach another policy to the role to give it these permissions. This is a simplified version of the default policy created by AWS when creating a crawler through the console. You should review these permissions to ensure they are appropriate for your use case:
 
-```json copy
+```json copy filename="crawler-policy.json"
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -243,6 +243,12 @@ WHERE "block_public_acls" <> TRUE
 ![Athena query editor](/images/how-to-guides/how-to-load-infrastructure-data-into-athena/athena-query-editor.png)
 
 Wait, isn't that the bucket we just created for this guide? Better go lock it down 😉
+
+{/*<!-- vale off -->*/}
+<Callout type="info">
+  Athena is case-insensitive. If you see an error like `Row is not a valid JSON Object - JSONException: Duplicate key`, this means some of the data in a JSON column contained keys where only the case differed (e.g. `Name` and `name`). AWS tags are case sensitive, so this can be a common cause. For more information about ways to address this issue, see [this GitHub comment](https://github.com/cloudquery/cloudquery/issues/7639#issuecomment-1419082572).
+</Callout>
+{/*<!-- vale on -->*/}
 
 ## Conclusion
 

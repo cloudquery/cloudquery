@@ -14,7 +14,7 @@ func Users() *schema.Table {
 		Resolver:            fetchIamUsers,
 		PreResourceResolver: getUser,
 		Transform:           transformers.TransformWithStruct(&types.User{}),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
 			{
 				Name:     "arn",
@@ -29,14 +29,7 @@ func Users() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
@@ -50,6 +43,7 @@ func Users() *schema.Table {
 			UserAttachedPolicies(),
 			UserPolicies(),
 			SshPublicKeys(),
+			SigningCertificates(),
 		},
 	}
 }

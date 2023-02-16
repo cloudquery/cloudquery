@@ -15,16 +15,8 @@ func Volumes() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Volume{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
@@ -34,10 +26,9 @@ func Volumes() *schema.Table {
 				},
 			},
 			{
-				Name:          "administrative_actions",
-				Type:          schema.TypeJSON,
-				Resolver:      schema.PathResolver("AdministrativeActions"),
-				IgnoreInTests: true,
+				Name:     "administrative_actions",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AdministrativeActions"),
 			},
 			{
 				Name:     "tags",

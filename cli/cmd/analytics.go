@@ -14,6 +14,7 @@ import (
 )
 
 const (
+	// default analytics host
 	analyticsHost = "analyticsv1.cloudquery.io:443"
 )
 
