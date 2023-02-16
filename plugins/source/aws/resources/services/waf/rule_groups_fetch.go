@@ -92,10 +92,7 @@ func resolveWafRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resour
 	outputTags := make(map[string]*string)
 	tagsConfig := waf.ListTagsForResourceInput{ResourceARN: aws.String(arnStr)}
 	for {
-		tags, err := service.ListTagsForResource(ctx, &tagsConfig, func(options *waf.Options) {
-			// Set region to default global region
-			options.Region = "us-east-1"
-		})
+		tags, err := service.ListTagsForResource(ctx, &tagsConfig)
 		if err != nil {
 			return err
 		}

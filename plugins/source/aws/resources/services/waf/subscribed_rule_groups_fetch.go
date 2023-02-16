@@ -14,10 +14,7 @@ func fetchWafSubscribedRuleGroups(ctx context.Context, meta schema.ClientMeta, p
 	service := c.Services().Waf
 	config := waf.ListSubscribedRuleGroupsInput{}
 	for {
-		output, err := service.ListSubscribedRuleGroups(ctx, &config, func(options *waf.Options) {
-			// Set region to default global region
-			options.Region = "us-east-1"
-		})
+		output, err := service.ListSubscribedRuleGroups(ctx, &config)
 		if err != nil {
 			return err
 		}

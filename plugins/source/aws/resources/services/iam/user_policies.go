@@ -14,7 +14,7 @@ func UserPolicies() *schema.Table {
 		Resolver:            fetchIamUserPolicies,
 		PreResourceResolver: getUserPolicy,
 		Transform:           transformers.TransformWithStruct(&iam.GetUserPolicyOutput{}),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
