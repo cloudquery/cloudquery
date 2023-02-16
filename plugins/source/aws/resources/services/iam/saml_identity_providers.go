@@ -18,7 +18,7 @@ func SamlIdentityProviders() *schema.Table {
 			transformers.WithUnwrapAllEmbeddedStructs(),
 			transformers.WithSkipFields("ResultMetadata"),
 		),
-		Multiplex: client.AccountMultiplex,
+		Multiplex: client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
