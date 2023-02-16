@@ -59,6 +59,9 @@ func resolveRepositoryPolicy(ctx context.Context, meta schema.ClientMeta, resour
 	}
 	output, err := svc.GetRepositoryPolicy(ctx, &input)
 	if err != nil {
+		if client.IsAWSError(err, "RepositoryPolicyNotFoundException") {
+			return nil
+		}
 		return err
 	}
 	return resource.Set(c.Name, output.PolicyText)
@@ -97,6 +100,9 @@ func fetchEcrRepositoryImageScanFindings(ctx context.Context, meta schema.Client
 		for paginator.HasMorePages() {
 			output, err := paginator.NextPage(ctx)
 			if err != nil {
+				if client.IsAWSError(err, "ScanNotFoundException") {
+					return nil
+				}
 				return err
 			}
 			res <- models.ImageScanWrapper{
