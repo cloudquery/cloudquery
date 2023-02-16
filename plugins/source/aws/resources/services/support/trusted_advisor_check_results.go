@@ -26,12 +26,12 @@ func trustedAdvisorCheckResults() *schema.Table {
 }
 
 func fetchTrustedAdvisorCheckResults(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	client := meta.(*client.Client)
+	c := meta.(*client.Client)
 	// No need to get the result for each language, as those are the same have the same check id
-	if client.LanguageCode != "en" {
+	if c.LanguageCode != "en" {
 		return nil
 	}
-	svc := client.Services().Support
+	svc := c.Services().Support
 	check := parent.Item.(types.TrustedAdvisorCheckDescription)
 	input := support.DescribeTrustedAdvisorCheckResultInput{CheckId: check.Id}
 
