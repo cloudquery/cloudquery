@@ -17,14 +17,13 @@ func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, par
 		MaxResults: &maxResults,
 	}
 	c := meta.(*client.Client)
-	if c.Region != "us-east-1" {
-		// Commands for ECR Public are only available in us-east-1
-		return nil
-	}
 	svc := c.Services().Ecrpublic
 	for {
 		output, err := svc.DescribeRepositories(ctx, &config)
 		if err != nil {
+			if client.IsAWSError(err, "UnsupportedCommandException") {
+				return nil
+			}
 			return err
 		}
 		res <- output.Repositories
