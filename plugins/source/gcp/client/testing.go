@@ -15,6 +15,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
+	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/option"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -57,7 +58,7 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 			logger:        logger,
 			ClientOptions: clientOptions,
 			projects:      []string{"testProject"},
-			orgs:          []string{"testOrg"},
+			orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
 			folderIds:     []string{"testFolder"},
 			Backend:       opts.Backend,
 		}
@@ -115,7 +116,7 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 			logger:        logger,
 			ClientOptions: clientOptions,
 			projects:      []string{"testProject"},
-			orgs:          []string{"testOrg"},
+			orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
 		}
 
 		return c, nil

@@ -39,8 +39,8 @@ func OrgMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	client := meta.(*Client)
 
 	l := make([]schema.ClientMeta, len(client.orgs))
-	for i, orgId := range client.orgs {
-		l[i] = client.withOrg(orgId)
+	for i := range client.orgs {
+		l[i] = client.withOrg(client.orgs[i])
 	}
 	return l
 }
