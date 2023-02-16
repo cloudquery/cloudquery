@@ -60,12 +60,12 @@ func (c *Client) normalizeColumnTypes(tables schema.Tables) schema.Tables {
 	allTables := tables.FlattenTables()
 	var normalized schema.Tables
 	for _, table := range allTables {
-		copy := table.Copy(table.Parent)
-		for i := range copy.Columns {
+		tableCopy := table.Copy(table.Parent)
+		for i := range tableCopy.Columns {
 			// Since multiple schema types can map to the same sqlite type we need to normalize them to avoid false positives when detecting schema changes
-			copy.Columns[i].Type = c.sqliteTypeToSchema(c.SchemaTypeToSqlite(table.Columns[i].Type))
+			tableCopy.Columns[i].Type = c.sqliteTypeToSchema(c.SchemaTypeToSqlite(table.Columns[i].Type))
 		}
-		normalized = append(normalized, copy)
+		normalized = append(normalized, tableCopy)
 	}
 
 	return normalized
