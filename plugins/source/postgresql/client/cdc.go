@@ -249,7 +249,7 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 			case *pglogrepl.TypeMessage:
 			case *pglogrepl.OriginMessage:
 			default:
-				log.Printf("Unknown message type in pgoutput stream: %T", logicalMsg)
+				c.logger.Error().Msg("Unknown message type in pgoutput stream: %T", logicalMsg)
 			}
 			clientXLogPos = xld.WALStart + pglogrepl.LSN(len(xld.WALData))
 		}
