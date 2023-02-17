@@ -3,6 +3,7 @@ package resources
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -10,17 +11,102 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
+var ROOT_PATH = "https://pricing.us-east-1.amazonaws.com"
+
 func SampleTable() *schema.Table {
 	return &schema.Table{
-		Name:      "awspricing_services",
-		Resolver:  fetchSampleTable,
-		Transform: transformers.TransformWithStruct(&PricingFile{}),
+		Name:                "awspricing_services",
+		Resolver:            fetchSampleTable,
+		PreResourceResolver: getPricingFile,
+		Transform:           transformers.TransformWithStruct(&PricingFile{}, transformers.WithSkipFields("Products", "Terms", "AttributesList")),
+		Relations: []*schema.Table{
+			products(),
+			terms(),
+		},
 	}
 }
 
-func fetchSampleTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func products() *schema.Table {
+	return &schema.Table{
+		Name:      "awspricing_service_products",
+		Resolver:  fetchProducts,
+		Transform: transformers.TransformWithStruct(&Product{}),
+		Relations: []*schema.Table{},
+	}
+}
 
-	resp, err := http.Get("https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/comprehend/20230210221619/us-east-1/index.json")
+func terms() *schema.Table {
+	return &schema.Table{
+		Name:      "awspricing_service_terms",
+		Resolver:  fetchTerms,
+		Transform: transformers.TransformWithStruct(&Term{}),
+		Relations: []*schema.Table{},
+	}
+}
+
+func fetchTerms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	pricingFile := parent.Item.(PricingFile)
+	res <- pricingFile.Terms
+	return nil
+}
+
+func fetchProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	pricingFile := parent.Item.(PricingFile)
+	res <- pricingFile.Products
+	return nil
+}
+
+func getRegionalPricingFileLinks(link string) ([]string, error) {
+	resp, err := http.Get(ROOT_PATH + link)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	offerFiles := make(map[string]any, 0)
+
+	if err := json.NewDecoder(resp.Body).Decode(&offerFiles); err != nil {
+		return nil, err
+	}
+	links := make([]string, 0)
+	regions := offerFiles["regions"].(map[string]any)
+	for _, region := range regions {
+		region := region.(map[string]any)
+		links = append(links, region["currentVersionUrl"].(string))
+	}
+	return links, nil
+}
+
+func getPricingFileLinks() ([]string, error) {
+	resp, err := http.Get(ROOT_PATH + "/offers/v1.0/aws/index.json")
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	offersFile := make(map[string]any, 0)
+
+	if err := json.NewDecoder(resp.Body).Decode(&offersFile); err != nil {
+		return nil, err
+	}
+	links := make([]string, 0)
+	for _, offer := range offersFile["offers"].(map[string]any) {
+		offer := offer.(map[string]any)
+		regionalLinks, err := getRegionalPricingFileLinks(offer["currentRegionIndexUrl"].(string))
+		if err != nil {
+			return nil, err
+		}
+		links = append(links, regionalLinks...)
+	}
+	return links, nil
+
+}
+
+func getPricingFile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	link := resource.Item.(string)
+	fmt.Printf("Fetching %s%s \n", ROOT_PATH, link)
+
+	resp, err := http.Get(ROOT_PATH + link)
 	if err != nil {
 		return err
 	}
@@ -32,7 +118,17 @@ func fetchSampleTable(ctx context.Context, meta schema.ClientMeta, parent *schem
 		return err
 	}
 	pricingFile, _ := transformRawPricingFile(rawPricingFile)
-	res <- pricingFile
+	resource.Item = pricingFile
+	return nil
+}
+func fetchSampleTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	links, err := getPricingFileLinks()
+
+	if err != nil {
+		return err
+	}
+	res <- links
+
 	return nil
 }
 
@@ -55,61 +151,124 @@ func transformRawPricingFile(rawStruct map[string]any) (PricingFile, error) {
 	}
 	pricingFile.Products = products
 
-	terms := rawStruct["terms"].(map[string]any)
-	onDemandTerms, err := extractOnDemandTerms(terms["OnDemand"].(map[string]any))
+	rawTerms := rawStruct["terms"].(map[string]any)
+	terms, err := extractTerms(rawTerms)
 	if err != nil {
 		return PricingFile{}, err
 	}
-	pricingFile.Terms.OnDemand = onDemandTerms
+	pricingFile.Terms = terms
 
 	return pricingFile, nil
 }
 
 func extractProducts(rec map[string]any) ([]Product, error) {
-	var products []Product
+	products := make([]Product, len(rec))
+	counter := 0
 	for _, val := range rec {
 		val := val.(map[string]any)
-		var attributes Attributes
-		byteArray, err := json.Marshal(val["attributes"])
-		if err != nil {
-			return nil, err
+		product := Product{
+			Sku:        val["sku"].(string),
+			Attributes: extractAttributes(val["attributes"].(map[string]any)),
 		}
-		json.Unmarshal(byteArray, &attributes)
-		if err != nil {
-			return nil, err
+		if productFamily, ok := val["productFamily"]; ok {
+			product.ProductFamily = productFamily.(string)
 		}
-		products = append(products, Product{
-			Sku:           val["sku"].(string),
-			ProductFamily: val["productFamily"].(string),
-			Attributes:    attributes,
-		})
+		products[counter] = product
+		counter++
 	}
 	return products, nil
 }
-func extractOnDemandTerms(onDemand map[string]any) ([]OnDemand, error) {
-	var onDemandTerms []OnDemand
-	for _, terms := range onDemand {
-		terms := terms.(map[string]any)
-		for _, val := range terms {
+
+func extractAttributes(attributes map[string]any) map[string]string {
+	returnVal := make(map[string]string)
+	for key, val := range attributes {
+		returnVal[key] = val.(string)
+	}
+	return returnVal
+}
+
+func countItems(termsRaw map[string]any) int {
+	counter := 0
+	if onDemand, ok := termsRaw["OnDemand"]; ok {
+		onDemand := onDemand.(map[string]any)
+		for _, term := range onDemand {
+			term := term.(map[string]any)
+			counter = counter + len(term)
+		}
+	}
+
+	if reserved, ok := termsRaw["Reserved"]; ok {
+		reserved := reserved.(map[string]any)
+		for _, term := range reserved {
+			term := term.(map[string]any)
+			counter = counter + len(term)
+		}
+	}
+
+	return counter
+}
+
+func extractTerms(termsRaw map[string]any) ([]Term, error) {
+
+	onDemand := termsRaw["OnDemand"].(map[string]any)
+
+	terms := make([]Term, countItems(termsRaw)+1)
+	counter := 0
+	for _, term := range onDemand {
+		term := term.(map[string]any)
+		for _, val := range term {
 			val := val.(map[string]any)
 			effectiveDate, err := time.Parse(time.RFC3339, val["effectiveDate"].(string))
 			if err != nil {
 				return nil, err
 			}
-			onDemandTerms = append(onDemandTerms, OnDemand{
+			terms[counter] = Term{
+				Type:            "OnDemand",
 				OfferTermCode:   val["offerTermCode"].(string),
 				Sku:             val["sku"].(string),
 				EffectiveDate:   effectiveDate,
-				TermAttributes:  val["termAttributes"].(map[string]any),
+				TermAttributes:  extractAttributes(val["termAttributes"].(map[string]any)),
 				PriceDimensions: extractPriceDimensions(val["priceDimensions"].(map[string]any)),
-			})
+			}
+			counter++
 		}
 	}
-	return onDemandTerms, nil
+	if _, ok := termsRaw["Reserved"]; !ok {
+		return terms, nil
+	}
+	reserved := termsRaw["Reserved"].(map[string]any)
+	for _, term := range reserved {
+		term := term.(map[string]any)
+		for _, val := range term {
+			val := val.(map[string]any)
+			effectiveDate, err := time.Parse(time.RFC3339, val["effectiveDate"].(string))
+			if err != nil {
+				return nil, err
+			}
+
+			var priceDimension []PriceDimension
+			if val, ok := val["priceDimensions"]; ok {
+				priceDimension = extractPriceDimensions(val.(map[string]any))
+			}
+
+			terms[counter] = Term{
+				Type:            "Reserved",
+				OfferTermCode:   val["offerTermCode"].(string),
+				Sku:             val["sku"].(string),
+				EffectiveDate:   effectiveDate,
+				TermAttributes:  extractAttributes(val["termAttributes"].(map[string]any)),
+				PriceDimensions: priceDimension,
+			}
+			counter++
+		}
+	}
+
+	return terms, nil
 }
 
 func extractPriceDimensions(priceDimensions map[string]any) []PriceDimension {
-	var priceDimensionsList []PriceDimension
+	priceDimensionsList := make([]PriceDimension, len(priceDimensions))
+
 	for _, val := range priceDimensions {
 		val := val.(map[string]any)
 		var pricePerUnit PricePerUnit
@@ -118,15 +277,22 @@ func extractPriceDimensions(priceDimensions map[string]any) []PriceDimension {
 			return nil
 		}
 		json.Unmarshal(byteArray, &pricePerUnit)
-		priceDimensionsList = append(priceDimensionsList, PriceDimension{
+
+		priceDimension := PriceDimension{
 			RateCode:     val["rateCode"].(string),
 			Description:  val["description"].(string),
-			BeginRange:   val["beginRange"].(string),
-			EndRange:     val["endRange"].(string),
 			Unit:         val["unit"].(string),
 			PricePerUnit: pricePerUnit,
 			AppliesTo:    val["appliesTo"].([]interface{}),
-		})
+		}
+		if val, ok := val["beginRange"]; ok {
+			priceDimension.BeginRange = val.(string)
+		}
+		if val, ok := val["endRange"]; ok {
+			priceDimension.EndRange = val.(string)
+		}
+
+		priceDimensionsList = append(priceDimensionsList, priceDimension)
 	}
 	return priceDimensionsList
 }
@@ -138,25 +304,13 @@ type PricingFile struct {
 	Version         string         `json:"version"`
 	PublicationDate time.Time      `json:"publicationDate"`
 	Products        []Product      `json:"products"`
-	Terms           Terms          `json:"terms"`
+	Terms           []Term         `json:"terms"`
 	AttributesList  AttributesList `json:"attributesList"`
 }
-type Attributes struct {
-	Servicecode      string `json:"servicecode"`
-	Location         string `json:"location"`
-	LocationType     string `json:"locationType"`
-	Group            string `json:"group"`
-	GroupDescription string `json:"groupDescription"`
-	Usagetype        string `json:"usagetype"`
-	Operation        string `json:"operation"`
-	Platofeaturetype string `json:"platofeaturetype"`
-	RegionCode       string `json:"regionCode"`
-	Servicename      string `json:"servicename"`
-}
 type Product struct {
-	Sku           string     `json:"sku"`
-	ProductFamily string     `json:"productFamily"`
-	Attributes    Attributes `json:"attributes"`
+	Sku           string            `json:"sku"`
+	ProductFamily string            `json:"productFamily"`
+	Attributes    map[string]string `json:"attributes"`
 }
 type PricePerUnit struct {
 	Usd string `json:"USD"`
@@ -172,15 +326,14 @@ type PriceDimension struct {
 }
 type TermAttributes struct {
 }
-type OnDemand struct {
-	OfferTermCode   string           `json:"offerTermCode"`
-	Sku             string           `json:"sku"`
-	EffectiveDate   time.Time        `json:"effectiveDate"`
-	PriceDimensions []PriceDimension `json:"priceDimensions"`
-	TermAttributes  map[string]any   `json:"termAttributes"`
+type Term struct {
+	Type            string            `json:"type"`
+	OfferTermCode   string            `json:"offerTermCode"`
+	Sku             string            `json:"sku"`
+	EffectiveDate   time.Time         `json:"effectiveDate"`
+	PriceDimensions []PriceDimension  `json:"priceDimensions"`
+	TermAttributes  map[string]string `json:"termAttributes"`
 }
-type Terms struct {
-	OnDemand []OnDemand `json:"OnDemand"`
-}
+
 type AttributesList struct {
 }
