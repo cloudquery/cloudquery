@@ -18,11 +18,12 @@ import (
 )
 
 type UpdateResourcesViewEvent struct {
-	Catalog  string `json:"catalog"`
-	Database string `json:"database"`
-	Output   string `json:"output"`
-	View     string `json:"view"`
-	Region   string `json:"region"`
+	Catalog      string   `json:"catalog"`
+	Database     string   `json:"database"`
+	Output       string   `json:"output"`
+	View         string   `json:"view"`
+	Region       string   `json:"region"`
+	ExtraColumns []string `json:"extra_columns"`
 }
 
 func HandleRequest(ctx context.Context, event UpdateResourcesViewEvent) (string, error) {
@@ -135,7 +136,7 @@ FROM tables t;`
 	sb.WriteString(`CREATE OR REPLACE VIEW aws_resources AS (`)
 	sb.WriteString("\n")
 	for i, t := range tables {
-		if i != 0 {
+		if i > 0 {
 			sb.WriteString("  UNION ALL\n")
 		}
 		region := "region"
@@ -148,11 +149,19 @@ FROM tables t;`
 			// so just use an empty map
 			tags = "'{}'"
 		}
-		q := `    SELECT _cq_id, _cq_source_name, cast (_cq_sync_time as timestamp) as _cq_sync_time, '%s' as _cq_table, account_id, %s as region, arn, %s as tags FROM %s`
-		sb.WriteString(fmt.Sprintf(q, t.name, region, tags, t.name))
+		q := `    SELECT _cq_id, _cq_source_name, cast (_cq_sync_time as timestamp) as _cq_sync_time, '%s' as _cq_table, account_id, %s as region, arn, %s as tags`
+		if len(event.ExtraColumns) > 0 {
+			for _, c := range event.ExtraColumns {
+				q += ", "
+				q += c
+			}
+		}
+		sb.WriteString(fmt.Sprintf(q, t.name, region, tags))
+		sb.WriteString(` FROM ` + t.name + "\n")
 		sb.WriteString("\n")
 	}
 	sb.WriteString(`)`)
+	fmt.Println(sb.String())
 
 	// Set up the query input parameters
 	input = &athena.StartQueryExecutionInput{
@@ -216,12 +225,18 @@ func main() {
 	}
 
 	e := UpdateResourcesViewEvent{}
+	var extraCols string
 	flag.StringVar(&e.Database, "database", "", "Database name")
 	flag.StringVar(&e.Output, "output", "", "Query output path (e.g. s3://bucket/path)")
 	flag.StringVar(&e.Catalog, "catalog", "awsdatacatalog", "Catalog name")
-	flag.StringVar(&e.View, "view-name", "aws_resources", "View name (default: aws_resources)")
-	flag.StringVar(&e.Region, "region", "us-east-1", "View name (default: aws_resources)")
+	flag.StringVar(&e.View, "view", "aws_resources", "View name (default: aws_resources)")
+	flag.StringVar(&e.Region, "region", "us-east-1", "View name (default: us-east-1)")
+	flag.StringVar(&extraCols, "extra-columns", "", "Extra columns to add to the view, separated by commas (default: none)")
 	flag.Parse()
+
+	if extraCols != "" {
+		e.ExtraColumns = strings.Split(extraCols, ",")
+	}
 
 	if e.Database == "" {
 		log.Fatal("database name is required")
