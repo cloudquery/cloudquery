@@ -2,4 +2,4 @@
 
 ## Tables
 
-Tables are dynamiclly defined by the PostgreSQL schema and the source plugin spec.
+Tables for this plugin are dynamically defined by the source PostgreSQL database schema and the source plugin spec.
