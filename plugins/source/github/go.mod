@@ -7,7 +7,7 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v48 v48.2.0
 	github.com/rs/zerolog v1.29.0
-	github.com/thoas/go-funk v0.9.3
+	github.com/thoas/go-funk v0.9.3 // indirect
 	golang.org/x/oauth2 v0.4.0
 )
 
@@ -30,7 +30,7 @@ require (
 	golang.org/x/crypto v0.1.0 // indirect
 	golang.org/x/exp v0.0.0-20230212135524-a684f29349b6 // indirect; indirect // indirect
 	golang.org/x/mod v0.6.0 // indirect
-	golang.org/x/net v0.6.0 // indirect
+	golang.org/x/net v0.7.0 // indirect; indirect // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect

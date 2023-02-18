@@ -30,7 +30,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/tailscale/hujson v0.0.0-20221223112325-20486734a56a // indirect; indirect // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
-	golang.org/x/net v0.6.0 // indirect
+	golang.org/x/net v0.7.0 // indirect; indirect // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 	google.golang.org/genproto v0.0.0-20230209215440-0dfe4f8abfcc // indirect; indirect // indirect
