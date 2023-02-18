@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -52,7 +51,6 @@ func (c *Client) createPublicationForTables(ctx context.Context, conn *pgconn.Pg
 }
 
 func (c *Client) startCDC(ctx context.Context, conn *pgconn.PgConn) (string, error) {
-	var err error
 	if err := c.createPublicationForTables(ctx, conn); err != nil {
 		return "", err
 	}
@@ -63,7 +61,7 @@ func (c *Client) startCDC(ctx context.Context, conn *pgconn.PgConn) (string, err
 		var pgErr *pgconn.PgError
 		if !errors.As(err, &pgErr) {
 			// not recoverable error
-			return "", fmt.Errorf("failed to create publication: %w", err)
+			return "", fmt.Errorf("failed to create replication slot: %w", err)
 		}
 		if pgErr.Code != "42710" {
 			// not recoverable error
@@ -184,7 +182,6 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 						values[colName] = val
 					}
 				}
-				log.Printf("INSERT INTO %s.%s: %v", rel.Namespace, rel.RelationName, values)
 				resource, err := c.resourceFromCDCValues(rel.RelationName, values)
 				if err != nil {
 					return err
@@ -212,7 +209,6 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 						values[colName] = val
 					}
 				}
-				log.Printf("UPDATE INTO %s.%s: %v", rel.Namespace, rel.RelationName, values)
 				resource, err := c.resourceFromCDCValues(rel.RelationName, values)
 				if err != nil {
 					return err
@@ -239,7 +235,6 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 						values[colName] = val
 					}
 				}
-				log.Printf("DELETE FROM %s.%s: %v", rel.Namespace, rel.RelationName, values)
 				resource, err := c.resourceFromCDCValues(rel.RelationName, values)
 				if err != nil {
 					return err
@@ -249,7 +244,7 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 			case *pglogrepl.TypeMessage:
 			case *pglogrepl.OriginMessage:
 			default:
-				c.logger.Error().Msg("Unknown message type in pgoutput stream: %T", logicalMsg)
+				c.logger.Error().Msgf("Unknown message type in pgoutput stream: %T", logicalMsg)
 			}
 			clientXLogPos = xld.WALStart + pglogrepl.LSN(len(xld.WALData))
 		}
