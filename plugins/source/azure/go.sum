@@ -143,6 +143,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic v1.0.0 h1:z
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic v1.0.0/go.mod h1:wKxEe9OvQk7W+/ZxqjitjvCo33uzbJ99zz3Azzytmu0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance v1.0.0 h1:dlpFQVi25aChz4Da4z/xqDZW1XaIrr2WdOLQCHKopg0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance v1.0.0/go.mod h1:rN0+MdglGCv8C4zt3iaSUrOFoKgvRip8i646rXfDWyY=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups v1.0.0 h1:pPvTJ1dY0sA35JOeFq6TsY2xj6Z85Yo23Pj4wCCvu4o=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups v1.0.0/go.mod h1:mLfWfj8v3jfWKsL9G4eoBoXVcsqcIUTapmdKy7uGOp0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb v1.0.0 h1:8ERY3SGBQZnIzdaRMOGX1y8R7yWAwhwznzyhFrrbBO8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb v1.0.0/go.mod h1:gCCoeyn1L3JQCHyLbSnC1PtbBrPTUulqYdXeEmv3JXY=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace v1.0.0 h1:oxl/rFdJBUhGFCiG3ptzuh7ivvjfYQwB9z1XWH8kHnA=
