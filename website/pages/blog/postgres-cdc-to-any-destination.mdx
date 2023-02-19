@@ -23,7 +23,7 @@ In PostgreSQL, CDC can be achieved via a feature called logical replication.
 
 PostgreSQL supports two types of replication: physical replication and logical replication.
 Physical replication creates a complete copy of the data, including the underlying storage structure,
-whereas logical replication only replicates changes to the data, such as the insertions, updates, and deletions of rows in tables.
+whereas logical replication only replicates changes to the data, such as insertions, updates, and deletions of rows in tables.
 Logical replication provides a more flexible and efficient way to replicate data as it only replicates the changes in the data,
 rather than the entire dataset. This can help to minimize the overhead of replication and reduce the amount of disk space required to store the replicated data.
 
