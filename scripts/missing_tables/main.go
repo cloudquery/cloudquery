@@ -19,7 +19,6 @@ func parseDocsTables() map[string]bool {
 
 	for _, readme := range tablesReadmes {
 		if strings.HasPrefix(readme, "plugins/source/test") {
-			fmt.Printf("Skipping test plugin: %s\n", readme)
 			continue
 		}
 		content, err := ioutil.ReadFile("../../" + readme)
@@ -49,7 +48,6 @@ func parseCodeTables() map[string]string {
 	}
 	for _, tableFile := range tableFiles {
 		if strings.HasPrefix(tableFile, "plugins/source/test") {
-			fmt.Printf("Skipping test plugin: %s\n", tableFile)
 			continue
 		}
 		if strings.HasSuffix(tableFile, "_test.go") {
@@ -67,7 +65,6 @@ func parseCodeTables() map[string]string {
 		tableNameRegex := regexp.MustCompile(`schema.Table[\s\S]+?Name\:.*?"(.*?)",`)
 		tableName := tableNameRegex.FindStringSubmatch(contentString)
 		if len(tableName) != 2 {
-			fmt.Printf("Error parsing table name from file: %s\n", tableFile)
 			continue
 		}
 		tablesMap[tableName[1]] = tableFile
