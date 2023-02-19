@@ -12,7 +12,7 @@ func Contacts() *schema.Table {
 		Name:        "aws_account_contacts",
 		Description: `https://docs.aws.amazon.com/accounts/latest/reference/API_ContactInformation.html`,
 		Resolver:    fetchAccountContacts,
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("account"),
 		Transform:   transformers.TransformWithStruct(&types.ContactInformation{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

@@ -12,7 +12,7 @@ func Accounts() *schema.Table {
 		Name:      "aws_iam_accounts",
 		Resolver:  fetchIamAccounts,
 		Transform: transformers.TransformWithStruct(&models.Account{}),
-		Multiplex: client.AccountMultiplex,
+		Multiplex: client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},

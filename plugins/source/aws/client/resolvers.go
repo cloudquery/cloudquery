@@ -33,6 +33,11 @@ func ResolveWAFScope(_ context.Context, meta schema.ClientMeta, r *schema.Resour
 	return r.Set(c.Name, meta.(*Client).WAFScope)
 }
 
+func ResolveLanguageCode(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+	client := meta.(*Client)
+	return r.Set(c.Name, client.LanguageCode)
+}
+
 func ResolveTags(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	return ResolveTagField("Tags")(ctx, meta, r, c)
 }

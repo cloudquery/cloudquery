@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [15.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v15.0.1...plugins-source-aws-v15.1.0) (2023-02-16)
+
+
+### Features
+
+* Add Support resources (includes AWS Trusted Advisor) ([#8140](https://github.com/cloudquery/cloudquery/issues/8140)) ([a49aae0](https://github.com/cloudquery/cloudquery/commit/a49aae04723d69efacf6a3a5344f25fcfffd4c25))
+* **aws:** Use ServiceAccountRegion Multiplexer ([#8158](https://github.com/cloudquery/cloudquery/issues/8158)) ([a06e02f](https://github.com/cloudquery/cloudquery/commit/a06e02f9eef709f21d4d13027c692f64c10f1003))
+
+
+### Bug Fixes
+
+* **aws:** Fix error for Empty Backup Notification ([#8164](https://github.com/cloudquery/cloudquery/issues/8164)) ([d9be357](https://github.com/cloudquery/cloudquery/commit/d9be357e3f2cefd29d0050be25e13543c9967db1))
+* **aws:** Fix error handling int `aws_alternate_contact` fetching ([#8152](https://github.com/cloudquery/cloudquery/issues/8152)) ([fcdf778](https://github.com/cloudquery/cloudquery/commit/fcdf7789fb70f7e972c581fba1f0e88970ec146e))
+* **aws:** Fix S3 Access Points ([#8160](https://github.com/cloudquery/cloudquery/issues/8160)) ([25caebf](https://github.com/cloudquery/cloudquery/commit/25caebf5607c5a2366576447ce2d4ef30fa8fa93))
+* **aws:** Ignore Default ECR Errors ([#8162](https://github.com/cloudquery/cloudquery/issues/8162)) ([e88e137](https://github.com/cloudquery/cloudquery/commit/e88e137c46585f1982e043a146f8b23fd41bd2fe))
+
+## [15.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v15.0.0...plugins-source-aws-v15.0.1) (2023-02-16)
+
+
+### Bug Fixes
+
+* **aws:** Use `credentialScope.region` if exists when generating regions data ([#8131](https://github.com/cloudquery/cloudquery/issues/8131)) ([915e829](https://github.com/cloudquery/cloudquery/commit/915e829e84bc8ff38dfe46c0288d5d90e93103e2))
+
 ## [15.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v14.0.0...plugins-source-aws-v15.0.0) (2023-02-15)
 
 

@@ -36,6 +36,7 @@ type Client struct {
 	AutoscalingNamespace string
 	WAFScope             wafv2types.Scope
 	Partition            string
+	LanguageCode         string
 }
 
 type AwsLogger struct {
@@ -116,12 +117,15 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func (c *Client) ID() string {
-	return strings.TrimRight(strings.Join([]string{
+	idStrings := []string{
 		c.AccountID,
 		c.Region,
 		c.AutoscalingNamespace,
 		string(c.WAFScope),
-	}, ":"), ":")
+		c.LanguageCode,
+	}
+
+	return strings.TrimRight(strings.Join(idStrings, ":"), ":")
 }
 
 func (c *Client) Services() *Services {
@@ -166,6 +170,13 @@ func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, regi
 		AutoscalingNamespace: c.AutoscalingNamespace,
 		WAFScope:             scope,
 	}
+}
+
+func (c *Client) withLanguageCode(code string) *Client {
+	newC := *c
+	newC.LanguageCode = code
+	newC.logger = newC.logger.With().Str("language_code", code).Logger()
+	return &newC
 }
 
 func verifyRegions(regions []string) error {
