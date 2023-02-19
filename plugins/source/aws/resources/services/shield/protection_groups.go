@@ -13,7 +13,7 @@ func ProtectionGroups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_ProtectionGroup.html`,
 		Resolver:    fetchShieldProtectionGroups,
 		Transform:   transformers.TransformWithStruct(&types.ProtectionGroup{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("shield"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

@@ -14,7 +14,7 @@ func RolePolicies() *schema.Table {
 		Resolver:            fetchIamRolePolicies,
 		PreResourceResolver: getRolePolicy,
 		Transform:           transformers.TransformWithStruct(&iam.GetRolePolicyOutput{}),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{

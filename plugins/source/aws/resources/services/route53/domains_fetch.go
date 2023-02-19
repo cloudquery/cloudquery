@@ -10,18 +10,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func domainClientOpts(options *route53domains.Options) {
-	// Set region to default global region
-	options.Region = "us-east-1"
-}
-
 func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Route53domains
 	var input route53domains.ListDomainsInput
 
 	for {
-		output, err := svc.ListDomains(ctx, &input, domainClientOpts)
+		output, err := svc.ListDomains(ctx, &input)
 		if err != nil {
 			return err
 		}
@@ -39,7 +34,7 @@ func getDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 	svc := c.Services().Route53domains
 	v := resource.Item.(types.DomainSummary)
 
-	d, err := svc.GetDomainDetail(ctx, &route53domains.GetDomainDetailInput{DomainName: v.DomainName}, domainClientOpts)
+	d, err := svc.GetDomainDetail(ctx, &route53domains.GetDomainDetailInput{DomainName: v.DomainName})
 	if err != nil {
 		return err
 	}
@@ -53,7 +48,7 @@ func resolveRoute53DomainTags(ctx context.Context, meta schema.ClientMeta, resou
 	c := meta.(*client.Client)
 	svc := c.Services().Route53domains
 	d := resource.Item.(*route53domains.GetDomainDetailOutput)
-	out, err := svc.ListTagsForDomain(ctx, &route53domains.ListTagsForDomainInput{DomainName: d.DomainName}, domainClientOpts)
+	out, err := svc.ListTagsForDomain(ctx, &route53domains.ListTagsForDomainInput{DomainName: d.DomainName})
 	if err != nil {
 		return err
 	}

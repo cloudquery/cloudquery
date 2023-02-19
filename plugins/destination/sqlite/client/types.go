@@ -44,3 +44,20 @@ func (*Client) SchemaTypeToSqlite(t schema.ValueType) string {
 		panic("unknown type")
 	}
 }
+
+func (*Client) sqliteTypeToSchema(t string) schema.ValueType {
+	switch t {
+	case "integer":
+		return schema.TypeInt
+	case "real":
+		return schema.TypeFloat
+	case "text":
+		return schema.TypeString
+	case "blob":
+		return schema.TypeByteArray
+	case "timestamp":
+		return schema.TypeTimestamp
+	default:
+		panic("unknown type")
+	}
+}
