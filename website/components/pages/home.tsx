@@ -50,8 +50,8 @@ export default function Home() {
     <div className="flex flex-col md:flex-row justify-between px-4 pt-16 pb-8 mx-auto sm:pt-24 lg:px-8 w-auto lg:max-w-7xl">
       <div className="flex flex-col justify-between md:mr-4">
         <div>
-          <h1 className="max-w-5xl mx-auto nx-text-6xl font-extrabold tracking-tighter leading-[1.1] sm:text-7xl lg:nx-text-8xl xl:nx-text-8xl">
-             Finally,
+          <h1 className="max-w-5xl mx-auto nx-text-6xl font-extrabold tracking-tighter leading-[1.1] text-6xl sm:text-7xl lg:nx-text-8xl xl:nx-text-8xl">
+             Finally,&nbsp;
              <br className="hidden lg:block" />
              <span className="pr-1 inline-block text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500 ">
              reliable
