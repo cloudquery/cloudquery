@@ -430,3 +430,9 @@ This guide doesn't cover destination plugins yet , but you can also look at the 
 - The [BigQuery Destination Plugin](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/bigquery) is a good example of a "managed" destination that writes to each table in separate batches
 
 Other source and destination plugins to reference can be found [here](https://github.com/cloudquery/cloudquery/tree/main/plugins)
+
+## Resources
+
+- [Discord](https://cloudquery.io/discord)
+- [How to Write a CloudQuery Source Plugin](https://www.youtube.com/watch?v=3Ka_Ob8E6P8) (Video 🎥)
+

@@ -139,11 +139,11 @@ export default function Home() {
     </div >
 
     <div className="sm:py-20 lg:py-24">
-      <div className="max-w-4xl px-4 pb-12 mx-auto lg:px-8 ">
+      <div className="max-w-7xl px-4 pb-12 mx-auto lg:px-8 ">
         <h2 className="nx-text-4xl font-extrabold leading-tight tracking-tight lg:nx-text-5xl xl:nx-text-6xl text-center dark:text-white">
           Integrations
         </h2>
-        <p className="mx-auto mt-4 font-medium text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
+        <p className="mx-auto mt-4 font-medium text-lg text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
           Integrate with a growing list of <a className="dark:text-white" href="/docs/plugins/sources/overview">30+ cloud providers and SaaS apps</a> with more than 1,000 unique tables. Sync to your <a href="/docs/plugins/destinations/overview" className="dark:text-white">favorite database, data warehouse or data lake</a>.
         </p>
         <Integrations />
