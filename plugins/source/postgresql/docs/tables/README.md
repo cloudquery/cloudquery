@@ -1,3 +1,0 @@
-# Source Plugin: postgresql
-
-## Tables
