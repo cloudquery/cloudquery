@@ -34,6 +34,9 @@ type Spec struct {
 	DatasetLocation       string                 `json:"dataset_location"`
 	TimePartitioning      TimePartitioningOption `json:"time_partitioning"`
 	ServiceAccountKeyJSON string                 `json:"service_account_key_json"`
+
+	// We override this in tests to ensure schema is ready
+	MinTriesSleepTimeSeconds int `json:"min_tries_sleep_time_seconds"`
 }
 
 func (s *Spec) SetDefaults() {

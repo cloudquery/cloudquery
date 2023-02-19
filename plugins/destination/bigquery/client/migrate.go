@@ -97,7 +97,7 @@ func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Clie
 	c.logger.Debug().Str("table", table.Name).Msg("Waiting for schemas to match")
 	wantSchema := c.bigQuerySchemaForTable(table)
 	for i := 0; i < maxTableChecks; i++ {
-		// require this check to pass 3 times in a row to mitigate getting different responses from different BQ servers
+		// require this check to pass multiple times in a row to mitigate getting different responses from different BQ servers
 		tries := 3
 		for j := 0; j < tries; j++ {
 			md, err := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Metadata(ctx)
@@ -111,6 +111,10 @@ func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Clie
 			if j == tries-1 {
 				c.logger.Debug().Str("table", table.Name).Msg("Schemas match")
 				return nil
+			}
+			if c.pluginSpec.MinTriesSleepTimeSeconds != 0 {
+				c.logger.Debug().Str("table", table.Name).Int("i", i).Int("j", j).Msg("Schemas match, waiting for more tries")
+				time.Sleep(time.Duration(c.pluginSpec.MinTriesSleepTimeSeconds) * time.Second)
 			}
 		}
 		c.logger.Debug().Str("table", table.Name).Int("i", i).Msg("Waiting for schemas to match")
