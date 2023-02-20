@@ -18,6 +18,7 @@ This table depends on [aws_cloudformation_stacks](aws_cloudformation_stacks.md).
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
+|stack_id|String|
 |last_updated_timestamp|Timestamp|
 |logical_resource_id|String|
 |resource_status|String|
