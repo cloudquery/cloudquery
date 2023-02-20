@@ -11,12 +11,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-var ROOT_PATH = "https://pricing.us-east-1.amazonaws.com"
-
 func Services() *schema.Table {
 	return &schema.Table{
 		Name:                "awspricing_services",
-		Resolver:            fetchSampleTable,
+		Resolver:            fetchServicesTable,
 		PreResourceResolver: getPricingFile,
 		Transform:           transformers.TransformWithStruct(&PricingFile{}, transformers.WithSkipFields("Products", "Terms")),
 		Relations: []*schema.Table{
@@ -26,9 +24,9 @@ func Services() *schema.Table {
 	}
 }
 
-func fetchSampleTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServicesTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	links, err := getPricingFileLinks(c.Endpoint)
+	links, err := getPricingFileLinks(c)
 	if err != nil {
 		return err
 	}
@@ -36,8 +34,19 @@ func fetchSampleTable(ctx context.Context, meta schema.ClientMeta, parent *schem
 	return nil
 }
 
-func getPricingFileLinks(endpoint string) ([]string, error) {
-	resp, err := http.Get(endpoint + "/offers/v1.0/aws/index.json")
+func validateOffersToSync(c *client.Client, offerCode string) bool {
+	// Can't use glob.Glob because currently it is in plugin-sdk/internal
+	for _, includeOfferCode := range c.OfferCodes {
+		// if glob.Glob(includeOfferCode, offerCode) {
+		if includeOfferCode == "*" || includeOfferCode == offerCode {
+			return true
+		}
+	}
+	return false
+}
+
+func getPricingFileLinks(c *client.Client) ([]string, error) {
+	resp, err := http.Get(c.Endpoint + "/offers/v1.0/aws/index.json")
 	if err != nil {
 		return nil, err
 	}
@@ -51,8 +60,12 @@ func getPricingFileLinks(endpoint string) ([]string, error) {
 	links := make([]string, 0)
 	for _, offer := range offersFile["offers"].(map[string]any) {
 		offer := offer.(map[string]any)
-		full_url := endpoint + offer["currentRegionIndexUrl"].(string)
-		regionalLinks, err := getRegionalPricingFileLinks(full_url)
+		if !validateOffersToSync(c, offer["offerCode"].(string)) {
+			continue
+		}
+		full_url := c.Endpoint + offer["currentRegionIndexUrl"].(string)
+
+		regionalLinks, err := getRegionalPricingFileLinks(c, full_url)
 		if err != nil {
 			return nil, err
 		}
@@ -62,7 +75,18 @@ func getPricingFileLinks(endpoint string) ([]string, error) {
 
 }
 
-func getRegionalPricingFileLinks(link string) ([]string, error) {
+func validateRegionsToSync(c *client.Client, regionCode string) bool {
+	// Can't use glob.Glob because currently it is in plugin-sdk/internal
+	for _, includeRegionCode := range c.RegionCodes {
+		// if glob.Glob(includeOfferCode, offerCode) {
+		if includeRegionCode == "*" || includeRegionCode == regionCode {
+			return true
+		}
+	}
+	return false
+}
+
+func getRegionalPricingFileLinks(c *client.Client, link string) ([]string, error) {
 	resp, err := http.Get(link)
 	if err != nil {
 		return nil, err
@@ -78,7 +102,10 @@ func getRegionalPricingFileLinks(link string) ([]string, error) {
 	regions := offerFiles["regions"].(map[string]any)
 	for _, region := range regions {
 		region := region.(map[string]any)
-		links = append(links, region["currentVersionUrl"].(string))
+		if !validateRegionsToSync(c, region["regionCode"].(string)) {
+			continue
+		}
+		links = append(links, c.Endpoint+region["currentVersionUrl"].(string))
 	}
 	return links, nil
 }

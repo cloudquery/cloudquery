@@ -11,8 +11,10 @@ import (
 )
 
 type Client struct {
-	Logger   zerolog.Logger
-	Endpoint string
+	Logger      zerolog.Logger
+	Endpoint    string
+	OfferCodes  []string
+	RegionCodes []string
 }
 
 func (c *Client) ID() string {
@@ -28,7 +30,9 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	pluginSpec.SetDefaults()
 
 	return &Client{
-		Logger:   logger,
-		Endpoint: pluginSpec.Endpoint,
+		Logger:      logger,
+		Endpoint:    pluginSpec.Endpoint,
+		OfferCodes:  pluginSpec.OfferCodes,
+		RegionCodes: pluginSpec.RegionCodes,
 	}, nil
 }
