@@ -27,7 +27,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.2
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.2
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.1
-	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.1
+	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.2
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.29.2
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.2
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.1
