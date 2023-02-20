@@ -1,0 +1,2 @@
+echo 'Running prebuild script'
+

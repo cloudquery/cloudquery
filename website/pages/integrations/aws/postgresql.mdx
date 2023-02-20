@@ -1,4 +1,20 @@
-import Integration from "../../../components/pages/integration";
-import {getPlugin} from "../../../components/pluginData";
+---
+title: AWS to Postgres Integration
+---
 
-<Integration source={getPlugin("aws")} destination={getPlugin("postgresql")}/>
+import Integration from "../../../components/pages/IntegrationSourceDestination";
+import {getPlugin} from "../../../components/pluginData";
+import SourceConfiguration from "../../../components/mdx/plugins/source/aws/_configuration.mdx";
+import SourceAuthentication from "../../../components/mdx/plugins/source/aws/_authentication.mdx";
+import DestinationConfiguration from "../../../components/mdx/plugins/destination/postgresql/_configuration.mdx";
+import SyncCommand from "../../../components/mdx/plugins/source/aws/postgresql/_sync.mdx";
+
+<Integration
+  source={getPlugin("aws")}
+  sourceConfiguration={<SourceConfiguration />}
+  sourceAuthentication={<SourceAuthentication />}
+  destination={getPlugin("postgresql")}
+  destinationConfiguration={<DestinationConfiguration />}
+  syncCommand={<SyncCommand />}
+>
+</Integration>

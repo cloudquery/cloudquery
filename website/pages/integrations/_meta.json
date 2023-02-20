@@ -1,3 +1,10 @@
 {
-  
+  "*": {
+    "theme": {
+      "sidebar": false,
+      "breadcrumb": false,
+      "typesetting": "page",
+      "toc": false
+    }
+  }
 }

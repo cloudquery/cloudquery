@@ -4,10 +4,10 @@
   "private": true,
   "description": "CloudQuery website and docs",
   "scripts": {
-    "predev": "echo 'Running predev script'",
+    "predev": "scripts/prebuild.sh",
     "dev": "next",
     "start": "next start",
-    "prebuild": "echo 'Running prebuild script'",
+    "prebuild": "scripts/prebuild.sh",
     "build": "next build",
     "postbuild": "next-sitemap",
     "lint": "next lint"
