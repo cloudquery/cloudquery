@@ -31,7 +31,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 
 	return &Client{
 		Logger:      logger,
-		Endpoint:    pluginSpec.Endpoint,
 		OfferCodes:  pluginSpec.OfferCodes,
 		RegionCodes: pluginSpec.RegionCodes,
 	}, nil

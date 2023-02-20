@@ -11,6 +11,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
+const ROOT_URL = "https://pricing.us-east-1.amazonaws.com"
+
 func Services() *schema.Table {
 	return &schema.Table{
 		Name:                "awspricing_services",
@@ -46,7 +48,7 @@ func validateOffersToSync(c *client.Client, offerCode string) bool {
 }
 
 func getPricingFileLinks(c *client.Client) ([]string, error) {
-	resp, err := http.Get(c.Endpoint + "/offers/v1.0/aws/index.json")
+	resp, err := http.Get(ROOT_URL + "/offers/v1.0/aws/index.json")
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +65,7 @@ func getPricingFileLinks(c *client.Client) ([]string, error) {
 		if !validateOffersToSync(c, offer["offerCode"].(string)) {
 			continue
 		}
-		full_url := c.Endpoint + offer["currentRegionIndexUrl"].(string)
+		full_url := ROOT_URL + offer["currentRegionIndexUrl"].(string)
 
 		regionalLinks, err := getRegionalPricingFileLinks(c, full_url)
 		if err != nil {
@@ -104,7 +106,7 @@ func getRegionalPricingFileLinks(c *client.Client, link string) ([]string, error
 		if !validateRegionsToSync(c, region["regionCode"].(string)) {
 			continue
 		}
-		links = append(links, c.Endpoint+region["currentVersionUrl"].(string))
+		links = append(links, ROOT_URL+region["currentVersionUrl"].(string))
 	}
 	return links, nil
 }
