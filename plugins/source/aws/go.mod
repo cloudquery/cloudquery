@@ -11,23 +11,23 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.1
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.3
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.1
-	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.2
+	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.3
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.2
-	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.17.2
+	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.17.3
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.26.2
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.24.1
-	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.1
+	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.2
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.2
-	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.2
+	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.3
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.2
-	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.1
+	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.2
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.1
-	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.1
+	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.2
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.29.2
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.2
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.1
@@ -120,7 +120,7 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.19 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.20 // indirect; indirect // indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.23 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.2 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
