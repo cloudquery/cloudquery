@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-lambda-go v1.37.0
 	github.com/aws/aws-sdk-go-v2 v1.17.4
 	github.com/aws/aws-sdk-go-v2/config v1.18.13
-	github.com/aws/aws-sdk-go-v2/service/athena v1.22.1
+	github.com/aws/aws-sdk-go-v2/service/athena v1.22.2
 )
 
 require (
