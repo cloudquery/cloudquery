@@ -16,5 +16,4 @@ func (s *Spec) SetDefaults() {
 	if len(s.OfferCodes) == 0 {
 		s.OfferCodes = []string{"*"}
 	}
-
 }

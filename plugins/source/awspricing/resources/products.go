@@ -16,7 +16,7 @@ func products() *schema.Table {
 	}
 }
 
-func fetchProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	pricingFile := parent.Item.(PricingFile)
 	res <- pricingFile.Products
 	return nil

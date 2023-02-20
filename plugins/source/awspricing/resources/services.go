@@ -24,7 +24,7 @@ func Services() *schema.Table {
 	}
 }
 
-func fetchServicesTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchServicesTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	links, err := getPricingFileLinks(c)
 	if err != nil {
@@ -72,7 +72,6 @@ func getPricingFileLinks(c *client.Client) ([]string, error) {
 		links = append(links, regionalLinks...)
 	}
 	return links, nil
-
 }
 
 func validateRegionsToSync(c *client.Client, regionCode string) bool {
@@ -141,11 +140,7 @@ func transformRawPricingFile(rawStruct map[string]any) (PricingFile, error) {
 	}
 	pricingFile.PublicationDate = pubDate
 
-	products, err := extractProducts(rawStruct["products"].(map[string]any))
-	if err != nil {
-		return PricingFile{}, err
-	}
-	pricingFile.Products = products
+	pricingFile.Products = extractProducts(rawStruct["products"].(map[string]any))
 
 	rawTerms := rawStruct["terms"].(map[string]any)
 	terms, err := extractAllTerms(rawTerms)
@@ -157,7 +152,7 @@ func transformRawPricingFile(rawStruct map[string]any) (PricingFile, error) {
 	return pricingFile, nil
 }
 
-func extractProducts(rawProducts map[string]any) ([]Product, error) {
+func extractProducts(rawProducts map[string]any) []Product {
 	products := make([]Product, len(rawProducts))
 	counter := 0
 	for _, val := range rawProducts {
@@ -172,7 +167,7 @@ func extractProducts(rawProducts map[string]any) ([]Product, error) {
 		products[counter] = product
 		counter++
 	}
-	return products, nil
+	return products
 }
 
 func extractAttributes(attributes map[string]any) map[string]string {
@@ -192,7 +187,7 @@ func countTermItems(termsRaw map[string]any) int {
 			continue
 		}
 		for _, typeTermsRaw := range termsRaw[termType].(map[string]any) {
-			counter = counter + len(typeTermsRaw.(map[string]any))
+			counter += len(typeTermsRaw.(map[string]any))
 		}
 	}
 	return counter
@@ -229,7 +224,10 @@ func extractTerm(rawTerm map[string]any, termType string) (Term, error) {
 
 	var priceDimension []PriceDimension
 	if val, ok := rawTerm["priceDimensions"]; ok {
-		priceDimension = extractPriceDimensions(val.(map[string]any))
+		priceDimension, err = extractPriceDimensions(val.(map[string]any))
+		if err != nil {
+			return Term{}, err
+		}
 	}
 
 	return Term{
@@ -242,7 +240,7 @@ func extractTerm(rawTerm map[string]any, termType string) (Term, error) {
 	}, nil
 }
 
-func extractPriceDimensions(priceDimensions map[string]any) []PriceDimension {
+func extractPriceDimensions(priceDimensions map[string]any) ([]PriceDimension, error) {
 	priceDimensionsList := make([]PriceDimension, len(priceDimensions))
 	counter := 0
 	for _, val := range priceDimensions {
@@ -250,9 +248,12 @@ func extractPriceDimensions(priceDimensions map[string]any) []PriceDimension {
 		var pricePerUnit PricePerUnit
 		byteArray, err := json.Marshal(val["pricePerUnit"])
 		if err != nil {
-			return nil
+			return nil, err
 		}
-		json.Unmarshal(byteArray, &pricePerUnit)
+		err = json.Unmarshal(byteArray, &pricePerUnit)
+		if err != nil {
+			return nil, err
+		}
 
 		// This makes sure there are no nil values
 		appliesTo := make([]any, 0)
@@ -278,7 +279,7 @@ func extractPriceDimensions(priceDimensions map[string]any) []PriceDimension {
 		counter++
 	}
 
-	return priceDimensionsList
+	return priceDimensionsList, nil
 }
 
 type PricingFile struct {
@@ -299,13 +300,13 @@ type PricePerUnit struct {
 	Usd string `json:"USD"`
 }
 type PriceDimension struct {
-	RateCode     string        `json:"rateCode"`
-	Description  string        `json:"description"`
-	BeginRange   string        `json:"beginRange"`
-	EndRange     string        `json:"endRange"`
-	Unit         string        `json:"unit"`
-	PricePerUnit PricePerUnit  `json:"pricePerUnit"`
-	AppliesTo    []interface{} `json:"appliesTo"`
+	RateCode     string       `json:"rateCode"`
+	Description  string       `json:"description"`
+	BeginRange   string       `json:"beginRange"`
+	EndRange     string       `json:"endRange"`
+	Unit         string       `json:"unit"`
+	PricePerUnit PricePerUnit `json:"pricePerUnit"`
+	AppliesTo    []any        `json:"appliesTo"`
 }
 type Term struct {
 	Type            string            `json:"type"`

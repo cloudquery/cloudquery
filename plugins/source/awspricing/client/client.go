@@ -17,7 +17,7 @@ type Client struct {
 	RegionCodes []string
 }
 
-func (c *Client) ID() string {
+func (*Client) ID() string {
 	return "awspricing"
 }
 

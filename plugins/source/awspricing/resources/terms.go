@@ -14,7 +14,7 @@ func terms() *schema.Table {
 		Transform: transformers.TransformWithStruct(&Term{}, transformers.WithPrimaryKeys("OfferTermCode", "Sku")),
 	}
 }
-func fetchTerms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchTerms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	pricingFile := parent.Item.(PricingFile)
 	res <- pricingFile.Terms
 	return nil
