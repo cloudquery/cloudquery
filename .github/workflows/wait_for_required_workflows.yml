@@ -63,6 +63,7 @@ jobs:
                            "plugins/source/oracle",
                            "plugins/source/pagerduty",
                            "plugins/source/plausible",
+                           "plugins/source/postgresql",
                            "plugins/source/salesforce",
                            "plugins/source/shopify",
                            "plugins/source/slack",
@@ -72,7 +73,6 @@ jobs:
                            "plugins/source/terraform",
                            "plugins/source/test",
                            "plugins/source/vercel",
-                           
                            "plugins/destination/postgresql",
                            "plugins/destination/test",
                            "plugins/destination/csv",

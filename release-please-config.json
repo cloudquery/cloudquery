@@ -27,6 +27,7 @@
     "plugins/source/oracle": {"component": "plugins-source-oracle"},
     "plugins/source/pagerduty": {"component": "plugins-source-pagerduty"},
     "plugins/source/plausible": {"component": "plugins-source-plausible"},
+    "plugins/source/postgresql": { "component": "plugins-source-postgresql" },
     "plugins/source/salesforce": { "component": "plugins-source-salesforce" },
     "plugins/source/shopify": { "component": "plugins-source-shopify" },
     "plugins/source/slack": { "component": "plugins-source-slack" },

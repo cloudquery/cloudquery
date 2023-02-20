@@ -40,6 +40,7 @@ func TestPluginJSON(t *testing.T) {
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,
 			SkipDeleteStale:           true,
+			SkipMigrateAppend:         true,
 			SkipMigrateOverwrite:      true,
 			SkipMigrateOverwriteForce: true,
 			SkipMigrateAppendForce:    true,

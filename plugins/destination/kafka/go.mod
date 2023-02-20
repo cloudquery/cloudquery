@@ -4,8 +4,8 @@ go 1.19
 
 require (
 	github.com/Shopify/sarama v1.37.2
-	github.com/cloudquery/filetypes v1.4.1
-	github.com/cloudquery/plugin-sdk v1.37.1
+	github.com/cloudquery/filetypes v1.4.2
+	github.com/cloudquery/plugin-sdk v1.38.0
 	github.com/rs/zerolog v1.29.0
 )
 
@@ -48,7 +48,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect; indirect // indirect
 	golang.org/x/crypto v0.0.0-20220926161630-eccd6366d1be // indirect
-	golang.org/x/net v0.6.0 // indirect
+	golang.org/x/net v0.7.0 // indirect; indirect // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
