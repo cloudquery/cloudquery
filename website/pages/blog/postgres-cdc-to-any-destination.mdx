@@ -42,7 +42,7 @@ This process happens in real-time, so the replica server's copy of the data is a
 ## How CloudQuery Uses Postgres Logical Replication to Sync Postgres to Any Other Destination
 
 CloudQuery PostgreSQL source plugin provides the ability to sync data and changes in real time from a PostgreSQL database, directly to any
-of the supported [destinations](/docs/plugins/destinations/overview), without the need for Kafka or any intermediary (You can still stream to Kafka or Google PubSub).
+of the supported [destinations](/docs/plugins/destinations/overview), without the need for Kafka or any other intermediary. (You can still stream to Kafka or Google PubSub.)
 This gives a much simpler setup to operate by just running one CloudQuery binary!
 
 In the following section, we will go through how our CloudQuery PostgreSQL source plugin works internally. (For running and configuring, refer to the [docs](https://www.cloudquery.io/docs/quickstart/macOS).)
