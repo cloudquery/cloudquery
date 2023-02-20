@@ -9,6 +9,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 )
 
+var migrateStrategy = destination.MigrateStrategy{
+	AddColumn:           destination.DataLossNone,
+	AddColumnNotNull:    destination.DataLossTable,
+	RemoveColumn:        destination.DataLossNone,
+	RemoveColumnNotNull: destination.DataLossTable,
+	ChangeColumn:        destination.DataLossColumn,
+}
+
 func getTestConnection() string {
 	if testConn := os.Getenv("CQ_DEST_CH_TEST_CONN"); len(testConn) > 0 {
 		return testConn
@@ -36,6 +44,9 @@ func TestPlugin(t *testing.T) {
 			SkipOverwrite:             true,
 			SkipMigrateOverwrite:      true,
 			SkipMigrateOverwriteForce: true,
+
+			MigrateStrategyOverwrite: migrateStrategy,
+			MigrateStrategyAppend:    migrateStrategy,
 		},
 	)
 }

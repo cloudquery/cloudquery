@@ -17,7 +17,7 @@ func TestCreateTable(t *testing.T) {
 			schema.Column{
 				Name:            "extra_col",
 				Type:            schema.TypeFloat,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				CreationOptions: schema.ColumnCreationOptions{NotNull: true},
 			},
 			schema.Column{Name: "extra_inet_col", Type: schema.TypeInet},
 			schema.Column{Name: "extra_inet_arr_col", Type: schema.TypeInetArray},
