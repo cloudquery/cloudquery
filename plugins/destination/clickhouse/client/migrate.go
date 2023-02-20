@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
+	"golang.org/x/sync/errgroup"
 )
 
 // Migrate relies on the CLI/client to lock before running migration.
@@ -26,27 +27,34 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 		}
 	}
 
+	const maxConcurrentMigrate = 10
+	eg, ctx := errgroup.WithContext(ctx)
+	eg.SetLimit(maxConcurrentMigrate)
+
 	for _, table := range newSchema {
 		table := table
-		c.logger.Info().Str("table", table.Name).Msg("Migrating table started")
-		if len(table.Columns) == 0 {
-			c.logger.Warn().Str("table", table.Name).Msg("Table with no columns, skip")
+		eg.Go(func() error {
+			c.logger.Info().Str("table", table.Name).Msg("Migrating table started")
+			if len(table.Columns) == 0 {
+				c.logger.Warn().Str("table", table.Name).Msg("Table with no columns, skip")
+				return nil
+			}
+
+			current := currentSchema.Get(table.Name)
+			if current == nil {
+				return c.createTable(ctx, table)
+			}
+
+			err := c.autoMigrate(ctx, table, current)
+			if err != nil {
+				return err
+			}
+			c.logger.Err(err).Str("table", table.Name).Msg("Migrating table done")
 			return nil
-		}
-
-		current := currentSchema.Get(table.Name)
-		if current == nil {
-			return c.createTable(ctx, table)
-		}
-
-		err := c.autoMigrate(ctx, table, current)
-		if err != nil {
-			return err
-		}
-		c.logger.Err(err).Str("table", table.Name).Msg("Migrating table done")
+		})
 	}
 
-	return nil
+	return eg.Wait()
 }
 
 func (c *Client) nonAutoMigrableTables(tables schema.Tables, currentTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
@@ -106,8 +114,7 @@ func needsTableDrop(change schema.TableColumnChange) bool {
 		return false
 	}
 
-	// Not null columns are used as sort keys, so we need to drop the table if those are removed
-	if change.Type == schema.TableColumnChangeTypeRemove && change.Previous.CreationOptions.NotNull {
+	if change.Type == schema.TableColumnChangeTypeRemove {
 		return false
 	}
 
@@ -130,17 +137,6 @@ func (c *Client) autoMigrate(ctx context.Context, table *schema.Table, current *
 		case change.Type == schema.TableColumnChangeTypeAdd && !change.Current.CreationOptions.NotNull:
 			c.logger.Debug().Str("table", table.Name).Str("column", change.Current.Name).Msg("Adding new column")
 			err := c.conn.Exec(ctx, queries.AddColumn(table.Name, &change.Current))
-			if err != nil {
-				return err
-			}
-		case change.Type == schema.TableColumnChangeTypeUpdate && !change.Current.CreationOptions.NotNull:
-			c.logger.Debug().Str("table", table.Name).Str("column", change.Current.Name).Msg("dropping changed non null column")
-			err := c.conn.Exec(ctx, queries.DropColumn(table.Name, &change.Previous))
-			if err != nil {
-				return err
-			}
-
-			err = c.conn.Exec(ctx, queries.AddColumn(table.Name, &change.Current))
 			if err != nil {
 				return err
 			}

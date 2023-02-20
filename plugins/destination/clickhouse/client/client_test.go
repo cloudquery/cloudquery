@@ -7,14 +7,15 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/specs"
 )
 
 var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           destination.DataLossNone,
-	AddColumnNotNull:    destination.DataLossTable,
-	RemoveColumn:        destination.DataLossNone,
-	RemoveColumnNotNull: destination.DataLossTable,
-	ChangeColumn:        destination.DataLossColumn,
+	AddColumn:           specs.MigrateModeSafe,
+	AddColumnNotNull:    specs.MigrateModeForced,
+	RemoveColumn:        specs.MigrateModeSafe,
+	RemoveColumnNotNull: specs.MigrateModeForced,
+	ChangeColumn:        specs.MigrateModeForced,
 }
 
 func getTestConnection() string {
