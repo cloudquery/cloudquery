@@ -22,9 +22,9 @@ spec:
 
 This is the (nested) spec used by GCP Source Plugin
 
-- `project_ids` ([]string) (default: empty. will use all available projects available to the current authenticated account)
+- `project_ids` ([]string) (default: empty. will use all projects available to the current authenticated account)
 
-  Specify specific projects to connect to. If either `folder_ids` or `project_filter` is specified, these projects will be fetched in addition
+  Specify projects to connect to. If either `folder_ids` or `project_filter` is specified, these projects will be synced in addition
   to the projects from the folder/filter.
 
 - `service_account_key_json` (string) (default: empty).
@@ -47,6 +47,14 @@ This is the (nested) spec used by GCP Source Plugin
   A filter to determine the projects that are synced. For instance, to only sync projects where the name starts with `how-`,
   set `project_filter` to `name:how-*`. Another example is: `"name:how-* OR name:test-*"`. For syntax and example queries refer to API Reference [here](https://cloud.google.com/resource-manager/reference/rest/v1/projects/list#google.cloudresourcemanager.v1.Projects.ListProjects).
   Mutually exclusive with `folder_ids`.
+
+- `organization_ids` ([]string) (default: empty. will use all organizations available to the current authenticated account)
+
+  Specify organizations to use when syncing organization level resources (e.g. [folders](https://github.com/cloudquery/cloudquery/blob/0e384a84d1c9545b24c2eda9af00f111bab79c36/plugins/source/gcp/resources/services/resourcemanager/folders_fetch.go#L23) or [security findings](https://github.com/cloudquery/cloudquery/blob/0e384a84d1c9545b24c2eda9af00f111bab79c36/plugins/source/gcp/resources/services/securitycenter/organization_findings.go#L43)). If `organization_filter` is specified, these organizations will be used in addition to the organizations from the filter.
+
+- `organization_filter` (string) (default: empty).
+
+  A filter to determine the organizations to use when syncing organization level resources (e.g. [folders](https://github.com/cloudquery/cloudquery/blob/0e384a84d1c9545b24c2eda9af00f111bab79c36/plugins/source/gcp/resources/services/resourcemanager/folders_fetch.go#L23) or [security findings](https://github.com/cloudquery/cloudquery/blob/0e384a84d1c9545b24c2eda9af00f111bab79c36/plugins/source/gcp/resources/services/securitycenter/organization_findings.go#L43)). For instance, to use only organizations from the `cloudquery.io` domain, set `organization_filter` to `domain:cloudquery.io`. For syntax and example queries refer to API Reference [here](https://cloud.google.com/resource-manager/reference/rest/v1/organizations/search#google.cloudresourcemanager.v1.SearchOrganizationsRequest).
 
 - `backoff_delay` (int) (default: 30).
   If specified APIs will be retried with exponential backoff if they are rate limited. This is the max delay (in seconds) between retries.

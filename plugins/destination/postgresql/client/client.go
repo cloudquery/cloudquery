@@ -28,34 +28,6 @@ type Client struct {
 	batchSize           int
 }
 
-type pgColumn struct {
-	name string
-	typ  string
-}
-
-type pgTableColumns struct {
-	name    string
-	columns []pgColumn
-}
-
-const sqlSelectColumnTypes = `
-SELECT
-pg_attribute.attname AS column_name,
-pg_catalog.format_type(pg_attribute.atttypid, pg_attribute.atttypmod) AS data_type
-FROM
-pg_catalog.pg_attribute
-INNER JOIN
-pg_catalog.pg_class ON pg_class.oid = pg_attribute.attrelid
-INNER JOIN
-pg_catalog.pg_namespace ON pg_namespace.oid = pg_class.relnamespace
-WHERE
-pg_attribute.attnum > 0
-AND NOT pg_attribute.attisdropped
-AND pg_class.relname = $1
-ORDER BY
-attnum ASC;
-`
-
 type pgType int
 
 const (
@@ -103,7 +75,10 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	if err != nil {
 		return nil, fmt.Errorf("failed to get current database: %w", err)
 	}
-	c.currentSchemaName = "public"
+	c.currentSchemaName, err = c.currentSchema(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get current schema: %w", err)
+	}
 	c.pgType, err = c.getPgType(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
@@ -132,6 +107,16 @@ func (c *Client) currentDatabase(ctx context.Context) (string, error) {
 	return db, nil
 }
 
+func (c *Client) currentSchema(ctx context.Context) (string, error) {
+	var schema string
+	err := c.conn.QueryRow(ctx, "select current_schema()").Scan(&schema)
+	if err != nil {
+		return "", err
+	}
+
+	return schema, nil
+}
+
 func (c *Client) getPgType(ctx context.Context) (pgType, error) {
 	var version string
 	var typ pgType
@@ -154,39 +139,4 @@ func (c *Client) getPgType(ctx context.Context) (pgType, error) {
 	}
 
 	return typ, nil
-}
-
-func (c *Client) getPgTableColumns(ctx context.Context, tableName string) (*pgTableColumns, error) {
-	tc := pgTableColumns{
-		name: tableName,
-	}
-	rows, err := c.conn.Query(ctx, sqlSelectColumnTypes, tableName)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var name string
-		var typ string
-		if err := rows.Scan(&name, &typ); err != nil {
-			return nil, err
-		}
-		tc.columns = append(tc.columns, pgColumn{
-			name: strings.ToLower(name),
-			typ:  strings.ToLower(typ),
-		})
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return &tc, nil
-}
-
-func (c *pgTableColumns) getPgColumn(column string) *pgColumn {
-	for _, col := range c.columns {
-		if col.name == column {
-			return &col
-		}
-	}
-	return nil
 }

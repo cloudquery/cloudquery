@@ -54,10 +54,27 @@ func pgErrToStr(err *pgconn.PgError) string {
 	return sb.String()
 }
 
+func (c *Client) populateConstraintNames(ctx context.Context, tables schema.Tables) error {
+	pgTables, err := c.listPgTables(ctx, tables)
+	if err != nil {
+		return err
+	}
+	for _, table := range tables.FlattenTables() {
+		pgTable := pgTables.Get(table.Name)
+		if pgTable == nil {
+			return fmt.Errorf("table %s not found in postgres. make sure to run migrate", table.Name)
+		}
+		table.PkConstraintName = pgTable.PkConstraintName
+	}
+	return nil
+}
+
 func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
 	var sql string
 	batch := &pgx.Batch{}
-
+	if err := c.populateConstraintNames(ctx, tables); err != nil {
+		return err
+	}
 	for r := range res {
 		table := tables.Get(r.TableName)
 		if table == nil {
@@ -66,7 +83,11 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 		if c.spec.WriteMode == specs.WriteModeAppend {
 			sql = c.insert(table)
 		} else {
-			sql = c.upsert(table)
+			if len(table.PrimaryKeys()) > 0 {
+				sql = c.upsert(table)
+			} else {
+				sql = c.insert(table)
+			}
 		}
 		batch.Queue(sql, r.Data...)
 		batchSize := batch.Len()
@@ -135,7 +156,7 @@ func (c *Client) upsert(table *schema.Table) string {
 	columns := table.Columns
 	columnsLen := len(columns)
 
-	constraintName := fmt.Sprintf("%s_cqpk", table.Name)
+	constraintName := table.PkConstraintName
 	sb.WriteString(" on conflict on constraint ")
 	sb.WriteString(constraintName)
 	sb.WriteString(" do update set ")
