@@ -13,7 +13,7 @@ var (
 
 func Plugin() *source.Plugin {
 	return source.NewPlugin(
-		"cloudquery-awspricing",
+		"awspricing",
 		Version,
 		schema.Tables{
 			resources.Services(),
