@@ -13,7 +13,7 @@ func Distributions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_Distribution.html`,
 		Resolver:            fetchCloudfrontDistributions,
 		PreResourceResolver: getDistribution,
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("cloudfront"),
 		Transform:           transformers.TransformWithStruct(&types.Distribution{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

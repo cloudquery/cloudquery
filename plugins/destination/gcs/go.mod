@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	cloud.google.com/go/storage v1.28.1
-	github.com/cloudquery/filetypes v1.4.0
+	github.com/cloudquery/filetypes v1.4.1
 	github.com/cloudquery/plugin-sdk v1.37.1
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
@@ -42,7 +42,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/net v0.6.0 // indirect
+	golang.org/x/net v0.7.0 // indirect; indirect // indirect
 	golang.org/x/oauth2 v0.4.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect

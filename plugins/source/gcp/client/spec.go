@@ -10,6 +10,8 @@ type Spec struct {
 	BackoffDelay          int      `json:"backoff_delay"`
 	BackoffRetries        int      `json:"backoff_retries"`
 	EnabledServicesOnly   bool     `json:"enabled_services_only"`
+	OrganizationIDs       []string `json:"organization_ids"`
+	OrganizationFilter    string   `json:"organization_filter"`
 }
 
 func (spec *Spec) setDefaults() {

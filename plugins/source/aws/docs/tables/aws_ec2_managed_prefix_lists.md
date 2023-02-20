@@ -3,7 +3,7 @@
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ManagedPrefixList.html. 
 The 'request_account_id' and 'request_region' columns are added to show the account_id and region of where the request was made from.
 
-The composite primary key for this table is (**request_account_id**, **request_region**).
+The composite primary key for this table is (**request_account_id**, **request_region**, **arn**).
 
 ## Columns
 
@@ -15,7 +15,7 @@ The composite primary key for this table is (**request_account_id**, **request_r
 |_cq_parent_id|UUID|
 |request_account_id (PK)|String|
 |request_region (PK)|String|
-|arn|String|
+|arn (PK)|String|
 |tags|JSON|
 |address_family|String|
 |max_entries|Int|

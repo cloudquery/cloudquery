@@ -87,6 +87,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssm"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssoadmin"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/stepfunctions"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/support"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/timestream"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/transfer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/waf"
@@ -427,8 +428,11 @@ func tables() []*schema.Table {
 		ssm.PatchBaselines(),
 		ssoadmin.Instances(),
 		stepfunctions.Activities(),
-		stepfunctions.Executions(),
 		stepfunctions.StateMachines(),
+		support.Cases(),
+		support.Services(),
+		support.SeverityLevels(),
+		support.TrustedAdvisorChecks(),
 		timestream.Databases(),
 		transfer.Servers(),
 		wafregional.RateBasedRules(),

@@ -23,6 +23,15 @@ func buildCloudwatchLogsLogGroupsMock(t *testing.T, ctrl *gomock.Controller) cli
 			LogGroups: []types.LogGroup{l},
 		}, nil)
 
+	sf := types.SubscriptionFilter{}
+	if err = faker.FakeObject(&sf); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().DescribeSubscriptionFilters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&cloudwatchlogs.DescribeSubscriptionFiltersOutput{
+			SubscriptionFilters: []types.SubscriptionFilter{sf},
+		}, nil)
+
 	tags := &cloudwatchlogs.ListTagsLogGroupOutput{}
 	err = faker.FakeObject(tags)
 	if err != nil {
