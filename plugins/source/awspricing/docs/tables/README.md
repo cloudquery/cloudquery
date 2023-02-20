@@ -1,4 +1,4 @@
-# Source Plugin: cloudquery-awspricing
+# Source Plugin: awspricing
 
 ## Tables
 
