@@ -1,5 +1,11 @@
 package client
 
 type Spec struct {
-	// plugin spec goes here
+	Endpoint string `json:"endpoint,omitempty"`
+}
+
+func (s *Spec) SetDefaults() {
+	if s.Endpoint == "" {
+		s.Endpoint = "https://pricing.us-east-1.amazonaws.com"
+	}
 }

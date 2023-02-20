@@ -16,7 +16,7 @@ func Plugin() *source.Plugin {
 		"cloudquery-aws-pricing",
 		Version,
 		schema.Tables{
-			resources.SampleTable(),
+			resources.Services(),
 		},
 		client.New,
 	)
