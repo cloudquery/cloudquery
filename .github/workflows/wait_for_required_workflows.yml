@@ -46,7 +46,6 @@ jobs:
                            "plugins/source/azure",
                            "plugins/source/azuredevops",
                            "plugins/source/cloudflare",
-                           "plugins/source/crowdstrike",
                            "plugins/source/digitalocean",
                            "plugins/source/datadog",
                            "plugins/source/fastly",
@@ -72,6 +71,7 @@ jobs:
                            "plugins/source/test",
                            "plugins/source/vercel",
                            "plugins/source/plausible",
+                           "plugins/source/postgresql",
                            
                            "plugins/destination/postgresql",
                            "plugins/destination/test",

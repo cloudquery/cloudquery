@@ -148,7 +148,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	// Add a fake request reason because it is not possible to pass nil options
 	c.ClientOptions = append(c.ClientOptions,
 		option.WithRequestReason("cloudquery resource fetch"),
-		// we disable telemetry to boost performance and be on the same side with telemtry
+		// we disable telemetry to boost performance and be on the same side with telemetry
 		option.WithTelemetryDisabled(),
 		option.WithGRPCDialOption(
 			unaryInterceptor,

@@ -10,7 +10,6 @@ import (
 const bucket = "cq-playground-test"
 
 func TestPluginCSV(t *testing.T) {
-	p := destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
 	spec := Spec{
 		Bucket:   bucket,
 		Path:     t.TempDir()[1:],
@@ -20,20 +19,24 @@ func TestPluginCSV(t *testing.T) {
 		},
 	}
 	spec.SetDefaults()
-	destination.PluginTestSuiteRunner(t, p,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
+		},
 		spec,
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:        true,
-			SkipDeleteStale:      true,
-			SkipSecondAppend:     true,
-			SkipMigrateAppend:    true,
-			SkipMigrateOverwrite: true,
+			SkipOverwrite:             true,
+			SkipDeleteStale:           true,
+			SkipSecondAppend:          true,
+			SkipMigrateAppend:         true,
+			SkipMigrateOverwrite:      true,
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		},
 	)
 }
 
 func TestPluginJSON(t *testing.T) {
-	p := destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
 	spec := Spec{
 		Bucket:   bucket,
 		Path:     t.TempDir()[1:],
@@ -43,14 +46,19 @@ func TestPluginJSON(t *testing.T) {
 		},
 	}
 	spec.SetDefaults()
-	destination.PluginTestSuiteRunner(t, p,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
+		},
 		spec,
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:        true,
-			SkipDeleteStale:      true,
-			SkipSecondAppend:     true,
-			SkipMigrateAppend:    true,
-			SkipMigrateOverwrite: true,
+			SkipOverwrite:             true,
+			SkipDeleteStale:           true,
+			SkipSecondAppend:          true,
+			SkipMigrateAppend:         true,
+			SkipMigrateOverwrite:      true,
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		},
 	)
 }

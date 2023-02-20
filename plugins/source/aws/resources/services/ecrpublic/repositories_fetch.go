@@ -21,6 +21,9 @@ func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		output, err := svc.DescribeRepositories(ctx, &config)
 		if err != nil {
+			if client.IsAWSError(err, "UnsupportedCommandException") {
+				return nil
+			}
 			return err
 		}
 		res <- output.Repositories

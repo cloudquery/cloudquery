@@ -20,7 +20,7 @@ func EngineVersions() *schema.Table {
 			{
 				Name:     "_engine_version_hash",
 				Type:     schema.TypeString,
-				Resolver: calculateUniqueHash,
+				Resolver: client.ResolveObjectHash,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

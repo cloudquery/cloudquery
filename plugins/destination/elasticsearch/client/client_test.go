@@ -12,10 +12,15 @@ func TestPlugin(t *testing.T) {
 	if address == "" {
 		address = "http://localhost:9200"
 	}
-	p := destination.NewPlugin("elasticsearch", "development", New, destination.WithManagedWriter())
-	destination.PluginTestSuiteRunner(t, p,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("elasticsearch", "development", New, destination.WithManagedWriter())
+		},
 		Spec{
 			Addresses: []string{address},
 		},
-		destination.PluginTestSuiteTests{})
+		destination.PluginTestSuiteTests{
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
+		})
 }

@@ -4,6 +4,11 @@ https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeState
 
 The primary key for this table is **arn**.
 
+## Relations
+
+The following tables depend on aws_stepfunctions_state_machines:
+  - [aws_stepfunctions_executions](aws_stepfunctions_executions.md)
+
 ## Columns
 
 | Name          | Type          |

@@ -1,6 +1,8 @@
 package issues
 
 import (
+	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -12,25 +14,29 @@ func Issues() *schema.Table {
 		Name:      "github_issues",
 		Resolver:  fetchIssues,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.Issue{}, client.SharedTransformers()...),
-		Columns: []schema.Column{
-			{
-				Name:        "org",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
-				Description: `The Github Organization of the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform: transformers.TransformWithStruct(&github.Issue{},
+			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
+		Columns: []schema.Column{client.OrgColumn},
 	}
+}
+
+func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	opts := &github.IssueListOptions{
+		Filter:      "all",
+		State:       "all",
+		ListOptions: github.ListOptions{PerPage: 100},
+	}
+	for {
+		issues, resp, err := c.Github.Issues.ListByOrg(ctx, c.Org, opts)
+		if err != nil {
+			return err
+		}
+		res <- issues
+		opts.Page = resp.NextPage
+		if opts.Page == resp.LastPage {
+			break
+		}
+	}
+	return nil
 }

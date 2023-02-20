@@ -12,7 +12,7 @@ func AlternateContacts() *schema.Table {
 		Name:        "aws_account_alternate_contacts",
 		Description: `https://docs.aws.amazon.com/accounts/latest/reference/API_AlternateContact.html`,
 		Resolver:    fetchAccountAlternateContacts,
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("account"),
 		Transform:   transformers.TransformWithStruct(&types.AlternateContact{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
