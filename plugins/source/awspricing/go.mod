@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/source/aws-pricing
+module github.com/cloudquery/cloudquery/plugins/source/awspricing
 
 go 1.19
 

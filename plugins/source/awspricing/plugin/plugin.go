@@ -1,8 +1,8 @@
 package plugin
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/aws-pricing/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws-pricing/resources"
+	"github.com/cloudquery/cloudquery/plugins/source/awspricing/client"
+	"github.com/cloudquery/cloudquery/plugins/source/awspricing/resources"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -13,7 +13,7 @@ var (
 
 func Plugin() *source.Plugin {
 	return source.NewPlugin(
-		"cloudquery-aws-pricing",
+		"cloudquery-awspricing",
 		Version,
 		schema.Tables{
 			resources.Services(),

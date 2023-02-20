@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/cloudquery/cloudquery/plugins/source/aws-pricing/client"
+	"github.com/cloudquery/cloudquery/plugins/source/awspricing/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )

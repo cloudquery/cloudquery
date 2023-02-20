@@ -2,8 +2,8 @@ alicloud:
   - plugins/source/alicloud/**/*
 aws:
   - plugins/source/aws/**/*
-aws-pricing:
-  - plugins/source/aws-pricing/**/*  
+awspricing:
+  - plugins/source/awspricing/**/*  
 azure:
   - plugins/source/azure/**/*
 azuredevops:

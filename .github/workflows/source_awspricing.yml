@@ -3,23 +3,23 @@ name: Source Plugin AWS Pricing Workflow
 on:
   pull_request:
     paths:
-      - "plugins/source/aws-pricing/**"
-      - ".github/workflows/source_aws-pricing.yml"
+      - "plugins/source/awspricing/**"
+      - ".github/workflows/source_awspricing.yml"
   push:
     branches:
       - main
     paths:
-      - "plugins/source/aws-pricing/**"
-      - ".github/workflows/source_aws-pricing.yml"
+      - "plugins/source/awspricing/**"
+      - ".github/workflows/source_awspricing.yml"
 
 jobs:
-  plugins-source-aws-pricing:
+  plugins-source-awspricing:
     timeout-minutes: 30
-    name: "plugins/source/aws-pricing"
+    name: "plugins/source/awspricing"
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./plugins/source/aws-pricing
+        working-directory: ./plugins/source/awspricing
     steps:
       - uses: actions/checkout@v3
         with:
@@ -27,14 +27,14 @@ jobs:
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
-          go-version-file: plugins/source/aws-pricing/go.mod
+          go-version-file: plugins/source/awspricing/go.mod
           cache: true
-          cache-dependency-path: plugins/source/aws-pricing/go.sum
+          cache-dependency-path: plugins/source/awspricing/go.sum
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.50.1
-          working-directory: plugins/source/aws-pricing
+          working-directory: plugins/source/awspricing
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true
@@ -65,14 +65,14 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/aws-pricing/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/awspricing/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-aws-pricing
+            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-awspricing
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
         with:
-          go-version-file: plugins/source/aws-pricing/go.mod
+          go-version-file: plugins/source/awspricing/go.mod
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: goreleaser/goreleaser-action@v3
@@ -82,6 +82,6 @@ jobs:
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/aws-pricing/.goreleaser.yaml
+        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/awspricing/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

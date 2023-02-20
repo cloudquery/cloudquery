@@ -1,6 +1,6 @@
-# CloudQuery aws-pricing Source Plugin
+# CloudQuery awspricing Source Plugin
 
-A aws-pricing source plugin for CloudQuery that loads data from aws-pricing to any database, data warehouse or data lake supported by [CloudQuery](https://www.cloudquery.io/), such as PostgreSQL, BigQuery, Athena, and many more.
+A awspricing source plugin for CloudQuery that loads data from awspricing to any database, data warehouse or data lake supported by [CloudQuery](https://www.cloudquery.io/), such as PostgreSQL, BigQuery, Athena, and many more.
 
 ## Links
 
@@ -15,8 +15,8 @@ The following source configuration file will sync to a PostgreSQL database. See 
 ```yaml
 kind: source
 spec:
-  name: "aws-pricing"
-  path: "cloudquery/aws-pricing"
+  name: "awspricing"
+  path: "cloudquery/awspricing"
   version: "${VERSION}"
   destinations:
     - "postgresql"
