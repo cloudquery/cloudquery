@@ -22,8 +22,8 @@ func TestPlugin(t *testing.T) {
 			return destination.NewPlugin("bigquery", "development", New, destination.WithManagedWriter())
 		},
 		Spec{
-			ProjectID:        "cq-playground",
-			DatasetID:        "ereztest",
+			ProjectID:        os.Getenv("BIGQUERY_PROJECT_ID"),
+			DatasetID:        os.Getenv("BIGQUERY_DATASET_ID"),
 			TimePartitioning: "none",
 		},
 		destination.PluginTestSuiteTests{
