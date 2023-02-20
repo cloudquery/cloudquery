@@ -4,10 +4,10 @@
   "private": true,
   "description": "CloudQuery website and docs",
   "scripts": {
-    "predev": "scripts/prebuild.sh",
+    "predev": "npx tsx ./scripts/prebuild.tsx",
     "dev": "next",
     "start": "next start",
-    "prebuild": "scripts/prebuild.sh",
+    "prebuild": "npx tsx ./scripts/prebuild.tsx",
     "build": "next build",
     "postbuild": "next-sitemap",
     "lint": "next lint"

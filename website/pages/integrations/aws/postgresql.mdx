@@ -10,10 +10,10 @@ import DestinationConfiguration from "../../../components/mdx/plugins/destinatio
 import SyncCommand from "../../../components/mdx/plugins/source/aws/postgresql/_sync.mdx";
 
 <Integration
-  source={getPlugin("aws")}
+  source={getPlugin("source", "aws")}
   sourceConfiguration={<SourceConfiguration />}
   sourceAuthentication={<SourceAuthentication />}
-  destination={getPlugin("postgresql")}
+  destination={getPlugin("destination", "postgresql")}
   destinationConfiguration={<DestinationConfiguration />}
   syncCommand={<SyncCommand />}
 >

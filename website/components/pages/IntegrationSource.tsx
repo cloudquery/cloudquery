@@ -56,20 +56,18 @@ export default function Integration({
             </div>
         </div>
 
-        <div className="relative from-gray-50 to-gray-100">
-            <div className="px-4 py-8 mx-auto">
-                {DESTINATION_PLUGINS.map(({ name, logo, logoDark, id, href }) => (
-                    <LogoContainer
-                        title={name}
-                        href={href || `/integrations/${source.id}/${id}`}
-                        key={id}
-                        logo={logo}
-                        logoDark={logoDark}
-                        name={name}
-                    >
-                    </LogoContainer>
-                ))}
-            </div>
+        <div className="flex justify-center items-center flex-wrap gap-9 pt-8 sm:mt-4">
+            {DESTINATION_PLUGINS.map(({ name, logo, logoDark, id, href }) => (
+                <LogoContainer
+                    title={name}
+                    href={href || `/integrations/${source.id}/${id}`}
+                    key={id}
+                    logo={logo}
+                    logoDark={logoDark}
+                    name={name}
+                >
+                </LogoContainer>
+            ))}
         </div>
     </>;
 }
