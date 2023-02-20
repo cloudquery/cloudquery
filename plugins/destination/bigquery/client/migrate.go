@@ -18,7 +18,7 @@ const (
 	maxTableChecks       = 20
 )
 
-// This is used only in tests to ensure the schema is update to date before inserting data
+// This is used only in tests to ensure the schema is up to date before inserting data
 var minTriesSleepTimeSeconds = 0
 
 // Migrate tables. It is the responsibility of the CLI of the client to lock before running migrations.
