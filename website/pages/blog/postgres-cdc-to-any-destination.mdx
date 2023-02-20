@@ -29,7 +29,7 @@ rather than the entire dataset. This can help to minimize the overhead of replic
 
 ## How Does Logical Replication Work?
 
-In PostgreSQL, logical replication is achieved by replicating changes made to the data in the form of write-ahead logs (`WALs`) records.
+In PostgreSQL, logical replication is achieved by replicating changes made to the data in the form of write-ahead log (`WAL`) records.
 These records contain all the necessary information to recreate the changes that were made to the data,
 including the type of change (insert, update, or delete),
 the time the change was made, and the actual data that was changed.
