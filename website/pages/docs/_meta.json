@@ -15,7 +15,6 @@
   "changelog": {
     "title": "Changelog ↗",
     "href": "https://github.com/cloudquery/cloudquery/blob/main/cli/CHANGELOG.md",
-    "newWindow": true,
-    "route": "https://github.com/cloudquery/cloudquery/blob/main/cli/CHANGELOG.md"
+    "newWindow": true
   }
 }
