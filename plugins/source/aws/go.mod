@@ -30,7 +30,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.2
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.29.2
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.3
-	github.com/aws/aws-sdk-go-v2/service/dax v1.12.1
+	github.com/aws/aws-sdk-go-v2/service/dax v1.12.2
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.3
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.2
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.3
