@@ -1,7 +1,6 @@
 package client
 
 import (
-	"os"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
@@ -17,15 +16,15 @@ var migrateStrategy = destination.MigrateStrategy{
 }
 
 func TestPlugin(t *testing.T) {
+	minTriesSleepTimeSeconds = 60
 	destination.PluginTestSuiteRunner(t,
 		func() *destination.Plugin {
 			return destination.NewPlugin("bigquery", "development", New, destination.WithManagedWriter())
 		},
 		Spec{
-			ProjectID:                os.Getenv("BIGQUERY_PROJECT_ID"),
-			DatasetID:                os.Getenv("BIGQUERY_DATASET_ID"),
-			TimePartitioning:         "none",
-			MinTriesSleepTimeSeconds: 45,
+			ProjectID:        "cq-playground",
+			DatasetID:        "ereztest",
+			TimePartitioning: "none",
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,

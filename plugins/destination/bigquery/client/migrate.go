@@ -18,6 +18,9 @@ const (
 	maxTableChecks       = 20
 )
 
+// This is used only in tests to ensure the schema is update to date before inserting data
+var minTriesSleepTimeSeconds = 0
+
 // Migrate tables. It is the responsibility of the CLI of the client to lock before running migrations.
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	eg, gctx := errgroup.WithContext(ctx)
@@ -112,9 +115,9 @@ func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Clie
 				c.logger.Debug().Str("table", table.Name).Msg("Schemas match")
 				return nil
 			}
-			if c.pluginSpec.MinTriesSleepTimeSeconds != 0 {
+			if minTriesSleepTimeSeconds != 0 {
 				c.logger.Debug().Str("table", table.Name).Int("i", i).Int("j", j).Msg("Schemas match, waiting for more tries")
-				time.Sleep(time.Duration(c.pluginSpec.MinTriesSleepTimeSeconds) * time.Second)
+				time.Sleep(time.Duration(minTriesSleepTimeSeconds) * time.Second)
 			}
 		}
 		c.logger.Debug().Str("table", table.Name).Int("i", i).Msg("Waiting for schemas to match")
