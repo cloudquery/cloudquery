@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v1.0.6...plugins-destination-elasticsearch-v1.1.0) (2023-02-21)
+
+
+### Features
+
+* **deps:** Update Elasticsearch plugin-sdk to v1.38.2 ([#8259](https://github.com/cloudquery/cloudquery/issues/8259)) ([0e852ed](https://github.com/cloudquery/cloudquery/commit/0e852ed5ba0b76b9f1921d47ee79d338bc2bdd23))
+
 ## [1.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v1.0.5...plugins-destination-elasticsearch-v1.0.6) (2023-02-21)
 
 
