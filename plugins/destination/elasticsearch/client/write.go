@@ -62,6 +62,10 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 
 func pkIndexes(table *schema.Table) []int {
 	pks := table.PrimaryKeys()
+	if len(pks) == 0 {
+		// if no PK is defined, use all columns for the ID which is based on the indices returned by this function
+		pks = table.Columns.Names()
+	}
 	inds := make([]int, 0, len(pks))
 	for _, col := range pks {
 		inds = append(inds, table.Columns.Index(col))

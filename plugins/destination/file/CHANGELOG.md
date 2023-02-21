@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v1.1.1...plugins-destination-file-v1.2.0) (2023-02-21)
+
+
+### Features
+
+* **deps:** Update File plugin-sdk to v1.38.2 ([#8262](https://github.com/cloudquery/cloudquery/issues/8262)) ([97c7b01](https://github.com/cloudquery/cloudquery/commit/97c7b011a88d44dd1722297e416fbd8c2839a2be))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes to v1.4.2 ([#8218](https://github.com/cloudquery/cloudquery/issues/8218)) ([9e656c2](https://github.com/cloudquery/cloudquery/commit/9e656c2f204951b54839547df5d8360de3ba4778))
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+
 ## [1.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v1.1.0...plugins-destination-file-v1.1.1) (2023-02-14)
 
 
