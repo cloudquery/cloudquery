@@ -80,8 +80,7 @@ func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
 	return normalized
 }
 
-func (c *Client) nonAutoMigrableTables(tables schema.Tables, schemaTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
-	var result []string
+func (c *Client) nonAutoMigrableTables(tables schema.Tables, schemaTables schema.Tables) (names []string, changes [][]schema.TableColumnChange) {
 	var tableChanges [][]schema.TableColumnChange
 	for _, t := range tables {
 		schemaTable := schemaTables.Get(t.Name)
@@ -90,11 +89,11 @@ func (c *Client) nonAutoMigrableTables(tables schema.Tables, schemaTables schema
 		}
 		changes := t.GetChanges(schemaTable)
 		if !c.canAutoMigrate(changes) {
-			result = append(result, t.Name)
+			names = append(names, t.Name)
 			tableChanges = append(tableChanges, changes)
 		}
 	}
-	return result, tableChanges
+	return names, tableChanges
 }
 
 func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
