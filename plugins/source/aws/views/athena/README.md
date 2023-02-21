@@ -7,6 +7,8 @@ There are currently two methods to create this view:
 1. a query that outputs a `CREATE VIEW` statement you can run in the Athena console (easiest, lowest effort)
 2. a Go script that will create the view for you. This can be run as a binary or as a Lambda function (can be automated to run periodically)
 
+Note that in both cases, the view works best when the underlying format is **parquet**. JSON and CSV formats are not supported.
+
 ## Option 1: Standalone SQL script
 
 ### Usage
@@ -89,6 +91,7 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
             "athena:GetQueryExecution",
             "athena:GetQueryResults",
             "glue:GetDatabases",
+            "glue:GetDatabase",
             "glue:GetTables",
             "glue:GetTable",
             "glue:UpdateTable"
@@ -133,7 +136,7 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
 6. Finally, run the function. This might be easier from the console, but here is an example of how to do it from the command line (you will need to modify the values in the payload for your environment):
 
   ```shell
-  aws lambda invoke --cli-binary-format raw-in-base64-out --function-name athena-resources-view --invocation-type Event --payload '{"catalog": "awsdatacatalog", "database": "athena-example", "output": "s3://cloudquery-athena-example/output", "view": "aws_resources", "region": "us-east-1"}' response.json
+  aws lambda invoke --cli-binary-format raw-in-base64-out --function-name athena-resources-view --invocation-type Event --payload '{"catalog": "awsdatacatalog", "database": "athena-example", "output": "s3://cloudquery-athena-example/output", "view": "aws_resources", "region": "us-east-1", "extra_columns": []}' response.json
   ```
   
   The above command uses the following JSON payload, which you should adapt for your environment:
@@ -143,7 +146,8 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
       "database": "athena-example",
       "output": "s3://cloudquery-athena-example/output",
       "view": "aws_resources",
-      "region": "us-east-1"
+      "region": "us-east-1",
+      "extra_columns": []
   }
   ```
   

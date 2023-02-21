@@ -60,6 +60,21 @@ func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta
 	}
 }
 
+func ServiceAccountRegionsLanguageCodeMultiplex(service string, codes []string) func(meta schema.ClientMeta) []schema.ClientMeta {
+	return func(meta schema.ClientMeta) []schema.ClientMeta {
+		l := make([]schema.ClientMeta, 0)
+		accountRegions := ServiceAccountRegionMultiplexer(service)(meta)
+		for _, c := range accountRegions {
+			for _, code := range codes {
+				client := c.(*Client).withLanguageCode(code)
+				l = append(l, client)
+			}
+		}
+
+		return l
+	}
+}
+
 func ServiceAccountRegionNamespaceMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
 		var l = make([]schema.ClientMeta, 0)

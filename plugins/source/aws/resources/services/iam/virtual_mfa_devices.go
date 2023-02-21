@@ -13,7 +13,7 @@ func VirtualMfaDevices() *schema.Table {
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_VirtualMFADevice.html`,
 		Resolver:    fetchIamVirtualMfaDevices,
 		Transform:   transformers.TransformWithStruct(&types.VirtualMFADevice{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

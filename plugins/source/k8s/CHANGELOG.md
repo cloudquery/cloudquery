@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v3.2.1...plugins-source-k8s-v3.2.2) (2023-02-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.38.2 ([#8156](https://github.com/cloudquery/cloudquery/issues/8156)) ([ac2d2d7](https://github.com/cloudquery/cloudquery/commit/ac2d2d70d5c4bc45fb8734bd4deb8a1e36074f6d))
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+
+## [3.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v3.2.0...plugins-source-k8s-v3.2.1) (2023-02-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.1 ([#8008](https://github.com/cloudquery/cloudquery/issues/8008)) ([c47aac0](https://github.com/cloudquery/cloudquery/commit/c47aac0b5e3190a04299713651b97e360043911f))
+
 ## [3.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v3.1.1...plugins-source-k8s-v3.2.0) (2023-02-14)
 
 

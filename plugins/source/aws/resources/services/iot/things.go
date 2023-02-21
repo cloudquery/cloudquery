@@ -18,10 +18,9 @@ func Things() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:          "principals",
-				Type:          schema.TypeStringArray,
-				Resolver:      ResolveIotThingPrincipals,
-				IgnoreInTests: true,
+				Name:     "principals",
+				Type:     schema.TypeStringArray,
+				Resolver: ResolveIotThingPrincipals,
 			},
 			{
 				Name:     "arn",

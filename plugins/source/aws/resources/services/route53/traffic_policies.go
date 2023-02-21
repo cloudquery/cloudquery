@@ -13,7 +13,7 @@ func TrafficPolicies() *schema.Table {
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicySummary.html`,
 		Resolver:    fetchRoute53TrafficPolicies,
 		Transform:   transformers.TransformWithStruct(&types.TrafficPolicySummary{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("route53"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
