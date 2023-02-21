@@ -3,12 +3,19 @@ module github.com/cloudquery/cloudquery/plugins/source/snyk
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.37.1
+	github.com/cloudquery/plugin-sdk v1.38.2
 	github.com/google/uuid v1.3.0
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/pavel-snyk/snyk-sdk-go v0.4.1
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/exp v0.0.0-20230212135524-a684f29349b6
+)
+
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 replace github.com/pavel-snyk/snyk-sdk-go => github.com/cloudquery/snyk-sdk-go v0.1.0
