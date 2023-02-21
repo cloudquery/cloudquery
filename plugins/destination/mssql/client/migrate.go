@@ -171,18 +171,19 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 			if err := c.createTable(ctx, table); err != nil {
 				return err
 			}
+			continue
+		}
+
+		changes := table.GetChanges(schemaTable)
+		if c.canAutoMigrate(changes) {
+			c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
+			if err := c.autoMigrateTable(ctx, table, changes); err != nil {
+				return err
+			}
 		} else {
-			changes := table.GetChanges(schemaTable)
-			if c.canAutoMigrate(changes) {
-				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
-				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
-					return err
-				}
-			} else {
-				c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
-				if err := c.recreateTable(ctx, table); err != nil {
-					return err
-				}
+			c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
+			if err := c.recreateTable(ctx, table); err != nil {
+				return err
 			}
 		}
 	}
