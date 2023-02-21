@@ -409,6 +409,7 @@
   - [aws_rds_cluster_parameters](aws_rds_cluster_parameters.md)
 - [aws_rds_event_subscriptions](aws_rds_event_subscriptions.md)
 - [aws_rds_instances](aws_rds_instances.md)
+- [aws_rds_reserved_instances](aws_rds_reserved_instances.md)
 - [aws_rds_subnet_groups](aws_rds_subnet_groups.md)
 - [aws_redshift_clusters](aws_redshift_clusters.md)
   - [aws_redshift_cluster_parameter_groups](aws_redshift_cluster_parameter_groups.md)

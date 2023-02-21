@@ -1,8 +1,8 @@
 github.com/avast/retry-go/v4 v4.3.3 h1:G56Bp6mU0b5HE1SkaoVjscZjlQb0oy4mezwY/cGH19w=
 github.com/avast/retry-go/v4 v4.3.3/go.mod h1:rg6XFaiuFYII0Xu3RDbZQkxCofFwruZKW8oEF1jpWiU=
 github.com/bradleyjkemp/cupaloy/v2 v2.8.0 h1:any4BmKE+jGIaMpnU8YgH/I2LPiLBufr6oMMlVBbn9M=
-github.com/cloudquery/plugin-sdk v1.37.1 h1:1/9cYMUSqFRkMqq4p+8ZThdPQ+09p+8Nlrt3ii9Fbf8=
-github.com/cloudquery/plugin-sdk v1.37.1/go.mod h1:anjM5gY7qgJDde9CCIlJbeKuFOxM4BBrFeX1jyU1dxo=
+github.com/cloudquery/plugin-sdk v1.38.2 h1:tAWrR+ADCpk+kDydWEC3mP6Doh01jEJjXCrK1hW5j3w=
+github.com/cloudquery/plugin-sdk v1.38.2/go.mod h1:mnz+Lov1Oe99lDhFZEcnIvLoGYRPohjzyW4LNsrn654=
 github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.2 h1:p1EgwI/C7NhT0JmVkwCD2ZBK8j4aeHQX2pMHHBfMQ6w=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=

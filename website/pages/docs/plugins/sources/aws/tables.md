@@ -409,6 +409,7 @@
   - [aws_rds_cluster_parameters](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_rds_cluster_parameters.md)
 - [aws_rds_event_subscriptions](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_rds_event_subscriptions.md)
 - [aws_rds_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_rds_instances.md)
+- [aws_rds_reserved_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_rds_reserved_instances.md)
 - [aws_rds_subnet_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_rds_subnet_groups.md)
 - [aws_redshift_clusters](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_redshift_clusters.md)
   - [aws_redshift_cluster_parameter_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_redshift_cluster_parameter_groups.md)
