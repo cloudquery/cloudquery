@@ -31,8 +31,9 @@ func resolveParameterTags(ctx context.Context, meta schema.ClientMeta, resource 
 	parameter := resource.Item.(types.Parameter)
 
 	svc := meta.(*client.Client).Services().SystemsManager
-	response, err := svc.ListTagsForResource(ctx, &elasticache.ListTagsForResourceInput{
-		ResourceName: parameter.path,
+	response, err := svc.ListTagsForResource(ctx, &parameter.ListTagsForResourceInput{
+		RessourceType: "Parameter",
+		ResourceId: parameter.path,
 	})
 	if err != nil {
 		return err
