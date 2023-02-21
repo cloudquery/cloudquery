@@ -40,8 +40,8 @@ func (c *Client) dropTable(ctx context.Context, table *schema.Table) (err error)
 	return nil
 }
 
-func (c *Client) recreateTable(ctx context.Context, table *schema.Table) (err error) {
-	err = c.dropTable(ctx, table)
+func (c *Client) recreateTable(ctx context.Context, table *schema.Table) error {
+	err := c.dropTable(ctx, table)
 	if err != nil {
 		return err
 	}
