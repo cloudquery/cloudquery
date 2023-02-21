@@ -62,18 +62,18 @@ func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema
 func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
 	var normalized schema.Tables
 	for _, table := range tables.FlattenTables() {
-		tableCopy := table.Copy(table.Parent)
-		for i := range tableCopy.Columns {
+		table := table
+		for i := range table.Columns {
 			// Since multiple schema types can map to the same MSSQL type we need to normalize them to avoid false positives when detecting schema changes
-			tableCopy.Columns[i].Type = queries.SchemaType(queries.SQLType(table.Columns[i].Type))
+			table.Columns[i].Type = queries.SchemaType(queries.SQLType(table.Columns[i].Type))
 		}
 		// If there are no PKs, we use CqID as PK
-		pks := tableCopy.PrimaryKeys()
+		pks := table.PrimaryKeys()
 		if !c.pkEnabled() || len(pks) == 0 {
-			tableCopy.Columns.Get(schema.CqIDColumn.Name).CreationOptions.PrimaryKey = true
+			table.Columns.Get(schema.CqIDColumn.Name).CreationOptions.PrimaryKey = true
 		}
 
-		normalized = append(normalized, tableCopy)
+		normalized = append(normalized, table)
 	}
 
 	return normalized
