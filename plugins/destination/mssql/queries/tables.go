@@ -15,10 +15,16 @@ type (
 func CreateTable(schemaName string, table *schema.Table, pkEnabled bool) string {
 	return execTemplate("create_table.sql.tpl", &createTableQueryBuilder{
 		Table:       SanitizedTableName(schemaName, table),
-		Definitions: GetDefinitions(table.Columns, pkEnabled),
+		Definitions: GetDefinitions(table.Columns),
 		PrimaryKey: &pkQueryBuilder{
 			Name:    pkConstraint(table),
-			Columns: GetPKColumns(table, pkEnabled),
+			Columns: GetPKColumns(table),
 		},
+	})
+}
+
+func DropTable(schemaName string, table *schema.Table) string {
+	return execTemplate("drop_table.sql.tpl", &createTableQueryBuilder{
+		Table: SanitizedTableName(schemaName, table),
 	})
 }

@@ -46,30 +46,11 @@ func (d *Definition) Nullable() *Definition {
 	}
 }
 
-func NewDefinition(name, typ string, nullable bool) *Definition {
-	d := &Definition{
-		Name:    strings.ToLower(name),
-		typ:     strings.ToLower(typ),
-		notNull: !nullable,
-	}
-	// add unique for _cq_id
-	d.unique = d.Name == schema.CqIDColumn.Name
-	return d
-}
-
-func GetDefinition(column *schema.Column, pkEnabled bool) *Definition {
+func GetDefinition(column *schema.Column) *Definition {
 	def := &Definition{
-		Name: column.Name,
-		typ:  SQLType(column.Type),
-	}
-
-	switch {
-	case column.Name == schema.CqIDColumn.Name:
-		// _cq_id column should always have a "UNIQUE NOT NULL" constraint
-		def.unique = true
-		def.notNull = true
-	case pkEnabled && column.CreationOptions.PrimaryKey:
-		def.notNull = true
+		Name:    column.Name,
+		typ:     SQLType(column.Type),
+		notNull: column.CreationOptions.NotNull,
 	}
 
 	return def
@@ -87,11 +68,11 @@ func (defs Definitions) Get(name string) *Definition {
 }
 
 // GetDefinitions returns sanitized Definitions
-func GetDefinitions(columns schema.ColumnList, pkEnabled bool) Definitions {
+func GetDefinitions(columns schema.ColumnList) Definitions {
 	definitions := make(Definitions, len(columns))
 
 	for i, col := range columns {
-		definitions[i] = GetDefinition(&col, pkEnabled).sanitized()
+		definitions[i] = GetDefinition(&col).sanitized()
 	}
 
 	return definitions

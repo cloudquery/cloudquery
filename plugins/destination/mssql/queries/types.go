@@ -20,7 +20,7 @@ func SQLType(t schema.ValueType) string {
 	case schema.TypeByteArray:
 		return "varbinary(max)"
 	case schema.TypeTimestamp:
-		return "datetimeoffset"
+		return "datetime2"
 	case schema.TypeString,
 		schema.TypeCIDR,
 		schema.TypeMacAddr,
@@ -36,6 +36,29 @@ func SQLType(t schema.ValueType) string {
 		return "nvarchar(max)"
 	default:
 		panic("unknown type " + t.String())
+	}
+}
+
+func SchemaType(t string) schema.ValueType {
+	switch t {
+	case "bit":
+		return schema.TypeBool
+	case "bigint":
+		return schema.TypeInt
+	case "float":
+		return schema.TypeFloat
+	case "uniqueidentifier":
+		return schema.TypeUUID
+	case "varbinary(max)":
+		return schema.TypeByteArray
+	case "datetime2":
+		return schema.TypeTimestamp
+	case "nvarchar(4000)":
+		return schema.TypeString
+	case "nvarchar(max)":
+		return schema.TypeStringArray
+	default:
+		panic("unknown type " + t)
 	}
 }
 

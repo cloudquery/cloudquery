@@ -66,10 +66,10 @@ func TestTVPAddType(t *testing.T) {
 	const (
 		schemaName = "cq"
 		expected   = `CREATE TYPE [cq].[cq_tbl_table_name] AS TABLE (
-  [_cq_id] uniqueidentifier UNIQUE NOT NULL,
+  [_cq_id] uniqueidentifier NOT NULL,
   [_cq_parent_id] uniqueidentifier,
   [_cq_source_name] nvarchar(4000),
-  [_cq_sync_time] datetimeoffset,
+  [_cq_sync_time] datetime2,
   [extra_col_pk1] float NOT NULL,
   [extra_col_pk2] bit NOT NULL,
   [extra_col_not_pk1] bigint,
@@ -87,12 +87,12 @@ func TestTVPAddType(t *testing.T) {
 			schema.Column{
 				Name:            "extra_col_pk1",
 				Type:            schema.TypeFloat,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true, NotNull: true},
 			},
 			schema.Column{
 				Name:            "extra_col_pk2",
 				Type:            schema.TypeBool,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true, NotNull: true},
 			},
 			schema.Column{
 				Name: "extra_col_not_pk1",
