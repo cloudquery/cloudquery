@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 	mssql "github.com/microsoft/go-mssqldb"
@@ -13,9 +12,8 @@ import (
 )
 
 type Client struct {
-	db           *sql.DB
-	schemaName   string
-	databaseName string
+	db         *sql.DB
+	schemaName string
 
 	logger zerolog.Logger
 
@@ -51,13 +49,6 @@ func New(_ context.Context, logger zerolog.Logger, spec specs.Destination) (dest
 	// set ctx logger
 	mssql.SetContextLogger(c)
 	c.db = sql.OpenDB(connector)
-
-	// get database name
-	var databaseName string
-	if err := c.db.QueryRow(queries.Database()).Scan(&databaseName); err != nil {
-		return nil, fmt.Errorf("failed to get database name: %w", err)
-	}
-	c.databaseName = databaseName
 
 	return c, nil
 }
