@@ -23,6 +23,7 @@ func CreateTable(table *schema.Table) string {
 	strBuilder.WriteString(sanitizeID(normalized.Name))
 	strBuilder.WriteString(" (\n")
 	for _, col := range normalized.Columns {
+		strBuilder.WriteString("  ")
 		strBuilder.WriteString(sanitizeID(col.Name))
 		strBuilder.WriteString(" ")
 		strBuilder.WriteString(chType(&col))
