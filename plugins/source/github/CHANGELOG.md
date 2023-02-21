@@ -1,5 +1,28 @@
 # Changelog
 
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v3.0.1...plugins-source-github-v4.0.0) (2023-02-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* **github:** Remove `repository` column from `github_workflows`
+* **github:** Change `github_organization_dependabot_alerts` PK from `(org,number)` to `(org,html_url)` ([#8070](https://github.com/cloudquery/cloudquery/issues/8070))
+
+### Features
+
+* **github-resources:** Add Traffic resources ([#8085](https://github.com/cloudquery/cloudquery/issues/8085)) ([cc22f56](https://github.com/cloudquery/cloudquery/commit/cc22f566515bc23fae0104ca11c3dbefa1a2d17f))
+* **github:** Add repositories multiplexer ([#8074](https://github.com/cloudquery/cloudquery/issues/8074)) ([f5f874d](https://github.com/cloudquery/cloudquery/commit/f5f874d5917ee4b9aeb3d2f0efef21bf5f492693))
+* **github:** Handle secondary rate limit ([#8078](https://github.com/cloudquery/cloudquery/issues/8078)) ([bf1f1cc](https://github.com/cloudquery/cloudquery/commit/bf1f1cc890af13962617bb858594c123b90c24d3))
+* **github:** Remove `repository` column from `github_workflows` ([21905a4](https://github.com/cloudquery/cloudquery/commit/21905a4a727023b20cab59387309cb70933fe5d7))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.38.2 ([#8156](https://github.com/cloudquery/cloudquery/issues/8156)) ([ac2d2d7](https://github.com/cloudquery/cloudquery/commit/ac2d2d70d5c4bc45fb8734bd4deb8a1e36074f6d))
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+* **github:** Add `repository_id` to `github_workflows` PK ([21905a4](https://github.com/cloudquery/cloudquery/commit/21905a4a727023b20cab59387309cb70933fe5d7))
+* **github:** Change `github_organization_dependabot_alerts` PK from `(org,number)` to `(org,html_url)` ([#8070](https://github.com/cloudquery/cloudquery/issues/8070)) ([a7c64cd](https://github.com/cloudquery/cloudquery/commit/a7c64cd4dc946c1def29a32f61062decc958e1ce))
+
 ## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v3.0.0...plugins-source-github-v3.0.1) (2023-02-14)
 
 
