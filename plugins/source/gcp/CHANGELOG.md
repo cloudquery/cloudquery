@@ -5,6 +5,19 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v8.1.0...plugins-source-gcp-v8.2.0) (2023-02-21)
+
+
+### Features
+
+* **gcp-spec:** Add `organization_ids` and `organization_filter` ([#7936](https://github.com/cloudquery/cloudquery/issues/7936)) ([cc8e9b5](https://github.com/cloudquery/cloudquery/commit/cc8e9b549240c5edb745d22341b7bf928c321d23))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.38.2 ([#8156](https://github.com/cloudquery/cloudquery/issues/8156)) ([ac2d2d7](https://github.com/cloudquery/cloudquery/commit/ac2d2d70d5c4bc45fb8734bd4deb8a1e36074f6d))
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+
 ## [8.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v8.0.0...plugins-source-gcp-v8.1.0) (2023-02-14)
 
 
