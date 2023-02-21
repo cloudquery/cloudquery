@@ -3,11 +3,18 @@ module github.com/cloudquery/cloudquery/plugins/source/oracle
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.37.1
+	github.com/cloudquery/plugin-sdk v1.38.2
 	github.com/iancoleman/strcase v0.2.0
 	github.com/oracle/oci-go-sdk/v65 v65.28.3
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/exp v0.0.0-20230212135524-a684f29349b6
+)
+
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 require (
