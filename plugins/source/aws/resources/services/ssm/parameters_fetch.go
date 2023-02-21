@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/dax/types"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -30,10 +31,10 @@ func fetchSsmParameters(ctx context.Context, meta schema.ClientMeta, parent *sch
 func resolveParameterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	parameter := resource.Item.(types.Parameter)
 
-	svc := meta.(*client.Client).Services().SystemsManager
+	svc := meta.(*client.Client).Services().Ssm
 	response, err := svc.ListTagsForResource(ctx, &parameter.ListTagsForResourceInput{
 		RessourceType: "Parameter",
-		ResourceId: parameter.path,
+		ResourceId:    parameter.path,
 	})
 	if err != nil {
 		return err
