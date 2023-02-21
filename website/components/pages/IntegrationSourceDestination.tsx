@@ -26,12 +26,12 @@ export default function Integration({
                     <h1 className="max-w-5xl mx-auto nx-text-6xl font-extrabold tracking-tighter leading-[1.1] text-7xl sm:text-7xl lg:nx-text-8xl xl:nx-text-8xl">
                         Export from&nbsp;
                         <br className="hidden lg:block" />
-                        <span className="pr-1 inline-block text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500 ">
+                        <span className="pr-1 pb-1 inline-block text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500 ">
              {source.name}
              </span>
                         &nbsp;to&nbsp;
                         {destination ?
-                            <span className="pr-1 inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 ">
+                            <span className="pr-1 pb-1 inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 ">
              {destination.name}
              </span> : "any destination"}
                     </h1>
