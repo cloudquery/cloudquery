@@ -120,9 +120,7 @@ func needsTableDrop(change schema.TableColumnChange) bool {
 }
 
 func changesSorter(a, b schema.TableColumnChange) bool {
-	aDropTable := needsTableDrop(a)
-	bDropTable := needsTableDrop(b)
-	return aDropTable && !bDropTable
+	return needsTableDrop(a) && !needsTableDrop(b)
 }
 
 func (c *Client) autoMigrate(ctx context.Context, table *schema.Table, current *schema.Table) (err error) {
