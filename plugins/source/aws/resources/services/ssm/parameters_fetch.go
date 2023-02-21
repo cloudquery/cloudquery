@@ -26,3 +26,17 @@ func fetchSsmParameters(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	return nil
 }
+
+func resolveParameterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	parameter := resource.Item.(types.Parameter)
+
+	svc := meta.(*client.Client).Services().SystemsManager
+	response, err := svc.ListTagsForResource(ctx, &parameter.ListTagsForResourceInput{
+		RessourceType: "Parameter",
+		ResourceId: parameter.path,
+	})
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, client.TagsToMap(response.TagList))
+}
