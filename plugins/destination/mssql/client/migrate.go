@@ -60,9 +60,8 @@ func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema
 }
 
 func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
-	allTables := tables.FlattenTables()
 	var normalized schema.Tables
-	for _, table := range allTables {
+	for _, table := range tables.FlattenTables() {
 		tableCopy := table.Copy(table.Parent)
 		for i := range tableCopy.Columns {
 			// Since multiple schema types can map to the same MSSQL type we need to normalize them to avoid false positives when detecting schema changes
