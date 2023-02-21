@@ -16,7 +16,7 @@ func Roots() *schema.Table {
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Root.html`,
 		Resolver:    fetchOrganizationsRoots,
 		Transform:   transformers.TransformWithStruct(&types.Root{}, transformers.WithPrimaryKeys("Arn")),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("organizations"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

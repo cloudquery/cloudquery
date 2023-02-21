@@ -22,7 +22,7 @@ func OrganizationalUnits() *schema.Table {
 			&types.OrganizationalUnit{},
 			transformers.WithPrimaryKeys("Arn"),
 		),
-		Multiplex: client.AccountMultiplex,
+		Multiplex: client.ServiceAccountRegionMultiplexer("organizations"),
 		Columns:   []schema.Column{client.DefaultAccountIDColumn(true)},
 	}
 }

@@ -16,7 +16,7 @@ func Policies() *schema.Table {
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Policy.html`,
 		Resolver:    fetchOrganizationsPolicies,
 		Transform:   transformers.TransformWithStruct(&types.PolicySummary{}, transformers.WithPrimaryKeys("Arn")),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("organizations"),
 		Columns: []schema.Column{
 			// This is needed as a PK because aws managed policies don't have an account_id in the ARN
 			client.DefaultAccountIDColumn(true),
