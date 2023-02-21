@@ -59,7 +59,7 @@ func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema
 	return schemaTables, nil
 }
 
-func (c *Client) normalizedTables(ctx context.Context, tables schema.Tables) schema.Tables {
+func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
 	allTables := tables.FlattenTables()
 	var normalized schema.Tables
 	for _, table := range allTables {
@@ -131,7 +131,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 	var statements []string
 	for _, change := range changes {
 		if change.Type == schema.TableColumnChangeTypeAdd {
-			def := queries.GetDefinition(&change.Current)
+			def := queries.GetDefinition(&change.Current, c.pkEnabled())
 			statements = append(statements, queries.AddColumn(c.schemaName, table, def))
 		}
 	}
@@ -150,7 +150,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 		return err
 	}
 
-	normalizedTables := c.normalizedTables(ctx, tables)
+	normalizedTables := c.normalizedTables(tables)
 
 	if c.spec.MigrateMode != specs.MigrateModeForced {
 		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(normalizedTables, schemaTables)

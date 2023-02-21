@@ -46,11 +46,20 @@ func (d *Definition) Nullable() *Definition {
 	}
 }
 
-func GetDefinition(column *schema.Column) *Definition {
+func GetDefinition(column *schema.Column, pkEnabled bool) *Definition {
 	def := &Definition{
 		Name:    column.Name,
 		typ:     SQLType(column.Type),
 		notNull: column.CreationOptions.NotNull,
+	}
+
+	switch {
+	case column.Name == schema.CqIDColumn.Name:
+		// _cq_id column should always have a "UNIQUE NOT NULL" constraint
+		def.unique = true
+		def.notNull = true
+	case pkEnabled && column.CreationOptions.PrimaryKey:
+		def.notNull = true
 	}
 
 	return def
@@ -68,11 +77,11 @@ func (defs Definitions) Get(name string) *Definition {
 }
 
 // GetDefinitions returns sanitized Definitions
-func GetDefinitions(columns schema.ColumnList) Definitions {
+func GetDefinitions(columns schema.ColumnList, pkEnabled bool) Definitions {
 	definitions := make(Definitions, len(columns))
 
 	for i, col := range columns {
-		definitions[i] = GetDefinition(&col).sanitized()
+		definitions[i] = GetDefinition(&col, pkEnabled).sanitized()
 	}
 
 	return definitions

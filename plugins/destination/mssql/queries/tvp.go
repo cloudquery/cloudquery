@@ -70,7 +70,7 @@ func TVPAddProc(schemaName string, table *schema.Table) string {
 func TVPAddType(schemaName string, table *schema.Table) string {
 	data := &tvpProcQueryBuilder{
 		Type:    sanitizeID(schemaName, tvpTableType(table)),
-		Columns: GetDefinitions(table.Columns),
+		Columns: GetDefinitions(table.Columns, true),
 	}
 
 	return execTemplate("tvp_add_type.sql.tpl", data)
