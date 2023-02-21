@@ -15,16 +15,8 @@ func Clusters() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Cluster{}, transformers.WithSkipFields("ClusterParameterGroups")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:        "arn",
 				Type:        schema.TypeString,
@@ -39,6 +31,11 @@ func Clusters() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    resolveRedshiftClusterLoggingStatus,
 				Description: `Describes the status of logging for a cluster.`,
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 

@@ -9,9 +9,10 @@ import (
 
 func Users() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_identitystore_users",
-		Resolver:  fetchIdentitystoreUsers,
-		Transform: transformers.TransformWithStruct(&types.User{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer("identitystore"),
+		Name:        "aws_identitystore_users",
+		Description: `https://docs.aws.amazon.com/singlesignon/latest/IdentityStoreAPIReference/API_User.html`,
+		Resolver:    fetchIdentitystoreUsers,
+		Transform:   transformers.TransformWithStruct(&types.User{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("identitystore"),
 	}
 }

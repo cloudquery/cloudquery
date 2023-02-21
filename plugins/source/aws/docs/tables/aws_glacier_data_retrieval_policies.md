@@ -1,5 +1,7 @@
 # Table: aws_glacier_data_retrieval_policies
 
+https://docs.aws.amazon.com/amazonglacier/latest/dev/api-GetDataRetrievalPolicy.html
+
 The composite primary key for this table is (**account_id**, **region**).
 
 ## Columns

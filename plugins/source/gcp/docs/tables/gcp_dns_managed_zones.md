@@ -13,13 +13,13 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|id (PK)|Int|
 |cloud_logging_config|JSON|
 |creation_time|String|
 |description|String|
 |dns_name|String|
 |dnssec_config|JSON|
 |forwarding_config|JSON|
+|id (PK)|Int|
 |kind|String|
 |labels|JSON|
 |name|String|

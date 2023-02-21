@@ -1,0 +1,30 @@
+name: Set Sentry Alerts
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+jobs:
+  sentry-alerts:
+    defaults:
+      run:
+        working-directory: scripts/sentry_alerts
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: scripts/sentry_alerts/go.mod
+          cache: true
+          cache-dependency-path: scripts/sentry_alerts/go.sum
+      - name: Set Sentry Alerts
+        run: go run main.go
+        env:
+          SENTRY_TOKEN: ${{ secrets.SENTRY_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SLACK_WORKSPACE: ${{ secrets.SLACK_WORKSPACE }}
+          SLACK_CHANNEL_NAME: ${{ secrets.SLACK_CHANNEL_NAME }}

@@ -41,7 +41,7 @@ func Nodes() *schema.Table {
 			{
 				Name:     "spec_pod_cidrs",
 				Type:     schema.TypeCIDRArray,
-				Resolver: schema.PathResolver("Spec.PodCIDRs"),
+				Resolver: client.StringToCidrArrayPathResolver("Spec.PodCIDRs"),
 			},
 		},
 	}

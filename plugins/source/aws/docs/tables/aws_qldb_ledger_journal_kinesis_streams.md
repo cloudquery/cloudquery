@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalKinesisStreamDescription.html
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **arn**.
 
 ## Relations
 
@@ -14,7 +14,7 @@ This table depends on [aws_qldb_ledgers](aws_qldb_ledgers.md).
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
@@ -25,7 +25,7 @@ This table depends on [aws_qldb_ledgers](aws_qldb_ledgers.md).
 |status|String|
 |stream_id|String|
 |stream_name|String|
-|arn|String|
+|arn (PK)|String|
 |creation_time|Timestamp|
 |error_cause|String|
 |exclusive_end_time|Timestamp|

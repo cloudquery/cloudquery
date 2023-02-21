@@ -1,6 +1,7 @@
 # Table: shopify_orders
 
 The primary key for this table is **id**.
+It supports incremental syncs based on the (**created_at**, **updated_at**) columns.
 
 ## Columns
 
@@ -11,6 +12,8 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|Int|
+|created_at (Incremental Key)|Timestamp|
+|updated_at (Incremental Key)|Timestamp|
 |admin_graphql_api_id|String|
 |app_id|Int|
 |browser_ip|String|
@@ -22,7 +25,6 @@ The primary key for this table is **id**.
 |closed_at|Timestamp|
 |confirmed|Bool|
 |contact_email|String|
-|created_at|Timestamp|
 |currency|String|
 |current_subtotal_price|String|
 |current_total_discounts|String|
@@ -61,7 +63,6 @@ The primary key for this table is **id**.
 |total_tax|String|
 |total_tip_received|String|
 |total_weight|Int|
-|updated_at|Timestamp|
 |user_id|Int|
 |customer|JSON|
 |discount_applications|JSON|

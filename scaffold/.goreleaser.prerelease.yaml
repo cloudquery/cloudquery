@@ -1,0 +1,49 @@
+project_name: scaffold
+
+monorepo:
+  tag_prefix: scaffold-
+  dir: scaffold
+
+before:
+  hooks:
+    - cmd: go mod download
+      dir: ./scaffold
+builds:
+  - flags:
+      - -buildmode=exe
+    env:
+      - GOGC=off
+      - CGO_ENABLED=0
+      - GO111MODULE=on
+    main: ./main.go
+    ldflags:
+      - -s -w -X github.com/cloudquery/cloudquery/scaffold/cmd.Version={{.Version}}
+    goos:
+      - windows
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+    binary: cq-scaffold
+archives:
+  -
+    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
+    format: binary
+  -
+    id: homebrew
+    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
+    format: zip
+checksum:
+  name_template: 'checksums.txt'
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+release:
+  prerelease: auto

@@ -9,19 +9,13 @@ import (
 
 func PasswordPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iam_password_policies",
-		Resolver:  fetchIamPasswordPolicies,
-		Transform: transformers.TransformWithStruct(&models.PasswordPolicyWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
-		Multiplex: client.AccountMultiplex,
+		Name:        "aws_iam_password_policies",
+		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_PasswordPolicy.html`,
+		Resolver:    fetchIamPasswordPolicies,
+		Transform:   transformers.TransformWithStruct(&models.PasswordPolicyWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
 		},
 	}
 }

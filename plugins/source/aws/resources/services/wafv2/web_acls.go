@@ -10,21 +10,14 @@ import (
 func WebAcls() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_wafv2_web_acls",
+		Description:         `https://docs.aws.amazon.com/waf/latest/APIReference/API_WebACL.html`,
 		Resolver:            fetchWafv2WebAcls,
 		PreResourceResolver: getWebAcl,
 		Transform:           transformers.TransformWithStruct(&models.WebACLWrapper{}, transformers.WithUnwrapStructFields("WebACL")),
 		Multiplex:           client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,

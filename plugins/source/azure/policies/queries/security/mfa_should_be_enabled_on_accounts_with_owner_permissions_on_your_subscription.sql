@@ -6,8 +6,8 @@ SELECT :'execution_time'                                                        
        subscription_id                                                             AS subscription_id,
        id                                                                           AS resource_id,
        CASE
-           WHEN status->>'code' IS DISTINCT FROM 'NotApplicable'
-               AND status->>'code' IS DISTINCT FROM 'Healthy'
+           WHEN properties->'status'->>'code' IS DISTINCT FROM 'NotApplicable'
+               AND properties->'status'->>'code' IS DISTINCT FROM 'Healthy'
                THEN 'fail'
            ELSE 'pass'
            END                                                                         AS status

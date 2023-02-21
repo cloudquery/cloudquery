@@ -1,5 +1,7 @@
 # Table: aws_sns_topics
 
+https://docs.aws.amazon.com/sns/latest/api/API_GetTopicAttributes.html
+
 The primary key for this table is **arn**.
 
 ## Columns

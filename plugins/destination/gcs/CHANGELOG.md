@@ -1,5 +1,86 @@
 # Changelog
 
+## [2.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v2.1.1...plugins-destination-gcs-v2.1.2) (2023-02-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes to v1.4.2 ([#8218](https://github.com/cloudquery/cloudquery/issues/8218)) ([9e656c2](https://github.com/cloudquery/cloudquery/commit/9e656c2f204951b54839547df5d8360de3ba4778))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.38.2 ([#8156](https://github.com/cloudquery/cloudquery/issues/8156)) ([ac2d2d7](https://github.com/cloudquery/cloudquery/commit/ac2d2d70d5c4bc45fb8734bd4deb8a1e36074f6d))
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+
+## [2.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v2.1.0...plugins-destination-gcs-v2.1.1) (2023-02-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes to v1.4.1 ([#8024](https://github.com/cloudquery/cloudquery/issues/8024)) ([380476f](https://github.com/cloudquery/cloudquery/commit/380476fc11cb5cab576f320baa12e215bb148f86))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.36.0 ([#7809](https://github.com/cloudquery/cloudquery/issues/7809)) ([c85a9cb](https://github.com/cloudquery/cloudquery/commit/c85a9cb697477520e94a1fd260c56b89da62fc87))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.0 ([#7933](https://github.com/cloudquery/cloudquery/issues/7933)) ([dc9cffb](https://github.com/cloudquery/cloudquery/commit/dc9cffbf37bbc6fae73a20bf47e6bbf17e74d1f9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.1 ([#8008](https://github.com/cloudquery/cloudquery/issues/8008)) ([c47aac0](https://github.com/cloudquery/cloudquery/commit/c47aac0b5e3190a04299713651b97e360043911f))
+
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v2.0.0...plugins-destination-gcs-v2.1.0) (2023-02-07)
+
+
+### Features
+
+* **destination-gcs:** Update filetypes to support Parquet ([#7731](https://github.com/cloudquery/cloudquery/issues/7731)) ([1d51c52](https://github.com/cloudquery/cloudquery/commit/1d51c52ff719351e892c846054584ef819b43994))
+
+
+### Bug Fixes
+
+* **deps:** Update google.golang.org/genproto digest to 1c01626 ([#7533](https://github.com/cloudquery/cloudquery/issues/7533)) ([c549c27](https://github.com/cloudquery/cloudquery/commit/c549c275077f1cdfb9df0b3f3c129cbf0b150552))
+* **deps:** Update module cloud.google.com/go to v0.109.0 ([#7584](https://github.com/cloudquery/cloudquery/issues/7584)) ([f95de44](https://github.com/cloudquery/cloudquery/commit/f95de44b6c8392c4b572444f1cb80f3e7e8febda))
+* **deps:** Update module github.com/cloudquery/filetypes to v1.3.1 ([#7274](https://github.com/cloudquery/cloudquery/issues/7274)) ([d0b6df8](https://github.com/cloudquery/cloudquery/commit/d0b6df81915bb4d623f0580516f600144c78340d))
+* **deps:** Update module github.com/cloudquery/filetypes to v1.3.2 ([#7598](https://github.com/cloudquery/cloudquery/issues/7598)) ([0a7a1a8](https://github.com/cloudquery/cloudquery/commit/0a7a1a839e78e8b4f8e30c284d43d9901d626af9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.1 ([#7614](https://github.com/cloudquery/cloudquery/issues/7614)) ([2fe665c](https://github.com/cloudquery/cloudquery/commit/2fe665cdd80d88c5699bb203bd7accd604dfba99))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.34.0 ([#7719](https://github.com/cloudquery/cloudquery/issues/7719)) ([6a33085](https://github.com/cloudquery/cloudquery/commit/6a33085c75adcf2387f7bbb5aa4f7a84ce7e2957))
+* **destinations:** Unmarshal spec error messages ([#7463](https://github.com/cloudquery/cloudquery/issues/7463)) ([85450ad](https://github.com/cloudquery/cloudquery/commit/85450adcc6a73e230a70ef2f56aff3d93dada185))
+
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v1.0.6...plugins-destination-gcs-v2.0.0) (2023-01-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* Add ability to override CSV File options (headers and delimiters) ([#6958](https://github.com/cloudquery/cloudquery/issues/6958))
+
+### Features
+
+* Add ability to override CSV File options (headers and delimiters) ([#6958](https://github.com/cloudquery/cloudquery/issues/6958)) ([d03819c](https://github.com/cloudquery/cloudquery/commit/d03819ce1439e5f0509eb128da5c6ed75acf416b))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.29.0 ([#7121](https://github.com/cloudquery/cloudquery/issues/7121)) ([b7441c9](https://github.com/cloudquery/cloudquery/commit/b7441c93c274ae3a6009474a2b28f44a172dd6dc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.30.0 ([#7222](https://github.com/cloudquery/cloudquery/issues/7222)) ([73ca21c](https://github.com/cloudquery/cloudquery/commit/73ca21c4259545f7e949c9d780d8184db475d2ac))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.31.0 ([#7228](https://github.com/cloudquery/cloudquery/issues/7228)) ([36e8549](https://github.com/cloudquery/cloudquery/commit/36e8549f722658d909865723630fad1b2821db62))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.32.0 ([#7334](https://github.com/cloudquery/cloudquery/issues/7334)) ([b684122](https://github.com/cloudquery/cloudquery/commit/b68412222219f9ca160c0753290709d52de7fcd6))
+
+## [1.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v1.0.5...plugins-destination-gcs-v1.0.6) (2023-01-24)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.28.0 ([#7009](https://github.com/cloudquery/cloudquery/issues/7009)) ([12ac005](https://github.com/cloudquery/cloudquery/commit/12ac005428a355d06a5939fbe06a82d49533e662))
+
+## [1.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v1.0.4...plugins-destination-gcs-v1.0.5) (2023-01-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes to v1.0.6 ([#6858](https://github.com/cloudquery/cloudquery/issues/6858)) ([129f91d](https://github.com/cloudquery/cloudquery/commit/129f91d0a3e05dff5d790887d3b419efde68670c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.2 ([#6695](https://github.com/cloudquery/cloudquery/issues/6695)) ([694ab9f](https://github.com/cloudquery/cloudquery/commit/694ab9f3e20473146e3620d7b03bb17eb259d697))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.25.0 ([#6745](https://github.com/cloudquery/cloudquery/issues/6745)) ([9c41854](https://github.com/cloudquery/cloudquery/commit/9c418547c3bbff97449765e337182230fb5e40d5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.25.1 ([#6805](https://github.com/cloudquery/cloudquery/issues/6805)) ([9da0ce2](https://github.com/cloudquery/cloudquery/commit/9da0ce283f50410eb9274375ec1d22131a80d937))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.26.0 ([#6839](https://github.com/cloudquery/cloudquery/issues/6839)) ([6ccda8d](https://github.com/cloudquery/cloudquery/commit/6ccda8d0bc6e7ce75f4a64a18911e349ccaac277))
+
+## [1.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v1.0.3...plugins-destination-gcs-v1.0.4) (2023-01-11)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes to v1.0.5 ([#6681](https://github.com/cloudquery/cloudquery/issues/6681)) ([32adfa2](https://github.com/cloudquery/cloudquery/commit/32adfa259912f24f555fbb49b45ac697bdb4c9b3))
+
 ## [1.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v1.0.2...plugins-destination-gcs-v1.0.3) (2023-01-10)
 
 

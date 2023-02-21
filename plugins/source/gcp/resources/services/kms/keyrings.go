@@ -7,13 +7,13 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
-func Keyrings() *schema.Table {
+func KeyRings() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_kms_keyrings",
 		Description: `https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings#KeyRing`,
 		Resolver:    fetchKeyrings,
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudkms.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.KeyRing{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.KeyRing{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -23,17 +23,10 @@ func Keyrings() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
 		},
 		Relations: []*schema.Table{
 			CryptoKeys(),
+			ImportJobs(),
 		},
 	}
 }

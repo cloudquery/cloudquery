@@ -77,5 +77,5 @@ func createDomains(router *mux.Router) error {
 }
 
 func TestDomains(t *testing.T) {
-	client.MockTestHelper(t, Domains(), createDomains)
+	client.MockTestHelper(t, Domains(), createDomains, client.TestOptions{})
 }

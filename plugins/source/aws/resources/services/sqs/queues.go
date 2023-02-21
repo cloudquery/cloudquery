@@ -10,21 +10,14 @@ import (
 func Queues() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_sqs_queues",
+		Description:         `https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_GetQueueAttributes.html`,
 		Resolver:            fetchSqsQueues,
 		PreResourceResolver: getQueue,
 		Transform:           transformers.TransformWithStruct(&models.Queue{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer("sqs"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

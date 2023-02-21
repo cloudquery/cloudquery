@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html
 
-The composite primary key for this table is (**account_id**, **engine**, **engine_version**).
+The composite primary key for this table is (**account_id**, **region**, **engine**, **engine_version**).
 
 ## Relations
 
@@ -19,11 +19,12 @@ The following tables depend on aws_docdb_engine_versions:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
-|engine (PK)|String|
-|engine_version (PK)|String|
+|region (PK)|String|
 |db_engine_description|String|
 |db_engine_version_description|String|
 |db_parameter_group_family|String|
+|engine (PK)|String|
+|engine_version (PK)|String|
 |exportable_log_types|StringArray|
 |supports_log_exports_to_cloudwatch_logs|Bool|
 |valid_upgrade_target|JSON|

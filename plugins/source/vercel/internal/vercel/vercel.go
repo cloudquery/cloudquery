@@ -9,13 +9,20 @@ import (
 	"net/url"
 	"strconv"
 	"time"
+
+	"github.com/rs/zerolog"
 )
 
 type Client struct {
+	logger  zerolog.Logger
 	hc      HTTPDoer
 	baseURL string
 	token   string
 	teamID  string
+
+	maxRetries int64
+	maxWait    int64 // in seconds
+	pageSize   int64
 }
 
 type Paginator struct {
@@ -28,12 +35,17 @@ type HTTPDoer interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-func New(hc HTTPDoer, baseURL, token, teamID string) *Client {
+func New(logger zerolog.Logger, hc HTTPDoer, baseURL, token, teamID string, maxRetries, maxWait, pageSize int64) *Client {
 	return &Client{
+		logger:  logger,
 		hc:      hc,
 		baseURL: baseURL,
 		token:   token,
 		teamID:  teamID,
+
+		maxRetries: maxRetries,
+		maxWait:    maxWait,
+		pageSize:   pageSize,
 	}
 }
 
@@ -59,7 +71,7 @@ func (v *Client) Request(ctx context.Context, path string, until *int64, fill an
 func (v *Client) request(ctx context.Context, path string, until *int64) (io.ReadCloser, error) {
 	u := v.baseURL + path
 	uv := url.Values{}
-	uv.Set("limit", "100") // Maximum limit
+	uv.Set("limit", strconv.FormatInt(v.pageSize, 10))
 	if until != nil {
 		uv.Set("until", strconv.FormatInt(*until, 10))
 	}
@@ -67,35 +79,54 @@ func (v *Client) request(ctx context.Context, path string, until *int64) (io.Rea
 		uv.Set("teamId", v.teamID)
 	}
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u+"?"+uv.Encode(), nil)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+v.token)
-	res, err := v.hc.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	if res.StatusCode != http.StatusOK {
-		defer res.Body.Close()
-
-		if res.StatusCode == http.StatusTooManyRequests {
-			val := res.Header.Get("X-Ratelimit-Reset")
-			if val != "" {
-				t, err := strconv.ParseInt(val, 10, 64)
-				if err == nil && t > 0 {
-					ts := time.Unix(t, 0)
-					val = ts.Format(time.RFC3339) + fmt.Sprintf(" (in %s)", time.Until(ts).Round(time.Second))
-				}
-
-				return nil, fmt.Errorf("request to %s failed: %s. Rate limit will reset at: %s", path, res.Status, val)
-			}
+	retries := int64(0)
+	for {
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, u+"?"+uv.Encode(), nil)
+		if err != nil {
+			return nil, err
+		}
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", "Bearer "+v.token)
+		res, err := v.hc.Do(req)
+		if err != nil {
+			return nil, err
 		}
 
-		return nil, fmt.Errorf("request to %s failed: %s", path, res.Status)
+		if res.StatusCode == http.StatusOK {
+			return res.Body, nil
+		}
+
+		_ = res.Body.Close()
+		retries++
+		if retries > v.maxRetries {
+			break
+		}
+
+		val := res.Header.Get("X-Ratelimit-Reset")
+		rateErr := fmt.Errorf("request to %s failed: %s", path, res.Status)
+		if val == "" || res.StatusCode != http.StatusTooManyRequests {
+			return nil, rateErr
+		}
+
+		t, err := strconv.ParseInt(val, 10, 64)
+		if err == nil && t > 0 {
+			ts := time.Unix(t, 0)
+			secsLeft := time.Until(ts).Round(time.Second)
+			if secsLeft > 0 && secsLeft < time.Duration(v.maxWait)*time.Second {
+				v.logger.Info().Dur("wait", secsLeft).Msg("waiting for rate limit reset")
+				select {
+				case <-ctx.Done():
+					return nil, rateErr
+				case <-time.After(secsLeft):
+				}
+				continue // next retry
+			}
+
+			val = ts.Format(time.RFC3339) + fmt.Sprintf(" (in %s)", secsLeft)
+		}
+
+		return nil, fmt.Errorf("request to %s failed: %s. Rate limit will reset at: %s", path, res.Status, val)
 	}
 
-	return res.Body, nil
+	return nil, fmt.Errorf("exceeded max retries")
 }

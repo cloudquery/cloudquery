@@ -10,21 +10,14 @@ import (
 func TrainingJobs() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_sagemaker_training_jobs",
+		Description:         `https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeTrainingJob.html`,
 		Resolver:            fetchSagemakerTrainingJobs,
 		PreResourceResolver: getTrainingJob,
 		Transform:           transformers.TransformWithStruct(&sagemaker.DescribeTrainingJobOutput{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer("api.sagemaker"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

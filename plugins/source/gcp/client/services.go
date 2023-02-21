@@ -5,6 +5,8 @@ package client
 var GcpServices = map[string]bool{
 	// Non discoverable services
 	"aiplatform.googleapis.com": true,
+	"vpcaccess.googleapis.com":  true,
+	"livestream.googleapis.com": true,
 	// Discoverable services
 	"abusiveexperiencereport.googleapis.com":       true,
 	"acceleratedmobilepageurl.googleapis.com":      true,
@@ -16,6 +18,7 @@ var GcpServices = map[string]bool{
 	"admob.googleapis.com":                         true,
 	"adsense.googleapis.com":                       true,
 	"adsensehost.googleapis.com":                   true,
+	"advisorynotifications.googleapis.com":         true,
 	"alertcenter.googleapis.com":                   true,
 	"analytics.googleapis.com":                     true,
 	"analyticsadmin.googleapis.com":                true,
@@ -147,7 +150,6 @@ var GcpServices = map[string]bool{
 	"iam.googleapis.com":                           true,
 	"iamcredentials.googleapis.com":                true,
 	"iap.googleapis.com":                           true,
-	"ideahub.googleapis.com":                       true,
 	"identitytoolkit.googleapis.com":               true,
 	"ids.googleapis.com":                           true,
 	"indexing.googleapis.com":                      true,
@@ -155,6 +157,7 @@ var GcpServices = map[string]bool{
 	"jobs.googleapis.com":                          true,
 	"keep.googleapis.com":                          true,
 	"kgsearch.googleapis.com":                      true,
+	"kmsinventory.googleapis.com":                  true,
 	"language.googleapis.com":                      true,
 	"libraryagent.googleapis.com":                  true,
 	"licensing.googleapis.com":                     true,
@@ -212,6 +215,7 @@ var GcpServices = map[string]bool{
 	"safebrowsing.googleapis.com":                  true,
 	"sasportal.googleapis.com":                     true,
 	"script.googleapis.com":                        true,
+	"searchads360.googleapis.com":                  true,
 	"searchconsole.googleapis.com":                 true,
 	"secretmanager.googleapis.com":                 true,
 	"securitycenter.googleapis.com":                true,

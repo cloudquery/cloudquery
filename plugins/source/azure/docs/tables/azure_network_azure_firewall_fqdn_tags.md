@@ -1,6 +1,8 @@
 # Table: azure_network_azure_firewall_fqdn_tags
 
-The primary key for this table is **id**.
+https://learn.microsoft.com/en-us/rest/api/firewall/azure-firewall-fqdn-tags/list-all?tabs=HTTP#azurefirewallfqdntag
+
+The composite primary key for this table is (**subscription_id**, **id**).
 
 ## Columns
 
@@ -10,7 +12,7 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
+|subscription_id (PK)|String|
 |id (PK)|String|
 |location|String|
 |properties|JSON|

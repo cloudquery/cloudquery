@@ -1,0 +1,1 @@
+ALTER TABLE {{.Table}} ADD {{template "col_def.sql.tpl" .Definition}};

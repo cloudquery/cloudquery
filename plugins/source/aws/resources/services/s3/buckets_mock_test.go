@@ -46,6 +46,11 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err != nil {
 		t.Fatal(err)
 	}
+	// set up properly
+	bgrant.Grantee.EmailAddress = nil
+	bgrant.Grantee.ID = nil
+	bgrant.Grantee.Type = s3Types.TypeGroup
+
 	bcors := s3Types.CORSRule{}
 	err = faker.FakeObject(&bcors)
 	if err != nil {

@@ -1,5 +1,7 @@
 # Table: aws_config_configuration_recorders
 
+https://docs.aws.amazon.com/config/latest/APIReference/API_ConfigurationRecorder.html
+
 The primary key for this table is **arn**.
 
 ## Columns

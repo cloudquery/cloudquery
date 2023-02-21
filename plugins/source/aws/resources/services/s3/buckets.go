@@ -14,11 +14,7 @@ func Buckets() *schema.Table {
 		Transform: transformers.TransformWithStruct(&models.WrappedBucket{}),
 		Multiplex: client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

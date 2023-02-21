@@ -1,5 +1,7 @@
 # Table: aws_config_config_rules
 
+https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConfigRules.html
+
 The primary key for this table is **arn**.
 
 ## Relations

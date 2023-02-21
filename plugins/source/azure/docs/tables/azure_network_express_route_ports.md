@@ -1,5 +1,7 @@
 # Table: azure_network_express_route_ports
 
+https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-ports/list?tabs=HTTP#expressrouteport
+
 The primary key for this table is **id**.
 
 ## Columns

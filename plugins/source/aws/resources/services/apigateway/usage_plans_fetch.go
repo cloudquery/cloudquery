@@ -40,7 +40,7 @@ func fetchApigatewayUsagePlanKeys(ctx context.Context, meta schema.ClientMeta, p
 	r := parent.Item.(types.UsagePlan)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
-	config := apigateway.GetUsagePlanKeysInput{UsagePlanId: r.Id}
+	config := apigateway.GetUsagePlanKeysInput{UsagePlanId: r.Id, Limit: aws.Int32(500)}
 	for p := apigateway.NewGetUsagePlanKeysPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx)
 		if err != nil {

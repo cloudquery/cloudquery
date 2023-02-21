@@ -46,12 +46,13 @@ func PagerdutyMockTestHelper(t *testing.T, table *schema.Table, buildMockHttpCli
 
 	version := "vDev"
 
-	configureTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+	configureTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		pagerdutyClient := pagerduty.NewClient("test_auth_token")
 		pagerdutyClient.HTTPClient = buildMockHttpClient()
 
 		cqClient := Client{
 			PagerdutyClient: pagerdutyClient,
+			Spec:            &Spec{},
 			logger:          logger,
 		}
 

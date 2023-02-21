@@ -2,6 +2,10 @@
 
 The primary key for this table is **neighbor_id**.
 
+## Relations
+
+This table depends on [digitalocean_droplets](digitalocean_droplets.md).
+
 ## Columns
 
 | Name          | Type          |

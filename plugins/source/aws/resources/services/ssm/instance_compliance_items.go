@@ -15,16 +15,8 @@ func InstanceComplianceItems() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.ComplianceItem{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ssm"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

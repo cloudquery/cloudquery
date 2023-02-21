@@ -11,7 +11,6 @@ The primary key for this table is **self_link**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id|String|
-|self_link (PK)|String|
 |ipv4_range|String|
 |auto_create_subnetworks|Bool|
 |creation_timestamp|String|
@@ -27,5 +26,6 @@ The primary key for this table is **self_link**.
 |network_firewall_policy_enforcement_order|String|
 |peerings|JSON|
 |routing_config|JSON|
+|self_link (PK)|String|
 |self_link_with_id|String|
 |subnetworks|StringArray|

@@ -11,31 +11,38 @@ import (
 
 func Keyvault() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_keyvault_keyvault",
-		Resolver:  fetchKeyvault,
-		Multiplex: client.SubscriptionMultiplex,
-		Transform: transformers.TransformWithStruct(&armkeyvault.Resource{}),
-		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Name:                "azure_keyvault_keyvault",
+		PreResourceResolver: keyvaultGet,
+		Resolver:            fetchKeyvault,
+		Description:         "https://learn.microsoft.com/en-us/rest/api/keyvault/keyvault/vaults/get?tabs=HTTP#vault",
+		Multiplex:           client.SubscriptionMultiplex,
+		Transform:           transformers.TransformWithStruct(&armkeyvault.Vault{}, transformers.WithPrimaryKeys("ID")),
+		Columns:             schema.ColumnList{client.SubscriptionID},
 
 		Relations: []*schema.Table{
 			keyvault_keys(),
 			keyvault_secrets(),
 		},
 	}
+}
+
+func keyvaultGet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	r := resource.Item.(*armkeyvault.Vault)
+	cl := meta.(*client.Client)
+	svc, err := armkeyvault.NewVaultsClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
+	group, err := client.ParseResourceGroup(*r.ID)
+	if err != nil {
+		return err
+	}
+	resp, err := svc.Get(ctx, group, *r.Name, nil)
+	if err != nil {
+		return err
+	}
+	resource.SetItem(resp.Vault)
+	return nil
 }
 
 func fetchKeyvault(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
@@ -50,7 +57,13 @@ func fetchKeyvault(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		if err != nil {
 			return err
 		}
-		res <- p.Value
+
+		for _, r := range p.Value {
+			res <- &armkeyvault.Vault{
+				ID:   r.ID,
+				Name: r.Name,
+			}
+		}
 	}
 	return nil
 }

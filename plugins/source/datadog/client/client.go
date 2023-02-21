@@ -70,7 +70,7 @@ func (c *Client) withAccount(account Account) schema.ClientMeta {
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	cfSpec := &Spec{}
 	if err := s.UnmarshalSpec(cfSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal datadog spec: %w", err)

@@ -1,5 +1,7 @@
 # Table: azure_peering_service_locations
 
+https://learn.microsoft.com/en-us/rest/api/peering/peering-service-locations/list?tabs=HTTP#peeringservicelocation
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,7 +13,7 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |properties|JSON|
+|id (PK)|String|
 |name|String|
 |type|String|

@@ -1,5 +1,7 @@
 # Table: aws_codepipeline_pipelines
 
+https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_GetPipeline.html
+
 The primary key for this table is **arn**.
 
 ## Columns

@@ -19,20 +19,12 @@ func Services() *schema.Table {
 		Description: `https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services#Service`,
 		Resolver:    fetchServices,
 		Multiplex:   client.ProjectMultiplexEnabledServices("appengine.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Service{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.Service{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

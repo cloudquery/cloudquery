@@ -12,19 +12,11 @@ func Buckets() *schema.Table {
 		Name:        "aws_lightsail_buckets",
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Bucket.html`,
 		Resolver:    fetchLightsailBuckets,
-		Transform:   transformers.TransformWithStruct(&types.Bucket{}),
+		Transform:   transformers.TransformWithStruct(&types.Bucket{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "able_to_update_bundle",
 				Type:     schema.TypeBool,

@@ -1,11 +1,11 @@
 WITH
     settings_with_logs AS (
-        SELECT resource_uri, storage_account_id, JSONB_ARRAY_ELEMENTS(logs) AS logs FROM azure_monitor_diagnostic_settings
+        SELECT resource_id, properties ->> 'storageAccountId' as storage_account_id, JSONB_ARRAY_ELEMENTS(properties -> 'logs') AS logs FROM azure_monitor_diagnostic_settings
     ),
     logging_enabled AS (
         SELECT DISTINCT j._cq_id
   FROM azure_streamanalytics_streaming_jobs j
-    LEFT JOIN settings_with_logs s ON j.id = s.resource_uri
+    LEFT JOIN settings_with_logs s ON j.id = s.resource_id
     WHERE (s.logs->>'enabled')::boolean IS TRUE
     AND s.logs->>'category' = 'AuditEvent'
     AND (s.storage_account_id IS NOT NULL OR s.storage_account_id IS DISTINCT FROM '')

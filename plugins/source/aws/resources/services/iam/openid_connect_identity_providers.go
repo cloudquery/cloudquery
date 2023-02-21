@@ -10,16 +10,13 @@ import (
 func OpenidConnectIdentityProviders() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_iam_openid_connect_identity_providers",
+		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetOpenIDConnectProvider.html`,
 		Resolver:            fetchIamOpenidConnectIdentityProviders,
 		PreResourceResolver: getOpenIdConnectIdentityProvider,
 		Transform:           transformers.TransformWithStruct(&models.IamOpenIdIdentityProviderWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name: "arn",
 				Type: schema.TypeString,

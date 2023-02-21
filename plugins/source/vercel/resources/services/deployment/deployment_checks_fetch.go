@@ -10,10 +10,13 @@ import (
 
 func fetchDeploymentChecks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	d := parent.Item.(vercel.Deployment)
-
 	cl := meta.(*client.Client)
 
-	var pg vercel.Paginator
+	const key = "deployment_checks"
+	pg, err := cl.GetPaginator(ctx, key, d.UID)
+	if err != nil {
+		return err
+	}
 
 	for {
 		list, p, err := cl.Services.ListDeploymentChecks(ctx, d.UID, &pg)
@@ -26,6 +29,10 @@ func fetchDeploymentChecks(ctx context.Context, meta schema.ClientMeta, parent *
 			break
 		}
 		pg.Next = p.Next
+
+		if err := cl.SavePaginator(ctx, key, pg, d.UID); err != nil {
+			return err
+		}
 	}
 	return nil
 }

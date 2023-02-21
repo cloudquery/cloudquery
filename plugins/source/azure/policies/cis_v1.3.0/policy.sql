@@ -34,24 +34,26 @@ END AS "execution_time"  \gset
 \set check_id "2.7"
 \echo "Executing check 2.7"
 \ir ../queries/security/defender_on_for_container_registeries.sql
-\set check_id "2.9"
-\echo "Executing check 2.9"
+\set check_id "2.8"
+\echo "Executing check 2.8"
 \ir ../queries/security/defender_on_for_key_vault.sql
-\set check_id "2.10"
-\echo "Executing check 2.10"
-\ir ../queries/security/mcas_integration_with_security_center_enabled.sql
+-- security settings does not have "enabled" property
+-- \set check_id "2.10"
+-- \echo "Executing check 2.10"
+-- \ir ../queries/security/mcas_integration_with_security_center_enabled.sql
 \set check_id "2.11"
 \echo "Executing check 2.11"
 \ir ../queries/security/auto_provisioning_monitoring_agent_enabled.sql
 \set check_id "2.12"
 \echo "Executing check 2.12"
 \ir ../queries/security/default_policy_disabled.sql
-\set check_id "2.13"
-\echo "Executing check 2.13"
-\ir ../queries/security/security_email_configured.sql
-\set check_id "2.14"
-\echo "Executing check 2.14"
-\ir ../queries/security/notify_high_severity_alerts.sql
+-- security contacts api is broken
+-- \set check_id "2.13"
+-- \echo "Executing check 2.13"
+-- \ir ../queries/security/security_email_configured.sql
+-- \set check_id "2.14"
+-- \echo "Executing check 2.14"
+-- \ir ../queries/security/notify_high_severity_alerts.sql
 
 \echo "Executing CIS V1.3.0 Section 4"
 \set check_id "4.1.1"

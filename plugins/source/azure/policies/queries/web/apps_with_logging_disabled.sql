@@ -7,9 +7,9 @@ SELECT
   subscription_id,
   id,
   case
-    when NOT (site_config -> 'httpLoggingEnabled')::text::bool
-      OR NOT (site_config -> 'detailedErrorLoggingEnabled')::text::bool
-      OR NOT (site_config -> 'requestTracingEnabled')::text::bool
+    when NOT (properties -> 'siteConfig' -> 'httpLoggingEnabled')::text::bool
+      OR NOT (properties -> 'siteConfig' -> 'detailedErrorLoggingEnabled')::text::bool
+      OR NOT (properties -> 'siteConfig' -> 'requestTracingEnabled')::text::bool
     then 'fail' else 'pass'
   end
-FROM azure_web_apps
+FROM azure_appservice_web_apps

@@ -4,7 +4,7 @@
 
 This example syncs from Slack to a Postgres destination, using bot `token` authentication. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml
+```yaml copy
 kind: source
 # Common source-plugin configuration
 spec:

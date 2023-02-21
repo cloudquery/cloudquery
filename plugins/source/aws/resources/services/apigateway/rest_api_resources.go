@@ -15,16 +15,8 @@ func RestApiResources() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Resource{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "rest_api_arn",
 				Type:     schema.TypeString,
@@ -34,7 +26,13 @@ func RestApiResources() *schema.Table {
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: resolveApigatewayRestAPIResourceArn,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
+		},
+		Relations: []*schema.Table{
+			restApiResourceMethods(),
 		},
 	}
 }

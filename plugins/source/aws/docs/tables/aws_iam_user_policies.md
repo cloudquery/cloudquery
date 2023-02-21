@@ -1,5 +1,7 @@
 # Table: aws_iam_user_policies
 
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetUserPolicy.html
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

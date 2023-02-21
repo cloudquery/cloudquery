@@ -14,16 +14,8 @@ func Operations() *schema.Table {
 		Resolver:    fetchApprunnerOperations,
 		Transform:   transformers.TransformWithStruct(&types.OperationSummary{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 		},
 	}
 }

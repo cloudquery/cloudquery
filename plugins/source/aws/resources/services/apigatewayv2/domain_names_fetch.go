@@ -2,8 +2,10 @@ package apigatewayv2
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -11,20 +13,26 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-const domainNamesIDPart = "domainnames"
-
-func resolveDomainNameArn() schema.ColumnResolver {
-	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
-		return []string{domainNamesIDPart, *resource.Item.(types.DomainName).DomainName}, nil
-	})
+func resolveDomainNameArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/domainnames/%s", aws.ToString(resource.Item.(types.DomainName).DomainName)),
+	}.String())
 }
 
-func resolveDomainNameRestApiMappingArn() schema.ColumnResolver {
-	return client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
-		r := resource.Item.(types.ApiMapping)
-		p := resource.Parent.Item.(types.DomainName)
-		return []string{domainNamesIDPart, *p.DomainName, "apimappings", *r.ApiMappingId}, nil
-	})
+func resolveDomainNameRestApiMappingArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/domainnames/%s/apimappings/%s", aws.ToString(resource.Parent.Item.(types.DomainName).DomainName), aws.ToString(resource.Item.(types.ApiMapping).ApiMappingId)),
+	}.String())
 }
 
 func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {

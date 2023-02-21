@@ -15,16 +15,8 @@ func UsagePlanKeys() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.UsagePlanKey{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "usage_plan_arn",
 				Type:     schema.TypeString,
@@ -34,6 +26,9 @@ func UsagePlanKeys() *schema.Table {
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: resolveApigatewayUsagePlanKeyArn,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 		},
 	}

@@ -13,13 +13,8 @@ func BucketLifecycles() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_LifecycleRule.html`,
 		Resolver:    fetchS3BucketLifecycles,
 		Transform:   transformers.TransformWithStruct(&types.LifecycleRule{}),
-		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "bucket_arn",
 				Type:     schema.TypeString,

@@ -1,5 +1,7 @@
 # Table: azure_operationalinsights_workspaces
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights@v1.0.0#Workspace
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,10 +13,10 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |etag|String|
 |properties|JSON|
 |tags|JSON|
+|id (PK)|String|
 |name|String|
 |type|String|

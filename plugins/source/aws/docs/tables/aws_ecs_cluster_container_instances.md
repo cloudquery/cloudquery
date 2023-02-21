@@ -19,6 +19,7 @@ This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 |account_id|String|
 |region|String|
 |cluster_arn|String|
+|tags|JSON|
 |agent_connected|Bool|
 |agent_update_status|String|
 |attachments|JSON|
@@ -34,6 +35,5 @@ This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 |running_tasks_count|Int|
 |status|String|
 |status_reason|String|
-|tags|JSON|
 |version|Int|
 |version_info|JSON|

@@ -9,20 +9,17 @@ import (
 
 func HostedZones() *schema.Table {
 	return &schema.Table{
-		Name:     "aws_route53_hosted_zones",
-		Resolver: fetchRoute53HostedZones,
+		Name:        "aws_route53_hosted_zones",
+		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_HostedZone.html`,
+		Resolver:    fetchRoute53HostedZones,
 		Transform: transformers.TransformWithStruct(
 			&models.Route53HostedZoneWrapper{},
 			transformers.WithUnwrapStructFields("HostedZone"),
 			transformers.WithNameTransformer(client.CreateReplaceTransformer(map[string]string{"vp_cs": "vpcs"})),
 		),
-		Multiplex: client.AccountMultiplex,
+		Multiplex: client.ServiceAccountRegionMultiplexer("route53"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

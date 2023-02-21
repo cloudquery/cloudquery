@@ -5,6 +5,148 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v8.1.0...plugins-source-gcp-v8.2.0) (2023-02-21)
+
+
+### Features
+
+* **gcp-spec:** Add `organization_ids` and `organization_filter` ([#7936](https://github.com/cloudquery/cloudquery/issues/7936)) ([cc8e9b5](https://github.com/cloudquery/cloudquery/commit/cc8e9b549240c5edb745d22341b7bf928c321d23))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.38.2 ([#8156](https://github.com/cloudquery/cloudquery/issues/8156)) ([ac2d2d7](https://github.com/cloudquery/cloudquery/commit/ac2d2d70d5c4bc45fb8734bd4deb8a1e36074f6d))
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+
+## [8.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v8.0.0...plugins-source-gcp-v8.1.0) (2023-02-14)
+
+
+### Features
+
+* Add 'gcp_projects' table ([#7979](https://github.com/cloudquery/cloudquery/issues/7979)) ([ac835f2](https://github.com/cloudquery/cloudquery/commit/ac835f2589cdeaa922b2e201bdf4ae65abcd163c))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.36.0 ([#7809](https://github.com/cloudquery/cloudquery/issues/7809)) ([c85a9cb](https://github.com/cloudquery/cloudquery/commit/c85a9cb697477520e94a1fd260c56b89da62fc87))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.36.1 ([#7930](https://github.com/cloudquery/cloudquery/issues/7930)) ([39dccc1](https://github.com/cloudquery/cloudquery/commit/39dccc1bf81f4eb02d181ba0c47b37038a4c5455))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.0 ([#7933](https://github.com/cloudquery/cloudquery/issues/7933)) ([dc9cffb](https://github.com/cloudquery/cloudquery/commit/dc9cffbf37bbc6fae73a20bf47e6bbf17e74d1f9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.1 ([#8008](https://github.com/cloudquery/cloudquery/issues/8008)) ([c47aac0](https://github.com/cloudquery/cloudquery/commit/c47aac0b5e3190a04299713651b97e360043911f))
+
+## [8.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.6.0...plugins-source-gcp-v8.0.0) (2023-02-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **gcp-resources:** Make Security Center Tables Incremental ([#7696](https://github.com/cloudquery/cloudquery/issues/7696))
+
+### Features
+
+* **gcp-resources:** Make Security Center Tables Incremental ([#7696](https://github.com/cloudquery/cloudquery/issues/7696)) ([50f5102](https://github.com/cloudquery/cloudquery/commit/50f51029da7fdc582eb2945f591831d65043e92f))
+
+## [7.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.5.0...plugins-source-gcp-v7.6.0) (2023-02-07)
+
+
+### Features
+
+* **gcp-resources:** Add Security Center folders findings ([#7624](https://github.com/cloudquery/cloudquery/issues/7624)) ([3ec2255](https://github.com/cloudquery/cloudquery/commit/3ec22552d31fe920f264dcb5f4638c16a355372d))
+
+## [7.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.4.0...plugins-source-gcp-v7.5.0) (2023-02-07)
+
+
+### Features
+
+* **gcp-resources:** Add Compute Routers and NAT Mappings ([#7691](https://github.com/cloudquery/cloudquery/issues/7691)) ([73c653e](https://github.com/cloudquery/cloudquery/commit/73c653ebbe3093a85dfa74ae5065c18d8fff15c5))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cncf/udpa/go digest to c52dc94 ([#7526](https://github.com/cloudquery/cloudquery/issues/7526)) ([2c31906](https://github.com/cloudquery/cloudquery/commit/2c31906c4623c62ebe669a6beb81aec1fd1e9bb7))
+* **deps:** Update github.com/cncf/xds/go digest to 46e39c7 ([#7527](https://github.com/cloudquery/cloudquery/issues/7527)) ([9e94369](https://github.com/cloudquery/cloudquery/commit/9e943696e901a29cca53e05e95e2dd5edefb947b))
+* **deps:** Update golang.org/x/exp digest to f062dba ([#7531](https://github.com/cloudquery/cloudquery/issues/7531)) ([59d5575](https://github.com/cloudquery/cloudquery/commit/59d55758b0951553b8d246d1e78b4e3917ff1976))
+* **deps:** Update google.golang.org/genproto digest to 1c01626 ([#7533](https://github.com/cloudquery/cloudquery/issues/7533)) ([c549c27](https://github.com/cloudquery/cloudquery/commit/c549c275077f1cdfb9df0b3f3c129cbf0b150552))
+* **deps:** Update module cloud.google.com/go to v0.109.0 ([#7584](https://github.com/cloudquery/cloudquery/issues/7584)) ([f95de44](https://github.com/cloudquery/cloudquery/commit/f95de44b6c8392c4b572444f1cb80f3e7e8febda))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.0 ([#7595](https://github.com/cloudquery/cloudquery/issues/7595)) ([c5adc75](https://github.com/cloudquery/cloudquery/commit/c5adc750d4b0242563997c04c582f8da27913095))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.33.1 ([#7614](https://github.com/cloudquery/cloudquery/issues/7614)) ([2fe665c](https://github.com/cloudquery/cloudquery/commit/2fe665cdd80d88c5699bb203bd7accd604dfba99))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.34.0 ([#7719](https://github.com/cloudquery/cloudquery/issues/7719)) ([6a33085](https://github.com/cloudquery/cloudquery/commit/6a33085c75adcf2387f7bbb5aa4f7a84ce7e2957))
+
+## [7.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.3.0...plugins-source-gcp-v7.4.0) (2023-01-31)
+
+
+### Features
+
+* New plugin-sdk features used for GCP ([#7208](https://github.com/cloudquery/cloudquery/issues/7208)) ([bb9e9e0](https://github.com/cloudquery/cloudquery/commit/bb9e9e050f9904eb5bf613541e45d67da081f326))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.30.0 ([#7222](https://github.com/cloudquery/cloudquery/issues/7222)) ([73ca21c](https://github.com/cloudquery/cloudquery/commit/73ca21c4259545f7e949c9d780d8184db475d2ac))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.31.0 ([#7228](https://github.com/cloudquery/cloudquery/issues/7228)) ([36e8549](https://github.com/cloudquery/cloudquery/commit/36e8549f722658d909865723630fad1b2821db62))
+* Remove primary keys options for non existent fields ([#7371](https://github.com/cloudquery/cloudquery/issues/7371)) ([8f875c5](https://github.com/cloudquery/cloudquery/commit/8f875c52137d6a27906bcd6f4feca2d31559f479))
+
+## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.2.1...plugins-source-gcp-v7.3.0) (2023-01-25)
+
+
+### Features
+
+* **gcp-resources:** Add Security Center projects and organizations findings ([#7089](https://github.com/cloudquery/cloudquery/issues/7089)) ([e849caf](https://github.com/cloudquery/cloudquery/commit/e849caf1915eb7f811e9e8edfc94009f6e710229))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.29.0 ([#7121](https://github.com/cloudquery/cloudquery/issues/7121)) ([b7441c9](https://github.com/cloudquery/cloudquery/commit/b7441c93c274ae3a6009474a2b28f44a172dd6dc))
+
+## [7.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.2.0...plugins-source-gcp-v7.2.1) (2023-01-24)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.28.0 ([#7009](https://github.com/cloudquery/cloudquery/issues/7009)) ([12ac005](https://github.com/cloudquery/cloudquery/commit/12ac005428a355d06a5939fbe06a82d49533e662))
+* **gcp-project-policies:** Use correct API to get Policy v3, fix policy 2.1 query ([#7053](https://github.com/cloudquery/cloudquery/issues/7053)) ([2f17a4d](https://github.com/cloudquery/cloudquery/commit/2f17a4dccc69d18b19cabceee754e7d9141cd46a))
+* Hardcode `us-central1` instead of `global` when fetching glossaries ([#6968](https://github.com/cloudquery/cloudquery/issues/6968)) ([0d76c62](https://github.com/cloudquery/cloudquery/commit/0d76c62a6c12296638af8183d169c7917a9fab7b))
+* **services:** Update GCP Services ([#7057](https://github.com/cloudquery/cloudquery/issues/7057)) ([7cc65a4](https://github.com/cloudquery/cloudquery/commit/7cc65a43bba9d5ca1528c6346cd016ce453b666d))
+
+## [7.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.1.1...plugins-source-gcp-v7.2.0) (2023-01-17)
+
+
+### Features
+
+* Add GCP vmmigration ([#6760](https://github.com/cloudquery/cloudquery/issues/6760)) ([28d9825](https://github.com/cloudquery/cloudquery/commit/28d9825a882e6b72c73a44be1a43253c1ad3fa08))
+* ADD GCP VPC Access ([#6755](https://github.com/cloudquery/cloudquery/issues/6755)) ([59c32dc](https://github.com/cloudquery/cloudquery/commit/59c32dc65c9df6870c4d973893a7e722c45188fd))
+* Add GCP Web Security Scanner ([#6674](https://github.com/cloudquery/cloudquery/issues/6674)) ([9b08d0e](https://github.com/cloudquery/cloudquery/commit/9b08d0e6e0cca513240f640929e232e3c034b5f8))
+* **gcp-resources:** Add Cloud Scheduler ([#6770](https://github.com/cloudquery/cloudquery/issues/6770)) ([b0941af](https://github.com/cloudquery/cloudquery/commit/b0941af0e59b512a38866f3de1314e075cc52506))
+* **gcp-resources:** Add Cloud Support ([#6771](https://github.com/cloudquery/cloudquery/issues/6771)) ([7aefc2b](https://github.com/cloudquery/cloudquery/commit/7aefc2bd4cbeb5e81ffdfd9617f1687049e30e34))
+* **gcp-resources:** Add livestream ([#6788](https://github.com/cloudquery/cloudquery/issues/6788)) ([6da9658](https://github.com/cloudquery/cloudquery/commit/6da965805ee24f7552cf6abcc955ffab5c4726e1))
+* **gcp-resources:** Add missing KMS resources ([#6769](https://github.com/cloudquery/cloudquery/issues/6769)) ([9ecc4d7](https://github.com/cloudquery/cloudquery/commit/9ecc4d7dfb5767311cf79ee4c19dd6ecfc467f89))
+* **gcp-resources:** Add translate ([#6832](https://github.com/cloudquery/cloudquery/issues/6832)) ([d827029](https://github.com/cloudquery/cloudquery/commit/d827029a68c87ae7d46a06e293ca5d09c98c7941))
+* **gcp-resources:** Add video-transcoder ([#6806](https://github.com/cloudquery/cloudquery/issues/6806)) ([d4fd41d](https://github.com/cloudquery/cloudquery/commit/d4fd41db64ad5ee21c74d74ac173cf9a79b832b6))
+* **gcp-resources:** Add vision ([#6786](https://github.com/cloudquery/cloudquery/issues/6786)) ([3dd6116](https://github.com/cloudquery/cloudquery/commit/3dd611689ce05de31e2766aa508ec269e791d454))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.24.2 ([#6695](https://github.com/cloudquery/cloudquery/issues/6695)) ([694ab9f](https://github.com/cloudquery/cloudquery/commit/694ab9f3e20473146e3620d7b03bb17eb259d697))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.25.0 ([#6745](https://github.com/cloudquery/cloudquery/issues/6745)) ([9c41854](https://github.com/cloudquery/cloudquery/commit/9c418547c3bbff97449765e337182230fb5e40d5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.25.1 ([#6805](https://github.com/cloudquery/cloudquery/issues/6805)) ([9da0ce2](https://github.com/cloudquery/cloudquery/commit/9da0ce283f50410eb9274375ec1d22131a80d937))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.26.0 ([#6839](https://github.com/cloudquery/cloudquery/issues/6839)) ([6ccda8d](https://github.com/cloudquery/cloudquery/commit/6ccda8d0bc6e7ce75f4a64a18911e349ccaac277))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.27.0 ([#6856](https://github.com/cloudquery/cloudquery/issues/6856)) ([545799b](https://github.com/cloudquery/cloudquery/commit/545799bb0481087e187b5f27c88f5dde9c99f2f0))
+* **gcp:** Add `Location` to client `ID` when present ([#6807](https://github.com/cloudquery/cloudquery/issues/6807)) ([8b21b80](https://github.com/cloudquery/cloudquery/commit/8b21b809c8fc677441d7d64a018e8191fc62e4d3))
+* **gcp:** Prevent gcp_resourcemanager_folders rows with nil org_id ([#6577](https://github.com/cloudquery/cloudquery/issues/6577)) ([266c191](https://github.com/cloudquery/cloudquery/commit/266c191006c13c164f3ffaa8807b0fa5a3343252))
+
+## [7.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.1.0...plugins-source-gcp-v7.1.1) (2023-01-11)
+
+
+### Bug Fixes
+
+* **gcp-resources:** Add `update_time` to PKs of `gcp_cloudiot_device_states` ([#6552](https://github.com/cloudquery/cloudquery/issues/6552)) ([b78eca5](https://github.com/cloudquery/cloudquery/commit/b78eca595d386fbd5691d5c6c7ef5c4adeb2166a))
+
+## [7.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v7.0.0...plugins-source-gcp-v7.1.0) (2023-01-10)
+
+
+### Features
+
+* **gcp-resources:** Add Workflows ([#6594](https://github.com/cloudquery/cloudquery/issues/6594)) ([bc16ee5](https://github.com/cloudquery/cloudquery/commit/bc16ee5dbef3e48f37028e881c003123442049f2))
+
 ## [7.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v6.1.2...plugins-source-gcp-v7.0.0) (2023-01-10)
 
 
@@ -73,6 +215,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ⚠ BREAKING CHANGES
 
+* **gcp-resources:** `gcp_iam_deny_policies` columns `create_time, delete_time, update_time` type changed from `String` to `Timestamp`
 * **gcp-resources:** `gcp_iam_roles` column `etag` type changed from `String` to `IntArray`
 * **gcp-resources:** `gcp_iam_service_account_keys` column `public_key_data` type changed from `String` to `IntArray` and columns `valid_after_time, valid_before_time` type changed from `String` to `Timestamp`
 * **gcp-resources:** `gcp_iam_service_accounts` column `etag` type changed from `String` to `IntArray`

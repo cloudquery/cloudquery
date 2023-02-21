@@ -9,21 +9,14 @@ import (
 
 func LayerVersionPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lambda_layer_version_policies",
-		Resolver:  fetchLambdaLayerVersionPolicies,
-		Transform: transformers.TransformWithStruct(&lambda.GetLayerVersionPolicyOutput{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer("lambda"),
+		Name:        "aws_lambda_layer_version_policies",
+		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_GetLayerVersionPolicy.html`,
+		Resolver:    fetchLambdaLayerVersionPolicies,
+		Transform:   transformers.TransformWithStruct(&lambda.GetLayerVersionPolicyOutput{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lambda"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "layer_version_arn",
 				Type:     schema.TypeString,

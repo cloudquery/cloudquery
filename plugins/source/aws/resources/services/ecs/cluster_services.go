@@ -15,16 +15,8 @@ func ClusterServices() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ecs"),
 		Transform:   transformers.TransformWithStruct(&types.Service{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
@@ -38,6 +30,9 @@ func ClusterServices() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: client.ResolveTags,
 			},
+		},
+		Relations: []*schema.Table{
+			ClusterTaskSets(),
 		},
 	}
 }

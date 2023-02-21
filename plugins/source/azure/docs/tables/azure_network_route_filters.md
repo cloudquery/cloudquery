@@ -1,5 +1,7 @@
 # Table: azure_network_route_filters
 
+https://learn.microsoft.com/en-us/rest/api/expressroute/route-filters/list?tabs=HTTP#routefilter
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -18,7 +18,7 @@ This table depends on [gcp_bigtableadmin_instances](gcp_bigtableadmin_instances.
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
 |instance_name (PK)|String|
-|name (PK)|String|
 |families|StringArray|
 |family_infos|JSON|
 |deletion_protection|Int|
+|name (PK)|String|

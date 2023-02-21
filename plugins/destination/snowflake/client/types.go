@@ -9,9 +9,9 @@ func (*Client) SchemaTypeToSnowflake(t schema.ValueType) string {
 	case schema.TypeBool:
 		return "boolean"
 	case schema.TypeInt:
-		return "bigint"
+		return "number"
 	case schema.TypeFloat:
-		return "float8"
+		return "float"
 	case schema.TypeUUID:
 		return "text"
 	case schema.TypeString:
@@ -21,7 +21,7 @@ func (*Client) SchemaTypeToSnowflake(t schema.ValueType) string {
 	case schema.TypeStringArray:
 		return "array"
 	case schema.TypeTimestamp:
-		return "timestamp"
+		return "timestamp_ntz"
 	case schema.TypeJSON:
 		return "variant"
 	case schema.TypeUUIDArray:

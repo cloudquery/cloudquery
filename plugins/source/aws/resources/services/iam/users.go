@@ -14,7 +14,7 @@ func Users() *schema.Table {
 		Resolver:            fetchIamUsers,
 		PreResourceResolver: getUser,
 		Transform:           transformers.TransformWithStruct(&types.User{}),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
 			{
 				Name:     "arn",
@@ -103,14 +103,7 @@ func Users() *schema.Table {
 				Description: "When the user has an access key and the access key's status is Active, this value is TRUE. Otherwise it is FALSE",
 				Type:        schema.TypeBool,
 			},
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
@@ -124,6 +117,7 @@ func Users() *schema.Table {
 			UserAttachedPolicies(),
 			UserPolicies(),
 			SshPublicKeys(),
+			SigningCertificates(),
 		},
 	}
 }

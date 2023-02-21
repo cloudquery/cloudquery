@@ -14,14 +14,14 @@ const theme: DocsThemeConfig = {
     ),
   },
   sidebar: {
-    defaultMenuCollapseLevel: 0,
+    defaultMenuCollapseLevel: 1,
   },
   toc: {
     float: true,
   },
   docsRepositoryBase:
     "https://github.com/cloudquery/cloudquery/blob/main/website/pages",
-  getNextSeoProps: () => ({
+  useNextSeoProps: () => ({
     titleTemplate: "%s | CloudQuery",
   }),
   search: { component: null },

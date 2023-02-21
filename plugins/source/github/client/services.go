@@ -38,6 +38,10 @@ type RepositoriesService interface {
 	ListByOrg(ctx context.Context, org string, opts *github.RepositoryListByOrgOptions) ([]*github.Repository, *github.Response, error)
 	ListReleases(ctx context.Context, owner, repo string, opts *github.ListOptions) ([]*github.RepositoryRelease, *github.Response, error)
 	ListReleaseAssets(ctx context.Context, owner, repo string, id int64, opts *github.ListOptions) ([]*github.ReleaseAsset, *github.Response, error)
+	ListTrafficClones(ctx context.Context, owner, repo string, opts *github.TrafficBreakdownOptions) (*github.TrafficClones, *github.Response, error)
+	ListTrafficViews(ctx context.Context, owner, repo string, opts *github.TrafficBreakdownOptions) (*github.TrafficViews, *github.Response, error)
+	ListTrafficPaths(ctx context.Context, owner, repo string) ([]*github.TrafficPath, *github.Response, error)
+	ListTrafficReferrers(ctx context.Context, owner, repo string) ([]*github.TrafficReferrer, *github.Response, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_orgs.go . OrganizationsService
@@ -45,6 +49,7 @@ type OrganizationsService interface {
 	Get(ctx context.Context, org string) (*github.Organization, *github.Response, error)
 	GetOrgMembership(ctx context.Context, user, org string) (*github.Membership, *github.Response, error)
 	ListHookDeliveries(ctx context.Context, org string, id int64, opts *github.ListCursorOptions) ([]*github.HookDelivery, *github.Response, error)
+	GetHookDelivery(ctx context.Context, owner string, hookID, deliveryID int64) (*github.HookDelivery, *github.Response, error)
 	ListHooks(ctx context.Context, org string, opts *github.ListOptions) ([]*github.Hook, *github.Response, error)
 	ListInstallations(ctx context.Context, org string, opts *github.ListOptions) (*github.OrganizationInstallations, *github.Response, error)
 	ListMembers(ctx context.Context, org string, opts *github.ListMembersOptions) ([]*github.User, *github.Response, error)

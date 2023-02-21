@@ -23,7 +23,7 @@ func Vpcs() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			Members(),
+			members(),
 		},
 	}
 }

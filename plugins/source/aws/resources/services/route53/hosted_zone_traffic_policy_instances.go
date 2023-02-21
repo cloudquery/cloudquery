@@ -13,18 +13,17 @@ func HostedZoneTrafficPolicyInstances() *schema.Table {
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicyInstance.html`,
 		Resolver:    fetchRoute53HostedZoneTrafficPolicyInstances,
 		Transform:   transformers.TransformWithStruct(&types.TrafficPolicyInstance{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("route53"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:        "arn",
 				Type:        schema.TypeString,
 				Resolver:    resolveRoute53HostedZoneTrafficPolicyInstancesArn,
 				Description: `Amazon Resource Name (ARN) of the route53 hosted zone traffic policy instance.`,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "hosted_zone_arn",

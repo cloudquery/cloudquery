@@ -1,5 +1,7 @@
 # Table: aws_glue_dev_endpoints
 
+https://docs.aws.amazon.com/glue/latest/webapi/API_DevEndpoint.html
+
 The primary key for this table is **arn**.
 
 ## Columns

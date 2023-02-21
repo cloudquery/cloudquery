@@ -61,7 +61,7 @@ func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	return nil
 }
 
-func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+func resolveResourcePolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	r := resource.Item.(*lambda.GetFunctionOutput)
 	if r.Configuration == nil {
 		return nil
@@ -93,6 +93,42 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 			return err
 		}
 	}
+	return nil
+}
+
+func resolveRuntimeManagementConfig(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+	r := resource.Item.(*lambda.GetFunctionOutput)
+	if r.Configuration == nil {
+		return nil
+	}
+	c := meta.(*client.Client)
+	svc := c.Services().Lambda
+
+	runtimeManagementConfig, err := svc.GetRuntimeManagementConfig(ctx, &lambda.GetRuntimeManagementConfigInput{
+		FunctionName: r.Configuration.FunctionName,
+	})
+
+	if err != nil {
+		if c.IsNotFoundError(err) {
+			return nil
+		}
+		return err
+	}
+
+	if err := resource.Set("runtime_version_arn", runtimeManagementConfig.RuntimeVersionArn); err != nil {
+		return err
+	}
+
+	return resource.Set("update_runtime_on", runtimeManagementConfig.UpdateRuntimeOn)
+}
+
+func resolveCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+	r := resource.Item.(*lambda.GetFunctionOutput)
+	if r.Configuration == nil {
+		return nil
+	}
+	c := meta.(*client.Client)
+	svc := c.Services().Lambda
 
 	// skip getting CodeSigningConfig since containerized lambda functions does not support this feature
 	// value can be nil if the caller doesn't have GetFunctionConfiguration permission and only has List*

@@ -112,6 +112,22 @@ func buildApigatewayRestApis(t *testing.T, ctrl *gomock.Controller) client.Servi
 			Items: []types.Resource{ar},
 		}, nil)
 
+	method := apigateway.GetMethodOutput{}
+	err = faker.FakeObject(&method)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().GetMethod(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&method, nil)
+
+	integration := apigateway.GetIntegrationOutput{}
+	err = faker.FakeObject(&integration)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().GetIntegration(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&integration, nil)
+
 	s := types.Stage{}
 	err = faker.FakeObject(&s)
 	if err != nil {

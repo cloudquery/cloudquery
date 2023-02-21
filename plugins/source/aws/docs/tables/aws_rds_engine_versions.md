@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html
 
-The composite primary key for this table is (**account_id**, **region**, **engine**, **engine_version**).
+The composite primary key for this table is (**account_id**, **region**, **_engine_version_hash**).
 
 ## Relations
 
@@ -19,8 +19,7 @@ The following tables depend on aws_rds_engine_versions:
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
 |region (PK)|String|
-|engine (PK)|String|
-|engine_version (PK)|String|
+|_engine_version_hash (PK)|String|
 |tag_list|JSON|
 |create_time|Timestamp|
 |custom_db_engine_version_manifest|String|
@@ -32,6 +31,8 @@ The following tables depend on aws_rds_engine_versions:
 |database_installation_files_s3_bucket_name|String|
 |database_installation_files_s3_prefix|String|
 |default_character_set|JSON|
+|engine|String|
+|engine_version|String|
 |exportable_log_types|StringArray|
 |image|JSON|
 |kms_key_id|String|

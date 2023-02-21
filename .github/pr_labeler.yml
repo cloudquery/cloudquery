@@ -1,3 +1,5 @@
+alicloud:
+  - plugins/source/alicloud/**/*
 aws:
   - plugins/source/aws/**/*
 azure:
@@ -6,16 +8,12 @@ azuredevops:
   - plugins/source/azuredevops/**/*
 cloudflare:
   - plugins/source/cloudflare/**/*
-crowdstrike:
-  - plugins/source/crowdstrike/**/*
-digitalocean:
-  - plugins/source/digitalocean/**/*
 datadog:
   - plugins/source/datadog/**/*
+digitalocean:
+  - plugins/source/digitalocean/**/*
 fastly:
   - plugins/source/fastly/**/*
-fuzz:
-  - plugins/source/fuzz/**/*
 gandi:
   - plugins/source/gandi/**/*
 gcp:
@@ -24,26 +22,46 @@ github:
   - plugins/source/github/**/*
 gitlab:
   - plugins/source/gitlab/**/*
-k8s:
-  - plugins/source/k8s/**/*
 hackernews:
   - plugins/source/hackernews/**/*
 heroku:
   - plugins/source/heroku/**/*
+hubspot:
+  - plugins/source/hubspot/**/*
+plausible:
+  - plugins/source/plausible/**/*
+source-postgresql:
+  - plugins/source/postgresql/**/*
+k8s:
+  - plugins/source/k8s/**/*
+launchdarkly:
+  - plugins/source/launchdarkly/**/*
+mixpanel:
+  - plugins/source/mixpanel/**/*
 okta:
   - plugins/source/okta/**/*
+oracle:
+  - plugins/source/oracle/**/*
+salesforce:
+  - plugins/source/salesforce/**/*
 slack:
   - plugins/source/slack/**/*
 shopify:
   - plugins/source/shopify/**/*
+stripe:
+  - plugins/source/stripe/**/*
 pagerduty:
   - plugins/source/pagerduty/**/*
+snyk:
+  - plugins/source/snyk/**/*
 terraform:
   - plugins/source/terraform/**/*
+tailscale:
+  - plugins/source/tailscale/**/*
 vercel:
   - plugins/source/vercel/**/*
-salesforce:
-  - plugins/source/salesforce/**/*
+azblob:
+  - plugins/destination/azblob/**/*
 postgresql:
   - plugins/destination/postgresql/**/*
 sqlite:
@@ -52,6 +70,8 @@ s3:
   - plugins/destination/s3/**/*
 csv:
   - plugins/destination/csv/**/*
+elasticsearch:
+  - plugins/destination/elasticsearch/**/*
 file:
   - plugins/destination/file/**/*
 gcs:
@@ -62,10 +82,16 @@ bigquery:
   - plugins/destination/bigquery/**/*
 mongodb:
   - plugins/destination/mongodb/**/*
+mssql:
+  - plugins/destination/mssql/**/*
 neo4j:
   - plugins/destination/neo4j/**/*
 kafka:
   - plugins/destination/kafka/**/*
+firehose:
+  - plugins/destination/firehose/**/*  
+clickhouse:
+  - plugins/destination/clickhouse/**/*
 website:
   - website/**/*
 cli:

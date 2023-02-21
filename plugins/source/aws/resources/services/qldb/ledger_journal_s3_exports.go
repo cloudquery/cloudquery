@@ -15,16 +15,8 @@ func LedgerJournalS3Exports() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.JournalS3ExportDescription{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("qldb"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "ledger_arn",
 				Type:     schema.TypeString,

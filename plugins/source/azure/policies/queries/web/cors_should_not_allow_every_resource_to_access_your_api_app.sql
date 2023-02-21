@@ -7,8 +7,8 @@ SELECT
   subscription_id,
   id,
   case
-    when array(select jsonb_array_elements_text(site_config -> 'cors' -> 'allowedOrigins')) && ARRAY['*']
+    when array(select jsonb_array_elements_text(properties -> 'siteConfig' -> 'cors' -> 'allowedOrigins')) && ARRAY['*']
       AND kind LIKE '%api'
     then 'fail' else 'pass'
   end
-FROM azure_web_apps
+FROM azure_appservice_web_apps

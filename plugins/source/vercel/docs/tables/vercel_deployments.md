@@ -1,7 +1,7 @@
 # Table: vercel_deployments
 
 The primary key for this table is **uid**.
-
+It supports incremental syncs.
 ## Relations
 
 The following tables depend on vercel_deployments:

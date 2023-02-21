@@ -15,21 +15,12 @@ func LoadBalancers() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.LoadBalancer{}),
 		Columns: []schema.Column{
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
-				Name:     "account_id",
+				Name:     "web_acl_arn",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
-			{
-				Name:          "web_acl_arn",
-				Type:          schema.TypeString,
-				Resolver:      resolveElbv2loadBalancerWebACLArn,
-				IgnoreInTests: true,
+				Resolver: resolveElbv2loadBalancerWebACLArn,
 			},
 			{
 				Name:     "tags",

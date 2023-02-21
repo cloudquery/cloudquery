@@ -5,7 +5,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Neighbors() *schema.Table {
+func neighbors() *schema.Table {
 	return &schema.Table{
 		Name:      "digitalocean_droplet_neighbors",
 		Resolver:  fetchDropletsNeighbors,

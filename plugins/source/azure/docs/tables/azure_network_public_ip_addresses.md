@@ -1,5 +1,7 @@
 # Table: azure_network_public_ip_addresses
 
+https://learn.microsoft.com/en-us/rest/api/virtualnetwork/public-ip-addresses/list?tabs=HTTP#publicipaddress
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,8 +13,8 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |extended_location|JSON|
+|id (PK)|String|
 |location|String|
 |properties|JSON|
 |sku|JSON|

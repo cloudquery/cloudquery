@@ -4,6 +4,11 @@ https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecrets.h
 
 The primary key for this table is **arn**.
 
+## Relations
+
+The following tables depend on aws_secretsmanager_secrets:
+  - [aws_secretsmanager_secret_versions](aws_secretsmanager_secret_versions.md)
+
 ## Columns
 
 | Name          | Type          |

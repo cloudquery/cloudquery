@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
+	"github.com/cloudquery/plugin-sdk/backend"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -21,6 +22,10 @@ import (
 )
 
 const testToken = "SomeToken"
+
+type TestOptions struct {
+	Backend backend.Backend
+}
 
 type MockHttpClient struct {
 	rootURL string
@@ -52,7 +57,7 @@ func (c *MockHttpClient) Do(req *http.Request) (*http.Response, error) {
 	return c.client.Do(req)
 }
 
-func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.Router) error) {
+func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.Router) error, opts TestOptions) {
 	version := "vDev"
 
 	t.Helper()
@@ -72,7 +77,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	newTestExecutionClient := func(ctx context.Context, _ zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, _ zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		var veSpec Spec
 		if err := spec.UnmarshalSpec(&veSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal vercel spec: %w", err)
@@ -83,9 +88,9 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			return nil, err
 		}
 
-		services := vercel.New(mockClient, h.URL, testToken, veSpec.TeamIDs[0])
+		services := vercel.New(logger.With().Str("source", "stripe-client").Logger(), mockClient, h.URL, testToken, veSpec.TeamIDs[0], 5, 10, 100)
 
-		c := New(logger, spec, veSpec, services, veSpec.TeamIDs)
+		c := New(logger, spec, veSpec, services, veSpec.TeamIDs, opts.Backend)
 		return &c, nil
 	}
 

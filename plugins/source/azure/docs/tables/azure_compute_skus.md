@@ -1,6 +1,8 @@
 # Table: azure_compute_skus
 
-The primary key for this table is **id**.
+https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list?tabs=HTTP#resourceskusresult
+
+The composite primary key for this table is (**subscription_id**, **_sku_hash**, **name**).
 
 ## Columns
 
@@ -10,8 +12,8 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
-|id (PK)|String|
+|subscription_id (PK)|String|
+|_sku_hash (PK)|String|
 |api_versions|StringArray|
 |capabilities|JSON|
 |capacity|JSON|
@@ -20,7 +22,7 @@ The primary key for this table is **id**.
 |kind|String|
 |location_info|JSON|
 |locations|StringArray|
-|name|String|
+|name (PK)|String|
 |resource_type|String|
 |restrictions|JSON|
 |size|String|

@@ -8,7 +8,7 @@ SELECT
   id,
   case
     when kind LIKE '%api'
-      AND site_config ->> 'remoteDebuggingEnabled' = 'true'
+      AND properties -> 'siteConfig' ->> 'remoteDebuggingEnabled' = 'true'
     then 'fail' else 'pass'
   end
-FROM azure_web_apps
+FROM azure_appservice_web_apps

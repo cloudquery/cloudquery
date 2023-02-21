@@ -1,0 +1,180 @@
+---
+title: How to Enrich AWS Cost and Usage Data with Infrastructure Data in Amazon Athena
+tag: tutorial
+description: >-
+  How to Query and Correlate AWS Cost and Usage Data with CloudQuery synced data from AWS.
+author: jsonkao
+---
+
+import { HowToGuideHeader } from "../../components/HowToGuideHeader"
+
+<HowToGuideHeader/>
+
+## Introduction
+
+AWS provides Cost and Usage Reports (CUR) as a comprehensive set of cost and usage data including granular breakdowns by time period, by resource, and by other distinctions.  To gain actionable insights on cost data as part of a FinOps strategy, we will enrich the Cost and Usage Reports data with more detail of the corresponding infrastructure and resources so that educated decisions can be made on how to optimize cloud cost. 
+
+In this tutorial, we will show you how to load AWS's Cost and Usage Reports into Amazon Athena and enrich the Cost and Usage Reports data with infrastructure data synced by CloudQuery.  This will enable you to query your data and execute different cost optimization and FinOps use cases to understand and manage the financials of your cloud infrastructure. 
+
+![GP2 EBS Volumes in Athena with CloudQuery Data](/images/how-to-guides/query-aws-cost-and-usage-athena/athena-gp2.png)
+
+## Walkthrough
+
+### 1. Infrastructure Data Prerequisites
+In a [previous guide](/how-to-guides/how-to-load-infrastructure-data-into-athena), we talked about how to load infrastructure data into Amazon Athena.  If you haven't done so already, follow the guide to setup CloudQuery to sync infrastructure data into S3 and query that data with Amazon Athena.
+
+After completing the guide above, you should have the following completed:
+
+* CloudQuery syncing data from AWS to S3.
+* The ability to query data in Athena.
+
+### 2. Start Gathering Cost and Usage Reports
+
+To set up Cost and Usage Reports, we'll follow AWS documentation for how to set up the infrastructure necessary for Cost and Usage Reports.
+
+By the end of this step, we'll have created the following:
+* A S3 Bucket to hold our Cost and Usage Reports.
+* A new Cost and Usage Report.
+
+Let's start by [creating a new S3 bucket](https://docs.aws.amazon.com/cur/latest/userguide/cur-s3.html) for our Cost and Usage Reports.  To do so in AWS console, navigate to the Cost and Usage Reports page of the [AWS Billing Console](https://aws.amazon.com/aws-cost-management/aws-billing/) (use the region of your choice) and select the following options:
+
+* Include resource IDs
+* Enable Data Refresh
+
+![Report Content Options for Resource IDs and Data Refresh](/images/how-to-guides/query-aws-cost-and-usage-athena/report-content.png)
+
+On the next page, click Configure S3 Bucket and create a bucket.  You can choose to use an existing bucket or customize the bucket settings if your organization has specific S3 requirements.  
+
+![Bucket Creation Screen](/images/how-to-guides/query-aws-cost-and-usage-athena/bucket-create.png)
+
+Once the bucket has been confirmed with the default bucket policy, select the following settings:
+* Select the time granularity of your choice.
+* Enable report data integration for Amazon Athena.
+
+![Report Content Options for Resource IDs and Data Refresh](/images/how-to-guides/query-aws-cost-and-usage-athena/athena-int.png)
+
+After verifying the settings of the Cost and Usage Report, select create report!
+
+Please see [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cur/put-report-definition.html) for the CLI equivalent.
+
+AWS's `billingreports.amazonaws.com` will deliver these reports to our new S3 Bucket.  Keep in mind that it may take up to 24 hours for AWS to start delivering reports to the Amazon S3 bucket.  If you are creating a fresh S3 bucket, we suggest creating the bucket and coming back the next day to complete the rest of this guide!  Storing the billing reports data in Amazon S3 will incur standard [S3 costs](https://docs.aws.amazon.com/cur/latest/userguide/billing-cur-limits.html).  
+
+You should see multiple files in the S3 bucket once the cost and usage reports have been successfully delivered to your S3 bucket. In the billing console, the cost and usage report created will also show a time stamp for `Data last refreshed` such as the screenshot below.
+
+![Cost and Usage Reports in the Billing Console](/images/how-to-guides/query-aws-cost-and-usage-athena/cq-demo-cur.png)
+
+### 3. Set up Amazon Athena for Cost and Usage Reports
+
+Now that we have successfully created an S3 Bucket to receive Cost and Usage Reports, we will now setup Athena for querying our Cost and Usage Reports.
+
+For this step, we'll use the CloudFormation template that [AWS generates](https://docs.aws.amazon.com/cur/latest/userguide/use-athena-cf.html) in the bucket we previously created for Cost and Usage Reports.  [Athena can be setup manually](https://docs.aws.amazon.com/cur/latest/userguide/cur-ate-manual.html) if CloudFormation does not work for your usage.
+
+```bash copy
+aws cloudformation create-stack \
+--stack-name cost-and-usage-crawler \
+--template-url https://cq-demo-cur.s3.amazonaws.com/cost-and-usage/cloudquery-demo-reports/crawler-cfn.yml \
+--capabilities CAPABILITY_IAM 
+--region us-east-1
+```
+
+Remember to replace the `template-url` parameter with the object URL for the CloudFormation template that AWS created in the Cost and Usage S3 Bucket.  
+
+This template creates the following resources: 
+* 3 IAM Roles
+* An AWS Glue Database
+* An AWS Glue crawler
+* 2 Lambda functions
+* An Amazon S3 notification
+
+As needed, adjust the CloudFormation template depending on your organizational requirements such as required IAM controls, tags, and encryption settings.
+
+You should now see 2 databases loaded in Amazon Athena:
+* CloudQuery Data
+* AWS Cost and Usage Reports
+
+We can run the following query [to validate that Athena is ready](https://docs.aws.amazon.com/cur/latest/userguide/cur-ate-run.html) for queries on the Cost and Usage data, replacing`athenacurcfn_cloudquery_demo_reports` with your own database name.    A status of `READY` means we can query the Athena database.  If the status is `UPDATING`, Athena may return incomplete results.
+
+```sql copy
+SELECT * 
+FROM "athenacurcfn_cloudquery_demo_reports"."cost_and_usage_data_status"
+```
+
+### 4. Run Athena Queries on Infrastructure and Cost Data
+
+Now, let's try a few use cases and run example Athena queries on our Infrastructure and Cost Data.  
+
+We'll start by looking at our biggest expenses by AWS resource ID:
+
+```sql copy
+SELECT 
+  line_item_resource_id, 
+  line_item_product_code,
+  sum(line_item_blended_cost) AS cost, 
+  month
+FROM "athenacurcfn_cloudquery_demo_reports"."cloudquery_demo_reports"
+WHERE year='2023' and line_item_resource_id!=''
+GROUP BY line_item_resource_id, line_item_product_code, month
+HAVING sum(line_item_blended_cost) > 0
+ORDER BY cost DESC;
+```
+
+By including the `line_item_resource_id!=''` in our Athena query, we exclude cost of items that are not directly associated with resource IDs such as cost for AWS Support.  This query will return the most expensive resources ordered by cost for 2023.
+
+![Results from Athena Query showing resources correlated with most expensive cost per month](/images/how-to-guides/query-aws-cost-and-usage-athena/athena-cost-usage.png)
+
+Let's look at another use case.  One method to reduce costs is to use more cost-effective EBS volume types.  In December of 2020, [AWS introduced the availability](https://aws.amazon.com/about-aws/whats-new/2020/12/introducing-new-amazon-ebs-general-purpose-volumes-gp3/) of the gp3 new Amazon EBS general purpose volumes which can provide up to 20% cost savings over existing gp2 volumes.
+
+```sql copy
+SELECT 
+  costquery.line_item_resource_id, 
+  costquery.cost, 
+  vols.volume_type, 
+  vols.attachments, 
+  vols.arn, 
+  vols.tags, 
+  vols.state, 
+  vols.snapshot_id, 
+  vols.size, 
+  vols.create_time
+FROM (
+	SELECT 
+	  line_item_resource_id, line_item_product_code, 
+    SUM(line_item_blended_cost) AS cost, month
+	FROM "athenacurcfn_cloudquery_demo_reports"."cloudquery_demo_reports"
+	WHERE 
+    line_item_resource_id LIKE 'vol-%'
+	GROUP BY 
+    line_item_resource_id, line_item_product_code, 
+    month
+	HAVING SUM(line_item_blended_cost) > 0
+	ORDER BY cost DESC
+) as costquery 
+LEFT JOIN
+"cloudquery-athena-example-json"."aws_ec2_ebs_volumes" as vols
+ON costquery.line_item_resource_id = vols.volume_id
+WHERE vols.volume_type = 'gp2'
+```
+
+The above query will return all gp2 EBS volumes in 2023 and show the cost as well as useful characteristics we synced from AWS with CloudQuery including attachment information and the state of the EBS volume.  We can see the current and historical cost, evaluate the potential cost savings, and decide whether these are good candidates for migration from gp2 to gp3 while avoiding potential impact to applications based off the infrastructure details added to the cost and usage data.  
+
+![GP2 EBS Volumes in Athena with CloudQuery Data](/images/how-to-guides/query-aws-cost-and-usage-athena/athena-gp2.png)
+
+For more information on how to migrate from gp2 to gp3 volumes, see [the AWS blog post](https://aws.amazon.com/blogs/storage/migrate-your-amazon-ebs-volumes-from-gp2-to-gp3-and-save-up-to-20-on-costs/)
+
+## Summary
+
+We've now walked through how to load AWS's Cost and Usage Reports into Amazon Athena and enriched that data with infrastructure data synced by CloudQuery.  Additionally, we've run the following 2 example queries on our infrastructure and cloud cost data:
+* Listing our highest expenses by AWS resource ID.
+* Listing potential candidates for gp2 to more cost-effective gp3 EBS volume migration.
+
+We'd love to see what more you do with cost optimization and FinOps with CloudQuery and AWS Cost and Usage Reports.  If you have comments or questions about using CloudQuery for Cloud Cost Management and Optimization, we would love to hear from you! Reach out to us on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord)!
+
+## References
+
+[CloudQuery: AWS Source Plugin](/docs/plugins/sources/aws/overview)
+
+[AWS: Querying Cost and Usage Reports using Amazon Athena](https://docs.aws.amazon.com/cur/latest/userguide/cur-query-athena.html)
+
+[AWS: What are AWS Cost and Usage Reports](https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html)
+
+[AWS Blogs: Starting your Cloud Financial Management journey: Cost visibility](https://aws.amazon.com/blogs/aws-cloud-financial-management/op-starting-your-cloud-financial-management-journey-cost-visibility/)

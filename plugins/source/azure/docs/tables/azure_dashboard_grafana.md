@@ -1,5 +1,7 @@
 # Table: azure_dashboard_grafana
 
+https://learn.microsoft.com/en-us/rest/api/managed-grafana/grafana/list-by-resource-group?tabs=HTTP#managedgrafana
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,12 +13,12 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |identity|JSON|
 |location|String|
 |properties|JSON|
 |sku|JSON|
 |tags|JSON|
+|id (PK)|String|
 |name|String|
 |system_data|JSON|
 |type|String|

@@ -10,21 +10,14 @@ import (
 func FunctionAliases() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_lambda_function_aliases",
+		Description:         `https://docs.aws.amazon.com/lambda/latest/dg/API_AliasConfiguration.html`,
 		Resolver:            fetchLambdaFunctionAliases,
 		PreResourceResolver: getFunctionAliasURLConfig,
 		Transform:           transformers.TransformWithStruct(&models.AliasWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Multiplex:           client.ServiceAccountRegionMultiplexer("lambda"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "function_arn",
 				Type:     schema.TypeString,

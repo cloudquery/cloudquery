@@ -1,5 +1,7 @@
 # Table: azure_apimanagement_service
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement#ServiceResource
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,7 +13,6 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |properties|JSON|
 |sku|JSON|
@@ -19,6 +20,7 @@ The primary key for this table is **id**.
 |tags|JSON|
 |zones|StringArray|
 |etag|String|
+|id (PK)|String|
 |name|String|
 |system_data|JSON|
 |type|String|

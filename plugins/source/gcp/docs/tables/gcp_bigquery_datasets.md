@@ -18,7 +18,6 @@ The following tables depend on gcp_bigquery_datasets:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
-|id (PK)|String|
 |access|JSON|
 |creation_time|Int|
 |dataset_reference|JSON|
@@ -29,6 +28,7 @@ The following tables depend on gcp_bigquery_datasets:
 |description|String|
 |etag|String|
 |friendly_name|String|
+|id (PK)|String|
 |is_case_insensitive|Bool|
 |kind|String|
 |labels|JSON|

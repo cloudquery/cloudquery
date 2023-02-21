@@ -13,7 +13,7 @@ func ServiceAccountKeys() *schema.Table {
 		Description: `https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys#ServiceAccountKey`,
 		Resolver:    fetchServiceAccountKeys,
 		Multiplex:   client.ProjectMultiplexEnabledServices("iam.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.ServiceAccountKey{}, append(client.Options(), transformers.WithSkipFields("PrivateKeyData", "PrivateKeyType"))...),
+		Transform:   transformers.TransformWithStruct(&pb.ServiceAccountKey{}, append(client.Options(), transformers.WithSkipFields("PrivateKeyData", "PrivateKeyType"), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -27,14 +27,6 @@ func ServiceAccountKeys() *schema.Table {
 				Name:     "service_account_unique_id",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("unique_id"),
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 		},
 	}

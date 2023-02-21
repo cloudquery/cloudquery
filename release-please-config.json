@@ -3,11 +3,12 @@
   "release-type": "go",
   "packages": {
     "cli": { "component": "cli" },
+    "scaffold": { "component": "scaffold" },
+    "plugins/source/alicloud": { "component": "plugins-source-alicloud" },
     "plugins/source/aws": { "component": "plugins-source-aws" },
     "plugins/source/azure": { "component": "plugins-source-azure" },
     "plugins/source/azuredevops": { "component": "plugins-source-azuredevops" },
     "plugins/source/cloudflare": { "component": "plugins-source-cloudflare" },
-    "plugins/source/crowdstrike": { "component": "plugins-source-crowdstrike" },
     "plugins/source/datadog": { "component": "plugins-source-datadog" },
     "plugins/source/digitalocean": { "component": "plugins-source-digitalocean" },
     "plugins/source/fastly": { "component": "plugins-source-fastly" },
@@ -17,16 +18,24 @@
     "plugins/source/gitlab": { "component": "plugins-source-gitlab" },
     "plugins/source/hackernews": { "component": "plugins-source-hackernews" },
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
+    "plugins/source/hubspot": { "component": "plugins-source-hubspot" },
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
+    "plugins/source/launchdarkly": { "component": "plugins-source-launchdarkly" },
     "plugins/source/okta": { "component": "plugins-source-okta" },
+    "plugins/source/oracle": {"component": "plugins-source-oracle"},
     "plugins/source/salesforce": { "component": "plugins-source-salesforce" },
     "plugins/source/slack": { "component": "plugins-source-slack" },
     "plugins/source/snyk": { "component": "plugins-source-snyk" },
     "plugins/source/tailscale": { "component": "plugins-source-tailscale" },
     "plugins/source/vercel": { "component": "plugins-source-vercel" },
     "plugins/source/pagerduty": {"component": "plugins-source-pagerduty"},
+    "plugins/source/plausible": {"component": "plugins-source-plausible"},
     "plugins/source/test": { "component": "plugins-source-test" },
     "plugins/source/terraform": { "component": "plugins-source-terraform" },
+    "plugins/source/shopify": { "component": "plugins-source-shopify" },
+    "plugins/source/stripe": { "component": "plugins-source-stripe" },
+    "plugins/source/mixpanel": { "component": "plugins-source-mixpanel" },
+    "plugins/source/postgresql": { "component": "plugins-source-postgresql" },
     "plugins/destination/postgresql": {
       "component": "plugins-destination-postgresql"
     },
@@ -60,11 +69,22 @@
     "plugins/destination/kafka": {
       "component": "plugins-destination-kafka"
     },
+    "plugins/destination/mssql": {
+      "component": "plugins-destination-mssql"
+    },
+    "plugins/destination/clickhouse": {
+      "component": "plugins-destination-clickhouse"
+    },
     "plugins/destination/test": {
       "component": "plugins-destination-test"
+    },
+    "plugins/destination/elasticsearch": {
+      "component": "plugins-destination-elasticsearch"
     }
   },
   "tag-separator": "-",
   "separate-pull-requests": true,
-  "pull-request-title-pattern": "chore${scope}: Release${component} v${version}"
+  "pull-request-title-pattern": "chore${scope}: Release${component} v${version}",
+  "sequential-calls": true
 }
+

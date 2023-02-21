@@ -1,5 +1,7 @@
 # Table: azure_notificationhubs_namespaces
 
+https://learn.microsoft.com/en-us/rest/api/notificationhubs/namespaces/list?tabs=HTTP#namespaceresource
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,10 +13,10 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |properties|JSON|
 |sku|JSON|
 |tags|JSON|
+|id (PK)|String|
 |name|String|
 |type|String|

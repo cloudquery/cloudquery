@@ -9,31 +9,23 @@ import (
 
 func ThingGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iot_thing_groups",
-		Resolver:  fetchIotThingGroups,
-		Transform: transformers.TransformWithStruct(&iot.DescribeThingGroupOutput{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer("iot"),
+		Name:        "aws_iot_thing_groups",
+		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeThingGroup.html`,
+		Resolver:    fetchIotThingGroups,
+		Transform:   transformers.TransformWithStruct(&iot.DescribeThingGroupOutput{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "things_in_group",
 				Type:     schema.TypeStringArray,
 				Resolver: ResolveIotThingGroupThingsInGroup,
 			},
 			{
-				Name:          "policies",
-				Type:          schema.TypeStringArray,
-				Resolver:      ResolveIotThingGroupPolicies,
-				IgnoreInTests: true,
+				Name:     "policies",
+				Type:     schema.TypeStringArray,
+				Resolver: ResolveIotThingGroupPolicies,
 			},
 			{
 				Name:     "tags",

@@ -10,9 +10,6 @@ import (
 )
 
 const (
-	isTableExistSQL = "SELECT count(name) FROM sqlite_master WHERE type='table' AND name=?;"
-
-	// https://wiki.postgresql.org/wiki/Retrieve_primary_key_columns
 	sqlTableInfo = "PRAGMA table_info('%s');"
 )
 
@@ -22,87 +19,167 @@ type columnInfo struct {
 	typ          string
 	notNull      bool
 	defaultValue any
-	pk           bool
+	pk           int
 }
 
 type tableInfo struct {
 	columns []columnInfo
 }
 
-func (i *tableInfo) getColumn(name string) *columnInfo {
-	for _, col := range i.columns {
-		if col.name == name {
-			return &col
+func (c *Client) sqliteTables(tables schema.Tables) (schema.Tables, error) {
+	allTables := tables.FlattenTables()
+	var schemaTables schema.Tables
+	for _, table := range allTables {
+		info, err := c.getTableInfo(table.Name)
+		if info == nil {
+			continue
+		}
+		if err != nil {
+			return nil, err
+		}
+		schemaTable := schema.Table{
+			Name: table.Name,
+		}
+		for _, col := range info.columns {
+			schemaTable.Columns = append(schemaTable.Columns, schema.Column{
+				Name: col.name,
+				Type: c.sqliteTypeToSchema(col.typ),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: col.pk != 0,
+					NotNull:    col.notNull,
+				},
+			})
+		}
+		schemaTables = append(schemaTables, &schemaTable)
+	}
+
+	return schemaTables, nil
+}
+
+func (c *Client) normalizeColumnTypes(tables schema.Tables) schema.Tables {
+	allTables := tables.FlattenTables()
+	var normalized schema.Tables
+	for _, table := range allTables {
+		tableCopy := table.Copy(table.Parent)
+		for i := range tableCopy.Columns {
+			// Since multiple schema types can map to the same sqlite type we need to normalize them to avoid false positives when detecting schema changes
+			tableCopy.Columns[i].Type = c.sqliteTypeToSchema(c.SchemaTypeToSqlite(table.Columns[i].Type))
+		}
+		normalized = append(normalized, tableCopy)
+	}
+
+	return normalized
+}
+
+func (c *Client) nonAutoMigrableTables(tables schema.Tables, sqliteTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
+	var result []string
+	var tableChanges [][]schema.TableColumnChange
+	for _, t := range tables {
+		sqliteTable := sqliteTables.Get(t.Name)
+		if sqliteTable == nil {
+			continue
+		}
+		changes := t.GetChanges(sqliteTable)
+		if !c.canAutoMigrate(changes) {
+			result = append(result, t.Name)
+			tableChanges = append(tableChanges, changes)
+		}
+	}
+	return result, tableChanges
+}
+
+func (c *Client) autoMigrateTable(table *schema.Table, changes []schema.TableColumnChange) error {
+	for _, change := range changes {
+		if change.Type == schema.TableColumnChangeTypeAdd {
+			if err := c.addColumn(table.Name, change.Current.Name, c.SchemaTypeToSqlite(change.Current.Type)); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
+}
+
+func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
+	for _, change := range changes {
+		if change.Type == schema.TableColumnChangeTypeAdd && (change.Current.CreationOptions.PrimaryKey || change.Current.CreationOptions.NotNull) {
+			return false
+		}
+
+		if change.Type == schema.TableColumnChangeTypeRemove && (change.Previous.CreationOptions.PrimaryKey || change.Previous.CreationOptions.NotNull) {
+			return false
+		}
+
+		if change.Type == schema.TableColumnChangeTypeUpdate {
+			return false
+		}
+	}
+	return true
 }
 
 // This is the responsibility of the CLI of the client to lock before running migration
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	for _, table := range tables {
-		c.logger.Debug().Str("table", table.Name).Msg("Migrating table")
-		tableExist, err := c.isTableExistSQL(ctx, table.Name)
-		if err != nil {
-			return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
+	sqliteTables, err := c.sqliteTables(tables)
+	if err != nil {
+		return err
+	}
+
+	normalizedTables := c.normalizeColumnTypes(tables)
+
+	if c.spec.MigrateMode != specs.MigrateModeForced {
+		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(normalizedTables, sqliteTables)
+		if len(nonAutoMigrableTables) > 0 {
+			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigrableTables, ","), changes)
 		}
-		if tableExist {
-			c.logger.Debug().Str("table", table.Name).Msg("Table exists, auto-migrating")
-			if err := c.autoMigrateTable(ctx, table); err != nil {
+	}
+
+	for _, table := range normalizedTables {
+		c.logger.Info().Str("table", table.Name).Msg("Migrating table")
+		if len(table.Columns) == 0 {
+			c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
+			continue
+		}
+		sqlite := sqliteTables.Get(table.Name)
+		if sqlite == nil {
+			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
+			if err := c.createTableIfNotExist(table); err != nil {
 				return err
 			}
 		} else {
-			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(ctx, table); err != nil {
-				return err
+			changes := table.GetChanges(sqlite)
+			if c.canAutoMigrate(changes) {
+				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
+				if err := c.autoMigrateTable(table, changes); err != nil {
+					return err
+				}
+			} else {
+				c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
+				if err := c.recreateTable(table); err != nil {
+					return err
+				}
 			}
 		}
-		if err := c.Migrate(ctx, table.Relations); err != nil {
-			return err
-		}
+	}
+
+	return nil
+}
+
+func (c *Client) recreateTable(table *schema.Table) error {
+	sql := "drop table if exists \"" + table.Name + "\""
+	if _, err := c.db.Exec(sql); err != nil {
+		return fmt.Errorf("failed to drop table %s: %w", table.Name, err)
+	}
+	return c.createTableIfNotExist(table)
+}
+
+func (c *Client) addColumn(tableName string, columnName string, columnType string) error {
+	sql := "alter table \"" + tableName + "\" add column \"" + columnName + "\" \"" + columnType + `"`
+	if _, err := c.db.Exec(sql); err != nil {
+		return fmt.Errorf("failed to add column %s on table %s: %w", columnName, tableName, err)
 	}
 	return nil
 }
 
-func (c *Client) isTableExistSQL(_ context.Context, table string) (bool, error) {
-	var tableExist int
-	if err := c.db.QueryRow(isTableExistSQL, table).Scan(&tableExist); err != nil {
-		return false, fmt.Errorf("failed to check if table %s exists: %w", table, err)
-	}
-	return tableExist == 1, nil
-}
-
-func (c *Client) autoMigrateTable(_ context.Context, table *schema.Table) error {
-	var err error
-	var info *tableInfo
-
-	if info, err = c.getTableInfo(table.Name); err != nil {
-		return fmt.Errorf("failed to get table %s columns types: %w", table.Name, err)
-	}
-
-	for _, col := range table.Columns {
-		columnName := col.Name
-		columnType := c.SchemaTypeToSqlite(col.Type)
-		sqliteColumn := info.getColumn(columnName)
-
-		switch {
-		case sqliteColumn == nil:
-			c.logger.Debug().Str("table", table.Name).Str("column", col.Name).Msg("Column doesn't exist, creating")
-			sql := "alter table \"" + table.Name + "\" add column \"" + columnName + "\" \"" + columnType + `"`
-			if col.CreationOptions.PrimaryKey {
-				return fmt.Errorf("failed to auto-migrate table %s: primary key changes are not supported. please drop and re-run", table.Name)
-			}
-			if _, err := c.db.Exec(sql); err != nil {
-				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
-			}
-		case sqliteColumn.typ != columnType:
-			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. trying dropping table and re-running", col.Name, table.Name, columnType, sqliteColumn.typ)
-		}
-	}
-	return nil
-}
-
-func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) error {
+func (c *Client) createTableIfNotExist(table *schema.Table) error {
 	var sb strings.Builder
 	// TODO sanitize tablename
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
@@ -119,9 +196,8 @@ func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) e
 		}
 		// TODO: sanitize column name
 		fieldDef := `"` + col.Name + `" ` + sqlType
-		if col.Name == "_cq_id" {
-			// _cq_id column should always have a "unique not null" constraint
-			fieldDef += " UNIQUE NOT NULL"
+		if col.CreationOptions.NotNull {
+			fieldDef += " NOT NULL"
 		}
 		sb.WriteString(fieldDef)
 		if i != totalColumns-1 {
@@ -139,11 +215,6 @@ func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) e
 		sb.WriteString("_cqpk PRIMARY KEY (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
-	} else {
-		// if no primary keys are defined, add a PK constraint for _cq_id
-		sb.WriteString(", CONSTRAINT ")
-		sb.WriteString(table.Name)
-		sb.WriteString("_cqpk PRIMARY KEY (_cq_id)")
 	}
 	sb.WriteString(")")
 	_, err := c.db.Exec(sb.String())
@@ -176,6 +247,11 @@ func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
+	}
+
+	if len(info.columns) == 0 {
+		// Table doesn't exist
+		return nil, nil
 	}
 	return &info, nil
 }

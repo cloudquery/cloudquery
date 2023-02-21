@@ -6,8 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/filetypes/csv"
-	"github.com/cloudquery/filetypes/json"
+	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 
@@ -26,10 +25,7 @@ type Client struct {
 	pluginSpec Spec
 	metrics    destination.Metrics
 
-	csvTransformer         *csv.Transformer
-	csvReverseTransformer  *csv.ReverseTransformer
-	jsonTransformer        *json.Transformer
-	jsonReverseTransformer *json.ReverseTransformer
+	*filetypes.Client
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -37,11 +33,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("destination only supports append mode")
 	}
 	c := &Client{
-		logger:                 logger.With().Str("module", "dest-kafka").Logger(),
-		csvTransformer:         &csv.Transformer{},
-		jsonTransformer:        &json.Transformer{},
-		csvReverseTransformer:  &csv.ReverseTransformer{},
-		jsonReverseTransformer: &json.ReverseTransformer{},
+		logger: logger.With().Str("module", "dest-kafka").Logger(),
 	}
 
 	c.spec = spec
@@ -83,6 +75,12 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	if err != nil {
 		return nil, err
 	}
+
+	filetypesClient, err := filetypes.NewClient(c.pluginSpec.FileSpec)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
+	}
+	c.Client = filetypesClient
 
 	return c, nil
 }

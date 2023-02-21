@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/url"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -15,16 +14,13 @@ import (
 func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListRolesInput
 	svc := meta.(*client.Client).Services().Iam
-	for {
-		response, err := svc.ListRoles(ctx, &config)
+	paginator := iam.NewListRolesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		response, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 		res <- response.Roles
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
 	}
 	return nil
 }
@@ -50,8 +46,9 @@ func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resourc
 		RoleName: r.RoleName,
 	}
 	policies := map[string]*string{}
-	for {
-		response, err := svc.ListAttachedRolePolicies(ctx, &input)
+	paginator := iam.NewListAttachedRolePoliciesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		response, err := paginator.NextPage(ctx)
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil
@@ -61,10 +58,6 @@ func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resourc
 		for _, p := range response.AttachedPolicies {
 			policies[*p.PolicyArn] = p.PolicyName
 		}
-		if response.Marker == nil {
-			break
-		}
-		input.Marker = response.Marker
 	}
 	return resource.Set("policies", policies)
 }
@@ -90,11 +83,11 @@ func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	svc := c.Services().Iam
 	role := parent.Item.(*types.Role)
-	config := iam.ListRolePoliciesInput{
+	paginator := iam.NewListRolePoliciesPaginator(svc, &iam.ListRolePoliciesInput{
 		RoleName: role.RoleName,
-	}
-	for {
-		output, err := svc.ListRolePolicies(ctx, &config)
+	})
+	for paginator.HasMorePages() {
+		output, err := paginator.NextPage(ctx)
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil
@@ -102,11 +95,6 @@ func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 			return err
 		}
 		res <- output.PolicyNames
-
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		config.Marker = output.Marker
 	}
 	return nil
 }

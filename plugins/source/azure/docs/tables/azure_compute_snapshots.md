@@ -1,5 +1,7 @@
 # Table: azure_compute_snapshots
 
+https://learn.microsoft.com/en-us/rest/api/compute/snapshots/list?tabs=HTTP#snapshot
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,12 +13,12 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |extended_location|JSON|
 |properties|JSON|
 |sku|JSON|
 |tags|JSON|
+|id (PK)|String|
 |managed_by|String|
 |name|String|
 |type|String|

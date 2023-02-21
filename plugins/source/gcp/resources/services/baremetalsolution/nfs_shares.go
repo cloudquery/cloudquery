@@ -19,20 +19,12 @@ func NfsShares() *schema.Table {
 		Description: `https://cloud.google.com/bare-metal/docs/reference/rest/v2/projects.locations.nfsShares#NfsShare`,
 		Resolver:    fetchNfsShares,
 		Multiplex:   client.ProjectMultiplexEnabledServices("baremetalsolution.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.NfsShare{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.NfsShare{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

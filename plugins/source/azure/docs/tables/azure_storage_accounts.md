@@ -1,13 +1,15 @@
 # Table: azure_storage_accounts
 
+https://learn.microsoft.com/en-us/rest/api/storagerp/storage-accounts/list?tabs=HTTP#storageaccount
+
 The primary key for this table is **id**.
 
 ## Relations
 
 The following tables depend on azure_storage_accounts:
-  - [azure_storage_tables](azure_storage_tables.md)
-  - [azure_storage_containers](azure_storage_containers.md)
   - [azure_storage_blob_services](azure_storage_blob_services.md)
+  - [azure_storage_containers](azure_storage_containers.md)
+  - [azure_storage_tables](azure_storage_tables.md)
 
 ## Columns
 
@@ -17,12 +19,13 @@ The following tables depend on azure_storage_accounts:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|id (PK)|String|
+|subscription_id|String|
 |location|String|
 |extended_location|JSON|
 |identity|JSON|
 |properties|JSON|
 |tags|JSON|
+|id (PK)|String|
 |kind|String|
 |name|String|
 |sku|JSON|

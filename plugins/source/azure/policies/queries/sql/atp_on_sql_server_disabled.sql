@@ -7,11 +7,11 @@ SELECT
   s.subscription_id,
   s.id AS server_id,
   case
-    when p.state != 'Enabled'
+    when p.properties->>'state' is distinct from 'Enabled'
     then 'fail' else 'pass'
   end
 FROM azure_sql_servers s
-    LEFT JOIN azure_sql_databases d ON
-        s.id = d.sql_server_id
-    LEFT JOIN azure_sql_database_threat_detection_policies p ON
-        d.id = p.sql_database_id
+    LEFT JOIN azure_sql_server_databases d ON
+        s._cq_id = d._cq_parent_id
+    LEFT JOIN azure_sql_server_database_threat_protections p ON
+        d._cq_id = p._cq_parent_id

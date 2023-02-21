@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -12,20 +11,14 @@ import (
 )
 
 func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Secretsmanager
-	cfg := secretsmanager.ListSecretsInput{}
-	for {
-		response, err := svc.ListSecrets(ctx, &cfg)
+	svc := meta.(*client.Client).Services().Secretsmanager
+	paginator := secretsmanager.NewListSecretsPaginator(svc, &secretsmanager.ListSecretsInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.SecretList
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		cfg.NextToken = response.NextToken
+		res <- page.SecretList
 	}
 	return nil
 }

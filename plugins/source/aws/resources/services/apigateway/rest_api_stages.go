@@ -15,16 +15,8 @@ func RestApiStages() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Stage{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "rest_api_arn",
 				Type:     schema.TypeString,
@@ -34,6 +26,9 @@ func RestApiStages() *schema.Table {
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: resolveApigatewayRestAPIStageArn,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 		},
 	}

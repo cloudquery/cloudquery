@@ -13,32 +13,11 @@ func EngineVersions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html`,
 		Resolver:    fetchDocdbEngineVersions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
-		Transform:   transformers.TransformWithStruct(&types.DBEngineVersion{}),
+		Transform: transformers.TransformWithStruct(&types.DBEngineVersion{},
+			transformers.WithPrimaryKeys("Engine", "EngineVersion")),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "engine",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Engine"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "engine_version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EngineVersion"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 		},
 
 		Relations: []*schema.Table{

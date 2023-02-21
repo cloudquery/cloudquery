@@ -1,5 +1,7 @@
 # Table: azure_authorization_provider_operations_metadata
 
+https://learn.microsoft.com/en-us/rest/api/authorization/provider-operations-metadata/list?tabs=HTTP#provideroperationsmetadata
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -10,9 +12,8 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
-|id (PK)|String|
 |display_name|String|
+|id (PK)|String|
 |name|String|
 |operations|JSON|
 |resource_types|JSON|

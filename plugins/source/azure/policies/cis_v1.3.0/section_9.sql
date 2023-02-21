@@ -6,7 +6,7 @@
 \ir ../queries/web/app_allow_http.sql
 \set check_id '9.3'
 \echo "Executing check 9.3"
-\ir ../queries/web/app_allow_http.sql
+\ir ../queries/web/app_using_old_tls.sql
 \set check_id '9.4'
 \echo "Executing check 9.4"
 \ir ../queries/web/app_client_cert_disabled.sql
@@ -25,9 +25,10 @@
 \set check_id '9.9'
 \echo "Executing check 9.9"
 \echo "Check must be done manually"
-\set check_id '9.10'
-\echo "Executing check 9.10"
-\ir ../queries/web/app_ftp_deployment_enabled.sql
+-- todo add a publishing profiles currently they are returned as XML document
+-- \set check_id '9.10'
+-- \echo "Executing check 9.10"
+-- \ir ../queries/web/app_ftp_deployment_enabled.sql
 \set check_id '9.11'
 \echo "Executing check 9.11"
 \echo "Check must be done manually"

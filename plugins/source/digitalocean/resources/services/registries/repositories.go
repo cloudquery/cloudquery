@@ -6,7 +6,7 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func Repositories() *schema.Table {
+func repositories() *schema.Table {
 	return &schema.Table{
 		Name:      "digitalocean_registry_repositories",
 		Resolver:  fetchRegistriesRepositories,

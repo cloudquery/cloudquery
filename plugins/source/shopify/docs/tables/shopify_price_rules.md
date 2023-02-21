@@ -1,7 +1,7 @@
 # Table: shopify_price_rules
 
 The primary key for this table is **id**.
-
+It supports incremental syncs based on the **updated_at** column.
 ## Relations
 
 The following tables depend on shopify_price_rules:
@@ -16,6 +16,7 @@ The following tables depend on shopify_price_rules:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |id (PK)|Int|
+|updated_at (Incremental Key)|Timestamp|
 |value_type|String|
 |value|String|
 |customer_selection|String|
@@ -27,7 +28,6 @@ The following tables depend on shopify_price_rules:
 |starts_at|Timestamp|
 |ends_at|Timestamp|
 |created_at|Timestamp|
-|updated_at|Timestamp|
 |entitled_product_ids|JSON|
 |entitled_variant_ids|JSON|
 |entitled_collection_ids|JSON|

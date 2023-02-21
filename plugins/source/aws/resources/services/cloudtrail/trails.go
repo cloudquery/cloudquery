@@ -15,16 +15,8 @@ func Trails() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudtrail"),
 		Transform:   transformers.TransformWithStruct(&models.CloudTrailWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:     "cloudwatch_logs_log_group_name",
 				Type:     schema.TypeString,

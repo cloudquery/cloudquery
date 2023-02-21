@@ -57,7 +57,7 @@ func (c *Client) withServiceAndRegion(service *fastly.Service, region string) sc
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var config Spec
 	err := sourceSpec.UnmarshalSpec(&config)
 	if err != nil {

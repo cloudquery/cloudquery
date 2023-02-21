@@ -9,10 +9,11 @@ import (
 
 func Projects() *schema.Table {
 	return &schema.Table{
-		Name:      "vercel_projects",
-		Resolver:  fetchProjects,
-		Transform: transformers.TransformWithStruct(&vercel.Project{}, client.SharedTransformers()...),
-		Multiplex: client.TeamMultiplex,
+		Name:          "vercel_projects",
+		Resolver:      fetchProjects,
+		Transform:     transformers.TransformWithStruct(&vercel.Project{}, client.SharedTransformers()...),
+		Multiplex:     client.TeamMultiplex,
+		IsIncremental: true,
 		Columns: []schema.Column{
 			{
 				Name:     "id",

@@ -9,10 +9,11 @@ import (
 
 func DomainRecords() *schema.Table {
 	return &schema.Table{
-		Name:      "vercel_domain_records",
-		Resolver:  fetchDomainRecords,
-		Transform: transformers.TransformWithStruct(&vercel.DomainRecord{}, client.SharedTransformers()...),
-		Multiplex: client.TeamMultiplex,
+		Name:          "vercel_domain_records",
+		Resolver:      fetchDomainRecords,
+		Transform:     transformers.TransformWithStruct(&vercel.DomainRecord{}, client.SharedTransformers()...),
+		Multiplex:     client.TeamMultiplex,
+		IsIncremental: true,
 		Columns: []schema.Column{
 			{
 				Name:     "domain_name",

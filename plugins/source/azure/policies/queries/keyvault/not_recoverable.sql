@@ -6,8 +6,8 @@ SELECT :'execution_time'                                 AS execution_time,
        subscription_id                                   AS subscription_id,
        id                                                AS resource_id,
        CASE
-           WHEN properties_enable_soft_delete IS NOT TRUE OR properties_enable_purge_protection IS NOT TRUE
+           WHEN (properties ->> 'enableSoftDelete')::boolean IS NOT TRUE OR (properties ->> 'enablePurgeProtection')::boolean IS NOT TRUE
                THEN 'fail'
            ELSE 'pass'
            END                                           AS status
-FROM azure_keyvault_vaults;
+FROM azure_keyvault_keyvault;

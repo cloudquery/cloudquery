@@ -1,0 +1,28 @@
+name: Release All PRs
+on:
+  workflow_dispatch:
+jobs:
+  add-automerge-labels:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Add token to config.yaml
+        uses: jacobtomlinson/gha-find-replace@f5f4ad7fb6c20101b4949438598d110322e5ee59
+        with:
+          find: GITHUB_TOKEN_VALUE
+          replace: ${{ secrets.GITHUB_TOKEN }}
+          regex: false
+          include: config.yaml
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+
+      - run: npm install -g @google/repo@6.1.2
+
+      - name: Add to release PRs
+        run: |
+          repo "tag" "--title" "chore\(main\)\: Release" "automerge"

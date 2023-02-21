@@ -23,7 +23,7 @@ func Droplets() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			Neighbors(),
+			neighbors(),
 		},
 	}
 }

@@ -10,20 +10,28 @@ import (
 func RolePolicies() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_iam_role_policies",
+		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetRolePolicy.html`,
 		Resolver:            fetchIamRolePolicies,
 		PreResourceResolver: getRolePolicy,
 		Transform:           transformers.TransformWithStruct(&iam.GetRolePolicyOutput{}),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "role_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "policy_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PolicyName"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "policy_document",

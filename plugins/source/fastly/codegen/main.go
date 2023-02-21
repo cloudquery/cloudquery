@@ -19,6 +19,7 @@ func main() {
 		[]any{&fastly.Client{}},
 		path.Join(path.Dir(filename), "../client/services"),
 		interfaces.WithIncludeFunc(include),
+		interfaces.WithExtraImports(extraImports),
 	)
 	if err != nil {
 		panic(err)
@@ -27,4 +28,8 @@ func main() {
 
 func include(m reflect.Method) bool {
 	return interfaces.MethodHasAnyPrefix(m, []string{"Get", "List", "NewGet", "NewList"})
+}
+
+func extraImports(m reflect.Method) []string {
+	return []string{"net/http"}
 }

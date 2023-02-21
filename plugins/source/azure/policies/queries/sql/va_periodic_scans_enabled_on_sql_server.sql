@@ -7,9 +7,9 @@ SELECT
   s.subscription_id,
   s.id,
   case
-    when (a.recurring_scans->>'isEnabled')::boolean IS DISTINCT FROM TRUE
+    when (a.properties->'recurringScans'->>'isEnabled')::boolean IS DISTINCT FROM TRUE
       then 'fail' else 'pass'
   end
 FROM azure_sql_servers s
     LEFT JOIN azure_sql_server_vulnerability_assessments a ON
-        s.id = a.sql_server_id
+        s._cq_id = a._cq_parent_id

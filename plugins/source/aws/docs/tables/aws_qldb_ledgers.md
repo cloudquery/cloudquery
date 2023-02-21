@@ -1,5 +1,7 @@
 # Table: aws_qldb_ledgers
 
+https://docs.aws.amazon.com/qldb/latest/developerguide/API_DescribeLedger.html
+
 The primary key for this table is **arn**.
 
 ## Relations

@@ -15,16 +15,8 @@ func RestApiRequestValidators() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.RequestValidator{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "rest_api_arn",
 				Type:     schema.TypeString,
@@ -34,6 +26,9 @@ func RestApiRequestValidators() *schema.Table {
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: resolveApigatewayRestAPIRequestValidatorArn,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 		},
 	}

@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function Tabs({ options, children }: Props) {
-  const items = options.map((value) => ({ label: value }));
+  const items = options.map((value) => ({ label: value })) as any;
   return (
     <NextraTabs items={items}>
       <div className="mb-4" />

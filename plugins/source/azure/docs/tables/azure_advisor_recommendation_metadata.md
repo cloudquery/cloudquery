@@ -1,5 +1,7 @@
 # Table: azure_advisor_recommendation_metadata
 
+https://learn.microsoft.com/en-us/rest/api/advisor/recommendation-metadata/list?tabs=HTTP#metadataentity
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -10,7 +12,6 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
 |id (PK)|String|
 |name|String|
 |properties|JSON|

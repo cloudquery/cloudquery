@@ -1,5 +1,7 @@
 # Table: azure_network_virtual_wans
 
+https://learn.microsoft.com/en-us/rest/api/virtualwan/virtual-wans/list?tabs=HTTP#virtualwan
+
 The primary key for this table is **id**.
 
 ## Columns

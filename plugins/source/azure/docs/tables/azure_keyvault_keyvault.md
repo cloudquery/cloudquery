@@ -1,5 +1,7 @@
 # Table: azure_keyvault_keyvault
 
+https://learn.microsoft.com/en-us/rest/api/keyvault/keyvault/vaults/get?tabs=HTTP#vault
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -17,8 +19,10 @@ The following tables depend on azure_keyvault_keyvault:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
+|properties|JSON|
 |location|String|
-|name|String|
 |tags|JSON|
+|id (PK)|String|
+|name|String|
+|system_data|JSON|
 |type|String|

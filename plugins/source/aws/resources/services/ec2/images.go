@@ -15,16 +15,8 @@ func Images() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Transform:   transformers.TransformWithStruct(&types.Image{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

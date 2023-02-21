@@ -51,7 +51,7 @@ jobs:
           cache: true
           cache-dependency-path: plugins/source/azure/go.sum
       - name: golangci-lint
-        uses: cloudquery/golangci-lint-action@master
+        uses: golangci/golangci-lint-action@v3
         with:
           version: v1.50.1
           working-directory: plugins/source/azure
@@ -60,16 +60,16 @@ jobs:
           skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
-      - name: Build
-        run: go build .
-      - name: Test
-        run: make test
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
       - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
         run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
+      - name: Build
+        run: go build .
+      - name: Test
+        run: make test
   validate-release:
     timeout-minutes: 30
     needs: [resolve-runner]
@@ -86,9 +86,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/source/azure/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/azure/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.4-release-cache-plugins-source-azure
+            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-azure
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
@@ -103,6 +103,52 @@ jobs:
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/source/azure/.goreleaser.yaml
+        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/azure/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+  test-policies:
+    timeout-minutes: 30
+    needs: [ resolve-runner ]
+    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    defaults:
+      run:
+        working-directory: ./plugins/source/aws
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_PASSWORD: pass
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/aws/go.mod
+          cache: true
+          cache-dependency-path: plugins/source/aws/go.sum
+      - name: Build
+        run: go build .
+      - name: Setup CloudQuery
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: 'v2.0.22'
+      - name: Migrate DB
+        run: cloudquery migrate test/policy_cq_config.yml
+        env:
+          CQ_DSN: postgresql://postgres:pass@localhost:5432/postgres
+      - name: Run all policies
+        run: cd policies && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
+        env:
+          PGPASSWORD: pass
+

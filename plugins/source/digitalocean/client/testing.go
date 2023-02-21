@@ -27,7 +27,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(t *tes
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		var doSpec Spec
 		if err := spec.UnmarshalSpec(&doSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal do spec: %w", err)

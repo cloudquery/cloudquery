@@ -15,16 +15,8 @@ func ClusterParameterGroupParameters() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("neptune"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "cluster_parameter_group_arn",
 				Type:     schema.TypeString,

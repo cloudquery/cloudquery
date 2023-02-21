@@ -1,5 +1,7 @@
 # Table: azure_containerregistry_registries
 
+https://learn.microsoft.com/en-us/rest/api/containerregistry/registries/list?tabs=HTTP#registry
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,12 +13,12 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |sku|JSON|
 |identity|JSON|
 |properties|JSON|
 |tags|JSON|
+|id (PK)|String|
 |name|String|
 |system_data|JSON|
 |type|String|

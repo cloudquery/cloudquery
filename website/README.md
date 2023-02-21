@@ -12,16 +12,16 @@ nvm use
 
 (and potentially `nvm install`) to set the correct version of `npm`.
 
-Next, install dependencies via `yarn`:
+Next, install dependencies via `npm`:
 
 ```shell
-yarn install
+npm ci
 ```
 
 And now run the server in development mode:
 
 ```shell
-yarn dev
+npm run dev
 ```
 
 This should start a server running on `localhost:3000`.

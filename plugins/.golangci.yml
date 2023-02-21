@@ -21,6 +21,10 @@ linters-settings:
     # tokens count to trigger issue, 150 by default
     threshold: 500
 
+  misspell:
+    ignore-words:
+      - hdinsight
+
   revive:
     enable-all-rules: true
     rules:

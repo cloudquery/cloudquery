@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 )
 
@@ -21,18 +22,25 @@ func getenv(key, fallback string) string {
 }
 
 func TestPgPlugin(t *testing.T) {
-	p := destination.NewPlugin("kafka", "development", New)
-	destination.PluginTestSuiteRunner(t, p,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("kafka", "development", New)
+		},
 		Spec{
 			Brokers:            strings.Split(getenv("CQ_DEST_KAFKA_CONNECTION_STRING", defaultConnectionString), ","),
 			SaslUsername:       getenv("CQ_DEST_KAFKA_SASL_USERNAME", ""),
 			SaslPassword:       getenv("CQ_DEST_KAFKA_SASL_PASSWORD", ""),
-			Format:             FormatTypeJSON,
 			Verbose:            true,
 			MaxMetadataRetries: 15,
+			FileSpec: &filetypes.FileSpec{
+				Format: filetypes.FormatTypeJSON,
+			},
 		},
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:     true,
-			SkipMigrateAppend: true,
+			SkipOverwrite:             true,
+			SkipMigrateAppend:         true,
+			SkipMigrateOverwrite:      true,
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		})
 }

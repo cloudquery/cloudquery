@@ -8,6 +8,9 @@ The composite primary key for this table is (**project_id**, **name**).
 
 This table depends on [gcp_kms_keyrings](gcp_kms_keyrings.md).
 
+The following tables depend on gcp_kms_crypto_keys:
+  - [gcp_kms_crypto_key_versions](gcp_kms_crypto_key_versions.md)
+
 ## Columns
 
 | Name          | Type          |
@@ -17,8 +20,8 @@ This table depends on [gcp_kms_keyrings](gcp_kms_keyrings.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
-|name (PK)|String|
 |rotation_period|Int|
+|name (PK)|String|
 |primary|JSON|
 |purpose|String|
 |create_time|Timestamp|

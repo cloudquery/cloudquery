@@ -27,7 +27,7 @@ jobs:
           echo "plugins_dir=plugins/${plugin_type}/${plugin_name}" >> $GITHUB_OUTPUT
       # Fail if not a valid SemVer string
       - name: Parse semver string
-        uses: booxmedialtd/ws-action-parse-semver@e81ad80123156d7ddd4f6c8383e63f497f857deb
+        uses: booxmedialtd/ws-action-parse-semver@7784200024d6b3fc01253e617ec0168daf603de3
         id: semver_parser
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
@@ -40,9 +40,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles(format('{0}/{1}', steps.split.outputs.plugins_dir, 'go.sum')) }}
+          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles(format('{0}/{1}', steps.split.outputs.plugins_dir, 'go.sum')) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.4-release-cache-plugins-${{ steps.split.outputs.plugin_type }}-${{ steps.split.outputs.plugin_name }}
+            ${{ runner.os }}-go-1.19.5-release-cache-plugins-${{ steps.split.outputs.plugin_type }}-${{ steps.split.outputs.plugin_name }}
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
@@ -54,7 +54,7 @@ jobs:
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        run: goreleaser release --timeout 50m --rm-dist --skip-validate --skip-publish --skip-sign -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
+        run: goreleaser release --timeout 50m --clean --skip-validate --skip-publish --skip-sign -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
@@ -64,7 +64,7 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Run GoReleaser
-        run: goreleaser release --timeout 50m --rm-dist -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
+        run: goreleaser release --timeout 50m --clean -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}

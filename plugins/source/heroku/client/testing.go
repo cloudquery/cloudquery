@@ -26,7 +26,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*he
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	newTestExecutionClient := func(ctx context.Context, _ zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, _ zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		svc, err := createService()
 		if err != nil {
 			return nil, fmt.Errorf("failed to createService %w", err)

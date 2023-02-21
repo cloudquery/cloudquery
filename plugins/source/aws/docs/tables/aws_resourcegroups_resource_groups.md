@@ -1,5 +1,7 @@
 # Table: aws_resourcegroups_resource_groups
 
+https://docs.aws.amazon.com/ARG/latest/APIReference/API_GetGroupQuery.html
+
 The primary key for this table is **arn**.
 
 ## Columns

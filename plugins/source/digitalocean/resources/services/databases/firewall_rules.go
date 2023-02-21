@@ -6,7 +6,7 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func FirewallRules() *schema.Table {
+func firewallRules() *schema.Table {
 	return &schema.Table{
 		Name:      "digitalocean_database_firewall_rules",
 		Resolver:  fetchDatabasesFirewallRules,

@@ -15,22 +15,8 @@ func DirectoryConfigs() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
 		Transform:   transformers.TransformWithStruct(&types.DirectoryConfig{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:     "directory_name",
 				Type:     schema.TypeString,

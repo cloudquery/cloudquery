@@ -1,5 +1,7 @@
 # Table: azure_appservice_resource_health_metadata
 
+https://learn.microsoft.com/en-us/rest/api/appservice/resource-health-metadata/list?tabs=HTTP#resourcehealthmetadata
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,8 +13,8 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |kind|String|
 |properties|JSON|
+|id (PK)|String|
 |name|String|
 |type|String|

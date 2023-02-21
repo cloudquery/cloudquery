@@ -1,5 +1,7 @@
 # Table: azure_network_custom_ip_prefixes
 
+https://learn.microsoft.com/en-us/rest/api/virtualnetwork/custom-ip-prefixes/list?tabs=HTTP#customipprefix
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,8 +13,8 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |extended_location|JSON|
+|id (PK)|String|
 |location|String|
 |properties|JSON|
 |tags|JSON|

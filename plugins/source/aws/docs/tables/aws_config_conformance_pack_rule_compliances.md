@@ -1,5 +1,7 @@
 # Table: aws_config_conformance_pack_rule_compliances
 
+https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConformancePackCompliance.html
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

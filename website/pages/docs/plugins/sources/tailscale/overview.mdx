@@ -1,0 +1,62 @@
+---
+name: Tailscale
+---
+# Tailscale Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", `tailscale`)}/>
+
+The CloudQuery Tailscale plugin pulls configuration out of Tailscale resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+
+## Authentication
+
+In order to fetch information from Tailscale, `cloudquery` needs to be authenticated.
+The suggested way is to use an [OAuth client](https://tailscale.com/kb/1215/oauth-clients/). The previous way of
+using an [API key](https://login.tailscale.com/admin/settings/keys) is also supported.
+
+
+## Spec
+
+This is the (nested) spec used by the Tailscale source plugin.
+
+- `client_id` (string, required):
+  Client ID of the [OAuth Client](https://tailscale.com/kb/1215/oauth-clients/).
+
+- `client_secret` (string, required):
+  Client secret of the [OAuth Client](https://tailscale.com/kb/1215/oauth-clients/) (Make sure to use environment variable
+  expansion and not hard code the keys in the config YAML).
+
+- `tailnet`  (string, required):
+  This is your Tailscale tailnet name (also known as organization name).
+
+- `api_key` (string, optional):
+  This way of authentication is not recommended. An API key to access Tailscale resources.
+  This can be obtained from [Tailscale Keys Settings Page](https://login.tailscale.com/admin/settings/keys).
+
+- `endpoint_url` (string, optional. Default: not used):
+  Endpoint URL to make the API requests to.
+
+## Example
+
+This example syncs from Tailscale to a Postgres destination, using OAuth authentication.
+The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
+
+```yaml copy
+kind: source
+# Common source-plugin configuration
+spec:
+  name:    tailscale
+  path:    cloudquery/tailscale
+  version: "VERSION_SOURCE_TAILSCALE"
+  tables: [ "*" ]
+  destinations: [ "postgresql" ]
+
+  # plugin specific configuration
+  spec:
+    client_id:    "<YOUR_CLIENT_ID_HERE>"
+    client_secret: ${CLIENT_SECRET_ENV_VARIABLE}
+    tailnet:      "<YOUR_TAILNET>"
+    endpoint_url: "<YOUR_BASE_URL>"
+```

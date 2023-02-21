@@ -9,21 +9,14 @@ import (
 
 func ConfigurationRecorders() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_config_configuration_recorders",
-		Resolver:  fetchConfigConfigurationRecorders,
-		Multiplex: client.ServiceAccountRegionMultiplexer("config"),
-		Transform: transformers.TransformWithStruct(&models.ConfigurationRecorderWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Name:        "aws_config_configuration_recorders",
+		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_ConfigurationRecorder.html`,
+		Resolver:    fetchConfigConfigurationRecorders,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("config"),
+		Transform:   transformers.TransformWithStruct(&models.ConfigurationRecorderWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

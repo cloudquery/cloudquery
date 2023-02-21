@@ -1,0 +1,14 @@
+variables:
+  component: source/hubspot
+  binary: hubspot
+
+project_name: plugins/source/hubspot
+
+monorepo:
+  tag_prefix: plugins-source-hubspot-
+  dir: plugins/source/hubspot
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

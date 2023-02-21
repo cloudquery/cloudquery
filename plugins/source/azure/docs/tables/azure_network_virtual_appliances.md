@@ -1,5 +1,7 @@
 # Table: azure_network_virtual_appliances
 
+https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-virtual-appliances/list?tabs=HTTP#networkvirtualappliance
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -92,8 +92,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().GetFunctionCodeSigningConfig(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&csco, nil)
+	m.EXPECT().GetFunctionCodeSigningConfig(gomock.Any(), gomock.Any(), gomock.Any()).Return(&csco, nil)
 
 	csc := types.CodeSigningConfig{}
 	err = faker.FakeObject(&csc)
@@ -121,6 +120,13 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	urlConfig.LastModifiedTime = aws.String("2012-07-14T01:00:00+01:00")
 	m.EXPECT().GetFunctionUrlConfig(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&urlConfig, nil)
+
+	runtimeManagementConfig := lambda.GetRuntimeManagementConfigOutput{}
+	err = faker.FakeObject(&runtimeManagementConfig)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().GetRuntimeManagementConfig(gomock.Any(), gomock.Any(), gomock.Any()).Return(&runtimeManagementConfig, nil)
 
 	return client.Services{
 		Lambda: m,

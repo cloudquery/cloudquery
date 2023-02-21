@@ -12,13 +12,9 @@ func HealthChecks() *schema.Table {
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_HealthCheck.html`,
 		Resolver:    fetchRoute53HealthChecks,
 		Transform:   transformers.TransformWithStruct(&Route53HealthCheckWrapper{}, transformers.WithUnwrapStructFields("HealthCheck")),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("route53"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

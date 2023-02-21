@@ -54,7 +54,7 @@ jobs:
           cache: true
           cache-dependency-path: plugins/source/aws/go.sum
       - name: golangci-lint
-        uses: cloudquery/golangci-lint-action@master
+        uses: golangci/golangci-lint-action@v3
         with:
           version: v1.50.1
           working-directory: plugins/source/aws
@@ -63,16 +63,16 @@ jobs:
           skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
-      - name: Build
-        run: go build .
-      - name: Test
-        run: make test
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
       - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
         run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
+      - name: Build
+        run: go build .
+      - name: Test
+        run: make test
       # Sanity integration test, only for release PRs
       - name: Setup CloudQuery
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
@@ -104,9 +104,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/source/aws/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/aws/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.4-release-cache-plugins-source-aws
+            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-aws
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
@@ -121,7 +121,7 @@ jobs:
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --timeout 50m --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/source/aws/.goreleaser.yaml
+        run: goreleaser release --timeout 50m --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/aws/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
   test-policies:

@@ -1,5 +1,7 @@
 # Table: azure_network_application_security_groups
 
+https://learn.microsoft.com/en-us/rest/api/virtualnetwork/application-security-groups/list?tabs=HTTP#applicationsecuritygroup
+
 The primary key for this table is **id**.
 
 ## Columns

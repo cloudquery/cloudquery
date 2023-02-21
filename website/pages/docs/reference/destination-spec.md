@@ -6,7 +6,7 @@ This goes through all the available options for the destination plugin `spec` ob
 
 This example configures the `postgresql` plugin to connect to a PostgreSQL database located at `localhost:5432`.
 
-```yaml
+```yaml copy
 kind: destination
 spec:
   name: "postgresql"
@@ -61,13 +61,21 @@ Specifies the update method to use when inserting rows. The exact semantics depe
 - `overwrite`: Same as `overwrite-delete-stale`, but doesn't delete stale rows from previous `sync`s.
 - `append`: Rows are never overwritten or deleted, only appended.
 
-{/*<!-- vale off -->*/}
+<!-- vale off -->
 ### batch_size
-{/*<!-- vale on -->*/}
+<!-- vale on -->
 
 (`int`, optional)
 
-The number of resources to insert in a single batch. Only relevant for plugins that utilize batching. Each plugin has its own default value.
+The number of resources to insert in a single batch. Only applies to plugins that utilize batching. This setting works in conjunction with `batch_size_bytes`, and batches are written whenever either `batch_size` or `batch_size_bytes` is reached. Every plugin has its own default value for `batch_size`.
+
+<!-- vale off -->
+### batch_size_bytes
+<!-- vale on -->
+
+(`int`, optional)
+
+The max number of bytes to use for a single batch. Only applies to plugins that utilize batching. This setting works in conjunction with `batch_size`, and batches are written whenever either `batch_size` or `batch_size_bytes` is reached. Every plugin has its own default value for `batch_size_bytes`. Note that the size in bytes is calculated based on the size of data in memory, not the serialized data, and it is best to choose a `batch_size_bytes` significantly lower than any hard limits.
 
 ### spec
 

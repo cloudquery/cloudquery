@@ -1,5 +1,7 @@
 # Table: azure_network_security_partner_providers
 
+https://learn.microsoft.com/en-us/rest/api/virtualnetwork/security-partner-providers/list?tabs=HTTP#securitypartnerprovider
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -6,4 +6,7 @@ type Spec struct {
 
 	EndpointURL string `json:"endpoint_url,omitempty"`
 	Timeout     int64  `json:"timeout_secs,omitempty"`
+	PageSize    int64  `json:"page_size,omitempty"`
+	MaxRetries  int64  `json:"max_retries,omitempty"`
+	MaxWait     int64  `json:"max_wait_secs,omitempty"`
 }

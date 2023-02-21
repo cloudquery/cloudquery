@@ -3,7 +3,7 @@ package cosmos
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -11,20 +11,12 @@ import (
 
 func DatabaseAccounts() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_cosmos_database_accounts",
-		Resolver:  fetchDatabaseAccounts,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_documentdb),
-		Transform: transformers.TransformWithStruct(&armcosmos.DatabaseAccountGetResults{}),
-		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Name:        "azure_cosmos_database_accounts",
+		Resolver:    fetchDatabaseAccounts,
+		Description: "https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/database-accounts/list?tabs=HTTP#databaseaccountgetresults",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cosmos_database_accounts", client.Namespacemicrosoft_documentdb),
+		Transform:   transformers.TransformWithStruct(&armcosmos.DatabaseAccountGetResults{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 
 		Relations: []*schema.Table{
 			mongo_db_databases(),

@@ -10,21 +10,14 @@ import (
 func Topics() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_sns_topics",
+		Description:         `https://docs.aws.amazon.com/sns/latest/api/API_GetTopicAttributes.html`,
 		Resolver:            fetchSnsTopics,
 		PreResourceResolver: getTopic,
 		Transform:           transformers.TransformWithStruct(&models.Topic{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer("sns"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

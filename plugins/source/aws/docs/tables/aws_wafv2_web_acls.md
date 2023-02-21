@@ -1,5 +1,7 @@
 # Table: aws_wafv2_web_acls
 
+https://docs.aws.amazon.com/waf/latest/APIReference/API_WebACL.html
+
 The primary key for this table is **arn**.
 
 ## Columns

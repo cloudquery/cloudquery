@@ -8,7 +8,7 @@ Note: For configuring individual plugins, please refer to the configuration sect
 
 This example configures the AWS plugin, and connects is to a `postgresql` destination:
 
-```yaml
+```yaml copy
 kind: source
 spec:
   name: "aws"
@@ -64,7 +64,15 @@ Tables to sync from the source plugin. It accepts wildcards. For example, to mat
 
 (`[]string`, optional, default: `[]`)
 
-Useful when using wildcards in `tables`. Specify which tables to skip when syncing the source plugin. Note that if a table with dependencies is skipped, all its dependant tables will also be skipped.
+Specify which tables to skip when syncing the source plugin. It accepts wildcards. This config is useful when using wildcards in `tables`, or when you wish to skip dependent tables. Note that if a table with dependencies is skipped, all its dependant tables will also be skipped.
+
+<!-- vale off -->
+### skip_dependent_tables
+<!-- vale on -->
+
+(`bool`, optional, default: `false`, introduced in CLI `v2.3.7`)
+
+If set to `true`, tables that depend on the tables specified in `tables` will not be synced, unless specifically selected themselves. This allows you to choose precisely which tables to sync, and prevents automatically syncing new dependent tables that may be added to the plugin in future versions.
 
 ### destinations
 
@@ -84,8 +92,20 @@ A best effort maximum number of Go routines to use. Lower this number to reduce 
 
 The scheduler to use when determining the priority of resources to sync. Currently, the only supported values are `dfs` (depth-first search) and `round-robin`. This is an experimental feature, and may be removed in the future. For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
 
+### backend
+
+(`string`, optional, default: `local`, introduced in CLI `v2.1.0`)
+
+The backend to use for storing the state of incremental tables. Currently, the only supported value is `local` (store the state in the local filesystem). For more information, see [managing incremental tables](/docs/advanced-topics/managing-incremental-tables).
+
+### backend_spec
+
+(`object`, optional, introduced in CLI `v2.1.0`)
+
+The backend spec is specific to the backend used. For the `local` backend, the only option is `path`, which specifies the name of the directory to use when storing metadata files.
+
 ### spec
 
 (`object`, optional)
 
-Plugin specific configurations. Visit [source plugins](/docs/plugins/sources/overview) documentation for more information.
+Plugin-specific configurations. Visit [source plugins](/docs/plugins/sources/overview) documentation for more information.

@@ -15,16 +15,8 @@ func Instances() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Transform:   transformers.TransformWithStruct(&types.Instance{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
@@ -34,10 +26,14 @@ func Instances() *schema.Table {
 				},
 			},
 			{
-				Name:          "state_transition_reason_time",
-				Type:          schema.TypeTimestamp,
-				Resolver:      resolveEc2InstanceStateTransitionReasonTime,
-				IgnoreInTests: true,
+				Name:     "state_transition_reason_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: resolveEc2InstanceStateTransitionReasonTime,
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 	}

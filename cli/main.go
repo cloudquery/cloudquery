@@ -6,6 +6,8 @@ import (
 	"os"
 	"os/signal"
 	"runtime/debug"
+	"sync"
+	"syscall"
 
 	"github.com/cloudquery/cloudquery/cli/cmd"
 	"github.com/getsentry/sentry-go"
@@ -15,23 +17,34 @@ import (
 
 func executeRootCmdWithContext() error {
 	ctx := context.Background()
-	// trap Ctrl+C and call cancel on the context
+	// trap Ctrl+C and other signals, then call cancel on the context
 	ctx, cancel := context.WithCancel(ctx)
 	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	defer func() {
 		signal.Stop(c)
-		cancel()
 	}()
+	var gotSignal os.Signal
+	var wg sync.WaitGroup
+	wg.Add(1)
 	go func() {
+		defer wg.Done()
 		select {
-		case <-c:
+		case gotSignal = <-c:
 			cancel()
 		case <-ctx.Done():
 		}
 	}()
 
-	return cmd.NewCmdRoot().ExecuteContext(ctx)
+	err := cmd.NewCmdRoot().ExecuteContext(ctx)
+	cancel()
+	wg.Wait()
+	if gotSignal != nil && err != nil {
+		err = fmt.Errorf("received %v signal from OS: %w", gotSignal.String(), err)
+	} else if gotSignal != nil {
+		err = fmt.Errorf("received %v signal from OS", gotSignal.String())
+	}
+	return err
 }
 
 func main() {

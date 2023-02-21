@@ -13,13 +13,8 @@ func BucketEncryptionRules() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_ServerSideEncryptionRule.html`,
 		Resolver:    fetchS3BucketEncryptionRules,
 		Transform:   transformers.TransformWithStruct(&types.ServerSideEncryptionRule{}),
-		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "bucket_arn",
 				Type:     schema.TypeString,

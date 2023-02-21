@@ -1,7 +1,7 @@
 # Test unit
 .PHONY: test
 test:
-	go test -timeout 3m ./...
+	go test -race -timeout 3m ./...
 
 # Install tools
 .PHONY: install-tools

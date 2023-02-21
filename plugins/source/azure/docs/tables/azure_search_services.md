@@ -1,5 +1,7 @@
 # Table: azure_search_services
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch@v1.0.0#Service
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -10,11 +12,12 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|id (PK)|String|
+|subscription_id|String|
 |location|String|
 |identity|JSON|
 |properties|JSON|
 |sku|JSON|
 |tags|JSON|
+|id (PK)|String|
 |name|String|
 |type|String|

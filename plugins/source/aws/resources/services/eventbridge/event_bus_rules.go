@@ -13,18 +13,10 @@ func EventBusRules() *schema.Table {
 		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Rule.html`,
 		Resolver:    fetchEventbridgeEventBusRules,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
-		Transform:   transformers.TransformWithStruct(&types.Rule{}),
+		Transform:   transformers.TransformWithStruct(&types.Rule{}, transformers.WithPrimaryKeys("Arn")),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "event_bus_arn",
 				Type:     schema.TypeString,

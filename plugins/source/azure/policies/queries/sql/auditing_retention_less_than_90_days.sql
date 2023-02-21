@@ -7,9 +7,9 @@ SELECT
   s.subscription_id,
   s.id AS server_id,
   case
-    when assdbap.retention_days < 90
+    when (assdbap.properties->'retentionDays')::int < 90
       then 'fail' else 'pass'
   end
 FROM azure_sql_servers s
     LEFT JOIN azure_sql_server_blob_auditing_policies assdbap ON
-        s.id = assdbap.sql_server_id
+        s._cq_id = assdbap._cq_parent_id

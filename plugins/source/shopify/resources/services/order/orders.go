@@ -20,6 +20,23 @@ func Orders() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedAt"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
+				},
+			},
+			{
+				Name:     "updated_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("UpdatedAt"),
+				CreationOptions: schema.ColumnCreationOptions{
+					IncrementalKey: true,
+				},
+			},
 		},
+		IsIncremental: true,
 	}
 }

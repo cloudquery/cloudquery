@@ -11,8 +11,12 @@ import (
 	"github.com/rs/zerolog"
 	"k8s.io/client-go/kubernetes"
 
+	v1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	// import all k8s auth options
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
+	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/tools/clientcmd/api"
 )
@@ -20,12 +24,15 @@ import (
 type Client struct {
 	logger zerolog.Logger
 	// map context_name -> Services struct
-	clients  map[string]kubernetes.Interface
-	spec     *Spec
-	contexts []string
-	paths    map[string]struct{}
+	clients map[string]kubernetes.Interface
+	// mao context_name -> namespaces
+	namespaces map[string][]v1.Namespace
+	spec       *Spec
+	contexts   []string
+	paths      map[string]struct{}
 
-	Context string
+	Context   string
+	Namespace string
 }
 
 func (c *Client) Logger() *zerolog.Logger {
@@ -33,26 +40,36 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func (c *Client) ID() string {
-	return c.Context
+	if c.Namespace != "" {
+		return fmt.Sprintf("context:%s:namespace%s", c.Context, c.Namespace)
+	}
+	return fmt.Sprintf("context:%s", c.Context)
 }
 
 func (c *Client) Client() kubernetes.Interface {
 	return c.clients[c.Context]
 }
 
-// Don't confuse `k8sContext` with `context.ctx`! k8s-context is a k8s-term that refers to a k8s cluster.
-func (c Client) WithContext(k8sContext string) *Client {
-	return &Client{
-		logger:   c.logger.With().Str("context", k8sContext).Logger(),
-		clients:  c.clients,
-		spec:     c.spec,
-		contexts: c.contexts,
-		paths:    c.paths,
-		Context:  k8sContext,
-	}
+func (c *Client) Namespaces() []v1.Namespace {
+	return c.namespaces[c.Context]
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+// Don't confuse `k8sContext` with `context.ctx`! k8s-context is a k8s-term that refers to a k8s cluster.
+func (c Client) WithContext(k8sContext string) *Client {
+	newC := c
+	newC.logger = c.logger.With().Str("context", k8sContext).Logger()
+	newC.Context = k8sContext
+	return &newC
+}
+
+func (c Client) WithNamespace(namespace string) *Client {
+	newC := c
+	newC.logger = c.logger.With().Str("namespace", namespace).Logger()
+	newC.Namespace = namespace
+	return &newC
+}
+
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var k8sSpec Spec
 
 	if err := s.UnmarshalSpec(&k8sSpec); err != nil {
@@ -99,17 +116,18 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...
 	}
 
 	c := Client{
-		logger:   logger,
-		clients:  make(map[string]kubernetes.Interface),
-		spec:     &k8sSpec,
-		contexts: contexts,
-		Context:  contexts[0],
-		paths:    make(map[string]struct{}),
+		logger:     logger,
+		clients:    make(map[string]kubernetes.Interface),
+		namespaces: make(map[string][]v1.Namespace),
+		spec:       &k8sSpec,
+		contexts:   contexts,
+		Context:    contexts[0],
+		paths:      make(map[string]struct{}),
 	}
 
 	for _, ctxName := range contexts {
 		logger.Info().Str("context", ctxName).Msg("creating k8s client for context")
-		kClient, err := buildKubeClient(rawKubeConfig, ctxName)
+		kClient, err := buildKubeClient(logger, rawKubeConfig, ctxName)
 		if err != nil {
 			return nil, fmt.Errorf("failed to build k8s client for context %q: %w", ctxName, err)
 		}
@@ -117,14 +135,38 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...
 		if err != nil {
 			logger.Warn().Err(err).Msg("Failed to get OpenAPI schema. It might be not supported in the current version of Kubernetes. OpenAPI has been supported since Kubernetes 1.4")
 		}
+		namespaces, err := discoverNamespaces(ctx, kClient)
+		if err != nil {
+			return nil, fmt.Errorf("failed to discover namespaces for context %q: %w", ctxName, err)
+		}
 		c.clients[ctxName] = kClient
+		c.namespaces[ctxName] = namespaces
 	}
 
 	return &c, nil
 }
 
+func discoverNamespaces(ctx context.Context, client kubernetes.Interface) ([]v1.Namespace, error) {
+	cl := client.CoreV1().Namespaces()
+
+	opts := metav1.ListOptions{}
+	namespaces := make([]v1.Namespace, 0)
+	for {
+		result, err := cl.List(ctx, opts)
+		if err != nil {
+			return nil, err
+		}
+		namespaces = append(namespaces, result.Items...)
+		if result.GetContinue() == "" {
+			break
+		}
+		opts.Continue = result.GetContinue()
+	}
+	return namespaces, nil
+}
+
 // buildKubeClient creates a k8s client from the given config and context name.
-func buildKubeClient(kubeConfig api.Config, ctx string) (*kubernetes.Clientset, error) {
+func buildKubeClient(logger zerolog.Logger, kubeConfig api.Config, ctx string) (*kubernetes.Clientset, error) {
 	override := &clientcmd.ConfigOverrides{CurrentContext: ctx}
 	clientConfig := clientcmd.NewNonInteractiveClientConfig(
 		kubeConfig,
@@ -134,7 +176,11 @@ func buildKubeClient(kubeConfig api.Config, ctx string) (*kubernetes.Clientset, 
 	)
 	restConfig, err := clientConfig.ClientConfig()
 	if err != nil {
-		return nil, err
+		logger.Warn().Msg("Failed to create k8s client, fallback to use the in-cluster config")
+		restConfig, err = rest.InClusterConfig()
+		if err != nil {
+			return nil, err
+		}
 	}
 	return kubernetes.NewForConfig(restConfig)
 }

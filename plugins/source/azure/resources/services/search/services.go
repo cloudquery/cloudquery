@@ -9,19 +9,11 @@ import (
 
 func Services() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_search_services",
-		Resolver:  fetchServices,
-		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(client.Namespacemicrosoft_search),
-		Transform: transformers.TransformWithStruct(&armsearch.Service{}),
-		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Name:        "azure_search_services",
+		Resolver:    fetchServices,
+		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch@v1.0.0#Service",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_search_services", client.Namespacemicrosoft_search),
+		Transform:   transformers.TransformWithStruct(&armsearch.Service{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }

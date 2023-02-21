@@ -25,6 +25,17 @@ func ContextMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	return clients
 }
 
+func ContextNamespaceMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
+	client := meta.(*Client)
+	clients := make([]schema.ClientMeta, 0)
+	for _, ctxName := range client.contexts {
+		for _, ns := range client.namespaces[ctxName] {
+			clients = append(clients, client.WithContext(ctxName).WithNamespace(ns.Name))
+		}
+	}
+	return clients
+}
+
 // APIFilterContextMultiplex returns a list of clients for each context from the cq config
 func APIFilterContextMultiplex(path string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
@@ -52,31 +63,82 @@ func ResolveContext(_ context.Context, meta schema.ClientMeta, r *schema.Resourc
 	return r.Set(c.Name, client.Context)
 }
 
-// In k8s, IP Addresses may sometimes be empty-strings - but postgresql doesn't like that.
-// So, the resolver for ip-addresses should recognize that case and not set null instead.
+// In k8s, IP Addresses may sometimes be empty-strings or `None` - but postgresql doesn't like that.
+// So, the resolver for ip-addresses should recognize that case and set null instead.
 func StringToInetPathResolver(path string) schema.ColumnResolver {
 	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		value := funk.Get(r.Item, path, funk.WithAllowZero())
 
 		stringValue, ok := value.(string)
-		if ok && stringValue != "" {
+		if ok && stringValue != "" && stringValue != "None" {
+			return r.Set(c.Name, value)
+		}
+
+		return r.Set(c.Name, nil)
+	}
+}
+
+// In k8s, IP Addresses may sometimes be empty-strings or `None` - but postgresql doesn't like that.
+// So, the resolver for ip-addresses should recognize that case and set null instead.
+func StringToInetArrayPathResolver(path string) schema.ColumnResolver {
+	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+		value := funk.Get(r.Item, path, funk.WithAllowZero())
+
+		stringArrayValue, ok := value.([]string)
+		if !ok {
+			return r.Set(c.Name, nil)
+		}
+
+		sanitized := []*string{}
+
+		for i := range stringArrayValue {
+			if stringArrayValue[i] != "" && stringArrayValue[i] != "None" {
+				sanitized = append(sanitized, &stringArrayValue[i])
+			} else {
+				sanitized = append(sanitized, nil)
+			}
+		}
+
+		return r.Set(c.Name, sanitized)
+	}
+}
+
+// In k8s, IP Addresses may sometimes be empty-strings or `None` - but postgresql doesn't like that.
+// So, the resolver for ip-addresses should recognize that case and set null instead.
+func StringToCidrPathResolver(path string) schema.ColumnResolver {
+	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+		value := funk.Get(r.Item, path, funk.WithAllowZero())
+
+		stringValue, ok := value.(string)
+		if ok && stringValue != "" && stringValue != "None" {
 			return r.Set(c.Name, value)
 		}
 		return r.Set(c.Name, nil)
 	}
 }
 
-// In k8s, IP Addresses may sometimes be empty-strings - but postgresql doesn't like that.
-// So, the resolver for ip-addresses should recognize that case and not set null instead.
-func StringToCidrPathResolver(path string) schema.ColumnResolver {
+// In k8s, IP Addresses may sometimes be empty-strings or `None` - but postgresql doesn't like that.
+// So, the resolver for ip-addresses should recognize that case and set null instead.
+func StringToCidrArrayPathResolver(path string) schema.ColumnResolver {
 	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		value := funk.Get(r.Item, path, funk.WithAllowZero())
 
-		stringValue, ok := value.(string)
-		if ok && stringValue != "" {
-			return r.Set(c.Name, value)
+		stringArrayValue, ok := value.([]string)
+		if !ok {
+			return r.Set(c.Name, nil)
 		}
-		return r.Set(c.Name, nil)
+
+		sanitized := []*string{}
+
+		for i := range stringArrayValue {
+			if stringArrayValue[i] != "" && stringArrayValue[i] != "None" {
+				sanitized = append(sanitized, &stringArrayValue[i])
+			} else {
+				sanitized = append(sanitized, nil)
+			}
+		}
+
+		return r.Set(c.Name, sanitized)
 	}
 }
 

@@ -33,6 +33,7 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 |maximum_retry_attempts|Int|
 |parallelization_factor|Int|
 |queues|StringArray|
+|scaling_config|JSON|
 |self_managed_event_source|JSON|
 |self_managed_kafka_event_source_config|JSON|
 |source_access_configurations|JSON|

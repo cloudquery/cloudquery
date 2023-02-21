@@ -10,21 +10,14 @@ import (
 func Pipelines() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_codepipeline_pipelines",
+		Description:         `https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_GetPipeline.html`,
 		Resolver:            fetchCodepipelinePipelines,
 		PreResourceResolver: getPipeline,
 		Multiplex:           client.ServiceAccountRegionMultiplexer("codepipeline"),
 		Transform:           transformers.TransformWithStruct(&codepipeline.GetPipelineOutput{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

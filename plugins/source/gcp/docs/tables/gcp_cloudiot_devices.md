@@ -21,8 +21,8 @@ The following tables depend on gcp_cloudiot_devices:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
-|name (PK)|String|
 |id|String|
+|name (PK)|String|
 |num_id|Int|
 |credentials|JSON|
 |last_heartbeat_time|Timestamp|

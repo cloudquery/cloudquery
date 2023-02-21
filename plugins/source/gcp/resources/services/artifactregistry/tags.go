@@ -19,20 +19,12 @@ func Tags() *schema.Table {
 		Description: `https://cloud.google.com/artifact-registry/docs/reference/rest/v1/projects.locations.repositories.packages.tags#Tag`,
 		Resolver:    fetchTags,
 		Multiplex:   client.ProjectMultiplexEnabledServices("artifactregistry.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Tag{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.Tag{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

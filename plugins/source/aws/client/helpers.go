@@ -60,6 +60,7 @@ const (
 	SESService                  AWSService = "ses"
 	WAFRegional                 AWSService = "waf-regional"
 	WorkspacesService           AWSService = "workspaces"
+	XRayService                 AWSService = "xray"
 )
 
 const (
@@ -260,13 +261,6 @@ func resolveARN(service AWSService, resourceID func(resource *schema.Resource) (
 // Region is left empty and account id is set to the value of the client.
 func ResolveARNWithAccount(service AWSService, resourceID func(resource *schema.Resource) ([]string, error)) schema.ColumnResolver {
 	return resolveARN(service, resourceID, false, true)
-}
-
-// ResolveARNWithRegion returns a column resolver that will set a field value to a proper ARN
-// based on provided AWS service and resource id value returned by resourceID function.
-// Region is set to the value of the client and account id is left empty.
-func ResolveARNWithRegion(service AWSService, resourceID func(resource *schema.Resource) ([]string, error)) schema.ColumnResolver {
-	return resolveARN(service, resourceID, true, false)
 }
 
 // ResolveARN returns a column resolver that will set a field value to a proper ARN

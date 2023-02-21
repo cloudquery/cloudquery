@@ -1,4 +1,4 @@
-import { DuplicateIcon } from "@heroicons/react/outline"
+import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 
 const SecurityQuery = () => (
     <>
@@ -11,15 +11,14 @@ const SecurityQuery = () => (
     </>
 )
 
-const ComplianceQuery = () => (
+const MarketingQuery = () => (
     <>
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>SELECT</span></div>
-        <div><span>    account_id,</span></div>
-        <div><span>    require_uppercase_characters</span></div>
+        <div><span>    *</span></div>
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>FROM</span></div>
-        <div><span>    aws_iam_password_policies</span></div>
+        <div><span>    shopify_abandoned_checkouts</span></div>
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>WHERE</span></div>
-        <div>    require_uppercase_characters =<span style={{ color: "var(--shiki-token-keyword)" }}> FALSE</span></div>
+        <div>    total_price {'>'} <span style={{ color: "var(--shiki-token-keyword)" }}> 1000</span></div>
     </>
 )
 
@@ -46,10 +45,10 @@ const QUERIES_EXAMPLES = [
         description: 'Find all public facing AWS load balancers',
     },
     {
-        code: 'SELECT account_id, require_uppercase_characters FROM aws_iam_password_policies WHERE require_uppercase_characters = FALSE',
-        html: <ComplianceQuery />,
-        title: 'Compliance',
-        description: 'AWS CIS 1.5 Ensure IAM password policy requires at least one uppercase letter',
+        code: 'SELECT * FROM shopify_abandoned_checkouts WHERE total_price > 1000',
+        html: <MarketingQuery />,
+        title: 'Marketing',
+        description: 'Find all abandoned checkouts with a total price greater than $1000',
     },
     {
         code: 'SELECT arn FROM aws_iam_users JOIN aws_iam_user_tags ON aws_iam_users.id = aws_iam_user_tags.user_id JOIN okta_users ON aws_iam_users.tags.value = okta_users.profile_email WHERE aws_iam_users.tags_key = "email"',
@@ -91,7 +90,7 @@ const QueryItem = ({ children, onClick, description, title }) => {
                     onClick={onClick}
                     className="absolute bottom-6 right-3 px-2 py-2 text-gray-600 bg-black rounded-md bg-opacity-5 dark:bg-white dark:text-gray-300 dark:border-gray-700 dark:bg-opacity-5 betterhover:hover:bg-gray-50 betterhover:dark:hover:bg-gray-900 md:py-3 md:text-base md:leading-6 md:px-10"
                 >
-                    <DuplicateIcon className="w-6 h-6 text-gray-400" />
+                    <DocumentDuplicateIcon className="w-6 h-6 text-gray-400" />
                 </button>
             </div>
             <div className='mt-6'>

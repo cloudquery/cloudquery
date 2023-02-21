@@ -8,10 +8,10 @@ SELECT
   aps.id AS server_id,
   case
     when apsfr."name" = 'AllowAllAzureIps'
-      OR (apsfr.start_ip_address = '0.0.0.0'
-      AND apsfr.end_ip_address = '0.0.0.0')
+      OR (apsfr.properties->>'startIPAddress' = '0.0.0.0'
+      AND apsfr.properties->>'endIPAddress' = '0.0.0.0')
     then 'fail' else 'pass'
   end
 FROM azure_postgresql_servers aps
-    LEFT JOIN azure_postgresql_firewall_rules apsfr ON
-        aps.id = apsfr.postgresql_server_id
+    LEFT JOIN azure_postgresql_server_firewall_rules apsfr ON
+        aps._cq_id = apsfr._cq_parent_id

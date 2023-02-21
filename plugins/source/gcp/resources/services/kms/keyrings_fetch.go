@@ -13,44 +13,23 @@ import (
 
 func fetchKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
+	p := parent.Item.(*locationpb.Location)
 	kmsClient, err := kms.NewKeyManagementClient(ctx, c.ClientOptions...)
 	if err != nil {
 		return err
 	}
 
-	locations, err := getAllKmsLocations(ctx, c, kmsClient)
-	if err != nil {
-		return err
-	}
-	for _, l := range locations {
-		it := kmsClient.ListKeyRings(ctx, &kmspb.ListKeyRingsRequest{Parent: l.Name})
-		for {
-			resp, err := it.Next()
-			if err == iterator.Done {
-				break
-			}
-			if err != nil {
-				return err
-			}
-
-			res <- resp
-		}
-	}
-	return nil
-}
-
-func getAllKmsLocations(ctx context.Context, c *client.Client, kmsClient *kms.KeyManagementClient) ([]*locationpb.Location, error) {
-	var locations []*locationpb.Location
-	it := kmsClient.ListLocations(ctx, &locationpb.ListLocationsRequest{Name: "projects/" + c.ProjectId})
+	it := kmsClient.ListKeyRings(ctx, &kmspb.ListKeyRingsRequest{Parent: p.Name})
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return nil, err
+			return err
 		}
-		locations = append(locations, resp)
+
+		res <- resp
 	}
-	return locations, nil
+	return nil
 }

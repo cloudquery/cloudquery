@@ -6,8 +6,11 @@ The composite primary key for this table is (**project_id**, **name**).
 
 ## Relations
 
+This table depends on [gcp_kms_locations](gcp_kms_locations.md).
+
 The following tables depend on gcp_kms_keyrings:
   - [gcp_kms_crypto_keys](gcp_kms_crypto_keys.md)
+  - [gcp_kms_import_jobs](gcp_kms_import_jobs.md)
 
 ## Columns
 

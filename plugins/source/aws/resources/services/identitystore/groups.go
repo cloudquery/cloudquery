@@ -9,10 +9,11 @@ import (
 
 func Groups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_identitystore_groups",
-		Resolver:  fetchIdentitystoreGroups,
-		Transform: transformers.TransformWithStruct(&types.Group{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer("identitystore"),
+		Name:        "aws_identitystore_groups",
+		Description: `https://docs.aws.amazon.com/singlesignon/latest/IdentityStoreAPIReference/API_Group.html`,
+		Resolver:    fetchIdentitystoreGroups,
+		Transform:   transformers.TransformWithStruct(&types.Group{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("identitystore"),
 
 		Relations: []*schema.Table{
 			GroupMemberships(),

@@ -1,5 +1,7 @@
 # Table: azure_cdn_security_policies
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn@v1.0.0#SecurityPolicy
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -14,8 +16,8 @@ This table depends on [azure_cdn_profiles](azure_cdn_profiles.md).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|id (PK)|String|
 |properties|JSON|
+|id (PK)|String|
 |name|String|
 |system_data|JSON|
 |type|String|

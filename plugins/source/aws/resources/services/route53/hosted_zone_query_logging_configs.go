@@ -13,13 +13,9 @@ func HostedZoneQueryLoggingConfigs() *schema.Table {
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_QueryLoggingConfig.html`,
 		Resolver:    fetchRoute53HostedZoneQueryLoggingConfigs,
 		Transform:   transformers.TransformWithStruct(&types.QueryLoggingConfig{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("route53"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

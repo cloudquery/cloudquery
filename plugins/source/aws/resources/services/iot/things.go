@@ -15,21 +15,12 @@ func Things() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.ThingAttribute{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
 		Columns: []schema.Column{
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
-			{
-				Name:          "principals",
-				Type:          schema.TypeStringArray,
-				Resolver:      ResolveIotThingPrincipals,
-				IgnoreInTests: true,
+				Name:     "principals",
+				Type:     schema.TypeStringArray,
+				Resolver: ResolveIotThingPrincipals,
 			},
 			{
 				Name:     "arn",

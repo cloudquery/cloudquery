@@ -27,7 +27,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	h := httptest.NewServer(router)
 	defer h.Close()
 
-	configureTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+	configureTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		err := createServices(router)
 		if err != nil {
 			return nil, err

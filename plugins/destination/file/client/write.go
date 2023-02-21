@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cloudquery/filetypes/csv"
-	"github.com/cloudquery/filetypes/json"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/google/uuid"
 )
@@ -21,18 +19,6 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 		return err
 	}
 	defer f.Close()
-	switch c.pluginSpec.Format {
-	case FormatTypeCSV:
-		if err := csv.WriteTableBatch(f, table, data); err != nil {
-			return err
-		}
-	case FormatTypeJSON:
-		if err := json.WriteTableBatch(f, table, data); err != nil {
-			return err
-		}
-	default:
-		panic("unknown format " + c.pluginSpec.Format)
-	}
 
-	return nil
+	return c.formatClient.WriteTableBatch(f, table, data)
 }

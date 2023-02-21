@@ -73,5 +73,5 @@ func createDeployments(router *mux.Router) error {
 }
 
 func TestDeployments(t *testing.T) {
-	client.MockTestHelper(t, Deployments(), createDeployments)
+	client.MockTestHelper(t, Deployments(), createDeployments, client.TestOptions{})
 }

@@ -21,6 +21,6 @@ func (*TestClient) ID() string {
 	return "TestClient"
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	return &TestClient{}, nil
 }

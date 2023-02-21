@@ -1,6 +1,6 @@
 WITH
     ds AS (
-        SELECT logic_workflow_id, jsonb_array_elements(logs) AS logs FROM azure_logic_diagnostic_settings
+        SELECT resource_id as logic_workflow_id, jsonb_array_elements(properties -> 'logs') AS logs FROM azure_monitor_diagnostic_settings
     ),
     details AS (
 	SELECT DISTINCT id AS

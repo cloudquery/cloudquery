@@ -51,6 +51,22 @@ func (mr *MockOrganizationsServiceMockRecorder) Get(arg0, arg1 interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockOrganizationsService)(nil).Get), arg0, arg1)
 }
 
+// GetHookDelivery mocks base method.
+func (m *MockOrganizationsService) GetHookDelivery(arg0 context.Context, arg1 string, arg2, arg3 int64) (*github.HookDelivery, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetHookDelivery", arg0, arg1, arg2, arg3)
+	ret0, _ := ret[0].(*github.HookDelivery)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// GetHookDelivery indicates an expected call of GetHookDelivery.
+func (mr *MockOrganizationsServiceMockRecorder) GetHookDelivery(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetHookDelivery", reflect.TypeOf((*MockOrganizationsService)(nil).GetHookDelivery), arg0, arg1, arg2, arg3)
+}
+
 // GetOrgMembership mocks base method.
 func (m *MockOrganizationsService) GetOrgMembership(arg0 context.Context, arg1, arg2 string) (*github.Membership, *github.Response, error) {
 	m.ctrl.T.Helper()

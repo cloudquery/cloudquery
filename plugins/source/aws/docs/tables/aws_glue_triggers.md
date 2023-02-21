@@ -1,5 +1,7 @@
 # Table: aws_glue_triggers
 
+https://docs.aws.amazon.com/glue/latest/webapi/API_Trigger.html
+
 The primary key for this table is **arn**.
 
 ## Columns

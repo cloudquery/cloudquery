@@ -24,64 +24,70 @@ const (
 )
 
 type Client struct {
-	log zerolog.Logger
+	opts *ClientOptions
 
-	baseURL    string
-	hc         HTTPDoer
-	maxRetries int64
+	baseURL string
+	lim     *rate.Limiter
+}
 
-	apiKey, apiSecret, accessToken string
+type ClientOptions struct {
+	Log zerolog.Logger
 
-	lim *rate.Limiter
+	HC         HTTPDoer
+	MaxRetries int64
+	PageSize   int
+
+	ApiKey, ApiSecret, AccessToken string
+	ShopURL                        string
 }
 
 type HTTPDoer interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-func New(log zerolog.Logger, hc HTTPDoer, apiKey, apiSecret, accessToken, shopURL string, maxRetries int64) (*Client, error) {
-	if accessToken == "" && (apiKey == "" || apiSecret == "") {
+func New(opts ClientOptions) (*Client, error) {
+	if opts.AccessToken == "" && (opts.ApiKey == "" || opts.ApiSecret == "") {
 		return nil, fmt.Errorf("missing shopify access token, api key or secret")
 	}
-	if shopURL == "" {
+	if opts.ShopURL == "" {
 		return nil, fmt.Errorf("missing shop url")
 	}
 
 	return &Client{
-		log:        log,
-		baseURL:    strings.TrimRight(shopURL, "/") + "/",
-		hc:         hc,
-		maxRetries: maxRetries,
-
-		apiKey:      apiKey,
-		apiSecret:   apiSecret,
-		accessToken: accessToken,
-
-		lim: rate.NewLimiter(rate.Limit(80), 120),
+		opts:    &opts,
+		baseURL: strings.TrimRight(opts.ShopURL, "/") + "/",
+		lim:     rate.NewLimiter(rate.Limit(80), 120),
 	}, nil
 }
 
-func (s *Client) request(ctx context.Context, edge string) (retResp *http.Response, retErr error) {
+func (s *Client) request(ctx context.Context, edge string, params url.Values) (retResp *http.Response, retErr error) {
+	if params == nil {
+		params = url.Values{}
+	}
+	params.Set("limit", strconv.FormatInt(int64(s.opts.PageSize), 10))
+
 	tries := int64(0)
+
+	log := s.opts.Log.With().Str("edge", edge).Interface("query_params", params).Logger()
 
 	defer func() {
 		if retErr != nil {
-			s.log.Error().Err(retErr).Str("edge", edge).Msg("request failed")
-		} else if tries > 5 {
-			s.log.Debug().Str("edge", edge).Int64("num_tries", tries).Msg("success after tries")
+			log.Error().Err(retErr).Msg("request failed")
+		} else if tries > 0 {
+			log.Debug().Int64("num_tries", tries).Msg("success after tries")
 		}
 	}()
 
-	for tries < s.maxRetries {
+	for {
 		if !s.lim.Allow() {
-			s.log.Debug().Msg("waiting for rate limiter...")
+			log.Debug().Msg("waiting for rate limiter...")
 			if err := s.lim.Wait(ctx); err != nil {
 				return nil, err
 			}
-			s.log.Debug().Msg("wait complete")
+			log.Debug().Msg("wait complete")
 		}
 
-		r, wait, err := s.retryableRequest(ctx, edge)
+		r, wait, err := s.retryableRequest(ctx, edge, params)
 		if err == nil {
 			return r, nil
 		}
@@ -93,14 +99,20 @@ func (s *Client) request(ctx context.Context, edge string) (retResp *http.Respon
 			temporary = he.Temporary()
 		}
 		if !temporary {
-			break
+			return nil, fmt.Errorf("request failed with error: %w", err)
 		}
 
 		tries++
+		if tries >= s.opts.MaxRetries {
+			return nil, fmt.Errorf("exceeded max retries (%d): %w", s.opts.MaxRetries, err)
+		}
+
 		if wait == nil { // no retry-after returned, linear backoff
 			w := time.Duration(tries) * 1 * time.Second
 			wait = &w
 		}
+
+		log.Warn().Err(err).Float64("backoff_seconds", wait.Seconds()).Msg("retryable request failed, will retry")
 
 		select {
 		case <-ctx.Done():
@@ -108,13 +120,12 @@ func (s *Client) request(ctx context.Context, edge string) (retResp *http.Respon
 		case <-time.After(*wait):
 		}
 	}
-
-	return nil, errors.New("exceeded max retries")
 }
 
-func (s *Client) retryableRequest(ctx context.Context, edge string) (*http.Response, *time.Duration, error) {
-	u := fmt.Sprintf("%v%v", s.baseURL, edge)
-	log := s.log.With().Str("edge", edge).Logger()
+func (s *Client) retryableRequest(ctx context.Context, edge string, params url.Values) (*http.Response, *time.Duration, error) {
+	log := s.opts.Log.With().Str("edge", edge).Interface("query_params", params).Logger()
+
+	u := s.baseURL + edge + "?" + params.Encode()
 
 	var (
 		body []byte
@@ -126,14 +137,14 @@ func (s *Client) retryableRequest(ctx context.Context, edge string) (*http.Respo
 		return nil, nil, err
 	}
 
-	if s.accessToken != "" {
-		req.Header.Add("X-Shopify-Access-Token", s.accessToken)
+	if s.opts.AccessToken != "" {
+		req.Header.Add("X-Shopify-Access-Token", s.opts.AccessToken)
 	} else {
-		req.SetBasicAuth(s.apiKey, s.apiSecret)
+		req.SetBasicAuth(s.opts.ApiKey, s.opts.ApiSecret)
 	}
 	req.Header.Add("Content-type", "application/json")
 
-	resp, err := s.hc.Do(req)
+	resp, err := s.opts.HC.Do(req)
 	if err != nil {
 		return nil, nil, fmt.Errorf("do %s: %w", edge, err)
 	}
@@ -172,16 +183,14 @@ func (s *Client) retryableRequest(ctx context.Context, edge string) (*http.Respo
 	return resp, wait, nil
 }
 
-func (s *Client) GetProducts(ctx context.Context, pageUrl string) (*GetProductsResponse, string, error) {
+func (s *Client) GetProducts(ctx context.Context, pageUrl string, params url.Values) (*GetProductsResponse, string, error) {
 	var ret GetProductsResponse
 
-	const pageSize = 250
-
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/products.json?limit=%v", APIVersion, pageSize)
+		pageUrl = fmt.Sprintf("admin/api/%s/products.json", APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl)
+	resp, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
@@ -194,21 +203,19 @@ func (s *Client) GetProducts(ctx context.Context, pageUrl string) (*GetProductsR
 		return nil, "", err
 	}
 
-	ret.PageSize = pageSize
+	ret.PageSize = s.opts.PageSize
 
 	return &ret, nextPage, nil
 }
 
-func (s *Client) GetOrders(ctx context.Context, pageUrl string) (*GetOrdersResponse, string, error) {
+func (s *Client) GetOrders(ctx context.Context, pageUrl string, params url.Values) (*GetOrdersResponse, string, error) {
 	var ret GetOrdersResponse
 
-	const pageSize = 250
-
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/orders.json?limit=%v", APIVersion, pageSize)
+		pageUrl = fmt.Sprintf("admin/api/%s/orders.json", APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl)
+	resp, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
@@ -221,21 +228,19 @@ func (s *Client) GetOrders(ctx context.Context, pageUrl string) (*GetOrdersRespo
 		return nil, "", err
 	}
 
-	ret.PageSize = pageSize
+	ret.PageSize = s.opts.PageSize
 
 	return &ret, nextPage, nil
 }
 
-func (s *Client) GetCustomers(ctx context.Context, pageUrl string) (*GetCustomersResponse, string, error) {
+func (s *Client) GetCustomers(ctx context.Context, pageUrl string, params url.Values) (*GetCustomersResponse, string, error) {
 	var ret GetCustomersResponse
 
-	const pageSize = 250
-
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/customers.json?limit=%v", APIVersion, pageSize)
+		pageUrl = fmt.Sprintf("admin/api/%s/customers.json", APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl)
+	resp, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
@@ -248,21 +253,19 @@ func (s *Client) GetCustomers(ctx context.Context, pageUrl string) (*GetCustomer
 		return nil, "", err
 	}
 
-	ret.PageSize = pageSize
+	ret.PageSize = s.opts.PageSize
 
 	return &ret, nextPage, nil
 }
 
-func (s *Client) GetAbandonedCheckouts(ctx context.Context, pageUrl string) (*GetCheckoutsResponse, string, error) {
+func (s *Client) GetAbandonedCheckouts(ctx context.Context, pageUrl string, params url.Values) (*GetCheckoutsResponse, string, error) {
 	var ret GetCheckoutsResponse
 
-	const pageSize = 20
-
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/checkouts.json?limit=%v", APIVersion, pageSize)
+		pageUrl = fmt.Sprintf("admin/api/%s/checkouts.json", APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl)
+	resp, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
@@ -275,21 +278,19 @@ func (s *Client) GetAbandonedCheckouts(ctx context.Context, pageUrl string) (*Ge
 		return nil, "", err
 	}
 
-	ret.PageSize = pageSize
+	ret.PageSize = s.opts.PageSize
 
 	return &ret, nextPage, nil
 }
 
-func (s *Client) GetPriceRules(ctx context.Context, pageUrl string) (*GetPriceRulesResponse, string, error) {
+func (s *Client) GetPriceRules(ctx context.Context, pageUrl string, params url.Values) (*GetPriceRulesResponse, string, error) {
 	var ret GetPriceRulesResponse
 
-	const pageSize = 250
-
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/price_rules.json?limit=%v", APIVersion, pageSize)
+		pageUrl = fmt.Sprintf("admin/api/%s/price_rules.json", APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl)
+	resp, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
@@ -302,7 +303,7 @@ func (s *Client) GetPriceRules(ctx context.Context, pageUrl string) (*GetPriceRu
 		return nil, "", err
 	}
 
-	ret.PageSize = pageSize
+	ret.PageSize = s.opts.PageSize
 
 	return &ret, nextPage, nil
 }
@@ -310,13 +311,11 @@ func (s *Client) GetPriceRules(ctx context.Context, pageUrl string) (*GetPriceRu
 func (s *Client) GetDiscountCodes(ctx context.Context, priceRuleID int64, pageUrl string) (*GetDiscountCodesResponse, string, error) {
 	var ret GetDiscountCodesResponse
 
-	const pageSize = 250
-
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/price_rules/%d/discount_codes.json?limit=%v", APIVersion, priceRuleID, pageSize)
+		pageUrl = fmt.Sprintf("admin/api/%s/price_rules/%d/discount_codes.json", APIVersion, priceRuleID)
 	}
 
-	resp, err := s.request(ctx, pageUrl)
+	resp, err := s.request(ctx, pageUrl, nil)
 	if err != nil {
 		return nil, "", err
 	}
@@ -329,7 +328,7 @@ func (s *Client) GetDiscountCodes(ctx context.Context, priceRuleID int64, pageUr
 		return nil, "", err
 	}
 
-	ret.PageSize = pageSize
+	ret.PageSize = s.opts.PageSize
 
 	return &ret, nextPage, nil
 }

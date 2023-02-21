@@ -1,0 +1,14 @@
+variables:
+  component: destination/clickhouse
+  binary:    clickhouse
+
+project_name: plugins/destination/clickhouse
+
+monorepo:
+  tag_prefix: plugins-destination-clickhouse-
+  dir:        plugins/destination/clickhouse
+
+includes:
+- from_file:
+    # Relative to the directory Go Releaser is run from (which is the root of the repository)
+    path: ./plugins/.goreleaser.yaml

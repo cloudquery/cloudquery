@@ -1,0 +1,14 @@
+variables:
+  component: destination/elasticsearch
+  binary: elasticsearch
+
+project_name: plugins/destination/elasticsearch
+
+monorepo:
+  tag_prefix: plugins-destination-elasticsearch-
+  dir: plugins/destination/elasticsearch
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

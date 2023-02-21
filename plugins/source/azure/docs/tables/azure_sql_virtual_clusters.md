@@ -1,5 +1,7 @@
 # Table: azure_sql_virtual_clusters
 
+https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/virtual-clusters/list?tabs=HTTP#virtualcluster
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,9 +13,9 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |properties|JSON|
 |tags|JSON|
+|id (PK)|String|
 |name|String|
 |type|String|

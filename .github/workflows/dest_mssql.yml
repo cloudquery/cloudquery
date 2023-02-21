@@ -1,0 +1,109 @@
+name: Destination Plugin Microsoft SQL Server Workflow
+
+on:
+  pull_request:
+    paths:
+    - "plugins/destination/mssql/**"
+    - ".github/workflows/dest_mssql.yml"
+  push:
+    branches:
+    - main
+    paths:
+    - "plugins/destination/mssql/**"
+    - ".github/workflows/dest_mssql.yml"
+
+jobs:
+  plugins-destination-mssql:
+    name:            "plugins/destination/mssql"
+    runs-on:         ubuntu-latest
+    timeout-minutes: 30
+    env:
+      DB_USER:     SA
+      DB_PASSWORD: yourStrongP@ssword
+      DB_NAME:     cloudquery
+    defaults:
+      run:
+        working-directory: plugins/destination/mssql
+    services:
+      mssql:
+        image:   mcr.microsoft.com/mssql/server:2017-latest
+        env:
+          ACCEPT_EULA:       Y
+          MSSQL_PID:         Express
+          MSSQL_SA_PASSWORD: ${{ env.DB_PASSWORD }}
+          DB_USER:           ${{ env.DB_USER }}
+          DB_NAME:           ${{ env.DB_NAME }}
+        ports:
+        - 1433:1433
+        options: >-
+                 --health-cmd "/opt/mssql-tools/bin/sqlcmd -U $DB_USER -P $MSSQL_SA_PASSWORD -Q 'select 1' -b -o /dev/null"
+                 --health-interval 60s
+                 --health-timeout 30s
+                 --health-start-period 20s
+                 --health-retries 5
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+    - name: Create Database
+      run:  >-
+            docker exec $(docker ps -alq) \
+              /opt/mssql-tools/bin/sqlcmd \
+              -U "$DB_USER" \
+              -P "$DB_PASSWORD" \
+              -Q "CREATE DATABASE $DB_NAME;"
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v3
+      with:
+        go-version-file:       plugins/destination/mssql/go.mod
+        cache:                 true
+        cache-dependency-path: plugins/destination/mssql/go.sum
+    - name: golangci-lint
+      uses: golangci/golangci-lint-action@v3
+      with:
+        version:           v1.50.1
+        working-directory: plugins/destination/mssql
+        args:              "--config ../../.golangci.yml"
+        skip-pkg-cache:    true
+        skip-build-cache:  true
+    - name: Get dependencies
+      run:  go get -t -d ./...
+    - name: Build
+      run:  go build .
+    - name: Test Microsoft SQL
+      run:  make test
+  validate-release:
+    timeout-minutes: 30
+    runs-on:         ubuntu-latest
+    env:
+      CGO_ENABLED: 0
+    steps:
+    - name: Checkout
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      with:
+        path:         |
+                      ~/.cache/go-build
+                      ~/go/pkg/mod
+        key:          ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/destination/mssql/go.sum') }}
+        restore-keys: |
+                      ${{ runner.os }}-go-1.19.5-release-cache-plugins-destination-mssql
+    - name: Set up Go
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      uses: actions/setup-go@v3
+      with:
+        go-version-file: plugins/destination/mssql/go.mod
+    - name: Install GoReleaser
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      uses: goreleaser/goreleaser-action@v3
+      with:
+        distribution: goreleaser-pro
+        version:      latest
+        install-only: true
+    - name: Run GoReleaser Dry-Run
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      run:  goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/destination/mssql/.goreleaser.yaml
+      env:
+        GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

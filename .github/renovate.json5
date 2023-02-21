@@ -11,4 +11,7 @@
     },
   ],
   ignorePaths: ["plugins/destination/csv/**"],
+  gomod: {
+    fileMatch: ["go\\.mod\\.tpl$"],
+  },
 }

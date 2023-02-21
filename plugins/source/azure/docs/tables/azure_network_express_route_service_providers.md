@@ -1,6 +1,8 @@
 # Table: azure_network_express_route_service_providers
 
-The primary key for this table is **id**.
+https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-service-providers/list?tabs=HTTP#expressrouteserviceprovider
+
+The composite primary key for this table is (**subscription_id**, **id**).
 
 ## Columns
 
@@ -10,7 +12,7 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
+|subscription_id (PK)|String|
 |id (PK)|String|
 |location|String|
 |properties|JSON|

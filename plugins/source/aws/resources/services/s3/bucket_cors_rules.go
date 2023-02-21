@@ -13,13 +13,8 @@ func BucketCorsRules() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_CORSRule.html`,
 		Resolver:    fetchS3BucketCorsRules,
 		Transform:   transformers.TransformWithStruct(&types.CORSRule{}),
-		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "bucket_arn",
 				Type:     schema.TypeString,

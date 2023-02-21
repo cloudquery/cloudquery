@@ -1,5 +1,7 @@
 # Table: azure_dnsresolver_dns_forwarding_rulesets
 
+https://learn.microsoft.com/en-us/rest/api/dns/dnsresolver/dns-forwarding-rulesets/list?tabs=HTTP#dnsforwardingruleset
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,11 +13,11 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |properties|JSON|
 |tags|JSON|
 |etag|String|
+|id (PK)|String|
 |name|String|
 |system_data|JSON|
 |type|String|

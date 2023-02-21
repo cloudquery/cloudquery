@@ -13,13 +13,9 @@ func SshPublicKeys() *schema.Table {
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_SSHPublicKeyMetadata.html`,
 		Resolver:    fetchIamSshPublicKeys,
 		Transform:   transformers.TransformWithStruct(&types.SSHPublicKeyMetadata{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "user_arn",
 				Type:     schema.TypeString,

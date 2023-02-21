@@ -1,5 +1,7 @@
 # Table: azure_resources_resources
 
+https://learn.microsoft.com/en-us/rest/api/resources/resources/list#genericresourceexpanded
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -10,7 +12,6 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|id (PK)|String|
 |extended_location|JSON|
 |identity|JSON|
 |kind|String|
@@ -21,6 +22,7 @@ The primary key for this table is **id**.
 |tags|JSON|
 |changed_time|Timestamp|
 |created_time|Timestamp|
+|id (PK)|String|
 |name|String|
 |provisioning_state|String|
 |type|String|

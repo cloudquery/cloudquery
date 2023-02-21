@@ -13,20 +13,12 @@ func Devices() *schema.Table {
 		Description: `https://cloud.google.com/iot/docs/reference/cloudiot/rest/v1/projects.locations.registries.devices#Device`,
 		Resolver:    fetchDevices,
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudiot.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Device{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.Device{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

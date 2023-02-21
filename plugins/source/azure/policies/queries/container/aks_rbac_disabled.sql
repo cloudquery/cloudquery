@@ -6,8 +6,8 @@ SELECT :'execution_time'                                                        
        subscription_id                                                                 AS subscription_id,
        id                                                                               AS resource_id,
        CASE
-           WHEN enable_rbac != true
+           WHEN (properties ->> 'enableRBAC')::boolean IS distinct from TRUE
                THEN 'fail'
            ELSE 'pass'
            END                                                                             AS status
-FROM azure_container_managed_clusters
+FROM azure_containerservice_managed_clusters

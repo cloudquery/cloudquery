@@ -9,21 +9,14 @@ import (
 
 func BrokerUsers() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_mq_broker_users",
-		Resolver:  fetchMqBrokerUsers,
-		Transform: transformers.TransformWithStruct(&mq.DescribeUserOutput{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer("mq"),
+		Name:        "aws_mq_broker_users",
+		Description: `https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers-broker-id-users-username.html`,
+		Resolver:    fetchMqBrokerUsers,
+		Transform:   transformers.TransformWithStruct(&mq.DescribeUserOutput{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("mq"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "broker_arn",
 				Type:     schema.TypeString,

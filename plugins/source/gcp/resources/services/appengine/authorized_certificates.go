@@ -19,20 +19,12 @@ func AuthorizedCertificates() *schema.Table {
 		Description: `https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.authorizedCertificates#AuthorizedCertificate`,
 		Resolver:    fetchAuthorizedCertificates,
 		Multiplex:   client.ProjectMultiplexEnabledServices("appengine.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.AuthorizedCertificate{}, client.Options()...),
+		Transform:   transformers.TransformWithStruct(&pb.AuthorizedCertificate{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

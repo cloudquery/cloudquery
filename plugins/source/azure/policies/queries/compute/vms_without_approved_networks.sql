@@ -1,9 +1,9 @@
 WITH vms_with_interfaces AS (SELECT subscription_id,
                                     id,
-                                    jsonb_array_elements(network_profile->'networkInterfaces') AS nics
+                                    jsonb_array_elements(properties->'networkProfile'->'networkInterfaces') AS nics
                              FROM azure_compute_virtual_machines vm),
 nics_with_subnets AS (
-    SELECT id, jsonb_array_elements(ip_configurations->'ipConfigurations') AS ip_config FROM azure_network_interfaces
+    SELECT id, jsonb_array_elements(properties -> 'ipConfigurations') AS ip_config FROM azure_network_interfaces
     )
 -- TODO check
 insert into azure_policy_results

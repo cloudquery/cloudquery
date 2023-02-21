@@ -4,7 +4,7 @@
 
 This example syncs from Cloudflare to a Postgres destination, using in-line `api_token` authentication (instead of the `CLOUDFLARE_API_TOKEN` environment variable). The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml
+```yaml copy
 kind: source
 # Common source-plugin configuration
 spec:

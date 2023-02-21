@@ -8,10 +8,10 @@ SELECT
   s.id AS server_id,
   case
     when p.kind != 'azurekeyvault'
-      OR p.server_key_type IS DISTINCT FROM 'AzureKeyVault'
-      OR uri IS NULL
+      OR p.properties->>'serverKeyType' IS DISTINCT FROM 'AzureKeyVault'
+      OR p.properties->>'uri' IS NULL
     then 'fail' else 'pass'
   end
 FROM azure_sql_servers s
-         LEFT JOIN azure_sql_encryption_protectors p ON
-    s.id = p.sql_server_id
+         LEFT JOIN azure_sql_server_encryption_protectors p ON
+    s._cq_id = p._cq_parent_id

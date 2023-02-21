@@ -1,5 +1,7 @@
 # Table: aws_ecr_registries
 
+https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_DescribeRegistry.html
+
 The composite primary key for this table is (**account_id**, **region**, **registry_id**).
 
 ## Columns

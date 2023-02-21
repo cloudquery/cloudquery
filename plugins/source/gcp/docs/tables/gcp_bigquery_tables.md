@@ -17,7 +17,6 @@ This table depends on [gcp_bigquery_datasets](gcp_bigquery_datasets.md).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |project_id (PK)|String|
-|id (PK)|String|
 |clone_definition|JSON|
 |clustering|JSON|
 |creation_time|Int|
@@ -28,6 +27,7 @@ This table depends on [gcp_bigquery_datasets](gcp_bigquery_datasets.md).
 |expiration_time|Int|
 |external_data_configuration|JSON|
 |friendly_name|String|
+|id (PK)|String|
 |kind|String|
 |labels|JSON|
 |last_modified_time|Int|

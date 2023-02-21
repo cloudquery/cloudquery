@@ -1,5 +1,7 @@
 # Table: aws_iam_group_policies
 
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetGroupPolicy.html
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

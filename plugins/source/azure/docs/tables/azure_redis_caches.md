@@ -1,5 +1,7 @@
 # Table: azure_redis_caches
 
+https://learn.microsoft.com/en-us/rest/api/redis/redis/list-by-subscription?tabs=HTTP#redisresource
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -10,11 +12,12 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|id (PK)|String|
+|subscription_id|String|
 |location|String|
 |properties|JSON|
 |identity|JSON|
 |tags|JSON|
 |zones|StringArray|
+|id (PK)|String|
 |name|String|
 |type|String|

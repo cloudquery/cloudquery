@@ -7,7 +7,8 @@ SELECT
   subscription_id,
   id,
   case
-    when enable_non_ssl_port IS NOT FALSE
+    when (properties ->> 'enableNonSslPort')::boolean IS NOT FALSE
     then 'fail' else 'pass'
   end
 FROM azure_redis_caches
+

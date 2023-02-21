@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id.html
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **arn**.
 
 ## Relations
 
@@ -17,12 +17,12 @@ The following tables depend on aws_mq_broker_configurations:
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |broker_arn|String|
-|arn|String|
+|arn (PK)|String|
 |authentication_strategy|String|
 |created|Timestamp|
 |description|String|

@@ -30,7 +30,7 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	snykSpec := new(Spec)
 	err := spec.UnmarshalSpec(snykSpec)
 	if err != nil {

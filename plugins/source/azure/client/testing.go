@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -73,14 +72,14 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	mockClient := NewMockHttpClient(h.Client(), h.URL)
 
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro}).Level(zerolog.DebugLevel).With().Timestamp().Logger()
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ ...source.Option) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		err := createServices(router)
 		if err != nil {
 			return nil, err
 		}
 		registeredNamespaces := make(map[string]map[string]bool)
 		registeredNamespaces[TestSubscription] = make(map[string]bool)
-		for _, namespace := range allNamespaces {
+		for _, namespace := range namespaces {
 			registeredNamespaces[TestSubscription][namespace] = true
 		}
 		c := &Client{
@@ -93,12 +92,8 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			registeredNamespaces: registeredNamespaces,
 			Creds:                creds,
 			subscriptions:        []string{TestSubscription},
-			resourceGroups: map[string][]*armresources.GenericResourceExpanded{
-				TestSubscription: {
-					{
-						Name: &testResourceGroup,
-					},
-				},
+			resourceGroups: map[string][]string{
+				TestSubscription: {testResourceGroup},
 			},
 		}
 

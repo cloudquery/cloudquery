@@ -1,5 +1,7 @@
 # Table: azure_hdinsight_clusters
 
+https://learn.microsoft.com/en-us/rest/api/hdinsight/2021-06-01/clusters/list?tabs=HTTP#cluster
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,13 +13,13 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |etag|String|
 |identity|JSON|
 |properties|JSON|
 |tags|JSON|
 |zones|StringArray|
+|id (PK)|String|
 |name|String|
 |system_data|JSON|
 |type|String|

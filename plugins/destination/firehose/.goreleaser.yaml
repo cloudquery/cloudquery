@@ -1,0 +1,14 @@
+variables:
+  component: destination/firehose
+  binary: firehose
+
+project_name: plugins/destination/firehose
+
+monorepo:
+  tag_prefix: plugins-destination-firehose-
+  dir: plugins/destination/firehose
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

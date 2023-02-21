@@ -14,13 +14,9 @@ func Attacks() *schema.Table {
 		Resolver:            fetchShieldAttacks,
 		PreResourceResolver: getAttack,
 		Transform:           transformers.TransformWithStruct(&types.AttackDetail{}),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("shield"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:        "id",
 				Type:        schema.TypeString,

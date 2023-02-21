@@ -1,5 +1,7 @@
 # Table: azure_engagementfabric_accounts
 
+https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric@v0.1.0#Account
+
 The primary key for this table is **id**.
 
 ## Columns
@@ -11,9 +13,9 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |sku|JSON|
 |tags|JSON|
+|id (PK)|String|
 |name|String|
 |type|String|

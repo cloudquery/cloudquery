@@ -30,7 +30,7 @@ func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMe
 	}
 	return nil
 }
-func resolveElasticbeanstalkEnvironmentTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.EnvironmentDescription)
 	if p.Resources == nil || p.Resources.LoadBalancer == nil {
 		return nil
@@ -41,7 +41,7 @@ func resolveElasticbeanstalkEnvironmentTags(ctx context.Context, meta schema.Cli
 	}
 	return resource.Set(c.Name, listeners)
 }
-func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveElasticbeanstalkEnvironmentTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.EnvironmentDescription)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Elasticbeanstalk
@@ -56,14 +56,7 @@ func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schem
 		}
 		return err
 	}
-	if len(tagsOutput.ResourceTags) == 0 {
-		return nil
-	}
-	tags := make(map[string]*string)
-	for _, s := range tagsOutput.ResourceTags {
-		tags[*s.Key] = s.Value
-	}
-	return resource.Set(c.Name, tags)
+	return resource.Set(c.Name, client.TagsToMap(tagsOutput.ResourceTags))
 }
 
 func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {

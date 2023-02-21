@@ -1,5 +1,7 @@
 # Table: azure_mariadb_servers
 
+https://learn.microsoft.com/en-us/rest/api/mariadb/servers/list?tabs=HTTP#server
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -16,10 +18,10 @@ The following tables depend on azure_mariadb_servers:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
-|id (PK)|String|
 |location|String|
 |properties|JSON|
 |sku|JSON|
 |tags|JSON|
+|id (PK)|String|
 |name|String|
 |type|String|

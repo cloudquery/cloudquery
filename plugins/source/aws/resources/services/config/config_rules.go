@@ -9,21 +9,14 @@ import (
 
 func ConfigRules() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_config_config_rules",
-		Resolver:  fetchConfigConfigRules,
-		Multiplex: client.ServiceAccountRegionMultiplexer("config"),
-		Transform: transformers.TransformWithStruct(&types.ConfigRule{}),
+		Name:        "aws_config_config_rules",
+		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConfigRules.html`,
+		Resolver:    fetchConfigConfigRules,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("config"),
+		Transform:   transformers.TransformWithStruct(&types.ConfigRule{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

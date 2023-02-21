@@ -5,7 +5,7 @@
 This example syncs from Snyk to a Postgres destination, using `api_key` authentication.
 The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml
+```yaml copy
 kind: source
 # Common source-plugin configuration
 spec:
@@ -28,7 +28,7 @@ spec:
 
 This is the (nested) spec used by the Snyk source plugin.
 
-- `api_key` (string, required. Default: `SNYK_API_KEY` environment variable):
+- `api_key` (string, required):
   An API key to access Snyk resources.
   See [Authentication for API](https://docs.snyk.io/snyk-api-info/authentication-for-api) for more information.
 

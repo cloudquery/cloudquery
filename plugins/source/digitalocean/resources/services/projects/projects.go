@@ -23,7 +23,7 @@ func Projects() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			Resources(),
+			resources(),
 		},
 	}
 }

@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Cors() *schema.Table {
+func cors() *schema.Table {
 	return &schema.Table{
 		Name:      "digitalocean_space_cors",
 		Resolver:  fetchSpacesCors,

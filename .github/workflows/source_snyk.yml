@@ -38,16 +38,16 @@ jobs:
           args: "--config ../../.golangci.yml"
       - name: Get dependencies
         run: go get -t -d ./...
-      - name: Build
-        run: go build .
-      - name: Test
-        run: make test
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
       - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
         run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
+      - name: Build
+        run: go build .
+      - name: Test
+        run: make test
   validate-release:
     timeout-minutes: 30
     runs-on: ubuntu-latest
@@ -63,9 +63,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/source/snyk/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/snyk/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.4-release-cache-plugins-source-snyk
+            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-snyk
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
@@ -80,6 +80,6 @@ jobs:
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/source/snyk/.goreleaser.yaml
+        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/snyk/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

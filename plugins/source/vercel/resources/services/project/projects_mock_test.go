@@ -72,5 +72,5 @@ func createProjects(router *mux.Router) error {
 }
 
 func TestProjects(t *testing.T) {
-	client.MockTestHelper(t, Projects(), createProjects)
+	client.MockTestHelper(t, Projects(), createProjects, client.TestOptions{})
 }

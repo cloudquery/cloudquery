@@ -1,0 +1,1 @@
+DELETE FROM {{.Table}} WHERE {{.SourceNameColumn}} = @sourceName AND {{.SyncTimeColumn}} < @syncTime;

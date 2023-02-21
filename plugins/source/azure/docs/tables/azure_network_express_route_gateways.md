@@ -1,5 +1,7 @@
 # Table: azure_network_express_route_gateways
 
+https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-gateways/list-by-subscription?tabs=HTTP#expressroutegateway
+
 The primary key for this table is **id**.
 
 ## Columns
