@@ -28,7 +28,7 @@ func Parameters() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: resolveClusterTags,
+				Resolver: resolveParameterTags,
 			},
 		},
 	}
