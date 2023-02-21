@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v1.0.7...plugins-destination-neo4j-v1.0.8) (2023-02-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+
 ## [1.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v1.0.6...plugins-destination-neo4j-v1.0.7) (2023-02-14)
 
 
