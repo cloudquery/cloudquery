@@ -74,15 +74,8 @@ func (c *Client) nonAutoMigrableTables(tables schema.Tables, currentTables schem
 
 func (*Client) canSafelyMigrate(changes []schema.TableColumnChange) bool {
 	for _, change := range changes {
-		if change.Type == schema.TableColumnChangeTypeAdd && change.Current.CreationOptions.NotNull {
-			return false
-		}
-
-		if change.Type == schema.TableColumnChangeTypeRemove && change.Previous.CreationOptions.NotNull {
-			return false
-		}
-
-		if change.Type == schema.TableColumnChangeTypeUpdate {
+		needsDrop := needsTableDrop(change)
+		if needsDrop {
 			return false
 		}
 	}
@@ -107,12 +100,8 @@ func needsTableDrop(change schema.TableColumnChange) bool {
 		return false
 	}
 
-	// We can safely drop a nullable and add a nullable column without dropping the table
-	if change.Type == schema.TableColumnChangeTypeUpdate && !change.Current.CreationOptions.NotNull {
-		return false
-	}
-
-	if change.Type == schema.TableColumnChangeTypeRemove {
+	// We can safely ignore removal of nullable columns without dropping the table
+	if change.Type == schema.TableColumnChangeTypeRemove && !change.Previous.CreationOptions.NotNull {
 		return false
 	}
 
