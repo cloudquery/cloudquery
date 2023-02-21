@@ -64,7 +64,7 @@ func (c *Client) nonAutoMigrableTables(tables schema.Tables, currentTables schem
 			continue
 		}
 		changes := t.GetChanges(current)
-		if !c.canSafeMigrate(changes) {
+		if !c.canSafelyMigrate(changes) {
 			result = append(result, t.Name)
 			tableChanges = append(tableChanges, changes)
 		}
@@ -72,7 +72,7 @@ func (c *Client) nonAutoMigrableTables(tables schema.Tables, currentTables schem
 	return result, tableChanges
 }
 
-func (*Client) canSafeMigrate(changes []schema.TableColumnChange) bool {
+func (*Client) canSafelyMigrate(changes []schema.TableColumnChange) bool {
 	for _, change := range changes {
 		if change.Type == schema.TableColumnChangeTypeAdd && change.Current.CreationOptions.NotNull {
 			return false
