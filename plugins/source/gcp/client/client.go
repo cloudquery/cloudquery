@@ -229,7 +229,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	} else {
 		if len(gcpSpec.OrganizationIDs) > 0 {
 			for _, orgID := range gcpSpec.OrganizationIDs {
-				c.logger.Info().Msg("Getting spec organizations...")
+				c.logger.Info().Msgf("Getting spec organization %q...", orgID)
 				org, err := getOrganization(ctx, orgID, c.ClientOptions...)
 				if err != nil {
 					return nil, fmt.Errorf("failed to get spec organization: %w", err)
@@ -243,13 +243,17 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 			if err != nil {
 				return nil, fmt.Errorf("failed to get organizations with filter: %w", err)
 			}
-			for _, orgWithFilter := range organizationsWithFilter {
+			for i := range organizationsWithFilter {
+				found := false
 				for _, org := range organizations {
-					if orgWithFilter.Name == org.Name {
-						continue
+					if organizationsWithFilter[i].Name == org.Name {
+						found = true
+						break
 					}
 				}
-				organizations = append(organizations, orgWithFilter)
+				if !found {
+					organizations = append(organizations, organizationsWithFilter[i])
+				}
 			}
 		}
 	}
@@ -467,7 +471,7 @@ func getOrganization(ctx context.Context, id string, options ...option.ClientOpt
 		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
 	}
 
-	return service.Organizations.Get(id).Context(ctx).Do()
+	return service.Organizations.Get("organizations/" + id).Context(ctx).Do()
 }
 
 func setUnion(a []string, b []string) []string {
