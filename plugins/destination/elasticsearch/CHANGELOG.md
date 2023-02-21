@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v1.0.5...plugins-destination-elasticsearch-v1.0.6) (2023-02-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+
 ## [1.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v1.0.4...plugins-destination-elasticsearch-v1.0.5) (2023-02-15)
 
 
