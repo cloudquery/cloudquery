@@ -33,8 +33,11 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 
 	for _, table := range newSchema {
 		table := table
-		eg.Go(func() error {
+		eg.Go(func() (err error) {
 			c.logger.Info().Str("table", table.Name).Msg("Migrating table started")
+			defer func() {
+				c.logger.Err(err).Str("table", table.Name).Msg("Migrating table done")
+			}()
 			if len(table.Columns) == 0 {
 				c.logger.Warn().Str("table", table.Name).Msg("Table with no columns, skip")
 				return nil
@@ -45,12 +48,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 				return c.createTable(ctx, table)
 			}
 
-			err := c.autoMigrate(ctx, table, current)
-			if err != nil {
-				return err
-			}
-			c.logger.Err(err).Str("table", table.Name).Msg("Migrating table done")
-			return nil
+			return c.autoMigrate(ctx, table, current)
 		})
 	}
 
