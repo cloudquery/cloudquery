@@ -157,8 +157,9 @@ func normalizeColumn(column schema.Column) schema.Column {
 	}
 
 	res.CreationOptions = column.CreationOptions
-	// We only support append mode so we don't care about primary key changes to the schema
-	res.CreationOptions.PrimaryKey = false
+	if !res.CreationOptions.NotNull {
+		res.CreationOptions.NotNull = column.CreationOptions.PrimaryKey
+	}
 
 	return res
 }
