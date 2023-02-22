@@ -12,9 +12,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
+const tableName = "aws_cloudtrail_events"
+
 func Events() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_cloudtrail_events",
+		Name:          tableName,
 		Description:   `https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Event.html`,
 		Resolver:      fetchCloudtrailEvents,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("cloudtrail"),
@@ -46,9 +48,8 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 
 	le := &cloudtrail.LookupEventsInput{}
 
-	const key = "cloudtrail_events"
 	if cl.Backend != nil {
-		value, err := cl.Backend.Get(ctx, key, cl.ID())
+		value, err := cl.Backend.Get(ctx, tableName, cl.ID())
 		if err != nil {
 			return fmt.Errorf("failed to retrieve state from backend: %w", err)
 		}
@@ -84,7 +85,7 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 
 	if cl.Backend != nil && lastEventTime != nil {
-		return cl.Backend.Set(ctx, key, cl.ID(), lastEventTime.Format(time.RFC3339Nano))
+		return cl.Backend.Set(ctx, tableName, cl.ID(), lastEventTime.Format(time.RFC3339Nano))
 	}
 	return nil
 }
