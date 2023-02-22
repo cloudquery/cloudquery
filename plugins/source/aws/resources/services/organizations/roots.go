@@ -10,44 +10,44 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Accounts() *schema.Table {
+func Roots() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_organizations_accounts",
-		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html`,
-		Resolver:    fetchOrganizationsAccounts,
-		Transform:   transformers.TransformWithStruct(&types.Account{}, transformers.WithPrimaryKeys("Arn")),
+		Name:        "aws_organizations_roots",
+		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Root.html`,
+		Resolver:    fetchOrganizationsRoots,
+		Transform:   transformers.TransformWithStruct(&types.Root{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("organizations"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: resolveAccountTags,
+				Resolver: resolveRootTags,
 			},
 		},
 	}
 }
-
-func fetchOrganizationsAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+func fetchOrganizationsRoots(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Organizations
-	var input organizations.ListAccountsInput
-	paginator := organizations.NewListAccountsPaginator(svc, &input)
+	var input organizations.ListRootsInput
+	paginator := organizations.NewListRootsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- page.Accounts
+		res <- page.Roots
 	}
 	return nil
 }
-func resolveAccountTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+
+func resolveRootTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	cl := meta.(*client.Client)
-	account := resource.Item.(types.Account)
+	root := resource.Item.(types.Root)
 	var tags []types.Tag
 	input := organizations.ListTagsForResourceInput{
-		ResourceId: account.Id,
+		ResourceId: root.Id,
 	}
 	paginator := organizations.NewListTagsForResourcePaginator(cl.Services().Organizations, &input)
 	for paginator.HasMorePages() {
