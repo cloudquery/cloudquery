@@ -1,4 +1,4 @@
-import { SOURCE_PLUGINS } from "./pluginData";
+import { SOURCE_PLUGINS, DESTINATION_PLUGINS } from "./pluginData";
 
 const LogoContainer: React.FC<{
   children?: React.ReactNode;
@@ -43,5 +43,25 @@ export function Integrations() {
         </LogoContainer>
       ))}
     </div>
+  );
+}
+
+
+export function Destinations() {
+  return (
+      <div className="flex justify-center items-center flex-wrap gap-9 pt-8 sm:mt-4">
+        {DESTINATION_PLUGINS.map(({ name, logo, logoDark, id, href }) => (
+            <LogoContainer
+                title={name}
+                href={href || `/docs/plugins/destinations/${id}/overview`}
+                key={id}
+                external={Boolean(href)}
+                logo={logo}
+                logoDark={logoDark}
+                name={name}
+            >
+            </LogoContainer>
+        ))}
+      </div>
   );
 }

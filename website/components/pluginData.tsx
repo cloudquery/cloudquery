@@ -41,22 +41,22 @@ export const SOURCE_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/datadog-dark.svg",
     id: "datadog",
   },
-  // {
-  //   name: "Digital Ocean",
-  //   logo: "/images/logos/plugins/digitalocean.svg",
-  //   id: "digitalocean",
-  // },
-  // {
-  //   name: "Fastly",
-  //   logo: "/images/logos/plugins/fastly.svg",
-  //   id: "fastly",
-  // },
-  // {
-  //   name: "Gandi",
-  //   logo: "/images/logos/plugins/gandi.svg",
-  //   logoDark: "/images/logos/plugins/gandi-dark.svg",
-  //   id: "gandi",
-  // },
+  {
+    name: "Digital Ocean",
+    logo: "/images/logos/plugins/digitalocean.svg",
+    id: "digitalocean",
+  },
+  {
+    name: "Fastly",
+    logo: "/images/logos/plugins/fastly.svg",
+    id: "fastly",
+  },
+  {
+    name: "Gandi",
+    logo: "/images/logos/plugins/gandi.svg",
+    logoDark: "/images/logos/plugins/gandi-dark.svg",
+    id: "gandi",
+  },
   {
     name: "Google Cloud Platform",
     logo: "/images/logos/plugins/gcp.svg",
