@@ -35,28 +35,28 @@ export const SOURCE_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/cloudflare.svg",
     id: "cloudflare",
   },
-  {
-    name: "Datadog",
-    logo: "/images/logos/plugins/datadog.svg",
-    logoDark: "/images/logos/plugins/datadog-dark.svg",
-    id: "datadog",
-  },
+  // {
+  //   name: "Datadog",
+  //   logo: "/images/logos/plugins/datadog.svg",
+  //   logoDark: "/images/logos/plugins/datadog-dark.svg",
+  //   id: "datadog",
+  // },
   {
     name: "Digital Ocean",
     logo: "/images/logos/plugins/digitalocean.svg",
     id: "digitalocean",
   },
-  {
-    name: "Fastly",
-    logo: "/images/logos/plugins/fastly.svg",
-    id: "fastly",
-  },
-  {
-    name: "Gandi",
-    logo: "/images/logos/plugins/gandi.svg",
-    logoDark: "/images/logos/plugins/gandi-dark.svg",
-    id: "gandi",
-  },
+  // {
+  //   name: "Fastly",
+  //   logo: "/images/logos/plugins/fastly.svg",
+  //   id: "fastly",
+  // },
+  // {
+  //   name: "Gandi",
+  //   logo: "/images/logos/plugins/gandi.svg",
+  //   logoDark: "/images/logos/plugins/gandi-dark.svg",
+  //   id: "gandi",
+  // },
   {
     name: "Google Cloud Platform",
     logo: "/images/logos/plugins/gcp.svg",
@@ -120,11 +120,11 @@ export const SOURCE_PLUGINS: Plugin[] = [
   //   logo: "/images/logos/plugins/pagerduty.svg",
   //   id: "pagerduty",
   // },
-  {
-    name: "Plausible Analytics",
-    logo: "/images/logos/plugins/plausibleanalytics.svg",
-    id: "plausible",
-  },
+  // {
+  //   name: "Plausible Analytics",
+  //   logo: "/images/logos/plugins/plausibleanalytics.svg",
+  //   id: "plausible",
+  // },
   {
     name: "Salesforce",
     logo: "/images/logos/plugins/salesforce.svg",
@@ -153,11 +153,11 @@ export const SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/simpleanalytics/cq-source-simpleanalytics",
     id: "simpleanalytics",
   },
-  {
-    name: "Slack",
-    logo: "/images/logos/plugins/slack.svg",
-    id: "slack",
-  },
+  // {
+  //   name: "Slack",
+  //   logo: "/images/logos/plugins/slack.svg",
+  //   id: "slack",
+  // },
   // {
   //   name: "Snyk",
   //   logo: "/images/logos/plugins/snyk.svg",
