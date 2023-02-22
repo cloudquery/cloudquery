@@ -51,14 +51,10 @@ func GetDefinition(column *schema.Column, pkEnabled bool) *Definition {
 		Name:    column.Name,
 		typ:     SQLType(column.Type),
 		notNull: column.CreationOptions.NotNull,
+		unique:  column.CreationOptions.Unique,
 	}
 
-	switch {
-	case column.Name == schema.CqIDColumn.Name:
-		// _cq_id column should always have a "UNIQUE NOT NULL" constraint
-		def.unique = true
-		def.notNull = true
-	case pkEnabled && column.CreationOptions.PrimaryKey:
+	if pkEnabled && column.CreationOptions.PrimaryKey {
 		def.notNull = true
 	}
 
