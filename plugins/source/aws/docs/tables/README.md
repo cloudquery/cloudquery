@@ -376,6 +376,7 @@
 - [aws_neptune_subnet_groups](aws_neptune_subnet_groups.md)
 - [aws_organizations](aws_organizations.md)
 - [aws_organizations_accounts](aws_organizations_accounts.md)
+- [aws_organizations_delgated_administrators](aws_organizations_delgated_administrators.md)
 - [aws_organizations_organizational_units](aws_organizations_organizational_units.md)
 - [aws_organizations_policies](aws_organizations_policies.md)
 - [aws_organizations_resource_policies](aws_organizations_resource_policies.md)
