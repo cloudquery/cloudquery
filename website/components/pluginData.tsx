@@ -83,16 +83,16 @@ export const SOURCE_PLUGINS: Plugin[] = [
   //   logo: "/images/logos/plugins/heroku.svg",
   //   id: "heroku",
   // },
-  {
-    name: "HubSpot",
-    logo: "/images/logos/plugins/hubspot.svg",
-    id: "hubspot",
-  },
-  {
-    name: "Kubernetes",
-    logo: "/images/logos/plugins/kubernetes.svg",
-    id: "k8s",
-  },
+  // {
+  //   name: "HubSpot",
+  //   logo: "/images/logos/plugins/hubspot.svg",
+  //   id: "hubspot",
+  // },
+  // {
+  //   name: "Kubernetes",
+  //   logo: "/images/logos/plugins/kubernetes.svg",
+  //   id: "k8s",
+  // },
   // {
   //   name: "LaunchDarkly",
   //   logo: "/images/logos/plugins/launchdarkly.svg",
@@ -105,21 +105,21 @@ export const SOURCE_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/mixpanel-dark.svg",
     id: "mixpanel",
   },
-  {
-    name: "Okta",
-    logo: "/images/logos/plugins/okta.svg",
-    id: "okta",
-  },
+  // {
+  //   name: "Okta",
+  //   logo: "/images/logos/plugins/okta.svg",
+  //   id: "okta",
+  // },
   // {
   //   name: "Oracle",
   //   logo: "/images/logos/plugins/oracle.svg",
   //   id: "oracle",
   // },
-  {
-    name: "Pagerduty",
-    logo: "/images/logos/plugins/pagerduty.svg",
-    id: "pagerduty",
-  },
+  // {
+  //   name: "Pagerduty",
+  //   logo: "/images/logos/plugins/pagerduty.svg",
+  //   id: "pagerduty",
+  // },
   {
     name: "Plausible Analytics",
     logo: "/images/logos/plugins/plausibleanalytics.svg",
