@@ -39,6 +39,7 @@ spec:
   # unless otherwise indicated they are configuration parameters rather than configured resources
   skip_tables:
     - aws_ec2_vpc_endpoint_services # this resource includes services that are available from AWS as well as other AWS Accounts
+    - aws_cloudtrail_events
     - aws_docdb_cluster_parameter_groups
     - aws_docdb_engine_versions
     - aws_ec2_instance_types

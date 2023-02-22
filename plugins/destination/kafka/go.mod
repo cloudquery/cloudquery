@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/Shopify/sarama v1.37.2
 	github.com/cloudquery/filetypes v1.4.2
-	github.com/cloudquery/plugin-sdk v1.38.2
+	github.com/cloudquery/plugin-sdk v1.39.0
 	github.com/rs/zerolog v1.29.0
 )
 

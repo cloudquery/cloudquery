@@ -233,6 +233,7 @@ func include(m reflect.Method) bool {
 	var exceptions = []string{
 		"QuerySchemaVersionMetadata",
 		"GenerateCredentialReport",
+		"LookupEvents",
 	}
 	if funk.ContainsString(exceptions, m.Name) {
 		return true
