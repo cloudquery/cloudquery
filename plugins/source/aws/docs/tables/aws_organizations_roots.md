@@ -1,6 +1,6 @@
-# Table: aws_organizations_accounts
+# Table: aws_organizations_roots
 
-https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html
+https://docs.aws.amazon.com/organizations/latest/APIReference/API_Root.html
 
 The primary key for this table is **arn**.
 
@@ -15,9 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |tags|JSON|
 |arn (PK)|String|
-|email|String|
 |id|String|
-|joined_method|String|
-|joined_timestamp|Timestamp|
 |name|String|
-|status|String|
+|policy_types|JSON|
