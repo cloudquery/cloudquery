@@ -9,9 +9,16 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.53
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.3
 	github.com/aws/aws-sdk-go-v2/service/sts v1.18.3
-	github.com/cloudquery/plugin-sdk v1.37.1
+	github.com/cloudquery/plugin-sdk v1.39.0
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.29.0
+)
+
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 require (

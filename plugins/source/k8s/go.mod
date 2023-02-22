@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/k8s
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.37.1
+	github.com/cloudquery/plugin-sdk v1.39.0
 	github.com/golang/mock v1.6.0
 	github.com/google/gnostic v0.6.9
 	github.com/rs/zerolog v1.29.0
@@ -13,7 +13,11 @@ require (
 	k8s.io/client-go v0.26.1
 )
 
-require github.com/google/go-cmp v0.5.9 // indirect
+require (
+	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

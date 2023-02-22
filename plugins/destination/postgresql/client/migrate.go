@@ -342,6 +342,9 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		}
 		columnName := pgx.Identifier{col.Name}.Sanitize()
 		fieldDef := columnName + " " + pgType
+		if col.Name == "_cq_id" {
+			fieldDef += " UNIQUE"
+		}
 		if col.CreationOptions.NotNull {
 			fieldDef += " NOT NULL"
 		}

@@ -3,11 +3,12 @@ module github.com/cloudquery/cloudquery/plugins/destination/sqlite
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.38.0
+	github.com/cloudquery/plugin-sdk v1.39.0
 	github.com/mattn/go-sqlite3 v1.14.16
 	github.com/rs/zerolog v1.29.0
-	github.com/stretchr/testify v1.8.1
 )
+
+require github.com/stretchr/testify v1.8.1 // indirect
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.1.7...plugins-destination-bigquery-v2.2.0) (2023-02-22)
+
+
+### Features
+
+* **deps:** Update BigQuery plugin-sdk to v1.39.0 ([#8230](https://github.com/cloudquery/cloudquery/issues/8230)) ([295bc90](https://github.com/cloudquery/cloudquery/commit/295bc90a1d61af20f211e7c07462327adf0af292))
+
+## [2.1.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.1.6...plugins-destination-bigquery-v2.1.7) (2023-02-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+
 ## [2.1.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.1.5...plugins-destination-bigquery-v2.1.6) (2023-02-14)
 
 

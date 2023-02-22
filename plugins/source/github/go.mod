@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/github
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.37.1
+	github.com/cloudquery/plugin-sdk v1.39.0
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v48 v48.2.0
 	github.com/rs/zerolog v1.29.0
@@ -12,6 +12,13 @@ require (
 )
 
 require github.com/gofri/go-github-ratelimit v1.0.2
+
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
+)
 
 require (
 	github.com/getsentry/sentry-go v0.18.0 // indirect

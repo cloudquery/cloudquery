@@ -3,12 +3,18 @@ module github.com/cloudquery/cloudquery/plugins/source/stripe
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.37.1
+	github.com/cloudquery/plugin-sdk v1.39.0
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/rs/zerolog v1.29.0
 	github.com/stripe/stripe-go/v74 v74.4.0
 	github.com/stripe/stripe-mock v0.148.0
 	golang.org/x/time v0.3.0
+)
+
+require (
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 require (
