@@ -12,7 +12,6 @@ func products() *schema.Table {
 		Name:      "awspricing_service_products",
 		Resolver:  fetchProducts,
 		Transform: transformers.TransformWithStruct(&Product{}, transformers.WithPrimaryKeys("Sku")),
-		Relations: []*schema.Table{},
 	}
 }
 
