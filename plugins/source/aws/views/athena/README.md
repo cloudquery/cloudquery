@@ -136,7 +136,7 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
 6. Finally, run the function. This might be easier from the console, but here is an example of how to do it from the command line (you will need to modify the values in the payload for your environment):
 
   ```shell
-  aws lambda invoke --cli-binary-format raw-in-base64-out --function-name athena-resources-view --invocation-type Event --payload '{"catalog": "awsdatacatalog", "database": "athena-example", "output": "s3://cloudquery-athena-example/output", "view": "aws_resources", "region": "us-east-1"}' response.json
+  aws lambda invoke --cli-binary-format raw-in-base64-out --function-name athena-resources-view --invocation-type Event --payload '{"catalog": "awsdatacatalog", "database": "athena-example", "output": "s3://cloudquery-athena-example/output", "view": "aws_resources", "region": "us-east-1", "extra_columns": []}' response.json
   ```
   
   The above command uses the following JSON payload, which you should adapt for your environment:
@@ -146,7 +146,8 @@ $ ./athena_resources_view -database athena-example -output 's3://cloudquery-athe
       "database": "athena-example",
       "output": "s3://cloudquery-athena-example/output",
       "view": "aws_resources",
-      "region": "us-east-1"
+      "region": "us-east-1",
+      "extra_columns": []
   }
   ```
   

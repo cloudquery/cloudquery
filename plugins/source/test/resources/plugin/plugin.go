@@ -17,6 +17,7 @@ func Plugin() *source.Plugin {
 		Version,
 		[]*schema.Table{
 			services.TestSomeTable(),
+			services.TestDataTable(),
 		},
 		client.New,
 	)

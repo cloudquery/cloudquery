@@ -35,6 +35,7 @@
     "plugins/source/shopify": { "component": "plugins-source-shopify" },
     "plugins/source/stripe": { "component": "plugins-source-stripe" },
     "plugins/source/mixpanel": { "component": "plugins-source-mixpanel" },
+    "plugins/source/postgresql": { "component": "plugins-source-postgresql" },
     "plugins/destination/postgresql": {
       "component": "plugins-destination-postgresql"
     },

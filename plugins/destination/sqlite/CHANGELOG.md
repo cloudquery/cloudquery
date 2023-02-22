@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v1.2.3...plugins-destination-sqlite-v1.3.0) (2023-02-21)
+
+
+### Features
+
+* **sqlite-migration:** Switch to SDK methods for migrating data ([#8166](https://github.com/cloudquery/cloudquery/issues/8166)) ([8716f79](https://github.com/cloudquery/cloudquery/commit/8716f791aca86aea75db932889f577ee45d21d0c))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.38.2 ([#8156](https://github.com/cloudquery/cloudquery/issues/8156)) ([ac2d2d7](https://github.com/cloudquery/cloudquery/commit/ac2d2d70d5c4bc45fb8734bd4deb8a1e36074f6d))
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+
 ## [1.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v1.2.2...plugins-destination-sqlite-v1.2.3) (2023-02-14)
 
 

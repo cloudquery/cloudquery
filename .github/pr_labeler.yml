@@ -30,6 +30,8 @@ hubspot:
   - plugins/source/hubspot/**/*
 plausible:
   - plugins/source/plausible/**/*
+source-postgresql:
+  - plugins/source/postgresql/**/*
 k8s:
   - plugins/source/k8s/**/*
 launchdarkly:
