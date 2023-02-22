@@ -1,4 +1,4 @@
-# Table: aws_organizations
+# Table: aws_organizations_organizations
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html
 
