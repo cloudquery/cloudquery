@@ -13,10 +13,10 @@ export default function Integration({
                                     }: {
     source: Plugin;
     sourceConfiguration: ReactNode;
-    sourceAuthentication: ReactNode;
+    sourceAuthentication?: ReactNode;
     destination: Plugin;
     destinationConfiguration: ReactNode;
-    destinationAuthentication: ReactNode;
+    destinationAuthentication?: ReactNode;
     syncCommand: ReactNode;
 }) {
     return <>
@@ -73,7 +73,7 @@ export default function Integration({
                     Create a file called <code className="text-lg nx-font-bold">{source.id}.yml</code> and add the following contents:
                 </p>
                 {sourceConfiguration}
-                <p>
+                <p className="mt-4">
                     Fine-tune this configuration to match your needs. For more information, see the <a target="_blank" href={"/docs/plugins/sources/" + source.id + "/overview"} className="text-blue-500 hover:text-blue-600">{source.name} Plugin ↗</a> page in the docs.
                 </p>
                 {sourceAuthentication ? <div>
@@ -96,7 +96,7 @@ export default function Integration({
                     Create a file called <code className="text-lg nx-font-bold">{destination.id}.yml</code> and add the following contents:
                 </p>
                 {destinationConfiguration}
-                <p>
+                <p className="mt-4">
                     Fine-tune this configuration to match your needs. For more information, see the <a target="_blank" href={"/docs/plugins/destinations/" + destination.id + "/overview"} className="text-blue-500 hover:text-blue-600">{destination.name} Plugin ↗</a> page in the docs.
                 </p>
                 {destinationAuthentication ? <div>

@@ -1,0 +1,13 @@
+```yaml copy
+kind: source
+spec:
+  name: "hubspot"
+  path: cloudquery/hubspot
+  version: "VERSION_SOURCE_HUBSPOT"
+  destinations: ["DESTINATION_NAME"]
+  tables: ["*"]
+  spec:
+    # optional, default is 5.
+    # See https://developers.hubspot.com/docs/api/usage-details#rate-limits
+    max_requests_per_second: 5
+```

@@ -5,24 +5,8 @@
 This example syncs from Snyk to a Postgres destination, using `api_key` authentication.
 The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml copy
-kind: source
-# Common source-plugin configuration
-spec:
-  name:    snyk
-  path:    cloudquery/snyk
-  version: "VERSION_SOURCE_SNYK"
-  tables: [ "*" ]
-  destinations: [ "postgresql" ]
-
-  # Snyk specific configuration
-  spec:
-    api_key:      "<YOUR_API_KEY_HERE>"
-    organizations:
-    - "<YOUR_ORG_1>"
-    - "<YOUR_ORG_2>"
-    endpoint_url: "<YOUR_BASE_URL>"
-```
+import Configuration from "./_configuration.mdx";
+<Configuration />
 
 ## Snyk Spec
 

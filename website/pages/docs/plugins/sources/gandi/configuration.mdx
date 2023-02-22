@@ -2,22 +2,8 @@
 
 ## Example
 
-This example syncs from Gandi to a Postgres destination, using `api_key` authentication. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
-
-```yaml copy
-kind: source
-# Common source-plugin configuration
-spec:
-  name: gandi
-  path: cloudquery/gandi
-  version: "VERSION_SOURCE_GANDI"
-  tables: ["*"]
-  destinations: ["postgresql"]
-
-  # Gandi specific configuration
-  spec:
-    api_key: "<YOUR_API_KEY_HERE>"
-```
+import Configuration from "./_configuration.mdx";
+<Configuration/>
 
 ## Gandi Spec
 
