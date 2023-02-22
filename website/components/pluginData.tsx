@@ -25,38 +25,38 @@ export const SOURCE_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/azure.svg",
     id: "azure",
   },
-  // {
-  //   name: "Azure DevOps",
-  //   logo: "/images/logos/plugins/azuredevops.svg",
-  //   id: "azuredevops",
-  // },
+  {
+    name: "Azure DevOps",
+    logo: "/images/logos/plugins/azuredevops.svg",
+    id: "azuredevops",
+  },
   {
     name: "Cloudflare",
     logo: "/images/logos/plugins/cloudflare.svg",
     id: "cloudflare",
   },
-  // {
-  //   name: "Datadog",
-  //   logo: "/images/logos/plugins/datadog.svg",
-  //   logoDark: "/images/logos/plugins/datadog-dark.svg",
-  //   id: "datadog",
-  // },
+  {
+    name: "Datadog",
+    logo: "/images/logos/plugins/datadog.svg",
+    logoDark: "/images/logos/plugins/datadog-dark.svg",
+    id: "datadog",
+  },
   {
     name: "Digital Ocean",
     logo: "/images/logos/plugins/digitalocean.svg",
     id: "digitalocean",
   },
-  // {
-  //   name: "Fastly",
-  //   logo: "/images/logos/plugins/fastly.svg",
-  //   id: "fastly",
-  // },
-  // {
-  //   name: "Gandi",
-  //   logo: "/images/logos/plugins/gandi.svg",
-  //   logoDark: "/images/logos/plugins/gandi-dark.svg",
-  //   id: "gandi",
-  // },
+  {
+    name: "Fastly",
+    logo: "/images/logos/plugins/fastly.svg",
+    id: "fastly",
+  },
+  {
+    name: "Gandi",
+    logo: "/images/logos/plugins/gandi.svg",
+    logoDark: "/images/logos/plugins/gandi-dark.svg",
+    id: "gandi",
+  },
   {
     name: "Google Cloud Platform",
     logo: "/images/logos/plugins/gcp.svg",
@@ -73,58 +73,58 @@ export const SOURCE_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/gitlab.svg",
     id: "gitlab",
   },
-  // {
-  //   name: "Hacker News",
-  //   logo: "/images/logos/plugins/hackernews.svg",
-  //   id: "hackernews",
-  // },
-  // {
-  //   name: "Heroku",
-  //   logo: "/images/logos/plugins/heroku.svg",
-  //   id: "heroku",
-  // },
-  // {
-  //   name: "HubSpot",
-  //   logo: "/images/logos/plugins/hubspot.svg",
-  //   id: "hubspot",
-  // },
-  // {
-  //   name: "Kubernetes",
-  //   logo: "/images/logos/plugins/kubernetes.svg",
-  //   id: "k8s",
-  // },
-  // {
-  //   name: "LaunchDarkly",
-  //   logo: "/images/logos/plugins/launchdarkly.svg",
-  //   logoDark: "/images/logos/plugins/launchdarkly-dark.svg",
-  //   id: "launchdarkly",
-  // },
+  {
+    name: "Hacker News",
+    logo: "/images/logos/plugins/hackernews.svg",
+    id: "hackernews",
+  },
+  {
+    name: "Heroku",
+    logo: "/images/logos/plugins/heroku.svg",
+    id: "heroku",
+  },
+  {
+    name: "HubSpot",
+    logo: "/images/logos/plugins/hubspot.svg",
+    id: "hubspot",
+  },
+  {
+    name: "Kubernetes",
+    logo: "/images/logos/plugins/kubernetes.svg",
+    id: "k8s",
+  },
+  {
+    name: "LaunchDarkly",
+    logo: "/images/logos/plugins/launchdarkly.svg",
+    logoDark: "/images/logos/plugins/launchdarkly-dark.svg",
+    id: "launchdarkly",
+  },
   {
     name: "Mixpanel",
     logo: "/images/logos/plugins/mixpanel.svg",
     logoDark: "/images/logos/plugins/mixpanel-dark.svg",
     id: "mixpanel",
   },
-  // {
-  //   name: "Okta",
-  //   logo: "/images/logos/plugins/okta.svg",
-  //   id: "okta",
-  // },
-  // {
-  //   name: "Oracle",
-  //   logo: "/images/logos/plugins/oracle.svg",
-  //   id: "oracle",
-  // },
-  // {
-  //   name: "Pagerduty",
-  //   logo: "/images/logos/plugins/pagerduty.svg",
-  //   id: "pagerduty",
-  // },
-  // {
-  //   name: "Plausible Analytics",
-  //   logo: "/images/logos/plugins/plausibleanalytics.svg",
-  //   id: "plausible",
-  // },
+  {
+    name: "Okta",
+    logo: "/images/logos/plugins/okta.svg",
+    id: "okta",
+  },
+  {
+    name: "Oracle",
+    logo: "/images/logos/plugins/oracle.svg",
+    id: "oracle",
+  },
+  {
+    name: "Pagerduty",
+    logo: "/images/logos/plugins/pagerduty.svg",
+    id: "pagerduty",
+  },
+  {
+    name: "Plausible Analytics",
+    logo: "/images/logos/plugins/plausibleanalytics.svg",
+    id: "plausible",
+  },
   {
     name: "Salesforce",
     logo: "/images/logos/plugins/salesforce.svg",
@@ -153,38 +153,38 @@ export const SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/simpleanalytics/cq-source-simpleanalytics",
     id: "simpleanalytics",
   },
-  // {
-  //   name: "Slack",
-  //   logo: "/images/logos/plugins/slack.svg",
-  //   id: "slack",
-  // },
-  // {
-  //   name: "Snyk",
-  //   logo: "/images/logos/plugins/snyk.svg",
-  //   id: "snyk",
-  // },
+  {
+    name: "Slack",
+    logo: "/images/logos/plugins/slack.svg",
+    id: "slack",
+  },
+  {
+    name: "Snyk",
+    logo: "/images/logos/plugins/snyk.svg",
+    id: "snyk",
+  },
   {
     name: "Stripe",
     logo: "/images/logos/plugins/stripe.svg",
     id: "stripe",
   },
-  // {
-  //   name: "Tailscale",
-  //   logo: "/images/logos/plugins/tailscale.svg",
-  //   logoDark: "/images/logos/plugins/tailscale-dark.svg",
-  //   id: "tailscale",
-  // },
-  // {
-  //   name: "Terraform",
-  //   logo: "/images/logos/plugins/terraform.svg",
-  //   id: "terraform",
-  // },
-  // {
-  //   name: "Vercel",
-  //   logo: "/images/logos/plugins/vercel.svg",
-  //   logoDark: "/images/logos/plugins/vercel-dark.svg",
-  //   id: "vercel",
-  // },
+  {
+    name: "Tailscale",
+    logo: "/images/logos/plugins/tailscale.svg",
+    logoDark: "/images/logos/plugins/tailscale-dark.svg",
+    id: "tailscale",
+  },
+  {
+    name: "Terraform",
+    logo: "/images/logos/plugins/terraform.svg",
+    id: "terraform",
+  },
+  {
+    name: "Vercel",
+    logo: "/images/logos/plugins/vercel.svg",
+    logoDark: "/images/logos/plugins/vercel-dark.svg",
+    id: "vercel",
+  },
   {
     name: "Yandex Cloud",
     logo: "/images/logos/plugins/yandex.svg",

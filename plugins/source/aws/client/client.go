@@ -19,6 +19,7 @@ import (
 	"github.com/aws/smithy-go"
 	"github.com/aws/smithy-go/logging"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
+	"github.com/cloudquery/plugin-sdk/backend"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -37,6 +38,7 @@ type Client struct {
 	WAFScope             wafv2types.Scope
 	Partition            string
 	LanguageCode         string
+	Backend              backend.Backend
 }
 
 type AwsLogger struct {
@@ -103,8 +105,9 @@ func (s *ServicesManager) InitServicesForPartitionAccountAndScope(partition, acc
 	s.wafScopeServices[partition][accountId] = &svcs
 }
 
-func NewAwsClient(logger zerolog.Logger) Client {
+func NewAwsClient(logger zerolog.Logger, b backend.Backend) Client {
 	return Client{
+		Backend: b,
 		ServicesManager: ServicesManager{
 			services: ServicesPartitionAccountRegionMap{},
 		},
@@ -145,6 +148,7 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 		Region:               region,
 		AutoscalingNamespace: c.AutoscalingNamespace,
 		WAFScope:             c.WAFScope,
+		Backend:              c.Backend,
 	}
 }
 
@@ -157,6 +161,7 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 		Region:               region,
 		AutoscalingNamespace: namespace,
 		WAFScope:             c.WAFScope,
+		Backend:              c.Backend,
 	}
 }
 
@@ -169,6 +174,7 @@ func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, regi
 		Region:               region,
 		AutoscalingNamespace: c.AutoscalingNamespace,
 		WAFScope:             scope,
+		Backend:              c.Backend,
 	}
 }
 
@@ -324,7 +330,7 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 	return awsCfg, err
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, opts source.Options) (schema.ClientMeta, error) {
 	var awsConfig Spec
 	err := spec.UnmarshalSpec(&awsConfig)
 	if err != nil {
@@ -336,7 +342,8 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 		return nil, fmt.Errorf("spec validation failed: %w", err)
 	}
 
-	client := NewAwsClient(logger)
+	client := NewAwsClient(logger, opts.Backend)
+
 	var adminAccountSts AssumeRoleAPIClient
 
 	if awsConfig.Organization != nil {
