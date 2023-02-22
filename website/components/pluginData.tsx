@@ -41,11 +41,11 @@ export const SOURCE_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/datadog-dark.svg",
     id: "datadog",
   },
-  {
-    name: "Digital Ocean",
-    logo: "/images/logos/plugins/digitalocean.svg",
-    id: "digitalocean",
-  },
+  // {
+  //   name: "Digital Ocean",
+  //   logo: "/images/logos/plugins/digitalocean.svg",
+  //   id: "digitalocean",
+  // },
   // {
   //   name: "Fastly",
   //   logo: "/images/logos/plugins/fastly.svg",
@@ -93,12 +93,12 @@ export const SOURCE_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/kubernetes.svg",
     id: "k8s",
   },
-  {
-    name: "LaunchDarkly",
-    logo: "/images/logos/plugins/launchdarkly.svg",
-    logoDark: "/images/logos/plugins/launchdarkly-dark.svg",
-    id: "launchdarkly",
-  },
+  // {
+  //   name: "LaunchDarkly",
+  //   logo: "/images/logos/plugins/launchdarkly.svg",
+  //   logoDark: "/images/logos/plugins/launchdarkly-dark.svg",
+  //   id: "launchdarkly",
+  // },
   {
     name: "Mixpanel",
     logo: "/images/logos/plugins/mixpanel.svg",
@@ -110,11 +110,11 @@ export const SOURCE_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/okta.svg",
     id: "okta",
   },
-  {
-    name: "Oracle",
-    logo: "/images/logos/plugins/oracle.svg",
-    id: "oracle",
-  },
+  // {
+  //   name: "Oracle",
+  //   logo: "/images/logos/plugins/oracle.svg",
+  //   id: "oracle",
+  // },
   {
     name: "Pagerduty",
     logo: "/images/logos/plugins/pagerduty.svg",
