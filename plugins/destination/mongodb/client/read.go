@@ -44,7 +44,7 @@ func (*Client) createResultsArray(res bson.M, table *schema.Table) []any {
 			}
 			results = append(results, r)
 		case schema.TypeTimestamp:
-			r := (val).(primitive.DateTime).Time()
+			r := (val).(primitive.DateTime).Time().UTC()
 			results = append(results, r)
 		case schema.TypeJSON:
 			r := (val).(primitive.M)

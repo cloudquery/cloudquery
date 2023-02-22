@@ -5,7 +5,16 @@ import (
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/specs"
 )
+
+var migrateStrategy = destination.MigrateStrategy{
+	AddColumn:           specs.MigrateModeSafe,
+	AddColumnNotNull:    specs.MigrateModeForced,
+	RemoveColumn:        specs.MigrateModeSafe,
+	RemoveColumnNotNull: specs.MigrateModeForced,
+	ChangeColumn:        specs.MigrateModeForced,
+}
 
 func getTestConnection() string {
 	testConn := os.Getenv("CQ_DEST_MONGODB_TEST_CONN")
@@ -24,5 +33,11 @@ func TestPlugin(t *testing.T) {
 			ConnectionString: getTestConnection(),
 			Database:         "destination_mongodb_test",
 		},
-		destination.PluginTestSuiteTests{})
+		destination.PluginTestSuiteTests{
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
+
+			MigrateStrategyOverwrite: migrateStrategy,
+			MigrateStrategyAppend:    migrateStrategy,
+		})
 }
