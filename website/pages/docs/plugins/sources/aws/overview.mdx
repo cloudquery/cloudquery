@@ -9,7 +9,7 @@ import { Badge } from "../../../../../components/Badge";
 
 <Badge text={"Latest: " + getLatestVersion("source", "aws")}/>
 
-The AWS Source plugin extracts information from many of the supported services by Amazon Web Services (AWS).
+The AWS Source plugin extracts information from many of the supported services by Amazon Web Services (AWS) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Authentication
 
@@ -50,7 +50,7 @@ For information about obtaining credentials, see the
 
 Here are example contents for a `credentials` file:
 
-```toml copy
+```toml copy filename="~/.aws/credentials"
 [default]
 aws_access_key_id = YOUR_ACCESS_KEY_ID
 aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
@@ -60,7 +60,7 @@ You can also specify credentials for a different profile, and instruct CloudQuer
 
 For example:
 
-```toml copy
+```toml copy filename="~/.aws/credentials"
 [myprofile]
 aws_access_key_id = YOUR_ACCESS_KEY_ID
 aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
@@ -74,7 +74,7 @@ export AWS_PROFILE=myprofile
 
 or, configure your desired profile in the `local_profile` field:
 
-```yaml copy
+```yaml copy filename="aws.yml"
 accounts:
   id: <account_alias>
   local_profile: myprofile

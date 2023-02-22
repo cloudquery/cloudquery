@@ -13,7 +13,7 @@ func Groups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html`,
 		Resolver:    fetchIamGroups,
 		Transform:   transformers.TransformWithStruct(&types.Group{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{

@@ -1,0 +1,20 @@
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    environment:
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+      CLICKHOUSE_PASSWORD:                  test
+      CLICKHOUSE_USER:                      cq
+      CLICKHOUSE_DB:                        cloudquery
+    ports:
+    - target:    8123
+      published: 8123
+    - target:    9000
+      published: 9000
+    networks:
+    - clickhouse
+
+networks:
+  clickhouse:
+    name:   clickhouse
+    driver: bridge

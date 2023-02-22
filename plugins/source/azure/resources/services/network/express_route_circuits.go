@@ -17,6 +17,10 @@ func ExpressRouteCircuits() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_express_route_circuits", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRouteCircuit{}, transformers.WithPrimaryKeys("ID")),
 		Columns:     schema.ColumnList{client.SubscriptionID},
+		Relations: []*schema.Table{
+			expressRouteCircuitAuthorizations(),
+			expressRouteCircuitPeerings(),
+		},
 	}
 }
 

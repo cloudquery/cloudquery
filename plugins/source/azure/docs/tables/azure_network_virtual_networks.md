@@ -4,6 +4,11 @@ https://learn.microsoft.com/en-us/rest/api/virtualnetwork/virtual-networks/list-
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on azure_network_virtual_networks:
+  - [azure_network_virtual_network_subnets](azure_network_virtual_network_subnets.md)
+
 ## Columns
 
 | Name          | Type          |

@@ -13,7 +13,7 @@ func Rules() *schema.Table {
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_RuleSummary.html`,
 		Resolver:    fetchWafRules,
 		Transform:   transformers.TransformWithStruct(&types.Rule{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("waf"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

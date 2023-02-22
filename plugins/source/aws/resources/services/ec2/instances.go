@@ -26,10 +26,9 @@ func Instances() *schema.Table {
 				},
 			},
 			{
-				Name:          "state_transition_reason_time",
-				Type:          schema.TypeTimestamp,
-				Resolver:      resolveEc2InstanceStateTransitionReasonTime,
-				IgnoreInTests: true,
+				Name:     "state_transition_reason_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: resolveEc2InstanceStateTransitionReasonTime,
 			},
 			{
 				Name:     "tags",

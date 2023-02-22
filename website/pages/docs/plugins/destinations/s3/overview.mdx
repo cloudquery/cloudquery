@@ -51,7 +51,17 @@ This is the (nested) spec used by the CSV destination Plugin.
 
 - `path` (string) (required)
 
-  Path to where the files will be uploaded in the above bucket. The path supports two placeholder variables: `{{TABLE}}` will be replaced with the table name, and `{{UUID}}` with a random UUID to uniquely identify each file.
+  Path to where the files will be uploaded in the above bucket. The path supports the following placeholder variables:
+
+  - `{{TABLE}}` will be replaced with the table name,
+  - `{{UUID}}` will be replaced with a random UUID to uniquely identify each file,
+  - `{{YEAR}}` will be replaced with the current year in `YYYY` format,
+  - `{{MONTH}}` will be replaced with the current month in `MM` format,
+  - `{{DAY}}` will be replaced with the current day in `DD` format,
+  - `{{HOUR}}` will be replaced with the current hour in `HH` format, and
+  - `{{MINUTE}}` will be replaced with the current minute in `mm` format
+
+  Note that timestamps are in UTC and will be the current time at the time the file is written, not when the sync started.
 
 - `athena` (boolean) (optional, default `false`)
 

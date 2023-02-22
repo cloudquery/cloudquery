@@ -20,8 +20,10 @@ func getTestConnection() string {
 }
 
 func TestPlugin(t *testing.T) {
-	p := destination.NewPlugin("mssql", plugin.Version, New, destination.WithManagedWriter())
-	destination.PluginTestSuiteRunner(t, p,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("mssql", plugin.Version, New, destination.WithManagedWriter())
+		},
 		Spec{ConnectionString: getTestConnection()},
 		destination.PluginTestSuiteTests{},
 	)
