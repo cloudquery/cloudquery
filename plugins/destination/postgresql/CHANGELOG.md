@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.1.1...plugins-destination-postgresql-v2.1.2) (2023-02-21)
+
+
+### Bug Fixes
+
+* **migrate:** Make `_cq_id` unique ([#8326](https://github.com/cloudquery/cloudquery/issues/8326)) ([d2cf7ee](https://github.com/cloudquery/cloudquery/commit/d2cf7ee9c5dbdac52b465070b6f051d18f944b5c))
+
 ## [2.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.1.0...plugins-destination-postgresql-v2.1.1) (2023-02-21)
 
 
