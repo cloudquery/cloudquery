@@ -375,6 +375,7 @@
 - [aws_neptune_subnet_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_neptune_subnet_groups.md)
 - [aws_organizations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_organizations.md)
 - [aws_organizations_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_organizations_accounts.md)
+- [aws_organizations_delgated_administrators](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_organizations_delgated_administrators.md)
 - [aws_organizations_organizational_units](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_organizations_organizational_units.md)
 - [aws_organizations_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_organizations_policies.md)
 - [aws_organizations_resource_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_organizations_resource_policies.md)
