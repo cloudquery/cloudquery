@@ -29,5 +29,5 @@ func buildDelegatedAdministrators(t *testing.T, ctrl *gomock.Controller) client.
 }
 
 func TestDelegatedAdministrators(t *testing.T) {
-	client.AwsMockTestHelper(t, DelegatedAdminstrators(), buildDelegatedAdministrators, client.TestOptions{})
+	client.AwsMockTestHelper(t, DelegatedAdministrators(), buildDelegatedAdministrators, client.TestOptions{})
 }
