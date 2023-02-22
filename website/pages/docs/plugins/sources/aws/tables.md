@@ -89,6 +89,7 @@
 - [aws_cloudfront_distributions](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_cloudfront_distributions.md)
 - [aws_cloudhsmv2_backups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_cloudhsmv2_backups.md)
 - [aws_cloudhsmv2_clusters](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_cloudhsmv2_clusters.md)
+- [aws_cloudtrail_events](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_cloudtrail_events.md) (Incremental)
 - [aws_cloudtrail_trails](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_cloudtrail_trails.md)
   - [aws_cloudtrail_trail_event_selectors](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_cloudtrail_trail_event_selectors.md)
 - [aws_cloudwatch_alarms](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_cloudwatch_alarms.md)
