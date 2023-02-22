@@ -146,6 +146,7 @@ func tables() []*schema.Table {
 		cloudfront.Distributions(),
 		cloudhsmv2.Backups(),
 		cloudhsmv2.Clusters(),
+		cloudtrail.Events(),
 		cloudtrail.Trails(),
 		cloudwatch.Alarms(),
 		cloudwatchlogs.LogGroups(),
