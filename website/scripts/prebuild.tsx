@@ -224,6 +224,10 @@ function generateFiles() {
 
     SOURCE_PLUGINS.forEach((source: Plugin) => {
        DESTINATION_PLUGINS.forEach((destination: Plugin) => {
+           if (source.href || destination.href) {
+               // skip partner or community plugins
+               return;
+           }
            const sourceHasAuth = hasAuthFile['source-' + source.id];
            const destHasAuth = hasAuthFile['destination-' + destination.id];
            createSourceDestinationIntegrationFile(source, destination, sourceHasAuth, destHasAuth);
