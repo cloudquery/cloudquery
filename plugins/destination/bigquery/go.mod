@@ -4,10 +4,17 @@ go 1.19
 
 require (
 	cloud.google.com/go/bigquery v1.44.0
-	github.com/cloudquery/plugin-sdk v1.37.1
+	github.com/cloudquery/plugin-sdk v1.39.0
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/sync v0.1.0
 	google.golang.org/api v0.107.0
+)
+
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 require (
