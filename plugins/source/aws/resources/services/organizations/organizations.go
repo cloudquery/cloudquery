@@ -12,7 +12,7 @@ import (
 
 func Organizations() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_organizations",
+		Name:        "aws_organizations_organizations",
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html`,
 		Resolver:    fetchOrganizationsOrganizations,
 		Transform: transformers.TransformWithStruct(
