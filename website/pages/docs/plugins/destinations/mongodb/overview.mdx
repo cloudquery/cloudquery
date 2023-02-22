@@ -1,4 +1,3 @@
-import {ConfigFile} from "@babel/core/src/config/files/index-browser";
 ---
 name: MongoDB
 ---
@@ -6,7 +5,7 @@ name: MongoDB
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
-import { Callout } from 'nextra-theme-docs'
+import { Callout } from 'nextra-theme-docs';
 import Configuration from "./_configuration.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "mongodb")}/>

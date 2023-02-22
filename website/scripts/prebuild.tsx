@@ -118,7 +118,7 @@ function createMetaFiles() {
     "theme": {
       "sidebar": false,
       "breadcrumb": true,
-      "typesetting": "page",
+      "typesetting": "default",
       "toc": false,
       "footer": true,
       "pagination": false
@@ -135,6 +135,10 @@ function createMetaFiles() {
     fs.writeFileSync(metaFilePath, metaFileContents);
 
     SOURCE_PLUGINS.forEach((source) => {
+        if (source.href) {
+            // skip partner or community plugins
+            return;
+        }
         const metaFileSourcePath = path.join(
             outputDir,
             `${source.id}/_meta.json`
