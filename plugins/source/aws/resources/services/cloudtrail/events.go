@@ -21,8 +21,8 @@ func Events() *schema.Table {
 		Transform:     transformers.TransformWithStruct(&types.Event{}, transformers.WithPrimaryKeys("EventId")),
 		IsIncremental: true,
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "cloud_trail_event",
 				Type:     schema.TypeJSON,
@@ -71,6 +71,7 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 		}
 		res <- page.Events
 
+		// Retrieve the timestamp from the latest event
 		for _, event := range page.Events {
 			if lastEventTime == nil {
 				lastEventTime = event.EventTime
@@ -86,6 +87,4 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 		return cl.Backend.Set(ctx, key, cl.ID(), lastEventTime.Format(time.RFC3339Nano))
 	}
 	return nil
-
-	// return err
 }
