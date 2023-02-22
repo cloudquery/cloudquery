@@ -25,43 +25,43 @@ export const SOURCE_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/azure.svg",
     id: "azure",
   },
-  // {
-  //   name: "Azure DevOps",
-  //   logo: "/images/logos/plugins/azuredevops.svg",
-  //   id: "azuredevops",
-  // },
-  // {
-  //   name: "Cloudflare",
-  //   logo: "/images/logos/plugins/cloudflare.svg",
-  //   id: "cloudflare",
-  // },
-  // {
-  //   name: "Datadog",
-  //   logo: "/images/logos/plugins/datadog.svg",
-  //   logoDark: "/images/logos/plugins/datadog-dark.svg",
-  //   id: "datadog",
-  // },
-  // {
-  //   name: "Digital Ocean",
-  //   logo: "/images/logos/plugins/digitalocean.svg",
-  //   id: "digitalocean",
-  // },
-  // {
-  //   name: "Fastly",
-  //   logo: "/images/logos/plugins/fastly.svg",
-  //   id: "fastly",
-  // },
-  // {
-  //   name: "Gandi",
-  //   logo: "/images/logos/plugins/gandi.svg",
-  //   logoDark: "/images/logos/plugins/gandi-dark.svg",
-  //   id: "gandi",
-  // },
-  // {
-  //   name: "Google Cloud Platform",
-  //   logo: "/images/logos/plugins/gcp.svg",
-  //   id: "gcp",
-  // },
+  {
+    name: "Azure DevOps",
+    logo: "/images/logos/plugins/azuredevops.svg",
+    id: "azuredevops",
+  },
+  {
+    name: "Cloudflare",
+    logo: "/images/logos/plugins/cloudflare.svg",
+    id: "cloudflare",
+  },
+  {
+    name: "Datadog",
+    logo: "/images/logos/plugins/datadog.svg",
+    logoDark: "/images/logos/plugins/datadog-dark.svg",
+    id: "datadog",
+  },
+  {
+    name: "Digital Ocean",
+    logo: "/images/logos/plugins/digitalocean.svg",
+    id: "digitalocean",
+  },
+  {
+    name: "Fastly",
+    logo: "/images/logos/plugins/fastly.svg",
+    id: "fastly",
+  },
+  {
+    name: "Gandi",
+    logo: "/images/logos/plugins/gandi.svg",
+    logoDark: "/images/logos/plugins/gandi-dark.svg",
+    id: "gandi",
+  },
+  {
+    name: "Google Cloud Platform",
+    logo: "/images/logos/plugins/gcp.svg",
+    id: "gcp",
+  },
   // {
   //   name: "GitHub",
   //   logo: "/images/logos/plugins/github.svg",
@@ -216,61 +216,61 @@ export const DESTINATION_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/clickhouse.svg",
     id: "clickhouse",
   },
-  // {
-  //   name: "Elasticsearch",
-  //   logo: "/images/logos/plugins/elasticsearch.svg",
-  //   id: "elasticsearch",
-  // },
-  // {
-  //   name: "File",
-  //   logo: "/images/logos/plugins/file.svg",
-  //   id: "file",
-  // },
-  // {
-  //   name: "GCS",
-  //   logo: "/images/logos/plugins/gcs.svg",
-  //   id: "gcs",
-  // },
-  // {
-  //   name: "Kafka",
-  //   logo: "/images/logos/plugins/kafka.svg",
-  //   id: "kafka",
-  // },
-  // {
-  //   name: "Microsoft SQL Server",
-  //   logo: "/images/logos/plugins/mssql.svg",
-  //   id: "mssql",
-  // },
-  // {
-  //   name: "MongoDB",
-  //   logo: "/images/logos/plugins/mongodb.svg",
-  //   id: "mongodb",
-  // },
-  // {
-  //   name: "Neo4j",
-  //   logo: "/images/logos/plugins/neo4j.svg",
-  //   id: "neo4j",
-  // },
-  // {
-  //   name: "PostgreSQL",
-  //   logo: "/images/logos/plugins/postgresql.svg",
-  //   id: "postgresql",
-  // },
-  // {
-  //   name: "S3",
-  //   logo: "/images/logos/plugins/s3.svg",
-  //   id: "s3",
-  // },
-  // {
-  //   name: "Snowflake",
-  //   logo: "/images/logos/plugins/snowflake.svg",
-  //   id: "snowflake",
-  // },
-  // {
-  //   name: "SQLite",
-  //   logo: "/images/logos/plugins/sqlite.svg",
-  //   id: "sqlite",
-  // },
+  {
+    name: "Elasticsearch",
+    logo: "/images/logos/plugins/elasticsearch.svg",
+    id: "elasticsearch",
+  },
+  {
+    name: "File",
+    logo: "/images/logos/plugins/file.svg",
+    id: "file",
+  },
+  {
+    name: "GCS",
+    logo: "/images/logos/plugins/gcs.svg",
+    id: "gcs",
+  },
+  {
+    name: "Kafka",
+    logo: "/images/logos/plugins/kafka.svg",
+    id: "kafka",
+  },
+  {
+    name: "Microsoft SQL Server",
+    logo: "/images/logos/plugins/mssql.svg",
+    id: "mssql",
+  },
+  {
+    name: "MongoDB",
+    logo: "/images/logos/plugins/mongodb.svg",
+    id: "mongodb",
+  },
+  {
+    name: "Neo4j",
+    logo: "/images/logos/plugins/neo4j.svg",
+    id: "neo4j",
+  },
+  {
+    name: "PostgreSQL",
+    logo: "/images/logos/plugins/postgresql.svg",
+    id: "postgresql",
+  },
+  {
+    name: "S3",
+    logo: "/images/logos/plugins/s3.svg",
+    id: "s3",
+  },
+  {
+    name: "Snowflake",
+    logo: "/images/logos/plugins/snowflake.svg",
+    id: "snowflake",
+  },
+  {
+    name: "SQLite",
+    logo: "/images/logos/plugins/sqlite.svg",
+    id: "sqlite",
+  },
 ];
 
 export const ALL_PLUGINS: Plugin[] = Array.prototype.concat(SOURCE_PLUGINS, DESTINATION_PLUGINS);
