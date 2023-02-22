@@ -8,7 +8,7 @@
     "dev": "next",
     "start": "next start",
     "prebuild": "npx tsx ./scripts/prebuild.tsx",
-    "build": "next build",
+    "build": "NODE_OPTIONS=--max-old-space-size=8192 next build",
     "postbuild": "next-sitemap",
     "lint": "next lint"
   },
