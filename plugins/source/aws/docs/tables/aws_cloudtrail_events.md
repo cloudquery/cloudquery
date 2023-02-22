@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Event.html
 
-The composite primary key for this table is (**account_id**, **region**, **event_id**).
+The primary key for this table is **event_id**.
 It supports incremental syncs based on the **event_time** column.
 
 ## Columns
@@ -13,8 +13,8 @@ It supports incremental syncs based on the **event_time** column.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
+|account_id|String|
+|region|String|
 |cloud_trail_event|JSON|
 |event_time (Incremental Key)|Timestamp|
 |access_key_id|String|
