@@ -30,7 +30,11 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, r
 	for i, resource := range resources {
 		operation := mongo.NewUpdateOneModel()
 		operation.SetUpsert(true)
-		filter := make(bson.M, len(table.PrimaryKeys()))
+		if len(pks) == 0 {
+			// If no primary keys are defined, use all columns as a filter
+			pks = table.Columns.Names()
+		}
+		filter := make(bson.M, len(pks))
 		for _, pk := range pks {
 			filter[pk] = resource[table.Columns.Index(pk)]
 		}

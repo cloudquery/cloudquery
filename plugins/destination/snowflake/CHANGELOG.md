@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.1.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.1.11...plugins-destination-snowflake-v1.1.12) (2023-02-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/credentials to v1.13.13 ([#8232](https://github.com/cloudquery/cloudquery/issues/8232)) ([58ea27b](https://github.com/cloudquery/cloudquery/commit/58ea27b68c3f5f7f742a64f94f3d60f0dd6085e5))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.53 ([#8233](https://github.com/cloudquery/cloudquery/issues/8233)) ([3bc3b86](https://github.com/cloudquery/cloudquery/commit/3bc3b8613a2e59fea4e0838d3b751e4da12b8379))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/internal/v4a to v1.0.20 ([#8234](https://github.com/cloudquery/cloudquery/issues/8234)) ([6516f73](https://github.com/cloudquery/cloudquery/commit/6516f735ac2edb576afbe168bf56f9d5b25eef71))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.38.2 ([#8156](https://github.com/cloudquery/cloudquery/issues/8156)) ([ac2d2d7](https://github.com/cloudquery/cloudquery/commit/ac2d2d70d5c4bc45fb8734bd4deb8a1e36074f6d))
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+
 ## [1.1.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.1.10...plugins-destination-snowflake-v1.1.11) (2023-02-14)
 
 
