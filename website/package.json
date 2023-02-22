@@ -8,7 +8,7 @@
     "dev": "next",
     "start": "next start",
     "prebuild": "npx tsx ./scripts/prebuild.tsx",
-    "build": "NODE_OPTIONS=--max-old-space-size=8192 next build",
+    "build": "NODE_OPTIONS='--max-old-space-size=8192' next build",
     "postbuild": "next-sitemap",
     "lint": "next lint"
   },
@@ -18,7 +18,7 @@
     "@heroicons/react": "^2.0.14",
     "copy-to-clipboard": "3.3.3",
     "gray-matter": "^4.0.3",
-    "next": "^13.1.5",
+    "next": "^13.1.6",
     "next-sitemap": "^3.1.47",
     "nextra": "^2.2.13",
     "nextra-theme-docs": "^2.2.13",
