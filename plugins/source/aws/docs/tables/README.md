@@ -89,6 +89,7 @@
 - [aws_cloudfront_distributions](aws_cloudfront_distributions.md)
 - [aws_cloudhsmv2_backups](aws_cloudhsmv2_backups.md)
 - [aws_cloudhsmv2_clusters](aws_cloudhsmv2_clusters.md)
+- [aws_cloudtrail_events](aws_cloudtrail_events.md) (Incremental)
 - [aws_cloudtrail_trails](aws_cloudtrail_trails.md)
   - [aws_cloudtrail_trail_event_selectors](aws_cloudtrail_trail_event_selectors.md)
 - [aws_cloudwatch_alarms](aws_cloudwatch_alarms.md)
