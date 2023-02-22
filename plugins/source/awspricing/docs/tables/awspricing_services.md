@@ -1,6 +1,6 @@
 # Table: awspricing_services
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**offer_code**, **version**, **publication_date**).
 
 ## Relations
 
@@ -14,10 +14,10 @@ The following tables depend on awspricing_services:
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
 |format_version|String|
 |disclaimer|String|
-|offer_code|String|
-|version|String|
-|publication_date|Timestamp|
+|offer_code (PK)|String|
+|version (PK)|String|
+|publication_date (PK)|Timestamp|
