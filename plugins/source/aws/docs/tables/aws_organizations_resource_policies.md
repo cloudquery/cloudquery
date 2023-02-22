@@ -1,4 +1,4 @@
-# Table: aws_organization_resource_policies
+# Table: aws_organizations_resource_policies
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_DescribeResourcePolicy.html
 
