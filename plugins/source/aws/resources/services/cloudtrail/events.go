@@ -46,7 +46,7 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 
 	le := &cloudtrail.LookupEventsInput{}
 
-	const key = "cloudwatch_events"
+	const key = "cloudtrail_events"
 	if cl.Backend != nil {
 		value, err := cl.Backend.Get(ctx, key, cl.ID())
 		if err != nil {
