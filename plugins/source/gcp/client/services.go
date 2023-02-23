@@ -5,13 +5,13 @@ package client
 var GcpServices = map[string]bool{
 	// Non discoverable services
 	"aiplatform.googleapis.com": true,
-	"vpcaccess.googleapis.com":  true,
 	"livestream.googleapis.com": true,
 	// Discoverable services
 	"abusiveexperiencereport.googleapis.com":          true,
 	"acceleratedmobilepageurl.googleapis.com":         true,
 	"accessapproval.googleapis.com":                   true,
 	"accesscontextmanager.googleapis.com":             true,
+	"acmedns.googleapis.com":                          true,
 	"adexchangebuyer2.googleapis.com":                 true,
 	"adexperiencereport.googleapis.com":               true,
 	"admin.googleapis.com":                            true,
@@ -254,6 +254,7 @@ var GcpServices = map[string]bool{
 	"videointelligence.googleapis.com":                true,
 	"vision.googleapis.com":                           true,
 	"vmmigration.googleapis.com":                      true,
+	"vpcaccess.googleapis.com":                        true,
 	"webfonts.googleapis.com":                         true,
 	"webrisk.googleapis.com":                          true,
 	"websecurityscanner.googleapis.com":               true,
