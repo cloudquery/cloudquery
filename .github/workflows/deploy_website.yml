@@ -20,3 +20,9 @@ jobs:
           node-version: 18.x
       - run: yarn install
       - run: yarn build
+      - uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+          github-token: ${{ secrets.GITHUB_TOKEN }} # Optional
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}  # Required
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}} # Required

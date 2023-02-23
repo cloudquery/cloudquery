@@ -5,8 +5,12 @@
       "FORCE_RUNTIME_TAG": "canary"
     }
   },
+  "builds": [
+    { "src": "./website", "use": "@vercel/static" }
+  ],
   "github": {
-    "silent": true
+    "silent": true,
+    "enabled": false
   },
   "redirects": [
     {
