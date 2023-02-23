@@ -18,7 +18,10 @@ func Services() *schema.Table {
 		Name:                "awspricing_services",
 		Resolver:            fetchServicesTable,
 		PreResourceResolver: getPricingFile,
-		Transform:           transformers.TransformWithStruct(&PricingFile{}, transformers.WithSkipFields("Products", "Terms"), transformers.WithPrimaryKeys("OfferCode", "Version", "PublicationDate")),
+		Transform: transformers.TransformWithStruct(&PricingFile{},
+			transformers.WithSkipFields("Products", "Terms"),
+			transformers.WithPrimaryKeys("OfferCode", "Version", "PublicationDate")
+		),
 		Relations: []*schema.Table{
 			products(),
 			terms(),
