@@ -1,0 +1,27 @@
+This example uses the parquet format, to create parquet files in `s3://bucket_name/path/to/files`, with each table placed in its own directory.
+
+The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+
+```yaml copy
+kind: destination
+spec:
+  name: "s3"
+  path: "cloudquery/s3"
+  version: "VERSION_DESTINATION_S3"
+  write_mode: "append" # s3 only supports 'append' mode
+  # batch_size: 10000 # optional
+  # batch_size_bytes: 5242880 # optional
+  spec:
+    bucket: "bucket_name"
+    path: "path/to/files/{{TABLE}}/{{UUID}}.parquet"
+    format: "parquet"
+    athena: false # <- set this to true for Athena compatibility
+```
+
+It is also possible to use `{{YEAR}}`, `{{MONTH}}`, `{{DAY}}` and `{{HOUR}}` in the path to create a directory structure based on the current time. For example:
+
+```
+path: "path/to/files/{{TABLE}}/dt={{YEAR}}-{{MONTH}}-{{DAY}}/{{UUID}}.parquet"
+```
+
+Other supported formats are `json` and `csv`.

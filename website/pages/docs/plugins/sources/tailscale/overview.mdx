@@ -5,6 +5,8 @@ name: Tailscale
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", `tailscale`)}/>
 
@@ -12,10 +14,14 @@ The CloudQuery Tailscale plugin pulls configuration out of Tailscale resources a
 
 ## Authentication
 
-In order to fetch information from Tailscale, `cloudquery` needs to be authenticated.
-The suggested way is to use an [OAuth client](https://tailscale.com/kb/1215/oauth-clients/). The previous way of
-using an [API key](https://login.tailscale.com/admin/settings/keys) is also supported.
+<Authentication/>
 
+## Example
+
+This example syncs from Tailscale to a Postgres destination, using OAuth authentication.
+The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
+
+<Configuration/>
 
 ## Spec
 
@@ -37,26 +43,3 @@ This is the (nested) spec used by the Tailscale source plugin.
 
 - `endpoint_url` (string, optional. Default: not used):
   Endpoint URL to make the API requests to.
-
-## Example
-
-This example syncs from Tailscale to a Postgres destination, using OAuth authentication.
-The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
-
-```yaml copy
-kind: source
-# Common source-plugin configuration
-spec:
-  name:    tailscale
-  path:    cloudquery/tailscale
-  version: "VERSION_SOURCE_TAILSCALE"
-  tables: [ "*" ]
-  destinations: [ "postgresql" ]
-
-  # plugin specific configuration
-  spec:
-    client_id:    "<YOUR_CLIENT_ID_HERE>"
-    client_secret: ${CLIENT_SECRET_ENV_VARIABLE}
-    tailnet:      "<YOUR_TAILNET>"
-    endpoint_url: "<YOUR_BASE_URL>"
-```

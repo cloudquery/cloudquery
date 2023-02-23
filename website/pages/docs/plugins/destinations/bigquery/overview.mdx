@@ -6,6 +6,8 @@ name: BigQuery
 import { Callout } from 'nextra-theme-docs'
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "bigquery")}/>
 
@@ -25,21 +27,7 @@ Streaming is not available for the [Google Cloud free tier](https://cloud.google
 
 ## Example config
 
-The following config reads the values for `project_id` and `dataset_id` from environment variables:
-
-```yaml copy
-kind: destination
-spec:
-  name: bigquery
-  path: cloudquery/bigquery
-  version: "VERSION_DESTINATION_BIGQUERY"
-  write_mode: "append"
-  # batch_size: 1000 # optional
-  # batch_size_bytes: 5242880 # optional
-  spec:
-    project_id: ${PROJECT_ID}
-    dataset_id: ${DATASET_ID}
-```
+<Configuration />
 
 The BigQuery destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
 
@@ -47,28 +35,7 @@ Note that the BigQuery plugin only supports the `append` write mode.
 
 ## Authentication
 
-The BigQuery plugin authenticates using your [Application Default Credentials](https://cloud.google.com/sdk/gcloud/reference/auth/application-default). Available options are all the same options described [here](https://cloud.google.com/docs/authentication/provide-credentials-adc) in detail:
-
-Local Environment:
-
-- `gcloud auth application-default login` (recommended when running locally)
-
-Google Cloud cloud-based development environment:
-
-- When you run on Cloud Shell or Cloud Code credentials are already available.
-
-Google Cloud containerized environment:
-
-- When running on GKE use [workload identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity).
-
-[Google Cloud services that support attaching a service account](https://cloud.google.com/docs/authentication/provide-credentials-adc#attached-sa):
-
-- Services such as Compute Engine, App Engine and functions supporting attaching a user-managed service account which will CloudQuery will be able to utilize.
-
-On-premises or another cloud provider
-
-- The suggested way is to use [Workload identity federation](https://cloud.google.com/iam/docs/workload-identity-federation)
-- If not available you can always use service account keys and export the location of the key via `GOOGLE_APPLICATION_CREDENTIALS`. (**Not recommended as long-lived keys are a security risk**)
+<Authentication />
 
 ## BigQuery Spec
 
