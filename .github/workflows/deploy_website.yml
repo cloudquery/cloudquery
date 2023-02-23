@@ -8,7 +8,7 @@ on:
   pull_request:
     branches: [ integration-pages ]
 jobs:
-  build:
+  Deploy-Preview:
     runs-on: cloudquery-release-runner-8-cores
     defaults:
       run:
