@@ -17,11 +17,6 @@ lint:
 lint-fix:
 	golangci-lint run --fix --config ../../.golangci.yml
 
-.PHONY: gen-mocks
-gen-mocks: install-tools
-	rm -rf ./client/mocks/*
-	go generate ./client/...
-
 .PHONY: gen-docs
 gen-docs:
 	rm -rf ./docs/tables/*
@@ -30,4 +25,4 @@ gen-docs:
 
 # All gen targets
 .PHONY: gen
-gen: gen-mocks gen-docs
+gen: gen-docs

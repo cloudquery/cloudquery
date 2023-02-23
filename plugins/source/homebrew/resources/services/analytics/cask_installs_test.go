@@ -9,12 +9,11 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/client"
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/internal/homebrew"
 	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/golang/mock/gomock"
 )
 
-func buildInstalls(t *testing.T, ctrl *gomock.Controller) *homebrew.Client {
+func buildCaskInstalls(t *testing.T) *homebrew.Client {
 	ts := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		installs := homebrew.InstallsResponse{}
+		installs := homebrew.CaskInstallsResponse{}
 		faker.FakeObject(&installs)
 		j, err := json.Marshal(installs)
 		if err != nil {
@@ -30,6 +29,14 @@ func buildInstalls(t *testing.T, ctrl *gomock.Controller) *homebrew.Client {
 	return c
 }
 
-func TestInstalls30d(t *testing.T) {
-	client.MockTestHelper(t, Installs30Days(), buildInstalls, client.TestOptions{})
+func TestCaskInstalls30d(t *testing.T) {
+	client.MockTestHelper(t, CaskInstalls(homebrew.Days30), buildCaskInstalls, client.TestOptions{})
+}
+
+func TestCaskInstalls90d(t *testing.T) {
+	client.MockTestHelper(t, CaskInstalls(homebrew.Days90), buildCaskInstalls, client.TestOptions{})
+}
+
+func TestCaskInstalls365d(t *testing.T) {
+	client.MockTestHelper(t, CaskInstalls(homebrew.Days365), buildCaskInstalls, client.TestOptions{})
 }
