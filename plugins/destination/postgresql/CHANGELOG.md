@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.1.2...plugins-destination-postgresql-v2.1.3) (2023-02-23)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.0 ([#8344](https://github.com/cloudquery/cloudquery/issues/8344)) ([9c57544](https://github.com/cloudquery/cloudquery/commit/9c57544d06f9a774adcc659bcabd2518a905bdaa))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.1 ([#8371](https://github.com/cloudquery/cloudquery/issues/8371)) ([e3274c1](https://github.com/cloudquery/cloudquery/commit/e3274c109739bc107387627d340a713470c3a3c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.40.0 ([#8401](https://github.com/cloudquery/cloudquery/issues/8401)) ([4cf36d6](https://github.com/cloudquery/cloudquery/commit/4cf36d68684f37c0407332930766c1ba60807a93))
+* **migrate:** Handle timestamps not set by CloudQuery ([#8416](https://github.com/cloudquery/cloudquery/issues/8416)) ([7831a28](https://github.com/cloudquery/cloudquery/commit/7831a280a188f4b0e44b2ba35f2b7075d525c6be))
+* **migrate:** Use unique column option instead of hard coding cq_id ([#8370](https://github.com/cloudquery/cloudquery/issues/8370)) ([e692a06](https://github.com/cloudquery/cloudquery/commit/e692a063fa5d8d81230d904bb303cffb3fbe496f))
+
 ## [2.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.1.1...plugins-destination-postgresql-v2.1.2) (2023-02-21)
 
 
