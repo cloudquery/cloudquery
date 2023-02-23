@@ -248,6 +248,7 @@
       - [azure_sql_server_database_vulnerability_assessment_scans](azure_sql_server_database_vulnerability_assessment_scans.md)
     - [azure_sql_transparent_data_encryptions](azure_sql_transparent_data_encryptions.md)
   - [azure_sql_server_encryption_protectors](azure_sql_server_encryption_protectors.md)
+  - [azure_sql_server_security_alert_policies](azure_sql_server_security_alert_policies.md)
   - [azure_sql_server_virtual_network_rules](azure_sql_server_virtual_network_rules.md)
   - [azure_sql_server_vulnerability_assessments](azure_sql_server_vulnerability_assessments.md)
 - [azure_sql_virtual_clusters](azure_sql_virtual_clusters.md)
