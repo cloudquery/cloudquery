@@ -1,0 +1,21 @@
+name: Deploy Website
+
+on:
+  push:
+    branches: [ integration-pages ]
+  pull_request:
+    branches: [ integration-pages ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./website
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - run: yarn build
