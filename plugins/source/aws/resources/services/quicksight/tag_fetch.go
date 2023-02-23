@@ -9,20 +9,24 @@ import (
 	"github.com/thoas/go-funk"
 )
 
-func resolveTags() schema.ColumnResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-		arn := funk.Get(r.Item, "Arn", funk.WithAllowZero()).(*string)
-		cl := meta.(*client.Client)
-		svc := cl.Services().Quicksight
-		params := quicksight.ListTagsForResourceInput{ResourceArn: arn}
+var tagsCol = schema.Column{
+	Name:     "tags",
+	Type:     schema.TypeJSON,
+	Resolver: resolveTags,
+}
 
-		output, err := svc.ListTagsForResource(ctx, &params)
-		if err != nil {
-			if cl.IsNotFoundError(err) {
-				return nil
-			}
-			return err
+func resolveTags(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+	arn := funk.Get(r.Item, "Arn", funk.WithAllowZero()).(*string)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Quicksight
+	params := quicksight.ListTagsForResourceInput{ResourceArn: arn}
+
+	output, err := svc.ListTagsForResource(ctx, &params)
+	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return nil
 		}
-		return r.Set(c.Name, client.TagsToMap(output.Tags))
+		return err
 	}
+	return r.Set(c.Name, client.TagsToMap(output.Tags))
 }

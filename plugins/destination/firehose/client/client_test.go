@@ -9,19 +9,22 @@ import (
 const streamARN = "cq-playground-test"
 
 func TestPluginJSON(t *testing.T) {
-	p := destination.NewPlugin("firehose", "development", New, destination.WithDefaultBatchSize(500))
-	destination.PluginTestSuiteRunner(t, p,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("firehose", "development", New, destination.WithDefaultBatchSize(500))
+		},
 		Spec{
 			NoRotate:  true,
 			StreamARN: streamARN,
 		},
 		destination.PluginTestSuiteTests{
-			SkipAppend:           true,
-			SkipDeleteStale:      true,
-			SkipMigrateAppend:    true,
-			SkipOverwrite:        true,
-			SkipSecondAppend:     true,
-			SkipMigrateOverwrite: true,
+			SkipAppend:                true,
+			SkipDeleteStale:           true,
+			SkipMigrateAppend:         true,
+			SkipOverwrite:             true,
+			SkipSecondAppend:          true,
+			SkipMigrateOverwrite:      true,
+			SkipMigrateOverwriteForce: true,
 		},
 	)
 }

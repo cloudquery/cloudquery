@@ -36,7 +36,6 @@ func buildWorkflows(t *testing.T, ctrl *gomock.Controller) client.GithubServices
 	workflowContent.Encoding = github.String("")
 	opts := github.RepositoryContentGetOptions{Ref: "master"}
 
-	repositoriesMock.EXPECT().ListByOrg(gomock.Any(), "testorg", gomock.Any()).Return([]*github.Repository{&repository}, &github.Response{}, nil)
 	repositoriesMock.EXPECT().GetContents(gomock.Any(), "testorg", "repo", *workflow.Path, &opts).Return(&workflowContent, nil, nil, nil)
 	workflowsMock.EXPECT().ListWorkflows(gomock.Any(), *repository.Owner.Login, *repository.Name, gomock.Any()).Return(&workflows, &github.Response{}, nil)
 	return client.GithubServices{Actions: workflowsMock, Repositories: repositoriesMock}

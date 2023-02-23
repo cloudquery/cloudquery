@@ -4,6 +4,11 @@ https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-interfaces/lis
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on azure_network_interfaces:
+  - [azure_network_interface_ip_configurations](azure_network_interface_ip_configurations.md)
+
 ## Columns
 
 | Name          | Type          |

@@ -38,7 +38,7 @@ func Stacks() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			StackResources(),
+			stackResources(),
 		},
 	}
 }

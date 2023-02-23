@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v1.0.6...plugins-destination-elasticsearch-v1.1.0) (2023-02-21)
+
+
+### Features
+
+* **deps:** Update Elasticsearch plugin-sdk to v1.38.2 ([#8259](https://github.com/cloudquery/cloudquery/issues/8259)) ([0e852ed](https://github.com/cloudquery/cloudquery/commit/0e852ed5ba0b76b9f1921d47ee79d338bc2bdd23))
+
+## [1.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v1.0.5...plugins-destination-elasticsearch-v1.0.6) (2023-02-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+
+## [1.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v1.0.4...plugins-destination-elasticsearch-v1.0.5) (2023-02-15)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.1 ([#8008](https://github.com/cloudquery/cloudquery/issues/8008)) ([c47aac0](https://github.com/cloudquery/cloudquery/commit/c47aac0b5e3190a04299713651b97e360043911f))
+
+## [1.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v1.0.3...plugins-destination-elasticsearch-v1.0.4) (2023-02-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.0 ([#7933](https://github.com/cloudquery/cloudquery/issues/7933)) ([dc9cffb](https://github.com/cloudquery/cloudquery/commit/dc9cffbf37bbc6fae73a20bf47e6bbf17e74d1f9))
+
 ## [1.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v1.0.2...plugins-destination-elasticsearch-v1.0.3) (2023-02-09)
 
 

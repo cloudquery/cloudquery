@@ -14,9 +14,6 @@ func sopRecommendations() *schema.Table {
 		Resolver:    fetchSopRecommendations,
 		Transform:   transformers.TransformWithStruct(&types.SopRecommendation{}, transformers.WithPrimaryKeys("RecommendationId")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("resiliencehub"),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
-		},
+		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, assessmentARN},
 	}
 }

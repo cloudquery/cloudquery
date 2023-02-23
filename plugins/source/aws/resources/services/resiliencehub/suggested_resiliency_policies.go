@@ -14,17 +14,6 @@ func SuggestedResiliencyPolicies() *schema.Table {
 		Resolver:    fetchSuggestedResiliencyPolicies,
 		Transform:   transformers.TransformWithStruct(&types.ResiliencyPolicy{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("resiliencehub"),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicyArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), arnColumn("PolicyArn")},
 	}
 }
