@@ -6,13 +6,7 @@ on:
   pull_request:
     paths:
       - "website/**"
-      - ".github/workflows/deploy_website.yml"
-  push:
-    branches:
-      - main
-    paths:
-      - "website/**"
-      - ".github/workflows/deploy_website.yml"
+      - ".github/workflows/deploy_website_preview.yml"
 jobs:
   Deploy-Preview:
     name: "deploy-website-preview"
