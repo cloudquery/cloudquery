@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: cloudquery-release-runner-8-cores
     defaults:
       run:
         working-directory: ./website
