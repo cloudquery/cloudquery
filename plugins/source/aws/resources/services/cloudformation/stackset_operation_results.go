@@ -1,6 +1,9 @@
 package cloudformation
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -38,4 +41,23 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 			},
 		},
 	}
+}
+func fetchCloudformationStackSetOperationResults(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	stackSet := parent.Parent.Item.(*types.StackSet)
+	operation := parent.Item.(*types.StackSetOperation)
+	config := cloudformation.ListStackSetOperationResultsInput{
+		OperationId:  operation.OperationId,
+		StackSetName: stackSet.StackSetName,
+	}
+	c := meta.(*client.Client)
+	svc := c.Services().Cloudformation
+	paginator := cloudformation.NewListStackSetOperationResultsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.Summaries
+	}
+	return nil
 }
