@@ -8,7 +8,7 @@ on:
       - main
 jobs:
   Deploy-Preview:
-    runs-on: cloudquery-release-runner-8-cores
+    runs-on: cloudquery-website-deploy-4-cores
     steps:
       - uses: actions/checkout@v3
       - name: Set up Node.js
