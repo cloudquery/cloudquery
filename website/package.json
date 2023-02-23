@@ -4,9 +4,11 @@
   "private": true,
   "description": "CloudQuery website and docs",
   "scripts": {
+    "predev": "npx tsx ./scripts/prebuild.tsx",
     "dev": "next",
     "start": "next start",
-    "build": "next build",
+    "prebuild": "npx tsx ./scripts/prebuild.tsx",
+    "build": "NODE_OPTIONS='--max-old-space-size=8192' next build",
     "postbuild": "next-sitemap",
     "lint": "next lint"
   },

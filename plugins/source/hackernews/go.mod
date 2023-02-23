@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/hackernews
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.39.1
+	github.com/cloudquery/plugin-sdk v1.40.0
 	github.com/golang/mock v1.6.0
 	github.com/hermanschaaf/hackernews v1.0.1
 	github.com/rs/zerolog v1.29.0

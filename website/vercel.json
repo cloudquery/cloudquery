@@ -6,7 +6,8 @@
     }
   },
   "github": {
-    "silent": true
+    "silent": true,
+    "enabled": false
   },
   "redirects": [
     {

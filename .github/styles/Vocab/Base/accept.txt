@@ -83,6 +83,7 @@ Grafana
 Grafana
 graphql
 GraphQL
+hardcode
 hcl
 HCL
 hostname
