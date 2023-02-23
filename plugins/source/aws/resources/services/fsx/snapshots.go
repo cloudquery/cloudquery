@@ -26,10 +26,9 @@ func Snapshots() *schema.Table {
 				},
 			},
 			{
-				Name:          "administrative_actions",
-				Type:          schema.TypeJSON,
-				Resolver:      schema.PathResolver("AdministrativeActions"),
-				IgnoreInTests: true,
+				Name:     "administrative_actions",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AdministrativeActions"),
 			},
 			{
 				Name:     "tags",

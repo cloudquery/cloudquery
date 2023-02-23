@@ -14,13 +14,7 @@ func appVersions() *schema.Table {
 		Resolver:    fetchAppVersions,
 		Transform:   transformers.TransformWithStruct(&types.AppVersionSummary{}, transformers.WithPrimaryKeys("AppVersion")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("resiliencehub"),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
-		},
-		Relations: []*schema.Table{
-			appVersionResources(),
-			appVersionResourceMappings(),
-		},
+		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARNTop},
+		Relations:   []*schema.Table{appVersionResources(), appVersionResourceMappings()},
 	}
 }

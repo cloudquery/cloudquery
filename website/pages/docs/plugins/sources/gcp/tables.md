@@ -136,6 +136,7 @@
 - [gcp_logging_metrics](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_logging_metrics.md)
 - [gcp_logging_sinks](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_logging_sinks.md)
 - [gcp_monitoring_alert_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_monitoring_alert_policies.md)
+- [gcp_projects](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_projects.md)
 - [gcp_redis_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_redis_instances.md)
 - [gcp_resourcemanager_folders](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_resourcemanager_folders.md)
 - [gcp_resourcemanager_project_policies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_resourcemanager_project_policies.md)

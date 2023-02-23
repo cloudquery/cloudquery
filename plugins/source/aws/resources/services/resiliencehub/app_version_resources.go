@@ -12,11 +12,16 @@ func appVersionResources() *schema.Table {
 		Name:        "aws_resiliencehub_app_version_resources",
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_PhysicalResource.html`,
 		Resolver:    fetchAppVersionResources,
-		Transform:   transformers.TransformWithStruct(&types.PhysicalResource{}, transformers.WithPrimaryKeys("PhysicalResourceId")),
+		Transform:   transformers.TransformWithStruct(&types.PhysicalResource{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("resiliencehub"),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
+			client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, appVersion,
+			{
+				Name:            "physical_resource_identifier",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("PhysicalResourceId.Identifier"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
 		},
 	}
 }

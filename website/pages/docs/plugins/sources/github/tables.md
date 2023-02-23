@@ -22,4 +22,8 @@
 - [github_teams](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_teams.md)
   - [github_team_members](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_team_members.md)
   - [github_team_repositories](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_team_repositories.md)
+- [github_traffic_clones](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_traffic_clones.md)
+- [github_traffic_paths](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_traffic_paths.md)
+- [github_traffic_referrers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_traffic_referrers.md)
+- [github_traffic_views](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_traffic_views.md)
 - [github_workflows](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/github_workflows.md)

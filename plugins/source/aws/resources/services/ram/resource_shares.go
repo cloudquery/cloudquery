@@ -15,8 +15,8 @@ func ResourceShares() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.ResourceShare{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ram"),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

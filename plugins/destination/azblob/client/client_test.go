@@ -11,7 +11,6 @@ const storage_account = "cqdestinationazblob"
 const container = "test"
 
 func TestPluginCSV(t *testing.T) {
-	p := destination.NewPlugin("azblob", "development", New, destination.WithManagedWriter())
 	spec := Spec{
 		StorageAccount: storage_account,
 		Container:      container,
@@ -22,20 +21,24 @@ func TestPluginCSV(t *testing.T) {
 		},
 	}
 	spec.SetDefaults()
-	destination.PluginTestSuiteRunner(t, p,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("azblob", "development", New, destination.WithManagedWriter())
+		},
 		spec,
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:        true,
-			SkipDeleteStale:      true,
-			SkipSecondAppend:     true,
-			SkipMigrateAppend:    true,
-			SkipMigrateOverwrite: true,
+			SkipOverwrite:             true,
+			SkipDeleteStale:           true,
+			SkipSecondAppend:          true,
+			SkipMigrateAppend:         true,
+			SkipMigrateOverwrite:      true,
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		},
 	)
 }
 
 func TestPluginJSON(t *testing.T) {
-	p := destination.NewPlugin("azblob", "development", New, destination.WithManagedWriter())
 	spec := Spec{
 		StorageAccount: storage_account,
 		Container:      container,
@@ -46,14 +49,19 @@ func TestPluginJSON(t *testing.T) {
 		},
 	}
 	spec.SetDefaults()
-	destination.PluginTestSuiteRunner(t, p,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("azblob", "development", New, destination.WithManagedWriter())
+		},
 		spec,
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:        true,
-			SkipDeleteStale:      true,
-			SkipSecondAppend:     true,
-			SkipMigrateAppend:    true,
-			SkipMigrateOverwrite: true,
+			SkipOverwrite:             true,
+			SkipDeleteStale:           true,
+			SkipSecondAppend:          true,
+			SkipMigrateAppend:         true,
+			SkipMigrateOverwrite:      true,
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		},
 	)
 }
