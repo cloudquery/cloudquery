@@ -63,14 +63,14 @@ export default function Integration({
         <div className="relative from-gray-50 to-gray-100">
             <div className="py-8">
                 <h2 className="nx-text-4xl font-extrabold tracking-tight lg:nx-text-5xl xl:nx-text-6xl dark:text-white">
-                    Step 2. Configure the {source.name} plugin
+                    Step 2. Configure the {source.name} source plugin
                 </h2>
                 <p className="mt-4 text-lg font-medium text-gray-400 lg:max-w-3xl lg:text-xl">
                     Create a configuration file for the {source.name} plugin and set up authentication.
                 </p>
                 <h3 className="mt-4 nx-text-2xl font-extrabold tracking-tight lg:nx-text-3xl xl:nx-text-4xl dark:text-white">Configuration</h3>
                 <p className="mt-4">
-                    Create a file called <code className="text-lg nx-font-bold">{source.id}.yml</code> and add the following contents:
+                    Create a file called <code className="text-lg nx-font-bold">{source.id}.yaml</code> and add the following contents:
                 </p>
                 {sourceConfiguration}
                 <p className="mt-4">
@@ -86,14 +86,14 @@ export default function Integration({
         <div className="relative from-gray-50 to-gray-100">
             <div className="py-8">
                 <h2 className="nx-text-4xl font-extrabold tracking-tight lg:nx-text-5xl xl:nx-text-6xl dark:text-white">
-                    Step 3. Configure the {destination.name} plugin
+                    Step 3. Configure the {destination.name} destination plugin
                 </h2>
                 <p className="mt-4 text-lg font-medium text-gray-400 lg:max-w-3xl lg:text-xl">
                     Create a configuration file for the {destination.name} plugin and set up authentication.
                 </p>
                 <h3 className="mt-4 nx-text-2xl font-extrabold tracking-tight lg:nx-text-3xl xl:nx-text-4xl dark:text-white">Configuration</h3>
                 <p className="mt-4">
-                    Create a file called <code className="text-lg nx-font-bold">{destination.id}.yml</code> and add the following contents:
+                    Create a file called <code className="text-lg nx-font-bold">{destination.id}.yaml</code> and add the following contents:
                 </p>
                 {destinationConfiguration}
                 <p className="mt-4">
