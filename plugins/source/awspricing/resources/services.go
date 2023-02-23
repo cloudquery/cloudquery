@@ -20,7 +20,7 @@ func Services() *schema.Table {
 		PreResourceResolver: getPricingFile,
 		Transform: transformers.TransformWithStruct(&PricingFile{},
 			transformers.WithSkipFields("Products", "Terms"),
-			transformers.WithPrimaryKeys("OfferCode", "Version", "PublicationDate")
+			transformers.WithPrimaryKeys("OfferCode", "Version", "PublicationDate"),
 		),
 		Relations: []*schema.Table{
 			products(),
