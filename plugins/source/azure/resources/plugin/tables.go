@@ -203,7 +203,7 @@ func tables() []*schema.Table {
 		monitor.PrivateLinkScopes(),
 		monitor.TenantActivityLogAlerts(),
 		monitor.TenantActivityLogs(),
-		monitor.DiagnosticSettings(),
+		monitor.Resources(),
 		monitor.ActivityLogAlerts(),
 		mysql.Servers(),
 		mysqlflexibleservers.Servers(),
