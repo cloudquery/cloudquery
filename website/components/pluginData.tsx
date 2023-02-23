@@ -273,7 +273,7 @@ export const DESTINATION_PLUGINS: Plugin[] = [
   },
 ];
 
-export const ALL_PLUGINS: Plugin[] = Array.prototype.concat(SOURCE_PLUGINS, DESTINATION_PLUGINS);
+export const ALL_PLUGINS: Plugin[] = [...SOURCE_PLUGINS, ...DESTINATION_PLUGINS];
 
 export function getPlugin(type: string, id: string): Plugin {
   if (type === "destination") {
