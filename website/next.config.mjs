@@ -112,8 +112,6 @@ const withNextra = nextra({
 export default withNextra({
   reactStrictMode: true,
   experimental: {
-    workerThreads: false,
-    cpus: 1,
     legacyBrowsers: false,
     images: { allowFutureImage: true },
   },
