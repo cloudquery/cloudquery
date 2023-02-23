@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.0
-	github.com/cloudquery/plugin-sdk v1.39.1
+	github.com/cloudquery/plugin-sdk v1.40.0
 	github.com/elastic/go-elasticsearch/v8 v8.6.0
 	github.com/rs/zerolog v1.29.0
 	github.com/segmentio/fasthash v1.0.3
