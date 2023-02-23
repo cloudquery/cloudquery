@@ -394,3 +394,23 @@ func (mr *MockCloudtrailClientMockRecorder) ListTrails(arg0, arg1 interface{}, a
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTrails", reflect.TypeOf((*MockCloudtrailClient)(nil).ListTrails), varargs...)
 }
+
+// LookupEvents mocks base method.
+func (m *MockCloudtrailClient) LookupEvents(arg0 context.Context, arg1 *cloudtrail.LookupEventsInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.LookupEventsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "LookupEvents", varargs...)
+	ret0, _ := ret[0].(*cloudtrail.LookupEventsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// LookupEvents indicates an expected call of LookupEvents.
+func (mr *MockCloudtrailClientMockRecorder) LookupEvents(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LookupEvents", reflect.TypeOf((*MockCloudtrailClient)(nil).LookupEvents), varargs...)
+}

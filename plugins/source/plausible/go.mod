@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/plausible
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.38.2
+	github.com/cloudquery/plugin-sdk v1.39.1
 	github.com/gorilla/mux v1.8.0
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/exp v0.0.0-20230212135524-a684f29349b6
