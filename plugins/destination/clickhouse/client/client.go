@@ -66,7 +66,7 @@ func New(_ context.Context, logger zerolog.Logger, spec specs.Destination) (dest
 		return nil, fmt.Errorf("failed to verify server version %w", err)
 	}
 
-	minVer := proto.Version{Major: 22}
+	minVer := proto.Version{Major: 22, Minor: 1, Patch: 2}
 	if !proto.CheckMinVersion(minVer, ver.Version) {
 		defer conn.Close()
 		return nil, fmt.Errorf("server version is %s, minimum version supported is %s", ver.Version, minVer)
