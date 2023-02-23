@@ -1,12 +1,12 @@
-# Table: azure_monitor_diagnostic_settings
+# Table: azure_sql_server_security_alert_policies
 
-https://learn.microsoft.com/en-us/rest/api/monitor/diagnostic-settings/list?tabs=HTTP#diagnosticsettingsresource
+https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/server-security-alert-policies/list-by-server?tabs=HTTP#serversecurityalertpolicy
 
 The primary key for this table is **id**.
 
 ## Relations
 
-This table depends on [azure_monitor_resources](azure_monitor_resources.md).
+This table depends on [azure_sql_servers](azure_sql_servers.md).
 
 ## Columns
 
@@ -22,4 +22,3 @@ This table depends on [azure_monitor_resources](azure_monitor_resources.md).
 |name|String|
 |system_data|JSON|
 |type|String|
-|resource_id|String|
