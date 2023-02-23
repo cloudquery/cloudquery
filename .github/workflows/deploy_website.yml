@@ -10,9 +10,9 @@ on:
 jobs:
   Deploy-Preview:
     runs-on: cloudquery-release-runner-8-cores
-    defaults:
-      run:
-        working-directory: ./website
+#    defaults:
+#      run:
+#        working-directory: ./website
     steps:
       - uses: actions/checkout@v3
       - name: Set up Node.js
