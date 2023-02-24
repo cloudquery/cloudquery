@@ -13,7 +13,23 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 ## Overview
 
+AWS is separated by 
+
 ### Why Delegation?
+
+Prior to AWS releasing delegation, any actions to manage Organizations and other accounts would have to originate in the Organization Management Account (often referred to as the root account).
+
+The Organization Management Account (root) is a security concern due to the following reasons:
+* The management account has organization-level functionality that can affect all member accounts and a broad scope of influence.
+* Created member accounts come with `OrganizationAccountAccessRole` which comes with default `*:*` Administrator Access and permits the management account to assume it.
+* The management account does not have SCPs apply to it.
+* The management account has Organization visibility into member accounts and other reconaissance activities.
+* The management account has Organization management features such as SCPs, enabling/disabling security features across the Organization and all member accounts.
+
+
+Thus, an attacker may find the Organization Management Account a preferred target to gain a foothold in an enterprise's AWS environments.  Additionally, the Organization Management account can be subject to misconfiguration that has a greater blast radius and can affect multiple member accounts and applications.  An example of this could be a misconfigured SCP.
+
+By delegating management to member AWS Accounts, this reduces the blast radius and follows [AWS Prescriptive Guidance regarding the management account](https://docs.aws.amazon.com/prescriptive-guidance/latest/security-reference-architecture/management-account.html).  By delegating management, permissions and access to the managemnet account can be reduced to a minimum.
 
 [AWS Provided list of services that work with Organizations and services that support delegated administrator](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services_list.html)
 
@@ -93,6 +109,18 @@ This is done via `organizations:PutResourcePolicy`.  Specifically, this enables 
 ### Chart 
 
 ### Risks of Delegated Administrator Accounts
+
+### Finding Delegated Administrators
+
+Finding Delegated Administrator Accounts
+```sql copy
+
+```
+
+Finding Resource-Based Delegation Policies
+```sql copy
+
+```
 
 ## Conclusion
 
