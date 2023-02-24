@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceSharePermissionSummary.html
 
-The composite primary key for this table is (**account_id**, **region**, **arn**, **version**).
+The composite primary key for this table is (**account_id**, **region**, **resource_share_arn**, **arn**, **version**).
 
 ## Relations
 
@@ -18,6 +18,7 @@ This table depends on [aws_ram_resource_shares](aws_ram_resource_shares).
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
 |region (PK)|String|
+|resource_share_arn (PK)|String|
 |permission|JSON|
 |arn (PK)|String|
 |creation_time|Timestamp|
