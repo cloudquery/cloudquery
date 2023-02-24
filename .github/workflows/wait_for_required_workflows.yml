@@ -55,6 +55,7 @@ jobs:
                            "plugins/source/gitlab",
                            "plugins/source/hackernews",
                            "plugins/source/heroku",
+                           "plugins/source/homebrew",
                            "plugins/source/hubspot",
                            "plugins/source/k8s",
                            "plugins/source/launchdarkly",
