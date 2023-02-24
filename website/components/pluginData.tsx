@@ -84,6 +84,11 @@ export const SOURCE_PLUGINS: Plugin[] = [
     id: "heroku",
   },
   {
+    name: "Homebrew",
+    logo: "/images/logos/plugins/homebrew.svg",
+    id: "homebrew",
+  },
+  {
     name: "HubSpot",
     logo: "/images/logos/plugins/hubspot.svg",
     id: "hubspot",

@@ -1,0 +1,43 @@
+---
+name: Homebrew
+---
+# Homebrew Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+
+<Badge text={"Latest: " + getLatestVersion("source", `homebrew`)}/>
+
+The Homebrew Source plugin for CloudQuery extracts configuration from the [Homebrew Analytics API](https://formulae.brew.sh/analytics/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+
+The Homebrew Analytics API exposes data for the top 10,000 Homebrew formula installs, aggregated over 30-day, 90-day, and 365-day periods. The plugin can fetch data for any of these periods. When synced on a regular basis, the plugin can be used to track the popularity of Homebrew formulae over time.
+
+## Configuration
+
+The following configuration syncs from Homebrew to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/quickstart) if you need help setting up the destination.
+
+<Configuration/>
+
+## Example Queries
+
+### List the most popular Homebrew formulae by number of installs in the last 30 days
+
+```sql copy
+select number, formula, count, percent from homebrew_analytics_installs_30d order by number asc limit 10;
+```
+
+```text
+number  formula          count   percent
+------  ---------------  ------  -------
+1       openssl@1.1      991372  2.03
+2       ca-certificates  946778  1.93
+3       xz               903305  1.85
+4       icu4c            764268  1.56
+5       jpeg-turbo       742750  1.52
+6       fontconfig       652903  1.33
+7       sqlite           633506  1.29
+8       pcre2            633417  1.29
+9       glib             603405  1.23
+10      libx11           600437  1.23
+```
