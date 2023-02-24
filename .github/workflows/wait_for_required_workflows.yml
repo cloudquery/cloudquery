@@ -40,7 +40,6 @@ jobs:
               return files.some(file => file.startsWith(`${action}/`) || matchesWorkflow(file, action))
             }
             let actions = ["cli",
-                           "deploy-website-preview",
                            "scaffold",
                            "plugins/source/alicloud",
                            "plugins/source/aws",
@@ -98,9 +97,6 @@ jobs:
 
             // Most modules should have a 'validate-release' job
             for (const action of actions) {
-              if (action === "deploy-website-preview") {
-                continue
-              }
               actions = [...actions, 'validate-release']
             }
 
