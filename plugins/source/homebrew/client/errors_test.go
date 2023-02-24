@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hermanschaaf/homebrew"
+	"github.com/cloudquery/cloudquery/plugins/source/homebrew/internal/homebrew"
 	"github.com/rs/zerolog"
 )
 

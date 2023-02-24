@@ -14,7 +14,10 @@ import (
 func buildCaskInstalls(t *testing.T) *homebrew.Client {
 	ts := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		installs := homebrew.CaskInstallsResponse{}
-		faker.FakeObject(&installs)
+		err := faker.FakeObject(&installs)
+		if err != nil {
+			t.Fatal(err)
+		}
 		j, err := json.Marshal(installs)
 		if err != nil {
 			t.Fatal(err)

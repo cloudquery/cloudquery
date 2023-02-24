@@ -32,14 +32,14 @@ func (d Date) MarshalJSON() ([]byte, error) {
 	return []byte(fmt.Sprintf("\"%s\"", f)), nil
 }
 
-func (d Date) UnmarshalJSON(b []byte) (err error) {
+func (d *Date) UnmarshalJSON(b []byte) (err error) {
 	s := strings.Trim(string(b), "\"")
 	if s == "null" {
 		d.Time = time.Time{}
-		return
+		return err
 	}
 	d.Time, err = time.Parse(layout, s)
-	return
+	return err
 }
 
 type InstallsResponse struct {

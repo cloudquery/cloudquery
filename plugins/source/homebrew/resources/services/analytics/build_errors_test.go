@@ -14,7 +14,10 @@ import (
 func buildErrors(t *testing.T) *homebrew.Client {
 	ts := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		installs := homebrew.InstallsResponse{}
-		faker.FakeObject(&installs)
+		err := faker.FakeObject(&installs)
+		if err != nil {
+			t.Fatal(err)
+		}
 		j, err := json.Marshal(installs)
 		if err != nil {
 			t.Fatal(err)
