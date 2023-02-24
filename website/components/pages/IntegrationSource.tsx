@@ -36,11 +36,11 @@ export default function Integration({
             <div>
                 <h1 className="max-w-5xl mx-auto nx-text-6xl font-extrabold tracking-tighter leading-[1.1] text-7xl sm:text-7xl lg:nx-text-8xl xl:nx-text-8xl">
                     Export from&nbsp;
-                    <br className="hidden lg:block" />
+                    <span className="hidden lg:block"></span>
                     <span className="pr-1 pb-1 inline-block text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500 ">
-         {source.name}
-         </span>
-                    &nbsp;to&nbsp;any destination
+                    {source.name}
+                    </span>
+                    &nbsp;to any destination
                 </h1>
                 <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
                     CloudQuery is an open-source data integration platform that allows you to extract data from any source into any destination.
