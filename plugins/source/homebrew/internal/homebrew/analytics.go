@@ -113,12 +113,14 @@ type CaskInstalls struct {
 }
 
 func (c *Client) getInstalls(ctx context.Context, path string) (Installs, error) {
-	b, err := c.get(ctx, path)
+	r, err := c.get(ctx, path)
 	if err != nil {
 		return Installs{}, err
 	}
+	defer r.Close()
 	var resp InstallsResponse
-	err = json.Unmarshal(b, &resp)
+	d := json.NewDecoder(r)
+	err = d.Decode(&resp)
 	if err != nil {
 		return Installs{}, err
 	}
@@ -149,12 +151,14 @@ func (c *Client) GetCaskInstalls(ctx context.Context, days Days) (CaskInstalls, 
 }
 
 func (c *Client) getCaskInstalls(ctx context.Context, path string) (CaskInstalls, error) {
-	b, err := c.get(ctx, path)
+	r, err := c.get(ctx, path)
 	if err != nil {
 		return CaskInstalls{}, err
 	}
+	defer r.Close()
 	var resp CaskInstallsResponse
-	err = json.Unmarshal(b, &resp)
+	d := json.NewDecoder(r)
+	err = d.Decode(&resp)
 	if err != nil {
 		return CaskInstalls{}, err
 	}
@@ -215,12 +219,14 @@ func (c *Client) GetBuildErrors(ctx context.Context, days Days) (BuildErrors, er
 }
 
 func (c *Client) getBuildErrors(ctx context.Context, path string) (BuildErrors, error) {
-	b, err := c.get(ctx, path)
+	r, err := c.get(ctx, path)
 	if err != nil {
 		return BuildErrors{}, err
 	}
+	defer r.Close()
 	var resp BuildErrorsResponse
-	err = json.Unmarshal(b, &resp)
+	d := json.NewDecoder(r)
+	err = d.Decode(&resp)
 	if err != nil {
 		return BuildErrors{}, err
 	}
