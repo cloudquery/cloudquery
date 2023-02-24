@@ -1,5 +1,11 @@
 {
   "overview": "Overview",
   "creating_connected_app": "Creating Connected App",
-  "tables": "Tables"
+  "tables": "Tables",
+  "_authentication": {
+    "display": "hidden"
+  },
+  "_configuration": {
+    "display": "hidden"
+  }
 }

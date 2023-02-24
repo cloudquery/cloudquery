@@ -1,6 +1,8 @@
 package client
 
 import (
+	"strings"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -141,6 +143,9 @@ func (*Client) Pg10ToSchemaType(t string) schema.ValueType {
 	case "bigint[]":
 		return schema.TypeIntArray
 	default:
+		if strings.HasPrefix(t, "timestamp") {
+			return schema.TypeTimestamp
+		}
 		panic("unknown type " + t)
 	}
 }
@@ -161,8 +166,6 @@ func (*Client) CockroachToSchemaType(t string) schema.ValueType {
 		return schema.TypeByteArray
 	case "text[]":
 		return schema.TypeStringArray
-	case "timestamp without time zone":
-		return schema.TypeTimestamp
 	case "jsonb":
 		return schema.TypeJSON
 	case "uuid[]":
@@ -174,6 +177,9 @@ func (*Client) CockroachToSchemaType(t string) schema.ValueType {
 	case "bigint[]":
 		return schema.TypeIntArray
 	default:
+		if strings.HasPrefix(t, "timestamp") {
+			return schema.TypeTimestamp
+		}
 		panic("unknown type " + t)
 	}
 }
