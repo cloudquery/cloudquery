@@ -38,7 +38,7 @@ func (c *Client) getTableColumns(ctx context.Context, table *schema.Table) (sche
 			if *charMaxLength == "-1" {
 				*charMaxLength = "max"
 			}
-			typ = "nvarchar(" + *charMaxLength + ")"
+			typ = fmt.Sprintf("%s(%s)", typ, *charMaxLength)
 		}
 
 		if typ == "datetimeoffset" {
