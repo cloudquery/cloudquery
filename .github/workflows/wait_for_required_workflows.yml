@@ -55,6 +55,7 @@ jobs:
                            "plugins/source/gitlab",
                            "plugins/source/hackernews",
                            "plugins/source/heroku",
+                           "plugins/source/homebrew",
                            "plugins/source/hubspot",
                            "plugins/source/k8s",
                            "plugins/source/launchdarkly",
@@ -95,7 +96,7 @@ jobs:
               return
             }
 
-            // Each module should have a 'validate-release' job
+            // Most modules should have a 'validate-release' job
             for (const action of actions) {
               actions = [...actions, 'validate-release']
             }

@@ -1,0 +1,17 @@
+```yaml copy
+kind: source
+spec:
+  # Source spec section
+  name: okta
+  path: cloudquery/okta
+  version: "VERSION_SOURCE_OKTA"
+  tables: ["*"]
+  destinations: ["DESTINATION_NAME"]
+  spec:
+    # Required. Your Okta domain name
+    domain: "https://<YOUR_OKTA_DOMAIN>.okta.com/"
+
+    # Optional. Okta Token to access API, you can set this with OKTA_API_TOKEN environment variable
+    # ⚠️ Warning - Your token should be kept secret and not committed to source control
+    # token: "<YOUR_OKTA_TOKEN>"
+```
