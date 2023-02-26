@@ -17,6 +17,7 @@ func ManagedClusters() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_containerservice_managed_clusters", client.Namespacemicrosoft_containerservice),
 		Transform:   transformers.TransformWithStruct(&armcontainerservice.ManagedCluster{}, transformers.WithPrimaryKeys("ID")),
 		Columns:     schema.ColumnList{client.SubscriptionID},
+		Relations:   []*schema.Table{clusterUpgradeProfiles()},
 	}
 }
 

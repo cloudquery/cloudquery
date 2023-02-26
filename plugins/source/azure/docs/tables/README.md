@@ -71,6 +71,7 @@
 - [azure_containerinstance_container_groups](azure_containerinstance_container_groups.md)
 - [azure_containerregistry_registries](azure_containerregistry_registries.md)
 - [azure_containerservice_managed_clusters](azure_containerservice_managed_clusters.md)
+  - [azure_containerservice_managed_cluster_upgrade_profiles](azure_containerservice_managed_cluster_upgrade_profiles.md)
 - [azure_containerservice_snapshots](azure_containerservice_snapshots.md)
 - [azure_cosmos_database_accounts](azure_cosmos_database_accounts.md)
   - [azure_cosmos_mongo_db_databases](azure_cosmos_mongo_db_databases.md)
