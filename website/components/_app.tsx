@@ -1,6 +1,3 @@
-import "../styles.css";
-import "nextra-theme-docs/style.css";
-import "../custom.css";
 import React from "react";
 import Script from "next/script";
 import { Prism } from "prism-react-renderer";

@@ -26,6 +26,8 @@ hackernews:
   - plugins/source/hackernews/**/*
 heroku:
   - plugins/source/heroku/**/*
+homebrew:
+  - plugins/source/homebrew/**/*
 hubspot:
   - plugins/source/hubspot/**/*
 plausible:

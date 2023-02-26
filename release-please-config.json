@@ -18,6 +18,7 @@
     "plugins/source/gitlab": { "component": "plugins-source-gitlab" },
     "plugins/source/hackernews": { "component": "plugins-source-hackernews" },
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
+    "plugins/source/homebrew": { "component": "plugins-source-homebrew" },
     "plugins/source/hubspot": { "component": "plugins-source-hubspot" },
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
     "plugins/source/launchdarkly": { "component": "plugins-source-launchdarkly" },
