@@ -119,7 +119,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 			builder.WriteString(identifier(pk))
 			if table.Columns.Get(pk).Type == schema.TypeString {
 				// Since we use `text` for strings we need to specify the prefix length to use for the primary key
-				builder.WriteString("(255)")
+				builder.WriteString("(64)")
 			}
 			if i < len(pks)-1 {
 				builder.WriteString(", ")
@@ -127,7 +127,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 		}
 		builder.WriteString(")\n")
 	}
-	builder.WriteString(");")
+	builder.WriteString(") CHARACTER SET utf8mb4;")
 	_, err := c.db.ExecContext(ctx, builder.String())
 	return err
 }
