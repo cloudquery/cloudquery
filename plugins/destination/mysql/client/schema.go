@@ -32,7 +32,11 @@ func (c *Client) getTableColumns(ctx context.Context, table *schema.Table) (sche
 			return nil, err
 		}
 
-		tc = append(tc, schema.Column{Name: name, Type: SchemaType(typ), CreationOptions: schema.ColumnCreationOptions{NotNull: nullable == "NO", PrimaryKey: key == "PRI"}})
+		column := schema.Column{
+			Name: name, Type: SchemaType(typ),
+			CreationOptions: schema.ColumnCreationOptions{NotNull: nullable == "NO", PrimaryKey: key == "PRI"},
+		}
+		tc = append(tc, column)
 	}
 
 	return tc, nil
@@ -100,7 +104,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 		if column.CreationOptions.Unique {
 			builder.WriteString(" UNIQUE")
 		}
-		if column.CreationOptions.NotNull || column.CreationOptions.PrimaryKey {
+		if column.CreationOptions.NotNull {
 			builder.WriteString(" NOT NULL")
 		}
 		if i < len(table.Columns)-1 {
@@ -109,11 +113,14 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 	}
 	pks := table.PrimaryKeys()
 	if len(pks) > 0 {
-		builder.WriteString(",\n  CONSTRAINT ")
-		builder.WriteString(identifier(table.Name + "_cqpk"))
+		builder.WriteString(",\n  ")
 		builder.WriteString(" PRIMARY KEY (")
 		for i, pk := range pks {
 			builder.WriteString(identifier(pk))
+			if table.Columns.Get(pk).Type == schema.TypeString {
+				// Since we use `text` for strings we need to specify the prefix length to use for the primary key
+				builder.WriteString("(255)")
+			}
 			if i < len(pks)-1 {
 				builder.WriteString(", ")
 			}

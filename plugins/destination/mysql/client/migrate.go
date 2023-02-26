@@ -23,6 +23,13 @@ func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
 			table.Columns.Get(schema.CqIDColumn.Name).CreationOptions.PrimaryKey = true
 		}
 
+		for i := range table.Columns {
+			if table.Columns[i].CreationOptions.PrimaryKey {
+				// Primary keys are implicitly set to not null in MySQL
+				table.Columns[i].CreationOptions.NotNull = true
+			}
+		}
+
 		normalized = append(normalized, table)
 	}
 
@@ -93,13 +100,9 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 
 	for _, table := range normalizedTables {
 		c.logger.Info().Str("table", table.Name).Msg("Migrating table")
-		if len(table.Columns) == 0 {
-			c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
-			continue
-		}
 		schemaTable := schemaTables.Get(table.Name)
 		if schemaTable == nil {
-			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
+			c.logger.Info().Str("table", table.Name).Msg("Table doesn't exist, creating")
 			if err := c.createTable(ctx, table); err != nil {
 				return err
 			}

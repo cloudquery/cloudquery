@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 
 	mysql "github.com/go-sql-driver/mysql"
 )
@@ -54,7 +53,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
 
-	return &Client{logger: log.With().Str("module", "mysql").Logger(), db: db, spec: spec, mySQLSpec: mySQLSpec}, nil
+	return &Client{logger: logger.With().Str("module", "mysql").Logger(), db: db, spec: spec, mySQLSpec: mySQLSpec}, nil
 }
 
 func (c *Client) Close(ctx context.Context) error {
