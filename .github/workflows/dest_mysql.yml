@@ -22,7 +22,7 @@ jobs:
         working-directory: ./plugins/destination/mysql
     services:
       postgres:
-        image: mysql:latest
+        image: mysql:5.7
         env:
           MYSQL_ROOT_PASSWORD: test
           MYSQL_DATABASE: cloudquery

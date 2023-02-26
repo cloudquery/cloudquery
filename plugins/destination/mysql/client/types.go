@@ -17,7 +17,7 @@ func SQLType(t schema.ValueType) string {
 	case schema.TypeByteArray:
 		return "blob"
 	case schema.TypeTimestamp:
-		return "timestamp"
+		return "datetime"
 	case schema.TypeCIDR,
 		schema.TypeMacAddr,
 		schema.TypeInet:
@@ -41,7 +41,7 @@ func SchemaType(t string) schema.ValueType {
 	switch t {
 	case "bool", "tinyint(1)":
 		return schema.TypeBool
-	case "bigint":
+	case "bigint", "bigint(20)":
 		return schema.TypeInt
 	case "float":
 		return schema.TypeFloat
@@ -49,7 +49,7 @@ func SchemaType(t string) schema.ValueType {
 		return schema.TypeUUID
 	case "blob":
 		return schema.TypeByteArray
-	case "timestamp":
+	case "datetime":
 		return schema.TypeTimestamp
 	case "nvarchar(255)", "varchar(255)":
 		return schema.TypeInet
