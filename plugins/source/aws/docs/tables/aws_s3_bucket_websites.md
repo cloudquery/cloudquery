@@ -22,4 +22,3 @@ This table depends on [aws_s3_buckets](aws_s3_buckets.md).
 |index_document|JSON|
 |redirect_all_requests_to|JSON|
 |routing_rules|JSON|
-|result_metadata|JSON|
