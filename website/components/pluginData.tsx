@@ -252,6 +252,12 @@ export const DESTINATION_PLUGINS: Plugin[] = [
     id: "mssql",
   },
   {
+    name: "MySQL",
+    logo: "/images/logos/plugins/mysql.svg",
+    logoDark: "/images/logos/plugins/mysql-dark.svg",
+    id: "mysql",
+  },
+  {
     name: "MongoDB",
     logo: "/images/logos/plugins/mongodb.svg",
     id: "mongodb",
