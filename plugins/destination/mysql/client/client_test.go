@@ -18,7 +18,7 @@ var migrateStrategy = destination.MigrateStrategy{
 }
 
 func getConnectionString() string {
-	if testConn := os.Getenv("CQ_DEST_MY_SQL_TEST_CONNECTION_STRING"); len(testConn) > 0 {
+	if testConn := os.Getenv("CQ_DEST_MYSQL_TEST_CONNECTION_STRING"); len(testConn) > 0 {
 		return testConn
 	}
 
