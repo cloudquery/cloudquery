@@ -86,6 +86,8 @@ mongodb:
   - plugins/destination/mongodb/**/*
 mssql:
   - plugins/destination/mssql/**/*
+mysql:
+  - plugins/destination/mysql/**/*
 neo4j:
   - plugins/destination/neo4j/**/*
 kafka:

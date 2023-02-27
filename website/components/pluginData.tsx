@@ -131,6 +131,11 @@ export const SOURCE_PLUGINS: Plugin[] = [
     id: "plausible",
   },
   {
+    name: "PostgreSQL",
+    logo: "/images/logos/plugins/postgresql.svg",
+    id: "postgresql",
+  },
+  {
     name: "Salesforce",
     logo: "/images/logos/plugins/salesforce.svg",
     id: "salesforce",
@@ -248,6 +253,12 @@ export const DESTINATION_PLUGINS: Plugin[] = [
     id: "mssql",
   },
   {
+    name: "MySQL",
+    logo: "/images/logos/plugins/mysql.svg",
+    logoDark: "/images/logos/plugins/mysql-dark.svg",
+    id: "mysql",
+  },
+  {
     name: "MongoDB",
     logo: "/images/logos/plugins/mongodb.svg",
     id: "mongodb",
@@ -279,10 +290,8 @@ export const DESTINATION_PLUGINS: Plugin[] = [
   },
 ];
 
-export const ALL_PLUGINS: Plugin[] = [...SOURCE_PLUGINS, ...DESTINATION_PLUGINS];
-
-export function getPlugin(type: string, id: string): Plugin {
-  if (type === "destination") {
+export function getPlugin(kind: string, id: string): Plugin {
+  if (kind === "destination") {
     return DESTINATION_PLUGINS.find((p) => p.id === id);
   }
   return SOURCE_PLUGINS.find((p) => p.id === id);

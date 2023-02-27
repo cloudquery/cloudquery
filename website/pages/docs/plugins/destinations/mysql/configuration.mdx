@@ -1,0 +1,25 @@
+# MySQL destination plugin configuration reference
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+import { Callout } from 'nextra-theme-docs';
+import Configuration from "./_configuration.mdx";
+
+<Badge text={"Latest: " + getLatestVersion("destination", "mysql")}/>
+
+## Example Configuration
+
+<Configuration/>
+
+## MySQL spec
+
+This is the (nested) spec used by the MySQL destination plugin.
+
+- `connection_string` (string, required)
+
+  Connection string to connect to the database. See the [Go driver documentation](https://github.com/go-sql-driver/mysql#dsn-data-source-name) for more details.
+
+<Callout type="info">
+Make sure you use [environment variable expansion](/docs/advanced-topics/environment-variable-substitution) in production instead of committing the credentials to the configuration file directly.
+</Callout>
+
