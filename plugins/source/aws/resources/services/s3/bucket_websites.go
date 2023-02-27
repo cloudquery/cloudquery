@@ -38,7 +38,7 @@ func fetchS3BucketWebsites(ctx context.Context, meta schema.ClientMeta, parent *
 		options.Region = region.Str
 	})
 	if err != nil {
-		if client.IsAWSError(err, "NoSuchBucket") {
+		if client.IsAWSError(err, "NoSuchBucket", "NoSuchWebsiteConfiguration") {
 			return nil
 		}
 		return err
