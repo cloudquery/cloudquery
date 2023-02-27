@@ -19,6 +19,7 @@
     "plugins/source/gitlab": { "component": "plugins-source-gitlab" },
     "plugins/source/hackernews": { "component": "plugins-source-hackernews" },
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
+    "plugins/source/homebrew": { "component": "plugins-source-homebrew" },
     "plugins/source/hubspot": { "component": "plugins-source-hubspot" },
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
     "plugins/source/launchdarkly": { "component": "plugins-source-launchdarkly" },
@@ -46,6 +47,9 @@
     "plugins/destination/file": {
       "component": "plugins-destination-file"
     },
+    "plugins/destination/firehose": {
+      "component": "plugins-destination-firehose"
+    },
     "plugins/destination/gcs": {
       "component": "plugins-destination-gcs"
     },
@@ -72,6 +76,9 @@
     },
     "plugins/destination/mssql": {
       "component": "plugins-destination-mssql"
+    },
+    "plugins/destination/mysql": {
+      "component": "plugins-destination-mysql"
     },
     "plugins/destination/clickhouse": {
       "component": "plugins-destination-clickhouse"

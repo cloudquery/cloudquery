@@ -1,0 +1,13 @@
+```yaml copy
+kind: destination
+spec:
+  name:     "clickhouse"
+  registry: "github"
+  path:     "cloudquery/clickhouse"
+  version:  "VERSION_DESTINATION_CLICKHOUSE"
+
+  spec:
+    connection_string: "clickhouse://${CH_USER}:${CH_PASSWORD}@localhost:9000/${CH_DATABASE}"
+```
+
+This example configures a ClickHouse instance, located at `localhost:9000`. It expects `CH_USER`, `CH_PASSWORD` and `CH_DATABASE` environment variables to be set. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).

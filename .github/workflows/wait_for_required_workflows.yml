@@ -56,6 +56,7 @@ jobs:
                            "plugins/source/gitlab",
                            "plugins/source/hackernews",
                            "plugins/source/heroku",
+                           "plugins/source/homebrew",
                            "plugins/source/hubspot",
                            "plugins/source/k8s",
                            "plugins/source/launchdarkly",
@@ -88,6 +89,7 @@ jobs:
                            "plugins/destination/neo4j",
                            "plugins/destination/kafka",
                            "plugins/destination/mssql",
+                           "plugins/destination/mysql",
                            "plugins/destination/elasticsearch",
                            ].filter(action => matchesFile(action))
             if (actions.length === 0) {
@@ -95,7 +97,7 @@ jobs:
               return
             }
 
-            // Each module should have a 'validate-release' job
+            // Most modules should have a 'validate-release' job
             for (const action of actions) {
               actions = [...actions, 'validate-release']
             }

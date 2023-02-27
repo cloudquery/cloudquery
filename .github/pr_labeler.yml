@@ -28,6 +28,8 @@ hackernews:
   - plugins/source/hackernews/**/*
 heroku:
   - plugins/source/heroku/**/*
+homebrew:
+  - plugins/source/homebrew/**/*
 hubspot:
   - plugins/source/hubspot/**/*
 plausible:
@@ -86,6 +88,8 @@ mongodb:
   - plugins/destination/mongodb/**/*
 mssql:
   - plugins/destination/mssql/**/*
+mysql:
+  - plugins/destination/mysql/**/*
 neo4j:
   - plugins/destination/neo4j/**/*
 kafka:

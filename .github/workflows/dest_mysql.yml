@@ -1,0 +1,94 @@
+name: Destination Plugin MySQL Workflow
+
+on:
+  pull_request:
+    paths:
+      - "plugins/destination/mysql/**"
+      - ".github/workflows/dest_mysql.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/destination/mysql/**"
+      - ".github/workflows/dest_mysql.yml"
+
+jobs:
+  plugins-destination-mysql:
+    timeout-minutes: 30
+    name: "plugins/destination/mysql"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/destination/mysql
+    services:
+      postgres:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: test
+          MYSQL_DATABASE: cloudquery
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/mysql/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/mysql/go.sum
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.50.1
+          working-directory: plugins/destination/mysql
+          args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      - name: Test MySQL
+        run: make test
+  validate-release:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    env:
+      CGO_ENABLED: 0
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/destination/mysql/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.5-release-cache-plugins-destination-mysql
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/mysql/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/destination/mysql/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

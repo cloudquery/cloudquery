@@ -12,7 +12,7 @@ import (
 
 func DelegatedAdministrators() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_organizations_delgated_administrators",
+		Name:        "aws_organizations_delegated_administrators",
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Root.html`,
 		Resolver:    fetchOrganizationsDelegatedAdmins,
 		Transform:   transformers.TransformWithStruct(&types.DelegatedAdministrator{}, transformers.WithPrimaryKeys("Arn")),

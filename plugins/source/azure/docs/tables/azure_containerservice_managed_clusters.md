@@ -4,6 +4,11 @@ https://learn.microsoft.com/en-us/rest/api/aks/managed-clusters/list?tabs=HTTP#m
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on azure_containerservice_managed_clusters:
+  - [azure_containerservice_managed_cluster_upgrade_profiles](azure_containerservice_managed_cluster_upgrade_profiles.md)
+
 ## Columns
 
 | Name          | Type          |

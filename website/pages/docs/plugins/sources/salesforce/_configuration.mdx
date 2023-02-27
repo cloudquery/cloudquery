@@ -1,0 +1,17 @@
+```yaml copy
+kind: source
+spec:
+  name: slack
+  path: cloudquery/salesforce
+  version: "VERSION_SOURCE_SALESFORCE"
+  tables: ["*"]
+  destinations: ["DESTINATION_NAME"]
+  # Salesforce specific configuration
+  spec:
+    client_id: "${SF_CLIENT_ID}"
+    client_secret: "${SF_CLIENT_SECRET}"
+    username: "${SF_USERNAME}"
+    password: "${SF_PASSWORD}"
+```
+
+It assumes that the `SF_CLIENT_ID`, `SF_CLIENT_SECRET`, `SF_USERNAME` and `SF_PASSWORD` environment variables are set.

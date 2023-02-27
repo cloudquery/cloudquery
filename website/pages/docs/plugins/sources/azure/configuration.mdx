@@ -1,0 +1,17 @@
+# CloudQuery Azure Source Plugin Configuration Reference
+
+## Example
+
+This example connects a single Azure subscription to a single destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
+
+import Configuration from './_configuration.mdx';
+
+<Configuration/>
+
+## Azure Spec
+
+This is the (nested) spec used by the Azure source plugin.
+
+- `subscriptions` ([]string) (default: empty. Will use all visible subscriptions)
+
+  Specify which subscriptions to sync data from.

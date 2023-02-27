@@ -18,7 +18,6 @@ spec:
   spec:
     access_token: "<YOUR_ACCESS_TOKEN_HERE>"
     base_url: "<INSTANCE_URL>"
-
 ```
 
 ## GitLab Spec

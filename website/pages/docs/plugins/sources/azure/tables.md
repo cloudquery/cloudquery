@@ -71,6 +71,7 @@
 - [azure_containerinstance_container_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_containerinstance_container_groups.md)
 - [azure_containerregistry_registries](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_containerregistry_registries.md)
 - [azure_containerservice_managed_clusters](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_containerservice_managed_clusters.md)
+  - [azure_containerservice_managed_cluster_upgrade_profiles](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_containerservice_managed_cluster_upgrade_profiles.md)
 - [azure_containerservice_snapshots](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_containerservice_snapshots.md)
 - [azure_cosmos_database_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_cosmos_database_accounts.md)
   - [azure_cosmos_mongo_db_databases](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_cosmos_mongo_db_databases.md)
