@@ -43,13 +43,10 @@ export default function Integration({
                     &nbsp;to any destination
                 </h1>
                 <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
-                    CloudQuery is an open-source data integration platform that allows you to extract data from any source into any destination.
+                    CloudQuery is an open-source ELT platform that allows you to extract data from any source into any destination. CloudQuery is a free and open source alternative to Fivetran or Airbyte that requires no account, and it takes only minutes to get started.
                 </p>
                 <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
-                    <>The CloudQuery {source.name} plugin allows you to sync data from {source.name}. It's free, open source, requires no account, and takes only minutes to get started.</>
-                </p>
-                <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
-                    Select the destination you would like to sync {source.name} data from the list of supported destinations below:
+                    The CloudQuery {source.name} plugin allows you to sync data from {source.name} to any destination. Select the destination you would like to sync {source.name} data from the list of supported destinations below:
                 </p>
             </div>
         </div>
