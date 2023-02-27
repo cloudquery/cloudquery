@@ -32,8 +32,12 @@ func (c *Client) getTableColumns(ctx context.Context, table *schema.Table) (sche
 			return nil, err
 		}
 
+		schemaType, err := SchemaType(table.Name, name, typ)
+		if err != nil {
+			return nil, err
+		}
 		column := schema.Column{
-			Name: name, Type: SchemaType(typ),
+			Name: name, Type: schemaType,
 			CreationOptions: schema.ColumnCreationOptions{NotNull: nullable == "NO", PrimaryKey: key == "PRI"},
 		}
 		tc = append(tc, column)

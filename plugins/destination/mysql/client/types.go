@@ -1,7 +1,10 @@
 package client
 
 import (
+	"fmt"
+
 	"github.com/cloudquery/plugin-sdk/schema"
+	"golang.org/x/exp/maps"
 )
 
 func SQLType(t schema.ValueType) string {
@@ -37,27 +40,25 @@ func SQLType(t schema.ValueType) string {
 	}
 }
 
-func SchemaType(t string) schema.ValueType {
-	switch t {
-	case "bool", "tinyint(1)":
-		return schema.TypeBool
-	case "bigint", "bigint(20)":
-		return schema.TypeInt
-	case "float":
-		return schema.TypeFloat
-	case "binary(16)":
-		return schema.TypeUUID
-	case "blob":
-		return schema.TypeByteArray
-	case "datetime":
-		return schema.TypeTimestamp
-	case "nvarchar(255)", "varchar(255)":
-		return schema.TypeInet
-	case "text":
-		return schema.TypeString
-	case "json":
-		return schema.TypeJSON
-	default:
-		panic("unknown type " + t)
+func SchemaType(tableName string, columnName string, sqlType string) (schema.ValueType, error) {
+	sqlTypeToSchemaType := map[string]schema.ValueType{
+		"bool":          schema.TypeBool,
+		"tinyint(1)":    schema.TypeBool,
+		"bigint":        schema.TypeInt,
+		"bigint(20)":    schema.TypeInt,
+		"float":         schema.TypeFloat,
+		"binary(16)":    schema.TypeUUID,
+		"blob":          schema.TypeByteArray,
+		"datetime":      schema.TypeTimestamp,
+		"nvarchar(255)": schema.TypeInet,
+		"varchar(255)":  schema.TypeInet,
+		"text":          schema.TypeString,
+		"json":          schema.TypeJSON,
 	}
+
+	if v, ok := sqlTypeToSchemaType[sqlType]; ok {
+		return v, nil
+	}
+
+	return schema.TypeInvalid, fmt.Errorf("got unknown MySQL type %q for column %q of table %q while trying to convert it to CloudQuery internal schema type. Supported MySQL types are %q", sqlType, columnName, tableName, maps.Keys(sqlTypeToSchemaType))
 }

@@ -14,7 +14,9 @@ func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
 	for _, table := range tables.FlattenTables() {
 		for i := range table.Columns {
 			// Since multiple schema types can map to the same MySQL type we need to normalize them to avoid false positives when detecting schema changes
-			table.Columns[i].Type = SchemaType(SQLType(table.Columns[i].Type))
+			// This should never fail we convert an internal schema type to an MySQL type and back
+			schemaType, _ := SchemaType(table.Name, table.Columns[i].Name, SQLType(table.Columns[i].Type))
+			table.Columns[i].Type = schemaType
 		}
 		// If there are no PKs, we use CqID as PK
 		pks := table.PrimaryKeys()
