@@ -115,7 +115,7 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.2
+	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.4
 	github.com/aws/aws-sdk-go-v2/service/support v1.14.1
 )
 
