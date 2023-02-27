@@ -32,7 +32,6 @@
 - [azure_azurearcdata_postgres_instances](azure_azurearcdata_postgres_instances.md)
 - [azure_azurearcdata_sql_managed_instances](azure_azurearcdata_sql_managed_instances.md)
 - [azure_azurearcdata_sql_server_instances](azure_azurearcdata_sql_server_instances.md)
-- [azure_azuredata_sql_server_registrations](azure_azuredata_sql_server_registrations.md)
 - [azure_batch_account](azure_batch_account.md)
 - [azure_billing_accounts](azure_billing_accounts.md)
 - [azure_billing_enrollment_accounts](azure_billing_enrollment_accounts.md)
