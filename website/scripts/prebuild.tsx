@@ -11,7 +11,11 @@ const mdxDestinationComponentDir = "./components/mdx/plugins/destination";
 
 function createSourceIntegrationDirectory(source: Plugin) {
     // Create the source directory if it doesn't exist
-    if (!fs.existsSync(outputDir + "/" + source.id)) {
+    if (fs.existsSync(outputDir + "/" + source.id)) {
+        // Clear the directory if it exists
+        fs.rmSync(outputDir+ "/" + source.id, { recursive: true, force: true });
+        fs.mkdirSync(outputDir+ "/" + source.id);
+    } else {
         fs.mkdirSync(outputDir+ "/" + source.id, { recursive: true });
     }
 }
@@ -23,7 +27,11 @@ function copySourceAuthenticationFile(source: Plugin) : boolean {
     // Copy the authentication and configuration files if they exist
     const authFilePath = path.join(sourceDir, "_authentication.mdx");
 
-    if (!fs.existsSync(mdxSourceComponentDir + "/" + source.id)) {
+    if (fs.existsSync(mdxSourceComponentDir + "/" + source.id)) {
+        // Clear the directory if it exists
+        fs.rmSync(mdxSourceComponentDir + "/" + source.id, { recursive: true, force: true });
+        fs.mkdirSync(mdxSourceComponentDir+ "/" + source.id);
+    } else {
         fs.mkdirSync(mdxSourceComponentDir+ "/" + source.id, { recursive: true });
     }
 
@@ -42,7 +50,11 @@ function copySourceConfigurationFile(source: Plugin): boolean {
     if (fs.existsSync(configFilePath)) {
         DESTINATION_PLUGINS.forEach((destination) => {
             const sourceConfigDir = mdxSourceComponentDir + `/${source.id}/${destination.id}`;
-            if (!fs.existsSync(sourceConfigDir)) {
+            if (fs.existsSync(sourceConfigDir)) {
+                // Clear the directory if it exists
+                fs.rmSync(sourceConfigDir, { recursive: true, force: true });
+                fs.mkdirSync(sourceConfigDir);
+            } else {
                 fs.mkdirSync(sourceConfigDir, { recursive: true });
             }
             let fileContents = fs.readFileSync(configFilePath, "utf8");
