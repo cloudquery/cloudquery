@@ -1,4 +1,4 @@
-# Table: aws_organizations_delgated_administrators
+# Table: aws_organizations_delegated_administrators
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_Root.html
 
