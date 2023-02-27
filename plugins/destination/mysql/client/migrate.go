@@ -23,11 +23,8 @@ func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
 			table.Columns.Get(schema.CqIDColumn.Name).CreationOptions.PrimaryKey = true
 		}
 
-		for i := range table.Columns {
-			if table.Columns[i].CreationOptions.PrimaryKey {
-				// Primary keys are implicitly set to not null in MySQL
-				table.Columns[i].CreationOptions.NotNull = true
-			}
+		for _, col := range table.Columns {
+			col.CreationOptions.NotNull = col.CreationOptions.NotNull || col.CreationOptions.PrimaryKey
 		}
 
 		normalized = append(normalized, table)
