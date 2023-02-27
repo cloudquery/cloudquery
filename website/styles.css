@@ -19,7 +19,7 @@ body {
   color: aliceblue !important;
 }
 .light button[title="Copy code"], button[title="Toggle word wrap"] {
-    color: aliceblue !important;
+  color: aliceblue !important;
 }
 .light button[title="Copy code"]:hover, button[title="Toggle word wrap"]:hover  {
   color: #00fd48dc !important;
