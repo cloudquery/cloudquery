@@ -20,7 +20,7 @@ func (c *Client) getTableColumns(ctx context.Context, table *schema.Table) (sche
 	if err != nil {
 		return nil, err
 	}
-
+	defer rows.Close()
 	for rows.Next() {
 		var name string
 		var typ string
@@ -48,7 +48,7 @@ func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema
 	if err != nil {
 		return nil, err
 	}
-
+	defer rows.Close()
 	schemaTables := make(schema.Tables, 0)
 	for rows.Next() {
 		var tableName string

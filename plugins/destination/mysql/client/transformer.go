@@ -1,8 +1,6 @@
 package client
 
 import (
-	"strings"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -64,12 +62,7 @@ func (*Client) TransformUUIDArray(v *schema.UUIDArray) any {
 		return nil
 	}
 
-	result := make([]string, len(v.Elements))
-	for i, elem := range v.Elements {
-		result[i] = elem.String()
-	}
-
-	return strings.Join(result, ",")
+	return v.String()
 }
 
 func (*Client) TransformInt8Array(v *schema.Int8Array) any {
@@ -77,12 +70,7 @@ func (*Client) TransformInt8Array(v *schema.Int8Array) any {
 		return nil
 	}
 
-	result := make([]string, len(v.Elements))
-	for i, elem := range v.Elements {
-		result[i] = elem.String()
-	}
-
-	return strings.Join(result, ",")
+	return v.String()
 }
 
 func (*Client) TransformCIDR(v *schema.CIDR) any {
@@ -118,12 +106,7 @@ func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
 		return nil
 	}
 
-	result := make([]string, len(v.Elements))
-	for i, elem := range v.Elements {
-		result[i] = elem.String()
-	}
-
-	return strings.Join(result, ",")
+	return v.String()
 }
 
 func (*Client) TransformInetArray(v *schema.InetArray) any {
@@ -131,12 +114,7 @@ func (*Client) TransformInetArray(v *schema.InetArray) any {
 		return nil
 	}
 
-	result := make([]string, len(v.Elements))
-	for i, elem := range v.Elements {
-		result[i] = elem.String()
-	}
-
-	return strings.Join(result, ",")
+	return v.String()
 }
 
 func (*Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
@@ -144,12 +122,7 @@ func (*Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
 		return nil
 	}
 
-	result := make([]string, len(v.Elements))
-	for i, elem := range v.Elements {
-		result[i] = elem.String()
-	}
-
-	return strings.Join(result, ",")
+	return v.String()
 }
 
 func (*Client) TransformTextArray(v *schema.TextArray) any {
@@ -157,10 +130,5 @@ func (*Client) TransformTextArray(v *schema.TextArray) any {
 		return nil
 	}
 
-	result := make([]string, len(v.Elements))
-	for i, elem := range v.Elements {
-		result[i] = elem.String()
-	}
-
-	return strings.Join(result, ",")
+	return v.String()
 }

@@ -20,12 +20,7 @@ func getInsertQueryBuild(table *schema.Table) *strings.Builder {
 		}
 	}
 	builder.WriteString(") VALUES (")
-	for i := range table.Columns {
-		builder.WriteString("?")
-		if i < len(table.Columns)-1 {
-			builder.WriteString(", ")
-		}
-	}
+	builder.WriteString(strings.TrimSuffix(strings.Repeat("?,", len(table.Columns)), ","))
 	builder.WriteString(")")
 	return &builder
 }

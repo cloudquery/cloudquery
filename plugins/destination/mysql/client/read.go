@@ -83,6 +83,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	if err != nil {
 		return err
 	}
+	defer rows.Close()
 	for rows.Next() {
 		values := c.createResultsArray(table)
 		if err := rows.Scan(values...); err != nil {
@@ -90,6 +91,5 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		}
 		res <- values
 	}
-	rows.Close()
 	return nil
 }

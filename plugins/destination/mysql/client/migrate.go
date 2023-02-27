@@ -12,7 +12,6 @@ import (
 func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
 	var normalized schema.Tables
 	for _, table := range tables.FlattenTables() {
-		table := table
 		for i := range table.Columns {
 			// Since multiple schema types can map to the same MySQL type we need to normalize them to avoid false positives when detecting schema changes
 			table.Columns[i].Type = SchemaType(SQLType(table.Columns[i].Type))
