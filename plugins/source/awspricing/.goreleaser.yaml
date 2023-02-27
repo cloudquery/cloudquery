@@ -1,0 +1,14 @@
+variables:
+  component: source/awspricing
+  binary: aws
+
+project_name: plugins/source/awspricing
+
+monorepo:
+  tag_prefix: plugins-source-awspricing-
+  dir: plugins/source/awspricing
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml
