@@ -8,9 +8,9 @@ In PostgreSQL CDC can be implemented using [Logical Replication](https://www.pos
 
 Logical Replication is a feature of PostgreSQL that allows you to stream changes from a database to another database, file or custom handler. It is also used to keep a copy of a database up to date with the original database in an efficient manner (Internally it is implemented by the so called [Write-Ahead Log](https://www.postgresql.org/docs/current/wal-intro.html)).
 
-In this document we won't go into details of how Logical Replication works internally, but we will show you how to enable it in number of environments and how to configure CloudQuery PostgreSQL source plugin that can stream the changes to any of [CloudQuery supported destinations](../../destinations/overview).
+In this document we won't go into details of how Logical Replication works internally, but we will show you how to enable it in number of environments and how to configure CloudQuery PostgreSQL source plugin that can stream the changes to any of [CloudQuery supported destinations](/docs/plugins/destinations/overview).
 
-Also, CloudQuery source plugin streams the changes directly to any of CQ destinations without any need for additional infrastructure (e.g. Kafka, RabbitMQ, etc). This means the setup is much easier.
+The PostgreSQL source plugin streams changes directly to any CloudQuery destination without the need for additional infrastructure (e.g. Kafka, RabbitMQ, etc). This means the setup is much easier.
 
 ## PSQL Test
 
@@ -36,7 +36,7 @@ If you are running it locally for testing purposes you can use the following com
 docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres:11 -c "wal_level=logical"
 ```
 
-## Self Hosted
+## Self-hosted
 
 Change the `wal_level` to `logical` in the `postgresql.conf` file and restart the database.
 
@@ -53,7 +53,6 @@ AWS Aurora serverless V1 doesn't support Logical Replication, but V2 does.
 Similar to RDS, you will need to create a custom parameter group, associate it with your Aurora serverless instance, set `rds.logical_replication` to `1` and restart the database.
 
 See full resolution on [AWS documentation](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraPostgreSQL.Replication.Logical.html)
-
 
 ## GCP Cloud SQL (PostgreSQL)
 
