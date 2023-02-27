@@ -249,6 +249,7 @@ export const DESTINATION_PLUGINS: Plugin[] = [
   {
     name: "MySQL",
     logo: "/images/logos/plugins/mysql.svg",
+    logoDark: "/images/logos/plugins/mysql-dark.svg",
     id: "mysql",
   },
   {
