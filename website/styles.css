@@ -12,10 +12,10 @@ body {
 
 /* Overriding the default colour schemas for light mode*/
 .light [data-language], .light .nextra-code-block>pre {
-  background-color: #0a4b6c  !important;
+  background-color: #0a4b6c !important;
 }
 .light .nextra-code-block>div {
-  background-color: #0a4b6c   !important;
+  background-color: #0a4b6c !important;
   color: aliceblue !important;
 }
 .light button[title="Copy code"], button[title="Toggle word wrap"] {
