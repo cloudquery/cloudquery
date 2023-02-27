@@ -239,6 +239,7 @@ export const DESTINATION_PLUGINS: Plugin[] = [
   {
     name: "Kafka",
     logo: "/images/logos/plugins/kafka.svg",
+    logoDark: "/images/logos/plugins/kafka-dark.svg",
     id: "kafka",
   },
   {
