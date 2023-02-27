@@ -124,13 +124,17 @@ func (c *Client) listPgTables(ctx context.Context, pluginTables schema.Tables) (
 		if pkName != "" {
 			table.PkConstraintName = pkName
 		}
+		schemaType, err := c.PgToSchemaType(tableName, columnName, columnType)
+		if err != nil {
+			return nil, err
+		}
 		table.Columns = append(table.Columns, schema.Column{
 			Name: columnName,
 			CreationOptions: schema.ColumnCreationOptions{
 				PrimaryKey: isPrimaryKey,
 				NotNull:    notNull,
 			},
-			Type: c.PgToSchemaType(columnType),
+			Type: schemaType,
 		})
 	}
 	return tables, nil
