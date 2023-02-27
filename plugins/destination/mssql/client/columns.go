@@ -45,7 +45,11 @@ func (c *Client) getTableColumns(ctx context.Context, table *schema.Table) (sche
 			return fmt.Errorf(`column %q from table %q is of type "datetimeoffset" which was changed to "datetime2". Please drop the database to upgrade to this version`, name, table.Name)
 		}
 
-		tc = append(tc, schema.Column{Name: name, Type: queries.SchemaType(typ), CreationOptions: schema.ColumnCreationOptions{NotNull: nullable == "NO"}})
+		schemaType, err := queries.SchemaType(table.Name, typ)
+		if err != nil {
+			return err
+		}
+		tc = append(tc, schema.Column{Name: name, Type: schemaType, CreationOptions: schema.ColumnCreationOptions{NotNull: nullable == "NO"}})
 
 		return nil
 	}); err != nil {
