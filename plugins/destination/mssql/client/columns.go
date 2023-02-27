@@ -45,7 +45,7 @@ func (c *Client) getTableColumns(ctx context.Context, table *schema.Table) (sche
 			return fmt.Errorf(`column %q from table %q is of type "datetimeoffset" which was changed to "datetime2". Please drop the database to upgrade to this version`, name, table.Name)
 		}
 
-		schemaType, err := queries.SchemaType(table.Name, typ)
+		schemaType, err := queries.SchemaType(table.Name, name, typ)
 		if err != nil {
 			return err
 		}

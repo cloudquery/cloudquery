@@ -66,7 +66,7 @@ func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
 		for i := range table.Columns {
 			// Since multiple schema types can map to the same MSSQL type we need to normalize them to avoid false positives when detecting schema changes
 			// This should never return an error
-			typ, _ := queries.SchemaType(table.Name, queries.SQLType(table.Columns[i].Type))
+			typ, _ := queries.SchemaType(table.Name, table.Columns[i].Name, queries.SQLType(table.Columns[i].Type))
 			table.Columns[i].Type = typ
 		}
 		// If there are no PKs, we use CqID as PK

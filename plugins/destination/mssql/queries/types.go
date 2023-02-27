@@ -41,7 +41,7 @@ func SQLType(t schema.ValueType) string {
 	}
 }
 
-func SchemaType(tableName string, sqlType string) (schema.ValueType, error) {
+func SchemaType(tableName string, columnName string, sqlType string) (schema.ValueType, error) {
 	sqlToSchema := map[string]schema.ValueType{
 		"bit":              schema.TypeBool,
 		"bigint":           schema.TypeInt,
@@ -57,7 +57,7 @@ func SchemaType(tableName string, sqlType string) (schema.ValueType, error) {
 		return v, nil
 	}
 
-	return schema.TypeInvalid, fmt.Errorf("got unknown MSSQL type %q for table %q while trying to convert it to CloudQuery internal schema type. Supported MSSQL types are %q", sqlType, tableName, maps.Keys(sqlToSchema))
+	return schema.TypeInvalid, fmt.Errorf("got unknown MSSQL type %q of column %q for table %q while trying to convert it to CloudQuery internal schema type. Supported MSSQL types are %q", sqlType, columnName, tableName, maps.Keys(sqlToSchema))
 }
 
 // columnGoType has to be in sync with SQLType
