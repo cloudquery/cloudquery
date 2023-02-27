@@ -10,7 +10,7 @@ Logical Replication is a feature of PostgreSQL that allows you to stream changes
 
 In this document we won't go into details of how Logical Replication works internally, but we will show you how to enable it in number of environments and how to configure CloudQuery PostgreSQL source plugin that can stream the changes to any of [CloudQuery supported destinations](/docs/plugins/destinations/overview).
 
-The PostgreSQL source plugin streams changes directly to any CloudQuery destinations without the need for additional infrastructure (e.g. Kafka, RabbitMQ, etc). This means the setup is much easier.
+The PostgreSQL source plugin streams changes directly to any CloudQuery destination without the need for additional infrastructure (e.g. Kafka, RabbitMQ, etc). This means the setup is much easier.
 
 ## PSQL Test
 
