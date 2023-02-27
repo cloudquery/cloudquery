@@ -11,17 +11,13 @@ body {
 }
 
 /* Overriding the default colour schemas */
-.nx-bg-primary-700\/5 {
+.light .nx-bg-primary-700\/5 {
   background-color: #0a4b6c !important;
 }
 
 .nx-text-gray-700 {
   --tw-text-opacity: 1;
   color: rgba(232, 239, 245, var(--tw-text-opacity));
-}
-
-.dark\:nx-bg-primary-300\/10 {
-  background-color: hsl(var(--nextra-primary-hue)100% 77%/.1) !important;
 }
 
 .dark body {
