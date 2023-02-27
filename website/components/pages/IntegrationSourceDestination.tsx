@@ -38,7 +38,7 @@ export default function Integration({
                         CloudQuery is an open-source data integration platform that allows you to export data from any source to any destination.
                     </p>
                     <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
-                        The CloudQuery {source.name} plugin allows you to sync data from {source.name}. It's free, open source, requires no account, and takes only minutes to get started.
+                        The CloudQuery {source.name} plugin allows you to sync data from {source.name} to any destination, including {destination.name}. It's free, open source, requires no account, and takes only minutes to get started.
                     </p>
                     <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
                     Ready? Let's dive right in!
