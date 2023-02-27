@@ -9,10 +9,14 @@ const outputDir = "./pages/integrations";
 const mdxSourceComponentDir = "./components/mdx/plugins/source";
 const mdxDestinationComponentDir = "./components/mdx/plugins/destination";
 
-function createSourceIntegrationDirectory(source: Plugin) {
-    // Create the source directory if it doesn't exist
-    if (!fs.existsSync(outputDir + "/" + source.id)) {
-        fs.mkdirSync(outputDir+ "/" + source.id, { recursive: true });
+function recreateDirectory(dir: string) {
+    if (fs.existsSync(dir)) {
+        // Clear the directory if it exists
+        fs.rmSync(dir, { recursive: true, force: true });
+        fs.mkdirSync(dir);
+    } else {
+        // Create the directory if it doesn't exist
+        fs.mkdirSync(dir, { recursive: true });
     }
 }
 
@@ -22,10 +26,6 @@ function copySourceAuthenticationFile(source: Plugin) : boolean {
 
     // Copy the authentication and configuration files if they exist
     const authFilePath = path.join(sourceDir, "_authentication.mdx");
-
-    if (!fs.existsSync(mdxSourceComponentDir + "/" + source.id)) {
-        fs.mkdirSync(mdxSourceComponentDir+ "/" + source.id, { recursive: true });
-    }
 
     if (fs.existsSync(authFilePath)) {
         const outputFilePath = path.join(mdxSourceComponentDir, `${source.id}/_authentication.mdx`);
@@ -37,14 +37,11 @@ function copySourceAuthenticationFile(source: Plugin) : boolean {
 
 // Copy the source configuration file if it exists and replace the destination name
 function copySourceConfigurationFile(source: Plugin): boolean {
-    createSourceIntegrationDirectory(source);
     const configFilePath = `./pages/docs/plugins/sources/${source.id}/_configuration.mdx`;
     if (fs.existsSync(configFilePath)) {
         DESTINATION_PLUGINS.forEach((destination) => {
             const sourceConfigDir = mdxSourceComponentDir + `/${source.id}/${destination.id}`;
-            if (!fs.existsSync(sourceConfigDir)) {
-                fs.mkdirSync(sourceConfigDir, { recursive: true });
-            }
+            recreateDirectory(sourceConfigDir);
             let fileContents = fs.readFileSync(configFilePath, "utf8");
             fileContents = fileContents.replace(/DESTINATION_NAME/g, destination.id);
             const outputFilePath = path.join(sourceConfigDir, `_configuration.mdx`);
@@ -61,11 +58,6 @@ function copyDestinationAuthenticationFile(destination: Plugin) : boolean {
 
     // Copy the authentication and configuration files if they exist
     const authFilePath = path.join(destinationPluginDir, "_authentication.mdx");
-
-    if (!fs.existsSync(mdxDestinationComponentDir + "/" + destination.id)) {
-        fs.mkdirSync(mdxDestinationComponentDir+ "/" + destination.id, { recursive: true });
-    }
-
     if (fs.existsSync(authFilePath)) {
         const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_authentication.mdx`);
         fs.copyFileSync(authFilePath, outputFilePath);
@@ -78,10 +70,6 @@ function copyDestinationAuthenticationFile(destination: Plugin) : boolean {
 function copyDestinationConfigurationFile(destination: Plugin) : boolean {
     const destinationDir = `./pages/docs/plugins/destinations/${destination.id}`;
     const authFilePath = path.join(destinationDir, "_configuration.mdx");
-
-    if (!fs.existsSync(mdxDestinationComponentDir + "/" + destination.id)) {
-        fs.mkdirSync(mdxDestinationComponentDir+ "/" + destination.id, { recursive: true });
-    }
 
     if (fs.existsSync(authFilePath)) {
         const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_configuration.mdx`);
@@ -204,6 +192,8 @@ function generateFiles() {
           // partner or community plugin
           return;
       }
+      recreateDirectory(outputDir + "/" + source.id);
+
       const hasConfiguration = copySourceConfigurationFile(source);
       if (!hasConfiguration) {
           throw new Error("No _configuration.mdx file found for source: " + source.id);
@@ -218,6 +208,8 @@ function generateFiles() {
             // partner or community plugin
             return;
         }
+        recreateDirectory(mdxDestinationComponentDir + "/" + destination.id);
+
         const hasConfiguration = copyDestinationConfigurationFile(destination);
         if (!hasConfiguration) {
             throw new Error("No _configuration.mdx file found for destination: " + destination.id);
