@@ -3,7 +3,6 @@ package postgresql
 import (
 	"encoding/json"
 	"net/http"
-
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
@@ -34,7 +33,10 @@ func createServers(router *mux.Router) error {
 	if err := createConfigurations(router); err != nil {
 		return err
 	}
-	return createFirewallRules(router)
+	if err := createFirewallRules(router); err != nil {
+		return err
+	}
+	return createDatabases(router)
 }
 
 func TestServers(t *testing.T) {

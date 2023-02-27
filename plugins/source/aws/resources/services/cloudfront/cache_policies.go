@@ -12,14 +12,10 @@ func CachePolicies() *schema.Table {
 		Name:        "aws_cloudfront_cache_policies",
 		Description: `https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_CachePolicySummary.html`,
 		Resolver:    fetchCloudfrontCachePolicies,
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudfront"),
 		Transform:   transformers.TransformWithStruct(&types.CachePolicySummary{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

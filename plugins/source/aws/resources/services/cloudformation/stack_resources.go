@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func StackResources() *schema.Table {
+func stackResources() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_cloudformation_stack_resources",
 		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackResourceSummary.html`,
@@ -15,15 +15,12 @@ func StackResources() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudformation"),
 		Transform:   transformers.TransformWithStruct(&types.StackResourceSummary{}),
 		Columns: []schema.Column{
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
-				Name:     "account_id",
+				Name:     "stack_id",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},
 	}

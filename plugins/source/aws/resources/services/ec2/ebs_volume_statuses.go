@@ -15,16 +15,8 @@ func EbsVolumesStatuses() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Transform:   transformers.TransformWithStruct(&types.VolumeStatusItem{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "volume_arn",
 				Type:     schema.TypeString,

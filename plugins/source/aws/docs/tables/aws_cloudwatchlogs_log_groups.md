@@ -4,6 +4,11 @@ https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_LogGrou
 
 The primary key for this table is **arn**.
 
+## Relations
+
+The following tables depend on aws_cloudwatchlogs_log_groups:
+  - [aws_cloudwatchlogs_log_group_subscription_filters](aws_cloudwatchlogs_log_group_subscription_filters.md)
+
 ## Columns
 
 | Name          | Type          |

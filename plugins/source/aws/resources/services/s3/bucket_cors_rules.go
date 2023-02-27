@@ -14,11 +14,7 @@ func BucketCorsRules() *schema.Table {
 		Resolver:    fetchS3BucketCorsRules,
 		Transform:   transformers.TransformWithStruct(&types.CORSRule{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "bucket_arn",
 				Type:     schema.TypeString,

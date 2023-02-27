@@ -12,32 +12,8 @@ func Users() *schema.Table {
 		Name:        "aws_quicksight_users",
 		Description: "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_User.html",
 		Resolver:    fetchQuicksightUsers,
-		Transform:   transformers.TransformWithStruct(&types.User{}),
+		Transform:   transformers.TransformWithStruct(&types.User{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("quicksight"),
-		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveTags(),
-			},
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Columns:     []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true), tagsCol},
 	}
 }

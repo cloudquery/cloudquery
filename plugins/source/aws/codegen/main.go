@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 	"path"
 	"reflect"
 	"runtime"
+
+	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/account"
@@ -96,6 +97,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
+	"github.com/aws/aws-sdk-go-v2/service/support"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
@@ -199,6 +201,7 @@ var clients = []any{
 	&sqs.Client{},
 	&ssm.Client{},
 	&ssoadmin.Client{},
+	&support.Client{},
 	&timestreamwrite.Client{},
 	&transfer.Client{},
 	&waf.Client{},
@@ -230,6 +233,7 @@ func include(m reflect.Method) bool {
 	var exceptions = []string{
 		"QuerySchemaVersionMetadata",
 		"GenerateCredentialReport",
+		"LookupEvents",
 	}
 	if funk.ContainsString(exceptions, m.Name) {
 		return true

@@ -19,6 +19,7 @@ import (
 	"github.com/aws/smithy-go"
 	"github.com/aws/smithy-go/logging"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
+	"github.com/cloudquery/plugin-sdk/backend"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -36,6 +37,8 @@ type Client struct {
 	AutoscalingNamespace string
 	WAFScope             wafv2types.Scope
 	Partition            string
+	LanguageCode         string
+	Backend              backend.Backend
 }
 
 type AwsLogger struct {
@@ -102,8 +105,9 @@ func (s *ServicesManager) InitServicesForPartitionAccountAndScope(partition, acc
 	s.wafScopeServices[partition][accountId] = &svcs
 }
 
-func NewAwsClient(logger zerolog.Logger) Client {
+func NewAwsClient(logger zerolog.Logger, b backend.Backend) Client {
 	return Client{
+		Backend: b,
 		ServicesManager: ServicesManager{
 			services: ServicesPartitionAccountRegionMap{},
 		},
@@ -116,12 +120,15 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func (c *Client) ID() string {
-	return strings.TrimRight(strings.Join([]string{
+	idStrings := []string{
 		c.AccountID,
 		c.Region,
 		c.AutoscalingNamespace,
 		string(c.WAFScope),
-	}, ":"), ":")
+		c.LanguageCode,
+	}
+
+	return strings.TrimRight(strings.Join(idStrings, ":"), ":")
 }
 
 func (c *Client) Services() *Services {
@@ -141,6 +148,7 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 		Region:               region,
 		AutoscalingNamespace: c.AutoscalingNamespace,
 		WAFScope:             c.WAFScope,
+		Backend:              c.Backend,
 	}
 }
 
@@ -153,6 +161,7 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 		Region:               region,
 		AutoscalingNamespace: namespace,
 		WAFScope:             c.WAFScope,
+		Backend:              c.Backend,
 	}
 }
 
@@ -165,7 +174,15 @@ func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, regi
 		Region:               region,
 		AutoscalingNamespace: c.AutoscalingNamespace,
 		WAFScope:             scope,
+		Backend:              c.Backend,
 	}
+}
+
+func (c *Client) withLanguageCode(code string) *Client {
+	newC := *c
+	newC.LanguageCode = code
+	newC.logger = newC.logger.With().Str("language_code", code).Logger()
+	return &newC
 }
 
 func verifyRegions(regions []string) error {
@@ -313,7 +330,7 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 	return awsCfg, err
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, opts source.Options) (schema.ClientMeta, error) {
 	var awsConfig Spec
 	err := spec.UnmarshalSpec(&awsConfig)
 	if err != nil {
@@ -325,7 +342,8 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 		return nil, fmt.Errorf("spec validation failed: %w", err)
 	}
 
-	client := NewAwsClient(logger)
+	client := NewAwsClient(logger, opts.Backend)
+
 	var adminAccountSts AssumeRoleAPIClient
 
 	if awsConfig.Organization != nil {

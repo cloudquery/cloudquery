@@ -5,7 +5,16 @@ import (
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/specs"
 )
+
+var migrateStrategy = destination.MigrateStrategy{
+	AddColumn:           specs.MigrateModeSafe,
+	AddColumnNotNull:    specs.MigrateModeForced,
+	RemoveColumn:        specs.MigrateModeSafe,
+	RemoveColumnNotNull: specs.MigrateModeForced,
+	ChangeColumn:        specs.MigrateModeForced,
+}
 
 const (
 	defaultConnectionString = "bolt://localhost:7687"
@@ -22,12 +31,20 @@ func getenv(key, fallback string) string {
 }
 
 func TestPlugin(t *testing.T) {
-	p := destination.NewPlugin("neo4j", "development", New, destination.WithManagedWriter())
-	destination.PluginTestSuiteRunner(t, p,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("neo4j", "development", New, destination.WithManagedWriter())
+		},
 		Spec{
 			Username:         getenv("CQ_DEST_NEO4J_USERNAME", defaultUsername),
 			Password:         getenv("CQ_DEST_NEO4J_PASSWORD", defaultPassword),
 			ConnectionString: getenv("CQ_DEST_NEO4J_CONNECTION_STRING", defaultConnectionString),
 		},
-		destination.PluginTestSuiteTests{})
+		destination.PluginTestSuiteTests{
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
+
+			MigrateStrategyOverwrite: migrateStrategy,
+			MigrateStrategyAppend:    migrateStrategy,
+		})
 }

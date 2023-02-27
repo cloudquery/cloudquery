@@ -28,3 +28,4 @@ go.work.sum.backup
 cli/examples
 cli/cli
 __tables.json
+__debug_bin

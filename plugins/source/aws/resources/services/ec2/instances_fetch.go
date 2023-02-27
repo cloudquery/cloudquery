@@ -15,26 +15,20 @@ import (
 
 var stateTransitionReasonTimeRegex = regexp.MustCompile(`\((.*)\)`)
 
-func fetchEc2Instances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var config ec2.DescribeInstancesInput
-	c := meta.(*client.Client)
-	svc := c.Services().Ec2
-	for {
-		output, err := svc.DescribeInstances(ctx, &config, func(options *ec2.Options) {
-			options.Region = c.Region
-		})
+func fetchEc2Instances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+	p := ec2.NewDescribeInstancesPaginator(meta.(*client.Client).Services().Ec2,
+		&ec2.DescribeInstancesInput{MaxResults: aws.Int32(1000)})
+
+	for p.HasMorePages() {
+		output, err := p.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 		for _, reservation := range output.Reservations {
 			res <- reservation.Instances
 		}
-
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
 	}
+
 	return nil
 }
 

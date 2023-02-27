@@ -5,17 +5,15 @@ name: Datadog
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", `datadog`)}/>
 
-The CloudQuery Datadog plugin extracts your Datadog information and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+The CloudQuery Datadog plugin extracts your Datadog information and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Authentication
 
-CloudQuery requires only `DD_CLIENT_API_KEY` and `DD_CLIENT_APP_KEY`. Follow [this guide](https://docs.datadoghq.com/account_management/api-app-keys/) for how to create an API key and app key for CloudQuery.
-
-CloudQuery requires only *read* permissions (we will never make any changes to your Datadog account),
-so, following the principle of the least privilege, it's recommended to grant it read-only permissions.
+<Authentication/>
 
 ## Query Examples
 

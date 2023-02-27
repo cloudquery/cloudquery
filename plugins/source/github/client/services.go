@@ -38,6 +38,10 @@ type RepositoriesService interface {
 	ListByOrg(ctx context.Context, org string, opts *github.RepositoryListByOrgOptions) ([]*github.Repository, *github.Response, error)
 	ListReleases(ctx context.Context, owner, repo string, opts *github.ListOptions) ([]*github.RepositoryRelease, *github.Response, error)
 	ListReleaseAssets(ctx context.Context, owner, repo string, id int64, opts *github.ListOptions) ([]*github.ReleaseAsset, *github.Response, error)
+	ListTrafficClones(ctx context.Context, owner, repo string, opts *github.TrafficBreakdownOptions) (*github.TrafficClones, *github.Response, error)
+	ListTrafficViews(ctx context.Context, owner, repo string, opts *github.TrafficBreakdownOptions) (*github.TrafficViews, *github.Response, error)
+	ListTrafficPaths(ctx context.Context, owner, repo string) ([]*github.TrafficPath, *github.Response, error)
+	ListTrafficReferrers(ctx context.Context, owner, repo string) ([]*github.TrafficReferrer, *github.Response, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_orgs.go . OrganizationsService

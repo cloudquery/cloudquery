@@ -15,16 +15,8 @@ func DatabaseTableIndexes() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.PartitionIndexDescriptor{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "database_arn",
 				Type:     schema.TypeString,

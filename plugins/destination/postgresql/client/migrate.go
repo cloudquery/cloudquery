@@ -3,210 +3,326 @@ package client
 import (
 	"context"
 	"fmt"
-	"sort"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/jackc/pgx/v5"
-	"golang.org/x/exp/maps"
 )
 
 const (
-	isTableExistSQL = "select count(*) from information_schema.tables where table_name = $1 and table_schema in (SELECT TRIM(BOTH from unnest(string_to_array(reset_val,','))) FROM pg_settings WHERE name='search_path')"
+	// this returns the following table in sorted manner:
+	// +----------------+-------------+-------------+------------+---------------+-----------+---------------------+
+	// | ordinal_position | table_name | column_name | data_type | is_primary_key| not_null  | pk_constraint_name  |
+	// +----------------+-------------+-------------+------------+---------------+-----------+---------------------+
+	// |              1 | users       | id          | bigint     | YES           | true 		 | cq_users_pk 	  	   |
+	// |              2 | users       | name        | text       | NO            | false 	   | 					           |
+	// |              3 | users       | email       | text       | NO            | true 		 | cq_users_pk         |
+	// |              1 | posts       | id          | bigint     | YES           | true 		 | cq_posts_pk			   |
+	// |              2 | posts       | title       | text       | NO            | false 	   | 					           |
+	selectAllTables = `
+SELECT
+	columns.ordinal_position AS ordinal_position,
+	pg_class.relname AS table_name,
+	pg_attribute.attname AS column_name,
+	pg_catalog.format_type(pg_attribute.atttypid, pg_attribute.atttypmod) AS data_type,
+	CASE 
+		WHEN conkey IS NOT NULL AND array_position(conkey, pg_attribute.attnum) > 0 THEN true
+		ELSE false
+	END AS is_primary_key,
+	CASE 
+		WHEN pg_attribute.attnotnull THEN true
+		ELSE false
+	END AS not_null,
+	COALESCE(pg_constraint.conname, '') AS primary_key_constraint_name
+FROM
+	pg_catalog.pg_attribute
+	INNER JOIN
+	pg_catalog.pg_class ON pg_class.oid = pg_attribute.attrelid
+	INNER JOIN
+	pg_catalog.pg_namespace ON pg_namespace.oid = pg_class.relnamespace
+	LEFT JOIN
+	pg_catalog.pg_constraint ON pg_constraint.conrelid = pg_attribute.attrelid
+	AND conkey IS NOT NULL AND array_position(conkey, pg_attribute.attnum) > 0
+	AND contype = 'p'
+	INNER JOIN
+	information_schema.columns ON columns.table_name = pg_class.relname AND columns.column_name = pg_attribute.attname AND columns.table_schema = pg_catalog.pg_namespace.nspname
+WHERE
+	pg_attribute.attnum > 0
+	AND NOT pg_attribute.attisdropped
+	AND pg_catalog.pg_namespace.nspname = '%s'
+ORDER BY
+	table_name ASC , ordinal_position ASC;
+`
 
-	// https://wiki.postgresql.org/wiki/Retrieve_primary_key_columns
-	sqlSelectPrimaryKeys = `
-SELECT a.attname as pkey FROM pg_index i       
-JOIN   pg_attribute a ON a.attrelid = i.indrelid
-  AND a.attnum = ANY(i.indkey)
-WHERE  i.indrelid = $1::regclass
-AND    i.indisprimary;
+	selectAllTablesCockroach = `
+SELECT
+	columns.ordinal_position AS ordinal_position,
+	pg_class.relname AS table_name,
+	pg_attribute.attname AS column_name,
+	pg_catalog.format_type(pg_attribute.atttypid, pg_attribute.atttypmod) AS data_type,
+	CASE 
+		WHEN conkey IS NOT NULL AND array_position(conkey, pg_attribute.attnum) > 0 THEN true
+		ELSE false
+	END AS is_primary_key,
+	CASE 
+		WHEN pg_attribute.attnotnull THEN true
+		ELSE false
+	END AS not_null,
+	COALESCE(pg_constraint.conname, '') AS primary_key_constraint_name
+FROM
+	pg_catalog.pg_attribute
+	INNER JOIN
+	pg_catalog.pg_class ON pg_class.oid = pg_attribute.attrelid
+	INNER JOIN
+	pg_catalog.pg_namespace ON pg_namespace.oid = pg_class.relnamespace
+	LEFT JOIN
+	pg_catalog.pg_constraint ON pg_constraint.conrelid = pg_attribute.attrelid
+	AND conkey IS NOT NULL AND array_position(conkey, pg_attribute.attnum) > 0
+	AND contype = 'p'
+	INNER JOIN
+	information_schema.columns ON columns.table_name = pg_class.relname AND columns.column_name = pg_attribute.attname AND columns.table_schema = pg_catalog.pg_namespace.nspname
+WHERE
+	pg_attribute.attnum > 0
+	AND NOT pg_attribute.attisdropped
+	AND pg_catalog.pg_namespace.nspname = '%s'
+	AND information_schema.columns.is_hidden != 'YES'
+ORDER BY
+	table_name ASC , ordinal_position ASC;
 `
 )
 
+func (c *Client) listPgTables(ctx context.Context, pluginTables schema.Tables) (schema.Tables, error) {
+	var tables schema.Tables
+	sql := selectAllTables
+	if c.pgType == pgTypeCockroachDB {
+		sql = selectAllTablesCockroach
+	}
+	rows, err := c.conn.Query(ctx, fmt.Sprintf(sql, c.currentSchemaName))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var ordinalPosition int
+		var tableName, columnName, columnType, pkName string
+		var isPrimaryKey, notNull bool
+		if err := rows.Scan(&ordinalPosition, &tableName, &columnName, &columnType, &isPrimaryKey, &notNull, &pkName); err != nil {
+			return nil, err
+		}
+		// We don't want to migrate tables that are not a part of the spec, or non CloudQuery tables
+		if pluginTables.Get(tableName) == nil {
+			continue
+		}
+		if ordinalPosition == 1 {
+			tables = append(tables, &schema.Table{
+				Name:    tableName,
+				Columns: make([]schema.Column, 0),
+			})
+		}
+		table := tables[len(tables)-1]
+		if pkName != "" {
+			table.PkConstraintName = pkName
+		}
+		table.Columns = append(table.Columns, schema.Column{
+			Name: columnName,
+			CreationOptions: schema.ColumnCreationOptions{
+				PrimaryKey: isPrimaryKey,
+				NotNull:    notNull,
+			},
+			Type: c.PgToSchemaType(columnType),
+		})
+	}
+	return tables, nil
+}
+
+func (c *Client) normalizeTableCockroach(table *schema.Table) *schema.Table {
+	for i := range table.Columns {
+		if !c.enabledPks() {
+			table.Columns[i].CreationOptions.PrimaryKey = false
+		}
+		switch table.Columns[i].Type {
+		case schema.TypeCIDR:
+			table.Columns[i].Type = schema.TypeInet
+		case schema.TypeCIDRArray:
+			table.Columns[i].Type = schema.TypeInetArray
+		case schema.TypeMacAddr:
+			table.Columns[i].Type = schema.TypeString
+		case schema.TypeMacAddrArray:
+			table.Columns[i].Type = schema.TypeStringArray
+		}
+		if table.Columns[i].CreationOptions.PrimaryKey {
+			table.Columns[i].CreationOptions.NotNull = true
+		}
+	}
+	return table
+}
+
+func (c *Client) normalizeTablePg(table *schema.Table) *schema.Table {
+	for i := range table.Columns {
+		if !c.enabledPks() {
+			table.Columns[i].CreationOptions.PrimaryKey = false
+		}
+		if table.Columns[i].CreationOptions.PrimaryKey {
+			table.Columns[i].CreationOptions.NotNull = true
+		}
+		// this is for backward compatibility as I believe this is as of right now defined on the source
+		if c.enabledPks() && len(table.PrimaryKeys()) == 0 {
+			cqIdColumn := table.Columns.Get(schema.CqIDColumn.Name)
+			if cqIdColumn != nil {
+				cqIdColumn.CreationOptions.PrimaryKey = true
+			}
+		}
+	}
+	return table
+}
+
+func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
+	switch c.pgType {
+	case pgTypeCockroachDB:
+		return c.normalizeTableCockroach(table)
+	case pgTypePostgreSQL:
+		return c.normalizeTablePg(table)
+	default:
+		panic("unknown pg type")
+	}
+}
+
+func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
+	for _, change := range changes {
+		switch change.Type {
+		case schema.TableColumnChangeTypeAdd:
+			if err := c.addColumn(ctx, table.Name, change.Current); err != nil {
+				return err
+			}
+		case schema.TableColumnChangeTypeRemove:
+			continue
+		default:
+			panic("unknown change type")
+		}
+	}
+	return nil
+}
+
+func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
+	for _, change := range changes {
+		switch change.Type {
+		case schema.TableColumnChangeTypeAdd:
+			if change.Current.CreationOptions.PrimaryKey || change.Current.CreationOptions.NotNull {
+				return false
+			}
+		case schema.TableColumnChangeTypeRemove:
+			if change.Previous.CreationOptions.PrimaryKey || change.Previous.CreationOptions.NotNull {
+				return false
+			}
+		case schema.TableColumnChangeTypeUpdate:
+			return false
+		default:
+			panic("unknown change type")
+		}
+	}
+	return true
+}
+
+// normalize the requested schema to be compatible with what Postgres supports
+func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
+	flattenedTables := tables.FlattenTables()
+	for _, table := range flattenedTables {
+		c.normalizeTable(table)
+	}
+	return flattenedTables
+}
+
+func (c *Client) nonAutoMigrableTables(tables schema.Tables, pgTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
+	var result []string
+	var tableChanges [][]schema.TableColumnChange
+	for _, t := range tables {
+		pgTable := pgTables.Get(t.Name)
+		if pgTable == nil {
+			continue
+		}
+		changes := t.GetChanges(pgTable)
+		if !c.canAutoMigrate(changes) {
+			result = append(result, t.Name)
+			tableChanges = append(tableChanges, changes)
+		}
+	}
+	return result, tableChanges
+}
+
 // This is the responsibility of the CLI of the client to lock before running migration
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+	pgTables, err := c.listPgTables(ctx, tables)
+	if err != nil {
+		return fmt.Errorf("failed listing postgres tables: %w", err)
+	}
+	tables = c.normalizeTables(tables)
+	if c.spec.MigrateMode != specs.MigrateModeForced {
+		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(tables, pgTables)
+		if len(nonAutoMigrableTables) > 0 {
+			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigrableTables, ","), changes)
+		}
+	}
+
 	for _, table := range tables {
 		c.logger.Info().Str("table", table.Name).Msg("Migrating table")
 		if len(table.Columns) == 0 {
 			c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
 			continue
 		}
-		tableExist, err := c.isTableExistSQL(ctx, table.Name)
-		if err != nil {
-			return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
-		}
-		if tableExist {
-			c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
-			if err := c.autoMigrateTable(ctx, table); err != nil {
-				return err
-			}
-		} else {
+		pgTable := pgTables.Get(table.Name)
+		if pgTable == nil {
 			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
 			if err := c.createTableIfNotExist(ctx, table); err != nil {
 				return err
 			}
-		}
-		if err := c.Migrate(ctx, table.Relations); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (c *Client) isTableExistSQL(ctx context.Context, table string) (bool, error) {
-	var tableExist int
-	if err := c.conn.QueryRow(ctx, isTableExistSQL, table).Scan(&tableExist); err != nil {
-		return false, fmt.Errorf("failed to check if table %s exists: %w", table, err)
-	}
-	return tableExist == 1, nil
-}
-
-func (c *Client) getStalePks(pgPKs map[string]bool, table *schema.Table) []string {
-	stalePks := []string{}
-	if c.enabledPks() {
-		sortedPKs := maps.Keys(pgPKs)
-		sort.Strings(sortedPKs)
-		for _, pk := range sortedPKs {
-			stalePk := true
-			for _, col := range table.Columns {
-				if col.Name == pk && col.CreationOptions.PrimaryKey {
-					stalePk = false
-					break
+		} else {
+			changes := table.GetChanges(pgTable)
+			if c.canAutoMigrate(changes) {
+				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
+				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
+					return err
+				}
+			} else {
+				c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
+				if err := c.dropTable(ctx, table.Name); err != nil {
+					return err
+				}
+				if err := c.createTableIfNotExist(ctx, table); err != nil {
+					return err
 				}
 			}
-			if stalePk {
-				c.logger.Info().Str("table", table.Name).Str("column", pk).Msg("Column exists with primary key but is not in the schema")
-				stalePks = append(stalePks, pk)
-			}
 		}
 	}
-	return stalePks
-}
-
-func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) error {
-	var err error
-	var pgColumns *pgTableColumns
-	var pgPKs map[string]bool
-
-	// create the new column as it doesn't exist
-	tableName := pgx.Identifier{table.Name}.Sanitize()
-	if pgColumns, err = c.getPgTableColumns(ctx, table.Name); err != nil {
-		return fmt.Errorf("failed to get table %s columns types: %w", table.Name, err)
+	conn, err := c.conn.Acquire(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to acquire connection: %w", err)
 	}
-
-	if pgPKs, err = c.getPgTablePrimaryKeys(ctx, table.Name); err != nil {
-		return fmt.Errorf("failed to get table %s primary key columns: %w", table.Name, err)
-	}
-
-	stalePks := c.getStalePks(pgPKs, table)
-	constraintName := pgx.Identifier{table.Name + "_cqpk"}.Sanitize()
-	dropConstraintSQL := "alter table " + tableName + " drop constraint if exists " + constraintName
-	if len(stalePks) > 0 {
-		message := "the following primary keys were removed from the schema %q for table %q.\nYou can migrate the table manually by running:\n%s"
-		sep := strings.Repeat("-", len(dropConstraintSQL)+1)
-		query := fmt.Sprintf("%s\n%s;\n%s\n%s", sep, dropConstraintSQL, getDropNotNullQuery(table, stalePks), sep)
-		return fmt.Errorf(message, stalePks, table.Name, query)
-	}
-
-	reCreatePrimaryKeys := false
-
-	for _, col := range table.Columns {
-		columnName := pgx.Identifier{col.Name}.Sanitize()
-		columnType := c.SchemaTypeToPg(col.Type)
-		if columnType == "" {
-			c.logger.Warn().Str("table", table.Name).Str("column", col.Name).Msg("Column type not supported, skipping")
-			continue
-		}
-		pgColumn := pgColumns.getPgColumn(col.Name)
-
-		switch {
-		case pgColumn == nil:
-			c.logger.Info().Str("table", table.Name).Str("column", col.Name).Msg("Column doesn't exist, creating")
-
-			sql := "alter table " + tableName + " add column " + columnName + " " + columnType
-			if col.CreationOptions.PrimaryKey {
-				reCreatePrimaryKeys = true
-			}
-			if _, err := c.conn.Exec(ctx, sql); err != nil {
-				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
-			}
-		case pgColumn.typ != columnType:
-			c.logger.Info().Str("table", table.Name).Str("column", col.Name).Str("old_type", pgColumn.typ).Str("new_type", columnType).Msg("Column exists but type is different, re-creating")
-			// column exists but type is different
-
-			// if this column contains primary key we will need to recreate the primary key
-			if c.enabledPks() && col.CreationOptions.PrimaryKey {
-				reCreatePrimaryKeys = true
-			}
-			sql := "alter table " + tableName + " drop column " + columnName
-			// right now we will drop the column and re-create. in the future we will have an option to automigrate
-			if _, err := c.conn.Exec(ctx, sql); err != nil {
-				return fmt.Errorf("failed to drop column %s on table %s: %w", col.Name, table.Name, err)
-			}
-			sql = "alter table " + tableName + " add column " + columnName + " " + columnType
-			if _, err := c.conn.Exec(ctx, sql); err != nil {
-				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
-			}
-		}
-
-		// column exists and type is the same but constraints might differ
-		if c.enabledPks() && pgPKs[col.Name] != col.CreationOptions.PrimaryKey {
-			c.logger.Info().Str("table", table.Name).Str("column", col.Name).Bool("pk", col.CreationOptions.PrimaryKey).Msg("Column exists with different primary keys")
-			reCreatePrimaryKeys = true
-		}
-	}
-
-	if reCreatePrimaryKeys {
-		c.logger.Info().Str("table", table.Name).Msg("Recreating primary keys")
-		if err := c.setNotNullOnPks(ctx, table); err != nil {
-			return fmt.Errorf("failed to enforce not null on primary keys: %w", err)
-		}
-
-		tx, err := c.conn.Begin(ctx)
-		if err != nil {
-			return fmt.Errorf("failed to begin transaction to recreate primary keys: %w", err)
-		}
-		if _, err := tx.Exec(ctx, dropConstraintSQL); err != nil {
-			if err := tx.Rollback(ctx); err != nil {
-				c.logger.Error().Err(err).Msg("failed to rollback transaction")
-			}
-			return fmt.Errorf("failed to drop primary key constraint on table %s: %w", table.Name, err)
-		}
-
-		sql := "alter table " + tableName + " add constraint " + constraintName + " primary key (" + strings.Join(table.PrimaryKeys(), ",") + ")"
-		if _, err := tx.Exec(ctx, sql); err != nil {
-			if err := tx.Rollback(ctx); err != nil {
-				c.logger.Error().Err(err).Msg("failed to rollback transaction")
-			}
-			return fmt.Errorf("failed to add primary key constraint on table %s: %w", table.Name, err)
-		}
-		if err := tx.Commit(ctx); err != nil {
-			return fmt.Errorf("failed to commit transaction to recreate primary keys: %w", err)
-		}
-	}
-
-	return nil
-}
-
-func (c *Client) setNotNullOnPks(ctx context.Context, table *schema.Table) error {
-	for _, col := range table.PrimaryKeys() {
-		sql := "alter table " + pgx.Identifier{table.Name}.Sanitize() + " alter column " + pgx.Identifier{col}.Sanitize() + " set not null"
-		if _, err := c.conn.Exec(ctx, sql); err != nil {
-			return fmt.Errorf("failed to set not null on column %s on table %s: %w", col, table.Name, err)
-		}
+	defer conn.Release()
+	if err := conn.Conn().DeallocateAll(ctx); err != nil {
+		return fmt.Errorf("failed to deallocate all prepared statements: %w", err)
 	}
 	return nil
 }
 
-func getDropNotNullQuery(table *schema.Table, stalePks []string) string {
-	queries := []string{}
-	for _, col := range stalePks {
-		queries = append(queries, "alter table "+pgx.Identifier{table.Name}.Sanitize()+" alter column "+pgx.Identifier{col}.Sanitize()+" drop not null;")
+func (c *Client) dropTable(ctx context.Context, tableName string) error {
+	c.logger.Info().Str("table", tableName).Msg("Dropping table")
+	sql := "drop table " + tableName
+	if _, err := c.conn.Exec(ctx, sql); err != nil {
+		return fmt.Errorf("failed to drop table %s: %w", tableName, err)
 	}
+	return nil
+}
 
-	return strings.Join(queries, "\n")
+func (c *Client) addColumn(ctx context.Context, tableName string, column schema.Column) error {
+	c.logger.Info().Str("table", tableName).Str("column", column.Name).Msg("Column doesn't exist, creating")
+	columnName := pgx.Identifier{column.Name}.Sanitize()
+	columnType := c.SchemaTypeToPg(column.Type)
+	sql := "alter table " + tableName + " add column " + columnName + " " + columnType
+	if _, err := c.conn.Exec(ctx, sql); err != nil {
+		return fmt.Errorf("failed to add column %s on table %s: %w", column.Name, tableName, err)
+	}
+	return nil
 }
 
 func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table) error {
@@ -226,9 +342,11 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		}
 		columnName := pgx.Identifier{col.Name}.Sanitize()
 		fieldDef := columnName + " " + pgType
-		if col.Name == "_cq_id" {
-			// _cq_id column should always have a "unique not null" constraint
-			fieldDef += " UNIQUE NOT NULL"
+		if col.CreationOptions.Unique {
+			fieldDef += " UNIQUE"
+		}
+		if col.CreationOptions.NotNull {
+			fieldDef += " NOT NULL"
 		}
 		sb.WriteString(fieldDef)
 		if i != totalColumns-1 {
@@ -246,11 +364,6 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		sb.WriteString("_cqpk PRIMARY KEY (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
-	} else {
-		// if no primary keys are defined, add a PK constraint for _cq_id
-		sb.WriteString(", CONSTRAINT ")
-		sb.WriteString(table.Name)
-		sb.WriteString("_cqpk PRIMARY KEY (_cq_id)")
 	}
 	sb.WriteString(")")
 	_, err := c.conn.Exec(ctx, sb.String())
@@ -258,26 +371,6 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		return fmt.Errorf("failed to create table %s: %w", table.Name, err)
 	}
 	return nil
-}
-
-func (c *Client) getPgTablePrimaryKeys(ctx context.Context, tableName string) (map[string]bool, error) {
-	pks := map[string]bool{}
-	rows, err := c.conn.Query(ctx, sqlSelectPrimaryKeys, tableName)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var column string
-		if err := rows.Scan(&column); err != nil {
-			return nil, err
-		}
-		pks[strings.ToLower(column)] = true
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return pks, nil
 }
 
 func (c *Client) enabledPks() bool {

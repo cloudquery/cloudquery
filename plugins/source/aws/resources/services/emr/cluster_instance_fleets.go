@@ -15,16 +15,8 @@ func clusterInstanceFleets() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
 		Transform:   transformers.TransformWithStruct(&types.InstanceFleet{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "cluster_arn",
 				Type:     schema.TypeString,

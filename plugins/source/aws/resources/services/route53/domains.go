@@ -14,16 +14,9 @@ func Domains() *schema.Table {
 		Resolver:            fetchRoute53Domains,
 		PreResourceResolver: getDomain,
 		Transform:           transformers.TransformWithStruct(&route53domains.GetDomainDetailOutput{}),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("route53domains"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
 			{
 				Name: "domain_name",
 				Type: schema.TypeString,

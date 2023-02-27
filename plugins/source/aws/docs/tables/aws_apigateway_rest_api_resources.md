@@ -8,6 +8,9 @@ The composite primary key for this table is (**account_id**, **arn**).
 
 This table depends on [aws_apigateway_rest_apis](aws_apigateway_rest_apis.md).
 
+The following tables depend on aws_apigateway_rest_api_resources:
+  - [aws_apigateway_rest_api_resource_methods](aws_apigateway_rest_api_resource_methods.md)
+
 ## Columns
 
 | Name          | Type          |

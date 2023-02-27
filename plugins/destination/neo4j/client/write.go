@@ -22,7 +22,12 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 	sb.WriteString("UNWIND $rows as row MERGE (t:")
 	sb.WriteString(table.Name)
 	sb.WriteString(" {")
-	for i, column := range table.PrimaryKeys() {
+	pks := table.PrimaryKeys()
+	if len(pks) == 0 {
+		// If no primary keys are defined, use all columns
+		pks = table.Columns.Names()
+	}
+	for i, column := range pks {
 		if i != 0 {
 			sb.WriteString(", ")
 		}

@@ -15,6 +15,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
+	"github.com/thoas/go-funk"
 )
 
 type Client struct {
@@ -116,9 +117,10 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
 	}
 
+	uniqueSubscriptions := funk.Uniq(spec.Subscriptions).([]string)
 	c := &Client{
 		logger:        logger,
-		subscriptions: spec.Subscriptions,
+		subscriptions: uniqueSubscriptions,
 	}
 
 	c.Creds, err = azidentity.NewDefaultAzureCredential(nil)

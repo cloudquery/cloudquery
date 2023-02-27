@@ -16,16 +16,8 @@ func UserPoolIdentityProviders() *schema.Table {
 		Multiplex:           client.ServiceAccountRegionMultiplexer("cognito-identity"),
 		Transform:           transformers.TransformWithStruct(&types.IdentityProviderType{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "user_pool_arn",
 				Type:     schema.TypeString,

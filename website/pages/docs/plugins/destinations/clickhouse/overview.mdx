@@ -1,0 +1,64 @@
+---
+name: ClickHouse
+---
+# ClickHouse destination plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+import { Callout } from 'nextra-theme-docs'
+import Configuration from "./_configuration.mdx";
+
+<Badge text={"Latest: " + getLatestVersion("destination", "mssql")}/>
+
+This destination plugin lets you sync data from a CloudQuery source to [ClickHouse](https://clickhouse.com/) database.
+
+Supported database versions: >= `22.1.2`
+
+## Configuration
+
+### Example
+
+<Configuration/>
+
+<Callout type="info">
+Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+</Callout>
+
+### ClickHouse spec
+
+This is the (nested) spec used by the ClickHouse destination plugin.
+
+- `connection_string` (string, required)
+
+  Connection string to connect to the database.
+  See [SDK documentation](https://github.com/ClickHouse/clickhouse-go#dsn) for more details.
+
+- `ca_cert` (string, optional. Default: not used)
+
+  If you need to use a custom CA to connect to ClickHouse instance you can use `ca_cert` option.
+  The following values are supported:
+
+  - Path to cert file
+  - CA cert data in plain text (or substituted from environment variable)
+
+#### Verbose logging for debug
+
+The ClickHouse destination can be run in debug mode.
+To achieve this pass the `debug=true` option to `connection_string`.
+See [SDK documentation](https://github.com/ClickHouse/clickhouse-go#dsn) for more details.
+
+Note: This will use [SDK](https://github.com/ClickHouse/clickhouse-go) built-in logging
+and might output data and sensitive information to logs.
+Make sure not to use it in production environment.
+
+```yaml copy
+kind: destination
+spec:
+  name:     "clickhouse"
+  registry: "github"
+  path:     "cloudquery/clickhouse"
+  version:  "VERSION_DESTINATION_CLICKHOUSE"
+
+  spec:
+    connection_string: "clickhouse://${CH_USER}:${CH_PASSWORD}@localhost:9000/${CH_DATABASE}?debug=true"
+```

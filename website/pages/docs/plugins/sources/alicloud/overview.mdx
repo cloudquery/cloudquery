@@ -5,36 +5,18 @@ name: Alibaba Cloud
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", `alicloud`)}/>
 
-The Alibaba Cloud source plugin for CloudQuery extracts configuration from the [Alibaba Cloud (阿里云) API](https://www.alibabacloud.com/product/openapiexplorer) and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+The Alibaba Cloud source plugin for CloudQuery extracts configuration from the [Alibaba Cloud (阿里云) API](https://www.alibabacloud.com/product/openapiexplorer) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Configuration
 
 The following configuration syncs from Alibaba Cloud to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/quickstart) if you need help setting up the destination.
 
-```yaml copy
-kind: source
-spec:
-  name: "alicloud"
-  path: "cloudquery/alicloud"
-  version: "VERSION_SOURCE_ALICLOUD"
-  tables: ["*"]
-  destinations: 
-    - "postgresql"
-  spec:
-    accounts: 
-      - name: my_account
-        regions:
-        - cn-hangzhou
-        - cn-beijing
-        - eu-west-1
-        - us-west-1
-        # ...
-        access_key: ${ALICLOUD_ACCESS_KEY}
-        secret_key: ${ALICLOUD_SECRET_KEY}
-```
+<Configuration />
 
 - `accounts` (array[object], required):
 
@@ -50,6 +32,10 @@ spec:
 
 
 See the [Alibaba documentation](https://www.alibabacloud.com/help/en/basics-for-beginners/latest/obtain-an-accesskey-pair) for how to obtain an AccessKey pair.
+
+## Authentication
+
+<Authentication />
 
 ## Example Queries
 

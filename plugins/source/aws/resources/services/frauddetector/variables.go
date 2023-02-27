@@ -15,16 +15,8 @@ func Variables() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("frauddetector"),
 		Transform:   transformers.TransformWithStruct(&types.Variable{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

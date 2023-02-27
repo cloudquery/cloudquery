@@ -15,16 +15,8 @@ func TransitGateways() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Transform:   transformers.TransformWithStruct(&types.TransitGateway{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:     "id",
 				Type:     schema.TypeString,

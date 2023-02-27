@@ -5,10 +5,11 @@ name: Hacker News
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", `hackernews`)}/>
 
-The Hacker News Source plugin for CloudQuery extracts configuration from the [Hacker News API](https://github.com/HackerNews/API) and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+The Hacker News Source plugin for CloudQuery extracts configuration from the [Hacker News API](https://github.com/HackerNews/API) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 It can be used for real applications, but is mainly intended to serve as an example of an incremental CloudQuery Source plugin. 
 
@@ -16,19 +17,7 @@ It can be used for real applications, but is mainly intended to serve as an exam
 
 The following configuration syncs from Hacker News to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/quickstart) if you need help setting up the destination.
 
-```yaml copy
-kind: source
-spec:
-  name: "hackernews"
-  path: "cloudquery/hackernews"
-  version: "VERSION_SOURCE_HACKERNEWS"
-  tables: ["*"]
-  backend: local
-  destinations: 
-    - "postgresql"
-  spec:
-    item_concurrency: 100
-```
+<Configuration/>
 
 import { Callout } from 'nextra-theme-docs'
 

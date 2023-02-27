@@ -6,18 +6,15 @@ stage: GA
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Authentication from './_authentication.mdx'
 
 <Badge text={"Latest: " + getLatestVersion("source", "azure")}/>
 
-The CloudQuery Azure source plugin extracts information from many of the supported services by Microsoft Azure.
+The CloudQuery Azure source plugin extracts information from many of the supported services by Microsoft Azure and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Authentication
 
-The plugin needs to be authenticated with your Azure account in order to fetch information about your cloud setup.
-
-You can either authenticate with `az login` (when running locally), or by using a "service principal" and exporting environment variables (appropriate for automated deployments).
-
-You can find out more about authentication with Azure at Azure's [documentation](https://github.com/Azure/azure-sdk-for-go) for the GoLang sdk.
+<Authentication />
 
 ### Authentication with `az login`
 

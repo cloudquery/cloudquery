@@ -1,0 +1,15 @@
+The following config will sync data to an Elasticsearch cluster running on `localhost:9200`:
+
+```yaml copy
+kind: destination
+spec:
+  name: elasticsearch
+  path: cloudquery/elasticsearch
+  version: "VERSION_DESTINATION_ELASTICSEARCH"
+  write_mode: "overwrite-delete-stale"
+  # batch_size: 10000 # optional
+  # batch_size_bytes: 5242880 # optional
+  spec:
+    # elasticsearch plugin spec
+    addresses: ["http://localhost:9200"] # optional
+```

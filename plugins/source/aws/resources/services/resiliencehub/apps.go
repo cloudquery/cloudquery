@@ -15,29 +15,7 @@ func Apps() *schema.Table {
 		PreResourceResolver: describeApp,
 		Transform:           transformers.TransformWithStruct(&types.App{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer("resiliencehub"),
-		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AppArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
-		Relations: []*schema.Table{
-			appAssesments(),
-			appVersions(),
-		},
+		Columns:             []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), arnColumn("AppArn")},
+		Relations:           []*schema.Table{appAssesments(), appVersions()},
 	}
 }

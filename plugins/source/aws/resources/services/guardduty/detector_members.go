@@ -15,11 +15,7 @@ func DetectorMembers() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Member{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("guardduty"),
 		Columns: []schema.Column{
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "detector_arn",
 				Type:     schema.TypeString,

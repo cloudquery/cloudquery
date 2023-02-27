@@ -1,6 +1,9 @@
 package cloudwatchlogs
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -15,16 +18,8 @@ func LogGroups() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("logs"),
 		Transform:   transformers.TransformWithStruct(&types.LogGroup{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
@@ -39,5 +34,33 @@ func LogGroups() *schema.Table {
 				Resolver: resolveLogGroupTags,
 			},
 		},
+		Relations: []*schema.Table{
+			subscriptionFilters(),
+		},
 	}
+}
+
+func fetchCloudwatchlogsLogGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var config cloudwatchlogs.DescribeLogGroupsInput
+	c := meta.(*client.Client)
+	svc := c.Services().Cloudwatchlogs
+	paginator := cloudwatchlogs.NewDescribeLogGroupsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.LogGroups
+	}
+	return nil
+}
+
+func resolveLogGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	lg := resource.Item.(types.LogGroup)
+	svc := meta.(*client.Client).Services().Cloudwatchlogs
+	out, err := svc.ListTagsLogGroup(ctx, &cloudwatchlogs.ListTagsLogGroupInput{LogGroupName: lg.LogGroupName})
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, out.Tags)
 }

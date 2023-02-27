@@ -15,16 +15,8 @@ func VaultNotifications() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.VaultNotificationConfig{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("glacier"),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "vault_arn",
 				Type:     schema.TypeString,

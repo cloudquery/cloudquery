@@ -8,8 +8,6 @@ azuredevops:
   - plugins/source/azuredevops/**/*
 cloudflare:
   - plugins/source/cloudflare/**/*
-crowdstrike:
-  - plugins/source/crowdstrike/**/*
 datadog:
   - plugins/source/datadog/**/*
 digitalocean:
@@ -28,10 +26,14 @@ hackernews:
   - plugins/source/hackernews/**/*
 heroku:
   - plugins/source/heroku/**/*
+homebrew:
+  - plugins/source/homebrew/**/*
 hubspot:
   - plugins/source/hubspot/**/*
 plausible:
   - plugins/source/plausible/**/*
+source-postgresql:
+  - plugins/source/postgresql/**/*
 k8s:
   - plugins/source/k8s/**/*
 launchdarkly:
@@ -90,6 +92,8 @@ kafka:
   - plugins/destination/kafka/**/*
 firehose:
   - plugins/destination/firehose/**/*  
+clickhouse:
+  - plugins/destination/clickhouse/**/*
 website:
   - website/**/*
 cli:

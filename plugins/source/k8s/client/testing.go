@@ -12,10 +12,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/kubernetes"
 )
 
-func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) kubernetes.Interface) {
+type TestOption func(*Client)
+
+func WithTestNamespaces(namespaces ...v1.Namespace) TestOption {
+	return func(c *Client) {
+		c.namespaces[c.Context] = namespaces
+	}
+}
+
+func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) kubernetes.Interface, opts ...TestOption) {
 	version := "vDev"
 
 	t.Helper()
@@ -33,12 +42,16 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		}
 
 		c := &Client{
-			logger:   logger,
-			Context:  "testContext",
-			spec:     &k8sSpec,
-			contexts: []string{"testContext"},
+			logger:     logger,
+			Context:    "testContext",
+			spec:       &k8sSpec,
+			contexts:   []string{"testContext"},
+			namespaces: map[string][]v1.Namespace{},
 		}
 		c.clients = map[string]kubernetes.Interface{"testContext": builder(t, mockController)}
+		for _, opt := range opts {
+			opt(c)
+		}
 		return c, nil
 	}
 

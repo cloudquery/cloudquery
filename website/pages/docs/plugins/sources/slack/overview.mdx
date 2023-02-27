@@ -5,32 +5,15 @@ name: Slack
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", "slack")}/>
 
-The CloudQuery Slack plugin extracts information from your Slack organization(s) and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+The CloudQuery Slack plugin extracts information from your Slack organization(s) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Installation
 
-### Step 1
-
-Install a custom Slack app with read-only permissions into your workspace by clicking the button below and following the instructions:
-
-import { getSlackAppLink } from "../../../../../utils/slack-app-link";
-
-<div style={{marginTop: '1em'}}>
-    <a target="_blank" href={getSlackAppLink()} class="btn btn-blue">Install App</a>
-</div>
-
-Once installed into the workspace, go to **Install App** (under **Settings**) and **copy the Bot User OAuth Token**. You will need this in your source config in the next step.
-
-### Step 2
-
-Set up a CloudQuery source config. See [Configuration](/docs/plugins/sources/slack/configuration) for an example and available options.
-
-If this is your first time running CloudQuery, check out the [Quickstart](/docs/quickstart) page for help on setting up a destination and running your first sync. 
-
-That's it, happy querying!
+<Authentication/>
 
 ## Syncing message histories
 

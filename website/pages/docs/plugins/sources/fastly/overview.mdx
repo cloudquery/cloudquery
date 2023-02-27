@@ -5,29 +5,20 @@ name: Fastly
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", `fastly`)}/>
 
-The CloudQuery Fastly plugin reads information from your Fastly account(s) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, Snowflake, BigQuery, etc).
+The CloudQuery Fastly plugin reads information from your Fastly account(s) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+
+## Authentication
+
+<Authentication />
 
 ## Configuration
 
-This example syncs from Fastly to a Postgres destination, using the token provided in an environment variable called `FASTLY_API_KEY`. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
-
-```yaml copy
-kind: source
-# Common source-plugin configuration
-spec:
-  name: fastly
-  path: cloudquery/fastly
-  version: "VERSION_SOURCE_FASTLY"
-  tables: ["*"]
-  destinations: ["postgresql"]
-
-  # Fastly specific configuration
-  spec:
-    fastly_api_key: "${FASTLY_API_KEY}"
-```
+<Configuration />
 
 For more information on downloading, installing and running the CloudQuery CLI, see the [Quickstart guide](/docs/quickstart).
 

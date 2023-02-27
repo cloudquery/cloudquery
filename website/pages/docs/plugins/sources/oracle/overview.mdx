@@ -5,31 +5,16 @@ name: Oracle
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
-import { Callout } from 'nextra-theme-docs';
+import Configuration from "./_configuration.mdx";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", "oracle")}/>
 
-The CloudQuery Oracle plugin extracts Oracle Cloud Infrastructure resources (`oci`). It is based on [the OCI Go SDK](https://github.com/oracle/oci-go-sdk) and the [Oracle Cloud REST API](https://docs.oracle.com/en-us/iaas/api/#/).
+The CloudQuery Oracle plugin extracts Oracle Cloud Infrastructure data (`oci`) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)). It is based on [the OCI Go SDK](https://github.com/oracle/oci-go-sdk) and the [Oracle Cloud REST API](https://docs.oracle.com/en-us/iaas/api/#/).
 
 ## Authentication
 
-In order for CloudQuery to sync resources from your Oracle Cloud setup, you will need to authenticate with your Oracle Cloud account.
-CloudQuery supports the same authentication methods as the OCI Go SDK, and uses the "default" configuration provider. You can read about how to create an Oracle Cloud configuration file in https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm.
-
-An example configuration file (e.g. in `~/.oci/config`) looks like this:
-
-```ini copy
-[DEFAULT]
-user=ocid1.user.oc1..<unique_ID>
-fingerprint=<your_fingerprint>
-key_file=~/.oci/oci_api_key.pem
-tenancy=ocid1.tenancy.oc1..<unique_ID>
-region=us-ashburn-1
-```
-
-<Callout type="info">
-Note that CloudQuery will `sync` information from all regions - not only the region specified in the `oci` config.
-</Callout>
+<Authentication/>
 
 ## Configuration
 
@@ -37,13 +22,4 @@ In order to get started with the Oracle plugin, you need to create a YAML file i
 
 The following example sets up the Oracle plugin, and connects it to a postgresql destination:
 
-```yaml copy
-kind: source
-spec:
-  name: "oracle"
-  path: cloudquery/oracle
-  version: "VERSION_SOURCE_ORACLE" 
-  destinations: ["postgresql"]
-  tables: ["*"]
-  spec:
-```
+<Configuration/>

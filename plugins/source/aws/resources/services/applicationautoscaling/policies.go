@@ -15,16 +15,8 @@ func Policies() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionNamespaceMultiplexer("application-autoscaling"),
 		Transform:   transformers.TransformWithStruct(&types.ScalingPolicy{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

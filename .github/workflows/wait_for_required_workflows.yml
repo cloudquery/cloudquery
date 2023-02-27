@@ -46,7 +46,6 @@ jobs:
                            "plugins/source/azure",
                            "plugins/source/azuredevops",
                            "plugins/source/cloudflare",
-                           "plugins/source/crowdstrike",
                            "plugins/source/digitalocean",
                            "plugins/source/datadog",
                            "plugins/source/fastly",
@@ -56,6 +55,7 @@ jobs:
                            "plugins/source/gitlab",
                            "plugins/source/hackernews",
                            "plugins/source/heroku",
+                           "plugins/source/homebrew",
                            "plugins/source/hubspot",
                            "plugins/source/k8s",
                            "plugins/source/launchdarkly",
@@ -72,6 +72,7 @@ jobs:
                            "plugins/source/test",
                            "plugins/source/vercel",
                            "plugins/source/plausible",
+                           "plugins/source/postgresql",
                            
                            "plugins/destination/postgresql",
                            "plugins/destination/test",
@@ -95,7 +96,7 @@ jobs:
               return
             }
 
-            // Each module should have a 'validate-release' job
+            // Most modules should have a 'validate-release' job
             for (const action of actions) {
               actions = [...actions, 'validate-release']
             }

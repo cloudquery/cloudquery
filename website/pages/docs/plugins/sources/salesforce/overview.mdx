@@ -6,38 +6,22 @@ name: Salesforce
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
 import { Callout } from 'nextra-theme-docs'
+import Configuration from "./_configuration.mdx";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", "salesforce")}/>
 
-The CloudQuery Salesforce plugin extracts information from your Salesforce organization(s) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, Snowflake, BigQuery, …).
+The CloudQuery Salesforce plugin extracts information from your Salesforce organization(s) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
-## Setup
+## Authentication
 
-First you must create a Salesforce Connected App. This is a Salesforce app that will be used to authenticate with Salesforce. You can create a Connected App in the Salesforce Setup UI. Checkout the [Salesforce documentation](https://help.salesforce.com/articleView?id=connected_app_create.htm&type=5) for more information. Or check out our latest guide to setup a connected app.
+<Authentication/>
 
 ## Configuration
 
-This example syncs from Salesforce to a specified CQ destination.
+This example syncs from Salesforce to a Postgres destination:
 
-```yaml copy
-kind: source
-# Common source-plugin configuration
-spec:
-  name: slack
-  path: cloudquery/salesforce
-  version: "VERSION_SOURCE_SALESFORCE"
-  tables: ["*"]
-  destinations: ["destination"]
-  # Salesforce specific configuration
-  spec:
-	client_id: "${SF_CLIENT_ID}"
-    client_secret: "${SF_CLIENT_SECRET}"
-    username: "${SF_USERNAME}"
-    password: "${SF_PASSWORD}"
-    # Optional
-    # include_objects: ["Account", "Contact"]
-    # exclude_objects: ["Account"]
-```
+<Configuration/>
 
 <Callout type="info">
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.

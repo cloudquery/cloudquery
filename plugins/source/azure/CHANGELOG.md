@@ -5,6 +5,33 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v4.1.1...plugins-source-azure-v4.2.0) (2023-02-21)
+
+
+### Features
+
+* **azure:** Add network ExpressRoute circuit authorizations and peerings ([#8128](https://github.com/cloudquery/cloudquery/issues/8128)) ([2d4cba5](https://github.com/cloudquery/cloudquery/commit/2d4cba5dd34b4157d59924c7b4ff6f959c56305d)), closes [#7927](https://github.com/cloudquery/cloudquery/issues/7927)
+* **azure:** Add network: interface_ip_configurations and virtual_network_subnets ([#8126](https://github.com/cloudquery/cloudquery/issues/8126)) ([df5e48b](https://github.com/cloudquery/cloudquery/commit/df5e48b5fde4db098c923019ef77cd6e370e224b)), closes [#7929](https://github.com/cloudquery/cloudquery/issues/7929)
+* **azure:** Add postgresql databases resource ([#8125](https://github.com/cloudquery/cloudquery/issues/8125)) ([91cab61](https://github.com/cloudquery/cloudquery/commit/91cab6176826de858fda3807aae4b3a2172e3a47)), closes [#7928](https://github.com/cloudquery/cloudquery/issues/7928)
+
+
+### Bug Fixes
+
+* **azure:** Ensure spec subscriptions are unique ([#8099](https://github.com/cloudquery/cloudquery/issues/8099)) ([20dc235](https://github.com/cloudquery/cloudquery/commit/20dc235b998f0c31214f4ca1b3a6d366552f5683))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.38.2 ([#8156](https://github.com/cloudquery/cloudquery/issues/8156)) ([ac2d2d7](https://github.com/cloudquery/cloudquery/commit/ac2d2d70d5c4bc45fb8734bd4deb8a1e36074f6d))
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+
+## [4.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v4.1.0...plugins-source-azure-v4.1.1) (2023-02-14)
+
+
+### Bug Fixes
+
+* **azure:** Fix detecting logic for CIS Azure Benchmark v1.3.0 - 2.12 ([#7807](https://github.com/cloudquery/cloudquery/issues/7807)) ([56b7ee2](https://github.com/cloudquery/cloudquery/commit/56b7ee2736e1fb267098eba4dd13bd27301cf7c3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.36.0 ([#7809](https://github.com/cloudquery/cloudquery/issues/7809)) ([c85a9cb](https://github.com/cloudquery/cloudquery/commit/c85a9cb697477520e94a1fd260c56b89da62fc87))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.36.1 ([#7930](https://github.com/cloudquery/cloudquery/issues/7930)) ([39dccc1](https://github.com/cloudquery/cloudquery/commit/39dccc1bf81f4eb02d181ba0c47b37038a4c5455))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.0 ([#7933](https://github.com/cloudquery/cloudquery/issues/7933)) ([dc9cffb](https://github.com/cloudquery/cloudquery/commit/dc9cffbf37bbc6fae73a20bf47e6bbf17e74d1f9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.37.1 ([#8008](https://github.com/cloudquery/cloudquery/issues/8008)) ([c47aac0](https://github.com/cloudquery/cloudquery/commit/c47aac0b5e3190a04299713651b97e360043911f))
+
 ## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v4.0.0...plugins-source-azure-v4.1.0) (2023-02-07)
 
 

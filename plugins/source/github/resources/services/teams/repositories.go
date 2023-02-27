@@ -1,43 +1,44 @@
 package teams
 
 import (
+	"context"
+	"strconv"
+	"strings"
+
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/google/go-github/v48/github"
 )
 
-func Repositories() *schema.Table {
+func repositories() *schema.Table {
 	return &schema.Table{
-		Name:      "github_team_repositories",
-		Resolver:  fetchRepositories,
-		Transform: transformers.TransformWithStruct(&github.Repository{}, client.SharedTransformers()...),
-		Columns: []schema.Column{
-			{
-				Name:        "org",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
-				Description: `The Github Organization of the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "team_id",
-				Type:     schema.TypeInt,
-				Resolver: client.ResolveParentColumn("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Name:     "github_team_repositories",
+		Resolver: fetchRepositories,
+		Transform: transformers.TransformWithStruct(&github.Repository{},
+			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
+		Columns: []schema.Column{client.OrgColumn, teamIDColumn},
 	}
+}
+
+func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	t := parent.Item.(*github.Team)
+	c := meta.(*client.Client)
+	opts := &github.ListOptions{PerPage: 100}
+	orgId, err := strconv.Atoi(strings.Split(*t.MembersURL, "/")[4])
+	if err != nil {
+		return err
+	}
+	for {
+		repos, resp, err := c.Github.Teams.ListTeamReposByID(ctx, int64(orgId), *t.ID, opts)
+		if err != nil {
+			return err
+		}
+		res <- repos
+		opts.Page = resp.NextPage
+		if opts.Page == resp.LastPage {
+			break
+		}
+	}
+	return nil
 }

@@ -50,8 +50,8 @@ export default function Home() {
     <div className="flex flex-col md:flex-row justify-between px-4 pt-16 pb-8 mx-auto sm:pt-24 lg:px-8 w-auto lg:max-w-7xl">
       <div className="flex flex-col justify-between md:mr-4">
         <div>
-          <h1 className="max-w-5xl mx-auto nx-text-6xl font-extrabold tracking-tighter leading-[1.1] sm:text-7xl lg:nx-text-8xl xl:nx-text-8xl">
-             Finally,
+          <h1 className="max-w-5xl mx-auto nx-text-6xl font-extrabold tracking-tighter leading-[1.1] text-6xl sm:text-7xl lg:nx-text-8xl xl:nx-text-8xl">
+             Finally,&nbsp;
              <br className="hidden lg:block" />
              <span className="pr-1 inline-block text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500 ">
              reliable
@@ -139,11 +139,11 @@ export default function Home() {
     </div >
 
     <div className="sm:py-20 lg:py-24">
-      <div className="max-w-4xl px-4 pb-12 mx-auto lg:px-8 ">
+      <div className="max-w-7xl px-4 pb-12 mx-auto lg:px-8 ">
         <h2 className="nx-text-4xl font-extrabold leading-tight tracking-tight lg:nx-text-5xl xl:nx-text-6xl text-center dark:text-white">
           Integrations
         </h2>
-        <p className="mx-auto mt-4 font-medium text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
+        <p className="mx-auto mt-4 font-medium text-lg text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
           Integrate with a growing list of <a className="dark:text-white" href="/docs/plugins/sources/overview">30+ cloud providers and SaaS apps</a> with more than 1,000 unique tables. Sync to your <a href="/docs/plugins/destinations/overview" className="dark:text-white">favorite database, data warehouse or data lake</a>.
         </p>
         <Integrations />

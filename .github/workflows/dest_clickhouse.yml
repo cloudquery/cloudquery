@@ -1,0 +1,105 @@
+name: Destination Plugin ClickHouse Workflow
+
+on:
+  pull_request:
+    paths:
+    - plugins/destination/clickhouse/**
+    - .github/workflows/dest_clickhouse.yml
+  push:
+    branches:
+    - main
+    paths:
+    - plugins/destination/clickhouse/**
+    - .github/workflows/dest_clickhouse.yml
+
+jobs:
+  plugins-destination-clickhouse:
+    name:            plugins/destination/clickhouse
+    runs-on:         ubuntu-latest
+    timeout-minutes: 30
+    env:
+      DB_USER:     cq
+      DB_PASSWORD: test
+      DB_NAME:     cloudquery
+    defaults:
+      run:
+        working-directory: plugins/destination/clickhouse
+    services:
+      clickhouse:
+        image:   clickhouse/clickhouse-server:22.1.2
+        env:
+          CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+          CLICKHOUSE_PASSWORD:                  ${{ env.DB_PASSWORD }}
+          CLICKHOUSE_USER:                      ${{ env.DB_USER }}
+          CLICKHOUSE_DB:                        ${{ env.DB_NAME }}
+        ports:
+        - 8123:8123
+        - 9000:9000
+        options: >-
+                 --ulimit nofile=262144:262144
+                 --health-cmd "wget --no-verbose --tries=1 --spider http://localhost:8123/ping || exit 1"
+                 --health-interval 60s
+                 --health-timeout 30s
+                 --health-start-period 20s
+                 --health-retries 5
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v3
+      with:
+        go-version-file:       plugins/destination/clickhouse/go.mod
+        cache:                 true
+        cache-dependency-path: plugins/destination/clickhouse/go.sum
+    - name: golangci-lint
+      uses: cloudquery/golangci-lint-action@master
+      with:
+        version:           v1.50.1
+        working-directory: plugins/destination/clickhouse
+        args:              "--config ../../.golangci.yml"
+        skip-pkg-cache:    true
+        skip-build-cache:  true
+    - name: Get dependencies
+      run:  go get -t -d ./...
+    - name: Build
+      run:  go build .
+    - name: Test ClickHouse
+      env:
+        CQ_DEST_CH_TEST_CONN: "clickhouse://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@localhost:9000/${{ env.DB_NAME }}"
+      run:  make test
+  validate-release:
+    timeout-minutes: 30
+    runs-on:         ubuntu-latest
+    env:
+      CGO_ENABLED: 0
+    steps:
+    - name: Checkout
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      with:
+        path:         |
+                      ~/.cache/go-build
+                      ~/go/pkg/mod
+        key:          ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/destination/clickhouse/go.sum') }}
+        restore-keys: |
+                      ${{ runner.os }}-go-1.19.4-release-cache-plugins-destination-clickhouse
+    - name: Set up Go
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      uses: actions/setup-go@v3
+      with:
+        go-version-file: plugins/destination/clickhouse/go.mod
+    - name: Install GoReleaser
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      uses: goreleaser/goreleaser-action@v3
+      with:
+        distribution: goreleaser-pro
+        version:      latest
+        install-only: true
+    - name: Run GoReleaser Dry-Run
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      run:  goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/clickhouse/.goreleaser.yaml
+      env:
+        GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

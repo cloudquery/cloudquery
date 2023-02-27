@@ -76,6 +76,9 @@ func (c *Client) deleteStaleTable(ctx context.Context, table *schema.Table, req 
 	}
 	if qResp.Status != 0 {
 		if len(qResp.Error.RootCause) > 0 {
+			if qResp.Error.RootCause[0].Type == "index_not_found_exception" {
+				return nil
+			}
 			return fmt.Errorf("failed to delete stale entries: %s", qResp.Error.RootCause[0].Reason)
 		}
 		return fmt.Errorf("failed to delete stale entries: status %d", qResp.Status)

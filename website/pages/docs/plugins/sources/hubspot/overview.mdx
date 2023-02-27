@@ -6,10 +6,12 @@ name: HubSpot
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
 import { Callout } from 'nextra-theme-docs';
+import Configuration from "./_configuration.mdx";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", "hubspot")}/>
 
-The CloudQuery HubSpot plugin extracts HubSpot information into your destination. It is based on the [HubSpot API](https://developers.hubspot.com/docs/api/overview) and the [github.com/clarkmcc/go-hubspot](https://github.com/clarkmcc/go-hubspot) library.
+The CloudQuery HubSpot plugin extracts HubSpot information and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)). It is based on the [HubSpot API](https://developers.hubspot.com/docs/api/overview) and the [github.com/clarkmcc/go-hubspot](https://github.com/clarkmcc/go-hubspot) library.
 
 <Callout type="warning">
 
@@ -21,29 +23,10 @@ You can use the `max_requests_per_second` configuration option to change this va
 
 ## Authentication
 
-In Order for CloudQuery to sync resources from your HubSpot setup, you will need to authenticate with your HubSpot account. You will need to create a [HubSpot Private App](https://developers.hubspot.com/docs/api/private-apps), and export the App Token in `HUBSPOT_APP_TOKEN` environment variable.
-
-```bash copy
-export HUBSPOT_APP_TOKEN=<your_app_token>
-```
+<Authentication/>
 
 ## Configuration
 
-In order to get started with the HubSpot plugin, you need to create a YAML file in your CloudQuery configuration directory (e.g. named `hubspot.yml`).
-
 The following example sets up the HubSpot plugin, and connects it to a postgresql destination:
 
-```yaml copy
-kind: source
-spec:
-  name: "hubspot"
-  path: cloudquery/hubspot
-  version: "VERSION_SOURCE_HUBSPOT" 
-  destinations: ["postgresql"]
-  tables: ["*"]
-  
-  spec:
-    # optional, default is 5.
-    # See https://developers.hubspot.com/docs/api/usage-details#rate-limits
-    max_requests_per_second: 5
-```
+<Configuration/>

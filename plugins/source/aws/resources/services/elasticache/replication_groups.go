@@ -15,16 +15,8 @@ func ReplicationGroups() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Transform:   transformers.TransformWithStruct(&types.ReplicationGroup{}),
 		Columns: []schema.Column{
-			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
@@ -32,6 +24,11 @@ func ReplicationGroups() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveElasticacheReplicationGroupTags,
 			},
 		},
 	}

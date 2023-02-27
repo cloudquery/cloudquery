@@ -1,6 +1,8 @@
 package billing
 
 import (
+	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -13,16 +15,16 @@ func Package() *schema.Table {
 		Resolver:  fetchPackage,
 		Multiplex: client.OrgMultiplex,
 		Transform: transformers.TransformWithStruct(&github.PackageBilling{}, client.SharedTransformers()...),
-		Columns: []schema.Column{
-			{
-				Name:        "org",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
-				Description: `The Github Organization of the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Columns:   []schema.Column{client.OrgColumn},
 	}
+}
+
+func fetchPackage(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	billing, _, err := c.Github.Billing.GetPackagesBillingOrg(ctx, c.Org)
+	if err != nil {
+		return err
+	}
+	res <- billing
+	return nil
 }
