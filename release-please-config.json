@@ -46,6 +46,9 @@
     "plugins/destination/file": {
       "component": "plugins-destination-file"
     },
+    "plugins/destination/firehose": {
+      "component": "plugins-destination-firehose"
+    },
     "plugins/destination/gcs": {
       "component": "plugins-destination-gcs"
     },
