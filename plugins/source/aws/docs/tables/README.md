@@ -454,6 +454,7 @@
   - [aws_s3_bucket_encryption_rules](aws_s3_bucket_encryption_rules.md)
   - [aws_s3_bucket_grants](aws_s3_bucket_grants.md)
   - [aws_s3_bucket_lifecycles](aws_s3_bucket_lifecycles.md)
+  - [aws_s3_bucket_websites](aws_s3_bucket_websites.md)
 - [aws_sagemaker_endpoint_configurations](aws_sagemaker_endpoint_configurations.md)
 - [aws_sagemaker_models](aws_sagemaker_models.md)
 - [aws_sagemaker_notebook_instances](aws_sagemaker_notebook_instances.md)
