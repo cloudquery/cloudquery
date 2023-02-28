@@ -1,6 +1,6 @@
 variables:
   component: source/awspricing
-  binary: aws
+  binary: awspricing
 
 project_name: plugins/source/awspricing
 

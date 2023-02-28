@@ -15,3 +15,8 @@ This is the (nested) spec used by the Azure source plugin.
 - `subscriptions` ([]string) (default: empty. Will use all visible subscriptions)
 
   Specify which subscriptions to sync data from.
+
+- `cloud_name` (string) (default: empty)
+
+  The name of the cloud environment to use. Possible values are `AzureCloud`, `AzureChinaCloud`, `AzureUSGovernment`.
+  See the [Azure CLI documentation for more information](https://learn.microsoft.com/en-us/cli/azure/manage-clouds-azure-cli).
