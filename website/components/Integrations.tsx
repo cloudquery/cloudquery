@@ -33,15 +33,25 @@ export function Integrations() {
       {SOURCE_PLUGINS.map(({ name, logo, logoDark, id, href }) => (
         <LogoContainer
           title={name}
-          href={href || `/integrations/${id}`}
+          href={`/integrations/${id}`}
           key={id}
-          external={Boolean(href)}
+          external={false}
           logo={logo}
           logoDark={logoDark}
           name={name}
         >
         </LogoContainer>
       ))}
+      <LogoContainer
+          title={"All Plugins"}
+          href={`/docs/plugins/overview`}
+          key={"more"}
+          external={false}
+          logo={"/images/logos/plugins/more.svg"}
+          logoDark={"/images/logos/plugins/more-dark.svg"}
+          name={"All Plugins"}
+      >
+      </LogoContainer>
     </div>
   );
 }
