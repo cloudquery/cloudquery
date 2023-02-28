@@ -5,6 +5,24 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v4.2.0...plugins-source-azure-v4.3.0) (2023-02-28)
+
+
+### Features
+
+* **azure-resources:** Add AKS Upgrade Profile ([#8444](https://github.com/cloudquery/cloudquery/issues/8444)) ([a665f4b](https://github.com/cloudquery/cloudquery/commit/a665f4b626110838bc26dcf85522492ec41c7987))
+* **azure-resources:** Add Management Groups ([#8226](https://github.com/cloudquery/cloudquery/issues/8226)) ([20a4c0b](https://github.com/cloudquery/cloudquery/commit/20a4c0b5f09d38a0eac2a629504cc01f33cb3af2))
+* **azure-resources:** Add SQL Server Security Alert Policies ([#7939](https://github.com/cloudquery/cloudquery/issues/7939)) ([210cf81](https://github.com/cloudquery/cloudquery/commit/210cf811b94f474aa15bd6d4034ac7c0b428683a))
+* **azure-spec:** Add cloud name configuration ([#8471](https://github.com/cloudquery/cloudquery/issues/8471)) ([d2ec0cc](https://github.com/cloudquery/cloudquery/commit/d2ec0cc531ed36ac21cadfda981e7e721d047bb9))
+
+
+### Bug Fixes
+
+* **azure-resources:** Make Monitor Diagnostic Settings a relation of generic resources ([#7943](https://github.com/cloudquery/cloudquery/issues/7943)) ([8316b87](https://github.com/cloudquery/cloudquery/commit/8316b87664d546c0da3cb3066dd39b1a573aa7a9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.0 ([#8344](https://github.com/cloudquery/cloudquery/issues/8344)) ([9c57544](https://github.com/cloudquery/cloudquery/commit/9c57544d06f9a774adcc659bcabd2518a905bdaa))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.1 ([#8371](https://github.com/cloudquery/cloudquery/issues/8371)) ([e3274c1](https://github.com/cloudquery/cloudquery/commit/e3274c109739bc107387627d340a713470c3a3c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.40.0 ([#8401](https://github.com/cloudquery/cloudquery/issues/8401)) ([4cf36d6](https://github.com/cloudquery/cloudquery/commit/4cf36d68684f37c0407332930766c1ba60807a93))
+
 ## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v4.1.1...plugins-source-azure-v4.2.0) (2023-02-21)
 
 

@@ -10,4 +10,4 @@ kind: destination
 spec:
   name: sqlite
   path: cloudquery/sqlite
-  version: "v1.3.0" # latest version of sqlite plugin
+  version: "v1.3.1" # latest version of sqlite plugin
