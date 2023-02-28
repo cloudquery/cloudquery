@@ -1,0 +1,21 @@
+```yaml copy
+kind: source
+spec:
+  name: "postgresql"
+  registry: "github"
+  path: "cloudquery/postgresql"
+  version: "VERSION_SOURCE_POSTGRESQL"
+  destinations: ["DESTINATION_NAME"]
+  spec:
+    connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
+    cdc: false  # Set to true to enable Change Data Capture mode (logical replication, or CDC)
+```
+
+This example configures a PostgreSQL source, located at `localhost:5432`. The (top level) spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
+
+The PostgreSQL plugin supports the following database versions:
+
+- PostgreSQL >= v11 (Needed for CDC, logical replication).
+- PostgreSQL >= v10 (If no need for CDC).
+
+Set `cdc` to `true` to enable Change Data Capture mode (logical replication, or CDC). This will enable the PostgreSQL plugin to use the PostgreSQL logical replication feature to capture changes in the database. This is useful for use cases where you want to capture changes in the database in real time. For more information on CDC, see the [CDC](/docs/plugins/sources/postgresql/cdc) section of the documentation.

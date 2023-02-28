@@ -5,6 +5,8 @@ name: GitLab
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", `gitlab`)}/>
 
@@ -12,5 +14,5 @@ The CloudQuery GitLab plugin pulls configuration out of GitLab resources and loa
 
 ## Authentication
 
-In order to fetch information from GitLab, `cloudquery` needs to be authenticated. An access token is required for authentication. Instructions on how to generate an access token [here](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token). Note that this token should only have read-only access to the resources you intend to use.
+<Authentication/>
 

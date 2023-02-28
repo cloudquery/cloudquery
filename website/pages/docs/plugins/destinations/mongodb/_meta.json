@@ -1,3 +1,6 @@
 {
-  "overview": "Overview"
+  "overview": "Overview",
+  "_configuration": {
+    "display": "hidden"
+  }
 }

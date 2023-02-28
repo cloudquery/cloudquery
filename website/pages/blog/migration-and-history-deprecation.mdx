@@ -8,10 +8,14 @@ description: >-
 author: yevgenypats
 ---
 
-import { BlogHeader } from "../../components/BlogHeader"
+import { BlogHeader } from "../../components/BlogHeader";
+import { Callout } from 'nextra-theme-docs';
 
 <BlogHeader/>
 
+<Callout type="warning">
+    Update (February 2023): While TimescaleDB is no longer supported, CloudQuery v1 supports `append` write mode, which can be used to create a historical view of your data. See the [write_mode documentation](/docs/reference/destination-spec#write_mode) for more information.
+</Callout>
 
 This is a short note that v0.24.0 is deprecating migrations from cloudquery together with history.
 

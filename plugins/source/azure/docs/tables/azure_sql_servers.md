@@ -11,6 +11,7 @@ The following tables depend on azure_sql_servers:
   - [azure_sql_server_blob_auditing_policies](azure_sql_server_blob_auditing_policies.md)
   - [azure_sql_server_databases](azure_sql_server_databases.md)
   - [azure_sql_server_encryption_protectors](azure_sql_server_encryption_protectors.md)
+  - [azure_sql_server_security_alert_policies](azure_sql_server_security_alert_policies.md)
   - [azure_sql_server_virtual_network_rules](azure_sql_server_virtual_network_rules.md)
   - [azure_sql_server_vulnerability_assessments](azure_sql_server_vulnerability_assessments.md)
 

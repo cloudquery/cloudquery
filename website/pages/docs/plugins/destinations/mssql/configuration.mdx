@@ -2,13 +2,14 @@
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
-import { Callout } from 'nextra-theme-docs'
+import { Callout } from 'nextra-theme-docs';
+import Configuration from "./_configuration.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "mssql")}/>
 
-<Callout type="info">
-Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
-</Callout>
+## Example Configuration
+
+<Configuration/>
 
 ## Microsoft SQL Server spec
 
@@ -35,6 +36,10 @@ This is the (nested) spec used by the Microsoft SQL Server destination plugin.
   By default, Microsoft SQL Server destination plugin will use the
   [default](https://learn.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-and-user-schema-separation?view=sql-server-ver16#the-dbo-schema)
   schema named `dbo`.
+
+<Callout type="info">
+  Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+</Callout>
 
 ### Verbose logging for debug
 

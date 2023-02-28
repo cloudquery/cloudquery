@@ -1,0 +1,41 @@
+---
+name: AWS Pricing
+---
+# AWS Pricing Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+
+<Badge text={"Latest: " + getLatestVersion("source", `awspricing`)}/>
+
+The AWS Pricing Source plugin for CloudQuery extracts data from the [AWS Bulk Pricing Service](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/using-ppslong.html) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+
+## Configuration
+
+The following configuration syncs from AWS Pricing service to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/quickstart) if you need help setting up the destination.
+
+```yaml copy
+kind: source
+spec:
+  name: "awspricing"
+  path: "cloudquery/awspricing"
+  version: "VERSION_SOURCE_AWSPRICING"
+  tables: ["*"]
+  destinations: 
+    - "postgresql"
+  spec:
+```
+
+
+## AWS Pricing Spec
+
+This is the (nested) spec used by the AWS Pricing source plugin.
+- `region_codes` ([]string) (default: empty. Will sync data for all regions)
+
+  Specify which region_codes to sync data for. No regular expressions are supported, matches must be an exact match
+  Note: This is not just AWS Commercial regions. It includes Wavelength Zones and regions in other partitions (Gov Cloud and China). 
+
+- `offer_codes` ([]string) (default: empty. Will sync data for all services)
+
+  Specify which services to sync data for. Regular expressions are not supported: matches must be exact.
+  Note: This is a unique code for the product of an AWS service. For example, `AmazonEC2`, `AmazonS3` or `comprehend`  

@@ -1,0 +1,13 @@
+```yaml copy
+kind: source
+spec:
+  name: "hackernews"
+  path: "cloudquery/hackernews"
+  version: "VERSION_SOURCE_HACKERNEWS"
+  tables: ["*"]
+  backend: local
+  destinations:
+    - "DESTINATION_NAME"
+  spec:
+    item_concurrency: 100
+```

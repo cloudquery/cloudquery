@@ -13,8 +13,8 @@ The primary key for this table is **arn**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
-|arn (PK)|String|
 |tags|JSON|
+|arn (PK)|String|
 |email|String|
 |id|String|
 |joined_method|String|

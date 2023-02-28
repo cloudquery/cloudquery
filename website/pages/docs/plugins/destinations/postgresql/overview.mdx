@@ -6,7 +6,8 @@ stage: GA
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
-import { Callout } from 'nextra-theme-docs'
+import { Callout } from 'nextra-theme-docs';
+import Configuration from "./_configuration.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "postgresql")}/>
 
@@ -21,19 +22,9 @@ Supported database versions:
 
 ### Example
 
-This example configures a Postgresql destination, located at `localhost:5432`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+<Configuration />
 
-```yaml copy
-kind: destination
-spec:
-  name: "postgresql"
-  registry: "github"
-  path: "cloudquery/postgresql"
-  version: "VERSION_DESTINATION_POSTGRESQL"
-
-  spec:
-    connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
-```
+The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
 <Callout type="info">
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.

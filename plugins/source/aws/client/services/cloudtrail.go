@@ -26,4 +26,5 @@ type CloudtrailClient interface {
 	ListQueries(context.Context, *cloudtrail.ListQueriesInput, ...func(*cloudtrail.Options)) (*cloudtrail.ListQueriesOutput, error)
 	ListTags(context.Context, *cloudtrail.ListTagsInput, ...func(*cloudtrail.Options)) (*cloudtrail.ListTagsOutput, error)
 	ListTrails(context.Context, *cloudtrail.ListTrailsInput, ...func(*cloudtrail.Options)) (*cloudtrail.ListTrailsOutput, error)
+	LookupEvents(context.Context, *cloudtrail.LookupEventsInput, ...func(*cloudtrail.Options)) (*cloudtrail.LookupEventsOutput, error)
 }

@@ -8,6 +8,10 @@ const patterns = {
   destinations: /VERSION_DESTINATION_([a-zA-Z0-9_]+)/,
 };
 
+const pluginNamePatterns = {
+  destinationName: /DESTINATION_NAME/,
+}
+
 function removeVersionPrefix(version) {
   return version.slice(1);
 }
@@ -58,6 +62,21 @@ function getVersions() {
 
 const versions = getVersions();
 
+const replaceMdxPluginNames = (node) => {
+  if (node.type === "text") {
+    Object.entries(pluginNamePatterns).forEach(([key, pattern]) => {
+      const match = node.value.match(pattern);
+      if (match) {
+        node.value = node.value.replace(pattern, "postgres"); // default to postgres
+      }
+    });
+  }
+  if (node.children !== undefined) {
+    node.children.forEach(replaceMdxPluginNames);
+  }
+  return;
+};
+
 const replaceMdxCodeVersions = (node) => {
   if (node.type === "text") {
     Object.entries(patterns).forEach(([key, pattern]) => {
@@ -84,6 +103,7 @@ const withNextra = nextra({
       theme: "nord",
       onVisitLine: (node) => {
         replaceMdxCodeVersions(node);
+        replaceMdxPluginNames(node);
       },
     },
   },
