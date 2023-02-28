@@ -2,6 +2,8 @@ alicloud:
   - plugins/source/alicloud/**/*
 aws:
   - plugins/source/aws/**/*
+awspricing:
+  - plugins/source/awspricing/**/*  
 azure:
   - plugins/source/azure/**/*
 azuredevops:
@@ -86,6 +88,8 @@ mongodb:
   - plugins/destination/mongodb/**/*
 mssql:
   - plugins/destination/mssql/**/*
+mysql:
+  - plugins/destination/mysql/**/*
 neo4j:
   - plugins/destination/neo4j/**/*
 kafka:

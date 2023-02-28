@@ -76,7 +76,8 @@ func NewCmdRoot() *cobra.Command {
 			}
 
 			sendStats := funk.ContainsString([]string{"all", "stats"}, telemetryLevel.String())
-			if Version != "development" && sendStats {
+			customAnalyticsHost := os.Getenv("CQ_ANALYTICS_HOST") != defaultAnalyticsHost
+			if (Version != "development" || customAnalyticsHost) && sendStats {
 				analyticsClient, err = initAnalytics()
 				if err != nil {
 					log.Warn().Err(err).Msg("failed to initialize analytics client")
