@@ -5,6 +5,7 @@
     "cli": { "component": "cli" },
     "scaffold": { "component": "scaffold" },
     "plugins/source/alicloud": { "component": "plugins-source-alicloud" },
+    "plugins/source/awspricing": { "component": "plugins-source-awspricing" },
     "plugins/source/aws": { "component": "plugins-source-aws" },
     "plugins/source/azure": { "component": "plugins-source-azure" },
     "plugins/source/azuredevops": { "component": "plugins-source-azuredevops" },
@@ -18,24 +19,25 @@
     "plugins/source/gitlab": { "component": "plugins-source-gitlab" },
     "plugins/source/hackernews": { "component": "plugins-source-hackernews" },
     "plugins/source/heroku": { "component": "plugins-source-heroku" },
+    "plugins/source/homebrew": { "component": "plugins-source-homebrew" },
     "plugins/source/hubspot": { "component": "plugins-source-hubspot" },
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
     "plugins/source/launchdarkly": { "component": "plugins-source-launchdarkly" },
+    "plugins/source/mixpanel": { "component": "plugins-source-mixpanel" },
     "plugins/source/okta": { "component": "plugins-source-okta" },
     "plugins/source/oracle": {"component": "plugins-source-oracle"},
-    "plugins/source/salesforce": { "component": "plugins-source-salesforce" },
-    "plugins/source/slack": { "component": "plugins-source-slack" },
-    "plugins/source/snyk": { "component": "plugins-source-snyk" },
-    "plugins/source/tailscale": { "component": "plugins-source-tailscale" },
-    "plugins/source/vercel": { "component": "plugins-source-vercel" },
     "plugins/source/pagerduty": {"component": "plugins-source-pagerduty"},
     "plugins/source/plausible": {"component": "plugins-source-plausible"},
-    "plugins/source/test": { "component": "plugins-source-test" },
-    "plugins/source/terraform": { "component": "plugins-source-terraform" },
-    "plugins/source/shopify": { "component": "plugins-source-shopify" },
-    "plugins/source/stripe": { "component": "plugins-source-stripe" },
-    "plugins/source/mixpanel": { "component": "plugins-source-mixpanel" },
     "plugins/source/postgresql": { "component": "plugins-source-postgresql" },
+    "plugins/source/salesforce": { "component": "plugins-source-salesforce" },
+    "plugins/source/shopify": { "component": "plugins-source-shopify" },
+    "plugins/source/slack": { "component": "plugins-source-slack" },
+    "plugins/source/snyk": { "component": "plugins-source-snyk" },
+    "plugins/source/stripe": { "component": "plugins-source-stripe" },
+    "plugins/source/tailscale": { "component": "plugins-source-tailscale" },
+    "plugins/source/terraform": { "component": "plugins-source-terraform" },
+    "plugins/source/test": { "component": "plugins-source-test" },
+    "plugins/source/vercel": { "component": "plugins-source-vercel" },
     "plugins/destination/postgresql": {
       "component": "plugins-destination-postgresql"
     },
@@ -44,6 +46,9 @@
     },
     "plugins/destination/file": {
       "component": "plugins-destination-file"
+    },
+    "plugins/destination/firehose": {
+      "component": "plugins-destination-firehose"
     },
     "plugins/destination/gcs": {
       "component": "plugins-destination-gcs"
@@ -71,6 +76,9 @@
     },
     "plugins/destination/mssql": {
       "component": "plugins-destination-mssql"
+    },
+    "plugins/destination/mysql": {
+      "component": "plugins-destination-mysql"
     },
     "plugins/destination/clickhouse": {
       "component": "plugins-destination-clickhouse"

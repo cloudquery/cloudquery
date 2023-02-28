@@ -12,7 +12,7 @@ import (
 
 func ResourcePolicies() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_organizations_resource_policies",
+		Name:        "aws_organization_resource_policies",
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_DescribeResourcePolicy.html`,
 		Resolver:    fetchOrganizationsResourcePolicies,
 		Transform:   transformers.TransformWithStruct(&types.ResourcePolicy{}),

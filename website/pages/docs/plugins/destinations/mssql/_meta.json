@@ -1,5 +1,11 @@
 {
   "overview": "Overview",
   "configuration": "Configuration",
-  "example": "Example"
+  "example": "Example",
+  "_authentication": {
+    "display": "hidden"
+  },
+  "_configuration": {
+    "display": "hidden"
+  }
 }

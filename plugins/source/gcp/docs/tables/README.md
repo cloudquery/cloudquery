@@ -90,6 +90,7 @@
   - [gcp_cloudiot_devices](gcp_cloudiot_devices.md)
     - [gcp_cloudiot_device_configs](gcp_cloudiot_device_configs.md)
     - [gcp_cloudiot_device_states](gcp_cloudiot_device_states.md)
+- [gcp_cloudresourcemanager_organizations](gcp_cloudresourcemanager_organizations.md)
 - [gcp_cloudscheduler_locations](gcp_cloudscheduler_locations.md)
   - [gcp_cloudscheduler_jobs](gcp_cloudscheduler_jobs.md)
 - [gcp_cloudsupport_cases](gcp_cloudsupport_cases.md)

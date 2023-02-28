@@ -1,0 +1,13 @@
+This example configures a Postgresql destination, located at `localhost:5432`:
+
+```yaml copy
+kind: destination
+spec:
+  name: "postgresql"
+  registry: "github"
+  path: "cloudquery/postgresql"
+  version: "VERSION_DESTINATION_POSTGRESQL"
+
+  spec:
+    connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
+```
