@@ -49,7 +49,7 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 func resolveIamPolicyVersionList(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ManagedPolicyDetail)
 	for i := range r.PolicyVersionList {
-		if v, err := url.PathUnescape(aws.ToString(r.PolicyVersionList[i].Document)); err == nil {
+		if v, err := url.QueryUnescape(aws.ToString(r.PolicyVersionList[i].Document)); err == nil {
 			r.PolicyVersionList[i].Document = &v
 		}
 	}
