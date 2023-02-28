@@ -30,47 +30,6 @@ func listBucketRegion(cl *client.Client) string {
 	}
 }
 
-func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services().S3
-	response, err := svc.ListBuckets(ctx, nil, func(options *s3.Options) {
-		options.Region = listBucketRegion(cl)
-	})
-	if err != nil {
-		return err
-	}
-
-	var wg sync.WaitGroup
-	buckets := make(chan types.Bucket)
-	errs := make(chan error)
-	for i := 0; i < fetchS3BucketsPoolSize; i++ {
-		wg.Add(1)
-		go fetchS3BucketsWorker(ctx, meta, buckets, errs, res, &wg)
-	}
-	go func() {
-		defer close(buckets)
-		for _, bucket := range response.Buckets {
-			select {
-			case <-ctx.Done():
-				return
-			case buckets <- bucket:
-			}
-		}
-	}()
-	done := make(chan struct{})
-	go func() {
-		for err = range errs {
-			cl.Logger().Err(err).Msg("failed to fetch s3 bucket")
-		}
-		close(done)
-	}()
-	wg.Wait()
-	close(errs)
-	<-done
-
-	return nil
-}
-
 func fetchS3BucketsWorker(ctx context.Context, meta schema.ClientMeta, buckets <-chan types.Bucket, errs chan<- error, res chan<- any, wg *sync.WaitGroup) {
 	defer wg.Done()
 	cl := meta.(*client.Client)
@@ -133,25 +92,6 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 	return resolveBucketOwnershipControls(ctx, meta, resource, resource.Region)
 }
 
-func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	r := parent.Item.(*models.WrappedBucket)
-	svc := meta.(*client.Client).Services().S3
-	region := parent.Get("region").(*schema.Text)
-	if region == nil {
-		return nil
-	}
-	aclOutput, err := svc.GetBucketAcl(ctx, &s3.GetBucketAclInput{Bucket: r.Name}, func(options *s3.Options) {
-		options.Region = region.Str
-	})
-	if err != nil {
-		if client.IsAWSError(err, "NoSuchBucket") {
-			return nil
-		}
-		return err
-	}
-	res <- aclOutput.Grants
-	return nil
-}
 func resolveBucketGranteeID(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	grantee := resource.Item.(types.Grant).Grantee
 	switch grantee.Type {
@@ -164,69 +104,6 @@ func resolveBucketGranteeID(_ context.Context, _ schema.ClientMeta, resource *sc
 	default:
 		return fmt.Errorf("unsupported grantee type %q", grantee.Type)
 	}
-}
-func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	r := parent.Item.(*models.WrappedBucket)
-	c := meta.(*client.Client)
-	svc := c.Services().S3
-	region := parent.Get("region").(*schema.Text)
-	if region == nil {
-		return nil
-	}
-	corsOutput, err := svc.GetBucketCors(ctx, &s3.GetBucketCorsInput{Bucket: r.Name}, func(options *s3.Options) {
-		options.Region = region.Str
-	})
-	if err != nil {
-		if client.IsAWSError(err, "NoSuchCORSConfiguration", "NoSuchBucket") {
-			return nil
-		}
-		return err
-	}
-	if corsOutput != nil {
-		res <- corsOutput.CORSRules
-	}
-	return nil
-}
-func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	r := parent.Item.(*models.WrappedBucket)
-	c := meta.(*client.Client)
-	svc := c.Services().S3
-	region := parent.Get("region").(*schema.Text)
-	if region == nil {
-		return nil
-	}
-	aclOutput, err := svc.GetBucketEncryption(ctx, &s3.GetBucketEncryptionInput{Bucket: r.Name}, func(options *s3.Options) {
-		options.Region = region.Str
-	})
-	if err != nil {
-		if client.IsAWSError(err, "ServerSideEncryptionConfigurationNotFoundError") {
-			return nil
-		}
-		return err
-	}
-	res <- aclOutput.ServerSideEncryptionConfiguration.Rules
-	return nil
-}
-
-func fetchS3BucketLifecycles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	r := parent.Item.(*models.WrappedBucket)
-	c := meta.(*client.Client)
-	svc := c.Services().S3
-	region := parent.Get("region").(*schema.Text)
-	if region == nil {
-		return nil
-	}
-	lifecycleOutput, err := svc.GetBucketLifecycleConfiguration(ctx, &s3.GetBucketLifecycleConfigurationInput{Bucket: r.Name}, func(options *s3.Options) {
-		options.Region = region.Str
-	})
-	if err != nil {
-		if client.IsAWSError(err, "NoSuchLifecycleConfiguration") {
-			return nil
-		}
-		return err
-	}
-	res <- lifecycleOutput.Rules
-	return nil
 }
 
 func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket, bucketRegion string) error {
