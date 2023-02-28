@@ -11,10 +11,12 @@ require (
 	golang.org/x/oauth2 v0.4.0
 )
 
-require github.com/gofri/go-github-ratelimit v1.0.2
+require (
+	github.com/beatlabs/github-auth v0.0.0-20220721134423-2b8d98e205d1
+	github.com/gofri/go-github-ratelimit v1.0.2
+)
 
 require (
-	github.com/beatlabs/github-auth v0.0.0-20220721134423-2b8d98e205d1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.8.1 // indirect
@@ -49,5 +51,3 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
-
-replace github.com/cloudquery/plugin-sdk v1.40.0 => ../../../../plugin-sdk
