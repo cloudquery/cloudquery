@@ -117,6 +117,7 @@
 - [azure_logic_workflows](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_logic_workflows.md)
 - [azure_maintenance_configurations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_maintenance_configurations.md)
 - [azure_maintenance_public_maintenance_configurations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_maintenance_public_maintenance_configurations.md)
+- [azure_managementgroups_management_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_managementgroups_management_groups.md)
 - [azure_mariadb_servers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_mariadb_servers.md)
   - [azure_mariadb_server_configurations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_mariadb_server_configurations.md)
 - [azure_marketplace_private_store](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_marketplace_private_store.md)
