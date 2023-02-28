@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.1.12...plugins-destination-snowflake-v1.1.13) (2023-02-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.17.5 ([#8446](https://github.com/cloudquery/cloudquery/issues/8446)) ([e86922b](https://github.com/cloudquery/cloudquery/commit/e86922b62e01d609bcdbacc6afdc2e51febeb7f0))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/credentials to v1.13.15 ([#8448](https://github.com/cloudquery/cloudquery/issues/8448)) ([70d1772](https://github.com/cloudquery/cloudquery/commit/70d17726e3db607752f58b0c489ac234aa7db8c4))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.55 ([#8450](https://github.com/cloudquery/cloudquery/issues/8450)) ([416a435](https://github.com/cloudquery/cloudquery/commit/416a435304cbef7c228b6ee1bc90ec9d1197ae1c))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/internal/v4a to v1.0.21 ([#8454](https://github.com/cloudquery/cloudquery/issues/8454)) ([7820d00](https://github.com/cloudquery/cloudquery/commit/7820d00414bebb5890beb2ac26326ce0d5a44199))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.0 ([#8344](https://github.com/cloudquery/cloudquery/issues/8344)) ([9c57544](https://github.com/cloudquery/cloudquery/commit/9c57544d06f9a774adcc659bcabd2518a905bdaa))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.1 ([#8371](https://github.com/cloudquery/cloudquery/issues/8371)) ([e3274c1](https://github.com/cloudquery/cloudquery/commit/e3274c109739bc107387627d340a713470c3a3c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.40.0 ([#8401](https://github.com/cloudquery/cloudquery/issues/8401)) ([4cf36d6](https://github.com/cloudquery/cloudquery/commit/4cf36d68684f37c0407332930766c1ba60807a93))
+
 ## [1.1.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.1.11...plugins-destination-snowflake-v1.1.12) (2023-02-21)
 
 
