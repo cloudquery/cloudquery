@@ -33,7 +33,8 @@
   },
   "plugins": {
     "title": "Plugins",
-    "href": "/docs/plugins/overview"
+    "href": "/docs/plugins/overview",
+    "route": "/docs/plugins/overview"
   },
   "confirm": {
     "title": "Confirm",
