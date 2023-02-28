@@ -3,23 +3,23 @@ spec:
   name: "test-1"
   path: "cloudquery/test"
   destinations: [test-1, test-2]
-  version: "v1.4.0" # latest version of source test plugin
+  version: "v1.4.1" # latest version of source test plugin
 ---
 kind: "source"
 spec:
   name: "test-2"
   path: "cloudquery/test"
   destinations: [test-2, test-1]
-  version: "v1.4.0" # latest version of source test plugin
+  version: "v1.4.1" # latest version of source test plugin
 ---
 kind: "destination"
 spec:
   name: "test-1"
   path: "cloudquery/test"
-  version: "v1.3.21" # latest version of destination test plugin
+  version: "v1.3.22" # latest version of destination test plugin
 ---
 kind: "destination"
 spec:
   name: "test-2"
   path: "cloudquery/test"
-  version: "v1.3.21" # latest version of destination test plugin
+  version: "v1.3.22" # latest version of destination test plugin
