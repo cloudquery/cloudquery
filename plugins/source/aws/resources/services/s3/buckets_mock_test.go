@@ -123,6 +123,14 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetBucketLifecycleConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&glco, nil)
 	mgr.EXPECT().GetBucketRegion(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		"us-east-1", nil)
+
+	websiteOutput := s3.GetBucketWebsiteOutput{}
+	if err := faker.FakeObject(&websiteOutput); err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().GetBucketWebsite(gomock.Any(), gomock.Any(), gomock.Any()).Return(&websiteOutput, nil)
+
 	return client.Services{
 		S3:        m,
 		S3manager: mgr,
