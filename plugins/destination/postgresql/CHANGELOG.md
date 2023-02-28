@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.1.3...plugins-destination-postgresql-v2.1.4) (2023-02-27)
+
+
+### Bug Fixes
+
+* **postgres:** Better error message on unknown types, add missing float types ([#8475](https://github.com/cloudquery/cloudquery/issues/8475)) ([7bada3b](https://github.com/cloudquery/cloudquery/commit/7bada3ba55b3784383eb4c19e3d37c9965a9d66e))
+
 ## [2.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.1.2...plugins-destination-postgresql-v2.1.3) (2023-02-23)
 
 
