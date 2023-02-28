@@ -57,6 +57,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto v1.1.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance v1.0.0
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mariadb/armmariadb v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor v0.8.0
@@ -129,7 +130,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/thoas/go-funk v0.9.3
 	golang.org/x/crypto v0.1.0 // indirect
-	golang.org/x/exp v0.0.0-20230212135524-a684f29349b6 // indirect; indirect // indirect
+	golang.org/x/exp v0.0.0-20230212135524-a684f29349b6 // indirect // indirect
 	golang.org/x/net v0.7.0 // indirect; indirect // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
