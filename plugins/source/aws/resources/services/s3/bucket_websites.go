@@ -13,7 +13,7 @@ import (
 func bucketWebsites() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_s3_bucket_websites",
-		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_CORSRule.html`,
+		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_WebsiteConfiguration.html`,
 		Resolver:    fetchS3BucketWebsites,
 		Transform:   transformers.TransformWithStruct(&s3.GetBucketWebsiteOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
