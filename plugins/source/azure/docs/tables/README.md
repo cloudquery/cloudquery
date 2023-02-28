@@ -117,6 +117,7 @@
 - [azure_logic_workflows](azure_logic_workflows.md)
 - [azure_maintenance_configurations](azure_maintenance_configurations.md)
 - [azure_maintenance_public_maintenance_configurations](azure_maintenance_public_maintenance_configurations.md)
+- [azure_managementgroups_management_groups](azure_managementgroups_management_groups.md)
 - [azure_mariadb_servers](azure_mariadb_servers.md)
   - [azure_mariadb_server_configurations](azure_mariadb_server_configurations.md)
 - [azure_marketplace_private_store](azure_marketplace_private_store.md)
