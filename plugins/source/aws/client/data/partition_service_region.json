@@ -1817,8 +1817,10 @@
             "ap-southeast-4": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
+            "eu-south-2": {},
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
@@ -2830,6 +2832,17 @@
             "us-west-2": {}
           }
         },
+        "internetmonitor": {
+          "regions": {
+            "ap-northeast-3": {},
+            "ap-south-2": {},
+            "ap-southeast-3": {},
+            "ap-southeast-4": {},
+            "eu-central-2": {},
+            "eu-south-2": {},
+            "me-central-1": {}
+          }
+        },
         "iot": {
           "regions": {
             "ap-east-1": {},
@@ -3139,6 +3152,7 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -3208,6 +3222,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
@@ -6189,6 +6204,12 @@
             "cn-north-1": {}
           }
         },
+        "internetmonitor": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
         "iot": {
           "regions": {
             "cn-north-1": {},
@@ -7555,6 +7576,12 @@
             "us-gov-west-1": {}
           }
         },
+        "emr-containers": {
+          "regions": {
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
         "es": {
           "regions": {
             "us-gov-east-1": {},
@@ -7637,6 +7664,12 @@
           }
         },
         "inspector2": {
+          "regions": {
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
+        "internetmonitor": {
           "regions": {
             "us-gov-east-1": {},
             "us-gov-west-1": {}
