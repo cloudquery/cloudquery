@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.2.0...plugins-destination-bigquery-v2.2.1) (2023-02-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.1 ([#8371](https://github.com/cloudquery/cloudquery/issues/8371)) ([e3274c1](https://github.com/cloudquery/cloudquery/commit/e3274c109739bc107387627d340a713470c3a3c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.40.0 ([#8401](https://github.com/cloudquery/cloudquery/issues/8401)) ([4cf36d6](https://github.com/cloudquery/cloudquery/commit/4cf36d68684f37c0407332930766c1ba60807a93))
+
 ## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.1.7...plugins-destination-bigquery-v2.2.0) (2023-02-22)
 
 
