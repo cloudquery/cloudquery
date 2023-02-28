@@ -9,6 +9,7 @@ The following tables depend on aws_s3_buckets:
   - [aws_s3_bucket_encryption_rules](aws_s3_bucket_encryption_rules.md)
   - [aws_s3_bucket_grants](aws_s3_bucket_grants.md)
   - [aws_s3_bucket_lifecycles](aws_s3_bucket_lifecycles.md)
+  - [aws_s3_bucket_websites](aws_s3_bucket_websites.md)
 
 ## Columns
 
