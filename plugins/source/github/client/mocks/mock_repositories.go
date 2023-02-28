@@ -35,6 +35,22 @@ func (m *MockRepositoriesService) EXPECT() *MockRepositoriesServiceMockRecorder 
 	return m.recorder
 }
 
+// Get mocks base method.
+func (m *MockRepositoriesService) Get(arg0 context.Context, arg1, arg2 string) (*github.Repository, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Get", arg0, arg1, arg2)
+	ret0, _ := ret[0].(*github.Repository)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// Get indicates an expected call of Get.
+func (mr *MockRepositoriesServiceMockRecorder) Get(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockRepositoriesService)(nil).Get), arg0, arg1, arg2)
+}
+
 // GetContents mocks base method.
 func (m *MockRepositoriesService) GetContents(arg0 context.Context, arg1, arg2, arg3 string, arg4 *github.RepositoryContentGetOptions) (*github.RepositoryContent, []*github.RepositoryContent, *github.Response, error) {
 	m.ctrl.T.Helper()
