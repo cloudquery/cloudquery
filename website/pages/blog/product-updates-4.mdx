@@ -1,0 +1,71 @@
+---
+title: "CloudQuery Product Updates #4"
+tag: product
+date: 2023/02/27
+description: >-
+  Monthly updates on CloudQuery product and roadmap.
+author: yevgenypats
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+Hey everyone! Our monthly round-up of CloudQuery product and roadmap updates is here! This month was packed!
+
+## New Integrations Page
+
+Check out our new [integrations page](https://www.cloudquery.io/integrations)!
+
+## SDK Updates
+
+- Better [migration approach](https://github.com/cloudquery/plugin-sdk/pull/688) that allows users to choose between `safe` and `forced` migrations for all destinations. `safe` is the default for all destinations, and `forced` is supported for ClickHouse, MySQL, PostgreSQL and SQLite at the moment (we'll add others gradually).
+
+## Destinations
+
+### New Destinations
+
+We've added 4 new destinations to CQ!
+
+* [Elasticsearch](/docs/plugins/destinations/elasticsearch/overview)
+* [ClickHouse](/docs/plugins/destinations/clickhouse/overview)
+* [Firehose](/docs/plugins/destinations/firehose/overview)
+* [MySQL](/docs/plugins/destinations/mysql/overview)
+
+## Sources
+
+### New Sources
+
+We've welcomed 4 partners and community plugins!
+
+- [Scaleway](https://www.cloudquery.io/docs/plugins/sources/overview#partners)
+- [Simple Analytics](https://www.cloudquery.io/docs/plugins/sources/overview#partners)
+- [Swetrix](https://www.cloudquery.io/docs/plugins/sources/overview#partners)
+- [SharePoint](https://www.cloudquery.io/docs/plugins/sources/overview#community-plugins)
+
+We've added 5 new official source plugins to CQ both in the infra and analytics space!
+
+* [PostgreSQL CDC](/docs/plugins/sources/postgresql/overview)
+* [Homebrew](/docs/plugins/sources/homebrew/overview)
+* [HubSpot](/docs/plugins/sources/hubspot/overview)
+* [Mixpanel](/docs/plugins/sources/mixpanel/overview)
+* [Plausible Analytics](/docs/plugins/sources/plausible/overview)
+* [Launch Darkly](/docs/plugins/sources/launchdarkly/overview)
+
+Numerous updates to [AWS](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/CHANGELOG.md), [GCP](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/CHANGELOG.md) and [Azure](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/CHANGELOG.md).
+
+## Other notable blogs and use-cases
+
+### Data
+
+- [Video: What is an Infrastructure Data Platform?](https://www.youtube.com/watch?v=X9rXN4CdCrU)
+
+### Engineering
+
+- [Stream Changes from PostgreSQL to Any Destination with Change Data Capture](/blog/postgres-cdc-to-any-destination).
+- [Video: How to write a CloudQuery Source Plugin](https://www.youtube.com/watch?v=3Ka_Ob8E6P8)
+
+### Security
+
+- [Outdated Default AWS IAM Policy Language Versions](/blog/outdated-aws-iam-policy-language)
+- [Search Through Your Cloud Infrastructure with CloudQuery and Elasticsearch](/blog/search-through-cloud-infrastructure-with-elasticsearch)
