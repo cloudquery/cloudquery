@@ -5,6 +5,22 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v8.2.0...plugins-source-gcp-v8.3.0) (2023-02-28)
+
+
+### Features
+
+* **gcp-resources:** Add Cloud Resource Manager Organizations ([#8151](https://github.com/cloudquery/cloudquery/issues/8151)) ([218797e](https://github.com/cloudquery/cloudquery/commit/218797eedbe1af7f59d8d18d449eb6d8e166e96f))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.0 ([#8344](https://github.com/cloudquery/cloudquery/issues/8344)) ([9c57544](https://github.com/cloudquery/cloudquery/commit/9c57544d06f9a774adcc659bcabd2518a905bdaa))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.1 ([#8371](https://github.com/cloudquery/cloudquery/issues/8371)) ([e3274c1](https://github.com/cloudquery/cloudquery/commit/e3274c109739bc107387627d340a713470c3a3c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.40.0 ([#8401](https://github.com/cloudquery/cloudquery/issues/8401)) ([4cf36d6](https://github.com/cloudquery/cloudquery/commit/4cf36d68684f37c0407332930766c1ba60807a93))
+* **services:** Update GCP Services ([#8346](https://github.com/cloudquery/cloudquery/issues/8346)) ([15c3327](https://github.com/cloudquery/cloudquery/commit/15c3327705d3861bea3593226700a842663ff591))
+* **services:** Update GCP Services ([#8405](https://github.com/cloudquery/cloudquery/issues/8405)) ([c7c9767](https://github.com/cloudquery/cloudquery/commit/c7c97675cc539b210087213882d6fdd7c6367c43))
+
 ## [8.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v8.1.0...plugins-source-gcp-v8.2.0) (2023-02-21)
 
 

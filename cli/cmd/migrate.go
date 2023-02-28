@@ -53,7 +53,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 		}
 		var destinationsSpecs []specs.Destination
 		for _, destination := range sourceSpec.Destinations {
-			spec := specReader.Destinations[destination]
+			spec := specReader.GetDestinationByName(destination)
 			if spec == nil {
 				return fmt.Errorf("failed to find destination %s in source %s", destination, sourceSpec.Name)
 			}
