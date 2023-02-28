@@ -12,10 +12,10 @@ export default function Integration({
     syncCommand,
                                     }: {
     source: Plugin;
-    sourceConfiguration: ReactNode;
+    sourceConfiguration?: ReactNode;
     sourceAuthentication?: ReactNode;
     destination: Plugin;
-    destinationConfiguration: ReactNode;
+    destinationConfiguration?: ReactNode;
     destinationAuthentication?: ReactNode;
     syncCommand: ReactNode;
 }) {
@@ -67,18 +67,28 @@ export default function Integration({
                 <p className="mt-4 text-lg font-medium text-gray-400 lg:max-w-3xl lg:text-xl">
                     Create a configuration file for the {source.name} plugin and set up authentication.
                 </p>
-                <h3 className="mt-4 nx-text-2xl font-extrabold tracking-tight lg:nx-text-3xl xl:nx-text-4xl dark:text-white">Configuration</h3>
-                <p className="mt-4">
-                    Create a file called <code className="text-lg nx-font-bold">{source.id}.yaml</code> and add the following contents:
-                </p>
-                {sourceConfiguration}
-                <p className="mt-4">
-                    Fine-tune this configuration to match your needs. For more information, see the <a target="_blank" href={"/docs/plugins/sources/" + source.id + "/overview"} className="text-blue-500 hover:text-blue-600">{source.name} Plugin ↗</a> page in the docs.
-                </p>
-                {sourceAuthentication ? <div>
-                    <h3 className="mt-4 nx-text-2xl font-extrabold tracking-tight lg:nx-text-3xl xl:nx-text-4xl dark:text-white">Authentication</h3>
-                    {sourceAuthentication}
-                </div> : <></>}
+                {source.kind !== "official" ?
+                    <>
+                        <p className="mt-4">
+                            {source.name} is a {source.kind} plugin, which means that it is maintained by the {source.kind === "community" ? "CloudQuery community" : source.name + " team"}. Create a file called <code className="text-lg nx-font-bold">{source.id}.yaml</code>, then copy the example and follow the instructions in the <a target="_blank" href={source.href} className="text-blue-500 hover:text-blue-600">{source.name} Plugin Documentation ↗</a> to fit your needs.
+                        </p>
+                    </>
+                    :
+                    <>
+                        <h3 className="mt-4 nx-text-2xl font-extrabold tracking-tight lg:nx-text-3xl xl:nx-text-4xl dark:text-white">Configuration</h3>
+                        <p className="mt-4">
+                            Create a file called <code className="text-lg nx-font-bold">{source.id}.yaml</code> and add the following contents:
+                        </p>
+                        {sourceConfiguration}
+                        <p className="mt-4">
+                            Fine-tune this configuration to match your needs. For more information, see the <a target="_blank" href={"/docs/plugins/sources/" + source.id + "/overview"} className="text-blue-500 hover:text-blue-600">{source.name} Plugin ↗</a> page in the docs.
+                        </p>
+                        {sourceAuthentication ? <div>
+                            <h3 className="mt-4 nx-text-2xl font-extrabold tracking-tight lg:nx-text-3xl xl:nx-text-4xl dark:text-white">Authentication</h3>
+                            {sourceAuthentication}
+                        </div> : <></>}
+                    </>
+                }
             </div>
         </div>
 
@@ -87,21 +97,31 @@ export default function Integration({
                 <h2 className="nx-text-4xl font-extrabold tracking-tight lg:nx-text-5xl xl:nx-text-6xl dark:text-white">
                     Step 3. Configure the {destination.name} destination plugin
                 </h2>
-                <p className="mt-4 text-lg font-medium text-gray-400 lg:max-w-3xl lg:text-xl">
-                    Create a configuration file for the {destination.name} plugin and set up authentication.
-                </p>
-                <h3 className="mt-4 nx-text-2xl font-extrabold tracking-tight lg:nx-text-3xl xl:nx-text-4xl dark:text-white">Configuration</h3>
-                <p className="mt-4">
-                    Create a file called <code className="text-lg nx-font-bold">{destination.id}.yaml</code> and add the following contents:
-                </p>
-                {destinationConfiguration}
-                <p className="mt-4">
-                    Fine-tune this configuration to match your needs. For more information, see the <a target="_blank" href={"/docs/plugins/destinations/" + destination.id + "/overview"} className="text-blue-500 hover:text-blue-600">{destination.name} Plugin ↗</a> page in the docs.
-                </p>
-                {destinationAuthentication ? <div>
-                    <h3 className="mt-4 nx-text-2xl font-extrabold tracking-tight lg:nx-text-3xl xl:nx-text-4xl dark:text-white">Authentication</h3>
-                    {destinationAuthentication}
-                </div> : <></>}
+                {destination.kind !== "official" ?
+                    <>
+                        <p className="mt-4">
+                            {destination.name} is a {destination.kind} plugin, which means that it is maintained by the {destination.kind === "community" ? "CloudQuery community" : destination.name + " team"}. Create a file called <code className="text-lg nx-font-bold">{destination.id}.yaml</code>, then copy the example and follow the instructions in the <a target="_blank" href={destination.href} className="text-blue-500 hover:text-blue-600">{destination.name} Plugin Documentation ↗</a> to fit your needs.
+                        </p>
+                    </>
+                    :
+                    <>
+                        <p className="mt-4 text-lg font-medium text-gray-400 lg:max-w-3xl lg:text-xl">
+                            Create a configuration file for the {destination.name} plugin and set up authentication.
+                        </p>
+                        <h3 className="mt-4 nx-text-2xl font-extrabold tracking-tight lg:nx-text-3xl xl:nx-text-4xl dark:text-white">Configuration</h3>
+                        <p className="mt-4">
+                            Create a file called <code className="text-lg nx-font-bold">{destination.id}.yaml</code> and add the following contents:
+                        </p>
+                        {destinationConfiguration}
+                        <p className="mt-4">
+                            Fine-tune this configuration to match your needs. For more information, see the <a target="_blank" href={"/docs/plugins/destinations/" + destination.id + "/overview"} className="text-blue-500 hover:text-blue-600">{destination.name} Plugin ↗</a> page in the docs.
+                        </p>
+                        {destinationAuthentication ? <div>
+                            <h3 className="mt-4 nx-text-2xl font-extrabold tracking-tight lg:nx-text-3xl xl:nx-text-4xl dark:text-white">Authentication</h3>
+                            {destinationAuthentication}
+                        </div> : <></>}
+                    </>
+                }
             </div>
         </div>
 
