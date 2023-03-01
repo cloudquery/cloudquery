@@ -16,8 +16,8 @@ install-hooks:
 
 .PHONY: lint
 lint:
-	@golangci-lint run --timeout 10m --verbose
-
+	golangci-lint run --config ../../.golangci.yml
+	
 .PHONY: gen-mocks
 gen-mocks:
 	go install github.com/golang/mock/mockgen@v1.6.0
