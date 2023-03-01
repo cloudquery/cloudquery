@@ -22,7 +22,7 @@ require (
 	cloud.google.com/go/domains v0.7.0
 	cloud.google.com/go/errorreporting v0.3.0
 	cloud.google.com/go/functions v1.9.0
-	cloud.google.com/go/iam v0.9.0
+	cloud.google.com/go/iam v0.110.0
 	cloud.google.com/go/iot v1.4.0
 	cloud.google.com/go/kms v1.6.0
 	cloud.google.com/go/logging v1.6.1
