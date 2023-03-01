@@ -11,7 +11,10 @@ require (
 	golang.org/x/oauth2 v0.4.0
 )
 
-require github.com/gofri/go-github-ratelimit v1.0.2
+require (
+	github.com/beatlabs/github-auth v0.0.0-20220721134423-2b8d98e205d1
+	github.com/gofri/go-github-ratelimit v1.0.2
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
