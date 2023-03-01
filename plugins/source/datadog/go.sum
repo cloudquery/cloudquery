@@ -33,8 +33,8 @@ cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/DataDog/datadog-api-client-go/v2 v2.6.1 h1:THstTY4UQUFbojIoOOKjWdomc6Q0Gl1bAoCY0UOo2XY=
-github.com/DataDog/datadog-api-client-go/v2 v2.6.1/go.mod h1:sHt3EuVMN8PSYJu065qwp3pZxCwR3RZP4sJnYwj/ZQY=
+github.com/DataDog/datadog-api-client-go/v2 v2.9.0 h1:1Cz3mqj95iqnQPykEovq2p52rrU26XvLC2Fz6hPE+TU=
+github.com/DataDog/datadog-api-client-go/v2 v2.9.0/go.mod h1:sHt3EuVMN8PSYJu065qwp3pZxCwR3RZP4sJnYwj/ZQY=
 github.com/DataDog/zstd v1.5.2 h1:vUG4lAyuPCXO0TLbXvPv7EB7cNK1QV/luu55UHLrrn8=
 github.com/DataDog/zstd v1.5.2/go.mod h1:g4AWEaM3yOg3HYfnJ3YIawPnVdXJh9QME85blwSAmyw=
 github.com/avast/retry-go/v4 v4.3.3 h1:G56Bp6mU0b5HE1SkaoVjscZjlQb0oy4mezwY/cGH19w=
