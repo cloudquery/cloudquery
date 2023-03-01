@@ -57,8 +57,6 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation v
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation v0.7.0/go.mod h1:Ro7nXanpxnqhbrmk0wI85yhXDuEBAbq1r6RONxba73E=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata v0.5.0 h1:2gPAcm4y6tHKjv77zgL5u0Kc1o3rCuw952JiS2kqSVg=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata v0.5.0/go.mod h1:d6QKb8hrJNefGMOdf7AJlzNpzUwqILR/E2l9aDEhIS0=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata v0.5.0 h1:uPu790CHudmWupn0b36xH8FHKk97zTVXFBjIdlOw1kA=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata v0.5.0/go.mod h1:L2q7LFzqMzyblAn2ZwlkOAClAXBBbSMKYb1tx6BXMEs=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch v1.1.0 h1:CUrPHKCgZXGTpOGb/fG/oXZ0yV/o4sHeuADSHPLQaCM=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch v1.1.0/go.mod h1:Jz7smLNU1YcKJg3U89KhubAGZ6o5/bgW83TRg1/gK/k=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling v0.5.0 h1:56uDxdVnsG1H8pdPT6LO1XQwnmK/pJWIEJmZ3lnUoGs=
@@ -626,8 +624,8 @@ google.golang.org/genproto v0.0.0-20200729003335-053ba62fc06f/go.mod h1:FWY/as6D
 google.golang.org/genproto v0.0.0-20200804131852-c06518451d9c/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
 google.golang.org/genproto v0.0.0-20200806141610-86f49bd18e98/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
 google.golang.org/genproto v0.0.0-20200825200019-8632dd797987/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
-google.golang.org/genproto v0.0.0-20230209215440-0dfe4f8abfcc h1:ijGwO+0vL2hJt5gaygqP2j6PfflOBrRot0IczKbmtio=
-google.golang.org/genproto v0.0.0-20230209215440-0dfe4f8abfcc/go.mod h1:RGgjbofJ8xD9Sq1VVhDM1Vok1vRONV+rg+CjzG4SZKM=
+google.golang.org/genproto v0.0.0-20230227214838-9b19f0bdc514 h1:rtNKfB++wz5mtDY2t5C8TXlU5y52ojSu7tZo0z7u8eQ=
+google.golang.org/genproto v0.0.0-20230227214838-9b19f0bdc514/go.mod h1:TvhZT5f700eVlTNwND1xoEZQeWTB2RY/65kplwl/bFA=
 google.golang.org/grpc v1.19.0/go.mod h1:mqu4LbDTu4XGKhr4mRzUsmM4RtVoemTSY81AxZiDr8c=
 google.golang.org/grpc v1.20.1/go.mod h1:10oTOabMzJvdu6/UiuZezV6QK5dSlG84ov/aaiqXj38=
 google.golang.org/grpc v1.21.1/go.mod h1:oYelfM1adQP15Ek0mdvEgi9Df8B9CZIaU1084ijfRaM=
