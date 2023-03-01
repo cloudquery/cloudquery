@@ -124,8 +124,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 		orgs:        spec.Orgs,
 		repos:       spec.Repos,
 	}
-	c.
-		logger.Info().Msg("Discovering repositories")
+	c.logger.Info().Msg("Discovering repositories")
 	orgRepositories, err := c.discoverRepositories(ctx, spec.Orgs, spec.Repos)
 	if err != nil {
 		return nil, fmt.Errorf("failed to discover repositories: %w", err)
