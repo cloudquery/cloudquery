@@ -34,6 +34,138 @@ func (m *MockBssopenapiClient) EXPECT() *MockBssopenapiClientMockRecorder {
 	return m.recorder
 }
 
+// DescribeCostBudgetsSummary mocks base method.
+func (m *MockBssopenapiClient) DescribeCostBudgetsSummary(arg0 *bssopenapi.DescribeCostBudgetsSummaryRequest) (*bssopenapi.DescribeCostBudgetsSummaryResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeCostBudgetsSummary", arg0)
+	ret0, _ := ret[0].(*bssopenapi.DescribeCostBudgetsSummaryResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeCostBudgetsSummary indicates an expected call of DescribeCostBudgetsSummary.
+func (mr *MockBssopenapiClientMockRecorder) DescribeCostBudgetsSummary(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeCostBudgetsSummary", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeCostBudgetsSummary), arg0)
+}
+
+// DescribeCostBudgetsSummaryWithCallback mocks base method.
+func (m *MockBssopenapiClient) DescribeCostBudgetsSummaryWithCallback(arg0 *bssopenapi.DescribeCostBudgetsSummaryRequest, arg1 func(*bssopenapi.DescribeCostBudgetsSummaryResponse, error)) <-chan int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeCostBudgetsSummaryWithCallback", arg0, arg1)
+	ret0, _ := ret[0].(<-chan int)
+	return ret0
+}
+
+// DescribeCostBudgetsSummaryWithCallback indicates an expected call of DescribeCostBudgetsSummaryWithCallback.
+func (mr *MockBssopenapiClientMockRecorder) DescribeCostBudgetsSummaryWithCallback(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeCostBudgetsSummaryWithCallback", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeCostBudgetsSummaryWithCallback), arg0, arg1)
+}
+
+// DescribeCostBudgetsSummaryWithChan mocks base method.
+func (m *MockBssopenapiClient) DescribeCostBudgetsSummaryWithChan(arg0 *bssopenapi.DescribeCostBudgetsSummaryRequest) (<-chan *bssopenapi.DescribeCostBudgetsSummaryResponse, <-chan error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeCostBudgetsSummaryWithChan", arg0)
+	ret0, _ := ret[0].(<-chan *bssopenapi.DescribeCostBudgetsSummaryResponse)
+	ret1, _ := ret[1].(<-chan error)
+	return ret0, ret1
+}
+
+// DescribeCostBudgetsSummaryWithChan indicates an expected call of DescribeCostBudgetsSummaryWithChan.
+func (mr *MockBssopenapiClientMockRecorder) DescribeCostBudgetsSummaryWithChan(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeCostBudgetsSummaryWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeCostBudgetsSummaryWithChan), arg0)
+}
+
+// DescribeInstanceAmortizedCostByAmortizationPeriod mocks base method.
+func (m *MockBssopenapiClient) DescribeInstanceAmortizedCostByAmortizationPeriod(arg0 *bssopenapi.DescribeInstanceAmortizedCostByAmortizationPeriodRequest) (*bssopenapi.DescribeInstanceAmortizedCostByAmortizationPeriodResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeInstanceAmortizedCostByAmortizationPeriod", arg0)
+	ret0, _ := ret[0].(*bssopenapi.DescribeInstanceAmortizedCostByAmortizationPeriodResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeInstanceAmortizedCostByAmortizationPeriod indicates an expected call of DescribeInstanceAmortizedCostByAmortizationPeriod.
+func (mr *MockBssopenapiClientMockRecorder) DescribeInstanceAmortizedCostByAmortizationPeriod(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeInstanceAmortizedCostByAmortizationPeriod", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeInstanceAmortizedCostByAmortizationPeriod), arg0)
+}
+
+// DescribeInstanceAmortizedCostByAmortizationPeriodWithCallback mocks base method.
+func (m *MockBssopenapiClient) DescribeInstanceAmortizedCostByAmortizationPeriodWithCallback(arg0 *bssopenapi.DescribeInstanceAmortizedCostByAmortizationPeriodRequest, arg1 func(*bssopenapi.DescribeInstanceAmortizedCostByAmortizationPeriodResponse, error)) <-chan int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeInstanceAmortizedCostByAmortizationPeriodWithCallback", arg0, arg1)
+	ret0, _ := ret[0].(<-chan int)
+	return ret0
+}
+
+// DescribeInstanceAmortizedCostByAmortizationPeriodWithCallback indicates an expected call of DescribeInstanceAmortizedCostByAmortizationPeriodWithCallback.
+func (mr *MockBssopenapiClientMockRecorder) DescribeInstanceAmortizedCostByAmortizationPeriodWithCallback(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeInstanceAmortizedCostByAmortizationPeriodWithCallback", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeInstanceAmortizedCostByAmortizationPeriodWithCallback), arg0, arg1)
+}
+
+// DescribeInstanceAmortizedCostByAmortizationPeriodWithChan mocks base method.
+func (m *MockBssopenapiClient) DescribeInstanceAmortizedCostByAmortizationPeriodWithChan(arg0 *bssopenapi.DescribeInstanceAmortizedCostByAmortizationPeriodRequest) (<-chan *bssopenapi.DescribeInstanceAmortizedCostByAmortizationPeriodResponse, <-chan error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeInstanceAmortizedCostByAmortizationPeriodWithChan", arg0)
+	ret0, _ := ret[0].(<-chan *bssopenapi.DescribeInstanceAmortizedCostByAmortizationPeriodResponse)
+	ret1, _ := ret[1].(<-chan error)
+	return ret0, ret1
+}
+
+// DescribeInstanceAmortizedCostByAmortizationPeriodWithChan indicates an expected call of DescribeInstanceAmortizedCostByAmortizationPeriodWithChan.
+func (mr *MockBssopenapiClientMockRecorder) DescribeInstanceAmortizedCostByAmortizationPeriodWithChan(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeInstanceAmortizedCostByAmortizationPeriodWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeInstanceAmortizedCostByAmortizationPeriodWithChan), arg0)
+}
+
+// DescribeInstanceAmortizedCostByConsumePeriod mocks base method.
+func (m *MockBssopenapiClient) DescribeInstanceAmortizedCostByConsumePeriod(arg0 *bssopenapi.DescribeInstanceAmortizedCostByConsumePeriodRequest) (*bssopenapi.DescribeInstanceAmortizedCostByConsumePeriodResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeInstanceAmortizedCostByConsumePeriod", arg0)
+	ret0, _ := ret[0].(*bssopenapi.DescribeInstanceAmortizedCostByConsumePeriodResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeInstanceAmortizedCostByConsumePeriod indicates an expected call of DescribeInstanceAmortizedCostByConsumePeriod.
+func (mr *MockBssopenapiClientMockRecorder) DescribeInstanceAmortizedCostByConsumePeriod(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeInstanceAmortizedCostByConsumePeriod", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeInstanceAmortizedCostByConsumePeriod), arg0)
+}
+
+// DescribeInstanceAmortizedCostByConsumePeriodWithCallback mocks base method.
+func (m *MockBssopenapiClient) DescribeInstanceAmortizedCostByConsumePeriodWithCallback(arg0 *bssopenapi.DescribeInstanceAmortizedCostByConsumePeriodRequest, arg1 func(*bssopenapi.DescribeInstanceAmortizedCostByConsumePeriodResponse, error)) <-chan int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeInstanceAmortizedCostByConsumePeriodWithCallback", arg0, arg1)
+	ret0, _ := ret[0].(<-chan int)
+	return ret0
+}
+
+// DescribeInstanceAmortizedCostByConsumePeriodWithCallback indicates an expected call of DescribeInstanceAmortizedCostByConsumePeriodWithCallback.
+func (mr *MockBssopenapiClientMockRecorder) DescribeInstanceAmortizedCostByConsumePeriodWithCallback(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeInstanceAmortizedCostByConsumePeriodWithCallback", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeInstanceAmortizedCostByConsumePeriodWithCallback), arg0, arg1)
+}
+
+// DescribeInstanceAmortizedCostByConsumePeriodWithChan mocks base method.
+func (m *MockBssopenapiClient) DescribeInstanceAmortizedCostByConsumePeriodWithChan(arg0 *bssopenapi.DescribeInstanceAmortizedCostByConsumePeriodRequest) (<-chan *bssopenapi.DescribeInstanceAmortizedCostByConsumePeriodResponse, <-chan error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeInstanceAmortizedCostByConsumePeriodWithChan", arg0)
+	ret0, _ := ret[0].(<-chan *bssopenapi.DescribeInstanceAmortizedCostByConsumePeriodResponse)
+	ret1, _ := ret[1].(<-chan error)
+	return ret0, ret1
+}
+
+// DescribeInstanceAmortizedCostByConsumePeriodWithChan indicates an expected call of DescribeInstanceAmortizedCostByConsumePeriodWithChan.
+func (mr *MockBssopenapiClientMockRecorder) DescribeInstanceAmortizedCostByConsumePeriodWithChan(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeInstanceAmortizedCostByConsumePeriodWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeInstanceAmortizedCostByConsumePeriodWithChan), arg0)
+}
+
 // DescribeInstanceBill mocks base method.
 func (m *MockBssopenapiClient) DescribeInstanceBill(arg0 *bssopenapi.DescribeInstanceBillRequest) (*bssopenapi.DescribeInstanceBillResponse, error) {
 	m.ctrl.T.Helper()
@@ -120,6 +252,94 @@ func (m *MockBssopenapiClient) DescribePricingModuleWithChan(arg0 *bssopenapi.De
 func (mr *MockBssopenapiClientMockRecorder) DescribePricingModuleWithChan(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribePricingModuleWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribePricingModuleWithChan), arg0)
+}
+
+// DescribeProductAmortizedCostByAmortizationPeriod mocks base method.
+func (m *MockBssopenapiClient) DescribeProductAmortizedCostByAmortizationPeriod(arg0 *bssopenapi.DescribeProductAmortizedCostByAmortizationPeriodRequest) (*bssopenapi.DescribeProductAmortizedCostByAmortizationPeriodResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeProductAmortizedCostByAmortizationPeriod", arg0)
+	ret0, _ := ret[0].(*bssopenapi.DescribeProductAmortizedCostByAmortizationPeriodResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeProductAmortizedCostByAmortizationPeriod indicates an expected call of DescribeProductAmortizedCostByAmortizationPeriod.
+func (mr *MockBssopenapiClientMockRecorder) DescribeProductAmortizedCostByAmortizationPeriod(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeProductAmortizedCostByAmortizationPeriod", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeProductAmortizedCostByAmortizationPeriod), arg0)
+}
+
+// DescribeProductAmortizedCostByAmortizationPeriodWithCallback mocks base method.
+func (m *MockBssopenapiClient) DescribeProductAmortizedCostByAmortizationPeriodWithCallback(arg0 *bssopenapi.DescribeProductAmortizedCostByAmortizationPeriodRequest, arg1 func(*bssopenapi.DescribeProductAmortizedCostByAmortizationPeriodResponse, error)) <-chan int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeProductAmortizedCostByAmortizationPeriodWithCallback", arg0, arg1)
+	ret0, _ := ret[0].(<-chan int)
+	return ret0
+}
+
+// DescribeProductAmortizedCostByAmortizationPeriodWithCallback indicates an expected call of DescribeProductAmortizedCostByAmortizationPeriodWithCallback.
+func (mr *MockBssopenapiClientMockRecorder) DescribeProductAmortizedCostByAmortizationPeriodWithCallback(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeProductAmortizedCostByAmortizationPeriodWithCallback", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeProductAmortizedCostByAmortizationPeriodWithCallback), arg0, arg1)
+}
+
+// DescribeProductAmortizedCostByAmortizationPeriodWithChan mocks base method.
+func (m *MockBssopenapiClient) DescribeProductAmortizedCostByAmortizationPeriodWithChan(arg0 *bssopenapi.DescribeProductAmortizedCostByAmortizationPeriodRequest) (<-chan *bssopenapi.DescribeProductAmortizedCostByAmortizationPeriodResponse, <-chan error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeProductAmortizedCostByAmortizationPeriodWithChan", arg0)
+	ret0, _ := ret[0].(<-chan *bssopenapi.DescribeProductAmortizedCostByAmortizationPeriodResponse)
+	ret1, _ := ret[1].(<-chan error)
+	return ret0, ret1
+}
+
+// DescribeProductAmortizedCostByAmortizationPeriodWithChan indicates an expected call of DescribeProductAmortizedCostByAmortizationPeriodWithChan.
+func (mr *MockBssopenapiClientMockRecorder) DescribeProductAmortizedCostByAmortizationPeriodWithChan(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeProductAmortizedCostByAmortizationPeriodWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeProductAmortizedCostByAmortizationPeriodWithChan), arg0)
+}
+
+// DescribeProductAmortizedCostByConsumePeriod mocks base method.
+func (m *MockBssopenapiClient) DescribeProductAmortizedCostByConsumePeriod(arg0 *bssopenapi.DescribeProductAmortizedCostByConsumePeriodRequest) (*bssopenapi.DescribeProductAmortizedCostByConsumePeriodResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeProductAmortizedCostByConsumePeriod", arg0)
+	ret0, _ := ret[0].(*bssopenapi.DescribeProductAmortizedCostByConsumePeriodResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeProductAmortizedCostByConsumePeriod indicates an expected call of DescribeProductAmortizedCostByConsumePeriod.
+func (mr *MockBssopenapiClientMockRecorder) DescribeProductAmortizedCostByConsumePeriod(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeProductAmortizedCostByConsumePeriod", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeProductAmortizedCostByConsumePeriod), arg0)
+}
+
+// DescribeProductAmortizedCostByConsumePeriodWithCallback mocks base method.
+func (m *MockBssopenapiClient) DescribeProductAmortizedCostByConsumePeriodWithCallback(arg0 *bssopenapi.DescribeProductAmortizedCostByConsumePeriodRequest, arg1 func(*bssopenapi.DescribeProductAmortizedCostByConsumePeriodResponse, error)) <-chan int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeProductAmortizedCostByConsumePeriodWithCallback", arg0, arg1)
+	ret0, _ := ret[0].(<-chan int)
+	return ret0
+}
+
+// DescribeProductAmortizedCostByConsumePeriodWithCallback indicates an expected call of DescribeProductAmortizedCostByConsumePeriodWithCallback.
+func (mr *MockBssopenapiClientMockRecorder) DescribeProductAmortizedCostByConsumePeriodWithCallback(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeProductAmortizedCostByConsumePeriodWithCallback", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeProductAmortizedCostByConsumePeriodWithCallback), arg0, arg1)
+}
+
+// DescribeProductAmortizedCostByConsumePeriodWithChan mocks base method.
+func (m *MockBssopenapiClient) DescribeProductAmortizedCostByConsumePeriodWithChan(arg0 *bssopenapi.DescribeProductAmortizedCostByConsumePeriodRequest) (<-chan *bssopenapi.DescribeProductAmortizedCostByConsumePeriodResponse, <-chan error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeProductAmortizedCostByConsumePeriodWithChan", arg0)
+	ret0, _ := ret[0].(<-chan *bssopenapi.DescribeProductAmortizedCostByConsumePeriodResponse)
+	ret1, _ := ret[1].(<-chan error)
+	return ret0, ret1
+}
+
+// DescribeProductAmortizedCostByConsumePeriodWithChan indicates an expected call of DescribeProductAmortizedCostByConsumePeriodWithChan.
+func (mr *MockBssopenapiClientMockRecorder) DescribeProductAmortizedCostByConsumePeriodWithChan(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeProductAmortizedCostByConsumePeriodWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).DescribeProductAmortizedCostByConsumePeriodWithChan), arg0)
 }
 
 // DescribeResourceCoverageDetail mocks base method.
@@ -1379,6 +1599,50 @@ func (mr *MockBssopenapiClientMockRecorder) QueryCashCouponsWithChan(arg0 interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryCashCouponsWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryCashCouponsWithChan), arg0)
 }
 
+// QueryCommodityList mocks base method.
+func (m *MockBssopenapiClient) QueryCommodityList(arg0 *bssopenapi.QueryCommodityListRequest) (*bssopenapi.QueryCommodityListResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryCommodityList", arg0)
+	ret0, _ := ret[0].(*bssopenapi.QueryCommodityListResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QueryCommodityList indicates an expected call of QueryCommodityList.
+func (mr *MockBssopenapiClientMockRecorder) QueryCommodityList(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryCommodityList", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryCommodityList), arg0)
+}
+
+// QueryCommodityListWithCallback mocks base method.
+func (m *MockBssopenapiClient) QueryCommodityListWithCallback(arg0 *bssopenapi.QueryCommodityListRequest, arg1 func(*bssopenapi.QueryCommodityListResponse, error)) <-chan int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryCommodityListWithCallback", arg0, arg1)
+	ret0, _ := ret[0].(<-chan int)
+	return ret0
+}
+
+// QueryCommodityListWithCallback indicates an expected call of QueryCommodityListWithCallback.
+func (mr *MockBssopenapiClientMockRecorder) QueryCommodityListWithCallback(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryCommodityListWithCallback", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryCommodityListWithCallback), arg0, arg1)
+}
+
+// QueryCommodityListWithChan mocks base method.
+func (m *MockBssopenapiClient) QueryCommodityListWithChan(arg0 *bssopenapi.QueryCommodityListRequest) (<-chan *bssopenapi.QueryCommodityListResponse, <-chan error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryCommodityListWithChan", arg0)
+	ret0, _ := ret[0].(<-chan *bssopenapi.QueryCommodityListResponse)
+	ret1, _ := ret[1].(<-chan error)
+	return ret0, ret1
+}
+
+// QueryCommodityListWithChan indicates an expected call of QueryCommodityListWithChan.
+func (mr *MockBssopenapiClientMockRecorder) QueryCommodityListWithChan(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryCommodityListWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryCommodityListWithChan), arg0)
+}
+
 // QueryCostUnit mocks base method.
 func (m *MockBssopenapiClient) QueryCostUnit(arg0 *bssopenapi.QueryCostUnitRequest) (*bssopenapi.QueryCostUnitResponse, error) {
 	m.ctrl.T.Helper()
@@ -1819,94 +2083,6 @@ func (mr *MockBssopenapiClientMockRecorder) QueryInvoicingCustomerListWithChan(a
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryInvoicingCustomerListWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryInvoicingCustomerListWithChan), arg0)
 }
 
-// QueryMonthlyBill mocks base method.
-func (m *MockBssopenapiClient) QueryMonthlyBill(arg0 *bssopenapi.QueryMonthlyBillRequest) (*bssopenapi.QueryMonthlyBillResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QueryMonthlyBill", arg0)
-	ret0, _ := ret[0].(*bssopenapi.QueryMonthlyBillResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// QueryMonthlyBill indicates an expected call of QueryMonthlyBill.
-func (mr *MockBssopenapiClientMockRecorder) QueryMonthlyBill(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryMonthlyBill", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryMonthlyBill), arg0)
-}
-
-// QueryMonthlyBillWithCallback mocks base method.
-func (m *MockBssopenapiClient) QueryMonthlyBillWithCallback(arg0 *bssopenapi.QueryMonthlyBillRequest, arg1 func(*bssopenapi.QueryMonthlyBillResponse, error)) <-chan int {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QueryMonthlyBillWithCallback", arg0, arg1)
-	ret0, _ := ret[0].(<-chan int)
-	return ret0
-}
-
-// QueryMonthlyBillWithCallback indicates an expected call of QueryMonthlyBillWithCallback.
-func (mr *MockBssopenapiClientMockRecorder) QueryMonthlyBillWithCallback(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryMonthlyBillWithCallback", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryMonthlyBillWithCallback), arg0, arg1)
-}
-
-// QueryMonthlyBillWithChan mocks base method.
-func (m *MockBssopenapiClient) QueryMonthlyBillWithChan(arg0 *bssopenapi.QueryMonthlyBillRequest) (<-chan *bssopenapi.QueryMonthlyBillResponse, <-chan error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QueryMonthlyBillWithChan", arg0)
-	ret0, _ := ret[0].(<-chan *bssopenapi.QueryMonthlyBillResponse)
-	ret1, _ := ret[1].(<-chan error)
-	return ret0, ret1
-}
-
-// QueryMonthlyBillWithChan indicates an expected call of QueryMonthlyBillWithChan.
-func (mr *MockBssopenapiClientMockRecorder) QueryMonthlyBillWithChan(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryMonthlyBillWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryMonthlyBillWithChan), arg0)
-}
-
-// QueryMonthlyInstanceConsumption mocks base method.
-func (m *MockBssopenapiClient) QueryMonthlyInstanceConsumption(arg0 *bssopenapi.QueryMonthlyInstanceConsumptionRequest) (*bssopenapi.QueryMonthlyInstanceConsumptionResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QueryMonthlyInstanceConsumption", arg0)
-	ret0, _ := ret[0].(*bssopenapi.QueryMonthlyInstanceConsumptionResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// QueryMonthlyInstanceConsumption indicates an expected call of QueryMonthlyInstanceConsumption.
-func (mr *MockBssopenapiClientMockRecorder) QueryMonthlyInstanceConsumption(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryMonthlyInstanceConsumption", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryMonthlyInstanceConsumption), arg0)
-}
-
-// QueryMonthlyInstanceConsumptionWithCallback mocks base method.
-func (m *MockBssopenapiClient) QueryMonthlyInstanceConsumptionWithCallback(arg0 *bssopenapi.QueryMonthlyInstanceConsumptionRequest, arg1 func(*bssopenapi.QueryMonthlyInstanceConsumptionResponse, error)) <-chan int {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QueryMonthlyInstanceConsumptionWithCallback", arg0, arg1)
-	ret0, _ := ret[0].(<-chan int)
-	return ret0
-}
-
-// QueryMonthlyInstanceConsumptionWithCallback indicates an expected call of QueryMonthlyInstanceConsumptionWithCallback.
-func (mr *MockBssopenapiClientMockRecorder) QueryMonthlyInstanceConsumptionWithCallback(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryMonthlyInstanceConsumptionWithCallback", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryMonthlyInstanceConsumptionWithCallback), arg0, arg1)
-}
-
-// QueryMonthlyInstanceConsumptionWithChan mocks base method.
-func (m *MockBssopenapiClient) QueryMonthlyInstanceConsumptionWithChan(arg0 *bssopenapi.QueryMonthlyInstanceConsumptionRequest) (<-chan *bssopenapi.QueryMonthlyInstanceConsumptionResponse, <-chan error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QueryMonthlyInstanceConsumptionWithChan", arg0)
-	ret0, _ := ret[0].(<-chan *bssopenapi.QueryMonthlyInstanceConsumptionResponse)
-	ret1, _ := ret[1].(<-chan error)
-	return ret0, ret1
-}
-
-// QueryMonthlyInstanceConsumptionWithChan indicates an expected call of QueryMonthlyInstanceConsumptionWithChan.
-func (mr *MockBssopenapiClientMockRecorder) QueryMonthlyInstanceConsumptionWithChan(arg0 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryMonthlyInstanceConsumptionWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryMonthlyInstanceConsumptionWithChan), arg0)
-}
-
 // QueryOrders mocks base method.
 func (m *MockBssopenapiClient) QueryOrders(arg0 *bssopenapi.QueryOrdersRequest) (*bssopenapi.QueryOrdersResponse, error) {
 	m.ctrl.T.Helper()
@@ -2037,6 +2213,50 @@ func (m *MockBssopenapiClient) QueryPrepaidCardsWithChan(arg0 *bssopenapi.QueryP
 func (mr *MockBssopenapiClientMockRecorder) QueryPrepaidCardsWithChan(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryPrepaidCardsWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryPrepaidCardsWithChan), arg0)
+}
+
+// QueryPriceEntityList mocks base method.
+func (m *MockBssopenapiClient) QueryPriceEntityList(arg0 *bssopenapi.QueryPriceEntityListRequest) (*bssopenapi.QueryPriceEntityListResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryPriceEntityList", arg0)
+	ret0, _ := ret[0].(*bssopenapi.QueryPriceEntityListResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QueryPriceEntityList indicates an expected call of QueryPriceEntityList.
+func (mr *MockBssopenapiClientMockRecorder) QueryPriceEntityList(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryPriceEntityList", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryPriceEntityList), arg0)
+}
+
+// QueryPriceEntityListWithCallback mocks base method.
+func (m *MockBssopenapiClient) QueryPriceEntityListWithCallback(arg0 *bssopenapi.QueryPriceEntityListRequest, arg1 func(*bssopenapi.QueryPriceEntityListResponse, error)) <-chan int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryPriceEntityListWithCallback", arg0, arg1)
+	ret0, _ := ret[0].(<-chan int)
+	return ret0
+}
+
+// QueryPriceEntityListWithCallback indicates an expected call of QueryPriceEntityListWithCallback.
+func (mr *MockBssopenapiClientMockRecorder) QueryPriceEntityListWithCallback(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryPriceEntityListWithCallback", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryPriceEntityListWithCallback), arg0, arg1)
+}
+
+// QueryPriceEntityListWithChan mocks base method.
+func (m *MockBssopenapiClient) QueryPriceEntityListWithChan(arg0 *bssopenapi.QueryPriceEntityListRequest) (<-chan *bssopenapi.QueryPriceEntityListResponse, <-chan error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryPriceEntityListWithChan", arg0)
+	ret0, _ := ret[0].(<-chan *bssopenapi.QueryPriceEntityListResponse)
+	ret1, _ := ret[1].(<-chan error)
+	return ret0, ret1
+}
+
+// QueryPriceEntityListWithChan indicates an expected call of QueryPriceEntityListWithChan.
+func (mr *MockBssopenapiClientMockRecorder) QueryPriceEntityListWithChan(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryPriceEntityListWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryPriceEntityListWithChan), arg0)
 }
 
 // QueryProductList mocks base method.
@@ -2347,6 +2567,50 @@ func (mr *MockBssopenapiClientMockRecorder) QuerySavingsPlansDeductLogWithChan(a
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuerySavingsPlansDeductLogWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).QuerySavingsPlansDeductLogWithChan), arg0)
 }
 
+// QuerySavingsPlansDiscount mocks base method.
+func (m *MockBssopenapiClient) QuerySavingsPlansDiscount(arg0 *bssopenapi.QuerySavingsPlansDiscountRequest) (*bssopenapi.QuerySavingsPlansDiscountResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QuerySavingsPlansDiscount", arg0)
+	ret0, _ := ret[0].(*bssopenapi.QuerySavingsPlansDiscountResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QuerySavingsPlansDiscount indicates an expected call of QuerySavingsPlansDiscount.
+func (mr *MockBssopenapiClientMockRecorder) QuerySavingsPlansDiscount(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuerySavingsPlansDiscount", reflect.TypeOf((*MockBssopenapiClient)(nil).QuerySavingsPlansDiscount), arg0)
+}
+
+// QuerySavingsPlansDiscountWithCallback mocks base method.
+func (m *MockBssopenapiClient) QuerySavingsPlansDiscountWithCallback(arg0 *bssopenapi.QuerySavingsPlansDiscountRequest, arg1 func(*bssopenapi.QuerySavingsPlansDiscountResponse, error)) <-chan int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QuerySavingsPlansDiscountWithCallback", arg0, arg1)
+	ret0, _ := ret[0].(<-chan int)
+	return ret0
+}
+
+// QuerySavingsPlansDiscountWithCallback indicates an expected call of QuerySavingsPlansDiscountWithCallback.
+func (mr *MockBssopenapiClientMockRecorder) QuerySavingsPlansDiscountWithCallback(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuerySavingsPlansDiscountWithCallback", reflect.TypeOf((*MockBssopenapiClient)(nil).QuerySavingsPlansDiscountWithCallback), arg0, arg1)
+}
+
+// QuerySavingsPlansDiscountWithChan mocks base method.
+func (m *MockBssopenapiClient) QuerySavingsPlansDiscountWithChan(arg0 *bssopenapi.QuerySavingsPlansDiscountRequest) (<-chan *bssopenapi.QuerySavingsPlansDiscountResponse, <-chan error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QuerySavingsPlansDiscountWithChan", arg0)
+	ret0, _ := ret[0].(<-chan *bssopenapi.QuerySavingsPlansDiscountResponse)
+	ret1, _ := ret[1].(<-chan error)
+	return ret0, ret1
+}
+
+// QuerySavingsPlansDiscountWithChan indicates an expected call of QuerySavingsPlansDiscountWithChan.
+func (mr *MockBssopenapiClientMockRecorder) QuerySavingsPlansDiscountWithChan(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuerySavingsPlansDiscountWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).QuerySavingsPlansDiscountWithChan), arg0)
+}
+
 // QuerySavingsPlansInstance mocks base method.
 func (m *MockBssopenapiClient) QuerySavingsPlansInstance(arg0 *bssopenapi.QuerySavingsPlansInstanceRequest) (*bssopenapi.QuerySavingsPlansInstanceResponse, error) {
 	m.ctrl.T.Helper()
@@ -2435,48 +2699,48 @@ func (mr *MockBssopenapiClientMockRecorder) QuerySettleBillWithChan(arg0 interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuerySettleBillWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).QuerySettleBillWithChan), arg0)
 }
 
-// QuerySettlementBill mocks base method.
-func (m *MockBssopenapiClient) QuerySettlementBill(arg0 *bssopenapi.QuerySettlementBillRequest) (*bssopenapi.QuerySettlementBillResponse, error) {
+// QuerySkuPriceList mocks base method.
+func (m *MockBssopenapiClient) QuerySkuPriceList(arg0 *bssopenapi.QuerySkuPriceListRequest) (*bssopenapi.QuerySkuPriceListResponse, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QuerySettlementBill", arg0)
-	ret0, _ := ret[0].(*bssopenapi.QuerySettlementBillResponse)
+	ret := m.ctrl.Call(m, "QuerySkuPriceList", arg0)
+	ret0, _ := ret[0].(*bssopenapi.QuerySkuPriceListResponse)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// QuerySettlementBill indicates an expected call of QuerySettlementBill.
-func (mr *MockBssopenapiClientMockRecorder) QuerySettlementBill(arg0 interface{}) *gomock.Call {
+// QuerySkuPriceList indicates an expected call of QuerySkuPriceList.
+func (mr *MockBssopenapiClientMockRecorder) QuerySkuPriceList(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuerySettlementBill", reflect.TypeOf((*MockBssopenapiClient)(nil).QuerySettlementBill), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuerySkuPriceList", reflect.TypeOf((*MockBssopenapiClient)(nil).QuerySkuPriceList), arg0)
 }
 
-// QuerySettlementBillWithCallback mocks base method.
-func (m *MockBssopenapiClient) QuerySettlementBillWithCallback(arg0 *bssopenapi.QuerySettlementBillRequest, arg1 func(*bssopenapi.QuerySettlementBillResponse, error)) <-chan int {
+// QuerySkuPriceListWithCallback mocks base method.
+func (m *MockBssopenapiClient) QuerySkuPriceListWithCallback(arg0 *bssopenapi.QuerySkuPriceListRequest, arg1 func(*bssopenapi.QuerySkuPriceListResponse, error)) <-chan int {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QuerySettlementBillWithCallback", arg0, arg1)
+	ret := m.ctrl.Call(m, "QuerySkuPriceListWithCallback", arg0, arg1)
 	ret0, _ := ret[0].(<-chan int)
 	return ret0
 }
 
-// QuerySettlementBillWithCallback indicates an expected call of QuerySettlementBillWithCallback.
-func (mr *MockBssopenapiClientMockRecorder) QuerySettlementBillWithCallback(arg0, arg1 interface{}) *gomock.Call {
+// QuerySkuPriceListWithCallback indicates an expected call of QuerySkuPriceListWithCallback.
+func (mr *MockBssopenapiClientMockRecorder) QuerySkuPriceListWithCallback(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuerySettlementBillWithCallback", reflect.TypeOf((*MockBssopenapiClient)(nil).QuerySettlementBillWithCallback), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuerySkuPriceListWithCallback", reflect.TypeOf((*MockBssopenapiClient)(nil).QuerySkuPriceListWithCallback), arg0, arg1)
 }
 
-// QuerySettlementBillWithChan mocks base method.
-func (m *MockBssopenapiClient) QuerySettlementBillWithChan(arg0 *bssopenapi.QuerySettlementBillRequest) (<-chan *bssopenapi.QuerySettlementBillResponse, <-chan error) {
+// QuerySkuPriceListWithChan mocks base method.
+func (m *MockBssopenapiClient) QuerySkuPriceListWithChan(arg0 *bssopenapi.QuerySkuPriceListRequest) (<-chan *bssopenapi.QuerySkuPriceListResponse, <-chan error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QuerySettlementBillWithChan", arg0)
-	ret0, _ := ret[0].(<-chan *bssopenapi.QuerySettlementBillResponse)
+	ret := m.ctrl.Call(m, "QuerySkuPriceListWithChan", arg0)
+	ret0, _ := ret[0].(<-chan *bssopenapi.QuerySkuPriceListResponse)
 	ret1, _ := ret[1].(<-chan error)
 	return ret0, ret1
 }
 
-// QuerySettlementBillWithChan indicates an expected call of QuerySettlementBillWithChan.
-func (mr *MockBssopenapiClientMockRecorder) QuerySettlementBillWithChan(arg0 interface{}) *gomock.Call {
+// QuerySkuPriceListWithChan indicates an expected call of QuerySkuPriceListWithChan.
+func (mr *MockBssopenapiClientMockRecorder) QuerySkuPriceListWithChan(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuerySettlementBillWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).QuerySettlementBillWithChan), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QuerySkuPriceListWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).QuerySkuPriceListWithChan), arg0)
 }
 
 // QuerySplitItemBill mocks base method.
