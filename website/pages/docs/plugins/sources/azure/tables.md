@@ -32,7 +32,6 @@
 - [azure_azurearcdata_postgres_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_azurearcdata_postgres_instances.md)
 - [azure_azurearcdata_sql_managed_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_azurearcdata_sql_managed_instances.md)
 - [azure_azurearcdata_sql_server_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_azurearcdata_sql_server_instances.md)
-- [azure_azuredata_sql_server_registrations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_azuredata_sql_server_registrations.md)
 - [azure_batch_account](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_batch_account.md)
 - [azure_billing_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_billing_accounts.md)
 - [azure_billing_enrollment_accounts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/azure/docs/tables/azure_billing_enrollment_accounts.md)
