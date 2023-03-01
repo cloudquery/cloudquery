@@ -17,7 +17,7 @@ require (
 	cloud.google.com/go/certificatemanager v1.4.0
 	cloud.google.com/go/compute v1.15.1
 	cloud.google.com/go/container v1.8.0
-	cloud.google.com/go/containeranalysis v0.6.0
+	cloud.google.com/go/containeranalysis v0.110.0
 	cloud.google.com/go/deploy v1.5.0
 	cloud.google.com/go/domains v0.7.0
 	cloud.google.com/go/errorreporting v0.3.0
