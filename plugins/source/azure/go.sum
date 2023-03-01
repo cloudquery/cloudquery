@@ -67,8 +67,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice v
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice v1.0.0/go.mod h1:bd9ftM3u9ucnHJjF9h785gW6qhwALfem3Iw7qFIJjbU=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn v1.0.0 h1:mZYozuxvzO83ZtKST8TYGqvj++a3ehiworh8zuxfxOo=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn v1.0.0/go.mod h1:9HKN4ZiYtjIYAEsr76ecdVsMO7DdUzOGo6tgu3Olf5w=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices v1.2.0 h1:FszWbnkWCl8qO4FU7io9DPTNNGix5kyc5EKqJmPy71k=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices v1.2.0/go.mod h1:VKkzyWyKOxfIuDfw2hy56cdp8eRAXt/h9xqo5eCr1yE=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices v1.3.0 h1:naqc/zqINYFw31zzRyfkiszQTHba+sxL7IdiOyPXOMM=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices v1.3.0/go.mod h1:qZulPr4qZ3ziyOFATgpFJR5TtoObDSaS4RzVRu/YuXU=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v3 v3.0.1 h1:H3g2mkmu105ON0c/Gqx3Bm+bzoIijLom8LmV9Gjn7X0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4 v4.1.0 h1:Vjq3Uy3JAU1DTxbA+uX6BegIhgO2pyFltbfbmDa9KdI=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4 v4.1.0/go.mod h1:Q3u+T/qw3Kb1Wf3DFKiFwEZlyaAyPb4yBgWm9wq7yh8=
