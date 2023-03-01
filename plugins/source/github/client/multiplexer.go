@@ -16,7 +16,11 @@ func OrgMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 func OrgRepositoryMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	var l = make([]schema.ClientMeta, 0)
 	client := meta.(*Client)
-	for o := range client.orgRepositories {
+	for o, repos := range client.orgRepositories {
+		for _, repo := range repos {
+			l = append(l, client.WithOrg(o).WithRepository(repo))
+		}
+	}
 		for i := range client.orgRepositories[o] {
 			l = append(l, client.WithOrg(o).WithRepository(client.orgRepositories[o][i]))
 		}
