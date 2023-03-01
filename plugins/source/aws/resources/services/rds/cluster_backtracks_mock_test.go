@@ -10,15 +10,14 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildRdsClusterBacktracks(t *testing.T, mockRds *mocks.MockRdsClient) error {
+func buildRdsClusterBacktracks(t *testing.T, mockRds *mocks.MockRdsClient) {
 	var d types.DBClusterBacktrack
 	err := faker.FakeObject(&d)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	mockRds.EXPECT().DescribeDBClusterBacktracks(gomock.Any(), gomock.Any(), gomock.Any()).Return(&rds.DescribeDBClusterBacktracksOutput{
+	mockRds.EXPECT().DescribeDBClusterBacktracks(gomock.Any(), gomock.Any(), gomock.Any()).Return(rds.DescribeDBClusterBacktracksOutput{
 		DBClusterBacktracks: []types.DBClusterBacktrack{d},
 	}, nil)
-	return nil
 }
