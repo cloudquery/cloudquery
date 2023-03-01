@@ -137,8 +137,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybri
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal v1.1.1 h1:BZOe7ExNYNGmapT91ZUrxtMYsqVljMxTHEnwjOdG7pk=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault v1.0.0 h1:Jc2KcpCDMu7wJfkrzn7fs/53QMDXH78GuqnH4HOd7zs=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault v1.0.0/go.mod h1:PFVgFsclKzPqYRT/BiwpfUN22cab0C7FlgXR3iWpwMo=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto v1.1.0 h1:0wECNgkDj/xFPXXOM9umr6+PJ9jzHCIIsIagkcueaFg=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto v1.1.0/go.mod h1:2+xLw3wnpvSce83gQnAu42MVl3/tiSGcWtEuWe1nhbo=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto v1.2.0 h1:d7d/WqRmoMZt7mqtgIHEnfPzHqrHR+DE1sWxOhB6jWI=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto v1.2.0/go.mod h1:6Co612NmvS5ZMrrmLA5gs98/5P84ZsAijD2f6Z6Iymk=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic v1.0.0 h1:zpvUxUvAyKXn3vhE9+huD0FEq1VIE6C5SuCKDQPaCcg=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic v1.0.0/go.mod h1:wKxEe9OvQk7W+/ZxqjitjvCo33uzbJ99zz3Azzytmu0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance v1.0.0 h1:dlpFQVi25aChz4Da4z/xqDZW1XaIrr2WdOLQCHKopg0=
