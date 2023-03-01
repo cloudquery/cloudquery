@@ -200,6 +200,7 @@ var GcpServices = map[string]bool{
 	"poly.googleapis.com":                             true,
 	"privateca.googleapis.com":                        true,
 	"prod_tt_sasportal.googleapis.com":                true,
+	"publicca.googleapis.com":                         true,
 	"pubsub.googleapis.com":                           true,
 	"pubsublite.googleapis.com":                       true,
 	"readerrevenuesubscriptionlinking.googleapis.com": true,
