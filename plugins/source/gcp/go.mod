@@ -10,7 +10,7 @@ require (
 	cloud.google.com/go/artifactregistry v1.9.0
 	cloud.google.com/go/baremetalsolution v0.4.0
 	cloud.google.com/go/batch v0.4.0
-	cloud.google.com/go/beyondcorp v0.3.1
+	cloud.google.com/go/beyondcorp v0.110.0
 	cloud.google.com/go/bigtable v1.18.1
 	cloud.google.com/go/billing v1.7.0
 	cloud.google.com/go/binaryauthorization v1.4.0
