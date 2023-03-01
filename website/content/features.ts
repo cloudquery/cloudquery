@@ -5,7 +5,10 @@ import {
   BoltIcon,
   CodeBracketIcon,
   ChartBarIcon,
+  LockClosedIcon,
+  ChartBarSquareIcon,
   KeyIcon,
+  Square3Stack3DIcon,
 } from "@heroicons/react/24/outline";
 
 export type Feature = {
@@ -34,6 +37,24 @@ const FEATURES: Features = [
     name: "Deploy anywhere",
     description: `CloudQuery plugins are single-binary executables and can be deployed and run anywhere.`,
     Icon: ChartBarIcon,
+    page: "all",
+  },
+  {
+    name: "Cloud Security Posture Management",
+    description: `Use as an open source CSPM solution to monitor and enforce security policies across your cloud infrastructure for AWS, GCP, Azure and many more.`,
+    Icon: LockClosedIcon,
+    page: "all",
+  },
+  {
+    name: "Cloud Asset Inventory",
+    description: `First-class support for major cloud infrastructure providers such as AWS, GCP and Azure allow you to collect and unify configuration data.`,
+    Icon: ChartBarSquareIcon,
+    page: "all",
+  },
+  {
+    name: "Own Your Infrastructure",
+    description: `Build robust ELT pipelines to collect and transform data from your cloud infrastructure into your data warehouse or data lake, all on your own infrastructure.`,
+    Icon: Square3Stack3DIcon,
     page: "all",
   },
   {
