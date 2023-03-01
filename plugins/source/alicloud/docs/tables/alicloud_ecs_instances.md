@@ -30,6 +30,7 @@ The composite primary key for this table is (**account_id**, **region_id**, **in
 |machine_id|String|
 |private_pool_options_id|String|
 |cluster_id|String|
+|socket_id|String|
 |instance_name|String|
 |private_pool_options_match_criteria|String|
 |deployment_set_group_no|Int|

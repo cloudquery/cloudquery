@@ -3598,6 +3598,50 @@ func (mr *MockEcsClientMockRecorder) DescribeRenewalPriceWithChan(arg0 interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeRenewalPriceWithChan", reflect.TypeOf((*MockEcsClient)(nil).DescribeRenewalPriceWithChan), arg0)
 }
 
+// DescribeReservedInstanceAutoRenewAttribute mocks base method.
+func (m *MockEcsClient) DescribeReservedInstanceAutoRenewAttribute(arg0 *ecs.DescribeReservedInstanceAutoRenewAttributeRequest) (*ecs.DescribeReservedInstanceAutoRenewAttributeResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeReservedInstanceAutoRenewAttribute", arg0)
+	ret0, _ := ret[0].(*ecs.DescribeReservedInstanceAutoRenewAttributeResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeReservedInstanceAutoRenewAttribute indicates an expected call of DescribeReservedInstanceAutoRenewAttribute.
+func (mr *MockEcsClientMockRecorder) DescribeReservedInstanceAutoRenewAttribute(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeReservedInstanceAutoRenewAttribute", reflect.TypeOf((*MockEcsClient)(nil).DescribeReservedInstanceAutoRenewAttribute), arg0)
+}
+
+// DescribeReservedInstanceAutoRenewAttributeWithCallback mocks base method.
+func (m *MockEcsClient) DescribeReservedInstanceAutoRenewAttributeWithCallback(arg0 *ecs.DescribeReservedInstanceAutoRenewAttributeRequest, arg1 func(*ecs.DescribeReservedInstanceAutoRenewAttributeResponse, error)) <-chan int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeReservedInstanceAutoRenewAttributeWithCallback", arg0, arg1)
+	ret0, _ := ret[0].(<-chan int)
+	return ret0
+}
+
+// DescribeReservedInstanceAutoRenewAttributeWithCallback indicates an expected call of DescribeReservedInstanceAutoRenewAttributeWithCallback.
+func (mr *MockEcsClientMockRecorder) DescribeReservedInstanceAutoRenewAttributeWithCallback(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeReservedInstanceAutoRenewAttributeWithCallback", reflect.TypeOf((*MockEcsClient)(nil).DescribeReservedInstanceAutoRenewAttributeWithCallback), arg0, arg1)
+}
+
+// DescribeReservedInstanceAutoRenewAttributeWithChan mocks base method.
+func (m *MockEcsClient) DescribeReservedInstanceAutoRenewAttributeWithChan(arg0 *ecs.DescribeReservedInstanceAutoRenewAttributeRequest) (<-chan *ecs.DescribeReservedInstanceAutoRenewAttributeResponse, <-chan error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DescribeReservedInstanceAutoRenewAttributeWithChan", arg0)
+	ret0, _ := ret[0].(<-chan *ecs.DescribeReservedInstanceAutoRenewAttributeResponse)
+	ret1, _ := ret[1].(<-chan error)
+	return ret0, ret1
+}
+
+// DescribeReservedInstanceAutoRenewAttributeWithChan indicates an expected call of DescribeReservedInstanceAutoRenewAttributeWithChan.
+func (mr *MockEcsClientMockRecorder) DescribeReservedInstanceAutoRenewAttributeWithChan(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeReservedInstanceAutoRenewAttributeWithChan", reflect.TypeOf((*MockEcsClient)(nil).DescribeReservedInstanceAutoRenewAttributeWithChan), arg0)
+}
+
 // DescribeReservedInstances mocks base method.
 func (m *MockEcsClient) DescribeReservedInstances(arg0 *ecs.DescribeReservedInstancesRequest) (*ecs.DescribeReservedInstancesResponse, error) {
 	m.ctrl.T.Helper()
