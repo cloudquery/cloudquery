@@ -5,7 +5,7 @@ go 1.19
 require (
 	cloud.google.com/go/aiplatform v1.27.0
 	cloud.google.com/go/apigateway v1.4.0
-	cloud.google.com/go/apikeys v0.2.0
+	cloud.google.com/go/apikeys v0.110.0
 	cloud.google.com/go/appengine v1.5.0
 	cloud.google.com/go/artifactregistry v1.9.0
 	cloud.google.com/go/baremetalsolution v0.4.0
