@@ -37,14 +37,14 @@ jobs:
           echo "$missing_tables" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
       - name: Find Comment
-        uses: peter-evans/find-comment@85a676a52594b4481e0532825a2d8906ef96dac2
+        uses: peter-evans/find-comment@034abe94d3191f9c89d870519735beae326f2bdb
         id: find-comment
         with:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
           body-includes: '### This PR has missing tables'
       - name: Create or update comment
-        uses: peter-evans/create-or-update-comment@e0e8aa00752bbac08c4393c1f7834e6ee753c159
+        uses: peter-evans/create-or-update-comment@c5a7a9808bb4d6de79278436482399ce9a4de9d5
         if: steps.missing-tables.outputs.result != ''
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}

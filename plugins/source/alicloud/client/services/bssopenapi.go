@@ -7,12 +7,27 @@ import (
 
 //go:generate mockgen -package=mocks -destination=../mocks/bssopenapi.go -source=bssopenapi.go BssopenapiClient
 type BssopenapiClient interface {
+	DescribeCostBudgetsSummary(*bssopenapi.DescribeCostBudgetsSummaryRequest) (*bssopenapi.DescribeCostBudgetsSummaryResponse, error)
+	DescribeCostBudgetsSummaryWithCallback(*bssopenapi.DescribeCostBudgetsSummaryRequest, func(*bssopenapi.DescribeCostBudgetsSummaryResponse, error)) <-chan int
+	DescribeCostBudgetsSummaryWithChan(*bssopenapi.DescribeCostBudgetsSummaryRequest) (<-chan *bssopenapi.DescribeCostBudgetsSummaryResponse, <-chan error)
+	DescribeInstanceAmortizedCostByAmortizationPeriod(*bssopenapi.DescribeInstanceAmortizedCostByAmortizationPeriodRequest) (*bssopenapi.DescribeInstanceAmortizedCostByAmortizationPeriodResponse, error)
+	DescribeInstanceAmortizedCostByAmortizationPeriodWithCallback(*bssopenapi.DescribeInstanceAmortizedCostByAmortizationPeriodRequest, func(*bssopenapi.DescribeInstanceAmortizedCostByAmortizationPeriodResponse, error)) <-chan int
+	DescribeInstanceAmortizedCostByAmortizationPeriodWithChan(*bssopenapi.DescribeInstanceAmortizedCostByAmortizationPeriodRequest) (<-chan *bssopenapi.DescribeInstanceAmortizedCostByAmortizationPeriodResponse, <-chan error)
+	DescribeInstanceAmortizedCostByConsumePeriod(*bssopenapi.DescribeInstanceAmortizedCostByConsumePeriodRequest) (*bssopenapi.DescribeInstanceAmortizedCostByConsumePeriodResponse, error)
+	DescribeInstanceAmortizedCostByConsumePeriodWithCallback(*bssopenapi.DescribeInstanceAmortizedCostByConsumePeriodRequest, func(*bssopenapi.DescribeInstanceAmortizedCostByConsumePeriodResponse, error)) <-chan int
+	DescribeInstanceAmortizedCostByConsumePeriodWithChan(*bssopenapi.DescribeInstanceAmortizedCostByConsumePeriodRequest) (<-chan *bssopenapi.DescribeInstanceAmortizedCostByConsumePeriodResponse, <-chan error)
 	DescribeInstanceBill(*bssopenapi.DescribeInstanceBillRequest) (*bssopenapi.DescribeInstanceBillResponse, error)
 	DescribeInstanceBillWithCallback(*bssopenapi.DescribeInstanceBillRequest, func(*bssopenapi.DescribeInstanceBillResponse, error)) <-chan int
 	DescribeInstanceBillWithChan(*bssopenapi.DescribeInstanceBillRequest) (<-chan *bssopenapi.DescribeInstanceBillResponse, <-chan error)
 	DescribePricingModule(*bssopenapi.DescribePricingModuleRequest) (*bssopenapi.DescribePricingModuleResponse, error)
 	DescribePricingModuleWithCallback(*bssopenapi.DescribePricingModuleRequest, func(*bssopenapi.DescribePricingModuleResponse, error)) <-chan int
 	DescribePricingModuleWithChan(*bssopenapi.DescribePricingModuleRequest) (<-chan *bssopenapi.DescribePricingModuleResponse, <-chan error)
+	DescribeProductAmortizedCostByAmortizationPeriod(*bssopenapi.DescribeProductAmortizedCostByAmortizationPeriodRequest) (*bssopenapi.DescribeProductAmortizedCostByAmortizationPeriodResponse, error)
+	DescribeProductAmortizedCostByAmortizationPeriodWithCallback(*bssopenapi.DescribeProductAmortizedCostByAmortizationPeriodRequest, func(*bssopenapi.DescribeProductAmortizedCostByAmortizationPeriodResponse, error)) <-chan int
+	DescribeProductAmortizedCostByAmortizationPeriodWithChan(*bssopenapi.DescribeProductAmortizedCostByAmortizationPeriodRequest) (<-chan *bssopenapi.DescribeProductAmortizedCostByAmortizationPeriodResponse, <-chan error)
+	DescribeProductAmortizedCostByConsumePeriod(*bssopenapi.DescribeProductAmortizedCostByConsumePeriodRequest) (*bssopenapi.DescribeProductAmortizedCostByConsumePeriodResponse, error)
+	DescribeProductAmortizedCostByConsumePeriodWithCallback(*bssopenapi.DescribeProductAmortizedCostByConsumePeriodRequest, func(*bssopenapi.DescribeProductAmortizedCostByConsumePeriodResponse, error)) <-chan int
+	DescribeProductAmortizedCostByConsumePeriodWithChan(*bssopenapi.DescribeProductAmortizedCostByConsumePeriodRequest) (<-chan *bssopenapi.DescribeProductAmortizedCostByConsumePeriodResponse, <-chan error)
 	DescribeResourceCoverageDetail(*bssopenapi.DescribeResourceCoverageDetailRequest) (*bssopenapi.DescribeResourceCoverageDetailResponse, error)
 	DescribeResourceCoverageDetailWithCallback(*bssopenapi.DescribeResourceCoverageDetailRequest, func(*bssopenapi.DescribeResourceCoverageDetailResponse, error)) <-chan int
 	DescribeResourceCoverageDetailWithChan(*bssopenapi.DescribeResourceCoverageDetailRequest) (<-chan *bssopenapi.DescribeResourceCoverageDetailResponse, <-chan error)
@@ -99,6 +114,9 @@ type BssopenapiClient interface {
 	QueryCashCoupons(*bssopenapi.QueryCashCouponsRequest) (*bssopenapi.QueryCashCouponsResponse, error)
 	QueryCashCouponsWithCallback(*bssopenapi.QueryCashCouponsRequest, func(*bssopenapi.QueryCashCouponsResponse, error)) <-chan int
 	QueryCashCouponsWithChan(*bssopenapi.QueryCashCouponsRequest) (<-chan *bssopenapi.QueryCashCouponsResponse, <-chan error)
+	QueryCommodityList(*bssopenapi.QueryCommodityListRequest) (*bssopenapi.QueryCommodityListResponse, error)
+	QueryCommodityListWithCallback(*bssopenapi.QueryCommodityListRequest, func(*bssopenapi.QueryCommodityListResponse, error)) <-chan int
+	QueryCommodityListWithChan(*bssopenapi.QueryCommodityListRequest) (<-chan *bssopenapi.QueryCommodityListResponse, <-chan error)
 	QueryCostUnit(*bssopenapi.QueryCostUnitRequest) (*bssopenapi.QueryCostUnitResponse, error)
 	QueryCostUnitResource(*bssopenapi.QueryCostUnitResourceRequest) (*bssopenapi.QueryCostUnitResourceResponse, error)
 	QueryCostUnitResourceWithCallback(*bssopenapi.QueryCostUnitResourceRequest, func(*bssopenapi.QueryCostUnitResourceResponse, error)) <-chan int
@@ -129,12 +147,6 @@ type BssopenapiClient interface {
 	QueryInvoicingCustomerList(*bssopenapi.QueryInvoicingCustomerListRequest) (*bssopenapi.QueryInvoicingCustomerListResponse, error)
 	QueryInvoicingCustomerListWithCallback(*bssopenapi.QueryInvoicingCustomerListRequest, func(*bssopenapi.QueryInvoicingCustomerListResponse, error)) <-chan int
 	QueryInvoicingCustomerListWithChan(*bssopenapi.QueryInvoicingCustomerListRequest) (<-chan *bssopenapi.QueryInvoicingCustomerListResponse, <-chan error)
-	QueryMonthlyBill(*bssopenapi.QueryMonthlyBillRequest) (*bssopenapi.QueryMonthlyBillResponse, error)
-	QueryMonthlyBillWithCallback(*bssopenapi.QueryMonthlyBillRequest, func(*bssopenapi.QueryMonthlyBillResponse, error)) <-chan int
-	QueryMonthlyBillWithChan(*bssopenapi.QueryMonthlyBillRequest) (<-chan *bssopenapi.QueryMonthlyBillResponse, <-chan error)
-	QueryMonthlyInstanceConsumption(*bssopenapi.QueryMonthlyInstanceConsumptionRequest) (*bssopenapi.QueryMonthlyInstanceConsumptionResponse, error)
-	QueryMonthlyInstanceConsumptionWithCallback(*bssopenapi.QueryMonthlyInstanceConsumptionRequest, func(*bssopenapi.QueryMonthlyInstanceConsumptionResponse, error)) <-chan int
-	QueryMonthlyInstanceConsumptionWithChan(*bssopenapi.QueryMonthlyInstanceConsumptionRequest) (<-chan *bssopenapi.QueryMonthlyInstanceConsumptionResponse, <-chan error)
 	QueryOrders(*bssopenapi.QueryOrdersRequest) (*bssopenapi.QueryOrdersResponse, error)
 	QueryOrdersWithCallback(*bssopenapi.QueryOrdersRequest, func(*bssopenapi.QueryOrdersResponse, error)) <-chan int
 	QueryOrdersWithChan(*bssopenapi.QueryOrdersRequest) (<-chan *bssopenapi.QueryOrdersResponse, <-chan error)
@@ -144,6 +156,9 @@ type BssopenapiClient interface {
 	QueryPrepaidCards(*bssopenapi.QueryPrepaidCardsRequest) (*bssopenapi.QueryPrepaidCardsResponse, error)
 	QueryPrepaidCardsWithCallback(*bssopenapi.QueryPrepaidCardsRequest, func(*bssopenapi.QueryPrepaidCardsResponse, error)) <-chan int
 	QueryPrepaidCardsWithChan(*bssopenapi.QueryPrepaidCardsRequest) (<-chan *bssopenapi.QueryPrepaidCardsResponse, <-chan error)
+	QueryPriceEntityList(*bssopenapi.QueryPriceEntityListRequest) (*bssopenapi.QueryPriceEntityListResponse, error)
+	QueryPriceEntityListWithCallback(*bssopenapi.QueryPriceEntityListRequest, func(*bssopenapi.QueryPriceEntityListResponse, error)) <-chan int
+	QueryPriceEntityListWithChan(*bssopenapi.QueryPriceEntityListRequest) (<-chan *bssopenapi.QueryPriceEntityListResponse, <-chan error)
 	QueryProductList(*bssopenapi.QueryProductListRequest) (*bssopenapi.QueryProductListResponse, error)
 	QueryProductListWithCallback(*bssopenapi.QueryProductListRequest, func(*bssopenapi.QueryProductListResponse, error)) <-chan int
 	QueryProductListWithChan(*bssopenapi.QueryProductListRequest) (<-chan *bssopenapi.QueryProductListResponse, <-chan error)
@@ -165,15 +180,18 @@ type BssopenapiClient interface {
 	QuerySavingsPlansDeductLog(*bssopenapi.QuerySavingsPlansDeductLogRequest) (*bssopenapi.QuerySavingsPlansDeductLogResponse, error)
 	QuerySavingsPlansDeductLogWithCallback(*bssopenapi.QuerySavingsPlansDeductLogRequest, func(*bssopenapi.QuerySavingsPlansDeductLogResponse, error)) <-chan int
 	QuerySavingsPlansDeductLogWithChan(*bssopenapi.QuerySavingsPlansDeductLogRequest) (<-chan *bssopenapi.QuerySavingsPlansDeductLogResponse, <-chan error)
+	QuerySavingsPlansDiscount(*bssopenapi.QuerySavingsPlansDiscountRequest) (*bssopenapi.QuerySavingsPlansDiscountResponse, error)
+	QuerySavingsPlansDiscountWithCallback(*bssopenapi.QuerySavingsPlansDiscountRequest, func(*bssopenapi.QuerySavingsPlansDiscountResponse, error)) <-chan int
+	QuerySavingsPlansDiscountWithChan(*bssopenapi.QuerySavingsPlansDiscountRequest) (<-chan *bssopenapi.QuerySavingsPlansDiscountResponse, <-chan error)
 	QuerySavingsPlansInstance(*bssopenapi.QuerySavingsPlansInstanceRequest) (*bssopenapi.QuerySavingsPlansInstanceResponse, error)
 	QuerySavingsPlansInstanceWithCallback(*bssopenapi.QuerySavingsPlansInstanceRequest, func(*bssopenapi.QuerySavingsPlansInstanceResponse, error)) <-chan int
 	QuerySavingsPlansInstanceWithChan(*bssopenapi.QuerySavingsPlansInstanceRequest) (<-chan *bssopenapi.QuerySavingsPlansInstanceResponse, <-chan error)
 	QuerySettleBill(*bssopenapi.QuerySettleBillRequest) (*bssopenapi.QuerySettleBillResponse, error)
 	QuerySettleBillWithCallback(*bssopenapi.QuerySettleBillRequest, func(*bssopenapi.QuerySettleBillResponse, error)) <-chan int
 	QuerySettleBillWithChan(*bssopenapi.QuerySettleBillRequest) (<-chan *bssopenapi.QuerySettleBillResponse, <-chan error)
-	QuerySettlementBill(*bssopenapi.QuerySettlementBillRequest) (*bssopenapi.QuerySettlementBillResponse, error)
-	QuerySettlementBillWithCallback(*bssopenapi.QuerySettlementBillRequest, func(*bssopenapi.QuerySettlementBillResponse, error)) <-chan int
-	QuerySettlementBillWithChan(*bssopenapi.QuerySettlementBillRequest) (<-chan *bssopenapi.QuerySettlementBillResponse, <-chan error)
+	QuerySkuPriceList(*bssopenapi.QuerySkuPriceListRequest) (*bssopenapi.QuerySkuPriceListResponse, error)
+	QuerySkuPriceListWithCallback(*bssopenapi.QuerySkuPriceListRequest, func(*bssopenapi.QuerySkuPriceListResponse, error)) <-chan int
+	QuerySkuPriceListWithChan(*bssopenapi.QuerySkuPriceListRequest) (<-chan *bssopenapi.QuerySkuPriceListResponse, <-chan error)
 	QuerySplitItemBill(*bssopenapi.QuerySplitItemBillRequest) (*bssopenapi.QuerySplitItemBillResponse, error)
 	QuerySplitItemBillWithCallback(*bssopenapi.QuerySplitItemBillRequest, func(*bssopenapi.QuerySplitItemBillResponse, error)) <-chan int
 	QuerySplitItemBillWithChan(*bssopenapi.QuerySplitItemBillRequest) (<-chan *bssopenapi.QuerySplitItemBillResponse, <-chan error)
