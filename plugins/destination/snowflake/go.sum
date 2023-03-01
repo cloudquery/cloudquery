@@ -289,8 +289,8 @@ github.com/ruudk/golang-pdf417 v0.0.0-20181029194003-1af4ab5afa58/go.mod h1:6lfF
 github.com/schollz/progressbar/v3 v3.13.0 h1:9TeeWRcjW2qd05I8Kf9knPkW4vLM/hYoa6z9ABvxje8=
 github.com/sirupsen/logrus v1.9.0 h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0=
 github.com/sirupsen/logrus v1.9.0/go.mod h1:naHLuLoDiP4jHNo9R0sCBMtWGeIprob74mVsIT4qYEQ=
-github.com/snowflakedb/gosnowflake v1.6.17 h1:npFUsPPUoHX1JERa1zQmHFzlt7D2JEieEhshOl2R0F0=
-github.com/snowflakedb/gosnowflake v1.6.17/go.mod h1:BhNDWNSUY+t4T8GBuOg3ckWC4v5hhGlLovqGcF8Rkac=
+github.com/snowflakedb/gosnowflake v1.6.18 h1:mm4KYvp3LWGHIuACwX/tHv9qDs2NdLDXuK0Rep+vfJc=
+github.com/snowflakedb/gosnowflake v1.6.18/go.mod h1:BhNDWNSUY+t4T8GBuOg3ckWC4v5hhGlLovqGcF8Rkac=
 github.com/spf13/cast v1.5.0 h1:rj3WzYc11XZaIZMPKmwP96zkFEnnAmV8s6XbB2aY32w=
 github.com/spf13/cast v1.5.0/go.mod h1:SpXXQ5YoyJw6s3/6cMTQuxvgRl3PCJiyaX9p6b155UU=
 github.com/spf13/cobra v1.6.1 h1:o94oiPyS4KD1mPy2fmcYYHHfCxLqYjJOhGsCHFZtEzA=
