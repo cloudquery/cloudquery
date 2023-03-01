@@ -19,7 +19,7 @@ require (
 	cloud.google.com/go/container v1.8.0
 	cloud.google.com/go/containeranalysis v0.6.0
 	cloud.google.com/go/deploy v1.5.0
-	cloud.google.com/go/domains v0.7.0
+	cloud.google.com/go/domains v0.110.0
 	cloud.google.com/go/errorreporting v0.3.0
 	cloud.google.com/go/functions v1.9.0
 	cloud.google.com/go/iam v0.9.0
