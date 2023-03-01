@@ -1,5 +1,5 @@
 To configure CloudQuery to extract from GitHub, create a `.yml` file in your CloudQuery configuration directory.
-The following configuration will extract information from the `cloudquery` organization, and connect it to a `DESTINATION_NAME` destination plugin
+The following configuration will extract information from the `cloudquery/cloudquery` repository:
 
 ```yaml copy
 kind: source
@@ -11,9 +11,18 @@ spec:
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   spec:
-    access_token: <YOUR_ACCESS_TOKEN_HERE> # Required. Personal Access Token
-    orgs: ["cloudquery"] # Required. List of organizations to extract from
+    access_token: <YOUR_ACCESS_TOKEN_HERE> # Personal Access Token, required if not using App Authentication.
+    ## App Authentication (one per org):
+    # app_auth:
+    # - org: cloudquery
+    #   private_key_path: <PATH_TO_PRIVATE_KEY> # Path to private key file
+    #   app_id: <YOUR_APP_ID> # App ID, required for App Authentication.
+    #   installation_id: <ORG_INSTALLATION_ID> # Installation ID for this org
+    orgs: [] # Optional. List of organizations to extract from
+    repos: ["cloudquery/cloudquery"] # Optional. List of repositories to extract from
 ```
+
+You must specify either `orgs` or `repos` in the configuration. If a repository is specified in both `orgs` and `repos`, it will be extracted only once, and other repositories from that organization will be ignored.
 
 It is recommended that you use environment variable expansion for the access token in production. For example, if the access token is stored in an environment variable called `GITHUB_ACCESS_TOKEN`:
 

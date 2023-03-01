@@ -35,10 +35,15 @@ func GithubMockTestHelper(t *testing.T, table *schema.Table, builder func(*testi
 	cs.TemplateRepository = &github.Repository{ID: &someId}
 	cs.Source = &github.Repository{ID: &someId}
 
+	b := builder(t, ctrl)
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		return &Client{
-			logger:          l,
-			Github:          builder(t, ctrl),
+			logger: l,
+			Github: b,
+			orgServices: map[string]GithubServices{
+				"":        b,
+				"testorg": b,
+			},
 			orgs:            []string{"testorg"},
 			orgRepositories: map[string][]*github.Repository{"testorg": {&cs}},
 		}, nil
