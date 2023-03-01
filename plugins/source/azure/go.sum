@@ -67,8 +67,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice v
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice v1.0.0/go.mod h1:bd9ftM3u9ucnHJjF9h785gW6qhwALfem3Iw7qFIJjbU=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn v1.0.0 h1:mZYozuxvzO83ZtKST8TYGqvj++a3ehiworh8zuxfxOo=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn v1.0.0/go.mod h1:9HKN4ZiYtjIYAEsr76ecdVsMO7DdUzOGo6tgu3Olf5w=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices v1.2.0 h1:FszWbnkWCl8qO4FU7io9DPTNNGix5kyc5EKqJmPy71k=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices v1.2.0/go.mod h1:VKkzyWyKOxfIuDfw2hy56cdp8eRAXt/h9xqo5eCr1yE=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices v1.3.0 h1:naqc/zqINYFw31zzRyfkiszQTHba+sxL7IdiOyPXOMM=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices v1.3.0/go.mod h1:qZulPr4qZ3ziyOFATgpFJR5TtoObDSaS4RzVRu/YuXU=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v3 v3.0.1 h1:H3g2mkmu105ON0c/Gqx3Bm+bzoIijLom8LmV9Gjn7X0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4 v4.1.0 h1:Vjq3Uy3JAU1DTxbA+uX6BegIhgO2pyFltbfbmDa9KdI=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4 v4.1.0/go.mod h1:Q3u+T/qw3Kb1Wf3DFKiFwEZlyaAyPb4yBgWm9wq7yh8=
@@ -82,8 +82,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armconta
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry v0.6.0/go.mod h1:0FPu3oDRGPvuX1H8TtHJ5XGA0KrXLunomcixR+PQGGA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v2 v2.3.0 h1:CnbZujgaLD2TDpp3mm1/naVAvPjvg5nnaG3YyxwsJdM=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v2 v2.3.0/go.mod h1:ne/R0Tm3u/2avpRZFZTS+DldZ3C/5bNN6P4kkl24fRs=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2 v2.1.0 h1:OsCNwwLbOU/1B7i/t57vb8D2x9jQ5I4yvw3EB/67VPY=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2 v2.1.0/go.mod h1:0Ru3yBTzBbuSfQbbQYmF+D3muZzraKOSIkGzvHpOWi8=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2 v2.2.0 h1:P11pQET++mDKmAOKjKk29C8B/9QNwGUHfLA0kv9RnaY=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2 v2.2.0/go.mod h1:TvsKoEkWlHqchKSkObQoFqejz/UWbixrugpYUzPK3g4=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement v1.0.0 h1:8L7OWiGwm6qe2U3zDv3K3WDXwOOgurDu7qw6Mv86Nlw=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement v1.0.0/go.mod h1:A8BFugBY4i+NVB3A87dK5jR0q765uv4KY8fE8o+sCcM=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights v1.0.0 h1:LonxoZFQ3+bmWU6GqIGZ/gP8YEte4lV4ZbqpUqJxlG4=
