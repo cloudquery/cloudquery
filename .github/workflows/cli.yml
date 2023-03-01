@@ -57,7 +57,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         if: matrix.os == 'ubuntu-latest'
         with:
-          version: v1.50.1
+          version: v1.51.2
           working-directory: cli
           skip-pkg-cache: true
           skip-build-cache: true
@@ -89,9 +89,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('cli/go.sum') }}
+          key: ${{ runner.os }}-go-1.20.1-release-cache-${{ hashFiles('cli/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.5-release-cache-cli
+            ${{ runner.os }}-go-1.20.1-release-cache-cli
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
