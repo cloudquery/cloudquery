@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/cloudquery/plugin-sdk v1.40.0
 	github.com/jackc/pgx-zerolog v0.0.0-20230124015146-7c83b3e9b2bd
-	github.com/jackc/pgx/v5 v5.3.0
+	github.com/jackc/pgx/v5 v5.3.1
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2
 )
