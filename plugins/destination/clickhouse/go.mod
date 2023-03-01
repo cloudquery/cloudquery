@@ -8,7 +8,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
 	github.com/stretchr/testify v1.8.1
-	golang.org/x/exp v0.0.0-20230213192124-5e25df0256eb
+	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2
 	golang.org/x/sync v0.1.0
 )
 
