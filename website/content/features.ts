@@ -8,7 +8,7 @@ import {
   LockClosedIcon,
   ChartBarSquareIcon,
   KeyIcon,
-  Square3Stack3DIcon,
+  CurrencyDollarIcon,
 } from "@heroicons/react/24/outline";
 
 export type Feature = {
@@ -54,7 +54,7 @@ const FEATURES: Features = [
   {
     name: "Cloud FinOps",
     description: `Collect and unify billing data from cloud providers to drive financial accountability.`,
-    Icon: Square3Stack3DIcon,
+    Icon: CurrencyDollarIcon,
     page: "home",
   },
   {
