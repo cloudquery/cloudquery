@@ -16,6 +16,7 @@ import (
 
 type Client struct {
 	database string
+	cluster  string
 	conn     clickhouse.Conn
 
 	logger zerolog.Logger
@@ -53,6 +54,7 @@ func New(_ context.Context, logger zerolog.Logger, spec specs.Destination) (dest
 	l := logger.With().
 		Str("module", "dest-clickhouse").
 		Str("database", options.Auth.Database).
+		Str("cluster", pluginSpec.Cluster).
 		Logger()
 	options.Debugf = l.Printf
 
@@ -74,6 +76,7 @@ func New(_ context.Context, logger zerolog.Logger, spec specs.Destination) (dest
 
 	return &Client{
 		database: options.Auth.Database,
+		cluster:  pluginSpec.Cluster,
 		conn:     conn,
 		logger:   l,
 		spec:     spec,

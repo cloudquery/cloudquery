@@ -54,3 +54,10 @@ func normalizeTable(table *schema.Table) *schema.Table {
 
 	return &schema.Table{Name: table.Name, Columns: columns}
 }
+
+func tableNamePart(table, cluster string) string {
+	if len(cluster) > 0 {
+		return sanitizeID(table) + " ON CLUSTER " + sanitizeID(cluster)
+	}
+	return sanitizeID(table)
+}
