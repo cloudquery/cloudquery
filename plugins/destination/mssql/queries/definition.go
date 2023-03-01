@@ -46,29 +46,15 @@ func (d *Definition) Nullable() *Definition {
 	}
 }
 
-func NewDefinition(name, typ string, nullable bool) *Definition {
-	d := &Definition{
-		Name:    strings.ToLower(name),
-		typ:     strings.ToLower(typ),
-		notNull: !nullable,
-	}
-	// add unique for _cq_id
-	d.unique = d.Name == schema.CqIDColumn.Name
-	return d
-}
-
 func GetDefinition(column *schema.Column, pkEnabled bool) *Definition {
 	def := &Definition{
-		Name: column.Name,
-		typ:  SQLType(column.Type),
+		Name:    column.Name,
+		typ:     SQLType(column.Type),
+		notNull: column.CreationOptions.NotNull,
+		unique:  column.CreationOptions.Unique,
 	}
 
-	switch {
-	case column.Name == schema.CqIDColumn.Name:
-		// _cq_id column should always have a "UNIQUE NOT NULL" constraint
-		def.unique = true
-		def.notNull = true
-	case pkEnabled && column.CreationOptions.PrimaryKey:
+	if pkEnabled && column.CreationOptions.PrimaryKey {
 		def.notNull = true
 	}
 

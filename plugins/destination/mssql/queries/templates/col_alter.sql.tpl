@@ -1,1 +1,0 @@
-ALTER TABLE {{.Table}} ALTER COLUMN {{with .Definition}}{{template "col_def.sql.tpl" .}}{{end}};

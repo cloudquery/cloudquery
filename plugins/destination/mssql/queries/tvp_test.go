@@ -69,7 +69,7 @@ func TestTVPAddType(t *testing.T) {
   [_cq_id] uniqueidentifier UNIQUE NOT NULL,
   [_cq_parent_id] uniqueidentifier,
   [_cq_source_name] nvarchar(4000),
-  [_cq_sync_time] datetimeoffset,
+  [_cq_sync_time] datetime2,
   [extra_col_pk1] float NOT NULL,
   [extra_col_pk2] bit NOT NULL,
   [extra_col_not_pk1] bigint,

@@ -8,6 +8,7 @@ import (
 )
 
 type Spec struct {
+	Cluster          string `json:"cluster,omitempty"`
 	ConnectionString string `json:"connection_string,omitempty"`
 	CACert           string `json:"ca_cert,omitempty"`
 }
