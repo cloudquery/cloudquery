@@ -8,7 +8,8 @@ There are two main types of CloudQuery plugins:
 
 See the following links for more information on writing source plugins (we will add more resources here over time):
 
-- [Creating a New Plugin](https://docs.cloudquery.io/docs/developers/creating-new-plugin)
+- [Creating a New Plugin Docs](https://www.cloudquery.io/docs/developers/creating-new-plugin)
+- [Create a Source Plugin Video Tutorial](https://www.youtube.com/watch?v=3Ka_Ob8E6P8)
 
 ## Writing a Destination Plugin
 
