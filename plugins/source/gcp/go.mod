@@ -30,7 +30,7 @@ require (
 	cloud.google.com/go/monitoring v1.9.0
 	cloud.google.com/go/redis v1.10.0
 	cloud.google.com/go/resourcemanager v1.4.0
-	cloud.google.com/go/run v0.4.0
+	cloud.google.com/go/run v0.110.0
 	cloud.google.com/go/scheduler v1.7.0
 	cloud.google.com/go/secretmanager v1.9.0
 	cloud.google.com/go/securitycenter v1.18.1
