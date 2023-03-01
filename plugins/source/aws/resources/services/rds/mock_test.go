@@ -36,6 +36,8 @@ func buildRdsDBClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
+	buildRdsClusterBacktracks(t, m)
+
 	m.EXPECT().DescribeDBClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&rds.DescribeDBClustersOutput{
 			DBClusters: []rdsTypes.DBCluster{l},
