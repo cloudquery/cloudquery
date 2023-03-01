@@ -250,6 +250,9 @@ type EcsClient interface {
 	DescribeRenewalPrice(*ecs.DescribeRenewalPriceRequest) (*ecs.DescribeRenewalPriceResponse, error)
 	DescribeRenewalPriceWithCallback(*ecs.DescribeRenewalPriceRequest, func(*ecs.DescribeRenewalPriceResponse, error)) <-chan int
 	DescribeRenewalPriceWithChan(*ecs.DescribeRenewalPriceRequest) (<-chan *ecs.DescribeRenewalPriceResponse, <-chan error)
+	DescribeReservedInstanceAutoRenewAttribute(*ecs.DescribeReservedInstanceAutoRenewAttributeRequest) (*ecs.DescribeReservedInstanceAutoRenewAttributeResponse, error)
+	DescribeReservedInstanceAutoRenewAttributeWithCallback(*ecs.DescribeReservedInstanceAutoRenewAttributeRequest, func(*ecs.DescribeReservedInstanceAutoRenewAttributeResponse, error)) <-chan int
+	DescribeReservedInstanceAutoRenewAttributeWithChan(*ecs.DescribeReservedInstanceAutoRenewAttributeRequest) (<-chan *ecs.DescribeReservedInstanceAutoRenewAttributeResponse, <-chan error)
 	DescribeReservedInstances(*ecs.DescribeReservedInstancesRequest) (*ecs.DescribeReservedInstancesResponse, error)
 	DescribeReservedInstancesWithCallback(*ecs.DescribeReservedInstancesRequest, func(*ecs.DescribeReservedInstancesResponse, error)) <-chan int
 	DescribeReservedInstancesWithChan(*ecs.DescribeReservedInstancesRequest) (<-chan *ecs.DescribeReservedInstancesResponse, <-chan error)

@@ -26,7 +26,7 @@ jobs:
         working-directory: plugins/destination/clickhouse
     services:
       clickhouse:
-        image:   clickhouse/clickhouse-server:22.1.2
+        image:   clickhouse/clickhouse-server:22.12.3
         env:
           CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
           CLICKHOUSE_PASSWORD:                  ${{ env.DB_PASSWORD }}
@@ -55,7 +55,7 @@ jobs:
     - name: golangci-lint
       uses: cloudquery/golangci-lint-action@master
       with:
-        version:           v1.50.1
+        version:           v1.51.2
         working-directory: plugins/destination/clickhouse
         args:              "--config ../../.golangci.yml"
         skip-pkg-cache:    true

@@ -454,9 +454,7 @@ func getOrganizations(ctx context.Context, filter string, options ...option.Clie
 
 	var orgs []*crmv1.Organization
 	if err := service.Organizations.Search(&crmv1.SearchOrganizationsRequest{Filter: filter}).Context(ctx).Pages(ctx, func(page *crmv1.SearchOrganizationsResponse) error {
-		for i := range page.Organizations {
-			orgs = append(orgs, page.Organizations[i])
-		}
+		orgs = append(orgs, page.Organizations...)
 		return nil
 	}); err != nil {
 		return nil, err

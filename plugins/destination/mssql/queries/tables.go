@@ -18,7 +18,13 @@ func CreateTable(schemaName string, table *schema.Table, pkEnabled bool) string 
 		Definitions: GetDefinitions(table.Columns, pkEnabled),
 		PrimaryKey: &pkQueryBuilder{
 			Name:    pkConstraint(table),
-			Columns: GetPKColumns(table, pkEnabled),
+			Columns: GetPKColumns(table),
 		},
+	})
+}
+
+func DropTable(schemaName string, table *schema.Table) string {
+	return execTemplate("drop_table.sql.tpl", &createTableQueryBuilder{
+		Table: SanitizedTableName(schemaName, table),
 	})
 }

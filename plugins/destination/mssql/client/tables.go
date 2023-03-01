@@ -23,3 +23,28 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) (err erro
 
 	return c.ensureTVP(ctx, table)
 }
+
+func (c *Client) dropTable(ctx context.Context, table *schema.Table) (err error) {
+	c.logger.Debug().Str("table", table.Name).Msg("Table exists, dropping")
+	defer func() {
+		if err != nil {
+			c.logErr(err)
+		}
+	}()
+
+	_, err = c.db.ExecContext(ctx, queries.DropTable(c.schemaName, table))
+	if err != nil {
+		return fmt.Errorf("failed to drop table %s: %w", table.Name, err)
+	}
+
+	return nil
+}
+
+func (c *Client) recreateTable(ctx context.Context, table *schema.Table) error {
+	err := c.dropTable(ctx, table)
+	if err != nil {
+		return err
+	}
+
+	return c.createTable(ctx, table)
+}

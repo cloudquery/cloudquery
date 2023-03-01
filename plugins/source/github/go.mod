@@ -11,12 +11,15 @@ require (
 	golang.org/x/oauth2 v0.4.0
 )
 
-require github.com/gofri/go-github-ratelimit v1.0.2
+require (
+	github.com/beatlabs/github-auth v0.0.0-20220721134423-2b8d98e205d1
+	github.com/gofri/go-github-ratelimit v1.0.2
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/stretchr/testify v1.8.1 // indirect
+	github.com/stretchr/testify v1.8.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
@@ -35,7 +38,7 @@ require (
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/crypto v0.1.0 // indirect
-	golang.org/x/exp v0.0.0-20230212135524-a684f29349b6 // indirect; indirect // indirect
+	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2 // indirect; indirect // indirect // indirect
 	golang.org/x/mod v0.6.0 // indirect
 	golang.org/x/net v0.7.0 // indirect; indirect // indirect
 	golang.org/x/sync v0.1.0 // indirect

@@ -20,7 +20,7 @@ func AddPK(schemaName string, table *schema.Table) string {
 	return execTemplate("pk_add.sql.tpl", &pkQueryBuilder{
 		Table:   sanitizeID(schemaName, table.Name),
 		Name:    pkConstraint(table),
-		Columns: GetPKColumns(table, true), // we call AddPK only for enabled
+		Columns: GetPKColumns(table),
 	})
 }
 
