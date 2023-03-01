@@ -94,8 +94,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox v1.0.0 
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox v1.0.0/go.mod h1:43obBGNGAM/4TLKn6H25WZgNyASDm7CgnTfTDlibyvI=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog v1.0.0 h1:7Zapr4GFYFaCkyaXFvu8l/COpnH+VrhZPBsQqn25qpU=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog v1.0.0/go.mod h1:iKMWSg+h5loVKnx1+l3EuugUTVYOCH6MfZAOBQhVEqU=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3 v3.0.0 h1:5jGlvu+R60230goC5DIEpoNxprrcGno2tX/+CuxadyM=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3 v3.0.0/go.mod h1:QotLMGSjFB/AeDVvDa6x4mb88qTcqFVpeSD5yelLBYU=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3 v3.1.0 h1:22ZxRpq1slkp4lg8n6EdCdGf2FXcNz5ULPg5UOlLyKc=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3 v3.1.0/go.mod h1:dPVd3Cs66eRFOTNevSSioLAXsouIlVctUnzKGbeGfSo=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics v0.6.0 h1:XEbmURCfR0upsC+6hLDVqiEbTfCnpR6emWsnZlSeF8c=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-analytics/armdatalakeanalytics v0.6.0/go.mod h1:G1Bzdln9FNkkncs72LVaRz2yqYutrdgO9eryJFQNdZM=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore v1.0.0 h1:igcbgTBnaRqBYYYXGi02BiwzWbUU9jewKMj030Il8ac=
