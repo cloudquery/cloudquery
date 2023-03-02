@@ -3,7 +3,6 @@ package ec2
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -31,19 +30,15 @@ func SpotInstanceRequests() *schema.Table {
 }
 
 func fetchEC2SpotInstanceRequests(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var config ec2.DescribeSpotInstanceRequestsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
-	for {
-		output, err := svc.DescribeSpotInstanceRequests(ctx, &config)
+	pag := ec2.NewDescribeSpotInstanceRequestsPaginator(svc, &ec2.DescribeSpotInstanceRequestsInput{})
+	for pag.HasMorePages() {
+		resp, err := pag.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.SpotInstanceRequests
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
+		res <- resp.SpotInstanceRequests
 	}
 	return nil
 }
