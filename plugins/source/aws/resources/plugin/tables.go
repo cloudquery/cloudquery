@@ -205,6 +205,8 @@ func tables() []*schema.Table {
 		ec2.ReservedInstances(),
 		ec2.RouteTables(),
 		ec2.SecurityGroups(),
+		ec2.SpotFleetRequests(),
+		ec2.SpotInstanceRequests(),
 		ec2.Subnets(),
 		ec2.TransitGateways(),
 		ec2.VpcEndpoints(),
