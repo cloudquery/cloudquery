@@ -167,7 +167,7 @@ export const SOURCE_PLUGINS: Plugin[] = [
     kind: "official",
   },
   {
-    name: "Sharepoint",
+    name: "SharePoint",
     logo: "/images/logos/plugins/sharepoint.svg",
     id: "sharepoint",
     kind: "community",
