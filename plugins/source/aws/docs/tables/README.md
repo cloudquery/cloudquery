@@ -138,6 +138,7 @@
   - [aws_dynamodb_table_replica_auto_scalings](aws_dynamodb_table_replica_auto_scalings.md)
 - [aws_ec2_byoip_cidrs](aws_ec2_byoip_cidrs.md)
 - [aws_ec2_customer_gateways](aws_ec2_customer_gateways.md)
+- [aws_ec2_dhcp_options](aws_ec2_dhcp_options.md)
 - [aws_ec2_ebs_snapshots](aws_ec2_ebs_snapshots.md)
 - [aws_ec2_ebs_volume_statuses](aws_ec2_ebs_volume_statuses.md)
 - [aws_ec2_ebs_volumes](aws_ec2_ebs_volumes.md)
