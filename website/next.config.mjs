@@ -95,6 +95,7 @@ const replaceMdxCodeVersions = (node) => {
 };
 
 const withNextra = nextra({
+  defaultShowCopyCode: true,
   theme: "nextra-theme-docs",
   themeConfig: "./theme.config.tsx",
   unstable_staticImage: true,
