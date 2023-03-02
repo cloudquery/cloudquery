@@ -5,12 +5,15 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func fetchEc2LaunchTemplateVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var config ec2.DescribeLaunchTemplateVersionsInput
+	config := ec2.DescribeLaunchTemplateVersionsInput{
+		LaunchTemplateId: parent.Item.(types.LaunchTemplate).LaunchTemplateId,
+	}
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
 	for {
