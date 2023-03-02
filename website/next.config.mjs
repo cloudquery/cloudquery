@@ -113,7 +113,6 @@ export default withNextra({
   reactStrictMode: true,
   experimental: {
     legacyBrowsers: false,
-    images: { allowFutureImage: true },
   },
   env: {
     VERCEL_GIT_REPO_OWNER: process.env.VERCEL_GIT_REPO_OWNER,
