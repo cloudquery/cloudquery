@@ -32,10 +32,13 @@ func DHCPOptions() *schema.Table {
 func fetchEC2DHCPOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
-	output, err := svc.DescribeDhcpOptions(ctx, &ec2.DescribeDhcpOptionsInput{})
-	if err != nil {
-		return err
+	pag := ec2.NewDescribeDhcpOptionsPaginator(svc, &ec2.DescribeDhcpOptionsInput{})
+	for pag.HasMorePages() {
+		page, err := pag.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.DhcpOptions
 	}
-	res <- output.DhcpOptions
 	return nil
 }
