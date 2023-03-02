@@ -17,7 +17,7 @@ func buildRdsClusterBacktracks(t *testing.T, mockRds *mocks.MockRdsClient) {
 		t.Fatal(err)
 	}
 
-	mockRds.EXPECT().DescribeDBClusterBacktracks(gomock.Any(), gomock.Any(), gomock.Any()).Return(rds.DescribeDBClusterBacktracksOutput{
+	mockRds.EXPECT().DescribeDBClusterBacktracks(gomock.Any(), gomock.Any(), gomock.Any()).Return(&rds.DescribeDBClusterBacktracksOutput{
 		DBClusterBacktracks: []types.DBClusterBacktrack{d},
 	}, nil)
 }
