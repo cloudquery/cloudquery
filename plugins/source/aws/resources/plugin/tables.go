@@ -195,6 +195,8 @@ func tables() []*schema.Table {
 		ec2.InstanceTypes(),
 		ec2.InternetGateways(),
 		ec2.KeyPairs(),
+		ec2.LaunchTemplates(),
+		ec2.LaunchTemplateVersions(),
 		ec2.ManagedPrefixLists(),
 		ec2.NatGateways(),
 		ec2.NetworkAcls(),
