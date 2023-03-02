@@ -15,7 +15,6 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2 v2.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation v0.7.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata v0.5.0
-	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata v0.5.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch v1.1.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling v0.5.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice v1.0.0
@@ -101,13 +100,13 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/mitchellh/hashstructure/v2 v2.0.2
 	github.com/rs/zerolog v1.29.0
+	github.com/stretchr/testify v1.8.2
 )
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/stretchr/testify v1.8.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 

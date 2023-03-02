@@ -57,8 +57,6 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation v
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation v0.7.0/go.mod h1:Ro7nXanpxnqhbrmk0wI85yhXDuEBAbq1r6RONxba73E=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata v0.5.0 h1:2gPAcm4y6tHKjv77zgL5u0Kc1o3rCuw952JiS2kqSVg=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata v0.5.0/go.mod h1:d6QKb8hrJNefGMOdf7AJlzNpzUwqILR/E2l9aDEhIS0=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata v0.5.0 h1:uPu790CHudmWupn0b36xH8FHKk97zTVXFBjIdlOw1kA=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata v0.5.0/go.mod h1:L2q7LFzqMzyblAn2ZwlkOAClAXBBbSMKYb1tx6BXMEs=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch v1.1.0 h1:CUrPHKCgZXGTpOGb/fG/oXZ0yV/o4sHeuADSHPLQaCM=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch v1.1.0/go.mod h1:Jz7smLNU1YcKJg3U89KhubAGZ6o5/bgW83TRg1/gK/k=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling v0.5.0 h1:56uDxdVnsG1H8pdPT6LO1XQwnmK/pJWIEJmZ3lnUoGs=
