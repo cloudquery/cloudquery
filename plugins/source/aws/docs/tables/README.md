@@ -151,7 +151,6 @@
 - [aws_ec2_instances](aws_ec2_instances.md)
 - [aws_ec2_internet_gateways](aws_ec2_internet_gateways.md)
 - [aws_ec2_key_pairs](aws_ec2_key_pairs.md)
-- [aws_ec2_launch_template_versions](aws_ec2_launch_template_versions.md)
 - [aws_ec2_launch_templates](aws_ec2_launch_templates.md)
   - [aws_ec2_launch_template_versions](aws_ec2_launch_template_versions.md)
 - [aws_ec2_managed_prefix_lists](aws_ec2_managed_prefix_lists.md)
