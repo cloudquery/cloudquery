@@ -6,10 +6,12 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.1
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v0.6.1
 	github.com/cloudquery/filetypes v1.4.2
-	github.com/cloudquery/plugin-sdk v1.40.0
+	github.com/cloudquery/plugin-sdk v1.41.0
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
 )
+
+require golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2 // indirect
 
 require (
 	github.com/apache/arrow/go/arrow v0.0.0-20200730104253-651201b0f516 // indirect
@@ -50,7 +52,7 @@ require (
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
-	google.golang.org/genproto v0.0.0-20230209215440-0dfe4f8abfcc // indirect; indirect // indirect
+	google.golang.org/genproto v0.0.0-20230227214838-9b19f0bdc514 // indirect; indirect // indirect
 	google.golang.org/grpc v1.53.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
