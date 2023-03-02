@@ -182,6 +182,7 @@ func tables() []*schema.Table {
 		ec2.AvailabilityZones(),
 		ec2.ByoipCidrs(),
 		ec2.CustomerGateways(),
+		ec2.DHCPOptions(),
 		ec2.EbsSnapshots(),
 		ec2.EbsVolumes(),
 		ec2.EbsVolumesStatuses(),

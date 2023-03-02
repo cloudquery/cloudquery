@@ -138,6 +138,7 @@
   - [aws_dynamodb_table_replica_auto_scalings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_dynamodb_table_replica_auto_scalings.md)
 - [aws_ec2_byoip_cidrs](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_byoip_cidrs.md)
 - [aws_ec2_customer_gateways](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_customer_gateways.md)
+- [aws_ec2_dhcp_options](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_dhcp_options.md)
 - [aws_ec2_ebs_snapshots](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_ebs_snapshots.md)
 - [aws_ec2_ebs_volume_statuses](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_ebs_volume_statuses.md)
 - [aws_ec2_ebs_volumes](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_ec2_ebs_volumes.md)
