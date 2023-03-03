@@ -116,6 +116,8 @@
 - [gcp_compute_target_ssl_proxies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_target_ssl_proxies.md)
 - [gcp_compute_url_maps](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_url_maps.md)
 - [gcp_compute_vpn_gateways](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_vpn_gateways.md)
+- [gcp_compute_zones](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_zones.md)
+  - [gcp_compute_machine_types](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_compute_machine_types.md)
 - [gcp_container_clusters](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_container_clusters.md)
 - [gcp_containeranalysis_occurrences](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_containeranalysis_occurrences.md)
 - [gcp_dns_managed_zones](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/gcp_dns_managed_zones.md)
