@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/mixpanel
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.40.0
+	github.com/cloudquery/plugin-sdk v1.41.0
 	github.com/gorilla/mux v1.8.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.29.0
@@ -36,7 +36,7 @@ require (
 	golang.org/x/net v0.7.0 // indirect; indirect // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
-	google.golang.org/genproto v0.0.0-20230209215440-0dfe4f8abfcc // indirect; indirect // indirect
+	google.golang.org/genproto v0.0.0-20230227214838-9b19f0bdc514 // indirect; indirect // indirect
 	google.golang.org/grpc v1.53.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

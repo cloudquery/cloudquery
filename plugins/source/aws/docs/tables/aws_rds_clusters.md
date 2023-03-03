@@ -4,6 +4,11 @@ https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBCluster.html
 
 The primary key for this table is **arn**.
 
+## Relations
+
+The following tables depend on aws_rds_clusters:
+  - [aws_rds_cluster_backtracks](aws_rds_cluster_backtracks.md)
+
 ## Columns
 
 | Name          | Type          |
