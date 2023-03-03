@@ -16,18 +16,21 @@ func sortKeys(table *schema.Table) []string {
 	return keys
 }
 
-func CreateTable(table *schema.Table) string {
+func CreateTable(table *schema.Table, cluster string) string {
 	normalized := normalizeTable(table)
 	strBuilder := strings.Builder{}
 	strBuilder.WriteString("CREATE TABLE ")
-	strBuilder.WriteString(sanitizeID(normalized.Name))
+	strBuilder.WriteString(tableNamePart(normalized.Name, cluster))
 	strBuilder.WriteString(" (\n")
-	for _, col := range normalized.Columns {
+	for i, col := range normalized.Columns {
 		strBuilder.WriteString("  ")
 		strBuilder.WriteString(sanitizeID(col.Name))
 		strBuilder.WriteString(" ")
 		strBuilder.WriteString(chType(&col))
-		strBuilder.WriteString(",\n")
+		if i < len(normalized.Columns)-1 {
+			strBuilder.WriteString(",")
+		}
+		strBuilder.WriteString("\n")
 	}
 	strBuilder.WriteString(") ENGINE = MergeTree ORDER BY (")
 	sortingKeys := sanitized(sortKeys(normalized)...)

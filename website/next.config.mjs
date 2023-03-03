@@ -8,6 +8,10 @@ const patterns = {
   destinations: /VERSION_DESTINATION_([a-zA-Z0-9_]+)/,
 };
 
+const pluginNamePatterns = {
+  destinationName: /DESTINATION_NAME/,
+}
+
 function removeVersionPrefix(version) {
   return version.slice(1);
 }
@@ -58,6 +62,21 @@ function getVersions() {
 
 const versions = getVersions();
 
+const replaceMdxPluginNames = (node) => {
+  if (node.type === "text") {
+    Object.entries(pluginNamePatterns).forEach(([key, pattern]) => {
+      const match = node.value.match(pattern);
+      if (match) {
+        node.value = node.value.replace(pattern, "postgres"); // default to postgres
+      }
+    });
+  }
+  if (node.children !== undefined) {
+    node.children.forEach(replaceMdxPluginNames);
+  }
+  return;
+};
+
 const replaceMdxCodeVersions = (node) => {
   if (node.type === "text") {
     Object.entries(patterns).forEach(([key, pattern]) => {
@@ -76,14 +95,15 @@ const replaceMdxCodeVersions = (node) => {
 };
 
 const withNextra = nextra({
+  defaultShowCopyCode: true,
   theme: "nextra-theme-docs",
   themeConfig: "./theme.config.tsx",
-  unstable_staticImage: true,
   mdxOptions: {
     rehypePrettyCodeOptions: {
       theme: "nord",
       onVisitLine: (node) => {
         replaceMdxCodeVersions(node);
+        replaceMdxPluginNames(node);
       },
     },
   },
@@ -93,7 +113,6 @@ export default withNextra({
   reactStrictMode: true,
   experimental: {
     legacyBrowsers: false,
-    images: { allowFutureImage: true },
   },
   env: {
     VERCEL_GIT_REPO_OWNER: process.env.VERCEL_GIT_REPO_OWNER,

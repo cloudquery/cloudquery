@@ -1,0 +1,1 @@
+ALTER TABLE `table_name` ON CLUSTER `my_cluster` ADD COLUMN `my_col` Int64

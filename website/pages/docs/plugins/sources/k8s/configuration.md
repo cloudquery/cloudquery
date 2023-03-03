@@ -6,19 +6,8 @@ The K8s source plugin connects to a Kubernetes cluster, fetches resources and lo
 
 This example connects a single k8s context to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml copy
-kind: source
-spec:
-  # Source spec section
-  name: k8s
-  path: cloudquery/k8s
-  version: "VERSION_SOURCE_K8S"
-  tables: ["*"]
-  destinations: ["postgresql"]
-
-  spec:
-    contexts: ["context"]
-```
+import Configuration from "./_configuration.mdx";
+<Configuration/>
 
 ## K8s Spec
 

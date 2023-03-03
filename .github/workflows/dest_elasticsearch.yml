@@ -22,7 +22,7 @@ jobs:
         working-directory: ./plugins/destination/elasticsearch
     services:
       elasticsearch:
-        image: docker.elastic.co/elasticsearch/elasticsearch:8.6.0
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
         ports:
           - 9200:9200
         options: >-
@@ -47,7 +47,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.50.1
+          version: v1.51.2
           working-directory: plugins/destination/elasticsearch
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true

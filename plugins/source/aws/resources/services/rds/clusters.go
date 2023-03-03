@@ -31,5 +31,8 @@ func Clusters() *schema.Table {
 				Resolver: resolveRdsClusterTags,
 			},
 		},
+		Relations: []*schema.Table{
+			clusterBacktracks(),
+		},
 	}
 }

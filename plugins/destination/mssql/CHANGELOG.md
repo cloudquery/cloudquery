@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v2.1.4...plugins-destination-mssql-v3.0.0) (2023-03-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** Update MSSQL plugin-sdk to v1.38.2. You'll need to drop the database and start fresh due to a change in the schema for all timestamp columns from `datetimeoffset` to `datetime2`.
+
+### Features
+
+* **deps:** Update MSSQL plugin-sdk to v1.38.2 ([b1870b9](https://github.com/cloudquery/cloudquery/commit/b1870b9dc3698c1306a8d82cf520d1f780bc671d))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to c95f2b4 ([#8560](https://github.com/cloudquery/cloudquery/issues/8560)) ([9c3bd5b](https://github.com/cloudquery/cloudquery/commit/9c3bd5b68f9741a360fde6c54bf3f5f3efe06d9e))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azcore to v1.3.1 ([#8567](https://github.com/cloudquery/cloudquery/issues/8567)) ([d17e2aa](https://github.com/cloudquery/cloudquery/commit/d17e2aa63e8258ecc3c6815431222d1c5f0a06bf))
+* **deps:** Update module github.com/stretchr/testify to v1.8.2 ([#8599](https://github.com/cloudquery/cloudquery/issues/8599)) ([2ec8086](https://github.com/cloudquery/cloudquery/commit/2ec808677328410cc96c97a693ef65022d314c32))
+
 ## [2.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v2.1.3...plugins-destination-mssql-v2.1.4) (2023-02-21)
 
 

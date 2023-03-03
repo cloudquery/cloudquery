@@ -5,7 +5,8 @@ name: Neo4j
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
-import { Callout } from 'nextra-theme-docs'
+import { Callout } from 'nextra-theme-docs';
+import Configuration from "./_configuration.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "neo4j")}/>
 
@@ -21,22 +22,9 @@ As a side note graph databases can be quite useful for various networking use-ca
 
 ### Example
 
-This example configures a Neo4j destination, located at `bolt://localhost:7687`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+<Configuration />
 
-```yaml copy
-kind: destination
-spec:
-  name: "neo4j"
-  registry: "github"
-  path: "cloudquery/neo4j"
-  version: "VERSION_DESTINATION_NEO4J"
-  # batch_size: 10000 # optional
-  # batch_size_bytes: 5242880 # optional
-  spec:
-    connection_string: "bolt://localhost:7687"
-    username: "${USERNAME}"
-    password: "${PASSWORD}"
-```
+The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
 <Callout type="info">
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.

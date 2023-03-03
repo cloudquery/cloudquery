@@ -1,10 +1,12 @@
 package queries
 
 import (
+	"fmt"
 	"reflect"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/schema"
+	"golang.org/x/exp/maps"
 )
 
 func SQLType(t schema.ValueType) string {
@@ -20,7 +22,7 @@ func SQLType(t schema.ValueType) string {
 	case schema.TypeByteArray:
 		return "varbinary(max)"
 	case schema.TypeTimestamp:
-		return "datetimeoffset"
+		return "datetime2"
 	case schema.TypeString,
 		schema.TypeCIDR,
 		schema.TypeMacAddr,
@@ -37,6 +39,25 @@ func SQLType(t schema.ValueType) string {
 	default:
 		panic("unknown type " + t.String())
 	}
+}
+
+func SchemaType(tableName string, columnName string, sqlType string) (schema.ValueType, error) {
+	sqlToSchema := map[string]schema.ValueType{
+		"bit":              schema.TypeBool,
+		"bigint":           schema.TypeInt,
+		"float":            schema.TypeFloat,
+		"uniqueidentifier": schema.TypeUUID,
+		"varbinary(max)":   schema.TypeByteArray,
+		"datetime2":        schema.TypeTimestamp,
+		"nvarchar(4000)":   schema.TypeString,
+		"nvarchar(max)":    schema.TypeStringArray,
+	}
+
+	if v, ok := sqlToSchema[sqlType]; ok {
+		return v, nil
+	}
+
+	return schema.TypeInvalid, fmt.Errorf("got unknown MSSQL type %q of column %q for table %q while trying to convert it to CloudQuery internal schema type. Supported MSSQL types are %q", sqlType, columnName, tableName, maps.Keys(sqlToSchema))
 }
 
 // columnGoType has to be in sync with SQLType
