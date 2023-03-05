@@ -26,6 +26,8 @@ digitalocean:
   - plugins/source/digitalocean/**/*
 elasticsearch:
   - plugins/destination/elasticsearch/**/*
+facebookmarketing:
+  - plugins/source/facebookmarketing/**/*
 fastly:
   - plugins/source/fastly/**/*
 file:
