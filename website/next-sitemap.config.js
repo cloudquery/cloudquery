@@ -7,7 +7,7 @@ module.exports = {
   additionalPaths: () => {
     const tablesData = getTablesData();
     const paths = tablesData.map(({ plugin, table }) => {
-      return { loc: `/docs/tables/${plugin}/${table}`};
+      return { loc: `/docs/plugins/sources/${plugin}/tables/${table}`};
     });
     return paths;
   },
