@@ -5,9 +5,12 @@ test:
 
 .PHONY: gen-docs
 gen-docs:
-	rm -rf ./docs/tables/*
-	go run main.go doc ./docs/tables
-	sed 's_(\(.*\))_(https://github.com/cloudquery/cloudquery/blob/main/plugins/source/mixpanel/docs/tables/\1)_' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/mixpanel/tables.md
+	rm -rf ../../../website/tables/mixpanel
+	go run main.go doc ../../../website/tables/mixpanel
+	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/mixpanel/README.md
+	mv ../../../website/tables/mixpanel/README.md ../../../website/pages/docs/plugins/sources/mixpanel/tables.md
+	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/mixpanel/*.md
+	rm -rf ../../../website/tables/mixpanel/*.bak
 
 .PHONY: lint
 lint:

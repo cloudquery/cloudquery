@@ -29,3 +29,4 @@ cli/examples
 cli/cli
 __tables.json
 __debug_bin
+.vercel
