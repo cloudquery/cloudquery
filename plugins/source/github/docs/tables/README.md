@@ -1,3 +1,29 @@
 # Source Plugin: github
 
-Plugins tables are now part of our Website. Please visit [https://www.cloudquery.io/docs/plugins/sources/github/tables](https://www.cloudquery.io/docs/plugins/sources/github/tables) for the latest information.
+## Tables
+
+- [github_billing_action](github_billing_action.md)
+- [github_billing_package](github_billing_package.md)
+- [github_billing_storage](github_billing_storage.md)
+- [github_external_groups](github_external_groups.md)
+- [github_hooks](github_hooks.md)
+  - [github_hook_deliveries](github_hook_deliveries.md)
+- [github_installations](github_installations.md)
+- [github_issues](github_issues.md)
+- [github_organizations](github_organizations.md)
+  - [github_organization_dependabot_alerts](github_organization_dependabot_alerts.md)
+  - [github_organization_dependabot_secrets](github_organization_dependabot_secrets.md)
+  - [github_organization_members](github_organization_members.md)
+- [github_repositories](github_repositories.md)
+  - [github_releases](github_releases.md)
+    - [github_release_assets](github_release_assets.md)
+  - [github_repository_dependabot_alerts](github_repository_dependabot_alerts.md)
+  - [github_repository_dependabot_secrets](github_repository_dependabot_secrets.md)
+- [github_teams](github_teams.md)
+  - [github_team_members](github_team_members.md)
+  - [github_team_repositories](github_team_repositories.md)
+- [github_traffic_clones](github_traffic_clones.md)
+- [github_traffic_paths](github_traffic_paths.md)
+- [github_traffic_referrers](github_traffic_referrers.md)
+- [github_traffic_views](github_traffic_views.md)
+- [github_workflows](github_workflows.md)

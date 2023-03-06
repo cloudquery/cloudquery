@@ -12,6 +12,7 @@ lint:
 gen-docs:
 	rm -rf ../../../website/tables/plausible
 	go run main.go doc ../../../website/tables/plausible
+	cp ../../../website/tables/plausible/README.md ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/plausible/README.md
 	mv ../../../website/tables/plausible/README.md ../../../website/pages/docs/plugins/sources/plausible/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/plausible/*.md
