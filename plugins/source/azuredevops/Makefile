@@ -11,6 +11,7 @@ lint:
 gen-docs:
 	rm -rf ../../../website/tables/azuredevops
 	go run main.go doc ../../../website/tables/azuredevops
+	cp ../../../website/tables/azuredevops/README.md ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/azuredevops/README.md
 	mv ../../../website/tables/azuredevops/README.md ../../../website/pages/docs/plugins/sources/azuredevops/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/azuredevops/*.md
