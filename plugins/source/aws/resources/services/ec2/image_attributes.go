@@ -11,11 +11,12 @@ import (
 )
 
 func imageAttributesLaunchPermissions() *schema.Table {
+	const tableName = "aws_ec2_image_launch_permissions"
 	return &schema.Table{
-		Name:        "aws_ec2_image_launch_permissions",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchPermission.html`,
 		Resolver:    fetchEc2ImageAttributeLaunchPermissions,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.LaunchPermission{}),
 		Columns: []schema.Column{
 			{
