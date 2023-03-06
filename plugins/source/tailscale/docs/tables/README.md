@@ -1,10 +1,3 @@
 # Source Plugin: tailscale
 
-## Tables
-
-- [tailscale_acls](tailscale_acls.md)
-- [tailscale_devices](tailscale_devices.md)
-- [tailscale_dns_nameservers](tailscale_dns_nameservers.md)
-- [tailscale_dns_preferences](tailscale_dns_preferences.md)
-- [tailscale_dns_searchpaths](tailscale_dns_searchpaths.md)
-- [tailscale_keys](tailscale_keys.md)
+Plugins tables are now part of our Website. Please visit [https://www.cloudquery.io/docs/plugins/sources/tailscale/tables](https://www.cloudquery.io/docs/plugins/sources/tailscale/tables) for the latest information.

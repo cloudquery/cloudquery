@@ -15,9 +15,12 @@ gen-mocks:
 
 .PHONY: gen-docs
 gen-docs:
-	rm -rf ./docs/tables/*
-	go run main.go doc ./docs/tables
-	sed 's_(\(.*\))_(https://github.com/cloudquery/cloudquery/blob/main/plugins/source/pagerduty/docs/tables/\1)_' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/pagerduty/tables.md
+	rm -rf ../../../website/tables/pagerduty
+	go run main.go doc ../../../website/tables/pagerduty
+	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/pagerduty/README.md
+	mv ../../../website/tables/pagerduty/README.md ../../../website/pages/docs/plugins/sources/pagerduty/tables.md
+	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/pagerduty/*.md
+	rm -rf ../../../website/tables/pagerduty/*.bak
 
 # All gen targets
 .PHONY: gen

@@ -2,6 +2,6 @@
 
 ## Tables
 
-- [awspricing_services](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/awspricing/docs/tables/awspricing_services.md)
-  - [awspricing_service_products](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/awspricing/docs/tables/awspricing_service_products.md)
-  - [awspricing_service_terms](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/awspricing/docs/tables/awspricing_service_terms.md)
+- [awspricing_services](tables/awspricing_services)
+  - [awspricing_service_products](tables/awspricing_service_products)
+  - [awspricing_service_terms](tables/awspricing_service_terms)

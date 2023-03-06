@@ -35,6 +35,12 @@
     "title": "Plugins",
     "href": "/docs/plugins/overview"
   },
+  "tables": {
+    "title": "Tables",
+    "theme": {
+      "typesetting": "article"
+    }
+  },
   "confirm": {
     "title": "Confirm",
     "display": "hidden"

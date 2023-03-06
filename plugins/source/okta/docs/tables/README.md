@@ -1,10 +1,3 @@
 # Source Plugin: okta
 
-## Tables
-
-- [okta_applications](okta_applications.md)
-  - [okta_application_group_assignments](okta_application_group_assignments.md)
-  - [okta_application_users](okta_application_users.md)
-- [okta_groups](okta_groups.md)
-  - [okta_group_users](okta_group_users.md)
-- [okta_users](okta_users.md)
+Plugins tables are now part of our Website. Please visit [https://www.cloudquery.io/docs/plugins/sources/okta/tables](https://www.cloudquery.io/docs/plugins/sources/okta/tables) for the latest information.
