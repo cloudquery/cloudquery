@@ -1,3 +1,7 @@
 # Source Plugin: terraform
 
-Plugins tables are now part of our Website. Please visit [https://www.cloudquery.io/docs/plugins/sources/terraform/tables](https://www.cloudquery.io/docs/plugins/sources/terraform/tables) for the latest information.
+## Tables
+
+- [tf_data](tf_data.md)
+  - [tf_resources](tf_resources.md)
+    - [tf_resource_instances](tf_resource_instances.md)

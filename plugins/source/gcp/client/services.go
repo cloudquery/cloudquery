@@ -168,6 +168,7 @@ var GcpServices = map[string]bool{
 	"manufacturers.googleapis.com":                    true,
 	"memcache.googleapis.com":                         true,
 	"metastore.googleapis.com":                        true,
+	"migrationcenter.googleapis.com":                  true,
 	"ml.googleapis.com":                               true,
 	"monitoring.googleapis.com":                       true,
 	"mybusinessaccountmanagement.googleapis.com":      true,
