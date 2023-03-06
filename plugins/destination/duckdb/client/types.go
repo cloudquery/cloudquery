@@ -21,7 +21,7 @@ func (*Client) SchemaTypeToDuckDB(t schema.ValueType) string {
 	case schema.TypeByteArray:
 		return "blob"
 	case schema.TypeStringArray:
-		return "text"
+		return "text[]"
 	case schema.TypeTimestamp:
 		return "timestamp"
 	case schema.TypeJSON:

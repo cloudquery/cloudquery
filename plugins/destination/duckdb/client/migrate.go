@@ -187,7 +187,6 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 	sb.WriteString(" (")
 	totalColumns := len(table.Columns)
 
-	primaryKeys := []string{}
 	for i, col := range table.Columns {
 		sqlType := c.SchemaTypeToDuckDB(col.Type)
 		if sqlType == "" {
@@ -196,6 +195,9 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 		}
 		// TODO: sanitize column name
 		fieldDef := `"` + col.Name + `" ` + sqlType
+		if col.CreationOptions.PrimaryKey {
+			fieldDef += " PRIMARY KEY"
+		}
 		if col.CreationOptions.NotNull {
 			fieldDef += " NOT NULL"
 		}
@@ -203,20 +205,10 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 		if i != totalColumns-1 {
 			sb.WriteString(",")
 		}
-		if c.enabledPks() && col.CreationOptions.PrimaryKey {
-			primaryKeys = append(primaryKeys, `"`+col.Name+`"`)
-		}
 	}
 
-	if len(primaryKeys) > 0 {
-		// add composite PK constraint on primary key columns
-		sb.WriteString(", CONSTRAINT ")
-		sb.WriteString(table.Name)
-		sb.WriteString("_cqpk PRIMARY KEY (")
-		sb.WriteString(strings.Join(primaryKeys, ","))
-		sb.WriteString(")")
-	}
 	sb.WriteString(")")
+	c.logger.Warn().Msg("query: " + sb.String())
 	_, err := c.db.Exec(sb.String())
 	if err != nil {
 		return fmt.Errorf("failed to create table with '%s': %w", sb.String(), err)
