@@ -48,7 +48,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.1
 	github.com/aws/aws-sdk-go-v2/service/emr v1.22.2
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.17.0
-	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.2
+	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.5
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.28.2
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.2
