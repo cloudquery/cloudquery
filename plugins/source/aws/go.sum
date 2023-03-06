@@ -117,8 +117,8 @@ github.com/aws/aws-sdk-go-v2/service/dax v1.12.2 h1:koRE8r2A6em0TnB1NZBDUWh2rvx+
 github.com/aws/aws-sdk-go-v2/service/dax v1.12.2/go.mod h1:SXDWJH3/4U7Zt/zxbi/H0Ryf11nHVBLxKvsotyXDEoU=
 github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.5 h1:0V+JqeJNaUI+rGK+NZKvIclzrusnmYsgdvxWL3/w6i4=
 github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.5/go.mod h1:zDHqy0m1EPCSrkjJCXTYd8C4yoMHX61VvvJkSfEvOQY=
-github.com/aws/aws-sdk-go-v2/service/docdb v1.20.2 h1:C98ZIJcRUTvqCbHEgkmf7yrJWaaviDbOFBKmDTDUvqk=
-github.com/aws/aws-sdk-go-v2/service/docdb v1.20.2/go.mod h1:v6kOzeI4cluKSWF+eVJJwQQIHC+xTmaV+407UKJvf4Q=
+github.com/aws/aws-sdk-go-v2/service/docdb v1.20.4 h1:bCOBtVprAAOPE7RgVu/YGZu/EbYm/DXicmwXOq9A3J0=
+github.com/aws/aws-sdk-go-v2/service/docdb v1.20.4/go.mod h1:vOVd3E2G7rmghjbvitFSrFa9dPgMshAcv3OKCHFzmDY=
 github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.6 h1:u3uxSRQiTTCDQ9xO0hsbqNVXh4b/zXo4gxzgLraFJhM=
 github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.6/go.mod h1:njGV8YOTBFbXQGuoei1SU+rQO32F01qvBQ9oUIR+SSY=
 github.com/aws/aws-sdk-go-v2/service/ec2 v1.80.0 h1:3uXwe5AWlSqkvdkkYKOjzW6A+ZVfxfeRarCl4iU6WAo=
@@ -177,7 +177,6 @@ github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.21/go.mod 
 github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.23 h1:5AwQnYQT3ZX/N7hPTAx4ClWyucaiqr2esQRMNbJIby0=
 github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.23/go.mod h1:s8OUYECPoPpevQHmRmMBemFIx6Oc91iapsw56KiXIMY=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21/go.mod h1:lRToEJsn+DRA9lW4O9L9+/3hjTkUzlzyzHqn8MTds5k=
-github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.22/go.mod h1:xt0Au8yPIwYXf/GYPy/vl4K3CgwhfQMYbrH7DlUUIws=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.23 h1:QoOybhwRfciWUBbZ0gp9S7XaDnCuSTeK/fySB99V1ls=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.23/go.mod h1:9uPh+Hrz2Vn6oMnQYiUi/zbh3ovbnQk19YKINkQny44=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.21/go.mod h1:WZvNXT1XuH8dnJM0HvOlvk+RNn7NbAPvA/ACO0QarSc=
