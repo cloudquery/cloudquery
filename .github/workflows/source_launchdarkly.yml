@@ -33,7 +33,7 @@ jobs:
       - name: golangci-lint
         uses: cloudquery/golangci-lint-action@master
         with:
-          version: v1.50.1
+          version: v1.51.2
           working-directory: plugins/source/launchdarkly
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true

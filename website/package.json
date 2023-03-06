@@ -17,6 +17,7 @@
   "dependencies": {
     "@heroicons/react": "^2.0.14",
     "copy-to-clipboard": "3.3.3",
+    "glob": "^9.0.1",
     "gray-matter": "^4.0.3",
     "next": "^13.1.5",
     "next-sitemap": "^3.1.47",
@@ -27,6 +28,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "2.4.0",
+    "react-search-box": "^3.0.0",
     "sharp": "^0.31.3"
   },
   "devDependencies": {
@@ -36,7 +38,7 @@
     "@types/react": "^18.0.27",
     "autoprefixer": "10.4.13",
     "csstype": "3.1.1",
-    "eslint": "8.34.0",
+    "eslint": "8.35.0",
     "eslint-config-next": "^13.1.5",
     "eslint-config-prettier": "8.6.0",
     "postcss": "8.4.21",

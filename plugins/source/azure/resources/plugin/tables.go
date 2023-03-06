@@ -11,7 +11,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/authorization"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/automation"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/azurearcdata"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/azuredata"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/batch"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/billing"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/botservice"
@@ -125,7 +124,6 @@ func tables() []*schema.Table {
 		azurearcdata.PostgresInstances(),
 		azurearcdata.SqlManagedInstances(),
 		azurearcdata.SqlServerInstances(),
-		azuredata.SqlServerRegistrations(),
 		batch.Account(),
 		billing.Accounts(),
 		billing.EnrollmentAccounts(),
@@ -207,6 +205,7 @@ func tables() []*schema.Table {
 		monitor.TenantActivityLogs(),
 		monitor.Resources(),
 		monitor.ActivityLogAlerts(),
+		monitor.AutoscaleSettings(),
 		mysql.Servers(),
 		mysqlflexibleservers.Servers(),
 		network.ApplicationGateways(),

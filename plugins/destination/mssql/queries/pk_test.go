@@ -12,7 +12,7 @@ func TestAddPK(t *testing.T) {
 		schemaName = "cq"
 		expected   = `ALTER TABLE [cq].[table_name] ADD CONSTRAINT [table_name_cqpk]
   PRIMARY KEY (
-  [_cq_id]
+  [pk]
   );`
 	)
 
@@ -23,6 +23,7 @@ func TestAddPK(t *testing.T) {
 			schema.CqParentIDColumn,
 			schema.CqSourceNameColumn,
 			schema.CqSyncTimeColumn,
+			schema.Column{Name: "pk", Type: schema.TypeUUID, CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true}},
 			schema.Column{Name: "extra_col", Type: schema.TypeFloat},
 		},
 	})

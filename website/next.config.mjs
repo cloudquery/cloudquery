@@ -95,9 +95,9 @@ const replaceMdxCodeVersions = (node) => {
 };
 
 const withNextra = nextra({
+  defaultShowCopyCode: true,
   theme: "nextra-theme-docs",
   themeConfig: "./theme.config.tsx",
-  unstable_staticImage: true,
   mdxOptions: {
     rehypePrettyCodeOptions: {
       theme: "nord",
@@ -113,7 +113,6 @@ export default withNextra({
   reactStrictMode: true,
   experimental: {
     legacyBrowsers: false,
-    images: { allowFutureImage: true },
   },
   env: {
     VERCEL_GIT_REPO_OWNER: process.env.VERCEL_GIT_REPO_OWNER,

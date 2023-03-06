@@ -33,6 +33,10 @@ This is the (nested) spec used by the ClickHouse destination plugin.
   Connection string to connect to the database.
   See [SDK documentation](https://github.com/ClickHouse/clickhouse-go#dsn) for more details.
 
+- `cluster` (string, optional. Default: not used)
+  Cluster name to be used for [distributed DDL](https://clickhouse.com/docs/en/sql-reference/distributed-ddl).
+  If the value is empty, DDL operations will affect only the server the plugin is connected to.
+
 - `ca_cert` (string, optional. Default: not used)
 
   If you need to use a custom CA to connect to ClickHouse instance you can use `ca_cert` option.

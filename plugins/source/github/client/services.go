@@ -34,6 +34,7 @@ type BillingService interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_repositories.go . RepositoriesService
 type RepositoriesService interface {
+	Get(ctx context.Context, owner, repo string) (*github.Repository, *github.Response, error)
 	GetContents(ctx context.Context, owner, repo, path string, opts *github.RepositoryContentGetOptions) (fileContent *github.RepositoryContent, directoryContent []*github.RepositoryContent, resp *github.Response, err error)
 	ListByOrg(ctx context.Context, org string, opts *github.RepositoryListByOrgOptions) ([]*github.Repository, *github.Response, error)
 	ListReleases(ctx context.Context, owner, repo string, opts *github.ListOptions) ([]*github.RepositoryRelease, *github.Response, error)

@@ -11,9 +11,13 @@ test:
 
 .PHONY: gen-docs
 gen-docs:
-	rm -rf ./docs/tables/*
-	go run main.go doc ./docs/tables
-	sed 's_(\(.*\))_(https://github.com/cloudquery/cloudquery/blob/main/plugins/source/datadog/docs/tables/\1)_' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/datadog/tables.md
+	rm -rf ../../../website/tables/datadog
+	go run main.go doc ../../../website/tables/datadog
+	cp ../../../website/tables/datadog/README.md ./docs/tables/README.md
+	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/datadog/README.md
+	mv ../../../website/tables/datadog/README.md ../../../website/pages/docs/plugins/sources/datadog/tables.md
+	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/datadog/*.md
+	rm -rf ../../../website/tables/datadog/*.bak
 
 .PHONY: lint
 lint:

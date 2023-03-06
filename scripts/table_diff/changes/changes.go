@@ -216,7 +216,7 @@ func getFileChanges(file *gitdiff.File) (changes []change, err error) {
 			Text:     fmt.Sprintf("Table %s was removed", backtickStrings(oldTableName)...),
 			Breaking: true,
 		})
-	case file.IsRename:
+	case file.IsRename && oldTableName != newTableName:
 		changes = append(changes, change{
 			Text:     fmt.Sprintf("Table %s was renamed to %s", backtickStrings(oldTableName, newTableName)...),
 			Breaking: true,

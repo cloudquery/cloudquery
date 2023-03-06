@@ -16,11 +16,11 @@ func sortKeys(table *schema.Table) []string {
 	return keys
 }
 
-func CreateTable(table *schema.Table) string {
+func CreateTable(table *schema.Table, cluster string) string {
 	normalized := normalizeTable(table)
 	strBuilder := strings.Builder{}
 	strBuilder.WriteString("CREATE TABLE ")
-	strBuilder.WriteString(sanitizeID(normalized.Name))
+	strBuilder.WriteString(tableNamePart(normalized.Name, cluster))
 	strBuilder.WriteString(" (\n")
 	for i, col := range normalized.Columns {
 		strBuilder.WriteString("  ")

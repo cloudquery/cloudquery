@@ -62,6 +62,18 @@ Specifies the update method to use when inserting rows. The exact semantics depe
 - `append`: Rows are never overwritten or deleted, only appended.
 
 <!-- vale off -->
+### migrate_mode
+<!-- vale on -->
+
+(`string`, optional, default: `safe`. Available: `safe`, `forced`)
+
+Specifies the migration mode to use when source tables are changed. In `safe` mode (the default), CloudQuery will not run migrations that would result in data loss, and will print an error instead. In `forced` mode, CloudQuery will run migrations that may result in data loss and the migration should always succeed without errors.
+`migrate_mode: forced` is only supported for the ClickHouse, MySQL, PostgreSQL, MSSQL and SQLite destination plugins at the moment.
+
+Read more about how CloudQuery handles migrations [here](/docs/advanced-topics/migrations).
+
+
+<!-- vale off -->
 ### batch_size
 <!-- vale on -->
 
