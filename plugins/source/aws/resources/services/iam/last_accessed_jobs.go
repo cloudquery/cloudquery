@@ -18,7 +18,7 @@ type Job struct {
 func userLastAccessedJobs() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_iam_user_last_accessed_jobs",
-		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GenerateServiceLastAccessedDetails.html#API_GenerateServiceLastAccessedDetails_Example_1_Response`,
+		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GenerateServiceLastAccessedDetails.html`,
 		Resolver:    fetchUserLastAccessedJobs,
 		Transform:   transformers.TransformWithStruct(&Job{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
@@ -32,7 +32,7 @@ func userLastAccessedJobs() *schema.Table {
 func roleLastAccessedJobs() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_iam_role_last_accessed_jobs",
-		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GenerateServiceLastAccessedDetails.html#API_GenerateServiceLastAccessedDetails_Example_1_Response`,
+		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GenerateServiceLastAccessedDetails.html`,
 		Resolver:    fetchRoleLastAccessedJobs,
 		Transform:   transformers.TransformWithStruct(&Job{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
@@ -46,7 +46,7 @@ func roleLastAccessedJobs() *schema.Table {
 func groupLastAccessedJobs() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_iam_group_last_accessed_jobs",
-		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GenerateServiceLastAccessedDetails.html#API_GenerateServiceLastAccessedDetails_Example_1_Response`,
+		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GenerateServiceLastAccessedDetails.html`,
 		Resolver:    fetchGroupLastAccessedJobs,
 		Transform:   transformers.TransformWithStruct(&Job{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
@@ -60,7 +60,7 @@ func groupLastAccessedJobs() *schema.Table {
 func policyLastAccessedJobs() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_iam_policy_last_accessed_jobs",
-		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GenerateServiceLastAccessedDetails.html#API_GenerateServiceLastAccessedDetails_Example_1_Response`,
+		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GenerateServiceLastAccessedDetails.html`,
 		Resolver:    fetchPolicyLastAccessedJobs,
 		Transform:   transformers.TransformWithStruct(&Job{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),

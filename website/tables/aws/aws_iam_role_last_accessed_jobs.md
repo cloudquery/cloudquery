@@ -1,6 +1,6 @@
 # Table: aws_iam_role_last_accessed_jobs
 
-https://docs.aws.amazon.com/IAM/latest/APIReference/API_GenerateServiceLastAccessedDetails.html#API_GenerateServiceLastAccessedDetails_Example_1_Response
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_GenerateServiceLastAccessedDetails.html
 
 The composite primary key for this table is (**account_id**, **arn**).
 
