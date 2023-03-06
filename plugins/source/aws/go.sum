@@ -161,8 +161,8 @@ github.com/aws/aws-sdk-go-v2/service/glue v1.40.0 h1:2BRxT2dD1/lh1GjPqijYIWpDqlB
 github.com/aws/aws-sdk-go-v2/service/glue v1.40.0/go.mod h1:kXio9ACrVjRndIledemYxonQhqmfDFbgDH3/AIBx3Hk=
 github.com/aws/aws-sdk-go-v2/service/guardduty v1.17.2 h1:ddyLLUCTLK9KHlYnZtQnFpP5YOBGpB1ySkpsA0lfmDk=
 github.com/aws/aws-sdk-go-v2/service/guardduty v1.17.2/go.mod h1:dt1eYTA3WqNblmomKsQmSOHIb/uCYdE7TFDODBb3TK8=
-github.com/aws/aws-sdk-go-v2/service/iam v1.19.0 h1:9vCynoqC+dgxZKrsjvAniyIopsv3RZFsZ6wkQ+yxtj8=
-github.com/aws/aws-sdk-go-v2/service/iam v1.19.0/go.mod h1:OyAuvpFeSVNppcSsp1hFOVQcaTRc1LE24YIR7pMbbAA=
+github.com/aws/aws-sdk-go-v2/service/iam v1.19.4 h1:hrBxgoUih7uy9sJTXrX0N/3TVgbmevlxEYsP9l+Lje4=
+github.com/aws/aws-sdk-go-v2/service/iam v1.19.4/go.mod h1:F5Xt96+AfAiyMpRXHy9CKafE/KULVwj7MwgZ0a4row4=
 github.com/aws/aws-sdk-go-v2/service/identitystore v1.16.0 h1:kaDCnnGZIeeKZdjGjkMuh9/GLh9yEt70IxBzA0rBHjQ=
 github.com/aws/aws-sdk-go-v2/service/identitystore v1.16.0/go.mod h1:mN2AeMZcyQWmPJhkrMU2fFUh2ZrUlLZER+V+YKplyMQ=
 github.com/aws/aws-sdk-go-v2/service/inspector v1.13.0 h1:4kZatO2FYgFO5CbkMqg+3R2uqUSipvFzHRo02NUHCsQ=
