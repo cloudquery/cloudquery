@@ -30,20 +30,20 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.4
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.29.5
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5
-	github.com/aws/aws-sdk-go-v2/service/dax v1.12.2
+	github.com/aws/aws-sdk-go-v2/service/dax v1.12.4
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.5
-	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.2
+	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.4
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.6
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.80.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.5
-	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.15.1
+	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.15.4
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.23.2
 	github.com/aws/aws-sdk-go-v2/service/efs v1.19.7
-	github.com/aws/aws-sdk-go-v2/service/eks v1.27.2
+	github.com/aws/aws-sdk-go-v2/service/eks v1.27.5
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.4
-	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.1
+	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.4
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.4
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.3
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.5
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.5
 	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.4
 	github.com/aws/aws-sdk-go-v2/service/emr v1.22.2
@@ -51,11 +51,11 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.5
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.28.2
-	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.2
+	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.5
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.17.2
-	github.com/aws/aws-sdk-go-v2/service/iam v1.19.0
+	github.com/aws/aws-sdk-go-v2/service/iam v1.19.4
 	github.com/aws/aws-sdk-go-v2/service/identitystore v1.16.0
-	github.com/aws/aws-sdk-go-v2/service/inspector v1.13.0
+	github.com/aws/aws-sdk-go-v2/service/inspector v1.13.4
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.11.0
 	github.com/aws/aws-sdk-go-v2/service/iot v1.33.0
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.19.0
