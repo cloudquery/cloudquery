@@ -5,9 +5,12 @@ test:
 
 .PHONY: gen-docs
 gen-docs:
-	rm -rf ./docs/tables/*
-	go run main.go doc ./docs/tables
-	sed 's_(\(.*\))_(https://github.com/cloudquery/cloudquery/blob/main/plugins/source/shopify/docs/tables/\1)_' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/shopify/tables.md
+	rm -rf ../../../website/tables/shopify
+	go run main.go doc ../../../website/tables/shopify
+	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/shopify/README.md
+	mv ../../../website/tables/shopify/README.md ../../../website/pages/docs/plugins/sources/shopify/tables.md
+	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/shopify/*.md
+	rm -rf ../../../website/tables/shopify/*.bak
 
 .PHONY: lint
 lint:

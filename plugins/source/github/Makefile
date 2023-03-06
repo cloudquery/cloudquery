@@ -18,9 +18,12 @@ install-tools:
 
 .PHONY: gen-docs
 gen-docs:
-	rm -rf ./docs/tables/*
-	go run main.go doc ./docs/tables
-	sed 's_(\(.*\))_(https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/tables/\1)_' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/github/tables.md
+	rm -rf ../../../website/tables/github
+	go run main.go doc ../../../website/tables/github
+	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/github/README.md
+	mv ../../../website/tables/github/README.md ../../../website/pages/docs/plugins/sources/github/tables.md
+	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/github/*.md
+	rm -rf ../../../website/tables/github/*.bak
 
 .PHONY: lint
 lint:

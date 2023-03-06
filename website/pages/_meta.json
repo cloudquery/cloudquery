@@ -33,7 +33,14 @@
   },
   "plugins": {
     "title": "Plugins",
-    "href": "/docs/plugins/overview"
+    "href": "/docs/plugins/overview",
+    "route": "#"
+  },
+  "tables": {
+    "title": "Tables",
+    "theme": {
+      "typesetting": "article"
+    }
   },
   "confirm": {
     "title": "Confirm",
