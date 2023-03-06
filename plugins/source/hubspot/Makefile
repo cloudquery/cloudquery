@@ -15,6 +15,7 @@ gen-code:
 gen-docs:
 	rm -rf ../../../website/tables/hubspot
 	go run main.go doc ../../../website/tables/hubspot
+	cp ../../../website/tables/hubspot/README.md ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/hubspot/README.md
 	mv ../../../website/tables/hubspot/README.md ../../../website/pages/docs/plugins/sources/hubspot/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/hubspot/*.md

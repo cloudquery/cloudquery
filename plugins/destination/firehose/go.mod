@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.5
 	github.com/aws/aws-sdk-go-v2/config v1.18.15
 	github.com/cloudquery/filetypes v1.4.2
-	github.com/cloudquery/plugin-sdk v1.41.0
+	github.com/cloudquery/plugin-sdk v1.42.0
 	github.com/rs/zerolog v1.29.0
 )
 
