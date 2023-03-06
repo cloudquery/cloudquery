@@ -51,7 +51,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.5
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.28.2
-	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.2
+	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.5
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.17.2
 	github.com/aws/aws-sdk-go-v2/service/iam v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/identitystore v1.16.0
