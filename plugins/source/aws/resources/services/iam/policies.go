@@ -35,5 +35,6 @@ func Policies() *schema.Table {
 				Resolver: resolveIamPolicyVersionList,
 			},
 		},
+		Relations: []*schema.Table{policyLastAccessedJobs()},
 	}
 }
