@@ -205,6 +205,7 @@ func tables() []*schema.Table {
 		monitor.TenantActivityLogs(),
 		monitor.Resources(),
 		monitor.ActivityLogAlerts(),
+		monitor.AutoscaleSettings(),
 		mysql.Servers(),
 		mysqlflexibleservers.Servers(),
 		network.ApplicationGateways(),
