@@ -34,6 +34,8 @@ See the **[Quickstart guide](https://www.cloudquery.io/docs/quickstart)** for in
 - Homepage: https://www.cloudquery.io
 - Documentation: https://www.cloudquery.io/docs
 - Plugins: https://www.cloudquery.io/docs/plugins/overview
+- How-to Guides: https://www.cloudquery.io/how-to-guides
+- Integrations: https://www.cloudquery.io/integrations
 - Releases: https://github.com/cloudquery/cloudquery/releases
 - Plugin SDK: https://github.com/cloudquery/plugin-sdk
 
