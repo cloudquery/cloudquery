@@ -22,7 +22,7 @@ See the **[Quickstart guide](https://www.cloudquery.io/docs/quickstart)** for in
 - **Eliminate data silos**: Eliminate data silos across your organization, unifying data between security, infrastructure, marketing and finance teams.
 - **Unlimited scale**: CloudQuery plugins are stateless and can be scaled horizontally on any platform, such as EC2, Kubernetes, batch jobs or any other compute.
 
-## Use Cases
+## Use Cases
 
 - **Cloud Security Posture Management**: Use as an open source CSPM solution to monitor and enforce security policies across your cloud infrastructure for AWS, GCP, Azure and many more.
 - **Cloud Asset Inventory**: First-class support for major cloud infrastructure providers such as AWS, GCP and Azure allow you to collect and unify configuration data.
