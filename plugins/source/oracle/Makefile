@@ -15,7 +15,7 @@ gen-code:
 gen-docs:
 	rm -rf ../../../website/tables/oracle
 	go run main.go doc ../../../website/tables/oracle
-	cp ../../../website/tables/oracle/README.md ./docs/tables/README.md
+	sed 's_(\(.*\))_(../../../../../website/tables/oracle/\1)_' ../../../website/tables/oracle/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/oracle/README.md
 	mv ../../../website/tables/oracle/README.md ../../../website/pages/docs/plugins/sources/oracle/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/oracle/*.md
