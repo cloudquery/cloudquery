@@ -23,6 +23,7 @@ This table depends on [gcp_aiplatform_job_locations](gcp_aiplatform_job_location
 |model_version_id|String|
 |unmanaged_container_model|JSON|
 |input_config|JSON|
+|instance_config|JSON|
 |model_parameters|JSON|
 |output_config|JSON|
 |dedicated_resources|JSON|
