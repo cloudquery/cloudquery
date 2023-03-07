@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 
+	// import duckdb driver
 	_ "github.com/marcboeker/go-duckdb"
 )
 
