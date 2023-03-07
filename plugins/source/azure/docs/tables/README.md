@@ -126,6 +126,7 @@
 - [azure_monitor_private_link_scopes](azure_monitor_private_link_scopes.md)
 - [azure_monitor_resources](azure_monitor_resources.md)
   - [azure_monitor_diagnostic_settings](azure_monitor_diagnostic_settings.md)
+- [azure_monitor_subscription_diagnostic_settings](azure_monitor_subscription_diagnostic_settings.md)
 - [azure_monitor_tenant_activity_log_alerts](azure_monitor_tenant_activity_log_alerts.md)
 - [azure_monitor_tenant_activity_logs](azure_monitor_tenant_activity_logs.md)
 - [azure_mysql_servers](azure_mysql_servers.md)
