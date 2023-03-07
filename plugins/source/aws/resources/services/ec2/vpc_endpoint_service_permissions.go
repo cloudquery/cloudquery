@@ -17,9 +17,9 @@ func vpcEndpointServicePermissions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_AllowedPrincipal.html`,
 		Resolver:    fetchEc2VpcEndpointServicePermissions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-		Transform:   transformers.TransformWithStruct(&types.AllowedPrincipal{}),
+		Transform:   transformers.TransformWithStruct(&types.AllowedPrincipal{}, transformers.WithPrimaryKeys("ServiceId", "ServicePermissionId")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
