@@ -159,10 +159,7 @@ func TestPlugin(t *testing.T) {
 	g := errgroup.Group{}
 	g.Go(func() error {
 		defer close(res)
-		if err := p.Sync(ctx, res); err != nil {
-			return err
-		}
-		return nil
+		return p.Sync(ctx, res)
 	})
 	var resource *schema.Resource
 	totalResources := 0
