@@ -2,7 +2,7 @@
 
 ## Tables
 
-- [snyk_dependencies](snyk_dependencies.md)
-- [snyk_integrations](snyk_integrations.md)
-- [snyk_organizations](snyk_organizations.md)
-- [snyk_projects](snyk_projects.md)
+- [snyk_dependencies](../../../../../website/tables/snyk/snyk_dependencies.md)
+- [snyk_integrations](../../../../../website/tables/snyk/snyk_integrations.md)
+- [snyk_organizations](../../../../../website/tables/snyk/snyk_organizations.md)
+- [snyk_projects](../../../../../website/tables/snyk/snyk_projects.md)
