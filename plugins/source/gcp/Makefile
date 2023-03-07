@@ -32,4 +32,4 @@ gen-services:
 
 # All gen targets
 .PHONY: gen
-gen: gen-services gen-docs
+gen: gen-docs
