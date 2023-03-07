@@ -1,6 +1,6 @@
 # CloudQuery DuckDB Destination Plugin
 
-This destination plugin let's you sync data from a CloudQuery source to an DuckDB database. This can be useful for local data exploration as no db/service is required.
+This destination plugin lets you sync data from a CloudQuery source to a DuckDB database.
 
 ## Links
 

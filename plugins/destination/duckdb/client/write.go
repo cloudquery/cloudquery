@@ -44,16 +44,22 @@ func expandData(table *schema.Table, data []any) []any {
 func (c *Client) insert(table *schema.Table, data []any) string {
 	var sb strings.Builder
 	sb.WriteString("insert into ")
-	return c.insertQuery(&sb, table, data)
+	c.insertQuery(&sb, table, data)
+	return sb.String()
 }
 
 func (c *Client) upsert(table *schema.Table, data []any) string {
+	// This code can be simplified by use of `insert or replace into`, but this is
+	// blocked by https://github.com/marcboeker/go-duckdb/issues/80
 	var sb strings.Builder
-	sb.WriteString("insert or replace into ")
-	return c.insertQuery(&sb, table, data)
+	sb.WriteString("insert into ")
+	c.insertQuery(&sb, table, data)
+	sb.WriteString(" on conflict do update set ")
+	c.updateQuery(&sb, table, data)
+	return sb.String()
 }
 
-func (*Client) insertQuery(sb *strings.Builder, table *schema.Table, data []any) string {
+func (*Client) insertQuery(sb *strings.Builder, table *schema.Table, data []any) {
 	sb.WriteString(`"` + table.Name + `"`)
 	sb.WriteString(" (")
 	columns := table.Columns
@@ -89,7 +95,37 @@ func (*Client) insertQuery(sb *strings.Builder, table *schema.Table, data []any)
 			sb.WriteString(")")
 		}
 	}
-	return sb.String()
+}
+
+func (*Client) updateQuery(sb *strings.Builder, table *schema.Table, data []any) {
+	columns := table.Columns
+	columnsLen := len(columns)
+
+	counter := 0
+	for i := range columns {
+		if columns[i].CreationOptions.PrimaryKey {
+			continue
+		}
+		sb.WriteString(`"` + columns[i].Name + `" = `)
+		if isArray(table.Columns[i]) {
+			n := arrayLength(table.Columns[i], data[i])
+			sb.WriteString("[")
+			for j := 0; j < n; j++ {
+				sb.WriteString(fmt.Sprintf("$%d", counter+1))
+				counter++
+				if j < n-1 {
+					sb.WriteString(",")
+				}
+			}
+			sb.WriteString("]")
+		} else {
+			sb.WriteString(fmt.Sprintf("$%d", counter+1))
+			counter++
+		}
+		if i < columnsLen-1 {
+			sb.WriteString(",")
+		}
+	}
 }
 
 func isArray(col schema.Column) bool {
