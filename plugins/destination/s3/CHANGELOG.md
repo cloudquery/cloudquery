@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v2.2.3...plugins-destination-s3-v2.3.0) (2023-03-07)
+
+
+### Features
+
+* **deps:** Update to filetypes v1.5.0 with arrow support ([#8739](https://github.com/cloudquery/cloudquery/issues/8739)) ([1870d4b](https://github.com/cloudquery/cloudquery/commit/1870d4b1fa2a93fad0fcb8b58abdb20c636e11e4))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/xerrors digest to 04be3eb ([#8561](https://github.com/cloudquery/cloudquery/issues/8561)) ([39ccfcd](https://github.com/cloudquery/cloudquery/commit/39ccfcd9a293509e67c31a668c843f2f799a5a38))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.41.0 ([#8682](https://github.com/cloudquery/cloudquery/issues/8682)) ([ea9d065](https://github.com/cloudquery/cloudquery/commit/ea9d065ae9f77c6dd990570974630ae6ac3f153e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.42.0 ([#8725](https://github.com/cloudquery/cloudquery/issues/8725)) ([b83b277](https://github.com/cloudquery/cloudquery/commit/b83b277a2421d1caf46a26c3229041b27a3da148))
+* **deps:** Update module github.com/pierrec/lz4/v4 to v4.1.17 ([#8623](https://github.com/cloudquery/cloudquery/issues/8623)) ([fd968d8](https://github.com/cloudquery/cloudquery/commit/fd968d8938e8b603f2e9f6405eac2409ac41636b))
+* **deps:** Update module github.com/stretchr/testify to v1.8.2 ([#8599](https://github.com/cloudquery/cloudquery/issues/8599)) ([2ec8086](https://github.com/cloudquery/cloudquery/commit/2ec808677328410cc96c97a693ef65022d314c32))
+
 ## [2.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v2.2.2...plugins-destination-s3-v2.2.3) (2023-02-28)
 
 
