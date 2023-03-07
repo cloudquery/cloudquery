@@ -22,7 +22,7 @@ gen-mocks: install-tools
 gen-docs:
 	rm -rf ../../../website/tables/slack
 	go run main.go doc ../../../website/tables/slack
-	cp ../../../website/tables/slack/README.md ./docs/tables/README.md
+	sed 's_(\(.*\))_(../../../../../website/tables/slack/\1)_' ../../../website/tables/slack/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/slack/README.md
 	mv ../../../website/tables/slack/README.md ../../../website/pages/docs/plugins/sources/slack/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/slack/*.md
