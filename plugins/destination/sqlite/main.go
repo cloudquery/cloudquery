@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	sentryDSN = ""
+	sentryDSN = "https://8e769078076443cd9c578833740beb54@o1396617.ingest.sentry.io/4504797525901312"
 )
 
 func main() {
