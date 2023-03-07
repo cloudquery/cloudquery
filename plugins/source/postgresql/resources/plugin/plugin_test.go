@@ -167,6 +167,10 @@ func TestPlugin(t *testing.T) {
 		resource = r
 		totalResources++
 	}
+	err = g.Wait()
+	if err != nil {
+		t.Fatal("got unexpected error:", err)
+	}
 	if totalResources != 1 {
 		t.Fatalf("expected 1 resource, got %d", totalResources)
 	}
