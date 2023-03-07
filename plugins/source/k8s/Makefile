@@ -22,7 +22,7 @@ gen-docs:
 	
 	rm -rf ../../../website/tables/k8s
 	go run main.go doc ../../../website/tables/k8s
-	cp ../../../website/tables/k8s/README.md ./docs/tables/README.md
+	sed 's_(\(.*\))_(../../../../../website/tables/k8s/\1)_' ../../../website/tables/k8s/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/k8s/README.md
 	mv ../../../website/tables/k8s/README.md ../../../website/pages/docs/plugins/sources/k8s/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/k8s/*.md
