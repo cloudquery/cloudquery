@@ -41,8 +41,7 @@ You will need to replace `<DESTINATION_BUCKET_NAME>` with the name of the S3 Buc
 
 ## Solution Overview
 
-![alt text](website/data/ecs-deployment/cloudquery_on_ecs.png "Title")
-
+![alt text](/website/data/ecs-deployment/cloudquery_on_ecs.png "Title")
 
 
 The CloudFormation will stand up a number of resources including:
