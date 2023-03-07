@@ -8,8 +8,8 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	policies "cloud.google.com/go/iam/apiv2"
+	policiespb "cloud.google.com/go/iam/apiv2/iampb"
 	"google.golang.org/api/iterator"
-	policiespb "google.golang.org/genproto/googleapis/iam/v2"
 )
 
 func fetchDenyPolicies(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- any) error {
