@@ -1,6 +1,6 @@
 module github.com/{{.Org}}/cq-source-{{.Name}}
 
-go 1.19
+go 1.20
 
 require (
 	github.com/cloudquery/plugin-sdk v1.42.0
