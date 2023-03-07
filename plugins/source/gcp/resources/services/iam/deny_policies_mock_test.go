@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/grpc"
 
-	pb "google.golang.org/genproto/googleapis/iam/v2"
+	pb "cloud.google.com/go/iam/apiv2/iampb"
 )
 
 func createDenyPolicies(gsrv *grpc.Server) error {
