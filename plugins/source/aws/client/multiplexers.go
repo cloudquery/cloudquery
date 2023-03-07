@@ -140,6 +140,6 @@ func generateLogMessages(client *Client, service string, skippedRegions []string
 		if emptyMultiplexer {
 			loggerEvent = client.Logger().Error()
 		}
-		loggerEvent.Str("service", service).Strs("regions", skippedRegions).Msg("specified regions are not supported for service")
+		loggerEvent.Str("service", service).Strs("regions", skippedRegions).Msg("specified regions do not support service")
 	}
 }
