@@ -66,6 +66,7 @@ func (*fakeDatasetLocationsRelationsServer) ListDatasets(context.Context, *aipla
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
 	resp.NextPageToken = ""
+	resp.Datasets[0].SavedQueries[0].Metadata = nil
 	return &resp, nil
 }
 
