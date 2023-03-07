@@ -23,3 +23,4 @@ This table depends on [gcp_vmmigration_source_migrating_vms](gcp_vmmigration_sou
 |state|String|
 |state_time|Timestamp|
 |error|JSON|
+|steps|JSON|
