@@ -7,6 +7,7 @@ test:
 gen-docs:
 	rm -rf ../../../website/tables/vercel
 	go run main.go doc ../../../website/tables/vercel
+	cp ../../../website/tables/vercel/README.md ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/vercel/README.md
 	mv ../../../website/tables/vercel/README.md ../../../website/pages/docs/plugins/sources/vercel/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/vercel/*.md

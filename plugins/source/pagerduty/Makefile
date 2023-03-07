@@ -17,6 +17,7 @@ gen-mocks:
 gen-docs:
 	rm -rf ../../../website/tables/pagerduty
 	go run main.go doc ../../../website/tables/pagerduty
+	cp ../../../website/tables/pagerduty/README.md ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/pagerduty/README.md
 	mv ../../../website/tables/pagerduty/README.md ../../../website/pages/docs/plugins/sources/pagerduty/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/pagerduty/*.md

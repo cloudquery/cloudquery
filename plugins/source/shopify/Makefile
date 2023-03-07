@@ -7,6 +7,7 @@ test:
 gen-docs:
 	rm -rf ../../../website/tables/shopify
 	go run main.go doc ../../../website/tables/shopify
+	cp ../../../website/tables/shopify/README.md ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/shopify/README.md
 	mv ../../../website/tables/shopify/README.md ../../../website/pages/docs/plugins/sources/shopify/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/shopify/*.md
