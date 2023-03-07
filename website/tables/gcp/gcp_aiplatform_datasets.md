@@ -26,5 +26,6 @@ This table depends on [gcp_aiplatform_dataset_locations](gcp_aiplatform_dataset_
 |update_time|Timestamp|
 |etag|String|
 |labels|JSON|
+|saved_queries|JSON|
 |encryption_spec|JSON|
 |metadata_artifact|String|
