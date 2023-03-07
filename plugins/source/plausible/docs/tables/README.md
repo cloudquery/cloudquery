@@ -2,4 +2,4 @@
 
 ## Tables
 
-- [plausible_stats_timeseries](plausible_stats_timeseries.md)
+- [plausible_stats_timeseries](../../../../../website/tables/plausible/plausible_stats_timeseries.md)
