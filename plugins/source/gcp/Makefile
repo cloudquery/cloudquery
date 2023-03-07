@@ -14,12 +14,17 @@ lint:
 
 .PHONY: gen-docs
 gen-docs:
-	rm -rf ./docs/tables/*
-	go run main.go doc ./docs/tables
-	sed 's_(\(.*\))_(https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/tables/\1)_' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/gcp/tables.md
 	go run main.go doc --format json docs
 	go run scripts/policy_docs/main.go gcp policies ../../../website/pages/docs/plugins/sources/gcp/policies.md docs/__tables.json
 	rm docs/__tables.json
+
+	rm -rf ../../../website/tables/gcp
+	go run main.go doc ../../../website/tables/gcp
+	cp ../../../website/tables/gcp/README.md ./docs/tables/README.md
+	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/gcp/README.md
+	mv ../../../website/tables/gcp/README.md ../../../website/pages/docs/plugins/sources/gcp/tables.md
+	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/gcp/*.md
+	rm -rf ../../../website/tables/gcp/*.bak
 
 .PHONY: gen-services
 gen-services:

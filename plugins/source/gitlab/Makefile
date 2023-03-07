@@ -9,9 +9,13 @@ lint:
 
 .PHONY: gen-docs
 gen-docs:
-	rm -rf ./docs/tables/*
-	go run main.go doc ./docs/tables
-	sed 's_(\(.*\))_(https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gitlab/docs/tables/\1)_' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/gitlab/tables.md
+	rm -rf ../../../website/tables/gitlab
+	go run main.go doc ../../../website/tables/gitlab
+	cp ../../../website/tables/gitlab/README.md ./docs/tables/README.md
+	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/gitlab/README.md
+	mv ../../../website/tables/gitlab/README.md ../../../website/pages/docs/plugins/sources/gitlab/tables.md
+	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/gitlab/*.md
+	rm -rf ../../../website/tables/gitlab/*.bak
 
 # All gen targets
 .PHONY: gen
