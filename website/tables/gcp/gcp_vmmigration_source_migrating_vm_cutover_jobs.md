@@ -25,3 +25,4 @@ This table depends on [gcp_vmmigration_source_migrating_vms](gcp_vmmigration_sou
 |progress_percent|Int|
 |error|JSON|
 |state_message|String|
+|steps|JSON|

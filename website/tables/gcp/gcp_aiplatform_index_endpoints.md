@@ -27,3 +27,4 @@ This table depends on [gcp_aiplatform_indexendpoint_locations](gcp_aiplatform_in
 |update_time|Timestamp|
 |network|String|
 |enable_private_service_connect|Bool|
+|private_service_connect_config|JSON|
