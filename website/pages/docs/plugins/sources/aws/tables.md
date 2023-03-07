@@ -174,6 +174,7 @@
   - [aws_ec2_transit_gateway_vpc_attachments](tables/aws_ec2_transit_gateway_vpc_attachments)
 - [aws_ec2_vpc_endpoint_service_configurations](tables/aws_ec2_vpc_endpoint_service_configurations)
 - [aws_ec2_vpc_endpoint_services](tables/aws_ec2_vpc_endpoint_services)
+  - [aws_ec2_vpc_endpoint_service_permissions](tables/aws_ec2_vpc_endpoint_service_permissions)
 - [aws_ec2_vpc_endpoints](tables/aws_ec2_vpc_endpoints)
 - [aws_ec2_vpc_peering_connections](tables/aws_ec2_vpc_peering_connections)
 - [aws_ec2_vpcs](tables/aws_ec2_vpcs)
