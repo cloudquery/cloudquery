@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"testing"
 
+	pb "cloud.google.com/go/apikeys/apiv2/apikeyspb"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	pb "google.golang.org/genproto/googleapis/api/apikeys/v2"
 	"google.golang.org/grpc"
 )
 
