@@ -5,6 +5,23 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v4.1.7...plugins-source-digitalocean-v4.2.0) (2023-03-07)
+
+
+### Features
+
+* **docs:** Render tables as a part of the Website and add a [tables search box](https://www.cloudquery.io/tables). The equivalent of the GitHub README.md file is now under each plugin's docs section, for example https://www.cloudquery.io/docs/plugins/sources/aws/tables. The Website HTML page is built from the GitHub markdown file located under each plugin's path in our Website code, for example https://github.com/cloudquery/cloudquery/blob/main/website/pages/docs/plugins/sources/aws/tables.md. For the list of all plugins table files as they are stored on GitHub see https://github.com/cloudquery/cloudquery/tree/main/website/tables ([342b0c5](https://github.com/cloudquery/cloudquery/commit/342b0c569fd28ee26ea3e09ec6d787f85c49f16c))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to c95f2b4 ([#8560](https://github.com/cloudquery/cloudquery/issues/8560)) ([9c3bd5b](https://github.com/cloudquery/cloudquery/commit/9c3bd5b68f9741a360fde6c54bf3f5f3efe06d9e))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/internal/checksum to v1.1.24 ([#8720](https://github.com/cloudquery/cloudquery/issues/8720)) ([153afdb](https://github.com/cloudquery/cloudquery/commit/153afdb1d42f179432de299d1f05fd52b3cf4c99))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/internal/s3shared to v1.13.23 ([#8721](https://github.com/cloudquery/cloudquery/issues/8721)) ([a22330e](https://github.com/cloudquery/cloudquery/commit/a22330e776d4f7202e3bcd987ca2c555b23fb72b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.41.0 ([#8682](https://github.com/cloudquery/cloudquery/issues/8682)) ([ea9d065](https://github.com/cloudquery/cloudquery/commit/ea9d065ae9f77c6dd990570974630ae6ac3f153e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.42.0 ([#8725](https://github.com/cloudquery/cloudquery/issues/8725)) ([b83b277](https://github.com/cloudquery/cloudquery/commit/b83b277a2421d1caf46a26c3229041b27a3da148))
+* **deps:** Update module github.com/stretchr/testify to v1.8.2 ([#8599](https://github.com/cloudquery/cloudquery/issues/8599)) ([2ec8086](https://github.com/cloudquery/cloudquery/commit/2ec808677328410cc96c97a693ef65022d314c32))
+
 ## [4.1.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v4.1.6...plugins-source-digitalocean-v4.1.7) (2023-02-28)
 
 

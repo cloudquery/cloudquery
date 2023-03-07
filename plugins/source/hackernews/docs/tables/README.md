@@ -2,4 +2,4 @@
 
 ## Tables
 
-- [hackernews_items](hackernews_items.md) (Incremental)
+- [hackernews_items](../../../../../website/tables/hackernews/hackernews_items.md) (Incremental)
