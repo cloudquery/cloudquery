@@ -49,12 +49,10 @@ The CloudFormation will stand up a number of resources including:
 
 
 - ***ECS Service and Task definition***: This uses the base image that the [CloudQuery Team maintains](https://github.com/cloudquery/cloudquery/pkgs/container/cloudquery). On top of that image this solution provides an alternative entrypoint that enables users to specify the configuration file as a base64 encoded string as an environment variable. This allows users to not have to build and maintain a custom image.
-- ***EventBridge Schedule***: Th
-- ***CloudWatch Dashboard***: A dashboard of useful information and metrics. This dashboard is powered by CloudWatch Insight querying the structured logs that are produced by each sync
+- ***EventBridge Schedule***: A Cloud native scheduling service that enables users to directly trigger an ECS task to run at a specific time or rate with support for timezones and daylight savings time. 
+- ***CloudWatch Dashboard***: A dashboard of useful information and metrics. This dashboard is powered by CloudWatch Insight querying the structured logs that are produced by each sync.
 - ***VPC and supporting resources***: By default this solution will deploy all of the VPC and networking resources required for you to have a running sync at the end of the deployment.  
 
-
-D
 
 ### Deploying Solution
 
