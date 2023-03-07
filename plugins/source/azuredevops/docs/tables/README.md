@@ -2,4 +2,4 @@
 
 ## Tables
 
-- [azuredevops_core_projects](azuredevops_core_projects.md)
+- [azuredevops_core_projects](../../../../../website/tables/azuredevops/azuredevops_core_projects.md)

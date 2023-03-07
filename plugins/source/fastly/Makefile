@@ -28,7 +28,7 @@ gen-mocks: install-tools
 gen-docs:
 	rm -rf ../../../website/tables/fastly
 	go run main.go doc ../../../website/tables/fastly
-	cp ../../../website/tables/fastly/README.md ./docs/tables/README.md
+	sed 's_(\(.*\))_(../../../../../website/tables/fastly/\1)_' ../../../website/tables/fastly/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/fastly/README.md
 	mv ../../../website/tables/fastly/README.md ../../../website/pages/docs/plugins/sources/fastly/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/fastly/*.md
