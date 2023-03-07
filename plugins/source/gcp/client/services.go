@@ -93,6 +93,7 @@ var GcpServices = map[string]bool{
 	"dataform.googleapis.com":                         true,
 	"datafusion.googleapis.com":                       true,
 	"datalabeling.googleapis.com":                     true,
+	"datalineage.googleapis.com":                      true,
 	"datamigration.googleapis.com":                    true,
 	"datapipelines.googleapis.com":                    true,
 	"dataplex.googleapis.com":                         true,
