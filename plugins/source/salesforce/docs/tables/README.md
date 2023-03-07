@@ -2,4 +2,4 @@
 
 ## Tables
 
-- [salesforce_objects](salesforce_objects.md)
+- [salesforce_objects](../../../../../website/tables/salesforce/salesforce_objects.md)
