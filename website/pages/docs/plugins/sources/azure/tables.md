@@ -121,6 +121,7 @@
   - [azure_mariadb_server_configurations](tables/azure_mariadb_server_configurations)
 - [azure_marketplace_private_store](tables/azure_marketplace_private_store)
 - [azure_monitor_activity_log_alerts](tables/azure_monitor_activity_log_alerts)
+- [azure_monitor_autoscale_settings](tables/azure_monitor_autoscale_settings)
 - [azure_monitor_log_profiles](tables/azure_monitor_log_profiles)
 - [azure_monitor_private_link_scopes](tables/azure_monitor_private_link_scopes)
 - [azure_monitor_resources](tables/azure_monitor_resources)

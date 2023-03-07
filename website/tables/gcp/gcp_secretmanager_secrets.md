@@ -21,3 +21,4 @@ The primary key for this table is **name**.
 |etag|String|
 |rotation|JSON|
 |version_aliases|JSON|
+|annotations|JSON|
