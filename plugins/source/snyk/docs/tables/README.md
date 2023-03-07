@@ -1,3 +1,8 @@
 # Source Plugin: snyk
 
-Plugins tables are now part of our Website. Please visit [https://www.cloudquery.io/docs/plugins/sources/snyk/tables](https://www.cloudquery.io/docs/plugins/sources/snyk/tables) for the latest information.
+## Tables
+
+- [snyk_dependencies](../../../../../website/tables/snyk/snyk_dependencies.md)
+- [snyk_integrations](../../../../../website/tables/snyk/snyk_integrations.md)
+- [snyk_organizations](../../../../../website/tables/snyk/snyk_organizations.md)
+- [snyk_projects](../../../../../website/tables/snyk/snyk_projects.md)

@@ -11,6 +11,7 @@ lint:
 gen-docs:
 	rm -rf ../../../website/tables/snyk
 	go run main.go doc ../../../website/tables/snyk
+	sed 's_(\(.*\))_(../../../../../website/tables/snyk/\1)_' ../../../website/tables/snyk/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/snyk/README.md
 	mv ../../../website/tables/snyk/README.md ../../../website/pages/docs/plugins/sources/snyk/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/snyk/*.md

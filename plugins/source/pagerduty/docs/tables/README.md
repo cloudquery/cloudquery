@@ -1,3 +1,26 @@
 # Source Plugin: pagerduty
 
-Plugins tables are now part of our Website. Please visit [https://www.cloudquery.io/docs/plugins/sources/pagerduty/tables](https://www.cloudquery.io/docs/plugins/sources/pagerduty/tables) for the latest information.
+## Tables
+
+- [pagerduty_addons](../../../../../website/tables/pagerduty/pagerduty_addons.md)
+- [pagerduty_business_services](../../../../../website/tables/pagerduty/pagerduty_business_services.md)
+- [pagerduty_escalation_policies](../../../../../website/tables/pagerduty/pagerduty_escalation_policies.md)
+- [pagerduty_extension_schemas](../../../../../website/tables/pagerduty/pagerduty_extension_schemas.md)
+- [pagerduty_extensions](../../../../../website/tables/pagerduty/pagerduty_extensions.md)
+- [pagerduty_incidents](../../../../../website/tables/pagerduty/pagerduty_incidents.md)
+  - [pagerduty_incident_alerts](../../../../../website/tables/pagerduty/pagerduty_incident_alerts.md)
+  - [pagerduty_incident_log_entries](../../../../../website/tables/pagerduty/pagerduty_incident_log_entries.md)
+  - [pagerduty_incident_notes](../../../../../website/tables/pagerduty/pagerduty_incident_notes.md)
+- [pagerduty_maintenance_windows](../../../../../website/tables/pagerduty/pagerduty_maintenance_windows.md)
+- [pagerduty_priorities](../../../../../website/tables/pagerduty/pagerduty_priorities.md)
+- [pagerduty_rulesets](../../../../../website/tables/pagerduty/pagerduty_rulesets.md)
+  - [pagerduty_ruleset_rules](../../../../../website/tables/pagerduty/pagerduty_ruleset_rules.md)
+- [pagerduty_schedules](../../../../../website/tables/pagerduty/pagerduty_schedules.md)
+- [pagerduty_services](../../../../../website/tables/pagerduty/pagerduty_services.md)
+  - [pagerduty_service_rules](../../../../../website/tables/pagerduty/pagerduty_service_rules.md)
+- [pagerduty_tags](../../../../../website/tables/pagerduty/pagerduty_tags.md)
+- [pagerduty_teams](../../../../../website/tables/pagerduty/pagerduty_teams.md)
+- [pagerduty_users](../../../../../website/tables/pagerduty/pagerduty_users.md)
+  - [pagerduty_user_contact_methods](../../../../../website/tables/pagerduty/pagerduty_user_contact_methods.md)
+  - [pagerduty_user_notification_rules](../../../../../website/tables/pagerduty/pagerduty_user_notification_rules.md)
+- [pagerduty_vendors](../../../../../website/tables/pagerduty/pagerduty_vendors.md)
