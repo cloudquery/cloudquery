@@ -62,7 +62,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		c.reverseTransformer = &csv.ReverseTransformer{}
 	case FormatTypeJSON:
 		c.formatClient, err = json.NewClient()
-		c.CQTypeTransformer = &json.Transformer{}
+		c.CQTypeTransformer = &schema.DefaultTransformer{}
 		c.reverseTransformer = &json.ReverseTransformer{}
 	case FormatTypeParquet:
 		c.formatClient, err = parquet.NewClient()
