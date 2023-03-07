@@ -23,3 +23,4 @@ This table depends on [gcp_artifactregistry_repositories](gcp_artifactregistry_r
 |create_time|Timestamp|
 |update_time|Timestamp|
 |owner|String|
+|fetch_time|Timestamp|
