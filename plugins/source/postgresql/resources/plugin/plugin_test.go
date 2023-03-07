@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/postgresql/client"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/cloudquery/plugin-sdk/testdata"
@@ -21,6 +20,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jackc/pgx/v5/tracelog"
 	"github.com/rs/zerolog"
+	"golang.org/x/sync/errgroup"
 )
 
 func getTestConnection(ctx context.Context, logger zerolog.Logger, connectionString string) (*pgxpool.Pool, error) {
@@ -52,11 +52,12 @@ func getTestConnectionString() string {
 	return testConn
 }
 
-func create_test_table(ctx context.Context, c *client.Client, table *schema.Table) error {
+func createTestTable(ctx context.Context, conn *pgxpool.Pool, table *schema.Table) error {
 	var sb strings.Builder
 	sb.WriteString("CREATE TABLE ")
 	sb.WriteString(table.Name)
 	sb.WriteString(" (")
+	c := client.Client{}
 	for i, col := range table.Columns {
 		sb.WriteString(col.Name)
 		sb.WriteString(" ")
@@ -69,13 +70,13 @@ func create_test_table(ctx context.Context, c *client.Client, table *schema.Tabl
 		}
 	}
 	sb.WriteString(")")
-	if _, err := c.Conn.Exec(ctx, sb.String()); err != nil {
+	if _, err := conn.Exec(ctx, sb.String()); err != nil {
 		return err
 	}
 	return nil
 }
 
-func insert_test_table(ctx context.Context, conn *pgxpool.Pool, table *schema.Table, data schema.CQTypes) error {
+func insertTestTable(ctx context.Context, conn *pgxpool.Pool, table *schema.Table, data schema.CQTypes) error {
 	var sb strings.Builder
 	sb.WriteString("INSERT INTO ")
 	sb.WriteString(table.Name)
@@ -124,22 +125,29 @@ func TestPlugin(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	metaClient, err := client.Configure(ctx, l, spec, source.Options{})
-	if err != nil {
-		t.Fatal(err)
-	}
-	testClient := metaClient.(*client.Client)
+	defer conn.Close()
 
 	testTable := testdata.TestSourceTable("test_pg_source")
-	if _, err := testClient.Conn.Exec(ctx, "DROP TABLE IF EXISTS test_pg_source"); err != nil {
+	if _, err := conn.Exec(ctx, "DROP TABLE IF EXISTS test_pg_source"); err != nil {
 		t.Fatal(err)
 	}
-	if err := create_test_table(ctx, testClient, testTable); err != nil {
+	if err := createTestTable(ctx, conn, testTable); err != nil {
 		t.Fatal(err)
 	}
 	data := testdata.GenTestData(testTable)
-	if err := insert_test_table(ctx, conn, testTable, data); err != nil {
+	if err := insertTestTable(ctx, conn, testTable, data); err != nil {
+		t.Fatal(err)
+	}
+
+	otherTable := testdata.TestSourceTable("other_pg_table")
+	if _, err := conn.Exec(ctx, "DROP TABLE IF EXISTS other_pg_table"); err != nil {
+		t.Fatal(err)
+	}
+	if err := createTestTable(ctx, conn, otherTable); err != nil {
+		t.Fatal(err)
+	}
+	otherData := testdata.GenTestData(otherTable)
+	if err := insertTestTable(ctx, conn, otherTable, otherData); err != nil {
 		t.Fatal(err)
 	}
 
@@ -147,11 +155,15 @@ func TestPlugin(t *testing.T) {
 	if err := p.Init(ctx, spec); err != nil {
 		t.Fatal(err)
 	}
-	res := make(chan *schema.Resource, 10)
-	if err := p.Sync(ctx, res); err != nil {
-		t.Fatal(err)
-	}
-	close(res)
+	res := make(chan *schema.Resource, 1)
+	g := errgroup.Group{}
+	g.Go(func() error {
+		defer close(res)
+		if err := p.Sync(ctx, res); err != nil {
+			return err
+		}
+		return nil
+	})
 	var resource *schema.Resource
 	totalResources := 0
 	for r := range res {
@@ -189,6 +201,7 @@ func TestPluginCDC(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer conn.Close()
 	if _, err := conn.Exec(ctx, "DROP TABLE IF EXISTS test_pg_source"); err != nil {
 		t.Fatal(err)
 	}
@@ -201,16 +214,11 @@ func TestPluginCDC(t *testing.T) {
 
 	testTable := testdata.TestSourceTable("test_pg_source")
 
-	metaClient, err := client.Configure(ctx, l, spec, source.Options{})
-	if err != nil {
-		t.Fatal(err)
-	}
-	testClient := metaClient.(*client.Client)
-	if err := create_test_table(ctx, testClient, testTable); err != nil {
+	if err := createTestTable(ctx, conn, testTable); err != nil {
 		t.Fatal(err)
 	}
 	data := testdata.GenTestData(testTable)
-	if err := insert_test_table(ctx, conn, testTable, data); err != nil {
+	if err := insertTestTable(ctx, conn, testTable, data); err != nil {
 		t.Fatal(err)
 	}
 	data2 := testdata.GenTestData(testTable)
@@ -233,10 +241,11 @@ func TestPluginCDC(t *testing.T) {
 		syncErr = p.Sync(syncCtx, res)
 	}()
 	time.AfterFunc(2*time.Second, func() {
-		if err := insert_test_table(ctx, conn, testTable, data2); err != nil {
+		if err := insertTestTable(ctx, conn, testTable, data2); err != nil {
 			t.Fatal(err)
 		}
 	})
+
 	totalResources := 0
 	for r := range res {
 		gotData := r.GetValues()
