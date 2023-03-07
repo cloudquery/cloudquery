@@ -169,6 +169,7 @@ export const SOURCE_PLUGINS: Plugin[] = [
   {
     name: "SharePoint",
     logo: "/images/logos/plugins/sharepoint.svg",
+    href: "https://github.com/koltyakov/cq-source-sharepoint",
     id: "sharepoint",
     kind: "community",
   },
