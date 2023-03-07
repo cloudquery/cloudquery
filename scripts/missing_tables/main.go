@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"regexp"
 	"strings"
@@ -21,7 +20,7 @@ func parseDocsTables() map[string]bool {
 		if strings.HasPrefix(readme, "plugins/source/test") {
 			continue
 		}
-		content, err := ioutil.ReadFile("../../" + readme)
+		content, err := os.ReadFile("../../" + readme)
 		if err != nil {
 			panic(err)
 		}
@@ -53,7 +52,7 @@ func parseCodeTables() map[string]string {
 		if strings.HasSuffix(tableFile, "_test.go") {
 			continue
 		}
-		content, err := ioutil.ReadFile("../../" + tableFile)
+		content, err := os.ReadFile("../../" + tableFile)
 		if err != nil {
 			panic(err)
 		}
