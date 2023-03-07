@@ -6,7 +6,7 @@ The composite primary key for this table is (**arn**, **service_namespace**).
 
 ## Relations
 
-This table depends on [aws_iam_group_last_accessed_jobs](aws_iam_group_last_accessed_jobs).
+This table depends on [aws_iam_groups](aws_iam_groups).
 
 ## Columns
 

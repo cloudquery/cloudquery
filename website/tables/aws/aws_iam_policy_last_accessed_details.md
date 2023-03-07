@@ -6,7 +6,7 @@ The composite primary key for this table is (**account_id**, **arn**, **service_
 
 ## Relations
 
-This table depends on [aws_iam_policy_last_accessed_jobs](aws_iam_policy_last_accessed_jobs).
+This table depends on [aws_iam_policies](aws_iam_policies).
 
 ## Columns
 

@@ -23,7 +23,7 @@ func userLastAccessedDetails() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_iam_user_last_accessed_details",
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
-		Resolver:    fetchLastAccessedDetails,
+		Resolver:    fetchUserLastAccessedDetails,
 		Transform:   transformers.TransformWithStruct(&LastAccessed{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
@@ -36,7 +36,7 @@ func roleLastAccessedDetails() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_iam_role_last_accessed_details",
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
-		Resolver:    fetchLastAccessedDetails,
+		Resolver:    fetchRoleLastAccessedDetails,
 		Transform:   transformers.TransformWithStruct(&LastAccessed{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
@@ -49,7 +49,7 @@ func groupLastAccessedDetails() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_iam_group_last_accessed_details",
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
-		Resolver:    fetchLastAccessedDetails,
+		Resolver:    fetchGroupLastAccessedDetails,
 		Transform:   transformers.TransformWithStruct(&LastAccessed{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
@@ -62,7 +62,7 @@ func policyLastAccessedDetails() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_iam_policy_last_accessed_details",
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
-		Resolver:    fetchLastAccessedDetails,
+		Resolver:    fetchPolicyLastAccessedDetails,
 		Transform:   transformers.TransformWithStruct(&LastAccessed{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
 		Columns: []schema.Column{
@@ -71,11 +71,41 @@ func policyLastAccessedDetails() *schema.Table {
 	}
 }
 
-func fetchLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchUserLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	user := parent.Item.(*types.User)
+	return fetchLastAccessedDetails(ctx, meta, user.Arn, res)
+}
+
+func fetchRoleLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	role := parent.Item.(*types.Role)
+	return fetchLastAccessedDetails(ctx, meta, role.Arn, res)
+}
+
+func fetchGroupLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	group := parent.Item.(types.Group)
+	return fetchLastAccessedDetails(ctx, meta, group.Arn, res)
+}
+
+func fetchPolicyLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	policy := parent.Item.(types.ManagedPolicyDetail)
+	return fetchLastAccessedDetails(ctx, meta, policy.Arn, res)
+}
+
+func fetchLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, arn *string, res chan<- any) error {
 	svc := meta.(*client.Client).Services().Iam
-	job := parent.Item.(Job)
+	generateConfig := iam.GenerateServiceLastAccessedDetailsInput{
+		Arn:         arn,
+		Granularity: types.AccessAdvisorUsageGranularityTypeActionLevel,
+	}
+	output, err := svc.GenerateServiceLastAccessedDetails(ctx, &generateConfig)
+	if err != nil {
+		return err
+	}
+
+	jobId := output.JobId
+
 	config := iam.GetServiceLastAccessedDetailsInput{
-		JobId:    &job.JobId,
+		JobId:    jobId,
 		MaxItems: aws.Int32(1000),
 	}
 
@@ -94,8 +124,8 @@ func fetchLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, paren
 		case types.JobStatusTypeCompleted:
 			for _, detail := range details.ServicesLastAccessed {
 				res <- LastAccessed{
-					Arn:                 job.Arn,
-					JobId:               job.JobId,
+					Arn:                 *arn,
+					JobId:               *jobId,
 					ServiceLastAccessed: detail,
 				}
 			}

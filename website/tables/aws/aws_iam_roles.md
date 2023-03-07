@@ -7,7 +7,7 @@ The composite primary key for this table is (**account_id**, **id**).
 ## Relations
 
 The following tables depend on aws_iam_roles:
-  - [aws_iam_role_last_accessed_jobs](aws_iam_role_last_accessed_jobs)
+  - [aws_iam_role_last_accessed_details](aws_iam_role_last_accessed_details)
   - [aws_iam_role_policies](aws_iam_role_policies)
 
 ## Columns
