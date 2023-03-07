@@ -47,7 +47,6 @@ You will need to replace `<DESTINATION_BUCKET_NAME>` with the name of the S3 Buc
 The CloudFormation will stand up a number of resources including:
 
 
-
 - ***ECS Service and Task definition***: This uses the base image that the [CloudQuery Team maintains](https://github.com/cloudquery/cloudquery/pkgs/container/cloudquery). On top of that image this solution provides an alternative entrypoint that enables users to specify the configuration file as a base64 encoded string as an environment variable. This allows users to not have to build and maintain a custom image.
 - ***EventBridge Schedule***: A Cloud native scheduling service that enables users to directly trigger an ECS task to run at a specific time or rate with support for timezones and daylight savings time. 
 - ***CloudWatch Dashboard***: A dashboard of useful information and metrics. This dashboard is powered by CloudWatch Insight querying the structured logs that are produced by each sync.
@@ -56,20 +55,21 @@ The CloudFormation will stand up a number of resources including:
 
 ### Deploying Solution
 
-Start off by cloning:
+Start off by downloading the following files:
 ```bash
-git clone https://github.com/cloudquery/<NOT SURE HOW WE WILL RELEASE THIS>
-cd <DIRECTORY>
+
+curl https://raw.githubusercontent.com/bbernays/cloudquery/ecs-tutorial/website/data/ecs-deployment/cloudquery.yml -o cloudquery.yml
+curl https://raw.githubusercontent.com/bbernays/cloudquery/ecs-tutorial/website/data/ecs-deployment/template.yml -o template.yml
 ```
 
 Deploy CloudFormation Template:
 
 ```bash
 aws cloudformation deploy --template-file template.yml \
-  --stack-name $STACKNAME \
+  --stack-name <STACK_NAME> \
   --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
   --parameter-overrides \
-    DestinationS3Bucket=$BUCKET_NAME \
+    DestinationS3Bucket=<BUCKET_NAME> \
     CQConfiguration=$(cat cloudquery.yml| base64) 
 ```
 
