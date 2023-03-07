@@ -44,6 +44,7 @@ func Users() *schema.Table {
 			UserPolicies(),
 			SshPublicKeys(),
 			SigningCertificates(),
+			userLastAccessedDetails(),
 		},
 	}
 }

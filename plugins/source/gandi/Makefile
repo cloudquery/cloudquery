@@ -18,6 +18,7 @@ install-tools:
 gen-docs:
 	rm -rf ../../../website/tables/gandi
 	go run main.go doc ../../../website/tables/gandi
+	sed 's_(\(.*\))_(../../../../../website/tables/gandi/\1)_' ../../../website/tables/gandi/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/gandi/README.md
 	mv ../../../website/tables/gandi/README.md ../../../website/pages/docs/plugins/sources/gandi/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/gandi/*.md
