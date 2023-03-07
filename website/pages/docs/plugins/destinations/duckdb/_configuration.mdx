@@ -1,4 +1,4 @@
-This is a basic configuration that will save all your sync resources to `foo.db`.
+This is a basic configuration that will save all your sync resources to `/path/to/example.db`.
 
 ```yaml copy
 kind: destination
@@ -7,7 +7,7 @@ spec:
   path: cloudquery/duckdb
   version: "VERSION_DESTINATION_DUCKDB"
   spec:
-    connection_string: /path/to/foo.db
+    connection_string: /path/to/example.db
 ```
 
-After running `cloudquery sync`, you can explore the data locally with the DuckDB CLI: `duckdb /path/to/foo.db`.
+After running `cloudquery sync`, you can explore the data locally with the DuckDB CLI: `duckdb /path/to/example.db`.
