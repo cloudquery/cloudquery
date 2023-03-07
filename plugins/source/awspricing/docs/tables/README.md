@@ -2,6 +2,6 @@
 
 ## Tables
 
-- [awspricing_services](awspricing_services.md)
-  - [awspricing_service_products](awspricing_service_products.md)
-  - [awspricing_service_terms](awspricing_service_terms.md)
+- [awspricing_services](../../../../../website/tables/awspricing/awspricing_services.md)
+  - [awspricing_service_products](../../../../../website/tables/awspricing/awspricing_service_products.md)
+  - [awspricing_service_terms](../../../../../website/tables/awspricing/awspricing_service_terms.md)
