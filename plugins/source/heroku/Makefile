@@ -18,6 +18,7 @@ install-tools:
 gen-docs:
 	rm -rf ../../../website/tables/heroku
 	go run main.go doc ../../../website/tables/heroku
+	sed 's_(\(.*\))_(../../../../../website/tables/heroku/\1)_' ../../../website/tables/heroku/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/heroku/README.md
 	mv ../../../website/tables/heroku/README.md ../../../website/pages/docs/plugins/sources/heroku/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/heroku/*.md
