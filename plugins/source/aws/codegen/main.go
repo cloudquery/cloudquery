@@ -234,6 +234,7 @@ func include(m reflect.Method) bool {
 		"QuerySchemaVersionMetadata",
 		"GenerateCredentialReport",
 		"LookupEvents",
+		"GenerateServiceLastAccessedDetails",
 	}
 	if funk.ContainsString(exceptions, m.Name) {
 		return true
