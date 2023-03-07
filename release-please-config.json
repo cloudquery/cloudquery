@@ -83,6 +83,9 @@
     "plugins/destination/clickhouse": {
       "component": "plugins-destination-clickhouse"
     },
+    "plugins/destination/duckdb": {
+      "component": "plugins-destination-duckdb"
+    },
     "plugins/destination/test": {
       "component": "plugins-destination-test"
     },

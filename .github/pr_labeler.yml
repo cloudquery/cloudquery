@@ -98,6 +98,8 @@ firehose:
   - plugins/destination/firehose/**/*  
 clickhouse:
   - plugins/destination/clickhouse/**/*
+duckdb:
+  - plugins/destination/duckdb/**/*
 website:
   - website/**/*
 cli:

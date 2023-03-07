@@ -266,6 +266,13 @@ export const DESTINATION_PLUGINS: Plugin[] = [
     kind: "official",
   },
   {
+    name: "DuckDB",
+    logo: "/images/logos/plugins/duckdb.svg",
+    logoDark: "/images/logos/plugins/duckdb-dark.svg",
+    id: "duckdb",
+    kind: "official",
+  },
+  {
     name: "Elasticsearch",
     logo: "/images/logos/plugins/elasticsearch.svg",
     id: "elasticsearch",

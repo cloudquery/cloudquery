@@ -80,6 +80,7 @@ jobs:
                            "plugins/destination/sqlite",
                            "plugins/destination/snowflake",
                            "plugins/destination/bigquery",
+                           "plugins/destination/duckdb",
                            "plugins/destination/mongodb",
                            "plugins/destination/file",
                            "plugins/destination/azblob",
