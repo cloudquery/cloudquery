@@ -32,7 +32,12 @@ func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 			region := getRegion(client.ServicesManager.services[partition][accountID])
 			// Ensure that the region is always set by a region that has been initialized
 			if region == "" {
-				meta.(*Client).Logger().Warn().Str("accountID", accountID).Str("partition", partition).Msg("no valid regions have been specified for this account")
+				if !client.allRegions {
+					meta.(*Client).Logger().Warn().Str("accountID", accountID).Str("partition", partition).Msg("no valid regions have been specified for this account")
+				} else {
+					meta.(*Client).Logger().Trace().Str("accountID", accountID).Str("partition", partition).Msg("no valid regions have been specified for this account")
+				}
+
 				continue
 			}
 			l = append(l, client.withPartitionAccountIDAndRegion(partition, accountID, region))
@@ -49,7 +54,11 @@ func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta
 			for accountID := range client.ServicesManager.services[partition] {
 				for region := range client.ServicesManager.services[partition][accountID] {
 					if !isSupportedServiceForRegion(service, region) {
-						client.Logger().Warn().Str("service", service).Str("region", region).Str("partition", partition).Msg("region is not supported for service")
+						if !client.allRegions {
+							client.Logger().Warn().Str("service", service).Str("region", region).Str("partition", partition).Msg("region is not supported for service")
+						} else {
+							client.Logger().Trace().Str("service", service).Str("region", region).Str("partition", partition).Msg("region is not supported for service")
+						}
 						continue
 					}
 					l = append(l, client.withPartitionAccountIDAndRegion(partition, accountID, region))
@@ -83,7 +92,11 @@ func ServiceAccountRegionNamespaceMultiplexer(service string) func(meta schema.C
 			for accountID := range client.ServicesManager.services[partition] {
 				for region := range client.ServicesManager.services[partition][accountID] {
 					if !isSupportedServiceForRegion(service, region) {
-						meta.(*Client).Logger().Warn().Str("service", service).Str("region", region).Str("partition", partition).Msg("region is not supported for service")
+						if !client.allRegions {
+							client.Logger().Warn().Str("service", service).Str("region", region).Str("partition", partition).Msg("region is not supported for service")
+						} else {
+							client.Logger().Trace().Str("service", service).Str("region", region).Str("partition", partition).Msg("region is not supported for service")
+						}
 						continue
 					}
 					for _, ns := range AllNamespaces {
@@ -106,7 +119,11 @@ func ServiceAccountRegionScopeMultiplexer(service string) func(meta schema.Clien
 				l = append(l, client.withPartitionAccountIDRegionAndScope(partition, accountID, cloudfrontScopeRegion, wafv2types.ScopeCloudfront))
 				for region := range client.ServicesManager.services[partition][accountID] {
 					if !isSupportedServiceForRegion(service, region) {
-						meta.(*Client).Logger().Warn().Str("service", service).Str("region", region).Str("partition", partition).Msg("region is not supported for service")
+						if !client.allRegions {
+							client.Logger().Warn().Str("service", service).Str("region", region).Str("partition", partition).Msg("region is not supported for service")
+						} else {
+							client.Logger().Trace().Str("service", service).Str("region", region).Str("partition", partition).Msg("region is not supported for service")
+						}
 						continue
 					}
 					l = append(l, client.withPartitionAccountIDRegionAndScope(partition, accountID, region, wafv2types.ScopeRegional))
