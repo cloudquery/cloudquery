@@ -8,6 +8,7 @@ test: gen-fixtures
 gen-docs:
 	rm -rf ../../../website/tables/stripe
 	go run main.go doc ../../../website/tables/stripe
+	sed 's_(\(.*\))_(../../../../../website/tables/stripe/\1)_' ../../../website/tables/stripe/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/stripe/README.md
 	mv ../../../website/tables/stripe/README.md ../../../website/pages/docs/plugins/sources/stripe/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/stripe/*.md

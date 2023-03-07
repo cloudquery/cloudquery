@@ -1,3 +1,9 @@
 # Source Plugin: alicloud
 
-Plugins tables are now part of our Website. Please visit [https://www.cloudquery.io/docs/plugins/sources/alicloud/tables](https://www.cloudquery.io/docs/plugins/sources/alicloud/tables) for the latest information.
+## Tables
+
+- [alicloud_bss_bill](../../../../../website/tables/alicloud/alicloud_bss_bill.md)
+- [alicloud_bss_bill_overview](../../../../../website/tables/alicloud/alicloud_bss_bill_overview.md)
+- [alicloud_ecs_instances](../../../../../website/tables/alicloud/alicloud_ecs_instances.md)
+- [alicloud_oss_buckets](../../../../../website/tables/alicloud/alicloud_oss_buckets.md)
+  - [alicloud_oss_bucket_stats](../../../../../website/tables/alicloud/alicloud_oss_bucket_stats.md)

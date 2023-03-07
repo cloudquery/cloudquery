@@ -1,3 +1,7 @@
 # Source Plugin: awspricing
 
-Plugins tables are now part of our Website. Please visit [https://www.cloudquery.io/docs/plugins/sources/awspricing/tables](https://www.cloudquery.io/docs/plugins/sources/awspricing/tables) for the latest information.
+## Tables
+
+- [awspricing_services](../../../../../website/tables/awspricing/awspricing_services.md)
+  - [awspricing_service_products](../../../../../website/tables/awspricing/awspricing_service_products.md)
+  - [awspricing_service_terms](../../../../../website/tables/awspricing/awspricing_service_terms.md)
