@@ -12,7 +12,7 @@ lint:
 gen-docs:
 	rm -rf ../../../website/tables/salesforce
 	go run main.go doc ../../../website/tables/salesforce
-	cp ../../../website/tables/salesforce/README.md ./docs/tables/README.md
+	sed 's_(\(.*\))_(../../../../../website/tables/salesforce/\1)_' ../../../website/tables/salesforce/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/salesforce/README.md
 	mv ../../../website/tables/salesforce/README.md ../../../website/pages/docs/plugins/sources/salesforce/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/salesforce/*.md
