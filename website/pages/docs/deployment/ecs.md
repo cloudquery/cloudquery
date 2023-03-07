@@ -41,11 +41,21 @@ You will need to replace `<DESTINATION_BUCKET_NAME>` with the name of the S3 Buc
 
 ## Solution Overview
 
+![alt text](website/data/ecs-deployment/cloudquery_on_ecs.png "Title")
+
+
+
 The CloudFormation will stand up a number of resources including:
+
+
+
 - ***ECS Service and Task definition***: This uses the base image that the [CloudQuery Team maintains](https://github.com/cloudquery/cloudquery/pkgs/container/cloudquery). On top of that image this solution provides an alternative entrypoint that enables users to specify the configuration file as a base64 encoded string as an environment variable. This allows users to not have to build and maintain a custom image.
 - ***EventBridge Schedule***: Th
 - ***CloudWatch Dashboard***: A dashboard of useful information and metrics. This dashboard is powered by CloudWatch Insight querying the structured logs that are produced by each sync
 - ***VPC and supporting resources***: By default this solution will deploy all of the VPC and networking resources required for you to have a running sync at the end of the deployment.  
+
+
+D
 
 ### Deploying Solution
 
