@@ -21,6 +21,16 @@ func buildEc2VpcEndpointServices(t *testing.T, ctrl *gomock.Controller) client.S
 		&ec2.DescribeVpcEndpointServicesOutput{
 			ServiceDetails: []types.ServiceDetail{sd},
 		}, nil)
+
+	ap := types.AllowedPrincipal{}
+	if err := faker.FakeObject(&ap); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().DescribeVpcEndpointServicePermissions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ec2.DescribeVpcEndpointServicePermissionsOutput{
+			AllowedPrincipals: []types.AllowedPrincipal{ap},
+		}, nil)
+
 	return client.Services{
 		Ec2: m,
 	}
