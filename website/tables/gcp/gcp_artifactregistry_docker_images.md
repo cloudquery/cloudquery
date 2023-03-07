@@ -24,3 +24,4 @@ This table depends on [gcp_artifactregistry_repositories](gcp_artifactregistry_r
 |upload_time|Timestamp|
 |media_type|String|
 |build_time|Timestamp|
+|update_time|Timestamp|
