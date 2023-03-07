@@ -135,11 +135,12 @@ func ServiceAccountRegionScopeMultiplexer(service string) func(meta schema.Clien
 }
 
 func generateLogMessages(client *Client, service string, skippedRegions []string, emptyMultiplexer bool) {
-	if len(skippedRegions) > 0 {
-		loggerEvent := client.Logger().Warn()
-		if emptyMultiplexer {
-			loggerEvent = client.Logger().Error()
-		}
-		loggerEvent.Str("service", service).Strs("regions", skippedRegions).Msg("specified regions do not support service")
+	if len(skippedRegions) == 0 {
+		return
 	}
+	loggerEvent := client.Logger().Warn()
+	if emptyMultiplexer {
+		loggerEvent = client.Logger().Error()
+	}
+	loggerEvent.Str("service", service).Strs("regions", skippedRegions).Msg("specified regions do not support service")
 }
