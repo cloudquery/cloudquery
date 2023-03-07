@@ -5,10 +5,10 @@ import (
 
 	"google.golang.org/api/iterator"
 
+	pb "cloud.google.com/go/apikeys/apiv2/apikeyspb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	pb "google.golang.org/genproto/googleapis/api/apikeys/v2"
 
 	apikeys "cloud.google.com/go/apikeys/apiv2"
 )
