@@ -1,11 +1,11 @@
 {
-  "cli": "2.4.0",
+  "cli": "2.4.1",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "15.2.0",
   "plugins/source/aws+FILLER": "0.0.0",
   "plugins/source/azure": "4.3.0",
   "plugins/source/azure+FILLER": "0.0.0",
-  "plugins/source/cloudflare": "3.1.8",
+  "plugins/source/cloudflare": "3.2.0",
   "plugins/source/cloudflare+FILLER": "0.0.0",
   "plugins/source/digitalocean": "4.2.0",
   "plugins/source/digitalocean+FILLER": "0.0.0",
@@ -35,7 +35,7 @@
   "plugins/destination/snowflake+FILLER": "0.0.0",
   "plugins/source/gandi": "1.2.0",
   "plugins/source/gandi+FILLER": "0.0.0",
-  "plugins/source/datadog": "1.1.8",
+  "plugins/source/datadog": "1.2.0",
   "plugins/source/datadog+FILLER": "0.0.0",
   "plugins/destination/bigquery": "2.2.2",
   "plugins/destination/bigquery+FILLER": "0.0.0",
@@ -51,7 +51,7 @@
   "plugins/destination/mongodb+FILLTER": "0.0.0",
   "plugins/source/gitlab": "2.2.0",
   "plugins/source/gitlab+FILLER": "0.0.0",
-  "plugins/source/azuredevops": "1.1.7",
+  "plugins/source/azuredevops": "1.2.0",
   "plugins/source/azuredevops+FILLER": "0.0.0",
   "plugins/source/salesforce": "1.1.0",
   "plugins/source/salesforce+FILLER": "0.0.0",
@@ -77,7 +77,7 @@
   "scaffold+FILLER": "0.0.0",
   "plugins/source/oracle": "1.1.0",
   "plugins/source/oracle+FILLER": "0.0.0",
-  "plugins/source/alicloud": "1.0.7",
+  "plugins/source/alicloud": "1.1.0",
   "plugins/source/alicloud+FILLER": "0.0.0",
   "plugins/destination/mssql": "3.0.1",
   "plugins/destination/mssql+FILLER": "0.0.0",
@@ -101,5 +101,5 @@
   "plugins/source/homebrew": "1.0.0",
   "plugins/destination/mysql": "1.0.1",
   "plugins/destination/firehose": "1.0.0",
-  "plugins/source/awspricing": "1.0.0"
+  "plugins/source/awspricing": "1.1.0"
 }
