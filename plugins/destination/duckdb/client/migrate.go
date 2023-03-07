@@ -56,15 +56,23 @@ func (c *Client) duckdbTables(tables schema.Tables) (schema.Tables, error) {
 	return schemaTables, nil
 }
 
-func (c *Client) normalizeColumnTypes(tables schema.Tables) schema.Tables {
+func (c *Client) normalizeColumns(tables schema.Tables) schema.Tables {
 	allTables := tables.FlattenTables()
 	var normalized schema.Tables
 	for _, table := range allTables {
 		tableCopy := table.Copy(table.Parent)
 		for i := range tableCopy.Columns {
+			// In DuckDB, a PK column must be NOT NULL, so we need to make sure that the schema we're comparing to has the same
+			// constraint.
+			if !c.enabledPks() {
+				tableCopy.Columns[i].CreationOptions.PrimaryKey = false
+			} else if tableCopy.Columns[i].CreationOptions.PrimaryKey {
+				tableCopy.Columns[i].CreationOptions.NotNull = true
+			}
 			// Since multiple schema types can map to the same duckdb type we need to normalize them to avoid false positives when detecting schema changes
 			tableCopy.Columns[i].Type = c.duckdbTypeToSchema(c.SchemaTypeToDuckDB(table.Columns[i].Type))
 		}
+
 		normalized = append(normalized, tableCopy)
 	}
 
@@ -116,15 +124,20 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 	return true
 }
 
-// This is the responsibility of the CLI of the client to lock before running migration
+// Migrate migrates to the latest schema
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	duckdbTables, err := c.duckdbTables(tables)
 	if err != nil {
 		return err
 	}
 
-	normalizedTables := c.normalizeColumnTypes(tables)
-
+	normalizedTables := c.normalizeColumns(tables)
+	for _, table := range normalizedTables {
+		c.logger.Warn().Msg("normalized table: " + table.Name + " columns: " + fmt.Sprint(table.Columns))
+	}
+	for _, table := range duckdbTables {
+		c.logger.Warn().Msg("duckdb     table: " + table.Name + " columns: " + fmt.Sprint(table.Columns))
+	}
 	if c.spec.MigrateMode != specs.MigrateModeForced {
 		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(normalizedTables, duckdbTables)
 		if len(nonAutoMigrableTables) > 0 {
@@ -181,7 +194,7 @@ func (c *Client) addColumn(tableName string, columnName string, columnType strin
 
 func (c *Client) createTableIfNotExist(table *schema.Table) error {
 	var sb strings.Builder
-	// TODO sanitize tablename
+	// TODO sanitize table name
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
 	sb.WriteString(`"` + table.Name + `"`)
 	sb.WriteString(" (")
@@ -195,8 +208,10 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 		}
 		// TODO: sanitize column name
 		fieldDef := `"` + col.Name + `" ` + sqlType
-		if col.CreationOptions.PrimaryKey {
-			fieldDef += " PRIMARY KEY"
+		if c.enabledPks() {
+			if col.CreationOptions.PrimaryKey {
+				fieldDef += " PRIMARY KEY"
+			}
 		}
 		if col.CreationOptions.NotNull {
 			fieldDef += " NOT NULL"
@@ -208,7 +223,6 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 	}
 
 	sb.WriteString(")")
-	c.logger.Warn().Msg("query: " + sb.String())
 	_, err := c.db.Exec(sb.String())
 	if err != nil {
 		return fmt.Errorf("failed to create table with '%s': %w", sb.String(), err)

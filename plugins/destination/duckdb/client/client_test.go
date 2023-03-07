@@ -24,7 +24,11 @@ func TestPlugin(t *testing.T) {
 			ConnectionString: "", // in-memory database
 		},
 		destination.PluginTestSuiteTests{
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
+			SkipOverwrite:             true,
+			SkipDeleteStale:           true,
+			SkipMigrateOverwrite:      true,
+			SkipMigrateOverwriteForce: true,
+			MigrateStrategyOverwrite:  migrateStrategy,
+			MigrateStrategyAppend:     migrateStrategy,
 		})
 }

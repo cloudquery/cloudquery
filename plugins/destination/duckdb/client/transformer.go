@@ -28,10 +28,7 @@ func (*Client) TransformInt8Array(v *schema.Int8Array) any {
 	for i, e := range v.Elements {
 		res[i] = e.String()
 	}
-	if len(res) == 0 {
-		return "[]"
-	}
-	return "[" + strings.Join(res, ",") + "]"
+	return res
 }
 
 func (*Client) TransformJSON(v *schema.JSON) any {
@@ -42,7 +39,7 @@ func (*Client) TransformJSON(v *schema.JSON) any {
 }
 
 func (*Client) TransformText(v *schema.Text) any {
-	return v.String()
+	return stripNulls(v.String())
 }
 
 func (*Client) TransformTextArray(v *schema.TextArray) any {
@@ -51,12 +48,9 @@ func (*Client) TransformTextArray(v *schema.TextArray) any {
 	}
 	res := make([]string, len(v.Elements))
 	for i, e := range v.Elements {
-		res[i] = e.String()
+		res[i] = stripNulls(e.String())
 	}
-	if len(res) == 0 {
-		return "[]"
-	}
-	return "['" + strings.Join(res, "', '") + "']"
+	return res
 }
 
 func (*Client) TransformTimestamptz(v *schema.Timestamptz) any {
@@ -77,18 +71,15 @@ func (*Client) TransformUUIDArray(v *schema.UUIDArray) any {
 	if v.Status != schema.Present {
 		return nil
 	}
-	if len(v.Elements) == 0 {
-		return "[]"
-	}
 	res := make([]string, len(v.Elements))
 	for i, e := range v.Elements {
 		res[i] = uuid.UUID(e.Bytes).String()
 	}
-	return "[" + strings.Join(res, ",") + "]"
+	return res
 }
 
 func (*Client) TransformCIDR(v *schema.CIDR) any {
-	return "'" + v.String() + "'"
+	return v.String()
 }
 
 func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
@@ -99,14 +90,11 @@ func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
 	for i, e := range v.Elements {
 		res[i] = e.String()
 	}
-	if len(res) == 0 {
-		return "[]"
-	}
-	return "['" + strings.Join(res, "', '") + "']"
+	return res
 }
 
 func (*Client) TransformInet(v *schema.Inet) any {
-	return "'" + v.String() + "'"
+	return v.String()
 }
 
 func (*Client) TransformInetArray(v *schema.InetArray) any {
@@ -117,14 +105,11 @@ func (*Client) TransformInetArray(v *schema.InetArray) any {
 	for i, e := range v.Elements {
 		res[i] = e.String()
 	}
-	if len(res) == 0 {
-		return "[]"
-	}
-	return "['" + strings.Join(res, "', '") + "']"
+	return res
 }
 
 func (*Client) TransformMacaddr(v *schema.Macaddr) any {
-	return "'" + v.Addr.String() + "'"
+	return v.Addr.String()
 }
 
 func (*Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
@@ -135,8 +120,9 @@ func (*Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
 	for i, e := range v.Elements {
 		res[i] = e.String()
 	}
-	if len(res) == 0 {
-		return "[]"
-	}
-	return "['" + strings.Join(res, "', '") + "']"
+	return res
+}
+
+func stripNulls(s string) string {
+	return strings.ReplaceAll(s, "\x00", "")
 }
