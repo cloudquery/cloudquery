@@ -100,6 +100,6 @@
   "plugins/source/postgresql": "1.0.3",
   "plugins/source/homebrew": "1.1.0",
   "plugins/destination/mysql": "1.0.1",
-  "plugins/destination/firehose": "1.0.0",
+  "plugins/destination/firehose": "1.1.0",
   "plugins/source/awspricing": "1.1.0"
 }
