@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v1.3.2...plugins-destination-sqlite-v1.3.3) (2023-03-08)
+
+
+### Bug Fixes
+
+* Add Sentry logging for SQLite plugin ([#8769](https://github.com/cloudquery/cloudquery/issues/8769)) ([f075067](https://github.com/cloudquery/cloudquery/commit/f075067edb60329639fe25e1fb38e932d8fb520a))
+
 ## [1.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v1.3.1...plugins-destination-sqlite-v1.3.2) (2023-03-07)
 
 
