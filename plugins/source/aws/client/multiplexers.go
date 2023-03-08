@@ -141,9 +141,9 @@ func generateLogMessages(client *Client, table, service string, skippedRegions [
 	if len(skippedRegions) == 0 {
 		return
 	}
-	loggerEvent := client.Logger().Warn()
+	loggerEvent := client.Logger().Info()
 	if emptyMultiplexer {
-		loggerEvent = client.Logger().Error()
+		loggerEvent = client.Logger().Warn()
 	}
 	loggerEvent.Str("service", service).
 		Str("table", table).
