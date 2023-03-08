@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-postgresql-v1.0.3...plugins-source-postgresql-v1.0.4) (2023-03-08)
+
+
+### Bug Fixes
+
+* Respect tables and skip_tables config in PostgreSQL source plugin ([#8791](https://github.com/cloudquery/cloudquery/issues/8791)) ([e546566](https://github.com/cloudquery/cloudquery/commit/e5465663ded7f10b6b4ab50a7764d48851675a2b))
+
 ## [1.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-postgresql-v1.0.2...plugins-source-postgresql-v1.0.3) (2023-03-07)
 
 
