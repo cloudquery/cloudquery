@@ -8,11 +8,12 @@ import (
 )
 
 func CustomerGateways() *schema.Table {
+	tableName := "aws_ec2_customer_gateways"
 	return &schema.Table{
-		Name:        "aws_ec2_customer_gateways",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CustomerGateway.html`,
 		Resolver:    fetchEc2CustomerGateways,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.CustomerGateway{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

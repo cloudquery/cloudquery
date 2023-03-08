@@ -8,11 +8,12 @@ import (
 )
 
 func LaunchConfigurations() *schema.Table {
+	tableName := "aws_autoscaling_launch_configurations"
 	return &schema.Table{
-		Name:        "aws_autoscaling_launch_configurations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchConfiguration.html`,
 		Resolver:    fetchAutoscalingLaunchConfigurations,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "autoscaling"),
 		Transform:   transformers.TransformWithStruct(&types.LaunchConfiguration{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

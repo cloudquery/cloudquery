@@ -8,13 +8,14 @@ import (
 )
 
 func Identities() *schema.Table {
+	tableName := "aws_ses_identities"
 	return &schema.Table{
-		Name:                "aws_ses_identities",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailIdentity.html`,
 		Resolver:            fetchSesIdentities,
 		PreResourceResolver: getIdentity,
 		Transform:           transformers.TransformWithStruct(&models.EmailIdentity{}, transformers.WithUnwrapStructFields("GetEmailIdentityOutput"), transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("email"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "email"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

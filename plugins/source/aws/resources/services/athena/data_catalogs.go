@@ -8,12 +8,13 @@ import (
 )
 
 func DataCatalogs() *schema.Table {
+	tableName := "aws_athena_data_catalogs"
 	return &schema.Table{
-		Name:                "aws_athena_data_catalogs",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/athena/latest/APIReference/API_DataCatalog.html`,
 		Resolver:            fetchAthenaDataCatalogs,
 		PreResourceResolver: getDataCatalog,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("athena"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "athena"),
 		Transform:           transformers.TransformWithStruct(&types.DataCatalog{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

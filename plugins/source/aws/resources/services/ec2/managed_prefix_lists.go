@@ -11,12 +11,13 @@ import (
 )
 
 func ManagedPrefixLists() *schema.Table {
+	tableName := "aws_ec2_managed_prefix_lists"
 	return &schema.Table{
-		Name: "aws_ec2_managed_prefix_lists",
+		Name: tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ManagedPrefixList.html. 
 The 'request_account_id' and 'request_region' columns are added to show the account_id and region of where the request was made from.`,
 		Resolver:  fetchEc2ManagedPrefixLists,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform: transformers.TransformWithStruct(&types.ManagedPrefixList{}),
 		Columns: []schema.Column{
 			{

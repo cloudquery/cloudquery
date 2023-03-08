@@ -8,12 +8,13 @@ import (
 )
 
 func ClusterParameterGroupParameters() *schema.Table {
+	tableName := "aws_neptune_cluster_parameter_group_parameters"
 	return &schema.Table{
-		Name:        "aws_neptune_cluster_parameter_group_parameters",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-parameters.html#DescribeDBParameterGroups`,
 		Resolver:    fetchNeptuneClusterParameterGroupParameters,
 		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("neptune"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "neptune"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

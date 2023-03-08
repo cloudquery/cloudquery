@@ -24,26 +24,30 @@ func getRegion(regionalMap map[string]*Services) string {
 	return regions[0]
 }
 
-func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
-	l := make([]schema.ClientMeta, 0)
-	client := meta.(*Client)
-	for partition := range client.ServicesManager.services {
-		for accountID := range client.ServicesManager.services[partition] {
-			region := getRegion(client.ServicesManager.services[partition][accountID])
-			// Ensure that the region is always set by a region that has been initialized
-			if region == "" {
-				// This can only happen if a user specifies a region from a different partition
-				meta.(*Client).Logger().Trace().Str("accountID", accountID).Str("partition", partition).Msg("no valid regions have been specified for this account")
-				continue
+func AccountMultiplex(table string) func(meta schema.ClientMeta) []schema.ClientMeta {
+	return func(meta schema.ClientMeta) []schema.ClientMeta {
+		l := make([]schema.ClientMeta, 0)
+		client := meta.(*Client)
+		for partition := range client.ServicesManager.services {
+			for accountID := range client.ServicesManager.services[partition] {
+				region := getRegion(client.ServicesManager.services[partition][accountID])
+				// Ensure that the region is always set by a region that has been initialized
+				if region == "" {
+					// This can only happen if a user specifies a region from a different partition
+					meta.(*Client).Logger().Trace().
+						Str("accountID", accountID).
+						Str("table", table).
+						Str("partition", partition).Msg("no valid regions have been specified for this account")
+					continue
+				}
+				l = append(l, client.withPartitionAccountIDAndRegion(partition, accountID, region))
 			}
-			l = append(l, client.withPartitionAccountIDAndRegion(partition, accountID, region))
 		}
+		return l
 	}
-
-	return l
 }
 
-func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
+func ServiceAccountRegionMultiplexer(table, service string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
 		var l = make([]schema.ClientMeta, 0)
 		skippedRegions := make([]string, 0)
@@ -55,22 +59,22 @@ func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta
 						if client.specificRegions {
 							skippedRegions = append(skippedRegions, region)
 						}
-						client.Logger().Trace().Str("service", service).Str("region", region).Str("partition", partition).Msg("region is not supported for service")
+						client.Logger().Trace().Str("service", service).Str("region", region).Str("table", table).Str("partition", partition).Msg("region is not supported for service")
 						continue
 					}
 					l = append(l, client.withPartitionAccountIDAndRegion(partition, accountID, region))
 				}
 			}
 		}
-		generateLogMessages(client, service, skippedRegions, len(l) == 0)
+		generateLogMessages(client, table, service, skippedRegions, len(l) == 0)
 		return l
 	}
 }
 
-func ServiceAccountRegionsLanguageCodeMultiplex(service string, codes []string) func(meta schema.ClientMeta) []schema.ClientMeta {
+func ServiceAccountRegionsLanguageCodeMultiplex(table, service string, codes []string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
 		l := make([]schema.ClientMeta, 0)
-		accountRegions := ServiceAccountRegionMultiplexer(service)(meta)
+		accountRegions := ServiceAccountRegionMultiplexer(table, service)(meta)
 		for _, c := range accountRegions {
 			for _, code := range codes {
 				client := c.(*Client).withLanguageCode(code)
@@ -81,7 +85,7 @@ func ServiceAccountRegionsLanguageCodeMultiplex(service string, codes []string) 
 	}
 }
 
-func ServiceAccountRegionNamespaceMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
+func ServiceAccountRegionNamespaceMultiplexer(table, service string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
 		skippedRegions := make([]string, 0)
 
@@ -103,12 +107,12 @@ func ServiceAccountRegionNamespaceMultiplexer(service string) func(meta schema.C
 				}
 			}
 		}
-		generateLogMessages(client, service, skippedRegions, len(l) == 0)
+		generateLogMessages(client, table, service, skippedRegions, len(l) == 0)
 		return l
 	}
 }
 
-func ServiceAccountRegionScopeMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
+func ServiceAccountRegionScopeMultiplexer(table, service string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
 		skippedRegions := make([]string, 0)
 		var l = make([]schema.ClientMeta, 0)
@@ -129,12 +133,12 @@ func ServiceAccountRegionScopeMultiplexer(service string) func(meta schema.Clien
 				}
 			}
 		}
-		generateLogMessages(client, service, skippedRegions, len(l) == 0)
+		generateLogMessages(client, table, service, skippedRegions, len(l) == 0)
 		return l
 	}
 }
 
-func generateLogMessages(client *Client, service string, skippedRegions []string, emptyMultiplexer bool) {
+func generateLogMessages(client *Client, table, service string, skippedRegions []string, emptyMultiplexer bool) {
 	if len(skippedRegions) == 0 {
 		return
 	}
@@ -142,5 +146,7 @@ func generateLogMessages(client *Client, service string, skippedRegions []string
 	if emptyMultiplexer {
 		loggerEvent = client.Logger().Error()
 	}
-	loggerEvent.Str("service", service).Strs("regions", skippedRegions).Msg("specified regions do not support service")
+	loggerEvent.Str("service", service).
+		Str("table", table).
+		Strs("regions", skippedRegions).Msg("specified regions do not support service")
 }

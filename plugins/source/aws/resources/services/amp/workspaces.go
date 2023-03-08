@@ -8,12 +8,13 @@ import (
 )
 
 func Workspaces() *schema.Table {
+	tableName := "aws_amp_workspaces"
 	return &schema.Table{
-		Name:                "aws_amp_workspaces",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-APIReference.html#AMP-APIReference-WorkspaceDescription`,
 		Resolver:            fetchAmpWorkspaces,
 		PreResourceResolver: describeWorkspace,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("amp"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "amp"),
 		Transform:           transformers.TransformWithStruct(&types.WorkspaceDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

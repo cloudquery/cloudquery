@@ -8,12 +8,13 @@ import (
 )
 
 func Dashboards() *schema.Table {
+	tableName := "aws_quicksight_dashboards"
 	return &schema.Table{
-		Name:        "aws_quicksight_dashboards",
+		Name:        tableName,
 		Description: "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_DashboardSummary.html",
 		Resolver:    fetchQuicksightDashboards,
 		Transform:   transformers.TransformWithStruct(&types.DashboardSummary{}, transformers.WithPrimaryKeys("Arn")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("quicksight"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "quicksight"),
 		Columns:     []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true), tagsCol},
 	}
 }

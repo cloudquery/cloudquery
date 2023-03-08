@@ -8,12 +8,13 @@ import (
 )
 
 func Clusters() *schema.Table {
+	tableName := "aws_eks_clusters"
 	return &schema.Table{
-		Name:                "aws_eks_clusters",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/eks/latest/APIReference/API_Cluster.html`,
 		Resolver:            fetchEksClusters,
 		PreResourceResolver: getEksCluster,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("eks"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "eks"),
 		Transform:           transformers.TransformWithStruct(&types.Cluster{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

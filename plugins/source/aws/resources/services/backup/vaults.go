@@ -8,11 +8,12 @@ import (
 )
 
 func Vaults() *schema.Table {
+	tableName := "aws_backup_vaults"
 	return &schema.Table{
-		Name:        "aws_backup_vaults",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_BackupVaultListMember.html`,
 		Resolver:    fetchBackupVaults,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("backup"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "backup"),
 		Transform:   transformers.TransformWithStruct(&types.BackupVaultListMember{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

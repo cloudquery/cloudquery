@@ -8,12 +8,13 @@ import (
 )
 
 func EventSubscriptions() *schema.Table {
+	tableName := "aws_redshift_event_subscriptions"
 	return &schema.Table{
-		Name:        "aws_redshift_event_subscriptions",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_EventSubscription.html`,
 		Resolver:    fetchRedshiftEventSubscriptions,
 		Transform:   transformers.TransformWithStruct(&types.EventSubscription{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

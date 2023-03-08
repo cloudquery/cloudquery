@@ -8,13 +8,14 @@ import (
 )
 
 func Secrets() *schema.Table {
+	tableName := "aws_secretsmanager_secrets"
 	return &schema.Table{
-		Name:                "aws_secretsmanager_secrets",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecrets.html`,
 		Resolver:            fetchSecretsmanagerSecrets,
 		Transform:           transformers.TransformWithStruct(&secretsmanager.DescribeSecretOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		PreResourceResolver: getSecret,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("secretsmanager"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "secretsmanager"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -8,11 +8,12 @@ import (
 )
 
 func Groups() *schema.Table {
+	tableName := "aws_autoscaling_groups"
 	return &schema.Table{
-		Name:        "aws_autoscaling_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_AutoScalingGroup.html`,
 		Resolver:    fetchAutoscalingGroups,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "autoscaling"),
 		Transform:   transformers.TransformWithStruct(&models.AutoScalingGroupWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

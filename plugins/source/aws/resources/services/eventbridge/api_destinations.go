@@ -8,11 +8,12 @@ import (
 )
 
 func ApiDestinations() *schema.Table {
+	tableName := "aws_eventbridge_api_destinations"
 	return &schema.Table{
-		Name:        "aws_eventbridge_api_destinations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_ApiDestination.html`,
 		Resolver:    fetchEventbridgeApiDestinations,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "events"),
 		Transform:   transformers.TransformWithStruct(&types.ApiDestination{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

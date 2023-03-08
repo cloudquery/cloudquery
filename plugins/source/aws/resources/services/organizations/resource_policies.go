@@ -11,12 +11,13 @@ import (
 )
 
 func ResourcePolicies() *schema.Table {
+	tableName := "aws_organization_resource_policies"
 	return &schema.Table{
-		Name:        "aws_organization_resource_policies",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_DescribeResourcePolicy.html`,
 		Resolver:    fetchOrganizationsResourcePolicies,
 		Transform:   transformers.TransformWithStruct(&types.ResourcePolicy{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("organizations"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},

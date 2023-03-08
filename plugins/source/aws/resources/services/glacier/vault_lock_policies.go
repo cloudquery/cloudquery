@@ -8,12 +8,13 @@ import (
 )
 
 func VaultLockPolicies() *schema.Table {
+	tableName := "aws_glacier_vault_lock_policies"
 	return &schema.Table{
-		Name:        "aws_glacier_vault_lock_policies",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/amazonglacier/latest/dev/api-GetVaultLock.html`,
 		Resolver:    fetchGlacierVaultLockPolicies,
 		Transform:   transformers.TransformWithStruct(&glacier.GetVaultLockOutput{}, transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("glacier"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glacier"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

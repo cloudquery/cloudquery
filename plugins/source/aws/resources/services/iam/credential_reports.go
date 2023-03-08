@@ -8,8 +8,9 @@ import (
 )
 
 func CredentialReports() *schema.Table {
+	tableName := "aws_iam_credential_reports"
 	return &schema.Table{
-		Name:     "aws_iam_credential_reports",
+		Name:     tableName,
 		Resolver: fetchIamCredentialReports,
 		Transform: transformers.TransformWithStruct(
 			&models.CredentialReportEntry{},
@@ -22,7 +23,7 @@ func CredentialReports() *schema.Table {
 				"Cert2LastRotated",
 			),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer("iam"),
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			{
 				Name:     "arn",
