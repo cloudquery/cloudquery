@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v2.2.0...plugins-source-gitlab-v2.2.1) (2023-03-08)
+
+
+### Bug Fixes
+
+* Add Sentry logging for GitLab ([#8771](https://github.com/cloudquery/cloudquery/issues/8771)) ([0c8c2bc](https://github.com/cloudquery/cloudquery/commit/0c8c2bcc9d990a2ebe0f05eed82703a89ca6f9d2))
+
 ## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v2.1.7...plugins-source-gitlab-v2.2.0) (2023-03-07)
 
 

@@ -1,6 +1,6 @@
 module github.com/cloudquery/plugins/source/gcp
 
-go 1.20
+go 1.19
 
 require (
 	cloud.google.com/go/aiplatform v1.35.0

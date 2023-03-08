@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/digitalocean
 
-go 1.20
+go 1.19
 
 require (
 	github.com/avast/retry-go/v4 v4.3.3
