@@ -1,0 +1,14 @@
+variables:
+  component: destination/neptune
+  binary: neptune
+
+project_name: plugins/destination/neptune
+
+monorepo:
+  tag_prefix: plugins-destination-neptune-
+  dir: plugins/destination/neptune
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml
