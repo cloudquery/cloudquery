@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/slack
 
-go 1.19
+go 1.20
 
 require (
 	github.com/cloudquery/plugin-sdk v1.42.0
