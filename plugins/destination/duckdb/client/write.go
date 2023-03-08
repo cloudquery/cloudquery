@@ -20,7 +20,6 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 			sql = c.upsert(table, r.Data)
 		}
 		expanded := expandData(table, r.Data)
-		c.logger.Info().Msg(fmt.Sprintf("Executing '%s' with values %v", sql, expanded))
 		if _, err := c.db.Exec(sql, expanded...); err != nil {
 			return fmt.Errorf("failed to execute '%s': %w", sql, err)
 		}
@@ -32,8 +31,7 @@ func expandData(table *schema.Table, data []any) []any {
 	var expanded []any
 	for i, d := range data {
 		if isArray(table.Columns[i]) {
-			v := toArray(table.Columns[i], d)
-			expanded = append(expanded, v...)
+			expanded = append(expanded, toArray(table.Columns[i], d)...)
 		} else {
 			expanded = append(expanded, d)
 		}
@@ -104,7 +102,7 @@ func isArray(col schema.Column) bool {
 func toArray(col schema.Column, data any) []any {
 	switch col.Type {
 	case schema.TypeIntArray:
-		if v, ok := data.([]int); ok {
+		if v, ok := data.([]int64); ok {
 			a := make([]any, len(v))
 			for i := range v {
 				a[i] = v[i]

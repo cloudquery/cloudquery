@@ -61,12 +61,12 @@ func (c *Client) normalizeColumns(tables schema.Tables) schema.Tables {
 	var normalized schema.Tables
 	for _, table := range allTables {
 		tableCopy := table.Copy(table.Parent)
-		for i := range tableCopy.Columns {
+		for i, col := range tableCopy.Columns {
 			// In DuckDB, a PK column must be NOT NULL, so we need to make sure that the schema we're comparing to has the same
 			// constraint.
 			if !c.enabledPks() {
 				tableCopy.Columns[i].CreationOptions.PrimaryKey = false
-			} else if tableCopy.Columns[i].CreationOptions.PrimaryKey {
+			} else if col.CreationOptions.PrimaryKey {
 				tableCopy.Columns[i].CreationOptions.NotNull = true
 			}
 			// Since multiple schema types can map to the same duckdb type we need to normalize them to avoid false positives when detecting schema changes
@@ -132,12 +132,6 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	}
 
 	normalizedTables := c.normalizeColumns(tables)
-	for _, table := range normalizedTables {
-		c.logger.Warn().Msg("normalized table: " + table.Name + " columns: " + fmt.Sprint(table.Columns))
-	}
-	for _, table := range duckdbTables {
-		c.logger.Warn().Msg("duckdb     table: " + table.Name + " columns: " + fmt.Sprint(table.Columns))
-	}
 	if c.spec.MigrateMode != specs.MigrateModeForced {
 		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(normalizedTables, duckdbTables)
 		if len(nonAutoMigrableTables) > 0 {
@@ -157,18 +151,18 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 			if err := c.createTableIfNotExist(table); err != nil {
 				return err
 			}
+			continue
+		}
+		changes := table.GetChanges(duckdb)
+		if c.canAutoMigrate(changes) {
+			c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
+			if err := c.autoMigrateTable(table, changes); err != nil {
+				return err
+			}
 		} else {
-			changes := table.GetChanges(duckdb)
-			if c.canAutoMigrate(changes) {
-				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
-				if err := c.autoMigrateTable(table, changes); err != nil {
-					return err
-				}
-			} else {
-				c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
-				if err := c.recreateTable(table); err != nil {
-					return err
-				}
+			c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
+			if err := c.recreateTable(table); err != nil {
+				return err
 			}
 		}
 	}
