@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/k8s
 
-go 1.20
+go 1.19
 
 require (
 	github.com/cloudquery/plugin-sdk v1.42.0
