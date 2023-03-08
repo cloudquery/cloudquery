@@ -72,9 +72,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.20.2-release-cache-${{ hashFiles('plugins/destination/mysql/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/destination/mysql/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.20.2-release-cache-plugins-destination-mysql
+            ${{ runner.os }}-go-1.19.5-release-cache-plugins-destination-mysql
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
