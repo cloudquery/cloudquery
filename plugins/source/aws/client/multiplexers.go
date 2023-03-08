@@ -148,5 +148,6 @@ func generateLogMessages(client *Client, table, service string, skippedRegions [
 	}
 	loggerEvent.Str("service", service).
 		Str("table", table).
-		Strs("regions", skippedRegions).Msg("specified regions do not support service")
+		Strs("regions", skippedRegions).
+		Strs("this service is supported in the following regions", supportedRegions(service)).Msg("specified regions do not support service, specify a region that does support this service")
 }

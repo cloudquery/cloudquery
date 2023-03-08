@@ -125,31 +125,45 @@ func ReadSupportedServiceRegions() *SupportedServiceRegionsData {
 	return &result
 }
 
-func isSupportedServiceForRegion(service string, region string) bool {
+func supportedRegions(service string) []string {
 	readOnce.Do(func() {
 		supportedServiceRegion = ReadSupportedServiceRegions()
 	})
 
 	if supportedServiceRegion == nil {
-		return false
+		return nil
 	}
 
 	if supportedServiceRegion.Partitions == nil {
-		return false
+		return nil
+	}
+	regions := make([]string, 0)
+	for id := range supportedServiceRegion.Partitions {
+		currentPartition := supportedServiceRegion.Partitions[id]
+
+		if currentPartition.Services[service] == nil {
+			return nil
+		}
+
+		for region := range currentPartition.Services[service].Regions {
+			regions = append(regions, region)
+		}
 	}
 
-	prt, _ := RegionsPartition(region)
-	currentPartition := supportedServiceRegion.Partitions[prt]
+	return regions
+}
 
-	if currentPartition.Services[service] == nil {
+func isSupportedServiceForRegion(service string, region string) bool {
+	supportedRegions := supportedRegions(service)
+	if len(supportedRegions) == 0 {
 		return false
 	}
-
-	if currentPartition.Services[service].Regions[region] == nil {
-		return false
+	for _, r := range supportedRegions {
+		if r == region {
+			return true
+		}
 	}
-
-	return true
+	return false
 }
 
 func getAvailableRegions() (map[string]bool, error) {
