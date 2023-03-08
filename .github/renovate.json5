@@ -3,6 +3,17 @@
     "github>cloudquery/.github//.github/renovate-go-default.json5",
     "github>cloudquery/.github//.github/renovate-node-default.json5",
   ],
+  regexManagers: [
+     {
+      fileMatch: ["Dockerfile$"],
+      matchStrings: [
+        "GORELEASER_VERSION=(?<currentValue>.*)-pro$",
+      ],
+      extractVersionTemplate: "^(?<version>.+)-pro$",
+      depNameTemplate: "goreleaser/goreleaser-pro",
+      datasourceTemplate: "github-releases",
+    },
+  ],
   packageRules: [
     { matchManagers: ["npm"], groupName: "Website" },
     {
