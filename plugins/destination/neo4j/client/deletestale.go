@@ -16,7 +16,7 @@ func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source s
 	defer session.Close(ctx)
 	for _, table := range tables {
 		stmt := fmt.Sprintf(deleteCypher, table.Name)
-		if _, err := session.Run(ctx, stmt, map[string]any{"$cq_source_name": source, "cq_sync_time": syncTime}); err != nil {
+		if _, err := session.Run(ctx, stmt, map[string]any{"cq_source_name": source, "cq_sync_time": syncTime}); err != nil {
 			return err
 		}
 	}
