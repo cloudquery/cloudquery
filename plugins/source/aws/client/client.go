@@ -39,7 +39,6 @@ type Client struct {
 	Partition            string
 	LanguageCode         string
 	Backend              backend.Backend
-	allRegions           bool
 	specificRegions      bool
 }
 
@@ -379,7 +378,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 		client.specificRegions = true
 		if isAllRegions(localRegions) {
 			logger.Info().Msg("All regions specified in `cloudquery.yml`. Assuming all regions")
-			client.allRegions = true
 			client.specificRegions = false
 		}
 

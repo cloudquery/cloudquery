@@ -154,11 +154,7 @@ func supportedRegions(service string) []string {
 }
 
 func isSupportedServiceForRegion(service string, region string) bool {
-	supportedRegions := supportedRegions(service)
-	if len(supportedRegions) == 0 {
-		return false
-	}
-	for _, r := range supportedRegions {
+	for _, r := range supportedRegions(service) {
 		if r == region {
 			return true
 		}

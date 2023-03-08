@@ -50,14 +50,14 @@ func AccountMultiplex(table string) func(meta schema.ClientMeta) []schema.Client
 func ServiceAccountRegionMultiplexer(table, service string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
 		var l = make([]schema.ClientMeta, 0)
-		skippedRegions := make([]string, 0)
+		notSupportedRegions := make([]string, 0)
 		client := meta.(*Client)
 		for partition := range client.ServicesManager.services {
 			for accountID := range client.ServicesManager.services[partition] {
 				for region := range client.ServicesManager.services[partition][accountID] {
 					if !isSupportedServiceForRegion(service, region) {
 						if client.specificRegions {
-							skippedRegions = append(skippedRegions, region)
+							notSupportedRegions = append(notSupportedRegions, region)
 						}
 						client.Logger().Trace().Str("service", service).Str("region", region).Str("table", table).Str("partition", partition).Msg("region is not supported for service")
 						continue
@@ -66,7 +66,7 @@ func ServiceAccountRegionMultiplexer(table, service string) func(meta schema.Cli
 				}
 			}
 		}
-		generateLogMessages(client, table, service, skippedRegions, len(l) == 0)
+		generateLogMessages(client, table, service, notSupportedRegions, len(l) == 0)
 		return l
 	}
 }
@@ -87,8 +87,7 @@ func ServiceAccountRegionsLanguageCodeMultiplex(table, service string, codes []s
 
 func ServiceAccountRegionNamespaceMultiplexer(table, service string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
-		skippedRegions := make([]string, 0)
-
+		notSupportedRegions := make([]string, 0)
 		var l = make([]schema.ClientMeta, 0)
 		client := meta.(*Client)
 		for partition := range client.ServicesManager.services {
@@ -96,7 +95,7 @@ func ServiceAccountRegionNamespaceMultiplexer(table, service string) func(meta s
 				for region := range client.ServicesManager.services[partition][accountID] {
 					if !isSupportedServiceForRegion(service, region) {
 						if client.specificRegions {
-							skippedRegions = append(skippedRegions, region)
+							notSupportedRegions = append(notSupportedRegions, region)
 						}
 						client.Logger().Trace().Str("service", service).Str("region", region).Str("partition", partition).Msg("region is not supported for service")
 						continue
@@ -107,14 +106,14 @@ func ServiceAccountRegionNamespaceMultiplexer(table, service string) func(meta s
 				}
 			}
 		}
-		generateLogMessages(client, table, service, skippedRegions, len(l) == 0)
+		generateLogMessages(client, table, service, notSupportedRegions, len(l) == 0)
 		return l
 	}
 }
 
 func ServiceAccountRegionScopeMultiplexer(table, service string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
-		skippedRegions := make([]string, 0)
+		notSupportedRegions := make([]string, 0)
 		var l = make([]schema.ClientMeta, 0)
 		client := meta.(*Client)
 		for partition := range client.ServicesManager.services {
@@ -124,7 +123,7 @@ func ServiceAccountRegionScopeMultiplexer(table, service string) func(meta schem
 				for region := range client.ServicesManager.services[partition][accountID] {
 					if !isSupportedServiceForRegion(service, region) {
 						if client.specificRegions {
-							skippedRegions = append(skippedRegions, region)
+							notSupportedRegions = append(notSupportedRegions, region)
 						}
 						client.Logger().Trace().Str("service", service).Str("region", region).Str("partition", partition).Msg("region is not supported for service")
 						continue
@@ -133,7 +132,7 @@ func ServiceAccountRegionScopeMultiplexer(table, service string) func(meta schem
 				}
 			}
 		}
-		generateLogMessages(client, table, service, skippedRegions, len(l) == 0)
+		generateLogMessages(client, table, service, notSupportedRegions, len(l) == 0)
 		return l
 	}
 }
@@ -148,6 +147,7 @@ func generateLogMessages(client *Client, table, service string, skippedRegions [
 	}
 	loggerEvent.Str("service", service).
 		Str("table", table).
-		Strs("regions", skippedRegions).
-		Strs("this service is supported in the following regions", supportedRegions(service)).Msg("specified regions do not support service, specify a region that does support this service")
+		Strs("skipped regions", skippedRegions).
+		Strs("supported regions", supportedRegions(service)).
+		Msg("skipping table for unsupported regions. To fix this message, ensure to configure only supported regions for the table")
 }
