@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudquery/plugin-sdk v1.42.0
-	github.com/neo4j/neo4j-go-driver/v5 v5.3.0
+	github.com/neo4j/neo4j-go-driver/v5 v5.6.0
 	github.com/rs/zerolog v1.29.0
 )
 
