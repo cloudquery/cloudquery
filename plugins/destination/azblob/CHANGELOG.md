@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v2.1.3...plugins-destination-azblob-v2.2.0) (2023-03-08)
+
+
+### Features
+
+* **azblob:** Update filetypes to v1.5.0 with arrow support. ([#8741](https://github.com/cloudquery/cloudquery/issues/8741)) ([ee52b5a](https://github.com/cloudquery/cloudquery/commit/ee52b5afedb0cf6b54091757ae06291886ade1f8))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/xerrors digest to 04be3eb ([#8561](https://github.com/cloudquery/cloudquery/issues/8561)) ([39ccfcd](https://github.com/cloudquery/cloudquery/commit/39ccfcd9a293509e67c31a668c843f2f799a5a38))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azcore to v1.3.1 ([#8567](https://github.com/cloudquery/cloudquery/issues/8567)) ([d17e2aa](https://github.com/cloudquery/cloudquery/commit/d17e2aa63e8258ecc3c6815431222d1c5f0a06bf))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.41.0 ([#8682](https://github.com/cloudquery/cloudquery/issues/8682)) ([ea9d065](https://github.com/cloudquery/cloudquery/commit/ea9d065ae9f77c6dd990570974630ae6ac3f153e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.42.0 ([#8725](https://github.com/cloudquery/cloudquery/issues/8725)) ([b83b277](https://github.com/cloudquery/cloudquery/commit/b83b277a2421d1caf46a26c3229041b27a3da148))
+* **deps:** Update module github.com/pierrec/lz4/v4 to v4.1.17 ([#8623](https://github.com/cloudquery/cloudquery/issues/8623)) ([fd968d8](https://github.com/cloudquery/cloudquery/commit/fd968d8938e8b603f2e9f6405eac2409ac41636b))
+* **deps:** Update module github.com/stretchr/testify to v1.8.2 ([#8599](https://github.com/cloudquery/cloudquery/issues/8599)) ([2ec8086](https://github.com/cloudquery/cloudquery/commit/2ec808677328410cc96c97a693ef65022d314c32))
+
 ## [2.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v2.1.2...plugins-destination-azblob-v2.1.3) (2023-02-28)
 
 
