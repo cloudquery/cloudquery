@@ -89,9 +89,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.20.2-release-cache-${{ hashFiles('cli/go.sum') }}
+          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('cli/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.20.2-release-cache-cli
+            ${{ runner.os }}-go-1.19.5-release-cache-cli
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

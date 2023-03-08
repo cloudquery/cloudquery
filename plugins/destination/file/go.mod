@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/file
 
-go 1.20
+go 1.19
 
 require (
 	github.com/cloudquery/filetypes v1.5.0

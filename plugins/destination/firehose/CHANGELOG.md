@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v1.0.0...plugins-destination-firehose-v1.1.0) (2023-03-08)
+
+
+### Features
+
+* **firehose:** Update to v1.5.0 with arrow support ([#8742](https://github.com/cloudquery/cloudquery/issues/8742)) ([8368e08](https://github.com/cloudquery/cloudquery/commit/8368e08512071a0c0ad85fc50894cfab4bb5e980))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/xerrors digest to 04be3eb ([#8561](https://github.com/cloudquery/cloudquery/issues/8561)) ([39ccfcd](https://github.com/cloudquery/cloudquery/commit/39ccfcd9a293509e67c31a668c843f2f799a5a38))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/firehose to v1.16.5 ([#8712](https://github.com/cloudquery/cloudquery/issues/8712)) ([50eef2e](https://github.com/cloudquery/cloudquery/commit/50eef2e6ec0b7dc0638ac7aa2a46523ce1600c4a))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.41.0 ([#8682](https://github.com/cloudquery/cloudquery/issues/8682)) ([ea9d065](https://github.com/cloudquery/cloudquery/commit/ea9d065ae9f77c6dd990570974630ae6ac3f153e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.42.0 ([#8725](https://github.com/cloudquery/cloudquery/issues/8725)) ([b83b277](https://github.com/cloudquery/cloudquery/commit/b83b277a2421d1caf46a26c3229041b27a3da148))
+* **deps:** Update module github.com/pierrec/lz4/v4 to v4.1.17 ([#8623](https://github.com/cloudquery/cloudquery/issues/8623)) ([fd968d8](https://github.com/cloudquery/cloudquery/commit/fd968d8938e8b603f2e9f6405eac2409ac41636b))
+* **deps:** Update module github.com/stretchr/testify to v1.8.2 ([#8599](https://github.com/cloudquery/cloudquery/issues/8599)) ([2ec8086](https://github.com/cloudquery/cloudquery/commit/2ec808677328410cc96c97a693ef65022d314c32))
+
 ## 1.0.0 (2023-02-27)
 
 
@@ -20,5 +37,3 @@
 * **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.1 ([#8371](https://github.com/cloudquery/cloudquery/issues/8371)) ([e3274c1](https://github.com/cloudquery/cloudquery/commit/e3274c109739bc107387627d340a713470c3a3c1))
 * **deps:** Update module github.com/cloudquery/plugin-sdk to v1.40.0 ([#8401](https://github.com/cloudquery/cloudquery/issues/8401)) ([4cf36d6](https://github.com/cloudquery/cloudquery/commit/4cf36d68684f37c0407332930766c1ba60807a93))
 * **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
-
-
