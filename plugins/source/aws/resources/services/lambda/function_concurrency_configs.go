@@ -8,12 +8,13 @@ import (
 )
 
 func FunctionConcurrencyConfigs() *schema.Table {
+	tableName := "aws_lambda_function_concurrency_configs"
 	return &schema.Table{
-		Name:        "aws_lambda_function_concurrency_configs",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_ProvisionedConcurrencyConfigListItem.html`,
 		Resolver:    fetchLambdaFunctionConcurrencyConfigs,
 		Transform:   transformers.TransformWithStruct(&types.ProvisionedConcurrencyConfigListItem{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("lambda"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

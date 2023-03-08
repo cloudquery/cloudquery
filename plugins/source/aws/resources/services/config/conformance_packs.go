@@ -8,11 +8,12 @@ import (
 )
 
 func ConformancePacks() *schema.Table {
+	tableName := "aws_config_conformance_packs"
 	return &schema.Table{
-		Name:        "aws_config_conformance_packs",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_ConformancePackDetail.html`,
 		Resolver:    fetchConfigConformancePacks,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("config"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		Transform:   transformers.TransformWithStruct(&types.ConformancePackDetail{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

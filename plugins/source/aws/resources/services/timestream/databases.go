@@ -8,12 +8,13 @@ import (
 )
 
 func Databases() *schema.Table {
+	tableName := "aws_timestream_databases"
 	return &schema.Table{
-		Name:        "aws_timestream_databases",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/timestream/latest/developerguide/API_Database.html`,
 		Resolver:    fetchTimestreamDatabases,
 		Transform:   transformers.TransformWithStruct(&types.Database{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ingest.timestream"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ingest.timestream"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

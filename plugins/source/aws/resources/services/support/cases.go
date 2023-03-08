@@ -12,12 +12,13 @@ import (
 )
 
 func Cases() *schema.Table {
+	tableName := "aws_support_cases"
 	return &schema.Table{
-		Name:        "aws_support_cases",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeCases.html`,
 		Resolver:    fetchCases,
 		Transform:   transformers.TransformWithStruct(&types.CaseDetails{}, transformers.WithPrimaryKeys("CaseId")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("support"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "support"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

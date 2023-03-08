@@ -8,11 +8,12 @@ import (
 )
 
 func InstanceStatuses() *schema.Table {
+	tableName := "aws_ec2_instance_statuses"
 	return &schema.Table{
-		Name:        "aws_ec2_instance_statuses",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceStatus.html`,
 		Resolver:    fetchEc2InstanceStatuses,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.InstanceStatus{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

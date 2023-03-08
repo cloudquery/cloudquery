@@ -8,8 +8,9 @@ import (
 )
 
 func ConfigurationSets() *schema.Table {
+	tableName := "aws_ses_configuration_sets"
 	return &schema.Table{
-		Name:                "aws_ses_configuration_sets",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetConfigurationSet.html`,
 		Resolver:            fetchSesConfigurationSets,
 		PreResourceResolver: getConfigurationSet,
@@ -18,7 +19,7 @@ func ConfigurationSets() *schema.Table {
 			transformers.WithSkipFields("ResultMetadata"),
 			transformers.WithNameTransformer(client.CreateTrimPrefixTransformer("configuration_set_")),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer("email"),
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "email"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

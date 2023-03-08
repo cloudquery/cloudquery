@@ -8,12 +8,13 @@ import (
 )
 
 func Snapshots() *schema.Table {
+	tableName := "aws_redshift_snapshots"
 	return &schema.Table{
-		Name:        "aws_redshift_snapshots",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_Snapshot.html`,
 		Resolver:    fetchRedshiftSnapshots,
 		Transform:   transformers.TransformWithStruct(&types.Snapshot{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

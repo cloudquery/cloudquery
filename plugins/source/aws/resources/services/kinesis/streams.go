@@ -8,13 +8,14 @@ import (
 )
 
 func Streams() *schema.Table {
+	tableName := "aws_kinesis_streams"
 	return &schema.Table{
-		Name:                "aws_kinesis_streams",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/kinesis/latest/APIReference/API_StreamDescriptionSummary.html`,
 		Resolver:            fetchKinesisStreams,
 		PreResourceResolver: getStream,
 		Transform:           transformers.TransformWithStruct(&types.StreamDescriptionSummary{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("kinesis"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "kinesis"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

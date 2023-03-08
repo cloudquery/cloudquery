@@ -8,12 +8,13 @@ import (
 )
 
 func Groups() *schema.Table {
+	tableName := "aws_xray_groups"
 	return &schema.Table{
-		Name:        "aws_xray_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/xray/latest/api/API_Group.html`,
 		Resolver:    fetchXrayGroups,
 		Transform:   transformers.TransformWithStruct(&types.GroupSummary{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("xray"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "xray"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

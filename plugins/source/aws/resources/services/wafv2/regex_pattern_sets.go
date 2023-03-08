@@ -8,13 +8,14 @@ import (
 )
 
 func RegexPatternSets() *schema.Table {
+	tableName := "aws_wafv2_regex_pattern_sets"
 	return &schema.Table{
-		Name:                "aws_wafv2_regex_pattern_sets",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/waf/latest/APIReference/API_RegexPatternSet.html`,
 		Resolver:            fetchWafv2RegexPatternSets,
 		PreResourceResolver: getRegexPatternSet,
 		Transform:           transformers.TransformWithStruct(&types.RegexPatternSet{}),
-		Multiplex:           client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
+		Multiplex:           client.ServiceAccountRegionScopeMultiplexer(tableName, "waf-regional"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

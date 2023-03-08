@@ -8,11 +8,12 @@ import (
 )
 
 func Packages() *schema.Table {
+	tableName := "aws_elasticsearch_packages"
 	return &schema.Table{
-		Name:        "aws_elasticsearch_packages",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_PackageDetails.html`,
 		Resolver:    fetchElasticsearchPackages,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("es"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "es"),
 		Transform:   transformers.TransformWithStruct(&types.PackageDetails{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

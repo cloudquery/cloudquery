@@ -8,12 +8,13 @@ import (
 )
 
 func SecurityProfiles() *schema.Table {
+	tableName := "aws_iot_security_profiles"
 	return &schema.Table{
-		Name:        "aws_iot_security_profiles",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeSecurityProfile.html`,
 		Resolver:    fetchIotSecurityProfiles,
 		Transform:   transformers.TransformWithStruct(&iot.DescribeSecurityProfileOutput{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

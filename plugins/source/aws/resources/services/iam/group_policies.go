@@ -8,13 +8,14 @@ import (
 )
 
 func GroupPolicies() *schema.Table {
+	tableName := "aws_iam_group_policies"
 	return &schema.Table{
-		Name:                "aws_iam_group_policies",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetGroupPolicy.html`,
 		Resolver:            fetchIamGroupPolicies,
 		PreResourceResolver: getGroupPolicy,
 		Transform:           transformers.TransformWithStruct(&iam.GetGroupPolicyOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("iam"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

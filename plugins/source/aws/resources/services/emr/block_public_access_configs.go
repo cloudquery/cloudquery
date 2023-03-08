@@ -8,10 +8,11 @@ import (
 )
 
 func BlockPublicAccessConfigs() *schema.Table {
+	tableName := "aws_emr_block_public_access_configs"
 	return &schema.Table{
-		Name:      "aws_emr_block_public_access_configs",
+		Name:      tableName,
 		Resolver:  fetchEmrBlockPublicAccessConfigs,
-		Multiplex: client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "elasticmapreduce"),
 		Transform: transformers.TransformWithStruct(&emr.GetBlockPublicAccessConfigurationOutput{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

@@ -8,11 +8,12 @@ import (
 )
 
 func SecurityConfigurations() *schema.Table {
+	tableName := "aws_emr_security_configurations"
 	return &schema.Table{
-		Name:        "aws_emr_security_configurations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/emr/latest/APIReference/API_DescribeSecurityConfiguration.html`,
 		Resolver:    fetchSecurityConfigurations,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticmapreduce"),
 		Transform:   transformers.TransformWithStruct(&types.SecurityConfigurationSummary{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{

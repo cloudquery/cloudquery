@@ -19,7 +19,7 @@ func Events() *schema.Table {
 		Name:          tableName,
 		Description:   `https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Event.html`,
 		Resolver:      fetchCloudtrailEvents,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("cloudtrail"),
+		Multiplex:     client.ServiceAccountRegionMultiplexer(tableName, "cloudtrail"),
 		Transform:     transformers.TransformWithStruct(&types.Event{}, transformers.WithPrimaryKeys("EventId")),
 		IsIncremental: true,
 		Columns: []schema.Column{

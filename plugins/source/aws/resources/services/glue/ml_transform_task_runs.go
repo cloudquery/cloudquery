@@ -8,12 +8,13 @@ import (
 )
 
 func MlTransformTaskRuns() *schema.Table {
+	tableName := "aws_glue_ml_transform_task_runs"
 	return &schema.Table{
-		Name:        "aws_glue_ml_transform_task_runs",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_TaskRun.html`,
 		Resolver:    fetchGlueMlTransformTaskRuns,
 		Transform:   transformers.TransformWithStruct(&types.TaskRun{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
