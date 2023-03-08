@@ -20,7 +20,7 @@ gen-docs:
 
 	rm -rf ../../../website/tables/gcp
 	go run main.go doc ../../../website/tables/gcp
-	cp ../../../website/tables/gcp/README.md ./docs/tables/README.md
+	sed 's_(\(.*\))_(../../../../../website/tables/gcp/\1)_' ../../../website/tables/gcp/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/gcp/README.md
 	mv ../../../website/tables/gcp/README.md ../../../website/pages/docs/plugins/sources/gcp/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/gcp/*.md
@@ -32,4 +32,4 @@ gen-services:
 
 # All gen targets
 .PHONY: gen
-gen: gen-services gen-docs
+gen: gen-docs

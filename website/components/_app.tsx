@@ -1,6 +1,8 @@
 import React from "react";
 import Script from "next/script";
 import { Prism } from "prism-react-renderer";
+import {DefaultSeo} from "next-seo";
+import {useRouter} from "next/router";
 
 (typeof global !== "undefined" ? global : window).Prism = Prism;
 
@@ -24,8 +26,14 @@ declare global {
 }
 
 export default function Nextra({ Component, pageProps }) {
-  return (
+    const router = useRouter();
+    const canonicalUrl = (`https://www.cloudquery.io` + (router.asPath === "/" ? "": router.asPath)).split("?")[0];
+
+    return (
     <React.Fragment>
+      <DefaultSeo
+          canonical={canonicalUrl}
+      />
       <Component {...pageProps} />
       <Script>
         {typeof window !== "undefined" &&
