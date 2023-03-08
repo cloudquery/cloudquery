@@ -1,3 +1,9 @@
 {
-  "overview": "Overview"
+  "overview": "Overview",
+  "_authentication": {
+    "display": "hidden"
+  },
+  "_configuration": {
+    "display": "hidden"
+  }
 }

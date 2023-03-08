@@ -31,11 +31,11 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-const maxProjectIdsToLog int = 100
+const maxIdsToLog int = 100
 
 type Client struct {
 	projects  []string
-	orgs      []string
+	orgs      []*crmv1.Organization
 	folderIds []string
 
 	ClientOptions []option.ClientOption
@@ -46,6 +46,7 @@ type Client struct {
 	ProjectId string
 	// this is set by table client Org multiplexer
 	OrgId string
+	Org   *crmv1.Organization
 	// this is set by table client Folder multiplexer
 	FolderId string
 	// this is set by table client Location multiplexer
@@ -73,11 +74,13 @@ func (c *Client) withLocation(location string) *Client {
 	return &newClient
 }
 
-// withOrg allows multiplexer to create a new client with given organizationId
-func (c *Client) withOrg(org string) *Client {
+// withOrg allows multiplexer to create a new client with given organization
+func (c *Client) withOrg(org *crmv1.Organization) *Client {
+	orgId := strings.TrimPrefix(org.Name, "organizations/")
 	newClient := *c
-	newClient.logger = c.logger.With().Str("org_id", org).Logger()
-	newClient.OrgId = org
+	newClient.logger = c.logger.With().Str("org_id", orgId).Logger()
+	newClient.OrgId = orgId
+	newClient.Org = org
 	return &newClient
 }
 
@@ -129,6 +132,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 
 	gcpSpec.setDefaults()
 	projects := gcpSpec.ProjectIDs
+	organizations := make([]*crmv1.Organization, 0)
 	if gcpSpec.BackoffRetries > 0 {
 		c.CallOptions = append(c.CallOptions, gax.WithRetry(func() gax.Retryer {
 			return &Retrier{
@@ -147,7 +151,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	// Add a fake request reason because it is not possible to pass nil options
 	c.ClientOptions = append(c.ClientOptions,
 		option.WithRequestReason("cloudquery resource fetch"),
-		// we disable telemetry to boost performance and be on the same side with telemtry
+		// we disable telemetry to boost performance and be on the same side with telemetry
 		option.WithTelemetryDisabled(),
 		option.WithGRPCDialOption(
 			unaryInterceptor,
@@ -214,7 +218,48 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		projects = setUnion(projects, projectsWithFilter)
 	}
 
+	if len(gcpSpec.OrganizationIDs) == 0 && len(gcpSpec.OrganizationFilter) == 0 {
+		c.logger.Info().Msg("No organization_ids or organization_filter specified - assuming all organizations")
+		c.logger.Info().Msg("Listing organizations...")
+
+		organizations, err = getOrganizations(ctx, "", c.ClientOptions...)
+		if err != nil {
+			c.logger.Err(err).Msg("failed to get organizations")
+		}
+	} else {
+		if len(gcpSpec.OrganizationIDs) > 0 {
+			for _, orgID := range gcpSpec.OrganizationIDs {
+				c.logger.Info().Msgf("Getting spec organization %q...", orgID)
+				org, err := getOrganization(ctx, orgID, c.ClientOptions...)
+				if err != nil {
+					return nil, fmt.Errorf("failed to get spec organization: %w", err)
+				}
+				organizations = append(organizations, org)
+			}
+		}
+		if len(gcpSpec.OrganizationFilter) > 0 {
+			c.logger.Info().Msg("Listing organizations with filter...")
+			organizationsWithFilter, err := getOrganizations(ctx, gcpSpec.OrganizationFilter, c.ClientOptions...)
+			if err != nil {
+				return nil, fmt.Errorf("failed to get organizations with filter: %w", err)
+			}
+			for i := range organizationsWithFilter {
+				found := false
+				for _, org := range organizations {
+					if organizationsWithFilter[i].Name == org.Name {
+						found = true
+						break
+					}
+				}
+				if !found {
+					organizations = append(organizations, organizationsWithFilter[i])
+				}
+			}
+		}
+	}
+
 	logProjectIds(&logger, projects)
+	logOrganizationIds(&logger, organizations)
 
 	if len(projects) == 0 {
 		return nil, fmt.Errorf("no active projects")
@@ -222,7 +267,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 
 	c.projects = projects
 	c.folderIds = gcpSpec.FolderIDs
-	c.orgs, err = getOrganizations(ctx, c.ClientOptions...)
+	c.orgs = organizations
 	if err != nil {
 		c.logger.Err(err).Msg("failed to get organizations")
 	}
@@ -247,8 +292,8 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 
 func logFolderIds(logger *zerolog.Logger, folderIds []string) {
 	// If there are too many folders, just log the first maxProjectIdsToLog.
-	if len(folderIds) > maxProjectIdsToLog {
-		logger.Info().Interface("folder_ids", folderIds[:maxProjectIdsToLog]).Msgf("Found %d folders. First %d: ", len(folderIds), maxProjectIdsToLog)
+	if len(folderIds) > maxIdsToLog {
+		logger.Info().Interface("folder_ids", folderIds[:maxIdsToLog]).Msgf("Found %d folders. First %d: ", len(folderIds), maxIdsToLog)
 		logger.Debug().Interface("folder_ids", folderIds).Msg("All folders: ")
 	} else {
 		logger.Info().Interface("folder_ids", folderIds).Msgf("Found %d projects in folders", len(folderIds))
@@ -256,12 +301,26 @@ func logFolderIds(logger *zerolog.Logger, folderIds []string) {
 }
 
 func logProjectIds(logger *zerolog.Logger, projectIds []string) {
-	// If there are too many folders, just log the first maxProjectIdsToLog.
-	if len(projectIds) > maxProjectIdsToLog {
-		logger.Info().Interface("projects", projectIds[:maxProjectIdsToLog]).Msgf("Found %d projects. First %d: ", len(projectIds), maxProjectIdsToLog)
+	// If there are too many folders, just log the first maxIdsToLog.
+	if len(projectIds) > maxIdsToLog {
+		logger.Info().Interface("projects", projectIds[:maxIdsToLog]).Msgf("Found %d projects. First %d: ", len(projectIds), maxIdsToLog)
 		logger.Debug().Interface("projects", projectIds).Msg("All projects: ")
 	} else {
 		logger.Info().Interface("projects", projectIds).Msgf("Found %d projects in folders", len(projectIds))
+	}
+}
+
+func logOrganizationIds(logger *zerolog.Logger, organizations []*crmv1.Organization) {
+	// If there are too many organizations, just log the first maxIdsToLog.
+	organizationIds := make([]string, len(organizations))
+	for i, org := range organizations {
+		organizationIds[i] = org.Name
+	}
+	if len(organizationIds) > maxIdsToLog {
+		logger.Info().Interface("organizations", organizationIds[:maxIdsToLog]).Msgf("Found %d organizations. First %d: ", len(organizationIds), maxIdsToLog)
+		logger.Debug().Interface("organizations", organizationIds).Msg("All organizations: ")
+	} else {
+		logger.Info().Interface("organizations", organizationIds).Msgf("Found %d organizations in folders", len(organizationIds))
 	}
 }
 
@@ -387,23 +446,30 @@ func listProjectsInFolders(ctx context.Context, projectClient *resourcemanager.P
 	return projects, nil
 }
 
-func getOrganizations(ctx context.Context, options ...option.ClientOption) ([]string, error) {
+func getOrganizations(ctx context.Context, filter string, options ...option.ClientOption) ([]*crmv1.Organization, error) {
 	service, err := crmv1.NewService(ctx, options...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
 	}
 
-	var orgs []string
-	if err := service.Organizations.Search(&crmv1.SearchOrganizationsRequest{}).Context(ctx).Pages(ctx, func(page *crmv1.SearchOrganizationsResponse) error {
-		for _, org := range page.Organizations {
-			orgs = append(orgs, strings.TrimPrefix(org.Name, "organizations/"))
-		}
+	var orgs []*crmv1.Organization
+	if err := service.Organizations.Search(&crmv1.SearchOrganizationsRequest{Filter: filter}).Context(ctx).Pages(ctx, func(page *crmv1.SearchOrganizationsResponse) error {
+		orgs = append(orgs, page.Organizations...)
 		return nil
 	}); err != nil {
 		return nil, err
 	}
 
-	return setUnion(nil, orgs), nil
+	return orgs, nil
+}
+
+func getOrganization(ctx context.Context, id string, options ...option.ClientOption) (*crmv1.Organization, error) {
+	service, err := crmv1.NewService(ctx, options...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
+	}
+
+	return service.Organizations.Get("organizations/" + id).Context(ctx).Do()
 }
 
 func setUnion(a []string, b []string) []string {

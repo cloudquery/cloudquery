@@ -8,12 +8,13 @@ import (
 )
 
 func SubnetGroups() *schema.Table {
+	tableName := "aws_redshift_subnet_groups"
 	return &schema.Table{
-		Name:        "aws_redshift_subnet_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_ClusterSubnetGroup.html`,
 		Resolver:    fetchRedshiftSubnetGroups,
 		Transform:   transformers.TransformWithStruct(&types.ClusterSubnetGroup{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

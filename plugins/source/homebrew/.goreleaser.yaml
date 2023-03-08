@@ -1,0 +1,14 @@
+variables:
+  component: source/homebrew
+  binary: homebrew
+
+project_name: plugins/source/homebrew
+
+monorepo:
+  tag_prefix: plugins-source-homebrew-
+  dir: plugins/source/homebrew
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

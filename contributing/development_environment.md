@@ -16,7 +16,7 @@ git clone https://github.com/cloudquery/cloudquery
 Build the CLI and all plugins:
 
 ```bash
-make build
+./scripts/build.sh
 ```
 
 ### Running Source Plugins in Developer Mode
@@ -28,7 +28,7 @@ make build
    spec:
      # global config
      name: "aws"
-     version: "latest"
+     version: "v15.2.0"
      registry: "grpc"
      path: "localhost:7777"
      tables: ["*"]

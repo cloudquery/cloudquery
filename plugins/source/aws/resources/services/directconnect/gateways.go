@@ -8,11 +8,12 @@ import (
 )
 
 func Gateways() *schema.Table {
+	tableName := "aws_directconnect_gateways"
 	return &schema.Table{
-		Name:        "aws_directconnect_gateways",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGateway.html`,
 		Resolver:    fetchDirectconnectGateways,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("directconnect"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "directconnect"),
 		Transform:   transformers.TransformWithStruct(&types.DirectConnectGateway{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

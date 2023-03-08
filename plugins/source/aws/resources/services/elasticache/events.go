@@ -8,11 +8,12 @@ import (
 )
 
 func Events() *schema.Table {
+	tableName := "aws_elasticache_events"
 	return &schema.Table{
-		Name:        "aws_elasticache_events",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_Event.html`,
 		Resolver:    fetchElasticacheEvents,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
 		Transform:   transformers.TransformWithStruct(&types.Event{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

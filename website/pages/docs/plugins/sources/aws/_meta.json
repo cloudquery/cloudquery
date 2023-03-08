@@ -2,5 +2,11 @@
   "overview": "Overview",
   "configuration": "Configuration",
   "multi-account": "Multi Account Configuration",
-  "tables": "Tables"
+  "tables": "Tables",
+  "_authentication": {
+    "display": "hidden"
+  },
+  "_configuration": {
+    "display": "hidden"
+  }
 }

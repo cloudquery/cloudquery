@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"regexp"
 	"strings"
@@ -18,7 +17,10 @@ func parseDocsTables() map[string]bool {
 	}
 
 	for _, readme := range tablesReadmes {
-		content, err := ioutil.ReadFile("../../" + readme)
+		if strings.HasPrefix(readme, "plugins/source/test") {
+			continue
+		}
+		content, err := os.ReadFile("../../" + readme)
 		if err != nil {
 			panic(err)
 		}
@@ -44,10 +46,13 @@ func parseCodeTables() map[string]string {
 		panic(err)
 	}
 	for _, tableFile := range tableFiles {
+		if strings.HasPrefix(tableFile, "plugins/source/test") {
+			continue
+		}
 		if strings.HasSuffix(tableFile, "_test.go") {
 			continue
 		}
-		content, err := ioutil.ReadFile("../../" + tableFile)
+		content, err := os.ReadFile("../../" + tableFile)
 		if err != nil {
 			panic(err)
 		}
@@ -58,6 +63,9 @@ func parseCodeTables() map[string]string {
 
 		tableNameRegex := regexp.MustCompile(`schema.Table[\s\S]+?Name\:.*?"(.*?)",`)
 		tableName := tableNameRegex.FindStringSubmatch(contentString)
+		if len(tableName) != 2 {
+			continue
+		}
 		tablesMap[tableName[1]] = tableFile
 
 	}

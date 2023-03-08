@@ -8,6 +8,7 @@ import (
 	// Import all autorest modules
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
@@ -16,6 +17,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 	"github.com/thoas/go-funk"
+	"golang.org/x/exp/maps"
 )
 
 type Client struct {
@@ -35,7 +37,7 @@ type Client struct {
 
 func (c *Client) discoverSubscriptions(ctx context.Context) error {
 	c.subscriptions = make([]string, 0)
-	subscriptionClient, err := armsubscription.NewSubscriptionsClient(c.Creds, nil)
+	subscriptionClient, err := armsubscription.NewSubscriptionsClient(c.Creds, c.Options)
 	if err != nil {
 		return err
 	}
@@ -71,7 +73,7 @@ func (c *Client) disocverResourceGroups(ctx context.Context) error {
 
 	for _, subID := range c.subscriptions {
 		c.registeredNamespaces[subID] = make(map[string]bool)
-		cl, err := armresources.NewResourceGroupsClient(subID, c.Creds, nil)
+		cl, err := armresources.NewResourceGroupsClient(subID, c.Creds, c.Options)
 		if err != nil {
 			return fmt.Errorf("failed to create resource group client: %w", err)
 		}
@@ -87,7 +89,7 @@ func (c *Client) disocverResourceGroups(ctx context.Context) error {
 			c.resourceGroups[subID] = append(c.resourceGroups[subID], getResourceGroupNames(page.Value)...)
 		}
 
-		providerClient, err := armresources.NewProvidersClient(subID, c.Creds, nil)
+		providerClient, err := armresources.NewProvidersClient(subID, c.Creds, c.Options)
 		if err != nil {
 			return fmt.Errorf("failed to create provider client: %w", err)
 		}
@@ -110,6 +112,20 @@ func (c *Client) disocverResourceGroups(ctx context.Context) error {
 	return nil
 }
 
+func getCloudConfigFromSpec(specCloud string) (cloud.Configuration, error) {
+	var specCloudToConfig = map[string]cloud.Configuration{
+		"AzurePublic":     cloud.AzurePublic,
+		"AzureGovernment": cloud.AzureGovernment,
+		"AzureChina":      cloud.AzureChina,
+	}
+
+	if v, ok := specCloudToConfig[specCloud]; ok {
+		return v, nil
+	}
+
+	return cloud.Configuration{}, fmt.Errorf("unknown Azure cloud name %q. Supported values are %q", specCloud, maps.Keys(specCloudToConfig))
+}
+
 func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var spec Spec
 	var err error
@@ -123,7 +139,20 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		subscriptions: uniqueSubscriptions,
 	}
 
-	c.Creds, err = azidentity.NewDefaultAzureCredential(nil)
+	if spec.CloudName != "" {
+		cloudConfig, err := getCloudConfigFromSpec(spec.CloudName)
+		if err != nil {
+			return nil, err
+		}
+		c.Options = &arm.ClientOptions{ClientOptions: azcore.ClientOptions{Cloud: cloudConfig}}
+	}
+
+	var credsOptions *azidentity.DefaultAzureCredentialOptions
+	if c.Options != nil {
+		credsOptions = &azidentity.DefaultAzureCredentialOptions{ClientOptions: c.Options.ClientOptions}
+	}
+
+	c.Creds, err = azidentity.NewDefaultAzureCredential(credsOptions)
 	if err != nil {
 		return nil, err
 	}

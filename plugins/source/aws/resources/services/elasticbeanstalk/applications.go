@@ -8,11 +8,12 @@ import (
 )
 
 func Applications() *schema.Table {
+	tableName := "aws_elasticbeanstalk_applications"
 	return &schema.Table{
-		Name:        "aws_elasticbeanstalk_applications",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ApplicationDescription.html`,
 		Resolver:    fetchElasticbeanstalkApplications,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticbeanstalk"),
 		Transform:   transformers.TransformWithStruct(&types.ApplicationDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

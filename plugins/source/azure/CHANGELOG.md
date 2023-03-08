@@ -5,6 +5,68 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v4.3.0...plugins-source-azure-v5.0.0) (2023-03-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* **azure-resources:** Remove `azure_azuredata_sql_server_registrations` since the API to sync it is deprecated. You should use the tables under `azurearcdata`, `azure_azurearcdata_sql_server_instances`, `azure_azurearcdata_postgres_instances` or `azure_azurearcdata_sql_managed_instances` to get the most up to date information. See more in this [Azure Go SDK issue comment](https://github.com/Azure/azure-sdk-for-go/issues/19789#issuecomment-1438803340).
+
+### Features
+
+* **azure-resources:** Add Monitor Autoscale Settings ([#8696](https://github.com/cloudquery/cloudquery/issues/8696)) ([030c0c2](https://github.com/cloudquery/cloudquery/commit/030c0c24370f4b78b18648986853c3172142d088))
+* **azure-resources:** Add Subscription Diagnostic Settings ([#8693](https://github.com/cloudquery/cloudquery/issues/8693)) ([d84454c](https://github.com/cloudquery/cloudquery/commit/d84454c52b995c0b4046e0fdcb3992a054ffc6e4))
+* **docs:** Render tables as a part of the Website and add a [tables search box](https://www.cloudquery.io/tables). The equivalent of the GitHub README.md file is now under each plugin's docs section, for example https://www.cloudquery.io/docs/plugins/sources/aws/tables. The Website HTML page is built from the GitHub markdown file located under each plugin's path in our Website code, for example https://github.com/cloudquery/cloudquery/blob/main/website/pages/docs/plugins/sources/aws/tables.md. For the list of all plugins table files as they are stored on GitHub see https://github.com/cloudquery/cloudquery/tree/main/website/tables ([342b0c5](https://github.com/cloudquery/cloudquery/commit/342b0c569fd28ee26ea3e09ec6d787f85c49f16c))
+
+
+### Bug Fixes
+
+* **azure-resources:** Remove `azure_azuredata_sql_server_registrations` ([977137e](https://github.com/cloudquery/cloudquery/commit/977137ec69fb6eb0e8fa086bfd155f579df6ec0a))
+* **azure:** Set date range in cost management queries ([#8676](https://github.com/cloudquery/cloudquery/issues/8676)) ([6178e1c](https://github.com/cloudquery/cloudquery/commit/6178e1c242a1428b1369405537af04f2f6496827)), closes [#8655](https://github.com/cloudquery/cloudquery/issues/8655)
+* **deps:** Update golang.org/x/exp digest to c95f2b4 ([#8560](https://github.com/cloudquery/cloudquery/issues/8560)) ([9c3bd5b](https://github.com/cloudquery/cloudquery/commit/9c3bd5b68f9741a360fde6c54bf3f5f3efe06d9e))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azcore to v1.3.1 ([#8567](https://github.com/cloudquery/cloudquery/issues/8567)) ([d17e2aa](https://github.com/cloudquery/cloudquery/commit/d17e2aa63e8258ecc3c6815431222d1c5f0a06bf))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices to v1.3.0 ([#8648](https://github.com/cloudquery/cloudquery/issues/8648)) ([7639032](https://github.com/cloudquery/cloudquery/commit/763903218170ee89323bb0d9d6567d8e2fec5abf))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2 to v2.2.0 ([#8649](https://github.com/cloudquery/cloudquery/issues/8649)) ([261aa9c](https://github.com/cloudquery/cloudquery/commit/261aa9c8b5dba8d315862126c00f4d0d1c136b81))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3 to v3.1.0 ([#8650](https://github.com/cloudquery/cloudquery/issues/8650)) ([359da21](https://github.com/cloudquery/cloudquery/commit/359da2150303db05402132ed222f63fc9c711d3f))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto to v1.2.0 ([#8651](https://github.com/cloudquery/cloudquery/issues/8651)) ([036adc7](https://github.com/cloudquery/cloudquery/commit/036adc7caf2da5607a3da486371c5d5fa1fb32f3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.41.0 ([#8682](https://github.com/cloudquery/cloudquery/issues/8682)) ([ea9d065](https://github.com/cloudquery/cloudquery/commit/ea9d065ae9f77c6dd990570974630ae6ac3f153e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.42.0 ([#8725](https://github.com/cloudquery/cloudquery/issues/8725)) ([b83b277](https://github.com/cloudquery/cloudquery/commit/b83b277a2421d1caf46a26c3229041b27a3da148))
+* **deps:** Update module github.com/stretchr/testify to v1.8.2 ([#8599](https://github.com/cloudquery/cloudquery/issues/8599)) ([2ec8086](https://github.com/cloudquery/cloudquery/commit/2ec808677328410cc96c97a693ef65022d314c32))
+
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v4.2.0...plugins-source-azure-v4.3.0) (2023-02-28)
+
+
+### Features
+
+* **azure-resources:** Add AKS Upgrade Profile ([#8444](https://github.com/cloudquery/cloudquery/issues/8444)) ([a665f4b](https://github.com/cloudquery/cloudquery/commit/a665f4b626110838bc26dcf85522492ec41c7987))
+* **azure-resources:** Add Management Groups ([#8226](https://github.com/cloudquery/cloudquery/issues/8226)) ([20a4c0b](https://github.com/cloudquery/cloudquery/commit/20a4c0b5f09d38a0eac2a629504cc01f33cb3af2))
+* **azure-resources:** Add SQL Server Security Alert Policies ([#7939](https://github.com/cloudquery/cloudquery/issues/7939)) ([210cf81](https://github.com/cloudquery/cloudquery/commit/210cf811b94f474aa15bd6d4034ac7c0b428683a))
+* **azure-spec:** Add cloud name configuration ([#8471](https://github.com/cloudquery/cloudquery/issues/8471)) ([d2ec0cc](https://github.com/cloudquery/cloudquery/commit/d2ec0cc531ed36ac21cadfda981e7e721d047bb9))
+
+
+### Bug Fixes
+
+* **azure-resources:** Make Monitor Diagnostic Settings a relation of generic resources ([#7943](https://github.com/cloudquery/cloudquery/issues/7943)) ([8316b87](https://github.com/cloudquery/cloudquery/commit/8316b87664d546c0da3cb3066dd39b1a573aa7a9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.0 ([#8344](https://github.com/cloudquery/cloudquery/issues/8344)) ([9c57544](https://github.com/cloudquery/cloudquery/commit/9c57544d06f9a774adcc659bcabd2518a905bdaa))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.1 ([#8371](https://github.com/cloudquery/cloudquery/issues/8371)) ([e3274c1](https://github.com/cloudquery/cloudquery/commit/e3274c109739bc107387627d340a713470c3a3c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.40.0 ([#8401](https://github.com/cloudquery/cloudquery/issues/8401)) ([4cf36d6](https://github.com/cloudquery/cloudquery/commit/4cf36d68684f37c0407332930766c1ba60807a93))
+
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v4.1.1...plugins-source-azure-v4.2.0) (2023-02-21)
+
+
+### Features
+
+* **azure:** Add network ExpressRoute circuit authorizations and peerings ([#8128](https://github.com/cloudquery/cloudquery/issues/8128)) ([2d4cba5](https://github.com/cloudquery/cloudquery/commit/2d4cba5dd34b4157d59924c7b4ff6f959c56305d)), closes [#7927](https://github.com/cloudquery/cloudquery/issues/7927)
+* **azure:** Add network: interface_ip_configurations and virtual_network_subnets ([#8126](https://github.com/cloudquery/cloudquery/issues/8126)) ([df5e48b](https://github.com/cloudquery/cloudquery/commit/df5e48b5fde4db098c923019ef77cd6e370e224b)), closes [#7929](https://github.com/cloudquery/cloudquery/issues/7929)
+* **azure:** Add postgresql databases resource ([#8125](https://github.com/cloudquery/cloudquery/issues/8125)) ([91cab61](https://github.com/cloudquery/cloudquery/commit/91cab6176826de858fda3807aae4b3a2172e3a47)), closes [#7928](https://github.com/cloudquery/cloudquery/issues/7928)
+
+
+### Bug Fixes
+
+* **azure:** Ensure spec subscriptions are unique ([#8099](https://github.com/cloudquery/cloudquery/issues/8099)) ([20dc235](https://github.com/cloudquery/cloudquery/commit/20dc235b998f0c31214f4ca1b3a6d366552f5683))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.38.2 ([#8156](https://github.com/cloudquery/cloudquery/issues/8156)) ([ac2d2d7](https://github.com/cloudquery/cloudquery/commit/ac2d2d70d5c4bc45fb8734bd4deb8a1e36074f6d))
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+
 ## [4.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v4.1.0...plugins-source-azure-v4.1.1) (2023-02-14)
 
 

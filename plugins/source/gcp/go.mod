@@ -3,47 +3,47 @@ module github.com/cloudquery/plugins/source/gcp
 go 1.19
 
 require (
-	cloud.google.com/go/aiplatform v1.27.0
-	cloud.google.com/go/apigateway v1.4.0
-	cloud.google.com/go/apikeys v0.2.0
-	cloud.google.com/go/appengine v1.5.0
-	cloud.google.com/go/artifactregistry v1.9.0
-	cloud.google.com/go/baremetalsolution v0.4.0
-	cloud.google.com/go/batch v0.4.0
-	cloud.google.com/go/beyondcorp v0.3.1
+	cloud.google.com/go/aiplatform v1.35.0
+	cloud.google.com/go/apigateway v1.5.0
+	cloud.google.com/go/apikeys v0.5.0
+	cloud.google.com/go/appengine v1.6.0
+	cloud.google.com/go/artifactregistry v1.11.1
+	cloud.google.com/go/baremetalsolution v0.5.0
+	cloud.google.com/go/batch v0.7.0
+	cloud.google.com/go/beyondcorp v0.4.0
 	cloud.google.com/go/bigtable v1.18.1
-	cloud.google.com/go/billing v1.7.0
-	cloud.google.com/go/binaryauthorization v1.4.0
-	cloud.google.com/go/certificatemanager v1.4.0
-	cloud.google.com/go/compute v1.15.1
-	cloud.google.com/go/container v1.8.0
-	cloud.google.com/go/containeranalysis v0.6.0
-	cloud.google.com/go/deploy v1.5.0
-	cloud.google.com/go/domains v0.7.0
+	cloud.google.com/go/billing v1.12.0
+	cloud.google.com/go/binaryauthorization v1.5.0
+	cloud.google.com/go/certificatemanager v1.6.0
+	cloud.google.com/go/compute v1.18.0
+	cloud.google.com/go/container v1.13.1
+	cloud.google.com/go/containeranalysis v0.7.0
+	cloud.google.com/go/deploy v1.6.0
+	cloud.google.com/go/domains v0.8.0
 	cloud.google.com/go/errorreporting v0.3.0
-	cloud.google.com/go/functions v1.9.0
-	cloud.google.com/go/iam v0.9.0
-	cloud.google.com/go/iot v1.4.0
-	cloud.google.com/go/kms v1.6.0
-	cloud.google.com/go/logging v1.6.1
-	cloud.google.com/go/longrunning v0.3.0
-	cloud.google.com/go/monitoring v1.9.0
-	cloud.google.com/go/redis v1.10.0
-	cloud.google.com/go/resourcemanager v1.4.0
-	cloud.google.com/go/run v0.4.0
-	cloud.google.com/go/scheduler v1.7.0
-	cloud.google.com/go/secretmanager v1.9.0
+	cloud.google.com/go/functions v1.10.0
+	cloud.google.com/go/iam v0.12.0
+	cloud.google.com/go/iot v1.5.0
+	cloud.google.com/go/kms v1.8.0
+	cloud.google.com/go/logging v1.7.0
+	cloud.google.com/go/longrunning v0.4.1
+	cloud.google.com/go/monitoring v1.12.0
+	cloud.google.com/go/redis v1.11.0
+	cloud.google.com/go/resourcemanager v1.5.0
+	cloud.google.com/go/run v0.8.0
+	cloud.google.com/go/scheduler v1.8.0
+	cloud.google.com/go/secretmanager v1.10.0
 	cloud.google.com/go/securitycenter v1.18.1
-	cloud.google.com/go/serviceusage v1.4.0
+	cloud.google.com/go/serviceusage v1.5.0
 	cloud.google.com/go/storage v1.28.1
-	cloud.google.com/go/translate v1.4.0
-	cloud.google.com/go/video v1.9.0
-	cloud.google.com/go/vision/v2 v2.5.0
-	cloud.google.com/go/vmmigration v1.3.0
-	cloud.google.com/go/vpcaccess v1.5.0
-	cloud.google.com/go/websecurityscanner v1.4.0
-	cloud.google.com/go/workflows v1.9.0
-	github.com/cloudquery/plugin-sdk v1.37.1
+	cloud.google.com/go/translate v1.5.0
+	cloud.google.com/go/video v1.12.0
+	cloud.google.com/go/vision/v2 v2.6.0
+	cloud.google.com/go/vmmigration v1.5.0
+	cloud.google.com/go/vpcaccess v1.6.0
+	cloud.google.com/go/websecurityscanner v1.5.0
+	cloud.google.com/go/workflows v1.10.0
+	github.com/cloudquery/plugin-sdk v1.42.0
 	github.com/golang/mock v1.6.0
 	github.com/googleapis/gax-go/v2 v2.7.0
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3
@@ -52,18 +52,18 @@ require (
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/rs/zerolog v1.29.0
 	github.com/spf13/cast v1.5.0
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.8.2
 	github.com/thoas/go-funk v0.9.3
-	golang.org/x/exp v0.0.0-20230212135524-a684f29349b6
+	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2
 	golang.org/x/sync v0.1.0
-	google.golang.org/api v0.107.0
-	google.golang.org/genproto v0.0.0-20230209215440-0dfe4f8abfcc
+	google.golang.org/api v0.110.0
+	google.golang.org/genproto v0.0.0-20230227214838-9b19f0bdc514
 	google.golang.org/grpc v1.53.0
 	google.golang.org/protobuf v1.28.1
 )
 
 require (
-	cloud.google.com/go v0.109.0 // indirect; indirect // indirect
+	cloud.google.com/go v0.110.0 // indirect; indirect // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/vision v1.2.0 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
@@ -79,7 +79,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/googleapis/enterprise-certificate-proxy v0.2.1 // indirect
+	github.com/googleapis/enterprise-certificate-proxy v0.2.3 // indirect; indirect // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
@@ -88,8 +88,8 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/mod v0.7.0 // indirect
-	golang.org/x/net v0.6.0 // indirect
-	golang.org/x/oauth2 v0.4.0 // indirect
+	golang.org/x/net v0.7.0 // indirect; indirect // indirect
+	golang.org/x/oauth2 v0.5.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/tools v0.3.0 // indirect

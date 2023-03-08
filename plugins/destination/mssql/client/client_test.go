@@ -7,7 +7,16 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/specs"
 )
+
+var migrateStrategy = destination.MigrateStrategy{
+	AddColumn:           specs.MigrateModeSafe,
+	AddColumnNotNull:    specs.MigrateModeForced,
+	RemoveColumn:        specs.MigrateModeSafe,
+	RemoveColumnNotNull: specs.MigrateModeForced,
+	ChangeColumn:        specs.MigrateModeForced,
+}
 
 func getTestConnection() string {
 	if testConn := os.Getenv("CQ_DEST_MS_SQL_TEST_CONN"); len(testConn) > 0 {
@@ -25,6 +34,9 @@ func TestPlugin(t *testing.T) {
 			return destination.NewPlugin("mssql", plugin.Version, New, destination.WithManagedWriter())
 		},
 		Spec{ConnectionString: getTestConnection()},
-		destination.PluginTestSuiteTests{},
+		destination.PluginTestSuiteTests{
+			MigrateStrategyOverwrite: migrateStrategy,
+			MigrateStrategyAppend:    migrateStrategy,
+		},
 	)
 }

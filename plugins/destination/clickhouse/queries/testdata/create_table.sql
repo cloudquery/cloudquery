@@ -6,4 +6,4 @@ CREATE TABLE `table_name` (
   `extra_col` Float64,
   `extra_inet_col` Nullable(String),
   `extra_inet_arr_col` Array(Nullable(String))
-) ENGINE = MergeTree ORDER BY (`_cq_id`)
+) ENGINE = MergeTree ORDER BY (`_cq_id`, `extra_col`)

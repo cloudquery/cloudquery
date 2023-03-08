@@ -2,8 +2,8 @@
 
 ## Tables
 
-- [alicloud_bss_bill](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/alicloud/docs/tables/alicloud_bss_bill.md)
-- [alicloud_bss_bill_overview](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/alicloud/docs/tables/alicloud_bss_bill_overview.md)
-- [alicloud_ecs_instances](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/alicloud/docs/tables/alicloud_ecs_instances.md)
-- [alicloud_oss_buckets](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/alicloud/docs/tables/alicloud_oss_buckets.md)
-  - [alicloud_oss_bucket_stats](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/alicloud/docs/tables/alicloud_oss_bucket_stats.md)
+- [alicloud_bss_bill](tables/alicloud_bss_bill)
+- [alicloud_bss_bill_overview](tables/alicloud_bss_bill_overview)
+- [alicloud_ecs_instances](tables/alicloud_ecs_instances)
+- [alicloud_oss_buckets](tables/alicloud_oss_buckets)
+  - [alicloud_oss_bucket_stats](tables/alicloud_oss_bucket_stats)

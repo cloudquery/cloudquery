@@ -1,0 +1,16 @@
+This example configures the file destination, to create CSV files in  `./cq_csv_output`. You can also choose `json` or `parquet` as the output format. Note that the file plugin only supports `append` write-mode.
+
+The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+
+```yaml copy
+kind: destination
+spec:
+  name: "file"
+  path: "cloudquery/file"
+  version: "VERSION_DESTINATION_FILE"
+  write_mode: "append" # file only supports 'append' mode
+
+  spec:
+    directory: "./cq_csv_output"
+    format: "csv" # supported values are 'csv', 'json' and 'parquet'
+```

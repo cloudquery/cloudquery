@@ -5,7 +5,8 @@ name: MongoDB
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
-import { Callout } from 'nextra-theme-docs'
+import { Callout } from 'nextra-theme-docs';
+import Configuration from "./_configuration.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "mongodb")}/>
 
@@ -19,21 +20,7 @@ Supported database versions:
 
 ### Example
 
-This example configures a MongoDB destination, located at `localhost:27017`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
-
-```yaml copy
-kind: destination
-spec:
-  name: "mongodb"
-  registry: "github"
-  path: "cloudquery/mongodb"
-  version: "VERSION_DESTINATION_MONGODB"
-  # batch_size: 10000 # optional
-  # batch_size_bytes: 5242880 # optional
-  spec:
-    connection_string: "mongodb://localhost:27017"
-    database: "your_mongo_database_name"
-```
+<Configuration />
 
 <Callout type="info">
 Make sure to use [environment variable substitution](/docs/advanced-topics/environment-variable-substitution) in production instead of committing the credentials to the configuration file directly.

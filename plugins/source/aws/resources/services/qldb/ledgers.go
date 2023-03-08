@@ -8,13 +8,14 @@ import (
 )
 
 func Ledgers() *schema.Table {
+	tableName := "aws_qldb_ledgers"
 	return &schema.Table{
-		Name:                "aws_qldb_ledgers",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/qldb/latest/developerguide/API_DescribeLedger.html`,
 		Resolver:            fetchQldbLedgers,
 		PreResourceResolver: getLedger,
 		Transform:           transformers.TransformWithStruct(&qldb.DescribeLedgerOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("qldb"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "qldb"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -1,0 +1,13 @@
+```yaml copy
+kind: source
+# Common source-plugin configuration
+spec:
+  name: cloudflare
+  path: cloudquery/cloudflare
+  version: "VERSION_SOURCE_CLOUDFLARE"
+  tables: ["*"]
+  destinations: ["DESTINATION_NAME"]
+
+  # Cloudflare specific configuration
+  spec:
+```

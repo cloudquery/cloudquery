@@ -8,12 +8,13 @@ import (
 )
 
 func Crawlers() *schema.Table {
+	tableName := "aws_glue_crawlers"
 	return &schema.Table{
-		Name:        "aws_glue_crawlers",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_Crawler.html`,
 		Resolver:    fetchGlueCrawlers,
 		Transform:   transformers.TransformWithStruct(&types.Crawler{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

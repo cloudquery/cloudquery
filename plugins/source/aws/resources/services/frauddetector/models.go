@@ -8,11 +8,12 @@ import (
 )
 
 func Models() *schema.Table {
+	tableName := "aws_frauddetector_models"
 	return &schema.Table{
-		Name:        "aws_frauddetector_models",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/frauddetector/latest/api/API_Model.html`,
 		Resolver:    fetchFrauddetectorModels,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("frauddetector"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "frauddetector"),
 		Transform:   transformers.TransformWithStruct(&types.Model{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

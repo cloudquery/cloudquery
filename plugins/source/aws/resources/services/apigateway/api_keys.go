@@ -8,11 +8,12 @@ import (
 )
 
 func ApiKeys() *schema.Table {
+	tableName := "aws_apigateway_api_keys"
 	return &schema.Table{
-		Name:        "aws_apigateway_api_keys",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_ApiKey.html`,
 		Resolver:    fetchApigatewayApiKeys,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.ApiKey{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

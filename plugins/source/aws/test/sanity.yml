@@ -5,9 +5,13 @@ spec:
   destinations: [sqlite]
   path: ./aws
   registry: local
+  tables: [aws_s3_buckets]
+  spec:
+    regions:
+      - us-east-1
 ---
 kind: destination
 spec:
   name: sqlite
   path: cloudquery/sqlite
-  version: "v1.2.3" # latest version of sqlite plugin
+  version: "v1.3.3" # latest version of sqlite plugin

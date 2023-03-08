@@ -13,6 +13,12 @@
     }
   },
   "docs": "Docs",
+  "integrations": {
+    "title": "Integrations",
+    "theme": {
+      "typesetting": "article"
+    }
+  },
   "how-to-guides": {
     "title": "How-to Guides",
     "theme": {
@@ -28,7 +34,13 @@
   "plugins": {
     "title": "Plugins",
     "href": "/docs/plugins/overview",
-    "route": "/docs/plugins"
+    "route": "#"
+  },
+  "tables": {
+    "title": "Tables",
+    "theme": {
+      "typesetting": "article"
+    }
   },
   "confirm": {
     "title": "Confirm",

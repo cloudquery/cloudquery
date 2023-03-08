@@ -8,12 +8,13 @@ import (
 )
 
 func ActiveReceiptRuleSets() *schema.Table {
+	tableName := "aws_ses_active_receipt_rule_sets"
 	return &schema.Table{
-		Name:        "aws_ses_active_receipt_rule_sets",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/ses/latest/APIReference/API_DescribeActiveReceiptRuleSet.html`,
 		Resolver:    fetchSesActiveReceiptRuleSets,
 		Transform:   transformers.TransformWithStruct(&ses.DescribeActiveReceiptRuleSetOutput{}, transformers.WithSkipFields("Metadata", "ResultMetadata")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("email"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "email"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

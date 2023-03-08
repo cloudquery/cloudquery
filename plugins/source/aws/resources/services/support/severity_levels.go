@@ -14,12 +14,14 @@ import (
 var severitySupportedLanguageCodes = []string{"en", "ja"}
 
 func SeverityLevels() *schema.Table {
+	tableName := "aws_support_severity_levels"
+
 	return &schema.Table{
-		Name:        "aws_support_severity_levels",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeSeverityLevels.html`,
 		Resolver:    fetchSeverityLevels,
 		Transform:   transformers.TransformWithStruct(&types.SeverityLevel{}, transformers.WithPrimaryKeys("Code")),
-		Multiplex:   client.ServiceAccountRegionsLanguageCodeMultiplex("support", severitySupportedLanguageCodes),
+		Multiplex:   client.ServiceAccountRegionsLanguageCodeMultiplex(tableName, "support", severitySupportedLanguageCodes),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

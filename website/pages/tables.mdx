@@ -1,0 +1,20 @@
+import Search from "../components/Search";
+import { getTablesData } from '../utils/tables'
+import { useSSG } from 'nextra/ssg'
+
+{/* <!-- vale off --> */}
+export const getStaticProps = () => {
+  return {
+    props: {
+      ssg: {
+        tables: getTablesData()
+      }
+    }
+  }
+}
+
+{/* <!-- vale on --> */}
+
+# Discover tables
+
+<Search data={useSSG().tables} />

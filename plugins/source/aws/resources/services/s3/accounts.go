@@ -8,11 +8,12 @@ import (
 )
 
 func Accounts() *schema.Table {
+	tableName := "aws_s3_accounts"
 	return &schema.Table{
-		Name:      "aws_s3_accounts",
+		Name:      tableName,
 		Resolver:  fetchS3Accounts,
 		Transform: transformers.TransformWithStruct(&models.PublicAccessBlockConfigurationWrapper{}, transformers.WithUnwrapStructFields("PublicAccessBlockConfiguration")),
-		Multiplex: client.AccountMultiplex,
+		Multiplex: client.AccountMultiplex(tableName),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},
