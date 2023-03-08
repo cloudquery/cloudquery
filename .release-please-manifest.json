@@ -49,7 +49,7 @@
   "plugins/source/pagerduty+FILLER": "0.0.0",
   "plugins/destination/mongodb": "1.1.2",
   "plugins/destination/mongodb+FILLTER": "0.0.0",
-  "plugins/source/gitlab": "2.2.0",
+  "plugins/source/gitlab": "2.2.1",
   "plugins/source/gitlab+FILLER": "0.0.0",
   "plugins/source/azuredevops": "1.2.0",
   "plugins/source/azuredevops+FILLER": "0.0.0",
@@ -98,8 +98,8 @@
   "plugins/destination/clickhouse": "1.2.1",
   "plugins/destination/clickhouse+FILLER": "0.0.0",
   "plugins/source/postgresql": "1.0.3",
-  "plugins/source/homebrew": "1.0.0",
+  "plugins/source/homebrew": "1.1.0",
   "plugins/destination/mysql": "1.0.1",
-  "plugins/destination/firehose": "1.0.0",
+  "plugins/destination/firehose": "1.1.0",
   "plugins/source/awspricing": "1.1.0"
 }
