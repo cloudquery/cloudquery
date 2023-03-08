@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/hubspot
 
-go 1.19
+go 1.20
 
 require (
 	github.com/clarkmcc/go-hubspot v0.0.0-20221010213350-20c2f9cbf936
