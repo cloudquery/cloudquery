@@ -26,7 +26,7 @@ jobs:
         working-directory: plugins/destination/clickhouse
     services:
       clickhouse:
-        image:   clickhouse/clickhouse-server:22.12.4
+        image:   clickhouse/clickhouse-server:22.12.3
         env:
           CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
           CLICKHOUSE_PASSWORD:                  ${{ env.DB_PASSWORD }}
