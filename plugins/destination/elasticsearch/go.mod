@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/elasticsearch
 
-go 1.20
+go 1.19
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.0
