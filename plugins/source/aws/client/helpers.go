@@ -142,7 +142,7 @@ func supportedRegions(service string) []string {
 		currentPartition := supportedServiceRegion.Partitions[id]
 
 		if currentPartition.Services[service] == nil {
-			return nil
+			continue
 		}
 
 		for region := range currentPartition.Services[service].Regions {
