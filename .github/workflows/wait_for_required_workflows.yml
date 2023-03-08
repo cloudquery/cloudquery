@@ -20,7 +20,7 @@ jobs:
           FILES: ${{ steps.changed-files.outputs.all }}
         with:
           script: |
-            const { promises: fs } = require('fs')
+            const fs = require("fs");
             const files = process.env.FILES.split(' ')
             console.log(files)
             if (files.length >= 300) {
@@ -33,15 +33,14 @@ jobs:
               if (!file.startsWith('.github/workflows/')) {
                 return false
               }
-              const fs = require("fs");
               const contents = fs.readFileSync(file, 'utf8');
               return contents.includes(`name: "${action}"`)
             }
             const matchesFile = (action) => {
               return files.some(file => file.startsWith(`${action}/`) || matchesWorkflow(file, action))
             }
-            const sources = (await fs.readdir("plugins/source", { withFileTypes: true })).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/source/${dirent.name}`)
-            const destinations = (await fs.readdir("plugins/destination", { withFileTypes: true })).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/destination/${dirent.name}`)
+            const sources = fs.readdirSync("plugins/source", { withFileTypes: true }).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/source/${dirent.name}`)
+            const destinations = fs.readdirSync("plugins/destination", { withFileTypes: true }).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/destination/${dirent.name}`)
             const allComponents = ["cli", "scaffold", ...sources, ...destinations]
             console.log(`All components: ${allComponents.join(", ")}`)
             let actions = allComponents.filter(action => matchesFile(action))
