@@ -35,7 +35,10 @@ func (*Client) TransformInt8(v *schema.Int8) any {
 }
 
 func (*Client) TransformInt8Array(v *schema.Int8Array) any {
-	return v.String()
+	if v.Status == schema.Present {
+		return v.String()
+	}
+	return nil
 }
 
 func (*Client) TransformJSON(v *schema.JSON) any {
@@ -71,7 +74,10 @@ func (*Client) TransformUUID(v *schema.UUID) any {
 }
 
 func (*Client) TransformUUIDArray(v *schema.UUIDArray) any {
-	return v.String()
+	if v.Status == schema.Present {
+		return v.String()
+	}
+	return nil
 }
 
 func (*Client) TransformCIDR(v *schema.CIDR) any {
@@ -82,7 +88,10 @@ func (*Client) TransformCIDR(v *schema.CIDR) any {
 }
 
 func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
-	return v.String()
+	if v.Status == schema.Present {
+		return v.String()
+	}
+	return nil
 }
 
 func (*Client) TransformInet(v *schema.Inet) any {
@@ -93,7 +102,10 @@ func (*Client) TransformInet(v *schema.Inet) any {
 }
 
 func (*Client) TransformInetArray(v *schema.InetArray) any {
-	return v.String()
+	if v.Status == schema.Present {
+		return v.String()
+	}
+	return nil
 }
 
 func (*Client) TransformMacaddr(v *schema.Macaddr) any {
@@ -104,7 +116,10 @@ func (*Client) TransformMacaddr(v *schema.Macaddr) any {
 }
 
 func (*Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
-	return v.String()
+	if v.Status == schema.Present {
+		return v.String()
+	}
+	return nil
 }
 
 func stripNulls(s string) string {
