@@ -38,13 +38,10 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 
 	for i := range rows {
 		g := gremlingo.Traversal_().WithRemote(session).V().HasLabel(table.Name)
-		//wh := AnonT.T__()
 		for _, column := range pks {
-			//wh = AnonT.Has(column, rows[i][column])
 			g = g.Has(column, rows[i][column])
 		}
 		g = g.Fold()
-		//g = g.Where(AnonT.And(wh)).Fold()
 
 		ins := AnonT.AddV(table.Name)
 		for _, column := range pks {

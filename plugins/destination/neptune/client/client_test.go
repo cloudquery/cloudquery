@@ -3,6 +3,7 @@ package client
 import (
 	"os"
 	"runtime"
+	"strconv"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
@@ -18,7 +19,7 @@ var migrateStrategy = destination.MigrateStrategy{
 }
 
 const (
-	defaultNeptuneEndpoint = "127.0.0.1:8183"
+	defaultGremlinEndpoint = "ws://localhost:8182"
 )
 
 func getenv(key, fallback string) string {
@@ -34,14 +35,17 @@ func TestPlugin(t *testing.T) {
 	if runtime.GOOS == "darwin" {
 		defaultInsecure = "true" // x509 issue with Neptune and macOS: https://github.com/golang/go/issues/51991
 	}
+	insecure, _ := strconv.ParseBool(getenv("CQ_DEST_NEPTUNE_INSECURE", defaultInsecure))
 
 	destination.PluginTestSuiteRunner(t,
 		func() *destination.Plugin {
 			return destination.NewPlugin("neptune", "development", New, destination.WithManagedWriter())
 		},
 		Spec{
-			Endpoint: getenv("CQ_DEST_NEPTUNE_ENDPOINT", defaultNeptuneEndpoint),
-			Insecure: getenv("CQ_DEST_NEPTUNE_INSECURE", defaultInsecure) == "true",
+			Endpoint: getenv("CQ_DEST_NEPTUNE_ENDPOINT", defaultGremlinEndpoint),
+			Insecure: insecure,
+			Username: os.Getenv("CQ_DEST_NEPTUNE_USERNAME"),
+			Password: os.Getenv("CQ_DEST_NEPTUNE_PASSWORD"),
 		},
 		destination.PluginTestSuiteTests{
 			SkipMigrateOverwriteForce: true,

@@ -39,10 +39,16 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 
 	c.pluginSpec = spec
 
+	au, err := c.getAuthInfo(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	c.client, err = gremlingo.NewDriverRemoteConnection(spec.Endpoint+"/gremlin",
 		func(settings *gremlingo.DriverRemoteConnectionSettings) {
 			settings.TraversalSource = "g"
 			settings.LogVerbosity = gremlingo.Debug
+			settings.AuthInfo = au
 
 			if spec.Insecure {
 				settings.TlsConfig = &tls.Config{InsecureSkipVerify: true}
@@ -56,7 +62,36 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	return c, nil
 }
 
-func (c *Client) Close(ctx context.Context) error {
+func (c *Client) Close(_ context.Context) error {
 	c.client.Close()
 	return nil
+}
+
+func (c *Client) getAuthInfo(ctx context.Context) (*gremlingo.AuthInfo, error) {
+	if c.pluginSpec.Username != "" && c.pluginSpec.Password != "" {
+		return gremlingo.BasicAuthInfo(c.pluginSpec.Username, c.pluginSpec.Password), nil
+	}
+
+	return nil, nil
+	/*
+		cfg, err := config.LoadDefaultConfig(ctx, config.WithDefaultRegion("us-east-1"))
+		if err != nil {
+			return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
+		}
+		cr, err := cfg.Credentials.Retrieve(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("unable to retrieve AWS credentials: %w", err)
+		}
+		sig := signer.NewSigner()
+		u := c.pluginSpec.Endpoint + "/gremlin"
+		//u = strings.ReplaceAll(u, "wss://", "ws://")
+		rq, _ := http.NewRequest(http.MethodGet, u, nil)
+		if err := sig.SignHTTP(ctx, cr, rq, "", "neptune", cfg.Region, time.Now()); err != nil {
+			return nil, fmt.Errorf("unsable to sign request: %w", err)
+		}
+
+		hdr := rq.Header
+		c.logger.Debug().Any("auth_headers", hdr).Str("url", rq.URL.String()).Msg("signed headers")
+		return gremlingo.HeaderAuthInfo(hdr), nil
+	*/
 }

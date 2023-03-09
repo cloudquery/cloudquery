@@ -8,8 +8,10 @@ import (
 type Spec struct {
 	Endpoint string `json:"endpoint"`
 	Insecure bool   `json:"insecure"`
-	//Username string `json:"username"`
-	//Password string `json:"password"`
+
+	// Static credentials, used for Tinkerpop Gremlin Server
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 func (s *Spec) SetDefaults() {
