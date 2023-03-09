@@ -6,11 +6,12 @@ import (
 )
 
 func Versions() *schema.Table {
+	tableName := "aws_elasticsearch_versions"
 	return &schema.Table{
-		Name:        "aws_elasticsearch_versions",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_ListVersions.html`,
 		Resolver:    fetchElasticsearchVersions,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("es"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "es"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

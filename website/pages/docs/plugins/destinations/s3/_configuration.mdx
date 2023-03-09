@@ -13,6 +13,7 @@ spec:
   # batch_size_bytes: 5242880 # optional
   spec:
     bucket: "bucket_name"
+    region: "region-name" # Example: us-east-1
     path: "path/to/files/{{TABLE}}/{{UUID}}.parquet"
     format: "parquet"
     athena: false # <- set this to true for Athena compatibility

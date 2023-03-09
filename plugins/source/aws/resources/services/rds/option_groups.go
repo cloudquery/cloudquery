@@ -11,12 +11,13 @@ import (
 )
 
 func OptionGroups() *schema.Table {
+	tableName := "aws_rds_option_groups"
 	return &schema.Table{
-		Name:        "aws_rds_option_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_OptionGroup.html`,
 		Resolver:    fetchOptionGroups,
 		Transform:   transformers.TransformWithStruct(&types.OptionGroup{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

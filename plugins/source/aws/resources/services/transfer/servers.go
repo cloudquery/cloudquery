@@ -8,13 +8,14 @@ import (
 )
 
 func Servers() *schema.Table {
+	tableName := "aws_transfer_servers"
 	return &schema.Table{
-		Name:                "aws_transfer_servers",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/transfer/latest/userguide/API_DescribedServer.html`,
 		Resolver:            fetchTransferServers,
 		PreResourceResolver: getServer,
 		Transform:           transformers.TransformWithStruct(&types.DescribedServer{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("transfer"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "transfer"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

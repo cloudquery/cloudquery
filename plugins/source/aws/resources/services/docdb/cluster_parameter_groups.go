@@ -8,11 +8,12 @@ import (
 )
 
 func ClusterParameterGroups() *schema.Table {
+	tableName := "aws_docdb_cluster_parameter_groups"
 	return &schema.Table{
-		Name:        "aws_docdb_cluster_parameter_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterParameterGroup.html`,
 		Resolver:    fetchDocdbClusterParameterGroups,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
 		Transform:   transformers.TransformWithStruct(&types.DBClusterParameterGroup{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

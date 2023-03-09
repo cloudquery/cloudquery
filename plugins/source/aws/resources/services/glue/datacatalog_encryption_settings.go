@@ -8,12 +8,13 @@ import (
 )
 
 func DatacatalogEncryptionSettings() *schema.Table {
+	tableName := "aws_glue_datacatalog_encryption_settings"
 	return &schema.Table{
-		Name:        "aws_glue_datacatalog_encryption_settings",
+		Name:        tableName,
 		Description: "https://docs.aws.amazon.com/glue/latest/webapi/API_GetDataCatalogEncryptionSettings.html",
 		Resolver:    fetchGlueDatacatalogEncryptionSettings,
 		Transform:   transformers.TransformWithStruct(&types.DataCatalogEncryptionSettings{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

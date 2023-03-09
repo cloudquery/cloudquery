@@ -8,11 +8,12 @@ import (
 )
 
 func PendingMaintenanceActions() *schema.Table {
+	tableName := "aws_docdb_pending_maintenance_actions"
 	return &schema.Table{
-		Name:        "aws_docdb_pending_maintenance_actions",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_PendingMaintenanceAction.html`,
 		Resolver:    fetchDocdbPendingMaintenanceActions,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
 		Transform:   transformers.TransformWithStruct(&types.ResourcePendingMaintenanceActions{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

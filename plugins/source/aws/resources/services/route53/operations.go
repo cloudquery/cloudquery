@@ -11,13 +11,14 @@ import (
 )
 
 func Operations() *schema.Table {
+	tableName := "aws_route53_operations"
 	return &schema.Table{
-		Name:                "aws_route53_operations",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_GetOperationDetail.html`,
 		Resolver:            fetchRoute53Operations,
 		PreResourceResolver: getOperation,
 		Transform:           transformers.TransformWithStruct(&route53domains.GetOperationDetailOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeys("OperationId", "Status", "SubmittedDate", "Type")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("route53domains"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "route53domains"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},

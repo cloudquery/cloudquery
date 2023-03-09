@@ -11,13 +11,14 @@ import (
 )
 
 func mapRuns() *schema.Table {
+	tableName := "aws_stepfunctions_map_runs"
 	return &schema.Table{
-		Name:                "aws_stepfunctions_map_runs",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeMapRun.html`,
 		Resolver:            fetchStepfunctionsMapRuns,
 		PreResourceResolver: getMapRun,
 		Transform:           transformers.TransformWithStruct(&sfn.DescribeMapRunOutput{}, transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("states"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "states"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

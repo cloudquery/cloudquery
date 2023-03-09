@@ -8,12 +8,13 @@ import (
 )
 
 func InstanceSnapshots() *schema.Table {
+	tableName := "aws_lightsail_instance_snapshots"
 	return &schema.Table{
-		Name:        "aws_lightsail_instance_snapshots",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_InstanceSnapshot.html`,
 		Resolver:    fetchLightsailInstanceSnapshots,
 		Transform:   transformers.TransformWithStruct(&types.InstanceSnapshot{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lightsail"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -8,11 +8,12 @@ import (
 )
 
 func DomainNameBasePathMappings() *schema.Table {
+	tableName := "aws_apigateway_domain_name_base_path_mappings"
 	return &schema.Table{
-		Name:        "aws_apigateway_domain_name_base_path_mappings",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_BasePathMapping.html`,
 		Resolver:    fetchApigatewayDomainNameBasePathMappings,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.BasePathMapping{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

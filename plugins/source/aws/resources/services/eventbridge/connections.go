@@ -8,11 +8,12 @@ import (
 )
 
 func Connections() *schema.Table {
+	tableName := "aws_eventbridge_connections"
 	return &schema.Table{
-		Name:        "aws_eventbridge_connections",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Connection.html`,
 		Resolver:    fetchEventbridgeConnections,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "events"),
 		Transform:   transformers.TransformWithStruct(&types.Connection{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
