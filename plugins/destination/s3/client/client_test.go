@@ -8,10 +8,12 @@ import (
 )
 
 const bucket = "cq-playground-test"
+const region = "us-east-1"
 
 func TestPluginCSV(t *testing.T) {
 	spec := Spec{
 		Bucket:   bucket,
+		Region:   region,
 		Path:     t.TempDir()[1:],
 		NoRotate: true,
 		FileSpec: &filetypes.FileSpec{

@@ -57,11 +57,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
 	}
 
-	location, err := getBucketLocation(ctx, s3.NewFromConfig(cfg), c.pluginSpec.Bucket)
-	if err != nil {
-		return nil, fmt.Errorf("unable to determine region of S3 bucket: %w", err)
-	}
-	cfg.Region = location
+	cfg.Region = c.pluginSpec.Region
 	c.s3Client = s3.NewFromConfig(cfg)
 	c.uploader = manager.NewUploader(c.s3Client)
 	c.downloader = manager.NewDownloader(c.s3Client)
