@@ -12,6 +12,6 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("gremlin", plugin.Version, client.New, destination.WithManagedWriter(), destination.WithDefaultBatchSize(1000))
+	p := destination.NewPlugin("gremlin", plugin.Version, client.New, destination.WithManagedWriter(), destination.WithDefaultBatchSize(200))
 	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
 }
