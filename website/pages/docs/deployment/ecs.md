@@ -14,24 +14,24 @@ Before starting the deployment process, you need to have the following prerequis
 ## Step 1: Create an ECS Cluster
 The first step in deploying CloudQuery on AWS ECS is to create an ECS cluster. To create an ECS cluster, use the following command:
 ```bash
-aws ecs create-cluster --cluster-name &lt;REPLACE_ECS_CLUSTER_NAME&gt;
+aws ecs create-cluster --cluster-name <REPLACE_ECS_CLUSTER_NAME>
 ```
 
-Replace `&lt;REPLACE_ECS_CLUSTER_NAME&gt;` with the name you want to give to your ECS cluster.
+Replace `<REPLACE_ECS_CLUSTER_NAME>` with the name you want to give to your ECS cluster.
 
 ## Step 2: Create a Log Group
 The next step is to create a log group for your ECS task. To create a log group, use the following command:
 ```bash
 
-aws logs create-log-group --log-group-name &lt;REPLACE_LOG_GROUP_NAME&gt;
+aws logs create-log-group --log-group-name <REPLACE_LOG_GROUP_NAME>
 
 ```
-Replace `&lt;REPLACE_LOG_GROUP_NAME&gt;` with the name you want to give to your log group.
+Replace `<REPLACE_LOG_GROUP_NAME>` with the name you want to give to your log group.
 
 ## Step 3: Set Log Group Retention
 After creating a log group, you need to set the retention policy for your log group. To set the retention policy, use the following command:
 ```bash
-aws logs put-retention-policy --log-group-name &lt;REPLACE_LOG_GROUP_NAME&gt; --retention-in-days 14
+aws logs put-retention-policy --log-group-name <REPLACE_LOG_GROUP_NAME> --retention-in-days 14
 ```
 This command will set the retention period for your log group to 14 days. You can modify the retention period based on your requirements.
 
@@ -39,18 +39,18 @@ This command will set the retention period for your log group to 14 days. You ca
 To allow the ECS task to access the required AWS services, you need to create an IAM role. To create an IAM role, use the following commands:
 ```bash
 
-aws iam create-role --role-name &lt;REPLACE_TASK_ROLE_NAME&gt; --assume-role-policy-document file://task-role-trust-policy.json;
+aws iam create-role --role-name <REPLACE_TASK_ROLE_NAME> --assume-role-policy-document file://task-role-trust-policy.json;
 
-aws iam put-role-policy --role-name &lt;REPLACE_TASK_ROLE_NAME&gt; --policy-name DenyData --policy-document file://deny-data.json;
+aws iam put-role-policy --role-name <REPLACE_TASK_ROLE_NAME> --policy-name DenyData --policy-document file://deny-data.json;
 
-aws iam put-role-policy --role-name &lt;REPLACE_TASK_ROLE_NAME&gt; --policy-name WriteDataToS3Destination --policy-document file://write-data-s3-destination.json;
+aws iam put-role-policy --role-name <REPLACE_TASK_ROLE_NAME> --policy-name WriteDataToS3Destination --policy-document file://write-data-s3-destination.json;
 
-aws iam attach-role-policy --role-name &lt;REPLACE_TASK_ROLE_NAME&gt; --policy-arn arn:aws:iam::aws:policy/ReadOnlyAccess
+aws iam attach-role-policy --role-name <REPLACE_TASK_ROLE_NAME> --policy-arn arn:aws:iam::aws:policy/ReadOnlyAccess
 
-aws iam attach-role-policy --role-name &lt;REPLACE_TASK_ROLE_NAME&gt;  --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy 
+aws iam attach-role-policy --role-name <REPLACE_TASK_ROLE_NAME>  --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy 
 
 ```
-Replace `&lt;REPLACE_TASK_ROLE_NAME&gt;` with the name you want to give to your IAM role. The `task-role-trust-policy.json`, `deny-data.json`, and `write-data-s3-destination.json` files contain the IAM policy documents that define the permissions for the IAM role.
+Replace `<REPLACE_TASK_ROLE_NAME>` with the name you want to give to your IAM role. The `task-role-trust-policy.json`, `deny-data.json`, and `write-data-s3-destination.json` files contain the IAM policy documents that define the permissions for the IAM role.
 
 
 ## Step 5: Register a Task Definition
@@ -62,33 +62,33 @@ Create a new file named `task-definition.json` with the following contents:
   "containerDefinitions": [
     {
       "name": "ScheduledWorker",
-      "image": "ghcr.io/cloudquery/cloudquery:&lt;REPLACE_CQ_CLI_VERSION&gt;",
+      "image": "ghcr.io/cloudquery/cloudquery:<REPLACE_CQ_CLI_VERSION>",
       "command": [
         "/bin/sh",
         "-c",
-        "echo $CQ_CONFIG| base64 -d  &gt; ./file.yml;/app/cloudquery sync ./file.yml --log-console --log-format json"
+        "echo $CQ_CONFIG| base64 -d  > ./file.yml;/app/cloudquery sync ./file.yml --log-console --log-format json"
       ],
       "environment": [
-        { "name": "CQ_CONFIG", "value": "&lt;REPLACE_CQ_BASE64_ENCODED_CONFIG&gt;" }
+        { "name": "CQ_CONFIG", "value": "<REPLACE_CQ_BASE64_ENCODED_CONFIG>" }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "&lt;REPLACE_LOG_GROUP_NAME&gt;",
-          "awslogs-region": "&lt;REPLACE_AWS_REGION&gt;",
-          "awslogs-stream-prefix": "&lt;REPLACE_PREFIX_FOR_STREAM&gt;"
+          "awslogs-group": "<REPLACE_LOG_GROUP_NAME>",
+          "awslogs-region": "<REPLACE_AWS_REGION>",
+          "awslogs-stream-prefix": "<REPLACE_PREFIX_FOR_STREAM>"
         }
       },
       "entryPoint": [""]
     }
   ],
-  "family": "&lt;REPLACE_TASK_FAMILY_NAME&gt;",
+  "family": "<REPLACE_TASK_FAMILY_NAME>",
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "1024",
   "memory": "2048",
   "networkMode": "awsvpc",
-  "taskRoleArn": "&lt;REPLACE_TASK_ROLE_ARN&gt;",
-  "executionRoleArn": "&lt;REPLACE_TASK_ROLE_ARN&gt;"
+  "taskRoleArn": "<REPLACE_TASK_ROLE_ARN>",
+  "executionRoleArn": "<REPLACE_TASK_ROLE_ARN>"
 }
 
 ```
@@ -110,13 +110,19 @@ aws ecs register-task-definition --cli-input-json file://task-definition.json
 ```
 This command registers the task definition with AWS ECS and returns the task definition's ARN, which you will use in the next step when you run the task.
 
-## Step 6: Run the ECS Task
-After registering the task definition, you can run the ECS task. To run the ECS task, use the following command:
+## Step 6: Run the CloudQuery Task on ECS
+Now that the task definition is registered, it's time to run the CloudQuery task on ECS using the `aws ecs run-task` command.
 ```bash
 
 aws ecs run-task \
-  --cluster &lt;CLUSTER NAME&gt; \
-  --task-definition &lt;TASK_ARN&gt; \
+  --cluster <REPLACE_ECS_CLUSTER_NAME> \
+  --task-definition <TASK_ARN> \
   --launch-type FARGATE \
-  --network-configuration 'awsvpcConfiguration={subnets=[&lt;SUBNET_1&gt;,&lt;SUBNET_2&gt;],securityGroups=[&lt;SG_1&gt;,&lt;SG_
+  --network-configuration 'awsvpcConfiguration={subnets=[<SUBNET_1>,<SUBNET_2>],securityGroups=[<SG_1>,<SG_2>]}'
+
 ```
+Replace `<REPLACE_ECS_CLUSTER_NAME>` with the name of the ECS cluster you created in Step 4, `<TASK_ARN>` with the ARN of the task definition you registered in Step 5, `<SUBNET_1>` and `<SUBNET_2>` with the IDs of the subnets in which you want to run the task, and `<SG_1>` and `<SG_2>` with the IDs of the security groups for the task.
+
+After running this command, you should see a response containing information about the newly launched task.
+
+Congratulations! You have successfully deployed CloudQuery on AWS ECS using Fargate.
