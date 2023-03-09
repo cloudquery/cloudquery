@@ -1,0 +1,19 @@
+kind: source
+spec:
+  name: "awspricing"
+  path: "cloudquery/awspricing"
+  version: "v1.1.0"
+  tables: ["*"]
+  concurrency: 100
+  destinations: 
+    - "postgresql"
+---
+kind: destination
+spec:
+  name: "postgresql"
+  registry: "github"
+  path: "cloudquery/postgresql"
+  version: "v2.1.0"
+  batch_size: 100000
+  spec:
+    connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
