@@ -305,7 +305,7 @@ export const DESTINATION_PLUGINS: Plugin[] = [
   },
   {
     name: "Gremlin",
-    logo: "/images/logos/plugins/gremlin.png",
+    logo: "/images/logos/plugins/gremlin.svg",
     id: "gremlin",
     kind: "official",
   },
