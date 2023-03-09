@@ -28,6 +28,8 @@ duckdb:
   - plugins/destination/duckdb/**/*
 elasticsearch:
   - plugins/destination/elasticsearch/**/*
+facebookmarketing:
+  - plugins/source/facebookmarketing/**/*
 fastly:
   - plugins/source/fastly/**/*
 file:

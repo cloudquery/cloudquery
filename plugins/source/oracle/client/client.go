@@ -94,11 +94,17 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 	}, nil
 }
 
-// cq-client id is comprised of region and compartment-ocid.
 func (c *Client) ID() string {
-	return strings.Join([]string{c.Region, c.CompartmentOcid}, ":")
-}
+	idStrings := []string{
+		c.Region,
+		c.CompartmentOcid,
+		c.AvailibilityDomain,
+		c.HomeRegion,
+		c.TenancyOcid,
+	}
 
+	return strings.Trim(strings.Join(idStrings, ":"), ":")
+}
 func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
