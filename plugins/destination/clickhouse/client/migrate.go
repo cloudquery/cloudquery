@@ -20,7 +20,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	}
 
 	newSchema := queries.NormalizedTables(tables)
-	if c.spec.MigrateMode != specs.MigrateModeForced {
+	if c.mode != specs.MigrateModeForced {
 		nonSafeMigratableTables, changes := c.nonAutoMigrableTables(newSchema, currentSchema)
 		if len(nonSafeMigratableTables) > 0 {
 			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonSafeMigratableTables, ","), changes)
@@ -85,7 +85,7 @@ func (*Client) canSafelyMigrate(changes []schema.TableColumnChange) bool {
 func (c *Client) createTable(ctx context.Context, table *schema.Table) (err error) {
 	c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
 
-	return c.conn.Exec(ctx, queries.CreateTable(table, c.cluster))
+	return c.conn.Exec(ctx, queries.CreateTable(table, c.spec.Cluster, c.spec.Engine))
 }
 
 func (c *Client) dropTable(ctx context.Context, table *schema.Table) (err error) {
@@ -121,7 +121,7 @@ func (c *Client) autoMigrate(ctx context.Context, table *schema.Table, current *
 		switch {
 		case change.Type == schema.TableColumnChangeTypeAdd && !change.Current.CreationOptions.NotNull:
 			c.logger.Debug().Str("table", table.Name).Str("column", change.Current.Name).Msg("Adding new column")
-			err := c.conn.Exec(ctx, queries.AddColumn(table.Name, c.cluster, &change.Current))
+			err := c.conn.Exec(ctx, queries.AddColumn(table.Name, c.spec.Cluster, &change.Current))
 			if err != nil {
 				return err
 			}
