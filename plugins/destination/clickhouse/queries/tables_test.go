@@ -1,6 +1,7 @@
 package queries
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -66,7 +67,7 @@ func TestCreateTableWithEngine(t *testing.T) {
 		},
 	}, "", &Engine{
 		Name:       "ReplicatedMergeTree",
-		Parameters: []any{"a", "b", 1, 2, 3},
+		Parameters: []any{"a", "b", 1, int32(2), int64(3), float32(1.2), float64(3.4), json.Number("327"), false, true},
 	})
 
 	ensureContents(t, query, "create_table_engine.sql")
