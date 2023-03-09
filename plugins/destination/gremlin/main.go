@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	sentryDSN = "" // TODO
+	sentryDSN = "https://eabea8e3c07b4c44a298546306641da0@o1396617.ingest.sentry.io/4504809326641152"
 )
 
 func main() {
