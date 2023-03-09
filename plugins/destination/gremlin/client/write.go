@@ -36,8 +36,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 		delete(nonPKs, pk)
 	}
 
+	g := gremlingo.Traversal_().WithRemote(session).V().HasLabel(table.Name)
 	for i := range rows {
-		g := gremlingo.Traversal_().WithRemote(session).V().HasLabel(table.Name)
 		for _, column := range pks {
 			g = g.Has(column, rows[i][column])
 		}
@@ -55,11 +55,10 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 		for column := range nonPKs {
 			g = g.Property(gremlingo.Cardinality.Single, column, rows[i][column])
 		}
+	}
 
-		err := <-g.Iterate()
-		if err != nil {
-			return fmt.Errorf("Iterate: %w", err)
-		}
+	if err := <-g.Iterate(); err != nil {
+		return fmt.Errorf("Iterate: %w", err)
 	}
 
 	return nil
