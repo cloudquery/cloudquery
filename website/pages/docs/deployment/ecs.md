@@ -5,12 +5,12 @@ date: 2023/03/03
 ---
 
 
-In this tutorial we will be deploying CloudQuery on AWS ECS using Fargate. We will be using the AWS CLI to create the required resources. You can also use the AWS Console to create the resources. At the end of the tutorial you will have a CloudQuery instance running on AWS ECS that will collect data from your AWS account and store it in an S3 bucket. You can then query the data using Athena.
+In this tutorial we will be deploying CloudQuery on AWS ECS using Fargate. You will be using the AWS CLI to create the required resources. You can also use the AWS Console to create the resources. At the end of the tutorial you will have a CloudQuery instance running on AWS ECS that will collect data from your AWS account and store it in an S3 bucket. You can then query the data using Athena.
 
 ## Prerequisites
 Before starting the deployment process, you need to have the following prerequisites:
   * An AWS account
-  * AWS CLI installed on your local machine
+  * AWS CLI installed and configured
   * Basic understanding of AWS ECS and Fargate
 
 ## Step 1: Generate a CloudQuery Configuration File
@@ -120,6 +120,15 @@ Create a new file named `data-access.json` with the following contents:
         },
         {
             "Action": [
+                "s3:GetObject"
+            ],
+            "Effect": "Deny",
+            "NotResource": [
+                "arn:aws:s3:::<REPLACE_WITH_S3_DESTINATION_BUCKET>/*"
+            ]
+        },
+        {
+            "Action": [
                 "cloudformation:GetTemplate",
                 "dynamodb:GetItem",
                 "dynamodb:BatchGetItem",
@@ -144,7 +153,10 @@ Create a new file named `data-access.json` with the following contents:
 ```
 
 Replace the `REPLACE_WITH_S3_DESTINATION_BUCKET` placeholder with the name of the S3 bucket you want to use to store the data.
-This policy will allow the ECS task to write data to the S3 bucket you specified and will deny access to all other data endpoints in other AWS services.
+
+
+This policy will allow the ECS task to write data to the S3 bucket you specified while also ensuring that CloudQuery never has access to any of your data.
+
 
 Using the IAM policy that you just defined in `data-access.json`, you are going to attach it directly to the IAM role that the Fargate Task will use. On top of the custom in-line policy you will also attach the `ReadOnlyAccess` policy and the `AmazonECSTaskExecutionRolePolicy` policy.
 ```bash
@@ -234,3 +246,7 @@ Replace the following placeholders:
   - `<SUBNET_1>` and `<SUBNET_2>` with the IDs of the subnets in which you want to run the task. You can specify any number of subnets that you want
   - `<SG_1>` and `<SG_2>` with the IDs of the security groups for the task. You can specify any number of security groups that you want
 
+
+## Step 8: Schedule the Task to Run on a Regular Basis
+
+Now that you have a task that runs CloudQuery, you can schedule it to run on a regular basis using AWS EventBridge scheduler.
