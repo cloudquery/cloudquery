@@ -23,13 +23,6 @@ jobs:
     services:
       gremlin-server:
         image: tinkerpop/gremlin-server:3.6.2
-        env:
-        options: >-
-          --health-cmd "nc -lw 1 -p 8182 2>&1|grep 'Address in use'"
-          --health-timeout 10s
-          --health-retries 20
-          --health-interval 10s
-          --health-start-period 30s
         ports:
           - 8182:8182
     steps:
