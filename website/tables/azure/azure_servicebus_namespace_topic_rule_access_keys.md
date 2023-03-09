@@ -2,7 +2,7 @@
 
 https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics%20%E2%80%93%20authorization%20rules/list-keys?tabs=HTTP#accesskeys
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**rule_id**, **key_name**).
 
 ## Relations
 
@@ -14,12 +14,13 @@ This table depends on [azure_servicebus_namespace_topic_authorization_rules](azu
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id|String|
+|rule_id (PK)|String|
 |alias_primary_connection_string|String|
 |alias_secondary_connection_string|String|
-|key_name|String|
+|key_name (PK)|String|
 |primary_connection_string|String|
 |primary_key|String|
 |secondary_connection_string|String|
