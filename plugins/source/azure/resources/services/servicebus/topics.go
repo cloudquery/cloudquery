@@ -17,7 +17,7 @@ func topics() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_servicebus_namespace_topics",
 		Resolver:    fetchTopics,
-		Description: "https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics/list-by-namespace?tabs=HTTP",
+		Description: "https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics/list-by-namespace?tabs=HTTP#sbtopic",
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_servicebus_namespaces", client.Namespacemicrosoft_servicebus),
 		Transform:   transformers.TransformWithStruct(&armservicebus.SBTopic{}, transformers.WithPrimaryKeys("ID")),
 		Columns:     schema.ColumnList{client.SubscriptionID},

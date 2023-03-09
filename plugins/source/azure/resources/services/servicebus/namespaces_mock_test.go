@@ -39,12 +39,12 @@ func createNamespaces(router *mux.Router) error {
 		return err
 	}
 
-	err = createPrivateEndpointConnections(router)
+	err = createTopicAuthorizationRules(router)
 	if err != nil {
 		return err
 	}
 
-	return createTopicAuthorizationRules(router)
+	return createTopicRuleAccessKeys(router)
 }
 
 func TestNamespaces(t *testing.T) {

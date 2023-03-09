@@ -17,7 +17,7 @@ func Namespaces() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_servicebus_namespaces", client.Namespacemicrosoft_servicebus),
 		Transform:   transformers.TransformWithStruct(&armservicebus.SBNamespace{}, transformers.WithPrimaryKeys("ID")),
 		Columns:     schema.ColumnList{client.SubscriptionID},
-		Relations:   []*schema.Table{topics(), privateEndpointConnections()},
+		Relations:   []*schema.Table{topics()},
 	}
 }
 

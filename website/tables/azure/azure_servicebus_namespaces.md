@@ -7,7 +7,6 @@ The primary key for this table is **id**.
 ## Relations
 
 The following tables depend on azure_servicebus_namespaces:
-  - [azure_servicebus_namespace_private_endpoint_connections](azure_servicebus_namespace_private_endpoint_connections)
   - [azure_servicebus_namespace_topics](azure_servicebus_namespace_topics)
 
 ## Columns

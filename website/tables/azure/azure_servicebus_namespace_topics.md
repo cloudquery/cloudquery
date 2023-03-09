@@ -1,6 +1,6 @@
 # Table: azure_servicebus_namespace_topics
 
-https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics/list-by-namespace?tabs=HTTP
+https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics/list-by-namespace?tabs=HTTP#sbtopic
 
 The primary key for this table is **id**.
 
