@@ -9,7 +9,7 @@ type Spec struct {
 	Endpoint string `json:"endpoint"`
 	Insecure bool   `json:"insecure"`
 
-	// Static credentials, used for Tinkerpop Gremlin Server
+	// Static credentials
 	Username string `json:"username"`
 	Password string `json:"password"`
 }

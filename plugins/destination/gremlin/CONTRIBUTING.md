@@ -1,4 +1,4 @@
-# Contribution Guide to CloudQuery Neptune Destination Plugin
+# Contribution Guide to CloudQuery Gremlin Destination Plugin
 
 ## Running in Debug mode
 
@@ -27,10 +27,10 @@ make test
 
 To change test database connection you can set the following environment variables:
 
-- `CQ_DEST_NEPTUNE_ENDPOINT` (default: `ws://localhost:8182`)
-- `CQ_DEST_NEPTUNE_INSECURE` (if testing `wss://` with self-signed certificates)
-- `CQ_DEST_NEPTUNE_USERNAME`
-- `CQ_DEST_NEPTUNE_PASSWORD`
+- `CQ_DEST_GREMLIN_ENDPOINT` (default: `ws://localhost:8182`)
+- `CQ_DEST_GREMLIN_INSECURE` (if testing `wss://` with self-signed certificates)
+- `CQ_DEST_GREMLIN_USERNAME`
+- `CQ_DEST_GREMLIN_PASSWORD`
 
 ## Lint
 

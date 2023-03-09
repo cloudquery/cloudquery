@@ -25,12 +25,12 @@ var AnonT = gremlingo.T__
 func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (destination.Client, error) {
 	var err error
 	c := &Client{
-		logger: logger.With().Str("module", "neptune").Logger(),
+		logger: logger.With().Str("module", "gremlin").Logger(),
 		spec:   destSpec,
 	}
 	var spec Spec
 	if err := destSpec.UnmarshalSpec(&spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal neptune spec: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal gremlin spec: %w", err)
 	}
 	spec.SetDefaults()
 	if err := spec.Validate(); err != nil {
@@ -67,31 +67,10 @@ func (c *Client) Close(_ context.Context) error {
 	return nil
 }
 
-func (c *Client) getAuthInfo(ctx context.Context) (*gremlingo.AuthInfo, error) {
+func (c *Client) getAuthInfo(_ context.Context) (*gremlingo.AuthInfo, error) {
 	if c.pluginSpec.Username != "" && c.pluginSpec.Password != "" {
 		return gremlingo.BasicAuthInfo(c.pluginSpec.Username, c.pluginSpec.Password), nil
 	}
 
 	return nil, nil
-	/*
-		cfg, err := config.LoadDefaultConfig(ctx, config.WithDefaultRegion("us-east-1"))
-		if err != nil {
-			return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
-		}
-		cr, err := cfg.Credentials.Retrieve(ctx)
-		if err != nil {
-			return nil, fmt.Errorf("unable to retrieve AWS credentials: %w", err)
-		}
-		sig := signer.NewSigner()
-		u := c.pluginSpec.Endpoint + "/gremlin"
-		//u = strings.ReplaceAll(u, "wss://", "ws://")
-		rq, _ := http.NewRequest(http.MethodGet, u, nil)
-		if err := sig.SignHTTP(ctx, cr, rq, "", "neptune", cfg.Region, time.Now()); err != nil {
-			return nil, fmt.Errorf("unsable to sign request: %w", err)
-		}
-
-		hdr := rq.Header
-		c.logger.Debug().Any("auth_headers", hdr).Str("url", rq.URL.String()).Msg("signed headers")
-		return gremlingo.HeaderAuthInfo(hdr), nil
-	*/
 }

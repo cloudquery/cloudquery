@@ -48,6 +48,8 @@ gitlab:
   - plugins/source/gitlab/**/*
 googleanalytics:
   - plugins/destination/googleanalytics/**/*
+gremlin:
+  - plugins/destination/gremlin/**/*
 hackernews:
   - plugins/source/hackernews/**/*
 heroku:
@@ -72,8 +74,6 @@ mysql:
   - plugins/destination/mysql/**/*
 neo4j:
   - plugins/destination/neo4j/**/*
-neptune:
-  - plugins/destination/neptune/**/*
 okta:
   - plugins/source/okta/**/*
 oracle:

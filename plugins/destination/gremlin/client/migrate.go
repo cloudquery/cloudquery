@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-// Migrate tables. Like neo4j, neptune does not have a schema, so this is a no-op.
+// Migrate tables. Like neo4j, gremlin does not have a schema, so this is a no-op.
 func (*Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return nil
 }
