@@ -65,6 +65,24 @@ This option allows to specify a custom table engine to be used.
   Engine parameters.
   Parameters can be strings, numbers, booleans.
 
+```yaml copy
+kind: destination
+spec:
+  name:     "clickhouse"
+  registry: "github"
+  path:     "cloudquery/clickhouse"
+  version:  "VERSION_DESTINATION_CLICKHOUSE"
+
+  spec:
+    connection_string: "clickhouse://${CH_USER}:${CH_PASSWORD}@localhost:9000/${CH_DATABASE}"
+    engine:
+      name: ReplicatedMergeTree
+      parameters:
+      - "/clickhouse/tables/{shard}/{database}/{table}"
+      - "{replica}"
+```
+
+
 #### Verbose logging for debug
 
 The ClickHouse destination can be run in debug mode.
