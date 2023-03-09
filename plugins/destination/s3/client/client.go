@@ -78,15 +78,3 @@ func (*Client) Close(ctx context.Context) error {
 	return nil
 }
 
-func getBucketLocation(ctx context.Context, s3Client *s3.Client, bucket string) (string, error) {
-	output, err := s3Client.GetBucketLocation(ctx, &s3.GetBucketLocationInput{
-		Bucket: aws.String(bucket),
-	})
-	if err != nil {
-		return "", fmt.Errorf("failed to get bucket location: %w", err)
-	}
-	if output.LocationConstraint == "" {
-		return "us-east-1", nil
-	}
-	return string(output.LocationConstraint), nil
-}
