@@ -102,10 +102,9 @@ Use the file you just created to create an IAM role for your ECS task. To create
 aws iam create-role --role-name <REPLACE_TASK_ROLE_NAME> --assume-role-policy-document file://task-role-trust-policy.json;
 ```
 
-Be sure to store the ARN of the IAM role you just created. You will need it in the next step.
+Store the ARN of the IAM role you just created. You will need it in the next step.
 
-
-Create a new file named `data-access.json` with the following contents: Be sure to replace all of the placeholders with the appropriate values.
+Create a new file named `data-access.json` with the following contents:
 ``` json
 {
     "Version": "2012-10-17",
@@ -118,15 +117,6 @@ Create a new file named `data-access.json` with the following contents: Be sure 
                 "arn:aws:s3:::<REPLACE_WITH_S3_DESTINATION_BUCKET>/*"
             ],
             "Effect": "Allow"
-        },
-        {
-            "Action": [
-                "s3:GetObject"
-            ],
-            "Effect": "Deny",
-            "NotResource": [
-                "arn:aws:s3:::<REPLACE_WITH_S3_DESTINATION_BUCKET>/*"
-            ]
         },
         {
             "Action": [
@@ -152,7 +142,9 @@ Create a new file named `data-access.json` with the following contents: Be sure 
     ]
 }
 ```
-This policy will deny access to all AWS services except S3. It will also allow access to the S3 bucket you specify in the `REPLACE_WITH_S3_DESTINATION_BUCKET` placeholder, which is the bucket where CloudQuery will store the data it collects.
+
+Replace the `REPLACE_WITH_S3_DESTINATION_BUCKET` placeholder with the name of the S3 bucket you want to use to store the data.
+This policy will allow the ECS task to write data to the S3 bucket you specified and will deny access to all other data endpoints in other AWS services.
 
 Using the IAM policy that you just defined in `data-access.json`, you are going to attach it directly to the IAM role that the Fargate Task will use. On top of the custom in-line policy you will also attach the `ReadOnlyAccess` policy and the `AmazonECSTaskExecutionRolePolicy` policy.
 ```bash
@@ -206,10 +198,17 @@ Create a new file named `task-definition.json` with the following contents:
   "taskRoleArn": "<REPLACE_TASK_ROLE_ARN>",
   "executionRoleArn": "<REPLACE_TASK_ROLE_ARN>"
 }
-
-
-
 ```
+Replace the following placeholders with the appropriate values:
+  - `<REPLACE_TASK_ROLE_ARN>` : The full arn of the role you created in Step 5.
+  - `<REPLACE_CQ_CLI_VERSION>` : The version of the CloudQuery CLI you want to use. You can find the latest version [here](LINK TO GHCR)
+  - `<REPLACE_CQ_BASE64_ENCODED_CONFIG>` : The base64 encoded version of the CloudQuery configuration file you created in Step 1.
+  - `<REPLACE_LOG_GROUP_NAME>` : The name of the CloudWatch log group you created in Step 4.
+  - `<REPLACE_AWS_REGION>` : The AWS region where you created the Cloudwatch log group in Step 4.
+  - `<REPLACE_PREFIX_FOR_STREAM>` : The prefix you want to use for the CloudWatch log stream.
+  - `<REPLACE_TASK_FAMILY_NAME>` : The name of the task family you want to use.
+
+
 Once you have modified the `task-definition.json` file to include the correct values for your environment, you can register the task definition with AWS ECS using the following command:
 ```bash
 
@@ -220,8 +219,8 @@ This command registers the task definition with AWS ECS and returns the task def
 
 ## Step 7: Run the CloudQuery Task on ECS
 Now that the task definition is registered, it's time to run the CloudQuery task on ECS using the `aws ecs run-task` command.
-```bash
 
+```bash
 aws ecs run-task \
   --cluster <REPLACE_ECS_CLUSTER_NAME> \
   --task-definition <TASK_ARN> \
@@ -229,5 +228,5 @@ aws ecs run-task \
   --network-configuration 'awsvpcConfiguration={subnets=[<SUBNET_1>,<SUBNET_2>],securityGroups=[<SG_1>,<SG_2>]}'
 
 ```
-Replace `<REPLACE_ECS_CLUSTER_NAME>` with the name of the ECS cluster you created in Step 4, `<TASK_ARN>` with the ARN of the task definition you registered in Step 5, `<SUBNET_1>` and `<SUBNET_2>` with the IDs of the subnets in which you want to run the task, and `<SG_1>` and `<SG_2>` with the IDs of the security groups for the task.
+Replace `<REPLACE_ECS_CLUSTER_NAME>` with the name of the ECS cluster you created in Step 2, `<TASK_ARN>` with the ARN of the task definition you registered in Step 6, `<SUBNET_1>` and `<SUBNET_2>` with the IDs of the subnets in which you want to run the task, and `<SG_1>` and `<SG_2>` with the IDs of the security groups for the task.
 
