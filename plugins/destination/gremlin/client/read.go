@@ -44,7 +44,6 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 					madeRow[i] = data[0]
 				} else if l > 1 {
 					return fmt.Errorf("expected 1 value for %v, got %v", col.Name, l)
-					//madeRow[i] = data
 				}
 			}
 			res <- madeRow
