@@ -5,12 +5,15 @@ import (
 	"os"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
 )
 
 type Spec struct {
 	Cluster          string `json:"cluster,omitempty"`
 	ConnectionString string `json:"connection_string,omitempty"`
 	CACert           string `json:"ca_cert,omitempty"`
+
+	Engine *queries.Engine `json:"engine,omitempty"`
 }
 
 func (s *Spec) Options() (*clickhouse.Options, error) {
@@ -46,4 +49,14 @@ func (s *Spec) Options() (*clickhouse.Options, error) {
 	}
 
 	return options, nil
+}
+
+func (s *Spec) SetDefaults() {
+	if s.Engine == nil {
+		s.Engine = queries.DefaultEngine()
+	}
+}
+
+func (s *Spec) Validate() error {
+	return s.Engine.Validate()
 }
