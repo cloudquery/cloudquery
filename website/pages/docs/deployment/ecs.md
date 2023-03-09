@@ -4,92 +4,114 @@ tag: tutorial
 date: 2023/03/03
 ---
 
-# Deploy with Amazon ECS
-
-In this tutorial, we will show you how to load AWS resources into Amazon S3 by running CloudQuery as a service in [Amazon ECS](https://github.com/features/actions), using the AWS source- and S3 destination plugins.
 
 ## Prerequisites
+Before starting the deployment process, you need to have the following prerequisites:
+  * An AWS account
+  * AWS CLI installed on your local machine
+  * Basic understanding of AWS ECS and Fargate
 
-1. S3 Bucket that will hold the data. If the bucket is in a different account than where you will be deploying the ECS service then you will need to ensure that there is a bucket policy that allows for cross account access.
-
-
-## Creating the CloudQuery configuration file
-
-Under the root of your repository, create a new `cloudquery.yml` file with the following content:
-
-```yaml copy
-kind: source
-spec:
-  name: 'aws'
-  path: cloudquery/aws
-  version: "VERSION_SOURCE_AWS"
-  destinations: ['s3']
----
-kind: destination
-spec:
-  name: 's3'
-  path: cloudquery/s3
-  version: "VERSION_DESTINATION_S3"
-  spec:
-    bucket: <DESTINATION_BUCKET_NAME>
+## Step 1: Create an ECS Cluster
+The first step in deploying CloudQuery on AWS ECS is to create an ECS cluster. To create an ECS cluster, use the following command:
+```bash
+aws ecs create-cluster --cluster-name &lt;REPLACE_ECS_CLUSTER_NAME&gt;
 ```
 
-You will need to replace `<DESTINATION_BUCKET_NAME>` with the name of the S3 Bucket where you want to store the data. 
+Replace `&lt;REPLACE_ECS_CLUSTER_NAME&gt;` with the name you want to give to your ECS cluster.
 
-
-> For more configuration options, [visit our docs](/docs/reference/source-spec)
-
-## Solution Overview
-
-![alt text](/website/data/ecs-deployment/cloudquery_on_ecs.png "Title")
-
-
-The CloudFormation will stand up a number of resources including:
-
-
-- ***ECS Service and Task definition***: This uses the base image that the [CloudQuery Team maintains](https://github.com/cloudquery/cloudquery/pkgs/container/cloudquery). On top of that image this solution provides an alternative entrypoint that enables users to specify the configuration file as a base64 encoded string as an environment variable. This allows users to not have to build and maintain a custom image.
-- ***EventBridge Schedule***: A Cloud native scheduling service that enables users to directly trigger an ECS task to run at a specific time or rate with support for timezones and daylight savings time. 
-- ***CloudWatch Dashboard***: A dashboard of useful information and metrics. This dashboard is powered by CloudWatch Insight querying the structured logs that are produced by each sync.
-- ***VPC and supporting resources***: By default this solution will deploy all of the VPC and networking resources required for you to have a running sync at the end of the deployment.  
-
-
-### Deploying Solution
-
-Start off by downloading the following files:
+## Step 2: Create a Log Group
+The next step is to create a log group for your ECS task. To create a log group, use the following command:
 ```bash
 
-curl https://raw.githubusercontent.com/bbernays/cloudquery/ecs-tutorial/website/data/ecs-deployment/cloudquery.yml -o cloudquery.yml
-curl https://raw.githubusercontent.com/bbernays/cloudquery/ecs-tutorial/website/data/ecs-deployment/template.yml -o template.yml
+aws logs create-log-group --log-group-name &lt;REPLACE_LOG_GROUP_NAME&gt;
+
 ```
+Replace `&lt;REPLACE_LOG_GROUP_NAME&gt;` with the name you want to give to your log group.
 
-Deploy CloudFormation Template:
-
+## Step 3: Set Log Group Retention
+After creating a log group, you need to set the retention policy for your log group. To set the retention policy, use the following command:
 ```bash
-aws cloudformation deploy --template-file template.yml \
-  --stack-name <STACK_NAME> \
-  --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
-  --parameter-overrides \
-    DestinationS3Bucket=<BUCKET_NAME> \
-    CQConfiguration=$(cat cloudquery.yml| base64) 
+aws logs put-retention-policy --log-group-name &lt;REPLACE_LOG_GROUP_NAME&gt; --retention-in-days 14
 ```
+This command will set the retention period for your log group to 14 days. You can modify the retention period based on your requirements.
 
-This call takes the `cloudquery.yml` configuration and injects it as a base64 encoded environment variable, so make sure not to hard code any sensitive information in the file. If you need to specify sensitive information you should use `Environment Variable Substitution` [INCLUDE LINK TO DOCS] 
-
-
-Once this has finished deploying CloudQuery will be executed every `24 hours`. To trigger a manual sync run the following command:
+## Step 4: Create an IAM Role
+To allow the ECS task to access the required AWS services, you need to create an IAM role. To create an IAM role, use the following commands:
 ```bash
+
+aws iam create-role --role-name &lt;REPLACE_TASK_ROLE_NAME&gt; --assume-role-policy-document file://task-role-trust-policy.json;
+
+aws iam put-role-policy --role-name &lt;REPLACE_TASK_ROLE_NAME&gt; --policy-name DenyData --policy-document file://deny-data.json;
+
+aws iam put-role-policy --role-name &lt;REPLACE_TASK_ROLE_NAME&gt; --policy-name WriteDataToS3Destination --policy-document file://write-data-s3-destination.json;
+
+aws iam attach-role-policy --role-name &lt;REPLACE_TASK_ROLE_NAME&gt; --policy-arn arn:aws:iam::aws:policy/ReadOnlyAccess
+
+aws iam attach-role-policy --role-name &lt;REPLACE_TASK_ROLE_NAME&gt;  --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy 
+
+```
+Replace `&lt;REPLACE_TASK_ROLE_NAME&gt;` with the name you want to give to your IAM role. The `task-role-trust-policy.json`, `deny-data.json`, and `write-data-s3-destination.json` files contain the IAM policy documents that define the permissions for the IAM role.
+
+
+## Step 5: Register a Task Definition
+A task definition is a blueprint that defines one or more containers that run together on the same host machine. In this step, we will create a task definition for the CloudQuery container.
+Create a new file named `task-definition.json` with the following contents:
+```json
+
+{
+  "containerDefinitions": [
+    {
+      "name": "ScheduledWorker",
+      "image": "ghcr.io/cloudquery/cloudquery:&lt;REPLACE_CQ_CLI_VERSION&gt;",
+      "command": [
+        "/bin/sh",
+        "-c",
+        "echo $CQ_CONFIG| base64 -d  &gt; ./file.yml;/app/cloudquery sync ./file.yml --log-console --log-format json"
+      ],
+      "environment": [
+        { "name": "CQ_CONFIG", "value": "&lt;REPLACE_CQ_BASE64_ENCODED_CONFIG&gt;" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "&lt;REPLACE_LOG_GROUP_NAME&gt;",
+          "awslogs-region": "&lt;REPLACE_AWS_REGION&gt;",
+          "awslogs-stream-prefix": "&lt;REPLACE_PREFIX_FOR_STREAM&gt;"
+        }
+      },
+      "entryPoint": [""]
+    }
+  ],
+  "family": "&lt;REPLACE_TASK_FAMILY_NAME&gt;",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "2048",
+  "networkMode": "awsvpc",
+  "taskRoleArn": "&lt;REPLACE_TASK_ROLE_ARN&gt;",
+  "executionRoleArn": "&lt;REPLACE_TASK_ROLE_ARN&gt;"
+}
+
+```
+The `containerDefinitions` section defines the container that runs the CloudQuery CLI. In this case, the container is named "ScheduledWorker", and it uses the official CloudQuery Docker image from GitHub Container Registry.
+The `command` section specifies the command that will be run in the container. The command downloads the CloudQuery configuration file, syncs the data, and logs the output in JSON format to the specified AWS CloudWatch Logs group.
+The `environment` section specifies environment variables that are passed to the container. In this case, the environment variable `CQ_CONFIG` contains the Base64-encoded configuration file.
+The `logConfiguration` section specifies the logging configuration for the container. In this case, the logs are sent to the specified AWS CloudWatch Logs group in the specified AWS region, with a specified prefix for the log stream name.
+The remaining fields specify the task definition's name, compatibility, CPU and memory requirements, network mode, and the IAM roles associated with the task.
+Once you have modified the `task-definition.json` file to include the correct values for your environment, you can register the task definition with AWS ECS using the following command:
+```bash
+
+aws ecs register-task-definition --cli-input-json file://task-definition.json
+
+```
+This command registers the task definition with AWS ECS and returns the task definition's ARN, which you will use in the next step when you run the task.
+
+## Step 6: Run the ECS Task
+After registering the task definition, you can run the ECS task. To run the ECS task, use the following command:
+```bash
+
 aws ecs run-task \
-  --cluster <CLUSTER NAME> \
-  --task-definition <TASK_ARN> \
+  --cluster &lt;CLUSTER NAME&gt; \
+  --task-definition &lt;TASK_ARN&gt; \
   --launch-type FARGATE \
-  --network-configuration 'awsvpcConfiguration={subnets=[<SUBNET_1>,<SUBNET_2>],securityGroups=[<SG_1>,<SG_2>]}'
+  --network-configuration 'awsvpcConfiguration={subnets=[&lt;SUBNET_1&gt;,&lt;SUBNET_2&gt;],securityGroups=[&lt;SG_1&gt;,&lt;SG_
 ```
-
-
-
-## Monitoring:
-
-As part of this solution there is a CloudWatch dashboard that helps users understand what is going on with the sync by showing metrics on how many resources have been synced and shows all of the errors that occurred during a sync:
-
-
-[INCLUDE SCREENSHOT HERE]
