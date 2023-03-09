@@ -34,6 +34,7 @@ This is the (nested) spec used by the ClickHouse destination plugin.
   See [SDK documentation](https://github.com/ClickHouse/clickhouse-go#dsn) for more details.
 
 - `cluster` (string, optional. Default: not used)
+
   Cluster name to be used for [distributed DDL](https://clickhouse.com/docs/en/sql-reference/distributed-ddl).
   If the value is empty, DDL operations will affect only the server the plugin is connected to.
 
@@ -46,6 +47,7 @@ This is the (nested) spec used by the ClickHouse destination plugin.
   - CA cert data in plain text (or substituted from environment variable)
 
 - `engine` (optional, structure documented [below](#clickhouse-table-engine). Default: `MergeTree` engine)
+
   Engine to be used for tables.
   Only [`*MergeTree` family](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/) is supported at the moment.
 
@@ -54,10 +56,12 @@ This is the (nested) spec used by the ClickHouse destination plugin.
 This option allows to specify a custom table engine to be used.
 
 - `name` (string, required)
+
   Name of the table engine.
   Only [`*MergeTree` family](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/) is supported at the moment.
 
 - `parameters` (array of parameters, optional. Default: empty)
+
   Engine parameters.
   Parameters can be strings, numbers, booleans.
 
