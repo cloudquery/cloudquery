@@ -8,11 +8,12 @@ import (
 )
 
 func Users() *schema.Table {
+	tableName := "aws_appstream_users"
 	return &schema.Table{
-		Name:        "aws_appstream_users",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_User.html`,
 		Resolver:    fetchAppstreamUsers,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "appstream2"),
 		Transform:   transformers.TransformWithStruct(&types.User{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

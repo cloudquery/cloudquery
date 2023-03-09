@@ -8,12 +8,13 @@ import (
 )
 
 func Configurations() *schema.Table {
+	tableName := "aws_kafka_configurations"
 	return &schema.Table{
-		Name:        "aws_kafka_configurations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-configuration.html`,
 		Resolver:    fetchKafkaConfigurations,
 		Transform:   transformers.TransformWithStruct(&types.Configuration{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("kafka"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "kafka"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

@@ -8,11 +8,12 @@ import (
 )
 
 func ConfigurationRecorders() *schema.Table {
+	tableName := "aws_config_configuration_recorders"
 	return &schema.Table{
-		Name:        "aws_config_configuration_recorders",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_ConfigurationRecorder.html`,
 		Resolver:    fetchConfigConfigurationRecorders,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("config"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		Transform:   transformers.TransformWithStruct(&models.ConfigurationRecorderWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

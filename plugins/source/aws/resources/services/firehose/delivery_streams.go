@@ -8,12 +8,13 @@ import (
 )
 
 func DeliveryStreams() *schema.Table {
+	tableName := "aws_firehose_delivery_streams"
 	return &schema.Table{
-		Name:                "aws_firehose_delivery_streams",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/firehose/latest/APIReference/API_DeliveryStreamDescription.html`,
 		Resolver:            fetchFirehoseDeliveryStreams,
 		PreResourceResolver: getDeliveryStream,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("firehose"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "firehose"),
 		Transform:           transformers.TransformWithStruct(&types.DeliveryStreamDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

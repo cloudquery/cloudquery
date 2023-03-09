@@ -8,13 +8,14 @@ import (
 )
 
 func Environments() *schema.Table {
+	tableName := "aws_mwaa_environments"
 	return &schema.Table{
-		Name:                "aws_mwaa_environments",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/mwaa/latest/API/API_Environment.html`,
 		Resolver:            fetchMwaaEnvironments,
 		Transform:           transformers.TransformWithStruct(&types.Environment{}),
 		PreResourceResolver: getEnvironment,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("airflow"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "airflow"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

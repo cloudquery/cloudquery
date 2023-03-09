@@ -13,11 +13,12 @@ import (
 )
 
 func VpcEndpoints() *schema.Table {
+	tableName := "aws_ec2_vpc_endpoints"
 	return &schema.Table{
-		Name:        "aws_ec2_vpc_endpoints",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcEndpoint.html`,
 		Resolver:    fetchEc2VpcEndpoints,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.VpcEndpoint{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

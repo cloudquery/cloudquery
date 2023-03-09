@@ -8,11 +8,12 @@ import (
 )
 
 func Clusters() *schema.Table {
+	tableName := "aws_ecs_clusters"
 	return &schema.Table{
-		Name:        "aws_ecs_clusters",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Cluster.html`,
 		Resolver:    fetchEcsClusters,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ecs"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ecs"),
 		Transform:   transformers.TransformWithStruct(&types.Cluster{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

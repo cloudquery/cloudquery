@@ -8,12 +8,13 @@ import (
 )
 
 func InstancePatches() *schema.Table {
+	tableName := "aws_ssm_instance_patches"
 	return &schema.Table{
-		Name:        "aws_ssm_instance_patches",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_PatchComplianceData.html`,
 		Resolver:    fetchSsmInstancePatches,
 		Transform:   transformers.TransformWithStruct(&types.PatchComplianceData{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ssm"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ssm"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

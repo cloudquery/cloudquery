@@ -8,11 +8,12 @@ import (
 )
 
 func EventBusRules() *schema.Table {
+	tableName := "aws_eventbridge_event_bus_rules"
 	return &schema.Table{
-		Name:        "aws_eventbridge_event_bus_rules",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Rule.html`,
 		Resolver:    fetchEventbridgeEventBusRules,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "events"),
 		Transform:   transformers.TransformWithStruct(&types.Rule{}, transformers.WithPrimaryKeys("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

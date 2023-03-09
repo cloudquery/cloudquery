@@ -8,11 +8,12 @@ import (
 )
 
 func Snapshots() *schema.Table {
+	tableName := "aws_elasticache_snapshots"
 	return &schema.Table{
-		Name:        "aws_elasticache_snapshots",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_Snapshot.html`,
 		Resolver:    fetchElasticacheSnapshots,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
 		Transform:   transformers.TransformWithStruct(&types.Snapshot{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

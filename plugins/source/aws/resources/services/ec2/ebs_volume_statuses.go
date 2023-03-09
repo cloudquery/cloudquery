@@ -8,11 +8,12 @@ import (
 )
 
 func EbsVolumesStatuses() *schema.Table {
+	tableName := "aws_ec2_ebs_volume_statuses"
 	return &schema.Table{
-		Name:        "aws_ec2_ebs_volume_statuses",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VolumeStatusItem.html`,
 		Resolver:    fetchEc2EbsVolumeStatuses,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.VolumeStatusItem{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

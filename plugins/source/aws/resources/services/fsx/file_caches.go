@@ -8,12 +8,13 @@ import (
 )
 
 func FileCaches() *schema.Table {
+	tableName := "aws_fsx_file_caches"
 	return &schema.Table{
-		Name:        "aws_fsx_file_caches",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_FileCache.html`,
 		Resolver:    fetchFsxFileCaches,
 		Transform:   transformers.TransformWithStruct(&types.FileCache{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "fsx"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -8,11 +8,12 @@ import (
 )
 
 func Stacks() *schema.Table {
+	tableName := "aws_appstream_stacks"
 	return &schema.Table{
-		Name:        "aws_appstream_stacks",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Stack.html`,
 		Resolver:    fetchAppstreamStacks,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "appstream2"),
 		Transform:   transformers.TransformWithStruct(&types.Stack{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

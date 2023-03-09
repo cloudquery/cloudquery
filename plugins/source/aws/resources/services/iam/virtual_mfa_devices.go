@@ -8,12 +8,13 @@ import (
 )
 
 func VirtualMfaDevices() *schema.Table {
+	tableName := "aws_iam_virtual_mfa_devices"
 	return &schema.Table{
-		Name:        "aws_iam_virtual_mfa_devices",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_VirtualMFADevice.html`,
 		Resolver:    fetchIamVirtualMfaDevices,
 		Transform:   transformers.TransformWithStruct(&types.VirtualMFADevice{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

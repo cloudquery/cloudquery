@@ -8,12 +8,13 @@ import (
 )
 
 func RateBasedRules() *schema.Table {
+	tableName := "aws_wafregional_rate_based_rules"
 	return &schema.Table{
-		Name:        "aws_wafregional_rate_based_rules",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_RateBasedRule.html`,
 		Resolver:    fetchWafregionalRateBasedRules,
 		Transform:   transformers.TransformWithStruct(&types.RateBasedRule{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("waf-regional"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "waf-regional"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

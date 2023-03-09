@@ -12,11 +12,12 @@ import (
 )
 
 func vpcEndpointServicePermissions() *schema.Table {
+	tableName := "aws_ec2_vpc_endpoint_service_permissions"
 	return &schema.Table{
-		Name:        "aws_ec2_vpc_endpoint_service_permissions",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_AllowedPrincipal.html`,
 		Resolver:    fetchEc2VpcEndpointServicePermissions,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.AllowedPrincipal{}, transformers.WithPrimaryKeys("ServiceId", "ServicePermissionId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

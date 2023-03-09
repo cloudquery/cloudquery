@@ -8,12 +8,13 @@ import (
 )
 
 func HostedZoneResourceRecordSets() *schema.Table {
+	tableName := "aws_route53_hosted_zone_resource_record_sets"
 	return &schema.Table{
-		Name:        "aws_route53_hosted_zone_resource_record_sets",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_ResourceRecordSet.html`,
 		Resolver:    fetchRoute53HostedZoneResourceRecordSets,
 		Transform:   transformers.TransformWithStruct(&types.ResourceRecordSet{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("route53"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

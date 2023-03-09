@@ -8,11 +8,12 @@ import (
 )
 
 func RegistryPolicies() *schema.Table {
+	tableName := "aws_ecr_registry_policies"
 	return &schema.Table{
-		Name:        "aws_ecr_registry_policies",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_GetRegistryPolicy.html`,
 		Resolver:    fetchEcrRegistryPolicies,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("api.ecr"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "api.ecr"),
 		Transform:   transformers.TransformWithStruct(&ecr.GetRegistryPolicyOutput{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
