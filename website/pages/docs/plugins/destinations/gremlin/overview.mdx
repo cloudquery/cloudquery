@@ -49,6 +49,10 @@ This is the (nested) spec used by the Gremlin destination Plugin.
 
   Whether to skip TLS verification. Defaults to `false`. This should be set on a MacOS environment when connecting to an AWS Neptune endpoint.
 
+- `auth_mode` (either `basic` or `iam`, default: `basic`)
+
+  Authentication mode to use. `basic` uses static credentials, `iam` uses AWS IAM authentication.
+
 - `username` (string, optional)
 
   Username to connect to the database, for static authentication.
