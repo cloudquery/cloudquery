@@ -180,6 +180,7 @@ unencrypted
 unmanaged
 unmarshalling
 upsert
+upserts
 upserted
 uuid
 UUID

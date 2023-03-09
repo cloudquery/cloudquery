@@ -23,10 +23,6 @@ type Client struct {
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
-	if spec.WriteMode != specs.WriteModeAppend {
-		// Other modes are possible, but blocked by https://github.com/marcboeker/go-duckdb/issues/80
-		return nil, fmt.Errorf("duckdb destination only supports append mode")
-	}
 	c := &Client{
 		logger: logger.With().Str("module", "duckdb-dest").Logger(),
 	}
