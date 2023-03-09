@@ -13,6 +13,9 @@
     "plugins/destination/clickhouse": {
       "component": "plugins-destination-clickhouse"
     },
+    "plugins/destination/duckdb": {
+      "component": "plugins-destination-duckdb"
+    },
     "plugins/destination/elasticsearch": {
       "component": "plugins-destination-elasticsearch"
     },

@@ -24,6 +24,8 @@ datadog:
   - plugins/source/datadog/**/*
 digitalocean:
   - plugins/source/digitalocean/**/*
+duckdb:
+  - plugins/destination/duckdb/**/*
 elasticsearch:
   - plugins/destination/elasticsearch/**/*
 facebookmarketing:
