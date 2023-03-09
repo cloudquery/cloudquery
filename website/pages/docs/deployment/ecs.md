@@ -199,7 +199,7 @@ Create a new file named `task-definition.json` with the following contents:
   "executionRoleArn": "<REPLACE_TASK_ROLE_ARN>"
 }
 ```
-Replace the following placeholders with the appropriate values:
+Replace the following placeholders:
   - `<REPLACE_TASK_ROLE_ARN>` : The full arn of the role you created in Step 5.
   - `<REPLACE_CQ_CLI_VERSION>` : The version of the CloudQuery CLI you want to use. You can find the latest version [here](LINK TO GHCR)
   - `<REPLACE_CQ_BASE64_ENCODED_CONFIG>` : The base64 encoded version of the CloudQuery configuration file you created in Step 1.
@@ -228,5 +228,9 @@ aws ecs run-task \
   --network-configuration 'awsvpcConfiguration={subnets=[<SUBNET_1>,<SUBNET_2>],securityGroups=[<SG_1>,<SG_2>]}'
 
 ```
-Replace `<REPLACE_ECS_CLUSTER_NAME>` with the name of the ECS cluster you created in Step 2, `<TASK_ARN>` with the ARN of the task definition you registered in Step 6, `<SUBNET_1>` and `<SUBNET_2>` with the IDs of the subnets in which you want to run the task, and `<SG_1>` and `<SG_2>` with the IDs of the security groups for the task.
+Replace the following placeholders: 
+  - `<REPLACE_ECS_CLUSTER_NAME>` with the name of the ECS cluster you created in Step 2
+  - `<TASK_ARN>` with the ARN of the task definition you registered in Step 6
+  - `<SUBNET_1>` and `<SUBNET_2>` with the IDs of the subnets in which you want to run the task. You can specify any number of subnets that you want
+  - `<SG_1>` and `<SG_2>` with the IDs of the security groups for the task. You can specify any number of security groups that you want
 
