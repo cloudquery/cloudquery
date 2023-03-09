@@ -123,6 +123,3 @@ aws ecs run-task \
 ```
 Replace `<REPLACE_ECS_CLUSTER_NAME>` with the name of the ECS cluster you created in Step 4, `<TASK_ARN>` with the ARN of the task definition you registered in Step 5, `<SUBNET_1>` and `<SUBNET_2>` with the IDs of the subnets in which you want to run the task, and `<SG_1>` and `<SG_2>` with the IDs of the security groups for the task.
 
-After running this command, you should see a response containing information about the newly launched task.
-
-Congratulations! You have successfully deployed CloudQuery on AWS ECS using Fargate.
