@@ -12,11 +12,12 @@ import (
 )
 
 func ResourcePolicies() *schema.Table {
+	tableName := "aws_cloudwatchlogs_resource_policies"
 	return &schema.Table{
-		Name:        "aws_cloudwatchlogs_resource_policies",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_ResourcePolicy.html`,
 		Resolver:    fetchCloudwatchlogsResourcePolicies,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("logs"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "logs"),
 		Transform:   transformers.TransformWithStruct(&types.ResourcePolicy{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

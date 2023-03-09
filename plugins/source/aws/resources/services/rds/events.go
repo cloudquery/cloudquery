@@ -11,12 +11,13 @@ import (
 )
 
 func Events() *schema.Table {
+	tableName := "aws_rds_events"
 	return &schema.Table{
-		Name:        "aws_rds_events",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DescribeEvents.html`,
 		Resolver:    fetchRdsEvents,
 		Transform:   transformers.TransformWithStruct(&types.Event{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

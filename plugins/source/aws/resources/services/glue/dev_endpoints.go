@@ -8,12 +8,13 @@ import (
 )
 
 func DevEndpoints() *schema.Table {
+	tableName := "aws_glue_dev_endpoints"
 	return &schema.Table{
-		Name:        "aws_glue_dev_endpoints",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_DevEndpoint.html`,
 		Resolver:    fetchGlueDevEndpoints,
 		Transform:   transformers.TransformWithStruct(&types.DevEndpoint{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

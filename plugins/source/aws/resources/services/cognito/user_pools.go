@@ -8,12 +8,13 @@ import (
 )
 
 func UserPools() *schema.Table {
+	tableName := "aws_cognito_user_pools"
 	return &schema.Table{
-		Name:                "aws_cognito_user_pools",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UserPoolType.html`,
 		Resolver:            fetchCognitoUserPools,
 		PreResourceResolver: getUserPool,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("cognito-identity"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "cognito-identity"),
 		Transform:           transformers.TransformWithStruct(&types.UserPoolType{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

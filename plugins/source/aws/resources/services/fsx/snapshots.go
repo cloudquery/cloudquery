@@ -8,12 +8,13 @@ import (
 )
 
 func Snapshots() *schema.Table {
+	tableName := "aws_fsx_snapshots"
 	return &schema.Table{
-		Name:        "aws_fsx_snapshots",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_Snapshot.html`,
 		Resolver:    fetchFsxSnapshots,
 		Transform:   transformers.TransformWithStruct(&types.Snapshot{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "fsx"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

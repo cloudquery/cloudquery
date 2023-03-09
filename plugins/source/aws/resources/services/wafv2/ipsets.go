@@ -8,13 +8,14 @@ import (
 )
 
 func Ipsets() *schema.Table {
+	tableName := "aws_wafv2_ipsets"
 	return &schema.Table{
-		Name:                "aws_wafv2_ipsets",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/waf/latest/APIReference/API_IPSet.html`,
 		Resolver:            fetchWafv2Ipsets,
 		Transform:           transformers.TransformWithStruct(&types.IPSet{}),
 		PreResourceResolver: getIpset,
-		Multiplex:           client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
+		Multiplex:           client.ServiceAccountRegionScopeMultiplexer(tableName, "waf-regional"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

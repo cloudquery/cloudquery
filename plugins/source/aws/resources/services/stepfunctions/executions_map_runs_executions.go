@@ -10,13 +10,14 @@ import (
 )
 
 func mapRunExecutions() *schema.Table {
+	tableName := "aws_stepfunctions_map_run_executions"
 	return &schema.Table{
-		Name:                "aws_stepfunctions_map_run_executions",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeExecution.html`,
 		Resolver:            fetchStepfunctionsMapRunExecutions,
 		PreResourceResolver: getExecution,
 		Transform:           transformers.TransformWithStruct(&sfn.DescribeExecutionOutput{}, transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("states"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "states"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

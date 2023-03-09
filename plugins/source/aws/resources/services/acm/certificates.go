@@ -8,12 +8,13 @@ import (
 )
 
 func Certificates() *schema.Table {
+	tableName := "aws_acm_certificates"
 	return &schema.Table{
-		Name:                "aws_acm_certificates",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/acm/latest/APIReference/API_CertificateDetail.html`,
 		Resolver:            fetchAcmCertificates,
 		PreResourceResolver: getCertificate,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("acm"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "acm"),
 		Transform:           transformers.TransformWithStruct(&types.CertificateDetail{}, transformers.WithSkipFields("CertificateArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

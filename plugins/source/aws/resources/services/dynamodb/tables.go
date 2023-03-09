@@ -8,12 +8,13 @@ import (
 )
 
 func Tables() *schema.Table {
+	tableName := "aws_dynamodb_tables"
 	return &schema.Table{
-		Name:                "aws_dynamodb_tables",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_TableDescription.html`,
 		Resolver:            fetchDynamodbTables,
 		PreResourceResolver: getTable,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("dynamodb"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "dynamodb"),
 		Transform:           transformers.TransformWithStruct(&types.TableDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

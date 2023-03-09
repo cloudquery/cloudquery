@@ -8,13 +8,14 @@ import (
 )
 
 func UserPolicies() *schema.Table {
+	tableName := "aws_iam_user_policies"
 	return &schema.Table{
-		Name:                "aws_iam_user_policies",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetUserPolicy.html`,
 		Resolver:            fetchIamUserPolicies,
 		PreResourceResolver: getUserPolicy,
 		Transform:           transformers.TransformWithStruct(&iam.GetUserPolicyOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("iam"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

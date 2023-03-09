@@ -9,11 +9,12 @@ import (
 )
 
 func Labels() *schema.Table {
+	tableName := "aws_frauddetector_labels"
 	return &schema.Table{
-		Name:        "aws_frauddetector_labels",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/frauddetector/latest/api/API_Label.html`,
 		Resolver:    fetchFrauddetectorLabels,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("frauddetector"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "frauddetector"),
 		Transform:   transformers.TransformWithStruct(&types.Label{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -13,11 +13,12 @@ import (
 )
 
 func spotFleetInstances() *schema.Table {
+	tableName := "aws_ec2_spot_fleet_instances"
 	return &schema.Table{
-		Name:        "aws_ec2_spot_fleet_instances",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ActiveInstance.html`,
 		Resolver:    fetchEC2SpotFleetInstances,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.ActiveInstance{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

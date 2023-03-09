@@ -8,12 +8,13 @@ import (
 )
 
 func Workspaces() *schema.Table {
+	tableName := "aws_workspaces_workspaces"
 	return &schema.Table{
-		Name:        "aws_workspaces_workspaces",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/workspaces/latest/api/API_Workspace.html`,
 		Resolver:    fetchWorkspacesWorkspaces,
 		Transform:   transformers.TransformWithStruct(&types.Workspace{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("workspaces"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "workspaces"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

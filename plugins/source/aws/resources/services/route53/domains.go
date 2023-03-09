@@ -8,13 +8,14 @@ import (
 )
 
 func Domains() *schema.Table {
+	tableName := "aws_route53_domains"
 	return &schema.Table{
-		Name:                "aws_route53_domains",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_GetDomainDetail.html`,
 		Resolver:            fetchRoute53Domains,
 		PreResourceResolver: getDomain,
 		Transform:           transformers.TransformWithStruct(&route53domains.GetDomainDetailOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("route53domains"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "route53domains"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{

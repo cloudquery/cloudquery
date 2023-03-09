@@ -8,12 +8,13 @@ import (
 )
 
 func DbSnapshots() *schema.Table {
+	tableName := "aws_rds_db_snapshots"
 	return &schema.Table{
-		Name:        "aws_rds_db_snapshots",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSnapshot.html`,
 		Resolver:    fetchRdsDbSnapshots,
 		Transform:   transformers.TransformWithStruct(&types.DBSnapshot{}, transformers.WithSkipFields("TagList")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

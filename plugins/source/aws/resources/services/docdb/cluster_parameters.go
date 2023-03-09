@@ -8,11 +8,12 @@ import (
 )
 
 func ClusterParameters() *schema.Table {
+	tableName := "aws_docdb_cluster_parameters"
 	return &schema.Table{
-		Name:        "aws_docdb_cluster_parameters",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Parameter.html`,
 		Resolver:    fetchDocdbClusterParameters,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
 		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

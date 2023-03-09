@@ -8,11 +8,12 @@ import (
 )
 
 func Projects() *schema.Table {
+	tableName := "aws_codebuild_projects"
 	return &schema.Table{
-		Name:        "aws_codebuild_projects",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/codebuild/latest/APIReference/API_Project.html`,
 		Resolver:    fetchCodebuildProjects,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("codebuild"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "codebuild"),
 		Transform:   transformers.TransformWithStruct(&types.Project{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

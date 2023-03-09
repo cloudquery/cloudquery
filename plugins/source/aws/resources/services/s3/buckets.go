@@ -13,11 +13,12 @@ import (
 )
 
 func Buckets() *schema.Table {
+	tableName := "aws_s3_buckets"
 	return &schema.Table{
 		Name:      "aws_s3_buckets",
 		Resolver:  fetchS3Buckets,
 		Transform: transformers.TransformWithStruct(&models.WrappedBucket{}),
-		Multiplex: client.AccountMultiplex,
+		Multiplex: client.AccountMultiplex(tableName),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

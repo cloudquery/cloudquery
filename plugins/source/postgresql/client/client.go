@@ -100,6 +100,11 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)
 	}
+	c.Tables, err = c.Tables.FilterDfs(spec.Tables, spec.SkipTables, spec.SkipDependentTables)
+	if err != nil {
+		return nil, fmt.Errorf("failed to apply config to tables: %w", err)
+	}
+
 	if c.pluginSpec.CDC {
 		if len(c.tablesWithPks()) == 0 {
 			return nil, fmt.Errorf("cdc is enabled but no tables with primary keys were found")
