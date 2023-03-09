@@ -26,7 +26,6 @@ declare global {
 }
 
 const getCanaonicalUrl = (path: string) => {
-  console.log(process.env)
   if (process.env.NEXT_PUBLIC_VERCEL_ENV !== "production") {
     return
   }
