@@ -93,10 +93,15 @@ Create a new file named `task-definition.json` with the following contents:
 
 ```
 The `containerDefinitions` section defines the container that runs the CloudQuery CLI. In this case, the container is named "ScheduledWorker", and it uses the official CloudQuery Docker image from GitHub Container Registry.
+
 The `command` section specifies the command that will be run in the container. The command downloads the CloudQuery configuration file, syncs the data, and logs the output in JSON format to the specified AWS CloudWatch Logs group.
+
 The `environment` section specifies environment variables that are passed to the container. In this case, the environment variable `CQ_CONFIG` contains the Base64-encoded configuration file.
+
 The `logConfiguration` section specifies the logging configuration for the container. In this case, the logs are sent to the specified AWS CloudWatch Logs group in the specified AWS region, with a specified prefix for the log stream name.
+
 The remaining fields specify the task definition's name, compatibility, CPU and memory requirements, network mode, and the IAM roles associated with the task.
+
 Once you have modified the `task-definition.json` file to include the correct values for your environment, you can register the task definition with AWS ECS using the following command:
 ```bash
 
