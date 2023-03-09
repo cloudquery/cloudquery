@@ -1,0 +1,58 @@
+---
+name: Gremlin
+---
+# Gremlin Destination Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+import { Callout } from 'nextra-theme-docs';
+import Configuration from "./_configuration.mdx";
+
+<Badge text={"Latest: " + getLatestVersion("destination", "gremlin")}/>
+
+This destination plugin lets you sync data from any CloudQuery source to a Gremlin compatible graph database such as AWS Neptune or Azure CosmosDB.
+
+Supported database (tested) versions (We use the [official Go driver](https://github.com/apache/tinkerpop/tree/master/gremlin-go)):
+
+- Gremlin Server >= 3.6.2
+- AWS Neptune >= 1.2
+
+As a side note graph databases can be quite useful for various networking use-cases, visualization, for read-teams, blue-teams and more.
+
+## Configuration
+
+### Example
+
+<Configuration />
+
+The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+
+<Callout type="info">
+Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+</Callout>
+
+The Gremlin destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+
+### Plugin Spec
+
+This is the (nested) spec used by the Gremlin destination Plugin.
+
+- `endpoint` (string, required)
+
+  Endpoint for the database. Supported schemes are `wss://` and `ws://`, the default port is `8182`.
+
+  - `"localhost"` (defaults to `wss://localhost:8182`)
+  - `"ws://localhost:8182"`
+  - `"wss://your-endpoint.cluster-id.your-region.neptune.amazonaws.com"`
+
+- `insecure` (boolean, optional)
+
+  Whether to skip TLS verification. Defaults to `false`. This should be set on a MacOS environment when connecting to an AWS Neptune endpoint.
+
+- `username` (string, optional)
+
+  Username to connect to the database, for static authentication.
+
+- `password` (string, optional)
+
+  Password to connect to the database, for static authentication.

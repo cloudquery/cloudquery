@@ -304,6 +304,12 @@ export const DESTINATION_PLUGINS: Plugin[] = [
     kind: "official",
   },
   {
+    name: "Gremlin",
+    logo: "/images/logos/plugins/gremlin.png",
+    id: "gremlin",
+    kind: "official",
+  },
+  {
     name: "Kafka",
     logo: "/images/logos/plugins/kafka.svg",
     logoDark: "/images/logos/plugins/kafka-dark.svg",
