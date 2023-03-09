@@ -23,7 +23,7 @@ type oauthSpec struct {
 
 func (o *oauthSpec) validate() error {
 	if o == nil {
-		return fmt.Errorf("nil oauth spec")
+		return nil
 	}
 
 	switch {
