@@ -50,7 +50,7 @@ cat cloudquery.yml | base64
 ## Step 2: Create an ECS Cluster
 The first step in deploying CloudQuery on AWS ECS is to create an ECS cluster. To create an ECS cluster, use the following command:
 
-Prior to running eplace `<REPLACE_ECS_CLUSTER_NAME>` with the name you want to give to your ECS cluster.
+Prior to running replace `<REPLACE_ECS_CLUSTER_NAME>` with the name you want to give to your ECS cluster.
 ```bash
 aws ecs create-cluster --cluster-name <REPLACE_ECS_CLUSTER_NAME>
 ```
@@ -204,7 +204,7 @@ Replace the following placeholders:
   - `<REPLACE_CQ_CLI_VERSION>` : The version of the CloudQuery CLI you want to use. You can find the latest version [here](LINK TO GHCR)
   - `<REPLACE_CQ_BASE64_ENCODED_CONFIG>` : The base64 encoded version of the CloudQuery configuration file you created in Step 1.
   - `<REPLACE_LOG_GROUP_NAME>` : The name of the CloudWatch log group you created in Step 4.
-  - `<REPLACE_AWS_REGION>` : The AWS region where you created the Cloudwatch log group in Step 4.
+  - `<REPLACE_AWS_REGION>` : The AWS region where you created the CloudWatch log group in Step 4.
   - `<REPLACE_PREFIX_FOR_STREAM>` : The prefix you want to use for the CloudWatch log stream.
   - `<REPLACE_TASK_FAMILY_NAME>` : The name of the task family you want to use.
 
