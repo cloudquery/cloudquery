@@ -16,7 +16,6 @@ func (*Client) TransformBool(v *schema.Bool) any {
 func (*Client) TransformBytea(v *schema.Bytea) any {
 	if v.Status == schema.Present {
 		return v.String()
-		//return v.Bytes
 	}
 	return nil
 }
@@ -37,11 +36,6 @@ func (*Client) TransformInt8(v *schema.Int8) any {
 
 func (*Client) TransformInt8Array(v *schema.Int8Array) any {
 	return v.String()
-	//res := make([]any, len(v.Elements))
-	//for i, e := range v.Elements {
-	//	res[i] = e.Int
-	//}
-	//return res
 }
 
 func (*Client) TransformJSON(v *schema.JSON) any {
@@ -60,11 +54,6 @@ func (*Client) TransformText(v *schema.Text) any {
 
 func (*Client) TransformTextArray(v *schema.TextArray) any {
 	return stripNulls(v.String())
-	//res := make([]any, len(v.Elements))
-	//for i, e := range v.Elements {
-	//	res[i] = stripNulls(e.String())
-	//}
-	//return res
 }
 
 func (*Client) TransformTimestamptz(v *schema.Timestamptz) any {
@@ -83,11 +72,6 @@ func (*Client) TransformUUID(v *schema.UUID) any {
 
 func (*Client) TransformUUIDArray(v *schema.UUIDArray) any {
 	return v.String()
-	//res := make([]any, len(v.Elements))
-	//for i, e := range v.Elements {
-	//	res[i] = e.String()
-	//}
-	//return res
 }
 
 func (*Client) TransformCIDR(v *schema.CIDR) any {
@@ -99,11 +83,6 @@ func (*Client) TransformCIDR(v *schema.CIDR) any {
 
 func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
 	return v.String()
-	//res := make([]any, len(v.Elements))
-	//for i, e := range v.Elements {
-	//	res[i] = e.String()
-	//}
-	//return res
 }
 
 func (*Client) TransformInet(v *schema.Inet) any {
@@ -115,11 +94,6 @@ func (*Client) TransformInet(v *schema.Inet) any {
 
 func (*Client) TransformInetArray(v *schema.InetArray) any {
 	return v.String()
-	//res := make([]any, len(v.Elements))
-	//for i, e := range v.Elements {
-	//	res[i] = e.String()
-	//}
-	//return res
 }
 
 func (*Client) TransformMacaddr(v *schema.Macaddr) any {
@@ -131,11 +105,6 @@ func (*Client) TransformMacaddr(v *schema.Macaddr) any {
 
 func (*Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
 	return v.String()
-	//res := make([]any, len(v.Elements))
-	//for i, e := range v.Elements {
-	//	res[i] = e.String()
-	//}
-	//return res
 }
 
 func stripNulls(s string) string {

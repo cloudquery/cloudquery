@@ -53,13 +53,6 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 		)
 
 		for column := range nonPKs {
-			//if list, ok := rows[i][column].([]any); ok {
-			//	g = g.SideEffect(AnonT.Properties(column).Drop())
-			//	for _, item := range list {
-			//		g = g.Property(gremlingo.Cardinality.Set, column, item)
-			//	}
-			//	continue
-			//}
 			g = g.Property(gremlingo.Cardinality.Single, column, rows[i][column])
 		}
 
