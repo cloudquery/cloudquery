@@ -23,6 +23,7 @@ type oauthSpec struct {
 
 func (o *oauthSpec) validate() error {
 	if o == nil {
+		// OAuth is optional
 		return nil
 	}
 

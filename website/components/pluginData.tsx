@@ -69,8 +69,8 @@ export const SOURCE_PLUGINS: Plugin[] = [
   },
   {
     name: "Google Analytics",
-    logo: "/images/logos/plugins/googleanalytics.svg",
-    logoDark: "/images/logos/plugins/googleanalytics-dark.svg",
+    logo: "/images/logos/plugins/ga.svg",
+    logoDark: "/images/logos/plugins/ga-dark.svg",
     id: "googleanalytics",
     kind: "official",
   },

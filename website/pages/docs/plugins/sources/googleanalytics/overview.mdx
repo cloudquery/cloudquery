@@ -6,15 +6,22 @@ name: Google Analytics
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
 import Configuration from "./_configuration.mdx";
-import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", `googleanalytics`)}/>
 
-The CloudQuery Google Analytics plugin allows to run custom
+The CloudQuery Google Analytics plugin allows you to run custom
 [Google Analytics Data API v1 reports](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#reports)
-and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+from [Google Analytics](https://www.google.com/analytics) and load it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+
+## Example
+
+<Configuration/>
+
+## Configuration
+
+See [Configuration](/docs/plugins/sources/googleanalytics/configuration).
 
 ## Authentication
 
-<Authentication/>
+See [Authentication](/docs/plugins/sources/googleanalytics/authentication).
 

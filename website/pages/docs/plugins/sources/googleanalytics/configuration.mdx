@@ -5,42 +5,8 @@
 This example syncs from Google Analytics to a Postgres destination.
 The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
 
-```yaml copy
-kind: source
-# Common source-plugin configuration
-spec:
-  name: googleanalytics
-  path: cloudquery/googleanalytics
-  version: "VERSION_SOURCE_GOOGLEANALYTICS"
-  tables: ["*"]
-  destinations: ["postgresql"]
-  
-  # Google Analytics specific configuration
-  spec:
-    property_id: "<YOUR_PROPERTY_ID_HERE>"
-    oauth:
-      access_token: "<YOUR_OAUTH_ACCESS_TOKEN>"
-    reports:
-    - name: example
-      dimensions:
-      - date
-      - language
-      - country
-      - city
-      - browser
-      - operatingSystem
-      - year
-      - month
-      - hour
-      metrics:
-      - name: totalUsers
-      - name: new_users
-        expression: newUsers
-      - name: new_users2
-        expression: "newUsers + totalUsers"
-        invisible: true
-      keep_empty_rows: true
-```
+import Configuration from "./_configuration.mdx";
+<Configuration/>
 
 ## Google Analytics Spec
 
@@ -99,7 +65,7 @@ The option structure follows:
   A list of Google Analytics Data API v1 [dimensions](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions).
   At most 9 dimensions can be specified per report.
 
-- `metrics` (array of metrics requested, required, structure documented [below](#google-analytics-metric-spec)
+- `metrics` (array of metrics requested, required, structure documented [below](#google-analytics-metric-spec))
 
   A list of Google Analytics Data API v1 [metrics](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics).
   Expressions are supported, too.
