@@ -2,7 +2,7 @@
 
 ## Example
 
-This example syncs from GitLab to a Postgres destination, using API Key authentication. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
+This example syncs from GitLab to a Postgres destination, using API Key authentication. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
 ```yaml copy
 kind: source
