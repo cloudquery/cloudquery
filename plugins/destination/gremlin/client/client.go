@@ -39,16 +39,14 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 
 	c.pluginSpec = spec
 
-	au, err := c.getAuthInfo(ctx)
-	if err != nil {
-		return nil, err
-	}
-
 	c.client, err = gremlingo.NewDriverRemoteConnection(spec.Endpoint+"/gremlin",
 		func(settings *gremlingo.DriverRemoteConnectionSettings) {
 			settings.TraversalSource = "g"
 			settings.LogVerbosity = gremlingo.Debug
-			settings.AuthInfo = au
+
+			if c.pluginSpec.Username != "" && c.pluginSpec.Password != "" {
+				settings.AuthInfo = gremlingo.BasicAuthInfo(c.pluginSpec.Username, c.pluginSpec.Password)
+			}
 
 			if spec.Insecure {
 				settings.TlsConfig = &tls.Config{InsecureSkipVerify: true}
@@ -65,12 +63,4 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 func (c *Client) Close(_ context.Context) error {
 	c.client.Close()
 	return nil
-}
-
-func (c *Client) getAuthInfo(_ context.Context) (*gremlingo.AuthInfo, error) {
-	if c.pluginSpec.Username != "" && c.pluginSpec.Password != "" {
-		return gremlingo.BasicAuthInfo(c.pluginSpec.Username, c.pluginSpec.Password), nil
-	}
-
-	return nil, nil
 }
