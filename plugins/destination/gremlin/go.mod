@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/apache/tinkerpop/gremlin-go/v3 v3.6.2
+	github.com/aws/aws-sdk-go v1.44.218
 	github.com/cloudquery/plugin-sdk v1.42.0
 	github.com/rs/zerolog v1.29.0
 )
@@ -11,6 +12,7 @@ require (
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/nicksnyder/go-i18n/v2 v2.2.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.8.2 // indirect

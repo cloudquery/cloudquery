@@ -9,10 +9,19 @@ type Spec struct {
 	Endpoint string `json:"endpoint"`
 	Insecure bool   `json:"insecure"`
 
+	AuthMode authMode `json:"auth_mode"`
+
 	// Static credentials
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
+
+type authMode string
+
+const (
+	authModeBasic = authMode("basic")
+	authModeIAM   = authMode("iam")
+)
 
 func (s *Spec) SetDefaults() {
 	if s.Endpoint != "" {
@@ -26,11 +35,18 @@ func (s *Spec) SetDefaults() {
 		}
 		s.Endpoint = strings.Join(e, "://")
 	}
+
+	if s.AuthMode == "" {
+		s.AuthMode = authModeBasic
+	}
 }
 
 func (s *Spec) Validate() error {
 	if s.Endpoint == "" {
 		return fmt.Errorf("endpoint is required")
+	}
+	if s.AuthMode != authModeBasic && s.AuthMode != authModeIAM {
+		return fmt.Errorf("invalid auth_mode, valid values are %q and %q", authModeBasic, authModeIAM)
 	}
 	return nil
 }
