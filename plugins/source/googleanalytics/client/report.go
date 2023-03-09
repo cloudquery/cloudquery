@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -23,7 +24,7 @@ func (r *Report) normalize() {
 		return
 	}
 
-	r.Name = csr.ToSnake(r.Name)
+	r.Name = csr.ToSnake(strings.ReplaceAll(r.Name, " ", "_"))
 }
 
 func (r *Report) validate() error {
