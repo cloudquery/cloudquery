@@ -77,4 +77,3 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 func (*Client) Close(ctx context.Context) error {
 	return nil
 }
-
