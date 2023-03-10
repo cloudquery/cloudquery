@@ -95,7 +95,7 @@ func (c *Client) getAuthInfo(ctx context.Context, baseURL string) (*gremlingo.Au
 			return nil, err
 		}
 
-		cfg, err := config.LoadDefaultConfig(ctx, config.WithDefaultRegion("us-east-1"))
+		cfg, err := config.LoadDefaultConfig(ctx)
 		if err != nil {
 			return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
 		}
@@ -104,10 +104,10 @@ func (c *Client) getAuthInfo(ctx context.Context, baseURL string) (*gremlingo.Au
 			return nil, fmt.Errorf("unable to retrieve AWS credentials: %w", err)
 		}
 		signer := v4.NewSigner()
-		if err := signer.SignHTTP(ctx, cr, req, emptyStringSHA256, "neptune-db", cfg.Region, time.Now()); err != nil {
+		if err := signer.SignHTTP(ctx, cr, req, emptyStringSHA256, "neptune-db", c.pluginSpec.AWSRegion, time.Now()); err != nil {
 			return nil, err
 		}
-		c.logger.Trace().Any("iam_headers", req.Header).Str("aws_region", cfg.Region).Msg("IAM headers")
+		c.logger.Trace().Any("iam_headers", req.Header).Str("aws_region", c.pluginSpec.AWSRegion).Msg("IAM headers")
 		return gremlingo.HeaderAuthInfo(req.Header), nil
 
 	default:

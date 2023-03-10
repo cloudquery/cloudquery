@@ -61,6 +61,10 @@ This is the (nested) spec used by the Gremlin destination Plugin.
 
   Password to connect to the database, for static authentication.
 
+- `aws_region` (string, required when `auth_mode` is `aws`)
+
+  AWS region to use for AWS IAM authentication.
+
 - `max_retries` (integer, optional. default: 5)
 
   Number of retries on `ConcurrentModificationException` before giving up for each batch. Retries are exponentially backed off.

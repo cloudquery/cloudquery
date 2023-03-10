@@ -17,6 +17,9 @@ type Spec struct {
 
 	// Backoff
 	MaxRetries int `json:"max_retries"`
+
+	// AWS specific settings
+	AWSRegion string `json:"aws_region"`
 }
 
 type authMode string
@@ -60,5 +63,9 @@ func (s *Spec) Validate() error {
 	if s.AuthMode != authModeNone && s.AuthMode != authModeBasic && s.AuthMode != authModeAWS {
 		return fmt.Errorf("invalid auth_mode, valid values are %q, %q and %q", authModeNone, authModeBasic, authModeAWS)
 	}
+	if s.AuthMode == authModeAWS && s.AWSRegion == "" {
+		return fmt.Errorf("aws_region is required when auth_mode is %q", authModeAWS)
+	}
+
 	return nil
 }
