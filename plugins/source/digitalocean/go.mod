@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.15
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.0
 	github.com/aws/smithy-go v1.13.5
-	github.com/cloudquery/plugin-sdk v1.41.0
+	github.com/cloudquery/plugin-sdk v1.42.0
 	github.com/digitalocean/godo v1.93.0
 	github.com/golang/mock v1.6.0
 	github.com/pkg/errors v0.9.1
@@ -31,9 +31,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.30 // indirect; indirect // indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.21 // indirect; indirect // indirect // indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.22 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.24 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.23 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.21 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.23 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.12.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.18.5 // indirect

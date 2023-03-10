@@ -9,7 +9,7 @@ import (
 )
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
-	session := c.client.NewSession(ctx, neo4j.SessionConfig{})
+	session := c.LoggedSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
 	rows := make([]map[string]any, len(resources))
 	for i, resource := range resources {
@@ -19,7 +19,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 		}
 	}
 	var sb strings.Builder
-	sb.WriteString("UNWIND $rows as row MERGE (t:")
+	sb.WriteString("UNWIND $rows AS row MERGE (t:")
 	sb.WriteString(table.Name)
 	sb.WriteString(" {")
 	pks := table.PrimaryKeys()
@@ -37,14 +37,13 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 	}
 	sb.WriteString("}) SET t = row")
 	stmt := sb.String()
+	c.logger.Debug().Str("stmt", stmt).Any("rows", rows).Msg("Executing statement")
 	if _, err := session.ExecuteWrite(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		_, err := tx.Run(ctx, stmt, map[string]any{"rows": rows})
-		if err != nil {
-			return nil, err
-		}
-		return nil, nil
+		return nil, err
 	}); err != nil {
 		return err
 	}
-	return nil
+
+	return session.Close(ctx)
 }

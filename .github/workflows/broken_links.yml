@@ -63,7 +63,7 @@ jobs:
         id: vercel
         run: |
           DEPLOY_URL=${{ steps.preview-deployment.outputs.url }}
-          echo "url=${DEPLOY_URL:-"https://www.cloudquery.io/"}" >> $GITHUB_OUTPUT
+          echo "url=${DEPLOY_URL:-"https://www.cloudquery.io"}" >> $GITHUB_OUTPUT
 
       - name: Check for broken links
         if: steps.broken-links.outputs.check != 'false'
@@ -73,6 +73,7 @@ jobs:
 
           npx broken-link-checker --requests 100 --host-requests 10 -f -r -v -o --filter-level 3 \
             --exclude "${{ steps.vercel.outputs.url }}/logo" \
+            --exclude "${{ steps.vercel.outputs.url }}/docs/plugins/sources/*/tables" \
             --exclude linkedin \
             --exclude cloudquery.io/discord \
             --exclude fonts.gstatic.com \

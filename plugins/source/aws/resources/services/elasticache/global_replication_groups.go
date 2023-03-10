@@ -8,11 +8,12 @@ import (
 )
 
 func GlobalReplicationGroups() *schema.Table {
+	tableName := "aws_elasticache_global_replication_groups"
 	return &schema.Table{
-		Name:        "aws_elasticache_global_replication_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_GlobalReplicationGroup.html`,
 		Resolver:    fetchElasticacheGlobalReplicationGroups,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
 		Transform:   transformers.TransformWithStruct(&types.GlobalReplicationGroup{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

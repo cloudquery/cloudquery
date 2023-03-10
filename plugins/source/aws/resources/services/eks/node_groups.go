@@ -8,12 +8,13 @@ import (
 )
 
 func NodeGroups() *schema.Table {
+	tableName := "aws_eks_cluster_node_groups"
 	return &schema.Table{
-		Name:                "aws_eks_cluster_node_groups",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/eks/latest/APIReference/API_Nodegroup.html`,
 		Resolver:            fetchNodeGroups,
 		PreResourceResolver: getNodeGroup,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("eks"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "eks"),
 		Transform:           transformers.TransformWithStruct(&types.Nodegroup{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

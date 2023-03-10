@@ -29,6 +29,8 @@ cloudquery
 CloudQuery
 CMK
 CMKs
+codegen
+Codegen
 compinit
 config
 Config
@@ -61,6 +63,7 @@ ENV
 exfiltrate
 exploitability
 Exploitability
+extensible
 Extensible
 faceprints
 failover
@@ -179,6 +182,7 @@ unencrypted
 unmanaged
 unmarshalling
 upsert
+upserts
 upserted
 uuid
 UUID

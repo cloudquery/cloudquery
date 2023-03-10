@@ -8,13 +8,14 @@ import (
 )
 
 func ContactLists() *schema.Table {
+	tableName := "aws_ses_contact_lists"
 	return &schema.Table{
-		Name:                "aws_ses_contact_lists",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetContactList.html`,
 		Resolver:            fetchSesContactLists,
 		PreResourceResolver: getContactList,
 		Transform:           transformers.TransformWithStruct(&sesv2.GetContactListOutput{}, transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("email"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "email"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

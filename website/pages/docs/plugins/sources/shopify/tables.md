@@ -2,11 +2,11 @@
 
 ## Tables
 
-- [shopify_abandoned_checkouts](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/shopify/docs/tables/shopify_abandoned_checkouts.md) (Incremental)
-- [shopify_customers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/shopify/docs/tables/shopify_customers.md) (Incremental)
-- [shopify_orders](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/shopify/docs/tables/shopify_orders.md) (Incremental)
-- [shopify_price_rules](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/shopify/docs/tables/shopify_price_rules.md) (Incremental)
-  - [shopify_price_rule_discount_codes](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/shopify/docs/tables/shopify_price_rule_discount_codes.md)
-- [shopify_products](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/shopify/docs/tables/shopify_products.md) (Incremental)
-  - [shopify_product_images](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/shopify/docs/tables/shopify_product_images.md)
-  - [shopify_product_variants](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/shopify/docs/tables/shopify_product_variants.md)
+- [shopify_abandoned_checkouts](tables/shopify_abandoned_checkouts) (Incremental)
+- [shopify_customers](tables/shopify_customers) (Incremental)
+- [shopify_orders](tables/shopify_orders) (Incremental)
+- [shopify_price_rules](tables/shopify_price_rules) (Incremental)
+  - [shopify_price_rule_discount_codes](tables/shopify_price_rule_discount_codes)
+- [shopify_products](tables/shopify_products) (Incremental)
+  - [shopify_product_images](tables/shopify_product_images)
+  - [shopify_product_variants](tables/shopify_product_variants)

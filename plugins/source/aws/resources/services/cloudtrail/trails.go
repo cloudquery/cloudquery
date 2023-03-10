@@ -8,11 +8,12 @@ import (
 )
 
 func Trails() *schema.Table {
+	tableName := "aws_cloudtrail_trails"
 	return &schema.Table{
-		Name:        "aws_cloudtrail_trails",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Trail.html`,
 		Resolver:    fetchCloudtrailTrails,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudtrail"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "cloudtrail"),
 		Transform:   transformers.TransformWithStruct(&models.CloudTrailWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

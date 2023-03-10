@@ -8,11 +8,12 @@ import (
 )
 
 func KeyPairs() *schema.Table {
+	tableName := "aws_ec2_key_pairs"
 	return &schema.Table{
-		Name:        "aws_ec2_key_pairs",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_KeyPairInfo.html`,
 		Resolver:    fetchEc2KeyPairs,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.KeyPairInfo{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -11,12 +11,13 @@ import (
 )
 
 func ReservedInstances() *schema.Table {
+	tableName := "aws_rds_reserved_instances"
 	return &schema.Table{
-		Name:        "aws_rds_reserved_instances",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_ReservedDBInstance.html`,
 		Resolver:    fetchRdsReservedInstances,
 		Transform:   transformers.TransformWithStruct(&types.ReservedDBInstance{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

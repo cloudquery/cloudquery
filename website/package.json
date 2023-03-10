@@ -17,8 +17,10 @@
   "dependencies": {
     "@heroicons/react": "^2.0.14",
     "copy-to-clipboard": "3.3.3",
+    "glob": "^9.0.1",
     "gray-matter": "^4.0.3",
     "next": "^13.1.5",
+    "next-seo": "^5.15.0",
     "next-sitemap": "^3.1.47",
     "nextra": "^2.2.16",
     "nextra-theme-docs": "^2.2.16",
@@ -27,6 +29,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "2.4.0",
+    "react-search-box": "^3.0.0",
     "sharp": "^0.31.3"
   },
   "devDependencies": {

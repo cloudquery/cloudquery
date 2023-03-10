@@ -8,11 +8,12 @@ import (
 )
 
 func SubnetGroups() *schema.Table {
+	tableName := "aws_elasticache_subnet_groups"
 	return &schema.Table{
-		Name:        "aws_elasticache_subnet_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheSubnetGroup.html`,
 		Resolver:    fetchElasticacheSubnetGroups,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
 		Transform:   transformers.TransformWithStruct(&types.CacheSubnetGroup{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

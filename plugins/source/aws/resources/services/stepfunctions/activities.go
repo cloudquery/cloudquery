@@ -11,12 +11,13 @@ import (
 )
 
 func Activities() *schema.Table {
+	tableName := "aws_stepfunctions_activities"
 	return &schema.Table{
-		Name:        "aws_stepfunctions_activities",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/step-functions/latest/apireference/API_ListActivities.html`,
 		Resolver:    fetchStepfunctionsActivities,
 		Transform:   transformers.TransformWithStruct(&types.ActivityListItem{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("states"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "states"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -8,12 +8,13 @@ import (
 )
 
 func MlTransforms() *schema.Table {
+	tableName := "aws_glue_ml_transforms"
 	return &schema.Table{
-		Name:        "aws_glue_ml_transforms",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_MLTransform.html`,
 		Resolver:    fetchGlueMlTransforms,
 		Transform:   transformers.TransformWithStruct(&types.MLTransform{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

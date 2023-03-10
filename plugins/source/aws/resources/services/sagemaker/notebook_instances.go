@@ -7,13 +7,14 @@ import (
 )
 
 func NotebookInstances() *schema.Table {
+	tableName := "aws_sagemaker_notebook_instances"
 	return &schema.Table{
-		Name:                "aws_sagemaker_notebook_instances",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeNotebookInstance.html`,
 		Resolver:            fetchSagemakerNotebookInstances,
 		PreResourceResolver: getNotebookInstance,
 		Transform:           transformers.TransformWithStruct(&WrappedSageMakerNotebookInstance{}, transformers.WithUnwrapStructFields("DescribeNotebookInstanceOutput")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("api.sagemaker"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "api.sagemaker"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

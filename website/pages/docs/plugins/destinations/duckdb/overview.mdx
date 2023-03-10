@@ -1,0 +1,29 @@
+---
+name: DuckDB
+---
+# DuckDB Destination Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+import { Callout } from 'nextra-theme-docs';
+
+<Badge text={"Latest: " + getLatestVersion("destination", "duckdb")}/>
+
+This destination plugin lets you sync data from a CloudQuery source to a [DuckDB](https://duckdb.org/) database.
+
+## Example Config
+
+<Configuration />
+
+<Callout type="warning">
+Note that this plugin does currently **not support Windows**. See [this issue](https://github.com/cloudquery/cloudquery/issues/8854) for more details.
+</Callout>
+
+## DuckDB Spec
+
+This is the top level spec used by the DuckDB destination Plugin.
+
+- `connection_string` (string) (required)
+
+  Absolute or relative path to a file, such as `./example.duckdb`

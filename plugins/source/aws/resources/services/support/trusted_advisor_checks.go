@@ -14,12 +14,13 @@ import (
 var checksSupportedLanguageCodes = []string{"en", "fr", "de", "id", "it", "ja", "ko", "pt_BR", "es", "zh", "zh_TW"}
 
 func TrustedAdvisorChecks() *schema.Table {
+	tableName := "aws_support_trusted_advisor_checks"
 	return &schema.Table{
 		Name:        "aws_support_trusted_advisor_checks",
 		Description: `https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeTrustedAdvisorChecks.html`,
 		Resolver:    fetchTrustedAdvisorChecks,
 		Transform:   transformers.TransformWithStruct(&types.TrustedAdvisorCheckDescription{}, transformers.WithPrimaryKeys("Id")),
-		Multiplex:   client.ServiceAccountRegionsLanguageCodeMultiplex("support", checksSupportedLanguageCodes),
+		Multiplex:   client.ServiceAccountRegionsLanguageCodeMultiplex(tableName, "support", checksSupportedLanguageCodes),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

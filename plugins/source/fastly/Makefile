@@ -26,9 +26,13 @@ gen-mocks: install-tools
 
 .PHONY: gen-docs
 gen-docs:
-	rm -rf ./docs/tables/*
-	go run main.go doc ./docs/tables
-	sed 's_(\(.*\))_(https://github.com/cloudquery/cloudquery/blob/main/plugins/source/fastly/docs/tables/\1)_' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/fastly/tables.md
+	rm -rf ../../../website/tables/fastly
+	go run main.go doc ../../../website/tables/fastly
+	sed 's_(\(.*\))_(../../../../../website/tables/fastly/\1)_' ../../../website/tables/fastly/README.md > ./docs/tables/README.md
+	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/fastly/README.md
+	mv ../../../website/tables/fastly/README.md ../../../website/pages/docs/plugins/sources/fastly/tables.md
+	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/fastly/*.md
+	rm -rf ../../../website/tables/fastly/*.bak
 
 # All gen targets
 .PHONY: gen

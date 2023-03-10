@@ -1,6 +1,6 @@
 The plugin needs to be authenticated with your account(s) in order to sync information from your cloud setup.
 
-The plugin requires only _read_ permissions (we will never make any changes to your cloud setup), so, following the principle of least privilege, it's recommended to grant it read-only permissions.
+The plugin requires only `PutObject` permissions (we will never make any changes to your cloud setup), so, following the principle of least privilege, it's recommended to grant it `PutObject` permissions.
 
 There are multiple ways to authenticate with AWS, and the plugin respects the AWS credential provider chain. This means that CloudQuery will follow the following priorities when attempting to authenticate:
 
@@ -57,13 +57,6 @@ Then, you can either export the `AWS_PROFILE` environment variable (On Linux/Mac
 export AWS_PROFILE=myprofile
 ```
 
-or, configure your desired profile in the `local_profile` field:
-
-```yaml copy filename="aws.yml"
-accounts:
-  id: <account_alias>
-  local_profile: myprofile
-```
 
 ### IAM Roles for AWS Compute Resources
 

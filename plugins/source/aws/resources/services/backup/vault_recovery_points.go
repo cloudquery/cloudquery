@@ -8,11 +8,12 @@ import (
 )
 
 func VaultRecoveryPoints() *schema.Table {
+	tableName := "aws_backup_vault_recovery_points"
 	return &schema.Table{
-		Name:        "aws_backup_vault_recovery_points",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_RecoveryPointByBackupVault.html`,
 		Resolver:    fetchBackupVaultRecoveryPoints,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("backup"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "backup"),
 		Transform:   transformers.TransformWithStruct(&types.RecoveryPointByBackupVault{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

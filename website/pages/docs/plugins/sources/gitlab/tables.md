@@ -2,10 +2,10 @@
 
 ## Tables
 
-- [gitlab_groups](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gitlab/docs/tables/gitlab_groups.md)
-  - [gitlab_group_members](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gitlab/docs/tables/gitlab_group_members.md)
-- [gitlab_projects](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gitlab/docs/tables/gitlab_projects.md)
-  - [gitlab_project_branches](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gitlab/docs/tables/gitlab_project_branches.md)
-  - [gitlab_projects_releases](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gitlab/docs/tables/gitlab_projects_releases.md)
-- [gitlab_settings](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gitlab/docs/tables/gitlab_settings.md)
-- [gitlab_users](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gitlab/docs/tables/gitlab_users.md)
+- [gitlab_groups](tables/gitlab_groups)
+  - [gitlab_group_members](tables/gitlab_group_members)
+- [gitlab_projects](tables/gitlab_projects)
+  - [gitlab_project_branches](tables/gitlab_project_branches)
+  - [gitlab_projects_releases](tables/gitlab_projects_releases)
+- [gitlab_settings](tables/gitlab_settings)
+- [gitlab_users](tables/gitlab_users)

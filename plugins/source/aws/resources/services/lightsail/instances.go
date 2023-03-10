@@ -8,12 +8,13 @@ import (
 )
 
 func Instances() *schema.Table {
+	tableName := "aws_lightsail_instances"
 	return &schema.Table{
-		Name:        "aws_lightsail_instances",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Instance.html`,
 		Resolver:    fetchLightsailInstances,
 		Transform:   transformers.TransformWithStruct(&types.Instance{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lightsail"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

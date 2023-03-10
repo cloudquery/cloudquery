@@ -48,3 +48,7 @@ body {
   white-space: nowrap;
   animation: slidein 60s linear infinite;
 }
+
+.tables-search li:hover {
+  text-decoration: underline;
+}

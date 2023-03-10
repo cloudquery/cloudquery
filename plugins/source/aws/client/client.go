@@ -39,6 +39,7 @@ type Client struct {
 	Partition            string
 	LanguageCode         string
 	Backend              backend.Backend
+	specificRegions      bool
 }
 
 type AwsLogger struct {
@@ -374,8 +375,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 			return nil, err
 		}
 
+		client.specificRegions = true
 		if isAllRegions(localRegions) {
 			logger.Info().Msg("All regions specified in `cloudquery.yml`. Assuming all regions")
+			client.specificRegions = false
 		}
 
 		awsCfg, err := configureAwsClient(ctx, logger, &awsConfig, account, adminAccountSts)

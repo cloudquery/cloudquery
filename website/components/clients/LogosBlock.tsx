@@ -1,7 +1,6 @@
 import React from "react";
 import { AuroralabsLogo } from "../logos/Auroralabs";
 import { AutodeskLogo } from "../logos/Autodesk";
-import { BloombergLogo } from "../logos/Bloomberg";
 import { FastlyLogo } from "../logos/Fastly";
 import { InfosysLogo } from "../logos/Infosys";
 import { InfrastructureLogo } from "../logos/Infrastructure";
@@ -15,7 +14,6 @@ const LogosList = () => {
       <FastlyLogo />
       <AutodeskLogo />
       <PaloAltoNetworksLogo />
-      <BloombergLogo />
       <InfrastructureLogo />
       <ZendeskLogo />
       <InfosysLogo />

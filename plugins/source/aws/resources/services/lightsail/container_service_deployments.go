@@ -8,12 +8,13 @@ import (
 )
 
 func ContainerServiceDeployments() *schema.Table {
+	tableName := "aws_lightsail_container_service_deployments"
 	return &schema.Table{
-		Name:        "aws_lightsail_container_service_deployments",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_ContainerServiceDeployment.html`,
 		Resolver:    fetchLightsailContainerServiceDeployments,
 		Transform:   transformers.TransformWithStruct(&types.ContainerServiceDeployment{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lightsail"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

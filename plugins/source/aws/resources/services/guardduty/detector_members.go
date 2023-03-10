@@ -8,12 +8,13 @@ import (
 )
 
 func DetectorMembers() *schema.Table {
+	tableName := "aws_guardduty_detector_members"
 	return &schema.Table{
-		Name:        "aws_guardduty_detector_members",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html`,
 		Resolver:    fetchGuarddutyDetectorMembers,
 		Transform:   transformers.TransformWithStruct(&types.Member{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("guardduty"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
 			client.DefaultRegionColumn(false),
 			{

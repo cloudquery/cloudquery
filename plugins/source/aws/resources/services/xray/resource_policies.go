@@ -8,12 +8,13 @@ import (
 )
 
 func ResourcePolicies() *schema.Table {
+	tableName := "aws_xray_resource_policies"
 	return &schema.Table{
-		Name:        "aws_xray_resource_policies",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/xray/latest/api/API_ResourcePolicy.html`,
 		Resolver:    fetchXrayResourcePolicies,
 		Transform:   transformers.TransformWithStruct(&types.ResourcePolicy{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("xray"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "xray"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
