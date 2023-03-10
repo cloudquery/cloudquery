@@ -70,10 +70,9 @@ func (r *Report) toGA(propertyID string) *analyticsdata.RunReportRequest {
 func (r *Report) table(propertyID string) *schema.Table {
 	tableName := "ga_" + r.Name
 	return &schema.Table{
-		Name: tableName,
-		Transform: transformers.TransformWithStruct(new(row),
-			transformers.WithPrimaryKeys("Date", "DimensionHash")),
-		Columns:       schema.ColumnList{PropertyIDColumn},
+		Name:          tableName,
+		Transform:     transformers.TransformWithStruct(new(row), transformers.WithPrimaryKeys("DimensionHash")),
+		Columns:       schema.ColumnList{PropertyIDColumn, DateColumn},
 		Resolver:      fetch(tableName, r.toGA(propertyID)),
 		IsIncremental: true,
 	}

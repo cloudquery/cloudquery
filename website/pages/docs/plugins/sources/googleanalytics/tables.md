@@ -14,9 +14,9 @@ but the snake case transformation produces the same string.
 ### Schema
 
 The composite primary key for this table is (**property_id**, **date**, **dimension_hash**).
-It supports incremental syncs.
+It supports incremental syncs based on the **date** column.
 
-#### Columns
+## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
@@ -25,7 +25,7 @@ It supports incremental syncs.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |property_id (PK)|String|
-|date (PK)|Timestamp|
+|date (PK) (Incremental Key)|Timestamp|
 |dimensions|JSON|
 |dimension_hash (PK)|ByteArray|
 |metrics|JSON|
