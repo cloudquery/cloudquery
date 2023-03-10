@@ -19,9 +19,24 @@ func (l Logger) Log(verbosity gremlingo.LogVerbosity, v ...any) {
 		return
 	}
 
-	l.Base.Trace().Any("data", v).Any("verbosity", verbosity).Msg("gremlingo log")
+	l.Base.Trace().Any("data", v).Any("verbosity", gremlingoVerbosity(verbosity)).Msg("gremlingo log")
 }
 
 func (l Logger) Logf(verbosity gremlingo.LogVerbosity, format string, v ...any) {
-	l.Base.Trace().Any("verbosity", verbosity).Msgf(format, v...)
+	l.Base.Trace().Any("verbosity", gremlingoVerbosity(verbosity)).Msgf(format, v...)
+}
+
+func gremlingoVerbosity(verbosity gremlingo.LogVerbosity) string {
+	switch verbosity {
+	case gremlingo.Debug:
+		return "debug"
+	case gremlingo.Info:
+		return "info"
+	case gremlingo.Warning:
+		return "warning"
+	case gremlingo.Error:
+		return "error"
+	default:
+		return "unknown"
+	}
 }

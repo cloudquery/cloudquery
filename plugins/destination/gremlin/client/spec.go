@@ -19,8 +19,9 @@ type Spec struct {
 type authMode string
 
 const (
+	authModeNone  = authMode("none")
 	authModeBasic = authMode("basic")
-	authModeIAM   = authMode("iam")
+	authModeAWS   = authMode("aws")
 )
 
 func (s *Spec) SetDefaults() {
@@ -37,7 +38,9 @@ func (s *Spec) SetDefaults() {
 	}
 
 	if s.AuthMode == "" {
-		s.AuthMode = authModeBasic
+		s.AuthMode = authModeNone
+	} else {
+		s.AuthMode = authMode(strings.ToLower(string(s.AuthMode)))
 	}
 }
 
@@ -45,8 +48,8 @@ func (s *Spec) Validate() error {
 	if s.Endpoint == "" {
 		return fmt.Errorf("endpoint is required")
 	}
-	if s.AuthMode != authModeBasic && s.AuthMode != authModeIAM {
-		return fmt.Errorf("invalid auth_mode, valid values are %q and %q", authModeBasic, authModeIAM)
+	if s.AuthMode != authModeNone && s.AuthMode != authModeBasic && s.AuthMode != authModeAWS {
+		return fmt.Errorf("invalid auth_mode, valid values are %q, %q and %q", authModeNone, authModeBasic, authModeAWS)
 	}
 	return nil
 }

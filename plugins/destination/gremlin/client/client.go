@@ -53,8 +53,11 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	c.client, err = gremlingo.NewDriverRemoteConnection(u,
 		func(settings *gremlingo.DriverRemoteConnectionSettings) {
 			settings.TraversalSource = "g"
-			settings.LogVerbosity = gremlingo.Debug
 			settings.AuthInfo = au
+
+			if logger.GetLevel() <= zerolog.DebugLevel {
+				settings.LogVerbosity = gremlingo.Debug
+			}
 
 			if spec.Insecure {
 				settings.TlsConfig = &tls.Config{InsecureSkipVerify: true}
@@ -75,13 +78,12 @@ func (c *Client) Close(_ context.Context) error {
 
 func (c *Client) getAuthInfo(ctx context.Context, baseURL string) (*gremlingo.AuthInfo, error) {
 	switch c.pluginSpec.AuthMode {
+	case authModeNone:
+		return nil, nil
 	case authModeBasic:
-		if c.pluginSpec.Username == "" && c.pluginSpec.Password == "" {
-			return nil, nil
-		}
 		return gremlingo.BasicAuthInfo(c.pluginSpec.Username, c.pluginSpec.Password), nil
 
-	case authModeIAM:
+	case authModeAWS:
 		// emptyStringSHA256 is a SHA256 of an empty string
 		const emptyStringSHA256 = `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
 
