@@ -16,7 +16,7 @@ but the snake case transformation produces the same string.
 The composite primary key for this table is (**property_id**, **date**, **dimension_hash**).
 It supports incremental syncs based on the **date** column.
 
-## Columns
+#### Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
@@ -30,3 +30,8 @@ It supports incremental syncs based on the **date** column.
 |dimension_hash (PK)|ByteArray|
 |metrics|JSON|
 |data_loss|Bool|
+
+### `dat_loss` column
+
+Data loss indicates if the `(other)` value is present due to hitting Google Analytics limits.
+To learn more, read [this article](https://support.google.com/analytics/answer/13331684).

@@ -49,6 +49,7 @@ func fetch(tableName string, request *analyticsdata.RunReportRequest) schema.Tab
 			}
 
 			// We save current date here, even with data loss (as the report should be edited to get all the data)
+			// Data loss refers to the `(other)` value, see https://support.google.com/analytics/answer/1333168.
 			if err := c.backend.Set(ctx, tableName, c.ID(), dateStr); err != nil {
 				logger.Err(err).Msg("failed to save state")
 				return err
