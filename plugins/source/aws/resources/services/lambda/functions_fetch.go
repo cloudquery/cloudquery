@@ -20,7 +20,6 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 			return err
 		}
 		res <- page.Functions
-
 	}
 	return nil
 }
