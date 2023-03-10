@@ -9,7 +9,7 @@ import (
 )
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
-	session, err := c.client.CreateSession()
+	session, err := c.newSession()
 	if err != nil {
 		return err
 	}

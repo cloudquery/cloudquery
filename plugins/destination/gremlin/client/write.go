@@ -12,7 +12,7 @@ import (
 )
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
-	session, err := c.client.CreateSession()
+	session, err := c.newSession()
 	if err != nil {
 		return err
 	}

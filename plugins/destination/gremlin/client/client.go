@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"sync"
 	"time"
 
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
@@ -22,7 +23,9 @@ type Client struct {
 	logger     zerolog.Logger
 	spec       specs.Destination
 	pluginSpec Spec
-	client     *gremlingo.DriverRemoteConnection
+
+	mu     sync.Mutex // protects client during session creation
+	client *gremlingo.DriverRemoteConnection
 }
 
 var AnonT = gremlingo.T__
@@ -110,4 +113,10 @@ func (c *Client) getAuthInfo(ctx context.Context, baseURL string) (*gremlingo.Au
 	default:
 		return nil, fmt.Errorf("unhandled auth mode %q", c.pluginSpec.AuthMode)
 	}
+}
+
+func (c *Client) newSession() (*gremlingo.DriverRemoteConnection, error) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	return c.client.CreateSession()
 }

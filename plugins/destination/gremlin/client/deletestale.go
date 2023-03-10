@@ -9,7 +9,7 @@ import (
 )
 
 func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
-	session, err := c.client.CreateSession()
+	session, err := c.newSession()
 	if err != nil {
 		return err
 	}
