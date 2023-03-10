@@ -1,5 +1,7 @@
 # Table: aws_rds_db_security_groups
 
+This table shows data for AWS RDS DB Security Groups.
+
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSecurityGroup.html
 
 The primary key for this table is **arn**.

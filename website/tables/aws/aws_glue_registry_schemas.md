@@ -1,5 +1,7 @@
 # Table: aws_glue_registry_schemas
 
+This table shows data for AWS Glue Registry Schemas.
+
 https://docs.aws.amazon.com/glue/latest/webapi/API_GetSchema.html
 
 The primary key for this table is **arn**.

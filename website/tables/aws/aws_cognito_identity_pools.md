@@ -1,5 +1,7 @@
 # Table: aws_cognito_identity_pools
 
+This table shows data for AWS Cognito Identity Pools.
+
 https://docs.aws.amazon.com/cognitoidentity/latest/APIReference/API_DescribeIdentityPool.html
 
 The composite primary key for this table is (**account_id**, **region**, **id**).

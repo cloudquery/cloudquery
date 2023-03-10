@@ -1,5 +1,7 @@
 # Table: aws_codepipeline_webhooks
 
+This table shows data for AWS Codepipeline Webhooks.
+
 https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_ListWebhookItem.html
 
 The primary key for this table is **arn**.

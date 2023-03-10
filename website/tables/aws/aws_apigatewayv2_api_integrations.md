@@ -1,5 +1,7 @@
 # Table: aws_apigatewayv2_api_integrations
 
+This table shows data for AWS API Gateway v2 API Integrations.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_Integration.html
 
 The composite primary key for this table is (**account_id**, **arn**).

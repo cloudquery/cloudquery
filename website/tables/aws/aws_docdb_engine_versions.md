@@ -1,5 +1,7 @@
 # Table: aws_docdb_engine_versions
 
+This table shows data for AWS DocDB Engine Versions.
+
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html
 
 The composite primary key for this table is (**account_id**, **region**, **engine**, **engine_version**).

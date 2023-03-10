@@ -1,5 +1,7 @@
 # Table: aws_ses_identities
 
+This table shows data for AWS Ses Identities.
+
 https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailIdentity.html
 
 The primary key for this table is **arn**.

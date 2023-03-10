@@ -1,5 +1,7 @@
 # Table: aws_docdb_global_clusters
 
+This table shows data for AWS DocDB Global Clusters.
+
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_GlobalCluster.html
 
 The primary key for this table is **arn**.

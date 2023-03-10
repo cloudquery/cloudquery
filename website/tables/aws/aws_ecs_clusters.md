@@ -1,5 +1,7 @@
 # Table: aws_ecs_clusters
 
+This table shows data for AWS ECS Clusters.
+
 https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Cluster.html
 
 The primary key for this table is **arn**.

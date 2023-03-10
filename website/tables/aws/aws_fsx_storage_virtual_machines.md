@@ -1,5 +1,7 @@
 # Table: aws_fsx_storage_virtual_machines
 
+This table shows data for AWS FSX Storage Virtual Machines.
+
 https://docs.aws.amazon.com/fsx/latest/APIReference/API_StorageVirtualMachine.html
 
 The primary key for this table is **arn**.

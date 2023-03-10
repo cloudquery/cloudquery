@@ -1,5 +1,7 @@
 # Table: aws_lightsail_database_snapshots
 
+This table shows data for AWS Lightsail Database Snapshots.
+
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabaseSnapshot.html
 
 The primary key for this table is **arn**.

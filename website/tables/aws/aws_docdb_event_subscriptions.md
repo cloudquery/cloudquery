@@ -1,5 +1,7 @@
 # Table: aws_docdb_event_subscriptions
 
+This table shows data for AWS DocDB Event Subscriptions.
+
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventSubscription.html
 
 The primary key for this table is **_cq_id**.

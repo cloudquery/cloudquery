@@ -1,5 +1,7 @@
 # Table: aws_docdb_event_categories
 
+This table shows data for AWS DocDB Event Categories.
+
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventCategoriesMap.html
 
 The primary key for this table is **_cq_id**.

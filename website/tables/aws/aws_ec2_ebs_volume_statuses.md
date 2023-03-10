@@ -1,5 +1,7 @@
 # Table: aws_ec2_ebs_volume_statuses
 
+This table shows data for AWS EC2 EBS Volume Statuses.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VolumeStatusItem.html
 
 The primary key for this table is **volume_arn**.

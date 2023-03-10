@@ -1,5 +1,7 @@
 # Table: aws_glue_datacatalog_encryption_settings
 
+This table shows data for AWS Glue Datacatalog Encryption Settings.
+
 https://docs.aws.amazon.com/glue/latest/webapi/API_GetDataCatalogEncryptionSettings.html
 
 The composite primary key for this table is (**account_id**, **region**).

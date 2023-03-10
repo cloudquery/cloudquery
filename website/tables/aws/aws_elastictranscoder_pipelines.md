@@ -1,5 +1,7 @@
 # Table: aws_elastictranscoder_pipelines
 
+This table shows data for AWS Elastictranscoder Pipelines.
+
 https://docs.aws.amazon.com/elastictranscoder/latest/developerguide/list-pipelines.html
 
 The primary key for this table is **arn**.

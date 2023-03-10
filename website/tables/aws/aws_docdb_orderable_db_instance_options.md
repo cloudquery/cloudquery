@@ -1,5 +1,7 @@
 # Table: aws_docdb_orderable_db_instance_options
 
+This table shows data for AWS DocDB Orderable DB Instance Options.
+
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_OrderableDBInstanceOption.html
 
 The primary key for this table is **_cq_id**.

@@ -1,5 +1,7 @@
 # Table: aws_apigateway_rest_api_deployments
 
+This table shows data for AWS API Gateway Rest API Deployments.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_Deployment.html
 
 The composite primary key for this table is (**account_id**, **arn**).

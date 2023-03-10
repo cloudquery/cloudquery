@@ -1,5 +1,7 @@
 # Table: aws_autoscaling_groups
 
+This table shows data for AWS Autoscaling Groups.
+
 https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_AutoScalingGroup.html
 
 The primary key for this table is **arn**.

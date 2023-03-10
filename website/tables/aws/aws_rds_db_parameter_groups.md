@@ -1,5 +1,7 @@
 # Table: aws_rds_db_parameter_groups
 
+This table shows data for AWS RDS DB Parameter Groups.
+
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBParameterGroup.html
 
 The primary key for this table is **arn**.

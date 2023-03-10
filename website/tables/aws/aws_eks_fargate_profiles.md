@@ -1,5 +1,7 @@
 # Table: aws_eks_fargate_profiles
 
+This table shows data for AWS EKS Fargate Profiles.
+
 https://docs.aws.amazon.com/eks/latest/APIReference/API_FargateProfile.html
 
 The primary key for this table is **arn**.

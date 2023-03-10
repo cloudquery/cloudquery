@@ -1,5 +1,7 @@
 # Table: aws_quicksight_dashboards
 
+This table shows data for AWS QuickSight Dashboards.
+
 https://docs.aws.amazon.com/quicksight/latest/APIReference/API_DashboardSummary.html
 
 The composite primary key for this table is (**account_id**, **region**, **arn**).

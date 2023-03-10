@@ -1,5 +1,7 @@
 # Table: aws_apigatewayv2_domain_name_rest_api_mappings
 
+This table shows data for AWS API Gateway v2 Domain Name Rest API Mappings.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_ApiMapping.html
 
 The composite primary key for this table is (**account_id**, **arn**).

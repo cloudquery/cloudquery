@@ -1,5 +1,7 @@
 # Table: aws_lightsail_certificates
 
+This table shows data for AWS Lightsail Certificates.
+
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Certificate.html
 
 The primary key for this table is **arn**.

@@ -1,5 +1,7 @@
 # Table: aws_apigateway_api_keys
 
+This table shows data for AWS API Gateway API Keys.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_ApiKey.html
 
 The primary key for this table is **arn**.

@@ -1,5 +1,7 @@
 # Table: aws_route53_operations
 
+This table shows data for AWS Route53 Operations.
+
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_GetOperationDetail.html
 
 The composite primary key for this table is (**account_id**, **operation_id**, **status**, **submitted_date**, **type**).

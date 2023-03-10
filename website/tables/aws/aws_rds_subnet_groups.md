@@ -1,5 +1,7 @@
 # Table: aws_rds_subnet_groups
 
+This table shows data for AWS RDS Subnet Groups.
+
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSubnetGroup.html
 
 The primary key for this table is **arn**.

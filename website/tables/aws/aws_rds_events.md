@@ -1,5 +1,7 @@
 # Table: aws_rds_events
 
+This table shows data for AWS RDS Events.
+
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DescribeEvents.html
 
 The primary key for this table is **_cq_id**.

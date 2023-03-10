@@ -1,5 +1,7 @@
 # Table: aws_ec2_eips
 
+This table shows data for AWS EC2 Eips.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Address.html
 
 The primary key for this table is **_cq_id**.

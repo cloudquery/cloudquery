@@ -1,5 +1,7 @@
 # Table: aws_ecr_repository_images
 
+This table shows data for AWS ECR Repository Images.
+
 https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageDetail.html
 
 The primary key for this table is **arn**.

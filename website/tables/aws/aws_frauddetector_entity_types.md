@@ -1,5 +1,7 @@
 # Table: aws_frauddetector_entity_types
 
+This table shows data for AWS Fraud Detector Entity Types.
+
 https://docs.aws.amazon.com/frauddetector/latest/api/API_EntityType.html
 
 The primary key for this table is **arn**.

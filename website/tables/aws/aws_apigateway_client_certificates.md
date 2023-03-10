@@ -1,5 +1,7 @@
 # Table: aws_apigateway_client_certificates
 
+This table shows data for AWS API Gateway Client Certificates.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_ClientCertificate.html
 
 The primary key for this table is **arn**.

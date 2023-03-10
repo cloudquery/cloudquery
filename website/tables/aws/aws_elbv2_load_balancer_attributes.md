@@ -1,5 +1,7 @@
 # Table: aws_elbv2_load_balancer_attributes
 
+This table shows data for AWS ELB v2 Load Balancer Attributes.
+
 https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_LoadBalancerAttribute.html
 
 The primary key for this table is **_cq_id**.

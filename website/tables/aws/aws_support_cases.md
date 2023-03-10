@@ -1,5 +1,7 @@
 # Table: aws_support_cases
 
+This table shows data for AWS Support Cases.
+
 https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeCases.html
 
 The composite primary key for this table is (**account_id**, **region**, **case_id**).

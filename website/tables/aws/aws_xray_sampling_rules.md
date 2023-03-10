@@ -1,5 +1,7 @@
 # Table: aws_xray_sampling_rules
 
+This table shows data for AWS Xray Sampling Rules.
+
 https://docs.aws.amazon.com/xray/latest/api/API_SamplingRuleRecord.html
 
 The primary key for this table is **arn**.

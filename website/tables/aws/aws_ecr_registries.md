@@ -1,5 +1,7 @@
 # Table: aws_ecr_registries
 
+This table shows data for AWS ECR Registries.
+
 https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_DescribeRegistry.html
 
 The composite primary key for this table is (**account_id**, **region**, **registry_id**).

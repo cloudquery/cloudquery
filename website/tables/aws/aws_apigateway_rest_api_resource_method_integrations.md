@@ -1,5 +1,7 @@
 # Table: aws_apigateway_rest_api_resource_method_integrations
 
+This table shows data for AWS API Gateway Rest API Resource Method Integrations.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_Integration.html
 
 The composite primary key for this table is (**account_id**, **arn**).

@@ -1,5 +1,7 @@
 # Table: aws_ses_configuration_set_event_destinations
 
+This table shows data for AWS Ses Configuration Set Event Destinations.
+
 https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_EventDestination.html
 
 The composite primary key for this table is (**account_id**, **region**, **configuration_set_name**, **name**).

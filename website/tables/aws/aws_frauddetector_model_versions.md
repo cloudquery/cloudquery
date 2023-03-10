@@ -1,5 +1,7 @@
 # Table: aws_frauddetector_model_versions
 
+This table shows data for AWS Fraud Detector Model Versions.
+
 https://docs.aws.amazon.com/frauddetector/latest/api/API_ModelVersionDetail.html
 
 The primary key for this table is **arn**.

@@ -1,5 +1,7 @@
 # Table: aws_rds_certificates
 
+This table shows data for AWS RDS Certificates.
+
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Certificate.html
 
 The composite primary key for this table is (**account_id**, **arn**).

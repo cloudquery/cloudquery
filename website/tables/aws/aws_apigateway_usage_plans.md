@@ -1,5 +1,7 @@
 # Table: aws_apigateway_usage_plans
 
+This table shows data for AWS API Gateway Usage Plans.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_UsagePlan.html
 
 The composite primary key for this table is (**account_id**, **arn**).

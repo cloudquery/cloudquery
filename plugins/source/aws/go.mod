@@ -114,6 +114,8 @@ require (
 	golang.org/x/sync v0.1.0
 )
 
+replace github.com/cloudquery/plugin-sdk v1.42.0 => ../../../../plugin-sdk
+
 require (
 	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.4
 	github.com/aws/aws-sdk-go-v2/service/support v1.14.1

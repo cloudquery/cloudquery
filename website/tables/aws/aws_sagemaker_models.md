@@ -1,5 +1,7 @@
 # Table: aws_sagemaker_models
 
+This table shows data for AWS Sagemaker Models.
+
 https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeModel.html
 
 The primary key for this table is **arn**.

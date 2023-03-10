@@ -1,5 +1,7 @@
 # Table: aws_ec2_transit_gateway_multicast_domains
 
+This table shows data for AWS EC2 Transit Gateway Multicast Domains.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayMulticastDomain.html
 
 The primary key for this table is **_cq_id**.

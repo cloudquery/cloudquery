@@ -1,5 +1,7 @@
 # Table: aws_ec2_transit_gateways
 
+This table shows data for AWS EC2 Transit Gateways.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html
 
 The composite primary key for this table is (**account_id**, **region**, **arn**).

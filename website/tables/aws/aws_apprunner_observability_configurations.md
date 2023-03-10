@@ -1,5 +1,7 @@
 # Table: aws_apprunner_observability_configurations
 
+This table shows data for AWS Apprunner Observability Configurations.
+
 https://docs.aws.amazon.com/apprunner/latest/api/API_ObservabilityConfiguration.html
 
 The primary key for this table is **arn**.

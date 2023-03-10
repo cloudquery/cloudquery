@@ -1,5 +1,7 @@
 # Table: aws_elbv2_load_balancers
 
+This table shows data for AWS ELB v2 Load Balancers.
+
 https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_LoadBalancer.html
 
 The primary key for this table is **arn**.

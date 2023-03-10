@@ -1,5 +1,7 @@
 # Table: aws_rds_db_parameter_group_db_parameters
 
+This table shows data for AWS RDS DB Parameter Group DB Parameters.
+
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Parameter.html
 
 The primary key for this table is **_cq_id**.

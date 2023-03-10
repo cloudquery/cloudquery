@@ -1,5 +1,7 @@
 # Table: aws_ec2_security_groups
 
+This table shows data for AWS EC2 Security Groups.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SecurityGroup.html
 
 The primary key for this table is **arn**.

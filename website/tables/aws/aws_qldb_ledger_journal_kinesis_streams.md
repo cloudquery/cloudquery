@@ -1,5 +1,7 @@
 # Table: aws_qldb_ledger_journal_kinesis_streams
 
+This table shows data for AWS QLDB Ledger Journal Kinesis Streams.
+
 https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalKinesisStreamDescription.html
 
 The primary key for this table is **arn**.

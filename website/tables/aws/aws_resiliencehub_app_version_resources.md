@@ -1,5 +1,7 @@
 # Table: aws_resiliencehub_app_version_resources
 
+This table shows data for AWS Resiliencehub App Version Resources.
+
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_PhysicalResource.html
 
 The composite primary key for this table is (**app_arn**, **app_version**, **physical_resource_identifier**).

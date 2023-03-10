@@ -1,5 +1,7 @@
 # Table: aws_redshift_subnet_groups
 
+This table shows data for AWS Redshift Subnet Groups.
+
 https://docs.aws.amazon.com/redshift/latest/APIReference/API_ClusterSubnetGroup.html
 
 The primary key for this table is **arn**.

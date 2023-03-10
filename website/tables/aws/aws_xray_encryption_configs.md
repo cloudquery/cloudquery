@@ -1,5 +1,7 @@
 # Table: aws_xray_encryption_configs
 
+This table shows data for AWS Xray Encryption Configs.
+
 https://docs.aws.amazon.com/xray/latest/api/API_EncryptionConfig.html
 
 The primary key for this table is **_cq_id**.

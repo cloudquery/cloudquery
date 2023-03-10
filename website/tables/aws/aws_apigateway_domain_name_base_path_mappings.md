@@ -1,5 +1,7 @@
 # Table: aws_apigateway_domain_name_base_path_mappings
 
+This table shows data for AWS API Gateway Domain Name Base Path Mappings.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_BasePathMapping.html
 
 The composite primary key for this table is (**account_id**, **arn**).

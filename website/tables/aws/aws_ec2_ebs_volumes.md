@@ -1,5 +1,7 @@
 # Table: aws_ec2_ebs_volumes
 
+This table shows data for AWS EC2 EBS Volumes.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Volume.html
 
 The primary key for this table is **arn**.

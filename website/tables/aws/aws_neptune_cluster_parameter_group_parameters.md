@@ -1,5 +1,7 @@
 # Table: aws_neptune_cluster_parameter_group_parameters
 
+This table shows data for AWS Neptune Cluster Parameter Group Parameters.
+
 https://docs.aws.amazon.com/neptune/latest/userguide/api-parameters.html#DescribeDBParameterGroups
 
 The primary key for this table is **_cq_id**.

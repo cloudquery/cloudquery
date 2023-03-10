@@ -1,5 +1,7 @@
 # Table: aws_fsx_snapshots
 
+This table shows data for AWS FSX Snapshots.
+
 https://docs.aws.amazon.com/fsx/latest/APIReference/API_Snapshot.html
 
 The primary key for this table is **arn**.

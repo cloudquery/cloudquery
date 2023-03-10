@@ -1,5 +1,7 @@
 # Table: aws_docdb_subnet_groups
 
+This table shows data for AWS DocDB Subnet Groups.
+
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBSubnetGroup.html
 
 The primary key for this table is **arn**.

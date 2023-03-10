@@ -1,5 +1,7 @@
 # Table: aws_fsx_data_repository_tasks
 
+This table shows data for AWS FSX Data Repository Tasks.
+
 https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryTask.html
 
 The primary key for this table is **arn**.

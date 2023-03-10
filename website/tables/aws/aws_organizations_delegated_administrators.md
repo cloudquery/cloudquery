@@ -1,5 +1,7 @@
 # Table: aws_organizations_delegated_administrators
 
+This table shows data for AWS Organizations Delegated Administrators.
+
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_Root.html
 
 The composite primary key for this table is (**account_id**, **arn**).

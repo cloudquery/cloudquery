@@ -1,5 +1,7 @@
 # Table: aws_frauddetector_detectors
 
+This table shows data for AWS Fraud Detector Detectors.
+
 https://docs.aws.amazon.com/frauddetector/latest/api/API_Detector.html
 
 The primary key for this table is **arn**.

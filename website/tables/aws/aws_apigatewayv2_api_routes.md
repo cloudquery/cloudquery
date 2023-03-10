@@ -1,5 +1,7 @@
 # Table: aws_apigatewayv2_api_routes
 
+This table shows data for AWS API Gateway v2 API Routes.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_Route.html
 
 The composite primary key for this table is (**account_id**, **arn**).

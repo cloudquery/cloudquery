@@ -1,5 +1,7 @@
 # Table: aws_accessanalyzer_analyzer_findings
 
+This table shows data for AWS Access Analyzer Analyzer Findings.
+
 https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_FindingSummary.html
 
 The primary key for this table is **arn**.

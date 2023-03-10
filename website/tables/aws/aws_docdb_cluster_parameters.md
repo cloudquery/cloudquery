@@ -1,5 +1,7 @@
 # Table: aws_docdb_cluster_parameters
 
+This table shows data for AWS DocDB Cluster Parameters.
+
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Parameter.html
 
 The primary key for this table is **_cq_id**.
