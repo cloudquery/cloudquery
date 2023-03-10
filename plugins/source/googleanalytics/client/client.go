@@ -48,7 +48,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, srcSpec specs.Source,
 	opts := []option.ClientOption{
 		option.WithScopes(analyticsdata.AnalyticsReadonlyScope),
 		option.WithRequestReason("cloudquery resource fetch"),
-		// we disable telemetry to boost performance and be on the same side with telemetry
+		// we disable telemetry to boost performance and be on the safe side with telemetry
 		option.WithTelemetryDisabled(),
 	}
 
