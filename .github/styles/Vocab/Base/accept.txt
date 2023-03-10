@@ -29,6 +29,8 @@ cloudquery
 CloudQuery
 CMK
 CMKs
+codegen
+Codegen
 compinit
 config
 Config

@@ -55,6 +55,12 @@ export const SOURCE_PLUGINS: Plugin[] = [
     kind: "official",
   },
   {
+    name: "Facebook Marketing",
+    logo: "/images/logos/plugins/meta.svg",
+    id: "facebookmarketing",
+    kind: "official",
+  },
+  {
     name: "Fastly",
     logo: "/images/logos/plugins/fastly.svg",
     id: "fastly",

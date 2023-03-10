@@ -82,6 +82,9 @@
     "plugins/source/digitalocean": {
       "component": "plugins-source-digitalocean"
     },
+    "plugins/source/facebookmarketing": {
+      "component": "plugins-source-facebookmarketing"
+    },
     "plugins/source/fastly": {
       "component": "plugins-source-fastly"
     },
