@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -13,21 +12,15 @@ import (
 )
 
 func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var input lambda.ListFunctionsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Lambda
-	for {
-		response, err := svc.ListFunctions(ctx, &input)
+	svc := meta.(*client.Client).Services().Lambda
+	paginator := lambda.NewListFunctionsPaginator(svc, &lambda.ListFunctionsInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
+		res <- page.Functions
 
-		res <- response.Functions
-
-		if aws.ToString(response.NextMarker) == "" {
-			break
-		}
-		input.Marker = response.NextMarker
 	}
 	return nil
 }
@@ -53,7 +46,10 @@ func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 			resource.Item = &lambda.GetFunctionOutput{
 				Configuration: &f,
 			}
+			c.Logger().Warn().Err(err).Msg("configuration data retrieved from ListFunctions will still be persisted")
+			return nil
 		}
+
 		return err
 	}
 
@@ -80,20 +76,18 @@ func resolveResourcePolicy(ctx context.Context, meta schema.ClientMeta, resource
 		return err
 	}
 
-	if response != nil {
-		if err := resource.Set("policy_revision_id", response.RevisionId); err != nil {
-			return err
-		}
-		var policyDocument map[string]any
-		err = json.Unmarshal([]byte(*response.Policy), &policyDocument)
-		if err != nil {
-			return err
-		}
-		if err := resource.Set("policy_document", policyDocument); err != nil {
-			return err
-		}
+	if response == nil {
+		return nil
 	}
-	return nil
+	if err := resource.Set("policy_revision_id", response.RevisionId); err != nil {
+		return err
+	}
+	var policyDocument map[string]any
+	err = json.Unmarshal([]byte(*response.Policy), &policyDocument)
+	if err != nil {
+		return err
+	}
+	return resource.Set("policy_document", policyDocument)
 }
 
 func resolveRuntimeManagementConfig(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
