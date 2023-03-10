@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v1.1.0...plugins-source-oracle-v1.1.1) (2023-03-10)
+
+
+### Bug Fixes
+
+* **oracle:** Add missing fields to client ID ([#8850](https://github.com/cloudquery/cloudquery/issues/8850)) ([cf534f2](https://github.com/cloudquery/cloudquery/commit/cf534f256aec3c84e1cde4ac24e505a1186bd275))
+
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v1.0.8...plugins-source-oracle-v1.1.0) (2023-03-07)
 
 
