@@ -14,6 +14,9 @@ type Spec struct {
 	// Static credentials
 	Username string `json:"username"`
 	Password string `json:"password"`
+
+	// Backoff
+	MaxRetries int `json:"max_retries"`
 }
 
 type authMode string
@@ -41,6 +44,12 @@ func (s *Spec) SetDefaults() {
 		s.AuthMode = authModeNone
 	} else {
 		s.AuthMode = authMode(strings.ToLower(string(s.AuthMode)))
+	}
+
+	if s.MaxRetries < 0 {
+		s.MaxRetries = 0
+	} else if s.MaxRetries == 0 {
+		s.MaxRetries = 5 // 5 retries by default
 	}
 }
 

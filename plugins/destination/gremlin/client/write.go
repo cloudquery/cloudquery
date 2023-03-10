@@ -3,8 +3,11 @@ package client
 import (
 	"context"
 	"fmt"
+	"strings"
+	"time"
 
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
+	"github.com/cenkalti/backoff/v4"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -57,9 +60,34 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 		}
 	}
 
-	if err := <-g.Iterate(); err != nil {
-		return fmt.Errorf("Iterate: %w", err)
+	bo := backoff.NewExponentialBackOff()
+	retryCount := 0
+
+	for retryCount <= c.pluginSpec.MaxRetries {
+		retryCount++
+
+		err = <-g.Iterate()
+		if err == nil {
+			return nil
+		}
+
+		if !strings.Contains(err.Error(), "ConcurrentModificationException") {
+			return fmt.Errorf("Iterate: %w", err)
+		}
+
+		if retryCount > c.pluginSpec.MaxRetries {
+			break
+		}
+
+		nb := bo.NextBackOff()
+		c.logger.Warn().Err(err).Str("backoff_duration", nb.String()).Msg("Iterate failed, retrying")
+
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-time.After(nb):
+		}
 	}
 
-	return nil
+	return fmt.Errorf("Max retries (%d) reached. Iterate: %w", c.pluginSpec.MaxRetries, err)
 }

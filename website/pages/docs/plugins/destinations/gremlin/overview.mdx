@@ -60,3 +60,7 @@ This is the (nested) spec used by the Gremlin destination Plugin.
 - `password` (string, optional)
 
   Password to connect to the database, for static authentication.
+
+- `max_retries` (integer, optional. default: 5)
+
+  Number of retries on `ConcurrentModificationException` before giving up for each batch. Retries are exponentially backed off.
