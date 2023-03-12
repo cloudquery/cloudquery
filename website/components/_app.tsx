@@ -25,7 +25,7 @@ declare global {
   }
 }
 
-const getCanaonicalUrl = (path: string) => {
+const getCanonicalUrl = (path: string) => {
   if (process.env.NEXT_PUBLIC_VERCEL_ENV !== "production") {
     return
   }
@@ -35,7 +35,7 @@ const getCanaonicalUrl = (path: string) => {
 
 export default function Nextra({ Component, pageProps }) {
     const router = useRouter();
-    const canonicalUrl = getCanaonicalUrl(router.asPath);
+    const canonicalUrl = getCanonicalUrl(router.asPath);
 
     return (
     <React.Fragment>
