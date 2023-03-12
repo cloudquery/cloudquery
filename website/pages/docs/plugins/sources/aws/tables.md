@@ -147,6 +147,7 @@
 - [aws_ec2_flow_logs](tables/aws_ec2_flow_logs)
 - [aws_ec2_hosts](tables/aws_ec2_hosts)
 - [aws_ec2_images](tables/aws_ec2_images)
+  - [aws_ec2_image_launch_permissions](tables/aws_ec2_image_launch_permissions)
 - [aws_ec2_instance_statuses](tables/aws_ec2_instance_statuses)
 - [aws_ec2_instance_types](tables/aws_ec2_instance_types)
 - [aws_ec2_instances](tables/aws_ec2_instances)
