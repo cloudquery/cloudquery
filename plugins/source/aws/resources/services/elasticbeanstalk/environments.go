@@ -8,11 +8,12 @@ import (
 )
 
 func Environments() *schema.Table {
+	tableName := "aws_elasticbeanstalk_environments"
 	return &schema.Table{
-		Name:        "aws_elasticbeanstalk_environments",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/APIReference/API_EnvironmentDescription.html`,
 		Resolver:    fetchElasticbeanstalkEnvironments,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticbeanstalk"),
 		Transform:   transformers.TransformWithStruct(&types.EnvironmentDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

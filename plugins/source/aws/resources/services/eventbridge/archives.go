@@ -8,11 +8,12 @@ import (
 )
 
 func Archives() *schema.Table {
+	tableName := "aws_eventbridge_archives"
 	return &schema.Table{
-		Name:        "aws_eventbridge_archives",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Archive.html`,
 		Resolver:    fetchEventbridgeArchives,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "events"),
 		Transform:   transformers.TransformWithStruct(&types.Archive{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

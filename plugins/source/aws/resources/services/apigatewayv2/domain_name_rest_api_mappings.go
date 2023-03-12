@@ -8,11 +8,12 @@ import (
 )
 
 func DomainNameRestApiMappings() *schema.Table {
+	tableName := "aws_apigatewayv2_domain_name_rest_api_mappings"
 	return &schema.Table{
-		Name:        "aws_apigatewayv2_domain_name_rest_api_mappings",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_ApiMapping.html`,
 		Resolver:    fetchApigatewayv2DomainNameRestApiMappings,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.ApiMapping{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

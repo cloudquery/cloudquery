@@ -8,12 +8,13 @@ import (
 )
 
 func InstancePortStates() *schema.Table {
+	tableName := "aws_lightsail_instance_port_states"
 	return &schema.Table{
-		Name:        "aws_lightsail_instance_port_states",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_InstancePortState.html`,
 		Resolver:    fetchLightsailInstancePortStates,
 		Transform:   transformers.TransformWithStruct(&types.InstancePortState{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lightsail"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

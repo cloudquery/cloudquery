@@ -8,12 +8,13 @@ import (
 )
 
 func testRecommendations() *schema.Table {
+	tableName := "aws_resiliencehub_test_recommendations"
 	return &schema.Table{
-		Name:        "aws_resiliencehub_test_recommendations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_TestRecommendation.html`,
 		Resolver:    fetchTestRecommendations,
 		Transform:   transformers.TransformWithStruct(&types.TestRecommendation{}, transformers.WithPrimaryKeys("RecommendationId")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("resiliencehub"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
 		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, assessmentARN},
 	}
 }

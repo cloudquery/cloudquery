@@ -8,13 +8,14 @@ import (
 )
 
 func Functions() *schema.Table {
+	tableName := "aws_lambda_functions"
 	return &schema.Table{
-		Name:                "aws_lambda_functions",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/lambda/latest/dg/API_GetFunction.html`,
 		Resolver:            fetchLambdaFunctions,
 		PreResourceResolver: getFunction,
 		Transform:           transformers.TransformWithStruct(&lambda.GetFunctionOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("lambda"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -8,12 +8,13 @@ import (
 )
 
 func SigningCertificates() *schema.Table {
+	tableName := "aws_iam_signing_certificates"
 	return &schema.Table{
-		Name:        "aws_iam_signing_certificates",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_SigningCertificate.html`,
 		Resolver:    fetchUserSigningCertificates,
 		Transform:   transformers.TransformWithStruct(&types.SigningCertificate{}, transformers.WithPrimaryKeys("CertificateId")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

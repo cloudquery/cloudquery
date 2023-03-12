@@ -8,11 +8,12 @@ import (
 )
 
 func SubnetGroups() *schema.Table {
+	tableName := "aws_docdb_subnet_groups"
 	return &schema.Table{
-		Name:        "aws_docdb_subnet_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBSubnetGroup.html`,
 		Resolver:    fetchDocdbSubnetGroups,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
 		Transform:   transformers.TransformWithStruct(&types.DBSubnetGroup{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -8,11 +8,12 @@ import (
 )
 
 func RestApiStages() *schema.Table {
+	tableName := "aws_apigateway_rest_api_stages"
 	return &schema.Table{
-		Name:        "aws_apigateway_rest_api_stages",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Stage.html`,
 		Resolver:    fetchApigatewayRestApiStages,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Stage{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

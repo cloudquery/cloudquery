@@ -8,11 +8,12 @@ import (
 )
 
 func ConfigurationOptions() *schema.Table {
+	tableName := "aws_elasticbeanstalk_configuration_options"
 	return &schema.Table{
-		Name:        "aws_elasticbeanstalk_configuration_options",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ConfigurationOptionDescription.html`,
 		Resolver:    fetchElasticbeanstalkConfigurationOptions,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticbeanstalk"),
 		Transform:   transformers.TransformWithStruct(&models.ConfigurationOptionDescriptionWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

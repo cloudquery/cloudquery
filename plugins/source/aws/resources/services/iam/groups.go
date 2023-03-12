@@ -8,12 +8,13 @@ import (
 )
 
 func Groups() *schema.Table {
+	tableName := "aws_iam_groups"
 	return &schema.Table{
-		Name:        "aws_iam_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html`,
 		Resolver:    fetchIamGroups,
 		Transform:   transformers.TransformWithStruct(&types.Group{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{

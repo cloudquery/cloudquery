@@ -8,12 +8,13 @@ import (
 )
 
 func HostedZoneTrafficPolicyInstances() *schema.Table {
+	tableName := "aws_route53_hosted_zone_traffic_policy_instances"
 	return &schema.Table{
-		Name:        "aws_route53_hosted_zone_traffic_policy_instances",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicyInstance.html`,
 		Resolver:    fetchRoute53HostedZoneTrafficPolicyInstances,
 		Transform:   transformers.TransformWithStruct(&types.TrafficPolicyInstance{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("route53"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{

@@ -8,11 +8,12 @@ import (
 )
 
 func Analyzers() *schema.Table {
+	tableName := "aws_accessanalyzer_analyzers"
 	return &schema.Table{
-		Name:        "aws_accessanalyzer_analyzers",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_AnalyzerSummary.html`,
 		Resolver:    fetchAccessanalyzerAnalyzers,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("access-analyzer"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "access-analyzer"),
 		Transform:   transformers.TransformWithStruct(&types.AnalyzerSummary{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -24,8 +24,12 @@ datadog:
   - plugins/source/datadog/**/*
 digitalocean:
   - plugins/source/digitalocean/**/*
+duckdb:
+  - plugins/destination/duckdb/**/*
 elasticsearch:
   - plugins/destination/elasticsearch/**/*
+facebookmarketing:
+  - plugins/source/facebookmarketing/**/*
 fastly:
   - plugins/source/fastly/**/*
 file:
@@ -42,6 +46,8 @@ github:
   - plugins/source/github/**/*
 gitlab:
   - plugins/source/gitlab/**/*
+googleanalytics:
+  - plugins/destination/googleanalytics/**/*
 hackernews:
   - plugins/source/hackernews/**/*
 heroku:

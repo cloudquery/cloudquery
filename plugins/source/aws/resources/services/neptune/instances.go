@@ -8,12 +8,13 @@ import (
 )
 
 func Instances() *schema.Table {
+	tableName := "aws_neptune_instances"
 	return &schema.Table{
-		Name:        "aws_neptune_instances",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#DescribeDBInstances`,
 		Resolver:    fetchNeptuneInstances,
 		Transform:   transformers.TransformWithStruct(&types.DBInstance{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("neptune"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "neptune"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

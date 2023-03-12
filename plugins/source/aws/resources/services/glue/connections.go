@@ -8,12 +8,13 @@ import (
 )
 
 func Connections() *schema.Table {
+	tableName := "aws_glue_connections"
 	return &schema.Table{
-		Name:        "aws_glue_connections",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_Connection.html`,
 		Resolver:    fetchGlueConnections,
 		Transform:   transformers.TransformWithStruct(&types.Connection{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

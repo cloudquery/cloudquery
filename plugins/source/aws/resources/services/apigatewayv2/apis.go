@@ -8,11 +8,12 @@ import (
 )
 
 func Apis() *schema.Table {
+	tableName := "aws_apigatewayv2_apis"
 	return &schema.Table{
-		Name:        "aws_apigatewayv2_apis",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Api.html`,
 		Resolver:    fetchApigatewayv2Apis,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Api{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

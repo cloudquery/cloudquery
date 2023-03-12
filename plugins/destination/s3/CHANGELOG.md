@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v2.3.0...plugins-destination-s3-v3.0.0) (2023-03-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **dest-s3:** Make region required and don't make getbucketlocation ([#8843](https://github.com/cloudquery/cloudquery/issues/8843))
+
+### Bug Fixes
+
+* **dest-s3:** Make region required and don't make getbucketlocation ([#8843](https://github.com/cloudquery/cloudquery/issues/8843)) ([716aba3](https://github.com/cloudquery/cloudquery/commit/716aba36cad94cb6839bb94633b25043daca0d45))
+
 ## [2.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v2.2.3...plugins-destination-s3-v2.3.0) (2023-03-07)
 
 

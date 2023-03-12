@@ -8,12 +8,13 @@ import (
 )
 
 func Layers() *schema.Table {
+	tableName := "aws_lambda_layers"
 	return &schema.Table{
-		Name:        "aws_lambda_layers",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_LayersListItem.html`,
 		Resolver:    fetchLambdaLayers,
 		Transform:   transformers.TransformWithStruct(&types.LayersListItem{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("lambda"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

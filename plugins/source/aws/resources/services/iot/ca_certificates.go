@@ -8,12 +8,13 @@ import (
 )
 
 func CaCertificates() *schema.Table {
+	tableName := "aws_iot_ca_certificates"
 	return &schema.Table{
-		Name:        "aws_iot_ca_certificates",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_CACertificateDescription.html`,
 		Resolver:    fetchIotCaCertificates,
 		Transform:   transformers.TransformWithStruct(&types.CACertificateDescription{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

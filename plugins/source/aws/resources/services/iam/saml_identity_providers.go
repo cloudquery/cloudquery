@@ -8,8 +8,9 @@ import (
 )
 
 func SamlIdentityProviders() *schema.Table {
+	tableName := "aws_iam_saml_identity_providers"
 	return &schema.Table{
-		Name:                "aws_iam_saml_identity_providers",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_SAMLProviderListEntry.html`,
 		Resolver:            fetchIamSamlIdentityProviders,
 		PreResourceResolver: getSamlIdentityProvider,
@@ -18,7 +19,7 @@ func SamlIdentityProviders() *schema.Table {
 			transformers.WithUnwrapAllEmbeddedStructs(),
 			transformers.WithSkipFields("ResultMetadata"),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer("iam"),
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

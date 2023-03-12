@@ -25,9 +25,17 @@ declare global {
   }
 }
 
+const getCanaonicalUrl = (path: string) => {
+  if (process.env.NEXT_PUBLIC_VERCEL_ENV !== "production") {
+    return
+  }
+
+  return (`https://www.cloudquery.io` + (path === "/" ? "": path)).split("?")[0]
+}
+
 export default function Nextra({ Component, pageProps }) {
     const router = useRouter();
-    const canonicalUrl = (`https://www.cloudquery.io` + (router.asPath === "/" ? "": router.asPath)).split("?")[0];
+    const canonicalUrl = getCanaonicalUrl(router.asPath);
 
     return (
     <React.Fragment>

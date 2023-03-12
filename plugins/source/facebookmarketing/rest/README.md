@@ -1,0 +1,1 @@
+This package contains a REST API wrapper for the Facebook Marketing API.

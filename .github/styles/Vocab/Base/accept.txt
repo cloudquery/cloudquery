@@ -29,6 +29,8 @@ cloudquery
 CloudQuery
 CMK
 CMKs
+codegen
+Codegen
 compinit
 config
 Config
@@ -180,6 +182,7 @@ unencrypted
 unmanaged
 unmarshalling
 upsert
+upserts
 upserted
 uuid
 UUID
