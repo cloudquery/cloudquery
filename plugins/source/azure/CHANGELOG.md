@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.0.0...plugins-source-azure-v5.1.0) (2023-03-12)
+
+
+### Features
+
+* **azure-resources:** Add Service Bus Namespace resources ([#8841](https://github.com/cloudquery/cloudquery/issues/8841)) ([2c3dfc2](https://github.com/cloudquery/cloudquery/commit/2c3dfc255aafc5ac82ae35dfe61f7f3e8d58b1d8))
+
 ## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v4.3.0...plugins-source-azure-v5.0.0) (2023-03-08)
 
 
