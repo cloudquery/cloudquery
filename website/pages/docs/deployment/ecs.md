@@ -237,7 +237,6 @@ aws ecs run-task \
   --task-definition <REPLACE_TASK_ARN> \
   --launch-type FARGATE \
   --network-configuration 'awsvpcConfiguration={subnets=[<REPLACE_SUBNET_1>,<REPLACE_SUBNET_2>],securityGroups=[<REPLACE_SG_1>,<REPLACE_SG_2>]}'
-
 ```
 Replace the following placeholders: 
   - `<REPLACE_ECS_CLUSTER_NAME>` with the name of the ECS cluster you created in Step 2
@@ -248,7 +247,7 @@ Replace the following placeholders:
 
 ## Step 8: Schedule the Task to Run on a Regular Basis
 
-Now that you have a task that runs CloudQuery, you can schedule it to run on a regular basis using AWS EventBridge scheduler. An Eventbridge schedule is able to start a task on a regular basis, but to do so it needs a role that it can assume which has the `ecs:RunTask` permission. In this step, you will create a role that has the required permissions and then you will create a schedule that will run the task on a regular basis.
+Now that you have a task that runs CloudQuery, you can schedule it to run on a regular basis using AWS EventBridge scheduler. An EventBridge schedule is able to start a task on a regular basis, but to do so it needs a role that it can assume which has the `ecs:RunTask` permission. In this step, you will create a role that has the required permissions and then you will create a schedule that will run the task on a regular basis.
 
 
 Create a file named `trust-policy.json` with the following contents:
@@ -287,7 +286,6 @@ Replace the `<REPLACE_EVENTBRIDGE_SCHEDULER_ROLE_NAME>` placeholder with the nam
 After creating a role with a trust policy that enables the scheduler service to assume it you will attach an inline policy that allows the scheduler to run the task you created. To do so
 create a file named `ECSExecPolicy.json` with the following contents:
 ```json
-
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -367,7 +365,7 @@ Replace the following placeholders:
 
 Finally, create the schedule using the following command: 
 
-```
+```bash
 aws scheduler create-schedule  --cli-input-json file://scheduler-params.json
 ```
 
