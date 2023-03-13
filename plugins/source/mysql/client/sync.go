@@ -19,11 +19,7 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 		}
 	}
 
-	if err := c.syncTables(ctx, res); err != nil {
-		return err
-	}
-
-	return nil
+	return c.syncTables(ctx, res)
 }
 
 func (*Client) createResultsArray(table *schema.Table) []any {

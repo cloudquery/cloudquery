@@ -19,7 +19,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-func getTestDB(ctx context.Context, logger zerolog.Logger, connectionString string) (*sql.DB, error) {
+func getTestDB(connectionString string) (*sql.DB, error) {
 	dsn, err := mysql.ParseDSN(connectionString)
 	if err != nil {
 		return nil, fmt.Errorf("invalid MySQL connection string: %w", err)
@@ -117,7 +117,7 @@ func TestPlugin(t *testing.T) {
 			ConnectionString: getTestConnectionString(),
 		},
 	}
-	db, err := getTestDB(ctx, l, spec.Spec.(client.Spec).ConnectionString)
+	db, err := getTestDB(spec.Spec.(client.Spec).ConnectionString)
 	if err != nil {
 		t.Fatal(err)
 	}
