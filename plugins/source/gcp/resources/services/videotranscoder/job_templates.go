@@ -13,7 +13,7 @@ func JobTemplates() *schema.Table {
 		Description: `https://cloud.google.com/transcoder/docs/reference/rest/v1/projects.locations.jobTemplates`,
 		Resolver:    fetchJobTemplates,
 		Multiplex:   client.ProjectMultiplexEnabledServices("transcoder.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.JobTemplate{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.JobTemplate{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

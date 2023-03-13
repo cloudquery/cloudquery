@@ -19,7 +19,7 @@ func Tasks() *schema.Table {
 		Description: `https://cloud.google.com/batch/docs/reference/rest/v1/projects.locations.jobs.taskGroups.tasks/list`,
 		Resolver:    fetchTasks,
 		Multiplex:   client.ProjectMultiplexEnabledServices("batch.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Task{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Task{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -13,7 +13,7 @@ func Instances() *schema.Table {
 		Description: `https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances#Instance`,
 		Resolver:    fetchInstances,
 		Multiplex:   client.ProjectMultiplexEnabledServices("bigtableadmin.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.InstanceInfo{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.InstanceInfo{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

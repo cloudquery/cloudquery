@@ -19,7 +19,7 @@ func DeliveryPipelines() *schema.Table {
 		Description: `https://cloud.google.com/deploy/docs/api/reference/rest/v1/projects.locations.deliveryPipelines#DeliveryPipeline`,
 		Resolver:    fetchDeliveryPipelines,
 		Multiplex:   client.ProjectMultiplexEnabledServices("clouddeploy.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.DeliveryPipeline{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.DeliveryPipeline{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

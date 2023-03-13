@@ -19,7 +19,7 @@ func CertificateIssuanceConfigs() *schema.Table {
 		Description: `https://cloud.google.com/certificate-manager/docs/reference/rest/v1/projects.locations.certificateIssuanceConfigs#CertificateIssuanceConfig`,
 		Resolver:    fetchCertificateIssuanceConfigs,
 		Multiplex:   client.ProjectMultiplexEnabledServices("certificatemanager.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.CertificateIssuanceConfig{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.CertificateIssuanceConfig{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
