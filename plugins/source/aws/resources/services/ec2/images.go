@@ -38,6 +38,9 @@ func Images() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 		},
+		Relations: []*schema.Table{
+			imageAttributesLaunchPermissions(),
+		},
 	}
 }
 

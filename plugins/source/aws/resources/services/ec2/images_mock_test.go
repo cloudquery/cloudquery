@@ -52,6 +52,25 @@ func buildEc2ImagesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	//	},
 	//	nil,
 	//).Times(2)
+
+	lp := types.LaunchPermission{}
+	if err := faker.FakeObject(&lp); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().DescribeImageAttribute(
+		gomock.Any(),
+		&ec2.DescribeImageAttributeInput{
+			Attribute: types.ImageAttributeNameLaunchPermission,
+			ImageId:   g.ImageId,
+		},
+		gomock.Any(),
+	).Return(
+		&ec2.DescribeImageAttributeOutput{
+			LaunchPermissions: []types.LaunchPermission{lp},
+		},
+		nil,
+	)
+
 	return services
 }
 
