@@ -80,7 +80,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 		}
 
 		nb := bo.NextBackOff()
-		c.logger.Warn().Err(err).Str("backoff_duration", nb.String()).Msg("Iterate failed, retrying")
+		c.logger.Debug().Err(err).Str("backoff_duration", nb.String()).Msg("Iterate failed, retrying")
 
 		select {
 		case <-ctx.Done():

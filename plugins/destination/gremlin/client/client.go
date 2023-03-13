@@ -59,8 +59,10 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 			settings.AuthInfo = au
 			settings.MaximumConcurrentConnections = spec.MaxConcurrentConnections
 
-			if logger.GetLevel() <= zerolog.DebugLevel {
+			if logger.GetLevel() <= zerolog.TraceLevel {
 				settings.LogVerbosity = gremlingo.Debug
+			} else {
+				settings.LogVerbosity = gremlingo.Off
 			}
 
 			if spec.Insecure {
