@@ -41,6 +41,9 @@ func (*Client) createResultsArray(table *schema.Table) []any {
 		case schema.TypeTimestamp:
 			var r *time.Time
 			results = append(results, &r)
+		case schema.TypeJSON:
+			var r string
+			results = append(results, &r)
 		default:
 			var r *string
 			results = append(results, &r)
