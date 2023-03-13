@@ -13,7 +13,7 @@ func WebhookEndpoints() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_webhook_endpoints",
 		Description: `https://stripe.com/docs/api/webhook_endpoints`,
-		Transform:   transformers.TransformWithStruct(&stripe.WebhookEndpoint{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.WebhookEndpoint{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchWebhookEndpoints,
 
 		Columns: []schema.Column{

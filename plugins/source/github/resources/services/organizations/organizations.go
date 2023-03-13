@@ -14,8 +14,7 @@ func Organizations() *schema.Table {
 		Name:      "github_organizations",
 		Resolver:  fetchOrganizations,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.Organization{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
+		Transform: client.TransformWithStruct(&github.Organization{}, transformers.WithPrimaryKeys("ID")),
 		Columns:   []schema.Column{client.OrgColumn},
 		Relations: []*schema.Table{alerts(), members(), secrets()},
 	}

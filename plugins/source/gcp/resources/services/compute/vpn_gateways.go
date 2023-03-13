@@ -19,7 +19,7 @@ func VpnGateways() *schema.Table {
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/vpnGateways#VpnGateway`,
 		Resolver:    fetchVpnGateways,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.VpnGateway{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.VpnGateway{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

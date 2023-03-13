@@ -11,7 +11,7 @@ func Campaigns() *schema.Table {
 	return &schema.Table{
 		Name:        "facebookmarketing_campaigns",
 		Resolver:    fetchCampaigns,
-		Transform:   transformers.TransformWithStruct(&rest.Campaign{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&rest.Campaign{}, transformers.WithPrimaryKeys("Id")),
 		Description: "https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/",
 	}
 }

@@ -19,7 +19,7 @@ func Secrets() *schema.Table {
 		Description: `https://cloud.google.com/secret-manager/docs/reference/rest/v1/projects.secrets#Secret`,
 		Resolver:    fetchSecrets,
 		Multiplex:   client.ProjectMultiplexEnabledServices("secretmanager.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Secret{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Secret{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

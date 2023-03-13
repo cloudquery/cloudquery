@@ -1,6 +1,6 @@
 {
   "overview": "Overview",
-  "CDC Configuration": "CDC Configuration",
+  "cdc": "CDC Configuration",
   "tables": "Tables",
   "_authentication": {
     "display": "hidden"

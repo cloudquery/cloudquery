@@ -13,7 +13,7 @@ func Locations() *schema.Table {
 		Description: `https://cloud.google.com/run/docs/reference/rest/v1/projects.locations#Location`,
 		Resolver:    fetchLocations,
 		Multiplex:   client.ProjectMultiplexEnabledServices("run.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Location{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Location{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
