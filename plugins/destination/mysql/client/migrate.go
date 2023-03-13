@@ -24,8 +24,8 @@ func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
 			table.Columns.Get(schema.CqIDColumn.Name).CreationOptions.PrimaryKey = true
 		}
 
-		for _, col := range table.Columns {
-			col.CreationOptions.NotNull = col.CreationOptions.NotNull || col.CreationOptions.PrimaryKey
+		for i := range table.Columns {
+			table.Columns[i].CreationOptions.NotNull = table.Columns[i].CreationOptions.NotNull || table.Columns[i].CreationOptions.PrimaryKey
 		}
 
 		normalized = append(normalized, table)
