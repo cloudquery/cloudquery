@@ -56,7 +56,6 @@ aws ecs create-cluster --cluster-name <REPLACE_ECS_CLUSTER_NAME>
 ```
 
 
-
 ## Step 3: Create a Log Group
 The next step is to create a log group for your ECS task. To create a log group, use the following command:
 
@@ -235,18 +234,147 @@ Now that the task definition is registered, it's time to run the CloudQuery task
 ```bash
 aws ecs run-task \
   --cluster <REPLACE_ECS_CLUSTER_NAME> \
-  --task-definition <TASK_ARN> \
+  --task-definition <REPLACE_TASK_ARN> \
   --launch-type FARGATE \
-  --network-configuration 'awsvpcConfiguration={subnets=[<SUBNET_1>,<SUBNET_2>],securityGroups=[<SG_1>,<SG_2>]}'
+  --network-configuration 'awsvpcConfiguration={subnets=[<REPLACE_SUBNET_1>,<REPLACE_SUBNET_2>],securityGroups=[<REPLACE_SG_1>,<REPLACE_SG_2>]}'
 
 ```
 Replace the following placeholders: 
   - `<REPLACE_ECS_CLUSTER_NAME>` with the name of the ECS cluster you created in Step 2
-  - `<TASK_ARN>` with the ARN of the task definition you registered in Step 6
-  - `<SUBNET_1>` and `<SUBNET_2>` with the IDs of the subnets in which you want to run the task. You can specify any number of subnets that you want
-  - `<SG_1>` and `<SG_2>` with the IDs of the security groups for the task. You can specify any number of security groups that you want
+  - `<REPLACE_TASK_ARN>` with the ARN of the task definition you registered in Step 6
+  - `<REPLACE_SUBNET_1>` and `<REPLACE_SUBNET_2>` with the IDs of the subnets in which you want to run the task. You can specify any number of subnets that you want
+  - `<REPLACE_SG_1>` and `<REPLACE_SG_2>` with the IDs of the security groups for the task. You can specify any number of security groups that you want
 
 
 ## Step 8: Schedule the Task to Run on a Regular Basis
 
-Now that you have a task that runs CloudQuery, you can schedule it to run on a regular basis using AWS EventBridge scheduler.
+Now that you have a task that runs CloudQuery, you can schedule it to run on a regular basis using AWS EventBridge scheduler. An Eventbridge schedule is able to start a task on a regular basis, but to do so it needs a role that it can assume which has the `ecs:RunTask` permission. In this step, you will create a role that has the required permissions and then you will create a schedule that will run the task on a regular basis.
+
+
+Create a file named `trust-policy.json` with the following contents:
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Version": "2012-10-17",
+    "Statement": [{
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "scheduler.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceArn": "arn:aws:scheduler:"<REPLACE_AWS_REGION>":"<REPLACE_AWS_ACCOUNT_ID>":schedule/default/"<REPLACE_SCHEDULE_NAME>""
+        }
+      }
+    }]
+  }]
+}
+```
+
+Replace the following placeholders:
+  - `<REPLACE_AWS_REGION>` with the AWS region where you deploying this solution.
+  - `<REPLACE_AWS_ACCOUNT_ID>` with the AWS account ID where you are deploying this solution.
+  - `<REPLACE_SCHEDULE_NAME>` with the name of the schedule you will create later in this step.
+
+Create an IAM role for the EventBridge scheduler using the following command:
+```bash
+aws iam create-role --role-name <REPLACE_EVENTBRIDGE_SCHEDULER_ROLE_NAME> --assume-role-policy-document file://trust-policy.json
+```
+Replace the `<REPLACE_EVENTBRIDGE_SCHEDULER_ROLE_NAME>` placeholder with the name of the role you want to create.
+
+After creating a role with a trust policy that enables the scheduler service to assume it you will attach an inline policy that allows the scheduler to run the task you created. To do so
+create a file named `ECSExecPolicy.json` with the following contents:
+```json
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecs:RunTask"
+            ],
+            "Resource": [
+                "<REPLACE_ECS_TASK_ARN>"
+            ],
+            "Condition": {
+                "ArnLike": {
+                    "ecs:cluster": "<REPLACE_ECS_CLUSTER_ARN>"
+                }
+            }
+        }
+    ]
+}
+```
+Replace the following placeholders:
+  - `<REPLACE_ECS_TASK_ARN>` with the ARN of the task you created in Step 6.
+  - `<REPLACE_ECS_CLUSTER_ARN>` with the ARN of the ECS cluster you created in Step 2.
+
+
+```bash
+aws iam put-role-policy --role-name <REPLACE_EVENTBRIDGE_SCHEDULER_ROLE_NAME> --policy-name ECSExecPolicy --policy-document file://ECSExecPolicy.json
+```
+Replace the `<REPLACE_EVENTBRIDGE_SCHEDULER_ROLE_NAME>` placeholder with the name of the role you just created.
+
+Now that you have an IAM role that the scheduler service create the following JSON file that will contain all of the arguments required to create the schedule:
+```json
+{
+    "Name": "<REPLACE_SCHEDULE_NAME>",
+    "Description": "",
+    "State": "ENABLED",
+    "ScheduleExpression": "rate(24 hours)",
+    "ScheduleExpressionTimezone": "UTC",
+    "FlexibleTimeWindow": {
+      "Mode": "OFF"
+    },
+    "Target": {
+      "RoleArn": "<REPLACE_EVENTBRIDGE_SCHEDULER_ROLE_ARN>",
+      "RetryPolicy": {
+        "MaximumRetryAttempts": 1
+      },
+      "Arn": "<REPLACE_ECS_CLUSTER_ARN>",
+      "Input": "{}",
+      "EcsParameters": {
+        "LaunchType": "FARGATE",
+        "PlatformVersion": "1.4",
+        "TaskCount": 1,
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "Subnets": [
+              "<REPLACE_SUBNET_1>",
+              "<REPLACE_SUBNET_2>"
+            ],
+            "SecurityGroups": [
+              "<REPLACE_SG_1>",
+              "<REPLACE_SG_2>"
+            ],
+          }
+        },
+        "TaskDefinitionArn": "<REPLACE_ECS_TASK_ARN>"
+      }
+    }
+  }
+```
+Replace the following placeholders:
+  - `<REPLACE_SCHEDULE_NAME>` with the name of the schedule you want to create.
+  - `<REPLACE_EVENTBRIDGE_SCHEDULER_ROLE_ARN>` with the ARN of the role you created in the previous step.
+  - `<REPLACE_ECS_CLUSTER_ARN>` with the ARN of the ECS cluster you created in Step 2.
+  - `<REPLACE_SUBNET_1>` and `<REPLACE_SUBNET_2>` with the IDs of the subnets in which you want to run the task. You can specify any number of subnets that you want
+  - `<REPLACE_SG_1>` and `<REPLACE_SG_2>` with the IDs of the security groups for the task. You can specify any number of security groups that you want
+  - `<REPLACE_ECS_TASK_ARN>` with the ARN of the task you created in Step 6.
+
+Finally, create the schedule using the following command: 
+
+```
+aws scheduler create-schedule  --cli-input-json file://scheduler-params.json
+```
+
+
+
+## Conclusion
+
+You now have a working CloudQuery deployment that runs on a regular basis and stores the results in an S3 bucket. This is a great base for iterating on to learn more about performance you can check out the [performance tuning guide](/docs/advanced-topics/performance-tuning).
+
+If you have any questions or comments, please feel free to reach out to us on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord)!
