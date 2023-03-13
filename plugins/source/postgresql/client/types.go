@@ -1,6 +1,8 @@
 package client
 
 import (
+	"strings"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -105,24 +107,24 @@ func (c *Client) PgToSchemaType(t string) schema.ValueType {
 }
 
 func (*Client) Pg10ToSchemaType(t string) schema.ValueType {
+	if strings.HasPrefix(t, "timestamp") {
+		return schema.TypeTimestamp
+	}
+
 	switch t {
 	case "boolean":
 		return schema.TypeBool
-	case "bigint", "integer":
+	case "bigint", "integer", "bigserial", "smallint", "smallserial", "serial":
 		return schema.TypeInt
-	case "double precision":
+	case "double precision", "float", "real", "numeric":
 		return schema.TypeFloat
 	case "uuid":
 		return schema.TypeUUID
-	case "text":
-		return schema.TypeString
 	case "bytea":
 		return schema.TypeByteArray
 	case "text[]":
 		return schema.TypeStringArray
-	case "timestamp without time zone":
-		return schema.TypeTimestamp
-	case "jsonb":
+	case "json", "jsonb":
 		return schema.TypeJSON
 	case "uuid[]":
 		return schema.TypeUUIDArray
@@ -141,28 +143,28 @@ func (*Client) Pg10ToSchemaType(t string) schema.ValueType {
 	case "bigint[]":
 		return schema.TypeIntArray
 	default:
-		panic("unknown type " + t)
+		return schema.TypeString
 	}
 }
 
 func (*Client) CockroachToSchemaType(t string) schema.ValueType {
+	if strings.HasPrefix(t, "timestamp") {
+		return schema.TypeTimestamp
+	}
+
 	switch t {
 	case "boolean":
 		return schema.TypeBool
-	case "bigint":
+	case "bigint", "int", "oid", "serial":
 		return schema.TypeInt
-	case "double precision":
+	case "decimal", "float":
 		return schema.TypeFloat
 	case "uuid":
 		return schema.TypeUUID
-	case "text":
-		return schema.TypeString
 	case "bytea":
 		return schema.TypeByteArray
 	case "text[]":
 		return schema.TypeStringArray
-	case "timestamp without time zone":
-		return schema.TypeTimestamp
 	case "jsonb":
 		return schema.TypeJSON
 	case "uuid[]":
@@ -174,6 +176,6 @@ func (*Client) CockroachToSchemaType(t string) schema.ValueType {
 	case "bigint[]":
 		return schema.TypeIntArray
 	default:
-		panic("unknown type " + t)
+		return schema.TypeString
 	}
 }
