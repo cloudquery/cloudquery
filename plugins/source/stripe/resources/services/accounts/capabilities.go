@@ -13,7 +13,7 @@ func Capabilities() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_capabilities",
 		Description: `https://stripe.com/docs/api/capabilities`,
-		Transform:   transformers.TransformWithStruct(&stripe.Capability{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.Capability{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchCapabilities,
 
 		Columns: []schema.Column{

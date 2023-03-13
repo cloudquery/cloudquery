@@ -2,7 +2,6 @@ package plans
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func Plans() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_plans",
 		Description: `https://stripe.com/docs/api/plans`,
-		Transform:   transformers.TransformWithStruct(&stripe.Plan{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.Plan{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchPlans,
 
 		Columns: []schema.Column{
