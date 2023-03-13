@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 )
