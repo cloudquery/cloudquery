@@ -15,7 +15,6 @@ import (
 
 type Client struct {
 	logger      zerolog.Logger
-	spec        specs.Source
 	metrics     *source.Metrics
 	Tables      schema.Tables
 	db          *sql.DB
@@ -57,7 +56,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
 
-	c := &Client{logger: logger.With().Str("module", "mysql-source").Logger(), db: db, spec: spec, tableSchema: dsn.DBName}
+	c := &Client{logger: logger.With().Str("module", "mysql-source").Logger(), db: db, tableSchema: dsn.DBName}
 	c.Tables, err = c.listTables(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)
