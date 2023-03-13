@@ -2,7 +2,6 @@ package issuing
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func IssuingAuthorizations() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_issuing_authorizations",
 		Description: `https://stripe.com/docs/api/issuing_authorizations`,
-		Transform:   transformers.TransformWithStruct(&stripe.IssuingAuthorization{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.IssuingAuthorization{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchIssuingAuthorizations,
 
 		Columns: []schema.Column{

@@ -11,7 +11,7 @@ func Ads() *schema.Table {
 	return &schema.Table{
 		Name:        "facebookmarketing_ads",
 		Resolver:    fetchAds,
-		Transform:   transformers.TransformWithStruct(&rest.Ad{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&rest.Ad{}, transformers.WithPrimaryKeys("Id")),
 		Description: "https://developers.facebook.com/docs/marketing-api/reference/adgroup",
 	}
 }

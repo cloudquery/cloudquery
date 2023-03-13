@@ -4,14 +4,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/client"
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Domains() *schema.Table {
 	return &schema.Table{
 		Name:          "vercel_domains",
 		Resolver:      fetchDomains,
-		Transform:     transformers.TransformWithStruct(&vercel.Domain{}, client.SharedTransformers()...),
+		Transform:     client.TransformWithStruct(&vercel.Domain{}),
 		Multiplex:     client.TeamMultiplex,
 		IsIncremental: true,
 		Columns: []schema.Column{

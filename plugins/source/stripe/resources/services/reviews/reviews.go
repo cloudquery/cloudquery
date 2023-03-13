@@ -2,7 +2,6 @@ package reviews
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func Reviews() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_reviews",
 		Description: `https://stripe.com/docs/api/reviews`,
-		Transform:   transformers.TransformWithStruct(&stripe.Review{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.Review{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchReviews,
 
 		Columns: []schema.Column{

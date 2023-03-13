@@ -11,7 +11,7 @@ func Adlabels() *schema.Table {
 	return &schema.Table{
 		Name:        "facebookmarketing_adlabels",
 		Resolver:    fetchAdlabels,
-		Transform:   transformers.TransformWithStruct(&rest.Adlabel{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&rest.Adlabel{}, transformers.WithPrimaryKeys("Id")),
 		Description: "https://developers.facebook.com/docs/marketing-api/reference/ad-label#Reading",
 		Columns: []schema.Column{
 			{

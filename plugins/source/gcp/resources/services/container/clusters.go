@@ -13,7 +13,7 @@ func Clusters() *schema.Table {
 		Description: `https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters#Cluster`,
 		Resolver:    fetchClusters,
 		Multiplex:   client.ProjectMultiplexEnabledServices("container.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Cluster{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.Cluster{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

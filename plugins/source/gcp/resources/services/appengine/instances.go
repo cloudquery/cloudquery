@@ -19,7 +19,7 @@ func Instances() *schema.Table {
 		Description: `https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions.instances#Instance`,
 		Resolver:    fetchInstances,
 		Multiplex:   client.ProjectMultiplexEnabledServices("appengine.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Instance{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Instance{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

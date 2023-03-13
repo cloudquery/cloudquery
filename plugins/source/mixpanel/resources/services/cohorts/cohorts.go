@@ -14,7 +14,7 @@ func Cohorts() *schema.Table {
 		Name:        "mixpanel_cohorts",
 		Description: `https://developer.mixpanel.com/reference/cohorts-list`,
 		Resolver:    fetchCohorts,
-		Transform:   transformers.TransformWithStruct(&mixpanel.Cohort{}, client.SharedTransformers(transformers.WithPrimaryKeys("ID"))...),
+		Transform:   client.TransformWithStruct(&mixpanel.Cohort{}, transformers.WithPrimaryKeys("ID")),
 		Relations: []*schema.Table{
 			CohortMembers(),
 		},
