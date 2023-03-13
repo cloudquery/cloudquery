@@ -8,11 +8,13 @@ import (
 	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
-func SharedTransformers() []transformers.StructTransformerOption {
-	return []transformers.StructTransformerOption{
-		transformers.WithTypeTransformer(typeTransformer),
-		transformers.WithResolverTransformer(resolverTransformer),
-	}
+var options = []transformers.StructTransformerOption{
+	transformers.WithTypeTransformer(typeTransformer),
+	transformers.WithResolverTransformer(resolverTransformer),
+}
+
+func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) schema.Transform {
+	return transformers.TransformWithStruct(t, append(options, opts...)...)
 }
 
 func typeTransformer(field reflect.StructField) (schema.ValueType, error) {

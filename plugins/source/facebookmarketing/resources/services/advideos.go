@@ -11,7 +11,7 @@ func Advideos() *schema.Table {
 	return &schema.Table{
 		Name:      "facebookmarketing_advideos",
 		Resolver:  fetchAdvideos,
-		Transform: transformers.TransformWithStruct(&rest.Advideo{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform: client.TransformWithStruct(&rest.Advideo{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

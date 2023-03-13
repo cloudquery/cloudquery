@@ -19,7 +19,7 @@ func Sinks() *schema.Table {
 		Description: `https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks#LogSink`,
 		Resolver:    fetchSinks,
 		Multiplex:   client.ProjectMultiplexEnabledServices("logging.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.LogSink{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.LogSink{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

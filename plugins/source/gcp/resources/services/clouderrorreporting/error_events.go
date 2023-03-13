@@ -7,7 +7,6 @@ import (
 
 	pb "cloud.google.com/go/errorreporting/apiv1beta1/errorreportingpb"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	errorreporting "cloud.google.com/go/errorreporting/apiv1beta1"
@@ -19,7 +18,7 @@ func ErrorEvents() *schema.Table {
 		Description: `https://cloud.google.com/error-reporting/reference/rest/v1beta1/ErrorEvent`,
 		Resolver:    fetchErrorEvents,
 		Multiplex:   client.ProjectMultiplexEnabledServices("clouderrorreporting.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.ErrorEvent{}, client.Options()...),
+		Transform:   client.TransformWithStruct(&pb.ErrorEvent{}),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

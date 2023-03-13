@@ -2,7 +2,6 @@ package files
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func Files() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_files",
 		Description: `https://stripe.com/docs/api/files`,
-		Transform:   transformers.TransformWithStruct(&stripe.File{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.File{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchFiles,
 
 		Columns: []schema.Column{

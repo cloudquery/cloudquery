@@ -19,7 +19,7 @@ func ClientConnectorServices() *schema.Table {
 		Description: `https://cloud.google.com/beyondcorp/docs/reference/rest/v1/projects.locations.clientConnectorServices#ClientConnectorService`,
 		Resolver:    fetchClientConnectorServices,
 		Multiplex:   client.ProjectMultiplexEnabledServices("beyondcorp.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.ClientConnectorService{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.ClientConnectorService{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

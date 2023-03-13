@@ -19,7 +19,7 @@ func DiskTypes() *schema.Table {
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/diskTypes#DiskType`,
 		Resolver:    fetchDiskTypes,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.DiskType{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.DiskType{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
