@@ -18,7 +18,8 @@ This is useful when multi region and account aggregation is enabled.`,
 		Transform: transformers.TransformWithStruct(&types.AwsSecurityFinding{},
 			transformers.WithTypeTransformer(client.TimestampTypeTransformer),
 			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
-			transformers.WithPrimaryKeys("AwsAccountId", "Region", "CreatedAt", "Description", "GeneratorId", "Id", "ProductArn", "SchemaVersion", "Title")),
+			transformers.WithPrimaryKeys("AwsAccountId", "Region", "CreatedAt", "UpdatedAt", "Description", "GeneratorId", "Id", "ProductArn", "SchemaVersion", "Title"),
+		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "securityhub"),
 		Columns: []schema.Column{
 			{
