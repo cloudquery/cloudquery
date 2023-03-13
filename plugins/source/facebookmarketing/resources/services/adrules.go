@@ -11,7 +11,7 @@ func Adrules() *schema.Table {
 	return &schema.Table{
 		Name:        "facebookmarketing_adrules",
 		Resolver:    fetchAdrules,
-		Transform:   transformers.TransformWithStruct(&rest.Adrule{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&rest.Adrule{}, transformers.WithPrimaryKeys("Id")),
 		Description: "https://developers.facebook.com/docs/marketing-api/reference/ad-rule#Reading",
 	}
 }

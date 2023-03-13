@@ -2,7 +2,6 @@ package application_fees
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func ApplicationFees() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_application_fees",
 		Description: `https://stripe.com/docs/api/application_fees`,
-		Transform:   transformers.TransformWithStruct(&stripe.ApplicationFee{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.ApplicationFee{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchApplicationFees,
 
 		Columns: []schema.Column{

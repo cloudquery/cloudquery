@@ -2,7 +2,6 @@ package coupons
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func Coupons() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_coupons",
 		Description: `https://stripe.com/docs/api/coupons`,
-		Transform:   transformers.TransformWithStruct(&stripe.Coupon{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.Coupon{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchCoupons,
 
 		Columns: []schema.Column{

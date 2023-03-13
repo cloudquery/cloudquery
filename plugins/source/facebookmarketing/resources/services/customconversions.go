@@ -11,6 +11,6 @@ func Customconversions() *schema.Table {
 	return &schema.Table{
 		Name:      "facebookmarketing_customconversions",
 		Resolver:  fetchCustomconversions,
-		Transform: transformers.TransformWithStruct(&rest.Customconversion{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform: client.TransformWithStruct(&rest.Customconversion{}, transformers.WithPrimaryKeys("Id")),
 	}
 }

@@ -19,7 +19,7 @@ func Networks() *schema.Table {
 		Description: `https://cloud.google.com/bare-metal/docs/reference/rest/v2/projects.locations.networks#Network`,
 		Resolver:    fetchNetworks,
 		Multiplex:   client.ProjectMultiplexEnabledServices("baremetalsolution.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Network{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Network{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

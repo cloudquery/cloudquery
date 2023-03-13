@@ -14,7 +14,7 @@ func ProjectEnvironments() *schema.Table {
 		Name:        "launchdarkly_project_environments",
 		Description: `https://apidocs.launchdarkly.com/tag/Environments#operation/getEnvironment`,
 		Resolver:    fetchProjectEnvironments,
-		Transform:   transformers.TransformWithStruct(&ldapi.Environment{}, client.SharedTransformers(transformers.WithPrimaryKeys("Id"), transformers.WithSkipFields("Links"))...),
+		Transform:   client.TransformWithStruct(&ldapi.Environment{}, transformers.WithPrimaryKeys("Id"), transformers.WithSkipFields("Links")),
 		Columns: schema.ColumnList{
 			{
 				Name:     "project_id",

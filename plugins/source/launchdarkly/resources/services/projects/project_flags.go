@@ -14,7 +14,7 @@ func ProjectFlags() *schema.Table {
 		Name:        "launchdarkly_project_flags",
 		Description: `https://apidocs.launchdarkly.com/tag/Feature-flags#operation/getFeatureFlags`,
 		Resolver:    fetchProjectFlags,
-		Transform:   transformers.TransformWithStruct(&ldapi.FeatureFlag{}, client.SharedTransformers(transformers.WithPrimaryKeys("Key"), transformers.WithSkipFields("Links"))...),
+		Transform:   client.TransformWithStruct(&ldapi.FeatureFlag{}, transformers.WithPrimaryKeys("Key"), transformers.WithSkipFields("Links")),
 		Columns: schema.ColumnList{
 			{
 				Name:     "project_id",

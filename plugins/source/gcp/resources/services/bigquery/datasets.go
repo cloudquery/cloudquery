@@ -14,7 +14,7 @@ func Datasets() *schema.Table {
 		PreResourceResolver: datasetGet,
 		Resolver:            fetchDatasets,
 		Multiplex:           client.ProjectMultiplexEnabledServices("bigquery.googleapis.com"),
-		Transform:           transformers.TransformWithStruct(&pb.Dataset{}, append(client.Options(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:           client.TransformWithStruct(&pb.Dataset{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

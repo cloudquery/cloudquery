@@ -2,7 +2,6 @@ package file_links
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func FileLinks() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_file_links",
 		Description: `https://stripe.com/docs/api/file_links`,
-		Transform:   transformers.TransformWithStruct(&stripe.FileLink{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.FileLink{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchFileLinks,
 
 		Columns: []schema.Column{

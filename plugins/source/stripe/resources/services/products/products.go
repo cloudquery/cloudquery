@@ -2,7 +2,6 @@ package products
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func Products() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_products",
 		Description: `https://stripe.com/docs/api/products`,
-		Transform:   transformers.TransformWithStruct(&stripe.Product{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Attributes", "DeactivateOn")))...),
+		Transform:   client.TransformWithStruct(&stripe.Product{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Attributes", "DeactivateOn"))),
 		Resolver:    fetchProducts,
 
 		Columns: []schema.Column{

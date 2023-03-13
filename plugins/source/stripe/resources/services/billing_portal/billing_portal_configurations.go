@@ -13,7 +13,7 @@ func BillingPortalConfigurations() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_billing_portal_configurations",
 		Description: `https://stripe.com/docs/api/billing_portal_configurations`,
-		Transform:   transformers.TransformWithStruct(&stripe.BillingPortalConfiguration{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.BillingPortalConfiguration{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchBillingPortalConfigurations,
 
 		Columns: []schema.Column{
