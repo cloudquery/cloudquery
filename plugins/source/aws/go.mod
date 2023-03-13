@@ -13,7 +13,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.5
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.5
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.6
-	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.17.5
+	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.17.6
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.18.0
