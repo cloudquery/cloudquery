@@ -39,18 +39,6 @@ For AWS Neptune, you don't need to specify any credentials if IAM authentication
 
 If IAM authentication is enabled, you need to set `auth_mode` to `aws` and `aws_region` to the region of the database. The plugin will use the default AWS credentials chain to authenticate.
 
-<!--
-### Connecting to Azure CosmosDB
-
-Azure CosmosDB has special requirements for connecting to the database:
-
- - For endpoint, use `wss://<account-name>.gremlin.cosmos.azure.com:443`
- - For username, use ``/dbs/<db>/colls/<coll>`` where <db> is your database name and <coll> is your collection name.
- - Use the specified Primary Key as the authentication password.
-
-Please refer to the relevant [CosmosDB documentation](https://learn.microsoft.com/en-us/azure/cosmos-db/gremlin/quickstart-console#ConnectAppService) on details.
--->
-
 ### Plugin Spec
 
 This is the (nested) spec used by the Gremlin destination Plugin.
@@ -73,11 +61,11 @@ This is the (nested) spec used by the Gremlin destination Plugin.
 
 - `username` (string, optional)
 
-  Username to connect to the database. <!-- For Azure CosmosDB, use `/dbs/<db>/colls/<coll>` here. -->
+  Username to connect to the database.
 
 - `password` (string, optional)
 
-  Password to connect to the database. <!-- For Azure CosmosDB, use your Primary Key here. -->
+  Password to connect to the database.
 
 - `aws_region` (string, required when `auth_mode` is `aws`)
 
