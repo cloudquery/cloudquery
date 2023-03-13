@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.16
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.16
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.55
-	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.5
+	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.6
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.1
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.6
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.5
@@ -23,14 +23,14 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.5
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.4
-	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.5
+	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.6
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.5
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.4
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.4
-	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.4
+	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.5
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.29.5
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5
-	github.com/aws/aws-sdk-go-v2/service/dax v1.12.4
+	github.com/aws/aws-sdk-go-v2/service/dax v1.12.5
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.5
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.4
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.6
