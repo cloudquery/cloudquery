@@ -23,7 +23,7 @@ func Endpoints() *schema.Table {
 		Description: `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.endpoints#Endpoint`,
 		Resolver:    fetchEndpoints,
 		Multiplex:   client.ProjectMultiplexEnabledServices("aiplatform.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Endpoint{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Endpoint{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -5,7 +5,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	v1 "k8s.io/api/node/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -15,7 +14,7 @@ func RuntimeClasses() *schema.Table {
 		Name:      "k8s_nodes_runtime_classes",
 		Resolver:  fetchRuntimeClasses,
 		Multiplex: client.ContextMultiplex,
-		Transform: transformers.TransformWithStruct(&v1.RuntimeClass{}, client.SharedTransformers()...),
+		Transform: client.TransformWithStruct(&v1.RuntimeClass{}),
 		Columns: []schema.Column{
 			{
 				Name:     "context",

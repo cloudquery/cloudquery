@@ -23,7 +23,7 @@ func Studies() *schema.Table {
 		Description: `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.studies#Study`,
 		Resolver:    fetchStudies,
 		Multiplex:   client.ProjectMultiplexEnabledServices("aiplatform.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Study{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Study{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

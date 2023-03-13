@@ -19,7 +19,7 @@ func Interconnects() *schema.Table {
 		Description: ``,
 		Resolver:    fetchInterconnects,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Interconnect{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.Interconnect{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

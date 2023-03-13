@@ -13,7 +13,7 @@ func TerminalReaders() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_terminal_readers",
 		Description: `https://stripe.com/docs/api/terminal_readers`,
-		Transform:   transformers.TransformWithStruct(&stripe.TerminalReader{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.TerminalReader{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchTerminalReaders,
 
 		Columns: []schema.Column{

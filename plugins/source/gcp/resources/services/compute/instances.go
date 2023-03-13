@@ -19,7 +19,7 @@ func Instances() *schema.Table {
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/instances#Instance`,
 		Resolver:    fetchInstances,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Instance{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.Instance{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

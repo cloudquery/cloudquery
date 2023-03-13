@@ -19,7 +19,7 @@ func TargetSslProxies() *schema.Table {
 		Description: ``,
 		Resolver:    fetchTargetSslProxies,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.TargetSslProxy{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.TargetSslProxy{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -13,7 +13,7 @@ func CreditNotes() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_credit_notes",
 		Description: `https://stripe.com/docs/api/credit_notes`,
-		Transform:   transformers.TransformWithStruct(&stripe.CreditNote{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.CreditNote{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchCreditNotes,
 
 		Columns: []schema.Column{

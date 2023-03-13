@@ -19,7 +19,7 @@ func Autoscalers() *schema.Table {
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/autoscalers#Autoscaler`,
 		Resolver:    fetchAutoscalers,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Autoscaler{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.Autoscaler{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

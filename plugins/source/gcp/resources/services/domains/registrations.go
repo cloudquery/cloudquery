@@ -2,6 +2,7 @@ package domains
 
 import (
 	"context"
+	"fmt"
 
 	"google.golang.org/api/iterator"
 
@@ -11,8 +12,6 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	domains "cloud.google.com/go/domains/apiv1beta1"
-
-	"fmt"
 )
 
 func Registrations() *schema.Table {
@@ -21,7 +20,7 @@ func Registrations() *schema.Table {
 		Description: `https://cloud.google.com/domains/docs/reference/rest/v1beta1/projects.locations.registrations#Registration`,
 		Resolver:    fetchRegistrations,
 		Multiplex:   client.ProjectMultiplexEnabledServices("domains.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Registration{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Registration{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
