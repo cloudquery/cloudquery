@@ -8,7 +8,7 @@ import (
 )
 
 func Identifier(name string) string {
-	return fmt.Sprintf("`%s`", name)
+	return "`" + name + "`"
 }
 
 func (c *Client) getTableColumns(ctx context.Context, table *schema.Table) (schema.ColumnList, error) {
