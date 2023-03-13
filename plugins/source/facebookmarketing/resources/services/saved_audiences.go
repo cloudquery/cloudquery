@@ -11,7 +11,7 @@ func SavedAudiences() *schema.Table {
 	return &schema.Table{
 		Name:        "facebookmarketing_saved_audiences",
 		Resolver:    fetchSavedAudiences,
-		Transform:   transformers.TransformWithStruct(&rest.SavedAudience{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&rest.SavedAudience{}, transformers.WithPrimaryKeys("Id")),
 		Description: "https://developers.facebook.com/docs/marketing-api/reference/saved-audience/#Reading",
 	}
 }

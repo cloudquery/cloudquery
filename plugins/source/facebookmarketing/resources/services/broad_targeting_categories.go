@@ -11,7 +11,7 @@ func BroadTargetingCategoriess() *schema.Table {
 	return &schema.Table{
 		Name:      "facebookmarketing_broad_targeting_categories",
 		Resolver:  fetchBroadTargetingCategories,
-		Transform: transformers.TransformWithStruct(&rest.BroadTargetingCategories{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform: client.TransformWithStruct(&rest.BroadTargetingCategories{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

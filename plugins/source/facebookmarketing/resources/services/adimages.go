@@ -11,7 +11,7 @@ func Adimages() *schema.Table {
 	return &schema.Table{
 		Name:        "facebookmarketing_adimages",
 		Resolver:    fetchAdimages,
-		Transform:   transformers.TransformWithStruct(&rest.Adimage{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&rest.Adimage{}, transformers.WithPrimaryKeys("Id")),
 		Description: "https://developers.facebook.com/docs/marketing-api/reference/ad-image#Reading",
 	}
 }
