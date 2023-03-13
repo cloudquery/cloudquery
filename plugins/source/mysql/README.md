@@ -4,4 +4,4 @@ The CloudQuery MySQL source plugin replicates a MySQL database to any supported 
 
 ## Links
 
-- [User Guide](https://docs.cloudquery.io/docs/plugins/sources/mysql/overview)
+- [User Guide](https://www.cloudquery.io/docs/plugins/sources/mysql/overview)
