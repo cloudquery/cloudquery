@@ -11,7 +11,7 @@ func ConnectedInstagramAccounts() *schema.Table {
 	return &schema.Table{
 		Name:      "facebookmarketing_connected_instagram_accounts",
 		Resolver:  fetchConnectedInstagramAccounts,
-		Transform: transformers.TransformWithStruct(&rest.ConnnectedInstagramAccount{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform: client.TransformWithStruct(&rest.ConnnectedInstagramAccount{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -13,7 +13,7 @@ func Quotes() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_quotes",
 		Description: `https://stripe.com/docs/api/quotes`,
-		Transform:   transformers.TransformWithStruct(&stripe.Quote{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.Quote{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchQuotes,
 
 		Columns: []schema.Column{

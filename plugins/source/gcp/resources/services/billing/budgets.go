@@ -13,7 +13,7 @@ func Budgets() *schema.Table {
 		Description: `https://cloud.google.com/billing/docs/reference/budget/rest/v1/billingAccounts.budgets#Budget`,
 		Resolver:    fetchBudgets,
 		Multiplex:   client.ProjectMultiplex,
-		Transform:   transformers.TransformWithStruct(&pb.Budget{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Budget{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

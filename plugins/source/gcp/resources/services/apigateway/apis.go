@@ -19,7 +19,7 @@ func Apis() *schema.Table {
 		Description: `https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations.apis#Api`,
 		Resolver:    fetchApis,
 		Multiplex:   client.ProjectMultiplexEnabledServices("apigateway.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Api{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Api{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

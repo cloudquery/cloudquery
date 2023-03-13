@@ -11,7 +11,7 @@ func Users() *schema.Table {
 	return &schema.Table{
 		Name:      "facebookmarketing_adaccount_users",
 		Resolver:  fetchUsers,
-		Transform: transformers.TransformWithStruct(&rest.Adaccountuser{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform: client.TransformWithStruct(&rest.Adaccountuser{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

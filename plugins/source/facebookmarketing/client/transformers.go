@@ -27,9 +27,11 @@ func ResolverTransformer(field reflect.StructField, path string) schema.ColumnRe
 	return transformers.DefaultResolverTransformer(field, path)
 }
 
-func TransformerOptions() []transformers.StructTransformerOption {
-	return []transformers.StructTransformerOption{
-		transformers.WithTypeTransformer(TypeTransformer),
-		transformers.WithResolverTransformer(ResolverTransformer),
-	}
+var options = []transformers.StructTransformerOption{
+	transformers.WithTypeTransformer(TypeTransformer),
+	transformers.WithResolverTransformer(ResolverTransformer),
+}
+
+func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) schema.Transform {
+	return transformers.TransformWithStruct(t, append(options, opts...)...)
 }

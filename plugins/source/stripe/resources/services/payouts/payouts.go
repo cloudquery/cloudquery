@@ -2,7 +2,6 @@ package payouts
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func Payouts() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_payouts",
 		Description: `https://stripe.com/docs/api/payouts`,
-		Transform:   transformers.TransformWithStruct(&stripe.Payout{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.Payout{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchPayouts,
 
 		Columns: []schema.Column{

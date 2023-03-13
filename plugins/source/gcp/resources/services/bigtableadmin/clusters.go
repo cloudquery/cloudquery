@@ -13,7 +13,7 @@ func Clusters() *schema.Table {
 		Description: `https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances.clusters#Cluster`,
 		Resolver:    fetchClusters,
 		Multiplex:   client.ProjectMultiplexEnabledServices("bigtableadmin.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.ClusterInfo{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.ClusterInfo{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

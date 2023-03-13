@@ -2,7 +2,6 @@ package reporting
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func ReportingReportRuns() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_reporting_report_runs",
 		Description: `https://stripe.com/docs/api/reporting_report_runs`,
-		Transform:   transformers.TransformWithStruct(&stripe.ReportingReportRun{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.ReportingReportRun{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchReportingReportRuns,
 
 		Columns: []schema.Column{

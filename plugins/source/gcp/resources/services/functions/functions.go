@@ -19,7 +19,7 @@ func Functions() *schema.Table {
 		Description: `https://cloud.google.com/functions/docs/reference/rest/v1/projects.locations.functions#CloudFunction`,
 		Resolver:    fetchFunctions,
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudfunctions.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.CloudFunction{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.CloudFunction{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

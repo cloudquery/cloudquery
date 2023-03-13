@@ -14,9 +14,8 @@ func Groups() *schema.Table {
 		Name:      "github_external_groups",
 		Resolver:  fetchGroups,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.ExternalGroup{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("GroupID"))...),
-		Columns: []schema.Column{client.OrgColumn},
+		Transform: client.TransformWithStruct(&github.ExternalGroup{}, transformers.WithPrimaryKeys("GroupID")),
+		Columns:   []schema.Column{client.OrgColumn},
 	}
 }
 

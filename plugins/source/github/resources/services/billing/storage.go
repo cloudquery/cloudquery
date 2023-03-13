@@ -5,7 +5,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/google/go-github/v48/github"
 )
 
@@ -14,7 +13,7 @@ func Storage() *schema.Table {
 		Name:      "github_billing_storage",
 		Resolver:  fetchStorage,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.StorageBilling{}, client.SharedTransformers()...),
+		Transform: client.TransformWithStruct(&github.StorageBilling{}),
 		Columns:   []schema.Column{client.OrgColumn},
 	}
 }

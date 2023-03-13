@@ -11,7 +11,7 @@ func Adspixels() *schema.Table {
 	return &schema.Table{
 		Name:      "facebookmarketing_adspixels",
 		Resolver:  fetchAdspixels,
-		Transform: transformers.TransformWithStruct(&rest.Adspixel{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform: client.TransformWithStruct(&rest.Adspixel{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

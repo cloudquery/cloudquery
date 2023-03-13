@@ -5,7 +5,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/google/go-github/v48/github"
 )
 
@@ -15,7 +14,7 @@ func Views() *schema.Table {
 		Description: "https://docs.github.com/en/rest/metrics/traffic?apiVersion=2022-11-28#get-page-views",
 		Resolver:    fetchViews,
 		Multiplex:   client.OrgRepositoryMultiplex,
-		Transform:   transformers.TransformWithStruct(&github.TrafficViews{}, client.SharedTransformers()...),
+		Transform:   client.TransformWithStruct(&github.TrafficViews{}),
 		Columns:     []schema.Column{client.OrgColumn, client.RepositoryIDColumn},
 	}
 }
