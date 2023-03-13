@@ -18,17 +18,16 @@ func SQLType(t schema.ValueType) string {
 		return "blob"
 	case schema.TypeTimestamp:
 		return "datetime"
-	case schema.TypeCIDR,
-		schema.TypeMacAddr,
-		schema.TypeInet:
-		return "nvarchar(255)"
 	case schema.TypeString,
 		schema.TypeStringArray,
 		schema.TypeUUIDArray,
 		schema.TypeCIDRArray,
 		schema.TypeMacAddrArray,
 		schema.TypeInetArray,
-		schema.TypeIntArray:
+		schema.TypeIntArray,
+		schema.TypeCIDR,
+		schema.TypeMacAddr,
+		schema.TypeInet:
 		return "text"
 	case schema.TypeJSON:
 		return "json"
