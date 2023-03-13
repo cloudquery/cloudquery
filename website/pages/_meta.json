@@ -15,8 +15,10 @@
   "docs": "Docs",
   "integrations": {
     "title": "Integrations",
+    "type": "page",
     "theme": {
-      "typesetting": "article"
+      "layout": "raw",
+      "sidebar": false
     }
   },
   "how-to-guides": {

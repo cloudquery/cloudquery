@@ -1,4 +1,4 @@
-import { SOURCE_PLUGINS, DESTINATION_PLUGINS } from "./pluginData";
+import {SOURCE_PLUGINS, DESTINATION_PLUGINS, UNPUBLISHED_SOURCE_PLUGINS} from "./pluginData";
 
 const LogoContainer: React.FC<{
   children?: React.ReactNode;
@@ -27,7 +27,7 @@ const LogoContainer: React.FC<{
   );
 };
 
-export function Integrations() {
+export function Sources() {
   return (
     <div className="flex justify-center items-center flex-wrap gap-9 pt-8 sm:mt-4">
       {SOURCE_PLUGINS.map(({ name, logo, logoDark, id, href }) => (
@@ -42,14 +42,26 @@ export function Integrations() {
         >
         </LogoContainer>
       ))}
+      {UNPUBLISHED_SOURCE_PLUGINS.map(({ name, logo, logoDark, id, href }) => (
+        <LogoContainer
+            title={name}
+            href={`/integrations/${id}`}
+            key={id}
+            external={false}
+            logo={logo ? logo : "/images/logos/plugins/more.svg"}
+            logoDark={logoDark ? logoDark : "/images/logos/plugins/more.svg"}
+            name={name}
+        >
+        </LogoContainer>
+      ))}
       <LogoContainer
-          title={"All Plugins"}
+          title={"Request a Source Plugin"}
           href={`/docs/plugins/overview`}
           key={"more"}
           external={false}
           logo={"/images/logos/plugins/more.svg"}
           logoDark={"/images/logos/plugins/more-dark.svg"}
-          name={"All Plugins"}
+          name={"Request a Source Plugin"}
       >
       </LogoContainer>
     </div>

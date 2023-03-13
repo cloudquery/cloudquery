@@ -3,9 +3,9 @@ export type Plugin = {
   name: string;
   href?: string;
   description?: string;
-  logo: string;
+  logo?: string;
   logoDark?: string;
-  kind: "official" | "partner" | "community";
+  kind: "official" | "partner" | "community" | "unpublished";
 };
 
 export const SOURCE_PLUGINS: Plugin[] = [
@@ -358,6 +358,184 @@ export const DESTINATION_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/sqlite.svg",
     id: "sqlite",
     kind: "official",
+  },
+];
+
+export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
+  {
+    name: "Airtable",
+    logo: "/images/logos/plugins/airtable.svg",
+    id: "airtable",
+    href: "https://github.com/cloudquery/cloudquery/issues/8869",
+    kind: "unpublished",
+  },
+  {
+    name: "Amazon ads",
+    logo: "/images/logos/plugins/amazonads.svg",
+    id: "amazonads",
+    href: "https://github.com/cloudquery/cloudquery/issues/8424",
+    kind: "unpublished",
+  },
+  {
+    name: "Aplitude",
+    logo: "/images/logos/plugins/aplitude.svg",
+    id: "aplitude",
+    href: "https://github.com/cloudquery/cloudquery/issues/8423",
+    kind: "unpublished",
+  },
+  {
+    name: "Atlassian Jira",
+    logo: "/images/logos/plugins/atlassian-jira.svg",
+    id: "atlassian-jira",
+    href: "https://github.com/cloudquery/cloudquery/issues/8104",
+    kind: "unpublished",
+  },
+  {
+    name: "Bamboo HR",
+    logo: "/images/logos/plugins/bamboo hr.svg",
+    id: "bamboo hr",
+    href: "https://github.com/cloudquery/cloudquery/issues/8426",
+    kind: "unpublished",
+  },
+  {
+    name: "Bing Ads",
+    logo: "/images/logos/plugins/bing-ads.svg",
+    id: "bing-ads",
+    href: "https://github.com/cloudquery/cloudquery/issues/8425",
+    kind: "unpublished",
+  },
+  {
+    name: "BitBucket",
+    logo: "/images/logos/plugins/bitbucket.svg",
+    id: "bitbucket",
+    href: "https://github.com/cloudquery/cloudquery/issues/5510",
+    kind: "unpublished",
+  },
+  {
+    name: "CloudWatch",
+    logo: "/images/logos/plugins/cloudwatch.svg",
+    id: "cloudwatch",
+    href: "https://github.com/cloudquery/cloudquery/issues/8163",
+    kind: "unpublished",
+  },
+  {
+    name: "CSV",
+    logo: "/images/logos/plugins/csv.svg",
+    id: "csv",
+    href: "https://github.com/cloudquery/cloudquery/issues/5195",
+    kind: "unpublished",
+  },
+  {
+    name: "Gmail",
+    logo: "/images/logos/plugins/gmail.svg",
+    id: "gmail",
+    href: "https://github.com/cloudquery/cloudquery/issues/8135",
+    kind: "unpublished",
+  },
+  {
+    name: "Google Ads",
+    logo: "/images/logos/plugins/google-ads.svg",
+    id: "google-ads",
+    href: "https://github.com/cloudquery/cloudquery/issues/8642",
+    kind: "unpublished",
+  },
+  {
+    name: "Google Sheets",
+    logo: "/images/logos/plugins/google-sheets.svg",
+    id: "google-sheets",
+    href: "https://github.com/cloudquery/cloudquery/issues/5190",
+    kind: "unpublished",
+  },
+  {
+    name: "Hashicorp Vault",
+    logo: "/images/logos/plugins/hashicorp-vault.svg",
+    id: "hashicorp-vault",
+    href: "https://github.com/cloudquery/cloudquery/issues/6738",
+    kind: "unpublished",
+  },
+  {
+    name: "Infoblox",
+    logo: "/images/logos/plugins/infoblox.svg",
+    id: "infoblox",
+    href: "https://github.com/cloudquery/cloudquery/issues/8383",
+    kind: "unpublished",
+  },
+  {
+    name: "Mailchimp",
+    logo: "/images/logos/plugins/mailchimp.svg",
+    id: "mailchimp",
+    href: "https://github.com/cloudquery/cloudquery/issues/8430",
+    kind: "unpublished",
+  },
+  {
+    name: "Marketo",
+    logo: "/images/logos/plugins/marketo.svg",
+    id: "marketo",
+    href: "https://github.com/cloudquery/cloudquery/issues/8428",
+    kind: "unpublished",
+  },
+  {
+    name: "Monday",
+    logo: "/images/logos/plugins/monday.svg",
+    id: "monday",
+    href: "https://github.com/cloudquery/cloudquery/issues/8431",
+    kind: "unpublished",
+  },
+  {
+    name: "MSSQL",
+    logo: "/images/logos/plugins/mssql.svg",
+    id: "mssql",
+    href: "https://github.com/cloudquery/cloudquery/issues/8861",
+    kind: "unpublished",
+  },
+  {
+    name: "MySQL",
+    logo: "/images/logos/plugins/mysql.svg",
+    id: "mysql",
+    href: "https://github.com/cloudquery/cloudquery/issues/8411",
+    kind: "unpublished",
+  },
+  {
+    name: "OracleDB",
+    logo: "/images/logos/plugins/oracledb.svg",
+    id: "oracledb",
+    href: "https://github.com/cloudquery/cloudquery/issues/8862",
+    kind: "unpublished",
+  },
+  {
+    name: "Paypal",
+    logo: "/images/logos/plugins/paypal.svg",
+    id: "paypal",
+    href: "https://github.com/cloudquery/cloudquery/issues/6781",
+    kind: "unpublished",
+  },
+  {
+    name: "Prisma",
+    logo: "/images/logos/plugins/prisma.svg",
+    id: "prisma",
+    href: "https://github.com/cloudquery/cloudquery/issues/6582",
+    kind: "unpublished",
+  },
+  {
+    name: "Reddit Advertising",
+    logo: "/images/logos/plugins/reddit-advertising.svg",
+    id: "reddit-advertising",
+    href: "https://github.com/cloudquery/cloudquery/issues/8684",
+    kind: "unpublished",
+  },
+  {
+    name: "S3",
+    logo: "/images/logos/plugins/s3.svg",
+    id: "s3",
+    href: "https://github.com/cloudquery/cloudquery/issues/8320",
+    kind: "unpublished",
+  },
+  {
+    name: "Sonatype Nexus",
+    logo: "/images/logos/plugins/sonatype-nexus.svg",
+    id: "sonatype-nexus",
+    href: "https://github.com/cloudquery/cloudquery/issues/7640",
+    kind: "unpublished",
   },
 ];
 
