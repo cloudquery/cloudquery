@@ -11,7 +11,7 @@ func PromotePages() *schema.Table {
 	return &schema.Table{
 		Name:      "facebookmarketing_promote_pages",
 		Resolver:  fetchPromotePages,
-		Transform: transformers.TransformWithStruct(&rest.PromotePage{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform: client.TransformWithStruct(&rest.PromotePage{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

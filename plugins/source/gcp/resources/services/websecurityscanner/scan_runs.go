@@ -13,7 +13,7 @@ func ScanRuns() *schema.Table {
 		Description: `https://cloud.google.com/security-command-center/docs/reference/web-security-scanner/rest/v1/projects.scanConfigs.scanRuns`,
 		Resolver:    fetchScanRuns,
 		Multiplex:   client.ProjectMultiplexEnabledServices("websecurityscanner.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.ScanRun{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.ScanRun{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

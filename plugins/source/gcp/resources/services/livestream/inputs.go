@@ -13,7 +13,7 @@ func Inputs() *schema.Table {
 		Description: `https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.inputs`,
 		Resolver:    fetchInputs,
 		Multiplex:   client.ProjectMultiplexEnabledServices("livestream.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Input{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Input{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

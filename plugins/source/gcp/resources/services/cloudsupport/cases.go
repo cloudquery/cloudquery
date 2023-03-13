@@ -13,7 +13,7 @@ func Cases() *schema.Table {
 		Description: `https://cloud.google.com/support/docs/reference/rest/v2beta/cases#Case`,
 		Resolver:    fetchCases,
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudsupport.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Case{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Case{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

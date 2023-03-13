@@ -13,7 +13,7 @@ func FeeRefunds() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_fee_refunds",
 		Description: `https://stripe.com/docs/api/fee_refunds`,
-		Transform:   transformers.TransformWithStruct(&stripe.FeeRefund{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.FeeRefund{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchFeeRefunds,
 
 		Columns: []schema.Column{

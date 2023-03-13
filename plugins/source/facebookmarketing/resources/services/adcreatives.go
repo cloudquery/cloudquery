@@ -11,7 +11,7 @@ func Adcreatives() *schema.Table {
 	return &schema.Table{
 		Name:        "facebookmarketing_adcreatives",
 		Resolver:    fetchAdcreatives,
-		Transform:   transformers.TransformWithStruct(&rest.Adcreative{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&rest.Adcreative{}, transformers.WithPrimaryKeys("Id")),
 		Description: "https://developers.facebook.com/docs/marketing-api/reference/ad-creative#Reading",
 	}
 }

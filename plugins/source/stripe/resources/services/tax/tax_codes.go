@@ -13,7 +13,7 @@ func TaxCodes() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_tax_codes",
 		Description: `https://stripe.com/docs/api/tax_codes`,
-		Transform:   transformers.TransformWithStruct(&stripe.TaxCode{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.TaxCode{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchTaxCodes,
 
 		Columns: []schema.Column{

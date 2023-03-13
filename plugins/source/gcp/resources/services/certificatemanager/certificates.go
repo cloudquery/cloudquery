@@ -19,7 +19,7 @@ func Certificates() *schema.Table {
 		Description: `https://cloud.google.com/certificate-manager/docs/reference/rest/v1/projects.locations.certificates#Certificate`,
 		Resolver:    fetchCertificates,
 		Multiplex:   client.ProjectMultiplexEnabledServices("certificatemanager.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Certificate{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Certificate{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -46,6 +46,8 @@ github:
   - plugins/source/github/**/*
 gitlab:
   - plugins/source/gitlab/**/*
+googleanalytics:
+  - plugins/destination/googleanalytics/**/*
 hackernews:
   - plugins/source/hackernews/**/*
 heroku:
@@ -92,6 +94,8 @@ snowflake:
   - plugins/destination/snowflake/**/*
 snyk:
   - plugins/source/snyk/**/*
+source-mysql:
+  - plugins/source/mysql/**/*
 source-postgresql:
   - plugins/source/postgresql/**/*
 sqlite:

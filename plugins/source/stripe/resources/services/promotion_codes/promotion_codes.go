@@ -2,7 +2,6 @@ package promotion_codes
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func PromotionCodes() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_promotion_codes",
 		Description: `https://stripe.com/docs/api/promotion_codes`,
-		Transform:   transformers.TransformWithStruct(&stripe.PromotionCode{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.PromotionCode{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchPromotionCodes,
 
 		Columns: []schema.Column{

@@ -2,7 +2,6 @@ package disputes
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func Disputes() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_disputes",
 		Description: `https://stripe.com/docs/api/disputes`,
-		Transform:   transformers.TransformWithStruct(&stripe.Dispute{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.Dispute{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchDisputes,
 
 		Columns: []schema.Column{

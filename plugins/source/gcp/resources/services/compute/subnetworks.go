@@ -19,7 +19,7 @@ func Subnetworks() *schema.Table {
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/subnetworks#Subnetwork`,
 		Resolver:    fetchSubnetworks,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Subnetwork{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.Subnetwork{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

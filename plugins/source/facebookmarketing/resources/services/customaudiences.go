@@ -11,7 +11,7 @@ func Customaudiences() *schema.Table {
 	return &schema.Table{
 		Name:        "facebookmarketing_customaudiences",
 		Resolver:    fetchCustomaudiences,
-		Transform:   transformers.TransformWithStruct(&rest.Customaudience{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&rest.Customaudience{}, transformers.WithPrimaryKeys("Id")),
 		Description: "https://developers.facebook.com/docs/marketing-api/reference/custom-audience#Reading",
 	}
 }
