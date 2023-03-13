@@ -172,17 +172,17 @@ func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, 
 
 func getExpectedData(uuidValue any, serialValue int64) schema.CQTypes {
 	cidr := schema.CIDR{}
-	cidr.Set("10.1.2.3/32")
+	_ = cidr.Set("10.1.2.3/32")
 	mac1 := schema.Macaddr{}
-	mac1.Set("08:00:2b:01:02:03")
+	_ = mac1.Set("08:00:2b:01:02:03")
 	mac2 := schema.Macaddr{}
-	mac2.Set("08:00:2b:01:02:03:04:05")
+	_ = mac2.Set("08:00:2b:01:02:03:04:05")
 	inet := schema.Inet{}
-	inet.Set("192.168.0.1/24")
+	_ = inet.Set("192.168.0.1/24")
 	timestamp := schema.Timestamptz{}
-	timestamp.Set("1999-01-08 04:05:06.789")
+	_ = timestamp.Set("1999-01-08 04:05:06.789")
 	uuidData := schema.UUID{}
-	uuidData.Set(uuidValue)
+	_ = uuidData.Set(uuidValue)
 	expectedData := schema.CQTypes{
 		&schema.Int8{Int: 1, Status: schema.Present},
 		&schema.Int8{Int: serialValue, Status: schema.Present},
