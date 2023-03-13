@@ -11,11 +11,12 @@ import (
 )
 
 func DHCPOptions() *schema.Table {
+	tableName := "aws_ec2_dhcp_options"
 	return &schema.Table{
-		Name:        "aws_ec2_dhcp_options",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DhcpOptions.html`,
 		Resolver:    fetchEC2DHCPOptions,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.DhcpOptions{}, transformers.WithPrimaryKeys("DhcpOptionsId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

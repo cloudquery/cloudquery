@@ -8,11 +8,12 @@ import (
 )
 
 func DirectoryConfigs() *schema.Table {
+	tableName := "aws_appstream_directory_configs"
 	return &schema.Table{
-		Name:        "aws_appstream_directory_configs",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_DirectoryConfig.html`,
 		Resolver:    fetchAppstreamDirectoryConfigs,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "appstream2"),
 		Transform:   transformers.TransformWithStruct(&types.DirectoryConfig{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

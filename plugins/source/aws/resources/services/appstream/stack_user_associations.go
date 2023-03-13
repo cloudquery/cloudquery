@@ -8,11 +8,12 @@ import (
 )
 
 func StackUserAssociations() *schema.Table {
+	tableName := "aws_appstream_stack_user_associations"
 	return &schema.Table{
-		Name:        "aws_appstream_stack_user_associations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_UserStackAssociation.html`,
 		Resolver:    fetchAppstreamStackUserAssociations,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "appstream2"),
 		Transform:   transformers.TransformWithStruct(&types.UserStackAssociation{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

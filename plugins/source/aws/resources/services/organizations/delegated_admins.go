@@ -11,12 +11,13 @@ import (
 )
 
 func DelegatedAdministrators() *schema.Table {
+	tableName := "aws_organizations_delegated_administrators"
 	return &schema.Table{
-		Name:        "aws_organizations_delegated_administrators",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Root.html`,
 		Resolver:    fetchOrganizationsDelegatedAdmins,
 		Transform:   transformers.TransformWithStruct(&types.DelegatedAdministrator{}, transformers.WithPrimaryKeys("Arn")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("organizations"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},

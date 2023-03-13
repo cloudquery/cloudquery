@@ -8,13 +8,14 @@ import (
 )
 
 func UserAccessKeys() *schema.Table {
+	tableName := "aws_iam_user_access_keys"
 	return &schema.Table{
-		Name:                 "aws_iam_user_access_keys",
+		Name:                 tableName,
 		Description:          `https://docs.aws.amazon.com/IAM/latest/APIReference/API_AccessKeyMetadata.html`,
 		Resolver:             fetchIamUserAccessKeys,
 		PostResourceResolver: postIamUserAccessKeyResolver,
 		Transform:            transformers.TransformWithStruct(&models.AccessKeyWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
-		Multiplex:            client.ServiceAccountRegionMultiplexer("iam"),
+		Multiplex:            client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{

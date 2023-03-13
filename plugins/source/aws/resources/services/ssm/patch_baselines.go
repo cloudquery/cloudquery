@@ -8,12 +8,13 @@ import (
 )
 
 func PatchBaselines() *schema.Table {
+	tableName := "aws_ssm_patch_baselines"
 	return &schema.Table{
-		Name:        "aws_ssm_patch_baselines",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_PatchBaselineIdentity.html`,
 		Resolver:    fetchSsmPatchBaselines,
 		Transform:   transformers.TransformWithStruct(&types.PatchBaselineIdentity{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ssm"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ssm"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

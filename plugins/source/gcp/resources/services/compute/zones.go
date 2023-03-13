@@ -19,7 +19,7 @@ func Zones() *schema.Table {
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/zones/list#response-body`,
 		Resolver:    fetchZones,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Zone{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.Zone{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

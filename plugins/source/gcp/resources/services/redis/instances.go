@@ -19,7 +19,7 @@ func Instances() *schema.Table {
 		Description: `https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance`,
 		Resolver:    fetchInstances,
 		Multiplex:   client.ProjectMultiplexEnabledServices("redis.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Instance{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Instance{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

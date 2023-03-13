@@ -13,7 +13,7 @@ func Instances() *schema.Table {
 		Description: `https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/instances#DatabaseInstance`,
 		Resolver:    fetchInstances,
 		Multiplex:   client.ProjectMultiplexEnabledServices("sqladmin.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.DatabaseInstance{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.DatabaseInstance{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

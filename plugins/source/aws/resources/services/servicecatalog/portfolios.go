@@ -8,12 +8,13 @@ import (
 )
 
 func Portfolios() *schema.Table {
+	tableName := "aws_servicecatalog_portfolios"
 	return &schema.Table{
-		Name:        "aws_servicecatalog_portfolios",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_PortfolioDetail.html`,
 		Resolver:    fetchServicecatalogPortfolios,
 		Transform:   transformers.TransformWithStruct(&types.PortfolioDetail{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("servicecatalog"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

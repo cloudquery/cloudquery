@@ -5,7 +5,6 @@ import (
 
 	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
@@ -16,7 +15,7 @@ func FolderFindings() *schema.Table {
 		Resolver:      fetchFolderFindings,
 		Multiplex:     client.FolderMultiplex,
 		IsIncremental: true,
-		Transform:     transformers.TransformWithStruct(&pb.ListFindingsResponse_ListFindingsResult{}, client.Options()...),
+		Transform:     client.TransformWithStruct(&pb.ListFindingsResponse_ListFindingsResult{}),
 		Columns: []schema.Column{
 			{
 				Name:     "folder_id",

@@ -1,0 +1,37 @@
+name: Auto sort files
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  "0 0 * * *"
+
+jobs:
+  sort-file:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+      - name: Install tools
+        run: |
+          npm i -g yaml-sort@2.0.0
+          npm i -g json-sort-cli@3.0.9
+      - name: Sort files
+        run: |
+          jsonsort release-please-config.json
+          yaml-sort -i .github/pr_labeler.yml
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          # required so the PR triggers workflow runs
+          token: ${{ secrets.GH_CQ_BOT }}
+          branch: chore/sort-files
+          base: main
+          title: "chore: Sort files"
+          commit-message: "chore: Sort files"
+          body: This PR was created by a scheduled workflow to sort files to avoid git conflicts.
+          author: cq-bot <cq-bot@users.noreply.github.com>
+          labels: automerge

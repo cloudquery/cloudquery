@@ -55,6 +55,12 @@ export const SOURCE_PLUGINS: Plugin[] = [
     kind: "official",
   },
   {
+    name: "Facebook Marketing",
+    logo: "/images/logos/plugins/meta.svg",
+    id: "facebookmarketing",
+    kind: "official",
+  },
+  {
     name: "Fastly",
     logo: "/images/logos/plugins/fastly.svg",
     id: "fastly",
@@ -65,6 +71,12 @@ export const SOURCE_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/gandi.svg",
     logoDark: "/images/logos/plugins/gandi-dark.svg",
     id: "gandi",
+    kind: "official",
+  },
+  {
+    name: "Google Analytics",
+    logo: "/images/logos/plugins/ga.svg",
+    id: "googleanalytics",
     kind: "official",
   },
   {
@@ -131,6 +143,13 @@ export const SOURCE_PLUGINS: Plugin[] = [
     kind: "official",
   },
   {
+    name: "MySQL",
+    logo: "/images/logos/plugins/mysql.svg",
+    logoDark: "/images/logos/plugins/mysql-dark.svg",
+    id: "mysql",
+    kind: "official",
+  },
+  {
     name: "Okta",
     logo: "/images/logos/plugins/okta.svg",
     id: "okta",
@@ -169,6 +188,7 @@ export const SOURCE_PLUGINS: Plugin[] = [
   {
     name: "SharePoint",
     logo: "/images/logos/plugins/sharepoint.svg",
+    href: "https://github.com/koltyakov/cq-source-sharepoint",
     id: "sharepoint",
     kind: "community",
   },
@@ -263,6 +283,13 @@ export const DESTINATION_PLUGINS: Plugin[] = [
     name: "ClickHouse",
     logo: "/images/logos/plugins/clickhouse.svg",
     id: "clickhouse",
+    kind: "official",
+  },
+  {
+    name: "DuckDB",
+    logo: "/images/logos/plugins/duckdb.svg",
+    logoDark: "/images/logos/plugins/duckdb-dark.svg",
+    id: "duckdb",
     kind: "official",
   },
   {

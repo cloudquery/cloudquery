@@ -8,12 +8,13 @@ import (
 )
 
 func Certificates() *schema.Table {
+	tableName := "aws_rds_certificates"
 	return &schema.Table{
-		Name:        "aws_rds_certificates",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Certificate.html`,
 		Resolver:    fetchRdsCertificates,
 		Transform:   transformers.TransformWithStruct(&types.Certificate{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),

@@ -8,12 +8,13 @@ import (
 )
 
 func SamplingRules() *schema.Table {
+	tableName := "aws_xray_sampling_rules"
 	return &schema.Table{
-		Name:        "aws_xray_sampling_rules",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/xray/latest/api/API_SamplingRuleRecord.html`,
 		Resolver:    fetchXraySamplingRules,
 		Transform:   transformers.TransformWithStruct(&types.SamplingRuleRecord{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("xray"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "xray"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

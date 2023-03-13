@@ -8,11 +8,12 @@ import (
 )
 
 func clusterInstances() *schema.Table {
+	tableName := "aws_emr_cluster_instances"
 	return &schema.Table{
-		Name:        "aws_emr_cluster_instances",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/emr/latest/APIReference/API_Instance.html`,
 		Resolver:    fetchClusterInstances,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticmapreduce"),
 		Transform:   transformers.TransformWithStruct(&types.Instance{}),
 		Columns: []schema.Column{
 			{

@@ -16,7 +16,7 @@ func CohortMembers() *schema.Table {
 		Name:        "mixpanel_cohort_members",
 		Description: `https://developer.mixpanel.com/reference/engage-query`,
 		Resolver:    fetchCohortMembers,
-		Transform:   transformers.TransformWithStruct(&mixpanel.EngageProfile{}, client.SharedTransformers(transformers.WithPrimaryKeys("DistinctID"))...),
+		Transform:   client.TransformWithStruct(&mixpanel.EngageProfile{}, transformers.WithPrimaryKeys("DistinctID")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

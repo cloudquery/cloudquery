@@ -8,12 +8,13 @@ import (
 )
 
 func DataSets() *schema.Table {
+	tableName := "aws_quicksight_data_sets"
 	return &schema.Table{
-		Name:        "aws_quicksight_data_sets",
+		Name:        tableName,
 		Description: "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_DataSetSummary.html",
 		Resolver:    fetchQuicksightDataSets,
 		Transform:   transformers.TransformWithStruct(&types.DataSetSummary{}, transformers.WithPrimaryKeys("Arn")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("quicksight"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "quicksight"),
 		Columns:     []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true), tagsCol},
 		Relations:   []*schema.Table{ingestions()},
 	}

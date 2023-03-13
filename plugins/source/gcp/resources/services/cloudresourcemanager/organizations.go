@@ -15,7 +15,7 @@ func Organizations() *schema.Table {
 		Description: `https://cloud.google.com/resource-manager/reference/rest/v1/organizations#Organization`,
 		Resolver:    fetchOrganizations,
 		Multiplex:   client.OrgMultiplex,
-		Transform:   transformers.TransformWithStruct(&crmv1.Organization{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&crmv1.Organization{}, transformers.WithPrimaryKeys("Name")),
 	}
 }
 

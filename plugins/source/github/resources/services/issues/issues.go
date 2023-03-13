@@ -14,9 +14,8 @@ func Issues() *schema.Table {
 		Name:      "github_issues",
 		Resolver:  fetchIssues,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.Issue{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
-		Columns: []schema.Column{client.OrgColumn},
+		Transform: client.TransformWithStruct(&github.Issue{}, transformers.WithPrimaryKeys("ID")),
+		Columns:   []schema.Column{client.OrgColumn},
 	}
 }
 

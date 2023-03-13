@@ -20,7 +20,7 @@ install-tools:
 gen-docs:
 	rm -rf ../../../website/tables/github
 	go run main.go doc ../../../website/tables/github
-	cp ../../../website/tables/github/README.md ./docs/tables/README.md
+	sed 's_(\(.*\))_(../../../../../website/tables/github/\1)_' ../../../website/tables/github/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/github/README.md
 	mv ../../../website/tables/github/README.md ../../../website/pages/docs/plugins/sources/github/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/github/*.md

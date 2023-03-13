@@ -8,11 +8,12 @@ import (
 )
 
 func EngineVersions() *schema.Table {
+	tableName := "aws_elasticache_engine_versions"
 	return &schema.Table{
-		Name:        "aws_elasticache_engine_versions",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheEngineVersion.html`,
 		Resolver:    fetchElasticacheEngineVersions,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
 		Transform:   transformers.TransformWithStruct(&types.CacheEngineVersion{}),
 		Columns: []schema.Column{
 			{

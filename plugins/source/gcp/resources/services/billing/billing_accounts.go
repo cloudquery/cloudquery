@@ -19,7 +19,7 @@ func BillingAccounts() *schema.Table {
 		Description: `https://cloud.google.com/billing/docs/reference/rest/v1/billingAccounts#BillingAccount`,
 		Resolver:    fetchBillingAccounts,
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudbilling.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.BillingAccount{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.BillingAccount{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

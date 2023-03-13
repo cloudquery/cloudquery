@@ -12,6 +12,7 @@ type Spec struct {
 	*filetypes.FileSpec
 	NoRotate bool   `json:"no_rotate,omitempty"`
 	Bucket   string `json:"bucket,omitempty"`
+	Region   string `json:"region,omitempty"`
 	Path     string `json:"path,omitempty"`
 	Athena   bool   `json:"athena,omitempty"`
 }
@@ -33,6 +34,9 @@ func (s *Spec) Validate() error {
 	}
 	if s.Path == "" {
 		return fmt.Errorf("path is required")
+	}
+	if s.Region == "" {
+		return fmt.Errorf("region is required")
 	}
 	if s.NoRotate && strings.Contains(s.Path, PathVarUUID) {
 		return fmt.Errorf("path should not contain %s when no_rotate = true", PathVarUUID)

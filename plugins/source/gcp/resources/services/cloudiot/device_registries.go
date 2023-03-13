@@ -13,7 +13,7 @@ func DeviceRegistries() *schema.Table {
 		Description: `https://cloud.google.com/iot/docs/reference/cloudiot/rest/v1/projects.locations.registries#DeviceRegistry`,
 		Resolver:    fetchDeviceRegistries,
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudiot.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.DeviceRegistry{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.DeviceRegistry{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

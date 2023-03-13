@@ -8,12 +8,13 @@ import (
 )
 
 func LayerVersionPolicies() *schema.Table {
+	tableName := "aws_lambda_layer_version_policies"
 	return &schema.Table{
-		Name:        "aws_lambda_layer_version_policies",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_GetLayerVersionPolicy.html`,
 		Resolver:    fetchLambdaLayerVersionPolicies,
 		Transform:   transformers.TransformWithStruct(&lambda.GetLayerVersionPolicyOutput{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("lambda"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

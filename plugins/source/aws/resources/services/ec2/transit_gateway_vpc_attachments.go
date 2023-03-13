@@ -8,11 +8,12 @@ import (
 )
 
 func TransitGatewayVpcAttachments() *schema.Table {
+	tableName := "aws_ec2_transit_gateway_vpc_attachments"
 	return &schema.Table{
-		Name:        "aws_ec2_transit_gateway_vpc_attachments",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayVpcAttachment.html`,
 		Resolver:    fetchEc2TransitGatewayVpcAttachments,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.TransitGatewayVpcAttachment{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

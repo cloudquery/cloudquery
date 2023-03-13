@@ -42,4 +42,5 @@ This table depends on [gcp_aiplatform_model_locations](gcp_aiplatform_model_loca
 |labels|JSON|
 |encryption_spec|JSON|
 |model_source_info|JSON|
+|original_model_info|JSON|
 |metadata_artifact|String|

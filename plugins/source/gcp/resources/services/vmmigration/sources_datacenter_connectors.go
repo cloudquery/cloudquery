@@ -13,7 +13,7 @@ func DatacenterConnectors() *schema.Table {
 		Description: `https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.sources.datacenterConnectors`,
 		Resolver:    fetchDatacenterConnectors,
 		Multiplex:   client.ProjectMultiplexEnabledServices("vmmigration.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.DatacenterConnector{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.DatacenterConnector{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

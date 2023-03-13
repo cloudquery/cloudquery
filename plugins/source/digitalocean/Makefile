@@ -22,7 +22,7 @@ lint:
 gen-docs:
 	rm -rf ../../../website/tables/digitalocean
 	go run main.go doc ../../../website/tables/digitalocean
-	cp ../../../website/tables/digitalocean/README.md ./docs/tables/README.md
+	sed 's_(\(.*\))_(../../../../../website/tables/digitalocean/\1)_' ../../../website/tables/digitalocean/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/digitalocean/README.md
 	mv ../../../website/tables/digitalocean/README.md ../../../website/pages/docs/plugins/sources/digitalocean/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/digitalocean/*.md
