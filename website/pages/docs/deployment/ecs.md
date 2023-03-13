@@ -4,6 +4,7 @@ tag: tutorial
 date: 2023/03/03
 ---
 
+# Running CloudQuery on Amazon ECS
 
 In this tutorial we will be deploying CloudQuery on AWS ECS using Fargate. You will be using the AWS CLI to create the required resources. You can also use the AWS Console to create the resources. At the end of the tutorial you will have a CloudQuery instance running on AWS ECS that will collect data from your AWS account and store it in an S3 bucket. You can then query the data using Athena.
 
@@ -42,7 +43,7 @@ spec:
 This will create a configuration file that will instruct CloudQuery to collect data from AWS and store it in an S3 bucket. You will need to replace the `REPLACE_WITH_S3_DESTINATION_BUCKET` placeholder with the name of the S3 bucket you want to use to store the data. You can also modify the configuration file to collect only the data you need. For more information on how to create a configuration file, [visit our docs](/docs/reference/source-spec)
 
 
-In order to inject the config file into the prebuilt container you will have to base64 encode the contents of the `cloudquery.yml` file . To do that, run the following command:
+In order to inject the config file into the prebuilt container you will have to base64 encode the contents of the `cloudquery.yml` file . Assuming you are running on a Linux or MacOS machine you can do this conversion by running the following command:
 ```bash
 cat cloudquery.yml | base64
 ```
