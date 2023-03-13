@@ -132,15 +132,15 @@ func (*Client) Pg10ToSchemaType(t string) schema.ValueType {
 		return schema.TypeCIDR
 	case "cidr[]":
 		return schema.TypeCIDRArray
-	case "macaddr":
+	case "macaddr", "macaddr8":
 		return schema.TypeMacAddr
-	case "macaddr[]":
+	case "macaddr[]", "macaddr8[]":
 		return schema.TypeMacAddrArray
 	case "inet":
 		return schema.TypeInet
 	case "inet[]":
 		return schema.TypeInetArray
-	case "bigint[]":
+	case "bigint[]", "integer[]", "smallint[]", "bigserial[]", "smallserial[]", "serial[]":
 		return schema.TypeIntArray
 	default:
 		return schema.TypeString
