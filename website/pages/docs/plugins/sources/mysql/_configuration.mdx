@@ -1,0 +1,11 @@
+```yaml copy
+kind: source
+spec:
+  name: "mysql"
+  registry: "github"
+  path: "cloudquery/mysql"
+  version: "VERSION_SOURCE_MYSQL"
+  destinations: ["DESTINATION_NAME"]
+  spec:
+    connection_string: "user:password@/dbname"
+```

@@ -6,10 +6,10 @@ require (
 	github.com/cloudquery/plugin-sdk v1.42.0
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/rs/zerolog v1.29.0
-	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2
+	github.com/stretchr/testify v1.8.2
 )
 
-require golang.org/x/sync v0.1.0 // indirect
+require golang.org/x/sync v0.1.0
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -27,8 +27,8 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.2 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
+	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2 // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect

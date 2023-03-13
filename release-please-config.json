@@ -124,6 +124,9 @@
     "plugins/source/mixpanel": {
       "component": "plugins-source-mixpanel"
     },
+    "plugins/source/mysql": {
+      "component": "plugins-source-mysql"
+    },
     "plugins/source/okta": {
       "component": "plugins-source-okta"
     },
