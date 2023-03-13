@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"runtime"
 	"strings"
 )
 
@@ -20,6 +21,9 @@ type Spec struct {
 
 	// AWS specific settings
 	AWSRegion string `json:"aws_region"`
+
+	// Connection settings
+	MaxConcurrentConnections int `json:"max_concurrent_connections"`
 }
 
 type authMode string
@@ -53,6 +57,10 @@ func (s *Spec) SetDefaults() {
 		s.MaxRetries = 0
 	} else if s.MaxRetries == 0 {
 		s.MaxRetries = 5 // 5 retries by default
+	}
+
+	if s.MaxConcurrentConnections < 1 {
+		s.MaxConcurrentConnections = runtime.NumCPU()
 	}
 }
 

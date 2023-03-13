@@ -12,11 +12,11 @@ import (
 )
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
-	session, err := c.newSession()
+	session, closer, err := c.newSession()
 	if err != nil {
 		return err
 	}
-	defer session.Close()
+	defer closer()
 
 	rows := make([]map[string]any, len(resources))
 	for i, resource := range resources {

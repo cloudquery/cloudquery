@@ -9,11 +9,11 @@ import (
 )
 
 func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
-	session, err := c.newSession()
+	session, closer, err := c.newSession()
 	if err != nil {
 		return err
 	}
-	defer session.Close()
+	defer closer()
 
 	for _, table := range tables {
 		g := gremlingo.Traversal_().WithRemote(session).

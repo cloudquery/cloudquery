@@ -9,11 +9,11 @@ import (
 )
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
-	session, err := c.newSession()
+	session, closer, err := c.newSession()
 	if err != nil {
 		return err
 	}
-	defer session.Close()
+	defer closer()
 
 	g := gremlingo.Traversal_().WithRemote(session).
 		V().

@@ -68,3 +68,7 @@ This is the (nested) spec used by the Gremlin destination Plugin.
 - `max_retries` (integer, optional. default: 5)
 
   Number of retries on `ConcurrentModificationException` before giving up for each batch. Retries are exponentially backed off.
+
+- `max_concurrent_connections` (integer, optional. default: number of runtime processors)
+
+  Maximum number of concurrent connections to the database.

@@ -57,6 +57,7 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 		func(settings *gremlingo.DriverRemoteConnectionSettings) {
 			settings.TraversalSource = "g"
 			settings.AuthInfo = au
+			settings.MaximumConcurrentConnections = spec.MaxConcurrentConnections
 
 			if logger.GetLevel() <= zerolog.DebugLevel {
 				settings.LogVerbosity = gremlingo.Debug
@@ -115,8 +116,18 @@ func (c *Client) getAuthInfo(ctx context.Context, baseURL string) (*gremlingo.Au
 	}
 }
 
-func (c *Client) newSession() (*gremlingo.DriverRemoteConnection, error) {
+func (c *Client) newSession() (*gremlingo.DriverRemoteConnection, func(), error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	return c.client.CreateSession()
+
+	sess, err := c.client.CreateSession()
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return sess, func() {
+		c.mu.Lock()
+		defer c.mu.Unlock()
+		sess.Close()
+	}, nil
 }
