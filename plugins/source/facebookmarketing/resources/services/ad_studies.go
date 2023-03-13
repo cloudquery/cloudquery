@@ -11,7 +11,7 @@ func AdStudies() *schema.Table {
 	return &schema.Table{
 		Name:        "facebookmarketing_ad_studies",
 		Resolver:    fetchAdStudies,
-		Transform:   transformers.TransformWithStruct(&rest.AdStudy{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&rest.AdStudy{}, transformers.WithPrimaryKeys("Id")),
 		Description: "https://developers.facebook.com/docs/marketing-api/reference/ad-study/#Reading",
 		Columns: []schema.Column{
 			{

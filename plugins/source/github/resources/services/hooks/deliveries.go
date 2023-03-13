@@ -14,8 +14,7 @@ func deliveries() *schema.Table {
 		Name:                "github_hook_deliveries",
 		Resolver:            fetchDeliveries,
 		PreResourceResolver: hooksGet,
-		Transform: transformers.TransformWithStruct(&github.HookDelivery{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
+		Transform:           client.TransformWithStruct(&github.HookDelivery{}, transformers.WithPrimaryKeys("ID")),
 		Columns: []schema.Column{
 			client.OrgColumn,
 			{

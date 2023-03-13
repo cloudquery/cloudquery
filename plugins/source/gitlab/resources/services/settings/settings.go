@@ -3,7 +3,6 @@ package settings
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/xanzy/go-gitlab"
 )
 
@@ -11,7 +10,7 @@ func Settings() *schema.Table {
 	return &schema.Table{
 		Name:      "gitlab_settings",
 		Resolver:  fetchSettings,
-		Transform: transformers.TransformWithStruct(&gitlab.Settings{}, client.SharedTransformers()...),
+		Transform: client.TransformWithStruct(&gitlab.Settings{}),
 		Columns: []schema.Column{
 			{
 				Name:     "base_url",

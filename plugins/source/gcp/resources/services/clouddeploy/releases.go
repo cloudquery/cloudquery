@@ -19,7 +19,7 @@ func Releases() *schema.Table {
 		Description: `https://cloud.google.com/deploy/docs/api/reference/rest/v1/projects.locations.deliveryPipelines.releases#Release`,
 		Resolver:    fetchReleases,
 		Multiplex:   client.ProjectMultiplexEnabledServices("clouddeploy.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Release{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Release{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -13,7 +13,7 @@ func TreasuryReceivedCredits() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_treasury_received_credits",
 		Description: `https://stripe.com/docs/api/treasury_received_credits`,
-		Transform:   transformers.TransformWithStruct(&stripe.TreasuryReceivedCredit{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.TreasuryReceivedCredit{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchTreasuryReceivedCredits,
 
 		Columns: []schema.Column{

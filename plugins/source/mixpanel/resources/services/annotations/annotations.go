@@ -15,7 +15,7 @@ func Annotations() *schema.Table {
 		Name:        "mixpanel_annotations",
 		Description: `https://developer.mixpanel.com/reference/list-all-annotations-for-project`,
 		Resolver:    fetchAnnotations,
-		Transform:   transformers.TransformWithStruct(&mixpanel.Annotation{}, client.SharedTransformers(transformers.WithPrimaryKeys("ID"))...),
+		Transform:   client.TransformWithStruct(&mixpanel.Annotation{}, transformers.WithPrimaryKeys("ID")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -11,7 +11,7 @@ func OfflineConversionDataSets() *schema.Table {
 	return &schema.Table{
 		Name:      "facebookmarketing_offline_conversion_data_sets",
 		Resolver:  fetchOfflineConversionDataSets,
-		Transform: transformers.TransformWithStruct(&rest.OfflineConversionDataSet{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform: client.TransformWithStruct(&rest.OfflineConversionDataSet{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

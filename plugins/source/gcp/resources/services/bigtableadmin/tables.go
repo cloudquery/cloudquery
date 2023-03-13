@@ -13,7 +13,7 @@ func Tables() *schema.Table {
 		PreResourceResolver: getTableInfo,
 		Resolver:            fetchTables,
 		Multiplex:           client.ProjectMultiplexEnabledServices("bigtableadmin.googleapis.com"),
-		Transform:           transformers.TransformWithStruct(&tableInfoWithName{}, append(client.Options(), transformers.WithUnwrapStructFields("TableInfo"), transformers.WithPrimaryKeys("Name"))...),
+		Transform:           client.TransformWithStruct(&tableInfoWithName{}, transformers.WithUnwrapStructFields("TableInfo"), transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

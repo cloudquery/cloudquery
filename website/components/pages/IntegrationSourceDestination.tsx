@@ -19,6 +19,8 @@ export default function Integration({
     destinationAuthentication?: ReactNode;
     syncCommand: ReactNode;
 }) {
+    const sourceFilename = source.id === destination.id ? `source-${source.id}.yaml` : `${source.id}.yaml`;
+    const destinationFilename = source.id === destination.id ? `destination-${destination.id}.yaml` : `${destination.id}.yaml`;
     return <>
         <div className="flex flex-col md:flex-row justify-between px-4 pt-16 pb-8 mx-auto sm:pt-24 lg:px-8 w-auto lg:max-w-7xl">
             <div className="flex flex-col justify-between md:mr-4">
@@ -70,14 +72,14 @@ export default function Integration({
                 {source.kind !== "official" ?
                     <>
                         <p className="mt-4">
-                            {source.name} is a {source.kind} plugin, which means that it is maintained by the {source.kind === "community" ? "CloudQuery community" : source.name + " team"}. Create a file called <code className="text-lg nx-font-bold">{source.id}.yaml</code>, then copy the example and follow the instructions in the <a target="_blank" href={source.href} className="text-blue-500 hover:text-blue-600">{source.name} Plugin Documentation ↗</a> to fit your needs.
+                            {source.name} is a {source.kind} plugin, which means that it is maintained by the {source.kind === "community" ? "CloudQuery community" : source.name + " team"}. Create a file called <code className="text-lg nx-font-bold">{sourceFilename}</code>, then copy the example and follow the instructions in the <a target="_blank" href={source.href} className="text-blue-500 hover:text-blue-600">{source.name} Plugin Documentation ↗</a> to fit your needs.
                         </p>
                     </>
                     :
                     <>
                         <h3 className="mt-4 nx-text-2xl font-extrabold tracking-tight lg:nx-text-3xl xl:nx-text-4xl dark:text-white">Configuration</h3>
                         <p className="mt-4">
-                            Create a file called <code className="text-lg nx-font-bold">{source.id}.yaml</code> and add the following contents:
+                            Create a file called <code className="text-lg nx-font-bold">{sourceFilename}</code> and add the following contents:
                         </p>
                         {sourceConfiguration}
                         <p className="mt-4">
@@ -100,7 +102,7 @@ export default function Integration({
                 {destination.kind !== "official" ?
                     <>
                         <p className="mt-4">
-                            {destination.name} is a {destination.kind} plugin, which means that it is maintained by the {destination.kind === "community" ? "CloudQuery community" : destination.name + " team"}. Create a file called <code className="text-lg nx-font-bold">{destination.id}.yaml</code>, then copy the example and follow the instructions in the <a target="_blank" href={destination.href} className="text-blue-500 hover:text-blue-600">{destination.name} Plugin Documentation ↗</a> to fit your needs.
+                            {destination.name} is a {destination.kind} plugin, which means that it is maintained by the {destination.kind === "community" ? "CloudQuery community" : destination.name + " team"}. Create a file called <code className="text-lg nx-font-bold">{destinationFilename}</code>, then copy the example and follow the instructions in the <a target="_blank" href={destination.href} className="text-blue-500 hover:text-blue-600">{destination.name} Plugin Documentation ↗</a> to fit your needs.
                         </p>
                     </>
                     :
@@ -110,7 +112,7 @@ export default function Integration({
                         </p>
                         <h3 className="mt-4 nx-text-2xl font-extrabold tracking-tight lg:nx-text-3xl xl:nx-text-4xl dark:text-white">Configuration</h3>
                         <p className="mt-4">
-                            Create a file called <code className="text-lg nx-font-bold">{destination.id}.yaml</code> and add the following contents:
+                            Create a file called <code className="text-lg nx-font-bold">{destinationFilename}</code> and add the following contents:
                         </p>
                         {destinationConfiguration}
                         <p className="mt-4">

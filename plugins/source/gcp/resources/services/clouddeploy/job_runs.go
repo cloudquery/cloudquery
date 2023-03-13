@@ -19,7 +19,7 @@ func JobRuns() *schema.Table {
 		Description: `https://cloud.google.com/deploy/docs/api/reference/rest/v1/projects.locations.deliveryPipelines.releases.rollouts.jobRuns#JobRun`,
 		Resolver:    fetchJobRuns,
 		Multiplex:   client.ProjectMultiplexEnabledServices("clouddeploy.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.JobRun{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.JobRun{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
