@@ -13,7 +13,7 @@ func Folders() *schema.Table {
 		Description: `https://cloud.google.com/resource-manager/reference/rest/v3/folders#Folder`,
 		Resolver:    fetchFolders,
 		Multiplex:   client.OrgMultiplex,
-		Transform:   transformers.TransformWithStruct(&pb.Folder{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Folder{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "organization_id",

@@ -5,7 +5,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	v1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -15,7 +14,7 @@ func DaemonSets() *schema.Table {
 		Name:      "k8s_apps_daemon_sets",
 		Resolver:  fetchDaemonSets,
 		Multiplex: client.ContextMultiplex,
-		Transform: transformers.TransformWithStruct(&v1.DaemonSet{}, client.SharedTransformers()...),
+		Transform: client.TransformWithStruct(&v1.DaemonSet{}),
 		Columns: []schema.Column{
 			{
 				Name:     "context",

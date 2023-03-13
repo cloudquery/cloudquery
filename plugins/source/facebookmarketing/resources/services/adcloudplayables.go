@@ -11,7 +11,7 @@ func Adcloudplayables() *schema.Table {
 	return &schema.Table{
 		Name:      "facebookmarketing_adcloudplayables",
 		Resolver:  fetchAdcloudplayables,
-		Transform: transformers.TransformWithStruct(&rest.Adcloudplayable{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform: client.TransformWithStruct(&rest.Adcloudplayable{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

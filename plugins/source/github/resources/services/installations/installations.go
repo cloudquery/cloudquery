@@ -14,9 +14,8 @@ func Installations() *schema.Table {
 		Name:      "github_installations",
 		Resolver:  fetchInstallations,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.Installation{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
-		Columns: []schema.Column{client.OrgColumn},
+		Transform: client.TransformWithStruct(&github.Installation{}, transformers.WithPrimaryKeys("ID")),
+		Columns:   []schema.Column{client.OrgColumn},
 	}
 }
 

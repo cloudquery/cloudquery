@@ -7,7 +7,6 @@ import (
 
 	pb "cloud.google.com/go/appengine/apiv1/appenginepb"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	appengine "cloud.google.com/go/appengine/apiv1"
@@ -19,7 +18,7 @@ func FirewallIngressRules() *schema.Table {
 		Description: `https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.firewall.ingressRules#FirewallRule`,
 		Resolver:    fetchFirewallIngressRules,
 		Multiplex:   client.ProjectMultiplexEnabledServices("appengine.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.FirewallRule{}, client.Options()...),
+		Transform:   client.TransformWithStruct(&pb.FirewallRule{}),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

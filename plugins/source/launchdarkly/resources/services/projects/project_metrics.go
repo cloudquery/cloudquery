@@ -14,7 +14,7 @@ func ProjectMetrics() *schema.Table {
 		Name:        "launchdarkly_project_metrics",
 		Description: `https://apidocs.launchdarkly.com/tag/Metrics#operation/getMetrics`,
 		Resolver:    fetchProjectMetrics,
-		Transform:   transformers.TransformWithStruct(&ldapi.MetricListingRep{}, client.SharedTransformers(transformers.WithPrimaryKeys("Id"), transformers.WithSkipFields("Links", "Site"))...),
+		Transform:   client.TransformWithStruct(&ldapi.MetricListingRep{}, transformers.WithPrimaryKeys("Id"), transformers.WithSkipFields("Links", "Site")),
 		Columns: schema.ColumnList{
 			{
 				Name:     "project_id",

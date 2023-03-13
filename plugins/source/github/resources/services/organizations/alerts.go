@@ -11,11 +11,10 @@ import (
 
 func alerts() *schema.Table {
 	return &schema.Table{
-		Name:     "github_organization_dependabot_alerts",
-		Resolver: fetchAlerts,
-		Transform: transformers.TransformWithStruct(&github.DependabotAlert{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("HTMLURL"))...),
-		Columns: []schema.Column{client.OrgColumn},
+		Name:      "github_organization_dependabot_alerts",
+		Resolver:  fetchAlerts,
+		Transform: client.TransformWithStruct(&github.DependabotAlert{}, transformers.WithPrimaryKeys("HTMLURL")),
+		Columns:   []schema.Column{client.OrgColumn},
 	}
 }
 

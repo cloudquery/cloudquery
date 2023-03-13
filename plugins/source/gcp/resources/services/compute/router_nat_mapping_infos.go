@@ -7,7 +7,6 @@ import (
 	compute "cloud.google.com/go/compute/apiv1"
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/api/iterator"
 )
@@ -18,7 +17,7 @@ func routerNatMappingInfos() *schema.Table {
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/routers/getNatMappingInfo#response-body`,
 		Resolver:    fetchRouterNatMappingInfo,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.VmEndpointNatMappings{}, client.Options()...),
+		Transform:   client.TransformWithStruct(&pb.VmEndpointNatMappings{}),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

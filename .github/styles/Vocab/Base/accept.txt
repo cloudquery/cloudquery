@@ -144,6 +144,8 @@ readme
 README
 recurse
 region_codes
+remediation
+remediations
 RESTful
 runtime
 runtimes

@@ -19,7 +19,7 @@ func BackendServices() *schema.Table {
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/backendServices#BackendService`,
 		Resolver:    fetchBackendServices,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.BackendService{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.BackendService{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -34,7 +34,17 @@ func createNamespaces(router *mux.Router) error {
 		}
 	})
 
-	return nil
+	err := createTopics(router)
+	if err != nil {
+		return err
+	}
+
+	err = createTopicAuthorizationRules(router)
+	if err != nil {
+		return err
+	}
+
+	return createTopicRuleAccessKeys(router)
 }
 
 func TestNamespaces(t *testing.T) {

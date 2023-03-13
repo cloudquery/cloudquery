@@ -11,7 +11,7 @@ func AdvertisableApplications() *schema.Table {
 	return &schema.Table{
 		Name:      "facebookmarketing_applications",
 		Resolver:  fetchAdvertisableApplications,
-		Transform: transformers.TransformWithStruct(&rest.Application{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform: client.TransformWithStruct(&rest.Application{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

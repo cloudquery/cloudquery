@@ -19,7 +19,7 @@ func Addresses() *schema.Table {
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/addresses#Address`,
 		Resolver:    fetchAddresses,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Address{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.Address{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -3,7 +3,6 @@ package applications
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
@@ -11,7 +10,7 @@ func ApplicationGroupAssignments() *schema.Table {
 	return &schema.Table{
 		Name:      "okta_application_group_assignments",
 		Resolver:  fetchApplicationGroupAssignments,
-		Transform: transformers.TransformWithStruct(&okta.ApplicationGroupAssignment{}, client.SharedTransformers()...),
+		Transform: client.TransformWithStruct(&okta.ApplicationGroupAssignment{}),
 		Columns: []schema.Column{
 			{
 				Name:     "app_id",
