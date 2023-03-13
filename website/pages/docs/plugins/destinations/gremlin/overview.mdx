@@ -10,7 +10,7 @@ import Configuration from "./_configuration.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "gremlin")}/>
 
-This destination plugin lets you sync data from any CloudQuery source to a Gremlin compatible graph database such as AWS Neptune or Azure CosmosDB.
+This destination plugin lets you sync data from any CloudQuery source to a Gremlin compatible graph database such as AWS Neptune.
 
 Supported database (tested) versions (We use the [official Go driver](https://github.com/apache/tinkerpop/tree/master/gremlin-go)):
 
@@ -32,6 +32,24 @@ Make sure you use environment variable expansion in production instead of commit
 </Callout>
 
 The Gremlin destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+
+### Connecting to AWS Neptune
+
+For AWS Neptune, you don't need to specify any credentials if IAM authentication is not enabled. Keep `auth_mode` at `none`.
+
+If IAM authentication is enabled, you need to set `auth_mode` to `aws` and `aws_region` to the region of the database. The plugin will use the default AWS credentials chain to authenticate.
+
+<!--
+### Connecting to Azure CosmosDB
+
+Azure CosmosDB has special requirements for connecting to the database:
+
+ - For endpoint, use `wss://<account-name>.gremlin.cosmos.azure.com:443`
+ - For username, use ``/dbs/<db>/colls/<coll>`` where <db> is your database name and <coll> is your collection name.
+ - Use the specified Primary Key as the authentication password.
+
+Please refer to the relevant [CosmosDB documentation](https://learn.microsoft.com/en-us/azure/cosmos-db/gremlin/quickstart-console#ConnectAppService) on details.
+-->
 
 ### Plugin Spec
 
@@ -55,11 +73,11 @@ This is the (nested) spec used by the Gremlin destination Plugin.
 
 - `username` (string, optional)
 
-  Username to connect to the database, for static authentication.
+  Username to connect to the database. <!-- For Azure CosmosDB, use `/dbs/<db>/colls/<coll>` here. -->
 
 - `password` (string, optional)
 
-  Password to connect to the database, for static authentication.
+  Password to connect to the database. <!-- For Azure CosmosDB, use your Primary Key here. -->
 
 - `aws_region` (string, required when `auth_mode` is `aws`)
 

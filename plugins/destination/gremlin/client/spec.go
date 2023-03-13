@@ -74,6 +74,9 @@ func (s *Spec) Validate() error {
 	if s.AuthMode == authModeAWS && s.AWSRegion == "" {
 		return fmt.Errorf("aws_region is required when auth_mode is %q", authModeAWS)
 	}
+	if s.AuthMode == authModeNone && (s.Username != "" || s.Password != "") {
+		return fmt.Errorf("username or password specified with auth_mode %q. Set auth mode to %q or remove username and password", authModeNone, authModeBasic)
+	}
 
 	return nil
 }
