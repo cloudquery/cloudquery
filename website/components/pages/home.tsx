@@ -5,7 +5,7 @@ import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { Container } from "../Container";
 import Features from "../Features";
-import { Sources } from "../Integrations";
+import { Sources } from "../Sources";
 import { LogosBlock } from "../clients/LogosBlock";
 import { QueriesExamples } from "../QueriesExamples";
 
