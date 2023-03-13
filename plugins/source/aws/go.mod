@@ -27,7 +27,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.5
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.4
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.4
-	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.4
+	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.5
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.29.5
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.4
@@ -137,8 +137,8 @@ require (
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.12.24 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.29 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.23 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.30 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.24 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.31 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.22.4
 	github.com/aws/aws-sdk-go-v2/service/backup v1.19.2
