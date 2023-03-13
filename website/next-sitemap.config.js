@@ -8,6 +8,19 @@ module.exports = {
     "/docs/plugins/sources/*/_*",
     "/docs/plugins/destinations/*/_*",
   ],
+  robotsTxtOptions: {
+    policies: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: [
+          // disallow pages that start with underscores
+          '/docs/plugins/sources/*/_*',
+          '/docs/plugins/destinations/*/_*',
+        ],
+      },
+    ],
+  },
   additionalPaths: () => {
     const tablesData = getTablesData();
     const paths = tablesData.map(({ plugin, table }) => {
