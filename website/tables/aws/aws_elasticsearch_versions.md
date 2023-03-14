@@ -1,6 +1,6 @@
 # Table: aws_elasticsearch_versions
 
-This table shows data for AWS Elasticsearch Versions.
+This table shows data for Elasticsearch Versions.
 
 https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_ListVersions.html
 

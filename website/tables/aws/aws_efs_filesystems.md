@@ -1,6 +1,6 @@
 # Table: aws_efs_filesystems
 
-This table shows data for AWS Efs Filesystems.
+This table shows data for Amazon Elastic File System (EFS) Filesystems.
 
 https://docs.aws.amazon.com/efs/latest/ug/API_FileSystemDescription.html
 

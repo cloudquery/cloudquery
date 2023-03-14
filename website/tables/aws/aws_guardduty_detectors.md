@@ -1,6 +1,6 @@
 # Table: aws_guardduty_detectors
 
-This table shows data for AWS Guardduty Detectors.
+This table shows data for Amazon GuardDuty Detectors.
 
 https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetDetector.html
 

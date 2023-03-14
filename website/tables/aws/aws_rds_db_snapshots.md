@@ -1,6 +1,6 @@
 # Table: aws_rds_db_snapshots
 
-This table shows data for AWS Rds DB Snapshots.
+This table shows data for Amazon Relational Database Service (RDS) DB Snapshots.
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSnapshot.html
 

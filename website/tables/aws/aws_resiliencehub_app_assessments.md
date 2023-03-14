@@ -1,6 +1,6 @@
 # Table: aws_resiliencehub_app_assessments
 
-This table shows data for AWS Resiliencehub App Assessments.
+This table shows data for AWS Resilience Hub App Assessments.
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_AppAssessment.html
 

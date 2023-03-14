@@ -1,6 +1,6 @@
 # Table: aws_glue_ml_transform_task_runs
 
-This table shows data for AWS Glue ML Transform Task Runs.
+This table shows data for Glue ML Transform Task Runs.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_TaskRun.html
 

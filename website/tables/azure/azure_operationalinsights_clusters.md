@@ -1,6 +1,6 @@
 # Table: azure_operationalinsights_clusters
 
-This table shows data for Azure Operationalinsights Clusters.
+This table shows data for Azure Operational Insights Clusters.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights@v1.0.0#Cluster
 

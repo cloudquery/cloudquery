@@ -1,6 +1,6 @@
 # Table: aws_glue_databases
 
-This table shows data for AWS Glue Databases.
+This table shows data for Glue Databases.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_Database.html
 

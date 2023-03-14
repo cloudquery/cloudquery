@@ -1,6 +1,6 @@
 # Table: aws_fsx_file_systems
 
-This table shows data for AWS Fsx File Systems.
+This table shows data for Amazon FSx File Systems.
 
 https://docs.aws.amazon.com/fsx/latest/APIReference/API_FileSystem.html
 

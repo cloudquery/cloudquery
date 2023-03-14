@@ -1,6 +1,6 @@
 # Table: aws_ecrpublic_repository_images
 
-This table shows data for AWS Ecrpublic Repository Images.
+This table shows data for Ecrpublic Repository Images.
 
 https://docs.aws.amazon.com/AmazonECRPublic/latest/APIReference/API_ImageDetail.html
 

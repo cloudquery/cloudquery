@@ -1,6 +1,6 @@
 # Table: aws_rds_db_security_groups
 
-This table shows data for AWS Rds DB Security Groups.
+This table shows data for Amazon Relational Database Service (RDS) DB Security Groups.
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSecurityGroup.html
 

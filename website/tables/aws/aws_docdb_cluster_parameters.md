@@ -1,6 +1,6 @@
 # Table: aws_docdb_cluster_parameters
 
-This table shows data for AWS Docdb Cluster Parameters.
+This table shows data for Amazon DocumentDB Cluster Parameters.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Parameter.html
 

@@ -1,6 +1,6 @@
 # Table: aws_ecrpublic_repositories
 
-This table shows data for AWS Ecrpublic Repositories.
+This table shows data for Ecrpublic Repositories.
 
 https://docs.aws.amazon.com/AmazonECRPublic/latest/APIReference/API_Repository.html
 

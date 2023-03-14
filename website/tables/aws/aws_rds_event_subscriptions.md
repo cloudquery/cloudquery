@@ -1,6 +1,6 @@
 # Table: aws_rds_event_subscriptions
 
-This table shows data for AWS Rds Event Subscriptions.
+This table shows data for Amazon Relational Database Service (RDS) Event Subscriptions.
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_EventSubscription.html
 

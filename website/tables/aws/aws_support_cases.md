@@ -1,6 +1,6 @@
 # Table: aws_support_cases
 
-This table shows data for AWS Support Cases.
+This table shows data for Support Cases.
 
 https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeCases.html
 
