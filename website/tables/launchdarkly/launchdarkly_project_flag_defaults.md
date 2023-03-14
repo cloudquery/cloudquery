@@ -1,6 +1,6 @@
 # Table: launchdarkly_project_flag_defaults
 
-This table shows data for Launchdarkly Project Flag Defaults.
+This table shows data for LaunchDarkly Project Flag Defaults.
 
 https://apidocs.launchdarkly.com/tag/Projects#operation/getFlagDefaultsByProject
 

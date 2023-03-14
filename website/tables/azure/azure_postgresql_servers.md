@@ -1,6 +1,6 @@
 # Table: azure_postgresql_servers
 
-This table shows data for Azure Postgresql Servers.
+This table shows data for Azure PostgreSQL Servers.
 
 https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/servers/list?tabs=HTTP#server
 

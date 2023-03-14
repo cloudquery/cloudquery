@@ -1,6 +1,6 @@
 # Table: azure_datafactory_factories
 
-This table shows data for Azure Datafactory Factories.
+This table shows data for Azure Data Factory Factories.
 
 https://learn.microsoft.com/en-us/rest/api/datafactory/factories/list?tabs=HTTP#factory
 
