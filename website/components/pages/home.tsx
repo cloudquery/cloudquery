@@ -8,6 +8,7 @@ import Features from "../Features";
 import { Sources } from "../Sources";
 import { LogosBlock } from "../clients/LogosBlock";
 import { QueriesExamples } from "../QueriesExamples";
+import React from "react";
 
 const HERO_IMAGE_DATA = [
   {
@@ -147,6 +148,9 @@ export default function Home() {
           Export data from a growing list of <a className="dark:text-white" href="/docs/plugins/sources/overview">30+ cloud providers, databases and SaaS apps</a> with more than 1,000 unique tables. Sync to your <a href="/docs/plugins/destinations/overview" className="dark:text-white">favorite database, data warehouse or data lake</a>.
         </p>
         <Sources />
+        <p className="mx-auto mt-24 font-medium text-lg text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
+          Couldn't find the source you were looking for? <a href="/new-source-plugin" className="text-blue-500 hover:text-blue-600">Request a New Source Plugin</a>
+        </p>
       </div>
       <Container>
         <div className="px-4 py-16 mx-auto mt-10 sm:max-w-none sm:flex sm:justify-center">

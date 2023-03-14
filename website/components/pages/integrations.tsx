@@ -1,5 +1,6 @@
 import {Sources} from "../Sources";
 import {Destinations} from "../Destinations";
+import React from "react";
 
 export default function Integrations() {
     return <>
@@ -13,6 +14,9 @@ export default function Integrations() {
                         Export data from a growing list of <a className="dark:text-white" href="/docs/plugins/sources/overview">30+ cloud providers, databases and SaaS apps</a> with more than 1,000 unique tables. Sync to your <a href="/docs/plugins/destinations/overview" className="dark:text-white">favorite database, data warehouse or data lake</a>.
                     </p>
                     <Sources />
+                    <p className="mx-auto mt-24 font-medium text-lg text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
+                        Couldn't find the source you were looking for? <a href="/new-source-plugin" className="text-blue-500 hover:text-blue-600">Request a New Source Plugin</a>
+                    </p>
                 </div>
                 <div className="max-w-8xl px-4 pb-12 mx-auto lg:px-8 ">
                     <h2 className="nx-text-4xl font-extrabold leading-tight tracking-tight lg:nx-text-5xl xl:nx-text-6xl text-center dark:text-white">

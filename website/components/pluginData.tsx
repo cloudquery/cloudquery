@@ -447,6 +447,13 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     category: "cloud-finops",
   },
   {
+    name: "AfterShip",
+    id: "aftership",
+    href: "https://github.com/cloudquery/cloudquery/issues/9047",
+    kind: "unpublished",
+    category: "shipment-tracking",
+  },
+  {
     name: "Amazon ads",
     id: "amazonads",
     href: "https://github.com/cloudquery/cloudquery/issues/8424",
@@ -475,6 +482,13 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     category: "cloud-finops",
   },
   {
+    name: "Baremetrics",
+    id: "baremetrics",
+    href: "https://github.com/cloudquery/cloudquery/issues/9045",
+    kind: "unpublished",
+    category: "marketing-analytics",
+  },
+  {
     name: "Bing Ads",
     id: "bing-ads",
     href: "https://github.com/cloudquery/cloudquery/issues/8425",
@@ -489,6 +503,13 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     category: "engineering-analytics",
   },
   {
+    name: "Chargebee",
+    id: "chargebee",
+    href: "https://github.com/cloudquery/cloudquery/issues/9048",
+    kind: "unpublished",
+    category: "cloud-finops",
+  },
+  {
     name: "CloudWatch",
     id: "cloudwatch",
     href: "https://github.com/cloudquery/cloudquery/issues/8163",
@@ -496,11 +517,18 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     category: "engineering-analytics",
   },
   {
-    name: "CSV",
-    id: "csv",
-    href: "https://github.com/cloudquery/cloudquery/issues/5195",
+    name: "Cloudinary",
+    id: "cloudinary",
+    href: "https://github.com/cloudquery/cloudquery/issues/9044",
     kind: "unpublished",
-    category: "data-warehouses-lakes",
+    category: "cloud-infrastructure",
+  },
+  {
+    name: "Detrack",
+    id: "detrack",
+    href: "https://github.com/cloudquery/cloudquery/issues/9054",
+    kind: "unpublished",
+    category: "shipment-tracking",
   },
   {
     name: "Gmail",
@@ -538,9 +566,30 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
   },
   {
+    name: "Intercom",
+    id: "intercom",
+    href: "https://github.com/cloudquery/cloudquery/issues/9041",
+    kind: "unpublished",
+    category: "cloud-infrastructure",
+  },
+  {
+    name: "LinkedIn Ads",
+    id: "linkedin-ads",
+    href: "https://github.com/cloudquery/cloudquery/issues/9033",
+    kind: "unpublished",
+    category: "marketing-analytics",
+  },
+  {
     name: "Mailchimp",
     id: "mailchimp",
     href: "https://github.com/cloudquery/cloudquery/issues/8430",
+    kind: "unpublished",
+    category: "marketing-analytics",
+  },
+  {
+    name: "Mailgun",
+    id: "mailgun",
+    href: "https://github.com/cloudquery/cloudquery/issues/9050",
     kind: "unpublished",
     category: "marketing-analytics",
   },
@@ -573,11 +622,25 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     category: "databases",
   },
   {
+    name: "New Relic",
+    id: "new-relic",
+    href: "https://github.com/cloudquery/cloudquery/issues/9040",
+    kind: "unpublished",
+    category: "product-analytics",
+  },
+  {
     name: "OracleDB",
     id: "oracledb",
     href: "https://github.com/cloudquery/cloudquery/issues/8862",
     kind: "unpublished",
     category: "databases",
+  },
+  {
+    name: "OnFleet",
+    id: "onfleet",
+    href: "https://github.com/cloudquery/cloudquery/issues/9053",
+    kind: "unpublished",
+    category: "fleet-management",
   },
   {
     name: "Paypal",
@@ -601,6 +664,27 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     category: "marketing-analytics",
   },
   {
+    name: "Samsara",
+    id: "samsara",
+    href: "https://github.com/cloudquery/cloudquery/issues/9052",
+    kind: "unpublished",
+    category: "fleet-management",
+  },
+  {
+    name: "Shippo",
+    id: "shippo",
+    href: "https://github.com/cloudquery/cloudquery/issues/9038",
+    kind: "unpublished",
+    category: "shipment-tracking",
+  },
+  {
+    name: "Shipup",
+    id: "shipup",
+    href: "https://github.com/cloudquery/cloudquery/issues/9055",
+    kind: "unpublished",
+    category: "shipment-tracking",
+  },
+  {
     name: "S3",
     id: "s3",
     href: "https://github.com/cloudquery/cloudquery/issues/8320",
@@ -614,11 +698,62 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "cloud-infrastructure",
   },
+  {
+    name: "Square",
+    id: "square",
+    href: "https://github.com/cloudquery/cloudquery/issues/9037",
+    kind: "unpublished",
+    category: "cloud-finops",
+  },
+  {
+    name: "Twilio",
+    id: "twilio",
+    href: "https://github.com/cloudquery/cloudquery/issues/9035",
+    kind: "unpublished",
+    category: "cloud-infrastructure",
+  },
+  {
+    name: "Twilio Sendgrid",
+    id: "sendgrid",
+    href: "https://github.com/cloudquery/cloudquery/issues/9039",
+    kind: "unpublished",
+    category: "marketing-analytics",
+  },
+  {
+    name: "Typeform",
+    id: "typeform",
+    href: "https://github.com/cloudquery/cloudquery/issues/9034",
+    kind: "unpublished",
+    category: "marketing-analytics",
+  },
+  {
+    name: "Zoho Campaign",
+    id: "zoho-campaign",
+    website: "https://www.zoho.com",
+    href: "https://github.com/cloudquery/cloudquery/issues/9028",
+    kind: "unpublished",
+    category: "product-analytics",
+  },
+  {
+    name: "Zoho CRM",
+    id: "zoho-crm",
+    website: "https://www.zoho.com",
+    href: "https://github.com/cloudquery/cloudquery/issues/9029",
+    kind: "unpublished",
+    category: "marketing-analytics",
+  },
+  {
+    name: "Zoom",
+    id: "zoom",
+    href: "https://github.com/cloudquery/cloudquery/issues/1507",
+    kind: "unpublished",
+    category: "cloud-infrastructure",
+  },
 ];
 
 export function getPlugin(kind: string, id: string): Plugin {
   if (kind === "destination") {
     return DESTINATION_PLUGINS.find((p) => p.id === id);
   }
-  return SOURCE_PLUGINS.find((p) => p.id === id);
+  return [...SOURCE_PLUGINS, ...UNPUBLISHED_SOURCE_PLUGINS].find((p) => p.id === id);
 }

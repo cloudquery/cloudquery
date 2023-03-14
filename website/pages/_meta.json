@@ -27,6 +27,13 @@
       "typesetting": "article"
     }
   },
+  "new-source-plugin": {
+    "title": "New Source Plugins",
+    "display": "hidden",
+    "theme": {
+      "layout": "full"
+    }
+  },
   "blog": {
     "title": "Blog",
     "theme": {
