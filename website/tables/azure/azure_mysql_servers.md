@@ -1,6 +1,6 @@
 # Table: azure_mysql_servers
 
-This table shows data for Azure Mysql Servers.
+This table shows data for Azure MySQL Servers.
 
 https://learn.microsoft.com/en-us/rest/api/mysql/singleserver/servers(2017-12-01)/list?tabs=HTTP#server
 

@@ -1,6 +1,6 @@
 # Table: azure_containerservice_managed_clusters
 
-This table shows data for Azure Containerservice Managed Clusters.
+This table shows data for Azure Container Service Managed Clusters.
 
 https://learn.microsoft.com/en-us/rest/api/aks/managed-clusters/list?tabs=HTTP#managedcluster
 
