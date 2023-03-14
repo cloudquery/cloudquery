@@ -20,4 +20,3 @@ The composite primary key for this table is (**project_id**, **name**).
 |entry_count|Int|
 |submit_time|Timestamp|
 |end_time|Timestamp|
-|display_name|String|

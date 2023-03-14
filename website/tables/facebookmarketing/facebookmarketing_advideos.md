@@ -1,5 +1,7 @@
 # Table: facebookmarketing_advideos
 
+This table shows data for Facebookmarketing Advideos.
+
 https://developers.facebook.com/docs/graph-api/reference/video#Reading
 
 The composite primary key for this table is (**account_id**, **id**).

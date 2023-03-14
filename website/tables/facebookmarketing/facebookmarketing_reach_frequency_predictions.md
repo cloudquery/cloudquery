@@ -1,5 +1,7 @@
 # Table: facebookmarketing_reach_frequency_predictions
 
+This table shows data for Facebookmarketing Reach Frequency Predictions.
+
 https://developers.facebook.com/docs/marketing-api/reference/reach-frequency-prediction/#Reading
 
 The primary key for this table is **id**.

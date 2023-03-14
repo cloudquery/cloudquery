@@ -1,5 +1,7 @@
 # Table: facebookmarketing_ad_place_page_sets
 
+This table shows data for Facebookmarketing Ad Place Page Sets.
+
 https://developers.facebook.com/docs/marketing-api/reference/ad-place-page-set#Reading
 
 The primary key for this table is **id**.
