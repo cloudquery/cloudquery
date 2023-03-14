@@ -1,5 +1,7 @@
 # Table: facebookmarketing_saved_audiences
 
+This table shows data for Facebook Marketing Saved Audiences.
+
 https://developers.facebook.com/docs/marketing-api/reference/saved-audience/#Reading
 
 The primary key for this table is **id**.

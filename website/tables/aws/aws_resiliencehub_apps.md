@@ -1,5 +1,7 @@
 # Table: aws_resiliencehub_apps
 
+This table shows data for AWS Resilience Hub Apps.
+
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_App.html
 
 The primary key for this table is **arn**.

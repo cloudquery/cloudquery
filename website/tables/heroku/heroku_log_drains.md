@@ -1,5 +1,7 @@
 # Table: heroku_log_drains
 
+This table shows data for Heroku Log Drains.
+
 https://devcenter.heroku.com/articles/platform-api-reference#log-drain
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: k8s_admissionregistration_mutating_webhook_configurations
 
+This table shows data for K8s Admissionregistration Mutating Webhook Configurations.
+
 The primary key for this table is **uid**.
 
 ## Columns

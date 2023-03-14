@@ -66,7 +66,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	timeNow := time.Now().UTC()
 	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
 		Bucket: aws.String(c.pluginSpec.Bucket),
-		Key:    aws.String(replacePathVariables(spec.Path, "TEST_TABLE", "TEST_UUID", timeNow)),
+		Key:    aws.String(replacePathVariables(c.pluginSpec.Path, "TEST_TABLE", "TEST_UUID", timeNow)),
 		Body:   bytes.NewReader([]byte("")),
 	}); err != nil {
 		return nil, fmt.Errorf("failed to write test file to S3: %w", err)

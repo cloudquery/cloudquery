@@ -1,5 +1,7 @@
 # Table: github_release_assets
 
+This table shows data for Github Release Assets.
+
 The composite primary key for this table is (**org**, **repository_id**, **id**).
 
 ## Relations

@@ -161,9 +161,6 @@ func (c *Client) upsert(table *schema.Table) string {
 	sb.WriteString(constraintName)
 	sb.WriteString(" do update set ")
 	for i, column := range columns {
-		if column.Name == schema.CqIDColumn.Name || column.Name == schema.CqParentIDColumn.Name {
-			continue
-		}
 		sb.WriteString(pgx.Identifier{column.Name}.Sanitize())
 		sb.WriteString("=excluded.") // excluded references the new values
 		sb.WriteString(pgx.Identifier{column.Name}.Sanitize())

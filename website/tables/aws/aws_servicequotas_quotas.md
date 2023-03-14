@@ -1,5 +1,7 @@
 # Table: aws_servicequotas_quotas
 
+This table shows data for Servicequotas Quotas.
+
 https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceQuota.html
 
 The primary key for this table is **arn**.

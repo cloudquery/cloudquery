@@ -1,5 +1,7 @@
 # Table: stripe_balance_transactions
 
+This table shows data for Stripe Balance Transactions.
+
 https://stripe.com/docs/api/balance_transactions
 
 The primary key for this table is **id**.

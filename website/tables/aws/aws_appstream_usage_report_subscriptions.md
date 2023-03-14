@@ -1,5 +1,7 @@
 # Table: aws_appstream_usage_report_subscriptions
 
+This table shows data for Amazon AppStream Usage Report Subscriptions.
+
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_UsageReportSubscription.html
 
 The composite primary key for this table is (**account_id**, **region**, **s3_bucket_name**).

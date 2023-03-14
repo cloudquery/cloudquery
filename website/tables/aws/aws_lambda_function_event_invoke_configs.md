@@ -1,5 +1,7 @@
 # Table: aws_lambda_function_event_invoke_configs
 
+This table shows data for AWS Lambda Function Event Invoke Configs.
+
 https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionEventInvokeConfig.html
 
 The primary key for this table is **_cq_id**.

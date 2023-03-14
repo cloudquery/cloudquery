@@ -1,5 +1,7 @@
 # Table: github_installations
 
+This table shows data for Github Installations.
+
 The composite primary key for this table is (**org**, **id**).
 
 ## Columns

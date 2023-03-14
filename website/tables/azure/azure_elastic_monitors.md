@@ -1,5 +1,7 @@
 # Table: azure_elastic_monitors
 
+This table shows data for Azure Elastic Monitors.
+
 https://learn.microsoft.com/en-us/rest/api/elastic/monitors/list?tabs=HTTP#elasticmonitorresource
 
 The primary key for this table is **id**.

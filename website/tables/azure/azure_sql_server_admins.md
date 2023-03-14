@@ -1,5 +1,7 @@
 # Table: azure_sql_server_admins
 
+This table shows data for Azure SQL Server Admins.
+
 https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/server-azure-ad-administrators/list-by-server?tabs=HTTP#serverazureadadministrator
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: aws_glue_job_runs
 
+This table shows data for Glue Job Runs.
+
 https://docs.aws.amazon.com/glue/latest/webapi/API_JobRun.html
 
 The primary key for this table is **_cq_id**.

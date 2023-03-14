@@ -1,5 +1,7 @@
 # Table: aws_docdb_pending_maintenance_actions
 
+This table shows data for Amazon DocumentDB Pending Maintenance Actions.
+
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_PendingMaintenanceAction.html
 
 The primary key for this table is **_cq_id**.

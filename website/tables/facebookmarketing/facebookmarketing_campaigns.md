@@ -1,5 +1,7 @@
 # Table: facebookmarketing_campaigns
 
+This table shows data for Facebook Marketing Campaigns.
+
 https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/
 
 The primary key for this table is **id**.

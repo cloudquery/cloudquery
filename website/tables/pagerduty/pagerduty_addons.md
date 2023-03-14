@@ -1,5 +1,7 @@
 # Table: pagerduty_addons
 
+This table shows data for PagerDuty Addons.
+
 https://developer.pagerduty.com/api-reference/e58b140202a57-list-installed-add-ons
 
 The primary key for this table is **id**.

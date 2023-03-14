@@ -1,5 +1,7 @@
 # Table: heroku_outbound_rulesets
 
+This table shows data for Heroku Outbound Rulesets.
+
 https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset
 
 The primary key for this table is **id**.

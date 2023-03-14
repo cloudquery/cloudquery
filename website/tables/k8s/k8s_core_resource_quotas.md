@@ -1,5 +1,7 @@
 # Table: k8s_core_resource_quotas
 
+This table shows data for K8s Core Resource Quotas.
+
 The primary key for this table is **uid**.
 
 ## Columns

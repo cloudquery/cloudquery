@@ -1,5 +1,7 @@
 # Table: gcp_clouderrorreporting_error_events
 
+This table shows data for GCP Clouderrorreporting Error Events.
+
 https://cloud.google.com/error-reporting/reference/rest/v1beta1/ErrorEvent
 
 The primary key for this table is **_cq_id**.

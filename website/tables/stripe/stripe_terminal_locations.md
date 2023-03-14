@@ -1,5 +1,7 @@
 # Table: stripe_terminal_locations
 
+This table shows data for Stripe Terminal Locations.
+
 https://stripe.com/docs/api/terminal_locations
 
 The primary key for this table is **id**.

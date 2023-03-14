@@ -1,5 +1,7 @@
 # Table: azure_dnsresolver_dns_forwarding_rulesets
 
+This table shows data for Azure DNS Resolver DNS Forwarding Rulesets.
+
 https://learn.microsoft.com/en-us/rest/api/dns/dnsresolver/dns-forwarding-rulesets/list?tabs=HTTP#dnsforwardingruleset
 
 The primary key for this table is **id**.

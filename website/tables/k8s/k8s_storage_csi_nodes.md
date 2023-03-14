@@ -1,5 +1,7 @@
 # Table: k8s_storage_csi_nodes
 
+This table shows data for K8s Storage Csi Nodes.
+
 The primary key for this table is **uid**.
 
 ## Columns

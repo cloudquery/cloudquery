@@ -1,5 +1,7 @@
 # Table: heroku_apps
 
+This table shows data for Heroku Apps.
+
 https://devcenter.heroku.com/articles/platform-api-reference#app
 
 The primary key for this table is **id**.

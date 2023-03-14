@@ -1,5 +1,7 @@
 # Table: shopify_customers
 
+This table shows data for Shopify Customers.
+
 The primary key for this table is **id**.
 It supports incremental syncs based on the **updated_at** column.
 

@@ -1,5 +1,7 @@
 # Table: heroku_oauth_clients
 
+This table shows data for Heroku OAuth Clients.
+
 https://devcenter.heroku.com/articles/platform-api-reference#o-auth-client
 
 The primary key for this table is **id**.

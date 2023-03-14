@@ -1,5 +1,7 @@
 # Table: aws_servicequotas_services
 
+This table shows data for Servicequotas Services.
+
 https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceInfo.html
 
 The composite primary key for this table is (**account_id**, **region**, **service_code**, **service_name**).

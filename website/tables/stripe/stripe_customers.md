@@ -1,5 +1,7 @@
 # Table: stripe_customers
 
+This table shows data for Stripe Customers.
+
 https://stripe.com/docs/api/customers
 
 The primary key for this table is **id**.

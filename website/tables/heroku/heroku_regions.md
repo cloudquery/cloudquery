@@ -1,5 +1,7 @@
 # Table: heroku_regions
 
+This table shows data for Heroku Regions.
+
 https://devcenter.heroku.com/articles/platform-api-reference#region
 
 The primary key for this table is **id**.

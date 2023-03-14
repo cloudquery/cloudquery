@@ -1,5 +1,7 @@
 # Table: k8s_core_namespaces
 
+This table shows data for K8s Core Namespaces.
+
 The primary key for this table is **uid**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: k8s_core_services
 
+This table shows data for K8s Core Services.
+
 The primary key for this table is **uid**.
 
 ## Columns

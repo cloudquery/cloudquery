@@ -1,5 +1,7 @@
 # Table: stripe_charges
 
+This table shows data for Stripe Charges.
+
 https://stripe.com/docs/api/charges
 
 The primary key for this table is **id**.

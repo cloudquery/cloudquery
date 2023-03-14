@@ -1,5 +1,7 @@
 # Table: stripe_tax_codes
 
+This table shows data for Stripe Tax Codes.
+
 https://stripe.com/docs/api/tax_codes
 
 The primary key for this table is **id**.

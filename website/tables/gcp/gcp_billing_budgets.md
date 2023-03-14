@@ -1,5 +1,7 @@
 # Table: gcp_billing_budgets
 
+This table shows data for GCP Billing Budgets.
+
 https://cloud.google.com/billing/docs/reference/budget/rest/v1/billingAccounts.budgets#Budget
 
 The composite primary key for this table is (**project_id**, **name**).

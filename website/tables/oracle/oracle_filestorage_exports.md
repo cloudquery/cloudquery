@@ -1,5 +1,7 @@
 # Table: oracle_filestorage_exports
 
+This table shows data for Oracle File Storage Exports.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

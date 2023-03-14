@@ -1,5 +1,7 @@
 # Table: azure_network_ip_allocations
 
+This table shows data for Azure Network IP Allocations.
+
 https://learn.microsoft.com/en-us/rest/api/virtualnetwork/ip-allocations/list?tabs=HTTP#ipallocation
 
 The primary key for this table is **id**.
