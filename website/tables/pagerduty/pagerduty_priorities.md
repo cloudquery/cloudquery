@@ -1,6 +1,6 @@
 # Table: pagerduty_priorities
 
-This table shows data for Pagerduty Priorities.
+This table shows data for PagerDuty Priorities.
 
 https://developer.pagerduty.com/api-reference/0fa9ad52bf2d2-list-priorities
 

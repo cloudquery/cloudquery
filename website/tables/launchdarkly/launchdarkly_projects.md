@@ -1,6 +1,6 @@
 # Table: launchdarkly_projects
 
-This table shows data for Launchdarkly Projects.
+This table shows data for LaunchDarkly Projects.
 
 https://apidocs.launchdarkly.com/tag/Projects#operation/getProjects
 
