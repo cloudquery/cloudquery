@@ -1,6 +1,6 @@
 # Table: aws_appstream_image_builders
 
-This table shows data for AWS Appstream Image Builders.
+This table shows data for Amazon AppStream Image Builders.
 
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_ImageBuilder.html
 

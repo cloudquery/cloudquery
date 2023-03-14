@@ -1,6 +1,6 @@
 # Table: aws_docdb_subnet_groups
 
-This table shows data for AWS Docdb Subnet Groups.
+This table shows data for Amazon DocumentDB Subnet Groups.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBSubnetGroup.html
 

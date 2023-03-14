@@ -1,6 +1,6 @@
 # Table: aws_waf_rules
 
-This table shows data for AWS WAF Rules.
+This table shows data for WAF Rules.
 
 https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_RuleSummary.html
 

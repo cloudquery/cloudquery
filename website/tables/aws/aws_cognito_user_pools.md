@@ -1,6 +1,6 @@
 # Table: aws_cognito_user_pools
 
-This table shows data for AWS Cognito User Pools.
+This table shows data for Cognito User Pools.
 
 https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UserPoolType.html
 

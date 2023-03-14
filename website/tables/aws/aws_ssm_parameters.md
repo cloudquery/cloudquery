@@ -1,6 +1,6 @@
 # Table: aws_ssm_parameters
 
-This table shows data for AWS Ssm Parameters.
+This table shows data for Ssm Parameters.
 
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ParameterMetadata.html
 

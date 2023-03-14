@@ -1,6 +1,6 @@
 # Table: aws_iam_user_access_keys
 
-This table shows data for AWS IAM User Access Keys.
+This table shows data for IAM User Access Keys.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_AccessKeyMetadata.html
 

@@ -1,6 +1,6 @@
 # Table: aws_redshift_snapshots
 
-This table shows data for AWS Redshift Snapshots.
+This table shows data for Redshift Snapshots.
 
 https://docs.aws.amazon.com/redshift/latest/APIReference/API_Snapshot.html
 

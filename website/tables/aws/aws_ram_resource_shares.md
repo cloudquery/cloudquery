@@ -1,6 +1,6 @@
 # Table: aws_ram_resource_shares
 
-This table shows data for AWS RAM Resource Shares.
+This table shows data for RAM Resource Shares.
 
 https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceShare.html
 

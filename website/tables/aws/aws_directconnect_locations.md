@@ -1,6 +1,6 @@
 # Table: aws_directconnect_locations
 
-This table shows data for AWS Directconnect Locations.
+This table shows data for AWS Direct Connect Locations.
 
 https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Location.html
 

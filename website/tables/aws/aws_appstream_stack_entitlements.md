@@ -1,6 +1,6 @@
 # Table: aws_appstream_stack_entitlements
 
-This table shows data for AWS Appstream Stack Entitlements.
+This table shows data for Amazon AppStream Stack Entitlements.
 
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Entitlement.html
 

@@ -1,6 +1,6 @@
 # Table: aws_apprunner_services
 
-This table shows data for AWS Apprunner Services.
+This table shows data for AWS App Runner Services.
 
 https://docs.aws.amazon.com/apprunner/latest/api/API_Service.html
 

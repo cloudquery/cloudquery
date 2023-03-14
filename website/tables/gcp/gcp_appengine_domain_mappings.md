@@ -1,6 +1,6 @@
 # Table: gcp_appengine_domain_mappings
 
-This table shows data for GCP Appengine Domain Mappings.
+This table shows data for GCP App Engine Domain Mappings.
 
 https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.domainMappings#DomainMapping
 

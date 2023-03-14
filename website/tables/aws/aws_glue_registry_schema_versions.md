@@ -1,6 +1,6 @@
 # Table: aws_glue_registry_schema_versions
 
-This table shows data for AWS Glue Registry Schema Versions.
+This table shows data for Glue Registry Schema Versions.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_GetSchemaVersion.html
 

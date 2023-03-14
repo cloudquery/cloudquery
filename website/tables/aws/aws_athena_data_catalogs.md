@@ -1,6 +1,6 @@
 # Table: aws_athena_data_catalogs
 
-This table shows data for AWS Athena Data Catalogs.
+This table shows data for Athena Data Catalogs.
 
 https://docs.aws.amazon.com/athena/latest/APIReference/API_DataCatalog.html
 
