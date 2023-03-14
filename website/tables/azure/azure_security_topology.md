@@ -1,5 +1,7 @@
 # Table: azure_security_topology
 
+This table shows data for Azure Security Topology.
+
 https://learn.microsoft.com/en-us/rest/api/defenderforcloud/topology/list?tabs=HTTP#topologyresource
 
 The composite primary key for this table is (**subscription_id**, **id**).

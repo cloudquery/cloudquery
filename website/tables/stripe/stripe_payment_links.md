@@ -1,5 +1,7 @@
 # Table: stripe_payment_links
 
+This table shows data for Stripe Payment Links.
+
 https://stripe.com/docs/api/payment_links
 
 The primary key for this table is **id**.

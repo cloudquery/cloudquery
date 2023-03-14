@@ -1,5 +1,7 @@
 # Table: github_traffic_views
 
+This table shows data for Github Traffic Views.
+
 https://docs.github.com/en/rest/metrics/traffic?apiVersion=2022-11-28#get-page-views
 
 The composite primary key for this table is (**org**, **repository_id**).

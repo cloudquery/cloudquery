@@ -1,5 +1,7 @@
 # Table: facebookmarketing_adcreatives
 
+This table shows data for Facebook Marketing Ad Creatives.
+
 https://developers.facebook.com/docs/marketing-api/reference/ad-creative#Reading
 
 The primary key for this table is **id**.

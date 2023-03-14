@@ -1,5 +1,7 @@
 # Table: gcp_securitycenter_folder_findings
 
+This table shows data for GCP Securitycenter Folder Findings.
+
 https://cloud.google.com/security-command-center/docs/reference/rest/v1/ListFindingsResponse#ListFindingsResult
 
 The composite primary key for this table is (**folder_id**, **name**).

@@ -1,5 +1,7 @@
 # Table: oracle_virtualnetwork_ip_sec_connections
 
+This table shows data for Oracle Virtual Network IP Sec Connections.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

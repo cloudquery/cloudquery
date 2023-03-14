@@ -1,5 +1,7 @@
 # Table: pagerduty_business_services
 
+This table shows data for PagerDuty Business Services.
+
 https://developer.pagerduty.com/api-reference/e67570b9d0e3d-list-business-services
 
 The primary key for this table is **id**.

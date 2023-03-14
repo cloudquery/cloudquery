@@ -1,5 +1,7 @@
 # Table: aws_ec2_regional_configs
 
+This table shows data for Amazon Elastic Compute Cloud (EC2) Regional Configs.
+
 The composite primary key for this table is (**account_id**, **region**).
 
 ## Columns

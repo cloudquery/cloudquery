@@ -1,5 +1,7 @@
 # Table: gcp_beyondcorp_client_gateways
 
+This table shows data for GCP Beyondcorp Client Gateways.
+
 https://cloud.google.com/beyondcorp/docs/reference/rest/v1/projects.locations.clientGateways#ClientGateway
 
 The composite primary key for this table is (**project_id**, **name**).

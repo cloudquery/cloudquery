@@ -1,5 +1,7 @@
 # Table: azure_security_applications
 
+This table shows data for Azure Security Applications.
+
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity@v0.9.0#Application
 
 The primary key for this table is **id**.

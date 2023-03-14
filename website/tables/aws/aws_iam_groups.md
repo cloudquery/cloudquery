@@ -1,5 +1,7 @@
 # Table: aws_iam_groups
 
+This table shows data for IAM Groups.
+
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html
 
 The composite primary key for this table is (**account_id**, **id**).

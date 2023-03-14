@@ -1,5 +1,7 @@
 # Table: gcp_vmmigration_source_migrating_vm_cutover_jobs
 
+This table shows data for GCP VM Migration Source Migrating VM Cutover Jobs.
+
 https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.sources.migratingVms.cutoverJobs
 
 The composite primary key for this table is (**project_id**, **name**).

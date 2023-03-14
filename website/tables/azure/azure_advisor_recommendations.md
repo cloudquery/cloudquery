@@ -1,5 +1,7 @@
 # Table: azure_advisor_recommendations
 
+This table shows data for Azure Advisor Recommendations.
+
 https://learn.microsoft.com/en-us/rest/api/advisor/recommendations/list?tabs=HTTP#resourcerecommendationbase
 
 The primary key for this table is **id**.

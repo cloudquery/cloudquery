@@ -1,5 +1,7 @@
 # Table: snyk_projects
 
+This table shows data for Snyk Projects.
+
 https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Project
 
 The primary key for this table is **id**.

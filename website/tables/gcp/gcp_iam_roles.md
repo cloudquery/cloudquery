@@ -1,5 +1,7 @@
 # Table: gcp_iam_roles
 
+This table shows data for GCP IAM Roles.
+
 https://cloud.google.com/iam/docs/reference/rest/v1/roles#Role
 
 The composite primary key for this table is (**project_id**, **name**).

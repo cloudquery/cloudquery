@@ -1,5 +1,7 @@
 # Table: fastly_stats_services
 
+This table shows data for Fastly Stats Services.
+
 https://developer.fastly.com/reference/api/metrics-stats/historical-stats/
 
 The composite primary key for this table is (**start_time**, **service_id**, **region**, **by**).

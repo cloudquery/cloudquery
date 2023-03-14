@@ -1,5 +1,7 @@
 # Table: mixpanel_engage_revenues
 
+This table shows data for Mixpanel Engage Revenues.
+
 The composite primary key for this table is (**project_id**, **date**).
 
 ## Columns

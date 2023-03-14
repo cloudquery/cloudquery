@@ -1,5 +1,7 @@
 # Table: stripe_prices
 
+This table shows data for Stripe Prices.
+
 https://stripe.com/docs/api/prices
 
 The primary key for this table is **id**.

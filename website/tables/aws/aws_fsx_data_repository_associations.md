@@ -1,5 +1,7 @@
 # Table: aws_fsx_data_repository_associations
 
+This table shows data for Amazon FSx Data Repository Associations.
+
 https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryAssociation.html
 
 The primary key for this table is **arn**.

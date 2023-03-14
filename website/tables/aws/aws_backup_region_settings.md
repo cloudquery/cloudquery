@@ -1,5 +1,7 @@
 # Table: aws_backup_region_settings
 
+This table shows data for Backup Region Settings.
+
 https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeRegionSettings.html
 
 The composite primary key for this table is (**account_id**, **region**).

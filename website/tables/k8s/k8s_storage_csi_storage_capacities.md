@@ -1,5 +1,7 @@
 # Table: k8s_storage_csi_storage_capacities
 
+This table shows data for K8s Storage Csi Storage Capacities.
+
 The primary key for this table is **uid**.
 
 ## Columns

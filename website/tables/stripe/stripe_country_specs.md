@@ -1,5 +1,7 @@
 # Table: stripe_country_specs
 
+This table shows data for Stripe Country Specs.
+
 https://stripe.com/docs/api/country_specs
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: digitalocean_registries
 
+This table shows data for DigitalOcean Registries.
+
 The primary key for this table is **name**.
 
 ## Relations

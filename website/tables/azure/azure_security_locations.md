@@ -1,5 +1,7 @@
 # Table: azure_security_locations
 
+This table shows data for Azure Security Locations.
+
 https://learn.microsoft.com/en-us/rest/api/defenderforcloud/locations/get?tabs=HTTP#asclocation
 
 The primary key for this table is **id**.

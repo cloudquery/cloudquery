@@ -1,5 +1,7 @@
 # Table: digitalocean_projects
 
+This table shows data for DigitalOcean Projects.
+
 The primary key for this table is **id**.
 
 ## Relations

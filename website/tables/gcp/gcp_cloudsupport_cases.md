@@ -1,5 +1,7 @@
 # Table: gcp_cloudsupport_cases
 
+This table shows data for GCP Cloudsupport Cases.
+
 https://cloud.google.com/support/docs/reference/rest/v2beta/cases#Case
 
 The composite primary key for this table is (**project_id**, **name**).

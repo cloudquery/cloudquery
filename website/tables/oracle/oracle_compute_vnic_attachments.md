@@ -1,5 +1,7 @@
 # Table: oracle_compute_vnic_attachments
 
+This table shows data for Oracle Compute Virtual Network Interface Card (VNIC) Attachments.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

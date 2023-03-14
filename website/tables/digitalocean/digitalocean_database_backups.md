@@ -1,5 +1,7 @@
 # Table: digitalocean_database_backups
 
+This table shows data for DigitalOcean Database Backups.
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

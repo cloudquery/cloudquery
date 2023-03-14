@@ -1,5 +1,7 @@
 # Table: oracle_compute_compute_capacity_reservations
 
+This table shows data for Oracle Compute Compute Capacity Reservations.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: gcp_bigquery_tables
 
+This table shows data for GCP BigQuery Tables.
+
 https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#Table
 
 The composite primary key for this table is (**project_id**, **id**).

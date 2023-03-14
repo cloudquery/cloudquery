@@ -1,5 +1,7 @@
 # Table: aws_elasticache_snapshots
 
+This table shows data for Elasticache Snapshots.
+
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_Snapshot.html
 
 The primary key for this table is **arn**.

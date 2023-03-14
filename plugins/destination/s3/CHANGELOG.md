@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v3.0.1...plugins-destination-s3-v3.0.2) (2023-03-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes to v1.5.1 ([#8951](https://github.com/cloudquery/cloudquery/issues/8951)) ([197559e](https://github.com/cloudquery/cloudquery/commit/197559e71e5d01b5a7fa194008ffc6e3cd22705f))
+
 ## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v3.0.0...plugins-destination-s3-v3.0.1) (2023-03-14)
 
 

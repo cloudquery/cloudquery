@@ -1,5 +1,7 @@
 # Table: azure_network_application_gateways
 
+This table shows data for Azure Network Application Gateways.
+
 https://learn.microsoft.com/en-us/rest/api/application-gateway/application-gateways/list?tabs=HTTP#applicationgateway
 
 The primary key for this table is **id**.

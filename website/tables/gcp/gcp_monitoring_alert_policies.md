@@ -1,5 +1,7 @@
 # Table: gcp_monitoring_alert_policies
 
+This table shows data for GCP Monitoring Alert Policies.
+
 https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.alertPolicies#AlertPolicy
 
 The primary key for this table is **name**.

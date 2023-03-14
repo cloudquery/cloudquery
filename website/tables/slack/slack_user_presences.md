@@ -1,5 +1,7 @@
 # Table: slack_user_presences
 
+This table shows data for Slack User Presences.
+
 https://api.slack.com/methods/users.getPresence
 
 The primary key for this table is **user_id**.

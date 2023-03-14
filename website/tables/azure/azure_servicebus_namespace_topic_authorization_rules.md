@@ -1,5 +1,7 @@
 # Table: azure_servicebus_namespace_topic_authorization_rules
 
+This table shows data for Azure Service Bus Namespace Topic Authorization Rules.
+
 https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics%20%E2%80%93%20authorization%20rules/list-authorization-rules?tabs=HTTP#sbauthorizationrule
 
 The primary key for this table is **id**.

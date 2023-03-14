@@ -1,5 +1,7 @@
 # Table: gcp_appengine_authorized_certificates
 
+This table shows data for GCP App Engine Authorized Certificates.
+
 https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.authorizedCertificates#AuthorizedCertificate
 
 The composite primary key for this table is (**project_id**, **name**).

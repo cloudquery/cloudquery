@@ -1,5 +1,7 @@
 # Table: aws_cloudfront_cache_policies
 
+This table shows data for Cloudfront Cache Policies.
+
 https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_CachePolicySummary.html
 
 The primary key for this table is **arn**.

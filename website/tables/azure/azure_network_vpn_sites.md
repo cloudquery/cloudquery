@@ -1,5 +1,7 @@
 # Table: azure_network_vpn_sites
 
+This table shows data for Azure Network Virtual Private Network (VPN) Sites.
+
 https://learn.microsoft.com/en-us/rest/api/virtualwan/vpn-sites/list?tabs=HTTP#vpnsite
 
 The primary key for this table is **id**.
