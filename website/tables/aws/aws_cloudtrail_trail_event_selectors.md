@@ -1,5 +1,7 @@
 # Table: aws_cloudtrail_trail_event_selectors
 
+This table shows data for AWS Cloudtrail Trail Event Selectors.
+
 https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_EventSelector.html
 
 The primary key for this table is **_cq_id**.

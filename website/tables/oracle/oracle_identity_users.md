@@ -1,5 +1,7 @@
 # Table: oracle_identity_users
 
+This table shows data for Oracle Identity Users.
+
 The primary key for this table is **id**.
 
 ## Columns

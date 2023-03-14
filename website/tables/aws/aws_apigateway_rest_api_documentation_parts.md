@@ -1,5 +1,7 @@
 # Table: aws_apigateway_rest_api_documentation_parts
 
+This table shows data for AWS Apigateway Rest API Documentation Parts.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_DocumentationPart.html
 
 The composite primary key for this table is (**account_id**, **arn**).

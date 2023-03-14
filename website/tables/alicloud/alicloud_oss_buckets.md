@@ -1,5 +1,7 @@
 # Table: alicloud_oss_buckets
 
+This table shows data for Alicloud Oss Buckets.
+
 The composite primary key for this table is (**account_id**, **name**).
 
 ## Relations

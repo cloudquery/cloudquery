@@ -1,5 +1,7 @@
 # Table: azure_frontdoor_network_experiment_profiles
 
+This table shows data for Azure Frontdoor Network Experiment Profiles.
+
 https://learn.microsoft.com/en-us/rest/api/internetanalyzer/network-experiment-profiles/list?tabs=HTTP#profile
 
 The primary key for this table is **id**.

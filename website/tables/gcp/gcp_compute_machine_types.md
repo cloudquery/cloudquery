@@ -1,5 +1,7 @@
 # Table: gcp_compute_machine_types
 
+This table shows data for GCP Compute Machine Types.
+
 https://cloud.google.com/compute/docs/reference/rest/v1/machineTypes/list#response-body
 
 The primary key for this table is **self_link**.

@@ -1,5 +1,7 @@
 # Table: tailscale_dns_preferences
 
+This table shows data for Tailscale DNS Preferences.
+
 https://github.com/tailscale/tailscale/blob/main/api.md#tailnet-dns-preferences-get
 
 The primary key for this table is **tailnet**.

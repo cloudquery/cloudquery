@@ -1,5 +1,7 @@
 # Table: digitalocean_sizes
 
+This table shows data for Digitalocean Sizes.
+
 The primary key for this table is **slug**.
 
 ## Columns

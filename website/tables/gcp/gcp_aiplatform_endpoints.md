@@ -1,5 +1,7 @@
 # Table: gcp_aiplatform_endpoints
 
+This table shows data for GCP Aiplatform Endpoints.
+
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.endpoints#Endpoint
 
 The composite primary key for this table is (**project_id**, **name**).

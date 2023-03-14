@@ -1,5 +1,7 @@
 # Table: stripe_billing_portal_configurations
 
+This table shows data for Stripe Billing Portal Configurations.
+
 https://stripe.com/docs/api/billing_portal_configurations
 
 The primary key for this table is **id**.

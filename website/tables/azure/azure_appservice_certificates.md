@@ -1,5 +1,7 @@
 # Table: azure_appservice_certificates
 
+This table shows data for Azure Appservice Certificates.
+
 https://learn.microsoft.com/en-us/rest/api/appservice/certificates/list?tabs=HTTP#certificate
 
 The primary key for this table is **id**.

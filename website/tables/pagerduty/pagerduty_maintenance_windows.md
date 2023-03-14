@@ -1,5 +1,7 @@
 # Table: pagerduty_maintenance_windows
 
+This table shows data for Pagerduty Maintenance Windows.
+
 https://developer.pagerduty.com/api-reference/4c0936c241cbb-list-maintenance-windows
 
 The primary key for this table is **id**.

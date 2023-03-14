@@ -1,5 +1,7 @@
 # Table: aws_ecr_registry_policies
 
+This table shows data for AWS Ecr Registry Policies.
+
 https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_GetRegistryPolicy.html
 
 The composite primary key for this table is (**account_id**, **region**, **registry_id**).

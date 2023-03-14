@@ -1,5 +1,7 @@
 # Table: awspricing_service_products
 
+This table shows data for Awspricing Service Products.
+
 The primary key for this table is **sku**.
 
 ## Relations

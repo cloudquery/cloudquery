@@ -1,5 +1,7 @@
 # Table: aws_ssm_inventory_schemas
 
+This table shows data for AWS Ssm Inventory Schemas.
+
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InventoryItemSchema.html
 
 The composite primary key for this table is (**account_id**, **region**, **type_name**, **version**).

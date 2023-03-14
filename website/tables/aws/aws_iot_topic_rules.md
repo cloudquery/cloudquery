@@ -1,5 +1,7 @@
 # Table: aws_iot_topic_rules
 
+This table shows data for AWS IOT Topic Rules.
+
 https://docs.aws.amazon.com/iot/latest/apireference/API_GetTopicRule.html
 
 The primary key for this table is **arn**.

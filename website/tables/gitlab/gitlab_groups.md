@@ -1,5 +1,7 @@
 # Table: gitlab_groups
 
+This table shows data for Gitlab Groups.
+
 The composite primary key for this table is (**base_url**, **id**, **name**).
 
 ## Relations

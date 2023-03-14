@@ -1,5 +1,7 @@
 # Table: github_billing_package
 
+This table shows data for Github Billing Package.
+
 The primary key for this table is **org**.
 
 ## Columns

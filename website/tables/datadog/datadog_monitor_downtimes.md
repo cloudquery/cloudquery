@@ -1,5 +1,7 @@
 # Table: datadog_monitor_downtimes
 
+This table shows data for Datadog Monitor Downtimes.
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

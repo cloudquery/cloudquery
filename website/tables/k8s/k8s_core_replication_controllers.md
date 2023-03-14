@@ -1,5 +1,7 @@
 # Table: k8s_core_replication_controllers
 
+This table shows data for K8s Core Replication Controllers.
+
 The primary key for this table is **uid**.
 
 ## Columns

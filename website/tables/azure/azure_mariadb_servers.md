@@ -1,5 +1,7 @@
 # Table: azure_mariadb_servers
 
+This table shows data for Azure Mariadb Servers.
+
 https://learn.microsoft.com/en-us/rest/api/mariadb/servers/list?tabs=HTTP#server
 
 The primary key for this table is **id**.

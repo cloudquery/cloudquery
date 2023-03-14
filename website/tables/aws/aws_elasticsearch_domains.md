@@ -1,5 +1,7 @@
 # Table: aws_elasticsearch_domains
 
+This table shows data for AWS Elasticsearch Domains.
+
 https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_DomainStatus.html
 
 The primary key for this table is **arn**.

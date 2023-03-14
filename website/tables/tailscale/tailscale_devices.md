@@ -1,5 +1,7 @@
 # Table: tailscale_devices
 
+This table shows data for Tailscale Devices.
+
 https://github.com/tailscale/tailscale/blob/main/api.md#tailnet-devices-get
 
 The composite primary key for this table is (**tailnet**, **id**).

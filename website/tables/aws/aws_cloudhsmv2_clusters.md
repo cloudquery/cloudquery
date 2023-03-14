@@ -1,5 +1,7 @@
 # Table: aws_cloudhsmv2_clusters
 
+This table shows data for AWS Cloudhsmv2 Clusters.
+
 https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_Cluster.html
 
 The primary key for this table is **arn**.

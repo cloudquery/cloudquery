@@ -1,5 +1,7 @@
 # Table: aws_eventbridge_connections
 
+This table shows data for AWS Eventbridge Connections.
+
 https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Connection.html
 
 The primary key for this table is **arn**.

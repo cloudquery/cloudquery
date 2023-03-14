@@ -1,5 +1,7 @@
 # Table: gcp_appengine_domain_mappings
 
+This table shows data for GCP Appengine Domain Mappings.
+
 https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.domainMappings#DomainMapping
 
 The composite primary key for this table is (**project_id**, **name**).

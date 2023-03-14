@@ -1,5 +1,7 @@
 # Table: aws_ec2_reserved_instances
 
+This table shows data for AWS Ec2 Reserved Instances.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ReservedInstances.html
 
 The primary key for this table is **arn**.

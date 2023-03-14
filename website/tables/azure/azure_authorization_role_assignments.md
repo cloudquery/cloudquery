@@ -1,5 +1,7 @@
 # Table: azure_authorization_role_assignments
 
+This table shows data for Azure Authorization Role Assignments.
+
 https://learn.microsoft.com/en-us/rest/api/authorization/role-assignments/get?tabs=HTTP#roleassignment
 
 The composite primary key for this table is (**subscription_id**, **id**).

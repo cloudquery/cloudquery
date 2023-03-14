@@ -1,5 +1,7 @@
 # Table: okta_application_group_assignments
 
+This table shows data for Okta Application Group Assignments.
+
 The composite primary key for this table is (**app_id**, **id**).
 
 ## Relations

@@ -1,5 +1,7 @@
 # Table: gcp_kms_crypto_keys
 
+This table shows data for GCP Kms Crypto Keys.
+
 https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKey
 
 The composite primary key for this table is (**project_id**, **name**).

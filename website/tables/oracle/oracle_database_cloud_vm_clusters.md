@@ -1,5 +1,7 @@
 # Table: oracle_database_cloud_vm_clusters
 
+This table shows data for Oracle Database Cloud VM Clusters.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

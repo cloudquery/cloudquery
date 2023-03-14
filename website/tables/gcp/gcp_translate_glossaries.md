@@ -1,5 +1,7 @@
 # Table: gcp_translate_glossaries
 
+This table shows data for GCP Translate Glossaries.
+
 https://cloud.google.com/translate/docs/reference/rest/v3/projects.locations.glossaries#resource:-glossary
 
 The composite primary key for this table is (**project_id**, **name**).
@@ -18,3 +20,4 @@ The composite primary key for this table is (**project_id**, **name**).
 |entry_count|Int|
 |submit_time|Timestamp|
 |end_time|Timestamp|
+|display_name|String|

@@ -1,5 +1,7 @@
 # Table: gcp_artifactregistry_tags
 
+This table shows data for GCP Artifactregistry Tags.
+
 https://cloud.google.com/artifact-registry/docs/reference/rest/v1/projects.locations.repositories.packages.tags#Tag
 
 The composite primary key for this table is (**project_id**, **name**).

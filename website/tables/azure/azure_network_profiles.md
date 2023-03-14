@@ -1,5 +1,7 @@
 # Table: azure_network_profiles
 
+This table shows data for Azure Network Profiles.
+
 https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-profiles/list?tabs=HTTP#networkprofile
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: aws_appstream_directory_configs
 
+This table shows data for AWS Appstream Directory Configs.
+
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_DirectoryConfig.html
 
 The composite primary key for this table is (**account_id**, **region**, **directory_name**).

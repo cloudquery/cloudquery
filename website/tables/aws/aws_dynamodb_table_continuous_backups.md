@@ -1,5 +1,7 @@
 # Table: aws_dynamodb_table_continuous_backups
 
+This table shows data for AWS Dynamodb Table Continuous Backups.
+
 https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ContinuousBackupsDescription.html
 
 The primary key for this table is **_cq_id**.

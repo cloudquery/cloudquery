@@ -1,5 +1,7 @@
 # Table: aws_ssm_inventories
 
+This table shows data for AWS Ssm Inventories.
+
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InventoryResultEntity.html
 
 The composite primary key for this table is (**account_id**, **region**, **id**).

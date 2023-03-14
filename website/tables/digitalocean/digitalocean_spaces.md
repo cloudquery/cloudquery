@@ -1,5 +1,7 @@
 # Table: digitalocean_spaces
 
+This table shows data for Digitalocean Spaces.
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

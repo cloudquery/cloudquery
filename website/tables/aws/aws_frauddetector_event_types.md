@@ -1,5 +1,7 @@
 # Table: aws_frauddetector_event_types
 
+This table shows data for AWS Frauddetector Event Types.
+
 https://docs.aws.amazon.com/frauddetector/latest/api/API_EventType.html
 
 The primary key for this table is **arn**.

@@ -1,5 +1,7 @@
 # Table: aws_route53_traffic_policy_versions
 
+This table shows data for AWS Route53 Traffic Policy Versions.
+
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicy.html
 
 The composite primary key for this table is (**traffic_policy_arn**, **id**, **version**).

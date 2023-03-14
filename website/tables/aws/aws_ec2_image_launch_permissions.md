@@ -1,5 +1,7 @@
 # Table: aws_ec2_image_launch_permissions
 
+This table shows data for AWS Ec2 Image Launch Permissions.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchPermission.html
 
 The primary key for this table is **_cq_id**.

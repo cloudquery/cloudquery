@@ -1,5 +1,7 @@
 # Table: azure_postgresqlflexibleservers_servers
 
+This table shows data for Azure Postgresqlflexibleservers Servers.
+
 https://learn.microsoft.com/en-us/rest/api/postgresql/flexibleserver/servers/list?tabs=HTTP#server
 
 The primary key for this table is **id**.

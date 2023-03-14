@@ -1,5 +1,7 @@
 # Table: aws_s3_buckets
 
+This table shows data for AWS S3 Buckets.
+
 The primary key for this table is **arn**.
 
 ## Relations

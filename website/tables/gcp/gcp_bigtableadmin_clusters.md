@@ -1,5 +1,7 @@
 # Table: gcp_bigtableadmin_clusters
 
+This table shows data for GCP Bigtableadmin Clusters.
+
 https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances.clusters#Cluster
 
 The composite primary key for this table is (**project_id**, **name**).

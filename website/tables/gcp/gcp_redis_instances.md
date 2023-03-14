@@ -1,5 +1,7 @@
 # Table: gcp_redis_instances
 
+This table shows data for GCP Redis Instances.
+
 https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance
 
 The primary key for this table is **name**.

@@ -1,5 +1,7 @@
 # Table: hubspot_crm_contacts
 
+This table shows data for Hubspot Crm Contacts.
+
 https://developers.hubspot.com/docs/api/crm/contacts
 
 The primary key for this table is **id**.

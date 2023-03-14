@@ -1,5 +1,7 @@
 # Table: homebrew_analytics_installs_365d
 
+This table shows data for Homebrew Analytics Installs 365d.
+
 https://formulae.brew.sh/analytics/install/365d/
 
 The primary key for this table is **number**.

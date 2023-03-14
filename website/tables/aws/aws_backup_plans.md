@@ -1,5 +1,7 @@
 # Table: aws_backup_plans
 
+This table shows data for AWS Backup Plans.
+
 https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupPlan.html
 
 The primary key for this table is **arn**.

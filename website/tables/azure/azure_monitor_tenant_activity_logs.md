@@ -1,5 +1,7 @@
 # Table: azure_monitor_tenant_activity_logs
 
+This table shows data for Azure Monitor Tenant Activity Logs.
+
 https://learn.microsoft.com/en-us/rest/api/monitor/tenant-activity-logs/list?tabs=HTTP#eventdata
 
 The primary key for this table is **id**.

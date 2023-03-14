@@ -1,5 +1,7 @@
 # Table: stripe_issuing_authorizations
 
+This table shows data for Stripe Issuing Authorizations.
+
 https://stripe.com/docs/api/issuing_authorizations
 
 The primary key for this table is **id**.

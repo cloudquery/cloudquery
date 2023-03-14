@@ -1,5 +1,7 @@
 # Table: aws_quicksight_data_sets
 
+This table shows data for AWS Quicksight Data Sets.
+
 https://docs.aws.amazon.com/quicksight/latest/APIReference/API_DataSetSummary.html
 
 The composite primary key for this table is (**account_id**, **region**, **arn**).

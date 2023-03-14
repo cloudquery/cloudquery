@@ -1,5 +1,7 @@
 # Table: aws_scheduler_schedules
 
+This table shows data for AWS Scheduler Schedules.
+
 https://docs.aws.amazon.com/scheduler/latest/APIReference/API_GetScheduleOutput.html
 
 The primary key for this table is **arn**.

@@ -1,5 +1,7 @@
 # Table: launchdarkly_auditlog_entries
 
+This table shows data for Launchdarkly Auditlog Entries.
+
 https://apidocs.launchdarkly.com/tag/Audit-log#operation/getAuditLogEntries
 
 The primary key for this table is **id**.

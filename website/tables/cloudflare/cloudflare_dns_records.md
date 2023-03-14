@@ -1,5 +1,7 @@
 # Table: cloudflare_dns_records
 
+This table shows data for Cloudflare DNS Records.
+
 The primary key for this table is **id**.
 
 ## Columns

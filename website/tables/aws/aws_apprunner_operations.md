@@ -1,5 +1,7 @@
 # Table: aws_apprunner_operations
 
+This table shows data for AWS Apprunner Operations.
+
 https://docs.aws.amazon.com/apprunner/latest/api/API_OperationSummary.html
 
 The primary key for this table is **_cq_id**.

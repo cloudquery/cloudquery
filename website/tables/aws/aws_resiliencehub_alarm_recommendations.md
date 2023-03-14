@@ -1,5 +1,7 @@
 # Table: aws_resiliencehub_alarm_recommendations
 
+This table shows data for AWS Resiliencehub Alarm Recommendations.
+
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_AlarmRecommendation.html
 
 The composite primary key for this table is (**app_arn**, **assessment_arn**, **recommendation_id**).

@@ -1,5 +1,7 @@
 # Table: aws_iam_accounts
 
+This table shows data for AWS IAM Accounts.
+
 The primary key for this table is **account_id**.
 
 ## Columns

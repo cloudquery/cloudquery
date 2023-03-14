@@ -1,5 +1,7 @@
 # Table: aws_iam_ssh_public_keys
 
+This table shows data for AWS IAM SSH Public Keys.
+
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_SSHPublicKeyMetadata.html
 
 The primary key for this table is **ssh_public_key_id**.

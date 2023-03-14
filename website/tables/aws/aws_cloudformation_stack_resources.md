@@ -1,5 +1,7 @@
 # Table: aws_cloudformation_stack_resources
 
+This table shows data for AWS Cloudformation Stack Resources.
+
 https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackResourceSummary.html
 
 The primary key for this table is **_cq_id**.

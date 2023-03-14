@@ -1,5 +1,7 @@
 # Table: aws_organization_resource_policies
 
+This table shows data for AWS Organization Resource Policies.
+
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_DescribeResourcePolicy.html
 
 The primary key for this table is **account_id**.

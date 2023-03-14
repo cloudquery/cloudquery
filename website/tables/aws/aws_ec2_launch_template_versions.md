@@ -1,5 +1,7 @@
 # Table: aws_ec2_launch_template_versions
 
+This table shows data for AWS Ec2 Launch Template Versions.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchTemplateVersion.html
 
 The composite primary key for this table is (**arn**, **version_number**).

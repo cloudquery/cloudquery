@@ -1,5 +1,7 @@
 # Table: gcp_iam_deny_policies
 
+This table shows data for GCP IAM Deny Policies.
+
 https://cloud.google.com/iam/docs/reference/rest/v2beta/policies#Policy
 
 The composite primary key for this table is (**project_id**, **name**).

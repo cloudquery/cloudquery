@@ -1,5 +1,7 @@
 # Table: aws_ssm_instance_compliance_items
 
+This table shows data for AWS Ssm Instance Compliance Items.
+
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ComplianceItem.html
 
 The composite primary key for this table is (**id**, **instance_arn**).

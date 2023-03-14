@@ -1,5 +1,7 @@
 # Table: aws_sns_subscriptions
 
+This table shows data for AWS Sns Subscriptions.
+
 https://docs.aws.amazon.com/sns/latest/api/API_GetSubscriptionAttributes.html
 
 The primary key for this table is **arn**.

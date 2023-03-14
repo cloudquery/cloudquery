@@ -1,5 +1,7 @@
 # Table: aws_servicecatalog_products
 
+This table shows data for AWS Servicecatalog Products.
+
 https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProductViewDetail.html
 
 The primary key for this table is **arn**.

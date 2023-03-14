@@ -1,5 +1,7 @@
 # Table: heroku_add_ons
 
+This table shows data for Heroku Add Ons.
+
 https://devcenter.heroku.com/articles/platform-api-reference#add-on
 
 The primary key for this table is **id**.

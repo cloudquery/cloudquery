@@ -1,5 +1,7 @@
 # Table: aws_ram_resource_share_permissions
 
+This table shows data for AWS RAM Resource Share Permissions.
+
 https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceSharePermissionSummary.html
 
 The composite primary key for this table is (**account_id**, **region**, **arn**, **version**).

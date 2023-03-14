@@ -1,5 +1,7 @@
 # Table: pagerduty_incident_notes
 
+This table shows data for Pagerduty Incident Notes.
+
 https://developer.pagerduty.com/api-reference/a1ac30885eb7a-list-notes-for-an-incident
 
 The primary key for this table is **id**.

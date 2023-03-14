@@ -1,5 +1,7 @@
 # Table: aws_apigateway_rest_api_request_validators
 
+This table shows data for AWS Apigateway Rest API Request Validators.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_RequestValidator.html
 
 The composite primary key for this table is (**account_id**, **arn**).

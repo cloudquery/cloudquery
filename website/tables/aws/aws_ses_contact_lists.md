@@ -1,5 +1,7 @@
 # Table: aws_ses_contact_lists
 
+This table shows data for AWS Ses Contact Lists.
+
 https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetContactList.html
 
 The composite primary key for this table is (**account_id**, **region**, **name**).
