@@ -1,6 +1,6 @@
 # Table: aws_elasticache_update_actions
 
-This table shows data for AWS Elasticache Update Actions.
+This table shows data for Elasticache Update Actions.
 
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_UpdateAction.html
 

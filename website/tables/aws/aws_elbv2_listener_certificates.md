@@ -1,6 +1,6 @@
 # Table: aws_elbv2_listener_certificates
 
-This table shows data for AWS Elbv2 Listener Certificates.
+This table shows data for Amazon Elastic Load Balancer (ELB) v2 Listener Certificates.
 
 https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Certificate.html
 

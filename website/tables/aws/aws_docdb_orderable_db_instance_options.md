@@ -1,6 +1,6 @@
 # Table: aws_docdb_orderable_db_instance_options
 
-This table shows data for AWS Docdb Orderable DB Instance Options.
+This table shows data for Amazon DocumentDB Orderable DB Instance Options.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_OrderableDBInstanceOption.html
 

@@ -1,6 +1,6 @@
 # Table: aws_support_trusted_advisor_check_results
 
-This table shows data for AWS Support Trusted Advisor Check Results.
+This table shows data for Support Trusted Advisor Check Results.
 
 https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeTrustedAdvisorCheckResult.html
 

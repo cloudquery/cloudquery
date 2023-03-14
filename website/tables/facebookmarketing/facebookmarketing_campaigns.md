@@ -1,6 +1,6 @@
 # Table: facebookmarketing_campaigns
 
-This table shows data for Facebookmarketing Campaigns.
+This table shows data for Facebook Marketing Campaigns.
 
 https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/
 

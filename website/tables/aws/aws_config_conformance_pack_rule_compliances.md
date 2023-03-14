@@ -1,6 +1,6 @@
 # Table: aws_config_conformance_pack_rule_compliances
 
-This table shows data for AWS Config Conformance Pack Rule Compliances.
+This table shows data for Config Conformance Pack Rule Compliances.
 
 https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConformancePackCompliance.html
 

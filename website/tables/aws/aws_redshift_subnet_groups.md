@@ -1,6 +1,6 @@
 # Table: aws_redshift_subnet_groups
 
-This table shows data for AWS Redshift Subnet Groups.
+This table shows data for Redshift Subnet Groups.
 
 https://docs.aws.amazon.com/redshift/latest/APIReference/API_ClusterSubnetGroup.html
 

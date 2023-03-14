@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_job_locations
 
-This table shows data for GCP Aiplatform Job Locations.
+This table shows data for GCP AI Platform Job Locations.
 
 https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location
 

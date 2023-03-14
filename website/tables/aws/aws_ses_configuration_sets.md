@@ -1,6 +1,6 @@
 # Table: aws_ses_configuration_sets
 
-This table shows data for AWS Ses Configuration Sets.
+This table shows data for Amazon Simple Email Service (SES) Configuration Sets.
 
 https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetConfigurationSet.html
 

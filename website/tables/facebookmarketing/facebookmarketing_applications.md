@@ -1,6 +1,6 @@
 # Table: facebookmarketing_applications
 
-This table shows data for Facebookmarketing Applications.
+This table shows data for Facebook Marketing Applications.
 
 https://developers.facebook.com/docs/graph-api/reference/application#Reading
 

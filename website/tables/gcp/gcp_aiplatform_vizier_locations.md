@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_vizier_locations
 
-This table shows data for GCP Aiplatform Vizier Locations.
+This table shows data for GCP AI Platform Vizier Locations.
 
 https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location
 

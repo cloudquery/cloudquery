@@ -1,6 +1,6 @@
 # Table: hubspot_crm_tickets
 
-This table shows data for Hubspot Crm Tickets.
+This table shows data for HubSpot CRM Tickets.
 
 https://developers.hubspot.com/docs/api/crm/tickets
 

@@ -1,6 +1,6 @@
 # Table: aws_resiliencehub_component_recommendations
 
-This table shows data for AWS Resiliencehub Component Recommendations.
+This table shows data for AWS Resilience Hub Component Recommendations.
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_ComponentRecommendation.html
 

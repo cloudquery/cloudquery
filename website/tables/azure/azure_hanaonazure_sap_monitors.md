@@ -1,6 +1,6 @@
 # Table: azure_hanaonazure_sap_monitors
 
-This table shows data for Azure Hanaonazure Sap Monitors.
+This table shows data for Azure HANA on Azure SAP Monitors.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hanaonazure/armhanaonazure@v0.5.0#SapMonitor
 

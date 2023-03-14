@@ -1,6 +1,6 @@
 # Table: aws_resiliencehub_resiliency_policies
 
-This table shows data for AWS Resiliencehub Resiliency Policies.
+This table shows data for AWS Resilience Hub Resiliency Policies.
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_ResiliencyPolicy.html
 

@@ -1,6 +1,6 @@
 # Table: aws_elasticache_users
 
-This table shows data for AWS Elasticache Users.
+This table shows data for Elasticache Users.
 
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_User.html
 
