@@ -1,6 +1,6 @@
 # Table: aws_identitystore_users
 
-This table shows data for AWS Identity Store Users.
+This table shows data for Identity Store Users.
 
 https://docs.aws.amazon.com/singlesignon/latest/IdentityStoreAPIReference/API_User.html
 

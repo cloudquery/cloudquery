@@ -1,6 +1,6 @@
 # Table: aws_rds_clusters
 
-This table shows data for AWS RDS Clusters.
+This table shows data for Amazon Relational Database Service (RDS) Clusters.
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBCluster.html
 

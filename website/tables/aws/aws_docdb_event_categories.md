@@ -1,6 +1,6 @@
 # Table: aws_docdb_event_categories
 
-This table shows data for AWS DocDB Event Categories.
+This table shows data for Amazon DocumentDB Event Categories.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventCategoriesMap.html
 

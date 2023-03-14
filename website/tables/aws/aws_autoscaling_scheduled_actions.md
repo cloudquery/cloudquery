@@ -1,6 +1,6 @@
 # Table: aws_autoscaling_scheduled_actions
 
-This table shows data for AWS Autoscaling Scheduled Actions.
+This table shows data for Autoscaling Scheduled Actions.
 
 https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScheduledUpdateGroupAction.html
 

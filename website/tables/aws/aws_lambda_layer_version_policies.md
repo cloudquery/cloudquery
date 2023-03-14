@@ -1,6 +1,6 @@
 # Table: aws_lambda_layer_version_policies
 
-This table shows data for AWS Lambda Layer Version Policies.
+This table shows data for Lambda Layer Version Policies.
 
 https://docs.aws.amazon.com/lambda/latest/dg/API_GetLayerVersionPolicy.html
 

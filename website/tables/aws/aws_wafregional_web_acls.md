@@ -1,6 +1,6 @@
 # Table: aws_wafregional_web_acls
 
-This table shows data for AWS Wafregional Web ACLs.
+This table shows data for Wafregional Web ACLs.
 
 https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_WebACL.html
 

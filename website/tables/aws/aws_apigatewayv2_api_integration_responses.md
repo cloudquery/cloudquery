@@ -1,6 +1,6 @@
 # Table: aws_apigatewayv2_api_integration_responses
 
-This table shows data for AWS API Gateway v2 API Integration Responses.
+This table shows data for Amazon API Gateway v2 API Integration Responses.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_IntegrationResponse.html
 

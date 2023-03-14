@@ -1,6 +1,6 @@
 # Table: aws_autoscaling_launch_configurations
 
-This table shows data for AWS Autoscaling Launch Configurations.
+This table shows data for Autoscaling Launch Configurations.
 
 https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchConfiguration.html
 

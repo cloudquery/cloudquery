@@ -1,6 +1,6 @@
 # Table: aws_emr_security_configurations
 
-This table shows data for AWS EMR Security Configurations.
+This table shows data for Amazon EMR Security Configurations.
 
 https://docs.aws.amazon.com/emr/latest/APIReference/API_DescribeSecurityConfiguration.html
 

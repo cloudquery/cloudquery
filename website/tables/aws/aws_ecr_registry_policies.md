@@ -1,6 +1,6 @@
 # Table: aws_ecr_registry_policies
 
-This table shows data for AWS ECR Registry Policies.
+This table shows data for Amazon Elastic Container Registry (ECR) Registry Policies.
 
 https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_GetRegistryPolicy.html
 

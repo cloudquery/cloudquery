@@ -1,6 +1,6 @@
 # Table: aws_docdb_events
 
-This table shows data for AWS DocDB Events.
+This table shows data for Amazon DocumentDB Events.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Event.html
 

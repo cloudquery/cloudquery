@@ -1,6 +1,6 @@
 # Table: aws_s3_access_points
 
-This table shows data for AWS S3 Access Points.
+This table shows data for S3 Access Points.
 
 The primary key for this table is **arn**.
 

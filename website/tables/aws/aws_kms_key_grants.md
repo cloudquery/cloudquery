@@ -1,6 +1,6 @@
 # Table: aws_kms_key_grants
 
-This table shows data for AWS KMS Key Grants.
+This table shows data for AWS Key Management Service (AWS KMS) Key Grants.
 
 https://docs.aws.amazon.com/kms/latest/APIReference/API_GrantListEntry.html
 

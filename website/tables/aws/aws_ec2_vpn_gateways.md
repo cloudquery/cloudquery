@@ -1,6 +1,6 @@
 # Table: aws_ec2_vpn_gateways
 
-This table shows data for AWS EC2 VPN Gateways.
+This table shows data for Amazon Elastic Compute Cloud (EC2) VPN Gateways.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpnGateway.html
 

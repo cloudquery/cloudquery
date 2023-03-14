@@ -1,6 +1,6 @@
 # Table: aws_dynamodb_table_continuous_backups
 
-This table shows data for AWS DynamoDB Table Continuous Backups.
+This table shows data for Amazon DynamoDB Table Continuous Backups.
 
 https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ContinuousBackupsDescription.html
 

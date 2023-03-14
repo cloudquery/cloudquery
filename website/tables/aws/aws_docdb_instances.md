@@ -1,6 +1,6 @@
 # Table: aws_docdb_instances
 
-This table shows data for AWS DocDB Instances.
+This table shows data for Amazon DocumentDB Instances.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBInstance.html
 

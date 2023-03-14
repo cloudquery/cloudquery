@@ -1,6 +1,6 @@
 # Table: aws_backup_region_settings
 
-This table shows data for AWS Backup Region Settings.
+This table shows data for Backup Region Settings.
 
 https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeRegionSettings.html
 

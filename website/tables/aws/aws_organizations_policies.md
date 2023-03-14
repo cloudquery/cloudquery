@@ -1,6 +1,6 @@
 # Table: aws_organizations_policies
 
-This table shows data for AWS Organizations Policies.
+This table shows data for Organizations Policies.
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_Policy.html
 

@@ -1,6 +1,6 @@
 # Table: aws_ec2_vpc_endpoint_service_permissions
 
-This table shows data for AWS EC2 VPC Endpoint Service Permissions.
+This table shows data for Amazon Elastic Compute Cloud (EC2) VPC Endpoint Service Permissions.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_AllowedPrincipal.html
 

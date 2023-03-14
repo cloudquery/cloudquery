@@ -1,6 +1,6 @@
 # Table: aws_elbv2_target_group_target_health_descriptions
 
-This table shows data for AWS ELB v2 Target Group Target Health Descriptions.
+This table shows data for Amazon Elastic Load Balancer (ELB) v2 Target Group Target Health Descriptions.
 
 https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_TargetHealthDescription.html
 

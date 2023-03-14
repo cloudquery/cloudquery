@@ -1,6 +1,6 @@
 # Table: aws_resiliencehub_app_component_compliances
 
-This table shows data for AWS Resiliencehub App Component Compliances.
+This table shows data for AWS Resilience Hub App Component Compliances.
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_AppComponentCompliance.html
 

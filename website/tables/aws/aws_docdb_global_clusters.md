@@ -1,6 +1,6 @@
 # Table: aws_docdb_global_clusters
 
-This table shows data for AWS DocDB Global Clusters.
+This table shows data for Amazon DocumentDB Global Clusters.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_GlobalCluster.html
 

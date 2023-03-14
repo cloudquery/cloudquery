@@ -1,6 +1,6 @@
 # Table: aws_frauddetector_rules
 
-This table shows data for AWS Fraud Detector Rules.
+This table shows data for Amazon Fraud Detector Rules.
 
 https://docs.aws.amazon.com/frauddetector/latest/api/API_RuleDetail.html
 

@@ -1,6 +1,6 @@
 # Table: aws_docdb_clusters
 
-This table shows data for AWS DocDB Clusters.
+This table shows data for Amazon DocumentDB Clusters.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html
 

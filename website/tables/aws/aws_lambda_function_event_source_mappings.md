@@ -1,6 +1,6 @@
 # Table: aws_lambda_function_event_source_mappings
 
-This table shows data for AWS Lambda Function Event Source Mappings.
+This table shows data for Lambda Function Event Source Mappings.
 
 https://docs.aws.amazon.com/lambda/latest/dg/API_EventSourceMappingConfiguration.html
 

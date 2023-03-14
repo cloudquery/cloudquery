@@ -1,6 +1,6 @@
 # Table: aws_apigateway_domain_names
 
-This table shows data for AWS API Gateway Domain Names.
+This table shows data for Amazon API Gateway Domain Names.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_DomainName.html
 

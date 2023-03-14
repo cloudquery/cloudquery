@@ -1,6 +1,6 @@
 # Table: aws_ec2_ebs_volumes
 
-This table shows data for AWS EC2 EBS Volumes.
+This table shows data for Amazon Elastic Compute Cloud (EC2) Amazon Elastic Block Store (EBS) Volumes.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Volume.html
 

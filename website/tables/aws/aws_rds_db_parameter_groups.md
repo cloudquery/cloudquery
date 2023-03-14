@@ -1,6 +1,6 @@
 # Table: aws_rds_db_parameter_groups
 
-This table shows data for AWS RDS DB Parameter Groups.
+This table shows data for Amazon Relational Database Service (RDS) DB Parameter Groups.
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBParameterGroup.html
 

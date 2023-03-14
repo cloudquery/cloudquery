@@ -1,6 +1,6 @@
 # Table: aws_emr_clusters
 
-This table shows data for AWS EMR Clusters.
+This table shows data for Amazon EMR Clusters.
 
 https://docs.aws.amazon.com/emr/latest/APIReference/API_Cluster.html
 

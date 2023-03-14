@@ -1,6 +1,6 @@
 # Table: aws_kms_aliases
 
-This table shows data for AWS KMS Aliases.
+This table shows data for AWS Key Management Service (AWS KMS) Aliases.
 
 https://docs.aws.amazon.com/kms/latest/APIReference/API_AliasListEntry.html
 

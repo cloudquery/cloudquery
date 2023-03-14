@@ -1,6 +1,6 @@
 # Table: aws_lightsail_load_balancers
 
-This table shows data for AWS Lightsail Load Balancers.
+This table shows data for Lightsail Load Balancers.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_LoadBalancer.html
 

@@ -1,6 +1,6 @@
 # Table: aws_lambda_function_versions
 
-This table shows data for AWS Lambda Function Versions.
+This table shows data for Lambda Function Versions.
 
 https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionConfiguration.html
 

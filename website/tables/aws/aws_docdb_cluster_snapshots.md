@@ -1,6 +1,6 @@
 # Table: aws_docdb_cluster_snapshots
 
-This table shows data for AWS DocDB Cluster Snapshots.
+This table shows data for Amazon DocumentDB Cluster Snapshots.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterSnapshot.html
 

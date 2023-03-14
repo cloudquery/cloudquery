@@ -1,6 +1,6 @@
 # Table: aws_mq_brokers
 
-This table shows data for AWS MQ Brokers.
+This table shows data for Amazon MQ Brokers.
 
 https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers.html
 

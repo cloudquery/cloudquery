@@ -1,6 +1,6 @@
 # Table: aws_apigatewayv2_api_models
 
-This table shows data for AWS API Gateway v2 API Models.
+This table shows data for Amazon API Gateway v2 API Models.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_Model.html
 

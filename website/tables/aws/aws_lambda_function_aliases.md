@@ -1,6 +1,6 @@
 # Table: aws_lambda_function_aliases
 
-This table shows data for AWS Lambda Function Aliases.
+This table shows data for Lambda Function Aliases.
 
 https://docs.aws.amazon.com/lambda/latest/dg/API_AliasConfiguration.html
 

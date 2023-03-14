@@ -1,6 +1,6 @@
 # Table: aws_wafv2_regex_pattern_sets
 
-This table shows data for AWS Wafv2 Regex Pattern Sets.
+This table shows data for Wafv2 Regex Pattern Sets.
 
 https://docs.aws.amazon.com/waf/latest/APIReference/API_RegexPatternSet.html
 

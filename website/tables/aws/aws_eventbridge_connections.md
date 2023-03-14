@@ -1,6 +1,6 @@
 # Table: aws_eventbridge_connections
 
-This table shows data for AWS Eventbridge Connections.
+This table shows data for Eventbridge Connections.
 
 https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Connection.html
 

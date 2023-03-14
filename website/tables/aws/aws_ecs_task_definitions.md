@@ -1,6 +1,6 @@
 # Table: aws_ecs_task_definitions
 
-This table shows data for AWS ECS Task Definitions.
+This table shows data for Amazon Elastic Container Service (ECS) Task Definitions.
 
 https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_TaskDefinition.html
 

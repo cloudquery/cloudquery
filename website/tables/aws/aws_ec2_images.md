@@ -1,6 +1,6 @@
 # Table: aws_ec2_images
 
-This table shows data for AWS EC2 Images.
+This table shows data for Amazon Elastic Compute Cloud (EC2) Images.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Image.html
 

@@ -1,6 +1,6 @@
 # Table: aws_accessanalyzer_analyzers
 
-This table shows data for AWS Access Analyzer Analyzers.
+This table shows data for AWS Identity and Access Management (IAM) Access Analyzer Analyzers.
 
 https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_AnalyzerSummary.html
 

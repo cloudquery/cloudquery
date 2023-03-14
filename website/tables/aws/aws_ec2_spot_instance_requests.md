@@ -1,6 +1,6 @@
 # Table: aws_ec2_spot_instance_requests
 
-This table shows data for AWS EC2 Spot Instance Requests.
+This table shows data for Amazon Elastic Compute Cloud (EC2) Spot Instance Requests.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SpotInstanceRequest.html
 

@@ -1,6 +1,6 @@
 # Table: aws_codepipeline_webhooks
 
-This table shows data for AWS Codepipeline Webhooks.
+This table shows data for Codepipeline Webhooks.
 
 https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_ListWebhookItem.html
 

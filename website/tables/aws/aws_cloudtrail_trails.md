@@ -1,6 +1,6 @@
 # Table: aws_cloudtrail_trails
 
-This table shows data for AWS Cloudtrail Trails.
+This table shows data for Cloudtrail Trails.
 
 https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Trail.html
 

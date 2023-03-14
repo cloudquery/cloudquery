@@ -1,6 +1,6 @@
 # Table: aws_frauddetector_batch_predictions
 
-This table shows data for AWS Fraud Detector Batch Predictions.
+This table shows data for Amazon Fraud Detector Batch Predictions.
 
 https://docs.aws.amazon.com/frauddetector/latest/api/API_BatchPrediction.html
 

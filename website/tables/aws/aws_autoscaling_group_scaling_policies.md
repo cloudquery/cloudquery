@@ -1,6 +1,6 @@
 # Table: aws_autoscaling_group_scaling_policies
 
-This table shows data for AWS Autoscaling Group Scaling Policies.
+This table shows data for Autoscaling Group Scaling Policies.
 
 https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScalingPolicy.html
 

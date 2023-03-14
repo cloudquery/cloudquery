@@ -1,6 +1,6 @@
 # Table: aws_dynamodb_table_replica_auto_scalings
 
-This table shows data for AWS DynamoDB Table Replica Auto Scalings.
+This table shows data for Amazon DynamoDB Table Replica Auto Scalings.
 
 https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ReplicaAutoScalingDescription.html
 

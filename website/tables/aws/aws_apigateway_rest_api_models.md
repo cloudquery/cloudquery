@@ -1,6 +1,6 @@
 # Table: aws_apigateway_rest_api_models
 
-This table shows data for AWS API Gateway Rest API Models.
+This table shows data for Amazon API Gateway Rest API Models.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_Model.html
 

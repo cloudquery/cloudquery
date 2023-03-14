@@ -1,6 +1,6 @@
 # Table: aws_apigateway_rest_apis
 
-This table shows data for AWS API Gateway Rest APIs.
+This table shows data for Amazon API Gateway Rest APIs.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_RestApi.html
 

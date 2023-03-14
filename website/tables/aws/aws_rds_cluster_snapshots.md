@@ -1,6 +1,6 @@
 # Table: aws_rds_cluster_snapshots
 
-This table shows data for AWS RDS Cluster Snapshots.
+This table shows data for Amazon Relational Database Service (RDS) Cluster Snapshots.
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBClusterSnapshot.html
 

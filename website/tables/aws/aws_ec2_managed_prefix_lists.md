@@ -1,6 +1,6 @@
 # Table: aws_ec2_managed_prefix_lists
 
-This table shows data for AWS EC2 Managed Prefix Lists.
+This table shows data for Amazon Elastic Compute Cloud (EC2) Managed Prefix Lists.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ManagedPrefixList.html. 
 The 'request_account_id' and 'request_region' columns are added to show the account_id and region of where the request was made from.

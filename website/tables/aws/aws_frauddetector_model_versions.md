@@ -1,6 +1,6 @@
 # Table: aws_frauddetector_model_versions
 
-This table shows data for AWS Fraud Detector Model Versions.
+This table shows data for Amazon Fraud Detector Model Versions.
 
 https://docs.aws.amazon.com/frauddetector/latest/api/API_ModelVersionDetail.html
 

@@ -1,6 +1,6 @@
 # Table: aws_docdb_event_subscriptions
 
-This table shows data for AWS DocDB Event Subscriptions.
+This table shows data for Amazon DocumentDB Event Subscriptions.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventSubscription.html
 

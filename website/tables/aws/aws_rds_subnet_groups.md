@@ -1,6 +1,6 @@
 # Table: aws_rds_subnet_groups
 
-This table shows data for AWS RDS Subnet Groups.
+This table shows data for Amazon Relational Database Service (RDS) Subnet Groups.
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSubnetGroup.html
 

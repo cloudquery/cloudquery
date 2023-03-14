@@ -1,6 +1,6 @@
 # Table: aws_frauddetector_labels
 
-This table shows data for AWS Fraud Detector Labels.
+This table shows data for Amazon Fraud Detector Labels.
 
 https://docs.aws.amazon.com/frauddetector/latest/api/API_Label.html
 

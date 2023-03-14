@@ -1,6 +1,6 @@
 # Table: aws_acm_certificates
 
-This table shows data for AWS ACM Certificates.
+This table shows data for Amazon Certificate Manager (ACM) Certificates.
 
 https://docs.aws.amazon.com/acm/latest/APIReference/API_CertificateDetail.html
 

@@ -1,6 +1,6 @@
 # Table: aws_eventbridge_endpoints
 
-This table shows data for AWS Eventbridge Endpoints.
+This table shows data for Eventbridge Endpoints.
 
 https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Endpoint.html
 

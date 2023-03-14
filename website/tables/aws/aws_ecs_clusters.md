@@ -1,6 +1,6 @@
 # Table: aws_ecs_clusters
 
-This table shows data for AWS ECS Clusters.
+This table shows data for Amazon Elastic Container Service (ECS) Clusters.
 
 https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Cluster.html
 

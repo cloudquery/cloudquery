@@ -1,6 +1,6 @@
 # Table: aws_cloudhsmv2_backups
 
-This table shows data for AWS Cloudhsmv2 Backups.
+This table shows data for CloudHSM v2 Backups.
 
 https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_Backup.html
 

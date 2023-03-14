@@ -1,6 +1,6 @@
 # Table: aws_mq_broker_users
 
-This table shows data for AWS MQ Broker Users.
+This table shows data for Amazon MQ Broker Users.
 
 https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers-broker-id-users-username.html
 

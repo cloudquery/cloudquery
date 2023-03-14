@@ -1,6 +1,6 @@
 # Table: aws_support_severity_levels
 
-This table shows data for AWS Support Severity Levels.
+This table shows data for Support Severity Levels.
 
 https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeSeverityLevels.html
 

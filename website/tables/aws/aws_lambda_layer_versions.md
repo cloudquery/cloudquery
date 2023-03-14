@@ -1,6 +1,6 @@
 # Table: aws_lambda_layer_versions
 
-This table shows data for AWS Lambda Layer Versions.
+This table shows data for Lambda Layer Versions.
 
 https://docs.aws.amazon.com/lambda/latest/dg/API_LayerVersionsListItem.html
 

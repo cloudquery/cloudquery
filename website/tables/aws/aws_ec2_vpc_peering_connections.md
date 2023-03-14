@@ -1,6 +1,6 @@
 # Table: aws_ec2_vpc_peering_connections
 
-This table shows data for AWS EC2 VPC Peering Connections.
+This table shows data for Amazon Elastic Compute Cloud (EC2) VPC Peering Connections.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcPeeringConnection.html
 

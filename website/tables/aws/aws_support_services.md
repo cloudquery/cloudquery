@@ -1,6 +1,6 @@
 # Table: aws_support_services
 
-This table shows data for AWS Support Services.
+This table shows data for Support Services.
 
 https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeServices.html
 

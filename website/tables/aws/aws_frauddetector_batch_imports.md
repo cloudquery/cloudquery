@@ -1,6 +1,6 @@
 # Table: aws_frauddetector_batch_imports
 
-This table shows data for AWS Fraud Detector Batch Imports.
+This table shows data for Amazon Fraud Detector Batch Imports.
 
 https://docs.aws.amazon.com/frauddetector/latest/api/API_BatchImport.html
 

@@ -1,6 +1,6 @@
 # Table: aws_kms_key_policies
 
-This table shows data for AWS KMS Key Policies.
+This table shows data for AWS Key Management Service (AWS KMS) Key Policies.
 
 https://docs.aws.amazon.com/kms/latest/APIReference/API_GetKeyPolicy.html
 

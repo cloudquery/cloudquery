@@ -1,6 +1,6 @@
 # Table: aws_apigateway_rest_api_resources
 
-This table shows data for AWS API Gateway Rest API Resources.
+This table shows data for Amazon API Gateway Rest API Resources.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_Resource.html
 

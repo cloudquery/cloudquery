@@ -1,6 +1,6 @@
 # Table: aws_ecr_repositories
 
-This table shows data for AWS ECR Repositories.
+This table shows data for Amazon Elastic Container Registry (ECR) Repositories.
 
 https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_Repository.html
 

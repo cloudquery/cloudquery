@@ -1,6 +1,6 @@
 # Table: aws_fsx_backups
 
-This table shows data for AWS FSX Backups.
+This table shows data for Amazon FSx Backups.
 
 https://docs.aws.amazon.com/fsx/latest/APIReference/API_Backup.html
 

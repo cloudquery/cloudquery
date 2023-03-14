@@ -1,6 +1,6 @@
 # Table: aws_rds_instances
 
-This table shows data for AWS RDS Instances.
+This table shows data for Amazon Relational Database Service (RDS) Instances.
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBInstance.html
 

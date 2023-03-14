@@ -1,6 +1,6 @@
 # Table: aws_ec2_instance_statuses
 
-This table shows data for AWS EC2 Instance Statuses.
+This table shows data for Amazon Elastic Compute Cloud (EC2) Instance Statuses.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceStatus.html
 

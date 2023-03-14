@@ -1,6 +1,6 @@
 # Table: aws_docdb_cluster_parameter_groups
 
-This table shows data for AWS DocDB Cluster Parameter Groups.
+This table shows data for Amazon DocumentDB Cluster Parameter Groups.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterParameterGroup.html
 

@@ -1,6 +1,6 @@
 # Table: aws_iot_policies
 
-This table shows data for AWS IOT Policies.
+This table shows data for IOT Policies.
 
 https://docs.aws.amazon.com/iot/latest/apireference/API_Policy.html
 

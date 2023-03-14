@@ -1,6 +1,6 @@
 # Table: aws_rds_certificates
 
-This table shows data for AWS RDS Certificates.
+This table shows data for Amazon Relational Database Service (RDS) Certificates.
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Certificate.html
 

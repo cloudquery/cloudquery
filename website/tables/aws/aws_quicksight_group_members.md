@@ -1,6 +1,6 @@
 # Table: aws_quicksight_group_members
 
-This table shows data for AWS QuickSight Group Members.
+This table shows data for QuickSight Group Members.
 
 https://docs.aws.amazon.com/quicksight/latest/APIReference/API_GroupMember.html
 

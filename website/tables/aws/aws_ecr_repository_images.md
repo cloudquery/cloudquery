@@ -1,6 +1,6 @@
 # Table: aws_ecr_repository_images
 
-This table shows data for AWS ECR Repository Images.
+This table shows data for Amazon Elastic Container Registry (ECR) Repository Images.
 
 https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageDetail.html
 

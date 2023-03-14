@@ -1,6 +1,6 @@
 # Table: aws_apigatewayv2_api_routes
 
-This table shows data for AWS API Gateway v2 API Routes.
+This table shows data for Amazon API Gateway v2 API Routes.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_Route.html
 

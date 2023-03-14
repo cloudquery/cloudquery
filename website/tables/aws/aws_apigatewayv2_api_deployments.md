@@ -1,6 +1,6 @@
 # Table: aws_apigatewayv2_api_deployments
 
-This table shows data for AWS API Gateway v2 API Deployments.
+This table shows data for Amazon API Gateway v2 API Deployments.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_Deployment.html
 

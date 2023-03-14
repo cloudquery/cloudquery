@@ -1,6 +1,6 @@
 # Table: aws_lambda_function_concurrency_configs
 
-This table shows data for AWS Lambda Function Concurrency Configs.
+This table shows data for Lambda Function Concurrency Configs.
 
 https://docs.aws.amazon.com/lambda/latest/dg/API_ProvisionedConcurrencyConfigListItem.html
 

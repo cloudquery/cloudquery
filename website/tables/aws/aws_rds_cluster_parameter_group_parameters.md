@@ -1,6 +1,6 @@
 # Table: aws_rds_cluster_parameter_group_parameters
 
-This table shows data for AWS RDS Cluster Parameter Group Parameters.
+This table shows data for Amazon Relational Database Service (RDS) Cluster Parameter Group Parameters.
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Parameter.html
 

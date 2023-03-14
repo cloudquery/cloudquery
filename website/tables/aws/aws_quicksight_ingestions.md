@@ -1,6 +1,6 @@
 # Table: aws_quicksight_ingestions
 
-This table shows data for AWS QuickSight Ingestions.
+This table shows data for QuickSight Ingestions.
 
 https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Ingestion.html
 

@@ -1,6 +1,6 @@
 # Table: aws_ec2_ebs_snapshots
 
-This table shows data for AWS EC2 EBS Snapshots.
+This table shows data for Amazon Elastic Compute Cloud (EC2) Amazon Elastic Block Store (EBS) Snapshots.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Snapshot.html
 

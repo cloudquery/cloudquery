@@ -1,6 +1,6 @@
 # Table: aws_accessanalyzer_analyzer_archive_rules
 
-This table shows data for AWS Access Analyzer Analyzer Archive Rules.
+This table shows data for AWS Identity and Access Management (IAM) Access Analyzer Analyzer Archive Rules.
 
 https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ArchiveRuleSummary.html
 

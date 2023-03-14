@@ -1,6 +1,6 @@
 # Table: aws_ec2_dhcp_options
 
-This table shows data for AWS EC2 DHCP Options.
+This table shows data for Amazon Elastic Compute Cloud (EC2) DHCP Options.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DhcpOptions.html
 

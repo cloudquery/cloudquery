@@ -1,6 +1,6 @@
 # Table: aws_elbv2_target_groups
 
-This table shows data for AWS ELB v2 Target Groups.
+This table shows data for Amazon Elastic Load Balancer (ELB) v2 Target Groups.
 
 https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_TargetGroup.html
 

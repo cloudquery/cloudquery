@@ -1,6 +1,6 @@
 # Table: aws_frauddetector_variables
 
-This table shows data for AWS Fraud Detector Variables.
+This table shows data for Amazon Fraud Detector Variables.
 
 https://docs.aws.amazon.com/frauddetector/latest/api/API_Variable.html
 
