@@ -1,6 +1,6 @@
 # Table: digitalocean_certificates
 
-This table shows data for Digitalocean Certificates.
+This table shows data for DigitalOcean Certificates.
 
 The primary key for this table is **id**.
 
