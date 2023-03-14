@@ -1,5 +1,7 @@
 # Table: aws_appstream_applications
 
+This table shows data for Amazon AppStream Applications.
+
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Application.html
 
 The primary key for this table is **arn**.

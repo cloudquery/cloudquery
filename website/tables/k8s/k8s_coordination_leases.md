@@ -1,5 +1,7 @@
 # Table: k8s_coordination_leases
 
+This table shows data for K8s Coordination Leases.
+
 The primary key for this table is **uid**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: shopify_product_images
 
+This table shows data for Shopify Product Images.
+
 The composite primary key for this table is (**product_id**, **id**).
 
 ## Relations

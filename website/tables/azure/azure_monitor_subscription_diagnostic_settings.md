@@ -1,5 +1,7 @@
 # Table: azure_monitor_subscription_diagnostic_settings
 
+This table shows data for Azure Monitor Subscription Diagnostic Settings.
+
 https://learn.microsoft.com/en-us/rest/api/monitor/subscription-diagnostic-settings/list?tabs=HTTP#subscriptiondiagnosticsettingsresource
 
 The primary key for this table is **id**.

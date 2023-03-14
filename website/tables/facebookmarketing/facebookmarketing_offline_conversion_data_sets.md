@@ -1,5 +1,7 @@
 # Table: facebookmarketing_offline_conversion_data_sets
 
+This table shows data for Facebook Marketing Offline Conversion Data Sets.
+
 https://developers.facebook.com/docs/marketing-api/reference/offline-conversion-data-set/#Reading
 
 The composite primary key for this table is (**account_id**, **id**).

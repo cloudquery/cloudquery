@@ -1,5 +1,7 @@
 # Table: test_testdata_table
 
+This table shows data for Test Testdata Table.
+
 Testdata table
 
 The primary key for this table is **_cq_id**.

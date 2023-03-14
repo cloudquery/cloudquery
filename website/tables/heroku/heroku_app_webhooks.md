@@ -1,5 +1,7 @@
 # Table: heroku_app_webhooks
 
+This table shows data for Heroku App Webhooks.
+
 https://devcenter.heroku.com/articles/platform-api-reference#app-webhook
 
 The primary key for this table is **id**.

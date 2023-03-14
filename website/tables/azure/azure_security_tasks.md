@@ -1,5 +1,7 @@
 # Table: azure_security_tasks
 
+This table shows data for Azure Security Tasks.
+
 https://learn.microsoft.com/en-us/rest/api/defenderforcloud/tasks/list?tabs=HTTP#securitytask
 
 The primary key for this table is **id**.

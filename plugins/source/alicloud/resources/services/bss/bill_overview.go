@@ -10,6 +10,7 @@ import (
 func BillOverview() *schema.Table {
 	return &schema.Table{
 		Name:        "alicloud_bss_bill_overview",
+		Title:       "Alibaba Cloud BSS Bill Overview",
 		Description: "https://help.aliyun.com/document_detail/100400.html",
 		Multiplex:   client.AccountMultiplex,
 		Resolver:    fetchBssBillOverview,

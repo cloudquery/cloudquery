@@ -1,5 +1,7 @@
 # Table: stripe_reporting_report_runs
 
+This table shows data for Stripe Reporting Report Runs.
+
 https://stripe.com/docs/api/reporting_report_runs
 
 The primary key for this table is **id**.

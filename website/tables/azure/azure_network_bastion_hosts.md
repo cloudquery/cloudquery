@@ -1,5 +1,7 @@
 # Table: azure_network_bastion_hosts
 
+This table shows data for Azure Network Bastion Hosts.
+
 https://learn.microsoft.com/en-us/rest/api/virtualnetwork/bastion-hosts/list?tabs=HTTP#bastionhost
 
 The primary key for this table is **id**.

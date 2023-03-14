@@ -1,5 +1,7 @@
 # Table: digitalocean_droplets
 
+This table shows data for DigitalOcean Droplets.
+
 The primary key for this table is **id**.
 
 ## Relations

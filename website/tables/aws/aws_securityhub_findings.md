@@ -1,5 +1,7 @@
 # Table: aws_securityhub_findings
 
+This table shows data for AWS Security Hub Findings.
+
 https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html.
 The `request_account_id` and `request_region` columns are added to show the account and region of where the request was made from.
 This is useful when multi region and account aggregation is enabled.

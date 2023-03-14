@@ -1,5 +1,7 @@
 # Table: heroku_team_features
 
+This table shows data for Heroku Team Features.
+
 https://devcenter.heroku.com/articles/platform-api-reference#team-feature
 
 The primary key for this table is **id**.

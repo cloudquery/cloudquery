@@ -1,5 +1,7 @@
 # Table: gcp_bigquery_datasets
 
+This table shows data for GCP BigQuery Datasets.
+
 https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets#Dataset
 
 The composite primary key for this table is (**project_id**, **id**).

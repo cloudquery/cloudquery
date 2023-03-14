@@ -1,5 +1,7 @@
 # Table: aws_route53_hosted_zone_traffic_policy_instances
 
+This table shows data for Route53 Hosted Zone Traffic Policy Instances.
+
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicyInstance.html
 
 The composite primary key for this table is (**account_id**, **arn**).

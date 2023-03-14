@@ -1,5 +1,7 @@
 # Table: aws_apigateway_rest_api_authorizers
 
+This table shows data for Amazon API Gateway Rest API Authorizers.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_Authorizer.html
 
 The composite primary key for this table is (**account_id**, **arn**).

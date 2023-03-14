@@ -1,5 +1,7 @@
 # Table: oracle_database_exadata_infrastructures
 
+This table shows data for Oracle Database Exadata Infrastructures.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

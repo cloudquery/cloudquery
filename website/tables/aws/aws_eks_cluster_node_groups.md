@@ -1,5 +1,7 @@
 # Table: aws_eks_cluster_node_groups
 
+This table shows data for Amazon Elastic Kubernetes Service (EKS) Cluster Node Groups.
+
 https://docs.aws.amazon.com/eks/latest/APIReference/API_Nodegroup.html
 
 The primary key for this table is **arn**.

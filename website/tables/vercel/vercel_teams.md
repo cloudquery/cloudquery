@@ -1,5 +1,7 @@
 # Table: vercel_teams
 
+This table shows data for Vercel Teams.
+
 The primary key for this table is **id**.
 It supports incremental syncs.
 ## Relations

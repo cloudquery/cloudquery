@@ -1,5 +1,7 @@
 # Table: azure_eventhub_namespaces
 
+This table shows data for Azure Event Hub Namespaces.
+
 https://learn.microsoft.com/en-us/rest/api/eventhub/stable/namespaces/list?tabs=HTTP#ehnamespace
 
 The primary key for this table is **id**.

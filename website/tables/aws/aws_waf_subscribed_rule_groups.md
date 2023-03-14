@@ -1,5 +1,7 @@
 # Table: aws_waf_subscribed_rule_groups
 
+This table shows data for WAF Subscribed Rule Groups.
+
 https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_SubscribedRuleGroupSummary.html
 
 The composite primary key for this table is (**account_id**, **rule_group_id**).

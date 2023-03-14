@@ -114,6 +114,8 @@ github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.5 h1:axGPbcjf
 github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.5/go.mod h1:H4hfLdGGr3RPJLsT4IojB+wyjjYq5jT6rTTFz0XDrUc=
 github.com/aws/aws-sdk-go-v2/service/configservice v1.29.6 h1:wcgjz5Gn0o5k8G74x4nUm4VEqS7Jam0GBWI/Crg+VXM=
 github.com/aws/aws-sdk-go-v2/service/configservice v1.29.6/go.mod h1:MmybfSbNyrVNJACsMT794/Umhnrz9THevciDeJwn3Es=
+github.com/aws/aws-sdk-go-v2/service/computeoptimizer v1.21.3 h1:JkWxBPjWWDKjVWjBoiIw9zbMA72Ynde66y5fInm9Q/g=
+github.com/aws/aws-sdk-go-v2/service/computeoptimizer v1.21.3/go.mod h1:U4bKXeB586zd73RIAkJX+ZmUtwI00xLJhDKJ7+hTCO0=
 github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5 h1:5djJJgT14pDx5oZaL4+m5ZdjY5BmrFj5o7Sfox/AIWM=
 github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5/go.mod h1:lgoF6So5J3yC2J4vefW/XxGPaOHFIG2OS4/gKzPxNjE=
 github.com/aws/aws-sdk-go-v2/service/dax v1.12.5 h1:i9Pp5HjJyj52pLmjA1XHtX4Ylfs2BshXNOrwUsZg41E=
@@ -296,8 +298,8 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMn
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/codegen v0.2.1 h1:AWpGNKIFUyzI7vulYADXi/3SoksUaNXgTgIMuSrTHZk=
 github.com/cloudquery/codegen v0.2.1/go.mod h1:oJxzUuOC79fP36vBPU1BJ7n+jgQemS33y/mbgNq6vfM=
-github.com/cloudquery/plugin-sdk v1.42.0 h1:+2AHK81YtZVnHY6Qil7ggPFprDIaZjicwllUVtMm7W4=
-github.com/cloudquery/plugin-sdk v1.42.0/go.mod h1:CIv+fgm6siZhReOuMGU/OCBPNRLNY4At2RkC31LRaS0=
+github.com/cloudquery/plugin-sdk v1.43.0 h1:vYycBgKdfDbrW7sp+r5ATxjTVVXU2AMc3x6cPs8DTns=
+github.com/cloudquery/plugin-sdk v1.43.0/go.mod h1:CIv+fgm6siZhReOuMGU/OCBPNRLNY4At2RkC31LRaS0=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=

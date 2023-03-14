@@ -1,5 +1,7 @@
 # Table: gcp_clouddeploy_targets
 
+This table shows data for GCP Clouddeploy Targets.
+
 https://cloud.google.com/deploy/docs/api/reference/rest/v1/projects.locations.targets#Target
 
 The composite primary key for this table is (**project_id**, **name**).

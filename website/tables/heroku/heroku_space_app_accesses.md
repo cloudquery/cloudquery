@@ -1,5 +1,7 @@
 # Table: heroku_space_app_accesses
 
+This table shows data for Heroku Space App Accesses.
+
 https://devcenter.heroku.com/articles/platform-api-reference#space-app-access
 
 The primary key for this table is **id**.

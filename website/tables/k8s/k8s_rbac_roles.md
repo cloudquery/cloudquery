@@ -1,5 +1,7 @@
 # Table: k8s_rbac_roles
 
+This table shows data for K8s Rbac Roles.
+
 The primary key for this table is **uid**.
 
 ## Columns

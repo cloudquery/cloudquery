@@ -1,5 +1,7 @@
 # Table: stripe_terminal_configurations
 
+This table shows data for Stripe Terminal Configurations.
+
 https://stripe.com/docs/api/terminal_configurations
 
 The primary key for this table is **id**.

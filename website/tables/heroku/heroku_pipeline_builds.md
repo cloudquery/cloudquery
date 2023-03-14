@@ -1,5 +1,7 @@
 # Table: heroku_pipeline_builds
 
+This table shows data for Heroku Pipeline Builds.
+
 https://devcenter.heroku.com/articles/platform-api-reference#pipeline-build
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: pagerduty_tags
 
+This table shows data for PagerDuty Tags.
+
 https://developer.pagerduty.com/api-reference/e44b160c69bf3-list-tags
 
 The primary key for this table is **id**.

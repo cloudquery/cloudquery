@@ -1,5 +1,7 @@
 # Table: aws_quicksight_data_sources
 
+This table shows data for QuickSight Data Sources.
+
 https://docs.aws.amazon.com/quicksight/latest/APIReference/API_DataSource.html
 
 The composite primary key for this table is (**account_id**, **region**, **arn**).

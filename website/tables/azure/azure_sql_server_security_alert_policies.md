@@ -1,5 +1,7 @@
 # Table: azure_sql_server_security_alert_policies
 
+This table shows data for Azure SQL Server Security Alert Policies.
+
 https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/server-security-alert-policies/list-by-server?tabs=HTTP#serversecurityalertpolicy
 
 The primary key for this table is **id**.

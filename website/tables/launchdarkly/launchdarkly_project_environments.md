@@ -1,5 +1,7 @@
 # Table: launchdarkly_project_environments
 
+This table shows data for LaunchDarkly Project Environments.
+
 https://apidocs.launchdarkly.com/tag/Environments#operation/getEnvironment
 
 The composite primary key for this table is (**project_id**, **id**).

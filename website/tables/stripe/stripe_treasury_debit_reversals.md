@@ -1,5 +1,7 @@
 # Table: stripe_treasury_debit_reversals
 
+This table shows data for Stripe Treasury Debit Reversals.
+
 https://stripe.com/docs/api/treasury_debit_reversals
 
 The primary key for this table is **id**.

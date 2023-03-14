@@ -1,5 +1,7 @@
 # Table: azure_security_allowed_connections
 
+This table shows data for Azure Security Allowed Connections.
+
 https://learn.microsoft.com/en-us/rest/api/defenderforcloud/allowed-connections/list?tabs=HTTP#allowedconnectionsresource
 
 The primary key for this table is **id**.

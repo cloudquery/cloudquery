@@ -1,5 +1,7 @@
 # Table: azure_relay_namespaces
 
+This table shows data for Azure Relay Namespaces.
+
 https://learn.microsoft.com/en-us/rest/api/relay/namespaces/list?tabs=HTTP#relaynamespace
 
 The primary key for this table is **id**.

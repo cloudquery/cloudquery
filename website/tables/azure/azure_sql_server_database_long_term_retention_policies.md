@@ -1,5 +1,7 @@
 # Table: azure_sql_server_database_long_term_retention_policies
 
+This table shows data for Azure SQL Server Database Long Term Retention Policies.
+
 https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/long-term-retention-policies/list-by-database?tabs=HTTP#longtermretentionpolicy
 
 The primary key for this table is **id**.

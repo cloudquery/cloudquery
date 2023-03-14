@@ -1,5 +1,7 @@
 # Table: snyk_integrations
 
+This table shows data for Snyk Integrations.
+
 https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Integration
 
 The primary key for this table is **id**.

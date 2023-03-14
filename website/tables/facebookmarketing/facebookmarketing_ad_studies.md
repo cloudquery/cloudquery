@@ -1,5 +1,7 @@
 # Table: facebookmarketing_ad_studies
 
+This table shows data for Facebook Marketing Ad Studies.
+
 https://developers.facebook.com/docs/marketing-api/reference/ad-study/#Reading
 
 The composite primary key for this table is (**account_id**, **id**).

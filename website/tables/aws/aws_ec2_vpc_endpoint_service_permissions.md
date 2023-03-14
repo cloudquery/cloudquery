@@ -1,5 +1,7 @@
 # Table: aws_ec2_vpc_endpoint_service_permissions
 
+This table shows data for Amazon Elastic Compute Cloud (EC2) VPC Endpoint Service Permissions.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_AllowedPrincipal.html
 
 The composite primary key for this table is (**account_id**, **service_id**, **service_permission_id**).

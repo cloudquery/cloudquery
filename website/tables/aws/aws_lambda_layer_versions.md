@@ -1,5 +1,7 @@
 # Table: aws_lambda_layer_versions
 
+This table shows data for AWS Lambda Layer Versions.
+
 https://docs.aws.amazon.com/lambda/latest/dg/API_LayerVersionsListItem.html
 
 The primary key for this table is **arn**.

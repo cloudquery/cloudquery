@@ -1,5 +1,7 @@
 # Table: azure_policy_exemptions
 
+This table shows data for Azure Policy Exemptions.
+
 https://learn.microsoft.com/en-us/rest/api/policy/policy-exemptions/list?tabs=HTTP#policyexemption
 
 The primary key for this table is **id**.

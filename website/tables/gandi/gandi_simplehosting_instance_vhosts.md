@@ -1,5 +1,7 @@
 # Table: gandi_simplehosting_instance_vhosts
 
+This table shows data for Gandi Simple Hosting Instance Vhosts.
+
 The composite primary key for this table is (**instance_id**, **fqdn**).
 
 ## Relations

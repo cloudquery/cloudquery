@@ -1,5 +1,7 @@
 # Table: aws_ec2_key_pairs
 
+This table shows data for Amazon Elastic Compute Cloud (EC2) Key Pairs.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_KeyPairInfo.html
 
 The primary key for this table is **arn**.

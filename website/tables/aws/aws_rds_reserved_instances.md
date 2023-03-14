@@ -1,5 +1,7 @@
 # Table: aws_rds_reserved_instances
 
+This table shows data for Amazon Relational Database Service (RDS) Reserved Instances.
+
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_ReservedDBInstance.html
 
 The primary key for this table is **arn**.

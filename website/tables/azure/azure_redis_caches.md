@@ -1,5 +1,7 @@
 # Table: azure_redis_caches
 
+This table shows data for Azure Redis Caches.
+
 https://learn.microsoft.com/en-us/rest/api/redis/redis/list-by-subscription?tabs=HTTP#redisresource
 
 The primary key for this table is **id**.

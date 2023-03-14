@@ -1,5 +1,7 @@
 # Table: aws_redshift_snapshots
 
+This table shows data for Redshift Snapshots.
+
 https://docs.aws.amazon.com/redshift/latest/APIReference/API_Snapshot.html
 
 The primary key for this table is **arn**.
