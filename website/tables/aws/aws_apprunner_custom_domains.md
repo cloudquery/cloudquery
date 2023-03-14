@@ -1,6 +1,6 @@
 # Table: aws_apprunner_custom_domains
 
-This table shows data for AWS Apprunner Custom Domains.
+This table shows data for AWS App Runner Custom Domains.
 
 https://docs.aws.amazon.com/apprunner/latest/api/API_CustomDomain.html
 

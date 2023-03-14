@@ -1,6 +1,6 @@
 # Table: aws_directconnect_gateways
 
-This table shows data for AWS Directconnect Gateways.
+This table shows data for AWS Direct Connect Gateways.
 
 https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGateway.html
 

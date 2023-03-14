@@ -1,6 +1,6 @@
 # Table: azure_desktopvirtualization_host_pools
 
-This table shows data for Azure Desktopvirtualization Host Pools.
+This table shows data for Azure Desktop Virtualization Host Pools.
 
 https://learn.microsoft.com/en-us/rest/api/desktopvirtualization/host-pools/list?tabs=HTTP#hostpool
 

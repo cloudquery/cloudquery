@@ -1,6 +1,6 @@
 # Table: aws_elbv1_load_balancer_policies
 
-This table shows data for AWS Elbv1 Load Balancer Policies.
+This table shows data for Amazon Elastic Load Balancer (ELB) v1 Load Balancer Policies.
 
 https://docs.aws.amazon.com/elasticloadbalancing/2012-06-01/APIReference/API_PolicyDescription.html
 

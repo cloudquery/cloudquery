@@ -1,6 +1,6 @@
 # Table: aws_servicecatalog_products
 
-This table shows data for AWS Servicecatalog Products.
+This table shows data for AWS Service Catalog Products.
 
 https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProductViewDetail.html
 

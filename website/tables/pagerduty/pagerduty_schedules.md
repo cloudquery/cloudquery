@@ -1,6 +1,6 @@
 # Table: pagerduty_schedules
 
-This table shows data for Pagerduty Schedules.
+This table shows data for PagerDuty Schedules.
 
 https://developer.pagerduty.com/api-reference/846ecf84402bb-list-schedules
 

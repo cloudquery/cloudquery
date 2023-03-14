@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_batch_prediction_jobs
 
-This table shows data for GCP Aiplatform Batch Prediction Jobs.
+This table shows data for GCP AI Platform Batch Prediction Jobs.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.batchPredictionJobs#BatchPredictionJob
 

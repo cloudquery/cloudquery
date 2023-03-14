@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_metadata_stores
 
-This table shows data for GCP Aiplatform Metadata Stores.
+This table shows data for GCP AI Platform Metadata Stores.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores#MetadataStore
 

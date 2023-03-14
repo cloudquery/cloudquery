@@ -1,6 +1,6 @@
 # Table: aws_glue_dev_endpoints
 
-This table shows data for AWS Glue Dev Endpoints.
+This table shows data for Glue Dev Endpoints.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_DevEndpoint.html
 

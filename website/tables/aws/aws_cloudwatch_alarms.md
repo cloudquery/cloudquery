@@ -1,6 +1,6 @@
 # Table: aws_cloudwatch_alarms
 
-This table shows data for AWS Cloudwatch Alarms.
+This table shows data for Cloudwatch Alarms.
 
 https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricAlarm.html
 

@@ -1,6 +1,6 @@
 # Table: aws_lightsail_disks
 
-This table shows data for AWS Lightsail Disks.
+This table shows data for Lightsail Disks.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Disk.html
 
