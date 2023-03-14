@@ -1,6 +1,6 @@
 # Table: launchdarkly_project_environments
 
-This table shows data for Launchdarkly Project Environments.
+This table shows data for LaunchDarkly Project Environments.
 
 https://apidocs.launchdarkly.com/tag/Environments#operation/getEnvironment
 

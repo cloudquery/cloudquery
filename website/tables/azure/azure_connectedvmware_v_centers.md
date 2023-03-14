@@ -1,6 +1,6 @@
 # Table: azure_connectedvmware_v_centers
 
-This table shows data for Azure Connectedvmware V Centers.
+This table shows data for Azure Connected VMware V Centers.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#VCenter
 
