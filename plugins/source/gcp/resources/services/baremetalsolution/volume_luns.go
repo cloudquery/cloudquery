@@ -19,7 +19,7 @@ func VolumeLuns() *schema.Table {
 		Description: `https://cloud.google.com/bare-metal/docs/reference/rest/v2/projects.locations.volumes.luns#Lun`,
 		Resolver:    fetchVolumeLuns,
 		Multiplex:   client.ProjectMultiplexEnabledServices("baremetalsolution.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Lun{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Lun{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

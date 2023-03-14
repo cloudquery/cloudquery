@@ -2,7 +2,6 @@ package topups
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func Topups() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_topups",
 		Description: `https://stripe.com/docs/api/topups`,
-		Transform:   transformers.TransformWithStruct(&stripe.Topup{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Source")))...),
+		Transform:   client.TransformWithStruct(&stripe.Topup{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Source"))),
 		Resolver:    fetchTopups,
 
 		Columns: []schema.Column{

@@ -13,7 +13,7 @@ func CountrySpecs() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_country_specs",
 		Description: `https://stripe.com/docs/api/country_specs`,
-		Transform:   transformers.TransformWithStruct(&stripe.CountrySpec{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.CountrySpec{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchCountrySpecs,
 
 		Columns: []schema.Column{

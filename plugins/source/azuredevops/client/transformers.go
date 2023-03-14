@@ -25,10 +25,10 @@ func typeTransformer(field reflect.StructField) (schema.ValueType, error) {
 	return schema.TypeInvalid, nil
 }
 
-func Options() []transformers.StructTransformerOption {
-	options := []transformers.StructTransformerOption{
-		transformers.WithTypeTransformer(typeTransformer),
-	}
+var options = []transformers.StructTransformerOption{
+	transformers.WithTypeTransformer(typeTransformer),
+}
 
-	return options
+func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) schema.Transform {
+	return transformers.TransformWithStruct(t, append(options, opts...)...)
 }

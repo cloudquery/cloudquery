@@ -11,7 +11,7 @@ func Businesses() *schema.Table {
 	return &schema.Table{
 		Name:        "facebookmarketing_businesses",
 		Resolver:    fetchBusinesss,
-		Transform:   transformers.TransformWithStruct(&rest.Business{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&rest.Business{}, transformers.WithPrimaryKeys("Id")),
 		Description: "https://developers.facebook.com/docs/marketing-api/reference/business/#Reading",
 	}
 }

@@ -5,7 +5,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/google/go-github/v48/github"
 )
 
@@ -15,7 +14,7 @@ func Clones() *schema.Table {
 		Description: "https://docs.github.com/en/rest/metrics/traffic?apiVersion=2022-11-28#get-repository-clones",
 		Resolver:    fetchClones,
 		Multiplex:   client.OrgRepositoryMultiplex,
-		Transform:   transformers.TransformWithStruct(&github.TrafficClones{}, client.SharedTransformers()...),
+		Transform:   client.TransformWithStruct(&github.TrafficClones{}),
 		Columns:     []schema.Column{client.OrgColumn, client.RepositoryIDColumn},
 	}
 }

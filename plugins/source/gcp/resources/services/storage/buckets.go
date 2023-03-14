@@ -13,7 +13,7 @@ func Buckets() *schema.Table {
 		Description: `https://cloud.google.com/storage/docs/json_api/v1/buckets#resource`,
 		Resolver:    fetchBuckets,
 		Multiplex:   client.ProjectMultiplexEnabledServices("storage.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.BucketAttrs{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.BucketAttrs{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

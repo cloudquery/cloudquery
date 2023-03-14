@@ -19,7 +19,7 @@ func Jobs() *schema.Table {
 		Description: `https://cloud.google.com/batch/docs/reference/rest/v1/projects.locations.jobs#Job`,
 		Resolver:    fetchJobs,
 		Multiplex:   client.ProjectMultiplexEnabledServices("batch.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Job{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Job{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

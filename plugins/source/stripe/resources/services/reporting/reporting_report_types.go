@@ -13,7 +13,7 @@ func ReportingReportTypes() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_reporting_report_types",
 		Description: `https://stripe.com/docs/api/reporting_report_types`,
-		Transform:   transformers.TransformWithStruct(&stripe.ReportingReportType{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.ReportingReportType{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchReportingReportTypes,
 
 		Columns: []schema.Column{

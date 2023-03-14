@@ -8,12 +8,14 @@ import (
 	"github.com/google/go-github/v48/github"
 )
 
-func SharedTransformers() []transformers.StructTransformerOption {
-	return []transformers.StructTransformerOption{
-		transformers.WithUnwrapAllEmbeddedStructs(),
-		transformers.WithUnwrapStructFields("Spec", "Status"),
-		transformers.WithTypeTransformer(typeTransformer),
-	}
+var options = []transformers.StructTransformerOption{
+	transformers.WithUnwrapAllEmbeddedStructs(),
+	transformers.WithUnwrapStructFields("Spec", "Status"),
+	transformers.WithTypeTransformer(typeTransformer),
+}
+
+func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) schema.Transform {
+	return transformers.TransformWithStruct(t, append(options, opts...)...)
 }
 
 func typeTransformer(field reflect.StructField) (schema.ValueType, error) {

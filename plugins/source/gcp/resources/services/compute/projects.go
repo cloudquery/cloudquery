@@ -13,7 +13,7 @@ func Projects() *schema.Table {
 		Description: ``,
 		Resolver:    fetchProjects,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Project{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.Project{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

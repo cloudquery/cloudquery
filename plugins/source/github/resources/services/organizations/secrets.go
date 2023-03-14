@@ -11,11 +11,10 @@ import (
 
 func secrets() *schema.Table {
 	return &schema.Table{
-		Name:     "github_organization_dependabot_secrets",
-		Resolver: fetchSecrets,
-		Transform: transformers.TransformWithStruct(&github.Secret{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("Name"))...),
-		Columns: []schema.Column{client.OrgColumn},
+		Name:      "github_organization_dependabot_secrets",
+		Resolver:  fetchSecrets,
+		Transform: client.TransformWithStruct(&github.Secret{}, transformers.WithPrimaryKeys("Name")),
+		Columns:   []schema.Column{client.OrgColumn},
 	}
 }
 

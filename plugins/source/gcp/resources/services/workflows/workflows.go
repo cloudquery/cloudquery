@@ -13,7 +13,7 @@ func Workflows() *schema.Table {
 		Description: `https://cloud.google.com/workflows/docs/reference/rest/v1/projects.locations.workflows#resource:-workflow`,
 		Resolver:    fetchWorkflows,
 		Multiplex:   client.ProjectMultiplexEnabledServices("workflows.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Workflow{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Workflow{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

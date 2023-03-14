@@ -23,7 +23,7 @@ func Models() *schema.Table {
 		Description: `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.models#Model`,
 		Resolver:    fetchModels,
 		Multiplex:   client.ProjectMultiplexEnabledServices("aiplatform.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Model{}, append(client.Options(), transformers.WithSkipFields("Metadata"), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Model{}, transformers.WithSkipFields("Metadata"), transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

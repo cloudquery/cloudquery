@@ -2,7 +2,6 @@ package payment
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func PaymentIntents() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_payment_intents",
 		Description: `https://stripe.com/docs/api/payment_intents`,
-		Transform:   transformers.TransformWithStruct(&stripe.PaymentIntent{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Source")))...),
+		Transform:   client.TransformWithStruct(&stripe.PaymentIntent{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Source"))),
 		Resolver:    fetchPaymentIntents,
 
 		Columns: []schema.Column{

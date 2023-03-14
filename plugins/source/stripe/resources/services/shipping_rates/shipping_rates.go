@@ -2,7 +2,6 @@ package shipping_rates
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func ShippingRates() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_shipping_rates",
 		Description: `https://stripe.com/docs/api/shipping_rates`,
-		Transform:   transformers.TransformWithStruct(&stripe.ShippingRate{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.ShippingRate{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchShippingRates,
 
 		Columns: []schema.Column{

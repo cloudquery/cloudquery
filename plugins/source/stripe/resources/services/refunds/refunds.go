@@ -2,7 +2,6 @@ package refunds
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func Refunds() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_refunds",
 		Description: `https://stripe.com/docs/api/refunds`,
-		Transform:   transformers.TransformWithStruct(&stripe.Refund{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.Refund{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchRefunds,
 
 		Columns: []schema.Column{
