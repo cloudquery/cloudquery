@@ -61,8 +61,6 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 
 			if logger.GetLevel() <= zerolog.TraceLevel {
 				settings.LogVerbosity = gremlingo.Debug
-			} else {
-				settings.LogVerbosity = gremlingo.Off
 			}
 
 			if spec.Insecure {
