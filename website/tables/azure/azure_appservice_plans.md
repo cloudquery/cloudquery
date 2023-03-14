@@ -1,6 +1,6 @@
 # Table: azure_appservice_plans
 
-This table shows data for Azure Appservice Plans.
+This table shows data for Azure App Service Plans.
 
 https://learn.microsoft.com/en-us/rest/api/appservice/app-service-environments/list-app-service-plans?tabs=HTTP#appserviceplan
 

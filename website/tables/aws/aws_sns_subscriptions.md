@@ -1,6 +1,6 @@
 # Table: aws_sns_subscriptions
 
-This table shows data for AWS Sns Subscriptions.
+This table shows data for Sns Subscriptions.
 
 https://docs.aws.amazon.com/sns/latest/api/API_GetSubscriptionAttributes.html
 

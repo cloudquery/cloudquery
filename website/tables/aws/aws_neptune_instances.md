@@ -1,6 +1,6 @@
 # Table: aws_neptune_instances
 
-This table shows data for AWS Neptune Instances.
+This table shows data for Neptune Instances.
 
 https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#DescribeDBInstances
 

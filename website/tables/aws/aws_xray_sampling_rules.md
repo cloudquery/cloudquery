@@ -1,6 +1,6 @@
 # Table: aws_xray_sampling_rules
 
-This table shows data for AWS Xray Sampling Rules.
+This table shows data for AWS X-Ray Sampling Rules.
 
 https://docs.aws.amazon.com/xray/latest/api/API_SamplingRuleRecord.html
 

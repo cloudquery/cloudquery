@@ -1,6 +1,6 @@
 # Table: aws_scheduler_schedules
 
-This table shows data for AWS Scheduler Schedules.
+This table shows data for Amazon EventBridge Scheduler Schedules.
 
 https://docs.aws.amazon.com/scheduler/latest/APIReference/API_GetScheduleOutput.html
 

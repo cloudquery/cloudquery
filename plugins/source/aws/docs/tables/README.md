@@ -390,6 +390,7 @@
 - [aws_organization_resource_policies](../../../../../website/tables/aws/aws_organization_resource_policies.md)
 - [aws_organizations](../../../../../website/tables/aws/aws_organizations.md)
 - [aws_organizations_accounts](../../../../../website/tables/aws/aws_organizations_accounts.md)
+  - [aws_organizations_delegated_services](../../../../../website/tables/aws/aws_organizations_delegated_services.md)
 - [aws_organizations_delegated_administrators](../../../../../website/tables/aws/aws_organizations_delegated_administrators.md)
 - [aws_organizations_organizational_units](../../../../../website/tables/aws/aws_organizations_organizational_units.md)
 - [aws_organizations_policies](../../../../../website/tables/aws/aws_organizations_policies.md)

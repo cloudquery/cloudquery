@@ -1,6 +1,6 @@
 # Table: aws_athena_work_group_query_executions
 
-This table shows data for AWS Athena Work Group Query Executions.
+This table shows data for Athena Work Group Query Executions.
 
 https://docs.aws.amazon.com/athena/latest/APIReference/API_QueryExecution.html
 

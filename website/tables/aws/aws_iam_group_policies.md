@@ -1,6 +1,6 @@
 # Table: aws_iam_group_policies
 
-This table shows data for AWS IAM Group Policies.
+This table shows data for IAM Group Policies.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetGroupPolicy.html
 

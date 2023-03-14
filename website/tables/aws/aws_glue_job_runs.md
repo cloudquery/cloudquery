@@ -1,6 +1,6 @@
 # Table: aws_glue_job_runs
 
-This table shows data for AWS Glue Job Runs.
+This table shows data for Glue Job Runs.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_JobRun.html
 

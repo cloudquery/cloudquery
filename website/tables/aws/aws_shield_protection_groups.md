@@ -1,6 +1,6 @@
 # Table: aws_shield_protection_groups
 
-This table shows data for AWS Shield Protection Groups.
+This table shows data for Shield Protection Groups.
 
 https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_ProtectionGroup.html
 

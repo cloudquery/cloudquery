@@ -1,6 +1,6 @@
 # Table: aws_ec2_route_tables
 
-This table shows data for AWS Ec2 Route Tables.
+This table shows data for Amazon Elastic Compute Cloud (EC2) Route Tables.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RouteTable.html
 

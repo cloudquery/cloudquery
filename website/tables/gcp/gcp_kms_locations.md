@@ -1,6 +1,6 @@
 # Table: gcp_kms_locations
 
-This table shows data for GCP Kms Locations.
+This table shows data for GCP Cloud Key Management Service (KMS) Locations.
 
 https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings#KeyRing
 

@@ -1,6 +1,6 @@
 # Table: aws_iam_policy_last_accessed_details
 
-This table shows data for AWS IAM Policy Last Accessed Details.
+This table shows data for IAM Policy Last Accessed Details.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html
 

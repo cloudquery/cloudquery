@@ -1,6 +1,6 @@
 # Table: aws_neptune_global_clusters
 
-This table shows data for AWS Neptune Global Clusters.
+This table shows data for Neptune Global Clusters.
 
 https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#DescribeDBInstances
 

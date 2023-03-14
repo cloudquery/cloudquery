@@ -1,6 +1,6 @@
 # Table: aws_wafregional_rate_based_rules
 
-This table shows data for AWS Wafregional Rate Based Rules.
+This table shows data for Wafregional Rate Based Rules.
 
 https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_RateBasedRule.html
 

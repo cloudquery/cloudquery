@@ -1,6 +1,6 @@
 # Table: aws_organizations_organizational_units
 
-This table shows data for AWS Organizations Organizational Units.
+This table shows data for Organizations Organizational Units.
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_OrganizationalUnit.html
 

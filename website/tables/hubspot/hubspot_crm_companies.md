@@ -1,6 +1,6 @@
 # Table: hubspot_crm_companies
 
-This table shows data for Hubspot Crm Companies.
+This table shows data for HubSpot CRM Companies.
 
 https://developers.hubspot.com/docs/api/crm/companies
 
