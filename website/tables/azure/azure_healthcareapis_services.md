@@ -1,6 +1,6 @@
 # Table: azure_healthcareapis_services
 
-This table shows data for Azure Healthcareapis Services.
+This table shows data for Azure Healthcare APIs Services.
 
 https://learn.microsoft.com/en-us/rest/api/healthcareapis/services/list?tabs=HTTP#servicesdescription
 

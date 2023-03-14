@@ -33,6 +33,18 @@ func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Se
 		&organizations.ListTagsForResourceOutput{
 			Tags: tt,
 		}, nil)
+
+	ds := organizationsTypes.DelegatedService{}
+	err = faker.FakeObject(&ds)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().ListDelegatedServicesForAccount(gomock.Any(), gomock.Any()).Return(
+		&organizations.ListDelegatedServicesForAccountOutput{
+			DelegatedServices: []organizationsTypes.DelegatedService{ds},
+		}, nil)
+
 	return client.Services{
 		Organizations: m,
 	}

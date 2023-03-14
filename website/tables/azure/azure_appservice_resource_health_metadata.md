@@ -1,6 +1,6 @@
 # Table: azure_appservice_resource_health_metadata
 
-This table shows data for Azure Appservice Resource Health Metadata.
+This table shows data for Azure App Service Resource Health Metadata.
 
 https://learn.microsoft.com/en-us/rest/api/appservice/resource-health-metadata/list?tabs=HTTP#resourcehealthmetadata
 

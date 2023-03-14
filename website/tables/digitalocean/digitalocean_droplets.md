@@ -1,6 +1,6 @@
 # Table: digitalocean_droplets
 
-This table shows data for Digitalocean Droplets.
+This table shows data for DigitalOcean Droplets.
 
 The primary key for this table is **id**.
 
