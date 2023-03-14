@@ -1,6 +1,6 @@
 # Table: aws_iot_thing_types
 
-This table shows data for IOT Thing Types.
+This table shows data for AWS IoT Thing Types.
 
 https://docs.aws.amazon.com/iot/latest/apireference/API_ThingTypeDefinition.html
 

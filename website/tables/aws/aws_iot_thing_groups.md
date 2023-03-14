@@ -1,6 +1,6 @@
 # Table: aws_iot_thing_groups
 
-This table shows data for IOT Thing Groups.
+This table shows data for AWS IoT Thing Groups.
 
 https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeThingGroup.html
 

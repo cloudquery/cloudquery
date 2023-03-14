@@ -49,6 +49,7 @@ var awsExceptions = map[string]string{
 	"fsx":               "Amazon FSx",
 	"guardduty":         "Amazon GuardDuty",
 	"identitystore":     "Identity Store",
+	"iot":               "AWS IoT",
 	"kms":               "AWS Key Management Service (AWS KMS)",
 	"mq":                "Amazon MQ",
 	"mwaa":              "Amazon MWAA",

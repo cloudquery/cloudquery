@@ -1,6 +1,6 @@
 # Table: aws_iot_ca_certificates
 
-This table shows data for IOT CA Certificates.
+This table shows data for AWS IoT CA Certificates.
 
 https://docs.aws.amazon.com/iot/latest/apireference/API_CACertificateDescription.html
 

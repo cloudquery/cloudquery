@@ -1,6 +1,6 @@
 # Table: aws_iot_topic_rules
 
-This table shows data for IOT Topic Rules.
+This table shows data for AWS IoT Topic Rules.
 
 https://docs.aws.amazon.com/iot/latest/apireference/API_GetTopicRule.html
 

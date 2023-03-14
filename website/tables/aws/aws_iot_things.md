@@ -1,6 +1,6 @@
 # Table: aws_iot_things
 
-This table shows data for IOT Things.
+This table shows data for AWS IoT Things.
 
 https://docs.aws.amazon.com/iot/latest/apireference/API_ThingAttribute.html
 

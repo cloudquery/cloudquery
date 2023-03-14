@@ -1,6 +1,6 @@
 # Table: aws_iot_security_profiles
 
-This table shows data for IOT Security Profiles.
+This table shows data for AWS IoT Security Profiles.
 
 https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeSecurityProfile.html
 
