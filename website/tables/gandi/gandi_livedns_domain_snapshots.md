@@ -1,6 +1,6 @@
 # Table: gandi_livedns_domain_snapshots
 
-This table shows data for Gandi Livedns Domain Snapshots.
+This table shows data for Gandi LiveDNS Domain Snapshots.
 
 The composite primary key for this table is (**fqdn**, **id**).
 
