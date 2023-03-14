@@ -1,5 +1,7 @@
 # Table: digitalocean_balances
 
+This table shows data for DigitalOcean Balances.
+
 The primary key for this table is **_cq_id**.
 
 ## Columns

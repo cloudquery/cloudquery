@@ -1,5 +1,7 @@
 # Table: k8s_discovery_endpoint_slices
 
+This table shows data for K8s Discovery Endpoint Slices.
+
 The primary key for this table is **uid**.
 
 ## Columns

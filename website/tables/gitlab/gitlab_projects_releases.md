@@ -1,5 +1,7 @@
 # Table: gitlab_projects_releases
 
+This table shows data for Gitlab Projects Releases.
+
 The composite primary key for this table is (**base_url**, **project_id**, **created_at**).
 
 ## Relations

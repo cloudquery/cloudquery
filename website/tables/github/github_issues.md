@@ -1,5 +1,7 @@
 # Table: github_issues
 
+This table shows data for Github Issues.
+
 The composite primary key for this table is (**org**, **id**).
 
 ## Columns

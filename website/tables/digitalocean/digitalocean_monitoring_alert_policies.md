@@ -1,5 +1,7 @@
 # Table: digitalocean_monitoring_alert_policies
 
+This table shows data for DigitalOcean Monitoring Alert Policies.
+
 The primary key for this table is **uuid**.
 
 ## Columns

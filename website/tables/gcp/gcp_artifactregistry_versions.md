@@ -1,5 +1,7 @@
 # Table: gcp_artifactregistry_versions
 
+This table shows data for GCP Artifact Registry Versions.
+
 https://cloud.google.com/artifact-registry/docs/reference/rest/v1/projects.locations.repositories.packages.versions#Version
 
 The composite primary key for this table is (**project_id**, **name**).

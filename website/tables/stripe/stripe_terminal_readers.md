@@ -1,5 +1,7 @@
 # Table: stripe_terminal_readers
 
+This table shows data for Stripe Terminal Readers.
+
 https://stripe.com/docs/api/terminal_readers
 
 The primary key for this table is **id**.

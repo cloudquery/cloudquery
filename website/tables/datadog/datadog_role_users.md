@@ -1,5 +1,7 @@
 # Table: datadog_role_users
 
+This table shows data for Datadog Role Users.
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

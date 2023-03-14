@@ -1,5 +1,7 @@
 # Table: oracle_identity_domains
 
+This table shows data for Oracle Identity Domains.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

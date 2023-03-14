@@ -1,5 +1,7 @@
 # Table: pagerduty_users
 
+This table shows data for PagerDuty Users.
+
 https://developer.pagerduty.com/api-reference/c96e889522dd6-list-users
 
 The primary key for this table is **id**.

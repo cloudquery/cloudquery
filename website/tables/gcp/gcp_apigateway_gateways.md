@@ -1,5 +1,7 @@
 # Table: gcp_apigateway_gateways
 
+This table shows data for GCP API Gateway Gateways.
+
 https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations.gateways#Gateway
 
 The composite primary key for this table is (**project_id**, **name**).

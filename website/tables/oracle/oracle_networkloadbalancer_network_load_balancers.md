@@ -1,5 +1,7 @@
 # Table: oracle_networkloadbalancer_network_load_balancers
 
+This table shows data for Oracle Networkloadbalancer Network Load Balancers.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

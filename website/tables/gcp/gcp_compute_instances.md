@@ -1,5 +1,7 @@
 # Table: gcp_compute_instances
 
+This table shows data for GCP Compute Instances.
+
 https://cloud.google.com/compute/docs/reference/rest/v1/instances#Instance
 
 The primary key for this table is **self_link**.

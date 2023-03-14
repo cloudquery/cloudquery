@@ -1,5 +1,7 @@
 # Table: aws_cloudwatchlogs_log_groups
 
+This table shows data for Cloudwatchlogs Log Groups.
+
 https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_LogGroup.html
 
 The primary key for this table is **arn**.

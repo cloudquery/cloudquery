@@ -1,5 +1,7 @@
 # Table: stripe_accounts
 
+This table shows data for Stripe Accounts.
+
 https://stripe.com/docs/api/accounts
 
 The primary key for this table is **id**.

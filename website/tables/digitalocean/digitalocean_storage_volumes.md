@@ -1,5 +1,7 @@
 # Table: digitalocean_storage_volumes
 
+This table shows data for DigitalOcean Storage Volumes.
+
 The primary key for this table is **id**.
 
 ## Columns

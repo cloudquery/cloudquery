@@ -1,5 +1,7 @@
 # Table: aws_support_services
 
+This table shows data for Support Services.
+
 https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeServices.html
 
 The composite primary key for this table is (**account_id**, **region**, **language_code**, **code**).

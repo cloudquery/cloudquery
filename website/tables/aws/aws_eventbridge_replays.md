@@ -1,5 +1,7 @@
 # Table: aws_eventbridge_replays
 
+This table shows data for Amazon EventBridge Replays.
+
 https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Replay.html
 
 The primary key for this table is **arn**.

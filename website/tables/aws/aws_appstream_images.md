@@ -1,5 +1,7 @@
 # Table: aws_appstream_images
 
+This table shows data for Amazon AppStream Images.
+
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Image.html
 
 The composite primary key for this table is (**account_id**, **region**, **arn**).

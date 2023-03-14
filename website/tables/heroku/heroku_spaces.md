@@ -1,5 +1,7 @@
 # Table: heroku_spaces
 
+This table shows data for Heroku Spaces.
+
 https://devcenter.heroku.com/articles/platform-api-reference#space
 
 The primary key for this table is **id**.

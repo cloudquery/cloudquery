@@ -1,5 +1,7 @@
 # Table: oracle_identity_cost_tracking_tags
 
+This table shows data for Oracle Identity Cost Tracking Tags.
+
 The primary key for this table is **id**.
 
 ## Columns

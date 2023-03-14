@@ -1,5 +1,7 @@
 # Table: aws_resiliencehub_suggested_resiliency_policies
 
+This table shows data for AWS Resilience Hub Suggested Resiliency Policies.
+
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_ResiliencyPolicy.html
 
 The primary key for this table is **arn**.

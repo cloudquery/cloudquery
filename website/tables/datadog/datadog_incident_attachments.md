@@ -1,5 +1,7 @@
 # Table: datadog_incident_attachments
 
+This table shows data for Datadog Incident Attachments.
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

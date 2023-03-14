@@ -1,5 +1,7 @@
 # Table: plausible_stats_timeseries
 
+This table shows data for Plausible Stats Timeseries.
+
 https://plausible.io/docs/stats-api#get-apiv1statstimeseries
 
 The composite primary key for this table is (**site_id**, **date**).

@@ -1,5 +1,7 @@
 # Table: aws_rds_cluster_snapshots
 
+This table shows data for Amazon Relational Database Service (RDS) Cluster Snapshots.
+
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBClusterSnapshot.html
 
 The primary key for this table is **arn**.

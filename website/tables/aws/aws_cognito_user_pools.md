@@ -1,5 +1,7 @@
 # Table: aws_cognito_user_pools
 
+This table shows data for Cognito User Pools.
+
 https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UserPoolType.html
 
 The composite primary key for this table is (**account_id**, **region**, **id**).

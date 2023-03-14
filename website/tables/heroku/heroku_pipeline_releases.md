@@ -1,5 +1,7 @@
 # Table: heroku_pipeline_releases
 
+This table shows data for Heroku Pipeline Releases.
+
 https://devcenter.heroku.com/articles/platform-api-reference#pipeline-release
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: aws_ecs_cluster_task_sets
 
+This table shows data for Amazon Elastic Container Service (ECS) Cluster Task Sets.
+
 https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_TaskSet.html
 
 The primary key for this table is **arn**.

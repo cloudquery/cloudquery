@@ -1,5 +1,7 @@
 # Table: snyk_dependencies
 
+This table shows data for Snyk Dependencies.
+
 https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Dependency
 
 The primary key for this table is **id**.

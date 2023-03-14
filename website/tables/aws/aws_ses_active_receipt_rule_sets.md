@@ -1,5 +1,7 @@
 # Table: aws_ses_active_receipt_rule_sets
 
+This table shows data for Amazon Simple Email Service (SES) Active Receipt Rule Sets.
+
 https://docs.aws.amazon.com/ses/latest/APIReference/API_DescribeActiveReceiptRuleSet.html
 
 The composite primary key for this table is (**account_id**, **region**, **name**).

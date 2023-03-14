@@ -1,5 +1,7 @@
 # Table: stripe_webhook_endpoints
 
+This table shows data for Stripe Webhook Endpoints.
+
 https://stripe.com/docs/api/webhook_endpoints
 
 The primary key for this table is **id**.

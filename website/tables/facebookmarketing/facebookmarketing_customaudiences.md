@@ -1,5 +1,7 @@
 # Table: facebookmarketing_customaudiences
 
+This table shows data for Facebook Marketing Custom Audiences.
+
 https://developers.facebook.com/docs/marketing-api/reference/custom-audience#Reading
 
 The primary key for this table is **id**.

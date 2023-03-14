@@ -1,5 +1,7 @@
 # Table: k8s_core_pvs
 
+This table shows data for K8s Core Pvs.
+
 The primary key for this table is **uid**.
 
 ## Columns

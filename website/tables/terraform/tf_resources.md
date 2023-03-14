@@ -1,5 +1,7 @@
 # Table: tf_resources
 
+This table shows data for Tf Resources.
+
 Terraform resources
 
 The primary key for this table is **_cq_id**.

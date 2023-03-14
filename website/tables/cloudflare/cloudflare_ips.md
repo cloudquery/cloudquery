@@ -1,5 +1,7 @@
 # Table: cloudflare_ips
 
+This table shows data for Cloudflare IPs.
+
 The primary key for this table is **_cq_id**.
 
 ## Columns
