@@ -26,6 +26,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
+	"github.com/aws/aws-sdk-go-v2/service/computeoptimizer"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
@@ -133,6 +134,7 @@ func initServices(region string, c aws.Config) Services {
 		Codepipeline:              codepipeline.NewFromConfig(awsCfg),
 		Cognitoidentity:           cognitoidentity.NewFromConfig(awsCfg),
 		Cognitoidentityprovider:   cognitoidentityprovider.NewFromConfig(awsCfg),
+		Computeoptimizer:          computeoptimizer.NewFromConfig(awsCfg),
 		Configservice:             configservice.NewFromConfig(awsCfg),
 		Databasemigrationservice:  databasemigrationservice.NewFromConfig(awsCfg),
 		Dax:                       dax.NewFromConfig(awsCfg),
@@ -237,6 +239,7 @@ type Services struct {
 	Codepipeline              services.CodepipelineClient
 	Cognitoidentity           services.CognitoidentityClient
 	Cognitoidentityprovider   services.CognitoidentityproviderClient
+	Computeoptimizer          services.ComputeoptimizerClient
 	Configservice             services.ConfigserviceClient
 	Databasemigrationservice  services.DatabasemigrationserviceClient
 	Dax                       services.DaxClient
