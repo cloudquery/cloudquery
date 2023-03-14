@@ -51,7 +51,6 @@ func fetchSagemakerApps(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 		res <- page.Apps
 	}
 	return nil
-
 }
 
 func getApp(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
