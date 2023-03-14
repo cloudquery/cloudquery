@@ -1,5 +1,7 @@
 # Table: azure_network_interface_ip_configurations
 
+This table shows data for Azure Network Interface IP Configurations.
+
 https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-interface-ip-configurations/list?tabs=HTTP#ipconfiguration
 
 The primary key for this table is **id**.

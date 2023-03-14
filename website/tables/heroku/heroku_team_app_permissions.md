@@ -1,5 +1,7 @@
 # Table: heroku_team_app_permissions
 
+This table shows data for Heroku Team App Permissions.
+
 https://devcenter.heroku.com/articles/platform-api-reference#team-app-permission
 
 The primary key for this table is **_cq_id**.

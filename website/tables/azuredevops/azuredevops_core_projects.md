@@ -1,5 +1,7 @@
 # Table: azuredevops_core_projects
 
+This table shows data for Azuredevops Core Projects.
+
 The primary key for this table is **_cq_id**.
 
 ## Columns

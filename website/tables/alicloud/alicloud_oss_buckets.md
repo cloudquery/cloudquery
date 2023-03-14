@@ -1,5 +1,7 @@
 # Table: alicloud_oss_buckets
 
+This table shows data for Alibaba Cloud Object Storage Service (OSS) Buckets.
+
 The composite primary key for this table is (**account_id**, **name**).
 
 ## Relations

@@ -1,5 +1,7 @@
 # Table: azure_network_service_endpoint_policies
 
+This table shows data for Azure Network Service Endpoint Policies.
+
 https://learn.microsoft.com/en-us/rest/api/expressroute/service-endpoint-policies/list?tabs=HTTP#serviceendpointpolicy
 
 The primary key for this table is **id**.

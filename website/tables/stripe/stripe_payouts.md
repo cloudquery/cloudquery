@@ -1,5 +1,7 @@
 # Table: stripe_payouts
 
+This table shows data for Stripe Payouts.
+
 https://stripe.com/docs/api/payouts
 
 The primary key for this table is **id**.

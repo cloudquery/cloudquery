@@ -1,5 +1,7 @@
 # Table: vercel_projects
 
+This table shows data for Vercel Projects.
+
 The primary key for this table is **id**.
 It supports incremental syncs.
 ## Relations

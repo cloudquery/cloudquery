@@ -1,5 +1,7 @@
 # Table: gcp_certificatemanager_certificate_map_entries
 
+This table shows data for GCP Certificatemanager Certificate Map Entries.
+
 https://cloud.google.com/certificate-manager/docs/reference/rest/v1/projects.locations.certificateMaps.certificateMapEntries#CertificateMapEntry
 
 The composite primary key for this table is (**project_id**, **name**).

@@ -1,5 +1,7 @@
 # Table: aws_wafregional_rate_based_rules
 
+This table shows data for Wafregional Rate Based Rules.
+
 https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_RateBasedRule.html
 
 The primary key for this table is **arn**.

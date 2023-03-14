@@ -1,5 +1,7 @@
 # Table: aws_support_trusted_advisor_check_summaries
 
+This table shows data for Support Trusted Advisor Check Summaries.
+
 https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeTrustedAdvisorCheckSummaries.html
 
 The composite primary key for this table is (**account_id**, **region**, **language_code**, **check_id**).

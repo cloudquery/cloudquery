@@ -1,5 +1,7 @@
 # Table: aws_backup_global_settings
 
+This table shows data for Backup Global Settings.
+
 https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeGlobalSettings.html
 
 The composite primary key for this table is (**account_id**, **region**).

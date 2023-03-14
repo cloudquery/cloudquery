@@ -1,5 +1,7 @@
 # Table: azure_frontdoor_managed_rule_sets
 
+This table shows data for Azure Frontdoor Managed Rule Sets.
+
 https://learn.microsoft.com/en-us/rest/api/frontdoor/webapplicationfirewall/managed-rule-sets/list#managedrulesetdefinition
 
 The composite primary key for this table is (**subscription_id**, **id**).

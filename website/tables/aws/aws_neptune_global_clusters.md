@@ -1,5 +1,7 @@
 # Table: aws_neptune_global_clusters
 
+This table shows data for Neptune Global Clusters.
+
 https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#DescribeDBInstances
 
 The primary key for this table is **arn**.

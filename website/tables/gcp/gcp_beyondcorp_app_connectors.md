@@ -1,5 +1,7 @@
 # Table: gcp_beyondcorp_app_connectors
 
+This table shows data for GCP Beyondcorp App Connectors.
+
 https://cloud.google.com/beyondcorp/docs/reference/rest/v1/projects.locations.appConnectors#AppConnector
 
 The composite primary key for this table is (**project_id**, **name**).

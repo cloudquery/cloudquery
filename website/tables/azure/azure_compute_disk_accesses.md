@@ -1,5 +1,7 @@
 # Table: azure_compute_disk_accesses
 
+This table shows data for Azure Compute Disk Accesses.
+
 https://learn.microsoft.com/en-us/rest/api/compute/disk-accesses/list?tabs=HTTP#diskaccess
 
 The primary key for this table is **id**.

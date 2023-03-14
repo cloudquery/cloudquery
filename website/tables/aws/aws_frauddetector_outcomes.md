@@ -1,5 +1,7 @@
 # Table: aws_frauddetector_outcomes
 
+This table shows data for Amazon Fraud Detector Outcomes.
+
 https://docs.aws.amazon.com/frauddetector/latest/api/API_Outcome.html
 
 The primary key for this table is **arn**.

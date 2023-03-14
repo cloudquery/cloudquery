@@ -1,5 +1,7 @@
 # Table: stripe_subscriptions
 
+This table shows data for Stripe Subscriptions.
+
 https://stripe.com/docs/api/subscriptions
 
 The primary key for this table is **id**.

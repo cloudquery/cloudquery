@@ -1,5 +1,7 @@
 # Table: azure_network_watchers
 
+This table shows data for Azure Network Watchers.
+
 https://learn.microsoft.com/en-us/rest/api/network-watcher/network-watchers/list-all?tabs=HTTP#networkwatcher
 
 The primary key for this table is **id**.

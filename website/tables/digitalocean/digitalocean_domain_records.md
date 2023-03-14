@@ -1,5 +1,7 @@
 # Table: digitalocean_domain_records
 
+This table shows data for DigitalOcean Domain Records.
+
 The primary key for this table is **id**.
 
 ## Relations

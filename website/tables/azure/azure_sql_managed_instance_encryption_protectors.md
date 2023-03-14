@@ -1,5 +1,7 @@
 # Table: azure_sql_managed_instance_encryption_protectors
 
+This table shows data for Azure SQL Managed Instance Encryption Protectors.
+
 https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/managed-instance-encryption-protectors/list-by-instance?tabs=HTTP#managedinstanceencryptionprotector
 
 The primary key for this table is **id**.

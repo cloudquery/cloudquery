@@ -1,5 +1,7 @@
 # Table: gcp_billing_services
 
+This table shows data for GCP Billing Services.
+
 https://cloud.google.com/billing/docs/reference/rest/v1/services/list#Service
 
 The primary key for this table is **name**.

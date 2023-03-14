@@ -1,5 +1,7 @@
 # Table: shopify_orders
 
+This table shows data for Shopify Orders.
+
 The primary key for this table is **id**.
 It supports incremental syncs based on the (**created_at**, **updated_at**) columns.
 

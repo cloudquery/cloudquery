@@ -1,5 +1,7 @@
 # Table: azure_cdn_managed_rule_sets
 
+This table shows data for Azure Content Delivery Network (CDN) Managed Rule Sets.
+
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn@v1.0.0#ManagedRuleSetDefinition
 
 The composite primary key for this table is (**subscription_id**, **id**).

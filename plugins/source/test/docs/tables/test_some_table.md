@@ -1,5 +1,7 @@
 # Table: test_some_table
 
+This table shows data for Test Some Table.
+
 Test description
 
 The primary key for this table is **column1**.

@@ -1,5 +1,7 @@
 # Table: stripe_treasury_transactions
 
+This table shows data for Stripe Treasury Transactions.
+
 https://stripe.com/docs/api/treasury_transactions
 
 The primary key for this table is **id**.

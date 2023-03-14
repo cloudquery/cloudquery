@@ -1,5 +1,7 @@
 # Table: azure_servicebus_namespace_topic_rule_access_keys
 
+This table shows data for Azure Service Bus Namespace Topic Rule Access Keys.
+
 https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics%20%E2%80%93%20authorization%20rules/list-keys?tabs=HTTP#accesskeys
 
 The composite primary key for this table is (**rule_id**, **key_name**).

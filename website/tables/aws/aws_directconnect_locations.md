@@ -1,5 +1,7 @@
 # Table: aws_directconnect_locations
 
+This table shows data for AWS Direct Connect Locations.
+
 https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Location.html
 
 The composite primary key for this table is (**account_id**, **region**, **location_code**).

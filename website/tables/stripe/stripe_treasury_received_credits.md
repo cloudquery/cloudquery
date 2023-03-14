@@ -1,5 +1,7 @@
 # Table: stripe_treasury_received_credits
 
+This table shows data for Stripe Treasury Received Credits.
+
 https://stripe.com/docs/api/treasury_received_credits
 
 The primary key for this table is **id**.

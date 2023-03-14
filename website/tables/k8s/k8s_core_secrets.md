@@ -1,5 +1,7 @@
 # Table: k8s_core_secrets
 
+This table shows data for K8s Core Secrets.
+
 The primary key for this table is **uid**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: aws_ecs_cluster_services
 
+This table shows data for Amazon Elastic Container Service (ECS) Cluster Services.
+
 https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Service.html
 
 The primary key for this table is **arn**.

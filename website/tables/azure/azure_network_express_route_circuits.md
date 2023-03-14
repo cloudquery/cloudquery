@@ -1,5 +1,7 @@
 # Table: azure_network_express_route_circuits
 
+This table shows data for Azure Network Express Route Circuits.
+
 https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuits/list?tabs=HTTP#expressroutecircuit
 
 The primary key for this table is **id**.

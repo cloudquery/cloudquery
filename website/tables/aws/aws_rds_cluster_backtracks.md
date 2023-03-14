@@ -1,5 +1,7 @@
 # Table: aws_rds_cluster_backtracks
 
+This table shows data for Amazon Relational Database Service (RDS) Cluster Backtracks.
+
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DescribeDBClusterBacktracks.html
 
 The composite primary key for this table is (**db_cluster_arn**, **backtrack_identifier**).

@@ -1,5 +1,7 @@
 # Table: aws_savingsplans_plans
 
+This table shows data for Savingsplans Plans.
+
 https://docs.aws.amazon.com/savingsplans/latest/APIReference/API_SavingsPlan.html
 
 The primary key for this table is **arn**.

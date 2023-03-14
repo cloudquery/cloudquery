@@ -1,5 +1,7 @@
 # Table: aws_docdb_certificates
 
+This table shows data for Amazon DocumentDB Certificates.
+
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Certificate.html
 
 The composite primary key for this table is (**account_id**, **arn**).

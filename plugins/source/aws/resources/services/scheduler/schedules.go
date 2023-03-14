@@ -11,6 +11,7 @@ func Schedules() *schema.Table {
 	tableName := "aws_scheduler_schedules"
 	return &schema.Table{
 		Name:                tableName,
+		Title:               "Amazon EventBridge Scheduler Schedules",
 		Description:         `https://docs.aws.amazon.com/scheduler/latest/APIReference/API_GetScheduleOutput.html`,
 		Resolver:            fetchSchedulerSchedules,
 		PreResourceResolver: getSchedule,

@@ -1,5 +1,7 @@
 # Table: datadog_dashboard_lists
 
+This table shows data for Datadog Dashboard Lists.
+
 The composite primary key for this table is (**account_name**, **id**).
 
 ## Columns
