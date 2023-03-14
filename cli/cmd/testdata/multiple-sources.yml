@@ -2,21 +2,21 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
-  version: v15.3.0
+  version: v15.3.0 # latest version of aws plugin
   destinations: [mysql]
 ---
 kind: source
 spec:
   name: gcp
   path: cloudquery/gcp
-  version: v8.4.0
+  version: v8.4.0 # latest version of gcp plugin
   destinations: [mysql]
 ---
 kind: source
 spec:
   name: azure
   path: cloudquery/azure
-  version: v5.1.1
+  version: v5.1.1 # latest version of azure plugin
   destinations: [mysql]
 ---
 kind: destination
