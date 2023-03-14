@@ -1,6 +1,6 @@
 # Table: aws_sagemaker_models
 
-This table shows data for AWS Sagemaker Models.
+This table shows data for Amazon SageMaker Models.
 
 https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeModel.html
 

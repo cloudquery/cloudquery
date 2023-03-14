@@ -1,6 +1,6 @@
 # Table: aws_redshift_cluster_parameter_groups
 
-This table shows data for AWS Redshift Cluster Parameter Groups.
+This table shows data for Redshift Cluster Parameter Groups.
 
 https://docs.aws.amazon.com/redshift/latest/APIReference/API_ClusterParameterGroupStatus.html
 

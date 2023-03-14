@@ -1,6 +1,6 @@
 # Table: aws_elasticbeanstalk_applications
 
-This table shows data for AWS Elasticbeanstalk Applications.
+This table shows data for AWS Elastic Beanstalk Applications.
 
 https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ApplicationDescription.html
 

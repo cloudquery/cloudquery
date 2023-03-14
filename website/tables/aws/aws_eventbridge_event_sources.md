@@ -1,6 +1,6 @@
 # Table: aws_eventbridge_event_sources
 
-This table shows data for AWS Eventbridge Event Sources.
+This table shows data for Amazon EventBridge Event Sources.
 
 https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_EventSource.html
 

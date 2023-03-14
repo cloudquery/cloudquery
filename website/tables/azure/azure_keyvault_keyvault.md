@@ -1,6 +1,6 @@
 # Table: azure_keyvault_keyvault
 
-This table shows data for Azure Keyvault Keyvault.
+This table shows data for Azure Key Vault Key Vault.
 
 https://learn.microsoft.com/en-us/rest/api/keyvault/keyvault/vaults/get?tabs=HTTP#vault
 

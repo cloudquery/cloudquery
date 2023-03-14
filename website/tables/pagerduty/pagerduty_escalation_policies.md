@@ -1,6 +1,6 @@
 # Table: pagerduty_escalation_policies
 
-This table shows data for Pagerduty Escalation Policies.
+This table shows data for PagerDuty Escalation Policies.
 
 https://developer.pagerduty.com/api-reference/51b21014a4f5a-list-escalation-policies
 

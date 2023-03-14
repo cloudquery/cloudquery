@@ -1,6 +1,6 @@
 # Table: aws_fsx_data_repository_tasks
 
-This table shows data for AWS Fsx Data Repository Tasks.
+This table shows data for Amazon FSx Data Repository Tasks.
 
 https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryTask.html
 

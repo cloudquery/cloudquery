@@ -1,6 +1,6 @@
 # Table: aws_glue_jobs
 
-This table shows data for AWS Glue Jobs.
+This table shows data for Glue Jobs.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_Job.html
 

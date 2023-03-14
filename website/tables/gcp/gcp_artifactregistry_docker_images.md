@@ -1,6 +1,6 @@
 # Table: gcp_artifactregistry_docker_images
 
-This table shows data for GCP Artifactregistry Docker Images.
+This table shows data for GCP Artifact Registry Docker Images.
 
 https://cloud.google.com/artifact-registry/docs/reference/rest/v1/projects.locations.repositories.dockerImages#DockerImage
 

@@ -1,6 +1,6 @@
 # Table: azure_cognitiveservices_accounts
 
-This table shows data for Azure Cognitiveservices Accounts.
+This table shows data for Azure Cognitive Services Accounts.
 
 https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/accounts/list?tabs=HTTP#account
 

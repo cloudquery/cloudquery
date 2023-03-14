@@ -1,6 +1,6 @@
 # Table: gcp_vmmigration_source_datacenter_connectors
 
-This table shows data for GCP Vmmigration Source Datacenter Connectors.
+This table shows data for GCP VM Migration Source Datacenter Connectors.
 
 https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.sources.datacenterConnectors
 

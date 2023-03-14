@@ -1,6 +1,6 @@
 # Table: aws_appstream_stacks
 
-This table shows data for AWS Appstream Stacks.
+This table shows data for Amazon AppStream Stacks.
 
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Stack.html
 

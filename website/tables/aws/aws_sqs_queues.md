@@ -1,6 +1,6 @@
 # Table: aws_sqs_queues
 
-This table shows data for AWS Sqs Queues.
+This table shows data for Sqs Queues.
 
 https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_GetQueueAttributes.html
 

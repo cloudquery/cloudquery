@@ -1,6 +1,6 @@
 # Table: aws_iam_user_attached_policies
 
-This table shows data for AWS IAM User Attached Policies.
+This table shows data for IAM User Attached Policies.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachedPolicy.html
 

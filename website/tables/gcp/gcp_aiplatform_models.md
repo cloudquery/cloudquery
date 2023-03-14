@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_models
 
-This table shows data for GCP Aiplatform Models.
+This table shows data for GCP AI Platform Models.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.models#Model
 

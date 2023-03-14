@@ -1,6 +1,6 @@
 # Table: aws_organizations_delegated_administrators
 
-This table shows data for AWS Organizations Delegated Administrators.
+This table shows data for Organizations Delegated Administrators.
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_DelegatedAdministrator.html
 
