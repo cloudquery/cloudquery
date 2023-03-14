@@ -1,0 +1,45 @@
+name: ✅ New Resource
+description: Ask to add a new resource to an existing source plugin
+title: "feat: Add <resource-name> to <plugin-name> source plugin"
+labels: [enhancement, resource, needs-triage]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the resource
+      description: Please describe what is the resource you'd like to add to the source plugin
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Please describe what's the reason for adding this resource to the source plugin
+    validations:
+      required: true
+
+  - type: input
+    id: api-docs
+    attributes:
+      label: Link to API documentation
+      description: Add a link to the official REST API documentation or Go SDK for the resource
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: |
+        Add any other context the resource, such as links to related PRs or issues
+    validations:
+      required: false
+
+  - type: checkboxes
+    attributes:
+      label: Pull request (optional)
+      description: Pull requests welcome! If you would like to help us add this resource, please check our [contributions guidelines](../blob/main/CONTRIBUTING.md)
+      options:
+        - label: I can submit a pull request
+          required: false
