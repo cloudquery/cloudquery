@@ -1,6 +1,6 @@
 # Table: digitalocean_cdns
 
-This table shows data for Digitalocean Cdns.
+This table shows data for Digitalocean CDNs.
 
 The primary key for this table is **id**.
 
