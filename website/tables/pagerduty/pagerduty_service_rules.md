@@ -1,6 +1,6 @@
 # Table: pagerduty_service_rules
 
-This table shows data for Pagerduty Service Rules.
+This table shows data for PagerDuty Service Rules.
 
 https://developer.pagerduty.com/api-reference/d69ad7f1ec900-list-service-s-event-rules
 
