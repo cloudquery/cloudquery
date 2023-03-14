@@ -30,6 +30,21 @@ func buildSavingPlansPlans(t *testing.T, ctrl *gomock.Controller) client.Service
 		nil,
 	)
 
+	var tag map[string]string
+	if err := faker.FakeObject(&tag); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(
+		gomock.Any(),
+		&savingsplans.ListTagsForResourceInput{ResourceArn: s.SavingsPlanArn},
+		gomock.Any(),
+	).Return(
+		&savingsplans.ListTagsForResourceOutput{
+			Tags: tag,
+		},
+		nil,
+	)
+
 	return client.Services{
 		Savingsplans: m,
 	}
