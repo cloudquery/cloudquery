@@ -1,5 +1,7 @@
 # Table: facebookmarketing_adcloudplayables
 
+This table shows data for Facebookmarketing Adcloudplayables.
+
 The composite primary key for this table is (**account_id**, **id**).
 
 ## Columns

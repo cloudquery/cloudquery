@@ -1,5 +1,7 @@
 # Table: oracle_compute_console_histories
 
+This table shows data for Oracle Compute Console Histories.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

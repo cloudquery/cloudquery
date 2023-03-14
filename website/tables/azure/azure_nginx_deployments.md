@@ -1,5 +1,7 @@
 # Table: azure_nginx_deployments
 
+This table shows data for Azure Nginx Deployments.
+
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v2@v2.0.0#Deployment
 
 The primary key for this table is **id**.

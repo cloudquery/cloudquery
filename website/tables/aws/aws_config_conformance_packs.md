@@ -1,5 +1,7 @@
 # Table: aws_config_conformance_packs
 
+This table shows data for AWS Config Conformance Packs.
+
 https://docs.aws.amazon.com/config/latest/APIReference/API_ConformancePackDetail.html
 
 The primary key for this table is **arn**.

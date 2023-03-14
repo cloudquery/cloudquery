@@ -1,5 +1,7 @@
 # Table: aws_route53_hosted_zones
 
+This table shows data for AWS Route53 Hosted Zones.
+
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_HostedZone.html
 
 The primary key for this table is **arn**.

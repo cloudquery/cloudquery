@@ -1,5 +1,7 @@
 # Table: aws_apigateway_domain_names
 
+This table shows data for AWS Apigateway Domain Names.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_DomainName.html
 
 The primary key for this table is **arn**.

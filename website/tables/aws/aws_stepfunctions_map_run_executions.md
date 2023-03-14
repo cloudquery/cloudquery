@@ -1,5 +1,7 @@
 # Table: aws_stepfunctions_map_run_executions
 
+This table shows data for AWS Stepfunctions Map Run Executions.
+
 https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeExecution.html
 
 The primary key for this table is **arn**.

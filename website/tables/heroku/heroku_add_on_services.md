@@ -1,5 +1,7 @@
 # Table: heroku_add_on_services
 
+This table shows data for Heroku Add On Services.
+
 https://devcenter.heroku.com/articles/platform-api-reference#add-on-service
 
 The primary key for this table is **id**.

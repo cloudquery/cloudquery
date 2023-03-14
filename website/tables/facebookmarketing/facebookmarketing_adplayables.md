@@ -1,5 +1,7 @@
 # Table: facebookmarketing_adplayables
 
+This table shows data for Facebookmarketing Adplayables.
+
 The composite primary key for this table is (**account_id**, **id**).
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: aws_elasticache_subnet_groups
 
+This table shows data for AWS Elasticache Subnet Groups.
+
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheSubnetGroup.html
 
 The primary key for this table is **arn**.

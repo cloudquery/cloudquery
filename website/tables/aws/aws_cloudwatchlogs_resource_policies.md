@@ -1,5 +1,7 @@
 # Table: aws_cloudwatchlogs_resource_policies
 
+This table shows data for AWS Cloudwatchlogs Resource Policies.
+
 https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_ResourcePolicy.html
 
 The composite primary key for this table is (**account_id**, **region**, **policy_name**).

@@ -1,5 +1,7 @@
 # Table: aws_frauddetector_variables
 
+This table shows data for AWS Frauddetector Variables.
+
 https://docs.aws.amazon.com/frauddetector/latest/api/API_Variable.html
 
 The primary key for this table is **arn**.

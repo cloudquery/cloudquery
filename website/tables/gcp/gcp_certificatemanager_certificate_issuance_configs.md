@@ -1,5 +1,7 @@
 # Table: gcp_certificatemanager_certificate_issuance_configs
 
+This table shows data for GCP Certificatemanager Certificate Issuance Configs.
+
 https://cloud.google.com/certificate-manager/docs/reference/rest/v1/projects.locations.certificateIssuanceConfigs#CertificateIssuanceConfig
 
 The composite primary key for this table is (**project_id**, **name**).

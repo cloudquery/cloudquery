@@ -1,5 +1,7 @@
 # Table: facebookmarketing_adspixels
 
+This table shows data for Facebookmarketing Adspixels.
+
 https://developers.facebook.com/docs/graph-api/reference/ads-pixel/#Reading
 
 The composite primary key for this table is (**account_id**, **id**).

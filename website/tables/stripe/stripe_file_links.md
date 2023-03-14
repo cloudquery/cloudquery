@@ -1,5 +1,7 @@
 # Table: stripe_file_links
 
+This table shows data for Stripe File Links.
+
 https://stripe.com/docs/api/file_links
 
 The primary key for this table is **id**.

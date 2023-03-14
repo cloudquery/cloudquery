@@ -1,5 +1,7 @@
 # Table: digitalocean_floating_ips
 
+This table shows data for Digitalocean Floating IPs.
+
 The primary key for this table is **ip**.
 
 ## Columns

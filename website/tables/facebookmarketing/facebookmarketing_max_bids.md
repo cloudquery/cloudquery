@@ -1,5 +1,7 @@
 # Table: facebookmarketing_max_bids
 
+This table shows data for Facebookmarketing Max Bids.
+
 https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/max-bid/
 
 The primary key for this table is **account_id**.

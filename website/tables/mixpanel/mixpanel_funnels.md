@@ -1,5 +1,7 @@
 # Table: mixpanel_funnels
 
+This table shows data for Mixpanel Funnels.
+
 https://developer.mixpanel.com/reference/funnels-list-saved
 
 The primary key for this table is **funnel_id**.

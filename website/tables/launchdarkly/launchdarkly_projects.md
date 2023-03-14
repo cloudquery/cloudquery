@@ -1,5 +1,7 @@
 # Table: launchdarkly_projects
 
+This table shows data for Launchdarkly Projects.
+
 https://apidocs.launchdarkly.com/tag/Projects#operation/getProjects
 
 The primary key for this table is **id**.

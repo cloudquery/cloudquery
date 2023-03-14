@@ -1,5 +1,7 @@
 # Table: aws_fsx_file_systems
 
+This table shows data for AWS Fsx File Systems.
+
 https://docs.aws.amazon.com/fsx/latest/APIReference/API_FileSystem.html
 
 The primary key for this table is **arn**.

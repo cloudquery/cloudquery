@@ -1,5 +1,7 @@
 # Table: gcp_bigtableadmin_app_profiles
 
+This table shows data for GCP Bigtableadmin App Profiles.
+
 https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances.appProfiles#AppProfile
 
 The composite primary key for this table is (**project_id**, **name**).

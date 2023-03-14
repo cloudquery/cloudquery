@@ -1,5 +1,7 @@
 # Table: oracle_networkfirewall_network_firewalls
 
+This table shows data for Oracle Networkfirewall Network Firewalls.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

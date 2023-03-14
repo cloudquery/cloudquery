@@ -1,5 +1,7 @@
 # Table: oracle_database_autonomous_container_databases
 
+This table shows data for Oracle Database Autonomous Container Databases.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

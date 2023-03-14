@@ -1,5 +1,7 @@
 # Table: aws_elbv2_listeners
 
+This table shows data for AWS Elbv2 Listeners.
+
 https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Listener.html
 
 The primary key for this table is **arn**.

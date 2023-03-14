@@ -1,5 +1,7 @@
 # Table: aws_neptune_instances
 
+This table shows data for AWS Neptune Instances.
+
 https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#DescribeDBInstances
 
 The primary key for this table is **arn**.

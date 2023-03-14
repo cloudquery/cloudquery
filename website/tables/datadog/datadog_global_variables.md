@@ -1,5 +1,7 @@
 # Table: datadog_global_variables
 
+This table shows data for Datadog Global Variables.
+
 The primary key for this table is **id**.
 
 ## Columns

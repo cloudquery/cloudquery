@@ -1,5 +1,7 @@
 # Table: stripe_products
 
+This table shows data for Stripe Products.
+
 https://stripe.com/docs/api/products
 
 The primary key for this table is **id**.

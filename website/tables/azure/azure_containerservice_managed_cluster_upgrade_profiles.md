@@ -1,5 +1,7 @@
 # Table: azure_containerservice_managed_cluster_upgrade_profiles
 
+This table shows data for Azure Containerservice Managed Cluster Upgrade Profiles.
+
 https://learn.microsoft.com/en-us/rest/api/aks/managed-clusters/get-upgrade-profile?tabs=HTTP#managedclusterupgradeprofile
 
 The primary key for this table is **id**.

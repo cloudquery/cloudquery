@@ -1,5 +1,7 @@
 # Table: aws_organizations_roots
 
+This table shows data for AWS Organizations Roots.
+
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_Root.html
 
 The primary key for this table is **arn**.

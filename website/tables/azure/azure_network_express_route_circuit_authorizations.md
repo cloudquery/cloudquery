@@ -1,5 +1,7 @@
 # Table: azure_network_express_route_circuit_authorizations
 
+This table shows data for Azure Network Express Route Circuit Authorizations.
+
 https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuit-authorizations/list?tabs=HTTP#expressroutecircuitauthorization
 
 The primary key for this table is **id**.

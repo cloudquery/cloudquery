@@ -1,5 +1,7 @@
 # Table: aws_dms_replication_instances
 
+This table shows data for AWS Dms Replication Instances.
+
 https://docs.aws.amazon.com/dms/latest/APIReference/API_ReplicationInstance.html
 
 The primary key for this table is **arn**.

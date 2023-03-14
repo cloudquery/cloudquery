@@ -1,5 +1,7 @@
 # Table: aws_servicecatalog_provisioned_products
 
+This table shows data for AWS Servicecatalog Provisioned Products.
+
 https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProvisionedProductAttribute.html
 
 The primary key for this table is **arn**.

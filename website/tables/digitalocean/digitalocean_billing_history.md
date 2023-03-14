@@ -1,5 +1,7 @@
 # Table: digitalocean_billing_history
 
+This table shows data for Digitalocean Billing History.
+
 The primary key for this table is **_cq_id**.
 
 ## Columns

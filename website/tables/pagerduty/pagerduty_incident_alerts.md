@@ -1,5 +1,7 @@
 # Table: pagerduty_incident_alerts
 
+This table shows data for Pagerduty Incident Alerts.
+
 https://developer.pagerduty.com/api-reference/4bc42e7ac0c59-list-alerts-for-an-incident
 
 The primary key for this table is **id**.

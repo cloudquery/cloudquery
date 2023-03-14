@@ -1,5 +1,7 @@
 # Table: gcp_aiplatform_tensorboards
 
+This table shows data for GCP Aiplatform Tensorboards.
+
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.tensorboards#Tensorboard
 
 The composite primary key for this table is (**project_id**, **name**).

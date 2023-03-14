@@ -1,5 +1,7 @@
 # Table: oracle_virtualnetwork_vtaps
 
+This table shows data for Oracle Virtualnetwork Vtaps.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

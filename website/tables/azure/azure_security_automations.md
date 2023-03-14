@@ -1,5 +1,7 @@
 # Table: azure_security_automations
 
+This table shows data for Azure Security Automations.
+
 https://learn.microsoft.com/en-us/rest/api/defenderforcloud/automations/list?tabs=HTTP#automation
 
 The primary key for this table is **id**.

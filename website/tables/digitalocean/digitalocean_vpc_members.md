@@ -1,5 +1,7 @@
 # Table: digitalocean_vpc_members
 
+This table shows data for Digitalocean VPC Members.
+
 The primary key for this table is **urn**.
 
 ## Relations

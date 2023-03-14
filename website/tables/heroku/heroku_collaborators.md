@@ -1,5 +1,7 @@
 # Table: heroku_collaborators
 
+This table shows data for Heroku Collaborators.
+
 https://devcenter.heroku.com/articles/platform-api-reference#collaborator
 
 The primary key for this table is **id**.

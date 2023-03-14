@@ -1,5 +1,7 @@
 # Table: homebrew_analytics_build_errors_365d
 
+This table shows data for Homebrew Analytics Build Errors 365d.
+
 https://formulae.brew.sh/analytics/build-error/365d/
 
 The primary key for this table is **number**.

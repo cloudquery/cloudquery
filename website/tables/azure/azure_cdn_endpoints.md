@@ -1,5 +1,7 @@
 # Table: azure_cdn_endpoints
 
+This table shows data for Azure Cdn Endpoints.
+
 https://learn.microsoft.com/en-us/rest/api/cdn/endpoints/list-by-profile?tabs=HTTP#endpoint
 
 The primary key for this table is **id**.

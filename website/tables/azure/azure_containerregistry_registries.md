@@ -1,5 +1,7 @@
 # Table: azure_containerregistry_registries
 
+This table shows data for Azure Containerregistry Registries.
+
 https://learn.microsoft.com/en-us/rest/api/containerregistry/registries/list?tabs=HTTP#registry
 
 The primary key for this table is **id**.

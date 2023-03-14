@@ -1,5 +1,7 @@
 # Table: azure_authorization_role_definitions
 
+This table shows data for Azure Authorization Role Definitions.
+
 https://learn.microsoft.com/en-us/rest/api/authorization/role-definitions/list?tabs=HTTP#roledefinition
 
 The primary key for this table is **id**.

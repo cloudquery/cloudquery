@@ -1,5 +1,7 @@
 # Table: aws_resiliencehub_recommendation_templates
 
+This table shows data for AWS Resiliencehub Recommendation Templates.
+
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_RecommendationTemplate.html
 
 The composite primary key for this table is (**arn**, **assessment_arn**, **app_arn**).

@@ -1,5 +1,7 @@
 # Table: facebookmarketing_promote_pages
 
+This table shows data for Facebookmarketing Promote Pages.
+
 https://developers.facebook.com/docs/graph-api/reference/page#Reading
 
 The composite primary key for this table is (**account_id**, **id**).

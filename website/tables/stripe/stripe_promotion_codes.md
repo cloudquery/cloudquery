@@ -1,5 +1,7 @@
 # Table: stripe_promotion_codes
 
+This table shows data for Stripe Promotion Codes.
+
 https://stripe.com/docs/api/promotion_codes
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: gcp_compute_images
 
+This table shows data for GCP Compute Images.
+
 The primary key for this table is **self_link**.
 
 ## Columns

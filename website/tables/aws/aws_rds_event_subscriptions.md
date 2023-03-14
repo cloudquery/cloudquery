@@ -1,5 +1,7 @@
 # Table: aws_rds_event_subscriptions
 
+This table shows data for AWS Rds Event Subscriptions.
+
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_EventSubscription.html
 
 The primary key for this table is **arn**.

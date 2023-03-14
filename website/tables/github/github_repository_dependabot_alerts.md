@@ -1,5 +1,7 @@
 # Table: github_repository_dependabot_alerts
 
+This table shows data for Github Repository Dependabot Alerts.
+
 The composite primary key for this table is (**org**, **repository_id**, **number**).
 
 ## Relations

@@ -1,5 +1,7 @@
 # Table: azure_search_services
 
+This table shows data for Azure Search Services.
+
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch@v1.0.0#Service
 
 The primary key for this table is **id**.

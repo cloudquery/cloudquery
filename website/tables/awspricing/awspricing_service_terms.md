@@ -1,5 +1,7 @@
 # Table: awspricing_service_terms
 
+This table shows data for Awspricing Service Terms.
+
 The composite primary key for this table is (**offer_term_code**, **sku**).
 
 ## Relations

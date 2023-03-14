@@ -1,5 +1,7 @@
 # Table: github_organization_dependabot_secrets
 
+This table shows data for Github Organization Dependabot Secrets.
+
 The composite primary key for this table is (**org**, **name**).
 
 ## Relations

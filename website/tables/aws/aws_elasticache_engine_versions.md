@@ -1,5 +1,7 @@
 # Table: aws_elasticache_engine_versions
 
+This table shows data for AWS Elasticache Engine Versions.
+
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheEngineVersion.html
 
 The composite primary key for this table is (**account_id**, **region**, **engine**, **engine_version**).

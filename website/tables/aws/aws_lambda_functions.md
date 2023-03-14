@@ -1,5 +1,7 @@
 # Table: aws_lambda_functions
 
+This table shows data for AWS Lambda Functions.
+
 https://docs.aws.amazon.com/lambda/latest/dg/API_GetFunction.html
 
 The primary key for this table is **arn**.

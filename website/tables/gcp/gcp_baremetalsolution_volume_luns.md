@@ -1,5 +1,7 @@
 # Table: gcp_baremetalsolution_volume_luns
 
+This table shows data for GCP Baremetalsolution Volume Luns.
+
 https://cloud.google.com/bare-metal/docs/reference/rest/v2/projects.locations.volumes.luns#Lun
 
 The composite primary key for this table is (**project_id**, **name**).

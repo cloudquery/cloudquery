@@ -1,5 +1,7 @@
 # Table: pagerduty_rulesets
 
+This table shows data for Pagerduty Rulesets.
+
 https://developer.pagerduty.com/api-reference/633f1ecb6c03b-list-rulesets
 
 The primary key for this table is **id**.

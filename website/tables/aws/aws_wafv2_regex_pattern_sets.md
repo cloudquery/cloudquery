@@ -1,5 +1,7 @@
 # Table: aws_wafv2_regex_pattern_sets
 
+This table shows data for AWS Wafv2 Regex Pattern Sets.
+
 https://docs.aws.amazon.com/waf/latest/APIReference/API_RegexPatternSet.html
 
 The primary key for this table is **arn**.

@@ -1,5 +1,7 @@
 # Table: gcp_compute_target_http_proxies
 
+This table shows data for GCP Compute Target HTTP Proxies.
+
 https://cloud.google.com/compute/docs/reference/rest/v1/targetHttpProxies#TargetHttpProxy
 
 The primary key for this table is **self_link**.

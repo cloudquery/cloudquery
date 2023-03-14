@@ -1,5 +1,7 @@
 # Table: aws_elasticache_clusters
 
+This table shows data for AWS Elasticache Clusters.
+
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheCluster.html
 
 The primary key for this table is **arn**.

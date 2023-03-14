@@ -1,5 +1,7 @@
 # Table: stripe_treasury_financial_accounts
 
+This table shows data for Stripe Treasury Financial Accounts.
+
 https://stripe.com/docs/api/treasury_financial_accounts
 
 The primary key for this table is **id**.

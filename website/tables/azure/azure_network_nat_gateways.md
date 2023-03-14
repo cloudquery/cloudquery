@@ -1,5 +1,7 @@
 # Table: azure_network_nat_gateways
 
+This table shows data for Azure Network Nat Gateways.
+
 https://learn.microsoft.com/en-us/rest/api/virtualnetwork/nat-gateways/list?tabs=HTTP#natgateway
 
 The primary key for this table is **id**.

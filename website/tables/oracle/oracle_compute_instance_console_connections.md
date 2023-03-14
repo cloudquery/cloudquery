@@ -1,5 +1,7 @@
 # Table: oracle_compute_instance_console_connections
 
+This table shows data for Oracle Compute Instance Console Connections.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

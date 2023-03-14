@@ -1,5 +1,7 @@
 # Table: aws_apigatewayv2_api_integration_responses
 
+This table shows data for AWS Apigatewayv2 API Integration Responses.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_IntegrationResponse.html
 
 The composite primary key for this table is (**account_id**, **arn**).

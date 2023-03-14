@@ -1,5 +1,7 @@
 # Table: aws_ram_principals
 
+This table shows data for AWS RAM Principals.
+
 https://docs.aws.amazon.com/ram/latest/APIReference/API_Principal.html
 
 The composite primary key for this table is (**account_id**, **region**, **id**, **resource_share_arn**).

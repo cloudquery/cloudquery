@@ -1,5 +1,7 @@
 # Table: fastly_service_domains
 
+This table shows data for Fastly Service Domains.
+
 https://developer.fastly.com/reference/api/services/domain/
 
 The composite primary key for this table is (**name**, **service_id**, **service_version**).

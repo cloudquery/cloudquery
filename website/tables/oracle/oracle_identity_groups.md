@@ -1,5 +1,7 @@
 # Table: oracle_identity_groups
 
+This table shows data for Oracle Identity Groups.
+
 The primary key for this table is **id**.
 
 ## Columns

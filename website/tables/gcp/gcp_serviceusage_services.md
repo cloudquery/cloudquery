@@ -1,5 +1,7 @@
 # Table: gcp_serviceusage_services
 
+This table shows data for GCP Serviceusage Services.
+
 https://cloud.google.com/service-usage/docs/reference/rest/v1/services#Service
 
 The primary key for this table is **name**.

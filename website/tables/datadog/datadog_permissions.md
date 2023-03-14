@@ -1,5 +1,7 @@
 # Table: datadog_permissions
 
+This table shows data for Datadog Permissions.
+
 The composite primary key for this table is (**account_name**, **id**).
 
 ## Columns
