@@ -1,6 +1,6 @@
 # Table: azure_engagementfabric_accounts
 
-This table shows data for Azure Engagementfabric Accounts.
+This table shows data for Azure Engagement Fabric Accounts.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric@v0.1.0#Account
 

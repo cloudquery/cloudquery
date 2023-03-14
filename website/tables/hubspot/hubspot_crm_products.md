@@ -1,6 +1,6 @@
 # Table: hubspot_crm_products
 
-This table shows data for Hubspot Crm Products.
+This table shows data for HubSpot CRM Products.
 
 https://developers.hubspot.com/docs/api/crm/products
 

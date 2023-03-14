@@ -1,6 +1,6 @@
 # Table: oracle_blockstorage_boot_volume_replicas
 
-This table shows data for Oracle Blockstorage Boot Volume Replicas.
+This table shows data for Oracle Block Storage Boot Volume Replicas.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
