@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_internet_gateways
 
-This table shows data for Oracle Virtualnetwork Internet Gateways.
+This table shows data for Oracle Virtual Network Internet Gateways.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
