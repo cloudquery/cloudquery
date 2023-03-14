@@ -1,5 +1,7 @@
 # Table: fastly_service_versions
 
+This table shows data for Fastly Service Versions.
+
 https://developer.fastly.com/reference/api/services/version/
 
 The composite primary key for this table is (**number**, **service_id**).

@@ -1,5 +1,7 @@
 # Table: aws_mq_broker_configuration_revisions
 
+This table shows data for AWS Mq Broker Configuration Revisions.
+
 https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id-revisions.html
 
 The primary key for this table is **_cq_id**.

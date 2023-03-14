@@ -1,5 +1,7 @@
 # Table: digitalocean_accounts
 
+This table shows data for Digitalocean Accounts.
+
 The primary key for this table is **uuid**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: facebookmarketing_applications
 
+This table shows data for Facebookmarketing Applications.
+
 https://developers.facebook.com/docs/graph-api/reference/application#Reading
 
 The composite primary key for this table is (**account_id**, **id**).

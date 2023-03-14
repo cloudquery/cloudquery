@@ -1,5 +1,7 @@
 # Table: aws_amplify_apps
 
+This table shows data for AWS Amplify Apps.
+
 https://docs.aws.amazon.com/amplify/latest/APIReference/API_ListApps.html
 
 The primary key for this table is **arn**.

@@ -1,5 +1,7 @@
 # Table: aws_apprunner_vpc_ingress_connections
 
+This table shows data for AWS Apprunner VPC Ingress Connections.
+
 https://docs.aws.amazon.com/apprunner/latest/api/API_VpcIngressConnection.html
 
 Notes:

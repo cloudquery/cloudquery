@@ -1,5 +1,7 @@
 # Table: cloudflare_worker_routes
 
+This table shows data for Cloudflare Worker Routes.
+
 The primary key for this table is **id**.
 
 ## Columns

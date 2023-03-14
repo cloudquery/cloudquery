@@ -1,5 +1,7 @@
 # Table: azure_postgresql_databases
 
+This table shows data for Azure Postgresql Databases.
+
 https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/databases/list-by-server?tabs=HTTP#database
 
 The primary key for this table is **id**.

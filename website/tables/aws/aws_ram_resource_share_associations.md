@@ -1,5 +1,7 @@
 # Table: aws_ram_resource_share_associations
 
+This table shows data for AWS RAM Resource Share Associations.
+
 https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceShareAssociation.html
 
 The composite primary key for this table is (**associated_entity**, **resource_share_arn**).

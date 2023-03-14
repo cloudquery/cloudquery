@@ -1,5 +1,7 @@
 # Table: azure_storage_accounts
 
+This table shows data for Azure Storage Accounts.
+
 https://learn.microsoft.com/en-us/rest/api/storagerp/storage-accounts/list?tabs=HTTP#storageaccount
 
 The primary key for this table is **id**.

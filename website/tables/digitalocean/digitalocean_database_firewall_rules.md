@@ -1,5 +1,7 @@
 # Table: digitalocean_database_firewall_rules
 
+This table shows data for Digitalocean Database Firewall Rules.
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

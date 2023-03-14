@@ -1,5 +1,7 @@
 # Table: azure_containerservice_managed_clusters
 
+This table shows data for Azure Containerservice Managed Clusters.
+
 https://learn.microsoft.com/en-us/rest/api/aks/managed-clusters/list?tabs=HTTP#managedcluster
 
 The primary key for this table is **id**.

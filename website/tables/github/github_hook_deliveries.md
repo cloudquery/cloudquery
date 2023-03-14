@@ -1,5 +1,7 @@
 # Table: github_hook_deliveries
 
+This table shows data for Github Hook Deliveries.
+
 The composite primary key for this table is (**org**, **hook_id**, **id**).
 
 ## Relations

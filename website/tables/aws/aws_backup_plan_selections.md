@@ -1,5 +1,7 @@
 # Table: aws_backup_plan_selections
 
+This table shows data for AWS Backup Plan Selections.
+
 https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupSelection.html
 
 The primary key for this table is **_cq_id**.

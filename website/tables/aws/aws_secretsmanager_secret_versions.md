@@ -1,5 +1,7 @@
 # Table: aws_secretsmanager_secret_versions
 
+This table shows data for AWS Secretsmanager Secret Versions.
+
 https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecretVersionIds.html
 
 The composite primary key for this table is (**secret_arn**, **version_id**).

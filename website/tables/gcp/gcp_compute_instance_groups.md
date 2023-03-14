@@ -1,5 +1,7 @@
 # Table: gcp_compute_instance_groups
 
+This table shows data for GCP Compute Instance Groups.
+
 https://cloud.google.com/compute/docs/reference/rest/v1/instanceGroups#InstanceGroup
 
 The primary key for this table is **self_link**.

@@ -1,5 +1,7 @@
 # Table: oracle_virtualnetwork_vlans
 
+This table shows data for Oracle Virtualnetwork Vlans.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

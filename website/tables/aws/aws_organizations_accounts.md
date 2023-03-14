@@ -1,5 +1,7 @@
 # Table: aws_organizations_accounts
 
+This table shows data for AWS Organizations Accounts.
+
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html
 
 The primary key for this table is **arn**.

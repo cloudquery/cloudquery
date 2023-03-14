@@ -1,5 +1,7 @@
 # Table: aws_mwaa_environments
 
+This table shows data for AWS Mwaa Environments.
+
 https://docs.aws.amazon.com/mwaa/latest/API/API_Environment.html
 
 The primary key for this table is **arn**.

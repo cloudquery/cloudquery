@@ -1,5 +1,7 @@
 # Table: aws_emr_block_public_access_configs
 
+This table shows data for AWS Emr Block Public Access Configs.
+
 The composite primary key for this table is (**account_id**, **region**).
 
 ## Columns

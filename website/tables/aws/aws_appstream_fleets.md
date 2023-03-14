@@ -1,5 +1,7 @@
 # Table: aws_appstream_fleets
 
+This table shows data for AWS Appstream Fleets.
+
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Fleet.html
 
 The primary key for this table is **arn**.

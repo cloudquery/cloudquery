@@ -1,5 +1,7 @@
 # Table: aws_ec2_dhcp_options
 
+This table shows data for AWS Ec2 DHCP Options.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DhcpOptions.html
 
 The composite primary key for this table is (**account_id**, **region**, **dhcp_options_id**).

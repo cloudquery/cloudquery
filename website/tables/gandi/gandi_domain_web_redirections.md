@@ -1,5 +1,7 @@
 # Table: gandi_domain_web_redirections
 
+This table shows data for Gandi Domain Web Redirections.
+
 The composite primary key for this table is (**fqdn**, **host**, **type**).
 
 ## Relations

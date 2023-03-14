@@ -1,5 +1,7 @@
 # Table: oracle_filestorage_file_systems
 
+This table shows data for Oracle Filestorage File Systems.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

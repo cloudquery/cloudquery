@@ -1,5 +1,7 @@
 # Table: aws_quicksight_group_members
 
+This table shows data for AWS Quicksight Group Members.
+
 https://docs.aws.amazon.com/quicksight/latest/APIReference/API_GroupMember.html
 
 The composite primary key for this table is (**account_id**, **region**, **group_arn**, **arn**).

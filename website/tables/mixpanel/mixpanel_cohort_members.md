@@ -1,5 +1,7 @@
 # Table: mixpanel_cohort_members
 
+This table shows data for Mixpanel Cohort Members.
+
 https://developer.mixpanel.com/reference/engage-query
 
 The composite primary key for this table is (**cohort_id**, **distinct_id**).

@@ -1,5 +1,7 @@
 # Table: aws_iam_saml_identity_providers
 
+This table shows data for AWS IAM Saml Identity Providers.
+
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_SAMLProviderListEntry.html
 
 The primary key for this table is **arn**.

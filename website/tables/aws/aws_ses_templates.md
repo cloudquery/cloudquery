@@ -1,5 +1,7 @@
 # Table: aws_ses_templates
 
+This table shows data for AWS Ses Templates.
+
 https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailTemplate.html
 
 The primary key for this table is **arn**.

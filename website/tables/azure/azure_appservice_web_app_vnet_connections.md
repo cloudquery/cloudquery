@@ -1,5 +1,7 @@
 # Table: azure_appservice_web_app_vnet_connections
 
+This table shows data for Azure Appservice Web App Vnet Connections.
+
 https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/list-vnet-connections#vnetinforesource
 
 The primary key for this table is **id**.

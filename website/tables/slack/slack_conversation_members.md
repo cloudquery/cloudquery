@@ -1,5 +1,7 @@
 # Table: slack_conversation_members
 
+This table shows data for Slack Conversation Members.
+
 https://api.slack.com/methods/conversations.members
 
 The composite primary key for this table is (**team_id**, **user_id**, **channel_id**).

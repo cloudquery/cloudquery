@@ -1,5 +1,7 @@
 # Table: gcp_websecurityscanner_scan_config_scan_run_findings
 
+This table shows data for GCP Websecurityscanner Scan Config Scan Run Findings.
+
 https://cloud.google.com/security-command-center/docs/reference/web-security-scanner/rest/v1/projects.scanConfigs.scanRuns.findings
 
 The composite primary key for this table is (**project_id**, **name**).

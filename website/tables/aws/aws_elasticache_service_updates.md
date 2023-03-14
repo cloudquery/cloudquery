@@ -1,5 +1,7 @@
 # Table: aws_elasticache_service_updates
 
+This table shows data for AWS Elasticache Service Updates.
+
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ServiceUpdate.html
 
 The primary key for this table is **arn**.

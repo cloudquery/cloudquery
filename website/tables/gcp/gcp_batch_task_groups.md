@@ -1,5 +1,7 @@
 # Table: gcp_batch_task_groups
 
+This table shows data for GCP Batch Task Groups.
+
 https://cloud.google.com/batch/docs/reference/rest/v1/projects.locations.jobs#TaskGroup
 
 The composite primary key for this table is (**project_id**, **name**).

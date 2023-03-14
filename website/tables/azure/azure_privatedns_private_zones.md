@@ -1,5 +1,7 @@
 # Table: azure_privatedns_private_zones
 
+This table shows data for Azure Privatedns Private Zones.
+
 https://learn.microsoft.com/en-us/rest/api/dns/privatedns/private-zones/list?tabs=HTTP#privatezone
 
 The primary key for this table is **id**.

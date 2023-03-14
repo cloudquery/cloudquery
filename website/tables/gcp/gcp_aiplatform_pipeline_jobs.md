@@ -1,5 +1,7 @@
 # Table: gcp_aiplatform_pipeline_jobs
 
+This table shows data for GCP Aiplatform Pipeline Jobs.
+
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.pipelineJobs#PipelineJob
 
 The composite primary key for this table is (**project_id**, **name**).

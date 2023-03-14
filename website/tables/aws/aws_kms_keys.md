@@ -1,5 +1,7 @@
 # Table: aws_kms_keys
 
+This table shows data for AWS Kms Keys.
+
 https://docs.aws.amazon.com/kms/latest/APIReference/API_KeyMetadata.html
 
 The primary key for this table is **arn**.

@@ -1,5 +1,7 @@
 # Table: oracle_virtualnetwork_route_tables
 
+This table shows data for Oracle Virtualnetwork Route Tables.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

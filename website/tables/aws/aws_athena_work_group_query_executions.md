@@ -1,5 +1,7 @@
 # Table: aws_athena_work_group_query_executions
 
+This table shows data for AWS Athena Work Group Query Executions.
+
 https://docs.aws.amazon.com/athena/latest/APIReference/API_QueryExecution.html
 
 The primary key for this table is **_cq_id**.

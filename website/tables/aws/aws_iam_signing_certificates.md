@@ -1,5 +1,7 @@
 # Table: aws_iam_signing_certificates
 
+This table shows data for AWS IAM Signing Certificates.
+
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_SigningCertificate.html
 
 The composite primary key for this table is (**user_arn**, **certificate_id**).

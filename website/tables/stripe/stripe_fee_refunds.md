@@ -1,5 +1,7 @@
 # Table: stripe_fee_refunds
 
+This table shows data for Stripe Fee Refunds.
+
 https://stripe.com/docs/api/fee_refunds
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: azure_connectedvmware_resource_pools
 
+This table shows data for Azure Connectedvmware Resource Pools.
+
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#ResourcePool
 
 The primary key for this table is **id**.

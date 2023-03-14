@@ -1,5 +1,7 @@
 # Table: aws_apigatewayv2_api_route_responses
 
+This table shows data for AWS Apigatewayv2 API Route Responses.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_RouteResponse.html
 
 The composite primary key for this table is (**account_id**, **arn**).

@@ -1,5 +1,7 @@
 # Table: k8s_storage_volume_attachments
 
+This table shows data for K8s Storage Volume Attachments.
+
 The primary key for this table is **uid**.
 
 ## Columns

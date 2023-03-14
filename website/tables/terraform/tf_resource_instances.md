@@ -1,5 +1,7 @@
 # Table: tf_resource_instances
 
+This table shows data for Tf Resource Instances.
+
 Terraform resource instances
 
 The primary key for this table is **_cq_id**.

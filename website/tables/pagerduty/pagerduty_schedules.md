@@ -1,5 +1,7 @@
 # Table: pagerduty_schedules
 
+This table shows data for Pagerduty Schedules.
+
 https://developer.pagerduty.com/api-reference/846ecf84402bb-list-schedules
 
 The primary key for this table is **id**.

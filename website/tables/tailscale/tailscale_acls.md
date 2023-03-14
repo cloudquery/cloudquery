@@ -1,5 +1,7 @@
 # Table: tailscale_acls
 
+This table shows data for Tailscale ACLs.
+
 https://github.com/tailscale/tailscale/blob/main/api.md#acl
 
 The primary key for this table is **tailnet**.

@@ -1,5 +1,7 @@
 # Table: aws_resiliencehub_component_recommendations
 
+This table shows data for AWS Resiliencehub Component Recommendations.
+
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_ComponentRecommendation.html
 
 The composite primary key for this table is (**app_arn**, **assessment_arn**, **app_component_name**).

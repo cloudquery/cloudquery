@@ -1,5 +1,7 @@
 # Table: gandi_domain_glue_records
 
+This table shows data for Gandi Domain Glue Records.
+
 The composite primary key for this table is (**name**, **fqdn**).
 
 ## Relations

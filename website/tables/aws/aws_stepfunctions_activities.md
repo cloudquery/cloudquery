@@ -1,5 +1,7 @@
 # Table: aws_stepfunctions_activities
 
+This table shows data for AWS Stepfunctions Activities.
+
 https://docs.aws.amazon.com/step-functions/latest/apireference/API_ListActivities.html
 
 The primary key for this table is **arn**.

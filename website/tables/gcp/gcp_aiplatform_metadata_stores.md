@@ -1,5 +1,7 @@
 # Table: gcp_aiplatform_metadata_stores
 
+This table shows data for GCP Aiplatform Metadata Stores.
+
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.metadataStores#MetadataStore
 
 The composite primary key for this table is (**project_id**, **name**).

@@ -1,5 +1,7 @@
 # Table: stripe_files
 
+This table shows data for Stripe Files.
+
 https://stripe.com/docs/api/files
 
 The primary key for this table is **id**.

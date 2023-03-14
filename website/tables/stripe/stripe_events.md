@@ -1,5 +1,7 @@
 # Table: stripe_events
 
+This table shows data for Stripe Events.
+
 https://stripe.com/docs/api/events
 
 The primary key for this table is **id**.

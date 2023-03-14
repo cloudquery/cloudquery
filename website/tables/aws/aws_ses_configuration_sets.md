@@ -1,5 +1,7 @@
 # Table: aws_ses_configuration_sets
 
+This table shows data for AWS Ses Configuration Sets.
+
 https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetConfigurationSet.html
 
 The primary key for this table is **arn**.

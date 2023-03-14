@@ -1,5 +1,7 @@
 # Table: azure_compute_virtual_machine_extensions
 
+This table shows data for Azure Compute Virtual Machine Extensions.
+
 https://learn.microsoft.com/en-us/rest/api/compute/virtual-machine-extensions/list?tabs=HTTP#virtualmachineextension
 
 The primary key for this table is **id**.

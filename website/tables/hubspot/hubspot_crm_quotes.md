@@ -1,5 +1,7 @@
 # Table: hubspot_crm_quotes
 
+This table shows data for Hubspot Crm Quotes.
+
 https://developers.hubspot.com/docs/api/crm/quotes
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: gcp_vpcaccess_locations
 
+This table shows data for GCP Vpcaccess Locations.
+
 https://cloud.google.com/vpc/docs/reference/vpcaccess/rest/Shared.Types/ListLocationsResponse#Location
 
 The composite primary key for this table is (**project_id**, **name**).

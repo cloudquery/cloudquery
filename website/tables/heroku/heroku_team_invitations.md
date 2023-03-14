@@ -1,5 +1,7 @@
 # Table: heroku_team_invitations
 
+This table shows data for Heroku Team Invitations.
+
 https://devcenter.heroku.com/articles/platform-api-reference#team-invitation
 
 The primary key for this table is **id**.

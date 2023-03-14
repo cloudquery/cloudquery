@@ -1,5 +1,7 @@
 # Table: stripe_checkout_sessions
 
+This table shows data for Stripe Checkout Sessions.
+
 https://stripe.com/docs/api/checkout_sessions
 
 The primary key for this table is **id**.

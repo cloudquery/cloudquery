@@ -1,5 +1,7 @@
 # Table: azure_network_azure_firewall_fqdn_tags
 
+This table shows data for Azure Network Azure Firewall FQDN Tags.
+
 https://learn.microsoft.com/en-us/rest/api/firewall/azure-firewall-fqdn-tags/list-all?tabs=HTTP#azurefirewallfqdntag
 
 The composite primary key for this table is (**subscription_id**, **id**).

@@ -1,5 +1,7 @@
 # Table: aws_eventbridge_archives
 
+This table shows data for AWS Eventbridge Archives.
+
 https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Archive.html
 
 The primary key for this table is **arn**.

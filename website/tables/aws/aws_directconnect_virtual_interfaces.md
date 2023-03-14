@@ -1,5 +1,7 @@
 # Table: aws_directconnect_virtual_interfaces
 
+This table shows data for AWS Directconnect Virtual Interfaces.
+
 https://docs.aws.amazon.com/directconnect/latest/APIReference/API_VirtualInterface.html
 
 The primary key for this table is **arn**.

@@ -1,5 +1,7 @@
 # Table: aws_route53_delegation_sets
 
+This table shows data for AWS Route53 Delegation Sets.
+
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_DelegationSet.html
 
 The primary key for this table is **arn**.

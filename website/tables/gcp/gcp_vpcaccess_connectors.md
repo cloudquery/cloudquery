@@ -1,5 +1,7 @@
 # Table: gcp_vpcaccess_connectors
 
+This table shows data for GCP Vpcaccess Connectors.
+
 https://cloud.google.com/vpc/docs/reference/vpcaccess/rest/v1/projects.locations.connectors
 
 The composite primary key for this table is (**project_id**, **name**).

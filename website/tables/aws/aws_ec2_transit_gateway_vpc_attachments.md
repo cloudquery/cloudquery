@@ -1,5 +1,7 @@
 # Table: aws_ec2_transit_gateway_vpc_attachments
 
+This table shows data for AWS Ec2 Transit Gateway VPC Attachments.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayVpcAttachment.html
 
 The primary key for this table is **_cq_id**.

@@ -1,5 +1,7 @@
 # Table: azure_mysql_server_configurations
 
+This table shows data for Azure Mysql Server Configurations.
+
 https://learn.microsoft.com/en-us/rest/api/mysql/singleserver/configurations/list-by-server?tabs=HTTP#configuration
 
 The primary key for this table is **id**.

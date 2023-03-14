@@ -1,5 +1,7 @@
 # Table: gcp_websecurityscanner_scan_config_scan_run_crawled_urls
 
+This table shows data for GCP Websecurityscanner Scan Config Scan Run Crawled Urls.
+
 https://cloud.google.com/security-command-center/docs/reference/web-security-scanner/rest/v1/projects.scanConfigs.scanRuns.crawledUrls/list#CrawledUrl
 
 The composite primary key for this table is (**project_id**, **scan_run_name**, **http_method**, **url**).

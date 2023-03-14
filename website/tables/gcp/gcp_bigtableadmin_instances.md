@@ -1,5 +1,7 @@
 # Table: gcp_bigtableadmin_instances
 
+This table shows data for GCP Bigtableadmin Instances.
+
 https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances#Instance
 
 The composite primary key for this table is (**project_id**, **name**).

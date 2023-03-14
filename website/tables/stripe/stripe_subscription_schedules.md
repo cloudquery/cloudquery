@@ -1,5 +1,7 @@
 # Table: stripe_subscription_schedules
 
+This table shows data for Stripe Subscription Schedules.
+
 https://stripe.com/docs/api/subscription_schedules
 
 The primary key for this table is **id**.
