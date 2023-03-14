@@ -1,6 +1,6 @@
 # Table: aws_resiliencehub_recommendation_templates
 
-This table shows data for AWS Resiliencehub Recommendation Templates.
+This table shows data for AWS Resilience Hub Recommendation Templates.
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_RecommendationTemplate.html
 

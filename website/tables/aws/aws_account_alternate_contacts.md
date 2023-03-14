@@ -1,6 +1,6 @@
 # Table: aws_account_alternate_contacts
 
-This table shows data for AWS Account Alternate Contacts.
+This table shows data for Account Alternate Contacts.
 
 https://docs.aws.amazon.com/accounts/latest/reference/API_AlternateContact.html
 

@@ -1,6 +1,6 @@
 # Table: aws_backup_vaults
 
-This table shows data for AWS Backup Vaults.
+This table shows data for Backup Vaults.
 
 https://docs.aws.amazon.com/aws-backup/latest/devguide/API_BackupVaultListMember.html
 

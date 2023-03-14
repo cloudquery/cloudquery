@@ -1,6 +1,6 @@
 # Table: azure_costmanagement_views
 
-This table shows data for Azure Costmanagement Views.
+This table shows data for Azure Cost Management Views.
 
 https://learn.microsoft.com/en-us/rest/api/cost-management/views/list?tabs=HTTP#view
 

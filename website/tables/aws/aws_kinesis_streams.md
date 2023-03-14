@@ -1,6 +1,6 @@
 # Table: aws_kinesis_streams
 
-This table shows data for AWS Kinesis Streams.
+This table shows data for Kinesis Streams.
 
 https://docs.aws.amazon.com/kinesis/latest/APIReference/API_StreamDescriptionSummary.html
 

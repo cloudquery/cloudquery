@@ -1,6 +1,6 @@
 # Table: aws_resiliencehub_app_version_resources
 
-This table shows data for AWS Resiliencehub App Version Resources.
+This table shows data for AWS Resilience Hub App Version Resources.
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_PhysicalResource.html
 

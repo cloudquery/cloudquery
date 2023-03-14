@@ -1,6 +1,6 @@
 # Table: azure_hybriddatamanager_data_managers
 
-This table shows data for Azure Hybriddatamanager Data Managers.
+This table shows data for Azure Hybrid Data Manager Data Managers.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager@v1.0.0#DataManager
 

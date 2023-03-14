@@ -1,6 +1,6 @@
 # Table: aws_wafv2_ipsets
 
-This table shows data for AWS Wafv2 Ipsets.
+This table shows data for Wafv2 Ipsets.
 
 https://docs.aws.amazon.com/waf/latest/APIReference/API_IPSet.html
 

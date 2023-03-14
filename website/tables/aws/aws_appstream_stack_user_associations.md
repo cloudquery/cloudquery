@@ -1,6 +1,6 @@
 # Table: aws_appstream_stack_user_associations
 
-This table shows data for AWS Appstream Stack User Associations.
+This table shows data for Amazon AppStream Stack User Associations.
 
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_UserStackAssociation.html
 

@@ -1,6 +1,6 @@
 # Table: aws_ec2_spot_fleet_requests
 
-This table shows data for AWS Ec2 Spot Fleet Requests.
+This table shows data for Amazon Elastic Compute Cloud (EC2) Spot Fleet Requests.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SpotFleetRequestConfig.html
 

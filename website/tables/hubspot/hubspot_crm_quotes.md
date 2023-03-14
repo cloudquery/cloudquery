@@ -1,6 +1,6 @@
 # Table: hubspot_crm_quotes
 
-This table shows data for Hubspot Crm Quotes.
+This table shows data for HubSpot CRM Quotes.
 
 https://developers.hubspot.com/docs/api/crm/quotes
 

@@ -1,6 +1,6 @@
 # Table: aws_route53_domains
 
-This table shows data for AWS Route53 Domains.
+This table shows data for Route53 Domains.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_GetDomainDetail.html
 

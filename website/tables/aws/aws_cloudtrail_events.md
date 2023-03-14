@@ -1,6 +1,6 @@
 # Table: aws_cloudtrail_events
 
-This table shows data for AWS Cloudtrail Events.
+This table shows data for AWS CloudTrail Events.
 
 https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Event.html
 
