@@ -1,6 +1,6 @@
 # Table: azure_dnsresolver_dns_resolvers
 
-This table shows data for Azure Dnsresolver DNS Resolvers.
+This table shows data for Azure DNS Resolver DNS Resolvers.
 
 https://learn.microsoft.com/en-us/rest/api/dns/dnsresolver/dns-resolvers/list?tabs=HTTP#dnsresolver
 
