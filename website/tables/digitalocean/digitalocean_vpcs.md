@@ -1,6 +1,6 @@
 # Table: digitalocean_vpcs
 
-This table shows data for Digitalocean VPCs.
+This table shows data for DigitalOcean VPCs.
 
 The primary key for this table is **id**.
 
