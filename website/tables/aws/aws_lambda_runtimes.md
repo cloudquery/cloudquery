@@ -1,6 +1,6 @@
 # Table: aws_lambda_runtimes
 
-This table shows data for Lambda Runtimes.
+This table shows data for AWS Lambda Runtimes.
 
 The primary key for this table is **name**.
 

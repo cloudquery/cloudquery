@@ -52,6 +52,7 @@ var awsExceptions = map[string]string{
 	"identitystore":     "Identity Store",
 	"iot":               "AWS IoT",
 	"kms":               "AWS Key Management Service (AWS KMS)",
+	"lambda":            "AWS Lambda",
 	"mq":                "Amazon MQ",
 	"mwaa":              "Amazon MWAA",
 	"nat":               "NAT",
