@@ -1,5 +1,7 @@
 # Table: aws_organizations_delegated_services
 
+This table shows data for Organizations Delegated Services.
+
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_DelegatedService.html
 
 The composite primary key for this table is (**account_id**, **service_principal**).
