@@ -1,6 +1,6 @@
 # Table: aws_elasticache_global_replication_groups
 
-This table shows data for AWS Elasticache Global Replication Groups.
+This table shows data for Elasticache Global Replication Groups.
 
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_GlobalReplicationGroup.html
 

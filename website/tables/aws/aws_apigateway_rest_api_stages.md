@@ -1,6 +1,6 @@
 # Table: aws_apigateway_rest_api_stages
 
-This table shows data for AWS Apigateway Rest API Stages.
+This table shows data for Amazon API Gateway Rest API Stages.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_Stage.html
 

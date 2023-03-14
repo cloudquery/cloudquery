@@ -1,6 +1,6 @@
 # Table: aws_autoscaling_group_lifecycle_hooks
 
-This table shows data for AWS Autoscaling Group Lifecycle Hooks.
+This table shows data for Auto Scaling Group Lifecycle Hooks.
 
 https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LifecycleHook.html
 

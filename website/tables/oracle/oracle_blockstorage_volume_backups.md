@@ -1,6 +1,6 @@
 # Table: oracle_blockstorage_volume_backups
 
-This table shows data for Oracle Blockstorage Volume Backups.
+This table shows data for Oracle Block Storage Volume Backups.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

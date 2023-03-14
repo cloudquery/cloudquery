@@ -1,6 +1,6 @@
 # Table: aws_ram_principals
 
-This table shows data for AWS RAM Principals.
+This table shows data for RAM Principals.
 
 https://docs.aws.amazon.com/ram/latest/APIReference/API_Principal.html
 

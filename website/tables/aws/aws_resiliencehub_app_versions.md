@@ -1,6 +1,6 @@
 # Table: aws_resiliencehub_app_versions
 
-This table shows data for AWS Resiliencehub App Versions.
+This table shows data for AWS Resilience Hub App Versions.
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_AppVersionSummary.html
 

@@ -1,6 +1,6 @@
 # Table: aws_neptune_clusters
 
-This table shows data for AWS Neptune Clusters.
+This table shows data for Neptune Clusters.
 
 https://docs.aws.amazon.com/neptune/latest/userguide/api-clusters.html#DescribeDBClusters
 

@@ -1,6 +1,6 @@
 # Table: aws_kafka_cluster_operations
 
-This table shows data for AWS Kafka Cluster Operations.
+This table shows data for Kafka Cluster Operations.
 
 https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-operations.html
 

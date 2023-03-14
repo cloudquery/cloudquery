@@ -1,6 +1,6 @@
 # Table: digitalocean_firewalls
 
-This table shows data for Digitalocean Firewalls.
+This table shows data for DigitalOcean Firewalls.
 
 The primary key for this table is **id**.
 

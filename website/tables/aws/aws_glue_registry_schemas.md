@@ -1,6 +1,6 @@
 # Table: aws_glue_registry_schemas
 
-This table shows data for AWS Glue Registry Schemas.
+This table shows data for Glue Registry Schemas.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_GetSchema.html
 

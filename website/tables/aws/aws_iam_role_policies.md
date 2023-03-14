@@ -1,6 +1,6 @@
 # Table: aws_iam_role_policies
 
-This table shows data for AWS IAM Role Policies.
+This table shows data for IAM Role Policies.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetRolePolicy.html
 

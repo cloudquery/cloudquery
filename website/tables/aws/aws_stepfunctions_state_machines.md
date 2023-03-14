@@ -1,6 +1,6 @@
 # Table: aws_stepfunctions_state_machines
 
-This table shows data for AWS Stepfunctions State Machines.
+This table shows data for Stepfunctions State Machines.
 
 https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeStateMachine.html
 
