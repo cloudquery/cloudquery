@@ -1,6 +1,6 @@
 # Table: hubspot_crm_line_items
 
-This table shows data for Hubspot Crm Line Items.
+This table shows data for HubSpot CRM Line Items.
 
 https://developers.hubspot.com/docs/api/crm/line-items
 

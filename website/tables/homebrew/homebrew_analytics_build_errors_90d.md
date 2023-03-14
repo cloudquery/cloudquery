@@ -1,6 +1,6 @@
 # Table: homebrew_analytics_build_errors_90d
 
-This table shows data for Homebrew Analytics Build Errors 90d.
+This table shows data for Homebrew Analytics Build Errors (90 days).
 
 https://formulae.brew.sh/analytics/build-error/90d/
 

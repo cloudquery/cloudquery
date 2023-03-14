@@ -13,6 +13,7 @@ import (
 func CaskInstalls(days homebrew.Days) *schema.Table {
 	return &schema.Table{
 		Name:        fmt.Sprintf("homebrew_analytics_cask_installs_%s", days),
+		Title:       fmt.Sprintf("Homebrew Analytics Cask Installs (%d days)", days.Number()),
 		Description: fmt.Sprintf(`https://formulae.brew.sh/analytics/cask-install/%s/`, days),
 		Resolver:    fetchCaskInstalls(days),
 		Transform: transformers.TransformWithStruct(

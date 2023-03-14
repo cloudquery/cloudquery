@@ -1,6 +1,6 @@
 # Table: facebookmarketing_customconversions
 
-This table shows data for Facebookmarketing Customconversions.
+This table shows data for Facebook Marketing Custom Conversions.
 
 The primary key for this table is **id**.
 

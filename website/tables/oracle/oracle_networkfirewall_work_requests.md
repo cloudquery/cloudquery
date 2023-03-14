@@ -1,6 +1,6 @@
 # Table: oracle_networkfirewall_work_requests
 
-This table shows data for Oracle Networkfirewall Work Requests.
+This table shows data for Oracle Network Firewall Work Requests.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
