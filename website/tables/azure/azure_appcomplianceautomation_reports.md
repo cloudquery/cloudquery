@@ -1,5 +1,7 @@
 # Table: azure_appcomplianceautomation_reports
 
+This table shows data for Azure Appcomplianceautomation Reports.
+
 https://learn.microsoft.com/en-us/rest/api/appcompliance/reports/list?tabs=HTTP#reportresource
 
 The primary key for this table is **id**.

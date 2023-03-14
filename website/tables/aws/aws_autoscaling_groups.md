@@ -1,6 +1,6 @@
 # Table: aws_autoscaling_groups
 
-This table shows data for Autoscaling Groups.
+This table shows data for Auto Scaling Groups.
 
 https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_AutoScalingGroup.html
 

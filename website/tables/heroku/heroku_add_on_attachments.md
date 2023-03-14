@@ -1,5 +1,7 @@
 # Table: heroku_add_on_attachments
 
+This table shows data for Heroku Add On Attachments.
+
 https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment
 
 The primary key for this table is **id**.

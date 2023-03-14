@@ -1,5 +1,7 @@
 # Table: azure_sql_server_blob_auditing_policies
 
+This table shows data for Azure SQL Server Blob Auditing Policies.
+
 https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/server-blob-auditing-policies/list-by-server?tabs=HTTP#serverblobauditingpolicy
 
 The primary key for this table is **id**.

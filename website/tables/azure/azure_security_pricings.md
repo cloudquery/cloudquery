@@ -1,5 +1,7 @@
 # Table: azure_security_pricings
 
+This table shows data for Azure Security Pricings.
+
 https://learn.microsoft.com/en-us/rest/api/defenderforcloud/pricings/list?tabs=HTTP#pricing
 
 The primary key for this table is **id**.

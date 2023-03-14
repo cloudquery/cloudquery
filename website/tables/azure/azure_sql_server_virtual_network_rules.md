@@ -1,5 +1,7 @@
 # Table: azure_sql_server_virtual_network_rules
 
+This table shows data for Azure SQL Server Virtual Network Rules.
+
 https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/virtual-network-rules/list-by-server?tabs=HTTP#virtualnetworkrule
 
 The primary key for this table is **id**.

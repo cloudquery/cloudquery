@@ -1,5 +1,7 @@
 # Table: okta_users
 
+This table shows data for Okta Users.
+
 The primary key for this table is **id**.
 
 ## Columns

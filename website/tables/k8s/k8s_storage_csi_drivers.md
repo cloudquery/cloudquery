@@ -1,5 +1,7 @@
 # Table: k8s_storage_csi_drivers
 
+This table shows data for K8s Storage Csi Drivers.
+
 The primary key for this table is **uid**.
 
 ## Columns

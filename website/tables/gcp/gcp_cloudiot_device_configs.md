@@ -1,5 +1,7 @@
 # Table: gcp_cloudiot_device_configs
 
+This table shows data for GCP Cloudiot Device Configs.
+
 https://cloud.google.com/iot/docs/reference/cloudiot/rest/v1/projects.locations.registries.devices.configVersions#DeviceConfig
 
 The composite primary key for this table is (**project_id**, **device_name**, **version**).

@@ -1,5 +1,7 @@
 # Table: gcp_cloudresourcemanager_organizations
 
+This table shows data for GCP Cloudresourcemanager Organizations.
+
 https://cloud.google.com/resource-manager/reference/rest/v1/organizations#Organization
 
 The primary key for this table is **name**.

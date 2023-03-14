@@ -1,5 +1,7 @@
 # Table: azure_compute_cloud_services
 
+This table shows data for Azure Compute Cloud Services.
+
 https://learn.microsoft.com/en-us/rest/api/compute/cloud-services/list?tabs=HTTP#cloudservice
 
 The primary key for this table is **id**.

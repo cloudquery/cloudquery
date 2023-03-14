@@ -1,5 +1,7 @@
 # Table: heroku_add_on_webhooks
 
+This table shows data for Heroku Add On Webhooks.
+
 https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook
 
 The primary key for this table is **id**.

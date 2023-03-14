@@ -1,5 +1,7 @@
 # Table: awspricing_services
 
+This table shows data for Awspricing Services.
+
 The composite primary key for this table is (**offer_code**, **version**, **publication_date**).
 
 ## Relations

@@ -1,5 +1,7 @@
 # Table: gcp_dns_policies
 
+This table shows data for GCP DNS Policies.
+
 https://cloud.google.com/dns/docs/reference/v1/policies#resource
 
 The primary key for this table is **id**.

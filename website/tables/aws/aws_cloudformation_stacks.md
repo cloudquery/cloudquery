@@ -1,6 +1,6 @@
 # Table: aws_cloudformation_stacks
 
-This table shows data for Cloudformation Stacks.
+This table shows data for AWS CloudFormation Stacks.
 
 https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html
 

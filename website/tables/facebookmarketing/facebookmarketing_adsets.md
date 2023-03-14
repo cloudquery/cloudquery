@@ -1,5 +1,7 @@
 # Table: facebookmarketing_adsets
 
+This table shows data for Facebookmarketing Adsets.
+
 https://developers.facebook.com/docs/marketing-api/reference/ad-campaign#Reading
 
 The primary key for this table is **id**.

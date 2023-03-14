@@ -1,5 +1,7 @@
 # Table: vercel_domain_records
 
+This table shows data for Vercel Domain Records.
+
 The composite primary key for this table is (**domain_name**, **id**).
 It supports incremental syncs.
 ## Relations

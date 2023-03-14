@@ -1,5 +1,7 @@
 # Table: gcp_certificatemanager_certificates
 
+This table shows data for GCP Certificatemanager Certificates.
+
 https://cloud.google.com/certificate-manager/docs/reference/rest/v1/projects.locations.certificates#Certificate
 
 The composite primary key for this table is (**project_id**, **name**).

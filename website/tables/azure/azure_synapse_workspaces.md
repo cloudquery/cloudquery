@@ -1,5 +1,7 @@
 # Table: azure_synapse_workspaces
 
+This table shows data for Azure Synapse Workspaces.
+
 https://learn.microsoft.com/en-us/rest/api/synapse/workspaces/list?tabs=HTTP#workspace
 
 The primary key for this table is **id**.

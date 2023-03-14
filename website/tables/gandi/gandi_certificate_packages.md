@@ -1,5 +1,7 @@
 # Table: gandi_certificate_packages
 
+This table shows data for Gandi Certificate Packages.
+
 The primary key for this table is **name**.
 
 ## Columns

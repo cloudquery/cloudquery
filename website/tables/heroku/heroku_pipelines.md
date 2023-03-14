@@ -1,5 +1,7 @@
 # Table: heroku_pipelines
 
+This table shows data for Heroku Pipelines.
+
 https://devcenter.heroku.com/articles/platform-api-reference#pipeline
 
 The primary key for this table is **id**.

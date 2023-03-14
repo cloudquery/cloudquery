@@ -1,5 +1,7 @@
 # Table: gcp_aiplatform_hyperparameter_tuning_jobs
 
+This table shows data for GCP Aiplatform Hyperparameter Tuning Jobs.
+
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.hyperparameterTuningJobs#HyperparameterTuningJob
 
 The composite primary key for this table is (**project_id**, **name**).

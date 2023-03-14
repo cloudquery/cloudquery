@@ -1,5 +1,7 @@
 # Table: oracle_filestorage_replication_targets
 
+This table shows data for Oracle Filestorage Replication Targets.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

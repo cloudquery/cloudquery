@@ -1,5 +1,7 @@
 # Table: snyk_organizations
 
+This table shows data for Snyk Organizations.
+
 https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Organization
 
 The primary key for this table is **id**.

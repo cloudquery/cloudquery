@@ -1,5 +1,7 @@
 # Table: azure_applicationinsights_web_tests
 
+This table shows data for Azure Applicationinsights Web Tests.
+
 https://learn.microsoft.com/en-us/rest/api/application-insights/web-tests/list?tabs=HTTP#webtest
 
 The primary key for this table is **id**.

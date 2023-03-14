@@ -1,5 +1,7 @@
 # Table: stripe_credit_notes
 
+This table shows data for Stripe Credit Notes.
+
 https://stripe.com/docs/api/credit_notes
 
 The primary key for this table is **id**.

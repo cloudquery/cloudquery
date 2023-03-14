@@ -1,5 +1,7 @@
 # Table: azure_managementgroups_management_groups
 
+This table shows data for Azure Managementgroups Management Groups.
+
 https://learn.microsoft.com/en-us/rest/api/managementgroups/management-groups/list?tabs=HTTP#managementgrouplistresult
 
 The primary key for this table is **id**.

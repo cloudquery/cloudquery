@@ -1,5 +1,7 @@
 # Table: pagerduty_teams
 
+This table shows data for Pagerduty Teams.
+
 https://developer.pagerduty.com/api-reference/0138639504311-list-teams
 
 The primary key for this table is **id**.

@@ -1,6 +1,6 @@
 # Table: aws_cloudformation_stack_resources
 
-This table shows data for Cloudformation Stack Resources.
+This table shows data for AWS CloudFormation Stack Resources.
 
 https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackResourceSummary.html
 

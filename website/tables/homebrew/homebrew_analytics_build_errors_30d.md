@@ -1,5 +1,7 @@
 # Table: homebrew_analytics_build_errors_30d
 
+This table shows data for Homebrew Analytics Build Errors 30d.
+
 https://formulae.brew.sh/analytics/build-error/30d/
 
 The primary key for this table is **number**.

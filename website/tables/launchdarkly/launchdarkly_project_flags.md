@@ -1,5 +1,7 @@
 # Table: launchdarkly_project_flags
 
+This table shows data for Launchdarkly Project Flags.
+
 https://apidocs.launchdarkly.com/tag/Feature-flags#operation/getFeatureFlags
 
 The composite primary key for this table is (**project_id**, **key**).

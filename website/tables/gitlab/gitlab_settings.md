@@ -1,5 +1,7 @@
 # Table: gitlab_settings
 
+This table shows data for Gitlab Settings.
+
 The composite primary key for this table is (**base_url**, **id**).
 
 ## Columns

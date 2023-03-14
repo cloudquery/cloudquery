@@ -1,5 +1,7 @@
 # Table: datadog_users
 
+This table shows data for Datadog Users.
+
 The composite primary key for this table is (**account_name**, **id**).
 
 ## Relations

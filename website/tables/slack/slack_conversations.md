@@ -1,5 +1,7 @@
 # Table: slack_conversations
 
+This table shows data for Slack Conversations.
+
 https://api.slack.com/methods/conversations.list
 
 The composite primary key for this table is (**team_id**, **id**).

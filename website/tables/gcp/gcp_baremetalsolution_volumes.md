@@ -1,5 +1,7 @@
 # Table: gcp_baremetalsolution_volumes
 
+This table shows data for GCP Baremetalsolution Volumes.
+
 https://cloud.google.com/bare-metal/docs/reference/rest/v2/projects.locations.volumes#Volume
 
 The composite primary key for this table is (**project_id**, **name**).

@@ -1,5 +1,7 @@
 # Table: pagerduty_vendors
 
+This table shows data for Pagerduty Vendors.
+
 https://developer.pagerduty.com/api-reference/d2aa663abec79-list-vendors
 
 The primary key for this table is **id**.

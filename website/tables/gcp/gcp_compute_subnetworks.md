@@ -1,5 +1,7 @@
 # Table: gcp_compute_subnetworks
 
+This table shows data for GCP Compute Subnetworks.
+
 https://cloud.google.com/compute/docs/reference/rest/v1/subnetworks#Subnetwork
 
 The primary key for this table is **self_link**.

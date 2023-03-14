@@ -1,5 +1,7 @@
 # Table: azure_datalakeanalytics_accounts
 
+This table shows data for Azure Datalakeanalytics Accounts.
+
 https://learn.microsoft.com/en-us/rest/api/datalakeanalytics/accounts/list?tabs=HTTP#datalakeanalyticsaccountbasic
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: facebookmarketing_publisher_block_lists
 
+This table shows data for Facebookmarketing Publisher Block Lists.
+
 https://developers.facebook.com/docs/marketing-api/reference/publisher-block-list/
 
 The composite primary key for this table is (**account_id**, **id**).

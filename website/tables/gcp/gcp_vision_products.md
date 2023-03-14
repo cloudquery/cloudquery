@@ -1,5 +1,7 @@
 # Table: gcp_vision_products
 
+This table shows data for GCP Vision Products.
+
 https://cloud.google.com/vision/docs/reference/rest/v1/projects.locations.products
 
 The composite primary key for this table is (**project_id**, **name**).

@@ -1,5 +1,7 @@
 # Table: oracle_identity_compartments
 
+This table shows data for Oracle Identity Compartments.
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: gcp_compute_disks
 
+This table shows data for GCP Compute Disks.
+
 https://cloud.google.com/compute/docs/reference/rest/v1/disks#Disk
 
 The primary key for this table is **self_link**.

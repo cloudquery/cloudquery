@@ -1,5 +1,7 @@
 # Table: k8s_autoscaling_hpas
 
+This table shows data for K8s Autoscaling Hpas.
+
 The primary key for this table is **uid**.
 
 ## Columns

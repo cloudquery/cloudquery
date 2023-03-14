@@ -1,5 +1,7 @@
 # Table: facebookmarketing_businesses
 
+This table shows data for Facebookmarketing Businesses.
+
 https://developers.facebook.com/docs/marketing-api/reference/business/#Reading
 
 The primary key for this table is **id**.
