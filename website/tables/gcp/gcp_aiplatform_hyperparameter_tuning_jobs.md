@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_hyperparameter_tuning_jobs
 
-This table shows data for GCP Aiplatform Hyperparameter Tuning Jobs.
+This table shows data for GCP AI Platform Hyperparameter Tuning Jobs.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.hyperparameterTuningJobs#HyperparameterTuningJob
 

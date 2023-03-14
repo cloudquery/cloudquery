@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_training_pipelines
 
-This table shows data for GCP Aiplatform Training Pipelines.
+This table shows data for GCP AI Platform Training Pipelines.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.trainingPipelines#TrainingPipeline
 

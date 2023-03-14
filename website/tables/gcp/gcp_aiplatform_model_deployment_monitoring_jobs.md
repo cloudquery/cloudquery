@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_model_deployment_monitoring_jobs
 
-This table shows data for GCP Aiplatform Model Deployment Monitoring Jobs.
+This table shows data for GCP AI Platform Model Deployment Monitoring Jobs.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.modelDeploymentMonitoringJobs#ModelDeploymentMonitoringJob
 

@@ -1,6 +1,6 @@
 # Table: gcp_vmmigration_source_utilization_reports
 
-This table shows data for GCP Vmmigration Source Utilization Reports.
+This table shows data for GCP VM Migration Source Utilization Reports.
 
 https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.sources.utilizationReports
 
