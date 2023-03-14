@@ -1,0 +1,28 @@
+kind: source
+spec:
+  name: aws
+  path: cloudquery/aws
+  version: v15.3.0
+  destinations: [mysql]
+---
+kind: source
+spec:
+  name: gcp
+  path: cloudquery/gcp
+  version: v8.4.0
+  destinations: [mysql]
+---
+kind: source
+spec:
+  name: azure
+  path: cloudquery/azure
+  version: v5.1.1
+  destinations: [mysql]
+---
+kind: destination
+spec:
+  name: mysql
+  path: cloudquery/mysql
+  version: v1.0.1
+  spec:
+    connection_string: root:test@/cloudquery
