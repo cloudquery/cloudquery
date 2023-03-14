@@ -1,6 +1,6 @@
 # Table: azure_connectedvmware_clusters
 
-This table shows data for Azure Connectedvmware Clusters.
+This table shows data for Azure Connected VMware Clusters.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#Cluster
 

@@ -1,6 +1,6 @@
 # Table: azure_keyvault_keyvault_secrets
 
-This table shows data for Azure Keyvault Keyvault Secrets.
+This table shows data for Azure Key Vault Key Vault Secrets.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault@v1.0.0#Secret
 
