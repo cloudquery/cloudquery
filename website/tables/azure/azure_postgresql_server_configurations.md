@@ -1,6 +1,6 @@
 # Table: azure_postgresql_server_configurations
 
-This table shows data for Azure Postgresql Server Configurations.
+This table shows data for Azure PostgreSQL Server Configurations.
 
 https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/configurations/list-by-server?tabs=HTTP#configuration
 

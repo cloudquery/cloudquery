@@ -1,6 +1,6 @@
 # Table: oracle_database_vm_clusters
 
-This table shows data for Oracle Database VM Clusters.
+This table shows data for Oracle Database Virtual Machine (VM) Clusters.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

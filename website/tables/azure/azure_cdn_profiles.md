@@ -1,6 +1,6 @@
 # Table: azure_cdn_profiles
 
-This table shows data for Azure Cdn Profiles.
+This table shows data for Azure Content Delivery Network (CDN) Profiles.
 
 https://learn.microsoft.com/en-us/rest/api/cdn/profiles/list?tabs=HTTP#profile
 
