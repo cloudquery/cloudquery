@@ -1,6 +1,6 @@
 # Table: facebookmarketing_businesses
 
-This table shows data for Facebookmarketing Businesses.
+This table shows data for Facebook Marketing Businesses.
 
 https://developers.facebook.com/docs/marketing-api/reference/business/#Reading
 
