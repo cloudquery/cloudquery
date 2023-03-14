@@ -2,6 +2,8 @@
 
 This table shows data for Service Products from the AWS Price List API.
 
+https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/price-changes.html
+
 The primary key for this table is **sku**.
 
 ## Relations
