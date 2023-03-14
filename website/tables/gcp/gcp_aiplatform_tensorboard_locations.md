@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_tensorboard_locations
 
-This table shows data for GCP Aiplatform Tensorboard Locations.
+This table shows data for GCP AI Platform TensorBoard Locations.
 
 https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location
 

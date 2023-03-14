@@ -1,6 +1,6 @@
 # Table: aws_lightsail_distributions
 
-This table shows data for AWS Lightsail Distributions.
+This table shows data for Lightsail Distributions.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_GetDistributions.html
 

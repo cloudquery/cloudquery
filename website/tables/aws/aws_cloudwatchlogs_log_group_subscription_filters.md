@@ -1,6 +1,6 @@
 # Table: aws_cloudwatchlogs_log_group_subscription_filters
 
-This table shows data for AWS Cloudwatchlogs Log Group Subscription Filters.
+This table shows data for Cloudwatchlogs Log Group Subscription Filters.
 
 https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_SubscriptionFilter.html
 

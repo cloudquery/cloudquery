@@ -1,6 +1,6 @@
 # Table: gcp_containeranalysis_occurrences
 
-This table shows data for GCP Containeranalysis Occurrences.
+This table shows data for GCP Container Analysis Occurrences.
 
 https://cloud.google.com/container-analysis/docs/reference/rest/v1beta1/projects.occurrences#Occurrence
 

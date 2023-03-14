@@ -1,6 +1,6 @@
 # Table: aws_route53_operations
 
-This table shows data for AWS Route53 Operations.
+This table shows data for Route53 Operations.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_GetOperationDetail.html
 

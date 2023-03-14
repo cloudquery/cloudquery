@@ -1,6 +1,6 @@
 # Table: aws_quicksight_analyses
 
-This table shows data for AWS Quicksight Analyses.
+This table shows data for QuickSight Analyses.
 
 https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Analysis.html
 

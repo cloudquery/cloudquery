@@ -1,6 +1,6 @@
 # Table: aws_apigateway_rest_api_gateway_responses
 
-This table shows data for AWS Apigateway Rest API Gateway Responses.
+This table shows data for Amazon API Gateway Rest API Gateway Responses.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_GatewayResponse.html
 

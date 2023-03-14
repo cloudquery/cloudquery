@@ -1,6 +1,6 @@
 # Table: azure_appservice_environments
 
-This table shows data for Azure Appservice Environments.
+This table shows data for Azure App Service Environments.
 
 https://learn.microsoft.com/en-us/rest/api/appservice/app-service-environments/list?tabs=HTTP#appserviceenvironmentresource
 

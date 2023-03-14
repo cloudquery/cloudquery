@@ -1,6 +1,6 @@
 # Table: aws_ec2_image_launch_permissions
 
-This table shows data for AWS Ec2 Image Launch Permissions.
+This table shows data for Amazon Elastic Compute Cloud (EC2) Image Launch Permissions.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchPermission.html
 

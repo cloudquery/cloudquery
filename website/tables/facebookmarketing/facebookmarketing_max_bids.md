@@ -1,6 +1,6 @@
 # Table: facebookmarketing_max_bids
 
-This table shows data for Facebookmarketing Max Bids.
+This table shows data for Facebook Marketing Max Bids.
 
 https://developers.facebook.com/docs/marketing-api/reference/ad-campaign-group/max-bid/
 
