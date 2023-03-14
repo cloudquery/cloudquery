@@ -26,6 +26,9 @@ func Accounts() *schema.Table {
 				Resolver: resolveAccountTags,
 			},
 		},
+		Relations: []*schema.Table{
+			delegatedServices(),
+		},
 	}
 }
 

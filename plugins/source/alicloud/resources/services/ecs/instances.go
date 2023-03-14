@@ -13,6 +13,7 @@ import (
 func Instances() *schema.Table {
 	return &schema.Table{
 		Name:        "alicloud_ecs_instances",
+		Title:       "Alibaba Cloud Elastic Compute Service (ECS) Instances",
 		Resolver:    fetchEcsInstances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(client.ServiceECS),
 		Description: "https://www.alibabacloud.com/help/en/elastic-compute-service/latest/describeinstances#t9865.html",

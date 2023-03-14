@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_vtaps
 
-This table shows data for Oracle Virtualnetwork Vtaps.
+This table shows data for Oracle Virtual Network Virtual Tunnel Access Points (VTAPs).
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
