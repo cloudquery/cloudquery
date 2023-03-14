@@ -1,6 +1,6 @@
 # Table: azure_mysql_server_configurations
 
-This table shows data for Azure Mysql Server Configurations.
+This table shows data for Azure MySQL Server Configurations.
 
 https://learn.microsoft.com/en-us/rest/api/mysql/singleserver/configurations/list-by-server?tabs=HTTP#configuration
 

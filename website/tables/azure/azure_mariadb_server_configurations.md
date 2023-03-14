@@ -1,6 +1,6 @@
 # Table: azure_mariadb_server_configurations
 
-This table shows data for Azure Mariadb Server Configurations.
+This table shows data for Azure MariaDB Server Configurations.
 
 https://learn.microsoft.com/en-us/rest/api/mariadb/configurations/list-by-server?tabs=HTTP#configuration
 

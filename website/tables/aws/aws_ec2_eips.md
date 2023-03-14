@@ -1,6 +1,6 @@
 # Table: aws_ec2_eips
 
-This table shows data for AWS Ec2 Eips.
+This table shows data for Amazon Elastic Compute Cloud (EC2) Eips.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Address.html
 

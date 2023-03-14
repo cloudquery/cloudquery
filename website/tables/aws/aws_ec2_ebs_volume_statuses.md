@@ -1,6 +1,6 @@
 # Table: aws_ec2_ebs_volume_statuses
 
-This table shows data for AWS Ec2 Ebs Volume Statuses.
+This table shows data for Amazon Elastic Compute Cloud (EC2) Amazon Elastic Block Store (EBS) Volume Statuses.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VolumeStatusItem.html
 

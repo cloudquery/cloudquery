@@ -1,6 +1,6 @@
 # Table: aws_apigateway_rest_api_documentation_versions
 
-This table shows data for AWS Apigateway Rest API Documentation Versions.
+This table shows data for Amazon API Gateway Rest API Documentation Versions.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_DocumentationVersion.html
 

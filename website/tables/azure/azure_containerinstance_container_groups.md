@@ -1,6 +1,6 @@
 # Table: azure_containerinstance_container_groups
 
-This table shows data for Azure Containerinstance Container Groups.
+This table shows data for Azure Container Instance Container Groups.
 
 https://learn.microsoft.com/en-us/rest/api/container-instances/container-groups/list?tabs=HTTP#containergroup
 

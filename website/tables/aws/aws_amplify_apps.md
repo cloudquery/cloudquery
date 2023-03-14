@@ -1,6 +1,6 @@
 # Table: aws_amplify_apps
 
-This table shows data for AWS Amplify Apps.
+This table shows data for Amplify Apps.
 
 https://docs.aws.amazon.com/amplify/latest/APIReference/API_ListApps.html
 

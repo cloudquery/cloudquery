@@ -1,6 +1,6 @@
 # Table: aws_route53_hosted_zones
 
-This table shows data for AWS Route53 Hosted Zones.
+This table shows data for Route53 Hosted Zones.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_HostedZone.html
 
