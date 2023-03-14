@@ -1,6 +1,6 @@
 # Table: aws_shield_attacks
 
-This table shows data for AWS Shield Attacks.
+This table shows data for Shield Attacks.
 
 https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_AttackDetail.html
 

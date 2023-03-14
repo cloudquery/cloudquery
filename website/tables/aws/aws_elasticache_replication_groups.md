@@ -1,6 +1,6 @@
 # Table: aws_elasticache_replication_groups
 
-This table shows data for AWS Elasticache Replication Groups.
+This table shows data for Elasticache Replication Groups.
 
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ReplicationGroup.html
 

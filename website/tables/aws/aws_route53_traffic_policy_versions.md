@@ -1,6 +1,6 @@
 # Table: aws_route53_traffic_policy_versions
 
-This table shows data for AWS Route53 Traffic Policy Versions.
+This table shows data for Route53 Traffic Policy Versions.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicy.html
 

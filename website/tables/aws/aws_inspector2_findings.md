@@ -1,6 +1,6 @@
 # Table: aws_inspector2_findings
 
-This table shows data for AWS Inspector2 Findings.
+This table shows data for Inspector2 Findings.
 
 https://docs.aws.amazon.com/inspector/v2/APIReference/API_Finding.html
 

@@ -1,6 +1,6 @@
 # Table: aws_sagemaker_notebook_instances
 
-This table shows data for AWS Sagemaker Notebook Instances.
+This table shows data for Amazon SageMaker Notebook Instances.
 
 https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeNotebookInstance.html
 

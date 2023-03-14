@@ -1,6 +1,6 @@
 # Table: aws_ecs_cluster_container_instances
 
-This table shows data for AWS Ecs Cluster Container Instances.
+This table shows data for Amazon Elastic Container Service (ECS) Cluster Container Instances.
 
 https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerInstance.html
 

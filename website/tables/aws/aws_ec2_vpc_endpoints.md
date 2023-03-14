@@ -1,6 +1,6 @@
 # Table: aws_ec2_vpc_endpoints
 
-This table shows data for AWS Ec2 VPC Endpoints.
+This table shows data for Amazon Elastic Compute Cloud (EC2) VPC Endpoints.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcEndpoint.html
 

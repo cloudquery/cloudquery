@@ -1,6 +1,6 @@
 # Table: aws_apprunner_operations
 
-This table shows data for AWS Apprunner Operations.
+This table shows data for AWS App Runner Operations.
 
 https://docs.aws.amazon.com/apprunner/latest/api/API_OperationSummary.html
 
