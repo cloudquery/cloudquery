@@ -1,6 +1,6 @@
 # Table: gcp_appengine_instances
 
-This table shows data for GCP Appengine Instances.
+This table shows data for GCP App Engine Instances.
 
 https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions.instances#Instance
 
