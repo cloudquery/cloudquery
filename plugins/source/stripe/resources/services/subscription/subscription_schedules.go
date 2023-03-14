@@ -2,7 +2,6 @@ package subscription
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func SubscriptionSchedules() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_subscription_schedules",
 		Description: `https://stripe.com/docs/api/subscription_schedules`,
-		Transform:   transformers.TransformWithStruct(&stripe.SubscriptionSchedule{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.SubscriptionSchedule{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchSubscriptionSchedules,
 
 		Columns: []schema.Column{

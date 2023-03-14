@@ -11,7 +11,7 @@ func ReachFrequencyPredictions() *schema.Table {
 	return &schema.Table{
 		Name:        "facebookmarketing_reach_frequency_predictions",
 		Resolver:    fetchReachFrequencyPredictions,
-		Transform:   transformers.TransformWithStruct(&rest.ReachFrequencyPrediction{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&rest.ReachFrequencyPrediction{}, transformers.WithPrimaryKeys("Id")),
 		Description: "https://developers.facebook.com/docs/marketing-api/reference/reach-frequency-prediction/#Reading",
 	}
 }

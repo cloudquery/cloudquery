@@ -23,7 +23,7 @@ func Datasets() *schema.Table {
 		Description: `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.datasets#Dataset`,
 		Resolver:    fetchDatasets,
 		Multiplex:   client.ProjectMultiplexEnabledServices("aiplatform.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Dataset{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Dataset{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

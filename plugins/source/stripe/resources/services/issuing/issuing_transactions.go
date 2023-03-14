@@ -2,7 +2,6 @@ package issuing
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func IssuingTransactions() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_issuing_transactions",
 		Description: `https://stripe.com/docs/api/issuing_transactions`,
-		Transform:   transformers.TransformWithStruct(&stripe.IssuingTransaction{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.IssuingTransaction{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchIssuingTransactions,
 
 		Columns: []schema.Column{

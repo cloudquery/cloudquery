@@ -19,7 +19,7 @@ func DockerImages() *schema.Table {
 		Description: `https://cloud.google.com/artifact-registry/docs/reference/rest/v1/projects.locations.repositories.dockerImages#DockerImage`,
 		Resolver:    fetchDockerImages,
 		Multiplex:   client.ProjectMultiplexEnabledServices("artifactregistry.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.DockerImage{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.DockerImage{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

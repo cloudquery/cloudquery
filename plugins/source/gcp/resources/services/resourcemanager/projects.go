@@ -13,7 +13,7 @@ func Projects() *schema.Table {
 		Description: `https://cloud.google.com/resource-manager/reference/rest/v3/projects#Project`,
 		Resolver:    fetchProjects,
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudresourcemanager.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Project{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Project{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

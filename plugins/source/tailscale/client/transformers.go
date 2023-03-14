@@ -8,10 +8,12 @@ import (
 	"github.com/tailscale/tailscale-client-go/tailscale"
 )
 
-func SharedTransformers(others ...transformers.StructTransformerOption) []transformers.StructTransformerOption {
-	return append([]transformers.StructTransformerOption{
-		transformers.WithTypeTransformer(typeTransformer),
-	}, others...)
+var options = []transformers.StructTransformerOption{
+	transformers.WithTypeTransformer(typeTransformer),
+}
+
+func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) schema.Transform {
+	return transformers.TransformWithStruct(t, append(options, opts...)...)
 }
 
 func typeTransformer(field reflect.StructField) (schema.ValueType, error) {

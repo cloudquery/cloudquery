@@ -2,7 +2,6 @@ package treasury
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func TreasuryFinancialAccounts() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_treasury_financial_accounts",
 		Description: `https://stripe.com/docs/api/treasury_financial_accounts`,
-		Transform:   transformers.TransformWithStruct(&stripe.TreasuryFinancialAccount{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.TreasuryFinancialAccount{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchTreasuryFinancialAccounts,
 
 		Columns: []schema.Column{
