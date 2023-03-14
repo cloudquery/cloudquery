@@ -1,6 +1,6 @@
 # Table: azure_network_dscp_configuration
 
-This table shows data for Azure Network Dscp Configuration.
+This table shows data for Azure Network Differentiated Services Code Point (DSCP) Configuration.
 
 https://learn.microsoft.com/en-us/rest/api/virtualnetwork/dscp-configuration/list?tabs=HTTP#dscpconfiguration
 

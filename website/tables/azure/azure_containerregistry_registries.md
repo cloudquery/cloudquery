@@ -1,6 +1,6 @@
 # Table: azure_containerregistry_registries
 
-This table shows data for Azure Containerregistry Registries.
+This table shows data for Azure Container Registry Registries.
 
 https://learn.microsoft.com/en-us/rest/api/containerregistry/registries/list?tabs=HTTP#registry
 

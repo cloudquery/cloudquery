@@ -1,6 +1,6 @@
 # Table: aws_organizations_roots
 
-This table shows data for AWS Organizations Roots.
+This table shows data for Organizations Roots.
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_Root.html
 

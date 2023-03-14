@@ -1,6 +1,6 @@
 # Table: azure_network_virtual_wans
 
-This table shows data for Azure Network Virtual Wans.
+This table shows data for Azure Network Virtual Wide Area Networks (WANs).
 
 https://learn.microsoft.com/en-us/rest/api/virtualwan/virtual-wans/list?tabs=HTTP#virtualwan
 

@@ -1,6 +1,6 @@
 # Table: aws_firehose_delivery_streams
 
-This table shows data for AWS Firehose Delivery Streams.
+This table shows data for Firehose Delivery Streams.
 
 https://docs.aws.amazon.com/firehose/latest/APIReference/API_DeliveryStreamDescription.html
 

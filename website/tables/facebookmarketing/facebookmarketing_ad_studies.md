@@ -1,6 +1,6 @@
 # Table: facebookmarketing_ad_studies
 
-This table shows data for Facebookmarketing Ad Studies.
+This table shows data for Facebook Marketing Ad Studies.
 
 https://developers.facebook.com/docs/marketing-api/reference/ad-study/#Reading
 

@@ -1,6 +1,6 @@
 # Table: aws_apprunner_vpc_connectors
 
-This table shows data for AWS Apprunner VPC Connectors.
+This table shows data for AWS App Runner VPC Connectors.
 
 https://docs.aws.amazon.com/apprunner/latest/api/API_VpcConnector.html
 

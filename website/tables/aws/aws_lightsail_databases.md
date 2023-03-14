@@ -1,6 +1,6 @@
 # Table: aws_lightsail_databases
 
-This table shows data for AWS Lightsail Databases.
+This table shows data for Lightsail Databases.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabase.html
 

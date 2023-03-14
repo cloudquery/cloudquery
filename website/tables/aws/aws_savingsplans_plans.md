@@ -1,6 +1,6 @@
 # Table: aws_savingsplans_plans
 
-This table shows data for AWS Savingsplans Plans.
+This table shows data for Savingsplans Plans.
 
 https://docs.aws.amazon.com/savingsplans/latest/APIReference/API_SavingsPlan.html
 

@@ -1,6 +1,6 @@
 # Table: aws_fsx_snapshots
 
-This table shows data for AWS Fsx Snapshots.
+This table shows data for Amazon FSx Snapshots.
 
 https://docs.aws.amazon.com/fsx/latest/APIReference/API_Snapshot.html
 

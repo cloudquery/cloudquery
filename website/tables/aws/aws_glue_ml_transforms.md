@@ -1,6 +1,6 @@
 # Table: aws_glue_ml_transforms
 
-This table shows data for AWS Glue ML Transforms.
+This table shows data for Glue ML Transforms.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_MLTransform.html
 

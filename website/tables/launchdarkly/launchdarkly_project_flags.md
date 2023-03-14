@@ -1,6 +1,6 @@
 # Table: launchdarkly_project_flags
 
-This table shows data for Launchdarkly Project Flags.
+This table shows data for LaunchDarkly Project Flags.
 
 https://apidocs.launchdarkly.com/tag/Feature-flags#operation/getFeatureFlags
 

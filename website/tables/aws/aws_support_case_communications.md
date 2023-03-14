@@ -1,6 +1,6 @@
 # Table: aws_support_case_communications
 
-This table shows data for AWS Support Case Communications.
+This table shows data for Support Case Communications.
 
 https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeCommunications.html
 

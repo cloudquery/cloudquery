@@ -1,6 +1,6 @@
 # Table: aws_lightsail_container_services
 
-This table shows data for AWS Lightsail Container Services.
+This table shows data for Lightsail Container Services.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_ContainerService.html
 

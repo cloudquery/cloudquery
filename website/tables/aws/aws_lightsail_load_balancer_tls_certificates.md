@@ -1,6 +1,6 @@
 # Table: aws_lightsail_load_balancer_tls_certificates
 
-This table shows data for AWS Lightsail Load Balancer TLS Certificates.
+This table shows data for Lightsail Load Balancer TLS Certificates.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_LoadBalancerTlsCertificate.html
 

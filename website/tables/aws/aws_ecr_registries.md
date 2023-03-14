@@ -1,6 +1,6 @@
 # Table: aws_ecr_registries
 
-This table shows data for AWS Ecr Registries.
+This table shows data for Amazon Elastic Container Registry (ECR) Registries.
 
 https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_DescribeRegistry.html
 

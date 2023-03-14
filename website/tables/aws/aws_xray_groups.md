@@ -1,6 +1,6 @@
 # Table: aws_xray_groups
 
-This table shows data for AWS Xray Groups.
+This table shows data for AWS X-Ray Groups.
 
 https://docs.aws.amazon.com/xray/latest/api/API_Group.html
 

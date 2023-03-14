@@ -1,6 +1,6 @@
 # Table: aws_glue_security_configurations
 
-This table shows data for AWS Glue Security Configurations.
+This table shows data for Glue Security Configurations.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_SecurityConfiguration.html
 

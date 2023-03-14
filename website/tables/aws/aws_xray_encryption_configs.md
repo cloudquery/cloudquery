@@ -1,6 +1,6 @@
 # Table: aws_xray_encryption_configs
 
-This table shows data for AWS Xray Encryption Configs.
+This table shows data for AWS X-Ray Encryption Configs.
 
 https://docs.aws.amazon.com/xray/latest/api/API_EncryptionConfig.html
 
