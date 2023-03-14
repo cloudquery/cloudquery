@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_virtual_circuits
 
-This table shows data for Oracle Virtualnetwork Virtual Circuits.
+This table shows data for Oracle Virtual Network Virtual Circuits.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

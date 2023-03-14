@@ -1,6 +1,6 @@
 # Table: gandi_simplehosting_instances
 
-This table shows data for Gandi Simplehosting Instances.
+This table shows data for Gandi Simple Hosting Instances.
 
 The primary key for this table is **id**.
 

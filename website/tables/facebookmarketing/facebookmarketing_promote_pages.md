@@ -1,6 +1,6 @@
 # Table: facebookmarketing_promote_pages
 
-This table shows data for Facebookmarketing Promote Pages.
+This table shows data for Facebook Marketing Promote Pages.
 
 https://developers.facebook.com/docs/graph-api/reference/page#Reading
 

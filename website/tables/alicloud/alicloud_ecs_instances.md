@@ -1,6 +1,6 @@
 # Table: alicloud_ecs_instances
 
-This table shows data for Alicloud Ecs Instances.
+This table shows data for Alibaba Cloud Elastic Compute Service (ECS) Instances.
 
 https://www.alibabacloud.com/help/en/elastic-compute-service/latest/describeinstances#t9865.html
 

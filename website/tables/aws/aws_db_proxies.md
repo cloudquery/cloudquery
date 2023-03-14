@@ -1,6 +1,6 @@
 # Table: aws_db_proxies
 
-This table shows data for AWS DB Proxies.
+This table shows data for DB Proxies.
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBProxy.html
 

@@ -1,6 +1,6 @@
 # Table: aws_glue_classifiers
 
-This table shows data for AWS Glue Classifiers.
+This table shows data for Glue Classifiers.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_Classifier.html
 

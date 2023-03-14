@@ -1,6 +1,6 @@
 # Table: oracle_filestorage_mount_targets
 
-This table shows data for Oracle Filestorage Mount Targets.
+This table shows data for Oracle File Storage Mount Targets.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

@@ -1,6 +1,6 @@
 # Table: aws_wafregional_rule_groups
 
-This table shows data for AWS Wafregional Rule Groups.
+This table shows data for Wafregional Rule Groups.
 
 https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_RuleGroup.html
 

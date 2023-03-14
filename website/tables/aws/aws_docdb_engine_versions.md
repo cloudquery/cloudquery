@@ -1,6 +1,6 @@
 # Table: aws_docdb_engine_versions
 
-This table shows data for AWS Docdb Engine Versions.
+This table shows data for Amazon DocumentDB Engine Versions.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html
 

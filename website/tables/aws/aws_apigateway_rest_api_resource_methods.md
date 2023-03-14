@@ -1,6 +1,6 @@
 # Table: aws_apigateway_rest_api_resource_methods
 
-This table shows data for AWS Apigateway Rest API Resource Methods.
+This table shows data for Amazon API Gateway Rest API Resource Methods.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_Method.html
 

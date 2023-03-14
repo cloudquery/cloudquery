@@ -1,6 +1,6 @@
 # Table: aws_redshift_clusters
 
-This table shows data for AWS Redshift Clusters.
+This table shows data for Redshift Clusters.
 
 https://docs.aws.amazon.com/redshift/latest/APIReference/API_Cluster.html
 

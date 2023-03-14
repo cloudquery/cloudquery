@@ -1,6 +1,6 @@
 # Table: aws_elbv2_load_balancers
 
-This table shows data for AWS Elbv2 Load Balancers.
+This table shows data for Amazon Elastic Load Balancer (ELB) v2 Load Balancers.
 
 https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_LoadBalancer.html
 

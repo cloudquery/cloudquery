@@ -1,6 +1,6 @@
 # Table: aws_elasticbeanstalk_environments
 
-This table shows data for AWS Elasticbeanstalk Environments.
+This table shows data for AWS Elastic Beanstalk Environments.
 
 https://docs.aws.amazon.com/elasticbeanstalk/latest/APIReference/API_EnvironmentDescription.html
 

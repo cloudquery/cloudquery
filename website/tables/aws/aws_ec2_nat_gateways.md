@@ -1,6 +1,6 @@
 # Table: aws_ec2_nat_gateways
 
-This table shows data for AWS Ec2 Nat Gateways.
+This table shows data for Amazon Elastic Compute Cloud (EC2) NAT Gateways.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NatGateway.html
 

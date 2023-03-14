@@ -1,6 +1,6 @@
 # Table: digitalocean_domains
 
-This table shows data for Digitalocean Domains.
+This table shows data for DigitalOcean Domains.
 
 The primary key for this table is **name**.
 
