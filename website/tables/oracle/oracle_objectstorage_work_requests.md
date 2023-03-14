@@ -1,6 +1,6 @@
 # Table: oracle_objectstorage_work_requests
 
-This table shows data for Oracle Objectstorage Work Requests.
+This table shows data for Oracle Object Storage Work Requests.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

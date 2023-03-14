@@ -1,6 +1,6 @@
 # Table: aws_ec2_instances
 
-This table shows data for AWS Ec2 Instances.
+This table shows data for Amazon Elastic Compute Cloud (EC2) Instances.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Instance.html
 

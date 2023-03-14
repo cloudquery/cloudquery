@@ -1,6 +1,6 @@
 # Table: gcp_cloudiot_device_configs
 
-This table shows data for GCP Cloudiot Device Configs.
+This table shows data for GCP Cloud IoT Device Configs.
 
 https://cloud.google.com/iot/docs/reference/cloudiot/rest/v1/projects.locations.registries.devices.configVersions#DeviceConfig
 

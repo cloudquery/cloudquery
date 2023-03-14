@@ -1,6 +1,6 @@
 # Table: aws_iam_policies
 
-This table shows data for AWS IAM Policies.
+This table shows data for IAM Policies.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_ManagedPolicyDetail.html
 

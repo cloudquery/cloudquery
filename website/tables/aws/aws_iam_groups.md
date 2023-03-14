@@ -1,6 +1,6 @@
 # Table: aws_iam_groups
 
-This table shows data for AWS IAM Groups.
+This table shows data for IAM Groups.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html
 

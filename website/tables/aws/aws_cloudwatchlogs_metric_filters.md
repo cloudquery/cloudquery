@@ -1,6 +1,6 @@
 # Table: aws_cloudwatchlogs_metric_filters
 
-This table shows data for AWS Cloudwatchlogs Metric Filters.
+This table shows data for Cloudwatchlogs Metric Filters.
 
 https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_MetricFilter.html
 

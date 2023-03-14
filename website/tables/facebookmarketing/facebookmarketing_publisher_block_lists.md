@@ -1,6 +1,6 @@
 # Table: facebookmarketing_publisher_block_lists
 
-This table shows data for Facebookmarketing Publisher Block Lists.
+This table shows data for Facebook Marketing Publisher Block Lists.
 
 https://developers.facebook.com/docs/marketing-api/reference/publisher-block-list/
 

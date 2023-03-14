@@ -1,6 +1,6 @@
 # Table: aws_appstream_usage_report_subscriptions
 
-This table shows data for AWS Appstream Usage Report Subscriptions.
+This table shows data for Amazon AppStream Usage Report Subscriptions.
 
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_UsageReportSubscription.html
 

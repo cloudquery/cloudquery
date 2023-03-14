@@ -1,6 +1,6 @@
 # Table: azure_cdn_edge_nodes
 
-This table shows data for Azure Cdn Edge Nodes.
+This table shows data for Azure Content Delivery Network (CDN) Edge Nodes.
 
 https://learn.microsoft.com/en-us/rest/api/cdn/edge-nodes/list?tabs=HTTP#edgenode
 

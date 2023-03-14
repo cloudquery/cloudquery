@@ -1,6 +1,6 @@
 # Table: aws_mwaa_environments
 
-This table shows data for AWS Mwaa Environments.
+This table shows data for Amazon MWAA Environments.
 
 https://docs.aws.amazon.com/mwaa/latest/API/API_Environment.html
 

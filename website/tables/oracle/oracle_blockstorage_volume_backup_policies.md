@@ -1,6 +1,6 @@
 # Table: oracle_blockstorage_volume_backup_policies
 
-This table shows data for Oracle Blockstorage Volume Backup Policies.
+This table shows data for Oracle Block Storage Volume Backup Policies.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

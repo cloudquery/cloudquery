@@ -1,6 +1,6 @@
 # Table: aws_guardduty_detector_members
 
-This table shows data for AWS Guardduty Detector Members.
+This table shows data for Amazon GuardDuty Detector Members.
 
 https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html
 

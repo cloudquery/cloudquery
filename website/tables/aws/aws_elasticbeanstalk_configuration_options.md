@@ -1,6 +1,6 @@
 # Table: aws_elasticbeanstalk_configuration_options
 
-This table shows data for AWS Elasticbeanstalk Configuration Options.
+This table shows data for AWS Elastic Beanstalk Configuration Options.
 
 https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ConfigurationOptionDescription.html
 

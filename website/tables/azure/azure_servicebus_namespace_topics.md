@@ -1,6 +1,6 @@
 # Table: azure_servicebus_namespace_topics
 
-This table shows data for Azure Servicebus Namespace Topics.
+This table shows data for Azure Service Bus Namespace Topics.
 
 https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics/list-by-namespace?tabs=HTTP#sbtopic
 

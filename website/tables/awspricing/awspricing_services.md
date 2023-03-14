@@ -1,6 +1,8 @@
 # Table: awspricing_services
 
-This table shows data for Awspricing Services.
+This table shows data for Services from the AWS Price List API.
+
+https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/price-changes.html
 
 The composite primary key for this table is (**offer_code**, **version**, **publication_date**).
 

@@ -1,6 +1,6 @@
 # Table: aws_neptune_subnet_groups
 
-This table shows data for AWS Neptune Subnet Groups.
+This table shows data for Neptune Subnet Groups.
 
 https://docs.aws.amazon.com/neptune/latest/userguide/api-subnets.html#DescribeDBSubnetGroups
 

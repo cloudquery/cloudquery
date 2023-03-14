@@ -1,6 +1,6 @@
 # Table: aws_cloudfront_distributions
 
-This table shows data for AWS Cloudfront Distributions.
+This table shows data for Cloudfront Distributions.
 
 https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_Distribution.html
 
