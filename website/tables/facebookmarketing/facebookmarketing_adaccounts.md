@@ -1,6 +1,6 @@
 # Table: facebookmarketing_adaccounts
 
-This table shows data for Facebookmarketing Adaccounts.
+This table shows data for Facebook Marketing Ad Accounts.
 
 https://developers.facebook.com/docs/marketing-api/reference/ad-account#Reading
 

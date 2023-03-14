@@ -1,6 +1,6 @@
 # Table: azure_cdn_security_policies
 
-This table shows data for Azure Cdn Security Policies.
+This table shows data for Azure Content Delivery Network (CDN) Security Policies.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn@v1.0.0#SecurityPolicy
 

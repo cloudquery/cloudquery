@@ -1,6 +1,6 @@
 # Table: homebrew_analytics_installs_30d
 
-This table shows data for Homebrew Analytics Installs 30d.
+This table shows data for Homebrew Analytics Installs (30 days).
 
 https://formulae.brew.sh/analytics/install/30d/
 

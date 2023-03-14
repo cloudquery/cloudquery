@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_cross_connects
 
-This table shows data for Oracle Virtualnetwork Cross Connects.
+This table shows data for Oracle Virtual Network Cross Connects.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

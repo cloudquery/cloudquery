@@ -1,6 +1,6 @@
 # Table: azure_cdn_rule_sets
 
-This table shows data for Azure Cdn Rule Sets.
+This table shows data for Azure Content Delivery Network (CDN) Rule Sets.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn@v1.0.0#RuleSet
 

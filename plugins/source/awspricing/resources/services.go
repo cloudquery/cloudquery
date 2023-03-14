@@ -16,6 +16,8 @@ const ROOT_URL = "https://pricing.us-east-1.amazonaws.com"
 func Services() *schema.Table {
 	return &schema.Table{
 		Name:                "awspricing_services",
+		Title:               "Services from the AWS Price List API",
+		Description:         "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/price-changes.html",
 		Resolver:            fetchServicesTable,
 		PreResourceResolver: getPricingFile,
 		Transform: transformers.TransformWithStruct(&PricingFile{},
