@@ -14,8 +14,9 @@ var (
 )
 
 var customExceptions = map[string]string{
-	"cdns": "CDNs",
-	"cors": "CORS",
+	"digitalocean": "DigitalOcean",
+	"cdns":         "CDNs",
+	"cors":         "CORS",
 }
 
 func titleTransformer(table *schema.Table) string {

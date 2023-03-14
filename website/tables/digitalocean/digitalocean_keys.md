@@ -1,6 +1,6 @@
 # Table: digitalocean_keys
 
-This table shows data for Digitalocean Keys.
+This table shows data for DigitalOcean Keys.
 
 The primary key for this table is **id**.
 

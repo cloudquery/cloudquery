@@ -1,6 +1,6 @@
 # Table: digitalocean_space_cors
 
-This table shows data for Digitalocean Space CORS.
+This table shows data for DigitalOcean Space CORS.
 
 The primary key for this table is **_cq_id**.
 
