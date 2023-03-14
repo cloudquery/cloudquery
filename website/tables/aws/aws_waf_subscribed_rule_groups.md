@@ -1,6 +1,6 @@
 # Table: aws_waf_subscribed_rule_groups
 
-This table shows data for AWS WAF Subscribed Rule Groups.
+This table shows data for WAF Subscribed Rule Groups.
 
 https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_SubscribedRuleGroupSummary.html
 

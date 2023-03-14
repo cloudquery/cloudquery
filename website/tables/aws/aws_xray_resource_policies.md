@@ -1,6 +1,6 @@
 # Table: aws_xray_resource_policies
 
-This table shows data for AWS Xray Resource Policies.
+This table shows data for AWS X-Ray Resource Policies.
 
 https://docs.aws.amazon.com/xray/latest/api/API_ResourcePolicy.html
 

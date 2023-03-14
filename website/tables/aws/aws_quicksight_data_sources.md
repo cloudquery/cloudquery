@@ -1,6 +1,6 @@
 # Table: aws_quicksight_data_sources
 
-This table shows data for AWS Quicksight Data Sources.
+This table shows data for QuickSight Data Sources.
 
 https://docs.aws.amazon.com/quicksight/latest/APIReference/API_DataSource.html
 

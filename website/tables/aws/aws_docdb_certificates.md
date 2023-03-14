@@ -1,6 +1,6 @@
 # Table: aws_docdb_certificates
 
-This table shows data for AWS Docdb Certificates.
+This table shows data for Amazon DocumentDB Certificates.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Certificate.html
 

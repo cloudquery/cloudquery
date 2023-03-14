@@ -1,6 +1,6 @@
 # Table: aws_dax_clusters
 
-This table shows data for AWS Dax Clusters.
+This table shows data for Dax Clusters.
 
 https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_dax_Cluster.html
 

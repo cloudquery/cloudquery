@@ -1,6 +1,6 @@
 # Table: aws_secretsmanager_secret_versions
 
-This table shows data for AWS Secretsmanager Secret Versions.
+This table shows data for AWS Secrets Manager Secret Versions.
 
 https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecretVersionIds.html
 

@@ -1,6 +1,6 @@
 # Table: aws_kafka_configurations
 
-This table shows data for AWS Kafka Configurations.
+This table shows data for Kafka Configurations.
 
 https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-configuration.html
 

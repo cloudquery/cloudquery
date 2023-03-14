@@ -1,6 +1,6 @@
 # Table: aws_organizations
 
-This table shows data for AWS Organizations.
+This table shows data for Organizations.
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html
 

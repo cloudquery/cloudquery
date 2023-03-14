@@ -1,6 +1,6 @@
 # Table: aws_apigateway_usage_plan_keys
 
-This table shows data for AWS Apigateway Usage Plan Keys.
+This table shows data for Amazon API Gateway Usage Plan Keys.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_UsagePlanKey.html
 

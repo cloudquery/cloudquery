@@ -1,6 +1,6 @@
 # Table: aws_elasticache_clusters
 
-This table shows data for AWS Elasticache Clusters.
+This table shows data for Elasticache Clusters.
 
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheCluster.html
 

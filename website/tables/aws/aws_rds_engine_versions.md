@@ -1,6 +1,6 @@
 # Table: aws_rds_engine_versions
 
-This table shows data for AWS Rds Engine Versions.
+This table shows data for Amazon Relational Database Service (RDS) Engine Versions.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html
 

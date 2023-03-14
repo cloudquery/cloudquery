@@ -1,6 +1,6 @@
 # Table: aws_secretsmanager_secrets
 
-This table shows data for AWS Secretsmanager Secrets.
+This table shows data for AWS Secrets Manager Secrets.
 
 https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecrets.html
 
