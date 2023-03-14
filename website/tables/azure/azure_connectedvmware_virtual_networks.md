@@ -1,6 +1,6 @@
 # Table: azure_connectedvmware_virtual_networks
 
-This table shows data for Azure Connectedvmware Virtual Networks.
+This table shows data for Azure Connected VMware Virtual Networks.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#VirtualNetwork
 

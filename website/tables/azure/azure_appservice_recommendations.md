@@ -1,6 +1,6 @@
 # Table: azure_appservice_recommendations
 
-This table shows data for Azure Appservice Recommendations.
+This table shows data for Azure App Service Recommendations.
 
 https://learn.microsoft.com/en-us/rest/api/appservice/recommendations/list#recommendation
 
