@@ -74,6 +74,11 @@ func tables(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to generate docs. Error: %w", err)
 		}
+
+		err = sourceClient.Terminate()
+		if err != nil {
+			fmt.Println("Failed to terminate source client. Error: ", err)
+		}
 	}
 
 	return nil
