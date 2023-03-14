@@ -89,7 +89,7 @@ This is called via `organizations:RegisterDelegatedAdministrator`.  Note that th
 | AWS Audit Manager | Yes | auditmanager:RegisterOrganizationAdminAccount |
 | AWS Inspector | Yes | inspector2:EnableDelegatedAdminAccount |
 | AWS Macie | Yes | macie2:EnableOrganizationAdminAccount |
-| AWS Trusted Advisor | Yes |trustedadvisor:SetOrganizationAccess |
+| AWS Trusted Advisor | Yes | - |
 | AWS CloudFormation StackSets | Yes | - |
 | AWS Systems Manager Explorer | Yes | - |
 | AWS Systems Manager Change Manager | Yes | - |
@@ -99,12 +99,16 @@ This is called via `organizations:RegisterDelegatedAdministrator`.  Note that th
 | AWS Config | Yes | - |
 | AWS DevOps Guru | Yes | - |
 | AWS IAM Access Analyzer | Yes | - |
-| AWS Licnese Manager | Yes | - |
+| AWS License Manager | Yes | - |
 | AWS Network Manager | Yes | - |
 | AWS S3 Storage Lens | Yes | - |
 | AWS Service Catalog | Yes | - |
 | AWS IAM Identity Center | Yes | - |
 | Reachability Analyzer | Yes | - |
+
+Trusted Access for Organizations:
+* trustedadvisor:SetOrganizationAccess
+
 
 (Is this section still needed) Services that are integrated with AWS Organizations but do not support delegated administrator:
 
@@ -128,7 +132,7 @@ This is done via `organizations:PutResourcePolicy`.  Specifically, this enables 
  * Organizational unit (OU)
  * Policy (any type)
 
-Below is an example policy for allowing organization delegation management.  This policy can be modified to deny organizational management as needed.
+Below is an example policy for managing organization delegation via delegated administrators.  This policy can be modified to deny organizational management as needed.  Note: This policy does not allow for management activities to be done by the delegated administrator such as attaching a service control policy to an organizational unit.
 
 ```json copy
 {
@@ -140,7 +144,6 @@ Below is an example policy for allowing organization delegation management.  Thi
             "Action": [
                 "organizations:List*",
                 "organizations:Describe*"
-            
             ],
             "Resource": "*"
         },
@@ -149,15 +152,46 @@ Below is an example policy for allowing organization delegation management.  Thi
             "Effect": "Allow",
             "Action": [
                 "organizations:RegisterDelegatedAdministrator",
-                "organizations:DeRegister"
-            ]
+                "organizations:DeregisterDelegatedAdministrator",
+                "organizations:PutResourcePolicy",
+                "organizations:DeleteResourcePolicy",
+                "securitylake:CreateDatalakeDelegatedAdmin",
+                "securitylake:DeleteDatalakeDelegatedAdmin",
+                "cloudtrail:RegisterOrganizationDelegatedAdmin",
+                "cloudtrail:DeregisterOrganizationDelegatedAdmin",
+                "fms:AssociateAdminAccount",
+                "fms:DisassociateAdminAccount",
+                "guardduty:EnableOrganizationAdminAccount",
+                "guardduty:DisableOrganizationAdminAccount",
+                "detective:EnableOrganizationAdminAccount",
+                "detective:DisableOrganizationAdminAccount",
+                "ec2:EnableIpamOrganizationAdminAccount",
+                "ec2:DisableIpamOrganizationAdminAccount",
+                "securityhub:EnableOrganizationAdminAccount",
+                "securityhub:DisableOrganizationAdminAccount",
+                "auditmanager:RegisterOrganizationAdminAccount",
+                "auditmanager:DeregisterOrganizationAdminAccount",
+                "inspector2:EnableDelegatedAdminAccount",
+                "inspector2:DisableDelegatedAdminAccount",
+                "macie2:EnableOrganizationAdminAccount",
+                "macie2:DisableOrganizationAdminAccount"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "DependentActions",
+            "Effect": "Allow",
+            "Action": [
+                "organizations:EnableAWSServiceAccess",
+                "organizations:DisableAWSServiceAccess",
+                "iam:GetRole",
+                "iam:CreateServiceLinkedRole"
+            ],
             "Resource": "*"
         }
     ]
 }
 ```
-
-### Chart 
 
 ### What Delegated Administrator Cannot Do
 Delegated Administrator Accounts cannot move accounts.
