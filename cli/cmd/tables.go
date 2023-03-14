@@ -27,7 +27,7 @@ func NewCmdTables() *cobra.Command {
 		Use:     "tables [files or directories]",
 		Short:   tablesShort,
 		Long:    tablesShort,
-		Example: ablesExample,
+		Example: tablesExample,
 		Args:    cobra.MinimumNArgs(1),
 		RunE:    tables,
 	}
