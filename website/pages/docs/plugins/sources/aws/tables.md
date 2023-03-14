@@ -136,6 +136,7 @@
 - [aws_dynamodb_tables](tables/aws_dynamodb_tables)
   - [aws_dynamodb_table_continuous_backups](tables/aws_dynamodb_table_continuous_backups)
   - [aws_dynamodb_table_replica_auto_scalings](tables/aws_dynamodb_table_replica_auto_scalings)
+- [aws_ec2_account_attributes](tables/aws_ec2_account_attributes)
 - [aws_ec2_byoip_cidrs](tables/aws_ec2_byoip_cidrs)
 - [aws_ec2_customer_gateways](tables/aws_ec2_customer_gateways)
 - [aws_ec2_dhcp_options](tables/aws_ec2_dhcp_options)
