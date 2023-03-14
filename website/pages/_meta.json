@@ -17,7 +17,7 @@
     "title": "Integrations",
     "type": "page",
     "theme": {
-      "layout": "raw",
+      "layout": "full",
       "sidebar": false
     }
   },

@@ -31,15 +31,16 @@ export default function Integration({
 
             <div className="mx-4 px-4 mx-auto w-auto">
                 <div className="flex justify-left items-left flex-wrap gap-9 pt-8 sm:mt-4">
-                    {DESTINATION_PLUGINS.map(({ name, logo, logoDark, id, href }) => (
+                    {DESTINATION_PLUGINS.map((plugin) => (
                         <LogoContainer
-                            title={name}
-                            href={href || `/integrations/${source.id}/${id}`}
-                            key={id}
-                            logo={logo}
-                            logoDark={logoDark}
-                            name={name}
+                            title={plugin.name}
+                            href={plugin.href || `/integrations/${source.id}/${plugin.id}`}
+                            key={plugin.id}
+                            logo={plugin.logo}
+                            logoDark={plugin.logoDark}
+                            name={plugin.name}
                             external={false}
+                            category={plugin.category}
                         >
                         </LogoContainer>
                     ))}
