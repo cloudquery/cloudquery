@@ -1,0 +1,28 @@
+name: 🔄 New Destination Plugin
+description: Request a new destination plugin
+title: "feat: Add <resource-name> to <plugin-name> destination plugin"
+labels: [new-destination-plugin, needs-triage]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the plugin
+      description: Please describe what is the destination plugin you'd like to add
+    validations:
+      required: true
+
+  - type: input
+    id: api-docs
+    attributes:
+      label: Link to API documentation
+      description: Add a link to the Go SDK or REST API documentation for the destination
+    validations:
+      required: true
+
+  - type: checkboxes
+    attributes:
+      label: Pull request (optional)
+      description: Pull requests welcome! If you would like to help us add this plugin, please check our [contributions guidelines](../blob/main/CONTRIBUTING.md)
+      options:
+        - label: I can submit a pull request
+          required: false
