@@ -337,7 +337,6 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	sb.WriteString(" (")
 	totalColumns := len(table.Columns)
 
-	primaryKeys := []string{}
 	for i, col := range table.Columns {
 		pgType := c.SchemaTypeToPg(col.Type)
 		if pgType == "" {
@@ -356,11 +355,9 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		if i != totalColumns-1 {
 			sb.WriteString(",")
 		}
-		if c.enabledPks() && col.CreationOptions.PrimaryKey {
-			primaryKeys = append(primaryKeys, col.Name)
-		}
 	}
 
+	primaryKeys := c.listPKs(table)
 	if len(primaryKeys) > 0 {
 		// add composite PK constraint on primary key columns
 		sb.WriteString(", CONSTRAINT ")
@@ -375,6 +372,29 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		return fmt.Errorf("failed to create table %s: %w", table.Name, err)
 	}
 	return nil
+}
+
+func (c *Client) listPKs(table *schema.Table) []string {
+	// If PKS are not needed for the writeMode then just return early
+	if !c.enabledPks() {
+		return []string{}
+	}
+	pks := []string{}
+	if c.spec.PKMode == specs.PKModeCQID {
+		pks = append(pks, schema.CqIDColumn.Name)
+		if table.Parent != nil {
+			// Only add the CQParentID column to the PK if the table is a relational table
+			pks = append(pks, schema.CqParentIDColumn.Name)
+		}
+		return pks
+	}
+
+	for _, col := range table.Columns {
+		if col.CreationOptions.PrimaryKey {
+			pks = append(pks, col.Name)
+		}
+	}
+	return pks
 }
 
 func (c *Client) enabledPks() bool {
