@@ -1,5 +1,7 @@
 # Table: gcp_run_services
 
+This table shows data for GCP Run Services.
+
 https://cloud.google.com/run/docs/reference/rest/v2/projects.locations.services#Service
 
 The composite primary key for this table is (**project_id**, **name**).

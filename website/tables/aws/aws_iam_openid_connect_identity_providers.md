@@ -1,5 +1,7 @@
 # Table: aws_iam_openid_connect_identity_providers
 
+This table shows data for IAM Openid Connect Identity Providers.
+
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetOpenIDConnectProvider.html
 
 The primary key for this table is **arn**.

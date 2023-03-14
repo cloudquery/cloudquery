@@ -1,5 +1,7 @@
 # Table: launchdarkly_project_metrics
 
+This table shows data for LaunchDarkly Project Metrics.
+
 https://apidocs.launchdarkly.com/tag/Metrics#operation/getMetrics
 
 The composite primary key for this table is (**project_id**, **id**).

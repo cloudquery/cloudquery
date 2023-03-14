@@ -1,5 +1,7 @@
 # Table: stripe_issuing_transactions
 
+This table shows data for Stripe Issuing Transactions.
+
 https://stripe.com/docs/api/issuing_transactions
 
 The primary key for this table is **id**.

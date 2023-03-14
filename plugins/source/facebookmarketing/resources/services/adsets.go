@@ -11,7 +11,7 @@ func Adsets() *schema.Table {
 	return &schema.Table{
 		Name:        "facebookmarketing_adsets",
 		Resolver:    fetchAdsets,
-		Transform:   transformers.TransformWithStruct(&rest.Adset{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&rest.Adset{}, transformers.WithPrimaryKeys("Id")),
 		Description: "https://developers.facebook.com/docs/marketing-api/reference/ad-campaign#Reading",
 	}
 }

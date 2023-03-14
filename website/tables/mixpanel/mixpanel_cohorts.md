@@ -1,5 +1,7 @@
 # Table: mixpanel_cohorts
 
+This table shows data for Mixpanel Cohorts.
+
 https://developer.mixpanel.com/reference/cohorts-list
 
 The primary key for this table is **id**.

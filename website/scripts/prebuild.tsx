@@ -175,8 +175,10 @@ import SyncCommand from "../../../components/mdx/plugins/source/${source.id}/${d
     }
     // Write the sync command file
     const syncCommandFilePath = path.join(syncCommandDir, "_sync.mdx");
+    const sourceFilename = source.id === destination.id ? `source-${source.id}.yaml` : `${source.id}.yaml`;
+    const destinationFilename = source.id === destination.id ? `destination-${destination.id}.yaml` : `${destination.id}.yaml`;
     const syncCommandFileContents = "```bash copy\n" +
-        `cloudquery sync ${source.id}.yaml ${destination.id}.yaml\n` +
+        `cloudquery sync ${sourceFilename} ${destinationFilename}\n` +
         "```"
     // Write the contents to the new file
     fs.writeFileSync(syncCommandFilePath, syncCommandFileContents);

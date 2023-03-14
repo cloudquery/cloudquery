@@ -1,5 +1,7 @@
 # Table: azure_network_route_tables
 
+This table shows data for Azure Network Route Tables.
+
 https://learn.microsoft.com/en-us/rest/api/virtualnetwork/route-tables/list?tabs=HTTP#routetable
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: gcp_logging_metrics
 
+This table shows data for GCP Logging Metrics.
+
 https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics#LogMetric
 
 The composite primary key for this table is (**project_id**, **name**).

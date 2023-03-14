@@ -1,5 +1,7 @@
 # Table: azure_logic_workflows
 
+This table shows data for Azure Logic Workflows.
+
 https://learn.microsoft.com/en-us/rest/api/logic/workflows/list-by-subscription?tabs=HTTP#workflow
 
 The primary key for this table is **id**.

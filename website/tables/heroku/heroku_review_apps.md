@@ -1,5 +1,7 @@
 # Table: heroku_review_apps
 
+This table shows data for Heroku Review Apps.
+
 https://devcenter.heroku.com/articles/platform-api-reference#review-app
 
 The primary key for this table is **id**.

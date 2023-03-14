@@ -16,10 +16,11 @@ import (
 func Keys() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_apikeys_keys",
+		Title:       "GCP API Keys",
 		Description: `https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key`,
 		Resolver:    fetchKeys,
 		Multiplex:   client.ProjectMultiplexEnabledServices("apikeys.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Key{}, append(client.Options(), transformers.WithPrimaryKeys("Uid"))...),
+		Transform:   client.TransformWithStruct(&pb.Key{}, transformers.WithPrimaryKeys("Uid")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

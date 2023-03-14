@@ -143,6 +143,13 @@ export const SOURCE_PLUGINS: Plugin[] = [
     kind: "official",
   },
   {
+    name: "MySQL",
+    logo: "/images/logos/plugins/mysql.svg",
+    logoDark: "/images/logos/plugins/mysql-dark.svg",
+    id: "mysql",
+    kind: "official",
+  },
+  {
     name: "Okta",
     logo: "/images/logos/plugins/okta.svg",
     id: "okta",

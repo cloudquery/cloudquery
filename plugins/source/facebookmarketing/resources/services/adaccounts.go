@@ -11,7 +11,7 @@ func Adaccounts() *schema.Table {
 	return &schema.Table{
 		Name:        "facebookmarketing_adaccounts",
 		Resolver:    fetchAdaccounts,
-		Transform:   transformers.TransformWithStruct(&rest.Adaccount{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&rest.Adaccount{}, transformers.WithPrimaryKeys("Id")),
 		Description: "https://developers.facebook.com/docs/marketing-api/reference/ad-account#Reading",
 	}
 }

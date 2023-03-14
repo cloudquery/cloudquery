@@ -3,7 +3,6 @@ package users
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/xanzy/go-gitlab"
 )
 
@@ -11,7 +10,7 @@ func Users() *schema.Table {
 	return &schema.Table{
 		Name:      "gitlab_users",
 		Resolver:  fetchUsers,
-		Transform: transformers.TransformWithStruct(&gitlab.User{}, client.SharedTransformers()...),
+		Transform: client.TransformWithStruct(&gitlab.User{}),
 		Columns: []schema.Column{
 			{
 				Name:     "base_url",

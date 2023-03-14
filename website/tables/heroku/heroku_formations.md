@@ -1,5 +1,7 @@
 # Table: heroku_formations
 
+This table shows data for Heroku Formations.
+
 https://devcenter.heroku.com/articles/platform-api-reference#formation
 
 The primary key for this table is **id**.

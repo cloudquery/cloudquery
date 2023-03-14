@@ -1,5 +1,7 @@
 # Table: shopify_product_variants
 
+This table shows data for Shopify Product Variants.
+
 The composite primary key for this table is (**product_id**, **id**).
 
 ## Relations

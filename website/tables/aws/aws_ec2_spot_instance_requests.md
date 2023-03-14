@@ -1,5 +1,7 @@
 # Table: aws_ec2_spot_instance_requests
 
+This table shows data for Amazon Elastic Compute Cloud (EC2) Spot Instance Requests.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SpotInstanceRequest.html
 
 The composite primary key for this table is (**account_id**, **region**, **spot_instance_request_id**).

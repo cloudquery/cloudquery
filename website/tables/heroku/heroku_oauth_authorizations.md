@@ -1,5 +1,7 @@
 # Table: heroku_oauth_authorizations
 
+This table shows data for Heroku OAuth Authorizations.
+
 https://devcenter.heroku.com/articles/platform-api-reference#o-auth-authorization
 
 The primary key for this table is **id**.

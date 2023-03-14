@@ -1,5 +1,7 @@
 # Table: cloudflare_workers_secrets
 
+This table shows data for Cloudflare Workers Secrets.
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

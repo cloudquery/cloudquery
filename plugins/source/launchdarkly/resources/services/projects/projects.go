@@ -14,7 +14,7 @@ func Projects() *schema.Table {
 		Name:        "launchdarkly_projects",
 		Description: `https://apidocs.launchdarkly.com/tag/Projects#operation/getProjects`,
 		Resolver:    fetchProjects,
-		Transform:   transformers.TransformWithStruct(&ldapi.Project{}, client.SharedTransformers(transformers.WithPrimaryKeys("Id"), transformers.WithSkipFields("Environments", "Links"))...),
+		Transform:   client.TransformWithStruct(&ldapi.Project{}, transformers.WithPrimaryKeys("Id"), transformers.WithSkipFields("Environments", "Links")),
 		Relations: []*schema.Table{
 			ProjectEnvironments(),
 			ProjectFlagDefaults(),

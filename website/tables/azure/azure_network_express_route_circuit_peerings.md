@@ -1,5 +1,7 @@
 # Table: azure_network_express_route_circuit_peerings
 
+This table shows data for Azure Network Express Route Circuit Peerings.
+
 https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuit-peerings/list?tabs=HTTP#expressroutecircuitpeering
 
 The primary key for this table is **id**.

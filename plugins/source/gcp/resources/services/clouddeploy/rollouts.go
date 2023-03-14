@@ -19,7 +19,7 @@ func Rollouts() *schema.Table {
 		Description: `https://cloud.google.com/deploy/docs/api/reference/rest/v1/projects.locations.deliveryPipelines.releases.rollouts#Rollout`,
 		Resolver:    fetchRollouts,
 		Multiplex:   client.ProjectMultiplexEnabledServices("clouddeploy.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Rollout{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Rollout{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

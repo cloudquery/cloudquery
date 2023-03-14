@@ -1,5 +1,7 @@
 # Table: hubspot_crm_deals
 
+This table shows data for HubSpot CRM Deals.
+
 https://developers.hubspot.com/docs/api/crm/deals
 
 The primary key for this table is **id**.

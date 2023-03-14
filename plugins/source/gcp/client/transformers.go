@@ -77,13 +77,13 @@ func ignoreInTestsTransformer(field reflect.StructField) bool {
 	return false
 }
 
-func Options() []transformers.StructTransformerOption {
-	options := []transformers.StructTransformerOption{
-		transformers.WithNameTransformer(replaceTransformer),
-		transformers.WithTypeTransformer(typeTransformer),
-		transformers.WithResolverTransformer(resolverTransformer),
-		transformers.WithIgnoreInTestsTransformer(ignoreInTestsTransformer),
-	}
+var options = []transformers.StructTransformerOption{
+	transformers.WithNameTransformer(replaceTransformer),
+	transformers.WithTypeTransformer(typeTransformer),
+	transformers.WithResolverTransformer(resolverTransformer),
+	transformers.WithIgnoreInTestsTransformer(ignoreInTestsTransformer),
+}
 
-	return options
+func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) schema.Transform {
+	return transformers.TransformWithStruct(t, append(options, opts...)...)
 }

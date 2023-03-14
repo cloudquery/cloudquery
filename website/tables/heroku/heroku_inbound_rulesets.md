@@ -1,5 +1,7 @@
 # Table: heroku_inbound_rulesets
 
+This table shows data for Heroku Inbound Rulesets.
+
 https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset
 
 The primary key for this table is **id**.

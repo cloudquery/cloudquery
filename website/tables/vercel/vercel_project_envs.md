@@ -1,5 +1,7 @@
 # Table: vercel_project_envs
 
+This table shows data for Vercel Project Envs.
+
 The composite primary key for this table is (**project_id**, **id**).
 It supports incremental syncs.
 ## Relations

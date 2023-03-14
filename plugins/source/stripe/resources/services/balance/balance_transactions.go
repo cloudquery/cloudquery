@@ -2,7 +2,6 @@ package balance
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func BalanceTransactions() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_balance_transactions",
 		Description: `https://stripe.com/docs/api/balance_transactions`,
-		Transform:   transformers.TransformWithStruct(&stripe.BalanceTransaction{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.BalanceTransaction{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchBalanceTransactions,
 
 		Columns: []schema.Column{

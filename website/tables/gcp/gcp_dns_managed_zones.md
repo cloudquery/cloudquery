@@ -1,5 +1,7 @@
 # Table: gcp_dns_managed_zones
 
+This table shows data for GCP DNS Managed Zones.
+
 https://cloud.google.com/dns/docs/reference/v1/managedZones#resource
 
 The primary key for this table is **id**.

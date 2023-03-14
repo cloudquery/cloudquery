@@ -13,7 +13,7 @@ func CutoverJobs() *schema.Table {
 		Description: `https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.sources.migratingVms.cutoverJobs`,
 		Resolver:    fetchCutoverJobs,
 		Multiplex:   client.ProjectMultiplexEnabledServices("vmmigration.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.CutoverJob{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.CutoverJob{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -96,6 +96,8 @@ snowflake:
   - plugins/destination/snowflake/**/*
 snyk:
   - plugins/source/snyk/**/*
+source-mysql:
+  - plugins/source/mysql/**/*
 source-postgresql:
   - plugins/source/postgresql/**/*
 sqlite:

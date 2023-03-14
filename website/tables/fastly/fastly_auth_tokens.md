@@ -1,5 +1,7 @@
 # Table: fastly_auth_tokens
 
+This table shows data for Fastly Auth Tokens.
+
 https://developer.fastly.com/reference/api/auth-tokens/
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: gcp_domains_registrations
 
+This table shows data for GCP Domains Registrations.
+
 https://cloud.google.com/domains/docs/reference/rest/v1beta1/projects.locations.registrations#Registration
 
 The composite primary key for this table is (**project_id**, **name**).

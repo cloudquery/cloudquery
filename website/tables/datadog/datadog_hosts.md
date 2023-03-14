@@ -1,5 +1,7 @@
 # Table: datadog_hosts
 
+This table shows data for Datadog Hosts.
+
 The composite primary key for this table is (**account_name**, **id**).
 
 ## Columns

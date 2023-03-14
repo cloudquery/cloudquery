@@ -11,7 +11,7 @@ func AdPlacePageSets() *schema.Table {
 	return &schema.Table{
 		Name:        "facebookmarketing_ad_place_page_sets",
 		Resolver:    fetchAdPlacePageSets,
-		Transform:   transformers.TransformWithStruct(&rest.AdPlacePageSet{}, append(client.TransformerOptions(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&rest.AdPlacePageSet{}, transformers.WithPrimaryKeys("Id")),
 		Description: "https://developers.facebook.com/docs/marketing-api/reference/ad-place-page-set#Reading",
 	}
 }

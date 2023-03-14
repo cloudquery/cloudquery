@@ -1,5 +1,7 @@
 # Table: cloudflare_zones
 
+This table shows data for Cloudflare Zones.
+
 The primary key for this table is **id**.
 
 ## Columns

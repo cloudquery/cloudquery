@@ -1,5 +1,7 @@
 # Table: azure_resources_links
 
+This table shows data for Azure Resources Links.
+
 https://learn.microsoft.com/en-us/rest/api/resources/resource-links/list-at-subscription#resourcelink
 
 The primary key for this table is **id**.

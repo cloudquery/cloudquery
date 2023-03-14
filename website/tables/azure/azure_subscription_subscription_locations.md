@@ -1,5 +1,7 @@
 # Table: azure_subscription_subscription_locations
 
+This table shows data for Azure Subscription Subscription Locations.
+
 https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list-locations?tabs=HTTP#location
 
 The primary key for this table is **id**.

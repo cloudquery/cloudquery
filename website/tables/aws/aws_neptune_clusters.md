@@ -1,5 +1,7 @@
 # Table: aws_neptune_clusters
 
+This table shows data for Neptune Clusters.
+
 https://docs.aws.amazon.com/neptune/latest/userguide/api-clusters.html#DescribeDBClusters
 
 The primary key for this table is **arn**.

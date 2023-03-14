@@ -1,5 +1,7 @@
 # Table: aws_dynamodb_tables
 
+This table shows data for Amazon DynamoDB Tables.
+
 https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_TableDescription.html
 
 The primary key for this table is **arn**.

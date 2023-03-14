@@ -1,5 +1,7 @@
 # Table: k8s_apps_daemon_sets
 
+This table shows data for K8s Apps Daemon Sets.
+
 The primary key for this table is **uid**.
 
 ## Columns

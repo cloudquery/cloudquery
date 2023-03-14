@@ -1,5 +1,7 @@
 # Table: k8s_certificates_signing_requests
 
+This table shows data for K8s Certificates Signing Requests.
+
 The primary key for this table is **uid**.
 
 ## Columns
