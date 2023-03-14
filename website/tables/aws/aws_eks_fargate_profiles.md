@@ -1,6 +1,6 @@
 # Table: aws_eks_fargate_profiles
 
-This table shows data for AWS Eks Fargate Profiles.
+This table shows data for Amazon Elastic Kubernetes Service (EKS) Fargate Profiles.
 
 https://docs.aws.amazon.com/eks/latest/APIReference/API_FargateProfile.html
 

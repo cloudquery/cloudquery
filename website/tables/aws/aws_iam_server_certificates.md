@@ -1,6 +1,6 @@
 # Table: aws_iam_server_certificates
 
-This table shows data for AWS IAM Server Certificates.
+This table shows data for IAM Server Certificates.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServerCertificateMetadata.html
 

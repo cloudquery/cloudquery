@@ -1,6 +1,6 @@
 # Table: aws_frauddetector_external_models
 
-This table shows data for AWS Frauddetector External Models.
+This table shows data for Amazon Fraud Detector External Models.
 
 https://docs.aws.amazon.com/frauddetector/latest/api/API_ExternalModel.html
 

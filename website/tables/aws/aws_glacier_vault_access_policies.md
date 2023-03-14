@@ -1,6 +1,6 @@
 # Table: aws_glacier_vault_access_policies
 
-This table shows data for AWS Glacier Vault Access Policies.
+This table shows data for Glacier Vault Access Policies.
 
 https://docs.aws.amazon.com/amazonglacier/latest/dev/api-GetVaultAccessPolicy.html
 

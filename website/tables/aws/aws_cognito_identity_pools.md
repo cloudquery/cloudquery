@@ -1,6 +1,6 @@
 # Table: aws_cognito_identity_pools
 
-This table shows data for AWS Cognito Identity Pools.
+This table shows data for Cognito Identity Pools.
 
 https://docs.aws.amazon.com/cognitoidentity/latest/APIReference/API_DescribeIdentityPool.html
 

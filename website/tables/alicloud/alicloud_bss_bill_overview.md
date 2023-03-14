@@ -1,6 +1,6 @@
 # Table: alicloud_bss_bill_overview
 
-This table shows data for Alicloud Bss Bill Overview.
+This table shows data for Alibaba Cloud BSS Bill Overview.
 
 https://help.aliyun.com/document_detail/100400.html
 

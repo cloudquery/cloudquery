@@ -1,6 +1,6 @@
 # Table: aws_rds_events
 
-This table shows data for AWS Rds Events.
+This table shows data for Amazon Relational Database Service (RDS) Events.
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DescribeEvents.html
 

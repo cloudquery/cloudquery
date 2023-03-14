@@ -1,6 +1,6 @@
 # Table: aws_apigatewayv2_api_stages
 
-This table shows data for AWS Apigatewayv2 API Stages.
+This table shows data for Amazon API Gateway v2 API Stages.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_Stage.html
 

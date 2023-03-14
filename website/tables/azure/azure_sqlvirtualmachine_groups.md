@@ -1,6 +1,6 @@
 # Table: azure_sqlvirtualmachine_groups
 
-This table shows data for Azure Sqlvirtualmachine Groups.
+This table shows data for Azure SQL Virtual Machine Groups.
 
 https://learn.microsoft.com/en-us/rest/api/sqlvm/2022-07-01-preview/sql-virtual-machine-groups/list?tabs=HTTP#sqlvirtualmachinegroup
 

@@ -1,6 +1,6 @@
 # Table: aws_ses_active_receipt_rule_sets
 
-This table shows data for AWS Ses Active Receipt Rule Sets.
+This table shows data for Amazon Simple Email Service (SES) Active Receipt Rule Sets.
 
 https://docs.aws.amazon.com/ses/latest/APIReference/API_DescribeActiveReceiptRuleSet.html
 

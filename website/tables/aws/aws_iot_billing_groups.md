@@ -1,6 +1,6 @@
 # Table: aws_iot_billing_groups
 
-This table shows data for AWS IOT Billing Groups.
+This table shows data for AWS IoT Billing Groups.
 
 https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeBillingGroup.html
 

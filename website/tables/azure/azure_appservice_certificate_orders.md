@@ -1,6 +1,6 @@
 # Table: azure_appservice_certificate_orders
 
-This table shows data for Azure Appservice Certificate Orders.
+This table shows data for Azure App Service Certificate Orders.
 
 https://learn.microsoft.com/en-us/rest/api/appservice/app-service-certificate-orders/list?tabs=HTTP#appservicecertificateorder
 

@@ -1,6 +1,6 @@
 # Table: aws_apigateway_usage_plans
 
-This table shows data for AWS Apigateway Usage Plans.
+This table shows data for Amazon API Gateway Usage Plans.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_UsagePlan.html
 

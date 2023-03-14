@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_fast_connect_provider_services
 
-This table shows data for Oracle Virtualnetwork Fast Connect Provider Services.
+This table shows data for Oracle Virtual Network Fast Connect Provider Services.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

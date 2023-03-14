@@ -1,6 +1,6 @@
 # Table: aws_lightsail_disk_snapshots
 
-This table shows data for AWS Lightsail Disk Snapshots.
+This table shows data for Lightsail Disk Snapshots.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_DiskSnapshot.html
 

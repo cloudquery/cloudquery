@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_specialistpool_locations
 
-This table shows data for GCP Aiplatform Specialistpool Locations.
+This table shows data for GCP AI Platform Specialist Pool Locations.
 
 https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location
 
