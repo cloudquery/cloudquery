@@ -1,6 +1,6 @@
 # Table: azure_appservice_deleted_web_apps
 
-This table shows data for Azure Appservice Deleted Web Apps.
+This table shows data for Azure App Service Deleted Web Apps.
 
 https://learn.microsoft.com/en-us/rest/api/appservice/deleted-web-apps/list#deletedsite
 

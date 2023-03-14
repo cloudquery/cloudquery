@@ -1,6 +1,6 @@
 # Table: hubspot_crm_deals
 
-This table shows data for Hubspot Crm Deals.
+This table shows data for HubSpot CRM Deals.
 
 https://developers.hubspot.com/docs/api/crm/deals
 

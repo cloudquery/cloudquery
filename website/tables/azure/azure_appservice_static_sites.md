@@ -1,6 +1,6 @@
 # Table: azure_appservice_static_sites
 
-This table shows data for Azure Appservice Static Sites.
+This table shows data for Azure App Service Static Sites.
 
 https://learn.microsoft.com/en-us/rest/api/appservice/static-sites/list?tabs=HTTP#staticsitearmresource
 
