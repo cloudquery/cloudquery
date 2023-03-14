@@ -102,7 +102,7 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-sdk v1.42.0
+	github.com/cloudquery/plugin-sdk v1.43.0
 	github.com/gocarina/gocsv v0.0.0-20230226133904-70c27cb2918a
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
@@ -113,8 +113,6 @@ require (
 	github.com/thoas/go-funk v0.9.3
 	golang.org/x/sync v0.1.0
 )
-
-replace github.com/cloudquery/plugin-sdk v1.42.0 => ../../../../plugin-sdk
 
 require (
 	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.4
