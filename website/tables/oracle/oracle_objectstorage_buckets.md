@@ -1,6 +1,6 @@
 # Table: oracle_objectstorage_buckets
 
-This table shows data for Oracle Objectstorage Buckets.
+This table shows data for Oracle Object Storage Buckets.
 
 The composite primary key for this table is (**region**, **compartment_id**, **namespace**, **name**).
 

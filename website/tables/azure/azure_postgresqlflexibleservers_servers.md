@@ -1,6 +1,6 @@
 # Table: azure_postgresqlflexibleservers_servers
 
-This table shows data for Azure Postgresqlflexibleservers Servers.
+This table shows data for Azure PostgreSQL Flexible Servers Servers.
 
 https://learn.microsoft.com/en-us/rest/api/postgresql/flexibleserver/servers/list?tabs=HTTP#server
 

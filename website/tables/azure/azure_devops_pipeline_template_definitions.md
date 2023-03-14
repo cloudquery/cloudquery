@@ -1,6 +1,6 @@
 # Table: azure_devops_pipeline_template_definitions
 
-This table shows data for Azure Devops Pipeline Template Definitions.
+This table shows data for Azure DevOps Pipeline Template Definitions.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops@v0.5.0#PipelineTemplateDefinition
 
