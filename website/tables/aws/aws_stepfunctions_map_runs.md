@@ -1,6 +1,6 @@
 # Table: aws_stepfunctions_map_runs
 
-This table shows data for AWS Stepfunctions Map Runs.
+This table shows data for Stepfunctions Map Runs.
 
 https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeMapRun.html
 

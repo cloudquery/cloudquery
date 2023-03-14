@@ -1,6 +1,6 @@
 # Table: azure_apimanagement_service
 
-This table shows data for Azure Apimanagement Service.
+This table shows data for Azure API Management Service.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement#ServiceResource
 

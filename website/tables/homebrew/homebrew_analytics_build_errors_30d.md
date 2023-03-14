@@ -1,6 +1,6 @@
 # Table: homebrew_analytics_build_errors_30d
 
-This table shows data for Homebrew Analytics Build Errors 30d.
+This table shows data for Homebrew Analytics Build Errors (30 days).
 
 https://formulae.brew.sh/analytics/build-error/30d/
 

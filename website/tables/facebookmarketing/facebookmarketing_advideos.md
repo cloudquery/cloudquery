@@ -1,6 +1,6 @@
 # Table: facebookmarketing_advideos
 
-This table shows data for Facebookmarketing Advideos.
+This table shows data for Facebook Marketing Ad Videos.
 
 https://developers.facebook.com/docs/graph-api/reference/video#Reading
 

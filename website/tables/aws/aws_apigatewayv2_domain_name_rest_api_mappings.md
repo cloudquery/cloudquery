@@ -1,6 +1,6 @@
 # Table: aws_apigatewayv2_domain_name_rest_api_mappings
 
-This table shows data for AWS Apigatewayv2 Domain Name Rest API Mappings.
+This table shows data for Amazon API Gateway v2 Domain Name Rest API Mappings.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_ApiMapping.html
 

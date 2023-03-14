@@ -1,6 +1,6 @@
 # Table: aws_docdb_pending_maintenance_actions
 
-This table shows data for AWS Docdb Pending Maintenance Actions.
+This table shows data for Amazon DocumentDB Pending Maintenance Actions.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_PendingMaintenanceAction.html
 

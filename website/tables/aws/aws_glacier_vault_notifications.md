@@ -1,6 +1,6 @@
 # Table: aws_glacier_vault_notifications
 
-This table shows data for AWS Glacier Vault Notifications.
+This table shows data for Glacier Vault Notifications.
 
 https://docs.aws.amazon.com/amazonglacier/latest/dev/api-vault-notifications-get.html
 

@@ -1,6 +1,6 @@
 # Table: homebrew_analytics_installs_365d
 
-This table shows data for Homebrew Analytics Installs 365d.
+This table shows data for Homebrew Analytics Installs (365 days).
 
 https://formulae.brew.sh/analytics/install/365d/
 

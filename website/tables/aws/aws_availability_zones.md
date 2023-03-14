@@ -1,6 +1,6 @@
 # Table: aws_availability_zones
 
-This table shows data for AWS Availability Zones.
+This table shows data for Availability Zones.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Region.html
 

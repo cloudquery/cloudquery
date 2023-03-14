@@ -1,6 +1,6 @@
 # Table: facebookmarketing_adimages
 
-This table shows data for Facebookmarketing Adimages.
+This table shows data for Facebook Marketing Ad Images.
 
 https://developers.facebook.com/docs/marketing-api/reference/ad-image#Reading
 

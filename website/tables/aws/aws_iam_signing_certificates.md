@@ -1,6 +1,6 @@
 # Table: aws_iam_signing_certificates
 
-This table shows data for AWS IAM Signing Certificates.
+This table shows data for IAM Signing Certificates.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_SigningCertificate.html
 

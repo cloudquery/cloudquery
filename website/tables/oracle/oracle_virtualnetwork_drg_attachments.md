@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_drg_attachments
 
-This table shows data for Oracle Virtualnetwork Drg Attachments.
+This table shows data for Oracle Virtual Network Dynamic Routing Gateway (DRG) Attachments.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

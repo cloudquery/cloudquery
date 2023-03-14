@@ -1,6 +1,6 @@
 # Table: aws_ssoadmin_account_assignments
 
-This table shows data for AWS Ssoadmin Account Assignments.
+This table shows data for Ssoadmin Account Assignments.
 
 https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_AccountAssignment.html
 

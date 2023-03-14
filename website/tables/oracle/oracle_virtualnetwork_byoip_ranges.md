@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_byoip_ranges
 
-This table shows data for Oracle Virtualnetwork Byoip Ranges.
+This table shows data for Oracle Virtual Network Bring Your Own IP (BYOIP) Ranges.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

@@ -1,6 +1,6 @@
 # Table: facebookmarketing_adrules
 
-This table shows data for Facebookmarketing Adrules.
+This table shows data for Facebook Marketing Adrules.
 
 https://developers.facebook.com/docs/marketing-api/reference/ad-rule#Reading
 

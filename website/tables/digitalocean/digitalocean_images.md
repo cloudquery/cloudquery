@@ -1,6 +1,6 @@
 # Table: digitalocean_images
 
-This table shows data for Digitalocean Images.
+This table shows data for DigitalOcean Images.
 
 The primary key for this table is **id**.
 
