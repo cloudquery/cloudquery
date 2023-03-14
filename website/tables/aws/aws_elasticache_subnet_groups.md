@@ -1,6 +1,6 @@
 # Table: aws_elasticache_subnet_groups
 
-This table shows data for AWS Elasticache Subnet Groups.
+This table shows data for Elasticache Subnet Groups.
 
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheSubnetGroup.html
 

@@ -1,6 +1,6 @@
 # Table: azure_databox_jobs
 
-This table shows data for Azure Databox Jobs.
+This table shows data for Azure Data Box Jobs.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox@v1.0.0#JobResource
 

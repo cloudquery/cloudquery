@@ -1,6 +1,6 @@
 # Table: aws_directconnect_lags
 
-This table shows data for AWS Directconnect Lags.
+This table shows data for AWS Direct Connect Lags.
 
 https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Lag.html
 

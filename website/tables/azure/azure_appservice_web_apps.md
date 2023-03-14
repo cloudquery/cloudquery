@@ -1,6 +1,6 @@
 # Table: azure_appservice_web_apps
 
-This table shows data for Azure Appservice Web Apps.
+This table shows data for Azure App Service Web Apps.
 
 https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/list#site
 

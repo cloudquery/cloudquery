@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_cpes
 
-This table shows data for Oracle Virtualnetwork Cpes.
+This table shows data for Oracle Virtual Network Customer Premises Equipment (CPEs).
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

@@ -1,6 +1,6 @@
 # Table: aws_identitystore_group_memberships
 
-This table shows data for AWS Identitystore Group Memberships.
+This table shows data for Identity Store Group Memberships.
 
 https://docs.aws.amazon.com/singlesignon/latest/IdentityStoreAPIReference/API_GroupMembership.html
 

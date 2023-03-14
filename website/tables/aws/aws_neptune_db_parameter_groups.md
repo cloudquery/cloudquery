@@ -1,6 +1,6 @@
 # Table: aws_neptune_db_parameter_groups
 
-This table shows data for AWS Neptune DB Parameter Groups.
+This table shows data for Neptune DB Parameter Groups.
 
 https://docs.aws.amazon.com/neptune/latest/userguide/api-parameters.html#DescribeDBClusterParameterGroups
 

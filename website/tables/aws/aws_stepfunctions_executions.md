@@ -1,6 +1,6 @@
 # Table: aws_stepfunctions_executions
 
-This table shows data for AWS Stepfunctions Executions.
+This table shows data for Stepfunctions Executions.
 
 https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeExecution.html
 

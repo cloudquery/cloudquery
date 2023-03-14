@@ -1,6 +1,6 @@
 # Table: pagerduty_user_contact_methods
 
-This table shows data for Pagerduty User Contact Methods.
+This table shows data for PagerDuty User Contact Methods.
 
 https://developer.pagerduty.com/api-reference/50d46c0eb020d-list-a-user-s-contact-methods
 

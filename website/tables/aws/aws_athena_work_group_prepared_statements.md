@@ -1,6 +1,6 @@
 # Table: aws_athena_work_group_prepared_statements
 
-This table shows data for AWS Athena Work Group Prepared Statements.
+This table shows data for Athena Work Group Prepared Statements.
 
 https://docs.aws.amazon.com/athena/latest/APIReference/API_PreparedStatement.html
 

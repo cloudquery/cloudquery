@@ -1,6 +1,6 @@
 # Table: aws_elasticache_service_updates
 
-This table shows data for AWS Elasticache Service Updates.
+This table shows data for Elasticache Service Updates.
 
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ServiceUpdate.html
 

@@ -1,6 +1,6 @@
 # Table: aws_s3_bucket_grants
 
-This table shows data for AWS S3 Bucket Grants.
+This table shows data for S3 Bucket Grants.
 
 https://docs.aws.amazon.com/AmazonS3/latest/API/API_Grant.html
 

@@ -1,6 +1,6 @@
 # Table: tailscale_acls
 
-This table shows data for Tailscale ACLs.
+This table shows data for Tailscale Access Control Lists (ACLs).
 
 https://github.com/tailscale/tailscale/blob/main/api.md#acl
 

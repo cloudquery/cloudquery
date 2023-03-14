@@ -1,6 +1,6 @@
 # Table: aws_elasticsearch_vpc_endpoints
 
-This table shows data for AWS Elasticsearch VPC Endpoints.
+This table shows data for Elasticsearch VPC Endpoints.
 
 https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_VpcEndpoint.html
 

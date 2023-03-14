@@ -1,6 +1,6 @@
 # Table: aws_elastictranscoder_presets
 
-This table shows data for AWS Elastictranscoder Presets.
+This table shows data for Amazon Elastic Transcoder Presets.
 
 https://docs.aws.amazon.com/elastictranscoder/latest/developerguide/list-presets.html
 

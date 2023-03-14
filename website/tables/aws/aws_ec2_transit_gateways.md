@@ -1,6 +1,6 @@
 # Table: aws_ec2_transit_gateways
 
-This table shows data for AWS Ec2 Transit Gateways.
+This table shows data for Amazon Elastic Compute Cloud (EC2) Transit Gateways.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html
 

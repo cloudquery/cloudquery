@@ -1,6 +1,6 @@
 # Table: aws_ses_identities
 
-This table shows data for AWS Ses Identities.
+This table shows data for Amazon Simple Email Service (SES) Identities.
 
 https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailIdentity.html
 
