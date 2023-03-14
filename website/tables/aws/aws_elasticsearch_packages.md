@@ -1,6 +1,6 @@
 # Table: aws_elasticsearch_packages
 
-This table shows data for AWS Elasticsearch Packages.
+This table shows data for Elasticsearch Packages.
 
 https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_PackageDetails.html
 

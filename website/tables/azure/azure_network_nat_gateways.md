@@ -1,6 +1,6 @@
 # Table: azure_network_nat_gateways
 
-This table shows data for Azure Network Nat Gateways.
+This table shows data for Azure Network Network Address Translation (NAT) Gateways.
 
 https://learn.microsoft.com/en-us/rest/api/virtualnetwork/nat-gateways/list?tabs=HTTP#natgateway
 

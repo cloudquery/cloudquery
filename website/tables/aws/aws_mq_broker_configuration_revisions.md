@@ -1,6 +1,6 @@
 # Table: aws_mq_broker_configuration_revisions
 
-This table shows data for AWS Mq Broker Configuration Revisions.
+This table shows data for Amazon MQ Broker Configuration Revisions.
 
 https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id-revisions.html
 

@@ -1,6 +1,6 @@
 # Table: facebookmarketing_adlabels
 
-This table shows data for Facebookmarketing Adlabels.
+This table shows data for Facebook Marketing Ad Labels.
 
 https://developers.facebook.com/docs/marketing-api/reference/ad-label#Reading
 

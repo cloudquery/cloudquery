@@ -1,6 +1,6 @@
 # Table: aws_ses_configuration_set_event_destinations
 
-This table shows data for AWS Ses Configuration Set Event Destinations.
+This table shows data for Amazon Simple Email Service (SES) Configuration Set Event Destinations.
 
 https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_EventDestination.html
 

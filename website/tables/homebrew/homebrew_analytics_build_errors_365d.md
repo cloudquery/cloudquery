@@ -1,6 +1,6 @@
 # Table: homebrew_analytics_build_errors_365d
 
-This table shows data for Homebrew Analytics Build Errors 365d.
+This table shows data for Homebrew Analytics Build Errors (365 days).
 
 https://formulae.brew.sh/analytics/build-error/365d/
 

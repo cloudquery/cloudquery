@@ -1,6 +1,6 @@
 # Table: aws_config_config_rule_compliances
 
-This table shows data for AWS Config Config Rule Compliances.
+This table shows data for Config Config Rule Compliances.
 
 https://docs.aws.amazon.com/config/latest/APIReference/API_ComplianceByConfigRule.html
 

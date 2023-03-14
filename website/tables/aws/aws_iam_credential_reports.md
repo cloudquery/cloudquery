@@ -1,6 +1,6 @@
 # Table: aws_iam_credential_reports
 
-This table shows data for AWS IAM Credential Reports.
+This table shows data for IAM Credential Reports.
 
 The composite primary key for this table is (**arn**, **user_creation_time**).
 

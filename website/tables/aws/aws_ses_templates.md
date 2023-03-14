@@ -1,6 +1,6 @@
 # Table: aws_ses_templates
 
-This table shows data for AWS Ses Templates.
+This table shows data for Amazon Simple Email Service (SES) Templates.
 
 https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailTemplate.html
 
