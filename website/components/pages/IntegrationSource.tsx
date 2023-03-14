@@ -21,11 +21,11 @@ export default function Integration({
                         &nbsp;to any destination
                     </h1>
                     <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
-                        CloudQuery is an open-source ELT platform that allows you to extract data from any source into any destination. CloudQuery is a free and open source alternative to Fivetran or Airbyte that requires no account, and it takes only minutes to get started.
+                        CloudQuery is an open-source ELT platform that allows you to extract data from any source into any destination. It is a free and open source alternative to Fivetran or Airbyte that requires no account, and it takes only minutes to get started.
                     </p>
                     <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
                         {source.kind === "unpublished" ?
-                            <>The CloudQuery {source.name} plugin is still under development. Once it is released, it will allow you to sync data from {source.website ? <a href={source.website} className="text-blue-500 hover:text-blue-600">{source.name}</a> : source.name } to any supported CloudQuery destination. Select the destination you would like to sync {source.name} data from the list of supported destinations below:</>
+                            <>A CloudQuery {source.name} plugin is on our roadmap. Please upvote and subscribe to the <a href={source.href} className="text-blue-500 hover:text-blue-600">issue on GitHub ↗</a> to register your interest and get updates on its progress. Once it is released, it will allow you to sync data from {source.website ? <a href={source.website} className="text-blue-500 hover:text-blue-600">{source.name}</a> : source.name } to any supported CloudQuery destination from the list below:</>
                             :
                             <>The CloudQuery {source.name} plugin allows you to sync data from {source.website ? <a href={source.website} className="text-blue-500 hover:text-blue-600">{source.name}</a> : source.name } to any destination. Select the destination you would like to sync {source.name} data from the list of supported destinations below:</>
                         }
@@ -51,7 +51,7 @@ export default function Integration({
                 </div>
             </div>
             <p className="mx-auto mt-24 font-medium text-lg text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
-                Couldn't find the integration you were looking for? Please <a href="https://github.com/cloudquery/cloudquery/issues/new/choose" className="text-blue-500 hover:text-blue-600">request it on GitHub</a> and we'll add it to our roadmap. New plugins are created all the time, often within days of a request. Showing your interest in a plugin helps us prioritize it.
+                Couldn't find the destination you were looking for? Please <a href="https://github.com/cloudquery/cloudquery/issues/new/choose" className="text-blue-500 hover:text-blue-600">request it on GitHub</a> and we'll add it to our roadmap. New plugins are created all the time, often within days of a request. Showing your interest in a plugin helps us prioritize it.
             </p>
         </div>
     </>;
