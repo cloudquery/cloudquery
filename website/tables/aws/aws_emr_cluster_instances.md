@@ -1,6 +1,6 @@
 # Table: aws_emr_cluster_instances
 
-This table shows data for AWS Emr Cluster Instances.
+This table shows data for Amazon EMR Cluster Instances.
 
 https://docs.aws.amazon.com/emr/latest/APIReference/API_Instance.html
 

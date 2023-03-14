@@ -1,6 +1,6 @@
 # Table: aws_cloudwatchlogs_log_groups
 
-This table shows data for AWS Cloudwatchlogs Log Groups.
+This table shows data for Cloudwatchlogs Log Groups.
 
 https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_LogGroup.html
 

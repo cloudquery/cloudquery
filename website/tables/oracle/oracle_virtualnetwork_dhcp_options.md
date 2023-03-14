@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_dhcp_options
 
-This table shows data for Oracle Virtualnetwork DHCP Options.
+This table shows data for Oracle Virtual Network Dynamic Host Configuration Protocol (DHCP) Options.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

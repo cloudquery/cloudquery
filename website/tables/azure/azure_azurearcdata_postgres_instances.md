@@ -1,6 +1,6 @@
 # Table: azure_azurearcdata_postgres_instances
 
-This table shows data for Azure Azurearcdata Postgres Instances.
+This table shows data for Azure Azure Arc Data Postgres Instances.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata@v0.5.0#PostgresInstance
 

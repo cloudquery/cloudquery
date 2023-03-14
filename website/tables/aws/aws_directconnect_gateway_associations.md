@@ -1,6 +1,6 @@
 # Table: aws_directconnect_gateway_associations
 
-This table shows data for AWS Directconnect Gateway Associations.
+This table shows data for AWS Direct Connect Gateway Associations.
 
 https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGatewayAssociation.html
 

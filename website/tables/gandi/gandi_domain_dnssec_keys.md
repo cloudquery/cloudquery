@@ -1,6 +1,6 @@
 # Table: gandi_domain_dnssec_keys
 
-This table shows data for Gandi Domain Dnssec Keys.
+This table shows data for Gandi Domain DNSSEC Keys.
 
 The composite primary key for this table is (**fqdn**, **id**).
 

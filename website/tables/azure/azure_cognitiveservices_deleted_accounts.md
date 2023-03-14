@@ -1,6 +1,6 @@
 # Table: azure_cognitiveservices_deleted_accounts
 
-This table shows data for Azure Cognitiveservices Deleted Accounts.
+This table shows data for Azure Cognitive Services Deleted Accounts.
 
 https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/deleted-accounts/list?tabs=HTTP#account
 

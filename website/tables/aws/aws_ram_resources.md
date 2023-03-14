@@ -1,6 +1,6 @@
 # Table: aws_ram_resources
 
-This table shows data for AWS RAM Resources.
+This table shows data for RAM Resources.
 
 https://docs.aws.amazon.com/ram/latest/APIReference/API_Resource.html
 

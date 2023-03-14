@@ -1,6 +1,6 @@
 # Table: aws_amp_workspaces
 
-This table shows data for AWS Amp Workspaces.
+This table shows data for Amazon Managed Service for Prometheus (AMP) Workspaces.
 
 https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-APIReference.html#AMP-APIReference-WorkspaceDescription
 

@@ -1,6 +1,6 @@
 # Table: aws_elasticache_engine_versions
 
-This table shows data for AWS Elasticache Engine Versions.
+This table shows data for Elasticache Engine Versions.
 
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheEngineVersion.html
 

@@ -1,6 +1,6 @@
 # Table: facebookmarketing_customaudiences
 
-This table shows data for Facebookmarketing Customaudiences.
+This table shows data for Facebook Marketing Custom Audiences.
 
 https://developers.facebook.com/docs/marketing-api/reference/custom-audience#Reading
 

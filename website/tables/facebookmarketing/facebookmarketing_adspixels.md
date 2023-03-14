@@ -1,6 +1,6 @@
 # Table: facebookmarketing_adspixels
 
-This table shows data for Facebookmarketing Adspixels.
+This table shows data for Facebook Marketing Ads Pixels.
 
 https://developers.facebook.com/docs/graph-api/reference/ads-pixel/#Reading
 

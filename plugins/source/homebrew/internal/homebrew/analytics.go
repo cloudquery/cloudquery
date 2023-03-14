@@ -21,6 +21,18 @@ func (d Days) String() string {
 	return string(d)
 }
 
+func (d Days) Number() int {
+	switch d {
+	case Days30:
+		return 30
+	case Days90:
+		return 90
+	case Days365:
+		return 365
+	}
+	return 0
+}
+
 const layout = "2006-01-02"
 
 type Date struct {

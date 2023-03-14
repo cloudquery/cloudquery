@@ -1,6 +1,6 @@
 # Table: aws_waf_rule_groups
 
-This table shows data for AWS WAF Rule Groups.
+This table shows data for WAF Rule Groups.
 
 https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_RuleGroupSummary.html
 

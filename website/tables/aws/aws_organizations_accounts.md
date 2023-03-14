@@ -1,10 +1,15 @@
 # Table: aws_organizations_accounts
 
-This table shows data for AWS Organizations Accounts.
+This table shows data for Organizations Accounts.
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html
 
 The primary key for this table is **arn**.
+
+## Relations
+
+The following tables depend on aws_organizations_accounts:
+  - [aws_organizations_delegated_services](aws_organizations_delegated_services)
 
 ## Columns
 

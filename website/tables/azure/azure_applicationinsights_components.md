@@ -1,6 +1,6 @@
 # Table: azure_applicationinsights_components
 
-This table shows data for Azure Applicationinsights Components.
+This table shows data for Azure Application Insights Components.
 
 https://learn.microsoft.com/en-us/rest/api/application-insights/components/list?tabs=HTTP#applicationinsightscomponent
 

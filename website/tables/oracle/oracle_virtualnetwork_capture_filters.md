@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_capture_filters
 
-This table shows data for Oracle Virtualnetwork Capture Filters.
+This table shows data for Oracle Virtual Network Capture Filters.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
