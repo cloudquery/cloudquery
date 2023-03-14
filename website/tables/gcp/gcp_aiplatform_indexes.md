@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_indexes
 
-This table shows data for GCP Aiplatform Indexes.
+This table shows data for GCP AI Platform Indexes.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.indexes#Index
 

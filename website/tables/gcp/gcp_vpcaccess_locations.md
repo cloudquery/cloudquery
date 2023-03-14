@@ -1,6 +1,6 @@
 # Table: gcp_vpcaccess_locations
 
-This table shows data for GCP Vpcaccess Locations.
+This table shows data for GCP VPC Access Locations.
 
 https://cloud.google.com/vpc/docs/reference/vpcaccess/rest/Shared.Types/ListLocationsResponse#Location
 
