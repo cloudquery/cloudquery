@@ -1,5 +1,7 @@
 # Table: datadog_user_permissions
 
+This table shows data for Datadog User Permissions.
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

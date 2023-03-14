@@ -1,5 +1,7 @@
 # Table: azure_mysqlflexibleservers_servers
 
+This table shows data for Azure Mysqlflexibleservers Servers.
+
 https://learn.microsoft.com/en-us/rest/api/mysql/flexibleserver/servers/list?tabs=HTTP#server
 
 The primary key for this table is **id**.

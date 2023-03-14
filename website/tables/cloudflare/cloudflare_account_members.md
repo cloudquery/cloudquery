@@ -1,5 +1,7 @@
 # Table: cloudflare_account_members
 
+This table shows data for Cloudflare Account Members.
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

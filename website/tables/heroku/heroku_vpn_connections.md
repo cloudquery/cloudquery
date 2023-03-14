@@ -1,5 +1,7 @@
 # Table: heroku_vpn_connections
 
+This table shows data for Heroku VPN Connections.
+
 https://devcenter.heroku.com/articles/platform-api-reference#vpn-connection
 
 The primary key for this table is **id**.

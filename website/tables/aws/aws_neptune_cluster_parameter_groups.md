@@ -1,5 +1,7 @@
 # Table: aws_neptune_cluster_parameter_groups
 
+This table shows data for Neptune Cluster Parameter Groups.
+
 https://docs.aws.amazon.com/neptune/latest/userguide/api-parameters.html#DescribeDBParameters
 
 The primary key for this table is **arn**.

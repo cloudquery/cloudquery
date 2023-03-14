@@ -1,5 +1,7 @@
 # Table: stripe_payment_intents
 
+This table shows data for Stripe Payment Intents.
+
 https://stripe.com/docs/api/payment_intents
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: hubspot_crm_tickets
 
+This table shows data for HubSpot CRM Tickets.
+
 https://developers.hubspot.com/docs/api/crm/tickets
 
 The primary key for this table is **id**.

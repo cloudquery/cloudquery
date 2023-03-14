@@ -1,5 +1,7 @@
 # Table: aws_workspaces_workspaces
 
+This table shows data for Workspaces Workspaces.
+
 https://docs.aws.amazon.com/workspaces/latest/api/API_Workspace.html
 
 The primary key for this table is **arn**.

@@ -1,5 +1,7 @@
 # Table: oracle_virtualnetwork_remote_peering_connections
 
+This table shows data for Oracle Virtual Network Remote Peering Connections.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

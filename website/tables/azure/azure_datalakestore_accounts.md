@@ -1,5 +1,7 @@
 # Table: azure_datalakestore_accounts
 
+This table shows data for Azure Data Lake Store Accounts.
+
 https://learn.microsoft.com/en-us/rest/api/datalakestore/accounts/list?tabs=HTTP#datalakestoreaccountbasic
 
 The primary key for this table is **id**.

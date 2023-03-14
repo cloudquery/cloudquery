@@ -1,5 +1,7 @@
 # Table: azure_connectedvmware_hosts
 
+This table shows data for Azure Connected VMware Hosts.
+
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#Host
 
 The primary key for this table is **id**.

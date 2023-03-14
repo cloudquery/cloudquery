@@ -1,5 +1,7 @@
 # Table: slack_teams
 
+This table shows data for Slack Teams.
+
 https://slack.com/api/team.info
 
 The primary key for this table is **id**.

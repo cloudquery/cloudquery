@@ -1,5 +1,7 @@
 # Table: aws_emr_cluster_instance_groups
 
+This table shows data for Amazon EMR Cluster Instance Groups.
+
 https://docs.aws.amazon.com/emr/latest/APIReference/API_InstanceGroup.html
 
 The composite primary key for this table is (**cluster_arn**, **id**).

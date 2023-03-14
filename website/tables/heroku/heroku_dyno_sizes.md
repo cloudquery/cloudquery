@@ -1,5 +1,7 @@
 # Table: heroku_dyno_sizes
 
+This table shows data for Heroku Dyno Sizes.
+
 https://devcenter.heroku.com/articles/platform-api-reference#dyno-size
 
 The primary key for this table is **id**.

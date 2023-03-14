@@ -1,5 +1,7 @@
 # Table: gcp_compute_projects
 
+This table shows data for GCP Compute Projects.
+
 The primary key for this table is **self_link**.
 
 ## Columns

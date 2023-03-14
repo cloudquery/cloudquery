@@ -1,5 +1,7 @@
 # Table: azure_storagecache_caches
 
+This table shows data for Azure Storagecache Caches.
+
 https://learn.microsoft.com/en-us/rest/api/storagecache/caches/list?tabs=HTTP#cache
 
 The primary key for this table is **id**.

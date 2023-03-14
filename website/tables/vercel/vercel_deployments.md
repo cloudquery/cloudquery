@@ -1,5 +1,7 @@
 # Table: vercel_deployments
 
+This table shows data for Vercel Deployments.
+
 The primary key for this table is **uid**.
 It supports incremental syncs.
 ## Relations

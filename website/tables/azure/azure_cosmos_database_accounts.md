@@ -1,5 +1,7 @@
 # Table: azure_cosmos_database_accounts
 
+This table shows data for Azure Cosmos Database Accounts.
+
 https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/database-accounts/list?tabs=HTTP#databaseaccountgetresults
 
 The primary key for this table is **id**.

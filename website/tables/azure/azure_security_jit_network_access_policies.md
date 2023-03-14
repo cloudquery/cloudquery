@@ -1,5 +1,7 @@
 # Table: azure_security_jit_network_access_policies
 
+This table shows data for Azure Security Jit Network Access Policies.
+
 https://learn.microsoft.com/en-us/rest/api/defenderforcloud/jit-network-access-policies/list?tabs=HTTP#jitnetworkaccesspolicy
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: aws_quicksight_analyses
 
+This table shows data for QuickSight Analyses.
+
 https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Analysis.html
 
 The composite primary key for this table is (**account_id**, **region**, **arn**).

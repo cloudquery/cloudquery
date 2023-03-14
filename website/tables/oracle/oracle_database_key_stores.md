@@ -1,5 +1,7 @@
 # Table: oracle_database_key_stores
 
+This table shows data for Oracle Database Key Stores.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

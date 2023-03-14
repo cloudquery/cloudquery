@@ -1,5 +1,7 @@
 # Table: heroku_peerings
 
+This table shows data for Heroku Peerings.
+
 https://devcenter.heroku.com/articles/platform-api-reference#peering
 
 The primary key for this table is **_cq_id**.

@@ -1,5 +1,7 @@
 # Table: aws_athena_work_group_named_queries
 
+This table shows data for Athena Work Group Named Queries.
+
 https://docs.aws.amazon.com/athena/latest/APIReference/API_NamedQuery.html
 
 The primary key for this table is **_cq_id**.

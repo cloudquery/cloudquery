@@ -1,5 +1,7 @@
 # Table: homebrew_analytics_cask_installs_90d
 
+This table shows data for Homebrew Analytics Cask Installs (90 days).
+
 https://formulae.brew.sh/analytics/cask-install/90d/
 
 The primary key for this table is **number**.

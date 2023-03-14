@@ -1,5 +1,7 @@
 # Table: gcp_workflows_workflows
 
+This table shows data for GCP Workflows Workflows.
+
 https://cloud.google.com/workflows/docs/reference/rest/v1/projects.locations.workflows#resource:-workflow
 
 The composite primary key for this table is (**project_id**, **name**).

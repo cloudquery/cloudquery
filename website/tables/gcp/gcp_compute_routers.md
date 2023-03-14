@@ -1,5 +1,7 @@
 # Table: gcp_compute_routers
 
+This table shows data for GCP Compute Routers.
+
 https://cloud.google.com/compute/docs/reference/rest/v1/routers/list#response-body
 
 The primary key for this table is **id**.

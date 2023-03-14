@@ -1,5 +1,7 @@
 # Table: aws_ec2_transit_gateway_peering_attachments
 
+This table shows data for Amazon Elastic Compute Cloud (EC2) Transit Gateway Peering Attachments.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayPeeringAttachment.html
 
 The primary key for this table is **_cq_id**.

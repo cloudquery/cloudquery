@@ -1,5 +1,7 @@
 # Table: pagerduty_user_notification_rules
 
+This table shows data for PagerDuty User Notification Rules.
+
 https://developer.pagerduty.com/api-reference/043092de7e3e1-list-a-user-s-notification-rules
 
 The primary key for this table is **id**.

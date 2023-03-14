@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/vercel
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.42.0
+	github.com/cloudquery/plugin-sdk v1.43.0
 	github.com/gorilla/mux v1.8.0
 	github.com/rs/zerolog v1.29.0
 )

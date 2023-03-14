@@ -1,5 +1,7 @@
 # Table: aws_fsx_file_caches
 
+This table shows data for Amazon FSx File Caches.
+
 https://docs.aws.amazon.com/fsx/latest/APIReference/API_FileCache.html
 
 The primary key for this table is **arn**.

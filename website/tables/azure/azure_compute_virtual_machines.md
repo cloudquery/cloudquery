@@ -1,5 +1,7 @@
 # Table: azure_compute_virtual_machines
 
+This table shows data for Azure Compute Virtual Machines.
+
 https://learn.microsoft.com/en-us/rest/api/compute/virtual-machines/list?tabs=HTTP#virtualmachine
 
 The primary key for this table is **id**.

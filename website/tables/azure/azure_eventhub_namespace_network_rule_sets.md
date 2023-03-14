@@ -1,5 +1,7 @@
 # Table: azure_eventhub_namespace_network_rule_sets
 
+This table shows data for Azure Event Hub Namespace Network Rule Sets.
+
 https://learn.microsoft.com/en-us/rest/api/eventhub/stable/network-rule-sets/list-network-rule-set?tabs=HTTP#networkruleset
 
 The primary key for this table is **id**.
