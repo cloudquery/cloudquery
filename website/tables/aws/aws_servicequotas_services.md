@@ -1,6 +1,6 @@
 # Table: aws_servicequotas_services
 
-This table shows data for AWS Servicequotas Services.
+This table shows data for Servicequotas Services.
 
 https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceInfo.html
 

@@ -1,6 +1,6 @@
 # Table: aws_sagemaker_training_jobs
 
-This table shows data for AWS Sagemaker Training Jobs.
+This table shows data for Amazon SageMaker Training Jobs.
 
 https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeTrainingJob.html
 

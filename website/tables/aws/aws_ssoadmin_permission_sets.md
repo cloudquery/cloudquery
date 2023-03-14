@@ -1,6 +1,6 @@
 # Table: aws_ssoadmin_permission_sets
 
-This table shows data for AWS Ssoadmin Permission Sets.
+This table shows data for Ssoadmin Permission Sets.
 
 https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_PermissionSet.html
 

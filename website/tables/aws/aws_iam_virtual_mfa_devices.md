@@ -1,6 +1,6 @@
 # Table: aws_iam_virtual_mfa_devices
 
-This table shows data for AWS IAM Virtual MFA Devices.
+This table shows data for IAM Virtual MFA Devices.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_VirtualMFADevice.html
 

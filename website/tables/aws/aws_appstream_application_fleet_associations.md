@@ -1,6 +1,6 @@
 # Table: aws_appstream_application_fleet_associations
 
-This table shows data for AWS Appstream Application Fleet Associations.
+This table shows data for Amazon AppStream Application Fleet Associations.
 
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_ApplicationFleetAssociation.html
 

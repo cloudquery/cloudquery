@@ -1,6 +1,6 @@
 # Table: aws_lightsail_buckets
 
-This table shows data for AWS Lightsail Buckets.
+This table shows data for Lightsail Buckets.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Bucket.html
 

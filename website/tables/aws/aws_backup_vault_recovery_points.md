@@ -1,6 +1,6 @@
 # Table: aws_backup_vault_recovery_points
 
-This table shows data for AWS Backup Vault Recovery Points.
+This table shows data for Backup Vault Recovery Points.
 
 https://docs.aws.amazon.com/aws-backup/latest/devguide/API_RecoveryPointByBackupVault.html
 

@@ -1,6 +1,6 @@
 # Table: aws_apigateway_rest_api_authorizers
 
-This table shows data for AWS Apigateway Rest API Authorizers.
+This table shows data for Amazon API Gateway Rest API Authorizers.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_Authorizer.html
 
