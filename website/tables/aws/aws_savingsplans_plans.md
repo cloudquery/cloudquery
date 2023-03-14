@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |_cq_parent_id|UUID|
 |account_id|String|
 |arn (PK)|String|
+|tags|JSON|
 |commitment|String|
 |currency|String|
 |description|String|
@@ -31,6 +32,5 @@ The primary key for this table is **arn**.
 |savings_plan_type|String|
 |start|String|
 |state|String|
-|tags|JSON|
 |term_duration_in_seconds|Int|
 |upfront_payment_amount|String|
