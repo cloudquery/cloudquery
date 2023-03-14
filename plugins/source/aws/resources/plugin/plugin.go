@@ -45,6 +45,7 @@ var awsExceptions = map[string]string{
 	"elbv1":             "Amazon Elastic Load Balancer (ELB) v1",
 	"elbv2":             "Amazon Elastic Load Balancer (ELB) v2",
 	"emr":               "Amazon EMR",
+	"eventbridge":       "Amazon EventBridge",
 	"frauddetector":     "Amazon Fraud Detector",
 	"fsx":               "Amazon FSx",
 	"guardduty":         "Amazon GuardDuty",

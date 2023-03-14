@@ -1,6 +1,6 @@
 # Table: aws_scheduler_schedule_groups
 
-This table shows data for Scheduler Schedule Groups.
+This table shows data for Amazon EventBridge Scheduler Schedule Groups.
 
 https://docs.aws.amazon.com/scheduler/latest/APIReference/API_ScheduleGroupSummary.html
 
