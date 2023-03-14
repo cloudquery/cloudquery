@@ -1,6 +1,6 @@
 # Table: gcp_cloudresourcemanager_organizations
 
-This table shows data for GCP Cloudresourcemanager Organizations.
+This table shows data for GCP Cloud Resource Manager Organizations.
 
 https://cloud.google.com/resource-manager/reference/rest/v1/organizations#Organization
 

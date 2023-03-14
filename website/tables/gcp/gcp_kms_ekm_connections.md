@@ -1,6 +1,6 @@
 # Table: gcp_kms_ekm_connections
 
-This table shows data for GCP Kms Ekm Connections.
+This table shows data for GCP Cloud Key Management Service (KMS) Cloud External Key Manager (EKM) Connections.
 
 https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.ekmConnections#EkmConnection
 

@@ -1,6 +1,6 @@
 # Table: gcp_kms_crypto_keys
 
-This table shows data for GCP Kms Crypto Keys.
+This table shows data for GCP Cloud Key Management Service (KMS) Crypto Keys.
 
 https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKey
 

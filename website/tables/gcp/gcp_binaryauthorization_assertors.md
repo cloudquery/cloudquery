@@ -1,6 +1,6 @@
 # Table: gcp_binaryauthorization_assertors
 
-This table shows data for GCP Binaryauthorization Assertors.
+This table shows data for GCP Binary Authorization Assertors.
 
 https://cloud.google.com/binary-authorization/docs/reference/rest/v1/projects.attestors#Attestor
 
