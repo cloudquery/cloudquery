@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	tablesShort  = "Generate documentation for all supported tables of source plugins specified in the spec(s)"
+	tablesShort   = "Generate documentation for all supported tables of source plugins specified in the spec(s)"
 	tablesExample = `# Generate documentation for all supported tables of source plugins specified in the spec(s) 
 cloudquery tables ./directory
 # The default format is JSON, you can override it with --format
