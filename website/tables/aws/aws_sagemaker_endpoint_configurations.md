@@ -1,6 +1,6 @@
 # Table: aws_sagemaker_endpoint_configurations
 
-This table shows data for AWS Sagemaker Endpoint Configurations.
+This table shows data for Amazon SageMaker Endpoint Configurations.
 
 https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeEndpointConfig.html
 

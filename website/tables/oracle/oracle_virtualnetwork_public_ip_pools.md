@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_public_ip_pools
 
-This table shows data for Oracle Virtualnetwork Public IP Pools.
+This table shows data for Oracle Virtual Network Public IP Pools.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

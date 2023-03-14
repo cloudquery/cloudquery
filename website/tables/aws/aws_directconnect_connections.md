@@ -1,6 +1,6 @@
 # Table: aws_directconnect_connections
 
-This table shows data for AWS Directconnect Connections.
+This table shows data for AWS Direct Connect Connections.
 
 https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.html
 

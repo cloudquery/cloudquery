@@ -1,6 +1,6 @@
 # Table: facebookmarketing_ads
 
-This table shows data for Facebookmarketing Ads.
+This table shows data for Facebook Marketing Ads.
 
 https://developers.facebook.com/docs/marketing-api/reference/adgroup
 

@@ -1,6 +1,6 @@
 # Table: aws_elasticache_reserved_cache_nodes
 
-This table shows data for AWS Elasticache Reserved Cache Nodes.
+This table shows data for Elasticache Reserved Cache Nodes.
 
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ReservedCacheNode.html
 

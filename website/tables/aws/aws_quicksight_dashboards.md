@@ -1,6 +1,6 @@
 # Table: aws_quicksight_dashboards
 
-This table shows data for AWS Quicksight Dashboards.
+This table shows data for QuickSight Dashboards.
 
 https://docs.aws.amazon.com/quicksight/latest/APIReference/API_DashboardSummary.html
 

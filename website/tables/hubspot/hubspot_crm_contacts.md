@@ -1,6 +1,6 @@
 # Table: hubspot_crm_contacts
 
-This table shows data for Hubspot Crm Contacts.
+This table shows data for HubSpot CRM Contacts.
 
 https://developers.hubspot.com/docs/api/crm/contacts
 

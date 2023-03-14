@@ -1,6 +1,6 @@
 # Table: aws_wafv2_managed_rule_groups
 
-This table shows data for AWS Wafv2 Managed Rule Groups.
+This table shows data for Wafv2 Managed Rule Groups.
 
 https://docs.aws.amazon.com/waf/latest/APIReference/API_ManagedRuleGroupSummary.html
 
