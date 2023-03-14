@@ -1,6 +1,6 @@
 # Table: azure_appcomplianceautomation_reports
 
-This table shows data for Azure Appcomplianceautomation Reports.
+This table shows data for Azure App Compliance Automation Reports.
 
 https://learn.microsoft.com/en-us/rest/api/appcompliance/reports/list?tabs=HTTP#reportresource
 

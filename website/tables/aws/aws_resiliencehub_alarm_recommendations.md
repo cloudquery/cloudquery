@@ -1,6 +1,6 @@
 # Table: aws_resiliencehub_alarm_recommendations
 
-This table shows data for AWS Resiliencehub Alarm Recommendations.
+This table shows data for AWS Resilience Hub Alarm Recommendations.
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_AlarmRecommendation.html
 

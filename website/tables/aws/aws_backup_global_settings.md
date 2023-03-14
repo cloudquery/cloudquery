@@ -1,6 +1,6 @@
 # Table: aws_backup_global_settings
 
-This table shows data for AWS Backup Global Settings.
+This table shows data for Backup Global Settings.
 
 https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeGlobalSettings.html
 

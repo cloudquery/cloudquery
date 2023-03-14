@@ -1,6 +1,6 @@
 # Table: aws_timestream_databases
 
-This table shows data for AWS Timestream Databases.
+This table shows data for Timestream Databases.
 
 https://docs.aws.amazon.com/timestream/latest/developerguide/API_Database.html
 

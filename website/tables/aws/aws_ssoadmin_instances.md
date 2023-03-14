@@ -1,6 +1,6 @@
 # Table: aws_ssoadmin_instances
 
-This table shows data for AWS Ssoadmin Instances.
+This table shows data for Ssoadmin Instances.
 
 https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_InstanceMetadata.html
 

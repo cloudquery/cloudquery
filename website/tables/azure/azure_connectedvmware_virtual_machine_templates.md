@@ -1,6 +1,6 @@
 # Table: azure_connectedvmware_virtual_machine_templates
 
-This table shows data for Azure Connectedvmware Virtual Machine Templates.
+This table shows data for Azure Connected VMware Virtual Machine Templates.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#VirtualMachineTemplate
 

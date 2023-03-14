@@ -1,6 +1,6 @@
 # Table: azure_hybridcompute_private_link_scopes
 
-This table shows data for Azure Hybridcompute Private Link Scopes.
+This table shows data for Azure Hybrid Compute Private Link Scopes.
 
 https://learn.microsoft.com/en-us/rest/api/hybridcompute/private-link-scopes/list?tabs=HTTP#hybridcomputeprivatelinkscope
 

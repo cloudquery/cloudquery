@@ -1,6 +1,6 @@
 # Table: aws_kafka_nodes
 
-This table shows data for AWS Kafka Nodes.
+This table shows data for Kafka Nodes.
 
 https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-nodes.html#ListNodes
 

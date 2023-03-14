@@ -1,6 +1,6 @@
 # Table: facebookmarketing_broad_targeting_categories
 
-This table shows data for Facebookmarketing Broad Targeting Categories.
+This table shows data for Facebook Marketing Broad Targeting Categories.
 
 The composite primary key for this table is (**account_id**, **id**).
 

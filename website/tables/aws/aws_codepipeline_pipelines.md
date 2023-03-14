@@ -1,6 +1,6 @@
 # Table: aws_codepipeline_pipelines
 
-This table shows data for AWS Codepipeline Pipelines.
+This table shows data for Codepipeline Pipelines.
 
 https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_GetPipeline.html
 
