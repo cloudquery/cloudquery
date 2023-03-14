@@ -30,6 +30,7 @@ var awsExceptions = map[string]string{
 	"cloudhsmv2":        "AWS CloudHSM v2",
 	"cloudformation":    "AWS CloudFormation",
 	"cloudtrail":        "AWS CloudTrail",
+	"computeoptimizer":  "Compute Optimizer",
 	"directconnect":     "AWS Direct Connect",
 	"docdb":             "Amazon DocumentDB",
 	"dynamodb":          "Amazon DynamoDB",

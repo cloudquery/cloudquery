@@ -1,6 +1,6 @@
 # Table: azure_saas_resources
 
-This table shows data for Azure Saas Resources.
+This table shows data for Azure Software as a Service (SaaS) Resources.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas@v0.5.0#Resource
 
