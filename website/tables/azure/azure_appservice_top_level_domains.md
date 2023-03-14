@@ -1,6 +1,6 @@
 # Table: azure_appservice_top_level_domains
 
-This table shows data for Azure Appservice Top Level Domains.
+This table shows data for Azure App Service Top Level Domains.
 
 https://learn.microsoft.com/en-us/rest/api/appservice/top-level-domains/list?tabs=HTTP#topleveldomain
 

@@ -12,6 +12,7 @@ import (
 func BucketStats() *schema.Table {
 	return &schema.Table{
 		Name:     "alicloud_oss_bucket_stats",
+		Title:    "Alibaba Cloud Object Storage Service (OSS) Bucket Stats",
 		Resolver: fetchOssBucketStats,
 		Transform: transformers.TransformWithStruct(
 			&oss.BucketStat{},

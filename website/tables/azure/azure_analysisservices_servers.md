@@ -1,6 +1,6 @@
 # Table: azure_analysisservices_servers
 
-This table shows data for Azure Analysisservices Servers.
+This table shows data for Azure Analysis Services Servers.
 
 https://learn.microsoft.com/en-us/rest/api/analysisservices/servers/list?tabs=HTTP#analysisservicesserver
 

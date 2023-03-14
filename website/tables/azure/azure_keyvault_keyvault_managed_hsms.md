@@ -1,6 +1,6 @@
 # Table: azure_keyvault_keyvault_managed_hsms
 
-This table shows data for Azure Keyvault Keyvault Managed Hsms.
+This table shows data for Azure Key Vault Key Vault Managed Hsms.
 
 https://learn.microsoft.com/en-us/rest/api/keyvault/managedhsm/managed-hsms/list-by-subscription?tabs=HTTP#managedhsm
 
