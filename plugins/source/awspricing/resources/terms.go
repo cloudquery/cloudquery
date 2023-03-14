@@ -10,6 +10,7 @@ import (
 func terms() *schema.Table {
 	return &schema.Table{
 		Name:      "awspricing_service_terms",
+		Title:     "Service Terms from the AWS Price List API",
 		Resolver:  fetchTerms,
 		Transform: transformers.TransformWithStruct(&Term{}, transformers.WithPrimaryKeys("OfferTermCode", "Sku")),
 	}

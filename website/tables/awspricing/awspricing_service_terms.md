@@ -1,6 +1,6 @@
 # Table: awspricing_service_terms
 
-This table shows data for Awspricing Service Terms.
+This table shows data for Service Terms from the AWS Price List API.
 
 The composite primary key for this table is (**offer_term_code**, **sku**).
 
