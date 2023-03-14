@@ -1,6 +1,6 @@
 # Table: aws_organization_resource_policies
 
-This table shows data for AWS Organization Resource Policies.
+This table shows data for Organization Resource Policies.
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_DescribeResourcePolicy.html
 

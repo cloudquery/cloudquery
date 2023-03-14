@@ -1,6 +1,6 @@
 # Table: aws_apigatewayv2_api_authorizers
 
-This table shows data for AWS Apigatewayv2 API Authorizers.
+This table shows data for Amazon API Gateway v2 API Authorizers.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_Authorizer.html
 

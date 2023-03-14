@@ -1,6 +1,6 @@
 # Table: azure_streamanalytics_streaming_jobs
 
-This table shows data for Azure Streamanalytics Streaming Jobs.
+This table shows data for Azure Stream Analytics Streaming Jobs.
 
 https://learn.microsoft.com/en-us/rest/api/streamanalytics/2020-03-01/streaming-jobs/list?tabs=HTTP#streamingjob
 

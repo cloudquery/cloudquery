@@ -1,6 +1,6 @@
 # Table: aws_stepfunctions_activities
 
-This table shows data for AWS Stepfunctions Activities.
+This table shows data for Stepfunctions Activities.
 
 https://docs.aws.amazon.com/step-functions/latest/apireference/API_ListActivities.html
 

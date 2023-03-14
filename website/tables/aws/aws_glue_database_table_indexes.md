@@ -1,6 +1,6 @@
 # Table: aws_glue_database_table_indexes
 
-This table shows data for AWS Glue Database Table Indexes.
+This table shows data for Glue Database Table Indexes.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_PartitionIndexDescriptor.html
 

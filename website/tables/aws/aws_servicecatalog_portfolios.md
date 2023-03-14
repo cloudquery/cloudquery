@@ -1,6 +1,6 @@
 # Table: aws_servicecatalog_portfolios
 
-This table shows data for AWS Servicecatalog Portfolios.
+This table shows data for AWS Service Catalog Portfolios.
 
 https://docs.aws.amazon.com/servicecatalog/latest/dg/API_PortfolioDetail.html
 

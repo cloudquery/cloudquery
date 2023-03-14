@@ -1,6 +1,6 @@
 # Table: aws_resiliencehub_test_recommendations
 
-This table shows data for AWS Resiliencehub Test Recommendations.
+This table shows data for AWS Resilience Hub Test Recommendations.
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_TestRecommendation.html
 

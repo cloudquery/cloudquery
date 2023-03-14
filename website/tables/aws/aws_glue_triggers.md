@@ -1,6 +1,6 @@
 # Table: aws_glue_triggers
 
-This table shows data for AWS Glue Triggers.
+This table shows data for Glue Triggers.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_Trigger.html
 

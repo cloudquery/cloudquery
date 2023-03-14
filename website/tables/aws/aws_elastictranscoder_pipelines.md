@@ -1,6 +1,6 @@
 # Table: aws_elastictranscoder_pipelines
 
-This table shows data for AWS Elastictranscoder Pipelines.
+This table shows data for Amazon Elastic Transcoder Pipelines.
 
 https://docs.aws.amazon.com/elastictranscoder/latest/developerguide/list-pipelines.html
 

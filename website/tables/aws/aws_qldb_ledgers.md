@@ -1,6 +1,6 @@
 # Table: aws_qldb_ledgers
 
-This table shows data for AWS Qldb Ledgers.
+This table shows data for Quantum Ledger Database (QLDB) Ledgers.
 
 https://docs.aws.amazon.com/qldb/latest/developerguide/API_DescribeLedger.html
 

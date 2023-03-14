@@ -1,6 +1,6 @@
 # Table: alicloud_oss_bucket_stats
 
-This table shows data for Alicloud Oss Bucket Stats.
+This table shows data for Alibaba Cloud Object Storage Service (OSS) Bucket Stats.
 
 The composite primary key for this table is (**bucket_name**, **account_id**).
 

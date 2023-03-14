@@ -1,6 +1,6 @@
 # Table: aws_quicksight_data_sets
 
-This table shows data for AWS Quicksight Data Sets.
+This table shows data for QuickSight Data Sets.
 
 https://docs.aws.amazon.com/quicksight/latest/APIReference/API_DataSetSummary.html
 

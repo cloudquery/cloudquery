@@ -1,6 +1,6 @@
 # Table: aws_neptune_cluster_snapshots
 
-This table shows data for AWS Neptune Cluster Snapshots.
+This table shows data for Neptune Cluster Snapshots.
 
 https://docs.aws.amazon.com/neptune/latest/userguide/api-snapshots.html#DescribeDBClusterSnapshots
 

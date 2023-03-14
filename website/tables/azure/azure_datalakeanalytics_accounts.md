@@ -1,6 +1,6 @@
 # Table: azure_datalakeanalytics_accounts
 
-This table shows data for Azure Datalakeanalytics Accounts.
+This table shows data for Azure Data Lake Analytics Accounts.
 
 https://learn.microsoft.com/en-us/rest/api/datalakeanalytics/accounts/list?tabs=HTTP#datalakeanalyticsaccountbasic
 

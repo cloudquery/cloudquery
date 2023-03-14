@@ -1,6 +1,6 @@
 # Table: aws_ses_contact_lists
 
-This table shows data for AWS Ses Contact Lists.
+This table shows data for Amazon Simple Email Service (SES) Contact Lists.
 
 https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetContactList.html
 
