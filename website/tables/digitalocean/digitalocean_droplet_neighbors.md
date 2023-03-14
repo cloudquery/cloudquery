@@ -1,6 +1,6 @@
 # Table: digitalocean_droplet_neighbors
 
-This table shows data for Digitalocean Droplet Neighbors.
+This table shows data for DigitalOcean Droplet Neighbors.
 
 The primary key for this table is **neighbor_id**.
 

@@ -1,6 +1,6 @@
 # Table: gcp_apikeys_keys
 
-This table shows data for GCP Apikeys Keys.
+This table shows data for GCP API Keys.
 
 https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key
 

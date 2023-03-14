@@ -1,6 +1,6 @@
 # Table: aws_lightsail_instance_snapshots
 
-This table shows data for AWS Lightsail Instance Snapshots.
+This table shows data for Lightsail Instance Snapshots.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_InstanceSnapshot.html
 

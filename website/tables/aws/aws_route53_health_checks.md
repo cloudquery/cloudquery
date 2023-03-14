@@ -1,6 +1,6 @@
 # Table: aws_route53_health_checks
 
-This table shows data for AWS Route53 Health Checks.
+This table shows data for Route53 Health Checks.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_HealthCheck.html
 

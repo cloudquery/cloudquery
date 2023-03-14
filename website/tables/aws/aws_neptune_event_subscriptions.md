@@ -1,6 +1,6 @@
 # Table: aws_neptune_event_subscriptions
 
-This table shows data for AWS Neptune Event Subscriptions.
+This table shows data for Neptune Event Subscriptions.
 
 https://docs.aws.amazon.com/neptune/latest/userguide/api-events.html#DescribeEventSubscriptions
 

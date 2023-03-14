@@ -1,6 +1,6 @@
 # Table: aws_apprunner_auto_scaling_configurations
 
-This table shows data for AWS Apprunner Auto Scaling Configurations.
+This table shows data for AWS App Runner Auto Scaling Configurations.
 
 https://docs.aws.amazon.com/apprunner/latest/api/API_AutoScalingConfiguration.html
 

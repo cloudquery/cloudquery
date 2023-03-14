@@ -1,6 +1,6 @@
 # Table: aws_glacier_data_retrieval_policies
 
-This table shows data for AWS Glacier Data Retrieval Policies.
+This table shows data for Glacier Data Retrieval Policies.
 
 https://docs.aws.amazon.com/amazonglacier/latest/dev/api-GetDataRetrievalPolicy.html
 

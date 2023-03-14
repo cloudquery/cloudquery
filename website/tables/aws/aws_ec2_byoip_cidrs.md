@@ -1,6 +1,6 @@
 # Table: aws_ec2_byoip_cidrs
 
-This table shows data for AWS Ec2 Byoip CIDRs.
+This table shows data for Amazon Elastic Compute Cloud (EC2) Bring your own IP addresses (BYOIP) CIDRs.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ByoipCidr.html
 

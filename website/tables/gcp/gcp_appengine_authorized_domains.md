@@ -1,6 +1,6 @@
 # Table: gcp_appengine_authorized_domains
 
-This table shows data for GCP Appengine Authorized Domains.
+This table shows data for GCP App Engine Authorized Domains.
 
 https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.authorizedDomains#AuthorizedDomain
 

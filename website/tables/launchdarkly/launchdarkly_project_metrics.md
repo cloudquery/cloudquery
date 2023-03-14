@@ -1,6 +1,6 @@
 # Table: launchdarkly_project_metrics
 
-This table shows data for Launchdarkly Project Metrics.
+This table shows data for LaunchDarkly Project Metrics.
 
 https://apidocs.launchdarkly.com/tag/Metrics#operation/getMetrics
 

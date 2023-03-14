@@ -1,6 +1,6 @@
 # Table: aws_lightsail_database_log_events
 
-This table shows data for AWS Lightsail Database Log Events.
+This table shows data for Lightsail Database Log Events.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_GetRelationalDatabaseLogEvents.html
 

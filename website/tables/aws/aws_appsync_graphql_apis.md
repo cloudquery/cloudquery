@@ -1,6 +1,6 @@
 # Table: aws_appsync_graphql_apis
 
-This table shows data for AWS Appsync Graphql APIs.
+This table shows data for Appsync Graphql APIs.
 
 https://docs.aws.amazon.com/appsync/latest/APIReference/API_GraphqlApi.html
 

@@ -1,6 +1,6 @@
 # Table: aws_apprunner_connections
 
-This table shows data for AWS Apprunner Connections.
+This table shows data for AWS App Runner Connections.
 
 https://docs.aws.amazon.com/apprunner/latest/api/API_Connection.html
 

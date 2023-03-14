@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_security_lists
 
-This table shows data for Oracle Virtualnetwork Security Lists.
+This table shows data for Oracle Virtual Network Security Lists.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

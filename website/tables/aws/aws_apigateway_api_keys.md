@@ -1,6 +1,6 @@
 # Table: aws_apigateway_api_keys
 
-This table shows data for AWS Apigateway API Keys.
+This table shows data for Amazon API Gateway API Keys.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_ApiKey.html
 
