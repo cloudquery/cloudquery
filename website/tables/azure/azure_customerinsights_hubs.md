@@ -1,6 +1,6 @@
 # Table: azure_customerinsights_hubs
 
-This table shows data for Azure Customerinsights Hubs.
+This table shows data for Azure Customer Insights Hubs.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights@v1.0.0#Hub
 

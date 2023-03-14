@@ -13,6 +13,7 @@ import (
 func BuildErrors(days homebrew.Days) *schema.Table {
 	return &schema.Table{
 		Name:        fmt.Sprintf("homebrew_analytics_build_errors_%s", days),
+		Title:       fmt.Sprintf("Homebrew Analytics Build Errors (%d days)", days.Number()),
 		Description: fmt.Sprintf(`https://formulae.brew.sh/analytics/build-error/%s/`, days),
 		Resolver:    fetchBuildErrors(days),
 		Transform: transformers.TransformWithStruct(

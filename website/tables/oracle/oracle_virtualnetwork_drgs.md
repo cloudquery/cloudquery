@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_drgs
 
-This table shows data for Oracle Virtualnetwork Drgs.
+This table shows data for Oracle Virtual Network Dynamic Routing Gateways (DRGs).
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

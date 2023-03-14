@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_local_peering_gateways
 
-This table shows data for Oracle Virtualnetwork Local Peering Gateways.
+This table shows data for Oracle Virtual Network Local Peering Gateways.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
