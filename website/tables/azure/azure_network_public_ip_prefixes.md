@@ -1,5 +1,7 @@
 # Table: azure_network_public_ip_prefixes
 
+This table shows data for Azure Network Public IP Prefixes.
+
 https://learn.microsoft.com/en-us/rest/api/virtualnetwork/public-ip-prefixes/list?tabs=HTTP#publicipprefix
 
 The primary key for this table is **id**.

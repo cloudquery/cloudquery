@@ -1,5 +1,7 @@
 # Table: facebookmarketing_adimages
 
+This table shows data for Facebookmarketing Adimages.
+
 https://developers.facebook.com/docs/marketing-api/reference/ad-image#Reading
 
 The primary key for this table is **id**.

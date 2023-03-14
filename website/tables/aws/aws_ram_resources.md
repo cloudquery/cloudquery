@@ -1,5 +1,7 @@
 # Table: aws_ram_resources
 
+This table shows data for AWS RAM Resources.
+
 https://docs.aws.amazon.com/ram/latest/APIReference/API_Resource.html
 
 The composite primary key for this table is (**account_id**, **region**, **arn**, **resource_share_arn**).

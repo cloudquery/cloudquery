@@ -1,5 +1,7 @@
 # Table: mixpanel_export_events
 
+This table shows data for Mixpanel Export Events.
+
 https://developer.mixpanel.com/reference/raw-event-export
 
 The composite primary key for this table is (**project_id**, **time**, **distinct_id**, **event**).

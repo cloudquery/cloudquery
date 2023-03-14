@@ -1,5 +1,7 @@
 # Table: aws_redshift_cluster_parameter_groups
 
+This table shows data for AWS Redshift Cluster Parameter Groups.
+
 https://docs.aws.amazon.com/redshift/latest/APIReference/API_ClusterParameterGroupStatus.html
 
 The composite primary key for this table is (**cluster_arn**, **parameter_group_name**).

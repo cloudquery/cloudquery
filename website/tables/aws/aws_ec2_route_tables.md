@@ -1,5 +1,7 @@
 # Table: aws_ec2_route_tables
 
+This table shows data for AWS Ec2 Route Tables.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RouteTable.html
 
 The primary key for this table is **arn**.

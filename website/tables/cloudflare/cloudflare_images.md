@@ -1,5 +1,7 @@
 # Table: cloudflare_images
 
+This table shows data for Cloudflare Images.
+
 The primary key for this table is **id**.
 
 ## Columns

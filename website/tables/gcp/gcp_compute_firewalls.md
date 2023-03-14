@@ -1,5 +1,7 @@
 # Table: gcp_compute_firewalls
 
+This table shows data for GCP Compute Firewalls.
+
 The primary key for this table is **self_link**.
 
 ## Columns

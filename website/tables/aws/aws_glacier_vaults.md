@@ -1,5 +1,7 @@
 # Table: aws_glacier_vaults
 
+This table shows data for AWS Glacier Vaults.
+
 https://docs.aws.amazon.com/amazonglacier/latest/dev/api-vaults-get.html
 
 The primary key for this table is **arn**.

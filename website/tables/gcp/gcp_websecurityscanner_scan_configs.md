@@ -1,5 +1,7 @@
 # Table: gcp_websecurityscanner_scan_configs
 
+This table shows data for GCP Web Security Scanner Scan Configs.
+
 https://cloud.google.com/security-command-center/docs/reference/web-security-scanner/rest/v1/projects.scanConfigs#resource:-scanconfig
 
 The composite primary key for this table is (**project_id**, **name**).

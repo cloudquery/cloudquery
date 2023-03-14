@@ -1,5 +1,7 @@
 # Table: aws_glue_jobs
 
+This table shows data for AWS Glue Jobs.
+
 https://docs.aws.amazon.com/glue/latest/webapi/API_Job.html
 
 The primary key for this table is **arn**.

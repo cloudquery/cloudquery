@@ -1,5 +1,7 @@
 # Table: aws_rds_cluster_parameter_groups
 
+This table shows data for AWS Rds Cluster Parameter Groups.
+
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBClusterParameterGroup.html
 
 The primary key for this table is **arn**.

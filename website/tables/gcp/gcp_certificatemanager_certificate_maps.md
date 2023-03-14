@@ -1,5 +1,7 @@
 # Table: gcp_certificatemanager_certificate_maps
 
+This table shows data for GCP Certificatemanager Certificate Maps.
+
 https://cloud.google.com/certificate-manager/docs/reference/rest/v1/projects.locations.certificateMaps#CertificateMap
 
 The composite primary key for this table is (**project_id**, **name**).

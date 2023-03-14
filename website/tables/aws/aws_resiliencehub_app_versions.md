@@ -1,5 +1,7 @@
 # Table: aws_resiliencehub_app_versions
 
+This table shows data for AWS Resiliencehub App Versions.
+
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_AppVersionSummary.html
 
 The composite primary key for this table is (**app_arn**, **app_version**).

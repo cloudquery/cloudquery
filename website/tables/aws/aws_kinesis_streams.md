@@ -1,5 +1,7 @@
 # Table: aws_kinesis_streams
 
+This table shows data for AWS Kinesis Streams.
+
 https://docs.aws.amazon.com/kinesis/latest/APIReference/API_StreamDescriptionSummary.html
 
 The primary key for this table is **arn**.

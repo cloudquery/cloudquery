@@ -1,5 +1,7 @@
 # Table: aws_eventbridge_event_bus_rules
 
+This table shows data for AWS Eventbridge Event Bus Rules.
+
 https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Rule.html
 
 The primary key for this table is **arn**.

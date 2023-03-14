@@ -1,5 +1,7 @@
 # Table: oracle_database_external_pluggable_databases
 
+This table shows data for Oracle Database External Pluggable Databases.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: shopify_abandoned_checkouts
 
+This table shows data for Shopify Abandoned Checkouts.
+
 The primary key for this table is **id**.
 It supports incremental syncs based on the **updated_at** column.
 

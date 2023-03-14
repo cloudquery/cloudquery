@@ -1,5 +1,7 @@
 # Table: azure_desktopvirtualization_host_pools
 
+This table shows data for Azure Desktopvirtualization Host Pools.
+
 https://learn.microsoft.com/en-us/rest/api/desktopvirtualization/host-pools/list?tabs=HTTP#hostpool
 
 The primary key for this table is **id**.

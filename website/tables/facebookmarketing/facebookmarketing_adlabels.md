@@ -1,5 +1,7 @@
 # Table: facebookmarketing_adlabels
 
+This table shows data for Facebookmarketing Adlabels.
+
 https://developers.facebook.com/docs/marketing-api/reference/ad-label#Reading
 
 The composite primary key for this table is (**account_id**, **id**).

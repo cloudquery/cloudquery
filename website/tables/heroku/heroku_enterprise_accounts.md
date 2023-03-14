@@ -1,5 +1,7 @@
 # Table: heroku_enterprise_accounts
 
+This table shows data for Heroku Enterprise Accounts.
+
 https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account
 
 The primary key for this table is **id**.

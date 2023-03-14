@@ -1,5 +1,7 @@
 # Table: gcp_artifactregistry_repositories
 
+This table shows data for GCP Artifact Registry Repositories.
+
 https://cloud.google.com/artifact-registry/docs/reference/rest/v1/projects.locations.repositories#Repository
 
 The composite primary key for this table is (**project_id**, **name**).

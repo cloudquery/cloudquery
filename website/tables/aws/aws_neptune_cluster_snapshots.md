@@ -1,5 +1,7 @@
 # Table: aws_neptune_cluster_snapshots
 
+This table shows data for AWS Neptune Cluster Snapshots.
+
 https://docs.aws.amazon.com/neptune/latest/userguide/api-snapshots.html#DescribeDBClusterSnapshots
 
 The primary key for this table is **arn**.

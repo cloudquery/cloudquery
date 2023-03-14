@@ -1,5 +1,7 @@
 # Table: gcp_compute_forwarding_rules
 
+This table shows data for GCP Compute Forwarding Rules.
+
 https://cloud.google.com/compute/docs/reference/rest/v1/forwardingRules#ForwardingRule
 
 The primary key for this table is **self_link**.

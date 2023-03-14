@@ -1,5 +1,7 @@
 # Table: aws_ec2_launch_templates
 
+This table shows data for AWS Ec2 Launch Templates.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchTemplate.html
 
 The primary key for this table is **arn**.

@@ -1,5 +1,7 @@
 # Table: aws_glue_ml_transform_task_runs
 
+This table shows data for AWS Glue ML Transform Task Runs.
+
 https://docs.aws.amazon.com/glue/latest/webapi/API_TaskRun.html
 
 The primary key for this table is **_cq_id**.

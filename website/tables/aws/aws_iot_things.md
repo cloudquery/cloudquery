@@ -1,5 +1,7 @@
 # Table: aws_iot_things
 
+This table shows data for AWS IOT Things.
+
 https://docs.aws.amazon.com/iot/latest/apireference/API_ThingAttribute.html
 
 The primary key for this table is **arn**.

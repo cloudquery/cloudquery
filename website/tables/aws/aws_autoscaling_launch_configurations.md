@@ -1,5 +1,7 @@
 # Table: aws_autoscaling_launch_configurations
 
+This table shows data for AWS Autoscaling Launch Configurations.
+
 https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchConfiguration.html
 
 The primary key for this table is **arn**.

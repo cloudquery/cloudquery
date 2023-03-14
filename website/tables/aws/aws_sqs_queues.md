@@ -1,5 +1,7 @@
 # Table: aws_sqs_queues
 
+This table shows data for AWS Sqs Queues.
+
 https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_GetQueueAttributes.html
 
 The primary key for this table is **arn**.

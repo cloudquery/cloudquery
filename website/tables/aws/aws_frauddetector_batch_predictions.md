@@ -1,5 +1,7 @@
 # Table: aws_frauddetector_batch_predictions
 
+This table shows data for AWS Frauddetector Batch Predictions.
+
 https://docs.aws.amazon.com/frauddetector/latest/api/API_BatchPrediction.html
 
 The primary key for this table is **arn**.

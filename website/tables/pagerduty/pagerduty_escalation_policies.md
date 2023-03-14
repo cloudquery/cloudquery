@@ -1,5 +1,7 @@
 # Table: pagerduty_escalation_policies
 
+This table shows data for Pagerduty Escalation Policies.
+
 https://developer.pagerduty.com/api-reference/51b21014a4f5a-list-escalation-policies
 
 The primary key for this table is **id**.

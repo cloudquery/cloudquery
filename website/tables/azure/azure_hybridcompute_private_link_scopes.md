@@ -1,5 +1,7 @@
 # Table: azure_hybridcompute_private_link_scopes
 
+This table shows data for Azure Hybridcompute Private Link Scopes.
+
 https://learn.microsoft.com/en-us/rest/api/hybridcompute/private-link-scopes/list?tabs=HTTP#hybridcomputeprivatelinkscope
 
 The primary key for this table is **id**.

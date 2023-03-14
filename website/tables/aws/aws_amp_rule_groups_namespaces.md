@@ -1,5 +1,7 @@
 # Table: aws_amp_rule_groups_namespaces
 
+This table shows data for AWS Amp Rule Groups Namespaces.
+
 https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-APIReference.html#AMP-APIReference-RuleGroupsNamespaceDescription
 
 The primary key for this table is **arn**.

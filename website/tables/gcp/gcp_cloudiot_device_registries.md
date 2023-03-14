@@ -1,5 +1,7 @@
 # Table: gcp_cloudiot_device_registries
 
+This table shows data for GCP Cloud IoT Device Registries.
+
 https://cloud.google.com/iot/docs/reference/cloudiot/rest/v1/projects.locations.registries#DeviceRegistry
 
 The composite primary key for this table is (**project_id**, **name**).

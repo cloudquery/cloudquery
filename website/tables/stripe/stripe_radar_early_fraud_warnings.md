@@ -1,5 +1,7 @@
 # Table: stripe_radar_early_fraud_warnings
 
+This table shows data for Stripe Radar Early Fraud Warnings.
+
 https://stripe.com/docs/api/radar_early_fraud_warnings
 
 The primary key for this table is **id**.

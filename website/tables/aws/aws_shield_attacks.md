@@ -1,5 +1,7 @@
 # Table: aws_shield_attacks
 
+This table shows data for AWS Shield Attacks.
+
 https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_AttackDetail.html
 
 The primary key for this table is **id**.

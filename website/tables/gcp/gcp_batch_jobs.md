@@ -1,5 +1,7 @@
 # Table: gcp_batch_jobs
 
+This table shows data for GCP Batch Jobs.
+
 https://cloud.google.com/batch/docs/reference/rest/v1/projects.locations.jobs#Job
 
 The composite primary key for this table is (**project_id**, **name**).

@@ -1,5 +1,7 @@
 # Table: aws_ssoadmin_instances
 
+This table shows data for AWS Ssoadmin Instances.
+
 https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_InstanceMetadata.html
 
 The primary key for this table is **_cq_id**.

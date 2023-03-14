@@ -1,5 +1,7 @@
 # Table: gcp_livestream_inputs
 
+This table shows data for GCP Livestream Inputs.
+
 https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.inputs
 
 The composite primary key for this table is (**project_id**, **name**).

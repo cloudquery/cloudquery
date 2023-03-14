@@ -1,5 +1,7 @@
 # Table: aws_elasticache_user_groups
 
+This table shows data for AWS Elasticache User Groups.
+
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_UserGroup.html
 
 The primary key for this table is **arn**.

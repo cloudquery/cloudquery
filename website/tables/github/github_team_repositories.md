@@ -1,5 +1,7 @@
 # Table: github_team_repositories
 
+This table shows data for Github Team Repositories.
+
 The composite primary key for this table is (**org**, **team_id**, **id**).
 
 ## Relations

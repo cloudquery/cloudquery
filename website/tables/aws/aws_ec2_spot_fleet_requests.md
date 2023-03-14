@@ -1,5 +1,7 @@
 # Table: aws_ec2_spot_fleet_requests
 
+This table shows data for AWS Ec2 Spot Fleet Requests.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SpotFleetRequestConfig.html
 
 The composite primary key for this table is (**account_id**, **region**, **spot_fleet_request_id**).

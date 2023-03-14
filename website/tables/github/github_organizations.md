@@ -1,5 +1,7 @@
 # Table: github_organizations
 
+This table shows data for Github Organizations.
+
 The composite primary key for this table is (**org**, **id**).
 
 ## Relations

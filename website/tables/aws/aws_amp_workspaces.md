@@ -1,5 +1,7 @@
 # Table: aws_amp_workspaces
 
+This table shows data for AWS Amp Workspaces.
+
 https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-APIReference.html#AMP-APIReference-WorkspaceDescription
 
 The primary key for this table is **arn**.

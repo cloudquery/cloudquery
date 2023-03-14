@@ -1,5 +1,7 @@
 # Table: aws_guardduty_detectors
 
+This table shows data for AWS Guardduty Detectors.
+
 https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetDetector.html
 
 The composite primary key for this table is (**account_id**, **region**, **id**).

@@ -1,5 +1,7 @@
 # Table: stripe_identity_verification_reports
 
+This table shows data for Stripe Identity Verification Reports.
+
 https://stripe.com/docs/api/identity_verification_reports
 
 The primary key for this table is **id**.

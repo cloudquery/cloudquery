@@ -1,5 +1,7 @@
 # Table: heroku_releases
 
+This table shows data for Heroku Releases.
+
 https://devcenter.heroku.com/articles/platform-api-reference#release
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: aws_lightsail_static_ips
 
+This table shows data for AWS Lightsail Static IPs.
+
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_StaticIp.html
 
 The primary key for this table is **arn**.

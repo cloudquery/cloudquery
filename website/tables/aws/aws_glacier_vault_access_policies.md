@@ -1,5 +1,7 @@
 # Table: aws_glacier_vault_access_policies
 
+This table shows data for AWS Glacier Vault Access Policies.
+
 https://docs.aws.amazon.com/amazonglacier/latest/dev/api-GetVaultAccessPolicy.html
 
 The primary key for this table is **vault_arn**.

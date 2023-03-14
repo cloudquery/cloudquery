@@ -1,5 +1,7 @@
 # Table: hubspot_crm_line_items
 
+This table shows data for Hubspot Crm Line Items.
+
 https://developers.hubspot.com/docs/api/crm/line-items
 
 The primary key for this table is **id**.

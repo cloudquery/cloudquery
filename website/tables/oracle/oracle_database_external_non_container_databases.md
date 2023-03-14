@@ -1,5 +1,7 @@
 # Table: oracle_database_external_non_container_databases
 
+This table shows data for Oracle Database External Non Container Databases.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

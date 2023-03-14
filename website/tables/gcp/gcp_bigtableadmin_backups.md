@@ -1,5 +1,7 @@
 # Table: gcp_bigtableadmin_backups
 
+This table shows data for GCP Bigtableadmin Backups.
+
 https://cloud.google.com/bigtable/docs/reference/admin/rest/v2/projects.instances.clusters.backups#Backup
 
 The composite primary key for this table is (**project_id**, **name**).

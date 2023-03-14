@@ -1,5 +1,7 @@
 # Table: facebookmarketing_ads
 
+This table shows data for Facebookmarketing Ads.
+
 https://developers.facebook.com/docs/marketing-api/reference/adgroup
 
 The primary key for this table is **id**.

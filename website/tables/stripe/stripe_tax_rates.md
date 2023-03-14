@@ -1,5 +1,7 @@
 # Table: stripe_tax_rates
 
+This table shows data for Stripe Tax Rates.
+
 https://stripe.com/docs/api/tax_rates
 
 The primary key for this table is **id**.

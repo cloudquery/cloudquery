@@ -1,5 +1,7 @@
 # Table: tailscale_keys
 
+This table shows data for Tailscale Keys.
+
 https://github.com/tailscale/tailscale/blob/main/api.md#keys
 
 The composite primary key for this table is (**tailnet**, **id**).

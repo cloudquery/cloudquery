@@ -1,5 +1,7 @@
 # Table: gitlab_projects
 
+This table shows data for Gitlab Projects.
+
 The composite primary key for this table is (**base_url**, **id**).
 
 ## Relations

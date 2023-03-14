@@ -1,5 +1,7 @@
 # Table: cloudflare_waf_packages
 
+This table shows data for Cloudflare WAF Packages.
+
 The primary key for this table is **id**.
 
 ## Relations

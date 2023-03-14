@@ -1,5 +1,7 @@
 # Table: slack_users
 
+This table shows data for Slack Users.
+
 https://api.slack.com/methods/users.list
 
 The primary key for this table is **id**.

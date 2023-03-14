@@ -1,5 +1,7 @@
 # Table: cloudflare_accounts
 
+This table shows data for Cloudflare Accounts.
+
 The primary key for this table is **id**.
 
 ## Relations

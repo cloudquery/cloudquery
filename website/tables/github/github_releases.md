@@ -1,5 +1,7 @@
 # Table: github_releases
 
+This table shows data for Github Releases.
+
 The composite primary key for this table is (**org**, **repository_id**, **id**).
 
 ## Relations

@@ -1,5 +1,7 @@
 # Table: aws_account_contacts
 
+This table shows data for AWS Account Contacts.
+
 https://docs.aws.amazon.com/accounts/latest/reference/API_ContactInformation.html
 
 The primary key for this table is **account_id**.

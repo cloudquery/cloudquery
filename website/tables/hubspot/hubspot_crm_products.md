@@ -1,5 +1,7 @@
 # Table: hubspot_crm_products
 
+This table shows data for Hubspot Crm Products.
+
 https://developers.hubspot.com/docs/api/crm/products
 
 The primary key for this table is **id**.

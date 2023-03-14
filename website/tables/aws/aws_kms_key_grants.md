@@ -1,5 +1,7 @@
 # Table: aws_kms_key_grants
 
+This table shows data for AWS Kms Key Grants.
+
 https://docs.aws.amazon.com/kms/latest/APIReference/API_GrantListEntry.html
 
 The composite primary key for this table is (**key_arn**, **grant_id**).

@@ -1,5 +1,7 @@
 # Table: aws_apigateway_rest_api_models
 
+This table shows data for AWS Apigateway Rest API Models.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_Model.html
 
 The composite primary key for this table is (**account_id**, **arn**).

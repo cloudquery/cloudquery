@@ -1,5 +1,7 @@
 # Table: aws_kms_key_policies
 
+This table shows data for AWS Kms Key Policies.
+
 https://docs.aws.amazon.com/kms/latest/APIReference/API_GetKeyPolicy.html
 
 The composite primary key for this table is (**key_arn**, **name**).
