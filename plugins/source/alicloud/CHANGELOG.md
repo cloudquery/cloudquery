@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v1.1.0...plugins-source-alicloud-v1.1.1) (2023-03-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.43.0 ([#8949](https://github.com/cloudquery/cloudquery/issues/8949)) ([31dfc63](https://github.com/cloudquery/cloudquery/commit/31dfc634850b699ba7bb7876399270a7367d6c7e))
+
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v1.0.7...plugins-source-alicloud-v1.1.0) (2023-03-07)
 
 
