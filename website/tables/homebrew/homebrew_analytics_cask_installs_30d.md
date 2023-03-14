@@ -1,6 +1,6 @@
 # Table: homebrew_analytics_cask_installs_30d
 
-This table shows data for Homebrew Analytics Cask Installs 30d.
+This table shows data for Homebrew Analytics Cask Installs (30 days).
 
 https://formulae.brew.sh/analytics/cask-install/30d/
 

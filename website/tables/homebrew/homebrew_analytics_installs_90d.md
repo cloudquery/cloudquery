@@ -1,6 +1,6 @@
 # Table: homebrew_analytics_installs_90d
 
-This table shows data for Homebrew Analytics Installs 90d.
+This table shows data for Homebrew Analytics Installs (90 days).
 
 https://formulae.brew.sh/analytics/install/90d/
 
