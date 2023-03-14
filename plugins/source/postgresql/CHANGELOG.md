@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-postgresql-v1.0.4...plugins-source-postgresql-v1.0.5) (2023-03-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.43.0 ([#8949](https://github.com/cloudquery/cloudquery/issues/8949)) ([31dfc63](https://github.com/cloudquery/cloudquery/commit/31dfc634850b699ba7bb7876399270a7367d6c7e))
+* **source-postgres:** Support more Postgres and CockroachDB types ([#8926](https://github.com/cloudquery/cloudquery/issues/8926)) ([9c52479](https://github.com/cloudquery/cloudquery/commit/9c524797463b642949878a0ac9c3f549822b9ca0))
+
 ## [1.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-postgresql-v1.0.3...plugins-source-postgresql-v1.0.4) (2023-03-08)
 
 
