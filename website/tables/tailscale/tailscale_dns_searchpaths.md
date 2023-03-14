@@ -1,6 +1,6 @@
 # Table: tailscale_dns_searchpaths
 
-This table shows data for Tailscale DNS Searchpaths.
+This table shows data for Tailscale Domain Name System (DNS) Search Paths.
 
 https://github.com/tailscale/tailscale/blob/main/api.md#tailnet-dns-preferences-get
 

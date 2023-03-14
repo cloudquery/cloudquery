@@ -1,6 +1,6 @@
 # Table: oracle_virtualnetwork_subnets
 
-This table shows data for Oracle Virtualnetwork Subnets.
+This table shows data for Oracle Virtual Network Subnets.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 

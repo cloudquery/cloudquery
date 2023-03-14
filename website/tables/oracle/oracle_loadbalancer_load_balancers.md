@@ -1,6 +1,6 @@
 # Table: oracle_loadbalancer_load_balancers
 
-This table shows data for Oracle Loadbalancer Load Balancers.
+This table shows data for Oracle Load Balancer Load Balancers.
 
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
