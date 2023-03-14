@@ -1,6 +1,6 @@
 # Table: aws_eventbridge_replays
 
-This table shows data for AWS Eventbridge Replays.
+This table shows data for Amazon EventBridge Replays.
 
 https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Replay.html
 

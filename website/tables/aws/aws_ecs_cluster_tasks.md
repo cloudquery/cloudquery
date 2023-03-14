@@ -1,6 +1,6 @@
 # Table: aws_ecs_cluster_tasks
 
-This table shows data for AWS Ecs Cluster Tasks.
+This table shows data for Amazon Elastic Container Service (ECS) Cluster Tasks.
 
 https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Task.html
 

@@ -1,6 +1,6 @@
 # Table: aws_appstream_images
 
-This table shows data for AWS Appstream Images.
+This table shows data for Amazon AppStream Images.
 
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Image.html
 

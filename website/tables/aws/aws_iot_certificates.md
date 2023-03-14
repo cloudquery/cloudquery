@@ -1,6 +1,6 @@
 # Table: aws_iot_certificates
 
-This table shows data for AWS IOT Certificates.
+This table shows data for AWS IoT Certificates.
 
 https://docs.aws.amazon.com/iot/latest/apireference/API_CertificateDescription.html
 

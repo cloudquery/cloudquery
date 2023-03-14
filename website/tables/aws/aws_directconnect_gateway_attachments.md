@@ -1,6 +1,6 @@
 # Table: aws_directconnect_gateway_attachments
 
-This table shows data for AWS Directconnect Gateway Attachments.
+This table shows data for AWS Direct Connect Gateway Attachments.
 
 https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGatewayAttachment.html
 

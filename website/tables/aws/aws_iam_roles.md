@@ -1,6 +1,6 @@
 # Table: aws_iam_roles
 
-This table shows data for AWS IAM Roles.
+This table shows data for IAM Roles.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_Role.html
 

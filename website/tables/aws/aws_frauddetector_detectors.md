@@ -1,6 +1,6 @@
 # Table: aws_frauddetector_detectors
 
-This table shows data for AWS Frauddetector Detectors.
+This table shows data for Amazon Fraud Detector Detectors.
 
 https://docs.aws.amazon.com/frauddetector/latest/api/API_Detector.html
 

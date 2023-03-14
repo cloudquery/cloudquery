@@ -1,6 +1,6 @@
 # Table: aws_shield_subscriptions
 
-This table shows data for AWS Shield Subscriptions.
+This table shows data for Shield Subscriptions.
 
 https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_Subscription.html
 

@@ -1,6 +1,6 @@
 # Table: aws_glue_connections
 
-This table shows data for AWS Glue Connections.
+This table shows data for Glue Connections.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_Connection.html
 
