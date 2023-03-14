@@ -1,6 +1,6 @@
 # Table: aws_quicksight_templates
 
-This table shows data for AWS Quicksight Templates.
+This table shows data for QuickSight Templates.
 
 https://docs.aws.amazon.com/quicksight/latest/APIReference/API_TemplateSummary.html
 

@@ -1,6 +1,6 @@
 # Table: aws_config_configuration_recorders
 
-This table shows data for AWS Config Configuration Recorders.
+This table shows data for Config Configuration Recorders.
 
 https://docs.aws.amazon.com/config/latest/APIReference/API_ConfigurationRecorder.html
 

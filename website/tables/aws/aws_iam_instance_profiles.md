@@ -1,6 +1,6 @@
 # Table: aws_iam_instance_profiles
 
-This table shows data for AWS IAM Instance Profiles.
+This table shows data for IAM Instance Profiles.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_InstanceProfile.html
 

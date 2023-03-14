@@ -1,6 +1,6 @@
 # Table: aws_elasticbeanstalk_application_versions
 
-This table shows data for AWS Elasticbeanstalk Application Versions.
+This table shows data for AWS Elastic Beanstalk Application Versions.
 
 https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ApplicationVersionDescription.html
 

@@ -1,6 +1,6 @@
 # Table: aws_iam_user_policies
 
-This table shows data for AWS IAM User Policies.
+This table shows data for IAM User Policies.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetUserPolicy.html
 

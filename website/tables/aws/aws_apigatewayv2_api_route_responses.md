@@ -1,6 +1,6 @@
 # Table: aws_apigatewayv2_api_route_responses
 
-This table shows data for AWS Apigatewayv2 API Route Responses.
+This table shows data for Amazon API Gateway v2 API Route Responses.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_RouteResponse.html
 

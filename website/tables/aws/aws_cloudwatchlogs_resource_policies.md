@@ -1,6 +1,6 @@
 # Table: aws_cloudwatchlogs_resource_policies
 
-This table shows data for AWS Cloudwatchlogs Resource Policies.
+This table shows data for Cloudwatchlogs Resource Policies.
 
 https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_ResourcePolicy.html
 

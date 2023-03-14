@@ -1,6 +1,6 @@
 # Table: aws_s3_accounts
 
-This table shows data for AWS S3 Accounts.
+This table shows data for S3 Accounts.
 
 The primary key for this table is **account_id**.
 

@@ -1,6 +1,6 @@
 # Table: aws_glue_registries
 
-This table shows data for AWS Glue Registries.
+This table shows data for Glue Registries.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_RegistryListItem.html
 

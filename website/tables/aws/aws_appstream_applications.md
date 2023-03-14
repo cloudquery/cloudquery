@@ -1,6 +1,6 @@
 # Table: aws_appstream_applications
 
-This table shows data for AWS Appstream Applications.
+This table shows data for Amazon AppStream Applications.
 
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Application.html
 

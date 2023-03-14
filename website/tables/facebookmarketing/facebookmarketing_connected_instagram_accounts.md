@@ -1,6 +1,6 @@
 # Table: facebookmarketing_connected_instagram_accounts
 
-This table shows data for Facebookmarketing Connected Instagram Accounts.
+This table shows data for Facebook Marketing Connected Instagram Accounts.
 
 The composite primary key for this table is (**account_id**, **id**).
 

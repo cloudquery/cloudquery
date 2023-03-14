@@ -1,6 +1,6 @@
 # Table: azure_connectedvmware_datastores
 
-This table shows data for Azure Connectedvmware Datastores.
+This table shows data for Azure Connected VMware Datastores.
 
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#Datastore
 

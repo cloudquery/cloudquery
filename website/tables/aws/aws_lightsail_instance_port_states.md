@@ -1,6 +1,6 @@
 # Table: aws_lightsail_instance_port_states
 
-This table shows data for AWS Lightsail Instance Port States.
+This table shows data for Lightsail Instance Port States.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_InstancePortState.html
 

@@ -1,6 +1,6 @@
 # Table: aws_ssm_instances
 
-This table shows data for AWS Ssm Instances.
+This table shows data for Ssm Instances.
 
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InstanceInformation.html
 

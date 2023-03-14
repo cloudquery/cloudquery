@@ -1,6 +1,6 @@
 # Table: aws_iam_users
 
-This table shows data for AWS IAM Users.
+This table shows data for IAM Users.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_User.html
 

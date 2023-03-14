@@ -1,6 +1,6 @@
 # Table: aws_elasticache_parameter_groups
 
-This table shows data for AWS Elasticache Parameter Groups.
+This table shows data for Elasticache Parameter Groups.
 
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheParameterGroup.html
 

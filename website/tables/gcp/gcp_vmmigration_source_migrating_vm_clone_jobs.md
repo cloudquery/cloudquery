@@ -1,6 +1,6 @@
 # Table: gcp_vmmigration_source_migrating_vm_clone_jobs
 
-This table shows data for GCP Vmmigration Source Migrating VM Clone Jobs.
+This table shows data for GCP VM Migration Source Migrating VM Clone Jobs.
 
 https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.sources.migratingVms.cloneJobs
 
