@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [16.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v15.4.0...plugins-source-aws-v16.0.0) (2023-03-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** Fix DynamoDB PITR Query ([#9125](https://github.com/cloudquery/cloudquery/issues/9125))
+
+### Bug Fixes
+
+* **aws:** AWS Password Policy Saved Query ([#9079](https://github.com/cloudquery/cloudquery/issues/9079)) ([00e5f86](https://github.com/cloudquery/cloudquery/commit/00e5f86bc2482f149c12ef1597cd718eae6341d8))
+* **aws:** Fix DynamoDB PITR Query ([#9125](https://github.com/cloudquery/cloudquery/issues/9125)) ([059fdf7](https://github.com/cloudquery/cloudquery/commit/059fdf760f28b977070989f70b61ea8fdad4acbf))
+
 ## [15.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v15.3.0...plugins-source-aws-v15.4.0) (2023-03-15)
 
 
