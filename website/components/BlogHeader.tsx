@@ -31,7 +31,7 @@ function Authors({ data }: { data: BlogPostMeta }) {
   return (
     <div className="w-full border-b border-gray-400 authors border-opacity-20">
       <div className="flex flex-wrap justify-center py-8 mx-auto gap-7">
-        {authors.map((author) => (<Avatar {...author} />))}
+        {authors.map((author) => (<Avatar key={author.name} {...author} />))}
       </div>
     </div>
   );
