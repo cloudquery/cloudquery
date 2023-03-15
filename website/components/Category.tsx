@@ -5,8 +5,10 @@ export type Category =
     "databases" |
     "data-warehouses-lakes" |
     "engineering-analytics" |
+    "hr-software" |
     "marketing-analytics" |
     "product-analytics" |
+    "project-management" |
     "fleet-management" |
     "shipment-tracking" |
     "other";
@@ -27,6 +29,8 @@ export function CategoryTitle(cat: Category) {
             return "Cloud FinOps";
         case "fleet-management":
             return "Fleet Management";
+        case "hr-software":
+            return "HR Software";
         case "marketing-analytics":
             return "Marketing Analytics";
         case "product-analytics":
