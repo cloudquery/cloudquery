@@ -26,6 +26,9 @@ export default function Integrations() {
                         CloudQuery currently supports the following destination databases, data warehouses and data lakes:
                     </p>
                     <Destinations />
+                    <p className="mx-auto mt-24 font-medium text-lg text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
+                        Couldn't find the destination you were looking for? Please <a href="https://github.com/cloudquery/cloudquery/issues/new/choose" target="blank" className="text-blue-500 hover:text-blue-600">request it on GitHub ↗</a> and we'll add it to our roadmap. New destinations are created all the time, often within days of a request. Showing your interest helps us prioritize.
+                    </p>
                 </div>
             </div>
         </div>
