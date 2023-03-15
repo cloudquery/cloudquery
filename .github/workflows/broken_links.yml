@@ -74,6 +74,7 @@ jobs:
           npx broken-link-checker --requests 100 --host-requests 10 -f -r -v -o --filter-level 3 \
             --exclude "${{ steps.vercel.outputs.url }}/logo" \
             --exclude "${{ steps.vercel.outputs.url }}/docs/plugins/sources/*/tables" \
+            --exclude "${{ steps.vercel.outputs.url }}/integrations/*" \
             --exclude linkedin \
             --exclude cloudquery.io/discord \
             --exclude fonts.gstatic.com \
