@@ -52,3 +52,12 @@ func SubscriptionMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	}
 	return c
 }
+
+func BillingAccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
+	client := meta.(*Client)
+	var c = make([]schema.ClientMeta, len(client.BillingAccounts))
+	for i := range client.BillingAccounts {
+		c[i] = client.withBillingAccount(client.BillingAccounts[i])
+	}
+	return c
+}

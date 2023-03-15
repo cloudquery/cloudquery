@@ -19,6 +19,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/compute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/confluent"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/connectedvmware"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/consumption"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/containerinstance"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/containerregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/containerservice"
@@ -165,6 +166,17 @@ func tables() []*schema.Table {
 		containerservice.Snapshots(),
 		cosmos.Locations(),
 		cosmos.RestorableDatabaseAccounts(),
+		consumption.BillingAccountBalances(),
+		consumption.BillingAccountBudgets(),
+		consumption.BillingAccountCharges(),
+		consumption.BillingAccountEvents(),
+		consumption.BillingAccountLots(),
+		consumption.BillingAccountMarketplaces(),
+		consumption.BillingAccountReservationDetails(),
+		consumption.BillingAccountReservationRecommendations(),
+		consumption.BillingAccountReservationSummaries(),
+		consumption.BillingAccountReservationTransactions(),
+		consumption.BillingAccountUsageDetails(),
 		customerinsights.Hubs(),
 		dashboard.Grafana(),
 		databox.Jobs(),

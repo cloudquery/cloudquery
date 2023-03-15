@@ -3,6 +3,7 @@ package billing
 import (
 	"context"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
@@ -20,11 +21,15 @@ func Accounts() *schema.Table {
 
 func fetchAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
+	if cl.BillingAccounts != nil {
+		res <- cl.BillingAccounts
+		return nil
+	}
 	svc, err := armbilling.NewAccountsClient(cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager(&armbilling.AccountsClientListOptions{Expand: to.Ptr("soldTo,billingProfiles,billingProfiles/invoiceSections")})
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

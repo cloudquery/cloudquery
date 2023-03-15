@@ -11,7 +11,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
@@ -42,7 +44,9 @@ type Client struct {
 	Creds         azcore.TokenCredential
 	Options       *arm.ClientOptions
 
-	pluginSpec *Spec
+	pluginSpec      *Spec
+	BillingAccounts []*armbilling.Account
+	BillingAccount  *armbilling.Account
 }
 
 func (c *Client) discoverSubscriptions(ctx context.Context) error {
@@ -112,6 +116,24 @@ func (c *Client) getRegisteredProvidersForSubscription(ctx context.Context, subs
 		}
 	}
 	return providers, nil
+}
+
+func (c *Client) discoverBillingAccounts(ctx context.Context) error {
+	accounts := make([]*armbilling.Account, 0)
+	svc, err := armbilling.NewAccountsClient(c.Creds, c.Options)
+	if err != nil {
+		return err
+	}
+	pager := svc.NewListPager(&armbilling.AccountsClientListOptions{Expand: to.Ptr("soldTo,billingProfiles,billingProfiles/invoiceSections")})
+	for pager.More() {
+		p, err := pager.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		accounts = append(accounts, p.Value...)
+	}
+	c.BillingAccounts = accounts
+	return nil
 }
 
 func (c *Client) discoverResourceGroups(ctx context.Context) error {
@@ -233,6 +255,10 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		return nil, err
 	}
 
+	if err := c.discoverBillingAccounts(ctx); err != nil {
+		return nil, err
+	}
+
 	return c, nil
 }
 
@@ -243,6 +269,9 @@ func (c *Client) Logger() *zerolog.Logger {
 func (c *Client) ID() string {
 	if c.ResourceGroup != "" {
 		return fmt.Sprintf("subscriptions/%s/resourceGroups/%s", c.SubscriptionId, c.ResourceGroup)
+	}
+	if c.BillingAccount != nil {
+		return fmt.Sprintf("billingAccounts/%s", *c.BillingAccount.Name)
 	}
 	return fmt.Sprintf("subscriptions/%s", c.SubscriptionId)
 }
@@ -259,5 +288,12 @@ func (c *Client) withResourceGroup(resourceGroup string) *Client {
 	newC := *c
 	newC.logger = c.logger.With().Str("resource_group", resourceGroup).Logger()
 	newC.ResourceGroup = resourceGroup
+	return &newC
+}
+
+func (c *Client) withBillingAccount(billingAccount *armbilling.Account) *Client {
+	newC := *c
+	newC.logger = c.logger.With().Str("billing_account", *billingAccount.ID).Logger()
+	newC.BillingAccount = billingAccount
 	return &newC
 }

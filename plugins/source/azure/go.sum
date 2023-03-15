@@ -74,6 +74,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent v1.
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confluent/armconfluent v1.0.0/go.mod h1:HPMdvtu1bwSsVSQ1wRLTUoe7TUlNGRbmdcRo384ekXE=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware v0.1.0 h1:km3FTKovs/UyF3qJpsBFPSXuS75bVbzDsE00nUUTdFA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware v0.1.0/go.mod h1:eFPy/X3ZpHjOGolySu+h+AIboGtguBv0z16N/oEenZc=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption v1.0.0 h1:DSK/n3SPssFsqEn15KMksdbjEBlBNNgn4IGkvWM4nt0=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption v1.0.0/go.mod h1:0PHlFYAfcqh0IKo+50hEPUNzuMrcyvRakDKzJTonchY=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance/v2 v2.1.0 h1:BhiBk1oFqFQxcVCUXoMNUmXJyOD9Jy2EobM0fL/e2rI=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerinstance/armcontainerinstance/v2 v2.1.0/go.mod h1:nqIVnU22IacbrniShrveGMTMHdVozaqfzVFVygR/g/k=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry v1.0.0 h1:UuDNFPr44qr9eFQF2sv2WpwSGJlvZroSMsI3A4YtQMc=
