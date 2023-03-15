@@ -25,13 +25,13 @@ export const LogoContainer: React.FC<{
             <div className="flex items-center justify-center h-32 mt-6">
                 {logo ?
                     <>
-                        <img className={"h-full max-h-16" + (logoDark ? " dark:hidden": "") + (published ? "" : " opacity-50")} src={logo}/>
-                        {logoDark ? <img className={"h-full max-h-16 hidden dark:block" + (published ? "" : " opacity-50")} src={logoDark}/> : null}
+                        <img className={"h-full max-h-16" + (logoDark ? " dark:hidden": "") + (published ? "" : " opacity-70")} src={logo}/>
+                        {logoDark ? <img className={"h-full max-h-16 hidden dark:block" + (published ? "" : " opacity-70")} src={logoDark}/> : null}
                     </>
                     :
                     <>
-                        <img className={"h-full max-h-16 dark:hidden" + (published ? "" : " opacity-50")} src={defaultLogo}/>
-                        <img className={"h-full max-h-16 hidden dark:block opacity-50" + (published ? "" : " opacity-50")} src={defaultLogoDark}/>
+                        <img className={"h-full max-h-16 dark:hidden" + (published ? "" : " opacity-70")} src={defaultLogo}/>
+                        <img className={"h-full max-h-16 hidden dark:block" + (published ? "" : " opacity-70")} src={defaultLogoDark}/>
                     </>
                 }
             </div>

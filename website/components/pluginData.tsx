@@ -451,7 +451,8 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     id: "airtable",
     href: "https://github.com/cloudquery/cloudquery/issues/8869",
     kind: "unpublished",
-    category: "cloud-finops",
+    category: "project-management",
+    logo: "/images/logos/plugins/airtable.svg",
   },
   {
     name: "AfterShip",
@@ -459,13 +460,16 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9047",
     kind: "unpublished",
     category: "shipment-tracking",
+    logo: "/images/logos/plugins/aftership.svg",
   },
   {
-    name: "Amazon ads",
+    name: "Amazon Ads",
     id: "amazonads",
     href: "https://github.com/cloudquery/cloudquery/issues/8424",
     kind: "unpublished",
     category: "marketing-analytics",
+    logo: "/images/logos/plugins/amazon.svg",
+    logoDark: "/images/logos/plugins/amazon-dark.svg",
   },
   {
     name: "Amplitude",
@@ -473,6 +477,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8423",
     kind: "unpublished",
     category: "product-analytics",
+    logo: "/images/logos/plugins/amplitude.svg",
   },
   {
     name: "Atlassian Jira",
@@ -480,13 +485,15 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8104",
     kind: "unpublished",
     category: "engineering-analytics",
+    logo: "/images/logos/plugins/jira.svg",
   },
   {
     name: "Bamboo HR",
     id: "bamboo-hr",
     href: "https://github.com/cloudquery/cloudquery/issues/8426",
     kind: "unpublished",
-    category: "cloud-finops",
+    category: "hr-software",
+    logo: "/images/logos/plugins/bamboohr.svg",
   },
   {
     name: "Baremetrics",
@@ -494,6 +501,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9045",
     kind: "unpublished",
     category: "marketing-analytics",
+    logo: "/images/logos/plugins/baremetrics.svg",
   },
   {
     name: "Bing Ads",
@@ -501,6 +509,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8425",
     kind: "unpublished",
     category: "marketing-analytics",
+    logo: "/images/logos/plugins/bingads.svg",
   },
   {
     name: "BitBucket",
@@ -508,6 +517,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/5510",
     kind: "unpublished",
     category: "engineering-analytics",
+    logo: "/images/logos/plugins/bitbucket.svg",
   },
   {
     name: "Chargebee",
@@ -515,6 +525,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9048",
     kind: "unpublished",
     category: "cloud-finops",
+    logo: "/images/logos/plugins/chargebee.svg",
   },
   {
     name: "CloudWatch",
@@ -529,6 +540,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9044",
     kind: "unpublished",
     category: "cloud-infrastructure",
+    logo: "/images/logos/plugins/cloudinary.svg",
   },
   {
     name: "Detrack",
@@ -542,7 +554,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     id: "gmail",
     href: "https://github.com/cloudquery/cloudquery/issues/8135",
     kind: "unpublished",
-    category: "cloud-finops",
+    category: "marketing-analytics",
   },
   {
     name: "Google Ads",
@@ -550,6 +562,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8642",
     kind: "unpublished",
     category: "marketing-analytics",
+    logo: "/images/logos/plugins/google-ads.svg",
   },
   {
     name: "Google Sheets",
@@ -557,6 +570,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/5190",
     kind: "unpublished",
     category: "other",
+    logo: "/images/logos/plugins/google-sheets.svg",
   },
   {
     name: "Hashicorp Vault",
@@ -564,6 +578,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/6738",
     kind: "unpublished",
     category: "cloud-infrastructure",
+    logo: "/images/logos/plugins/hashicorp-vault.svg",
   },
   {
     name: "Infoblox",
@@ -571,6 +586,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8383",
     kind: "unpublished",
     category: "cloud-infrastructure",
+    logo: "/images/logos/plugins/infoblox.svg",
   },
   {
     name: "Intercom",
@@ -578,6 +594,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9041",
     kind: "unpublished",
     category: "cloud-infrastructure",
+    logo: "/images/logos/plugins/intercom.svg",
   },
   {
     name: "LinkedIn Ads",
@@ -585,6 +602,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9033",
     kind: "unpublished",
     category: "marketing-analytics",
+    logo: "/images/logos/plugins/linkedin.svg",
   },
   {
     name: "Mailchimp",
@@ -592,6 +610,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8430",
     kind: "unpublished",
     category: "marketing-analytics",
+    logo: "/images/logos/plugins/mailchimp.svg",
   },
   {
     name: "Mailgun",
@@ -599,6 +618,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9050",
     kind: "unpublished",
     category: "marketing-analytics",
+    logo: "/images/logos/plugins/mailgun.svg",
   },
   {
     name: "Marketo",
@@ -606,20 +626,22 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8428",
     kind: "unpublished",
     category: "marketing-analytics",
+    logo: "/images/logos/plugins/marketo.svg",
   },
   {
     name: "Monday",
     id: "monday",
     href: "https://github.com/cloudquery/cloudquery/issues/8431",
     kind: "unpublished",
-    category: "cloud-finops",
+    category: "project-management",
   },
   {
-    name: "MSSQL",
+    name: "Microsoft SQL Server",
     id: "mssql",
     href: "https://github.com/cloudquery/cloudquery/issues/8861",
     kind: "unpublished",
     category: "databases",
+    logo: "/images/logos/plugins/mssql.svg",
   },
   {
     name: "MySQL",
@@ -627,6 +649,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8411",
     kind: "unpublished",
     category: "databases",
+    logo: "/images/logos/plugins/mysql.svg",
   },
   {
     name: "New Relic",
@@ -641,6 +664,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8862",
     kind: "unpublished",
     category: "databases",
+    logo: "/images/logos/plugins/oracle.svg",
   },
   {
     name: "OnFleet",
@@ -655,6 +679,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/6781",
     kind: "unpublished",
     category: "cloud-finops",
+    logo: "/images/logos/plugins/paypal.svg",
   },
   {
     name: "Prisma",
@@ -662,6 +687,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/6582",
     kind: "unpublished",
     category: "cloud-infrastructure",
+    logo: "/images/logos/plugins/prisma.svg",
   },
   {
     name: "Reddit Advertising",
@@ -669,6 +695,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8684",
     kind: "unpublished",
     category: "marketing-analytics",
+    logo: "/images/logos/plugins/reddit.svg",
   },
   {
     name: "Samsara",
@@ -683,6 +710,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9038",
     kind: "unpublished",
     category: "shipment-tracking",
+    logo: "/images/logos/plugins/shippo.svg",
   },
   {
     name: "Shipup",
@@ -697,6 +725,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8320",
     kind: "unpublished",
     category: "data-warehouses-lakes",
+    logo: "/images/logos/plugins/s3.svg",
   },
   {
     name: "Sonatype Nexus",
@@ -704,6 +733,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/7640",
     kind: "unpublished",
     category: "cloud-infrastructure",
+    logo: "/images/logos/plugins/sonatype.svg",
   },
   {
     name: "Square",
@@ -711,6 +741,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9037",
     kind: "unpublished",
     category: "cloud-finops",
+    logo: "/images/logos/plugins/square.svg",
   },
   {
     name: "Twilio",
@@ -718,6 +749,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9035",
     kind: "unpublished",
     category: "cloud-infrastructure",
+    logo: "/images/logos/plugins/twilio.svg",
   },
   {
     name: "Twilio Sendgrid",
@@ -725,6 +757,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9039",
     kind: "unpublished",
     category: "marketing-analytics",
+    logo: "/images/logos/plugins/sendgrid.svg",
   },
   {
     name: "Typeform",
@@ -732,6 +765,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9034",
     kind: "unpublished",
     category: "marketing-analytics",
+    logo: "/images/logos/plugins/typeform.svg",
   },
   {
     name: "Zoho Campaign",
@@ -740,6 +774,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9028",
     kind: "unpublished",
     category: "product-analytics",
+    logo: "/images/logos/plugins/zoho.svg",
   },
   {
     name: "Zoho CRM",
@@ -748,6 +783,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9029",
     kind: "unpublished",
     category: "marketing-analytics",
+    logo: "/images/logos/plugins/zoho.svg",
   },
   {
     name: "Zoom",
@@ -755,6 +791,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/1507",
     kind: "unpublished",
     category: "cloud-infrastructure",
+    logo: "/images/logos/plugins/zoom.svg",
   },
 ];
 
