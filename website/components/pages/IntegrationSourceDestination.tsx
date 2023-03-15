@@ -32,7 +32,7 @@ function unpublishedPlugin({
                             A CloudQuery {source.name} plugin will allow you to sync data from {source.website ? <a href={source.website} className="text-blue-500 hover:text-blue-600">{source.name}</a> : source.name } to any destination, including {destination.name} and <a href={"/integrations/" + source.id} className="text-blue-500 hover:text-blue-600">many others</a>.
                         </p>
                         <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
-                            Upvote and subscribe to <a href={source.href} className="text-blue-500 hover:text-blue-600">the issue on GitHub ↗</a> to show your interest and get notified when the {source.name} plugin is released. New plugins are created all the time, often within days of a request. Showing your interest in a plugin helps us prioritize it.
+                            Upvote and subscribe to <a href={source.href} target="_blank" className="text-blue-500 hover:text-blue-600">the issue on GitHub ↗</a> to show your interest and get notified when the {source.name} plugin is released. New plugins are created all the time, often within days of a request. Showing your interest in a plugin helps us prioritize it.
                         </p>
                         <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
                         <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
