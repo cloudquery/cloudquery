@@ -7,13 +7,14 @@ import (
 )
 
 func Models() *schema.Table {
+	tableName := "aws_sagemaker_models"
 	return &schema.Table{
-		Name:                "aws_sagemaker_models",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeModel.html`,
 		Resolver:            fetchSagemakerModels,
 		PreResourceResolver: getModel,
 		Transform:           transformers.TransformWithStruct(&WrappedSageMakerModel{}, transformers.WithUnwrapStructFields("DescribeModelOutput")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("api.sagemaker"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "api.sagemaker"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

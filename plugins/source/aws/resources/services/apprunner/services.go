@@ -8,12 +8,13 @@ import (
 )
 
 func Services() *schema.Table {
+	tableName := "aws_apprunner_services"
 	return &schema.Table{
-		Name:                "aws_apprunner_services",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/apprunner/latest/api/API_Service.html`,
 		Resolver:            fetchApprunnerServices,
 		PreResourceResolver: getService,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("apprunner"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "apprunner"),
 		Transform:           transformers.TransformWithStruct(&types.Service{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

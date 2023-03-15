@@ -2,7 +2,6 @@ package tax
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func TaxRates() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_tax_rates",
 		Description: `https://stripe.com/docs/api/tax_rates`,
-		Transform:   transformers.TransformWithStruct(&stripe.TaxRate{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.TaxRate{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchTaxRates,
 
 		Columns: []schema.Column{

@@ -16,28 +16,8 @@ func AddColumn(schemaName string, table *schema.Table, definition *Definition) s
 	})
 }
 
-func DropColumn(schemaName string, table *schema.Table, definition *Definition) string {
-	return execTemplate("col_drop.sql.tpl", &colQueryBuilder{
-		Table:      SanitizedTableName(schemaName, table),
-		Definition: definition.sanitized(),
-	})
-}
-
-func AlterColumn(schemaName string, table *schema.Table, definition *Definition) string {
-	return execTemplate("col_alter.sql.tpl", &colQueryBuilder{
-		Table:      SanitizedTableName(schemaName, table),
-		Definition: definition.sanitized(),
-	})
-}
-
-func GetPKColumns(table *schema.Table, enabled bool) []string {
-	pk := table.PrimaryKeys()
-
-	if !enabled || len(pk) == 0 {
-		return sanitized(schema.CqIDColumn.Name)
-	}
-
-	return sanitized(pk...)
+func GetPKColumns(table *schema.Table) []string {
+	return sanitized(table.PrimaryKeys()...)
 }
 
 func GetValueColumns(columns schema.ColumnList) []string {

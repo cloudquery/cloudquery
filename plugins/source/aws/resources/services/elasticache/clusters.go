@@ -8,11 +8,12 @@ import (
 )
 
 func Clusters() *schema.Table {
+	tableName := "aws_elasticache_clusters"
 	return &schema.Table{
-		Name:        "aws_elasticache_clusters",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheCluster.html`,
 		Resolver:    fetchElasticacheClusters,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
 		Transform:   transformers.TransformWithStruct(&types.CacheCluster{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

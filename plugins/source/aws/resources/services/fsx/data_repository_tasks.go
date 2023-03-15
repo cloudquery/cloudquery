@@ -8,12 +8,13 @@ import (
 )
 
 func DataRepositoryTasks() *schema.Table {
+	tableName := "aws_fsx_data_repository_tasks"
 	return &schema.Table{
-		Name:        "aws_fsx_data_repository_tasks",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryTask.html`,
 		Resolver:    fetchFsxDataRepositoryTasks,
 		Transform:   transformers.TransformWithStruct(&types.DataRepositoryTask{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "fsx"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

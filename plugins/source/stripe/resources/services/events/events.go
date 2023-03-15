@@ -2,7 +2,6 @@ package events
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func Events() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_events",
 		Description: `https://stripe.com/docs/api/events`,
-		Transform:   transformers.TransformWithStruct(&stripe.Event{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.Event{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchEvents,
 
 		Columns: []schema.Column{

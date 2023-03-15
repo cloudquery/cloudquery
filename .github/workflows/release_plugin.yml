@@ -3,6 +3,7 @@ on:
   push:
     tags:
       - "plugins-*-*-v*.*.*"
+      - "!plugins-destination-duckdb-v*.*.*"
       - "!plugins-destination-sqlite-v*.*.*"
       - "!plugins-destination-snowflake-v*.*.*"
 env:

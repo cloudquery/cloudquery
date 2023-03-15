@@ -24,7 +24,13 @@ func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 		}
 		describeClusterOutput, err := svc.DescribeClusters(ctx, &ecs.DescribeClustersInput{
 			Clusters: listClustersOutput.ClusterArns,
-			Include:  []types.ClusterField{types.ClusterFieldTags},
+			Include: []types.ClusterField{
+				types.ClusterFieldAttachments,
+				types.ClusterFieldTags,
+				types.ClusterFieldSettings,
+				types.ClusterFieldConfigurations,
+				types.ClusterFieldStatistics,
+			},
 		})
 		if err != nil {
 			return err

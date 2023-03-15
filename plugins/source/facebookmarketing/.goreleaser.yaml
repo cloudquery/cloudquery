@@ -1,0 +1,14 @@
+variables:
+  component: source/facebookmarketing
+  binary: facebookmarketing
+
+project_name: plugins/source/facebookmarketing
+
+monorepo:
+  tag_prefix: plugins-source-facebookmarketing-
+  dir: plugins/source/facebookmarketing
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

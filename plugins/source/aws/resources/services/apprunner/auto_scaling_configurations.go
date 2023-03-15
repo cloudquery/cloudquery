@@ -8,12 +8,13 @@ import (
 )
 
 func AutoScalingConfigurations() *schema.Table {
+	tableName := "aws_apprunner_auto_scaling_configurations"
 	return &schema.Table{
-		Name:                "aws_apprunner_auto_scaling_configurations",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/apprunner/latest/api/API_AutoScalingConfiguration.html`,
 		Resolver:            fetchApprunnerAutoScalingConfigurations,
 		PreResourceResolver: getAutoScalingConfiguration,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("apprunner"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "apprunner"),
 		Transform:           transformers.TransformWithStruct(&types.AutoScalingConfiguration{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

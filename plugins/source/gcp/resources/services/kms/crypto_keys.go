@@ -13,7 +13,7 @@ func CryptoKeys() *schema.Table {
 		Description: `https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKey`,
 		Resolver:    fetchCryptoKeys,
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudkms.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.CryptoKey{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.CryptoKey{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

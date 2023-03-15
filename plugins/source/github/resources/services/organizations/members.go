@@ -11,10 +11,9 @@ import (
 
 func members() *schema.Table {
 	return &schema.Table{
-		Name:     "github_organization_members",
-		Resolver: fetchMembers,
-		Transform: transformers.TransformWithStruct(&github.User{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
+		Name:      "github_organization_members",
+		Resolver:  fetchMembers,
+		Transform: client.TransformWithStruct(&github.User{}, transformers.WithPrimaryKeys("ID")),
 		Columns: []schema.Column{
 			client.OrgColumn,
 			{

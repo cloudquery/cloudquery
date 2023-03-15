@@ -11,13 +11,14 @@ import (
 )
 
 func StateMachines() *schema.Table {
+	tableName := "aws_stepfunctions_state_machines"
 	return &schema.Table{
-		Name:                "aws_stepfunctions_state_machines",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeStateMachine.html`,
 		Resolver:            fetchStepfunctionsStateMachines,
 		PreResourceResolver: getStepFunction,
 		Transform:           transformers.TransformWithStruct(&sfn.DescribeStateMachineOutput{}, transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("states"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "states"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

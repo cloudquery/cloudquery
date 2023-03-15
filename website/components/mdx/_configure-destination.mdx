@@ -1,0 +1,54 @@
+import { Callout } from 'nextra-theme-docs';
+
+## Configure Destination Plugin
+
+Destination plugins define where you will be syncing your data to (See: [available destinations](/docs/plugins/destinations/overview)).
+
+For example, let's configure the [PostgreSQL](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql) destination plugin
+(See all available versions [here](https://github.com/cloudquery/cloudquery/releases?q=plugins-destination-postgresql&expanded=true)).
+Create a file in a new directory `cloudquery-config/postgresql.yml`: 
+
+```yaml copy
+kind: destination
+spec:
+  ## Required. name of the plugin.
+  ## This is an alias so it should be unique if you have a number of postgresql destination plugins.
+  name: "postgresql"
+
+  ## Optional. Where to search for the plugin. Default: "github". Options: "github", "local", "grpc".
+  # registry: "github"
+
+  ## Path for the plugin.
+  ## If registry is "github" path should be "repo/name"
+  ## If registry is "local", path is path to binary. If "grpc" then it should be address of the plugin (usually useful in debug).
+  path: "cloudquery/postgresql"
+
+  ## Required. Must be a specific version starting with v, e.g. v1.2.3
+  ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-destination-postgresql&expanded=true
+  version: "VERSION_DESTINATION_POSTGRESQL"
+
+  ## Optional. Default: "overwrite-delete-stale". Available: "overwrite-delete-stale", "overwrite", "append". 
+  ##  Not all modes are supported by all plugins, so make sure to check the plugin documentation for more details.
+  write_mode: "overwrite-delete-stale" # overwrite-delete-stale, overwrite, append
+
+  spec:
+    ## plugin-specific configuration for PostgreSQL.
+    ## See all available options here: https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql#postgresql-spec
+
+    ## Required. Connection string to your PostgreSQL instance
+    ## In production it is highly recommended to use environment variable expansion
+    ## connection_string: ${PG_CONNECTION_STRING}
+    connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
+```
+
+- All general options for destination spec you can find under [references/destination-spec](/docs/reference/destination-spec).
+- All options for `postgresql` destination plugin spec you can find [here](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql#postgresql-spec)
+
+For a list of all available destination plugin spec options, see [Destination Spec Reference](/docs/reference/destination-spec).
+
+<Callout>
+
+If you have multiple destination plugins (or running multiple cloudquery instances in parallel), it's required
+that every plugin configuration has a unique `name` (e.g. `postgres1`, `postgres2`, …).
+
+</Callout>

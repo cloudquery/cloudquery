@@ -8,12 +8,13 @@ import (
 )
 
 func Classifiers() *schema.Table {
+	tableName := "aws_glue_classifiers"
 	return &schema.Table{
-		Name:        "aws_glue_classifiers",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_Classifier.html`,
 		Resolver:    fetchGlueClassifiers,
 		Transform:   transformers.TransformWithStruct(&types.Classifier{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

@@ -24,6 +24,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codebuild"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codepipeline"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cognito"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/computeoptimizer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/config"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dax"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/directconnect"
@@ -157,6 +158,12 @@ func tables() []*schema.Table {
 		codepipeline.Webhooks(),
 		cognito.IdentityPools(),
 		cognito.UserPools(),
+		computeoptimizer.AutoscalingGroupsRecommendations(),
+		computeoptimizer.EbsVolumeRecommendations(),
+		computeoptimizer.Ec2InstanceRecommendations(),
+		computeoptimizer.EcsServiceRecommendations(),
+		computeoptimizer.EnrollmentStatuses(),
+		computeoptimizer.LambdaFunctionsRecommendations(),
 		config.ConfigRules(),
 		config.ConfigurationRecorders(),
 		config.ConformancePacks(),
@@ -179,9 +186,11 @@ func tables() []*schema.Table {
 		docdb.PendingMaintenanceActions(),
 		docdb.SubnetGroups(),
 		dynamodb.Tables(),
+		ec2.AccountAttributes(),
 		ec2.AvailabilityZones(),
 		ec2.ByoipCidrs(),
 		ec2.CustomerGateways(),
+		ec2.DHCPOptions(),
 		ec2.EbsSnapshots(),
 		ec2.EbsVolumes(),
 		ec2.EbsVolumesStatuses(),
@@ -195,6 +204,7 @@ func tables() []*schema.Table {
 		ec2.InstanceTypes(),
 		ec2.InternetGateways(),
 		ec2.KeyPairs(),
+		ec2.LaunchTemplates(),
 		ec2.ManagedPrefixLists(),
 		ec2.NatGateways(),
 		ec2.NetworkAcls(),
@@ -204,6 +214,8 @@ func tables() []*schema.Table {
 		ec2.ReservedInstances(),
 		ec2.RouteTables(),
 		ec2.SecurityGroups(),
+		ec2.SpotFleetRequests(),
+		ec2.SpotInstanceRequests(),
 		ec2.Subnets(),
 		ec2.TransitGateways(),
 		ec2.VpcEndpoints(),
@@ -378,8 +390,10 @@ func tables() []*schema.Table {
 		rds.DbSecurityGroups(),
 		rds.DbSnapshots(),
 		rds.EngineVersions(),
+		rds.Events(),
 		rds.EventSubscriptions(),
 		rds.Instances(),
+		rds.OptionGroups(),
 		rds.ReservedInstances(),
 		rds.SubnetGroups(),
 		redshift.Clusters(),

@@ -8,12 +8,13 @@ import (
 )
 
 func IdentityPools() *schema.Table {
+	tableName := "aws_cognito_identity_pools"
 	return &schema.Table{
-		Name:                "aws_cognito_identity_pools",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/cognitoidentity/latest/APIReference/API_DescribeIdentityPool.html`,
 		Resolver:            fetchCognitoIdentityPools,
 		PreResourceResolver: getIdentityPool,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("cognito-identity"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "cognito-identity"),
 		Transform:           transformers.TransformWithStruct(&cognitoidentity.DescribeIdentityPoolOutput{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

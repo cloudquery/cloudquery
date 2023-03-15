@@ -8,12 +8,14 @@ import (
 )
 
 func ScheduleGroups() *schema.Table {
+	tableName := "aws_scheduler_schedule_groups"
 	return &schema.Table{
-		Name:        "aws_scheduler_schedule_groups",
+		Name:        tableName,
+		Title:       "Amazon EventBridge Scheduler Schedule Groups",
 		Description: `https://docs.aws.amazon.com/scheduler/latest/APIReference/API_ScheduleGroupSummary.html`,
 		Resolver:    fetchSchedulerScheduleGroups,
 		Transform:   transformers.TransformWithStruct(&types.ScheduleGroupSummary{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("scheduler"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "scheduler"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

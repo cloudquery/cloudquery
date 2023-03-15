@@ -8,11 +8,12 @@ import (
 )
 
 func InstanceTypes() *schema.Table {
+	tableName := "aws_ec2_instance_types"
 	return &schema.Table{
-		Name:        "aws_ec2_instance_types",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceTypeInfo.html`,
 		Resolver:    fetchEc2InstanceTypes,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.InstanceTypeInfo{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

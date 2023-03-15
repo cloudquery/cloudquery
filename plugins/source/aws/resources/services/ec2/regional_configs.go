@@ -8,10 +8,11 @@ import (
 )
 
 func RegionalConfigs() *schema.Table {
+	tableName := "aws_ec2_regional_configs"
 	return &schema.Table{
-		Name:      "aws_ec2_regional_configs",
+		Name:      tableName,
 		Resolver:  fetchEc2RegionalConfigs,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform: transformers.TransformWithStruct(&models.RegionalConfig{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

@@ -8,12 +8,13 @@ import (
 )
 
 func Registries() *schema.Table {
+	tableName := "aws_glue_registries"
 	return &schema.Table{
-		Name:        "aws_glue_registries",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_RegistryListItem.html`,
 		Resolver:    fetchGlueRegistries,
 		Transform:   transformers.TransformWithStruct(&types.RegistryListItem{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

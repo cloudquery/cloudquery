@@ -8,12 +8,13 @@ import (
 )
 
 func Vaults() *schema.Table {
+	tableName := "aws_glacier_vaults"
 	return &schema.Table{
-		Name:        "aws_glacier_vaults",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/amazonglacier/latest/dev/api-vaults-get.html`,
 		Resolver:    fetchGlacierVaults,
 		Transform:   transformers.TransformWithStruct(&types.DescribeVaultOutput{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("glacier"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glacier"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

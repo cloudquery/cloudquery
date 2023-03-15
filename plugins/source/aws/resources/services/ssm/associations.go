@@ -8,12 +8,13 @@ import (
 )
 
 func Associations() *schema.Table {
+	tableName := "aws_ssm_associations"
 	return &schema.Table{
-		Name:        "aws_ssm_associations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_Association.html`,
 		Resolver:    fetchSsmAssociations,
 		Transform:   transformers.TransformWithStruct(&types.Association{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ssm"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ssm"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

@@ -8,11 +8,12 @@ import (
 )
 
 func VpcEndpoints() *schema.Table {
+	tableName := "aws_elasticsearch_vpc_endpoints"
 	return &schema.Table{
-		Name:        "aws_elasticsearch_vpc_endpoints",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_VpcEndpoint.html`,
 		Resolver:    fetchElasticsearchVpcEndpoints,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("es"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "es"),
 		Transform:   transformers.TransformWithStruct(&types.VpcEndpoint{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

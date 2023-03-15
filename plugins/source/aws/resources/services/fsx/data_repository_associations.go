@@ -8,12 +8,13 @@ import (
 )
 
 func DataRepositoryAssociations() *schema.Table {
+	tableName := "aws_fsx_data_repository_associations"
 	return &schema.Table{
-		Name:        "aws_fsx_data_repository_associations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryAssociation.html`,
 		Resolver:    fetchFsxDataRepositoryAssociations,
 		Transform:   transformers.TransformWithStruct(&types.DataRepositoryAssociation{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "fsx"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

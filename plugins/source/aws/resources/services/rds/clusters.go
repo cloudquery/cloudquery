@@ -8,12 +8,13 @@ import (
 )
 
 func Clusters() *schema.Table {
+	tableName := "aws_rds_clusters"
 	return &schema.Table{
-		Name:        "aws_rds_clusters",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBCluster.html`,
 		Resolver:    fetchRdsClusters,
 		Transform:   transformers.TransformWithStruct(&types.DBCluster{}, transformers.WithSkipFields("TagList")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -30,6 +31,9 @@ func Clusters() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: resolveRdsClusterTags,
 			},
+		},
+		Relations: []*schema.Table{
+			clusterBacktracks(),
 		},
 	}
 }

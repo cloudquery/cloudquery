@@ -1,0 +1,30 @@
+# Table: tf_resources
+
+This table shows data for Tf Resources.
+
+Terraform resources
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+
+This table depends on [tf_data](tf_data).
+
+The following tables depend on tf_resources:
+  - [tf_resource_instances](tf_resource_instances)
+
+## Columns
+
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|data_backend_name|String|
+|module|String|
+|mode|String|
+|type|String|
+|name|String|
+|provider_path|String|
+|provider|String|

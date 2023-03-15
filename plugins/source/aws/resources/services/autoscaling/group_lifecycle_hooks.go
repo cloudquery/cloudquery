@@ -8,11 +8,12 @@ import (
 )
 
 func GroupLifecycleHooks() *schema.Table {
+	tableName := "aws_autoscaling_group_lifecycle_hooks"
 	return &schema.Table{
-		Name:        "aws_autoscaling_group_lifecycle_hooks",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LifecycleHook.html`,
 		Resolver:    fetchAutoscalingGroupLifecycleHooks,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "autoscaling"),
 		Transform:   transformers.TransformWithStruct(&types.LifecycleHook{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

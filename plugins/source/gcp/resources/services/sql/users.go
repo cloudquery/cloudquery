@@ -13,7 +13,7 @@ func Users() *schema.Table {
 		Description: `https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/users#User`,
 		Resolver:    fetchUsers,
 		Multiplex:   client.ProjectMultiplexEnabledServices("sqladmin.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.User{}, append(client.Options(), transformers.WithPrimaryKeys("Instance", "Name"))...),
+		Transform:   client.TransformWithStruct(&pb.User{}, transformers.WithPrimaryKeys("Instance", "Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

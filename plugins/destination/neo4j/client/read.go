@@ -101,7 +101,7 @@ func (*Client) createResultsArray(table *schema.Table, node *neo4j.Node) []any {
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
 	stmt := fmt.Sprintf(readCypher, table.Name)
 
-	session := c.client.NewSession(ctx, neo4j.SessionConfig{})
+	session := c.LoggedSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
 	session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		r, err := tx.Run(ctx, stmt, map[string]any{"cq_source_name": sourceName})
@@ -122,5 +122,5 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		}
 		return nil, nil
 	})
-	return nil
+	return session.Close(ctx)
 }

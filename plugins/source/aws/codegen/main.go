@@ -31,6 +31,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
+	"github.com/aws/aws-sdk-go-v2/service/computeoptimizer"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
@@ -117,6 +118,7 @@ var clients = []any{
 	&amplify.Client{},
 	&apigateway.Client{},
 	&apigatewayv2.Client{},
+	&computeoptimizer.Client{},
 	&applicationautoscaling.Client{},
 	&apprunner.Client{},
 	&appstream.Client{},
@@ -234,6 +236,7 @@ func include(m reflect.Method) bool {
 		"QuerySchemaVersionMetadata",
 		"GenerateCredentialReport",
 		"LookupEvents",
+		"GenerateServiceLastAccessedDetails",
 	}
 	if funk.ContainsString(exceptions, m.Name) {
 		return true

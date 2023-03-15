@@ -13,7 +13,7 @@ func Locations() *schema.Table {
 		Description: `https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings#KeyRing`,
 		Resolver:    fetchLocations,
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudkms.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&locationpb.Location{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&locationpb.Location{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

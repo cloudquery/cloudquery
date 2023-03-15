@@ -13,10 +13,25 @@
     }
   },
   "docs": "Docs",
+  "integrations": {
+    "title": "Integrations",
+    "type": "page",
+    "theme": {
+      "layout": "full",
+      "sidebar": false
+    }
+  },
   "how-to-guides": {
     "title": "How-to Guides",
     "theme": {
       "typesetting": "article"
+    }
+  },
+  "new-source-plugin": {
+    "title": "New Source Plugins",
+    "display": "hidden",
+    "theme": {
+      "layout": "full"
     }
   },
   "blog": {
@@ -28,7 +43,13 @@
   "plugins": {
     "title": "Plugins",
     "href": "/docs/plugins/overview",
-    "route": "/docs/plugins"
+    "route": "#"
+  },
+  "tables": {
+    "title": "Tables",
+    "theme": {
+      "typesetting": "article"
+    }
   },
   "confirm": {
     "title": "Confirm",

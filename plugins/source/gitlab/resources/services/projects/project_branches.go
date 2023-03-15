@@ -3,7 +3,6 @@ package projects
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/xanzy/go-gitlab"
 )
 
@@ -11,7 +10,7 @@ func ProjectBranches() *schema.Table {
 	return &schema.Table{
 		Name:      "gitlab_project_branches",
 		Resolver:  fetchProjectBranches,
-		Transform: transformers.TransformWithStruct(&gitlab.Branch{}, client.SharedTransformers()...),
+		Transform: client.TransformWithStruct(&gitlab.Branch{}),
 		Columns: []schema.Column{
 			{
 				Name:     "base_url",

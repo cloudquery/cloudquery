@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	sourcePluginDocsRegex = regexp.MustCompile(`^plugins/source/.*?/docs/tables/.*\.md$`)
+	sourcePluginDocsRegex = regexp.MustCompile(`^website/tables/.*?/.*\.md$`)
 )
 
 func isPluginTableDocFile(file *gitdiff.File) bool {

@@ -8,11 +8,12 @@ import (
 )
 
 func VpnGateways() *schema.Table {
+	tableName := "aws_ec2_vpn_gateways"
 	return &schema.Table{
-		Name:        "aws_ec2_vpn_gateways",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpnGateway.html`,
 		Resolver:    fetchEc2VpnGateways,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.VpnGateway{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

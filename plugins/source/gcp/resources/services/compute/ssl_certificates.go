@@ -19,7 +19,7 @@ func SslCertificates() *schema.Table {
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/sslCertificates#SslCertificate`,
 		Resolver:    fetchSslCertificates,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.SslCertificate{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.SslCertificate{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
