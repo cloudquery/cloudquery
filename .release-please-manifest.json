@@ -11,7 +11,7 @@
   "plugins/source/digitalocean+FILLER": "0.0.0",
   "plugins/source/gcp": "8.4.1",
   "plugins/source/gcp+FILLER": "0.0.0",
-  "plugins/source/github": "4.1.0",
+  "plugins/source/github": "4.1.1",
   "plugins/source/github+FILLER": "0.0.0",
   "plugins/source/heroku": "3.2.1",
   "plugins/source/heroku+FILLER": "0.0.0",
@@ -55,7 +55,7 @@
   "plugins/source/azuredevops+FILLER": "0.0.0",
   "plugins/source/salesforce": "1.1.1",
   "plugins/source/salesforce+FILLER": "0.0.0",
-  "plugins/source/fastly": "1.2.0",
+  "plugins/source/fastly": "1.2.1",
   "plugins/source/fastly+FILLER": "0.0.0",
   "plugins/source/snyk": "1.2.1",
   "plugins/source/snyk+FILLER": "0.0.0",
@@ -111,6 +111,6 @@
   "plugins/destination/duckdb+FILLER": "0.0.0",
   "plugins/source/facebookmarketing": "1.0.1",
   "plugins/source/facebookmarketing+FILLER": "0.0.0",
-  "plugins/source/googleanalytics": "1.0.0",
+  "plugins/source/googleanalytics": "1.0.1",
   "plugins/source/mysql": "1.0.1"
 }
