@@ -23,6 +23,7 @@
 - [azure_appservice_top_level_domains](../../../../../website/tables/azure/azure_appservice_top_level_domains.md)
 - [azure_appservice_web_apps](../../../../../website/tables/azure/azure_appservice_web_apps.md)
   - [azure_appservice_web_app_auth_settings](../../../../../website/tables/azure/azure_appservice_web_app_auth_settings.md)
+  - [azure_appservice_web_app_configurations](../../../../../website/tables/azure/azure_appservice_web_app_configurations.md)
   - [azure_appservice_web_app_vnet_connections](../../../../../website/tables/azure/azure_appservice_web_app_vnet_connections.md)
 - [azure_authorization_classic_administrators](../../../../../website/tables/azure/azure_authorization_classic_administrators.md)
 - [azure_authorization_provider_operations_metadata](../../../../../website/tables/azure/azure_authorization_provider_operations_metadata.md)

@@ -48,11 +48,10 @@ jobs:
 
       - name: Waiting for Vercel Preview
         if: github.event_name == 'pull_request' && steps.broken-links.outputs.check != 'false'
-        uses: patrickedqvist/wait-for-vercel-preview@bfdff514ff78a669f2536e9f4dd4ef5813a704a2
+        uses: patrickedqvist/wait-for-vercel-preview@dca4940010f36d2d44caa487087a09b57939b24a
         id: preview-deployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          # The action waits half of `max_timeout`. TODO: Change to 600 when https://github.com/patrickedqvist/wait-for-vercel-preview/pull/34 is released
           max_timeout: 1200
           check_interval: 10
           environment: 'Preview'
@@ -74,6 +73,7 @@ jobs:
           npx broken-link-checker --requests 100 --host-requests 10 -f -r -v -o --filter-level 3 \
             --exclude "${{ steps.vercel.outputs.url }}/logo" \
             --exclude "${{ steps.vercel.outputs.url }}/docs/plugins/sources/*/tables" \
+            --exclude "${{ steps.vercel.outputs.url }}/integrations/*" \
             --exclude linkedin \
             --exclude cloudquery.io/discord \
             --exclude fonts.gstatic.com \

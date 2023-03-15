@@ -28,6 +28,9 @@
     "plugins/destination/gcs": {
       "component": "plugins-destination-gcs"
     },
+    "plugins/destination/gremlin": {
+      "component": "plugins-destination-gremlin"
+    },
     "plugins/destination/kafka": {
       "component": "plugins-destination-kafka"
     },
