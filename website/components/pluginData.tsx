@@ -372,6 +372,12 @@ export const DESTINATION_PLUGINS: Plugin[] = [
     category: "data-warehouses-lakes",
   },
   {
+    name: "Gremlin",
+    logo: "/images/logos/plugins/gremlin.svg",
+    id: "gremlin",
+    kind: "official",
+  },
+  {
     name: "Kafka",
     logo: "/images/logos/plugins/kafka.svg",
     logoDark: "/images/logos/plugins/kafka-dark.svg",
