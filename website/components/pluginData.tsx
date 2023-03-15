@@ -636,7 +636,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     category: "project-management",
   },
   {
-    name: "MSSQL",
+    name: "Microsoft SQL Server",
     id: "mssql",
     href: "https://github.com/cloudquery/cloudquery/issues/8861",
     kind: "unpublished",
