@@ -526,7 +526,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "cloud-finops",
     logo: "/images/logos/plugins/chargebee.svg",
-    logoDark: "/images/logos/plugins/chargebee-dark.svg",
   },
   {
     name: "CloudWatch",
@@ -556,7 +555,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8135",
     kind: "unpublished",
     category: "marketing-analytics",
-    logo: "/images/logos/plugins/gmail.svg",
   },
   {
     name: "Google Ads",
@@ -565,7 +563,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/google-ads.svg",
-    logoDark: "/images/logos/plugins/google-ads-dark.svg",
   },
   {
     name: "Google Sheets",
@@ -582,7 +579,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/hashicorp-vault.svg",
-    logoDark: "/images/logos/plugins/hashicorp-vault-dark.svg",
   },
   {
     name: "Infoblox",
@@ -591,7 +587,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/infoblox.svg",
-    logoDark: "/images/logos/plugins/infoblox-dark.svg",
   },
   {
     name: "Intercom",
@@ -639,7 +634,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8431",
     kind: "unpublished",
     category: "project-management",
-    logo: "/images/logos/plugins/monday.svg",
   },
   {
     name: "MSSQL",
@@ -656,7 +650,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "databases",
     logo: "/images/logos/plugins/mysql.svg",
-    logoDark: "/images/logos/plugins/mysql-dark.svg",
   },
   {
     name: "New Relic",
@@ -695,7 +688,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/prisma.svg",
-    logoDark: "/images/logos/plugins/prisma-dark.svg",
   },
   {
     name: "Reddit Advertising",
@@ -750,7 +742,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "cloud-finops",
     logo: "/images/logos/plugins/square.svg",
-    logoDark: "/images/logos/plugins/square-dark.svg",
   },
   {
     name: "Twilio",
@@ -775,7 +766,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/typeform.svg",
-    logoDark: "/images/logos/plugins/typeform-dark.svg",
   },
   {
     name: "Zoho Campaign",
