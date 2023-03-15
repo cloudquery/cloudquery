@@ -115,6 +115,25 @@ aws organizations register-delegated-administrator \
 --region us-east-1
 ```
 
+| AWS Service | Support via `organizations:RegisterDelegatedAdministrator` |
+| ----------- | ---------- |
+| AWS Trusted Advisor | Yes | - |
+| AWS CloudFormation StackSets | Yes | - |
+| AWS Systems Manager Explorer | Yes | - |
+| AWS Systems Manager Change Manager | Yes | - |
+| AWS Account Management | Yes | - |
+| AWS Backup | Yes | - |
+| AWS Compute Optimizer | Yes | - |
+| AWS Config | Yes | - |
+| AWS DevOps Guru | Yes | - |
+| AWS IAM Access Analyzer | Yes | - |
+| AWS License Manager | Yes | - |
+| AWS Network Manager | Yes | - |
+| AWS S3 Storage Lens | Yes | - |
+| AWS Service Catalog | Yes | - |
+| AWS IAM Identity Center | Yes | - |
+| Reachability Analyzer | Yes | - |
+
 #### Delegation via Service-specific Actions 
 
 We went through all the current services that support delegated administrator and found the service-specific IAM actions for delegation.  The table below shows the result of our research.
@@ -136,23 +155,6 @@ For these IAM actions, there is a lack of standardization of action naming: for 
 The service specific actions do make child calls to `organizations:RegisterDelegatedAdministrator` and other dependent actions.  The below screenshot shows the assocaited calls for `fms:AssociateAdminAccount`, `guardduty:EnableOrganizationAdminAccount`, `macie2:EnableOrganizationAdminAccount`, and `inspector2:EnableDelegatedAdminAccount`.
 
 ![CloudTrail Event History for Delegated Administrator](/images/blog/guide-aws-org-delegation/cloudtrail-delegating-admin.png)
-
-| AWS Trusted Advisor | Yes | - |
-| AWS CloudFormation StackSets | Yes | - |
-| AWS Systems Manager Explorer | Yes | - |
-| AWS Systems Manager Change Manager | Yes | - |
-| AWS Account Management | Yes | - |
-| AWS Backup | Yes | - |
-| AWS Compute Optimizer | Yes | - |
-| AWS Config | Yes | - |
-| AWS DevOps Guru | Yes | - |
-| AWS IAM Access Analyzer | Yes | - |
-| AWS License Manager | Yes | - |
-| AWS Network Manager | Yes | - |
-| AWS S3 Storage Lens | Yes | - |
-| AWS Service Catalog | Yes | - |
-| AWS IAM Identity Center | Yes | - |
-| Reachability Analyzer | Yes | - |
 
 #### Organization Resource-Based Delegation Policies
 
@@ -250,7 +252,7 @@ Similar to registering delegated administrators, some services have service-spec
 
 | AWS Service | Deregister Action | Management or Delegated Admin Account | 
 | -------- | ------- | -------- |
-| AWS Security Lake (Not GA) | securitylake:DeleteDatalakeDelegatedAdmin | - |
+| AWS Security Lake (Preview) | securitylake:DeleteDatalakeDelegatedAdmin | ? |
 | AWS CloudTrail | cloudtrail:DeregisterOrganizationDelegatedAdmin | - |
 | AWS Firewall Manager | fms:DisassociateAdminAccount | - |
 | AWS GuardDuty | guardduty:DisableOrganizationAdminAccount | - |
