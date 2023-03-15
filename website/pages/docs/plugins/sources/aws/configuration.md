@@ -12,7 +12,7 @@ spec:
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
   tables: ["*"]
-  destinations: ["postgresql"]
+  destinations: ["DESTINATION_NAME"]
   spec: 
     # AWS Spec section described below
     regions: 
@@ -53,7 +53,7 @@ spec:
     - aws_rds_db_parameter_groups
     - aws_rds_engine_versions
     - aws_servicequotas_services
-  destinations: ["<destination>"]
+  destinations: ["DESTINATION_NAME"]
 ``` 
 
 ## AWS Organization Example
@@ -68,7 +68,7 @@ spec:
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
   tables: ['*']
-  destinations: ["postgresql"]
+  destinations: ["DESTINATION_NAME"]
   spec:
     aws_debug: false
     org:
