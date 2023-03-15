@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.1.2...plugins-source-azure-v5.2.0) (2023-03-15)
+
+
+### Features
+
+* **azure:** Add azure_appservice_web_app_configurations resource ([#9109](https://github.com/cloudquery/cloudquery/issues/9109)) ([ff44c4a](https://github.com/cloudquery/cloudquery/commit/ff44c4a9f293c5e82574a4f88fdf0d696eb8c2c6)), closes [#8531](https://github.com/cloudquery/cloudquery/issues/8531)
+
 ## [5.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.1.1...plugins-source-azure-v5.1.2) (2023-03-14)
 
 
