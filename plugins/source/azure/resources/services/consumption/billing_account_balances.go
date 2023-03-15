@@ -25,7 +25,7 @@ func fetchBillingAccountBalances(ctx context.Context, meta schema.ClientMeta, pa
 	if err != nil {
 		return err
 	}
-	resp, err := svc.GetByBillingAccount(ctx, *cl.BillingAccount.ID, nil)
+	resp, err := svc.GetByBillingAccount(ctx, *cl.BillingAccount.Name, nil)
 	if err != nil {
 		return err
 	}

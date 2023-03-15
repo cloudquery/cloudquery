@@ -25,7 +25,7 @@ func fetchBillingAccountEvents(ctx context.Context, meta schema.ClientMeta, pare
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListByBillingAccountPager(*cl.BillingAccount.ID, nil)
+	pager := svc.NewListByBillingAccountPager(*cl.BillingAccount.Name, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

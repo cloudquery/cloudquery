@@ -25,7 +25,7 @@ func fetchBillingAccountReservationTransactions(ctx context.Context, meta schema
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(*cl.BillingAccount.ID, nil)
+	pager := svc.NewListPager(*cl.BillingAccount.Name, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {
