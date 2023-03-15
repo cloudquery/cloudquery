@@ -99,7 +99,7 @@
   "plugins/destination/clickhouse+FILLER": "0.0.0",
   "plugins/source/postgresql": "1.0.5",
   "plugins/source/postgresql+FILLER": "0.0.0",
-  "plugins/source/homebrew": "1.1.0",
+  "plugins/source/homebrew": "1.1.1",
   "plugins/source/homebrew+FILLER": "0.0.0",
   "plugins/destination/mysql": "1.0.3",
   "plugins/destination/mysql+FILLER": "0.0.0",
