@@ -36,15 +36,15 @@ The introduction of data warehouses and data lakes also made it possible to shif
 
 ![The Modern Data Stack Architecture](/images/blog/what_is_the_modern_data_stack/architecture.png)
 
-**Note**: There are many more vendors at each component of the stack and we chose some of them in no particular order (apart from CloudQuery given our bias :)).
+**Note:** There are many more vendors at each component of the stack and we chose some of them in no particular order (apart from CloudQuery given our bias :)).
 
 ## Data Sources
 
 This refers to the data we want to ingest and involves different types of sources:
 
-- **Databases** - Companies have many databases for different workloads. Since these databases are not optimized for analytical workloads, it is often necessary to ingest data from production databases to analytical databases where you can run complex queries without impacting the production system. Additionally, there have been many advances around Change Data Capture ([CDC](https://www.cloudquery.io/blog/postgres-cdc-to-any-destination)) for databases, allowing you to ingest data in real-time from databases. This enables efficient, near-real time syncing between source databases and destinations.
-- **APIs** - Most SaaS products expose their data via APIs. So, data for anything from marketing or finance products such as Salesforce and Stripe, to infrastructure platforms such as AWS, GCP, Azure can be loaded.**
-- **Event Streams** - This is another popular source type where you might want to subscribe to an event queue and send it to an analytical destination.
+- **Databases -** Companies have many databases for different workloads. Since these databases are not optimized for analytical workloads, it is often necessary to ingest data from production databases to analytical databases where you can run complex queries without impacting the production system. Additionally, there have been many advances around Change Data Capture ([CDC](https://www.cloudquery.io/blog/postgres-cdc-to-any-destination)) for databases, allowing you to ingest data in real-time from databases. This enables efficient, near-real time syncing between source databases and destinations.
+- **APIs -** Most SaaS products expose their data via APIs. So, data for anything from marketing or finance products such as Salesforce and Stripe, to infrastructure platforms such as AWS, GCP, Azure can be loaded.**
+- **Event Streams -** This is another popular source type where you might want to subscribe to an event queue and send it to an analytical destination.
 
 ## Extract-Load (EL)
 
@@ -54,7 +54,7 @@ You can also think of EL tools as an intermediate language between sources and d
 
 Other important features of EL tools:
 
-- **Open Source - Not all EL tools are open source, but if you want to extend connectors or write new ones, you will need to find an open source EL tool such as CloudQuery. :)**
+- **Open Source -** Not all EL tools are open source, but if you want to extend connectors or write new ones, you will need to find an open source EL tool such as CloudQuery. :)
 - **Performance -** The better the performance, the cheaper the EL workload will be, and the faster data will be ingested.
 - **Pluggable Architecture -** Given the large number of sources and destinations, it is essential that sources and destinations are decoupled; otherwise, each source will need to support a growing number of destinations.
 
