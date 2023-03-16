@@ -31,7 +31,7 @@ The introduction of data warehouses and data lakes also made it possible to shif
 
 # Architecture
 
-[TODO]
+Insert architecture Image.
 
 ## Data Sources
 
@@ -63,7 +63,7 @@ The advances in OLAP data warehouses and data lakes were one of the main enabler
 
 ## Transformation
 
-One of the main design/architecture changes in the modern data stack was moving from "ETL" (Extract-Transform-Load) to "ELT" (Extract-Load-Transform). What this means is that any additional transformations are made inside the data warehouse or data lake. As requirements change, this gives more flexibility for teams to create different transformations inside the database, rather than re-running compute-intensive workloads to reload data from the source. Transformations can be done with anything from pure SQL, to Python, to DBT.
+One of the main design/architecture changes in the modern data stack was moving from "ETL" (Extract-Transform-Load) to "ELT" (Extract-Load-Transform). What this means is that any additional transformations are made inside the data warehouse or data lake. As requirements change, this gives more flexibility for teams to create different transformations inside the database, rather than re-running compute-intensive workloads to reload data from the source. Transformations can be done with anything from pure SQL, to Python, to dbt.
 
 ## Data Visualization
 
@@ -85,7 +85,7 @@ APIs and data pipelines may experience downtime, throttling, and failures, so it
 
 ## Governance
 
-A lot of work can go into creating a robust data pipeline, but if the resulting data quality and documentation are lacking, the results of using the data will likely be as well. This is where the Governance component comes into play. Tools like Great Expectations, Amundsen and DBT all offer insight into how data moves through the pipeline, the ability to document their features and constraints, and monitoring of the quality of the data so that analysts are not deriving insights from low-quality data.
+A lot of work can go into creating a robust data pipeline, but if the resulting data quality and documentation are lacking, the results of using the data will likely be as well. This is where the Governance component comes into play. Tools like Great Expectations, Amundsen and dbt all offer insight into how data moves through the pipeline, the ability to document their features and constraints, and monitoring of the quality of the data so that analysts are not deriving insights from low-quality data.
 
 # Use Cases
 
