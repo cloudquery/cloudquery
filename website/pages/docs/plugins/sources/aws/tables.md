@@ -301,6 +301,7 @@
 - [aws_iam_accounts](tables/aws_iam_accounts)
 - [aws_iam_credential_reports](tables/aws_iam_credential_reports)
 - [aws_iam_groups](tables/aws_iam_groups)
+  - [aws_iam_group_attached_policies](tables/aws_iam_group_attached_policies)
   - [aws_iam_group_last_accessed_details](tables/aws_iam_group_last_accessed_details)
   - [aws_iam_group_policies](tables/aws_iam_group_policies)
 - [aws_iam_instance_profiles](tables/aws_iam_instance_profiles)

@@ -2,7 +2,6 @@ package iam
 
 import (
 	"context"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
@@ -41,4 +40,21 @@ func resolveIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, resour
 		policyMap[*p.PolicyArn] = p.PolicyName
 	}
 	return resource.Set(c.Name, policyMap)
+}
+
+func fetchIamGroupAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	p := parent.Item.(types.Group)
+	svc := meta.(*client.Client).Services().Iam
+	config := iam.ListAttachedGroupPoliciesInput{
+		GroupName: p.GroupName,
+	}
+	paginator := iam.NewListAttachedGroupPoliciesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		output, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- output.AttachedPolicies
+	}
+	return nil
 }

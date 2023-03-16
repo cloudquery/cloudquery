@@ -301,6 +301,7 @@
 - [aws_iam_accounts](../../../../../website/tables/aws/aws_iam_accounts.md)
 - [aws_iam_credential_reports](../../../../../website/tables/aws/aws_iam_credential_reports.md)
 - [aws_iam_groups](../../../../../website/tables/aws/aws_iam_groups.md)
+  - [aws_iam_group_attached_policies](../../../../../website/tables/aws/aws_iam_group_attached_policies.md)
   - [aws_iam_group_last_accessed_details](../../../../../website/tables/aws/aws_iam_group_last_accessed_details.md)
   - [aws_iam_group_policies](../../../../../website/tables/aws/aws_iam_group_policies.md)
 - [aws_iam_instance_profiles](../../../../../website/tables/aws/aws_iam_instance_profiles.md)
