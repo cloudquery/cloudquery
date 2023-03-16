@@ -20,15 +20,14 @@ However, delegating administrator duties can be complex and there are multiple d
 * Via service-specific actions such as `guardduty:EnableOrganizationAdminAccount` or `cloudtrail:RegisterOrganizationDelegatedAdmin`.
 * Organization resource-based delegation policies.
 
-Additionally, depending on the use case and service for delegated administrator, deregistering or changing the delegated administrator account may either need to be done from the management account or the delegated administrator account.
+We have also noticed inconsistencies with AWS documentation on what activities are possible with Delegated Administrator as of March 16th, 2023.  We sent our findings to AWS after testing to address inconsistencies in AWS Organizations and API documentation.
 
 In this post, we'll explain our research on: 
 * AWS Organizations and Multi Account Management.
 * Delegated Administrator and the security and management benefits.
-* What can be done by delegated administrator.
+* What can be done by delegated administrator.  
 * The 3 different methods of setting up delegated administration and the complexity of delegation.
 * The IAM permissions required for Delegated Administrator Management and reference policies.
-* How to change or deregister delegated administrator accounts and where the call must be made from.
 
 ### Background 
 
@@ -158,7 +157,7 @@ The service specific actions do make child calls to `organizations:RegisterDeleg
 
 #### Organization Resource-Based Delegation Policies
 
-Lastly, we have Delegation via Organization Resource-Based Delegation Policies.  This recent release 
+Lastly, we have Delegation via Organization Resource-Based Delegation Policies.  This was released in late November of 2022 and allows for more organizational actions outside of the activities listed above. 
 
 This is done via `organizations:PutResourcePolicy`.  Specifically, this enables the following actions that can be grouped into 3 categories: resource tagging, viewing organizational information, and organizational policy management:
 
@@ -193,9 +192,8 @@ Actions:
 * DescribeHandshake, ListHandshakesForAccount, ListHandshakesForOrganization
 * DescribeAccount, DescribeOrganization, DescribeOrganizationalUnit
 * ListAccounts, ListAccountsForParent, ListChildren, ListOrganizationalUnitsForParent, ListParents, ListRoots
-* ListAWSServiceAccessForOrganization
 * ListPolicies, ListPoliciesForTarget
-* ListDelegatedAdministrators, ListDelegatedServicesForAccount
+* ListAWSServiceAccessForOrganization, ListDelegatedAdministrators, ListDelegatedServicesForAccount
 * ListTagsForResource, ListTargetsForPolicy
 
 The actions above grant a delegated administrator account access to view and describe organization resources such as policies, accounts, organizational units, and organizational structure.
@@ -322,39 +320,22 @@ Note: SCPs do not apply to the organization management account.  One recommendat
 
 ### Update or Deletion: Deregistering Delegated Administrators
 
-While deregistering a delegated administrator should be an infrequent action, we found knowing how to deregister a delegated administrator.  Use cases for deregistering delegated administrator accounts include deleting a delegated administrator if a service is no longer needed.  In some cases, certain services only allow for 1 delegated administrator and deregistering the initial delegated administrator is necessary prior to setting up a new delegated administrator.
+The above policy also lists how to deregister delegated administrators.  We will cover updating or deleting delegated administrator accounts in a future post.  
 
-Similar to registering delegated administrators, some services have service-specific actions for deregistering delegated administrator accounts.  
+The specific actions for deregistering delegated administrator accounts (not via `organizations:DeregisterDelegatedAdministrator`) are below:
 
-| AWS Service | Deregister Action | Management or Delegated Admin Account | 
-| -------- | ------- | -------- |
-| AWS Security Lake (Preview) | securitylake:DeleteDatalakeDelegatedAdmin | ? |
-| AWS CloudTrail | cloudtrail:DeregisterOrganizationDelegatedAdmin | - |
-| AWS Firewall Manager | fms:DisassociateAdminAccount | - |
-| AWS GuardDuty | guardduty:DisableOrganizationAdminAccount | - |
-| AWS Detective | detective:DisableOrganizationAdminAccount | - |
-| AWS EC2 (IPAM) | ec2:DisableIpamOrganizationAdminAccount | - |
-| AWS Security Hub | securityhub:DisableOrganizationAdminAccount | - |
-| AWS Audit Manager | auditmanager:DeregisterOrganizationAdminAccount | - |
-| AWS Inspector | inspector2:DisableDelegatedAdminAccount | - |
-| AWS Macie | macie2:DisableOrganizationAdminAccount | - |
-| AWS Trusted Advisor | organizations:DeregisterDelegatedAdministrator | - |
-| AWS CloudFormation StackSets | organizations:DeregisterDelegatedAdministrator | - |
-| AWS Systems Manager Explorer | organizations:DeregisterDelegatedAdministrator | - |
-| AWS Systems Manager Change Manager | organizations:DeregisterDelegatedAdministrator | - |
-| AWS Account Management | organizations:DeregisterDelegatedAdministrator | - |
-| AWS Backup | organizations:DeregisterDelegatedAdministrator | - |
-| AWS Compute Optimizer | organizations:DeregisterDelegatedAdministrator | - |
-| AWS Config | organizations:DeregisterDelegatedAdministrator | - |
-| AWS DevOps Guru | organizations:DeregisterDelegatedAdministrator | - |
-| AWS IAM Access Analyzer | organizations:DeregisterDelegatedAdministrator | - |
-| AWS License Manager | organizations:DeregisterDelegatedAdministrator | - |
-| AWS Network Manager | organizations:DeregisterDelegatedAdministrator | - |
-| AWS S3 Storage Lens | organizations:DeregisterDelegatedAdministrator | - |
-| AWS Service Catalog | organizations:DeregisterDelegatedAdministrator | - |
-| AWS IAM Identity Center | organizations:DeregisterDelegatedAdministrator | - |
-| Reachability Analyzer | organizations:DeregisterDelegatedAdministrator | - |
-
+| AWS Service | Deregister Action | 
+| -------- | ------- |
+| AWS Security Lake (Preview) | securitylake:DeleteDatalakeDelegatedAdmin |
+| AWS CloudTrail | cloudtrail:DeregisterOrganizationDelegatedAdmin | 
+| AWS Firewall Manager | fms:DisassociateAdminAccount | 
+| AWS GuardDuty | guardduty:DisableOrganizationAdminAccount | 
+| AWS Detective | detective:DisableOrganizationAdminAccount | 
+| AWS EC2 (IPAM) | ec2:DisableIpamOrganizationAdminAccount | 
+| AWS Security Hub | securityhub:DisableOrganizationAdminAccount | 
+| AWS Audit Manager | auditmanager:DeregisterOrganizationAdminAccount | 
+| AWS Inspector | inspector2:DisableDelegatedAdminAccount | 
+| AWS Macie | macie2:DisableOrganizationAdminAccount |
 
 ### Observability: Finding Delegated Administrators
 
@@ -374,19 +355,16 @@ SELECT * from aws_organization_resource_policies;
 
 ## Conclusion
 
-The following can be done via delegated administrator:
-
 * Organization resource-based delegation policies.
 * Directly via organization actions such as `organizations:RegisterDelegatedAdministrator`.
 * Indirectly via service-specific actions such as `guardduty:EnableOrganizationAdminAccount` or `trustedadvisor:SetOrganizationAccess`.
 
-| Operation Category | Delegation Type | Example |
-| -------- | ------- | -------- | 
-| View Accounts and Organization Data | All | Describe Accounts ? | 
-| Resource Tagging | Resource Policy | Tag Account or OU |
-| Organizational Policy Management | Resource Policy | Enable AI Opt Out Policy |
-| Enabling Security Service | ? | ? |  
-
+In this post, we'll explain our research on: 
+* AWS Organizations and Multi Account Management.
+* Delegated Administrator and the security and management benefits.
+* What can be done by delegated administrator.  
+* The 3 different methods of setting up delegated administration and the complexity of delegation.
+* The IAM permissions required for Delegated Administrator Management and reference policies.
 
 ### Contact Us
 
