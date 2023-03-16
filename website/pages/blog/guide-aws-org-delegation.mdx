@@ -117,22 +117,22 @@ aws organizations register-delegated-administrator \
 
 | AWS Service | Support via `organizations:RegisterDelegatedAdministrator` |
 | ----------- | ---------- |
-| AWS Trusted Advisor | Yes | - |
-| AWS CloudFormation StackSets | Yes | - |
-| AWS Systems Manager Explorer | Yes | - |
-| AWS Systems Manager Change Manager | Yes | - |
-| AWS Account Management | Yes | - |
-| AWS Backup | Yes | - |
-| AWS Compute Optimizer | Yes | - |
-| AWS Config | Yes | - |
-| AWS DevOps Guru | Yes | - |
-| AWS IAM Access Analyzer | Yes | - |
-| AWS License Manager | Yes | - |
-| AWS Network Manager | Yes | - |
-| AWS S3 Storage Lens | Yes | - |
-| AWS Service Catalog | Yes | - |
-| AWS IAM Identity Center | Yes | - |
-| Reachability Analyzer | Yes | - |
+| AWS Trusted Advisor | Yes |
+| AWS CloudFormation StackSets | Yes | 
+| AWS Systems Manager Explorer | Yes | 
+| AWS Systems Manager Change Manager | Yes | 
+| AWS Account Management | Yes | 
+| AWS Backup | Yes | 
+| AWS Compute Optimizer | Yes | 
+| AWS Config | Yes | 
+| AWS DevOps Guru | Yes | 
+| AWS IAM Access Analyzer | Yes | 
+| AWS License Manager | Yes | 
+| AWS Network Manager | Yes | 
+| AWS S3 Storage Lens | Yes | 
+| AWS Service Catalog | Yes | 
+| AWS IAM Identity Center | Yes | 
+| Reachability Analyzer | Yes | 
 
 #### Delegation via Service-specific Actions 
 
@@ -160,11 +160,13 @@ The service specific actions do make child calls to `organizations:RegisterDeleg
 
 Lastly, we have Delegation via Organization Resource-Based Delegation Policies.  This recent release 
 
-This is done via `organizations:PutResourcePolicy`.  Specifically, this enables the following actions that can be grouped into 2 categories: resource tagging and organizational policy management:
+This is done via `organizations:PutResourcePolicy`.  Specifically, this enables the following actions that can be grouped into 3 categories: resource tagging, viewing organizational information, and organizational policy management:
 
+##### Organizational Policy Management
+
+Actions:
 * CreatePolicy, AttachPolicy, UpdatePolicy, DeletePolicy, DetachPolicy.
 * DisablePolicyType and EnablePolicyType.
-* TagResource, UntagResource
  
  Current services and policies that support this type of delegation via Resource-Based Delegation Policies include the following:
  * AI Services data collection and usage via `AISERVICES_OPT_OUT_POLICY`
@@ -172,11 +174,85 @@ This is done via `organizations:PutResourcePolicy`.  Specifically, this enables 
  * Organization Permission Management via `SERVICE_CONTROL_POLICY`
  * Resource Tagging via `TAG_POLICY`
 
+##### Resource Tagging
+
+Actions: 
+* TagResource, UntagResource
+
  The following resources can be tagged via `TagResource` and `UntagResource`:
  * AWS account
  * Organization root
  * Organizational unit (OU)
  * Policy (any type)
+
+##### Viewing Organizational Information
+
+Actions:
+* DescribeCreateAccountStatus, ListCreateAccountStatus
+* DescribeEffectivePolicy, DescribeResourcePolicy
+* DescribeHandshake, ListHandshakesForAccount, ListHandshakesForOrganization
+* DescribeAccount, DescribeOrganization, DescribeOrganizationalUnit
+* ListAccounts, ListAccountsForParent, ListChildren, ListOrganizationalUnitsForParent, ListParents, ListRoots
+* ListAWSServiceAccessForOrganization
+* ListPolicies, ListPoliciesForTarget
+* ListDelegatedAdministrators, ListDelegatedServicesForAccount
+* ListTagsForResource, ListTargetsForPolicy
+
+The actions above grant a delegated administrator account access to view and describe organization resources such as policies, accounts, organizational units, and organizational structure.
+
+##### Example Resource-Based Delegation Policy
+
+ An example resource-based delegation policy that grants all permissions to a separate account is as follows:
+
+```json copy
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllPossiblePermissionsForDelegationPolicy",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::123412341234:root"
+      },
+      "Action": [
+        "organizations:ListTagsForResource",
+        "organizations:ListRoots",
+        "organizations:ListPoliciesForTarget",
+        "organizations:ListPolicies",
+        "organizations:ListParents",
+        "organizations:ListOrganizationalUnitsForParent",
+        "organizations:ListDelegatedServicesForAccount",
+        "organizations:ListHandshakesForAccount",
+        "organizations:ListHandshakesForOrganization",
+        "organizations:ListDelegatedAdministrators",
+        "organizations:ListCreateAccountStatus",
+        "organizations:ListChildren",
+        "organizations:ListAWSServiceAccessForOrganization",
+        "organizations:ListAccountsForParent",
+        "organizations:ListAccounts",
+        "organizations:DetachPolicy",
+        "organizations:DescribePolicy",
+        "organizations:DescribeOrganizationalUnit",
+        "organizations:DescribeHandshake",
+        "organizations:DescribeEffectivePolicy",
+        "organizations:DescribeCreateAccountStatus",
+        "organizations:DescribeAccount",
+        "organizations:DescribeOrganization",
+        "organizations:CreatePolicy",
+        "organizations:AttachPolicy",
+        "organizations:EnablePolicyType",
+        "organizations:ListTargetsForPolicy",
+        "organizations:UntagResource",
+        "organizations:TagResource",
+        "organizations:UpdatePolicy",
+        "organizations:DeletePolicy",
+        "organizations:DisablePolicyType"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
 
 ### Access Management: Granting Access to Manage Delegated Administration
 
