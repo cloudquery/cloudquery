@@ -32,7 +32,7 @@ In this post, we'll explain our research on:
 
 ### Background 
 
-Over the last few years, AWS has been releasing support for delegated administrator from other AWS accounts within the organization, which enable teams to conduct management activites from non-management accounts.  From a security perspective, using the management account is akin to using the `root` user for a system.  Mistakes and misconfigurations happen, and using the management account may have a large blast radius of potential impact.  
+Over the last few years, AWS has been releasing support for delegated administrator from other AWS accounts within the organization, which enable teams to conduct management activities from non-management accounts.  From a security perspective, using the management account is akin to using the `root` user for a system.  Mistakes and misconfigurations happen, and using the management account may have a large blast radius of potential impact.  
 
 However, the documentation and usage of delegated administrator is spread across multiple different AWS documentation pages.  
 
@@ -40,7 +40,7 @@ The following services and features can be utilized via Organizations:
 * Organization Authorization Policies such as Service Control Policies (SCPs) that can manage permissions available for accounts and their principals in the organization.
 * Organization Management Policies such as AI services out-opt policies that enable data collection control for AWS AI services across the organization's accounts, Tag policies that standardize tags attached to AWS resources in the organization's accounts.
 * Account Management activities such as AWS CloudFormation StackSets and AWS Account Management.
-* Resource Management activies such as AWS Systems Manager.
+* Resource Management activities such as AWS Systems Manager.
 * Account Management security services such as AWS GuardDuty, AWS Trusted Advisor, and AWS CloudTrail.
 
 ### Selected Timeline of Relevant Releases
@@ -49,13 +49,13 @@ The following services and features can be utilized via Organizations:
 * May 2011: AWS launched Identity and Access Management (IAM).
 * October 2020: Amazon GuardDuty Delegated Administrator.
 * February 2021: CloudFormation StackSets delegated administration.
-* November 2022: Delegated Adminstrator via Delegation Policies Release.
+* November 2022: Delegated Administrator via Delegation Policies Release.
 
 ## Why Delegation?
 
 Prior to AWS releasing delegation, any actions to manage Organizations and other accounts would have to originate in the Organization Management Account (often referred to as the root account).  Over the last few years, AWS has released support for more multi-account management activities via delegated administrator.  
 
-By leveraging multiple delegated administrator accounts, usage of the organization management account can be limited to infrequent activites and break-glass access.  This reduces the possibility of misconfiguration of the management account, an account with a large blast radius of the rest of the accounts in the AWS organization.
+By leveraging multiple delegated administrator accounts, usage of the organization management account can be limited to infrequent activities and break-glass access.  This reduces the possibility of misconfiguration of the management account, an account with a large blast radius of the rest of the accounts in the AWS organization.
 
 ### Security Concerns of Organization Management Account Overuse
 
@@ -63,7 +63,7 @@ The Organization Management Account (root) is a security concern due to the foll
 * The management account has organization-level functionality that can affect all member accounts and a broad scope of influence.
 * Created member accounts come with `OrganizationAccountAccessRole` which comes with default `*:*` Administrator Access and permits the management account to assume it.
 * SCPs do not apply to the management account.
-* The management account has Organization visibility into member accounts and other reconaissance activities.
+* The management account has Organization visibility into member accounts and other reconnaissance activities.
 * The management account has Organization management features such as SCPs, enabling/disabling security features across the Organization and all member accounts.
 
 Thus, an attacker may find the Organization Management Account a preferred target to gain a foothold in an enterprise's AWS environments.  From the above, if an attacker is able to gain access to an IAM principal with `sts:AssumeRole` privileges in the organization management account, they could have administrative access to every member account in the entire AWS Organization.  Additionally, the Organization Management account can be subject to misconfiguration that has a greater blast radius and can affect multiple member accounts and applications.  An example of this could be a misconfigured Service Control Policy (SCP).
@@ -71,7 +71,7 @@ Thus, an attacker may find the Organization Management Account a preferred targe
 By delegating management to member AWS Accounts, this reduces the blast radius and follows [AWS Prescriptive Guidance regarding the management account](https://docs.aws.amazon.com/prescriptive-guidance/latest/security-reference-architecture/management-account.html).  AWS recommends only using the management account for tasks that can only be performed by that account.  By delegating management, permissions and access to the management account can be reduced to a minimum.  AWS recommends using both trusted access and delegated administrator to reduce permissions and limit access to the management account.
 
 ### What Delegated Administrator Cannot Do
-There are activites that delegated administrators cannot do and thus will still require usage of the organization management account.
+There are activities that delegated administrators cannot do and thus will still require usage of the organization management account.
 
 The list below is not exhaustive and gives examples of activities that still require usage of the organization management account.
 
@@ -152,7 +152,7 @@ For these IAM actions, there is a lack of standardization of action naming: for 
 | AWS Inspector | inspector2:EnableDelegatedAdminAccount |
 | AWS Macie | macie2:EnableOrganizationAdminAccount |
 
-The service specific actions do make child calls to `organizations:RegisterDelegatedAdministrator` and other dependent actions.  The below screenshot shows the assocaited calls for `fms:AssociateAdminAccount`, `guardduty:EnableOrganizationAdminAccount`, `macie2:EnableOrganizationAdminAccount`, and `inspector2:EnableDelegatedAdminAccount`.
+The service specific actions do make child calls to `organizations:RegisterDelegatedAdministrator` and other dependent actions.  The below screenshot shows the associated calls for `fms:AssociateAdminAccount`, `guardduty:EnableOrganizationAdminAccount`, `macie2:EnableOrganizationAdminAccount`, and `inspector2:EnableDelegatedAdminAccount`.
 
 ![CloudTrail Event History for Delegated Administrator](/images/blog/guide-aws-org-delegation/cloudtrail-delegating-admin.png)
 

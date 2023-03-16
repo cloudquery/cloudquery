@@ -202,3 +202,8 @@ Yandex
 Yevgeny
 zsh
 Zsh
+Reachability
+deregister
+Deregistering
+Macie
+overprivileged
