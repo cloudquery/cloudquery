@@ -204,6 +204,9 @@ zsh
 Zsh
 Reachability
 deregister
+Deregister
+deregistering
 Deregistering
 Macie
 overprivileged
+Overprivileged
