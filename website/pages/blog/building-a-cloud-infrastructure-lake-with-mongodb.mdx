@@ -26,7 +26,7 @@ MongoDB is a popular, open-source NoSQL database that offers high performance, s
 
 ## Setting up CloudQuery
 
-To start building your cloud infrastructure lake with CloudQuery and MongoDB, you'll first need to set up CloudQuery. Follow the quickstart guide, which offers precompiled binaries for various platforms, including [Windows]((https://www.cloudquery.io/docs/quickstart/windows), [macOS](https://www.cloudquery.io/docs/quickstart/macOS), and [Linux](https://www.cloudquery.io/docs/quickstart/linux). Follow the links to the guide for your respective platform.
+To start building your cloud infrastructure lake with CloudQuery and MongoDB, you'll first need to set up CloudQuery. Follow the quickstart guide, which offers precompiled binaries for various platforms, including [Windows](https://www.cloudquery.io/docs/quickstart/windows), [macOS](https://www.cloudquery.io/docs/quickstart/macOS), and [Linux](https://www.cloudquery.io/docs/quickstart/linux). Follow the links to the guide for your respective platform.
 
 Next, create a configuration file that specifies the cloud providers and resources you want to include in your infrastructure lake. For example, you might include [AWS](https://www.cloudquery.io/integrations/aws), [Google Cloud](https://www.cloudquery.io/integrations/gcp), and [Azure](https://www.cloudquery.io/integrations/azure), along with their respective resource types such as EC2 instances, S3 buckets, and virtual machines. You can find all supported cloud providers and resources in [CloudQuery integrations](https://www.cloudquery.io/integrations).
 
@@ -34,9 +34,9 @@ Next, create a configuration file that specifies the cloud providers and resourc
 
 ### Example with AWS, Azure and MongoDB
 
-- Go to the CloudQuery integrations page for AWS to MongoDB [here](https://www.cloudquery.io/integrations/aws/mongodb) and follow it to create `aws.yaml` and `mongodb.yaml` files.
+- Go to the CloudQuery integrations page for [AWS to MongoDB](https://www.cloudquery.io/integrations/aws/mongodb) and follow it to create `aws.yaml` and `mongodb.yaml` files.
 
-- Go to the CloudQuery integrations page for Azure to MongoDB [here](https://www.cloudquery.io/integrations/azure/mongodb) and follow it to create `azure.yaml` file. `mongodb.yaml` file should have the same content as the previous one.
+- Go to the CloudQuery integrations page for [Azure to MongoDB](https://www.cloudquery.io/integrations/azure/mongodb) and follow it to create `azure.yaml` file. `mongodb.yaml` file should have the same content as the previous one.
 
 ## Syncing Cloud Infrastructure Data
 
@@ -54,7 +54,7 @@ Now that your cloud infrastructure data is stored in MongoDB, you can use the Mo
 
 - Calculate the total cost of your EC2 instances or identify unused resources that could be terminated to save on costs
 
-- Use the MongoDB aggregation framework to group and summarize data
+- Use the [MongoDB aggregation framework](https://www.mongodb.com/docs/manual/aggregation/) to group and summarize data
 
 - Use the [MongoDB Compass GUI](https://www.mongodb.com/products/compass) to visualize your data in a more intuitive manner
 
