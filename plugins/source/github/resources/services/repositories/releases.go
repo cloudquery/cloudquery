@@ -11,10 +11,9 @@ import (
 
 func releases() *schema.Table {
 	return &schema.Table{
-		Name:     "github_releases",
-		Resolver: fetchReleases,
-		Transform: transformers.TransformWithStruct(&github.RepositoryRelease{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
+		Name:      "github_releases",
+		Resolver:  fetchReleases,
+		Transform: client.TransformWithStruct(&github.RepositoryRelease{}, transformers.WithPrimaryKeys("ID")),
 		Columns:   []schema.Column{client.OrgColumn, client.RepositoryIDColumn},
 		Relations: []*schema.Table{assets()},
 	}

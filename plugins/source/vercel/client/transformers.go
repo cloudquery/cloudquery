@@ -8,10 +8,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func SharedTransformers() []transformers.StructTransformerOption {
-	return []transformers.StructTransformerOption{
-		transformers.WithTypeTransformer(typeTransformer),
-	}
+var options = []transformers.StructTransformerOption{
+	transformers.WithTypeTransformer(typeTransformer),
+}
+
+func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) schema.Transform {
+	return transformers.TransformWithStruct(t, append(options, opts...)...)
 }
 
 func typeTransformer(field reflect.StructField) (schema.ValueType, error) {

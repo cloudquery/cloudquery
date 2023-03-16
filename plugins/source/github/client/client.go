@@ -3,8 +3,12 @@ package client
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"strings"
 	"time"
 
+	"github.com/beatlabs/github-auth/app/inst"
+	"github.com/beatlabs/github-auth/key"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -19,14 +23,15 @@ type Client struct {
 	// It will be passed for each resource fetcher.
 	logger zerolog.Logger
 
-	// CHANGEME:  Usually you store here your 3rd party clients and use them in the fetcher
-	Github GithubServices
+	orgServices map[string]GithubServices
+	Github      GithubServices
 
 	Org        string
 	Repository *github.Repository
 
 	orgs            []string
 	orgRepositories map[string][]*github.Repository
+	repos           []string
 }
 
 func (c *Client) Logger() *zerolog.Logger {
@@ -40,10 +45,18 @@ func (c *Client) ID() string {
 	return fmt.Sprintf("org:%s", c.Org)
 }
 
+func (c *Client) servicesForOrg(org string) GithubServices {
+	if _, ok := c.orgServices[org]; ok {
+		return c.orgServices[org]
+	}
+	return c.orgServices[""]
+}
+
 func (c *Client) WithOrg(org string) *Client {
 	newC := *c
 	newC.logger = c.logger.With().Str("org", org).Logger()
 	newC.Org = org
+	newC.Github = c.servicesForOrg(org)
 	return &newC
 }
 
@@ -68,52 +81,78 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 	}
 
 	// validate plugin config
-	if spec.AccessToken == "" {
-		return nil, fmt.Errorf("missing personal access token in configuration")
-	}
-	if len(spec.Orgs) == 0 {
-		return nil, fmt.Errorf("no organizations defined in configuration")
-	}
-
-	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: spec.AccessToken})
-	tc := oauth2.NewClient(ctx, ts)
-	rateLimiter, err := github_ratelimit.NewRateLimitWaiterClient(tc.Transport, github_ratelimit.WithLimitDetectedCallback(limitDetectedCallback(logger)))
+	err = spec.Validate()
 	if err != nil {
-		return nil, fmt.Errorf("failed to create rate limiter: %w", err)
+		return nil, fmt.Errorf("failed to validate GitHub spec: %w", err)
 	}
-	c := github.NewClient(rateLimiter)
 
-	logger.Info().Msg("Discovering organizations repositories")
-	orgRepositories, err := discoverRepositories(ctx, c, spec.Orgs)
+	ghServices := map[string]GithubServices{}
+	for _, auth := range spec.AppAuth {
+		k, err := key.FromFile(auth.PrivateKeyPath)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse private key: %w", err)
+		}
+		i, err := inst.NewConfig(auth.AppID, auth.InstallationID, k)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create app config: %w", err)
+		}
+		httpClient := i.Client(ctx)
+		ghc, err := githubClientForHTTPClient(httpClient, logger)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create GitHub client for org %v: %w", auth.Org, err)
+		}
+		ghServices[auth.Org] = servicesForClient(ghc)
+	}
+
+	var defaultServices GithubServices
+	if spec.AccessToken != "" {
+		ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: spec.AccessToken})
+		httpClient := oauth2.NewClient(ctx, ts)
+		ghc, err := githubClientForHTTPClient(httpClient, logger)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create GitHub client for access token: %w", err)
+		}
+		defaultServices = servicesForClient(ghc)
+	} else {
+		defaultServices = ghServices[spec.AppAuth[0].Org]
+	}
+	ghServices[""] = defaultServices
+
+	c := &Client{
+		logger:      logger,
+		orgServices: ghServices,
+		orgs:        spec.Orgs,
+		repos:       spec.Repos,
+	}
+	c.logger.Info().Msg("Discovering repositories")
+	orgRepositories, err := c.discoverRepositories(ctx, spec.Orgs, spec.Repos)
 	if err != nil {
-		return nil, fmt.Errorf("failed to discover organizations repositories: %w", err)
+		return nil, fmt.Errorf("failed to discover repositories: %w", err)
 	}
-
-	// Init your client and 3rd party clients using the user's configuration
-	// passed by the SDK.
-	return &Client{
-		logger: logger,
-		Github: GithubServices{
-			Actions:       c.Actions,
-			Billing:       c.Billing,
-			Dependabot:    c.Dependabot,
-			Issues:        c.Issues,
-			Organizations: c.Organizations,
-			Repositories:  c.Repositories,
-			Teams:         c.Teams,
-		},
-		orgs:            spec.Orgs,
-		orgRepositories: orgRepositories,
-	}, nil
+	c.orgRepositories = orgRepositories
+	return c, nil
 }
 
-func discoverRepositories(ctx context.Context, client *github.Client, orgs []string) (map[string][]*github.Repository, error) {
+func servicesForClient(c *github.Client) GithubServices {
+	return GithubServices{
+		Actions:       c.Actions,
+		Billing:       c.Billing,
+		Dependabot:    c.Dependabot,
+		Issues:        c.Issues,
+		Organizations: c.Organizations,
+		Repositories:  c.Repositories,
+		Teams:         c.Teams,
+	}
+}
+
+func (c *Client) discoverRepositories(ctx context.Context, orgs []string, repos []string) (map[string][]*github.Repository, error) {
 	opts := &github.RepositoryListByOrgOptions{ListOptions: github.ListOptions{PerPage: 100}}
 
 	orgRepos := make(map[string][]*github.Repository)
 	for _, org := range orgs {
+		services := c.servicesForOrg(org)
 		for {
-			repos, resp, err := client.Repositories.ListByOrg(ctx, org, opts)
+			repos, resp, err := services.Repositories.ListByOrg(ctx, org, opts)
 			if err != nil {
 				return nil, err
 			}
@@ -124,6 +163,37 @@ func discoverRepositories(ctx context.Context, client *github.Client, orgs []str
 			}
 		}
 	}
+	seenOrgs := make(map[string]struct{})
+	for _, repo := range repos {
+		repoSplit := splitRepo(repo)
+		if len(repoSplit) != 2 {
+			return nil, fmt.Errorf("invalid repository: %s", repo)
+		}
+		org, name := repoSplit[0], repoSplit[1]
+		services := c.servicesForOrg(org)
+		r, _, err := services.Repositories.Get(ctx, org, name)
+		if err != nil {
+			return nil, err
+		}
+		if _, seen := seenOrgs[org]; !seen {
+			// if org is also in orgs list, we will only sync repos in repos list
+			seenOrgs[org] = struct{}{}
+			orgRepos[org] = []*github.Repository{}
+		}
+		orgRepos[org] = append(orgRepos[org], r)
+	}
 
 	return orgRepos, nil
+}
+
+func githubClientForHTTPClient(httpClient *http.Client, logger zerolog.Logger) (*github.Client, error) {
+	rateLimiter, err := github_ratelimit.NewRateLimitWaiterClient(httpClient.Transport, github_ratelimit.WithLimitDetectedCallback(limitDetectedCallback(logger)))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create rate limiter: %w", err)
+	}
+	return github.NewClient(rateLimiter), nil
+}
+
+func splitRepo(repo string) []string {
+	return strings.Split(repo, "/")
 }

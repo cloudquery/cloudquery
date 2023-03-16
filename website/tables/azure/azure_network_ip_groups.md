@@ -1,0 +1,24 @@
+# Table: azure_network_ip_groups
+
+This table shows data for Azure Network IP Groups.
+
+https://learn.microsoft.com/en-us/rest/api/virtualnetwork/ip-groups/list?tabs=HTTP#ipgroup
+
+The primary key for this table is **id**.
+
+## Columns
+
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|subscription_id|String|
+|id (PK)|String|
+|location|String|
+|properties|JSON|
+|tags|JSON|
+|etag|String|
+|name|String|
+|type|String|

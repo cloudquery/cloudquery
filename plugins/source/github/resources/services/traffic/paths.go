@@ -15,7 +15,7 @@ func Paths() *schema.Table {
 		Description: "https://docs.github.com/en/rest/metrics/traffic?apiVersion=2022-11-28#get-top-referral-paths",
 		Resolver:    fetchPaths,
 		Multiplex:   client.OrgRepositoryMultiplex,
-		Transform:   transformers.TransformWithStruct(&github.TrafficPath{}, append(client.SharedTransformers(), transformers.WithPrimaryKeys("Path"))...),
+		Transform:   client.TransformWithStruct(&github.TrafficPath{}, transformers.WithPrimaryKeys("Path")),
 		Columns:     []schema.Column{client.OrgColumn, client.RepositoryIDColumn},
 	}
 }

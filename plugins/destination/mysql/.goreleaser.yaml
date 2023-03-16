@@ -1,0 +1,14 @@
+variables:
+  component: destination/mysql
+  binary: mysql
+
+project_name: plugins/destination/mysql
+
+monorepo:
+  tag_prefix: plugins-destination-mysql-
+  dir: plugins/destination/mysql
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

@@ -31,7 +31,8 @@ func fetchVirtualMachineScaleSetsVMs(ctx context.Context, meta schema.ClientMeta
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(group, *scaleSet.Name, nil)
+	expand := "instanceView"
+	pager := svc.NewListPager(group, *scaleSet.Name, &armcompute.VirtualMachineScaleSetVMsClientListOptions{Expand: &expand})
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

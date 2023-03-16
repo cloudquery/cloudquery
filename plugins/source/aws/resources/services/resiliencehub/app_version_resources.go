@@ -8,12 +8,13 @@ import (
 )
 
 func appVersionResources() *schema.Table {
+	tableName := "aws_resiliencehub_app_version_resources"
 	return &schema.Table{
-		Name:        "aws_resiliencehub_app_version_resources",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_PhysicalResource.html`,
 		Resolver:    fetchAppVersionResources,
 		Transform:   transformers.TransformWithStruct(&types.PhysicalResource{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("resiliencehub"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, appVersion,
 			{

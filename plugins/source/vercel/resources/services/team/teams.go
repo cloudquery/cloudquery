@@ -4,14 +4,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/client"
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Teams() *schema.Table {
 	return &schema.Table{
 		Name:          "vercel_teams",
 		Resolver:      fetchTeams,
-		Transform:     transformers.TransformWithStruct(&vercel.Team{}, client.SharedTransformers()...),
+		Transform:     client.TransformWithStruct(&vercel.Team{}),
 		IsIncremental: true,
 		Columns: []schema.Column{
 			{

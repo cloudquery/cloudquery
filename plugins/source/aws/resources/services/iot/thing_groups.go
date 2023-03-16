@@ -8,12 +8,13 @@ import (
 )
 
 func ThingGroups() *schema.Table {
+	tableName := "aws_iot_thing_groups"
 	return &schema.Table{
-		Name:        "aws_iot_thing_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeThingGroup.html`,
 		Resolver:    fetchIotThingGroups,
 		Transform:   transformers.TransformWithStruct(&iot.DescribeThingGroupOutput{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

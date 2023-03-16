@@ -8,12 +8,13 @@ import (
 )
 
 func ConfigurationSetEventDestinations() *schema.Table {
+	tableName := "aws_ses_configuration_set_event_destinations"
 	return &schema.Table{
-		Name:        "aws_ses_configuration_set_event_destinations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_EventDestination.html`,
 		Resolver:    fetchSesConfigurationSetEventDestinations,
 		Transform:   transformers.TransformWithStruct(&types.EventDestination{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("email"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "email"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

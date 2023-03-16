@@ -34,7 +34,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         if: matrix.os == 'ubuntu-latest'
         with:
-          version: v1.50.1
+          version: v1.51.2
           working-directory: cli
           skip-pkg-cache: true
           skip-build-cache: true

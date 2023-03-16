@@ -2,7 +2,6 @@ package identity
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func IdentityVerificationReports() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_identity_verification_reports",
 		Description: `https://stripe.com/docs/api/identity_verification_reports`,
-		Transform:   transformers.TransformWithStruct(&stripe.IdentityVerificationReport{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.IdentityVerificationReport{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchIdentityVerificationReports,
 
 		Columns: []schema.Column{

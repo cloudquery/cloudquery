@@ -5,6 +5,7 @@ name: Azure Blob Storage
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "azblob")}/>
 
@@ -12,7 +13,7 @@ This destination plugin lets you sync data from a CloudQuery source to remote Az
 
 ## Authentication
 
-Authentication is similar to Azure CLI. See also [azure source plugin](../../sources/azure/overview#authentication) for more information.
+<Authentication />
 
 ## Example
 

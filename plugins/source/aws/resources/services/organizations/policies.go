@@ -11,12 +11,13 @@ import (
 )
 
 func Policies() *schema.Table {
+	tableName := "aws_organizations_policies"
 	return &schema.Table{
-		Name:        "aws_organizations_policies",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Policy.html`,
 		Resolver:    fetchOrganizationsPolicies,
 		Transform:   transformers.TransformWithStruct(&types.PolicySummary{}, transformers.WithPrimaryKeys("Arn")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("organizations"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
 		Columns: []schema.Column{
 			// This is needed as a PK because aws managed policies don't have an account_id in the ARN
 			client.DefaultAccountIDColumn(true),

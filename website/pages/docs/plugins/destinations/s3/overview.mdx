@@ -5,6 +5,8 @@ name: S3
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "s3")}/>
 
@@ -12,34 +14,11 @@ This destination plugin lets you sync data from a CloudQuery source to remote S3
 
 This is useful in various use-cases, especially in data lakes where you can query the data direct from Athena or load it to various data warehouses such as BigQuery, RedShift, Snowflake and others.
 
-## Authentication
-
-Authentication is similar to AWS CLI. See also [aws source plugin](../../sources/aws/overview#authentication) for more information.
-
 ## Example
 
-This example configures a CSV destination, to create CSV files in `s3://bucket_name/path/to/files`, with each table placed in its own directory. Note that the S3 plugin only supports `append` write-mode.
+<Configuration />
 
-The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
-
-```yaml copy
-kind: destination
-spec:
-  name: "s3"
-  path: "cloudquery/s3"
-  version: "VERSION_DESTINATION_S3"
-  write_mode: "append" # s3 only supports 'append' mode
-  # batch_size: 10000 # optional
-  # batch_size_bytes: 5242880 # optional
-  spec:
-    bucket: "bucket_name"
-    path: "path/to/files/{{TABLE}}/{{UUID}}.csv"
-    format: "csv"
-    format_spec:
-      delimiter: ","
-```
-
-The S3 destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+The S3 destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes). Note that the S3 plugin only supports `append` write-mode.
 
 ## S3 Spec
 
@@ -48,6 +27,10 @@ This is the (nested) spec used by the CSV destination Plugin.
 - `bucket` (string) (required)
 
   Bucket where to sync the files.
+
+- `region` (string) (required)
+
+  Region where bucket is located.
 
 - `path` (string) (required)
 
@@ -83,3 +66,7 @@ This is the (nested) spec used by the CSV destination Plugin.
 - `skip_header` (bool) (optional) (default: false)
 
   Specifies if the first line of a file should be the headers (when format is `csv`).
+
+## Authentication
+
+<Authentication />

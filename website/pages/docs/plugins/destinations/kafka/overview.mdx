@@ -5,6 +5,7 @@ name: Kafka
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "kafka")}/>
 
@@ -12,22 +13,7 @@ This destination plugin lets you sync data from a CloudQuery source to Kafka in 
 
 ## Example
 
-This example configures connects to a local Kafka destination with no authentication and pushes messages in JSON format. Note that the plugin only supports `append` write-mode.
-
-The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
-
-```yaml copy
-kind: destination
-spec:
-  name: "kafka"
-  path: "cloudquery/kafka"
-  version: "VERSION_DESTINATION_KAFKA"
-  write_mode: "append" # only supports 'append'
-
-  spec:
-    brokers: ["<broker-host>:<broker-port>"]
-    format: "json"
-```
+<Configuration />
 
 ## Plugin Spec
 

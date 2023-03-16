@@ -8,13 +8,14 @@ import (
 )
 
 func Apps() *schema.Table {
+	tableName := "aws_resiliencehub_apps"
 	return &schema.Table{
-		Name:                "aws_resiliencehub_apps",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_App.html`,
 		Resolver:            fetchApps,
 		PreResourceResolver: describeApp,
 		Transform:           transformers.TransformWithStruct(&types.App{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("resiliencehub"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
 		Columns:             []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), arnColumn("AppArn")},
 		Relations:           []*schema.Table{appAssesments(), appVersions()},
 	}

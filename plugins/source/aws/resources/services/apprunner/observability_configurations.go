@@ -8,12 +8,13 @@ import (
 )
 
 func ObservabilityConfigurations() *schema.Table {
+	tableName := "aws_apprunner_observability_configurations"
 	return &schema.Table{
-		Name:                "aws_apprunner_observability_configurations",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/apprunner/latest/api/API_ObservabilityConfiguration.html`,
 		Resolver:            fetchApprunnerObservabilityConfigurations,
 		PreResourceResolver: getObservabilityConfiguration,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("apprunner"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "apprunner"),
 		Transform:           transformers.TransformWithStruct(&types.ObservabilityConfiguration{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

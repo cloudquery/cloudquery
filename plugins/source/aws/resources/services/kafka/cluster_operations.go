@@ -8,12 +8,13 @@ import (
 )
 
 func ClusterOperations() *schema.Table {
+	tableName := "aws_kafka_cluster_operations"
 	return &schema.Table{
-		Name:        "aws_kafka_cluster_operations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-operations.html`,
 		Resolver:    fetchKafkaClusterOperations,
 		Transform:   transformers.TransformWithStruct(&types.ClusterOperationInfo{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("kafka"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "kafka"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

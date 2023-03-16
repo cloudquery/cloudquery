@@ -8,11 +8,12 @@ import (
 )
 
 func ApiIntegrations() *schema.Table {
+	tableName := "aws_apigatewayv2_api_integrations"
 	return &schema.Table{
-		Name:        "aws_apigatewayv2_api_integrations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Integration.html`,
 		Resolver:    fetchApigatewayv2ApiIntegrations,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Integration{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

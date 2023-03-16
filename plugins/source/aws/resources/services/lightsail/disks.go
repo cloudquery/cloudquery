@@ -8,12 +8,13 @@ import (
 )
 
 func Disks() *schema.Table {
+	tableName := "aws_lightsail_disks"
 	return &schema.Table{
-		Name:        "aws_lightsail_disks",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Disk.html`,
 		Resolver:    fetchLightsailDisks,
 		Transform:   transformers.TransformWithStruct(&types.Disk{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lightsail"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

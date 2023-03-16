@@ -8,11 +8,12 @@ import (
 )
 
 func Policies() *schema.Table {
+	tableName := "aws_applicationautoscaling_policies"
 	return &schema.Table{
-		Name:        "aws_applicationautoscaling_policies",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/autoscaling/plans/APIReference/API_ScalingPolicy.html`,
 		Resolver:    fetchApplicationautoscalingPolicies,
-		Multiplex:   client.ServiceAccountRegionNamespaceMultiplexer("application-autoscaling"),
+		Multiplex:   client.ServiceAccountRegionNamespaceMultiplexer(tableName, "application-autoscaling"),
 		Transform:   transformers.TransformWithStruct(&types.ScalingPolicy{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

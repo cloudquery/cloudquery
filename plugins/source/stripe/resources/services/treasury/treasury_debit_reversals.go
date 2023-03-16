@@ -13,7 +13,7 @@ func TreasuryDebitReversals() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_treasury_debit_reversals",
 		Description: `https://stripe.com/docs/api/treasury_debit_reversals`,
-		Transform:   transformers.TransformWithStruct(&stripe.TreasuryDebitReversal{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.TreasuryDebitReversal{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchTreasuryDebitReversals,
 
 		Columns: []schema.Column{

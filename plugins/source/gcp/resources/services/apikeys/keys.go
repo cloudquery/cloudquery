@@ -5,10 +5,10 @@ import (
 
 	"google.golang.org/api/iterator"
 
+	pb "cloud.google.com/go/apikeys/apiv2/apikeyspb"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	pb "google.golang.org/genproto/googleapis/api/apikeys/v2"
 
 	apikeys "cloud.google.com/go/apikeys/apiv2"
 )
@@ -16,10 +16,11 @@ import (
 func Keys() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_apikeys_keys",
+		Title:       "GCP API Keys",
 		Description: `https://cloud.google.com/api-keys/docs/reference/rest/v2/projects.locations.keys#Key`,
 		Resolver:    fetchKeys,
 		Multiplex:   client.ProjectMultiplexEnabledServices("apikeys.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Key{}, append(client.Options(), transformers.WithPrimaryKeys("Uid"))...),
+		Transform:   client.TransformWithStruct(&pb.Key{}, transformers.WithPrimaryKeys("Uid")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

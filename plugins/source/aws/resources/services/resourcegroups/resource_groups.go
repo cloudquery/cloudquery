@@ -8,13 +8,14 @@ import (
 )
 
 func ResourceGroups() *schema.Table {
+	tableName := "aws_resourcegroups_resource_groups"
 	return &schema.Table{
-		Name:                "aws_resourcegroups_resource_groups",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/ARG/latest/APIReference/API_GetGroupQuery.html`,
 		Resolver:            fetchResourcegroupsResourceGroups,
 		PreResourceResolver: getResourceGroup,
 		Transform:           transformers.TransformWithStruct(&models.ResourceGroupWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("resource-groups"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "resource-groups"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

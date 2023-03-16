@@ -1,0 +1,27 @@
+# Table: heroku_team_spaces
+
+This table shows data for Heroku Team Spaces.
+
+https://devcenter.heroku.com/articles/platform-api-reference#team-space
+
+The primary key for this table is **id**.
+
+## Columns
+
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|id (PK)|String|
+|cidr|String|
+|created_at|Timestamp|
+|data_cidr|String|
+|name|String|
+|organization|JSON|
+|region|JSON|
+|shield|Bool|
+|state|String|
+|team|JSON|
+|updated_at|Timestamp|

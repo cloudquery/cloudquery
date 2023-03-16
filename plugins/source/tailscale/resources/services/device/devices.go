@@ -15,7 +15,7 @@ func Devices() *schema.Table {
 		Description:          `https://github.com/tailscale/tailscale/blob/main/api.md#tailnet-devices-get`,
 		Resolver:             fetchDevices,
 		PostResourceResolver: postDeviceFetch,
-		Transform:            transformers.TransformWithStruct(&tailscale.Device{}, client.SharedTransformers(transformers.WithPrimaryKeys("ID"))...),
+		Transform:            client.TransformWithStruct(&tailscale.Device{}, transformers.WithPrimaryKeys("ID")),
 		Columns: []schema.Column{
 			{
 				Name:     "tailnet",

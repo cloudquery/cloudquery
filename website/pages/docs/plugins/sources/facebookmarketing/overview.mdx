@@ -1,0 +1,28 @@
+---
+name: Facebook Marketing
+stage: Preview
+---
+
+# Facebook Marketing Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+import Authentication from "./_authentication.mdx";
+
+<Badge text={"Latest: " + getLatestVersion("source", "facebookmarketing")}/>
+
+The Facebook Marketing source plugin for CloudQuery extracts information from the [Facebook marketing API](https://developers.facebook.com/docs/marketing-api/reference/v16.0).
+
+
+## Configuration
+
+This following configuration example connects a Facebook Marketing source to a Postgres destination.
+
+<Configuration/>
+
+
+## Authentication
+
+<Authentication/>
+

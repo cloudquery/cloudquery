@@ -8,11 +8,12 @@ import (
 )
 
 func Replays() *schema.Table {
+	tableName := "aws_eventbridge_replays"
 	return &schema.Table{
-		Name:        "aws_eventbridge_replays",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Replay.html`,
 		Resolver:    fetchEventbridgeReplays,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "events"),
 		Transform:   transformers.TransformWithStruct(&types.Replay{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

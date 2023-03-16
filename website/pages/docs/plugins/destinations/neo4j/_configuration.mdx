@@ -1,0 +1,16 @@
+This example configures a Neo4j destination, located at `bolt://localhost:7687`. The username and password are stored in environment variables.
+
+```yaml copy
+kind: destination
+spec:
+  name: "neo4j"
+  registry: "github"
+  path: "cloudquery/neo4j"
+  version: "VERSION_DESTINATION_NEO4J"
+  # batch_size: 10000 # optional
+  # batch_size_bytes: 5242880 # optional
+  spec:
+    connection_string: "bolt://localhost:7687"
+    username: "${USERNAME}"
+    password: "${PASSWORD}"
+```

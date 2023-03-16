@@ -13,7 +13,7 @@ func PaymentLinks() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_payment_links",
 		Description: `https://stripe.com/docs/api/payment_links`,
-		Transform:   transformers.TransformWithStruct(&stripe.PaymentLink{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.PaymentLink{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchPaymentLinks,
 
 		Columns: []schema.Column{

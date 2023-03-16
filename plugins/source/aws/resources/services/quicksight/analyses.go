@@ -8,13 +8,14 @@ import (
 )
 
 func Analyses() *schema.Table {
+	tableName := "aws_quicksight_analyses"
 	return &schema.Table{
-		Name:                "aws_quicksight_analyses",
+		Name:                tableName,
 		Description:         "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Analysis.html",
 		Resolver:            fetchQuicksightAnalyses,
 		PreResourceResolver: getAnalysis,
 		Transform:           transformers.TransformWithStruct(&types.Analysis{}, transformers.WithPrimaryKeys("Arn")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("quicksight"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "quicksight"),
 		Columns:             []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true), tagsCol},
 	}
 }
