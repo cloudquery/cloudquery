@@ -1,0 +1,156 @@
+---
+title: Exploring API Data with DuckDB
+tag: security
+date: 2023/03/17
+description: >-
+  How to sync and explore data from AWS, Azure, GCP, Homebrew or any other CloudQuery source using DuckDB
+author: hermanschaaf
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+DuckDB has been making a splash in the data world, and for good reason. It's a fast, in-process SQL OLAP database management system that can be used to explore data in a variety of ways.
+
+Looking at [DuckDB's GitHub star history](https://star-history.com/#duckdb/duckdb&Date), it's clear that DuckDB has rapidly been gaining popularity:
+
+![DuckDB Star History](/images/blog/syncing-data-to-duckdb/star-history.png)
+
+We have now added support for DuckDB to CloudQuery in the form of a new destination plugin, so you can sync data from any CloudQuery source and explore it using DuckDB. But what is DuckDB? In this post we will introduce DuckDB, show how to sync data to a local DuckDB database, and then explore the data using the DuckDB CLI.
+
+## What is DuckDB?
+
+DuckDB describes an in-process SQL OLAP database management system. What does this mean? DuckDB is perhaps most easily understood as being in the same category as SQLite, but focused on OLAP (online analytical processing) instead of OLTP (online transaction processing). DuckDB is a columnar database, which means that it stores data in columns instead of rows. This makes it very fast for aggregations and other analytical queries. The fact that it runs in-process means that it can be used in a wide variety of applications: from [Jupyter notebooks](https://duckdb.org/docs/guides/python/jupyter.html) to [web browsers](https://duckdb.org/2021/10/29/duckdb-wasm.html) to [command-line tools](https://duckdb.org/docs/api/cli.html).
+
+## Syncing Data to DuckDB
+
+Since DuckDB is an "in-process" database, it might not be entirely clear what we mean by loading data into DuckDB! Similar to SQLite, DuckDB databases can also be stored as files, so we can use the CloudQuery `duckdb` destination plugin to sync data to a local DuckDB database file. Let's try it out!
+
+First, we need a source dataset to sync from. Just for fun, let's sync data from the Homebrew Analytics API. We can create a CloudQuery config file called `homebrew.yml`, in which we'll put both the Homebrew source and the DuckDB destination configuration:
+
+```yaml copy
+kind: source
+spec:
+  name: "homebrew"
+  version: "VERSION_SOURCE_HOMEBREW"
+  path: "cloudquery/homebrew"
+  destinations: ["duckdb"]
+  tables:
+    - homebrew_analytics_installs_30d
+    - homebrew_analytics_installs_90d
+    - homebrew_analytics_installs_365d
+---
+kind: destination
+spec:
+  name: "duckdb"
+  version: "VERSION_DESTINATION_DUCKDB"
+  path: "cloudquery/duckdb"
+  spec:
+    connection_string: "./homebrew.duckdb"
+```
+
+Now we can run `cloudquery sync` to sync data from the Homebrew source to a local DuckDB database file:
+
+```bash copy
+cloudquery sync homebrew-duckdb.yml
+```
+
+This outputs the following:
+
+```bash
+cloudquery sync homebrew-duckdb.yml
+Loading spec(s) from homebrew-duckdb.yml
+Starting migration with 3 tables for: homebrew (VERSION_SOURCE_HOMEBREW) -> [duckdb (VERSION_DESTINATION_DUCKDB)]
+Migration completed successfully.
+Starting sync for: homebrew (VERSION_SOURCE_HOMEBREW) -> [duckdb (VERSION_DESTINATION_DUCKDB)]
+Sync completed successfully. Resources: 30000, Errors: 0, Panics: 0, Time: 10s
+```
+
+Now we have a local DuckDB database file called `homebrew.duckdb` that contains the data from the Homebrew Analytics API. We can use the DuckDB CLI to explore the data. Check out the [DuckDB Installation page](https://duckdb.org/docs/installation/index) for more information on how to install the CLI. Let's open the database:
+
+```bash copy
+duckdb homebrew.duckdb
+```
+
+This outputs the following and then waits for input:
+
+```bash
+v0.7.1 b00b93f0b1
+Enter ".help" for usage hints.
+D
+```
+
+DuckDB is great for data exploration, so let's start by exploring the data! Let's start by looking at the `homebrew_analytics_installs_30d` table:
+
+```sql copy
+SELECT number, formula, count, percent FROM homebrew_analytics_installs_30d ORDER BY number ASC LIMIT 10;
+```
+
+Now we can see the top 10 most installed Homebrew packages (on MacOS) in the last 30 days:
+
+```bash
+┌────────┬─────────────────┬────────┬─────────┐
+│ number │     formula     │ count  │ percent │
+│ int64  │     varchar     │ int64  │  float  │
+├────────┼─────────────────┼────────┼─────────┤
+│      1 │ openssl@1.1     │ 313469 │    2.37 │
+│      2 │ libnghttp2      │ 258853 │    1.96 │
+│      3 │ zstd            │ 255983 │    1.94 │
+│      4 │ python@3.11     │ 238906 │    1.81 │
+│      5 │ ca-certificates │ 219814 │    1.67 │
+│      6 │ freetype        │ 207035 │    1.57 │
+│      7 │ xz              │ 204572 │    1.55 │
+│      8 │ jpeg-turbo      │ 203761 │    1.54 │
+│      9 │ libxcb          │ 202785 │    1.54 │
+│     10 │ harfbuzz        │ 176521 │    1.34 │
+├────────┴─────────────────┴────────┴─────────┤
+│ 10 rows                           4 columns │
+└─────────────────────────────────────────────┘
+```
+
+Great! But what if we wanted to see the fastest-growing Homebrew packages? We can combine the `homebrew_analytics_installs_30d`, `homebrew_analytics_installs_90d` tables to find out which packages have gone up in popularity the most. We shouldn't use the `count` column for this, because Homebrew recently added and publicized a new way to control the analytics that gets sent. This means that the `count` column, which is an absolute count of installs, is being skewed by more users turning off analytics in the last month. Instead, we will use the `number` column, which is a relative ranking of popularity. If we do this, we should also make sure we only look at formulae that had a relatively large number of installs to begin with, otherwise a small gain in installs can lead to a large jump in ranking for long-tail formulae. Let's try it out:
+
+```sql copy
+SELECT
+  a.formula,
+  'https://formulae.brew.sh/formula/' || a.formula as url,
+  a.number AS number_30d,
+  b.number AS number_90d,
+  (a.number - b.number) AS change_90d
+FROM homebrew_analytics_installs_30d a
+JOIN homebrew_analytics_installs_90d b ON a.formula = b.formula
+WHERE
+    -- only consider formulae that had at least 500 installs in the last 90 days
+    b.count > 500
+    -- only consider formulae that are not custom taps
+    AND NOT contains(a.formula, '/')
+    -- ignore specific version installs
+    AND NOT contains(a.formula, '@')
+ORDER BY change_90d ASC
+LIMIT 15;
+```
+
+And the results are:
+
+|    formula    |                      url                       | number_30d | number_90d | change_90d |
+|---------------|------------------------------------------------|------------|------------|------------|
+| spandsp       | https://formulae.brew.sh/formula/spandsp       | 1256       | 2347       | -1091      |
+| aws-console   | https://formulae.brew.sh/formula/aws-console   | 1222       | 2156       | -934       |
+| megatools     | https://formulae.brew.sh/formula/megatools     | 1376       | 2282       | -906       |
+| librsync      | https://formulae.brew.sh/formula/librsync      | 892        | 1797       | -905       |
+| traefik       | https://formulae.brew.sh/formula/traefik       | 1379       | 2284       | -905       |
+| noti          | https://formulae.brew.sh/formula/noti          | 1350       | 2197       | -847       |
+| solr          | https://formulae.brew.sh/formula/solr          | 1297       | 2070       | -773       |
+| checkbashisms | https://formulae.brew.sh/formula/checkbashisms | 1485       | 2233       | -748       |
+| jd            | https://formulae.brew.sh/formula/jd            | 1115       | 1792       | -677       |
+| terraform-ls  | https://formulae.brew.sh/formula/terraform-ls  | 1028       | 1695       | -667       |
+| trash-cli     | https://formulae.brew.sh/formula/trash-cli     | 1096       | 1756       | -660       |
+| zola          | https://formulae.brew.sh/formula/zola          | 1208       | 1866       | -658       |
+| grails        | https://formulae.brew.sh/formula/grails        | 1515       | 2167       | -652       |
+| hubble        | https://formulae.brew.sh/formula/hubble        | 1711       | 2335       | -624       |
+| libxmp        | https://formulae.brew.sh/formula/libxmp        | 550        | 1156       | -606       |
+
+To get the output in markdown format (like I did for this post), you can run `.mode markdown` before running the query.
+
+There are some interesting tools in that list! If you'd like to explore the most up-to-date data yourself, you can follow the steps above and try out some of your own queries. You can also check out the [DuckDB documentation](https://duckdb.org/docs/sql/introduction) for more information on how to use DuckDB.
