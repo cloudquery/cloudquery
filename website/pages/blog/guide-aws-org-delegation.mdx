@@ -358,7 +358,7 @@ SELECT * from aws_organization_resource_policies;
 We have covered research on AWS Organizations delegated administrator and the security and management benefits of using delegated administrator accounts for multi account management.  To summarize:
 
 * Use delegated administrator to reduce usage of the organization management account for multi account AWS environments.
-* Depending on the use case, delegated admininstrator can be setup 3 different ways:
+* Delegated administrator can be setup 3 different ways for different use cases:
     * Via organization actions such as `organizations:RegisterDelegatedAdministrator`.
     * Via service-specific actions such as `guardduty:EnableOrganizationAdminAccount` or `cloudtrail:RegisterOrganizationDelegatedAdmin`.
     * Via organization resource-based delegation policies.
