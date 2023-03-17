@@ -1,3 +1,7 @@
+---
+title: Google Cloud Asset Inventory alternative | Comparison with CloudQuery
+---
+
 # CloudQuery vs Google Cloud Asset Inventory
 
 Google Cloud Asset Inventory is the native GCP asset inventory.
