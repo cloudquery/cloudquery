@@ -14,7 +14,7 @@ func Exports() *schema.Table {
 	tableName := "aws_dynamodb_exports"
 	return &schema.Table{
 		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_GlobalTableDescription.html`,
+		Description:         `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ExportDescription.html`,
 		Resolver:            listExports,
 		PreResourceResolver: getExport,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "dynamodb"),
