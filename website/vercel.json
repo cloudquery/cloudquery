@@ -199,12 +199,32 @@
       "destination": "/docs/plugins/sources/tailscale/overview"
     },
     {
+      "source": "/docs/cq-vs-others/airbyte",
+      "destination": "/docs/cq-vs-others/airbyte-alternative-cloudquery"
+    },
+    {
+      "source": "/docs/cq-vs-others/aws-config",
+      "destination": "/docs/cq-vs-others/aws-config-alternative-cloudquery"
+    },
+    {
+      "source": "/docs/cq-vs-others/cloudsploit",
+      "destination": "/docs/cq-vs-others/cloudsploit-alternative-cloudquery"
+    },
+    {
       "source": "/docs/cq-vs-others/cspms",
       "destination": "/docs/cq-vs-others/cspm-alternative-cloudquery"
     },
     {
-      "source": "/docs/cq-vs-others/:other",
-      "destination": "/docs/cq-vs-others/:other-alternative-cloudquery"
+      "source": "/docs/cq-vs-others/fivetran",
+      "destination": "/docs/cq-vs-others/fivetran-alternative-cloudquery"
+    },
+    {
+      "source": "/docs/cq-vs-others/google-cloud-asset-inventory",
+      "destination": "/docs/cq-vs-others/google-cloud-asset-inventory-alternative-cloudquery"
+    },
+    {
+      "source": "/docs/cq-vs-others/steampipe",
+      "destination": "/docs/cq-vs-others/steampipe-alternative-cloudquery"
     }
   ]
 }
