@@ -42,7 +42,7 @@ The introduction of data warehouses and data lakes also made it possible to shif
 
 This refers to the data we want to ingest and involves different types of sources:
 
-- **Databases -** Companies have many databases for different workloads. Since these databases are not optimized for analytical workloads, it is often necessary to ingest data from production databases to analytical databases where you can run complex queries without impacting the production system. Additionally, there have been many advances around Change Data Capture ([CDC](https://www.cloudquery.io/blog/postgres-cdc-to-any-destination)) for databases, allowing you to ingest data in real-time from databases. This enables efficient, near-real time syncing between source databases and destinations.
+- **Databases**: Companies have many databases for different workloads. Since these databases are not optimized for analytical workloads, it is often necessary to ingest data from production databases to analytical databases where you can run complex queries without impacting the production system. Additionally, there have been many advances around Change Data Capture ([CDC](https://www.cloudquery.io/blog/postgres-cdc-to-any-destination)) for databases, allowing you to ingest data in real-time from databases. This enables efficient, near-real time syncing between source databases and destinations.
 - **APIs -** Most SaaS products expose their data via APIs. So, data for anything from marketing or finance products such as Salesforce and Stripe, to infrastructure platforms such as AWS, GCP, Azure can be loaded.**
 - **Event Streams -** This is another popular source type where you might want to subscribe to an event queue and send it to an analytical destination.
 
