@@ -16,7 +16,7 @@ func GroupAttachedPolicies() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.AttachedPolicy{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "group_arn",
 				Type:     schema.TypeString,
