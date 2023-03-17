@@ -166,8 +166,8 @@ This is done via `organizations:PutResourcePolicy`.  Specifically, this enables 
 ##### Organizational Policy Management
 
 Actions:
-* CreatePolicy, AttachPolicy, UpdatePolicy, DeletePolicy, DetachPolicy.
-* DisablePolicyType and EnablePolicyType.
+* `organizations:CreatePolicy`, `organizations:AttachPolicy`, `organizations:UpdatePolicy`, `organizations:DeletePolicy`, `organizations:DetachPolicy`.
+* `organizations:DisablePolicyType` and `organizations:EnablePolicyType`.
  
  Current services and policies that support this type of delegation via Resource-Based Delegation Policies include the following:
  * AI Services data collection and usage via `AISERVICES_OPT_OUT_POLICY`
@@ -178,9 +178,9 @@ Actions:
 ##### Resource Tagging
 
 Actions: 
-* TagResource, UntagResource
+* `organziations:TagResource`, `organizations:UntagResource`
 
- The following resources can be tagged via `TagResource` and `UntagResource`:
+ The following resources can be tagged via `organizations:TagResource` and `organizations:UntagResource`:
  * AWS account
  * Organization root
  * Organizational unit (OU)
@@ -189,14 +189,14 @@ Actions:
 ##### Viewing Organizational Information
 
 Actions:
-* DescribeCreateAccountStatus, ListCreateAccountStatus
-* DescribeEffectivePolicy, DescribeResourcePolicy
-* DescribeHandshake, ListHandshakesForAccount, ListHandshakesForOrganization
-* DescribeAccount, DescribeOrganization, DescribeOrganizationalUnit
-* ListAccounts, ListAccountsForParent, ListChildren, ListOrganizationalUnitsForParent, ListParents, ListRoots
-* ListPolicies, ListPoliciesForTarget
-* ListAWSServiceAccessForOrganization, ListDelegatedAdministrators, ListDelegatedServicesForAccount
-* ListTagsForResource, ListTargetsForPolicy
+* `organizations:DescribeCreateAccountStatus`, `organizations:ListCreateAccountStatus`
+* `organizations:DescribeEffectivePolicy`, `organizations:DescribeResourcePolicy`
+* `organizations:DescribeHandshake`, `organizations:ListHandshakesForAccount`, `organizations:ListHandshakesForOrganization`
+* `organizations:DescribeAccount`, `organizations:DescribeOrganization`, `organizations:DescribeOrganizationalUnit`
+* `organizations:ListAccounts`, `organizations:ListAccountsForParent`, `organizations:ListChildren`, `organizations:ListOrganizationalUnitsForParent`, `organizations:ListParents`, `organizations:ListRoots`
+* `organizations:ListPolicies`, `organizations:ListPoliciesForTarget`
+* `organizations:ListAWSServiceAccessForOrganization`, `organizations:ListDelegatedAdministrators`, `organizations:ListDelegatedServicesForAccount`
+* `organizations:ListTagsForResource`, `organizations:ListTargetsForPolicy`
 
 The actions above grant a delegated administrator account access to view and describe organization resources such as policies, accounts, organizational units, and organizational structure.
 
