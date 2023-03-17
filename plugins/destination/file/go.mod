@@ -24,6 +24,8 @@ require (
 	golang.org/x/tools v0.6.0 // indirect
 )
 
+replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230317130341-c648117570af
+
 require (
 	github.com/apache/arrow/go/arrow v0.0.0-20200730104253-651201b0f516 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
