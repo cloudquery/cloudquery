@@ -197,6 +197,14 @@
     {
       "source": "/docs/plugins/sources/tailscale/configuration",
       "destination": "/docs/plugins/sources/tailscale/overview"
+    },
+    {
+      "source": "/docs/cq-vs-others/cspms",
+      "destination": "/docs/cq-vs-others/cspm-alternative-cloudquery"
+    },
+    {
+      "source": "/docs/cq-vs-others/:other",
+      "destination": "/docs/cq-vs-others/:other-alternative-cloudquery"
     }
   ]
 }
