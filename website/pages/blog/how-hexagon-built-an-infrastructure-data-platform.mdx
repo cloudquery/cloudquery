@@ -27,13 +27,14 @@ The different stages are shown in the high-level architecture diagram below:
 - Step 11 starts by an EvenBridge cron rule triggered on a daily basis. This rule will then summon a Lambda function ([provided by CloudQuery](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/views/athena)). This function (Step 12) updates a resource view called aws_resources: a single view that contains all resources from all accounts.
 - Lastly, a lifecycle rule created in S3 permanently deletes all the data older than 7 days old (in order to keep the cost of hosting the data low).
 
-With these stages complete, the data is queryable from Athena, either by table or through the resources view. The tables and views can also be loaded into QuickSight (via data set), where graphs and dashboards can be created.
+With all the above steps completed, Athena is now able to query the data, either by resource type or by using the `aws_resources` view. The tables and views can also be loaded into QuickSight (via dataset), where graphs and dashboards can be created.
 
 ## Results
 
 Overall, this project was a great success. The Hexagon CCoE team was able to build a serverless data lake that collects data from all of Hexagon’s cloud accounts and stores it in a single location. They are now able to query this data using SQL and to visualise it using QuickSight, their dashboard tool of choice.
 
-Pushing from the beginning for a fully serverless solution will bring lots of benefits in the long run. There is no need for time-consuming or costly updates and virtually zero maintenance. The cloud provider and CloudQuery updates and maintains the whole solution making it extremely attractive. This brings to the Hexagon CCoE team important peace of mind since they highly value the zero maintenance model.
+Pushing for a fully serverless solution from the beginning was an important requirement for Hexagon. This decision brought lots of benefits since there is no need for time-consuming updates and virtually zero maintenance.
+Both the Cloud provider and CloudQuery will maintain and support the whole solution, which makes it extremely attractive. This brought to Hexagon confidence they made the right decision, both by choosing CloudQuery and the serverless approach.
 
 ## Challenges
 
