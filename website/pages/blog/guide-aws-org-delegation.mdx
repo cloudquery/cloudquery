@@ -97,6 +97,8 @@ There are 3 different ways to delegate organization management.  In this case, a
 * Via service-specific actions such as `guardduty:EnableOrganizationAdminAccount` or `cloudtrail:RegisterOrganizationDelegatedAdmin`.
 * Organization resource-based delegation policies.
 
+In some cases, delegation is only possible via API and CLI and not via the AWS management console.  One example is [AWS Account Management](https://docs.aws.amazon.com/accounts/latest/reference/using-orgs-delegated-admin.html).  
+
 #### Delegation via Organization Actions
 
 This is called via `organizations:RegisterDelegatedAdministrator`.  Note that this permission is called as a child command from the service-specific permissions for registering a Delegated Administrator.  Note: AWS Security Lake is included, but is in Preview right now and the behavior may not differ when it becomes generally available (GA) like other AWS services.
@@ -116,7 +118,7 @@ aws organizations register-delegated-administrator \
 --region us-east-1
 ```
 
-| AWS Service | Support via `organizations:RegisterDelegatedAdministrator` |
+| AWS Service | Support via `organizations:RegisterDelegatedAdministrator` only |
 | ----------- | ---------- |
 | AWS Trusted Advisor | Yes |
 | AWS CloudFormation StackSets | Yes | 
