@@ -13,7 +13,9 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 ## Overview
 
-Amazon Web Services accounts can be complex to manage at scale.  AWS Organizations offers management activities to aid with managing multiple AWS Accounts.  When AWS Organizations was first released for better multi account management, many management activities could only be done from the management root account.  The recent support for Delegated Administrator allows for reduced blast radius by moving certain actions to other member accounts to reduce the usage of the management `root` account and improve security.
+Amazon Web Services accounts can be complex to manage at scale.  AWS Organizations offers management activities to aid with managing multiple AWS Accounts.  A multi-account strategy with AWS Organizations offers multiple benefits including reducing security blast radius with AWS accounts as a boundary, reducing blast radius from AWS resource and quota limits, simplified and consolidated billing, and benefits with cross-account resource sharing and permissions.  
+
+When AWS Organizations was first released for better multi account management, many management activities could only be done from the management root account.  The recent support for Delegated Administrator allows for reduced blast radius by moving certain actions to other member accounts to reduce the usage of the management `root` account and improve security.
 
 However, delegating administrator duties can be complex and there are multiple different methods that include:
 * Via organization actions such as `organizations:RegisterDelegatedAdministrator`.
@@ -54,7 +56,7 @@ The following services and features can be utilized via Organizations:
 
 Prior to AWS releasing delegation, any actions to manage Organizations and other accounts would have to originate in the Organization Management Account (often referred to as the root account).  Over the last few years, AWS has released support for more multi-account management activities via delegated administrator.  
 
-By leveraging multiple delegated administrator accounts, usage of the organization management account can be limited to infrequent activities and break-glass access.  This reduces the possibility of misconfiguration of the management account, an account with a large blast radius of the rest of the accounts in the AWS organization.
+By leveraging delegated administrator accounts, usage of the organization management account can be limited to infrequent activities and break-glass access.  This reduces the possibility of misconfiguration of the management account, an account with a large blast radius of the rest of the accounts in the AWS organization.
 
 ### Security Concerns of Organization Management Account Overuse
 
