@@ -3,14 +3,10 @@ package client
 import (
 	"context"
 	"fmt"
-	"io"
 	"os"
 
-	"github.com/cloudquery/filetypes/csv"
-	"github.com/cloudquery/filetypes/json"
-	"github.com/cloudquery/filetypes/parquet"
+	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 )
@@ -21,20 +17,7 @@ type Client struct {
 	spec       specs.Destination
 	pluginSpec Spec
 
-	formatClient formatClient
-
-	// Embedded transformers
-	schema.CQTypeTransformer
-	reverseTransformer
-}
-
-type reverseTransformer interface {
-	ReverseTransformValues(table *schema.Table, values []any) (schema.CQTypes, error)
-}
-
-type formatClient interface {
-	Read(r io.Reader, table *schema.Table, sourceName string, res chan<- []any) error
-	WriteTableBatch(w io.Writer, table *schema.Table, resources [][]any) error
+	*filetypes.Client
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -54,23 +37,11 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 	c.pluginSpec.SetDefaults()
 
-	var err error
-	switch c.pluginSpec.Format {
-	case FormatTypeCSV:
-		c.formatClient, err = csv.NewClient()
-		c.CQTypeTransformer = &csv.Transformer{}
-		c.reverseTransformer = &csv.ReverseTransformer{}
-	case FormatTypeJSON:
-		c.formatClient, err = json.NewClient()
-		c.CQTypeTransformer = &schema.DefaultTransformer{}
-		c.reverseTransformer = &json.ReverseTransformer{}
-	case FormatTypeParquet:
-		c.formatClient, err = parquet.NewClient()
-		c.CQTypeTransformer = &parquet.Transformer{}
-		c.reverseTransformer = &parquet.ReverseTransformer{}
-	default:
-		return nil, fmt.Errorf("unknown format %q", c.pluginSpec.Format)
+	filetypesClient, err := filetypes.NewClient(c.pluginSpec.FileSpec)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}
+	c.Client = filetypesClient
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to create filetype client: %w", err)

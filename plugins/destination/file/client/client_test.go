@@ -3,6 +3,7 @@ package client
 import (
 	"testing"
 
+	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 )
@@ -22,8 +23,10 @@ func TestPluginCSV(t *testing.T) {
 		},
 		Spec{
 			Directory: t.TempDir(),
-			Format:    FormatTypeCSV,
-			NoRotate:  true,
+			FileSpec: &filetypes.FileSpec{
+				Format: filetypes.FormatTypeCSV,
+			},
+			NoRotate: true,
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,
@@ -45,8 +48,10 @@ func TestPluginJSON(t *testing.T) {
 		},
 		Spec{
 			Directory: t.TempDir(),
-			Format:    FormatTypeJSON,
-			NoRotate:  true,
+			FileSpec: &filetypes.FileSpec{
+				Format: filetypes.FormatTypeJSON,
+			},
+			NoRotate: true,
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,
@@ -68,8 +73,10 @@ func TestPluginParquet(t *testing.T) {
 		},
 		Spec{
 			Directory: t.TempDir(),
-			Format:    FormatTypeParquet,
-			NoRotate:  true,
+			FileSpec: &filetypes.FileSpec{
+				Format: filetypes.FormatTypeParquet,
+			},
+			NoRotate: true,
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,
