@@ -92,6 +92,8 @@ github.com/aws/aws-sdk-go-v2/service/autoscaling v1.26.2 h1:lMmzWec4pL9bYz/ATY0T
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.26.2/go.mod h1:qlmHUWNkEWcU83iUnN/sTAP47G5DUOeB3WYqjKTlU4A=
 github.com/aws/aws-sdk-go-v2/service/backup v1.19.2 h1:nwzOpnf9k86iQq7jFdgswQ7QY3dX+cIXVfjKwcxFxFE=
 github.com/aws/aws-sdk-go-v2/service/backup v1.19.2/go.mod h1:C8OY9BP/rQqiVXrQAoeIiiSref/EAGPPXmebCdiwaA4=
+github.com/aws/aws-sdk-go-v2/service/batch v1.21.6 h1:Pj5Yn8epZW38SSnZJPXiHVLVVvWO6qHUI71lx3QI4xw=
+github.com/aws/aws-sdk-go-v2/service/batch v1.21.6/go.mod h1:3Rsii9aSumSw25P9PrciV1AC6ykPRNadiKO4x/LMSSU=
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.25.1 h1:WWP7rtNSBk+Wh4644ADuX5EksF6QFoCKNwj45fsBvRs=
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.25.1/go.mod h1:Apg7QSWLW1AGekfjYItJXemDl8GEeQYoUFlnw8WwBD8=
 github.com/aws/aws-sdk-go-v2/service/cloudfront v1.24.1 h1:+JyTKAmvtszyz+LH0ag+Jm1BdcjfyXK3O2KJKSHIXtM=
@@ -112,10 +114,10 @@ github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.5 h1:nP0iDv8085tqAfwc
 github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.5/go.mod h1:OJyP6JYoFROrH5IlvAApN0Oyz38xTXjjkFnmYYAswuA=
 github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.5 h1:axGPbcjf9Td0a7vN7HO7tlkaN6hVEtvWVkcUZvNrfwc=
 github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.5/go.mod h1:H4hfLdGGr3RPJLsT4IojB+wyjjYq5jT6rTTFz0XDrUc=
-github.com/aws/aws-sdk-go-v2/service/configservice v1.29.6 h1:wcgjz5Gn0o5k8G74x4nUm4VEqS7Jam0GBWI/Crg+VXM=
-github.com/aws/aws-sdk-go-v2/service/configservice v1.29.6/go.mod h1:MmybfSbNyrVNJACsMT794/Umhnrz9THevciDeJwn3Es=
 github.com/aws/aws-sdk-go-v2/service/computeoptimizer v1.21.3 h1:JkWxBPjWWDKjVWjBoiIw9zbMA72Ynde66y5fInm9Q/g=
 github.com/aws/aws-sdk-go-v2/service/computeoptimizer v1.21.3/go.mod h1:U4bKXeB586zd73RIAkJX+ZmUtwI00xLJhDKJ7+hTCO0=
+github.com/aws/aws-sdk-go-v2/service/configservice v1.29.6 h1:wcgjz5Gn0o5k8G74x4nUm4VEqS7Jam0GBWI/Crg+VXM=
+github.com/aws/aws-sdk-go-v2/service/configservice v1.29.6/go.mod h1:MmybfSbNyrVNJACsMT794/Umhnrz9THevciDeJwn3Es=
 github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5 h1:5djJJgT14pDx5oZaL4+m5ZdjY5BmrFj5o7Sfox/AIWM=
 github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5/go.mod h1:lgoF6So5J3yC2J4vefW/XxGPaOHFIG2OS4/gKzPxNjE=
 github.com/aws/aws-sdk-go-v2/service/dax v1.12.5 h1:i9Pp5HjJyj52pLmjA1XHtX4Ylfs2BshXNOrwUsZg41E=
