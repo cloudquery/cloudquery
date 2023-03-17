@@ -145,7 +145,7 @@ For these IAM actions, there is a lack of standardization of action naming: for 
 | AWS Firewall Manager | fms:AssociateAdminAccount |
 | AWS GuardDuty | guardduty:EnableOrganizationAdminAccount |
 | AWS Detective | detective:EnableOrganizationAdminAccount |
-| AWS EC2 (IPAM) | ec2:EnableIpamOrganizationAdminAccount |
+| AWS VPC IP Address Manager (EC2 IPAM) | ec2:EnableIpamOrganizationAdminAccount |
 | AWS Security Hub | securityhub:EnableOrganizationAdminAccount |
 | AWS Audit Manager | auditmanager:RegisterOrganizationAdminAccount |
 | AWS Inspector | inspector2:EnableDelegatedAdminAccount |
@@ -331,7 +331,7 @@ The specific actions for deregistering delegated administrator accounts (not via
 | AWS Firewall Manager | fms:DisassociateAdminAccount | 
 | AWS GuardDuty | guardduty:DisableOrganizationAdminAccount | 
 | AWS Detective | detective:DisableOrganizationAdminAccount | 
-| AWS EC2 (IPAM) | ec2:DisableIpamOrganizationAdminAccount | 
+| AWS VPC IP Address Manager (EC2 IPAM) | ec2:DisableIpamOrganizationAdminAccount | 
 | AWS Security Hub | securityhub:DisableOrganizationAdminAccount | 
 | AWS Audit Manager | auditmanager:DeregisterOrganizationAdminAccount | 
 | AWS Inspector | inspector2:DisableDelegatedAdminAccount | 
@@ -355,18 +355,13 @@ SELECT * from aws_organization_resource_policies;
 
 ## Conclusion
 
-* Organization resource-based delegation policies.
-* Directly via organization actions such as `organizations:RegisterDelegatedAdministrator`.
-* Indirectly via service-specific actions such as `guardduty:EnableOrganizationAdminAccount` or `trustedadvisor:SetOrganizationAccess`.
+We have covered research on AWS Organizations delegated administrator and the security and management benefits of using delegated administrator accounts for multi account management.  To summarize:
 
-In this post, we'll explain our research on: 
-* AWS Organizations and Multi Account Management.
-* Delegated Administrator and the security and management benefits.
-* What can be done by delegated administrator.  
-* The 3 different methods of setting up delegated administration and the complexity of delegation.
-* The IAM permissions required for Delegated Administrator Management and reference policies.
-
-### Contact Us
+* Use delegated administrator to reduce usage of the organization management account for multi account AWS environments.
+* Depending on the use case, delegated admininstrator can be setup 3 different ways:
+    * Via organization actions such as `organizations:RegisterDelegatedAdministrator`.
+    * Via service-specific actions such as `guardduty:EnableOrganizationAdminAccount` or `cloudtrail:RegisterOrganizationDelegatedAdmin`.
+    * Via organization resource-based delegation policies.
 
 If you have comments or questions about the content above, CloudQuery or potential partnerships with us, reach out to us on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord)!
 
