@@ -72,7 +72,7 @@ Specify which tables to skip when syncing the source plugin. It accepts wildcard
 
 (`bool`, optional, default: `false`, introduced in CLI `v2.3.7`)
 
-If set to `true`, tables that depend on the tables specified in `tables` will not be synced, unless specifically selected themselves. This allows you to choose precisely which tables to sync, and prevents automatically syncing new dependent tables that may be added to the plugin in future versions. If you specify a nested table then CloudQuery will automatically select all of the parent tables automatically.
+If set to `true`, tables that depend on the tables specified in `tables` will not be synced, unless specifically selected themselves. This allows you to choose precisely which tables to sync, and prevents automatically syncing new dependent tables that may be added to the plugin in future versions. Note that if you specify a table that depends on another table, CloudQuery will still automatically include the parent table(s).
 
 ### destinations
 
