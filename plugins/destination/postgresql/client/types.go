@@ -1,11 +1,9 @@
 package client
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/schema"
-	"golang.org/x/exp/maps"
 )
 
 func (c *Client) SchemaTypeToPg(t schema.ValueType) string {
@@ -99,74 +97,85 @@ func (*Client) SchemaTypeToCockroach(t schema.ValueType) string {
 	}
 }
 
-func (c *Client) PgToSchemaType(tableName string, columnName string, t string) (schema.ValueType, error) {
+func (c *Client) PgToSchemaType(t string) schema.ValueType {
 	switch c.pgType {
 	case pgTypeCockroachDB:
-		return c.CockroachToSchemaType(tableName, columnName, t)
+		return c.CockroachToSchemaType(t)
 	default:
-		return c.Pg10ToSchemaType(tableName, columnName, t)
+		return c.Pg10ToSchemaType(t)
 	}
 }
 
-func (*Client) Pg10ToSchemaType(tableName string, columnName string, postgresType string) (schema.ValueType, error) {
-	if strings.HasPrefix(postgresType, "timestamp") {
-		return schema.TypeTimestamp, nil
+func (*Client) Pg10ToSchemaType(t string) schema.ValueType {
+	if strings.HasPrefix(t, "timestamp") {
+		return schema.TypeTimestamp
 	}
 
-	pgToSchemaType := map[string]schema.ValueType{
-		"boolean":          schema.TypeBool,
-		"bigint":           schema.TypeInt,
-		"integer":          schema.TypeInt,
-		"float":            schema.TypeFloat,
-		"real":             schema.TypeFloat,
-		"double precision": schema.TypeFloat,
-		"uuid":             schema.TypeUUID,
-		"text":             schema.TypeString,
-		"bytea":            schema.TypeByteArray,
-		"text[]":           schema.TypeStringArray,
-		"jsonb":            schema.TypeJSON,
-		"uuid[]":           schema.TypeUUIDArray,
-		"cidr":             schema.TypeCIDR,
-		"cidr[]":           schema.TypeCIDRArray,
-		"macaddr":          schema.TypeMacAddr,
-		"macaddr[]":        schema.TypeMacAddrArray,
-		"inet":             schema.TypeInet,
-		"inet[]":           schema.TypeInetArray,
-		"bigint[]":         schema.TypeIntArray,
+	switch t {
+	case "boolean":
+		return schema.TypeBool
+	case "bigint", "integer", "bigserial", "smallint", "smallserial", "serial":
+		return schema.TypeInt
+	case "double precision", "float", "real", "numeric":
+		return schema.TypeFloat
+	case "uuid":
+		return schema.TypeUUID
+	case "bytea":
+		return schema.TypeByteArray
+	case "text[]":
+		return schema.TypeStringArray
+	case "json", "jsonb":
+		return schema.TypeJSON
+	case "uuid[]":
+		return schema.TypeUUIDArray
+	case "cidr":
+		return schema.TypeCIDR
+	case "cidr[]":
+		return schema.TypeCIDRArray
+	case "macaddr", "macaddr8":
+		return schema.TypeMacAddr
+	case "macaddr[]", "macaddr8[]":
+		return schema.TypeMacAddrArray
+	case "inet":
+		return schema.TypeInet
+	case "inet[]":
+		return schema.TypeInetArray
+	case "bigint[]", "integer[]", "smallint[]", "bigserial[]", "smallserial[]", "serial[]":
+		return schema.TypeIntArray
+	default:
+		return schema.TypeString
 	}
-
-	if v, ok := pgToSchemaType[postgresType]; ok {
-		return v, nil
-	}
-
-	return schema.TypeInvalid, fmt.Errorf("got unknown PostgreSQL type %q for column %q of table %q while trying to convert it to CloudQuery internal schema type. Supported PostgreSQL types are %q", postgresType, columnName, tableName, append(maps.Keys(pgToSchemaType), "timestamp"))
 }
 
-func (*Client) CockroachToSchemaType(tableName string, columnName string, cockroachType string) (schema.ValueType, error) {
-	if strings.HasPrefix(cockroachType, "timestamp") {
-		return schema.TypeTimestamp, nil
+func (*Client) CockroachToSchemaType(t string) schema.ValueType {
+	if strings.HasPrefix(t, "timestamp") {
+		return schema.TypeTimestamp
 	}
 
-	cockroachToSchemaType := map[string]schema.ValueType{
-		"boolean":          schema.TypeBool,
-		"bigint":           schema.TypeInt,
-		"float":            schema.TypeFloat,
-		"real":             schema.TypeFloat,
-		"double precision": schema.TypeFloat,
-		"uuid":             schema.TypeUUID,
-		"text":             schema.TypeString,
-		"bytea":            schema.TypeByteArray,
-		"text[]":           schema.TypeStringArray,
-		"jsonb":            schema.TypeJSON,
-		"uuid[]":           schema.TypeUUIDArray,
-		"inet":             schema.TypeInet,
-		"inet[]":           schema.TypeInetArray,
-		"bigint[]":         schema.TypeIntArray,
+	switch t {
+	case "boolean":
+		return schema.TypeBool
+	case "bigint", "int", "oid", "serial":
+		return schema.TypeInt
+	case "decimal", "float":
+		return schema.TypeFloat
+	case "uuid":
+		return schema.TypeUUID
+	case "bytea":
+		return schema.TypeByteArray
+	case "text[]":
+		return schema.TypeStringArray
+	case "jsonb":
+		return schema.TypeJSON
+	case "uuid[]":
+		return schema.TypeUUIDArray
+	case "inet":
+		return schema.TypeInet
+	case "inet[]":
+		return schema.TypeInetArray
+	case "bigint[]":
+		return schema.TypeIntArray
+	default:
+		return schema.TypeString
 	}
-
-	if v, ok := cockroachToSchemaType[cockroachType]; ok {
-		return v, nil
-	}
-
-	return schema.TypeInvalid, fmt.Errorf("got unknown CockroachDB type %q for column %q of table %q while trying to convert it to CloudQuery internal schema type. Supported CockroachDB types are %q", cockroachType, columnName, tableName, append(maps.Keys(cockroachToSchemaType), "timestamp"))
 }
