@@ -58,7 +58,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	switch c.pluginSpec.Format {
 	case FormatTypeCSV:
 		c.formatClient, err = csv.NewClient()
-		c.CQTypeTransformer = &csv.Transformer{}
+		c.CQTypeTransformer = &schema.DefaultTransformer{}
 		c.reverseTransformer = &csv.ReverseTransformer{}
 	case FormatTypeJSON:
 		c.formatClient, err = json.NewClient()
