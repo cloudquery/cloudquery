@@ -9,6 +9,8 @@ require (
 	github.com/rs/zerolog v1.29.0
 )
 
+replace github.com/cloudquery/filetypes v1.5.1 => ../../../../filetypes
+
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/apache/arrow/go/v12 v12.0.0-20230306000349-d5b3b4737838 // indirect
@@ -24,7 +26,7 @@ require (
 	golang.org/x/tools v0.6.0 // indirect
 )
 
-replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230306072451-b6560ef2e6c1
+replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230317103356-3818eab063a2
 
 require (
 	github.com/apache/arrow/go/arrow v0.0.0-20200730104253-651201b0f516 // indirect
