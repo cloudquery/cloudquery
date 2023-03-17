@@ -11,7 +11,7 @@ import (
 )
 
 func Exports() *schema.Table {
-	tableName := "aws_dynamodb_global_tables"
+	tableName := "aws_dynamodb_exports"
 	return &schema.Table{
 		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_GlobalTableDescription.html`,

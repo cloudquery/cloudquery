@@ -37,7 +37,6 @@ func GlobalTables() *schema.Table {
 				Resolver: resolveDynamodbGlobalTableTags,
 			},
 		},
-		Relations: []*schema.Table{},
 	}
 }
 

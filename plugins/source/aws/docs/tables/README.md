@@ -139,6 +139,7 @@
 - [aws_docdb_global_clusters](../../../../../website/tables/aws/aws_docdb_global_clusters.md)
 - [aws_docdb_pending_maintenance_actions](../../../../../website/tables/aws/aws_docdb_pending_maintenance_actions.md)
 - [aws_docdb_subnet_groups](../../../../../website/tables/aws/aws_docdb_subnet_groups.md)
+- [aws_dynamodb_exports](../../../../../website/tables/aws/aws_dynamodb_exports.md)
 - [aws_dynamodb_global_tables](../../../../../website/tables/aws/aws_dynamodb_global_tables.md)
 - [aws_dynamodb_tables](../../../../../website/tables/aws/aws_dynamodb_tables.md)
   - [aws_dynamodb_table_continuous_backups](../../../../../website/tables/aws/aws_dynamodb_table_continuous_backups.md)
