@@ -61,6 +61,43 @@ Now that your cloud infrastructure data is stored in MongoDB, you can use the Mo
 
 - Use the [MongoDB Compass GUI](https://www.mongodb.com/products/compass) to visualize your data in a more intuitive manner
 
+### Example Queries
+
+Here are some example MongoDB queries that you could use to analyze CloudQuery infrastructure data for AWS. Please note that these queries assume that you have already synced your AWS data using CloudQuery into MongoDB.
+
+Count the total number of EC2 instances:
+
+```mql
+db.aws_ec2_instances.aggregate([
+  { $group: { _id: null, count: { $sum: 1 } } }
+])
+```
+
+Find EC2 instances with a specific instance type (e.g., "t3.medium"):
+
+```mql
+db.aws_ec2_instances.find({ instance_type: "t3.medium" })
+```
+
+Find security groups that allow unrestricted access to a specific port (e.g., port 22 for SSH):
+
+```mql
+db.aws_ec2_security_groups.find({
+  "ip_permissions": {
+    $elemMatch: {
+      FromPort: 22,
+      ToPort: 22,
+      IpRanges: {
+        $elemMatch: {
+          CidrIp: "0.0.0.0/0"
+        }
+      }
+    }
+  }
+})
+```
+
+These are just a few examples of the types of queries you can perform using MongoDB to analyze your cloud infrastructure data from AWS. Depending on your specific needs and the resources you have synced, you can create custom queries to gain insights into your cloud infrastructure.
 
 ## Conclusion
 
