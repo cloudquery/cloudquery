@@ -343,6 +343,20 @@ The specific actions for deregistering delegated administrator accounts (not via
 
 The following queries can be used to find delegated administrators within your AWS Organization setup.  To setup CloudQuery with your AWS environment, please see CloudQuery documentation [here](https://www.cloudquery.io/docs/plugins/sources/aws/overview).
 
+A sample CloudQuery AWS source configuration is as follows:
+```yaml copy
+spec:
+  name: "aws"
+  path: "cloudquery/aws"
+  version: "v15.4.0"
+  destinations: ["postgresql"]
+  tables: ["aws_organization*"]
+  spec:
+    accounts:
+      - id: '123412341234'
+        local_profile: 'cq-read-role'
+```
+
 #### Finding [Delegated Administrator Accounts](https://github.com/cloudquery/cloudquery/blob/main/website/tables/aws/aws_organizations_delegated_administrators.md)
 
 ```sql copy
