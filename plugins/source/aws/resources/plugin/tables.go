@@ -185,6 +185,7 @@ func tables() []*schema.Table {
 		docdb.GlobalClusters(),
 		docdb.PendingMaintenanceActions(),
 		docdb.SubnetGroups(),
+		dynamodb.GlobalTables(),
 		dynamodb.Tables(),
 		ec2.AccountAttributes(),
 		ec2.AvailabilityZones(),
