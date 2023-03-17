@@ -139,6 +139,7 @@
 - [aws_docdb_global_clusters](tables/aws_docdb_global_clusters)
 - [aws_docdb_pending_maintenance_actions](tables/aws_docdb_pending_maintenance_actions)
 - [aws_docdb_subnet_groups](tables/aws_docdb_subnet_groups)
+- [aws_dynamodb_backups](tables/aws_dynamodb_backups)
 - [aws_dynamodb_exports](tables/aws_dynamodb_exports)
 - [aws_dynamodb_global_tables](tables/aws_dynamodb_global_tables)
 - [aws_dynamodb_tables](tables/aws_dynamodb_tables)

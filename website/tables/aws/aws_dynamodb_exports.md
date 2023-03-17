@@ -2,7 +2,7 @@
 
 This table shows data for Amazon DynamoDB Exports.
 
-https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_GlobalTableDescription.html
+https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ExportDescription.html
 
 The primary key for this table is **arn**.
 
