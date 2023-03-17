@@ -19,7 +19,7 @@ func GlobalTables() *schema.Table {
 		Resolver:            fetchGlobalTables,
 		PreResourceResolver: getGlobalTable,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "dynamodb"),
-		Transform:           transformers.TransformWithStruct(&types.TableDescription{}),
+		Transform:           transformers.TransformWithStruct(&types.GlobalTableDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
