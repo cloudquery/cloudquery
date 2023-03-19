@@ -1,5 +1,7 @@
 # Table: aws_lightsail_bucket_access_keys
 
+This table shows data for Lightsail Bucket Access Keys.
+
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_AccessKey.html
 
 The primary key for this table is **_cq_id**.

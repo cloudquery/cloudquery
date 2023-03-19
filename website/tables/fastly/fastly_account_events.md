@@ -1,5 +1,7 @@
 # Table: fastly_account_events
 
+This table shows data for Fastly Account Events.
+
 https://developer.fastly.com/reference/api/account/events/
 
 The primary key for this table is **id**.

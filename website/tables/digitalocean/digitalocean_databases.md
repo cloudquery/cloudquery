@@ -1,5 +1,7 @@
 # Table: digitalocean_databases
 
+This table shows data for DigitalOcean Databases.
+
 The primary key for this table is **id**.
 
 ## Relations

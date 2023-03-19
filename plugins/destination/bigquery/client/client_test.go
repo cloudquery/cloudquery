@@ -21,10 +21,12 @@ func TestPlugin(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("bigquery", "development", New, destination.WithManagedWriter())
 		},
-		Spec{
-			ProjectID:        os.Getenv("BIGQUERY_PROJECT_ID"),
-			DatasetID:        os.Getenv("BIGQUERY_DATASET_ID"),
-			TimePartitioning: "none",
+		specs.Destination{
+			Spec: &Spec{
+				ProjectID:        os.Getenv("BIGQUERY_PROJECT_ID"),
+				DatasetID:        os.Getenv("BIGQUERY_DATASET_ID"),
+				TimePartitioning: "none",
+			},
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,

@@ -1,5 +1,7 @@
 # Table: aws_lambda_layers
 
+This table shows data for AWS Lambda Layers.
+
 https://docs.aws.amazon.com/lambda/latest/dg/API_LayersListItem.html
 
 The primary key for this table is **arn**.

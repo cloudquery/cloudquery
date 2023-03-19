@@ -1,5 +1,7 @@
 # Table: azure_security_assessments_metadata
 
+This table shows data for Azure Security Assessments Metadata.
+
 https://learn.microsoft.com/en-us/rest/api/defenderforcloud/assessments-metadata/list?tabs=HTTP#securityassessmentmetadata
 
 The composite primary key for this table is (**subscription_id**, **id**).

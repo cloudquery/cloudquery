@@ -1,5 +1,7 @@
 # Table: aws_cloudformation_stacks
 
+This table shows data for AWS CloudFormation Stacks.
+
 https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html
 
 The primary key for this table is **arn**.

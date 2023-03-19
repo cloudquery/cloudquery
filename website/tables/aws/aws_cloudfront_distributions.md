@@ -1,5 +1,7 @@
 # Table: aws_cloudfront_distributions
 
+This table shows data for Cloudfront Distributions.
+
 https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_Distribution.html
 
 The primary key for this table is **arn**.

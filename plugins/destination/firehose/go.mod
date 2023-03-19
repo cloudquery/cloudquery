@@ -5,12 +5,12 @@ go 1.19
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.6
 	github.com/aws/aws-sdk-go-v2/config v1.18.16
-	github.com/cloudquery/filetypes v1.5.0
-	github.com/cloudquery/plugin-sdk v1.42.0
+	github.com/cloudquery/filetypes v1.6.0
+	github.com/cloudquery/plugin-sdk v1.44.0
 	github.com/rs/zerolog v1.29.0
 )
 
-replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230306072451-b6560ef2e6c1
+replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230317130341-c648117570af
 
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect

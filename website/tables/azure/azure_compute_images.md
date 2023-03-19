@@ -1,5 +1,7 @@
 # Table: azure_compute_images
 
+This table shows data for Azure Compute Images.
+
 https://learn.microsoft.com/en-us/rest/api/compute/images/list?tabs=HTTP#image
 
 The primary key for this table is **id**.

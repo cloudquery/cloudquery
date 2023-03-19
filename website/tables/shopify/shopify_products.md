@@ -1,5 +1,7 @@
 # Table: shopify_products
 
+This table shows data for Shopify Products.
+
 The primary key for this table is **id**.
 It supports incremental syncs based on the **updated_at** column.
 ## Relations

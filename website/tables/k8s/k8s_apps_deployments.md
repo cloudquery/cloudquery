@@ -1,5 +1,7 @@
 # Table: k8s_apps_deployments
 
+This table shows data for K8s Apps Deployments.
+
 The primary key for this table is **uid**.
 
 ## Columns

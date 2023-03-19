@@ -1,5 +1,7 @@
 # Table: stripe_balance
 
+This table shows data for Stripe Balance.
+
 https://stripe.com/docs/api/balance
 
 The primary key for this table is **_cq_id**.

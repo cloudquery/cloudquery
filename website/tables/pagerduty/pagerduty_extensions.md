@@ -1,5 +1,7 @@
 # Table: pagerduty_extensions
 
+This table shows data for PagerDuty Extensions.
+
 https://developer.pagerduty.com/api-reference/26b46f0092a55-list-extensions
 
 The primary key for this table is **id**.

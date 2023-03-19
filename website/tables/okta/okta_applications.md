@@ -1,5 +1,7 @@
 # Table: okta_applications
 
+This table shows data for Okta Applications.
+
 The primary key for this table is **id**.
 
 ## Relations

@@ -1,5 +1,7 @@
 # Table: aws_ecr_repository_image_scan_findings
 
+This table shows data for Amazon Elastic Container Registry (ECR) Repository Image Scan Findings.
+
 https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageScanFindings.html
 
 The primary key for this table is **_cq_id**.

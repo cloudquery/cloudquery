@@ -1,5 +1,7 @@
 # Table: fastly_services
 
+This table shows data for Fastly Services.
+
 https://developer.fastly.com/reference/api/services/service/
 
 The primary key for this table is **id**.

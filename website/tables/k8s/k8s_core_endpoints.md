@@ -1,5 +1,7 @@
 # Table: k8s_core_endpoints
 
+This table shows data for K8s Core Endpoints.
+
 The primary key for this table is **uid**.
 
 ## Columns

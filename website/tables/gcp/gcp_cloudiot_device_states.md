@@ -1,5 +1,7 @@
 # Table: gcp_cloudiot_device_states
 
+This table shows data for GCP Cloud IoT Device States.
+
 https://cloud.google.com/iot/docs/reference/cloudiot/rest/v1/projects.locations.registries.devices.states#DeviceState
 
 The composite primary key for this table is (**project_id**, **device_name**, **update_time**).

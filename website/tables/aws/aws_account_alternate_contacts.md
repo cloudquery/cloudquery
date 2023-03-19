@@ -1,5 +1,7 @@
 # Table: aws_account_alternate_contacts
 
+This table shows data for Account Alternate Contacts.
+
 https://docs.aws.amazon.com/accounts/latest/reference/API_AlternateContact.html
 
 The composite primary key for this table is (**account_id**, **alternate_contact_type**).

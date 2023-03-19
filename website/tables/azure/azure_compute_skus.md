@@ -1,5 +1,7 @@
 # Table: azure_compute_skus
 
+This table shows data for Azure Compute Skus.
+
 https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list?tabs=HTTP#resourceskusresult
 
 The composite primary key for this table is (**subscription_id**, **_sku_hash**, **name**).

@@ -1,5 +1,7 @@
 # Table: azure_analysisservices_servers
 
+This table shows data for Azure Analysis Services Servers.
+
 https://learn.microsoft.com/en-us/rest/api/analysisservices/servers/list?tabs=HTTP#analysisservicesserver
 
 The primary key for this table is **id**.

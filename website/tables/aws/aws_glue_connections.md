@@ -1,5 +1,7 @@
 # Table: aws_glue_connections
 
+This table shows data for Glue Connections.
+
 https://docs.aws.amazon.com/glue/latest/webapi/API_Connection.html
 
 The primary key for this table is **arn**.

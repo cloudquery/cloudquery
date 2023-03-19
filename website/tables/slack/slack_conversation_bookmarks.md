@@ -1,5 +1,7 @@
 # Table: slack_conversation_bookmarks
 
+This table shows data for Slack Conversation Bookmarks.
+
 https://api.slack.com/methods/bookmarks.list
 
 The composite primary key for this table is (**team_id**, **id**, **channel_id**).

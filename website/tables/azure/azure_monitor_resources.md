@@ -1,5 +1,7 @@
 # Table: azure_monitor_resources
 
+This table shows data for Azure Monitor Resources.
+
 https://learn.microsoft.com/en-us/rest/api/resources/resources/list#genericresourceexpanded
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: github_billing_storage
 
+This table shows data for Github Billing Storage.
+
 The primary key for this table is **org**.
 
 ## Columns

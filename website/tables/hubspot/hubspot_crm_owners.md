@@ -1,5 +1,7 @@
 # Table: hubspot_crm_owners
 
+This table shows data for HubSpot CRM Owners.
+
 https://developers.hubspot.com/docs/api/crm/owners
 
 The primary key for this table is **id**.

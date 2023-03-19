@@ -1,5 +1,7 @@
 # Table: k8s_storage_storage_classes
 
+This table shows data for K8s Storage Storage Classes.
+
 The primary key for this table is **uid**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: hubspot_crm_pipelines
 
+This table shows data for HubSpot CRM Pipelines.
+
 https://developers.hubspot.com/docs/api/crm/pipelines
 
 The composite primary key for this table is (**object_type**, **id**).

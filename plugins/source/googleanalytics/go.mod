@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/googleanalytics
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.42.0
+	github.com/cloudquery/plugin-sdk v1.44.0
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/exp v0.0.0-20230306221820-f0f767cdffd6
 	golang.org/x/oauth2 v0.6.0

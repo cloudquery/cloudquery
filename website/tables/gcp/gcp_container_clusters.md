@@ -1,5 +1,7 @@
 # Table: gcp_container_clusters
 
+This table shows data for GCP Container Clusters.
+
 https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters#Cluster
 
 The primary key for this table is **self_link**.

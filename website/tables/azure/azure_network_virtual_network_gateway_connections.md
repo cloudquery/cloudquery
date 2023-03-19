@@ -1,5 +1,7 @@
 # Table: azure_network_virtual_network_gateway_connections
 
+This table shows data for Azure Network Virtual Network Gateway Connections.
+
 https://learn.microsoft.com/en-us/rest/api/network-gateway/virtual-network-gateway-connections/list?tabs=HTTP#virtualnetworkgatewayconnection
 
 The primary key for this table is **id**.

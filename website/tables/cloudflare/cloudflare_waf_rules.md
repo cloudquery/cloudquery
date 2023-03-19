@@ -1,5 +1,7 @@
 # Table: cloudflare_waf_rules
 
+This table shows data for Cloudflare WAF Rules.
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

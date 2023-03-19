@@ -1,5 +1,7 @@
 # Table: gcp_storage_bucket_policies
 
+This table shows data for GCP Storage Bucket Policies.
+
 https://cloud.google.com/iam/docs/reference/rest/v1/Policy
 
 The primary key for this table is **_cq_id**.

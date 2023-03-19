@@ -1,5 +1,7 @@
 # Table: azure_botservice_bots
 
+This table shows data for Azure Botservice Bots.
+
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice@v0.5.0#Bot
 
 The primary key for this table is **id**.

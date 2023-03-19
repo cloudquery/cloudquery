@@ -1,5 +1,7 @@
 # Table: aws_appstream_stack_user_associations
 
+This table shows data for Amazon AppStream Stack User Associations.
+
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_UserStackAssociation.html
 
 The composite primary key for this table is (**account_id**, **region**, **stack_name**, **user_name**, **authentication_type**).

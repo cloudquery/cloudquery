@@ -1,5 +1,7 @@
 # Table: digitalocean_database_replicas
 
+This table shows data for DigitalOcean Database Replicas.
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

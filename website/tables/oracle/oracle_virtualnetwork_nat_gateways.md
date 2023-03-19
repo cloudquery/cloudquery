@@ -1,5 +1,7 @@
 # Table: oracle_virtualnetwork_nat_gateways
 
+This table shows data for Oracle Virtual Network Nat Gateways.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

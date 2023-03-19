@@ -1,5 +1,7 @@
 # Table: cloudflare_waf_overrides
 
+This table shows data for Cloudflare WAF Overrides.
+
 The primary key for this table is **id**.
 
 ## Columns

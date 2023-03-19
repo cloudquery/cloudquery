@@ -1,5 +1,7 @@
 # Table: aws_route53_hosted_zone_resource_record_sets
 
+This table shows data for Route53 Hosted Zone Resource Record Sets.
+
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_ResourceRecordSet.html
 
 The primary key for this table is **_cq_id**.
