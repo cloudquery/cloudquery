@@ -1,3 +1,7 @@
+---
+title: Airbyte alternative | Comparison with CloudQuery
+---
+
 # CloudQuery Vs Airbyte
 
 Both CloudQuery and Airbyte are open source ELT frameworks with a few key differences.
