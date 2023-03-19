@@ -51,6 +51,8 @@
 - [azure_compute_disk_encryption_sets](../../../../../website/tables/azure/azure_compute_disk_encryption_sets.md)
 - [azure_compute_disks](../../../../../website/tables/azure/azure_compute_disks.md)
 - [azure_compute_galleries](../../../../../website/tables/azure/azure_compute_galleries.md)
+  - [azure_compute_gallery_images](../../../../../website/tables/azure/azure_compute_gallery_images.md)
+    - [azure_compute_gallery_image_versions](../../../../../website/tables/azure/azure_compute_gallery_image_versions.md)
 - [azure_compute_images](../../../../../website/tables/azure/azure_compute_images.md)
 - [azure_compute_restore_point_collections](../../../../../website/tables/azure/azure_compute_restore_point_collections.md)
 - [azure_compute_skus](../../../../../website/tables/azure/azure_compute_skus.md)
