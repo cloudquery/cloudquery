@@ -18,7 +18,7 @@ func galleryImageVersions() *schema.Table {
 		Name:        "azure_compute_gallery_image_versions",
 		Resolver:    fetchGalleryImageVersions,
 		Description: "https://learn.microsoft.com/en-us/rest/api/compute/gallery-image-versions/list-by-gallery-image?tabs=HTTP#galleryimageversion",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_gallery_images", client.Namespacemicrosoft_compute),
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_gallery_image_versions", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.GalleryImageVersion{}, transformers.WithPrimaryKeys("ID")),
 		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
