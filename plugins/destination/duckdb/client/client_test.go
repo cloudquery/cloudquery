@@ -20,8 +20,10 @@ func TestPlugin(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("duckdb", "development", New)
 		},
-		Spec{
-			ConnectionString: "", // in-memory database
+		specs.Destination{
+			Spec: &Spec{
+				ConnectionString: "",
+			},
 		},
 		destination.PluginTestSuiteTests{
 			MigrateStrategyOverwrite: migrateStrategy,

@@ -7,15 +7,15 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.16
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.56
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.6
-	github.com/cloudquery/filetypes v1.5.1
-	github.com/cloudquery/plugin-sdk v1.43.0
+	github.com/cloudquery/filetypes v1.6.0
+	github.com/cloudquery/plugin-sdk v1.44.0
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
 	github.com/stretchr/testify v1.8.2
 )
 
-replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230306072451-b6560ef2e6c1
+replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230317130341-c648117570af
 
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
