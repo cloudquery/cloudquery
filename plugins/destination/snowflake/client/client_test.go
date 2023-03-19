@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/specs"
 )
 
 func TestPlugin(t *testing.T) {
@@ -12,8 +13,10 @@ func TestPlugin(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("snowflake", "development", New, destination.WithManagedWriter())
 		},
-		Spec{
-			ConnectionString: os.Getenv("SNOW_TEST_DSN"),
+		specs.Destination{
+			Spec: &Spec{
+				ConnectionString: os.Getenv("SNOW_TEST_DSN"),
+			},
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,
