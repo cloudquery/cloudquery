@@ -1,3 +1,7 @@
+---
+title: AWS Config alternative | Comparison with CloudQuery
+---
+
 # CloudQuery vs AWS Config
 
 AWS Config is the native AWS asset inventory provided by AWS.
