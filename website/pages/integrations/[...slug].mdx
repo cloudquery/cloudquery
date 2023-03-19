@@ -1,0 +1,101 @@
+{/* <!-- vale off --> */}
+import { RemoteContent } from 'nextra/data'
+import dynamic from 'next/dynamic'
+import path from 'path'
+import { buildDynamicMDX, buildDynamicMeta } from 'nextra/remote'
+import { promises as fs } from 'fs'
+import IntegrationSource from "../../components/pages/IntegrationSource";
+import IntegrationDestination from "../../components/pages/IntegrationSourceDestination";
+import { getPlugin } from "../../components/pluginData";
+import { getIntegrationsPaths } from "../../utils/integrations";
+
+export const getMeta = (source, dest) => {
+  const metadata = {
+    "*": {
+      display: "hidden",
+      theme: {
+        sidebar: false,
+        breadcrumb: true,
+        typesetting: "default",
+        toc: false,
+        footer: true,
+        pagination: false
+      }
+    }
+  }
+  const meta = {
+    kind: "Folder",
+    name: source.replace(/-/g, "-"),
+    route: `/integrations/${source}`,
+    children: [
+      {
+        kind: "Meta",
+        data: metadata
+      },
+      dest && {
+        kind: "Folder",
+        name: dest.replace(/-/g, "-"),
+        route: `/integrations/${source}/${dest}`,
+        children: [
+          {
+            kind: "Meta",
+            data: metadata
+          },
+        ]
+      }
+    ].filter(Boolean)
+  }
+  return meta
+}
+
+export const getStaticProps = async ({ params: { slug } }) => {
+  const [source, dest] = slug
+  const integrationFile = path.join(process.cwd(), `integrations/${slug.join("/")}.mdx`)
+  const integrationContent = await fs.readFile(integrationFile, 'utf8')
+  const dynamicMDX = await buildDynamicMDX(integrationContent)
+  const dynamicMeta = await buildDynamicMeta()
+  const integrationsRoute = dynamicMeta.__nextra_pageMap.find(page => page.route === "/integrations")
+  integrationsRoute.children.push(getMeta(source, dest))
+  return {
+    props: {
+      ...dynamicMDX,
+      ...dynamicMeta,
+    },
+  }
+}
+
+export const getStaticPaths = async () => {
+  if (process.env.VERCEL_ENV !== "production") {
+    return {
+      paths: [],
+      fallback: 'blocking'
+    }
+  }
+  const paths = await getIntegrationsPaths()
+  return {
+    paths,
+    fallback: false
+  }
+}
+
+export const components = {
+  IntegrationSource: ({ source }) => <IntegrationSource source={getPlugin("source", source)} />,
+  IntegrationDestination: ({ source, destination, isOfficialSource, isOfficialDestination, sourceHasAuth, destHasAuth }) => {
+    const SourceConfiguration = isOfficialSource ? dynamic(() => import(`../../components/mdx/plugins/source/${source}/${destination}/_configuration.mdx`)) : null
+    const DestinationConfiguration = isOfficialDestination ? dynamic(() =>import(`../../components/mdx/plugins/destination/${destination}/_configuration.mdx`)) : null
+    const SourceAuthentication = sourceHasAuth ? dynamic(() => import(`../../components/mdx/plugins/source/${source}/_authentication.mdx`)) : null
+    const DestinationAuthentication = destHasAuth ? dynamic(() => import(`../../components/mdx/plugins/destination/${destination}/_authentication.mdx`)) : null
+    const SyncCommand = dynamic(() => import(`../../components/mdx/plugins/source/${source}/${destination}/_sync.mdx`))
+    return <IntegrationDestination  
+              source={getPlugin("source", source)}
+              destination={getPlugin("destination", destination)}
+              sourceConfiguration={SourceConfiguration && <SourceConfiguration />}
+              destinationConfiguration={DestinationConfiguration && <DestinationConfiguration />}
+              sourceAuthentication={SourceAuthentication && <SourceAuthentication />}
+              destinationAuthentication={DestinationAuthentication && <DestinationAuthentication />}
+              syncCommand={<SyncCommand />}
+            />
+    }
+}
+
+<RemoteContent components={components} />
