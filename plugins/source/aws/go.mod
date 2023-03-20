@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.6
 	github.com/aws/aws-sdk-go-v2/config v1.18.18
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.17
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.56
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.58
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.7
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.1
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.6
@@ -32,23 +32,23 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.5
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.7
-	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.4
+	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.5
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.6
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.80.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.6
-	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.15.4
+	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.15.5
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.23.2
 	github.com/aws/aws-sdk-go-v2/service/efs v1.19.8
-	github.com/aws/aws-sdk-go-v2/service/eks v1.27.5
+	github.com/aws/aws-sdk-go-v2/service/eks v1.27.7
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.4
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.5
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.4
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.5
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.6
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.5
 	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.5
 	github.com/aws/aws-sdk-go-v2/service/emr v1.22.2
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.17.0
-	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.5
+	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.7
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.28.6
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.6
