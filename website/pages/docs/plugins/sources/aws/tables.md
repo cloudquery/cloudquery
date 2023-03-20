@@ -518,6 +518,7 @@
 - [aws_ssm_inventory_schemas](tables/aws_ssm_inventory_schemas)
 - [aws_ssm_parameters](tables/aws_ssm_parameters)
 - [aws_ssm_patch_baselines](tables/aws_ssm_patch_baselines)
+- [aws_ssm_sessions](tables/aws_ssm_sessions)
 - [aws_ssoadmin_instances](tables/aws_ssoadmin_instances)
   - [aws_ssoadmin_permission_sets](tables/aws_ssoadmin_permission_sets)
     - [aws_ssoadmin_account_assignments](tables/aws_ssoadmin_account_assignments)

@@ -518,6 +518,7 @@
 - [aws_ssm_inventory_schemas](../../../../../website/tables/aws/aws_ssm_inventory_schemas.md)
 - [aws_ssm_parameters](../../../../../website/tables/aws/aws_ssm_parameters.md)
 - [aws_ssm_patch_baselines](../../../../../website/tables/aws/aws_ssm_patch_baselines.md)
+- [aws_ssm_sessions](../../../../../website/tables/aws/aws_ssm_sessions.md)
 - [aws_ssoadmin_instances](../../../../../website/tables/aws/aws_ssoadmin_instances.md)
   - [aws_ssoadmin_permission_sets](../../../../../website/tables/aws/aws_ssoadmin_permission_sets.md)
     - [aws_ssoadmin_account_assignments](../../../../../website/tables/aws/aws_ssoadmin_account_assignments.md)

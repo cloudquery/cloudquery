@@ -446,6 +446,7 @@ func tables() []*schema.Table {
 		ssm.InventorySchemas(),
 		ssm.Parameters(),
 		ssm.PatchBaselines(),
+		ssm.Sessions(),
 		ssoadmin.Instances(),
 		stepfunctions.Activities(),
 		stepfunctions.StateMachines(),
