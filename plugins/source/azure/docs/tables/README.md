@@ -209,6 +209,7 @@
 - [azure_reservations_reservation](../../../../../website/tables/azure/azure_reservations_reservation.md)
 - [azure_reservations_reservation_order](../../../../../website/tables/azure/azure_reservations_reservation_order.md)
 - [azure_resources_links](../../../../../website/tables/azure/azure_resources_links.md)
+- [azure_resources_resource_groups](../../../../../website/tables/azure/azure_resources_resource_groups.md)
 - [azure_resources_resources](../../../../../website/tables/azure/azure_resources_resources.md)
 - [azure_saas_resources](../../../../../website/tables/azure/azure_saas_resources.md)
 - [azure_search_services](../../../../../website/tables/azure/azure_search_services.md)

@@ -8,7 +8,7 @@ import (
 // this is used to hook ParseResourceGroup and to have easier codegen
 var debug = false
 
-const resourceIDPatternText = `(?i)subscriptions/(.+)/resourceGroups/(.+)/providers/(.+?)/(.+?)/(.+)`
+const resourceIDPatternText = `(?i)subscriptions/(.+)/ResourceGroups/(.+)/providers/(.+?)/(.+?)/(.+)`
 
 var resourceIDPattern = regexp.MustCompile(resourceIDPatternText)
 

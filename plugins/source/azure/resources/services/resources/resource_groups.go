@@ -22,17 +22,8 @@ func ResourceGroups() *schema.Table {
 
 func fetchResourceGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc, err := armresources.NewResourceGroupsClient(cl.SubscriptionId, cl.Creds, cl.Options)
-	if err != nil {
-		return err
-	}
-	pager := svc.NewListPager(nil)
-	for pager.More() {
-		p, err := pager.NextPage(ctx)
-		if err != nil {
-			return err
-		}
-		res <- p.Value
-	}
+
+	// We already fetched the resource groups for this subscription, no need to fetch again
+	res <- cl.ResourceGroups[cl.SubscriptionId]
 	return nil
 }
