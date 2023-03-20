@@ -41,11 +41,13 @@ func TestPlugin(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("gremlin", "development", New, destination.WithManagedWriter())
 		},
-		Spec{
-			Endpoint: getenv("CQ_DEST_GREMLIN_ENDPOINT", defaultGremlinEndpoint),
-			Insecure: insecure,
-			Username: os.Getenv("CQ_DEST_GREMLIN_USERNAME"),
-			Password: os.Getenv("CQ_DEST_GREMLIN_PASSWORD"),
+		specs.Destination{
+			Spec: &Spec{
+				Endpoint: getenv("CQ_DEST_GREMLIN_ENDPOINT", defaultGremlinEndpoint),
+				Insecure: insecure,
+				Username: os.Getenv("CQ_DEST_GREMLIN_USERNAME"),
+				Password: os.Getenv("CQ_DEST_GREMLIN_PASSWORD"),
+			},
 		},
 		destination.PluginTestSuiteTests{
 			SkipMigrateOverwriteForce: true,

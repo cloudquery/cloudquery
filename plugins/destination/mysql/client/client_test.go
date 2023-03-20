@@ -30,7 +30,11 @@ func TestPlugin(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("mysql", plugin.Version, New, destination.WithManagedWriter())
 		},
-		Spec{ConnectionString: getConnectionString()},
+		specs.Destination{
+			Spec: &Spec{
+				ConnectionString: getConnectionString(),
+			},
+		},
 		destination.PluginTestSuiteTests{
 			MigrateStrategyOverwrite: migrateStrategy,
 			MigrateStrategyAppend:    migrateStrategy,

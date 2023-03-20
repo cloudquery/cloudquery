@@ -19,5 +19,5 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	}
 	defer f.Close()
 
-	return c.formatClient.Read(f, table, sourceName, res)
+	return c.Client.Read(f, table, sourceName, res)
 }

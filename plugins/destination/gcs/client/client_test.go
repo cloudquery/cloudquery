@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/specs"
 )
 
 const bucket = "cq-dest-gcs"
@@ -23,7 +24,9 @@ func TestPluginCSV(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("gcs", "development", New, destination.WithManagedWriter())
 		},
-		spec,
+		specs.Destination{
+			Spec: &spec,
+		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,
 			SkipDeleteStale:           true,
@@ -50,7 +53,9 @@ func TestPluginJSON(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("gcs", "development", New, destination.WithManagedWriter())
 		},
-		spec,
+		specs.Destination{
+			Spec: &spec,
+		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,
 			SkipDeleteStale:           true,
