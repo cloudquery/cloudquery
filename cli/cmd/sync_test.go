@@ -78,20 +78,22 @@ func TestSync(t *testing.T) {
 
 			if tc.wantSourcePluginCache {
 				// check that source plugin was downloaded to the cache using --cq-dir
-				files, err := os.ReadDir(path.Join(cqDir, "plugins", "source"))
+				p := path.Join(cqDir, "plugins", "source")
+				files, err := os.ReadDir(p)
 				if err != nil {
-					t.Fatalf("failed to read cache directory %v: %v", cqDir, err)
+					t.Fatalf("failed to read cache directory %v: %v", p, err)
 				}
-				require.NotEmpty(t, files, "plugin not downloaded to cache")
+				require.NotEmpty(t, files, "source plugin not downloaded to cache")
 			}
 
 			if tc.wantDestinationPluginCache {
 				// check that destination plugin was downloaded to the cache using --cq-dir
-				files, err := os.ReadDir(path.Join(cqDir, "plugins", "destination"))
+				p := path.Join(cqDir, "plugins", "destination")
+				files, err := os.ReadDir(p)
 				if err != nil {
-					t.Fatalf("failed to read cache directory %v: %v", cqDir, err)
+					t.Fatalf("failed to read cache directory %v: %v", p, err)
 				}
-				require.NotEmpty(t, files, "plugin not downloaded to cache")
+				require.NotEmpty(t, files, "destination plugin not downloaded to cache")
 			}
 
 		})
