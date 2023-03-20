@@ -22,11 +22,16 @@ import (
 
 type Client struct {
 	subscriptions []string
-	// This is to cache full objects returned from ListSubscriptions on initialisation
+
+	// SubscriptionsObjects is to cache full objects returned from ListSubscriptions on initialisation
 	SubscriptionsObjects []*armsubscription.Subscription
+
+	// ResourceGroups is to cache full objects returned from ListResourceGroups on initialisation,
+	// as a map from subscription ID to list of resource groups.
+	ResourceGroups map[string][]*armresources.ResourceGroup
+
 	logger               zerolog.Logger
 	registeredNamespaces map[string]map[string]bool
-	resourceGroups       map[string][]string
 	// this is set by table client multiplexer
 	SubscriptionId string
 	// this is set by table client multiplexer (SubscriptionResourceGroupMultiplexRegisteredNamespace)
@@ -59,16 +64,8 @@ func (c *Client) discoverSubscriptions(ctx context.Context) error {
 	return nil
 }
 
-func getResourceGroupNames(resourceGroups []*armresources.ResourceGroup) []string {
-	names := make([]string, len(resourceGroups))
-	for i, rg := range resourceGroups {
-		names[i] = *rg.Name
-	}
-	return names
-}
-
-func (c *Client) disocverResourceGroups(ctx context.Context) error {
-	c.resourceGroups = make(map[string][]string, len(c.subscriptions))
+func (c *Client) discoverResourceGroups(ctx context.Context) error {
+	c.ResourceGroups = make(map[string][]*armresources.ResourceGroup, len(c.subscriptions))
 	c.registeredNamespaces = make(map[string]map[string]bool, len(c.subscriptions))
 
 	for _, subID := range c.subscriptions {
@@ -86,7 +83,7 @@ func (c *Client) disocverResourceGroups(ctx context.Context) error {
 			if len(page.Value) == 0 {
 				continue
 			}
-			c.resourceGroups[subID] = append(c.resourceGroups[subID], getResourceGroupNames(page.Value)...)
+			c.ResourceGroups[subID] = append(c.ResourceGroups[subID], page.Value...)
 		}
 
 		providerClient, err := armresources.NewProvidersClient(subID, c.Creds, c.Options)
@@ -169,7 +166,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		return nil, fmt.Errorf("no subscriptions found")
 	}
 
-	if err := c.disocverResourceGroups(ctx); err != nil {
+	if err := c.discoverResourceGroups(ctx); err != nil {
 		return nil, err
 	}
 
