@@ -116,7 +116,7 @@ require (
 
 require (
 	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.5
-	github.com/aws/aws-sdk-go-v2/service/computeoptimizer v1.21.3
+	github.com/aws/aws-sdk-go-v2/service/computeoptimizer v1.21.4
 	github.com/aws/aws-sdk-go-v2/service/support v1.14.1
 )
 
