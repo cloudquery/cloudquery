@@ -14,6 +14,7 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|subscription_id|String|
 |location|String|
 |managed_by|String|
 |properties|JSON|

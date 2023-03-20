@@ -16,7 +16,7 @@ func ResourceGroups() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/resources/resource-groups/list#resourcegroup",
 		Multiplex:   client.SubscriptionMultiplex,
 		Transform:   transformers.TransformWithStruct(&armresources.ResourceGroup{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{},
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 
