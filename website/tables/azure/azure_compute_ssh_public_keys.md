@@ -1,15 +1,10 @@
-# Table: azure_compute_galleries
+# Table: azure_compute_ssh_public_keys
 
-This table shows data for Azure Compute Galleries.
+This table shows data for Azure Compute SSH Public Keys.
 
-https://learn.microsoft.com/en-us/rest/api/compute/galleries/list?tabs=HTTP#gallery
+https://learn.microsoft.com/en-us/rest/api/compute/ssh-public-keys/list-by-subscription?tabs=HTTP#sshpublickeyresource
 
 The primary key for this table is **id**.
-
-## Relations
-
-The following tables depend on azure_compute_galleries:
-  - [azure_compute_gallery_images](azure_compute_gallery_images)
 
 ## Columns
 

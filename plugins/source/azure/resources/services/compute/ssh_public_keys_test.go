@@ -13,8 +13,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func createGalleries(router *mux.Router) error {
-	var item armcompute.GalleriesClientListResponse
+func createSSHPublicKeys(router *mux.Router) error {
+	var item armcompute.SSHPublicKeysClientListBySubscriptionResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -22,7 +22,7 @@ func createGalleries(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/galleries", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscription-id}/providers/Microsoft.Compute/sshPublicKeys", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -34,13 +34,9 @@ func createGalleries(router *mux.Router) error {
 		}
 	})
 
-	if err := createMockGalleryImages(router); err != nil {
-		return err
-	}
-
-	return createMockGalleryImageVersions(router)
+	return nil
 }
 
-func TestGalleries(t *testing.T) {
-	client.MockTestHelper(t, Galleries(), createGalleries)
+func TestSSHPublicKeys(t *testing.T) {
+	client.MockTestHelper(t, SSHPublicKeys(), createSSHPublicKeys)
 }
