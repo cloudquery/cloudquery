@@ -99,7 +99,6 @@ LIMIT 10;
 
 Now we can see the top 10 most installed Homebrew packages (on MacOS) in the last 30 days:
 
-{/* <!-- vale off --> */}
 ```text
 ┌────────┬─────────────────┬────────┬─────────┐
 │ number │     formula     │ count  │ percent │
@@ -119,7 +118,6 @@ Now we can see the top 10 most installed Homebrew packages (on MacOS) in the las
 │ 10 rows                           4 columns │
 └─────────────────────────────────────────────┘
 ```
-{/* <!-- vale on --> */}
 
 Great! This proves it works, but it's a bit boring, in my opinion. What if we wanted to see the fastest-growing Homebrew packages instead?
 
@@ -148,6 +146,7 @@ LIMIT 15;
 And the results are:
 
 {/* <!-- vale off --> */}
+
 |    formula    |                      url                       | number_30d | number_90d | change_90d |
 |---------------|------------------------------------------------|------------|------------|------------|
 | spandsp       | https://formulae.brew.sh/formula/spandsp       | 1256       | 2347       | -1091      |
@@ -165,6 +164,7 @@ And the results are:
 | grails        | https://formulae.brew.sh/formula/grails        | 1515       | 2167       | -652       |
 | hubble        | https://formulae.brew.sh/formula/hubble        | 1711       | 2335       | -624       |
 | libxmp        | https://formulae.brew.sh/formula/libxmp        | 550        | 1156       | -606       |
+
 {/* <!-- vale on --> */}
 
 To get the output in Markdown format (like I did for this post), you can run `.mode markdown` before running the query.
@@ -184,9 +184,13 @@ WHERE
     a.formula = 'duckdb';
 ```
 
+{/* <!-- vale off --> */}
+
 | formula |                   url                   | number_30d | number_90d | change_90d |
 |---------|-----------------------------------------|------------|------------|------------|
 | duckdb  | https://formulae.brew.sh/formula/duckdb | 1709       | 1937       | -228       |
+
+{/* <!-- vale on --> */}
 
 Perhaps not in the top 15, but moving up 228 places in ranking is still impressive! It also backs up the meteoric rise in popularity that we observed on the GitHub Stars graph earlier.
 
