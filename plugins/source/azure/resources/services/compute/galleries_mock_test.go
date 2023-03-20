@@ -34,7 +34,11 @@ func createGalleries(router *mux.Router) error {
 		}
 	})
 
-	return nil
+	if err := createMockGalleryImages(router); err != nil {
+		return err
+	}
+
+	return createMockGalleryImageVersions(router)
 }
 
 func TestGalleries(t *testing.T) {

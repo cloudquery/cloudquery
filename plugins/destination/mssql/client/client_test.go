@@ -33,7 +33,11 @@ func TestPlugin(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("mssql", plugin.Version, New, destination.WithManagedWriter())
 		},
-		Spec{ConnectionString: getTestConnection()},
+		specs.Destination{
+			Spec: &Spec{
+				ConnectionString: getTestConnection(),
+			},
+		},
 		destination.PluginTestSuiteTests{
 			MigrateStrategyOverwrite: migrateStrategy,
 			MigrateStrategyAppend:    migrateStrategy,
