@@ -4,10 +4,10 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.6
-	github.com/aws/aws-sdk-go-v2/config v1.18.16
-	github.com/aws/aws-sdk-go-v2/credentials v1.13.16
+	github.com/aws/aws-sdk-go-v2/config v1.18.18
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.17
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.56
-	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.6
+	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.7
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.1
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.6
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.5
@@ -31,11 +31,11 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.29.6
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.5
-	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.5
+	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.7
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.4
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.6
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.80.0
-	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.5
+	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.6
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.15.4
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.23.2
 	github.com/aws/aws-sdk-go-v2/service/efs v1.19.8
@@ -116,7 +116,7 @@ require (
 
 require (
 	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.5
-	github.com/aws/aws-sdk-go-v2/service/computeoptimizer v1.21.3
+	github.com/aws/aws-sdk-go-v2/service/computeoptimizer v1.21.4
 	github.com/aws/aws-sdk-go-v2/service/support v1.14.1
 )
 
@@ -137,7 +137,7 @@ require (
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
-	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.12.24 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.0 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.30 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.24 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.31 // indirect; indirect // indirect
