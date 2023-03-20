@@ -21,12 +21,14 @@ func TestPluginCSV(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("file", "development", New, destination.WithManagedWriter())
 		},
-		Spec{
-			Directory: t.TempDir(),
-			FileSpec: &filetypes.FileSpec{
-				Format: filetypes.FormatTypeCSV,
+		specs.Destination{
+			Spec: &Spec{
+				Directory: t.TempDir(),
+				FileSpec: &filetypes.FileSpec{
+					Format: filetypes.FormatTypeCSV,
+				},
+				NoRotate: true,
 			},
-			NoRotate: true,
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,
@@ -46,12 +48,14 @@ func TestPluginJSON(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("file", "development", New, destination.WithManagedWriter())
 		},
-		Spec{
-			Directory: t.TempDir(),
-			FileSpec: &filetypes.FileSpec{
-				Format: filetypes.FormatTypeJSON,
+		specs.Destination{
+			Spec: &Spec{
+				Directory: t.TempDir(),
+				FileSpec: &filetypes.FileSpec{
+					Format: filetypes.FormatTypeJSON,
+				},
+				NoRotate: true,
 			},
-			NoRotate: true,
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,
@@ -71,12 +75,14 @@ func TestPluginParquet(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("file", "development", New, destination.WithManagedWriter())
 		},
-		Spec{
-			Directory: t.TempDir(),
-			FileSpec: &filetypes.FileSpec{
-				Format: filetypes.FormatTypeParquet,
+		specs.Destination{
+			Spec: &Spec{
+				Directory: t.TempDir(),
+				FileSpec: &filetypes.FileSpec{
+					Format: filetypes.FormatTypeParquet,
+				},
+				NoRotate: true,
 			},
-			NoRotate: true,
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,

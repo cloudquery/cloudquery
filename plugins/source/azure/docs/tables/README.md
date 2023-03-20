@@ -57,6 +57,7 @@
 - [azure_compute_restore_point_collections](../../../../../website/tables/azure/azure_compute_restore_point_collections.md)
 - [azure_compute_skus](../../../../../website/tables/azure/azure_compute_skus.md)
 - [azure_compute_snapshots](../../../../../website/tables/azure/azure_compute_snapshots.md)
+- [azure_compute_ssh_public_keys](../../../../../website/tables/azure/azure_compute_ssh_public_keys.md)
 - [azure_compute_virtual_machine_scale_sets](../../../../../website/tables/azure/azure_compute_virtual_machine_scale_sets.md)
   - [azure_compute_virtual_machine_scale_set_vms](../../../../../website/tables/azure/azure_compute_virtual_machine_scale_set_vms.md)
 - [azure_compute_virtual_machines](../../../../../website/tables/azure/azure_compute_virtual_machines.md)
