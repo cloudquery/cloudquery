@@ -212,6 +212,7 @@
 - [azure_reservations_reservation](tables/azure_reservations_reservation)
 - [azure_reservations_reservation_order](tables/azure_reservations_reservation_order)
 - [azure_resources_links](tables/azure_resources_links)
+- [azure_resources_resource_groups](tables/azure_resources_resource_groups)
 - [azure_resources_resources](tables/azure_resources_resources)
 - [azure_saas_resources](tables/azure_saas_resources)
 - [azure_search_services](tables/azure_search_services)
