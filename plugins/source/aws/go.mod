@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.6
 	github.com/aws/aws-sdk-go-v2/config v1.18.18
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.17
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.56
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.58
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.7
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.1
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.6
@@ -51,12 +51,12 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.7
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.28.6
-	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.5
+	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.6
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.17.6
 	github.com/aws/aws-sdk-go-v2/service/iam v1.19.6
-	github.com/aws/aws-sdk-go-v2/service/identitystore v1.16.4
+	github.com/aws/aws-sdk-go-v2/service/identitystore v1.16.5
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.13.5
-	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.11.5
+	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.11.6
 	github.com/aws/aws-sdk-go-v2/service/iot v1.33.0
 	github.com/aws/aws-sdk-go-v2/service/kafka v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.17.0
