@@ -373,6 +373,6 @@ aws scheduler create-schedule  --cli-input-json file://scheduler-params.json
 
 ## Conclusion
 
-You now have a working CloudQuery deployment that runs on a regular basis and stores the results in an S3 bucket. This is a great base for iterating on to learn more about performance you can check out the [performance tuning guide](/docs/advanced-topics/performance-tuning).
+You now have a working CloudQuery deployment that runs on a regular basis and stores the results in an S3 bucket. This is a great base for iterating on. To learn more about performance you can check out the [performance tuning guide](/docs/advanced-topics/performance-tuning).
 
 If you have any questions or comments, please feel free to reach out to us on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord)!
