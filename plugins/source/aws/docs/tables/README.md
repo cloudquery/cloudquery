@@ -510,6 +510,7 @@
 - [aws_ssm_associations](../../../../../website/tables/aws/aws_ssm_associations.md)
 - [aws_ssm_compliance_summary_items](../../../../../website/tables/aws/aws_ssm_compliance_summary_items.md)
 - [aws_ssm_documents](../../../../../website/tables/aws/aws_ssm_documents.md)
+  - [aws_ssm_document_versions](../../../../../website/tables/aws/aws_ssm_document_versions.md)
 - [aws_ssm_instances](../../../../../website/tables/aws/aws_ssm_instances.md)
   - [aws_ssm_instance_compliance_items](../../../../../website/tables/aws/aws_ssm_instance_compliance_items.md)
   - [aws_ssm_instance_patches](../../../../../website/tables/aws/aws_ssm_instance_patches.md)

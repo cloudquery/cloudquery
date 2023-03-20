@@ -510,6 +510,7 @@
 - [aws_ssm_associations](tables/aws_ssm_associations)
 - [aws_ssm_compliance_summary_items](tables/aws_ssm_compliance_summary_items)
 - [aws_ssm_documents](tables/aws_ssm_documents)
+  - [aws_ssm_document_versions](tables/aws_ssm_document_versions)
 - [aws_ssm_instances](tables/aws_ssm_instances)
   - [aws_ssm_instance_compliance_items](tables/aws_ssm_instance_compliance_items)
   - [aws_ssm_instance_patches](tables/aws_ssm_instance_patches)
