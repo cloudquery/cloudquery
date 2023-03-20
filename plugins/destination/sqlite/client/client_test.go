@@ -20,8 +20,10 @@ func TestPlugin(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("sqlite", "development", New)
 		},
-		Spec{
-			ConnectionString: ":memory:",
+		specs.Destination{
+			Spec: &Spec{
+				ConnectionString: ":memory:",
+			},
 		},
 		destination.PluginTestSuiteTests{
 			MigrateStrategyOverwrite: migrateStrategy,
