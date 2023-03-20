@@ -57,13 +57,20 @@ func getApp(ctx context.Context, meta schema.ClientMeta, resource *schema.Resour
 	c := meta.(*client.Client)
 	svc := c.Services().Sagemaker
 	n := resource.Item.(types.AppDetails)
+	input := &sagemaker.DescribeAppInput{
+		AppName:  n.AppName,
+		AppType:  n.AppType,
+		DomainId: n.DomainId,
+	}
+	if n.UserProfileName != nil {
+		input.UserProfileName = n.UserProfileName
+	}
 
-	response, err := svc.DescribeApp(ctx, &sagemaker.DescribeAppInput{
-		AppName:   n.AppName,
-		AppType:   n.AppType,
-		DomainId:  n.DomainId,
-		SpaceName: n.SpaceName,
-	})
+	if n.SpaceName != nil {
+		input.SpaceName = n.SpaceName
+	}
+
+	response, err := svc.DescribeApp(ctx, input)
 	if err != nil {
 		return err
 	}
