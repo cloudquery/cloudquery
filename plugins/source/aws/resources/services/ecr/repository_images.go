@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func RepositoryImages() *schema.Table {
+func repositoryImages() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ecr_repository_images",
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageDetail.html`,
@@ -32,7 +32,7 @@ func RepositoryImages() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			RepositoryImageScanFindings(),
+			repositoryImageScanFindings(),
 		},
 	}
 }
