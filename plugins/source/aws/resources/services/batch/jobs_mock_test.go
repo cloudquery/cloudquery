@@ -30,21 +30,21 @@ func buildBatchJobsMock(t *testing.T, m *mocks.MockBatchClient) client.Services 
 	m.EXPECT().ListJobs(gomock.Any(), gomock.Any()).Return(
 		&batch.ListJobsOutput{
 			JobSummaryList: []types.JobSummary{a},
-		}, nil)
+		}, nil).Times(len(allJobStatuses))
 
 	m.EXPECT().DescribeJobs(gomock.Any(), &batch.DescribeJobsInput{
 		Jobs: []string{*a.JobId},
 	}).Return(
 		&batch.DescribeJobsOutput{
 			Jobs: []types.JobDetail{d},
-		}, nil)
+		}, nil).Times(len(allJobStatuses))
 
 	tagResponse := batch.ListTagsForResourceOutput{}
 	err = faker.FakeObject(&tagResponse)
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagResponse, nil)
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagResponse, nil).Times(len(allJobStatuses))
 
 	return services
 }
