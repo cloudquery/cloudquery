@@ -110,7 +110,7 @@ func (c *Client) getAuthInfo(ctx context.Context, baseURL string) (gremlingo.Aut
 			if err := signer.SignHTTP(ctx, cr, req, emptyStringSHA256, "neptune-db", c.pluginSpec.AWSRegion, time.Now()); err != nil {
 				panic(err) // not ideal, but it's always nil
 			}
-			c.logger.Warn().Any("iam_headers", req.Header).Str("aws_region", c.pluginSpec.AWSRegion).Msg("IAM headers")
+			c.logger.Trace().Any("iam_headers", req.Header).Str("aws_region", c.pluginSpec.AWSRegion).Msg("IAM headers")
 			return gremlingo.HeaderAuthInfo(req.Header)
 		}
 		return gremlingo.NewDynamicAuth(gen), nil
