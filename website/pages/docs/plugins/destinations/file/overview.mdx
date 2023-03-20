@@ -33,3 +33,16 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   If set to true, the plugin will write to one file per table.
   Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
+
+- `format_spec` (map [format_spec](#format_spec)) (optional)
+Optional parameters to change the format of the file
+
+### format_spec
+
+- `delimiter` (string) (optional) (default: `,`)
+
+Character that will be used as want to use as the delimiter if the format type is `csv`
+
+- `skip_header` (bool) (optional) (default: false)
+
+Specifies if the first line of a file should be the headers (when format is `csv`).
