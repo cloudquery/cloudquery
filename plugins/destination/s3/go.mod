@@ -4,8 +4,8 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.6
-	github.com/aws/aws-sdk-go-v2/config v1.18.16
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.56
+	github.com/aws/aws-sdk-go-v2/config v1.18.18
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.58
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.6
 	github.com/cloudquery/filetypes v1.6.0
 	github.com/cloudquery/plugin-sdk v1.44.0
@@ -48,8 +48,8 @@ require (
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.13.16 // indirect
-	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.12.24 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.17 // indirect
+	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.0 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.30 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.24 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.31 // indirect; indirect // indirect
