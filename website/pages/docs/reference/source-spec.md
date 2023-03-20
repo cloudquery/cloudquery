@@ -104,6 +104,12 @@ The backend to use for storing the state of incremental tables. Currently, the o
 
 The backend spec is specific to the backend used. For the `local` backend, the only option is `path`, which specifies the name of the directory to use when storing metadata files.
 
+### deterministic_cq_id
+
+(`bool`, optional, default: `false`, introduced in CLI `v2.4.1`)
+
+A flag that indicates whether the value of `_cq_id` should be a hash of the primary keys or if the value should bea random UUID. If a resource has no Primary Keys defined the value will always be a random UUID
+
 ### spec
 
 (`object`, optional)
