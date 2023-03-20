@@ -6,7 +6,7 @@ date: 2023/03/03
 
 # Running CloudQuery on Amazon ECS
 
-In this tutorial we will be deploying CloudQuery on AWS ECS using Fargate. You will be using the AWS CLI to create the required resources. You can also use the AWS Console to create the resources. At the end of the tutorial you will have a CloudQuery instance running on AWS ECS that will collect data from your AWS account and store it in an S3 bucket. You can then query the data using Athena.
+In this tutorial we will be deploying CloudQuery on AWS ECS using Fargate. You will be using the AWS CLI to create the required resources. You can also use the AWS Management Console to create the resources. At the end of the tutorial you will have a CloudQuery instance running on AWS ECS that will collect data from your AWS account and store it in an S3 bucket. You can then query the data using Athena.
 
 ## Prerequisites
 Before starting the deployment process, you need to have the following prerequisites:
@@ -16,14 +16,14 @@ Before starting the deployment process, you need to have the following prerequis
 
 ## Step 1: Generate a CloudQuery Configuration File
 
-Create a new file named `cloudquery.yml` with the following contents:
+Create a new file named `cloudquery.yml` with the following content:
 ```yaml
 kind: source
 spec:
   # Source spec section
   name: aws
   path: "cloudquery/aws"
-  version: "v15.3.0"
+  version: "VERSION_SOURCE_AWS"
   tables: ["*"]
   destinations: ["s3"] 
 ---
@@ -43,7 +43,7 @@ spec:
 This will create a configuration file that will instruct CloudQuery to collect data from AWS and store it in an S3 bucket. You will need to replace the `REPLACE_WITH_S3_DESTINATION_BUCKET` placeholder with the name of the S3 bucket you want to use to store the data. You can also modify the configuration file to collect only the data you need. For more information on how to create a configuration file, [visit our docs](/docs/reference/source-spec)
 
 
-In order to inject the config file into the prebuilt container you will have to base64 encode the contents of the `cloudquery.yml` file . Assuming you are running on a Linux or MacOS machine you can do this conversion by running the following command:
+In order to inject the config file into the prebuilt container you will have to base64 encode the content of the `cloudquery.yml` file . Assuming you are running on a Linux or MacOS machine you can do this conversion by running the following command:
 ```bash
 cat cloudquery.yml | base64
 ```
@@ -51,27 +51,27 @@ cat cloudquery.yml | base64
 ## Step 2: Create an ECS Cluster
 The first step in deploying CloudQuery on AWS ECS is to create an ECS cluster. To create an ECS cluster, use the following command:
 
-Prior to running replace `<REPLACE_ECS_CLUSTER_NAME>` with the name you want to give to your ECS cluster.
+Prior to running replace `<REPLACE_WITH_ECS_CLUSTER_NAME>` with the name you want to give to your ECS cluster.
 ```bash
-aws ecs create-cluster --cluster-name <REPLACE_ECS_CLUSTER_NAME>
+aws ecs create-cluster --cluster-name <REPLACE_WITH_ECS_CLUSTER_NAME>
 ```
 
 
 ## Step 3: Create a Log Group
 The next step is to create a log group for your ECS task. To create a log group, use the following command:
 
-Prior to running replace `<REPLACE_LOG_GROUP_NAME>` with the name you want to give to your log group.
+Prior to running replace `<REPLACE_WITH_LOG_GROUP_NAME>` with the name you want to give to your log group.
 ```bash
-aws logs create-log-group --log-group-name <REPLACE_LOG_GROUP_NAME>
+aws logs create-log-group --log-group-name <REPLACE_WITH_LOG_GROUP_NAME>
 ```
 
 ## Step 4: Set Log Group Retention
 After creating a log group, you need to set the retention policy for your log group. To set the retention policy, use the following command:
 
-Replace `<REPLACE_LOG_GROUP_NAME>` with the name of the log group that you created in Step 3.
+Replace `<REPLACE_WITH_LOG_GROUP_NAME>` with the name of the log group that you created in Step 3.
 
 ```bash
-aws logs put-retention-policy --log-group-name <REPLACE_LOG_GROUP_NAME> --retention-in-days 14
+aws logs put-retention-policy --log-group-name <REPLACE_WITH_LOG_GROUP_NAME> --retention-in-days 14
 ```
 This command will set the retention period for your log group to 14 days. You can modify the retention period based on your requirements.
 
@@ -98,13 +98,13 @@ Create a new file named `task-role-trust-policy.json` with the following content
 Use the file you just created to create an IAM role for your ECS task. To create an IAM role, use the following command:
 
 ```bash
-# Prior to running the following command, make sure you have replaced the <REPLACE_TASK_ROLE_NAME> placeholder with the name of the IAM role you want to create.
-aws iam create-role --role-name <REPLACE_TASK_ROLE_NAME> --assume-role-policy-document file://task-role-trust-policy.json;
+# Prior to running the following command, make sure you have replaced the <REPLACE_WITH_TASK_ROLE_NAME> placeholder with the name of the IAM role you want to create.
+aws iam create-role --role-name <REPLACE_WITH_TASK_ROLE_NAME> --assume-role-policy-document file://task-role-trust-policy.json;
 ```
 
 Store the ARN of the IAM role you just created. You will need it in the next step.
 
-Create a new file named `data-access.json` with the following contents:
+Create a new file named `data-access.json` with the following content:
 ``` json
 {
     "Version": "2012-10-17",
@@ -158,16 +158,16 @@ Replace the `REPLACE_WITH_S3_DESTINATION_BUCKET` placeholder with the name of th
 This policy will allow the ECS task to write data to the S3 bucket you specified while also ensuring that CloudQuery never has access to any of your data.
 
 
-Using the IAM policy that you just defined in `data-access.json`, you are going to attach it directly to the IAM role that the Fargate Task will use. On top of the custom in-line policy you will also attach the `ReadOnlyAccess` policy and the `AmazonECSTaskExecutionRolePolicy` policy.
+Using the IAM policy that you just defined in `data-access.json`, you are going to attach it directly to the IAM role that the Fargate task will use. On top of the custom in-line policy you will also attach the `ReadOnlyAccess` policy and the `AmazonECSTaskExecutionRolePolicy` policy.
 ```bash
 # Prior to running the following commands, make sure you have replaced the <REPLACE_TASK_ROLE_NAME> placeholder with the name of the IAM role you created earlier in this step.
-aws iam put-role-policy --role-name <REPLACE_TASK_ROLE_NAME> --policy-name DenyData --policy-document file://data-access.json;
-aws iam attach-role-policy --role-name <REPLACE_TASK_ROLE_NAME> --policy-arn arn:aws:iam::aws:policy/ReadOnlyAccess
-aws iam attach-role-policy --role-name <REPLACE_TASK_ROLE_NAME>  --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy 
+aws iam put-role-policy --role-name < REPLACE_WITH_TASK_ROLE_NAME> --policy-name DenyData --policy-document file://data-access.json;
+aws iam attach-role-policy --role-name < REPLACE_WITH_TASK_ROLE_NAME> --policy-arn arn:aws:iam::aws:policy/ReadOnlyAccess
+aws iam attach-role-policy --role-name < REPLACE_WITH_TASK_ROLE_NAME>  --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy 
 
 ```
 
-At this point you have a single IAM role that will be used by the Fargate Task to access the required AWS services.
+At this point you have a single IAM role that will be used by the Fargate task to access the required AWS services.
 
 ## Step 6: Register a Task Definition
 A task definition is a blueprint that defines one or more containers that run together on the same host machine. In this step, we will create a task definition for the CloudQuery container.
@@ -176,7 +176,7 @@ In the task that you are going to create you will override the default entrypoin
 
 You will also need to pass the CloudQuery configuration file to the container. To do that, you will need to base64 encode the configuration file and pass it as an environment variable to the container.
 
-Create a new file named `task-definition.json` with the following contents:
+Create a new file named `task-definition.json` with the following content:
 ```json
 {
   "containerDefinitions": [
@@ -251,7 +251,7 @@ Replace the following placeholders:
 Now that you have a task that runs CloudQuery, you can schedule it to run on a regular basis using AWS EventBridge scheduler. An EventBridge schedule is able to start a task on a regular basis, but to do so it needs a role that it can assume which has the `ecs:RunTask` permission. In this step, you will create a role that has the required permissions and then you will create a schedule that will run the task on a regular basis.
 
 
-Create a file named `trust-policy.json` with the following contents:
+Create a file named `trust-policy.json` with the following content:
 ```json
 {
   "Version": "2012-10-17",
@@ -265,7 +265,7 @@ Create a file named `trust-policy.json` with the following contents:
       "Action": "sts:AssumeRole",
       "Condition": {
         "StringEquals": {
-          "aws:SourceArn": "arn:aws:scheduler:"<REPLACE_AWS_REGION>":"<REPLACE_AWS_ACCOUNT_ID>":schedule/default/"<REPLACE_SCHEDULE_NAME>""
+          "aws:SourceArn": "arn:aws:scheduler:<REPLACE_AWS_REGION>:<REPLACE_AWS_ACCOUNT_ID>:schedule/default/<REPLACE_SCHEDULE_NAME>"
         }
       }
     }]
@@ -285,7 +285,7 @@ aws iam create-role --role-name <REPLACE_EVENTBRIDGE_SCHEDULER_ROLE_NAME> --assu
 Replace the `<REPLACE_EVENTBRIDGE_SCHEDULER_ROLE_NAME>` placeholder with the name of the role you want to create.
 
 After creating a role with a trust policy that enables the scheduler service to assume it you will attach an inline policy that allows the scheduler to run the task you created. To do so
-create a file named `ECSExecPolicy.json` with the following contents:
+create a file named `ECSExecPolicy.json` with the following content:
 ```json
 {
     "Version": "2012-10-17",
