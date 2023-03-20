@@ -25,7 +25,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.6 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.17 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.56 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.58 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.30 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.24 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.22 // indirect; indirect // indirect
