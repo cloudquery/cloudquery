@@ -2,7 +2,8 @@
 
 This table shows data for AWS Systems Manager (SSM) Sessions.
 
-https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_Session.html
+https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_Session.html. 
+Only Active sessions are fetched.
 
 The composite primary key for this table is (**account_id**, **region**, **session_id**).
 
