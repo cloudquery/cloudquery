@@ -31,7 +31,7 @@ kind: destination
 spec:
   name: "s3"
   path: "cloudquery/s3"
-  version: "v2.2.3"
+  version: "VERSION_DESTINATION_S3"
   write_mode: "append"
   spec:
     bucket: <REPLACE_WITH_S3_DESTINATION_BUCKET>
@@ -78,7 +78,7 @@ This command will set the retention period for your log group to 14 days. You ca
 ## Step 5: Create an IAM Role
 To allow the ECS task to access the required AWS services, you need to create an IAM role.
 
-Create a new file named `task-role-trust-policy.json` with the following contents:
+Create a new file named `task-role-trust-policy.json` with the following content:
 ```json
 {
   "Version": "2012-10-17",
