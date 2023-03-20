@@ -1,6 +1,6 @@
 # Table: aws_ssm_sessions
 
-This table shows data for Ssm Sessions.
+This table shows data for AWS Systems Manager (SSM) Sessions.
 
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_Session.html
 

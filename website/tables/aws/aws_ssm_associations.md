@@ -1,6 +1,6 @@
 # Table: aws_ssm_associations
 
-This table shows data for Ssm Associations.
+This table shows data for AWS Systems Manager (SSM) Associations.
 
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_Association.html
 

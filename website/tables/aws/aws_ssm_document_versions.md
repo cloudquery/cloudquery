@@ -1,6 +1,6 @@
 # Table: aws_ssm_document_versions
 
-This table shows data for Ssm Document Versions.
+This table shows data for AWS Systems Manager (SSM) Document Versions.
 
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DocumentVersionInfo.html
 

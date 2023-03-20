@@ -1,6 +1,6 @@
 # Table: aws_ssm_documents
 
-This table shows data for Ssm Documents.
+This table shows data for AWS Systems Manager (SSM) Documents.
 
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DocumentDescription.html
 
