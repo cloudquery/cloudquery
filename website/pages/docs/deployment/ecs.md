@@ -10,9 +10,8 @@ In this tutorial we will be deploying CloudQuery on AWS ECS using Fargate. You w
 
 ## Prerequisites
 Before starting the deployment process, you need to have the following prerequisites:
-  * An AWS account
-  * AWS CLI installed and configured
-  * Basic understanding of AWS ECS and Fargate
+  * AWS CLI installed and configured more information can be found [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html) 
+  * Basic understanding of [AWS ECS and Fargate](https://docs.aws.amazon.com/AmazonECS/latest/userguide/what-is-fargate.html)
 
 ## Step 1: Generate a CloudQuery Configuration File
 
