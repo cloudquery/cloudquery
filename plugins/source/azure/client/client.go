@@ -179,7 +179,7 @@ func (c *Client) Logger() *zerolog.Logger {
 
 func (c *Client) ID() string {
 	if c.ResourceGroup != "" {
-		return fmt.Sprintf("subscriptions/%s/ResourceGroups/%s", c.SubscriptionId, c.ResourceGroup)
+		return fmt.Sprintf("subscriptions/%s/resourceGroups/%s", c.SubscriptionId, c.ResourceGroup)
 	}
 	return fmt.Sprintf("subscriptions/%s", c.SubscriptionId)
 }

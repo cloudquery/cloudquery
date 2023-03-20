@@ -86,7 +86,10 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 		}
 
 		resourceGroup := &armresources.ResourceGroup{}
-		faker.FakeObject(resourceGroup)
+		err = faker.FakeObject(resourceGroup)
+		if err != nil {
+			return nil, err
+		}
 		resourceGroup.Name = &testResourceGroup
 
 		c := &Client{
