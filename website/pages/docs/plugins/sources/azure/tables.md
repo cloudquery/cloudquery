@@ -266,6 +266,7 @@
 - [azure_storage_accounts](tables/azure_storage_accounts)
   - [azure_storage_blob_services](tables/azure_storage_blob_services)
   - [azure_storage_containers](tables/azure_storage_containers)
+  - [azure_storage_file_shares](tables/azure_storage_file_shares)
   - [azure_storage_tables](tables/azure_storage_tables)
 - [azure_storagecache_caches](tables/azure_storagecache_caches)
 - [azure_streamanalytics_streaming_jobs](tables/azure_streamanalytics_streaming_jobs)

@@ -266,6 +266,7 @@
 - [azure_storage_accounts](../../../../../website/tables/azure/azure_storage_accounts.md)
   - [azure_storage_blob_services](../../../../../website/tables/azure/azure_storage_blob_services.md)
   - [azure_storage_containers](../../../../../website/tables/azure/azure_storage_containers.md)
+  - [azure_storage_file_shares](../../../../../website/tables/azure/azure_storage_file_shares.md)
   - [azure_storage_tables](../../../../../website/tables/azure/azure_storage_tables.md)
 - [azure_storagecache_caches](../../../../../website/tables/azure/azure_storagecache_caches.md)
 - [azure_streamanalytics_streaming_jobs](../../../../../website/tables/azure/azure_streamanalytics_streaming_jobs.md)
