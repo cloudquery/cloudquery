@@ -1,12 +1,13 @@
 import Image from "next/image";
-import type { AuthorDetails } from "../content/team";
+import type { Author } from "../content/authors";
 
 export const Avatar = ({
   name,
   url,
   image_url,
-  twitterUsername,
-}: AuthorDetails) => {
+  urlText,
+  company,
+}: Author) => {
   return (
     <div className="flex items-center flex-shrink-0 md:justify-start">
       <div className="w-[32px] h-[32px]">
@@ -26,15 +27,22 @@ export const Avatar = ({
         <dd className="text-gray-900 dark:text-white">{name}</dd>
         <dt className="sr-only">Twitter</dt>
         <dd>
-          <a
-            href={url}
-            className="text-xs text-blue-500 no-underline betterhover:hover:text-blue-600 betterhover:hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {twitterUsername ? `@${twitterUsername}` : url}
-          </a>
+          <span className="text-xs text-gray-500 dark:text-white">{company ? `${company} ` : ""}</span>
         </dd>
+          {url ?
+            <dd>
+                <a
+                  href={url}
+                  className="text-xs text-blue-500 no-underline betterhover:hover:text-blue-600 betterhover:hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {urlText}
+                </a>
+            </dd>
+              :
+              null
+          }
       </dl>
     </div>
   );

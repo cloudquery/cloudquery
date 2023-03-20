@@ -35,10 +35,12 @@ func TestPlugin(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("neo4j", "development", New, destination.WithManagedWriter())
 		},
-		Spec{
-			Username:         getenv("CQ_DEST_NEO4J_USERNAME", defaultUsername),
-			Password:         getenv("CQ_DEST_NEO4J_PASSWORD", defaultPassword),
-			ConnectionString: getenv("CQ_DEST_NEO4J_CONNECTION_STRING", defaultConnectionString),
+		specs.Destination{
+			Spec: &Spec{
+				Username:         getenv("CQ_DEST_NEO4J_USERNAME", defaultUsername),
+				Password:         getenv("CQ_DEST_NEO4J_PASSWORD", defaultPassword),
+				ConnectionString: getenv("CQ_DEST_NEO4J_CONNECTION_STRING", defaultConnectionString),
+			},
 		},
 		destination.PluginTestSuiteTests{
 			SkipMigrateOverwriteForce: true,
