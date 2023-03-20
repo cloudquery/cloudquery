@@ -61,3 +61,18 @@ func BillingAccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	}
 	return c
 }
+
+func BillingAccountProfileMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
+	client := meta.(*Client)
+	var c = make([]schema.ClientMeta, 0)
+	for i := range client.BillingAccounts {
+		if client.BillingAccounts[i].Properties.BillingProfiles == nil {
+			continue
+		}
+		profiles := client.BillingAccounts[i].Properties.BillingProfiles.Value
+		for j := range profiles {
+			c = append(c, client.withBillingAccount(client.BillingAccounts[i]).withBillingProfile(profiles[j]))
+		}
+	}
+	return c
+}

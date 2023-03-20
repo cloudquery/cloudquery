@@ -47,6 +47,7 @@ type Client struct {
 	pluginSpec      *Spec
 	BillingAccounts []*armbilling.Account
 	BillingAccount  *armbilling.Account
+	BillingProfile  *armbilling.Profile
 }
 
 func (c *Client) discoverSubscriptions(ctx context.Context) error {
@@ -270,6 +271,9 @@ func (c *Client) ID() string {
 	if c.ResourceGroup != "" {
 		return fmt.Sprintf("subscriptions/%s/resourceGroups/%s", c.SubscriptionId, c.ResourceGroup)
 	}
+	if c.BillingProfile != nil {
+		return fmt.Sprintf("billingAccounts/%s/billingProfiles/%s", *c.BillingAccount.Name, *c.BillingProfile.Name)
+	}
 	if c.BillingAccount != nil {
 		return fmt.Sprintf("billingAccounts/%s", *c.BillingAccount.Name)
 	}
@@ -295,5 +299,12 @@ func (c *Client) withBillingAccount(billingAccount *armbilling.Account) *Client 
 	newC := *c
 	newC.logger = c.logger.With().Str("billing_account", *billingAccount.ID).Logger()
 	newC.BillingAccount = billingAccount
+	return &newC
+}
+
+func (c *Client) withBillingProfile(billingProfile *armbilling.Profile) *Client {
+	newC := *c
+	newC.logger = c.logger.With().Str("billing_profile", *billingProfile.ID).Logger()
+	newC.BillingProfile = billingProfile
 	return &newC
 }

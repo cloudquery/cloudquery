@@ -2,7 +2,9 @@ package consumption
 
 import (
 	"context"
+	"errors"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -29,6 +31,12 @@ func fetchBillingAccountLots(ctx context.Context, meta schema.ClientMeta, parent
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {
+			var respError *azcore.ResponseError
+			// If there's no data a 404 error is returned so we ignore it
+			if errors.As(err, &respError) && respError.StatusCode == 404 {
+				cl.Logger().Debug().Msg("No data for billing account lots")
+				return nil
+			}
 			return err
 		}
 		res <- p.Value

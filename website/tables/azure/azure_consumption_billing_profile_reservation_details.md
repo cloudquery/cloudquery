@@ -1,6 +1,6 @@
-# Table: azure_consumption_billing_account_reservation_details
+# Table: azure_consumption_billing_profile_reservation_details
 
-This table shows data for Azure Consumption Billing Account Reservation Details.
+This table shows data for Azure Consumption Billing Profile Reservation Details.
 
 https://learn.microsoft.com/en-us/rest/api/consumption/reservations-details/list?tabs=HTTP#reservationdetail
 
