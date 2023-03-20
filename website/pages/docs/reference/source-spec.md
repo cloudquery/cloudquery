@@ -103,6 +103,7 @@ The backend to use for storing the state of incremental tables. Currently, the o
 (`object`, optional, introduced in CLI `v2.1.0`)
 
 The backend spec is specific to the backend used. For the `local` backend, the only option is `path`, which specifies the name of the directory to use when storing metadata files.
+
 <!-- vale off -->
 ### deterministic_cq_id
 <!-- vale on -->
