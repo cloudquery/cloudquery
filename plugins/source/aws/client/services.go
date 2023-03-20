@@ -16,6 +16,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
+	"github.com/aws/aws-sdk-go-v2/service/batch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
@@ -123,6 +124,7 @@ func initServices(region string, c aws.Config) Services {
 		Appsync:                   appsync.NewFromConfig(awsCfg),
 		Athena:                    athena.NewFromConfig(awsCfg),
 		Autoscaling:               autoscaling.NewFromConfig(awsCfg),
+		Batch:                     batch.NewFromConfig(awsCfg),
 		Backup:                    backup.NewFromConfig(awsCfg),
 		Cloudformation:            cloudformation.NewFromConfig(awsCfg),
 		Cloudfront:                cloudfront.NewFromConfig(awsCfg),
@@ -229,6 +231,7 @@ type Services struct {
 	Athena                    services.AthenaClient
 	Autoscaling               services.AutoscalingClient
 	Backup                    services.BackupClient
+	Batch                     services.BatchClient
 	Cloudformation            services.CloudformationClient
 	Cloudfront                services.CloudfrontClient
 	Cloudhsmv2                services.Cloudhsmv2Client

@@ -141,6 +141,7 @@ func tables() []*schema.Table {
 		compute.Galleries(),
 		compute.Images(),
 		compute.RestorePointCollections(),
+		compute.SSHPublicKeys(),
 		compute.SKUs(),
 		compute.Snapshots(),
 		compute.VirtualMachineScaleSets(),

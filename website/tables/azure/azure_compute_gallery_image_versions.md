@@ -1,15 +1,14 @@
-# Table: azure_compute_galleries
+# Table: azure_compute_gallery_image_versions
 
-This table shows data for Azure Compute Galleries.
+This table shows data for Azure Compute Gallery Image Versions.
 
-https://learn.microsoft.com/en-us/rest/api/compute/galleries/list?tabs=HTTP#gallery
+https://learn.microsoft.com/en-us/rest/api/compute/gallery-image-versions/list-by-gallery-image?tabs=HTTP#galleryimageversion
 
 The primary key for this table is **id**.
 
 ## Relations
 
-The following tables depend on azure_compute_galleries:
-  - [azure_compute_gallery_images](azure_compute_gallery_images)
+This table depends on [azure_compute_gallery_images](azure_compute_gallery_images).
 
 ## Columns
 
