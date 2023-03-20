@@ -1,6 +1,6 @@
 # Table: aws_applicationautoscaling_policies
 
-This table shows data for Applicationautoscaling Policies.
+This table shows data for Application Auto Scaling Policies.
 
 https://docs.aws.amazon.com/autoscaling/application/APIReference/API_ScalingPolicy.html
 

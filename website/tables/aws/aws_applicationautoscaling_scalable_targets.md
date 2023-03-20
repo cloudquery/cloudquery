@@ -1,6 +1,6 @@
 # Table: aws_applicationautoscaling_scalable_targets
 
-This table shows data for Applicationautoscaling Scalable Targets.
+This table shows data for Application Auto Scaling Scalable Targets.
 
 https://docs.aws.amazon.com/autoscaling/application/APIReference/API_ScalableTarget.html
 

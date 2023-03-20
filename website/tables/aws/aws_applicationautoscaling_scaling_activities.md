@@ -1,6 +1,6 @@
 # Table: aws_applicationautoscaling_scaling_activities
 
-This table shows data for Applicationautoscaling Scaling Activities.
+This table shows data for Application Auto Scaling Scaling Activities.
 
 https://docs.aws.amazon.com/autoscaling/application/APIReference/API_ScalingActivity.html
 
