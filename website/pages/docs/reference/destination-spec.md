@@ -89,6 +89,19 @@ The number of resources to insert in a single batch. Only applies to plugins tha
 
 The max number of bytes to use for a single batch. Only applies to plugins that utilize batching. This setting works in conjunction with `batch_size`, and batches are written whenever either `batch_size` or `batch_size_bytes` is reached. Every plugin has its own default value for `batch_size_bytes`. Note that the size in bytes is calculated based on the size of data in memory, not the serialized data, and it is best to choose a `batch_size_bytes` significantly lower than any hard limits.
 
+<!-- vale off -->
+### pk_mode
+<!-- vale on -->
+
+(`string`, optional, default: `default`, Available: `default`, `cq-id-only` introduced in CLI `v2.5.2`)
+
+
+Specifies the Primary Keys that the destination will configure when using the `overwrite` or `overwrite-delete-stale` mode. 
+
+- `default`: The default primary keys are used.
+- `cq-id-only`: The `_cq_id` field is used as the only primary key for each table.  This is useful when you don't want breaking changes to primary keys to impact your schema. It is highly reccomended that if you are using this feature you should also use the [`deterministic_cq_id` feature in the source](docs/reference/source-spec#deterministic_cq_id). If you are using `overwrite` mode and a source updates a primary key, this will result in a new row being inserted. If you are using `overwrite-delete-stale` mode, a new row will be inserted and the old row will be deleted as a stale resource. Note: using this parameter might result in changes to query performance as queries will not have the ability to use indexes.  
+
+
 ### spec
 
 (`object`, optional)
