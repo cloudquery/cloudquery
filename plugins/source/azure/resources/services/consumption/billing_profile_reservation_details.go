@@ -7,8 +7,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func BillingProfileReservationDetails() *schema.Table {
@@ -27,7 +27,7 @@ func fetchBillingProfileReservationDetails(ctx context.Context, meta schema.Clie
 	if err != nil {
 		return err
 	}
-	today := to.Ptr(time.Time(time.Now()).Format("2006-01-02"))
+	today := to.Ptr(time.Now().UTC().AddDate(0, 0, 1).Format("2006-01-02"))
 	pager := svc.NewListPager(*cl.BillingProfile.ID, &armconsumption.ReservationsDetailsClientListOptions{StartDate: to.Ptr("2000-01-01"), EndDate: today})
 	for pager.More() {
 		p, err := pager.NextPage(ctx)

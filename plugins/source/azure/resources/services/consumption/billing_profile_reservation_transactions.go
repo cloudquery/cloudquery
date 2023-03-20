@@ -8,8 +8,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func BillingProfileReservationTransactions() *schema.Table {
@@ -28,9 +28,9 @@ func fetchBillingProfileReservationTransactions(ctx context.Context, meta schema
 	if err != nil {
 		return err
 	}
-	now := time.Now()
-	end := time.Time(now).Format("2006-01-02")
-	start := time.Time(now.AddDate(-1, 0, 0)).Format("2006-01-02")
+	now := time.Now().UTC()
+	end := now.AddDate(0, 0, 1).Format("2006-01-02")
+	start := now.AddDate(-1, 0, 0).Format("2006-01-02")
 	filter := to.Ptr(fmt.Sprintf("properties/eventDate ge %s AND properties/eventDate le %s", start, end))
 	pager := svc.NewListByBillingProfilePager(*cl.BillingAccount.Name, *cl.BillingProfile.Name, &armconsumption.ReservationTransactionsClientListByBillingProfileOptions{Filter: filter})
 	for pager.More() {

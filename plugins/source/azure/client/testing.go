@@ -9,13 +9,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/gorilla/mux"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v2/specs"
@@ -73,6 +75,15 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	defer h.Close()
 	mockClient := NewMockHttpClient(h.Client(), h.URL)
 
+	var billingAccounts []*armbilling.Account
+	if err := faker.FakeObject(&billingAccounts); err != nil {
+		t.Fatal(err)
+	}
+	billingAccounts[0].ID = to.Ptr("/providers/Microsoft.Billing/billingAccounts/account-id")
+	billingAccounts[0].Name = to.Ptr("account-id")
+	billingAccounts[0].Properties.BillingProfiles.Value[0].ID = to.Ptr("/providers/Microsoft.Billing/billingAccounts/account-id/billingProfiles/profile-id")
+	billingAccounts[0].Properties.BillingProfiles.Value[0].Name = to.Ptr("profile-id")
+
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro}).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		err := createServices(router)
@@ -105,6 +116,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			ResourceGroups: map[string][]*armresources.ResourceGroup{
 				TestSubscription: {resourceGroup},
 			},
+			BillingAccounts: billingAccounts,
 		}
 
 		return c, nil

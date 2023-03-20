@@ -5,8 +5,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func BillingAccountUsageDetails() *schema.Table {
@@ -31,8 +31,8 @@ func fetchBillingAccountUsageDetails(ctx context.Context, meta schema.ClientMeta
 		if err != nil {
 			return err
 		}
-		for _, r := range p.Value {
-			res <- r.GetUsageDetail()
+		for _, v := range p.Value {
+			res <- v.(*armconsumption.ModernUsageDetail)
 		}
 	}
 	return nil
