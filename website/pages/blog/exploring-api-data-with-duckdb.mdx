@@ -17,13 +17,11 @@ Looking at [DuckDB's GitHub star history](https://star-history.com/#duckdb/duckd
 
 ![DuckDB Star History](/images/blog/exploring-api-data-with-duckdb/star-history.png)
 
-I'm excited to share that CloudQuery has now added a new DuckDB destination plugin, so you can sync data from [any CloudQuery source](/integrations) and explore it using DuckDB.
-
-But what is DuckDB? In this post we will introduce DuckDB, show how to sync data to a local DuckDB database, and then explore the data using the DuckDB CLI.
+I'm excited to share that CloudQuery has now added a new DuckDB destination plugin, so you can sync data from [any CloudQuery source](/integrations) and explore it using DuckDB. But what is DuckDB? In this post I will introduce DuckDB, show how to sync data to a local DuckDB database, and then explore the data using the DuckDB CLI.
 
 ## What is DuckDB?
 
-DuckDB describes itself as an in-process SQL OLAP database management system. That's a bit of a mouthful. DuckDB is perhaps most easily understood as being in the same category as SQLite, but focused on OLAP (online analytical processing) instead of OLTP (online transaction processing). As such, DuckDB is a columnar database, which means that it stores data in columns instead of rows. This makes it very fast for aggregations and other analytical queries. Being embedded with a focus on OLAP helps it fill a niche that is not well served by other databases, as illustrated by the diagram below from the [2019 SIGMOD paper by Raasveldt & Mühleisen: DuckDB: an Embeddable Analytical Database](https://mytherin.github.io/papers/2019-duckdbdemo.pdf):
+DuckDB describes itself as an in-process SQL OLAP database management system. That's a bit of a mouthful. DuckDB is perhaps most easily understood as being in the same category as SQLite, but focused on OLAP (online analytical processing) instead of OLTP (online transaction processing). As such, DuckDB is a columnar database, which means that it stores data in columns instead of rows. This makes it fast for aggregations and other analytical queries. Being embedded with a focus on OLAP helps it fill a niche that is not well served by other databases, as illustrated by the diagram below from the [2019 SIGMOD paper by Raasveldt & Mühleisen: DuckDB: an Embeddable Analytical Database](https://mytherin.github.io/papers/2019-duckdbdemo.pdf):
 
 ![DuckDB vs SQLite vs PostgreSQL](/images/blog/exploring-api-data-with-duckdb/database_landscape.png)
 
@@ -101,6 +99,7 @@ LIMIT 10;
 
 Now we can see the top 10 most installed Homebrew packages (on MacOS) in the last 30 days:
 
+{/* <!-- vale off --> */}
 ```text
 ┌────────┬─────────────────┬────────┬─────────┐
 │ number │     formula     │ count  │ percent │
@@ -120,6 +119,7 @@ Now we can see the top 10 most installed Homebrew packages (on MacOS) in the las
 │ 10 rows                           4 columns │
 └─────────────────────────────────────────────┘
 ```
+{/* <!-- vale on --> */}
 
 Great! This proves it works, but it's a bit boring, in my opinion. What if we wanted to see the fastest-growing Homebrew packages instead?
 
@@ -147,6 +147,7 @@ LIMIT 15;
 
 And the results are:
 
+{/* <!-- vale off --> */}
 |    formula    |                      url                       | number_30d | number_90d | change_90d |
 |---------------|------------------------------------------------|------------|------------|------------|
 | spandsp       | https://formulae.brew.sh/formula/spandsp       | 1256       | 2347       | -1091      |
@@ -164,8 +165,9 @@ And the results are:
 | grails        | https://formulae.brew.sh/formula/grails        | 1515       | 2167       | -652       |
 | hubble        | https://formulae.brew.sh/formula/hubble        | 1711       | 2335       | -624       |
 | libxmp        | https://formulae.brew.sh/formula/libxmp        | 550        | 1156       | -606       |
+{/* <!-- vale on --> */}
 
-To get the output in markdown format (like I did for this post), you can run `.mode markdown` before running the query.
+To get the output in Markdown format (like I did for this post), you can run `.mode markdown` before running the query.
 
 There are some interesting tools in that list! I'll be honest, knowing DuckDB's rise in popularity, I was expecting to see it in this list as well. Let's run a quick query to see how it did:
 
