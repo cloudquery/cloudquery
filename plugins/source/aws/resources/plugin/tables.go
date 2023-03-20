@@ -15,6 +15,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/athena"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/batch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudfront"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudhsmv2"
@@ -24,6 +25,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codebuild"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codepipeline"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cognito"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/computeoptimizer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/config"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dax"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/directconnect"
@@ -141,6 +143,8 @@ func tables() []*schema.Table {
 		backup.Plans(),
 		backup.RegionSettings(),
 		backup.Vaults(),
+		batch.JobQueues(),
+		batch.JobDefinitions(),
 		cloudformation.Stacks(),
 		cloudfront.CachePolicies(),
 		cloudfront.Distributions(),
@@ -157,6 +161,12 @@ func tables() []*schema.Table {
 		codepipeline.Webhooks(),
 		cognito.IdentityPools(),
 		cognito.UserPools(),
+		computeoptimizer.AutoscalingGroupsRecommendations(),
+		computeoptimizer.EbsVolumeRecommendations(),
+		computeoptimizer.Ec2InstanceRecommendations(),
+		computeoptimizer.EcsServiceRecommendations(),
+		computeoptimizer.EnrollmentStatuses(),
+		computeoptimizer.LambdaFunctionsRecommendations(),
 		config.ConfigRules(),
 		config.ConfigurationRecorders(),
 		config.ConformancePacks(),

@@ -20,5 +20,5 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	}
 	defer f.Close()
 
-	return c.formatClient.WriteTableBatch(f, table, data)
+	return c.Client.WriteTableBatchFile(f, table, data)
 }

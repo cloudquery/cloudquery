@@ -1,8 +1,7 @@
 import { Avatar } from "./Avatar";
-import CLOUDQUERY_TEAM from "../content/team";
-import type { Author } from "../content/team";
 import Head from "next/head";
 import { useConfig } from "nextra-theme-docs";
+import {AuthorByName} from "../content/authors";
 
 type BlogPostMeta = {
   title: string;
@@ -19,18 +18,19 @@ type BlogPostMeta = {
 };
 
 function Authors({ data }: { data: BlogPostMeta }) {
-  const authorName = data?.author as Author;
+  const authorName = data?.author;
 
   if (!authorName) {
     return null;
   }
 
-  const author = CLOUDQUERY_TEAM[authorName];
+  const authorNames = authorName.split(",").map((name) => name.trim());
+  const authors = authorNames.map((name) => AuthorByName(name));
 
   return (
     <div className="w-full border-b border-gray-400 authors border-opacity-20">
       <div className="flex flex-wrap justify-center py-8 mx-auto gap-7">
-        <Avatar {...author} />
+        {authors.map((author) => (<Avatar key={author.name} {...author} />))}
       </div>
     </div>
   );

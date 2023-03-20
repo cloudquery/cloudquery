@@ -1,4 +1,5 @@
 const { getTablesData } = require("./utils/tables-data");
+const { getIntegrationsPaths } = require("./utils/integrations");
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
@@ -21,11 +22,15 @@ module.exports = {
       },
     ],
   },
-  additionalPaths: () => {
+  additionalPaths: async () => {
     const tablesData = getTablesData();
-    const paths = tablesData.map(({ plugin, table }) => {
+    const tablesPaths = tablesData.map(({ plugin, table }) => {
       return { loc: `/docs/plugins/sources/${plugin}/tables/${table}`};
     });
-    return paths;
+    const integrationsData = await getIntegrationsPaths();
+    const integrationsPaths = integrationsData.map(({ params: { slug } }) => {
+      return { loc: `/integrations/${slug.join("/")}`};
+    })
+    return [...tablesPaths, ...integrationsPaths];
   },
 };

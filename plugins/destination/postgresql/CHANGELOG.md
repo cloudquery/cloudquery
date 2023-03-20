@@ -1,5 +1,28 @@
 # Changelog
 
+## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v3.0.0...plugins-destination-postgresql-v3.0.1) (2023-03-19)
+
+
+### Bug Fixes
+
+* **postgresql:** Normalize types in Postgres destination ([#9143](https://github.com/cloudquery/cloudquery/issues/9143)) ([eedea97](https://github.com/cloudquery/cloudquery/commit/eedea9725e607f109bfd2a37f43a1cba51e1b939))
+
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.1.5...plugins-destination-postgresql-v3.0.0) (2023-03-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **postgresql:** Update Internal CQ IDs on Upsert ([#8554](https://github.com/cloudquery/cloudquery/issues/8554))
+
+### Features
+
+* **postgresql:** Update Internal CQ IDs on Upsert ([#8554](https://github.com/cloudquery/cloudquery/issues/8554)) ([e820b01](https://github.com/cloudquery/cloudquery/commit/e820b01af43a7a9bf6e46e7c7f16d86d3acb7615))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.43.0 ([#8949](https://github.com/cloudquery/cloudquery/issues/8949)) ([31dfc63](https://github.com/cloudquery/cloudquery/commit/31dfc634850b699ba7bb7876399270a7367d6c7e))
+
 ## [2.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.1.4...plugins-destination-postgresql-v2.1.5) (2023-03-07)
 
 
