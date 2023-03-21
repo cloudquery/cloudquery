@@ -9,6 +9,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -82,6 +84,14 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 		for _, namespace := range namespaces {
 			registeredNamespaces[TestSubscription][namespace] = true
 		}
+
+		resourceGroup := &armresources.ResourceGroup{}
+		err = faker.FakeObject(resourceGroup)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroup.Name = &testResourceGroup
+
 		c := &Client{
 			logger: l,
 			Options: &arm.ClientOptions{
@@ -92,8 +102,8 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			registeredNamespaces: registeredNamespaces,
 			Creds:                creds,
 			subscriptions:        []string{TestSubscription},
-			resourceGroups: map[string][]string{
-				TestSubscription: {testResourceGroup},
+			ResourceGroups: map[string][]*armresources.ResourceGroup{
+				TestSubscription: {resourceGroup},
 			},
 		}
 
