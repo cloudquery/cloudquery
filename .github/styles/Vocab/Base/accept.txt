@@ -56,6 +56,7 @@ discoverability
 Docusaurus
 ELB
 ELBs
+Embeddable
 ENI
 ENIs
 env
@@ -139,6 +140,7 @@ Promtail
 protobuf
 Pulumi
 queryable
+Raasveldt
 ransform
 readme
 README
