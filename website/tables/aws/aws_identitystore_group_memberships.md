@@ -18,6 +18,7 @@ This table depends on [aws_identitystore_groups](aws_identitystore_groups).
 |_cq_sync_time|Timestamp|
 |_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
+|member_id|String|
 |identity_store_id|String|
 |group_id|String|
 |membership_id|String|
