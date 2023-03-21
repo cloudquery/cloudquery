@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v2.2.1...plugins-destination-gcs-v2.3.0) (2023-03-21)
+
+
+### Features
+
+* **gcs:** Update to filetypes v1.6.0 ([#9151](https://github.com/cloudquery/cloudquery/issues/9151)) ([a31b74f](https://github.com/cloudquery/cloudquery/commit/a31b74ff7d68a0739ed57e306f0f63e1f711ea6b))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.0 ([#9167](https://github.com/cloudquery/cloudquery/issues/9167)) ([49d6477](https://github.com/cloudquery/cloudquery/commit/49d647730a85ea6fae51e97194ba61c0625d1331))
+
 ## [2.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v2.2.0...plugins-destination-gcs-v2.2.1) (2023-03-14)
 
 
