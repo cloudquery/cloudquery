@@ -1,6 +1,6 @@
 # Table: aws_ssm_instance_patches
 
-This table shows data for Ssm Instance Patches.
+This table shows data for AWS Systems Manager (SSM) Instance Patches.
 
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_PatchComplianceData.html
 
