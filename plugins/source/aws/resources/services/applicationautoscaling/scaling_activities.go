@@ -11,43 +11,35 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Policies() *schema.Table {
-	tableName := "aws_applicationautoscaling_policies"
+func ScalingActivities() *schema.Table {
+	tableName := "aws_applicationautoscaling_scaling_activities"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/autoscaling/application/APIReference/API_ScalingPolicy.html`,
-		Resolver:    fetchPolicies,
+		Description: `https://docs.aws.amazon.com/autoscaling/application/APIReference/API_ScalingActivity.html`,
+		Resolver:    fetchScalingActivities,
 		Multiplex:   client.ServiceAccountRegionNamespaceMultiplexer(tableName, "application-autoscaling"),
-		Transform:   transformers.TransformWithStruct(&types.ScalingPolicy{}),
+		Transform:   transformers.TransformWithStruct(&types.ScalingActivity{}, transformers.WithPrimaryKeys("ResourceId")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicyARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 		},
 	}
 }
 
-func fetchPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchScalingActivities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Applicationautoscaling
 
-	config := applicationautoscaling.DescribeScalingPoliciesInput{
+	config := applicationautoscaling.DescribeScalingActivitiesInput{
 		ServiceNamespace: types.ServiceNamespace(c.AutoscalingNamespace),
 	}
 	for {
-		output, err := svc.DescribeScalingPolicies(ctx, &config)
+		output, err := svc.DescribeScalingActivities(ctx, &config)
 		if err != nil {
 			return err
 		}
 
-		res <- output.ScalingPolicies
+		res <- output.ScalingActivities
 
 		if aws.ToString(output.NextToken) == "" {
 			break
