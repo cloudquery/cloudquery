@@ -51,7 +51,7 @@ func createVirtualMachineScaleSets(router *mux.Router) error {
 		}
 	})
 
-	return nil
+	return createVirtualMachineScaleSetsNetworkInterfaces(router)
 }
 
 func TestVirtualMachineScaleSets(t *testing.T) {

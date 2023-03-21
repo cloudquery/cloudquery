@@ -1,6 +1,6 @@
 # Table: aws_ssm_instance_compliance_items
 
-This table shows data for Ssm Instance Compliance Items.
+This table shows data for AWS Systems Manager (SSM) Instance Compliance Items.
 
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ComplianceItem.html
 
