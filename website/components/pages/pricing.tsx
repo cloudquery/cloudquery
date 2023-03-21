@@ -19,7 +19,7 @@ const tiers: PricingTier[] = [
         attributes: {
             Price: "$4k",
             PriceMonthly: true,
-            PriceDetails: "Annual contract. 10% discount if billed annually.",
+            PriceDetails: "Annual contract. Billed annually.",
             Communication: "Private channel in any of Discord, Slack, or Teams",
             SLA: "24 hour response time on support tickets.",
             TAM: "Up to 2 hours / month",
@@ -32,7 +32,7 @@ const tiers: PricingTier[] = [
         attributes: {
             Price: "$25k",
             PriceMonthly: true,
-            PriceDetails: "Annual contract. 10% discount if billed annually.",
+            PriceDetails: "Annual contract. Billed annually.",
             Communication: "Private channel in any of Discord, Slack, or Teams",
             SLA: "24 hour response time on support tickets.",
             TAM: "Up to 4 hours / month",
