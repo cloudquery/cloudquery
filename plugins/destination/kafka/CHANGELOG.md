@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v2.0.7...plugins-destination-kafka-v2.0.8) (2023-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.0 ([#9167](https://github.com/cloudquery/cloudquery/issues/9167)) ([49d6477](https://github.com/cloudquery/cloudquery/commit/49d647730a85ea6fae51e97194ba61c0625d1331))
+
 ## [2.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v2.0.6...plugins-destination-kafka-v2.0.7) (2023-03-14)
 
 
