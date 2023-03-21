@@ -25,14 +25,18 @@ func getSyncCommand(t *testing.T, config string) (*cobra.Command, string) {
 
 func TestSync(t *testing.T) {
 	configs := []struct {
-		name        string
-		config      string
-		err         string
-		logMessages []string
+		name                       string
+		config                     string
+		err                        string
+		logMessages                []string
+		wantSourcePluginCache      bool
+		wantDestinationPluginCache bool
 	}{
 		{
-			name:   "should finish successfully for valid config",
-			config: "sync-success.yml",
+			name:                       "should finish successfully for valid config",
+			config:                     "sync-success.yml",
+			wantSourcePluginCache:      true,
+			wantDestinationPluginCache: true,
 		},
 		{
 			name:   "should fail with missing path error when path is missing",
@@ -45,6 +49,8 @@ func TestSync(t *testing.T) {
 			logMessages: []string{
 				`Start sync destinations=\["test\-1.*?","test\-2.*?"\] module=cli source="test\-1.*?"`,
 				`Start sync destinations=\["test\-2.*?","test\-1.*?"\] module=cli source="test\-2.*?"`},
+			wantSourcePluginCache:      true,
+			wantDestinationPluginCache: true,
 		},
 	}
 
@@ -68,6 +74,26 @@ func TestSync(t *testing.T) {
 				require.NoError(t, commandError)
 			} else {
 				require.Contains(t, commandError.Error(), tc.err)
+			}
+
+			if tc.wantSourcePluginCache {
+				// check that source plugin was downloaded to the cache using --cq-dir
+				p := path.Join(cqDir, "plugins", "source")
+				files, err := os.ReadDir(p)
+				if err != nil {
+					t.Fatalf("failed to read cache directory %v: %v", p, err)
+				}
+				require.NotEmpty(t, files, "source plugin not downloaded to cache")
+			}
+
+			if tc.wantDestinationPluginCache {
+				// check that destination plugin was downloaded to the cache using --cq-dir
+				p := path.Join(cqDir, "plugins", "destination")
+				files, err := os.ReadDir(p)
+				if err != nil {
+					t.Fatalf("failed to read cache directory %v: %v", p, err)
+				}
+				require.NotEmpty(t, files, "destination plugin not downloaded to cache")
 			}
 		})
 	}
