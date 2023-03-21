@@ -1,6 +1,6 @@
 # Table: aws_ssm_patch_baselines
 
-This table shows data for Ssm Patch Baselines.
+This table shows data for AWS Systems Manager (SSM) Patch Baselines.
 
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_PatchBaselineIdentity.html
 
