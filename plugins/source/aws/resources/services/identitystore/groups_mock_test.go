@@ -31,6 +31,9 @@ func buildGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err != nil {
 		t.Fatal(err)
 	}
+	groupMembership.MemberId = &iTypes.MemberIdMemberUserId{
+		Value: "test",
+	}
 
 	mSSOAdmin.EXPECT().ListInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ssoadmin.ListInstancesOutput{
