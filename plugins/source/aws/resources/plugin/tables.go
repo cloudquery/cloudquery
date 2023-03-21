@@ -415,6 +415,7 @@ func tables() []*schema.Table {
 		s3.AccessPoints(),
 		s3.Accounts(),
 		s3.Buckets(),
+		sagemaker.Apps(),
 		sagemaker.EndpointConfigurations(),
 		sagemaker.Models(),
 		sagemaker.NotebookInstances(),
