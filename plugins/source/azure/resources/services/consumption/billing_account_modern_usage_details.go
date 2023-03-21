@@ -9,17 +9,17 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
-func BillingAccountUsageDetails() *schema.Table {
+func BillingAccountModernUsageDetails() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_billing_account_usage_details",
-		Resolver:    fetchBillingAccountUsageDetails,
+		Name:        "azure_consumption_billing_account_modern_usage_details",
+		Resolver:    fetchBillingAccountModernUsageDetails,
 		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/usage-details/list?tabs=HTTP#modernusagedetail",
-		Multiplex:   client.BillingAccountMultiplex,
+		Multiplex:   client.ModernBillingAccountMultiplex,
 		Transform:   transformers.TransformWithStruct(&armconsumption.ModernUsageDetail{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 
-func fetchBillingAccountUsageDetails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchBillingAccountModernUsageDetails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armconsumption.NewUsageDetailsClient(cl.Creds, cl.Options)
 	if err != nil {

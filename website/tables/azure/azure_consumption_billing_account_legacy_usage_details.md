@@ -1,8 +1,8 @@
-# Table: azure_consumption_billing_account_usage_details
+# Table: azure_consumption_billing_account_legacy_usage_details
 
-This table shows data for Azure Consumption Billing Account Usage Details.
+This table shows data for Azure Consumption Billing Account Legacy Usage Details.
 
-https://learn.microsoft.com/en-us/rest/api/consumption/usage-details/list?tabs=HTTP#modernusagedetail
+https://learn.microsoft.com/en-us/rest/api/consumption/usage-details/list?tabs=HTTP#legacyusagedetail
 
 The primary key for this table is **id**.
 

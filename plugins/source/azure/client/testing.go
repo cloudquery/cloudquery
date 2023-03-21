@@ -25,6 +25,8 @@ import (
 )
 
 const TestSubscription = "12345678-1234-1234-1234-123456789000"
+const LegacyAccountName = "9971ccb0-02bb-45e2-bd6a-9e340372dcba"
+const ModernAccountName = "7c05a543-80ff-571e-9f98-1063b3b53cf2:99ad03ad-2d1b-4889-a452-090ad407d25f_2019-05-31"
 
 var testResourceGroup = "test-resource-group"
 
@@ -75,14 +77,22 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	defer h.Close()
 	mockClient := NewMockHttpClient(h.Client(), h.URL)
 
-	var billingAccounts []*armbilling.Account
-	if err := faker.FakeObject(&billingAccounts); err != nil {
+	var legacyAccount armbilling.Account
+	if err := faker.FakeObject(&legacyAccount); err != nil {
 		t.Fatal(err)
 	}
-	billingAccounts[0].ID = to.Ptr("/providers/Microsoft.Billing/billingAccounts/account-id")
-	billingAccounts[0].Name = to.Ptr("account-id")
-	billingAccounts[0].Properties.BillingProfiles.Value[0].ID = to.Ptr("/providers/Microsoft.Billing/billingAccounts/account-id/billingProfiles/profile-id")
-	billingAccounts[0].Properties.BillingProfiles.Value[0].Name = to.Ptr("profile-id")
+	legacyAccount.ID = to.Ptr("/providers/Microsoft.Billing/billingAccounts/" + LegacyAccountName)
+	legacyAccount.Name = to.Ptr(LegacyAccountName)
+	legacyAccount.Properties.BillingProfiles = nil
+
+	var modernAccount armbilling.Account
+	if err := faker.FakeObject(&modernAccount); err != nil {
+		t.Fatal(err)
+	}
+	modernAccount.ID = to.Ptr("/providers/Microsoft.Billing/billingAccounts/" + ModernAccountName)
+	modernAccount.Name = to.Ptr(ModernAccountName)
+	modernAccount.Properties.BillingProfiles.Value[0].ID = to.Ptr("/providers/Microsoft.Billing/billingAccounts/account-id/billingProfiles/profile-id")
+	modernAccount.Properties.BillingProfiles.Value[0].Name = to.Ptr("profile-id")
 
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro}).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
@@ -116,7 +126,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			ResourceGroups: map[string][]*armresources.ResourceGroup{
 				TestSubscription: {resourceGroup},
 			},
-			BillingAccounts: billingAccounts,
+			BillingAccounts: []*armbilling.Account{&legacyAccount, &modernAccount},
 		}
 
 		return c, nil

@@ -13,12 +13,12 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func createBillingAccountUsageDetails(router *mux.Router) error {
-	var item armconsumption.ModernUsageDetail
+func createBillingAccountLegacyUsageDetails(router *mux.Router) error {
+	var item armconsumption.LegacyUsageDetail
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
-	item.Kind = to.Ptr(armconsumption.UsageDetailsKindModern)
+	item.Kind = to.Ptr(armconsumption.UsageDetailsKindLegacy)
 
 	resp := armconsumption.UsageDetailsClientListResponse{
 		UsageDetailsListResult: armconsumption.UsageDetailsListResult{
@@ -28,7 +28,7 @@ func createBillingAccountUsageDetails(router *mux.Router) error {
 	}
 	resp.NextLink = to.Ptr("")
 
-	router.HandleFunc("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/usageDetails", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/providers/Microsoft.Billing/billingAccounts/"+client.LegacyAccountName+"/providers/Microsoft.Consumption/usageDetails", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&resp)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -43,6 +43,6 @@ func createBillingAccountUsageDetails(router *mux.Router) error {
 	return nil
 }
 
-func TestBillingAccountUsageDetails(t *testing.T) {
-	client.MockTestHelper(t, BillingAccountUsageDetails(), createBillingAccountUsageDetails)
+func TestBillingAccountLegacyUsageDetails(t *testing.T) {
+	client.MockTestHelper(t, BillingAccountLegacyUsageDetails(), createBillingAccountLegacyUsageDetails)
 }

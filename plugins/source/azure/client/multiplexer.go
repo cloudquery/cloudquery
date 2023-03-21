@@ -1,6 +1,9 @@
 package client
 
 import (
+	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
@@ -58,6 +61,31 @@ func BillingAccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	var c = make([]schema.ClientMeta, len(client.BillingAccounts))
 	for i := range client.BillingAccounts {
 		c[i] = client.withBillingAccount(client.BillingAccounts[i])
+	}
+	return c
+}
+func isModernAccount(account *armbilling.Account) bool {
+	return strings.Contains(*account.Name, ":")
+}
+
+func LegacyBillingAccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
+	client := meta.(*Client)
+	var c = make([]schema.ClientMeta, 0)
+	for i := range client.BillingAccounts {
+		if !isModernAccount(client.BillingAccounts[i]) {
+			c = append(c, client.withBillingAccount(client.BillingAccounts[i]))
+		}
+	}
+	return c
+}
+
+func ModernBillingAccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
+	client := meta.(*Client)
+	var c = make([]schema.ClientMeta, 0)
+	for i := range client.BillingAccounts {
+		if isModernAccount(client.BillingAccounts[i]) {
+			c = append(c, client.withBillingAccount(client.BillingAccounts[i]))
+		}
 	}
 	return c
 }
