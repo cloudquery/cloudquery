@@ -11,43 +11,35 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Policies() *schema.Table {
-	tableName := "aws_applicationautoscaling_policies"
+func ScalableTargets() *schema.Table {
+	tableName := "aws_applicationautoscaling_scalable_targets"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/autoscaling/application/APIReference/API_ScalingPolicy.html`,
-		Resolver:    fetchPolicies,
+		Description: `https://docs.aws.amazon.com/autoscaling/application/APIReference/API_ScalableTarget.html`,
+		Resolver:    fetchScalableTargets,
 		Multiplex:   client.ServiceAccountRegionNamespaceMultiplexer(tableName, "application-autoscaling"),
-		Transform:   transformers.TransformWithStruct(&types.ScalingPolicy{}),
+		Transform:   transformers.TransformWithStruct(&types.ScalableTarget{}, transformers.WithPrimaryKeys("ResourceId")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicyARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 		},
 	}
 }
 
-func fetchPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchScalableTargets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Applicationautoscaling
 
-	config := applicationautoscaling.DescribeScalingPoliciesInput{
+	config := applicationautoscaling.DescribeScalableTargetsInput{
 		ServiceNamespace: types.ServiceNamespace(c.AutoscalingNamespace),
 	}
 	for {
-		output, err := svc.DescribeScalingPolicies(ctx, &config)
+		output, err := svc.DescribeScalableTargets(ctx, &config)
 		if err != nil {
 			return err
 		}
 
-		res <- output.ScalingPolicies
+		res <- output.ScalableTargets
 
 		if aws.ToString(output.NextToken) == "" {
 			break
