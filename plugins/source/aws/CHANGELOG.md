@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [15.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v15.4.0...plugins-source-aws-v15.5.0) (2023-03-21)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_applicationautoscaling_scalable_targets` was added
+- Table `aws_applicationautoscaling_scaling_activities` was added
+- Table `aws_applicationautoscaling_scheduled_actions` was added
+- Table `aws_ssm_document_versions` was added
+- Table `aws_ssm_sessions` was added
+
 ### Features
 
 * Add `member_id` to `aws_identitystore_group_memberships` ([#9297](https://github.com/cloudquery/cloudquery/issues/9297)) ([62ce2ae](https://github.com/cloudquery/cloudquery/commit/62ce2ae82eb4f27f282387b2ab5ce96e1807f58d))
