@@ -1,6 +1,6 @@
 # Table: aws_ssm_inventories
 
-This table shows data for Ssm Inventories.
+This table shows data for AWS Systems Manager (SSM) Inventories.
 
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InventoryResultEntity.html
 

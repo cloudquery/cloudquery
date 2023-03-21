@@ -31,3 +31,11 @@ func fetchIdentitystoreGroupMemberships(ctx context.Context, meta schema.ClientM
 	}
 	return nil
 }
+
+func resolveMemberID(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+	groupMembership := r.Item.(types.GroupMembership)
+	if v, ok := groupMembership.MemberId.(*types.MemberIdMemberUserId); ok {
+		return r.Set(c.Name, v.Value)
+	}
+	return nil
+}
