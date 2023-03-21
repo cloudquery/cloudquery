@@ -7,6 +7,7 @@ import (
 
 	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/specs"
 )
 
 const (
@@ -26,14 +27,16 @@ func TestPgPlugin(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("kafka", "development", New)
 		},
-		Spec{
-			Brokers:            strings.Split(getenv("CQ_DEST_KAFKA_CONNECTION_STRING", defaultConnectionString), ","),
-			SaslUsername:       getenv("CQ_DEST_KAFKA_SASL_USERNAME", ""),
-			SaslPassword:       getenv("CQ_DEST_KAFKA_SASL_PASSWORD", ""),
-			Verbose:            true,
-			MaxMetadataRetries: 15,
-			FileSpec: &filetypes.FileSpec{
-				Format: filetypes.FormatTypeJSON,
+		specs.Destination{
+			Spec: &Spec{
+				Brokers:            strings.Split(getenv("CQ_DEST_KAFKA_CONNECTION_STRING", defaultConnectionString), ","),
+				SaslUsername:       getenv("CQ_DEST_KAFKA_SASL_USERNAME", ""),
+				SaslPassword:       getenv("CQ_DEST_KAFKA_SASL_PASSWORD", ""),
+				Verbose:            true,
+				MaxMetadataRetries: 15,
+				FileSpec: &filetypes.FileSpec{
+					Format: filetypes.FormatTypeJSON,
+				},
 			},
 		},
 		destination.PluginTestSuiteTests{

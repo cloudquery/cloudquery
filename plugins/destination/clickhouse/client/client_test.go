@@ -40,7 +40,11 @@ func TestPlugin(t *testing.T) {
 				destination.WithManagedWriter(),
 			)
 		},
-		Spec{ConnectionString: getTestConnection()},
+		specs.Destination{
+			Spec: &Spec{
+				ConnectionString: getTestConnection(),
+			},
+		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,
 			SkipMigrateOverwrite:      true,

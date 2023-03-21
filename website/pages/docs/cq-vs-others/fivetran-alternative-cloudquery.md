@@ -1,3 +1,7 @@
+---
+title: Fivetran alternative | Comparison with CloudQuery
+---
+
 # CloudQuery Vs Fivetran
 
 Fivetran is a closed source managed ELT SaaS solution with a few key differences.
