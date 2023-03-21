@@ -101,6 +101,7 @@ Specifies the Primary Keys that the destination will configure when using the `o
 - `default`: The default primary keys are used.
 - `cq-id-only`: The `_cq_id` field is used as the only primary key for each table.  This is useful when you don't want breaking changes to primary keys to impact your schema. It is highly recommended that if you are using this feature you should also use the [`deterministic_cq_id` feature in the source](docs/reference/source-spec#deterministic_cq_id). If you are using `overwrite` mode and a source updates a primary key, this will result in a new row being inserted. If you are using `overwrite-delete-stale` mode, a new row will be inserted and the old row will be deleted as a stale resource. Note: using this parameter might result in changes to query performance as queries will not have the ability to use indexes.  
 
+Only destination plugins released after 2023-03-21 will support this functionality.
 
 ### spec
 
