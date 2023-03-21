@@ -11,7 +11,7 @@
   "plugins/source/digitalocean+FILLER": "0.0.0",
   "plugins/source/gcp": "8.4.1",
   "plugins/source/gcp+FILLER": "0.0.0",
-  "plugins/source/github": "4.1.1",
+  "plugins/source/github": "4.1.2",
   "plugins/source/github+FILLER": "0.0.0",
   "plugins/source/heroku": "3.2.1",
   "plugins/source/heroku+FILLER": "0.0.0",
