@@ -26,7 +26,7 @@ export default function PricingCard({tier} : {tier: PricingTier}) {
     </svg>;
 
     return <div
-        className="flex flex-col px-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-900 dark:text-white">
+        className="flex flex-col px-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 p-8 dark:bg-gray-900 dark:text-white">
         <h3 className="mb-4 text-2xl font-semibold">{tier.name}</h3>
         <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">{tier.description}</p>
         <div className="flex justify-center items-baseline my-8">
