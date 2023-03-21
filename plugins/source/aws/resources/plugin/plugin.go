@@ -68,6 +68,7 @@ var awsExceptions = map[string]string{
 	"securityhub":       "AWS Security Hub",
 	"servicecatalog":    "AWS Service Catalog",
 	"ses":               "Amazon Simple Email Service (SES)",
+	"ssm":               "AWS Systems Manager (SSM)",
 	"xray":              "AWS X-Ray",
 }
 
