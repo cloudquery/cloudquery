@@ -15,5 +15,12 @@ func GroupMemberships() *schema.Table {
 		Resolver:    fetchIdentitystoreGroupMemberships,
 		Transform:   transformers.TransformWithStruct(&types.GroupMembership{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "identitystore"),
+		Columns: []schema.Column{
+			{
+				Name:     "member_id",
+				Type:     schema.TypeString,
+				Resolver: resolveMemberID,
+			},
+		},
 	}
 }
