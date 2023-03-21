@@ -8,12 +8,13 @@ import (
 )
 
 func VaultNotifications() *schema.Table {
+	tableName := "aws_glacier_vault_notifications"
 	return &schema.Table{
-		Name:        "aws_glacier_vault_notifications",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/amazonglacier/latest/dev/api-vault-notifications-get.html`,
 		Resolver:    fetchGlacierVaultNotifications,
 		Transform:   transformers.TransformWithStruct(&types.VaultNotificationConfig{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("glacier"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glacier"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

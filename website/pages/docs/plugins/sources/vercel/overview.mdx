@@ -5,19 +5,15 @@ name: Vercel
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", `vercel`)}/>
 
-The CloudQuery Vercel plugin pulls configuration out of Vercel resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+The CloudQuery Vercel plugin pulls configuration out of Vercel resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Authentication
 
-In order to fetch information from Vercel, `cloudquery` needs to be authenticated. An access token is required for authentication. You can create a new access token in [Vercel's Account Tokens Page](https://vercel.com/account/tokens).
-
-## Incremental Syncing
-
-The Vercel plugin supports incremental syncing. This means that only new data will be fetched from Vercel and loaded into your destination for supported tables (support depending on API endpoint). This is done by keeping track of the last `paginator` for each table and only fetching data that has been updated since then.
-To enable this, `backend` option must be set in the spec (as shown in the [example](configuration#example)). This is documented in the [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) section.
+<Authentication/>
 
 ## Query Examples
 

@@ -8,12 +8,13 @@ import (
 )
 
 func RuleGroups() *schema.Table {
+	tableName := "aws_waf_rule_groups"
 	return &schema.Table{
-		Name:        "aws_waf_rule_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_RuleGroupSummary.html`,
 		Resolver:    fetchWafRuleGroups,
 		Transform:   transformers.TransformWithStruct(&types.RuleGroup{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "waf"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

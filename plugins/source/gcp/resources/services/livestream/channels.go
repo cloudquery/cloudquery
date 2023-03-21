@@ -13,7 +13,7 @@ func Channels() *schema.Table {
 		Description: `https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels`,
 		Resolver:    fetchChannels,
 		Multiplex:   client.ProjectMultiplexEnabledServices("livestream.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Channel{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Channel{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

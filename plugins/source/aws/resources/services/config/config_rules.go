@@ -8,11 +8,12 @@ import (
 )
 
 func ConfigRules() *schema.Table {
+	tableName := "aws_config_config_rules"
 	return &schema.Table{
-		Name:        "aws_config_config_rules",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConfigRules.html`,
 		Resolver:    fetchConfigConfigRules,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("config"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		Transform:   transformers.TransformWithStruct(&types.ConfigRule{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -8,23 +8,13 @@ import (
 )
 
 func Images() *schema.Table {
+	tableName := "aws_appstream_images"
 	return &schema.Table{
-		Name:        "aws_appstream_images",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Image.html`,
 		Resolver:    fetchAppstreamImages,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
-		Transform:   transformers.TransformWithStruct(&types.Image{}),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "appstream2"),
+		Transform:   transformers.TransformWithStruct(&types.Image{}, transformers.WithPrimaryKeys("Arn")),
+		Columns:     []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true)},
 	}
 }

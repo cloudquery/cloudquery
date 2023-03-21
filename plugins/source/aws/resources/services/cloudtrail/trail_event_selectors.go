@@ -8,11 +8,12 @@ import (
 )
 
 func TrailEventSelectors() *schema.Table {
+	tableName := "aws_cloudtrail_trail_event_selectors"
 	return &schema.Table{
-		Name:        "aws_cloudtrail_trail_event_selectors",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_EventSelector.html`,
 		Resolver:    fetchCloudtrailTrailEventSelectors,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudtrail"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "cloudtrail"),
 		Transform:   transformers.TransformWithStruct(&types.EventSelector{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

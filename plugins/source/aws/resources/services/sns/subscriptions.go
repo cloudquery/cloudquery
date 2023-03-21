@@ -8,13 +8,14 @@ import (
 )
 
 func Subscriptions() *schema.Table {
+	tableName := "aws_sns_subscriptions"
 	return &schema.Table{
-		Name:                "aws_sns_subscriptions",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/sns/latest/api/API_GetSubscriptionAttributes.html`,
 		Resolver:            fetchSnsSubscriptions,
 		PreResourceResolver: getSnsSubscription,
 		Transform:           transformers.TransformWithStruct(&models.Subscription{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("sns"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "sns"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

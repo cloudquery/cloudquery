@@ -38,4 +38,18 @@ the different plugins may overwrite/delete each others data.
 
 It is also important that every plugin-configuration is fetching different data (i.e. no two plugins are fetching the same account/table/region combination).
 
-You read more about this [here](/docs/advanced-topics/running-cloudquery-in-parallel).
+You can read more about this [here](/docs/advanced-topics/running-cloudquery-in-parallel).
+
+### My AWS sync is taking a long time. What can I do to speed it up?
+
+A few specific tables in AWS are quite slow to sync. You can try skipping them if you don't need this data.
+Take a look at the [skip_tables list](/docs/plugins/sources/aws/configuration#skipping-tables-with-configuration-parameters).
+If syncs are still taking a long time, you can also take a look at our [performance tuning guide](/docs/advanced-topics/performance-tuning).
+
+### I am running `cloudquery sync` locally, but it is taking a long time / doesn't seem to finish
+
+(If running the AWS plugin, try the `skip_tables` solution from the previous paragraph first).
+
+Large CloudQuery plugins, such as AWS, make a lot of DNS queries (for example, the AWS plugin makes a DNS query per `num_regions * num_services`).
+Some less performant DNS servers may not be able to handle this load (e.g. home routers).
+You can try pointing your machine to a different DNS server (such as the reliable [Google DNS Server](https://developers.google.com/speed/public-dns)).

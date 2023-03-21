@@ -34,7 +34,7 @@ func createManagedClusters(router *mux.Router) error {
 		}
 	})
 
-	return nil
+	return createManagedClusterUpgradeProfile(router)
 }
 
 func TestManagedClusters(t *testing.T) {

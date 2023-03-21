@@ -8,15 +8,13 @@ import (
 )
 
 func appComponentCompliances() *schema.Table {
+	tableName := "aws_resiliencehub_app_component_compliances"
 	return &schema.Table{
-		Name:        "aws_resiliencehub_app_component_compliances",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_AppComponentCompliance.html`,
 		Resolver:    fetchAppComponentCompliances,
 		Transform:   transformers.TransformWithStruct(&types.AppComponentCompliance{}, transformers.WithPrimaryKeys("AppComponentName")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("resiliencehub"),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
-		},
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
+		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, assessmentARN},
 	}
 }

@@ -7,7 +7,7 @@ select
   account_id,
   account_id,
   case when
-    (max_password_age is null or max_password_age < 90) or policy_exists = false
+    (max_password_age is null or max_password_age > 90) or policy_exists = false
     then 'fail'
     else 'pass'
   end

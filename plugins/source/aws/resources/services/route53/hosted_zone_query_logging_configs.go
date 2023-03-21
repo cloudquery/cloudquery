@@ -8,12 +8,13 @@ import (
 )
 
 func HostedZoneQueryLoggingConfigs() *schema.Table {
+	tableName := "aws_route53_hosted_zone_query_logging_configs"
 	return &schema.Table{
-		Name:        "aws_route53_hosted_zone_query_logging_configs",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_QueryLoggingConfig.html`,
 		Resolver:    fetchRoute53HostedZoneQueryLoggingConfigs,
 		Transform:   transformers.TransformWithStruct(&types.QueryLoggingConfig{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

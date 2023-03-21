@@ -3,21 +3,20 @@ package client
 import (
 	"context"
 	"database/sql"
-	"strings"
+	"fmt"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"golang.org/x/exp/slices"
 )
 
 func (c *Client) pkEnabled() bool {
 	return c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale
 }
 
-func (c *Client) getTableColumns(ctx context.Context, table *schema.Table) (queries.Definitions, error) {
+func (c *Client) getTableColumns(ctx context.Context, table *schema.Table) (schema.ColumnList, error) {
 	query, params := queries.GetTableSchema(c.schemaName, table)
-	var tc queries.Definitions
+	var tc schema.ColumnList
 
 	rows, err := c.db.QueryContext(ctx, query, params...)
 	if err != nil {
@@ -28,13 +27,29 @@ func (c *Client) getTableColumns(ctx context.Context, table *schema.Table) (quer
 	if err := processRows(rows, func(row *sql.Rows) error {
 		var name string
 		var typ string
-		var nullable bool
+		var nullable string
+		var charMaxLength *string
 
-		if err := row.Scan(&name, &typ, &nullable); err != nil {
+		if err := row.Scan(&name, &typ, &nullable, &charMaxLength); err != nil {
 			return err
 		}
 
-		tc = append(tc, queries.NewDefinition(name, typ, nullable))
+		if (typ == "nvarchar" || typ == "varbinary") && charMaxLength != nil {
+			if *charMaxLength == "-1" {
+				*charMaxLength = "max"
+			}
+			typ += "(" + *charMaxLength + ")"
+		}
+
+		if typ == "datetimeoffset" {
+			return fmt.Errorf(`column %q from table %q is of type "datetimeoffset" which was changed to "datetime2". Please drop the database to upgrade to this version`, name, table.Name)
+		}
+
+		schemaType, err := queries.SchemaType(table.Name, name, typ)
+		if err != nil {
+			return err
+		}
+		tc = append(tc, schema.Column{Name: name, Type: schemaType, CreationOptions: schema.ColumnCreationOptions{NotNull: nullable == "NO"}})
 
 		return nil
 	}); err != nil {
@@ -57,9 +72,8 @@ func (c *Client) getTablePK(ctx context.Context, table *schema.Table) ([]string,
 	var result []string
 	if err := processRows(rows, func(row *sql.Rows) error {
 		var name string
-		var idx int
 
-		if err := rows.Scan(&name, &idx); err != nil {
+		if err := rows.Scan(&name); err != nil {
 			return err
 		}
 
@@ -72,32 +86,4 @@ func (c *Client) getTablePK(ctx context.Context, table *schema.Table) ([]string,
 	}
 
 	return result, nil
-}
-
-func (c *Client) getStalePKs(table *schema.Table, primaryKey []string) []string {
-	if !c.pkEnabled() {
-		return nil
-	}
-
-	schemaPK := table.PrimaryKeys()
-
-	var stale []string
-	for _, key := range primaryKey {
-		if !slices.Contains(schemaPK, key) {
-			stale = append(stale, key)
-		}
-	}
-
-	return stale
-}
-
-func (c *Client) getDropNotNullQuery(table *schema.Table, stale []string) string {
-	statements := make([]string, len(stale))
-	for i, name := range stale {
-		statements[i] = queries.AlterColumn(c.schemaName, table,
-			queries.GetDefinition(table.Column(name), true).Nullable(),
-		)
-	}
-
-	return strings.Join(statements, "\n")
 }

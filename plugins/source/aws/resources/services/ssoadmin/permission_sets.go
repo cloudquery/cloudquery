@@ -8,13 +8,14 @@ import (
 )
 
 func PermissionSets() *schema.Table {
+	tableName := "aws_ssoadmin_permission_sets"
 	return &schema.Table{
-		Name:                "aws_ssoadmin_permission_sets",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_PermissionSet.html`,
 		Resolver:            fetchSsoadminPermissionSets,
 		PreResourceResolver: getSsoadminPermissionSet,
 		Transform:           transformers.TransformWithStruct(&types.PermissionSet{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("identitystore"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "identitystore"),
 		Columns: []schema.Column{
 			{
 				Name:     "inline_policy",

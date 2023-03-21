@@ -8,31 +8,16 @@ import (
 )
 
 func ResourceShareAssociations() *schema.Table {
+	tableName := "aws_ram_resource_share_associations"
 	return &schema.Table{
-		Name:        "aws_ram_resource_share_associations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceShareAssociation.html`,
 		Resolver:    fetchRamResourceShareAssociations,
-		Transform:   transformers.TransformWithStruct(&types.ResourceShareAssociation{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ram"),
+		Transform:   transformers.TransformWithStruct(&types.ResourceShareAssociation{}, transformers.WithPrimaryKeys("AssociatedEntity", "ResourceShareArn")),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ram"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
-			{
-				Name:     "associated_entity",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AssociatedEntity"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "resource_share_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceShareArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
 		},
 	}
 }

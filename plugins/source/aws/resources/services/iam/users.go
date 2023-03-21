@@ -8,13 +8,14 @@ import (
 )
 
 func Users() *schema.Table {
+	tableName := "aws_iam_users"
 	return &schema.Table{
-		Name:                "aws_iam_users",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_User.html`,
 		Resolver:            fetchIamUsers,
 		PreResourceResolver: getUser,
 		Transform:           transformers.TransformWithStruct(&types.User{}),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			{
 				Name:     "arn",
@@ -44,6 +45,7 @@ func Users() *schema.Table {
 			UserPolicies(),
 			SshPublicKeys(),
 			SigningCertificates(),
+			userLastAccessedDetails(),
 		},
 	}
 }

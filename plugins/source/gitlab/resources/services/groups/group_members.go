@@ -3,7 +3,6 @@ package groups
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/xanzy/go-gitlab"
 )
 
@@ -11,7 +10,7 @@ func GroupMembers() *schema.Table {
 	return &schema.Table{
 		Name:      "gitlab_group_members",
 		Resolver:  fetchGroupMembers,
-		Transform: transformers.TransformWithStruct(&gitlab.GroupMember{}, client.SharedTransformers()...),
+		Transform: client.TransformWithStruct(&gitlab.GroupMember{}),
 		Columns: []schema.Column{
 			{
 				Name:     "base_url",

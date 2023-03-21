@@ -8,15 +8,16 @@ import (
 )
 
 func DbSecurityGroups() *schema.Table {
+	tableName := "aws_rds_db_security_groups"
 	return &schema.Table{
-		Name:        "aws_rds_db_security_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSecurityGroup.html`,
 		Resolver:    fetchRdsDbSecurityGroups,
 		Transform: transformers.TransformWithStruct(
 			&types.DBSecurityGroup{},
 			transformers.WithNameTransformer(client.CreateReplaceTransformer(map[string]string{"e_c2": "ec2"})),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer("rds"),
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -5,18 +5,15 @@ name: Cloudflare
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", "cloudflare")}/>
 
-The CloudQuery Cloudflare plugin pulls configuration out of Cloudflare resources.
+The CloudQuery Cloudflare plugin pulls configuration out of Cloudflare resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Authentication
 
-In order to fetch information from Cloudflare, `cloudquery` needs to be authenticated. There are a few options for authentication:
-
-- Export the `CLOUDFLARE_API_TOKEN` environment variable before running `cloudquery sync`.
-- Export the `CLOUDFLARE_EMAIL` and `CLOUDFLARE_API_KEY` environment variables before running cloudquery
-- Specifying either the `api_token` or `api_email, api_key` parameters in the YAML configuration (See [Configuration](configuration) for more details).
+<Authentication/>
 
 ## Query Examples
 

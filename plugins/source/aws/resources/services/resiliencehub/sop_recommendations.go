@@ -8,15 +8,13 @@ import (
 )
 
 func sopRecommendations() *schema.Table {
+	tableName := "aws_resiliencehub_sop_recommendations"
 	return &schema.Table{
-		Name:        "aws_resiliencehub_sop_recommendations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_SopRecommendation.html`,
 		Resolver:    fetchSopRecommendations,
 		Transform:   transformers.TransformWithStruct(&types.SopRecommendation{}, transformers.WithPrimaryKeys("RecommendationId")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("resiliencehub"),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
-		},
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
+		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, assessmentARN},
 	}
 }

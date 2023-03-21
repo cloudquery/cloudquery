@@ -8,11 +8,12 @@ import (
 )
 
 func RestApiDeployments() *schema.Table {
+	tableName := "aws_apigateway_rest_api_deployments"
 	return &schema.Table{
-		Name:        "aws_apigateway_rest_api_deployments",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Deployment.html`,
 		Resolver:    fetchApigatewayRestApiDeployments,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Deployment{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

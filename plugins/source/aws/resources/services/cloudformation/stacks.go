@@ -8,11 +8,12 @@ import (
 )
 
 func Stacks() *schema.Table {
+	tableName := "aws_cloudformation_stacks"
 	return &schema.Table{
-		Name:        "aws_cloudformation_stacks",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html`,
 		Resolver:    fetchCloudformationStacks,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudformation"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "cloudformation"),
 		Transform:   transformers.TransformWithStruct(&types.Stack{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -38,7 +39,7 @@ func Stacks() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			StackResources(),
+			stackResources(),
 		},
 	}
 }

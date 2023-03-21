@@ -8,15 +8,16 @@ import (
 )
 
 func ResourceShares() *schema.Table {
+	tableName := "aws_ram_resource_shares"
 	return &schema.Table{
-		Name:        "aws_ram_resource_shares",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceShare.html`,
 		Resolver:    fetchRamResourceShares,
 		Transform:   transformers.TransformWithStruct(&types.ResourceShare{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ram"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ram"),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,

@@ -5,6 +5,7 @@ name: Kubernetes
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", "k8s")}/>
 
@@ -16,56 +17,4 @@ The K8s Source plugin for CloudQuery extracts configuration from a variety of K8
 
 ## Authentication
 
-Similar to how `kubectl` works, `cloudquery` depends on a Kubernetes configuration file to connect to a Kubernetes cluster and `sync` its information.
-By default, `cloudquery` uses the default Kubernetes configuration file (`~/.kube/config`).
-You can also specify a different configuration by setting the `KUBECONFIG` environment variable before running `cloudquery sync`.
-
-```bash copy
-export KUBECONFIG="<PATH_TO_YOUR_CONFIG_FILE>"
-```
-
-### Kubernetes Service Account
-
-When `cloudquery` is syncing the Kubernetes cluster information where it is running in a pod,
-the Kubernetes Service Account can be used for direct authentication.
-
-To achieve that you need to create a cluster role with all `get` and `list` privileges:
-
-```bash copy
-kubectl apply -f - <<EOF
-apiVersion: rbac.authorization.k8s.io/v1
-kind:       ClusterRole
-metadata:
-  name: cloudquery-cluster-read
-rules:
-- apiGroups:
-  - '*'
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-- nonResourceURLs:
-  - '*'
-  verbs:
-  - get
-  - list
-EOF
-```
-
-Then, create a cluster role binding for that role and the service account the `cloudquery` pod uses:
-
-```bash copy
-kubectl apply -f - <<EOF
-apiVersion: rbac.authorization.k8s.io/v1
-kind:       ClusterRoleBinding
-metadata:
-  name: cloudquery-cluster-read-binding
-subjects:
-- kind: ServiceAccount
-  name: cloudquery-sa
-roleRef:
-  kind: ClusterRole
-  name: cloudquery-cluster-read
-EOF
-```
+<Authentication/>

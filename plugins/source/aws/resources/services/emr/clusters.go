@@ -8,12 +8,13 @@ import (
 )
 
 func Clusters() *schema.Table {
+	tableName := "aws_emr_clusters"
 	return &schema.Table{
-		Name:                "aws_emr_clusters",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/emr/latest/APIReference/API_Cluster.html`,
 		Resolver:            fetchEmrClusters,
 		PreResourceResolver: getCluster,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "elasticmapreduce"),
 		Transform:           transformers.TransformWithStruct(&types.Cluster{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -32,6 +33,6 @@ func Clusters() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 		},
-		Relations: []*schema.Table{clusterInstanceFleets(), clusterInstanceGroups()},
+		Relations: []*schema.Table{clusterInstanceFleets(), clusterInstanceGroups(), clusterInstances()},
 	}
 }

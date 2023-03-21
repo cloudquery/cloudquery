@@ -13,7 +13,7 @@ func TerminalLocations() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_terminal_locations",
 		Description: `https://stripe.com/docs/api/terminal_locations`,
-		Transform:   transformers.TransformWithStruct(&stripe.TerminalLocation{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.TerminalLocation{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchTerminalLocations,
 
 		Columns: []schema.Column{

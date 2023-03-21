@@ -8,15 +8,13 @@ import (
 )
 
 func alarmRecommendations() *schema.Table {
+	tableName := "aws_resiliencehub_alarm_recommendations"
 	return &schema.Table{
-		Name:        "aws_resiliencehub_alarm_recommendations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_AlarmRecommendation.html`,
 		Resolver:    fetchAlarmRecommendations,
-		Transform:   transformers.TransformWithStruct(&types.AlarmRecommendation{}, transformers.WithPrimaryKeys("Name")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("resiliencehub"),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
-		},
+		Transform:   transformers.TransformWithStruct(&types.AlarmRecommendation{}, transformers.WithPrimaryKeys("RecommendationId")),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
+		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, assessmentARN},
 	}
 }

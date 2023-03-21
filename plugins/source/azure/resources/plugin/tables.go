@@ -11,7 +11,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/authorization"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/automation"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/azurearcdata"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/azuredata"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/batch"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/billing"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/botservice"
@@ -53,6 +52,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/kusto"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/logic"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/maintenance"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/managementgroups"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mariadb"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/marketplace"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/monitor"
@@ -124,7 +124,6 @@ func tables() []*schema.Table {
 		azurearcdata.PostgresInstances(),
 		azurearcdata.SqlManagedInstances(),
 		azurearcdata.SqlServerInstances(),
-		azuredata.SqlServerRegistrations(),
 		batch.Account(),
 		billing.Accounts(),
 		billing.EnrollmentAccounts(),
@@ -142,6 +141,7 @@ func tables() []*schema.Table {
 		compute.Galleries(),
 		compute.Images(),
 		compute.RestorePointCollections(),
+		compute.SSHPublicKeys(),
 		compute.SKUs(),
 		compute.Snapshots(),
 		compute.VirtualMachineScaleSets(),
@@ -197,14 +197,17 @@ func tables() []*schema.Table {
 		logic.Workflows(),
 		maintenance.Configurations(),
 		maintenance.PublicMaintenanceConfigurations(),
+		managementgroups.ManagementGroups(),
 		mariadb.Servers(),
 		marketplace.PrivateStore(),
 		monitor.LogProfiles(),
 		monitor.PrivateLinkScopes(),
 		monitor.TenantActivityLogAlerts(),
 		monitor.TenantActivityLogs(),
-		monitor.DiagnosticSettings(),
+		monitor.Resources(),
 		monitor.ActivityLogAlerts(),
+		monitor.SubscriptionDiagnosticSettings(),
+		monitor.AutoscaleSettings(),
 		mysql.Servers(),
 		mysqlflexibleservers.Servers(),
 		network.ApplicationGateways(),
@@ -271,6 +274,7 @@ func tables() []*schema.Table {
 		reservations.Reservation(),
 		reservations.ReservationOrder(),
 		resources.Resources(),
+		resources.ResourceGroups(),
 		resources.Links(),
 		policy.Assignments(),
 		policy.DataPolicyManifests(),

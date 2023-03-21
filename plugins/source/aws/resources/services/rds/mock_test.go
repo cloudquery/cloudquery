@@ -36,6 +36,8 @@ func buildRdsDBClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
+	buildRdsClusterBacktracks(t, m)
+
 	m.EXPECT().DescribeDBClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&rds.DescribeDBClustersOutput{
 			DBClusters: []rdsTypes.DBCluster{l},
@@ -79,6 +81,30 @@ func buildRdsDBSubnetGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 	}
 }
 
+func buildRdsDBReservedInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
+	m := mocks.NewMockRdsClient(ctrl)
+	ri := rdsTypes.ReservedDBInstance{}
+	if err := faker.FakeObject(&ri); err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().DescribeReservedDBInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&rds.DescribeReservedDBInstancesOutput{
+			ReservedDBInstances: []rdsTypes.ReservedDBInstance{ri},
+		}, nil)
+
+	tagOutput := rds.ListTagsForResourceOutput{}
+	if err := faker.FakeObject(&tagOutput); err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagOutput, nil)
+
+	return client.Services{
+		Rds: m,
+	}
+}
+
 func TestRdsCertificates(t *testing.T) {
 	client.AwsMockTestHelper(t, Certificates(), buildRdsCertificates, client.TestOptions{})
 }
@@ -90,4 +116,8 @@ func TestRdsClusters(t *testing.T) {
 }
 func TestRdsSubnetGroups(t *testing.T) {
 	client.AwsMockTestHelper(t, SubnetGroups(), buildRdsDBSubnetGroups, client.TestOptions{})
+}
+
+func TestRdsReservedInstances(t *testing.T) {
+	client.AwsMockTestHelper(t, ReservedInstances(), buildRdsDBReservedInstances, client.TestOptions{})
 }

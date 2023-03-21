@@ -8,12 +8,13 @@ import (
 )
 
 func Subscriptions() *schema.Table {
+	tableName := "aws_shield_subscriptions"
 	return &schema.Table{
-		Name:        "aws_shield_subscriptions",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_Subscription.html`,
 		Resolver:    fetchShieldSubscriptions,
 		Transform:   transformers.TransformWithStruct(&types.Subscription{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "shield"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

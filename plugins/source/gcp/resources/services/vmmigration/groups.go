@@ -13,7 +13,7 @@ func Groups() *schema.Table {
 		Description: `https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.groups`,
 		Resolver:    fetchGroups,
 		Multiplex:   client.ProjectMultiplexEnabledServices("vmmigration.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Group{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Group{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

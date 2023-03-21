@@ -8,11 +8,12 @@ import (
 )
 
 func VirtualGateways() *schema.Table {
+	tableName := "aws_directconnect_virtual_gateways"
 	return &schema.Table{
-		Name:        "aws_directconnect_virtual_gateways",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_VirtualGateway.html`,
 		Resolver:    fetchDirectconnectVirtualGateways,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("directconnect"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "directconnect"),
 		Transform:   transformers.TransformWithStruct(&types.VirtualGateway{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

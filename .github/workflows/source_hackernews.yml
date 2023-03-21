@@ -33,21 +33,21 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.50.1
+          version: v1.51.2
           working-directory: plugins/source/hackernews
           args: "--config ../../.golangci.yml"
       - name: Get dependencies
         run: go get -t -d ./...
-      - name: Build
-        run: go build .
-      - name: Test
-        run: make test
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
       - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
         run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
+      - name: Build
+        run: go build .
+      - name: Test
+        run: make test
   validate-release:
     timeout-minutes: 30
     runs-on: ubuntu-latest

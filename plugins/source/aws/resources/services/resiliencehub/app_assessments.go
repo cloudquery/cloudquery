@@ -8,25 +8,15 @@ import (
 )
 
 func appAssesments() *schema.Table {
+	tableName := "aws_resiliencehub_app_assessments"
 	return &schema.Table{
-		Name:                "aws_resiliencehub_app_assessments",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_AppAssessment.html`,
 		Resolver:            fetchAppAssessments,
 		PreResourceResolver: describeAppAssessments,
 		Transform:           transformers.TransformWithStruct(&types.AppAssessment{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("resiliencehub"),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AssessmentArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
+		Columns:             []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARNTop, arnColumn("AssessmentArn")},
 		Relations: []*schema.Table{
 			appComponentCompliances(),
 			appComponentRecommendations(),

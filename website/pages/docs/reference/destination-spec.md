@@ -61,17 +61,29 @@ Specifies the update method to use when inserting rows. The exact semantics depe
 - `overwrite`: Same as `overwrite-delete-stale`, but doesn't delete stale rows from previous `sync`s.
 - `append`: Rows are never overwritten or deleted, only appended.
 
-{/*<!-- vale off -->*/}
+<!-- vale off -->
+### migrate_mode
+<!-- vale on -->
+
+(`string`, optional, default: `safe`. Available: `safe`, `forced`)
+
+Specifies the migration mode to use when source tables are changed. In `safe` mode (the default), CloudQuery will not run migrations that would result in data loss, and will print an error instead. In `forced` mode, CloudQuery will run migrations that may result in data loss and the migration should always succeed without errors.
+`migrate_mode: forced` is only supported for the ClickHouse, MySQL, PostgreSQL, MSSQL and SQLite destination plugins at the moment.
+
+Read more about how CloudQuery handles migrations [here](/docs/advanced-topics/migrations).
+
+
+<!-- vale off -->
 ### batch_size
-{/*<!-- vale on -->*/}
+<!-- vale on -->
 
 (`int`, optional)
 
 The number of resources to insert in a single batch. Only applies to plugins that utilize batching. This setting works in conjunction with `batch_size_bytes`, and batches are written whenever either `batch_size` or `batch_size_bytes` is reached. Every plugin has its own default value for `batch_size`.
 
-{/*<!-- vale off -->*/}
+<!-- vale off -->
 ### batch_size_bytes
-{/*<!-- vale on -->*/}
+<!-- vale on -->
 
 (`int`, optional)
 

@@ -1,1 +1,0 @@
-export const INTEGRATION_WIDTH = 36

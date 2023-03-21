@@ -129,14 +129,14 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 			if addedColumn.pk() && !deletedColumn.pk() {
 				changes = append(changes, change{
 					Text:     fmt.Sprintf("Table %s: primary key constraint added to column %s", backtickStrings(table, deletedName)...),
-					Breaking: false,
+					Breaking: true,
 				})
 			}
 
 			if !addedColumn.pk() && deletedColumn.pk() {
 				changes = append(changes, change{
 					Text:     fmt.Sprintf("Table %s: primary key constraint removed from column %s", backtickStrings(table, deletedName)...),
-					Breaking: false,
+					Breaking: true,
 				})
 			}
 
@@ -216,7 +216,7 @@ func getFileChanges(file *gitdiff.File) (changes []change, err error) {
 			Text:     fmt.Sprintf("Table %s was removed", backtickStrings(oldTableName)...),
 			Breaking: true,
 		})
-	case file.IsRename:
+	case file.IsRename && oldTableName != newTableName:
 		changes = append(changes, change{
 			Text:     fmt.Sprintf("Table %s was renamed to %s", backtickStrings(oldTableName, newTableName)...),
 			Breaking: true,

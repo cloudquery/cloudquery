@@ -8,12 +8,13 @@ import (
 )
 
 func Volumes() *schema.Table {
+	tableName := "aws_fsx_volumes"
 	return &schema.Table{
-		Name:        "aws_fsx_volumes",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_Volume.html`,
 		Resolver:    fetchFsxVolumes,
 		Transform:   transformers.TransformWithStruct(&types.Volume{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "fsx"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -26,10 +27,9 @@ func Volumes() *schema.Table {
 				},
 			},
 			{
-				Name:          "administrative_actions",
-				Type:          schema.TypeJSON,
-				Resolver:      schema.PathResolver("AdministrativeActions"),
-				IgnoreInTests: true,
+				Name:     "administrative_actions",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AdministrativeActions"),
 			},
 			{
 				Name:     "tags",

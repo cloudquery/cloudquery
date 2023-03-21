@@ -1,5 +1,92 @@
 # Changelog
 
+## [3.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v3.0.1...plugins-destination-postgresql-v3.0.2) (2023-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.0 ([#9167](https://github.com/cloudquery/cloudquery/issues/9167)) ([49d6477](https://github.com/cloudquery/cloudquery/commit/49d647730a85ea6fae51e97194ba61c0625d1331))
+
+## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v3.0.0...plugins-destination-postgresql-v3.0.1) (2023-03-19)
+
+
+### Bug Fixes
+
+* **postgresql:** Normalize types in Postgres destination ([#9143](https://github.com/cloudquery/cloudquery/issues/9143)) ([eedea97](https://github.com/cloudquery/cloudquery/commit/eedea9725e607f109bfd2a37f43a1cba51e1b939))
+
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.1.5...plugins-destination-postgresql-v3.0.0) (2023-03-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **postgresql:** Update Internal CQ IDs on Upsert ([#8554](https://github.com/cloudquery/cloudquery/issues/8554))
+
+### Features
+
+* **postgresql:** Update Internal CQ IDs on Upsert ([#8554](https://github.com/cloudquery/cloudquery/issues/8554)) ([e820b01](https://github.com/cloudquery/cloudquery/commit/e820b01af43a7a9bf6e46e7c7f16d86d3acb7615))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.43.0 ([#8949](https://github.com/cloudquery/cloudquery/issues/8949)) ([31dfc63](https://github.com/cloudquery/cloudquery/commit/31dfc634850b699ba7bb7876399270a7367d6c7e))
+
+## [2.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.1.4...plugins-destination-postgresql-v2.1.5) (2023-03-07)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to c95f2b4 ([#8560](https://github.com/cloudquery/cloudquery/issues/8560)) ([9c3bd5b](https://github.com/cloudquery/cloudquery/commit/9c3bd5b68f9741a360fde6c54bf3f5f3efe06d9e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.41.0 ([#8682](https://github.com/cloudquery/cloudquery/issues/8682)) ([ea9d065](https://github.com/cloudquery/cloudquery/commit/ea9d065ae9f77c6dd990570974630ae6ac3f153e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.42.0 ([#8725](https://github.com/cloudquery/cloudquery/issues/8725)) ([b83b277](https://github.com/cloudquery/cloudquery/commit/b83b277a2421d1caf46a26c3229041b27a3da148))
+* **deps:** Update module github.com/jackc/pgx/v5 to v5.3.1 ([#8572](https://github.com/cloudquery/cloudquery/issues/8572)) ([11f2e3a](https://github.com/cloudquery/cloudquery/commit/11f2e3a8a5ede0524f55606d080838bd4b3f556c))
+* **deps:** Update module github.com/stretchr/testify to v1.8.2 ([#8599](https://github.com/cloudquery/cloudquery/issues/8599)) ([2ec8086](https://github.com/cloudquery/cloudquery/commit/2ec808677328410cc96c97a693ef65022d314c32))
+
+## [2.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.1.3...plugins-destination-postgresql-v2.1.4) (2023-02-27)
+
+
+### Bug Fixes
+
+* **postgres:** Better error message on unknown types, add missing float types ([#8475](https://github.com/cloudquery/cloudquery/issues/8475)) ([7bada3b](https://github.com/cloudquery/cloudquery/commit/7bada3ba55b3784383eb4c19e3d37c9965a9d66e))
+
+## [2.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.1.2...plugins-destination-postgresql-v2.1.3) (2023-02-23)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.0 ([#8344](https://github.com/cloudquery/cloudquery/issues/8344)) ([9c57544](https://github.com/cloudquery/cloudquery/commit/9c57544d06f9a774adcc659bcabd2518a905bdaa))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.1 ([#8371](https://github.com/cloudquery/cloudquery/issues/8371)) ([e3274c1](https://github.com/cloudquery/cloudquery/commit/e3274c109739bc107387627d340a713470c3a3c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.40.0 ([#8401](https://github.com/cloudquery/cloudquery/issues/8401)) ([4cf36d6](https://github.com/cloudquery/cloudquery/commit/4cf36d68684f37c0407332930766c1ba60807a93))
+* **migrate:** Handle timestamps not set by CloudQuery ([#8416](https://github.com/cloudquery/cloudquery/issues/8416)) ([7831a28](https://github.com/cloudquery/cloudquery/commit/7831a280a188f4b0e44b2ba35f2b7075d525c6be))
+* **migrate:** Use unique column option instead of hard coding cq_id ([#8370](https://github.com/cloudquery/cloudquery/issues/8370)) ([e692a06](https://github.com/cloudquery/cloudquery/commit/e692a063fa5d8d81230d904bb303cffb3fbe496f))
+
+## [2.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.1.1...plugins-destination-postgresql-v2.1.2) (2023-02-21)
+
+
+### Bug Fixes
+
+* **migrate:** Make `_cq_id` unique ([#8326](https://github.com/cloudquery/cloudquery/issues/8326)) ([d2cf7ee](https://github.com/cloudquery/cloudquery/commit/d2cf7ee9c5dbdac52b465070b6f051d18f944b5c))
+
+## [2.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.1.0...plugins-destination-postgresql-v2.1.1) (2023-02-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.38.2 ([#8156](https://github.com/cloudquery/cloudquery/issues/8156)) ([ac2d2d7](https://github.com/cloudquery/cloudquery/commit/ac2d2d70d5c4bc45fb8734bd4deb8a1e36074f6d))
+* **deps:** Update module golang.org/x/net to v0.7.0 [SECURITY] ([#8176](https://github.com/cloudquery/cloudquery/issues/8176)) ([fc4cef8](https://github.com/cloudquery/cloudquery/commit/fc4cef86dce4ca76ca8397e897ab744e48975834))
+
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.10...plugins-destination-postgresql-v2.1.0) (2023-02-16)
+
+
+### Features
+
+* **pg:** Faster migrations ([#7819](https://github.com/cloudquery/cloudquery/issues/7819)) ([8f51733](https://github.com/cloudquery/cloudquery/commit/8f517337a48c25aa7471b7d1e9381a3188dc3c3b))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.36.0 ([#7809](https://github.com/cloudquery/cloudquery/issues/7809)) ([c85a9cb](https://github.com/cloudquery/cloudquery/commit/c85a9cb697477520e94a1fd260c56b89da62fc87))
+* Postgresql timestamps ([#7840](https://github.com/cloudquery/cloudquery/issues/7840)) ([e2c8b61](https://github.com/cloudquery/cloudquery/commit/e2c8b613696447602d052d0686b643a38694573c))
+
 ## [2.0.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v2.0.9...plugins-destination-postgresql-v2.0.10) (2023-02-08)
 
 

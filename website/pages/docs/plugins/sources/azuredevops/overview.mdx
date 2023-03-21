@@ -5,32 +5,24 @@ name: Azure DevOps
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", `azuredevops`)}/>
 
-The CloudQuery Azure DevOps plugin reads information from your Azure DevOps account and loads it into any supported CloudQuery destination (e.g. PostgreSQL, Snowflake, BigQuery).
+The CloudQuery Azure DevOps plugin reads information from your Azure DevOps account and loads it into any supported CloudQuery destination (e.g. PostgreSQL, Snowflake, BigQuery, and [more](/docs/plugins/destinations/overview)).
 
 ## Configuration
 
-This example syncs from Azure DevOps to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
+This example syncs from Azure DevOps to a destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml copy
-kind: source
-# Common source-plugin configuration
-spec:
-  name: azuredevops
-  path: cloudquery/azuredevops
-  version: "VERSION_SOURCE_AZUREDEVOPS"
-  tables: ["*"]
-  destinations: ["postgresql"]
-
-  # Azure DevOps specific configuration
-  spec:
-    personal_access_token: "${AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN}"
-    organization_url: "${AZURE_DEVOPS_ORGANIZATION_URL}"
-```
+<Configuration />
 
 For more information on downloading, installing and running the CloudQuery CLI, see the [Quickstart guide](/docs/quickstart).
+
+## Authentication
+
+<Authentication />
 
 ## Azure DevOps Spec
 

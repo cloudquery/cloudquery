@@ -8,11 +8,12 @@ import (
 )
 
 func ClusterTasks() *schema.Table {
+	tableName := "aws_ecs_cluster_tasks"
 	return &schema.Table{
-		Name:        "aws_ecs_cluster_tasks",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Task.html`,
 		Resolver:    fetchEcsClusterTasks,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ecs"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ecs"),
 		Transform:   transformers.TransformWithStruct(&types.Task{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

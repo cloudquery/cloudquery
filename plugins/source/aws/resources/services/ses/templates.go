@@ -8,13 +8,14 @@ import (
 )
 
 func Templates() *schema.Table {
+	tableName := "aws_ses_templates"
 	return &schema.Table{
-		Name:                "aws_ses_templates",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailTemplate.html`,
 		Resolver:            fetchSesTemplates,
 		PreResourceResolver: getTemplate,
 		Transform:           transformers.TransformWithStruct(&models.Template{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("email"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "email"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/discovery"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/networking"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/nodes"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/policy"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/rbac"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/storage"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
@@ -62,6 +63,7 @@ func Plugin() *source.Plugin {
 			rbac.ClusterRoleBindings(),
 			rbac.Roles(),
 			rbac.RoleBindings(),
+			policy.PodDisruptionBudgets(),
 			storage.CsiDrivers(),
 			storage.CsiNodes(),
 			storage.CsiStorageCapacities(),

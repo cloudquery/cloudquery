@@ -8,11 +8,12 @@ import (
 )
 
 func Repositories() *schema.Table {
+	tableName := "aws_ecrpublic_repositories"
 	return &schema.Table{
-		Name:        "aws_ecrpublic_repositories",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonECRPublic/latest/APIReference/API_Repository.html`,
 		Resolver:    fetchEcrpublicRepositories,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("api.ecr-public"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "api.ecr-public"),
 		Transform:   transformers.TransformWithStruct(&types.Repository{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

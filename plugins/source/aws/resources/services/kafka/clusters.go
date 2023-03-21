@@ -8,13 +8,14 @@ import (
 )
 
 func Clusters() *schema.Table {
+	tableName := "aws_kafka_clusters"
 	return &schema.Table{
-		Name:                "aws_kafka_clusters",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/MSK/2.0/APIReference/v2-clusters-clusterarn.html#v2-clusters-clusterarn-properties`,
 		Resolver:            fetchKafkaClusters,
 		PreResourceResolver: getCluster,
 		Transform:           transformers.TransformWithStruct(&types.Cluster{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("kafka"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "kafka"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

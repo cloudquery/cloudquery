@@ -5,14 +5,16 @@ import (
 
 	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/specs"
 )
 
 const bucket = "cq-playground-test"
+const region = "us-east-1"
 
 func TestPluginCSV(t *testing.T) {
-	p := destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
 	spec := Spec{
 		Bucket:   bucket,
+		Region:   region,
 		Path:     t.TempDir()[1:],
 		NoRotate: true,
 		FileSpec: &filetypes.FileSpec{
@@ -20,22 +22,29 @@ func TestPluginCSV(t *testing.T) {
 		},
 	}
 	spec.SetDefaults()
-	destination.PluginTestSuiteRunner(t, p,
-		spec,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
+		},
+		specs.Destination{
+			Spec: &spec,
+		},
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:        true,
-			SkipDeleteStale:      true,
-			SkipSecondAppend:     true,
-			SkipMigrateAppend:    true,
-			SkipMigrateOverwrite: true,
+			SkipOverwrite:             true,
+			SkipDeleteStale:           true,
+			SkipSecondAppend:          true,
+			SkipMigrateAppend:         true,
+			SkipMigrateOverwrite:      true,
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		},
 	)
 }
 
 func TestPluginJSON(t *testing.T) {
-	p := destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
 	spec := Spec{
 		Bucket:   bucket,
+		Region:   region,
 		Path:     t.TempDir()[1:],
 		NoRotate: true,
 		FileSpec: &filetypes.FileSpec{
@@ -43,14 +52,21 @@ func TestPluginJSON(t *testing.T) {
 		},
 	}
 	spec.SetDefaults()
-	destination.PluginTestSuiteRunner(t, p,
-		spec,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
+		},
+		specs.Destination{
+			Spec: &spec,
+		},
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:        true,
-			SkipDeleteStale:      true,
-			SkipSecondAppend:     true,
-			SkipMigrateAppend:    true,
-			SkipMigrateOverwrite: true,
+			SkipOverwrite:             true,
+			SkipDeleteStale:           true,
+			SkipSecondAppend:          true,
+			SkipMigrateAppend:         true,
+			SkipMigrateOverwrite:      true,
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		},
 	)
 }

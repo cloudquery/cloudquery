@@ -8,12 +8,13 @@ import (
 )
 
 func DatabaseParameters() *schema.Table {
+	tableName := "aws_lightsail_database_parameters"
 	return &schema.Table{
-		Name:        "aws_lightsail_database_parameters",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabaseParameter.html`,
 		Resolver:    fetchLightsailDatabaseParameters,
 		Transform:   transformers.TransformWithStruct(&types.RelationalDatabaseParameter{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lightsail"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

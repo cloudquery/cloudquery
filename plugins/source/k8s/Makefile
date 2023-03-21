@@ -16,12 +16,17 @@ install-tools:
 
 .PHONY: gen-docs
 gen-docs:
-	rm -rf ./docs/tables/*
-	go run main.go doc ./docs/tables
-	sed 's_(\(.*\))_(https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/tables/\1)_' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/k8s/tables.md
 	go run main.go doc --format json docs
 	go run scripts/policy_docs/main.go k8s policies ../../../website/pages/docs/plugins/sources/k8s/policies.md docs/__tables.json
 	rm docs/__tables.json
+	
+	rm -rf ../../../website/tables/k8s
+	go run main.go doc ../../../website/tables/k8s
+	sed 's_(\(.*\))_(../../../../../website/tables/k8s/\1)_' ../../../website/tables/k8s/README.md > ./docs/tables/README.md
+	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/k8s/README.md
+	mv ../../../website/tables/k8s/README.md ../../../website/pages/docs/plugins/sources/k8s/tables.md
+	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/k8s/*.md
+	rm -rf ../../../website/tables/k8s/*.bak
 
 .PHONY: lint
 lint:

@@ -8,12 +8,13 @@ import (
 )
 
 func TrafficPolicies() *schema.Table {
+	tableName := "aws_route53_traffic_policies"
 	return &schema.Table{
-		Name:        "aws_route53_traffic_policies",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicySummary.html`,
 		Resolver:    fetchRoute53TrafficPolicies,
 		Transform:   transformers.TransformWithStruct(&types.TrafficPolicySummary{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

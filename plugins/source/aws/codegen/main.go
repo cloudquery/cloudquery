@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 	"path"
 	"reflect"
 	"runtime"
+
+	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/account"
@@ -20,6 +21,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
+	"github.com/aws/aws-sdk-go-v2/service/batch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
@@ -30,6 +32,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
+	"github.com/aws/aws-sdk-go-v2/service/computeoptimizer"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
@@ -96,6 +99,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
+	"github.com/aws/aws-sdk-go-v2/service/support"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
@@ -115,6 +119,7 @@ var clients = []any{
 	&amplify.Client{},
 	&apigateway.Client{},
 	&apigatewayv2.Client{},
+	&computeoptimizer.Client{},
 	&applicationautoscaling.Client{},
 	&apprunner.Client{},
 	&appstream.Client{},
@@ -122,6 +127,7 @@ var clients = []any{
 	&athena.Client{},
 	&autoscaling.Client{},
 	&backup.Client{},
+	&batch.Client{},
 	&cloudformation.Client{},
 	&cloudfront.Client{},
 	&cloudhsmv2.Client{},
@@ -199,6 +205,7 @@ var clients = []any{
 	&sqs.Client{},
 	&ssm.Client{},
 	&ssoadmin.Client{},
+	&support.Client{},
 	&timestreamwrite.Client{},
 	&transfer.Client{},
 	&waf.Client{},
@@ -230,6 +237,8 @@ func include(m reflect.Method) bool {
 	var exceptions = []string{
 		"QuerySchemaVersionMetadata",
 		"GenerateCredentialReport",
+		"LookupEvents",
+		"GenerateServiceLastAccessedDetails",
 	}
 	if funk.ContainsString(exceptions, m.Name) {
 		return true

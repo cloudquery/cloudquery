@@ -5,13 +5,12 @@ import (
 
 	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/specs"
 )
 
 const bucket = "cq-dest-gcs"
 
 func TestPluginCSV(t *testing.T) {
-	p := destination.NewPlugin("gcs", "development", New, destination.WithManagedWriter())
-
 	spec := Spec{
 		Bucket:   bucket,
 		Path:     t.TempDir(),
@@ -21,20 +20,26 @@ func TestPluginCSV(t *testing.T) {
 		},
 	}
 	spec.SetDefaults()
-	destination.PluginTestSuiteRunner(t, p,
-		spec,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("gcs", "development", New, destination.WithManagedWriter())
+		},
+		specs.Destination{
+			Spec: &spec,
+		},
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:        true,
-			SkipDeleteStale:      true,
-			SkipSecondAppend:     true,
-			SkipMigrateAppend:    true,
-			SkipMigrateOverwrite: true,
+			SkipOverwrite:             true,
+			SkipDeleteStale:           true,
+			SkipSecondAppend:          true,
+			SkipMigrateAppend:         true,
+			SkipMigrateOverwrite:      true,
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		},
 	)
 }
 
 func TestPluginJSON(t *testing.T) {
-	p := destination.NewPlugin("gcs", "development", New, destination.WithManagedWriter())
 	spec := Spec{
 		Bucket:   bucket,
 		Path:     t.TempDir(),
@@ -44,14 +49,21 @@ func TestPluginJSON(t *testing.T) {
 		},
 	}
 	spec.SetDefaults()
-	destination.PluginTestSuiteRunner(t, p,
-		spec,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("gcs", "development", New, destination.WithManagedWriter())
+		},
+		specs.Destination{
+			Spec: &spec,
+		},
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:        true,
-			SkipDeleteStale:      true,
-			SkipSecondAppend:     true,
-			SkipMigrateAppend:    true,
-			SkipMigrateOverwrite: true,
+			SkipOverwrite:             true,
+			SkipDeleteStale:           true,
+			SkipSecondAppend:          true,
+			SkipMigrateAppend:         true,
+			SkipMigrateOverwrite:      true,
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		},
 	)
 }

@@ -5,40 +5,22 @@ name: Mixpanel
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", `mixpanel`)}/>
 
-The CloudQuery Mixpanel plugin pulls data from Mixpanel and loads it into any supported CloudQuery destination (e.g. PostgreSQL).
+The CloudQuery Mixpanel plugin pulls data from Mixpanel and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Authentication
 
-In order to fetch information from Mixpanel, `cloudquery` needs to be authenticated using a [Service Account](https://developer.mixpanel.com/reference/service-accounts) from your Mixpanel account. You can view and manage your Service Accounts in Mixpanel `Organization Settings > Service Accounts`.
-
-## Incremental Syncing
-
-The Mixpanel plugin supports incremental syncing for event data. This means that only new events will be fetched from Mixpanel and loaded into your destination. This is done by keeping track of the last event fetched and only fetching events that has been created since then.
-To enable this, `backend` option must be set in the spec (as shown below). This is documented in the [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) section.
+<Authentication/>
 
 ### Example
 
 This example syncs from Mixpanel to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml copy
-kind: source
-# Common source-plugin configuration
-spec:
-  name: mixpanel
-  path: cloudquery/mixpanel
-  version: "VERSION_SOURCE_MIXPANEL"
-  tables: ["*"]
-  destinations: ["postgresql"]
-  backend: local
-  # Mixpanel specific configuration
-  spec:
-    username: "<YOUR_SERVICE_ACCOUNT_USER_HERE>"
-    secret: "<YOUR_SERVICE_ACCOUNT_SECRET_HERE>"
-    project_id: 12345 # Your project ID 
-```
+<Configuration/>
 
 ## Configuration Reference
 

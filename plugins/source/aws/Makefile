@@ -23,12 +23,17 @@ gen-mocks:
 
 .PHONY: gen-docs
 gen-docs:
-	rm -rf ./docs/tables/*
-	go run main.go doc ./docs/tables
-	sed 's_(\(.*\))_(https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/\1)_' docs/tables/README.md > ../../../website/pages/docs/plugins/sources/aws/tables.md
 	go run main.go doc --format json docs
 	go run scripts/policy_docs/main.go aws policies ../../../website/pages/docs/plugins/sources/aws/policies.md docs/__tables.json
 	rm docs/__tables.json
+
+	rm -rf ../../../website/tables/aws
+	go run main.go doc ../../../website/tables/aws
+	sed 's_(\(.*\))_(../../../../../website/tables/aws/\1)_' ../../../website/tables/aws/README.md > ./docs/tables/README.md
+	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/aws/README.md
+	mv ../../../website/tables/aws/README.md ../../../website/pages/docs/plugins/sources/aws/tables.md
+	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/aws/*.md
+	rm -rf ../../../website/tables/aws/*.bak
 
 # All gen targets
 .PHONY: gen

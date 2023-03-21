@@ -8,6 +8,7 @@ import (
 	// Import all autorest modules
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
@@ -15,15 +16,22 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
+	"github.com/thoas/go-funk"
+	"golang.org/x/exp/maps"
 )
 
 type Client struct {
 	subscriptions []string
-	// This is to cache full objects returned from ListSubscriptions on initialisation
+
+	// SubscriptionsObjects is to cache full objects returned from ListSubscriptions on initialisation
 	SubscriptionsObjects []*armsubscription.Subscription
+
+	// ResourceGroups is to cache full objects returned from ListResourceGroups on initialisation,
+	// as a map from subscription ID to list of resource groups.
+	ResourceGroups map[string][]*armresources.ResourceGroup
+
 	logger               zerolog.Logger
 	registeredNamespaces map[string]map[string]bool
-	resourceGroups       map[string][]string
 	// this is set by table client multiplexer
 	SubscriptionId string
 	// this is set by table client multiplexer (SubscriptionResourceGroupMultiplexRegisteredNamespace)
@@ -34,7 +42,7 @@ type Client struct {
 
 func (c *Client) discoverSubscriptions(ctx context.Context) error {
 	c.subscriptions = make([]string, 0)
-	subscriptionClient, err := armsubscription.NewSubscriptionsClient(c.Creds, nil)
+	subscriptionClient, err := armsubscription.NewSubscriptionsClient(c.Creds, c.Options)
 	if err != nil {
 		return err
 	}
@@ -56,21 +64,13 @@ func (c *Client) discoverSubscriptions(ctx context.Context) error {
 	return nil
 }
 
-func getResourceGroupNames(resourceGroups []*armresources.ResourceGroup) []string {
-	names := make([]string, len(resourceGroups))
-	for i, rg := range resourceGroups {
-		names[i] = *rg.Name
-	}
-	return names
-}
-
-func (c *Client) disocverResourceGroups(ctx context.Context) error {
-	c.resourceGroups = make(map[string][]string, len(c.subscriptions))
+func (c *Client) discoverResourceGroups(ctx context.Context) error {
+	c.ResourceGroups = make(map[string][]*armresources.ResourceGroup, len(c.subscriptions))
 	c.registeredNamespaces = make(map[string]map[string]bool, len(c.subscriptions))
 
 	for _, subID := range c.subscriptions {
 		c.registeredNamespaces[subID] = make(map[string]bool)
-		cl, err := armresources.NewResourceGroupsClient(subID, c.Creds, nil)
+		cl, err := armresources.NewResourceGroupsClient(subID, c.Creds, c.Options)
 		if err != nil {
 			return fmt.Errorf("failed to create resource group client: %w", err)
 		}
@@ -83,10 +83,10 @@ func (c *Client) disocverResourceGroups(ctx context.Context) error {
 			if len(page.Value) == 0 {
 				continue
 			}
-			c.resourceGroups[subID] = append(c.resourceGroups[subID], getResourceGroupNames(page.Value)...)
+			c.ResourceGroups[subID] = append(c.ResourceGroups[subID], page.Value...)
 		}
 
-		providerClient, err := armresources.NewProvidersClient(subID, c.Creds, nil)
+		providerClient, err := armresources.NewProvidersClient(subID, c.Creds, c.Options)
 		if err != nil {
 			return fmt.Errorf("failed to create provider client: %w", err)
 		}
@@ -109,6 +109,20 @@ func (c *Client) disocverResourceGroups(ctx context.Context) error {
 	return nil
 }
 
+func getCloudConfigFromSpec(specCloud string) (cloud.Configuration, error) {
+	var specCloudToConfig = map[string]cloud.Configuration{
+		"AzurePublic":     cloud.AzurePublic,
+		"AzureGovernment": cloud.AzureGovernment,
+		"AzureChina":      cloud.AzureChina,
+	}
+
+	if v, ok := specCloudToConfig[specCloud]; ok {
+		return v, nil
+	}
+
+	return cloud.Configuration{}, fmt.Errorf("unknown Azure cloud name %q. Supported values are %q", specCloud, maps.Keys(specCloudToConfig))
+}
+
 func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var spec Spec
 	var err error
@@ -116,12 +130,26 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
 	}
 
+	uniqueSubscriptions := funk.Uniq(spec.Subscriptions).([]string)
 	c := &Client{
 		logger:        logger,
-		subscriptions: spec.Subscriptions,
+		subscriptions: uniqueSubscriptions,
 	}
 
-	c.Creds, err = azidentity.NewDefaultAzureCredential(nil)
+	if spec.CloudName != "" {
+		cloudConfig, err := getCloudConfigFromSpec(spec.CloudName)
+		if err != nil {
+			return nil, err
+		}
+		c.Options = &arm.ClientOptions{ClientOptions: azcore.ClientOptions{Cloud: cloudConfig}}
+	}
+
+	var credsOptions *azidentity.DefaultAzureCredentialOptions
+	if c.Options != nil {
+		credsOptions = &azidentity.DefaultAzureCredentialOptions{ClientOptions: c.Options.ClientOptions}
+	}
+
+	c.Creds, err = azidentity.NewDefaultAzureCredential(credsOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -138,7 +166,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		return nil, fmt.Errorf("no subscriptions found")
 	}
 
-	if err := c.disocverResourceGroups(ctx); err != nil {
+	if err := c.discoverResourceGroups(ctx); err != nil {
 		return nil, err
 	}
 

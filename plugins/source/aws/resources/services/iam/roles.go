@@ -8,13 +8,14 @@ import (
 )
 
 func Roles() *schema.Table {
+	tableName := "aws_iam_roles"
 	return &schema.Table{
-		Name:                "aws_iam_roles",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_Role.html`,
 		Resolver:            fetchIamRoles,
 		PreResourceResolver: getRole,
 		Transform:           transformers.TransformWithStruct(&types.Role{}),
-		Multiplex:           client.AccountMultiplex,
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
@@ -44,6 +45,7 @@ func Roles() *schema.Table {
 
 		Relations: []*schema.Table{
 			RolePolicies(),
+			roleLastAccessedDetails(),
 		},
 	}
 }

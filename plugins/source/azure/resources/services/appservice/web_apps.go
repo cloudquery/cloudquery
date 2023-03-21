@@ -19,6 +19,7 @@ func WebApps() *schema.Table {
 		Columns:     schema.ColumnList{client.SubscriptionID},
 		Relations: []*schema.Table{
 			webAppAuthSettings(),
+			webAppConfigurations(),
 			webAppVnetConnections(),
 		},
 	}

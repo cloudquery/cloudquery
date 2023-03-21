@@ -8,20 +8,20 @@ import (
 )
 
 func Things() *schema.Table {
+	tableName := "aws_iot_things"
 	return &schema.Table{
-		Name:        "aws_iot_things",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_ThingAttribute.html`,
 		Resolver:    fetchIotThings,
 		Transform:   transformers.TransformWithStruct(&types.ThingAttribute{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:          "principals",
-				Type:          schema.TypeStringArray,
-				Resolver:      ResolveIotThingPrincipals,
-				IgnoreInTests: true,
+				Name:     "principals",
+				Type:     schema.TypeStringArray,
+				Resolver: ResolveIotThingPrincipals,
 			},
 			{
 				Name:     "arn",

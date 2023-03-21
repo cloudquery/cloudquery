@@ -7,36 +7,23 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Ingestions() *schema.Table {
+func ingestions() *schema.Table {
+	tableName := "aws_quicksight_ingestions"
 	return &schema.Table{
-		Name:        "aws_quicksight_ingestions",
+		Name:        tableName,
 		Description: "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Ingestion.html",
 		Resolver:    fetchQuicksightIngestions,
-		Transform:   transformers.TransformWithStruct(&types.Ingestion{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("quicksight"),
+		Transform:   transformers.TransformWithStruct(&types.Ingestion{}, transformers.WithPrimaryKeys("Arn")),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "quicksight"),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
+			tagsCol,
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveTags(),
-			},
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "data_set_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:            "data_set_arn",
+				Type:            schema.TypeString,
+				Resolver:        schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 	}

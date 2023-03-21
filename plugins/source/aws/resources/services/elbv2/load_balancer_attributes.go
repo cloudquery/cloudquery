@@ -8,11 +8,12 @@ import (
 )
 
 func LoadBalancerAttributes() *schema.Table {
+	tableName := "aws_elbv2_load_balancer_attributes"
 	return &schema.Table{
-		Name:        "aws_elbv2_load_balancer_attributes",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_LoadBalancerAttribute.html`,
 		Resolver:    fetchElbv2LoadBalancerAttributes,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.LoadBalancerAttribute{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

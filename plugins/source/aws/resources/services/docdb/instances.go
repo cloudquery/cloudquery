@@ -8,11 +8,12 @@ import (
 )
 
 func Instances() *schema.Table {
+	tableName := "aws_docdb_instances"
 	return &schema.Table{
-		Name:        "aws_docdb_instances",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBInstance.html`,
 		Resolver:    fetchDocdbInstances,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
 		Transform:   transformers.TransformWithStruct(&types.DBInstance{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

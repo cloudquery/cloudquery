@@ -20,6 +20,7 @@ jobs:
           FILES: ${{ steps.changed-files.outputs.all }}
         with:
           script: |
+            const fs = require("fs");
             const files = process.env.FILES.split(' ')
             console.log(files)
             if (files.length >= 300) {
@@ -32,70 +33,23 @@ jobs:
               if (!file.startsWith('.github/workflows/')) {
                 return false
               }
-              const fs = require("fs");
               const contents = fs.readFileSync(file, 'utf8');
               return contents.includes(`name: "${action}"`)
             }
             const matchesFile = (action) => {
               return files.some(file => file.startsWith(`${action}/`) || matchesWorkflow(file, action))
             }
-            let actions = ["cli",
-                           "scaffold",
-                           "plugins/source/alicloud",
-                           "plugins/source/aws",
-                           "plugins/source/azure",
-                           "plugins/source/azuredevops",
-                           "plugins/source/cloudflare",
-                           "plugins/source/crowdstrike",
-                           "plugins/source/digitalocean",
-                           "plugins/source/datadog",
-                           "plugins/source/fastly",
-                           "plugins/source/gandi",
-                           "plugins/source/gcp",
-                           "plugins/source/github",
-                           "plugins/source/gitlab",
-                           "plugins/source/hackernews",
-                           "plugins/source/heroku",
-                           "plugins/source/hubspot",
-                           "plugins/source/k8s",
-                           "plugins/source/launchdarkly",
-                           "plugins/source/okta",
-                           "plugins/source/shopify",
-                           "plugins/source/oracle",
-                           "plugins/source/slack",
-                           "plugins/source/salesforce",
-                           "plugins/source/snyk",
-                           "plugins/source/stripe",
-                           "plugins/source/tailscale",
-                           "plugins/source/pagerduty",
-                           "plugins/source/terraform",
-                           "plugins/source/test",
-                           "plugins/source/vercel",
-                           "plugins/source/plausible",
-                           
-                           "plugins/destination/postgresql",
-                           "plugins/destination/test",
-                           "plugins/destination/csv",
-                           "plugins/destination/sqlite",
-                           "plugins/destination/snowflake",
-                           "plugins/destination/bigquery",
-                           "plugins/destination/mongodb",
-                           "plugins/destination/file",
-                           "plugins/destination/azblob",
-                           "plugins/destination/gcs",
-                           "plugins/destination/s3",
-                           "plugins/destination/firehose",
-                           "plugins/destination/neo4j",
-                           "plugins/destination/kafka",
-                           "plugins/destination/mssql",
-                           "plugins/destination/elasticsearch",
-                           ].filter(action => matchesFile(action))
+            const sources = fs.readdirSync("plugins/source", { withFileTypes: true }).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/source/${dirent.name}`)
+            const destinations = fs.readdirSync("plugins/destination", { withFileTypes: true }).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/destination/${dirent.name}`)
+            const allComponents = ["cli", "scaffold", ...sources, ...destinations]
+            console.log(`All components: ${allComponents.join(", ")}`)
+            let actions = allComponents.filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")
               return
             }
 
-            // Each module should have a 'validate-release' job
+            // Most modules should have a 'validate-release' job
             for (const action of actions) {
               actions = [...actions, 'validate-release']
             }

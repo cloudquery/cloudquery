@@ -1,0 +1,17 @@
+This example configures a Gremlin destination, located at `ws://localhost:8182`. The username and password are stored in environment variables.
+
+```yaml
+kind: destination
+spec:
+  name: "gremlin"
+  registry: "github"
+  path: "cloudquery/gremlin"
+  version: "VERSION_DESTINATION_GREMLIN"
+  # batch_size: 10000 # optional
+  # batch_size_bytes: 5242880 # optional
+  spec:
+    endpoint: "ws://localhost:8182"
+    auth_mode: "basic"
+    username: "${GREMLIN_USERNAME}"
+    password: "${GREMLIN_PASSWORD}"
+```

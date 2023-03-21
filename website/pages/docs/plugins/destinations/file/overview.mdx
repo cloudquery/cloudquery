@@ -5,6 +5,7 @@ name: File
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "file")}/>
 
@@ -14,22 +15,7 @@ This is useful in local environments, but also in production environments where 
 
 ## Example
 
-This example configures a CSV destination, to create CSV files in  `./cq_csv_output`. Note that the CSV plugin only supports `append` write-mode.
-
-The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
-
-```yaml copy
-kind: destination
-spec:
-  name: "file"
-  path: "cloudquery/file"
-  version: "VERSION_DESTINATION_FILE"
-  write_mode: "append" # file only supports 'append' mode
-
-  spec:
-    directory: "./cq_csv_output"
-    format: "csv"
-```
+<Configuration />
 
 ## File Spec
 
@@ -47,3 +33,16 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   If set to true, the plugin will write to one file per table.
   Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
+
+- `format_spec` (map [format_spec](#format_spec)) (optional)
+Optional parameters to change the format of the file
+
+### format_spec
+
+- `delimiter` (string) (optional) (default: `,`)
+
+Character that will be used as want to use as the delimiter if the format type is `csv`
+
+- `skip_header` (bool) (optional) (default: false)
+
+Specifies if the first line of a file should be the headers (when format is `csv`).

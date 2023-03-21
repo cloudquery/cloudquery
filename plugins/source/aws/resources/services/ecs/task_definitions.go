@@ -8,12 +8,13 @@ import (
 )
 
 func TaskDefinitions() *schema.Table {
+	tableName := "aws_ecs_task_definitions"
 	return &schema.Table{
-		Name:                "aws_ecs_task_definitions",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_TaskDefinition.html`,
 		Resolver:            fetchEcsTaskDefinitions,
 		PreResourceResolver: getTaskDefinition,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("ecs"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "ecs"),
 		Transform:           transformers.TransformWithStruct(&types.TaskDefinition{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

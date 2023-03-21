@@ -7,6 +7,7 @@ import (
 
 	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/specs"
 )
 
 const (
@@ -22,21 +23,27 @@ func getenv(key, fallback string) string {
 }
 
 func TestPgPlugin(t *testing.T) {
-	p := destination.NewPlugin("kafka", "development", New)
-	destination.PluginTestSuiteRunner(t, p,
-		Spec{
-			Brokers:            strings.Split(getenv("CQ_DEST_KAFKA_CONNECTION_STRING", defaultConnectionString), ","),
-			SaslUsername:       getenv("CQ_DEST_KAFKA_SASL_USERNAME", ""),
-			SaslPassword:       getenv("CQ_DEST_KAFKA_SASL_PASSWORD", ""),
-			Verbose:            true,
-			MaxMetadataRetries: 15,
-			FileSpec: &filetypes.FileSpec{
-				Format: filetypes.FormatTypeJSON,
+	destination.PluginTestSuiteRunner(t,
+		func() *destination.Plugin {
+			return destination.NewPlugin("kafka", "development", New)
+		},
+		specs.Destination{
+			Spec: &Spec{
+				Brokers:            strings.Split(getenv("CQ_DEST_KAFKA_CONNECTION_STRING", defaultConnectionString), ","),
+				SaslUsername:       getenv("CQ_DEST_KAFKA_SASL_USERNAME", ""),
+				SaslPassword:       getenv("CQ_DEST_KAFKA_SASL_PASSWORD", ""),
+				Verbose:            true,
+				MaxMetadataRetries: 15,
+				FileSpec: &filetypes.FileSpec{
+					Format: filetypes.FormatTypeJSON,
+				},
 			},
 		},
 		destination.PluginTestSuiteTests{
-			SkipOverwrite:        true,
-			SkipMigrateAppend:    true,
-			SkipMigrateOverwrite: true,
+			SkipOverwrite:             true,
+			SkipMigrateAppend:         true,
+			SkipMigrateOverwrite:      true,
+			SkipMigrateOverwriteForce: true,
+			SkipMigrateAppendForce:    true,
 		})
 }

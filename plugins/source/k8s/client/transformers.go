@@ -7,26 +7,29 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func SharedTransformersWithMoreSkipFields(skips []string) []transformers.StructTransformerOption {
-	return []transformers.StructTransformerOption{
+var (
+	options = []transformers.StructTransformerOption{
 		transformers.WithUnwrapAllEmbeddedStructs(),
-		transformers.WithSkipFields(
-			append([]string{
-				"GenerateName",
-				"SelfLink",
-				"CreationTimestamp",
-				"DeletionTimestamp",
-				"ZZZ_DeprecatedClusterName",
-				"ManagedFields",
-			}, skips...)...,
-		),
+		transformers.WithSkipFields(skipFields...),
 		transformers.WithUnwrapStructFields("Spec", "Status"),
 		transformers.WithTypeTransformer(typeTransformer),
 	}
+	skipFields = []string{
+		"GenerateName",
+		"SelfLink",
+		"CreationTimestamp",
+		"DeletionTimestamp",
+		"ZZZ_DeprecatedClusterName",
+		"ManagedFields",
+	}
+)
+
+func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) schema.Transform {
+	return transformers.TransformWithStruct(t, append(options, opts...)...)
 }
 
-func SharedTransformers() []transformers.StructTransformerOption {
-	return SharedTransformersWithMoreSkipFields(nil)
+func WithMoreSkipFields(extra ...string) transformers.StructTransformerOption {
+	return transformers.WithSkipFields(append(skipFields, extra...)...)
 }
 
 func typeTransformer(field reflect.StructField) (schema.ValueType, error) {

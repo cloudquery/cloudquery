@@ -8,12 +8,13 @@ import (
 )
 
 func ClusterParameters() *schema.Table {
+	tableName := "aws_redshift_cluster_parameters"
 	return &schema.Table{
-		Name:        "aws_redshift_cluster_parameters",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_Parameter.html`,
 		Resolver:    fetchRedshiftClusterParameters,
 		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

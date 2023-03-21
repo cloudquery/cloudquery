@@ -3,7 +3,6 @@ package network
 import (
 	"encoding/json"
 	"net/http"
-
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
@@ -34,7 +33,10 @@ func createExpressRouteCircuits(router *mux.Router) error {
 		}
 	})
 
-	return nil
+	if err := createExpressRouteCircuitAuthorizations(router); err != nil {
+		return err
+	}
+	return createExpressRouteCircuitPeerings(router)
 }
 
 func TestExpressRouteCircuits(t *testing.T) {

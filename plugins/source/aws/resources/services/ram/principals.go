@@ -8,23 +8,19 @@ import (
 )
 
 func Principals() *schema.Table {
+	tableName := "aws_ram_principals"
 	return &schema.Table{
-		Name:        "aws_ram_principals",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/ram/latest/APIReference/API_Principal.html`,
 		Resolver:    fetchRamPrincipals,
-		Transform:   transformers.TransformWithStruct(&types.Principal{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ram"),
+		Transform: transformers.TransformWithStruct(
+			&types.Principal{},
+			transformers.WithPrimaryKeys("Id", "ResourceShareArn"),
+		),
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "ram"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(false),
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.DefaultRegionColumn(true),
 		},
 	}
 }

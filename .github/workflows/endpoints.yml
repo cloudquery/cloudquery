@@ -1,7 +1,9 @@
 name: Sync AWS Source Plugin Endpoints
 on:
   schedule:
-    - cron: "30 * * * *"
+    # At 05:00 on Tuesday
+    - cron: "0 5 * * 2"
+  workflow_dispatch:
 
 defaults:
   run:

@@ -16,6 +16,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
+	"github.com/aws/aws-sdk-go-v2/service/batch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
@@ -26,6 +27,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
+	"github.com/aws/aws-sdk-go-v2/service/computeoptimizer"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
@@ -93,6 +95,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
+	"github.com/aws/aws-sdk-go-v2/service/support"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
@@ -121,6 +124,7 @@ func initServices(region string, c aws.Config) Services {
 		Appsync:                   appsync.NewFromConfig(awsCfg),
 		Athena:                    athena.NewFromConfig(awsCfg),
 		Autoscaling:               autoscaling.NewFromConfig(awsCfg),
+		Batch:                     batch.NewFromConfig(awsCfg),
 		Backup:                    backup.NewFromConfig(awsCfg),
 		Cloudformation:            cloudformation.NewFromConfig(awsCfg),
 		Cloudfront:                cloudfront.NewFromConfig(awsCfg),
@@ -132,6 +136,7 @@ func initServices(region string, c aws.Config) Services {
 		Codepipeline:              codepipeline.NewFromConfig(awsCfg),
 		Cognitoidentity:           cognitoidentity.NewFromConfig(awsCfg),
 		Cognitoidentityprovider:   cognitoidentityprovider.NewFromConfig(awsCfg),
+		Computeoptimizer:          computeoptimizer.NewFromConfig(awsCfg),
 		Configservice:             configservice.NewFromConfig(awsCfg),
 		Databasemigrationservice:  databasemigrationservice.NewFromConfig(awsCfg),
 		Dax:                       dax.NewFromConfig(awsCfg),
@@ -198,6 +203,7 @@ func initServices(region string, c aws.Config) Services {
 		Sns:                       sns.NewFromConfig(awsCfg),
 		Sqs:                       sqs.NewFromConfig(awsCfg),
 		Ssm:                       ssm.NewFromConfig(awsCfg),
+		Support:                   support.NewFromConfig(awsCfg),
 		Ssoadmin:                  ssoadmin.NewFromConfig(awsCfg),
 		Timestreamwrite:           timestreamwrite.NewFromConfig(awsCfg),
 		Transfer:                  transfer.NewFromConfig(awsCfg),
@@ -225,6 +231,7 @@ type Services struct {
 	Athena                    services.AthenaClient
 	Autoscaling               services.AutoscalingClient
 	Backup                    services.BackupClient
+	Batch                     services.BatchClient
 	Cloudformation            services.CloudformationClient
 	Cloudfront                services.CloudfrontClient
 	Cloudhsmv2                services.Cloudhsmv2Client
@@ -235,6 +242,7 @@ type Services struct {
 	Codepipeline              services.CodepipelineClient
 	Cognitoidentity           services.CognitoidentityClient
 	Cognitoidentityprovider   services.CognitoidentityproviderClient
+	Computeoptimizer          services.ComputeoptimizerClient
 	Configservice             services.ConfigserviceClient
 	Databasemigrationservice  services.DatabasemigrationserviceClient
 	Dax                       services.DaxClient
@@ -302,6 +310,7 @@ type Services struct {
 	Sqs                       services.SqsClient
 	Ssm                       services.SsmClient
 	Ssoadmin                  services.SsoadminClient
+	Support                   services.SupportClient
 	Timestreamwrite           services.TimestreamwriteClient
 	Transfer                  services.TransferClient
 	Waf                       services.WafClient

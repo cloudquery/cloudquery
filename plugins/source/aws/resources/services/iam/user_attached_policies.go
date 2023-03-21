@@ -8,12 +8,13 @@ import (
 )
 
 func UserAttachedPolicies() *schema.Table {
+	tableName := "aws_iam_user_attached_policies"
 	return &schema.Table{
-		Name:        "aws_iam_user_attached_policies",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachedPolicy.html`,
 		Resolver:    fetchIamUserAttachedPolicies,
 		Transform:   transformers.TransformWithStruct(&types.AttachedPolicy{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{

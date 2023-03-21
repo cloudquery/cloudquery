@@ -8,28 +8,16 @@ import (
 )
 
 func DataSources() *schema.Table {
+	tableName := "aws_quicksight_data_sources"
 	return &schema.Table{
-		Name:        "aws_quicksight_data_sources",
+		Name:        tableName,
 		Description: "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_DataSource.html",
 		Resolver:    fetchQuicksightDataSources,
-		Transform:   transformers.TransformWithStruct(&types.DataSource{}, transformers.WithSkipFields("AlternateDataSourceParameters")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("quicksight"),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveTags(),
-			},
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform: transformers.TransformWithStruct(&types.DataSource{},
+			transformers.WithPrimaryKeys("Arn"),
+			transformers.WithSkipFields("AlternateDataSourceParameters"),
+		),
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "quicksight"),
+		Columns:   []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true), tagsCol},
 	}
 }

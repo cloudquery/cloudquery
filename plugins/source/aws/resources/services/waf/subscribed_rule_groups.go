@@ -8,12 +8,13 @@ import (
 )
 
 func SubscribedRuleGroups() *schema.Table {
+	tableName := "aws_waf_subscribed_rule_groups"
 	return &schema.Table{
-		Name:        "aws_waf_subscribed_rule_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_SubscribedRuleGroupSummary.html`,
 		Resolver:    fetchWafSubscribedRuleGroups,
 		Transform:   transformers.TransformWithStruct(&types.SubscribedRuleGroupSummary{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "waf"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

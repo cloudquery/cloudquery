@@ -1,0 +1,20 @@
+This example configures a GCS destination, to create CSV files in `gcs://bucket_name/path/to/files`.
+
+```yaml copy
+kind: destination
+spec:
+  name: "gcs"
+  path: "cloudquery/gcs"
+  version: "VERSION_DESTINATION_GCS"
+  write_mode: "append" # gcs only supports 'append' mode
+  # batch_size: 10000 # optional
+  # batch_size_bytes: 5242880 # optional
+  spec:
+    bucket: "bucket_name"
+    path: "path/to/files"
+    format: "csv"
+    format_spec:
+      delimiter: ","
+```
+
+Note that the GCS plugin only supports `append` write-mode. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).

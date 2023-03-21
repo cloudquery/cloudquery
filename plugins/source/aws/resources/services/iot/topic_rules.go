@@ -8,12 +8,13 @@ import (
 )
 
 func TopicRules() *schema.Table {
+	tableName := "aws_iot_topic_rules"
 	return &schema.Table{
-		Name:        "aws_iot_topic_rules",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_GetTopicRule.html`,
 		Resolver:    fetchIotTopicRules,
 		Transform:   transformers.TransformWithStruct(&iot.GetTopicRuleOutput{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

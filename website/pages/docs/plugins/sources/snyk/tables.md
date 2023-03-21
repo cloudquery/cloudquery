@@ -2,7 +2,7 @@
 
 ## Tables
 
-- [snyk_dependencies](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/snyk/docs/tables/snyk_dependencies.md)
-- [snyk_integrations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/snyk/docs/tables/snyk_integrations.md)
-- [snyk_organizations](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/snyk/docs/tables/snyk_organizations.md)
-- [snyk_projects](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/snyk/docs/tables/snyk_projects.md)
+- [snyk_dependencies](tables/snyk_dependencies)
+- [snyk_integrations](tables/snyk_integrations)
+- [snyk_organizations](tables/snyk_organizations)
+- [snyk_projects](tables/snyk_projects)

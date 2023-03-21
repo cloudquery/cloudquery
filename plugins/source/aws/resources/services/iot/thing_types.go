@@ -8,12 +8,13 @@ import (
 )
 
 func ThingTypes() *schema.Table {
+	tableName := "aws_iot_thing_types"
 	return &schema.Table{
-		Name:        "aws_iot_thing_types",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_ThingTypeDefinition.html`,
 		Resolver:    fetchIotThingTypes,
 		Transform:   transformers.TransformWithStruct(&types.ThingTypeDefinition{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

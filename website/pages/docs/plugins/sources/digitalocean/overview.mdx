@@ -6,37 +6,22 @@ stage: GA
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+import Authentication from "./_authentication.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", "digitalocean")}/>
 
-The CloudQuery DigitalOcean plugin pulls configuration from DigitalOcean.
+The CloudQuery DigitalOcean plugin pulls configuration from DigitalOcean and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Authentication
 
-- [Obtain a DigitalOcean API authentication token](https://docs.digitalocean.com/reference/api/api-reference/#section/Authentication)
-- [Obtain a Spaces API access key](https://cloud.digitalocean.com/settings/api/tokens?i=d6d4a6)
-
-Set the following environment variables in your shell (with values from the previous steps):
-
-- `DIGITALOCEAN_TOKEN`
-- `SPACES_ACCESS_KEY_ID` and `SPACES_SECRET_ACCESS_KEY`
+<Authentication/>
 
 ## Configuration
 
-In order to get started with the DigitalOcean plugin, you need to create a YAML file in your CloudQuery configuration directory (e.g. named `digitalocean.yml`).
+The following example config sets up the DigitalOcean plugin, and connects it to a destination:
 
-The following example sets up the DigitalOcean plugin, and connects it to a postgresql destination:
-
-```yaml copy
-kind: source
-spec:
-  # Source spec section
-  name: digitalocean
-  path: cloudquery/digitalocean
-  version: "VERSION_SOURCE_DIGITALOCEAN"
-  tables: ["*"]
-  destinations: ["postgresql"]
-```
+<Configuration/>
 
 ## Query Examples
 

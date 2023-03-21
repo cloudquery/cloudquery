@@ -8,11 +8,12 @@ import (
 )
 
 func Listeners() *schema.Table {
+	tableName := "aws_elbv2_listeners"
 	return &schema.Table{
-		Name:        "aws_elbv2_listeners",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Listener.html`,
 		Resolver:    fetchElbv2Listeners,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.Listener{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

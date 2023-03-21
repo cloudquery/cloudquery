@@ -8,29 +8,14 @@ import (
 )
 
 func Folders() *schema.Table {
+	tableName := "aws_quicksight_folders"
 	return &schema.Table{
-		Name:                "aws_quicksight_folders",
+		Name:                tableName,
 		Description:         "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Folder.html",
 		Resolver:            fetchQuicksightFolders,
 		PreResourceResolver: getFolder,
-		Transform:           transformers.TransformWithStruct(&types.Folder{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("quicksight"),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveTags(),
-			},
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:           transformers.TransformWithStruct(&types.Folder{}, transformers.WithPrimaryKeys("Arn")),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "quicksight"),
+		Columns:             []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true), tagsCol},
 	}
 }

@@ -2,7 +2,6 @@ package issuing
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func IssuingDisputes() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_issuing_disputes",
 		Description: `https://stripe.com/docs/api/issuing_disputes`,
-		Transform:   transformers.TransformWithStruct(&stripe.IssuingDispute{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.IssuingDispute{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchIssuingDisputes,
 
 		Columns: []schema.Column{

@@ -8,12 +8,13 @@ import (
 )
 
 func ServerCertificates() *schema.Table {
+	tableName := "aws_iam_server_certificates"
 	return &schema.Table{
-		Name:        "aws_iam_server_certificates",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServerCertificateMetadata.html`,
 		Resolver:    fetchIamServerCertificates,
 		Transform:   transformers.TransformWithStruct(&types.ServerCertificateMetadata{}),
-		Multiplex:   client.AccountMultiplex,
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{

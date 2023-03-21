@@ -5,7 +5,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -15,7 +14,7 @@ func Namespaces() *schema.Table {
 		Name:      "k8s_core_namespaces",
 		Resolver:  fetchNamespaces,
 		Multiplex: client.ContextMultiplex,
-		Transform: transformers.TransformWithStruct(&v1.Namespace{}, client.SharedTransformers()...),
+		Transform: client.TransformWithStruct(&v1.Namespace{}),
 		Columns: []schema.Column{
 			{
 				Name:     "context",
@@ -35,7 +34,13 @@ func Namespaces() *schema.Table {
 }
 
 func fetchNamespaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client).Client().CoreV1().Namespaces()
+	c := meta.(*client.Client)
+	if c.Namespaces() != nil {
+		// If we already got the namespaces we can exit early
+		res <- c.Namespaces()
+		return nil
+	}
+	cl := c.Client().CoreV1().Namespaces()
 
 	opts := metav1.ListOptions{}
 	for {

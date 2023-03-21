@@ -8,13 +8,14 @@ import (
 )
 
 func Keys() *schema.Table {
+	tableName := "aws_kms_keys"
 	return &schema.Table{
-		Name:                "aws_kms_keys",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/kms/latest/APIReference/API_KeyMetadata.html`,
 		Resolver:            fetchKmsKeys,
 		PreResourceResolver: getKey,
 		Transform:           transformers.TransformWithStruct(&types.KeyMetadata{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("kms"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "kms"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -36,10 +37,9 @@ func Keys() *schema.Table {
 				},
 			},
 			{
-				Name:          "replica_keys",
-				Type:          schema.TypeJSON,
-				Resolver:      resolveKeysReplicaKeys,
-				IgnoreInTests: true,
+				Name:     "replica_keys",
+				Type:     schema.TypeJSON,
+				Resolver: resolveKeysReplicaKeys,
 			},
 		},
 

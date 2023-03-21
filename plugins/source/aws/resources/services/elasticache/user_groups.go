@@ -8,11 +8,12 @@ import (
 )
 
 func UserGroups() *schema.Table {
+	tableName := "aws_elasticache_user_groups"
 	return &schema.Table{
-		Name:        "aws_elasticache_user_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_UserGroup.html`,
 		Resolver:    fetchElasticacheUserGroups,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
 		Transform:   transformers.TransformWithStruct(&types.UserGroup{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

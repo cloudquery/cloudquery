@@ -72,14 +72,10 @@ CloudQuery has the ability to be run locally with a corresponding local Postgres
 
 #### Commit Messages
 
-We make use of the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) for pull request titles. This allows us to categorize contributions and automate versioning for releases. Pull request titles should start with one of the prefixes specified in the table below:
+We make use of the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) for pull request titles. This allows us to categorize contributions and automate versioning for releases. Pull request titles should start with one of the following prefixes `fix`, `feat`, `chore`, `refactor`, `test` or `doc` followed by a colon and a short description of the change. For example: `feat: Add support for AWS S3 buckets`.
 
-| Title      | Message | Action |
-| ----------- | ----------- |----------- |
-| `chore: <Message>`      |  `<String>`       | patch release|
-| `fix: <Message>`      |  `<String>`      | patch release|
-| `feat: <Message>`      |  `<String>`       | patch release|
-| `refactor: <Message>`      |  `<String>`       | patch release|
-| `test: <Message>`      |  `<String>`       | patch release|
+- `fix` PRs result in a patch version bump (e.g. 1.0.0 -> 1.0.1). 
+- `feat` PRs result in a minor version bump (e.g. 1.0.0 -> 1.1.0). 
+- `chore`, `refactor`, `test` and `doc` do not result in a version bump.
 
-Additional context can be provided in parentheses, e.g. `fix(docs): Fix typo`. Breaking changes should be suffixed with `!`, e.g. `feat!: Drop support for X`. This will always result in a minor release.
+To create a major version bump, add `!` after the prefix (e.g. `feat!: Drop support for PostgreSQL versions lower than 11`).

@@ -19,7 +19,7 @@ func Services() *schema.Table {
 		Description: `https://cloud.google.com/billing/docs/reference/rest/v1/services/list#Service`,
 		Resolver:    fetchServices,
 		Multiplex:   client.ProjectMultiplex,
-		Transform:   transformers.TransformWithStruct(&pb.Service{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Service{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

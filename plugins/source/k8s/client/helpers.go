@@ -25,6 +25,17 @@ func ContextMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	return clients
 }
 
+func ContextNamespaceMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
+	client := meta.(*Client)
+	clients := make([]schema.ClientMeta, 0)
+	for _, ctxName := range client.contexts {
+		for _, ns := range client.namespaces[ctxName] {
+			clients = append(clients, client.WithContext(ctxName).WithNamespace(ns.Name))
+		}
+	}
+	return clients
+}
+
 // APIFilterContextMultiplex returns a list of clients for each context from the cq config
 func APIFilterContextMultiplex(path string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {

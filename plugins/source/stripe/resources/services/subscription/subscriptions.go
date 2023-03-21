@@ -2,7 +2,6 @@ package subscription
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func Subscriptions() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_subscriptions",
 		Description: `https://stripe.com/docs/api/subscriptions`,
-		Transform:   transformers.TransformWithStruct(&stripe.Subscription{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("DefaultSource")))...),
+		Transform:   client.TransformWithStruct(&stripe.Subscription{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("DefaultSource"))),
 		Resolver:    fetchSubscriptions,
 
 		Columns: []schema.Column{

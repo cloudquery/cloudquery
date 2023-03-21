@@ -8,15 +8,16 @@ import (
 )
 
 func TransitGateways() *schema.Table {
+	tableName := "aws_ec2_transit_gateways"
 	return &schema.Table{
-		Name:        "aws_ec2_transit_gateways",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html`,
 		Resolver:    fetchEc2TransitGateways,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.TransitGateway{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
