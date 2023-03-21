@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * **resources:** Remove `subscription_id` column from `azure_billing_enrollment_accounts` and `azure_billing_accounts` tables, as those tables are not tied to a specific subscription.
 
+### This Release has the Following Changes to Tables
+- Table `azure_compute_virtual_machine_scale_set_network_interfaces` was added
+
 ### Features
 
 * Add azure_resources_resource_groups table ([#9158](https://github.com/cloudquery/cloudquery/issues/9158)) ([6ed30fc](https://github.com/cloudquery/cloudquery/commit/6ed30fc4af6f6aa28644a2441dbe7e86615940a1))
