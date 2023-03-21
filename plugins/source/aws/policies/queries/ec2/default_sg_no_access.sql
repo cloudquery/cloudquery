@@ -7,7 +7,9 @@ select
   account_id,
   arn,
   case when
-      group_name = 'default' AND ip_permissions IS NOT NULL
+      group_name='default' 
+      AND (jsonb_array_length(ip_permissions) > 0
+      OR jsonb_array_length(ip_permissions_egress) > 0)
       then 'fail'
       else 'pass'
   end

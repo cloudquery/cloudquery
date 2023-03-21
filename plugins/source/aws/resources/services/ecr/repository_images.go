@@ -1,13 +1,18 @@
 package ecr
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func RepositoryImages() *schema.Table {
+func repositoryImages() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ecr_repository_images",
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageDetail.html`,
@@ -24,65 +29,38 @@ func RepositoryImages() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
-			{
-				Name:     "artifact_media_type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ArtifactMediaType"),
-			},
-			{
-				Name:     "image_digest",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ImageDigest"),
-			},
-			{
-				Name:     "image_manifest_media_type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ImageManifestMediaType"),
-			},
-			{
-				Name:     "image_pushed_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("ImagePushedAt"),
-			},
-			{
-				Name:     "image_scan_findings_summary",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ImageScanFindingsSummary"),
-			},
-			{
-				Name:     "image_scan_status",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ImageScanStatus"),
-			},
-			{
-				Name:     "image_size_in_bytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ImageSizeInBytes"),
-			},
-			{
-				Name:     "image_tags",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("ImageTags"),
-			},
-			{
-				Name:     "last_recorded_pull_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("LastRecordedPullTime"),
-			},
-			{
-				Name:     "registry_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RegistryId"),
-			},
-			{
-				Name:     "repository_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RepositoryName"),
-			},
 		},
 
 		Relations: []*schema.Table{
-			RepositoryImageScanFindings(),
+			repositoryImageScanFindings(),
 		},
 	}
+}
+func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	config := ecr.DescribeImagesInput{
+		RepositoryName: parent.Item.(types.Repository).RepositoryName,
+		MaxResults:     aws.Int32(1000),
+	}
+	paginator := ecr.NewDescribeImagesPaginator(meta.(*client.Client).Services().Ecr, &config)
+	for paginator.HasMorePages() {
+		output, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- output.ImageDetails
+	}
+	return nil
+}
+func resolveImageArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	item := resource.Item.(types.ImageDetail)
+
+	a := arn.ARN{
+		Partition: cl.Partition,
+		Service:   "ecr",
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  "repository/" + *item.RepositoryName + "/image/" + *item.ImageDigest,
+	}
+	return resource.Set(c.Name, a.String())
 }
