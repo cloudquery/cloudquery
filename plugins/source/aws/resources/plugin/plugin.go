@@ -14,6 +14,8 @@ var (
 )
 
 var awsExceptions = map[string]string{
+	"applicationautoscaling": "Application Auto Scaling",
+
 	"accessanalyzer":    "AWS Identity and Access Management (IAM) Access Analyzer",
 	"acm":               "Amazon Certificate Manager (ACM)",
 	"amp":               "Amazon Managed Service for Prometheus (AMP)",
@@ -66,6 +68,7 @@ var awsExceptions = map[string]string{
 	"securityhub":       "AWS Security Hub",
 	"servicecatalog":    "AWS Service Catalog",
 	"ses":               "Amazon Simple Email Service (SES)",
+	"ssm":               "AWS Systems Manager (SSM)",
 	"xray":              "AWS X-Ray",
 }
 
