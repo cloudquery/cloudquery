@@ -79,7 +79,7 @@
   "plugins/source/oracle+FILLER": "0.0.0",
   "plugins/source/alicloud": "1.1.2",
   "plugins/source/alicloud+FILLER": "0.0.0",
-  "plugins/destination/mssql": "3.0.2",
+  "plugins/destination/mssql": "3.0.3",
   "plugins/destination/mssql+FILLER": "0.0.0",
   "plugins/source/plausible": "1.1.2",
   "plugins/source/plausible+FILLER": "0.0.0",
