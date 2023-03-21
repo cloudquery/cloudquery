@@ -1,6 +1,6 @@
 # Table: aws_ssm_compliance_summary_items
 
-This table shows data for Ssm Compliance Summary Items.
+This table shows data for AWS Systems Manager (SSM) Compliance Summary Items.
 
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ComplianceSummaryItem.html
 
