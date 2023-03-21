@@ -95,7 +95,6 @@ func TestSync(t *testing.T) {
 				}
 				require.NotEmpty(t, files, "destination plugin not downloaded to cache")
 			}
-
 		})
 	}
 }
