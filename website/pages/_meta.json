@@ -27,6 +27,12 @@
       "typesetting": "article"
     }
   },
+  "pricing": {
+    "title": "Pricing",
+    "theme": {
+      "layout": "full"
+    }
+  },
   "new-source-plugin": {
     "title": "New Source Plugins",
     "display": "hidden",
