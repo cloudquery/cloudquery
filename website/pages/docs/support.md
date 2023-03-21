@@ -12,5 +12,5 @@ Community support is free and available to everyone.
 
 ## Enterprise
 
-If you need an SLA, a private communication channel, and/or prioritization of resources, plugins, or issues, see our [Pricing](https://www.cloudquery.io/pricing) page for enterprise support.
+If you need an SLA, a private communication channel, and/or prioritization of resources, plugins, or issues, see our [Pricing](/pricing) page for enterprise support.
 
