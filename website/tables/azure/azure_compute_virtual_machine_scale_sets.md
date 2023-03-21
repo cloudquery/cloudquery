@@ -9,6 +9,7 @@ The primary key for this table is **id**.
 ## Relations
 
 The following tables depend on azure_compute_virtual_machine_scale_sets:
+  - [azure_compute_virtual_machine_scale_set_network_interfaces](azure_compute_virtual_machine_scale_set_network_interfaces)
   - [azure_compute_virtual_machine_scale_set_vms](azure_compute_virtual_machine_scale_set_vms)
 
 ## Columns
