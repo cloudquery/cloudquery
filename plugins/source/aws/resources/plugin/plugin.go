@@ -25,6 +25,7 @@ var awsExceptions = map[string]string{
 	"arns":              "Amazon Resource Names (ARNs)",
 	"aws":               "", // remove "AWS" from names, because in most cases it will be replaced with either Amazon or AWS
 	"autoscaling":       "Auto Scaling",
+	"autoscalingplans":  "Auto Scaling Plans",
 	"byoip":             "Bring your own IP addresses (BYOIP)",
 	"cloudhsm":          "AWS CloudHSM",
 	"cloudhsmv2":        "AWS CloudHSM v2",

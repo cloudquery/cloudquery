@@ -75,6 +75,8 @@
   - [aws_autoscaling_group_lifecycle_hooks](../../../../../website/tables/aws/aws_autoscaling_group_lifecycle_hooks.md)
   - [aws_autoscaling_group_scaling_policies](../../../../../website/tables/aws/aws_autoscaling_group_scaling_policies.md)
 - [aws_autoscaling_launch_configurations](../../../../../website/tables/aws/aws_autoscaling_launch_configurations.md)
+- [aws_autoscaling_plans](../../../../../website/tables/aws/aws_autoscaling_plans.md)
+  - [aws_autoscaling_plan_resources](../../../../../website/tables/aws/aws_autoscaling_plan_resources.md)
 - [aws_autoscaling_scheduled_actions](../../../../../website/tables/aws/aws_autoscaling_scheduled_actions.md)
 - [aws_availability_zones](../../../../../website/tables/aws/aws_availability_zones.md)
 - [aws_backup_global_settings](../../../../../website/tables/aws/aws_backup_global_settings.md)
