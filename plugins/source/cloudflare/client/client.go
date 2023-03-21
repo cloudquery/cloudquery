@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
@@ -48,7 +49,12 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func (c *Client) ID() string {
-	return c.AccountId
+	idStrings := []string{
+		c.AccountId,
+		c.ZoneId,
+	}
+
+	return strings.TrimRight(strings.Join(idStrings, ":"), ":")
 }
 
 func (c *Client) withAccountID(accountId string) *Client {
