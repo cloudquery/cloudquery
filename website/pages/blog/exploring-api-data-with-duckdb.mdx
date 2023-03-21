@@ -198,7 +198,7 @@ If you'd like to explore the most up-to-date data yourself, you can follow the s
 
 ## Conclusion
 
-In this post, I introduced DuckDB and the new CloudQuery DuckDB destination that allows you to load data from many APIs into a DuckDB-compatible format. I also showed how you one specific use case: using DuckDB to query the Homebrew Analytics API and discover new tools that are gaining popularity. From here, we could take the analysis in a million different directions: perhaps by combining it with data from other APIs or datasets? Or graphing the popularity trends? Classifying Homebrew tools with ChatGPT or GPT4 and creating separate rankings by class? I will leave these as exercises for the reader. :)
+In this post, I introduced DuckDB and the new CloudQuery DuckDB destination that allows you to load data from many APIs into a DuckDB-compatible format. I also showed you one specific use case: using DuckDB to query the Homebrew Analytics API and discover new tools that are gaining popularity. From here, we could take the analysis in a million different directions: perhaps by combining it with data from other APIs or datasets? Or graphing the popularity trends? Classifying Homebrew tools with ChatGPT or GPT4 and creating separate rankings by class? I will leave these as exercises for the reader. :)
 
 Another interesting next step would be to allow CloudQuery to be run as an embedded process in the same way as DuckDB, so that both could be run from the same application, like Jupyter Notebooks. This would certainly make for a powerful combination, and it's something I'd like to explore more. Right now it would be a two-step process: sync to a local DuckDB file first, then load it from the notebook.
 
