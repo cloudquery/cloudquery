@@ -33,7 +33,7 @@ By using the CloudQuery DuckDB destination plugin, we can explore data from a wh
 
 First, we need a source dataset to sync from. If you're familiar with CloudQuery, you probably already know about the extensive [AWS](/docs/plugins/sources/aws/overview), [GCP](/docs/plugins/sources/gcp/overview) and [Azure](/docs/plugins/sources/azure/overview) plugins that can sync infrastructure data. DuckDB is a great fit for quick ad-hoc exploration of this data as well, but just for fun, today let's sync data from the [Homebrew Analytics API](/docs/plugins/sources/homebrew/overview) and explore it a bit using DuckDB.
 
-First we create a CloudQuery config file called `homebrew.yml`, in which we'll put both the Homebrew source and the DuckDB destination configuration:
+First we create a CloudQuery config file called `homebrew-duckdb.yml`, in which we'll put both the Homebrew source and the DuckDB destination configuration:
 
 ```yaml copy
 kind: source
