@@ -74,6 +74,7 @@ jobs:
             --exclude "${{ steps.vercel.outputs.url }}/logo" \
             --exclude "${{ steps.vercel.outputs.url }}/docs/plugins/sources/*/tables" \
             --exclude "${{ steps.vercel.outputs.url }}/integrations/*" \
+            --exclude "${{ steps.vercel.outputs.url }}/contact" \
             --exclude linkedin \
             --exclude cloudquery.io/discord \
             --exclude fonts.gstatic.com \
