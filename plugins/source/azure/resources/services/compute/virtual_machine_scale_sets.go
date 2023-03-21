@@ -19,6 +19,7 @@ func VirtualMachineScaleSets() *schema.Table {
 		Columns:     schema.ColumnList{client.SubscriptionID},
 		Relations: []*schema.Table{
 			VirtualMachineScaleSetsVMs(),
+			virtualMachineScaleSetsNetworkInterfaces(),
 		},
 	}
 }

@@ -6,6 +6,9 @@ spec:
   path: "cloudquery/azure"
   version: "VERSION_SOURCE_AZURE"
   destinations: ["DESTINATION_NAME"]
+  # For the Azure plugin we recommend a lower concurrency setting than the default to avoid hitting memory limits
+  # See more in https://www.cloudquery.io/docs/advanced-topics/performance-tuning#tune-concurrency
+  concurrency: 1000
 
   spec:
     # Azure Spec section

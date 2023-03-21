@@ -59,6 +59,7 @@
 - [azure_compute_snapshots](tables/azure_compute_snapshots)
 - [azure_compute_ssh_public_keys](tables/azure_compute_ssh_public_keys)
 - [azure_compute_virtual_machine_scale_sets](tables/azure_compute_virtual_machine_scale_sets)
+  - [azure_compute_virtual_machine_scale_set_network_interfaces](tables/azure_compute_virtual_machine_scale_set_network_interfaces)
   - [azure_compute_virtual_machine_scale_set_vms](tables/azure_compute_virtual_machine_scale_set_vms)
 - [azure_compute_virtual_machines](tables/azure_compute_virtual_machines)
   - [azure_compute_virtual_machine_extensions](tables/azure_compute_virtual_machine_extensions)
