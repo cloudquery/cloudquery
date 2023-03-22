@@ -3,6 +3,7 @@ package rds
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -35,8 +36,15 @@ func clusterBacktracks() *schema.Table {
 }
 
 func fetchRdsClusterBacktracks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cluster := parent.Item.(types.DBCluster)
+
+	if aws.ToInt64(cluster.BacktrackWindow) == 0 {
+		// If this value is set to 0, backtracking is disabled for the DB cluster.
+		return nil
+	}
+
 	config := rds.DescribeDBClusterBacktracksInput{
-		DBClusterIdentifier: parent.Item.(types.DBCluster).DBClusterIdentifier,
+		DBClusterIdentifier: cluster.DBClusterIdentifier,
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Rds
