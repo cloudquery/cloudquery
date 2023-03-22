@@ -30,7 +30,7 @@ export default function PricingCard({tier} : {tier: PricingTier}) {
         className="flex flex-col px-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 p-8 dark:bg-gray-900 dark:text-white">
         <h3 className="mb-4 text-2xl font-semibold">{tier.name}</h3>
         <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">{tier.description}</p>
-        <div className={"flex justify-center items-baseline mt-8" + (tier.attributes.PriceDetails ? " mb-2" : " sm:mb-8 lg:mb-11") }>
+        <div className={"flex justify-center items-baseline mt-8" + (tier.attributes.PriceDetails ? " mb-2" : " sm:mb-8 lg:mb-16") }>
             <span className="mr-2 text-4xl font-extrabold">{tier.attributes.Price}</span>
             {tier.attributes.PriceMonthly ? <span className="text-gray-500 dark:text-gray-400">/month</span> : null}
         </div>
