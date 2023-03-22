@@ -4,6 +4,8 @@ This table shows data for Azure Compute Virtual Machine Assess Patches.
 
 https://learn.microsoft.com/en-us/rest/api/compute/virtual-machines/assess-patches?tabs=HTTP#virtualmachineassesspatchesresult.
 
+This will begin patch assessments on available virtual machines and can take long to complete.
+
 Not available for all VMs. More at https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-guest-patching#requirements-for-enabling-automatic-vm-guest-patching
 
 The primary key for this table is **assessment_activity_id**.

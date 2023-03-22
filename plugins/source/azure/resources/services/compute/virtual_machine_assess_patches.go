@@ -17,6 +17,9 @@ func virtualMachineAssessPatches() *schema.Table {
 		Name:     tableName,
 		Resolver: fetchVirtualMachineAssessPatches,
 		Description: `https://learn.microsoft.com/en-us/rest/api/compute/virtual-machines/assess-patches?tabs=HTTP#virtualmachineassesspatchesresult.
+
+This will begin patch assessments on available virtual machines and can take long to complete.
+
 Not available for all VMs. More at https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-guest-patching#requirements-for-enabling-automatic-vm-guest-patching
 `,
 		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(tableName, client.Namespacemicrosoft_compute),
