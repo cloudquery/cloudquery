@@ -27,7 +27,7 @@ func fetchLocations(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListLocationsPager(*p.ID, nil)
+	pager := svc.NewListLocationsPager(*p.SubscriptionID, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {
