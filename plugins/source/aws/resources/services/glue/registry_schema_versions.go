@@ -8,13 +8,14 @@ import (
 )
 
 func RegistrySchemaVersions() *schema.Table {
+	tableName := "aws_glue_registry_schema_versions"
 	return &schema.Table{
-		Name:                "aws_glue_registry_schema_versions",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/glue/latest/webapi/API_GetSchemaVersion.html`,
 		Resolver:            fetchGlueRegistrySchemaVersions,
 		PreResourceResolver: getRegistrySchemaVersion,
 		Transform:           transformers.TransformWithStruct(&glue.GetSchemaVersionOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("glue"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

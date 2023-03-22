@@ -8,12 +8,13 @@ import (
 )
 
 func Clusters() *schema.Table {
+	tableName := "aws_neptune_clusters"
 	return &schema.Table{
-		Name:        "aws_neptune_clusters",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-clusters.html#DescribeDBClusters`,
 		Resolver:    fetchNeptuneClusters,
 		Transform:   transformers.TransformWithStruct(&types.DBCluster{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("neptune"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "neptune"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

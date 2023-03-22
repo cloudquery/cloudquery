@@ -8,12 +8,13 @@ import (
 )
 
 func ClusterParameters() *schema.Table {
+	tableName := "aws_rds_cluster_parameters"
 	return &schema.Table{
-		Name:        "aws_rds_cluster_parameters",
+		Name:        tableName,
 		Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Parameter.html",
 		Resolver:    fetchRdsClusterParameters,
 		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

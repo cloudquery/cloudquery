@@ -1,5 +1,7 @@
 # Table: aws_route53_hosted_zone_query_logging_configs
 
+This table shows data for Route53 Hosted Zone Query Logging Configs.
+
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_QueryLoggingConfig.html
 
 The primary key for this table is **arn**.

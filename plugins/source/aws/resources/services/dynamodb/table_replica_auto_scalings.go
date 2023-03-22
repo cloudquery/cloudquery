@@ -8,11 +8,12 @@ import (
 )
 
 func TableReplicaAutoScalings() *schema.Table {
+	tableName := "aws_dynamodb_table_replica_auto_scalings"
 	return &schema.Table{
-		Name:        "aws_dynamodb_table_replica_auto_scalings",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ReplicaAutoScalingDescription.html`,
 		Resolver:    fetchDynamodbTableReplicaAutoScalings,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("dynamodb"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "dynamodb"),
 		Transform:   transformers.TransformWithStruct(&types.ReplicaAutoScalingDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

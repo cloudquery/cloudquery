@@ -8,12 +8,13 @@ import (
 )
 
 func Instances() *schema.Table {
+	tableName := "aws_ssoadmin_instances"
 	return &schema.Table{
-		Name:        "aws_ssoadmin_instances",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_InstanceMetadata.html`,
 		Resolver:    fetchSsoadminInstances,
 		Transform:   transformers.TransformWithStruct(&types.InstanceMetadata{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("identitystore"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "identitystore"),
 
 		Relations: []*schema.Table{
 			PermissionSets(),

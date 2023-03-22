@@ -5,6 +5,43 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.2](https://github.com/cloudquery/cloudquery/compare/cli-v2.5.1...cli-v2.5.2) (2023-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.0 ([#9167](https://github.com/cloudquery/cloudquery/issues/9167)) ([49d6477](https://github.com/cloudquery/cloudquery/commit/49d647730a85ea6fae51e97194ba61c0625d1331))
+
+## [2.5.1](https://github.com/cloudquery/cloudquery/compare/cli-v2.5.0...cli-v2.5.1) (2023-03-14)
+
+
+### Bug Fixes
+
+* **cmd-tables:** Call terminate client after docs generation ([#9025](https://github.com/cloudquery/cloudquery/issues/9025)) ([80ef109](https://github.com/cloudquery/cloudquery/commit/80ef1096106a2564d6cd94b85d1dbedf1db1a436))
+
+## [2.5.0](https://github.com/cloudquery/cloudquery/compare/cli-v2.4.1...cli-v2.5.0) (2023-03-14)
+
+
+### Features
+
+* Add command to generate sources tables ([#8803](https://github.com/cloudquery/cloudquery/issues/8803)) ([b50b5d7](https://github.com/cloudquery/cloudquery/commit/b50b5d7b0b17cfc3248daf2a405293a82cb0a818))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.43.0 ([#8949](https://github.com/cloudquery/cloudquery/issues/8949)) ([31dfc63](https://github.com/cloudquery/cloudquery/commit/31dfc634850b699ba7bb7876399270a7367d6c7e))
+
+## [2.4.1](https://github.com/cloudquery/cloudquery/compare/cli-v2.4.0...cli-v2.4.1) (2023-03-07)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to c95f2b4 ([#8560](https://github.com/cloudquery/cloudquery/issues/8560)) ([9c3bd5b](https://github.com/cloudquery/cloudquery/commit/9c3bd5b68f9741a360fde6c54bf3f5f3efe06d9e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.41.0 ([#8682](https://github.com/cloudquery/cloudquery/issues/8682)) ([ea9d065](https://github.com/cloudquery/cloudquery/commit/ea9d065ae9f77c6dd990570974630ae6ac3f153e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.42.0 ([#8725](https://github.com/cloudquery/cloudquery/issues/8725)) ([b83b277](https://github.com/cloudquery/cloudquery/commit/b83b277a2421d1caf46a26c3229041b27a3da148))
+* **deps:** Update module github.com/rivo/uniseg to v0.4.4 ([#8576](https://github.com/cloudquery/cloudquery/issues/8576)) ([7876a24](https://github.com/cloudquery/cloudquery/commit/7876a24857ac71de530d824fb48a83ff108f7367))
+* **deps:** Update module github.com/stretchr/testify to v1.8.2 ([#8599](https://github.com/cloudquery/cloudquery/issues/8599)) ([2ec8086](https://github.com/cloudquery/cloudquery/commit/2ec808677328410cc96c97a693ef65022d314c32))
+
 ## [2.4.0](https://github.com/cloudquery/cloudquery/compare/cli-v2.3.10...cli-v2.4.0) (2023-02-28)
 
 

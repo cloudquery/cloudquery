@@ -14,7 +14,7 @@ func Connectors() *schema.Table {
 		Description: `https://cloud.google.com/vpc/docs/reference/vpcaccess/rest/v1/projects.locations.connectors`,
 		Resolver:    fetchConnectors,
 		Multiplex:   client.ProjectMultiplexEnabledServices("vpcaccess.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Connector{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Connector{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

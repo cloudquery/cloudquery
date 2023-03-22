@@ -15,6 +15,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/athena"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/batch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudfront"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudhsmv2"
@@ -24,6 +25,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codebuild"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codepipeline"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cognito"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/computeoptimizer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/config"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dax"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/directconnect"
@@ -116,6 +118,9 @@ func tables() []*schema.Table {
 		apigatewayv2.DomainNames(),
 		apigatewayv2.VpcLinks(),
 		applicationautoscaling.Policies(),
+		applicationautoscaling.ScalableTargets(),
+		applicationautoscaling.ScalingActivities(),
+		applicationautoscaling.ScheduledActions(),
 		apprunner.AutoScalingConfigurations(),
 		apprunner.Connections(),
 		apprunner.ObservabilityConfigurations(),
@@ -141,6 +146,8 @@ func tables() []*schema.Table {
 		backup.Plans(),
 		backup.RegionSettings(),
 		backup.Vaults(),
+		batch.JobQueues(),
+		batch.JobDefinitions(),
 		cloudformation.Stacks(),
 		cloudformation.StackSets(),
 		cloudfront.CachePolicies(),
@@ -158,6 +165,12 @@ func tables() []*schema.Table {
 		codepipeline.Webhooks(),
 		cognito.IdentityPools(),
 		cognito.UserPools(),
+		computeoptimizer.AutoscalingGroupsRecommendations(),
+		computeoptimizer.EbsVolumeRecommendations(),
+		computeoptimizer.Ec2InstanceRecommendations(),
+		computeoptimizer.EcsServiceRecommendations(),
+		computeoptimizer.EnrollmentStatuses(),
+		computeoptimizer.LambdaFunctionsRecommendations(),
 		config.ConfigRules(),
 		config.ConfigurationRecorders(),
 		config.ConformancePacks(),
@@ -180,6 +193,7 @@ func tables() []*schema.Table {
 		docdb.PendingMaintenanceActions(),
 		docdb.SubnetGroups(),
 		dynamodb.Tables(),
+		ec2.AccountAttributes(),
 		ec2.AvailabilityZones(),
 		ec2.ByoipCidrs(),
 		ec2.CustomerGateways(),
@@ -405,6 +419,7 @@ func tables() []*schema.Table {
 		s3.AccessPoints(),
 		s3.Accounts(),
 		s3.Buckets(),
+		sagemaker.Apps(),
 		sagemaker.EndpointConfigurations(),
 		sagemaker.Models(),
 		sagemaker.NotebookInstances(),
@@ -439,6 +454,7 @@ func tables() []*schema.Table {
 		ssm.InventorySchemas(),
 		ssm.Parameters(),
 		ssm.PatchBaselines(),
+		ssm.Sessions(),
 		ssoadmin.Instances(),
 		stepfunctions.Activities(),
 		stepfunctions.StateMachines(),

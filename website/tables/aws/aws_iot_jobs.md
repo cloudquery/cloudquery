@@ -1,5 +1,7 @@
 # Table: aws_iot_jobs
 
+This table shows data for AWS IoT Jobs.
+
 https://docs.aws.amazon.com/iot/latest/apireference/API_Job.html
 
 The primary key for this table is **arn**.

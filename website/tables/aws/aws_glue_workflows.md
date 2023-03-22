@@ -1,5 +1,7 @@
 # Table: aws_glue_workflows
 
+This table shows data for Glue Workflows.
+
 https://docs.aws.amazon.com/glue/latest/webapi/API_Workflow.html
 
 The primary key for this table is **arn**.

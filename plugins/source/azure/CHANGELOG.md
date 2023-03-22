@@ -5,6 +5,89 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.2.0...plugins-source-azure-v6.0.0) (2023-03-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* **resources:** Remove `subscription_id` column from `azure_billing_enrollment_accounts` and `azure_billing_accounts` tables, as those tables are not tied to a specific subscription.
+
+### This Release has the Following Changes to Tables
+- Table `azure_compute_virtual_machine_scale_set_network_interfaces` was added
+
+### Features
+
+* Add azure_resources_resource_groups table ([#9158](https://github.com/cloudquery/cloudquery/issues/9158)) ([6ed30fc](https://github.com/cloudquery/cloudquery/commit/6ed30fc4af6f6aa28644a2441dbe7e86615940a1))
+* **azure-resources:** Add compute gallery images and versions ([#9180](https://github.com/cloudquery/cloudquery/issues/9180)) ([3c39ce6](https://github.com/cloudquery/cloudquery/commit/3c39ce6f750d68b4aed93a7118aed4ac714dbfc7))
+* **azure-resources:** Add Compute SSH Public Keys ([#9182](https://github.com/cloudquery/cloudquery/issues/9182)) ([de0407a](https://github.com/cloudquery/cloudquery/commit/de0407a6bbc63de5b4598b5edcb2ed5d7de7ff0f))
+* **azure-resources:** VM Scale Set Network Interfaces ([#9299](https://github.com/cloudquery/cloudquery/issues/9299)) ([db6f782](https://github.com/cloudquery/cloudquery/commit/db6f78214f8978df54ed1d02b1e999d14121f1b0))
+* **azure:** File Shares ([#9163](https://github.com/cloudquery/cloudquery/issues/9163)) ([5ea94a8](https://github.com/cloudquery/cloudquery/commit/5ea94a8d3e23710e650dffcf0fd5c31a5f5d03c3)), closes [#9137](https://github.com/cloudquery/cloudquery/issues/9137)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.0 ([#9167](https://github.com/cloudquery/cloudquery/issues/9167)) ([49d6477](https://github.com/cloudquery/cloudquery/commit/49d647730a85ea6fae51e97194ba61c0625d1331))
+* **resources:** Don't list billing and enrollment accounts per subscription ([a083b34](https://github.com/cloudquery/cloudquery/commit/a083b3450f288776036301f39a6d2478ad4af793))
+
+## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.1.2...plugins-source-azure-v5.2.0) (2023-03-15)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_appservice_web_app_configurations` was added
+
+### Features
+
+* **azure:** Add azure_appservice_web_app_configurations resource ([#9109](https://github.com/cloudquery/cloudquery/issues/9109)) ([ff44c4a](https://github.com/cloudquery/cloudquery/commit/ff44c4a9f293c5e82574a4f88fdf0d696eb8c2c6)), closes [#8531](https://github.com/cloudquery/cloudquery/issues/8531)
+
+## [5.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.1.1...plugins-source-azure-v5.1.2) (2023-03-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.43.0 ([#8949](https://github.com/cloudquery/cloudquery/issues/8949)) ([31dfc63](https://github.com/cloudquery/cloudquery/commit/31dfc634850b699ba7bb7876399270a7367d6c7e))
+
+## [5.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.1.0...plugins-source-azure-v5.1.1) (2023-03-12)
+
+
+### Bug Fixes
+
+* **azure-resources:** Retrieve instance view when sync `azure_compute_virtual_machine_scale_set_vms` ([#8877](https://github.com/cloudquery/cloudquery/issues/8877)) ([832164f](https://github.com/cloudquery/cloudquery/commit/832164fa254c8124a8fa0d5b5aa3f386316f89c6))
+
+## [5.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.0.0...plugins-source-azure-v5.1.0) (2023-03-12)
+
+
+### Features
+
+* **azure-resources:** Add Service Bus Namespace resources ([#8841](https://github.com/cloudquery/cloudquery/issues/8841)) ([2c3dfc2](https://github.com/cloudquery/cloudquery/commit/2c3dfc255aafc5ac82ae35dfe61f7f3e8d58b1d8))
+
+## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v4.3.0...plugins-source-azure-v5.0.0) (2023-03-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* **azure-resources:** Remove `azure_azuredata_sql_server_registrations` since the API to sync it is deprecated. You should use the tables under `azurearcdata`, `azure_azurearcdata_sql_server_instances`, `azure_azurearcdata_postgres_instances` or `azure_azurearcdata_sql_managed_instances` to get the most up to date information. See more in this [Azure Go SDK issue comment](https://github.com/Azure/azure-sdk-for-go/issues/19789#issuecomment-1438803340).
+
+### Features
+
+* **azure-resources:** Add Monitor Autoscale Settings ([#8696](https://github.com/cloudquery/cloudquery/issues/8696)) ([030c0c2](https://github.com/cloudquery/cloudquery/commit/030c0c24370f4b78b18648986853c3172142d088))
+* **azure-resources:** Add Subscription Diagnostic Settings ([#8693](https://github.com/cloudquery/cloudquery/issues/8693)) ([d84454c](https://github.com/cloudquery/cloudquery/commit/d84454c52b995c0b4046e0fdcb3992a054ffc6e4))
+* **docs:** Render tables as a part of the Website and add a [tables search box](https://www.cloudquery.io/tables). The equivalent of the GitHub README.md file is now under each plugin's docs section, for example https://www.cloudquery.io/docs/plugins/sources/aws/tables. The Website HTML page is built from the GitHub markdown file located under each plugin's path in our Website code, for example https://github.com/cloudquery/cloudquery/blob/main/website/pages/docs/plugins/sources/aws/tables.md. For the list of all plugins table files as they are stored on GitHub see https://github.com/cloudquery/cloudquery/tree/main/website/tables ([342b0c5](https://github.com/cloudquery/cloudquery/commit/342b0c569fd28ee26ea3e09ec6d787f85c49f16c))
+
+
+### Bug Fixes
+
+* **azure-resources:** Remove `azure_azuredata_sql_server_registrations` ([977137e](https://github.com/cloudquery/cloudquery/commit/977137ec69fb6eb0e8fa086bfd155f579df6ec0a))
+* **azure:** Set date range in cost management queries ([#8676](https://github.com/cloudquery/cloudquery/issues/8676)) ([6178e1c](https://github.com/cloudquery/cloudquery/commit/6178e1c242a1428b1369405537af04f2f6496827)), closes [#8655](https://github.com/cloudquery/cloudquery/issues/8655)
+* **deps:** Update golang.org/x/exp digest to c95f2b4 ([#8560](https://github.com/cloudquery/cloudquery/issues/8560)) ([9c3bd5b](https://github.com/cloudquery/cloudquery/commit/9c3bd5b68f9741a360fde6c54bf3f5f3efe06d9e))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azcore to v1.3.1 ([#8567](https://github.com/cloudquery/cloudquery/issues/8567)) ([d17e2aa](https://github.com/cloudquery/cloudquery/commit/d17e2aa63e8258ecc3c6815431222d1c5f0a06bf))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices to v1.3.0 ([#8648](https://github.com/cloudquery/cloudquery/issues/8648)) ([7639032](https://github.com/cloudquery/cloudquery/commit/763903218170ee89323bb0d9d6567d8e2fec5abf))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2 to v2.2.0 ([#8649](https://github.com/cloudquery/cloudquery/issues/8649)) ([261aa9c](https://github.com/cloudquery/cloudquery/commit/261aa9c8b5dba8d315862126c00f4d0d1c136b81))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3 to v3.1.0 ([#8650](https://github.com/cloudquery/cloudquery/issues/8650)) ([359da21](https://github.com/cloudquery/cloudquery/commit/359da2150303db05402132ed222f63fc9c711d3f))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto to v1.2.0 ([#8651](https://github.com/cloudquery/cloudquery/issues/8651)) ([036adc7](https://github.com/cloudquery/cloudquery/commit/036adc7caf2da5607a3da486371c5d5fa1fb32f3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.41.0 ([#8682](https://github.com/cloudquery/cloudquery/issues/8682)) ([ea9d065](https://github.com/cloudquery/cloudquery/commit/ea9d065ae9f77c6dd990570974630ae6ac3f153e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.42.0 ([#8725](https://github.com/cloudquery/cloudquery/issues/8725)) ([b83b277](https://github.com/cloudquery/cloudquery/commit/b83b277a2421d1caf46a26c3229041b27a3da148))
+* **deps:** Update module github.com/stretchr/testify to v1.8.2 ([#8599](https://github.com/cloudquery/cloudquery/issues/8599)) ([2ec8086](https://github.com/cloudquery/cloudquery/commit/2ec808677328410cc96c97a693ef65022d314c32))
+
 ## [4.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v4.2.0...plugins-source-azure-v4.3.0) (2023-02-28)
 
 

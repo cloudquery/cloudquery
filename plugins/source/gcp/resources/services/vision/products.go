@@ -17,7 +17,7 @@ func Products() *schema.Table {
 			[]string{
 				"us-west1", "us-east1", "asia-east1", "europe-west1",
 			}),
-		Transform: transformers.TransformWithStruct(&pb.Product{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform: client.TransformWithStruct(&pb.Product{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

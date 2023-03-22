@@ -1,5 +1,7 @@
 # Table: gcp_aiplatform_datasets
 
+This table shows data for GCP AI Platform Datasets.
+
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.datasets#Dataset
 
 The composite primary key for this table is (**project_id**, **name**).
@@ -26,5 +28,6 @@ This table depends on [gcp_aiplatform_dataset_locations](gcp_aiplatform_dataset_
 |update_time|Timestamp|
 |etag|String|
 |labels|JSON|
+|saved_queries|JSON|
 |encryption_spec|JSON|
 |metadata_artifact|String|

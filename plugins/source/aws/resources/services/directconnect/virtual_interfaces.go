@@ -8,11 +8,12 @@ import (
 )
 
 func VirtualInterfaces() *schema.Table {
+	tableName := "aws_directconnect_virtual_interfaces"
 	return &schema.Table{
-		Name:        "aws_directconnect_virtual_interfaces",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_VirtualInterface.html`,
 		Resolver:    fetchDirectconnectVirtualInterfaces,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("directconnect"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "directconnect"),
 		Transform:   transformers.TransformWithStruct(&types.VirtualInterface{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

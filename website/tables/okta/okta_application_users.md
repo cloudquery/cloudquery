@@ -1,5 +1,7 @@
 # Table: okta_application_users
 
+This table shows data for Okta Application Users.
+
 The composite primary key for this table is (**app_id**, **id**).
 
 ## Relations

@@ -1,3 +1,29 @@
 # Source Plugin: github
 
-Plugins tables are now part of our Website. Please visit [https://www.cloudquery.io/docs/plugins/sources/github/tables](https://www.cloudquery.io/docs/plugins/sources/github/tables) for the latest information.
+## Tables
+
+- [github_billing_action](../../../../../website/tables/github/github_billing_action.md)
+- [github_billing_package](../../../../../website/tables/github/github_billing_package.md)
+- [github_billing_storage](../../../../../website/tables/github/github_billing_storage.md)
+- [github_external_groups](../../../../../website/tables/github/github_external_groups.md)
+- [github_hooks](../../../../../website/tables/github/github_hooks.md)
+  - [github_hook_deliveries](../../../../../website/tables/github/github_hook_deliveries.md)
+- [github_installations](../../../../../website/tables/github/github_installations.md)
+- [github_issues](../../../../../website/tables/github/github_issues.md)
+- [github_organizations](../../../../../website/tables/github/github_organizations.md)
+  - [github_organization_dependabot_alerts](../../../../../website/tables/github/github_organization_dependabot_alerts.md)
+  - [github_organization_dependabot_secrets](../../../../../website/tables/github/github_organization_dependabot_secrets.md)
+  - [github_organization_members](../../../../../website/tables/github/github_organization_members.md)
+- [github_repositories](../../../../../website/tables/github/github_repositories.md)
+  - [github_releases](../../../../../website/tables/github/github_releases.md)
+    - [github_release_assets](../../../../../website/tables/github/github_release_assets.md)
+  - [github_repository_dependabot_alerts](../../../../../website/tables/github/github_repository_dependabot_alerts.md)
+  - [github_repository_dependabot_secrets](../../../../../website/tables/github/github_repository_dependabot_secrets.md)
+- [github_teams](../../../../../website/tables/github/github_teams.md)
+  - [github_team_members](../../../../../website/tables/github/github_team_members.md)
+  - [github_team_repositories](../../../../../website/tables/github/github_team_repositories.md)
+- [github_traffic_clones](../../../../../website/tables/github/github_traffic_clones.md)
+- [github_traffic_paths](../../../../../website/tables/github/github_traffic_paths.md)
+- [github_traffic_referrers](../../../../../website/tables/github/github_traffic_referrers.md)
+- [github_traffic_views](../../../../../website/tables/github/github_traffic_views.md)
+- [github_workflows](../../../../../website/tables/github/github_workflows.md)

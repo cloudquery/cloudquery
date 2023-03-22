@@ -2,7 +2,6 @@ package resourcemanager
 
 import (
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	pb "google.golang.org/api/cloudresourcemanager/v3"
 )
@@ -13,7 +12,7 @@ func ProjectPolicies() *schema.Table {
 		Description: `https://cloud.google.com/resource-manager/reference/rest/Shared.Types/Policy`,
 		Resolver:    fetchProjectPolicies,
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudresourcemanager.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Policy{}, client.Options()...),
+		Transform:   client.TransformWithStruct(&pb.Policy{}),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

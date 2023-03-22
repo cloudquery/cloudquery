@@ -8,12 +8,13 @@ import (
 )
 
 func WorkGroups() *schema.Table {
+	tableName := "aws_athena_work_groups"
 	return &schema.Table{
-		Name:                "aws_athena_work_groups",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/athena/latest/APIReference/API_WorkGroup.html`,
 		Resolver:            fetchAthenaWorkGroups,
 		PreResourceResolver: getWorkGroup,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("athena"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "athena"),
 		Transform:           transformers.TransformWithStruct(&types.WorkGroup{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

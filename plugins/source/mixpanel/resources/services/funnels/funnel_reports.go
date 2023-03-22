@@ -14,7 +14,7 @@ func FunnelReports() *schema.Table {
 		Name:        "mixpanel_funnel_reports",
 		Description: `https://developer.mixpanel.com/reference/funnels-query`,
 		Resolver:    fetchFunnelReports,
-		Transform:   transformers.TransformWithStruct(&mixpanel.FunnelData{}, client.SharedTransformers(transformers.WithPrimaryKeys("Date"))...),
+		Transform:   client.TransformWithStruct(&mixpanel.FunnelData{}, transformers.WithPrimaryKeys("Date")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

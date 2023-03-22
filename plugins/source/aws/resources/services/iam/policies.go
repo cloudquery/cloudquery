@@ -8,12 +8,13 @@ import (
 )
 
 func Policies() *schema.Table {
+	tableName := "aws_iam_policies"
 	return &schema.Table{
-		Name:        "aws_iam_policies",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ManagedPolicyDetail.html`,
 		Resolver:    fetchIamPolicies,
 		Transform:   transformers.TransformWithStruct(&types.ManagedPolicyDetail{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("iam"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
@@ -35,5 +36,6 @@ func Policies() *schema.Table {
 				Resolver: resolveIamPolicyVersionList,
 			},
 		},
+		Relations: []*schema.Table{policyLastAccessedDetails()},
 	}
 }

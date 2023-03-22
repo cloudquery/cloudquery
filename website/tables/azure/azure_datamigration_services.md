@@ -1,5 +1,7 @@
 # Table: azure_datamigration_services
 
+This table shows data for Azure Datamigration Services.
+
 https://learn.microsoft.com/en-us/rest/api/datamigration/services/list?tabs=HTTP#datamigrationservice
 
 The primary key for this table is **id**.

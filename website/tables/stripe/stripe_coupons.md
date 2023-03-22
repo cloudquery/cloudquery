@@ -1,5 +1,7 @@
 # Table: stripe_coupons
 
+This table shows data for Stripe Coupons.
+
 https://stripe.com/docs/api/coupons
 
 The primary key for this table is **id**.

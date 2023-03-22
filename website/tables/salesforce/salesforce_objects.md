@@ -1,5 +1,7 @@
 # Table: salesforce_objects
 
+This table shows data for Salesforce Objects.
+
 https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_list.htm
 
 The composite primary key for this table is (**object_type**, **id**).

@@ -1,5 +1,7 @@
 # Table: gcp_compute_url_maps
 
+This table shows data for GCP Compute URL Maps.
+
 https://cloud.google.com/compute/docs/reference/rest/v1/urlMaps#UrlMap
 
 The primary key for this table is **self_link**.

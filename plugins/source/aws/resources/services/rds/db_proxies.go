@@ -8,12 +8,13 @@ import (
 )
 
 func DbProxies() *schema.Table {
+	tableName := "aws_db_proxies"
 	return &schema.Table{
-		Name:        "aws_db_proxies",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBProxy.html`,
 		Resolver:    fetchDbProxies,
 		Transform:   transformers.TransformWithStruct(&types.DBProxy{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -21,6 +21,7 @@ lint-fix:
 gen-docs:
 	rm -rf ../../../website/tables/homebrew
 	go run main.go doc ../../../website/tables/homebrew
+	sed 's_(\(.*\))_(../../../../../website/tables/homebrew/\1)_' ../../../website/tables/homebrew/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/homebrew/README.md
 	mv ../../../website/tables/homebrew/README.md ../../../website/pages/docs/plugins/sources/homebrew/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/homebrew/*.md

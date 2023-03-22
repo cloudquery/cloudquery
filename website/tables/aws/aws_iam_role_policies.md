@@ -1,5 +1,7 @@
 # Table: aws_iam_role_policies
 
+This table shows data for IAM Role Policies.
+
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetRolePolicy.html
 
 The composite primary key for this table is (**account_id**, **role_arn**, **policy_name**).

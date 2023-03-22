@@ -8,12 +8,13 @@ import (
 )
 
 func Plans() *schema.Table {
+	tableName := "aws_backup_plans"
 	return &schema.Table{
-		Name:                "aws_backup_plans",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupPlan.html`,
 		Resolver:            fetchBackupPlans,
 		PreResourceResolver: getPlan,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("backup"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "backup"),
 		Transform:           transformers.TransformWithStruct(&backup.GetBackupPlanOutput{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

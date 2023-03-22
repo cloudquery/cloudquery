@@ -8,11 +8,12 @@ import (
 )
 
 func GlobalSettings() *schema.Table {
+	tableName := "aws_backup_global_settings"
 	return &schema.Table{
-		Name:        "aws_backup_global_settings",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeGlobalSettings.html`,
 		Resolver:    fetchBackupGlobalSettings,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("backup"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "backup"),
 		Transform:   transformers.TransformWithStruct(&backup.DescribeGlobalSettingsOutput{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

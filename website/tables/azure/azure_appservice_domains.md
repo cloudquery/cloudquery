@@ -1,5 +1,7 @@
 # Table: azure_appservice_domains
 
+This table shows data for Azure App Service Domains.
+
 https://learn.microsoft.com/en-us/rest/api/appservice/domains/list?tabs=HTTP#domain
 
 The primary key for this table is **id**.

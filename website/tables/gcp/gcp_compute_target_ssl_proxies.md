@@ -1,5 +1,7 @@
 # Table: gcp_compute_target_ssl_proxies
 
+This table shows data for GCP Compute Target SSL Proxies.
+
 The primary key for this table is **self_link**.
 
 ## Columns

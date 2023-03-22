@@ -1,0 +1,115 @@
+name: release-summary
+
+on:
+  pull_request:
+    paths:
+      - "plugins/source/**"
+      - ".github/workflows/release_summary.yml"
+
+jobs:
+  release-summary:
+    if:  startsWith(github.head_ref, 'release-please--branches--main--components--plugins-source')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get plugin name
+        id: plugin
+        run: |
+          branch=${{ github.head_ref }}
+          plugin_name=$(echo $branch | cut -d- -f12)
+          echo "name=${plugin_name}" >> $GITHUB_OUTPUT
+      - name: Get latest tag
+        id: tag
+        run: |
+          tag=$(git describe --tags --match 'plugins-source-${{ steps.plugin.outputs.name }}*' --abbrev=0)
+          echo "latest=${tag}" >> $GITHUB_OUTPUT
+      - name: Generate diff
+        run: |
+          git diff ${{ steps.tag.outputs.latest }}..HEAD -- website/tables/${{ steps.plugin.outputs.name }} > scripts/table_diff/diff.txt
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: scripts/table_diff/go.mod
+          cache: true
+          cache-dependency-path: scripts/table_diff/go.sum
+      - name: Generate docs changes file
+        working-directory: scripts/table_diff
+        run: |
+          go run main.go diff.txt changes.json
+      - uses: actions/github-script@v6
+        name: Get doc changes string
+        id: get-changes
+        with:
+          result-encoding: string
+          script: |
+            const { promises: fs } = require('fs')
+            const changes = JSON.parse(await fs.readFile('scripts/table_diff/changes.json', 'utf8'))
+            if (changes.length === 0) {
+              console.log('No changes to tables')
+              return ""
+            }
+            const changesList = changes.map(change => {
+              const { breaking, text } = change
+              if (breaking) {
+                return `- ${text} (:warning: breaking)`
+              }
+              return `- ${text}`
+            }).join('\n')
+            return changesList
+      - uses: actions/github-script@v6
+        name: Update changelog
+        if: ${{ steps.get-changes.outputs.result != '' }}
+        env:
+          PLUGIN_NAME: '${{ steps.plugin.outputs.name }}'
+          CHANGES: '${{ steps.get-changes.outputs.result }}'
+        with:
+          script: |
+            const fs = require('fs')
+            const changelogPath = `plugins/source/${process.env.PLUGIN_NAME}/CHANGELOG.md`
+            const changes = process.env.CHANGES.replaceAll('\\n', '\n')
+            const currentChangelog = fs.readFileSync(changelogPath, 'utf8')
+            // drop existing summary if it exists
+            const title = 'This Release has the Following Changes to Tables'
+            let sliceIndex = currentChangelog.includes(title) ? 2 : 1
+            // Move summary after breaking changes if they exist
+            const newlyAddedSection = currentChangelog.split("## [")[0]
+            sliceIndex = newlyAddedSection.includes("BREAKING CHANGES") ? sliceIndex + 1 : sliceIndex
+            const changelogParts = currentChangelog.split('###')
+            const newChangelog = [...changelogParts.slice(0, sliceIndex), ` ${title}\n${changes}\n\n`, ...changelogParts.slice(sliceIndex)].join('###')
+            fs.writeFileSync(changelogPath, newChangelog)
+      - uses: actions/github-script@v6
+        name: Update PR description
+        if: ${{ steps.get-changes.outputs.result != '' }}
+        env:
+          PR_BODY: '${{ github.event.pull_request.body }}'
+          PR_NUMBER: '${{ github.event.number }}'
+          CHANGES: '${{ steps.get-changes.outputs.result }}'
+        with:
+          script: |
+            const currentDescription = process.env.PR_BODY
+            const changes = process.env.CHANGES.replaceAll('\\n', '\n')
+            const currentDescriptionParts = currentDescription.split('###')
+            // drop existing summary if it exists
+            const title = 'This Release has the Following Changes to Tables'
+            let sliceIndex = currentDescription.includes(title) ? 2 : 1
+            // Move summary after breaking changes if they exist
+            sliceIndex = currentDescription.includes("BREAKING CHANGES") ? sliceIndex + 1 : sliceIndex
+            const newDescription = [...currentDescriptionParts.slice(0, sliceIndex), ` ${title}\n${changes}\n\n`, ...currentDescriptionParts.slice(sliceIndex)].join('###')
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: process.env.PR_NUMBER,
+              body: newDescription
+            })
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        if: ${{ steps.get-changes.outputs.result != '' }}
+        with:
+          # required so the commit triggers workflow runs
+          token: ${{ secrets.GH_CQ_BOT }}
+          commit_message: "chore: Add tables changes to changelog"
+          file_pattern: "plugins/source/${{ steps.plugin.outputs.name }}/CHANGELOG.md"
+          author: cq-bot <cq-bot@users.noreply.github.com>

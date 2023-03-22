@@ -1,5 +1,7 @@
 # Table: gcp_functions_functions
 
+This table shows data for GCP Functions Functions.
+
 https://cloud.google.com/functions/docs/reference/rest/v1/projects.locations.functions#CloudFunction
 
 The composite primary key for this table is (**project_id**, **name**).

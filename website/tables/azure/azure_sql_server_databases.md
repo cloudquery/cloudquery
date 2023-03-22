@@ -1,5 +1,7 @@
 # Table: azure_sql_server_databases
 
+This table shows data for Azure SQL Server Databases.
+
 https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/databases/list-by-server?tabs=HTTP#database
 
 The primary key for this table is **id**.

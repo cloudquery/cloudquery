@@ -1,5 +1,7 @@
 # Table: gcp_iam_service_accounts
 
+This table shows data for GCP IAM Service Accounts.
+
 https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts#ServiceAccount
 
 The composite primary key for this table is (**unique_id**, **name**).

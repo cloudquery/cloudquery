@@ -1,5 +1,7 @@
 # Table: azure_network_virtual_hubs
 
+This table shows data for Azure Network Virtual Hubs.
+
 https://learn.microsoft.com/en-us/rest/api/virtualwan/virtual-hubs/list?tabs=HTTP#virtualhub
 
 The primary key for this table is **id**.

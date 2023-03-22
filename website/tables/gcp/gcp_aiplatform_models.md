@@ -1,5 +1,7 @@
 # Table: gcp_aiplatform_models
 
+This table shows data for GCP AI Platform Models.
+
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.models#Model
 
 The composite primary key for this table is (**project_id**, **name**).
@@ -42,4 +44,5 @@ This table depends on [gcp_aiplatform_model_locations](gcp_aiplatform_model_loca
 |labels|JSON|
 |encryption_spec|JSON|
 |model_source_info|JSON|
+|original_model_info|JSON|
 |metadata_artifact|String|

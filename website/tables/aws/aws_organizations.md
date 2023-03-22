@@ -1,5 +1,7 @@
 # Table: aws_organizations
 
+This table shows data for Organizations.
+
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html
 
 The composite primary key for this table is (**account_id**, **arn**).

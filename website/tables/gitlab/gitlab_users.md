@@ -1,5 +1,7 @@
 # Table: gitlab_users
 
+This table shows data for Gitlab Users.
+
 The composite primary key for this table is (**base_url**, **id**).
 
 ## Columns

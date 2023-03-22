@@ -8,11 +8,12 @@ import (
 )
 
 func ReplicationInstances() *schema.Table {
+	tableName := "aws_dms_replication_instances"
 	return &schema.Table{
-		Name:        "aws_dms_replication_instances",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/dms/latest/APIReference/API_ReplicationInstance.html`,
 		Resolver:    fetchDmsReplicationInstances,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("dms"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "dms"),
 		Transform:   transformers.TransformWithStruct(&models.ReplicationInstanceWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

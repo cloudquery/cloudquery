@@ -1,5 +1,7 @@
 # Table: aws_elasticache_update_actions
 
+This table shows data for Elasticache Update Actions.
+
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_UpdateAction.html
 
 The primary key for this table is **_cq_id**.

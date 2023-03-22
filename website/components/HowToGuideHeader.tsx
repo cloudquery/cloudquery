@@ -1,6 +1,5 @@
 import { Avatar } from "./Avatar";
-import CLOUDQUERY_TEAM from "../content/team";
-import type { Author } from "../content/team";
+import {AuthorByName} from "../content/authors";
 import Head from "next/head";
 import { useConfig } from "nextra-theme-docs";
 
@@ -17,13 +16,13 @@ type PostMeta = {
 };
 
 function Authors({ data }: { data: PostMeta }) {
-  const authorName = data?.author as Author;
+  const authorName = data?.author;
 
   if (!authorName) {
     return null;
   }
 
-  const author = CLOUDQUERY_TEAM[authorName];
+  const author = AuthorByName(authorName);
 
   return (
     <div className="w-full border-b border-gray-400 authors border-opacity-20">

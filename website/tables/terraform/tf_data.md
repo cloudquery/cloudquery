@@ -1,5 +1,7 @@
 # Table: tf_data
 
+This table shows data for Tf Data.
+
 Terraform meta data
 
 The primary key for this table is **_cq_id**.

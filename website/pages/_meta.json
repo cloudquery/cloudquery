@@ -15,14 +15,29 @@
   "docs": "Docs",
   "integrations": {
     "title": "Integrations",
+    "type": "page",
     "theme": {
-      "typesetting": "article"
+      "layout": "full",
+      "sidebar": false
     }
   },
   "how-to-guides": {
     "title": "How-to Guides",
     "theme": {
       "typesetting": "article"
+    }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "theme": {
+      "layout": "full"
+    }
+  },
+  "new-source-plugin": {
+    "title": "New Source Plugins",
+    "display": "hidden",
+    "theme": {
+      "layout": "full"
     }
   },
   "blog": {

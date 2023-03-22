@@ -1,5 +1,7 @@
 # Table: mixpanel_funnel_reports
 
+This table shows data for Mixpanel Funnel Reports.
+
 https://developer.mixpanel.com/reference/funnels-query
 
 The composite primary key for this table is (**funnel_id**, **date**).

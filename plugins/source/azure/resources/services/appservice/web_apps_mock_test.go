@@ -3,7 +3,6 @@ package appservice
 import (
 	"encoding/json"
 	"net/http"
-
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
@@ -35,6 +34,9 @@ func createWebApps(router *mux.Router) error {
 	})
 
 	if err := createVnetConnections(router); err != nil {
+		return err
+	}
+	if err := createWebAppConfigurations(router); err != nil {
 		return err
 	}
 

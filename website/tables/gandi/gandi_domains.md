@@ -1,5 +1,7 @@
 # Table: gandi_domains
 
+This table shows data for Gandi Domains.
+
 The primary key for this table is **id**.
 
 ## Relations

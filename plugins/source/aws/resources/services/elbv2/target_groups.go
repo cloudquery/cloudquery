@@ -8,11 +8,12 @@ import (
 )
 
 func TargetGroups() *schema.Table {
+	tableName := "aws_elbv2_target_groups"
 	return &schema.Table{
-		Name:        "aws_elbv2_target_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_TargetGroup.html`,
 		Resolver:    fetchElbv2TargetGroups,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.TargetGroup{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

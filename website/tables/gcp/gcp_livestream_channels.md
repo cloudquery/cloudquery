@@ -1,5 +1,7 @@
 # Table: gcp_livestream_channels
 
+This table shows data for GCP Livestream Channels.
+
 https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.channels
 
 The composite primary key for this table is (**project_id**, **name**).

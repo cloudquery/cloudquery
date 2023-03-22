@@ -5,13 +5,16 @@ import (
 
 	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/specs"
 )
 
 const bucket = "cq-playground-test"
+const region = "us-east-1"
 
 func TestPluginCSV(t *testing.T) {
 	spec := Spec{
 		Bucket:   bucket,
+		Region:   region,
 		Path:     t.TempDir()[1:],
 		NoRotate: true,
 		FileSpec: &filetypes.FileSpec{
@@ -23,7 +26,9 @@ func TestPluginCSV(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
 		},
-		spec,
+		specs.Destination{
+			Spec: &spec,
+		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,
 			SkipDeleteStale:           true,
@@ -39,6 +44,7 @@ func TestPluginCSV(t *testing.T) {
 func TestPluginJSON(t *testing.T) {
 	spec := Spec{
 		Bucket:   bucket,
+		Region:   region,
 		Path:     t.TempDir()[1:],
 		NoRotate: true,
 		FileSpec: &filetypes.FileSpec{
@@ -50,7 +56,9 @@ func TestPluginJSON(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
 		},
-		spec,
+		specs.Destination{
+			Spec: &spec,
+		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,
 			SkipDeleteStale:           true,

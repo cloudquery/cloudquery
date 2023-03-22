@@ -1,5 +1,7 @@
 # Table: azure_monitor_diagnostic_settings
 
+This table shows data for Azure Monitor Diagnostic Settings.
+
 https://learn.microsoft.com/en-us/rest/api/monitor/diagnostic-settings/list?tabs=HTTP#diagnosticsettingsresource
 
 The primary key for this table is **id**.

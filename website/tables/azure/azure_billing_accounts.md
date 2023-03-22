@@ -1,5 +1,7 @@
 # Table: azure_billing_accounts
 
+This table shows data for Azure Billing Accounts.
+
 https://learn.microsoft.com/en-us/rest/api/billing/2020-05-01/billing-accounts/list?tabs=HTTP#billingaccount
 
 The primary key for this table is **id**.
@@ -12,7 +14,6 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
 |properties|JSON|
 |id (PK)|String|
 |name|String|

@@ -1,5 +1,7 @@
 # Table: azure_reservations_reservation
 
+This table shows data for Azure Reservations Reservation.
+
 https://learn.microsoft.com/en-us/rest/api/reserved-vm-instances/reservation/list-all?tabs=HTTP#reservationresponse
 
 The primary key for this table is **id**.

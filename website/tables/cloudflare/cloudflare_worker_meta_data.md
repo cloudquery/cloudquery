@@ -1,5 +1,7 @@
 # Table: cloudflare_worker_meta_data
 
+This table shows data for Cloudflare Worker Meta Data.
+
 The primary key for this table is **id**.
 
 ## Relations

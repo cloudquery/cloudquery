@@ -1,5 +1,7 @@
 # Table: azure_resources_resources
 
+This table shows data for Azure Resources Resources.
+
 https://learn.microsoft.com/en-us/rest/api/resources/resources/list#genericresourceexpanded
 
 The primary key for this table is **id**.
@@ -12,6 +14,7 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|subscription_id|String|
 |extended_location|JSON|
 |identity|JSON|
 |kind|String|

@@ -1,5 +1,7 @@
 # Table: fastly_account_users
 
+This table shows data for Fastly Account Users.
+
 https://developer.fastly.com/reference/api/account/user/
 
 The primary key for this table is **id**.

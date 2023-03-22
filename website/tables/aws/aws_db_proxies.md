@@ -1,5 +1,7 @@
 # Table: aws_db_proxies
 
+This table shows data for DB Proxies.
+
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBProxy.html
 
 The primary key for this table is **arn**.

@@ -8,13 +8,14 @@ import (
 )
 
 func BrokerConfigurationRevisions() *schema.Table {
+	tableName := "aws_mq_broker_configuration_revisions"
 	return &schema.Table{
-		Name:                "aws_mq_broker_configuration_revisions",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id-revisions.html`,
 		Resolver:            fetchMqBrokerConfigurationRevisions,
 		PreResourceResolver: getMqBrokerConfigurationRevision,
 		Transform:           transformers.TransformWithStruct(&mq.DescribeConfigurationRevisionOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("mq"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "mq"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

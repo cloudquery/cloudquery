@@ -8,13 +8,15 @@ import (
 )
 
 func Schedules() *schema.Table {
+	tableName := "aws_scheduler_schedules"
 	return &schema.Table{
-		Name:                "aws_scheduler_schedules",
+		Name:                tableName,
+		Title:               "Amazon EventBridge Scheduler Schedules",
 		Description:         `https://docs.aws.amazon.com/scheduler/latest/APIReference/API_GetScheduleOutput.html`,
 		Resolver:            fetchSchedulerSchedules,
 		PreResourceResolver: getSchedule,
 		Transform:           transformers.TransformWithStruct(&scheduler.GetScheduleOutput{}, transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer("scheduler"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "scheduler"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

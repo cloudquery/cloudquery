@@ -1,5 +1,7 @@
 # Table: gcp_sql_instances
 
+This table shows data for GCP SQL Instances.
+
 https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/instances#DatabaseInstance
 
 The primary key for this table is **self_link**.

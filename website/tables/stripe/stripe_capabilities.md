@@ -1,5 +1,7 @@
 # Table: stripe_capabilities
 
+This table shows data for Stripe Capabilities.
+
 https://stripe.com/docs/api/capabilities
 
 The primary key for this table is **id**.
