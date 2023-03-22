@@ -34,7 +34,7 @@ const tiers: PricingTier[] = [
             PriceMonthly: true,
             PriceDetails: "Annual contract. Billed annually.",
             Communication: "Private channel in any of Discord, Slack, or Teams",
-            SLA: "24 hour response time on support tickets.",
+            SLA: "12 hour response time on support tickets.",
             TAM: "Up to 4 hours / month",
             Features: "Up to 5 resources / month; more on a best-effort basis.",
             Contract: "Standard Support Contract (minor modifications allowed)",
