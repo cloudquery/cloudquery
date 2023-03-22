@@ -10,7 +10,7 @@ const tiers: PricingTier[] = [
             Price: "Free",
             PriceMonthly: false,
             Limits: "No usage-based billing or limits on number of rows.",
-            Communication: "Discord public channels, GitHub issues",
+            Communication: <><a href="https://www.cloudquery.io/discord" className="text-blue-500 hover:text-blue-600">Discord public channels</a>, <a href="https://github.com/cloudquery/cloudquery/issues" className="text-blue-500 hover:text-blue-600">GitHub issues</a></>,
             Contract: "None needed",
         }
     },
