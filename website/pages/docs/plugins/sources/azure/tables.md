@@ -62,6 +62,7 @@
   - [azure_compute_virtual_machine_scale_set_network_interfaces](tables/azure_compute_virtual_machine_scale_set_network_interfaces)
   - [azure_compute_virtual_machine_scale_set_vms](tables/azure_compute_virtual_machine_scale_set_vms)
 - [azure_compute_virtual_machines](tables/azure_compute_virtual_machines)
+  - [azure_compute_virtual_machine_assess_patches](tables/azure_compute_virtual_machine_assess_patches)
   - [azure_compute_virtual_machine_extensions](tables/azure_compute_virtual_machine_extensions)
 - [azure_confluent_marketplace_agreements](tables/azure_confluent_marketplace_agreements)
 - [azure_connectedvmware_clusters](tables/azure_connectedvmware_clusters)

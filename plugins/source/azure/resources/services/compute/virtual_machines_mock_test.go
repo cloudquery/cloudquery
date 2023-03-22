@@ -50,6 +50,10 @@ func createVirtualMachines(router *mux.Router) error {
 		}
 	})
 
+	if err := createVirtualMachineAssessPatches(router); err != nil {
+		return err
+	}
+
 	return createVirtualMachineExtensions(router)
 }
 

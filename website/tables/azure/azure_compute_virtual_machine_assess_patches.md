@@ -1,0 +1,29 @@
+# Table: azure_compute_virtual_machine_assess_patches
+
+This table shows data for Azure Compute Virtual Machine Assess Patches.
+
+https://learn.microsoft.com/en-us/rest/api/compute/virtual-machines/assess-patches?tabs=HTTP#virtualmachineassesspatchesresult
+
+The primary key for this table is **assessment_activity_id**.
+
+## Relations
+
+This table depends on [azure_compute_virtual_machines](azure_compute_virtual_machines).
+
+## Columns
+
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|subscription_id|String|
+|assessment_activity_id (PK)|String|
+|available_patches|JSON|
+|critical_and_security_patch_count|Int|
+|error|JSON|
+|other_patch_count|Int|
+|reboot_pending|Bool|
+|start_date_time|Timestamp|
+|status|String|
