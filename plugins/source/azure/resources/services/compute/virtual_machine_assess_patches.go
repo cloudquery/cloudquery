@@ -14,19 +14,20 @@ import (
 func virtualMachineAssessPatches() *schema.Table {
 	tableName := `azure_compute_virtual_machine_assess_patches`
 	return &schema.Table{
-		Name:        tableName,
-		Resolver:    fetchVirtualMachineAssessPatches,
-		Description: "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machines/assess-patches?tabs=HTTP#virtualmachineassesspatchesresult",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace(tableName, client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.VirtualMachineAssessPatchesResult{}, transformers.WithPrimaryKeys("AssessmentActivityID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:     tableName,
+		Resolver: fetchVirtualMachineAssessPatches,
+		Description: `https://learn.microsoft.com/en-us/rest/api/compute/virtual-machines/assess-patches?tabs=HTTP#virtualmachineassesspatchesresult.
+Not available for all VMs. More at https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-guest-patching#requirements-for-enabling-automatic-vm-guest-patching
+`,
+		Multiplex: client.SubscriptionMultiplexRegisteredNamespace(tableName, client.Namespacemicrosoft_compute),
+		Transform: transformers.TransformWithStruct(&armcompute.VirtualMachineAssessPatchesResult{}, transformers.WithPrimaryKeys("AssessmentActivityID")),
+		Columns:   schema.ColumnList{client.SubscriptionID},
 	}
 }
 
 func fetchVirtualMachineAssessPatches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*armcompute.VirtualMachine)
 
-	// Not available for all VMs. More at https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-guest-patching
 	supported := false
 	if p.Properties != nil && p.Properties.OSProfile != nil {
 		if p.Properties.OSProfile.WindowsConfiguration != nil &&
