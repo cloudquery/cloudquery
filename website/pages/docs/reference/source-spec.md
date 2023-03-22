@@ -112,6 +112,8 @@ The backend spec is specific to the backend used. For the `local` backend, the o
 
 A flag that indicates whether the value of `_cq_id` should be a UUID that is a hash of the primary keys or a random UUID. If a resource has no primary keys defined the value will always be a random UUID
 
+Supported by source plugins released on 2023-03-08 and later
+
 ### spec
 
 (`object`, optional)

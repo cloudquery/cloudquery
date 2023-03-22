@@ -11,7 +11,7 @@ export interface PricingTierAttributes {
     PriceMonthly: boolean;
     PriceDetails?: string;
     Limits?: string;
-    Communication?: string;
+    Communication?: React.ReactNode;
     SLA?: string;
     TAM?: string;
     Features?: string;
