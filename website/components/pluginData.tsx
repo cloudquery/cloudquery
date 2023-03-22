@@ -579,6 +579,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/hashicorp-vault.svg",
+    logoDark: "/images/logos/plugins/hashicorp-vault-dark.svg",
   },
   {
     name: "Infoblox",
@@ -587,6 +588,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/infoblox.svg",
+    logoDark: "/images/logos/plugins/infoblox-dark.svg",
   },
   {
     name: "Intercom",
@@ -688,6 +690,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/prisma.svg",
+    logoDark: "/images/logos/plugins/prisma-dark.svg",
   },
   {
     name: "Reddit Advertising",
@@ -742,6 +745,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "cloud-finops",
     logo: "/images/logos/plugins/square.svg",
+    logoDark: "/images/logos/plugins/square-dark.svg",
   },
   {
     name: "Twilio",
@@ -766,6 +770,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/typeform.svg",
+    logoDark: "/images/logos/plugins/typeform-dark.svg",
   },
   {
     name: "Zoho Campaign",
