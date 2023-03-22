@@ -3,6 +3,7 @@ package client
 import (
 	"testing"
 
+	"github.com/cloudquery/filetypes"
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/specs"
 )
@@ -20,10 +21,14 @@ func TestPluginCSV(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("file", "development", New, destination.WithManagedWriter())
 		},
-		Spec{
-			Directory: t.TempDir(),
-			Format:    FormatTypeCSV,
-			NoRotate:  true,
+		specs.Destination{
+			Spec: &Spec{
+				Directory: t.TempDir(),
+				FileSpec: &filetypes.FileSpec{
+					Format: filetypes.FormatTypeCSV,
+				},
+				NoRotate: true,
+			},
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,
@@ -43,10 +48,14 @@ func TestPluginJSON(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("file", "development", New, destination.WithManagedWriter())
 		},
-		Spec{
-			Directory: t.TempDir(),
-			Format:    FormatTypeJSON,
-			NoRotate:  true,
+		specs.Destination{
+			Spec: &Spec{
+				Directory: t.TempDir(),
+				FileSpec: &filetypes.FileSpec{
+					Format: filetypes.FormatTypeJSON,
+				},
+				NoRotate: true,
+			},
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,
@@ -66,10 +75,14 @@ func TestPluginParquet(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("file", "development", New, destination.WithManagedWriter())
 		},
-		Spec{
-			Directory: t.TempDir(),
-			Format:    FormatTypeParquet,
-			NoRotate:  true,
+		specs.Destination{
+			Spec: &Spec{
+				Directory: t.TempDir(),
+				FileSpec: &filetypes.FileSpec{
+					Format: filetypes.FormatTypeParquet,
+				},
+				NoRotate: true,
+			},
 		},
 		destination.PluginTestSuiteTests{
 			SkipOverwrite:             true,

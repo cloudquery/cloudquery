@@ -41,8 +41,8 @@ func SubscriptionResourceGroupMultiplexRegisteredNamespace(table string, namespa
 		var c = make([]schema.ClientMeta, 0)
 		for _, subId := range client.subscriptions {
 			if _, ok := client.registeredNamespaces[subId][namespace]; ok {
-				for _, rg := range client.resourceGroups[subId] {
-					c = append(c, client.withSubscription(subId).withResourceGroup(rg))
+				for _, rg := range client.ResourceGroups[subId] {
+					c = append(c, client.withSubscription(subId).withResourceGroup(*rg.Name))
 				}
 			} else {
 				client.Logger().Info().
