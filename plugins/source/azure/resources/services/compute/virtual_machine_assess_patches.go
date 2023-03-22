@@ -25,6 +25,25 @@ func virtualMachineAssessPatches() *schema.Table {
 
 func fetchVirtualMachineAssessPatches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*armcompute.VirtualMachine)
+
+	// Not available for all VMs. More at https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-guest-patching
+	supported := false
+	if p.Properties != nil && p.Properties.OSProfile != nil {
+		if p.Properties.OSProfile.WindowsConfiguration != nil &&
+			p.Properties.OSProfile.WindowsConfiguration.PatchSettings != nil &&
+			*p.Properties.OSProfile.WindowsConfiguration.PatchSettings.PatchMode == armcompute.WindowsVMGuestPatchModeAutomaticByPlatform {
+			supported = true
+		}
+		if p.Properties.OSProfile.LinuxConfiguration != nil &&
+			p.Properties.OSProfile.LinuxConfiguration.PatchSettings != nil &&
+			*p.Properties.OSProfile.LinuxConfiguration.PatchSettings.PatchMode == armcompute.LinuxVMGuestPatchModeAutomaticByPlatform {
+			supported = true
+		}
+	}
+	if !supported {
+		return nil
+	}
+
 	cl := meta.(*client.Client)
 	svc, err := armcompute.NewVirtualMachinesClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
