@@ -11,12 +11,13 @@ import (
 )
 
 func StackSets() *schema.Table {
+	table_name := "aws_cloudformation_stack_sets"
 	return &schema.Table{
-		Name:                "aws_cloudformation_stack_sets",
+		Name:                table_name,
 		Description:         `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackSet.html`,
 		Resolver:            fetchCloudformationStackSets,
 		PreResourceResolver: getStackSet,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("cloudformation"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(table_name, "cloudformation"),
 		Transform:           transformers.TransformWithStruct(&types.StackSet{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
