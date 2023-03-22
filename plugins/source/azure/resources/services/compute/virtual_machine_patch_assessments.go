@@ -35,11 +35,13 @@ func fetchVirtualMachinePatchAssessments(ctx context.Context, meta schema.Client
 	if p.Properties != nil && p.Properties.OSProfile != nil {
 		if p.Properties.OSProfile.WindowsConfiguration != nil &&
 			p.Properties.OSProfile.WindowsConfiguration.PatchSettings != nil &&
+			p.Properties.OSProfile.WindowsConfiguration.PatchSettings.PatchMode != nil &&
 			*p.Properties.OSProfile.WindowsConfiguration.PatchSettings.PatchMode == armcompute.WindowsVMGuestPatchModeAutomaticByPlatform {
 			supported = true
 		}
 		if p.Properties.OSProfile.LinuxConfiguration != nil &&
 			p.Properties.OSProfile.LinuxConfiguration.PatchSettings != nil &&
+			p.Properties.OSProfile.LinuxConfiguration.PatchSettings.PatchMode != nil &&
 			*p.Properties.OSProfile.LinuxConfiguration.PatchSettings.PatchMode == armcompute.LinuxVMGuestPatchModeAutomaticByPlatform {
 			supported = true
 		}
