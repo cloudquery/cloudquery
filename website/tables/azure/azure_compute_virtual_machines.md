@@ -9,8 +9,8 @@ The primary key for this table is **id**.
 ## Relations
 
 The following tables depend on azure_compute_virtual_machines:
-  - [azure_compute_virtual_machine_assess_patches](azure_compute_virtual_machine_assess_patches)
   - [azure_compute_virtual_machine_extensions](azure_compute_virtual_machine_extensions)
+  - [azure_compute_virtual_machine_patch_assessments](azure_compute_virtual_machine_patch_assessments)
 
 ## Columns
 

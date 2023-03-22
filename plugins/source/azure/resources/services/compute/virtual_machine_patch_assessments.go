@@ -11,11 +11,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func virtualMachineAssessPatches() *schema.Table {
-	tableName := `azure_compute_virtual_machine_assess_patches`
+func virtualMachinePatchAssessments() *schema.Table {
+	tableName := `azure_compute_virtual_machine_patch_assessments`
 	return &schema.Table{
 		Name:     tableName,
-		Resolver: fetchVirtualMachineAssessPatches,
+		Resolver: fetchVirtualMachinePatchAssessments,
 		Description: `https://learn.microsoft.com/en-us/rest/api/compute/virtual-machines/assess-patches?tabs=HTTP#virtualmachineassesspatchesresult.
 
 This will begin patch assessments on available virtual machines and can take long to complete.
@@ -28,7 +28,7 @@ Not available for all VMs. More at https://learn.microsoft.com/en-us/azure/virtu
 	}
 }
 
-func fetchVirtualMachineAssessPatches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchVirtualMachinePatchAssessments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*armcompute.VirtualMachine)
 
 	supported := false

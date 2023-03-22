@@ -23,7 +23,7 @@ func createVirtualMachines(router *mux.Router) error {
 	s := armcompute.WindowsVMGuestPatchModeAutomaticByPlatform
 	for i := range item.VirtualMachineListResult.Value {
 		item.VirtualMachineListResult.Value[i].Properties.OSProfile.WindowsConfiguration.PatchSettings = &armcompute.PatchSettings{
-			PatchMode: &s, // required for virtual_machine_assess_patches_mock_test.go
+			PatchMode: &s, // required for virtual_machine_patch_assessments_mock_test.go
 		}
 	}
 

@@ -1,6 +1,6 @@
-# Table: azure_compute_virtual_machine_assess_patches
+# Table: azure_compute_virtual_machine_patch_assessments
 
-This table shows data for Azure Compute Virtual Machine Assess Patches.
+This table shows data for Azure Compute Virtual Machine Patch Assessments.
 
 https://learn.microsoft.com/en-us/rest/api/compute/virtual-machines/assess-patches?tabs=HTTP#virtualmachineassesspatchesresult.
 
