@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v3.2.2...plugins-source-cloudflare-v3.2.3) (2023-03-21)
+
+
+### Bug Fixes
+
+* **cloudflare:** Add ZoneId to client ID if present ([#9312](https://github.com/cloudquery/cloudquery/issues/9312)) ([62d5ae9](https://github.com/cloudquery/cloudquery/commit/62d5ae95818606b0f5c18c2994e4739061434f68))
+
 ## [3.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v3.2.1...plugins-source-cloudflare-v3.2.2) (2023-03-21)
 
 

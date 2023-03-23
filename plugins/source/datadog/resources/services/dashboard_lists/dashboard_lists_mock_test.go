@@ -22,8 +22,7 @@ func buildDashboardListsMock(t *testing.T, ctrl *gomock.Controller) client.Datad
 	if err != nil {
 		t.Fatal(err)
 	}
-	//desc := "test string"
-	//d.Dashboards[0].Description.Set(&desc)
+
 	m.EXPECT().ListDashboardLists(gomock.Any()).Return(d, nil, nil)
 
 	return services
