@@ -4,7 +4,7 @@ This table shows data for AWS CloudFormation Stack Set Operations.
 
 https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackSetOperation.html
 
-The composite primary key for this table is (**creation_timestamp**, **operation_id**, **stack_set_id**).
+The composite primary key for this table is (**stack_set_arn**, **creation_timestamp**, **operation_id**).
 
 ## Relations
 
@@ -24,7 +24,7 @@ The following tables depend on aws_cloudformation_stack_set_operations:
 |account_id|String|
 |region|String|
 |id|String|
-|stack_set_arn|String|
+|stack_set_arn (PK)|String|
 |action|String|
 |administration_role_arn|String|
 |creation_timestamp (PK)|Timestamp|
@@ -35,7 +35,7 @@ The following tables depend on aws_cloudformation_stack_set_operations:
 |operation_preferences|JSON|
 |retain_stacks|Bool|
 |stack_set_drift_detection_details|JSON|
-|stack_set_id (PK)|String|
+|stack_set_id|String|
 |status|String|
 |status_details|JSON|
 |status_reason|String|
