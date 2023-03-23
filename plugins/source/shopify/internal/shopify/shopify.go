@@ -156,7 +156,9 @@ func (s *Client) retryableRequest(ctx context.Context, edge string, params url.V
 	}
 
 	if dr := resp.Header.Get("X-Shopify-Api-Deprecated-Reason"); dr != "" {
-		log.Warn().Str("deprecated_reason", dr).Msg("Deprecated API call detected")
+		if dr != "https://shopify.dev/changelog/property-deprecations-in-the-admin-api-order-and-lineitem-resource" { // already know about it, nothing to do
+			log.Warn().Str("deprecated_reason", dr).Msg("Deprecated API call detected")
+		}
 	}
 
 	var wait *time.Duration
