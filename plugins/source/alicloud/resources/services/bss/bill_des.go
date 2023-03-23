@@ -13,10 +13,9 @@ func Bill_Des() *schema.Table {
 		Multiplex: client.AccountMultiplex,
 		Transform: transformers.TransformWithStruct(
 			&BillDesModel{},
-			//transformers.WithPrimaryKeys(
-			//	"BillingCycle", "AccountID", "ProductCode",
-			//	"ProductType", "PipCode", "RecordID", "SubscriptionType", "CommodityCode",
-			//),
+			transformers.WithPrimaryKeys(
+				"BillingCycle",
+			),
 		),
 	}
 }

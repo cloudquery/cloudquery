@@ -5,6 +5,7 @@ import "fmt"
 type Spec struct {
 	Accounts          []AccountSpec `json:"accounts,omitempty"`
 	BillHistoryMonths int           `json:"bill_history_months,omitempty"`
+	BillHistoryDays   int           `json:"bill_history_days,omitempty"`
 }
 
 type AccountSpec struct {
