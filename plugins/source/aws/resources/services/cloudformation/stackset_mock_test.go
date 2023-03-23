@@ -26,7 +26,7 @@ func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	mock.EXPECT().ListStackSets(
 		gomock.Any(),
-		&cloudformation.ListStackSetsInput{},
+		&cloudformation.ListStackSetsInput{CallAs: types.CallAsDelegatedAdmin},
 		gomock.Any(),
 	).Return(
 		&cloudformation.ListStackSetsOutput{Summaries: []types.StackSetSummary{stackSummary}},
@@ -35,7 +35,7 @@ func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	mock.EXPECT().DescribeStackSet(
 		gomock.Any(),
-		&cloudformation.DescribeStackSetInput{StackSetName: stackSummary.StackSetName},
+		&cloudformation.DescribeStackSetInput{StackSetName: stackSummary.StackSetName, CallAs: types.CallAsDelegatedAdmin},
 		gomock.Any(),
 	).Return(
 		&cloudformation.DescribeStackSetOutput{StackSet: &stack},
@@ -49,7 +49,7 @@ func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	mock.EXPECT().ListStackSetOperations(
 		gomock.Any(),
-		&cloudformation.ListStackSetOperationsInput{StackSetName: stackSummary.StackSetName},
+		&cloudformation.ListStackSetOperationsInput{StackSetName: stackSummary.StackSetName, CallAs: types.CallAsDelegatedAdmin},
 		gomock.Any(),
 	).Return(
 		&cloudformation.ListStackSetOperationsOutput{Summaries: []types.StackSetOperationSummary{stackSetOperationSummary}},
@@ -63,7 +63,7 @@ func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	mock.EXPECT().DescribeStackSetOperation(
 		gomock.Any(),
-		&cloudformation.DescribeStackSetOperationInput{StackSetName: stackSummary.StackSetName, OperationId: stackSetOperationSummary.OperationId},
+		&cloudformation.DescribeStackSetOperationInput{StackSetName: stackSummary.StackSetName, OperationId: stackSetOperationSummary.OperationId, CallAs: types.CallAsDelegatedAdmin},
 		gomock.Any(),
 	).Return(
 		&cloudformation.DescribeStackSetOperationOutput{StackSetOperation: &stackSetOperation},
@@ -77,7 +77,7 @@ func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	mock.EXPECT().ListStackSetOperationResults(
 		gomock.Any(),
-		&cloudformation.ListStackSetOperationResultsInput{StackSetName: stackSummary.StackSetName, OperationId: stackSetOperationSummary.OperationId},
+		&cloudformation.ListStackSetOperationResultsInput{StackSetName: stackSummary.StackSetName, OperationId: stackSetOperationSummary.OperationId, CallAs: types.CallAsDelegatedAdmin},
 		gomock.Any(),
 	).Return(
 		&cloudformation.ListStackSetOperationResultsOutput{Summaries: []types.StackSetOperationResultSummary{stackSetOperationResultSummary}},

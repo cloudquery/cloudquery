@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
@@ -18,7 +19,7 @@ func StackSets() *schema.Table {
 		Resolver:            fetchCloudformationStackSets,
 		PreResourceResolver: getStackSet,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(table_name, "cloudformation"),
-		Transform:           transformers.TransformWithStruct(&types.StackSet{}),
+		Transform:           transformers.TransformWithStruct(&models.ExpandedStackSet{}, transformers.WithUnwrapStructFields("StackSet"), transformers.WithSkipFields("CallAs")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -47,29 +48,55 @@ func StackSets() *schema.Table {
 		},
 	}
 }
+
 func fetchCloudformationStackSets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	config := cloudformation.ListStackSetsInput{}
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudformation
-	paginator := cloudformation.NewListStackSetsPaginator(svc, &config)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return err
+	var err error
+	var page *cloudformation.ListStackSetsOutput
+	for _, callAs := range []types.CallAs{types.CallAsDelegatedAdmin, types.CallAsSelf} {
+		config := cloudformation.ListStackSetsInput{
+			CallAs: callAs,
 		}
-		res <- page.Summaries
+		paginator := cloudformation.NewListStackSetsPaginator(svc, &config)
+		for paginator.HasMorePages() {
+			page, err = paginator.NextPage(ctx)
+			if err != nil {
+				// Maybe try logging this error?
+				break
+			}
+			for _, summary := range page.Summaries {
+				res <- models.ExpandedSummary{
+					StackSetSummary: summary,
+					CallAs:          callAs,
+				}
+			}
+		}
+		if err == nil {
+			return nil
+		}
 	}
-	return nil
+	return err
 }
 
 func getStackSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	stack := resource.Item.(types.StackSetSummary)
-	stackSet, err := meta.(*client.Client).Services().Cloudformation.DescribeStackSet(ctx, &cloudformation.DescribeStackSetInput{
+	stack := resource.Item.(models.ExpandedSummary)
+	var err error
+	var stackSet *cloudformation.DescribeStackSetOutput
+
+	input := &cloudformation.DescribeStackSetInput{
 		StackSetName: stack.StackSetName,
-	})
+		CallAs:       stack.CallAs,
+	}
+
+	stackSet, err = meta.(*client.Client).Services().Cloudformation.DescribeStackSet(ctx, input)
 	if err != nil {
 		return err
 	}
-	resource.Item = stackSet.StackSet
+	resource.Item = models.ExpandedStackSet{
+		StackSet: *stackSet.StackSet,
+		CallAs:   stack.CallAs,
+	}
 	return nil
+
 }

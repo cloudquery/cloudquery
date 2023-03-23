@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
-	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
@@ -18,7 +18,7 @@ func stackSetOperations() *schema.Table {
 		Resolver:            fetchCloudformationStackSetOperations,
 		PreResourceResolver: getStackSetOperation,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(table_name, "cloudformation"),
-		Transform:           transformers.TransformWithStruct(&types.StackSetOperation{}, transformers.WithPrimaryKeys("StackSetId", "OperationId", "CreationTimestamp")),
+		Transform:           transformers.TransformWithStruct(&models.ExpandedStackSetOperation{}, transformers.WithUnwrapStructFields("StackSetOperation"), transformers.WithSkipFields("CallAs"), transformers.WithPrimaryKeys("StackSetId", "OperationId", "CreationTimestamp")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -40,32 +40,47 @@ func stackSetOperations() *schema.Table {
 	}
 }
 func fetchCloudformationStackSetOperations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	stack := parent.Item.(*types.StackSet)
-	config := cloudformation.ListStackSetOperationsInput{
+	stack := parent.Item.(models.ExpandedStackSet)
+
+	input := cloudformation.ListStackSetOperationsInput{
 		StackSetName: stack.StackSetName,
+		CallAs:       stack.CallAs,
 	}
+
 	svc := meta.(*client.Client).Services().Cloudformation
-	paginator := cloudformation.NewListStackSetOperationsPaginator(svc, &config)
+	paginator := cloudformation.NewListStackSetOperationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- page.Summaries
+		for _, operation := range page.Summaries {
+			res <- models.ExpandedStackSetOperationSummary{
+				StackSetOperationSummary: operation,
+				CallAs:                   input.CallAs,
+			}
+		}
 	}
 	return nil
 }
 
 func getStackSetOperation(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	stack := resource.Parent.Item.(*types.StackSet)
-	operation := resource.Item.(types.StackSetOperationSummary)
-	stackSetOperation, err := meta.(*client.Client).Services().Cloudformation.DescribeStackSetOperation(ctx, &cloudformation.DescribeStackSetOperationInput{
+	stack := resource.Parent.Item.(models.ExpandedStackSet)
+	operation := resource.Item.(models.ExpandedStackSetOperationSummary)
+
+	input := cloudformation.DescribeStackSetOperationInput{
 		StackSetName: stack.StackSetName,
 		OperationId:  operation.OperationId,
-	})
+		CallAs:       stack.CallAs,
+	}
+
+	stackSetOperation, err := meta.(*client.Client).Services().Cloudformation.DescribeStackSetOperation(ctx, &input)
 	if err != nil {
 		return err
 	}
-	resource.Item = stackSetOperation.StackSetOperation
+	resource.Item = models.ExpandedStackSetOperation{
+		StackSetOperation: *stackSetOperation.StackSetOperation,
+		CallAs:            input.CallAs,
+	}
 	return nil
 }
