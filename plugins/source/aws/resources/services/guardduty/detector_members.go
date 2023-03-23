@@ -17,7 +17,7 @@ func detectorMembers() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html`,
-		Resolver:    fetchGuarddutyDetectorMembers,
+		Resolver:    fetchDetectorMembers,
 		Transform:   transformers.TransformWithStruct(&types.Member{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
@@ -31,7 +31,7 @@ func detectorMembers() *schema.Table {
 	}
 }
 
-func fetchGuarddutyDetectorMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchDetectorMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	detector := parent.Item.(*models.DetectorWrapper)
 	c := meta.(*client.Client)
 	svc := c.Services().Guardduty

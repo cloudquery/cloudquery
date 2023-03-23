@@ -37,11 +37,12 @@ func Detectors() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			detectorMembers(),
 			detectorFindings(),
 			detectorFilters(),
+			detectorMembers(),
 			detectorIPSets(),
 			detectorPublishingDestinations(),
+			detectorThreatIntelSets(),
 		},
 	}
 }

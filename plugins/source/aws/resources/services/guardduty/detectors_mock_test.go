@@ -70,6 +70,16 @@ func buildDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&guardduty.ListPublishingDestinationsOutput{Destinations: []gdTypes.Destination{dest}}, nil,
 	)
 
+	var tset guardduty.GetThreatIntelSetOutput
+	if err := faker.FakeObject(&tset); err != nil {
+		t.Fatal(err)
+	}
+	tset.Name = aws.String("test-threatset")
+	m.EXPECT().ListThreatIntelSets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&guardduty.ListThreatIntelSetsOutput{ThreatIntelSetIds: []string{*tset.Name}}, nil,
+	)
+	m.EXPECT().GetThreatIntelSet(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tset, nil)
+
 	var member gdTypes.Member
 	if err := faker.FakeObject(&member); err != nil {
 		t.Fatal(err)

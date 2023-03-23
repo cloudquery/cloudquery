@@ -307,6 +307,7 @@
 - [aws_guardduty_detectors](tables/aws_guardduty_detectors)
   - [aws_guardduty_detector_filters](tables/aws_guardduty_detector_filters)
   - [aws_guardduty_detector_findings](tables/aws_guardduty_detector_findings)
+  - [aws_guardduty_detector_intel_sets](tables/aws_guardduty_detector_intel_sets)
   - [aws_guardduty_detector_ip_sets](tables/aws_guardduty_detector_ip_sets)
   - [aws_guardduty_detector_members](tables/aws_guardduty_detector_members)
   - [aws_guardduty_detector_publishing_destinations](tables/aws_guardduty_detector_publishing_destinations)
