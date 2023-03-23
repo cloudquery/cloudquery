@@ -106,6 +106,9 @@
     "plugins/source/googleanalytics": {
       "component": "plugins-source-googleanalytics"
     },
+    "plugins/source/googleads": {
+      "component": "plugins-source-googleads"
+    },
     "plugins/source/hackernews": {
       "component": "plugins-source-hackernews"
     },

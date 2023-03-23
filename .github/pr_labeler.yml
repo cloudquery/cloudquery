@@ -48,6 +48,8 @@ gitlab:
   - plugins/source/gitlab/**/*
 googleanalytics:
   - plugins/destination/googleanalytics/**/*
+googleads:
+  - plugins/destination/googleads/**/*
 gremlin:
   - plugins/destination/gremlin/**/*
 hackernews:
