@@ -9,10 +9,10 @@ import (
 func BillDetails() *schema.Table {
 	return &schema.Table{
 		Name:      "alicloud_bss_bill_details",
-		Resolver:  fetchBssDescribeinstanceBill,
+		Resolver:  fetchBillDetails,
 		Multiplex: client.AccountMultiplex,
 		Transform: transformers.TransformWithStruct(
-			&BillDesModel{},
+			&BillDetailsModel{},
 			transformers.WithPrimaryKeys(
 				"BillingCycle", "AccountID", "ProductCode",
 				"ProductType", "PipCode", "RecordID", "SubscriptionType", "CommodityCode",
@@ -21,7 +21,7 @@ func BillDetails() *schema.Table {
 	}
 }
 
-type BillDesModel struct {
+type BillDetailsModel struct {
 	BillingCycle          string  `json:"BillingCycle"`
 	BillingDate           string  `json:"BillingDate"`
 	AccountID             string  `json:"AccountID"`

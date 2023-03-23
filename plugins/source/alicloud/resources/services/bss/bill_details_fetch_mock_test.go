@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildBssDesBill(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildBillDetails(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockBssopenapiClient(ctrl)
 
 	var b *bssopenapi.QueryBillResponse
@@ -23,6 +23,6 @@ func buildBssDesBill(t *testing.T, ctrl *gomock.Controller) client.Services {
 	return client.Services{BSS: mock}
 }
 
-func TestBssDesBill(t *testing.T) {
-	client.MockTestHelper(t, Bill(), buildBssDesBill, client.TestOptions{})
+func TestBillDetails(t *testing.T) {
+	client.MockTestHelper(t, Bill(), buildBillDetails, client.TestOptions{})
 }

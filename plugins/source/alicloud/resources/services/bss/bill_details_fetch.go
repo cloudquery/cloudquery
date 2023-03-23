@@ -16,24 +16,24 @@ import (
 /*
 * https://help.aliyun.com/document_detail/100392.html
  */
-func fetchBssDescribeinstanceBill(_ context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+func fetchBillDetails(_ context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	billingCycles := getDesBillingCycles()
+	billingCycles := getDetailsBillingCycles()
 	if c.Spec.BillHistoryMonths > 0 {
 		billingCycles = append(getHistoryBillingCycles(c.Spec.BillHistoryMonths), billingCycles...)
 	}
 	for _, billingCycle := range billingCycles {
-		billingDates := getDesBillingDates(billingCycle)
+		billingDates := getDetailsBillingDates(billingCycle)
 		for _, billingDate := range billingDates {
 			request := bssopenapi.CreateQueryInstanceBillRequest()
 			log.Info().Str("data", billingDate)
 			request.BillingCycle = billingCycle
 			pageNum := 1
 			total := 0
-			DesmaxLimit := 100
+			DetailsmaxLimit := 100
 			request.PageNum = requests.NewInteger(pageNum)
 			request.BillingDate = billingDate
-			request.PageSize = requests.NewInteger(DesmaxLimit)
+			request.PageSize = requests.NewInteger(DetailsmaxLimit)
 			request.Granularity = "DAILY"
 			for {
 				response, err := c.Services().BSS.QueryInstanceBill(request)
@@ -45,7 +45,7 @@ func fetchBssDescribeinstanceBill(_ context.Context, meta schema.ClientMeta, _ *
 					return fmt.Errorf("got response status code %d (%v)", code, http.StatusText(code))
 				}
 				for _, item := range response.Data.Items.Item {
-					res <- &BillDesModel{
+					res <- &BillDetailsModel{
 						BillingCycle:          response.Data.BillingCycle,
 						BillingDate:           item.BillingDate,
 						AccountID:             response.Data.AccountID,
@@ -93,7 +93,7 @@ func fetchBssDescribeinstanceBill(_ context.Context, meta schema.ClientMeta, _ *
 	return nil
 }
 
-func getDesBillingCycles() []string {
+func getDetailsBillingCycles() []string {
 	var months []string
 	curMonth := time.Now().Format("2006-01")
 	months = append(months, curMonth)
@@ -104,7 +104,7 @@ func getDesBillingCycles() []string {
 	return months
 }
 
-func getDesBillingDates(month string) []string {
+func getDetailsBillingDates(month string) []string {
 	var days []string
 	firstDate := month + "-01"
 	first, _ := time.ParseInLocation("2006-01-02", firstDate, time.Local)
