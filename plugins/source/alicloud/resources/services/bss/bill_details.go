@@ -6,15 +6,16 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Bill_Des() *schema.Table {
+func BillDetails() *schema.Table {
 	return &schema.Table{
-		Name:      "alicloud_bss_bill_des",
+		Name:      "alicloud_bss_bill_details",
 		Resolver:  fetchBssDescribeinstanceBill,
 		Multiplex: client.AccountMultiplex,
 		Transform: transformers.TransformWithStruct(
 			&BillDesModel{},
 			transformers.WithPrimaryKeys(
-				"BillingCycle",
+				"BillingCycle", "AccountID", "ProductCode",
+				"ProductType", "PipCode", "RecordID", "SubscriptionType", "CommodityCode",
 			),
 		),
 	}

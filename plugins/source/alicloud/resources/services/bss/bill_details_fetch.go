@@ -30,7 +30,7 @@ func fetchBssDescribeinstanceBill(_ context.Context, meta schema.ClientMeta, _ *
 			request.BillingCycle = billingCycle
 			pageNum := 1
 			total := 0
-			desmaxLimit := 100
+			DesmaxLimit := 100
 			request.PageNum = requests.NewInteger(pageNum)
 			request.BillingDate = billingDate
 			request.PageSize = requests.NewInteger(DesmaxLimit)
@@ -107,10 +107,9 @@ func getDesBillingCycles() []string {
 func getDesBillingDates(month string) []string {
 	var days []string
 	firstDate := month + "-01"
-	middle, _ := time.ParseInLocation("2006-01-02", firstDate, time.Local)
-	totalDate := middle.AddDate(0, 1, -middle.Day()).Day()
-	for i := 0; i < totalDate; i++ {
-		days = append(days, middle.AddDate(0, 0, i).Format("2006-01-02"))
+	first, _ := time.ParseInLocation("2006-01-02", firstDate, time.Local)
+	for curr := first; curr.Month() == first.Month(); curr = curr.AddDate(0, 0, 1) {
+		days = append(days, curr.Format("2006-01-02"))
 	}
 	return days
 }
