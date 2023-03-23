@@ -19,7 +19,7 @@ func sortKeys(table *schema.Table) []string {
 func CreateTable(table *schema.Table, cluster string, engine *Engine) string {
 	normalized := normalizeTable(table)
 	strBuilder := strings.Builder{}
-	strBuilder.WriteString("CREATE TABLE ")
+	strBuilder.WriteString("CREATE TABLE IF NOT EXISTS")
 	strBuilder.WriteString(tableNamePart(normalized.Name, cluster))
 	strBuilder.WriteString(" (\n")
 	for i, col := range normalized.Columns {
