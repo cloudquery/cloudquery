@@ -121,6 +121,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/support v1.14.1
 )
 
+require github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.5
+
 require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.22 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.25 // indirect
