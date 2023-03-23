@@ -62,9 +62,6 @@ func (v *Client) Request(ctx context.Context, path string, until *int64, fill an
 	}
 	defer body.Close()
 
-	//b, _ := io.ReadAll(body)
-	//fmt.Println(path, "\n", string(b), "\n")
-	//return json.Unmarshal(b, &fill)
 	return json.NewDecoder(body).Decode(&fill)
 }
 
