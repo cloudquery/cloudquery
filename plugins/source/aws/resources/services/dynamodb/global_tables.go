@@ -14,8 +14,10 @@ import (
 func GlobalTables() *schema.Table {
 	tableName := "aws_dynamodb_global_tables"
 	return &schema.Table{
-		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_GlobalTableDescription.html`,
+		Name: tableName,
+		Description: `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_GlobalTableDescription.html
+This table only contains version 2017.11.29 (Legacy) Global Tables. See aws_dynamodb_tables for version 2019.11.21 (Current) Global Tables.
+`,
 		Resolver:            fetchGlobalTables,
 		PreResourceResolver: getGlobalTable,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "dynamodb"),
