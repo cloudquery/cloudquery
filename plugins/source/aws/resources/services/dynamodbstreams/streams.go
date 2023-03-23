@@ -58,11 +58,8 @@ func listStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 }
 
 func describeStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-
 	svc := meta.(*client.Client).Services().Dynamodbstreams
-
 	stream := resource.Item.(types.Stream)
-
 	response, err := svc.DescribeStream(ctx, &dynamodbstreams.DescribeStreamInput{StreamArn: stream.StreamArn})
 	if err != nil {
 		return err
