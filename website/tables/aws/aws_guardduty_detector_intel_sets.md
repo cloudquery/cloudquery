@@ -18,7 +18,6 @@ This table depends on [aws_guardduty_detectors](aws_guardduty_detectors).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|region|String|
 |detector_arn (PK)|String|
 |format|String|
 |location|String|

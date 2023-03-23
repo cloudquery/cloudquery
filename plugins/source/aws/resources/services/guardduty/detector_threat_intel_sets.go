@@ -21,7 +21,6 @@ func detectorThreatIntelSets() *schema.Table {
 		Transform:           transformers.TransformWithStruct(&guardduty.GetThreatIntelSetOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
-			client.DefaultRegionColumn(false),
 			{
 				Name:     "detector_arn",
 				Type:     schema.TypeString,

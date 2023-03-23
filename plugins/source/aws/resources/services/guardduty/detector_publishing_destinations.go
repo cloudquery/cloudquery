@@ -21,7 +21,6 @@ func detectorPublishingDestinations() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Destination{}, transformers.WithPrimaryKeys("DestinationId")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
-			client.DefaultRegionColumn(false),
 			{
 				Name:     "detector_arn",
 				Type:     schema.TypeString,
