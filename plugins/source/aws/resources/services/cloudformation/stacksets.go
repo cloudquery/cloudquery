@@ -99,5 +99,4 @@ func getStackSet(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 		CallAs:   stack.CallAs,
 	}
 	return nil
-
 }
