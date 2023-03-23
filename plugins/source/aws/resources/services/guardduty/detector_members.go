@@ -1,13 +1,18 @@
 package guardduty
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func DetectorMembers() *schema.Table {
+func detectorMembers() *schema.Table {
 	tableName := "aws_guardduty_detector_members"
 	return &schema.Table{
 		Name:        tableName,
@@ -23,5 +28,23 @@ func DetectorMembers() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 		},
+	}
+}
+
+func fetchGuarddutyDetectorMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	detector := parent.Item.(*models.DetectorWrapper)
+	c := meta.(*client.Client)
+	svc := c.Services().Guardduty
+	config := &guardduty.ListMembersInput{DetectorId: aws.String(detector.Id)}
+	for {
+		output, err := svc.ListMembers(ctx, config)
+		if err != nil {
+			return err
+		}
+		res <- output.Members
+		if output.NextToken == nil {
+			return nil
+		}
+		config.NextToken = output.NextToken
 	}
 }
