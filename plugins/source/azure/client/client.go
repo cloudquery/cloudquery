@@ -72,7 +72,7 @@ func (c *Client) getResourceGroupsForSubscription(ctx context.Context, subscript
 	if err != nil {
 		return nil, fmt.Errorf("failed to create resource group client: %w", err)
 	}
-	groups := make([]*armresources.ResourceGroup, 0)
+	var groups []*armresources.ResourceGroup
 	pager := cl.NewListPager(&armresources.ResourceGroupsClientListOptions{})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
