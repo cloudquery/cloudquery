@@ -54,6 +54,7 @@ func fetchCloudformationStackSets(ctx context.Context, meta schema.ClientMeta, _
 	svc := c.Services().Cloudformation
 	var err error
 	var page *cloudformation.ListStackSetsOutput
+	// There is no way of determining if an account is a delegated admin or not. So just need to test it out and fail over to the other one
 	for _, callAs := range []types.CallAs{types.CallAsDelegatedAdmin, types.CallAsSelf} {
 		config := cloudformation.ListStackSetsInput{
 			CallAs: callAs,
