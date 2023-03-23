@@ -38,7 +38,7 @@ func stackSetOperations() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			// stackSetOperationResults(),
+			stackSetOperationResults(),
 		},
 	}
 }
