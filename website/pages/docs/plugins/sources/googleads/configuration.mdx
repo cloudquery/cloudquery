@@ -21,6 +21,8 @@ This is the (nested) spec used by the Google Ads source plugin:
 
   Google Ads [Login customer ID](https://developers.google.com/google-ads/api/docs/migration/login-customer-id).
 
+  Format: digits either with or without hyphen (`-`).
+
   This parameter allows to specify the root account to fetch data from (as well as linked accounts).
   If omitted, the accessible accounts are
   [listed](https://developers.google.com/google-ads/api/docs/account-management/listing-accounts)
@@ -35,6 +37,8 @@ This is the (nested) spec used by the Google Ads source plugin:
 
   Fetch the data only from the specified accounts.
   If account ID specified is a management account, the data will be fetched both from this account and all accounts accessible from it.
+
+  Format: digits either with or without hyphen (`-`).
 
 - `oauth` ([OAuth](#google-ads-oauth-spec) spec, optional. Default: empty)
 
