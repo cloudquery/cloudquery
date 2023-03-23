@@ -60,7 +60,7 @@ func (facebookClient *FacebookClient) ListBusinesss(ctx context.Context, page st
 		RawQuery: query.Encode(),
 	}
 
-	request, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String() /*body*/, nil)
+	request, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String() /* body */, nil)
 	if err != nil {
 		return nil, "", sanitizeUrlError(err)
 	}

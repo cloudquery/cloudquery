@@ -34,7 +34,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		return nil, fmt.Errorf("failed to validate plugin spec: %w", err)
 	}
 
-	facebookClient := rest.NewFacebookClient( /*httpClient*/ nil, facebookSpec.AdAccountId, facebookSpec.AccessToken)
+	facebookClient := rest.NewFacebookClient( /* httpClient */ nil, facebookSpec.AdAccountId, facebookSpec.AccessToken)
 
 	return &Client{
 		FacebookClient: facebookClient,

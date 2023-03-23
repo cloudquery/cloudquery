@@ -16,15 +16,8 @@ The CloudQuery Azure source plugin extracts information from many of the support
 
 <Authentication />
 
-### Authentication with `az login`
-
-First, install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (`az`). Then, login with the Azure CLI:
-
-```bash copy
-az login
-```
-
-You are now authenticated!
+For best performance we recommend creating a service principal and using environment variables to authenticate.
+For testing purposes only you can use [`az login`](#authentication-with-az-login) to authenticate.
 
 ### Authentication with Environment Variables
 
@@ -83,6 +76,22 @@ export AZURE_CLIENT_ID=<YOUR AZURE_CLIENT_ID>
 export AZURE_CLIENT_SECRET=<YOUR AZURE_CLIENT_SECRET>
 export AZURE_SUBSCRIPTION_ID=$SUBSCRIPTION_ID
 ```
+
+### Authentication with `az login`
+
+First, install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (`az`). Then, login with the Azure CLI:
+
+```bash copy
+az login
+```
+
+You are now authenticated!
+
+import { Callout } from 'nextra-theme-docs'
+
+<Callout type="info">
+Using only `az login` is not recommended for production use, as it requires spawning a new Azure CLI process each time an authentication token is needed.
+</Callout>
 
 ## Query Examples
 

@@ -7,18 +7,18 @@ import (
 	"golang.org/x/time/rate"
 )
 
-// Note that this is an implementatioin of 'pagerduty.HTTPClient', not of 'http.Client'.
+// Note that this is an implementation of 'pagerduty.HTTPClient', not of 'http.Client'.
 func newRateLimitedHttpClient(underlyingHttpClient pagerduty.HTTPClient, maxRequestsPerSecond int) *RateLimitedHttpClient {
 	return &RateLimitedHttpClient{
 		underlyingHttpClient: underlyingHttpClient,
 		limiter: rate.NewLimiter(
-			/*r=*/ rate.Limit(maxRequestsPerSecond),
-			/*b=*/ 1,
+			/* r= */ rate.Limit(maxRequestsPerSecond),
+			/* b= */ 1,
 		),
 	}
 }
 
-// Note that this is an implementatioin of 'pagerduty.HTTPClient', not of 'http.Client'.
+// Note that this is an implementation of 'pagerduty.HTTPClient', not of 'http.Client'.
 type RateLimitedHttpClient struct {
 	underlyingHttpClient pagerduty.HTTPClient
 
