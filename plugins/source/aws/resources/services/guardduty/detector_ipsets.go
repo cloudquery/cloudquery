@@ -10,14 +10,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func detectorFilters() *schema.Table {
-	tableName := "aws_guardduty_detector_filters"
+func detectorIPSets() *schema.Table {
+	tableName := "aws_guardduty_detector_ip_sets"
 	return &schema.Table{
 		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetFilter.html`,
-		Resolver:            fetchDetectorFilters,
-		PreResourceResolver: getDetectorFilter,
-		Transform:           transformers.TransformWithStruct(&guardduty.GetFilterOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
+		Resolver:            fetchDetectorIPSets,
+		PreResourceResolver: getDetectorIPSet,
+		Transform:           transformers.TransformWithStruct(&guardduty.GetIPSetOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
 			{
@@ -29,20 +29,20 @@ func detectorFilters() *schema.Table {
 	}
 }
 
-func fetchDetectorFilters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchDetectorIPSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	detector := parent.Item.(*models.DetectorWrapper)
 
 	c := meta.(*client.Client)
 	svc := c.Services().Guardduty
-	config := &guardduty.ListFiltersInput{
+	config := &guardduty.ListIPSetsInput{
 		DetectorId: &detector.Id,
 	}
 	for {
-		output, err := svc.ListFilters(ctx, config)
+		output, err := svc.ListIPSets(ctx, config)
 		if err != nil {
 			return err
 		}
-		res <- output.FilterNames
+		res <- output.IpSetIds
 
 		if output.NextToken == nil {
 			return nil
@@ -51,15 +51,15 @@ func fetchDetectorFilters(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 }
 
-func getDetectorFilter(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+func getDetectorIPSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Guardduty
-	filterName := resource.Item.(string)
+	id := resource.Item.(string)
 	detector := resource.Parent.Item.(*models.DetectorWrapper)
 
-	out, err := svc.GetFilter(ctx, &guardduty.GetFilterInput{
+	out, err := svc.GetIPSet(ctx, &guardduty.GetIPSetInput{
 		DetectorId: &detector.Id,
-		FilterName: &filterName,
+		IpSetId:    &id,
 	})
 	if err != nil {
 		return err

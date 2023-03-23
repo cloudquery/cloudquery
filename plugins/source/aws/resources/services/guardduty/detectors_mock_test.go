@@ -59,6 +59,16 @@ func buildDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 	m.EXPECT().GetFilter(gomock.Any(), gomock.Any(), gomock.Any()).Return(&filter, nil)
 
+	var ipset guardduty.GetIPSetOutput
+	if err := faker.FakeObject(&ipset); err != nil {
+		t.Fatal(err)
+	}
+	ipset.Name = aws.String("test-ipset")
+	m.EXPECT().ListIPSets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&guardduty.ListIPSetsOutput{IpSetIds: []string{*ipset.Name}}, nil,
+	)
+	m.EXPECT().GetIPSet(gomock.Any(), gomock.Any(), gomock.Any()).Return(&ipset, nil)
+
 	m.EXPECT().ListMembers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&guardduty.ListMembersOutput{Members: []gdTypes.Member{member}}, nil,
 	)

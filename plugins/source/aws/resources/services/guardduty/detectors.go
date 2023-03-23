@@ -37,6 +37,7 @@ func Detectors() *schema.Table {
 			DetectorMembers(),
 			detectorFindings(),
 			detectorFilters(),
+			detectorIPSets(),
 		},
 	}
 }

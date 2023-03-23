@@ -1,6 +1,6 @@
-# Table: aws_guardduty_detector_filters
+# Table: aws_guardduty_detector_ip_sets
 
-This table shows data for Amazon GuardDuty Detector Filters.
+This table shows data for Amazon GuardDuty Detector IP Sets.
 
 https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetFilter.html
 
@@ -19,9 +19,8 @@ This table depends on [aws_guardduty_detectors](aws_guardduty_detectors).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |detector_arn|String|
-|action|String|
-|finding_criteria|JSON|
+|format|String|
+|location|String|
 |name (PK)|String|
-|description|String|
-|rank|Int|
+|status|String|
 |tags|JSON|
