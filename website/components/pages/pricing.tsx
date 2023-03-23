@@ -9,7 +9,8 @@ const tiers: PricingTier[] = [
         attributes: {
             Price: "Free",
             PriceMonthly: false,
-            Communication: "Discord public channels, GitHub issues",
+            Limits: "No usage-based billing or limits on number of rows.",
+            Communication: <><a href="https://www.cloudquery.io/discord" className="text-blue-500 hover:text-blue-600">Discord public channels</a>, <a href="https://github.com/cloudquery/cloudquery/issues" className="text-blue-500 hover:text-blue-600">GitHub issues</a></>,
             Contract: "None needed",
         }
     },
@@ -19,7 +20,8 @@ const tiers: PricingTier[] = [
         attributes: {
             Price: "$4k",
             PriceMonthly: true,
-            PriceDetails: "Annual contract. Billed annually.",
+            PriceDetails: "USD. Annual contract, billed annually.",
+            Limits: "No usage-based billing or limits on number of rows.",
             Communication: "Private channel in any of Discord, Slack, or Teams",
             SLA: "24 hour response time on support tickets.",
             TAM: "Up to 2 hours / month",
@@ -32,7 +34,8 @@ const tiers: PricingTier[] = [
         attributes: {
             Price: "$25k",
             PriceMonthly: true,
-            PriceDetails: "Annual contract. Billed annually.",
+            PriceDetails: "USD. Annual contract, billed annually.",
+            Limits: "No usage-based billing or limits on number of rows.",
             Communication: "Private channel in any of Discord, Slack, or Teams",
             SLA: "12 hour response time on support tickets.",
             TAM: "Up to 4 hours / month",
@@ -46,6 +49,7 @@ const tiers: PricingTier[] = [
         attributes: {
             Price: "Custom",
             PriceMonthly: false,
+            Limits: "No usage-based billing or limits on number of rows.",
             Communication: "Private channel in any of Discord, Slack, or Teams",
             SLA: "12 hour response time on support tickets.",
             TAM: "Customizable hours / month",

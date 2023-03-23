@@ -10,7 +10,8 @@ export interface PricingTierAttributes {
     Price: string;
     PriceMonthly: boolean;
     PriceDetails?: string;
-    Communication?: string;
+    Limits?: string;
+    Communication?: React.ReactNode;
     SLA?: string;
     TAM?: string;
     Features?: string;
@@ -40,6 +41,11 @@ export default function PricingCard({tier} : {tier: PricingTier}) {
         : null}
 
         <ul role="list" className="space-y-4 text-left mb-20">
+            {tier.attributes.Limits ?
+            <li className="flex items-center space-x-3">
+                {check}
+                <span><strong>Unlimited</strong>: {tier.attributes.Limits}</span>
+            </li> : null }
             {tier.attributes.Communication ?
             <li className="flex items-center space-x-3">
                 {check}
