@@ -1,9 +1,9 @@
 {
   "cli": "2.5.2",
   "cli+FILLER": "0.0.0",
-  "plugins/source/aws": "15.5.0",
+  "plugins/source/aws": "15.6.0",
   "plugins/source/aws+FILLER": "0.0.0",
-  "plugins/source/azure": "6.0.0",
+  "plugins/source/azure": "6.1.0",
   "plugins/source/azure+FILLER": "0.0.0",
   "plugins/source/cloudflare": "3.2.3",
   "plugins/source/cloudflare+FILLER": "0.0.0",
@@ -83,7 +83,7 @@
   "plugins/destination/mssql+FILLER": "0.0.0",
   "plugins/source/plausible": "1.1.2",
   "plugins/source/plausible+FILLER": "0.0.0",
-  "plugins/source/shopify": "1.1.2",
+  "plugins/source/shopify": "1.1.3",
   "plugins/source/shopify+FILLER": "0.0.0",
   "plugins/source/stripe": "1.1.2",
   "plugins/source/stripe+FILLER": "0.0.0",
@@ -116,5 +116,6 @@
   "plugins/source/mysql": "1.0.1",
   "plugins/source/mysql+FILLER": "0.0.0",
   "plugins/destination/gremlin": "1.0.1",
-  "plugins/destination/gremlin+FILLER": "0.0.0"
+  "plugins/destination/gremlin+FILLER": "0.0.0",
+  "plugins/source/googleads": "1.0.0"
 }
