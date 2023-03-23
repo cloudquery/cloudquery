@@ -35,6 +35,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodbstreams"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
@@ -145,6 +146,7 @@ func initServices(region string, c aws.Config) Services {
 		Directconnect:             directconnect.NewFromConfig(awsCfg),
 		Docdb:                     docdb.NewFromConfig(awsCfg),
 		Dynamodb:                  dynamodb.NewFromConfig(awsCfg),
+		Dynamodbstreams:           dynamodbstreams.NewFromConfig(awsCfg),
 		Ec2:                       ec2.NewFromConfig(awsCfg),
 		Ecr:                       ecr.NewFromConfig(awsCfg),
 		Ecrpublic:                 ecrpublic.NewFromConfig(awsCfg),
@@ -252,6 +254,7 @@ type Services struct {
 	Directconnect             services.DirectconnectClient
 	Docdb                     services.DocdbClient
 	Dynamodb                  services.DynamodbClient
+	Dynamodbstreams           services.DynamodbstreamsClient
 	Ec2                       services.Ec2Client
 	Ecr                       services.EcrClient
 	Ecrpublic                 services.EcrpublicClient
