@@ -3,7 +3,6 @@ package bss
 import (
 	"context"
 	"fmt"
-	"github.com/rs/zerolog/log"
 	"net/http"
 	"time"
 
@@ -26,7 +25,6 @@ func fetchBillDetails(_ context.Context, meta schema.ClientMeta, _ *schema.Resou
 		billingDates := getDetailsBillingDates(billingCycle)
 		for _, billingDate := range billingDates {
 			request := bssopenapi.CreateQueryInstanceBillRequest()
-			log.Info().Str("data", billingDate)
 			request.BillingCycle = billingCycle
 			pageNum := 1
 			total := 0
