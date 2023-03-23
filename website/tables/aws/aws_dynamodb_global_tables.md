@@ -3,6 +3,7 @@
 This table shows data for Amazon DynamoDB Global Tables.
 
 https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_GlobalTableDescription.html
+This table only contains version 2017.11.29 (Legacy) Global Tables. See aws_dynamodb_tables for version 2019.11.21 (Current) Global Tables.
 
 The primary key for this table is **arn**.
 
