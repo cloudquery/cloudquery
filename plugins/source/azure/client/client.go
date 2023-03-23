@@ -127,8 +127,8 @@ func (c *Client) discoverResourceGroups(ctx context.Context) error {
 				return err
 			}
 			groupsLock.Lock()
+			defer groupsLock.Unlock()
 			c.ResourceGroups[subID] = groups
-			groupsLock.Unlock()
 
 			return nil
 		})
@@ -140,11 +140,11 @@ func (c *Client) discoverResourceGroups(ctx context.Context) error {
 			}
 
 			namespacesLock.Lock()
+			defer namespacesLock.Unlock()
 			c.registeredNamespaces[subID] = make(map[string]bool)
 			for _, p := range providers {
 				c.registeredNamespaces[subID][strings.ToLower(*p.Namespace)] = true
 			}
-			namespacesLock.Unlock()
 
 			return nil
 		})
