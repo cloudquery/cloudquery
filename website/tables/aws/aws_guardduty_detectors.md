@@ -9,6 +9,7 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 ## Relations
 
 The following tables depend on aws_guardduty_detectors:
+  - [aws_guardduty_detector_findings](aws_guardduty_detector_findings)
   - [aws_guardduty_detector_members](aws_guardduty_detector_members)
 
 ## Columns

@@ -37,6 +37,18 @@ func buildGuardDutyDetectors(t *testing.T, ctrl *gomock.Controller) client.Servi
 	member.UpdatedAt = aws.String(time.Now().Format(time.RFC3339))
 	member.InvitedAt = aws.String(time.Now().Format(time.RFC3339))
 
+	var f gdTypes.Finding
+	if err := faker.FakeObject(&f); err != nil {
+		t.Fatal(err)
+	}
+	f.Id = aws.String("test-finding")
+	m.EXPECT().ListFindings(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&guardduty.ListFindingsOutput{FindingIds: []string{*f.Id}}, nil,
+	)
+	m.EXPECT().GetFindings(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&guardduty.GetFindingsOutput{Findings: []gdTypes.Finding{f}}, nil,
+	)
+
 	m.EXPECT().ListMembers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&guardduty.ListMembersOutput{Members: []gdTypes.Member{member}}, nil,
 	)
