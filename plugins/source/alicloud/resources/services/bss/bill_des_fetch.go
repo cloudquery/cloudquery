@@ -80,7 +80,6 @@ func fetchBssDescribeinstanceBill(_ context.Context, meta schema.ClientMeta, _ *
 						InstanceID:            item.InstanceID,
 						CashAmount:            item.CashAmount,
 					}
-
 				}
 				total += len(response.Data.Items.Item)
 				if len(response.Data.Items.Item) == 0 || total >= response.Data.TotalCount {
