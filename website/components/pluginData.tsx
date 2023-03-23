@@ -97,20 +97,6 @@ export const SOURCE_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
   },
   {
-    name: "Google Analytics",
-    logo: "/images/logos/plugins/ga.svg",
-    id: "googleanalytics",
-    kind: "official",
-    category: "marketing-analytics",
-  },
-  {
-    name: "Google Cloud Platform",
-    logo: "/images/logos/plugins/gcp.svg",
-    id: "gcp",
-    kind: "official",
-    category: "cloud-infrastructure",
-  },
-  {
     name: "GitHub",
     logo: "/images/logos/plugins/github.svg",
     logoDark: "/images/logos/plugins/github-dark.svg",
@@ -124,6 +110,27 @@ export const SOURCE_PLUGINS: Plugin[] = [
     id: "gitlab",
     kind: "official",
     category: "engineering-analytics",
+  },
+  {
+    name: "Google Ads",
+    id: "googleads",
+    kind: "official",
+    category: "marketing-analytics",
+    logo: "/images/logos/plugins/ga2.svg",
+  },
+  {
+    name: "Google Analytics",
+    logo: "/images/logos/plugins/ga.svg",
+    id: "googleanalytics",
+    kind: "official",
+    category: "marketing-analytics",
+  },
+  {
+    name: "Google Cloud Platform",
+    logo: "/images/logos/plugins/gcp.svg",
+    id: "gcp",
+    kind: "official",
+    category: "cloud-infrastructure",
   },
   {
     name: "Hacker News API",
@@ -562,14 +569,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8135",
     kind: "unpublished",
     category: "marketing-analytics",
-  },
-  {
-    name: "Google Ads",
-    id: "google-ads",
-    href: "https://github.com/cloudquery/cloudquery/issues/8642",
-    kind: "unpublished",
-    category: "marketing-analytics",
-    logo: "/images/logos/plugins/google-ads.svg",
   },
   {
     name: "Google Sheets",
