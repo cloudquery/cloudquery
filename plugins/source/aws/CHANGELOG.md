@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Table `aws_autoscaling_plan_resources` was added
 - Table `aws_autoscaling_plans` was added
 
+### This Release has the Following Changes to Tables
+- Table `aws_autoscaling_plan_resources` was added
+- Table `aws_autoscaling_plans` was added
+
 ### Bug Fixes
 
 * **aws:** Paginate EBS Snapshots for more consistent throughput ([#9374](https://github.com/cloudquery/cloudquery/issues/9374)) ([156013a](https://github.com/cloudquery/cloudquery/commit/156013a358597840b2c312561b09d4a3688e1d45))
