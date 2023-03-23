@@ -36,6 +36,7 @@ func Detectors() *schema.Table {
 		Relations: []*schema.Table{
 			DetectorMembers(),
 			detectorFindings(),
+			detectorFilters(),
 		},
 	}
 }

@@ -15,7 +15,7 @@ func detectorFindings() *schema.Table {
 	tableName := "aws_guardduty_detector_findings"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetFindings.html`,
+		Description: `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Finding.html`,
 		Resolver:    fetchDetectorFindings,
 		Transform:   transformers.TransformWithStruct(&types.Finding{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),

@@ -2,7 +2,7 @@
 
 This table shows data for Amazon GuardDuty Detector Findings.
 
-https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetFindings.html
+https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Finding.html
 
 The primary key for this table is **arn**.
 

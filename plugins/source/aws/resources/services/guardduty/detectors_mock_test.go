@@ -13,7 +13,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildGuardDutyDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockGuarddutyClient(ctrl)
 
 	var d guardduty.GetDetectorOutput
@@ -37,17 +37,27 @@ func buildGuardDutyDetectors(t *testing.T, ctrl *gomock.Controller) client.Servi
 	member.UpdatedAt = aws.String(time.Now().Format(time.RFC3339))
 	member.InvitedAt = aws.String(time.Now().Format(time.RFC3339))
 
-	var f gdTypes.Finding
-	if err := faker.FakeObject(&f); err != nil {
+	var finding gdTypes.Finding
+	if err := faker.FakeObject(&finding); err != nil {
 		t.Fatal(err)
 	}
-	f.Id = aws.String("test-finding")
+	finding.Id = aws.String("test-finding")
 	m.EXPECT().ListFindings(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&guardduty.ListFindingsOutput{FindingIds: []string{*f.Id}}, nil,
+		&guardduty.ListFindingsOutput{FindingIds: []string{*finding.Id}}, nil,
 	)
 	m.EXPECT().GetFindings(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&guardduty.GetFindingsOutput{Findings: []gdTypes.Finding{f}}, nil,
+		&guardduty.GetFindingsOutput{Findings: []gdTypes.Finding{finding}}, nil,
 	)
+
+	var filter guardduty.GetFilterOutput
+	if err := faker.FakeObject(&filter); err != nil {
+		t.Fatal(err)
+	}
+	filter.Name = aws.String("test-filter")
+	m.EXPECT().ListFilters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&guardduty.ListFiltersOutput{FilterNames: []string{*filter.Name}}, nil,
+	)
+	m.EXPECT().GetFilter(gomock.Any(), gomock.Any(), gomock.Any()).Return(&filter, nil)
 
 	m.EXPECT().ListMembers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&guardduty.ListMembersOutput{Members: []gdTypes.Member{member}}, nil,
@@ -57,6 +67,6 @@ func buildGuardDutyDetectors(t *testing.T, ctrl *gomock.Controller) client.Servi
 	}
 }
 
-func TestGuarddutyDetectors(t *testing.T) {
-	client.AwsMockTestHelper(t, Detectors(), buildGuardDutyDetectors, client.TestOptions{})
+func TestDetectors(t *testing.T) {
+	client.AwsMockTestHelper(t, Detectors(), buildDetectors, client.TestOptions{})
 }

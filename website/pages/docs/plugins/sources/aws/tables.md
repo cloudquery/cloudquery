@@ -303,6 +303,7 @@
 - [aws_glue_triggers](tables/aws_glue_triggers)
 - [aws_glue_workflows](tables/aws_glue_workflows)
 - [aws_guardduty_detectors](tables/aws_guardduty_detectors)
+  - [aws_guardduty_detector_filters](tables/aws_guardduty_detector_filters)
   - [aws_guardduty_detector_findings](tables/aws_guardduty_detector_findings)
   - [aws_guardduty_detector_members](tables/aws_guardduty_detector_members)
 - [aws_iam_accounts](tables/aws_iam_accounts)
