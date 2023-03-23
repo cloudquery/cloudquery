@@ -93,7 +93,7 @@ func (c *Client) getRegisteredProvidersForSubscription(ctx context.Context, subs
 	if err != nil {
 		return nil, fmt.Errorf("failed to create provider client: %w", err)
 	}
-	providers := make([]*armresources.Provider, 0)
+	var providers []*armresources.Provider
 	providerPager := providerClient.NewListPager(nil)
 	for providerPager.More() {
 		providerPage, err := providerPager.NextPage(ctx)
