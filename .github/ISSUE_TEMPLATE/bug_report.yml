@@ -62,7 +62,7 @@ body:
     id: version
     attributes:
       label: CloudQuery version
-      description: output of `cloudquery version`
+      description: output of `cloudquery --version`
     validations:
       required: true
 

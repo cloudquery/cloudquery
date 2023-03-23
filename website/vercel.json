@@ -225,6 +225,18 @@
     {
       "source": "/docs/cq-vs-others/steampipe",
       "destination": "/docs/cq-vs-others/steampipe-alternative-cloudquery"
+    },
+    {
+      "source": "/blog/how-hexagon-built-an-infrastructure-data-platform",
+      "destination": "/blog/how-hexagon-built-an-infrastructure-data-lake"
+    },
+    {
+      "source": "/contact",
+      "destination": "https://docs.google.com/forms/d/e/1FAIpQLSfSbz6B1z7SsqbqqadjnA2EJ6QoZ67S1NCtjjImCLlMacGkyg/viewform?usp=sf_link"
+    },
+    {
+      "source": "/docs/support",
+      "destination": "/pricing"
     }
   ]
 }

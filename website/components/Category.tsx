@@ -10,6 +10,7 @@ export type Category =
     "product-analytics" |
     "project-management" |
     "fleet-management" |
+    "security" |
     "shipment-tracking" |
     "other";
 

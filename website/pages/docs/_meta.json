@@ -11,7 +11,6 @@
   "faq": "FAQ",
   "telemetry": "Telemetry",
   "troubleshooting": "Troubleshooting",
-  "support": "Support",
   "changelog": {
     "title": "Changelog ↗",
     "href": "https://github.com/cloudquery/cloudquery/blob/main/cli/CHANGELOG.md",
