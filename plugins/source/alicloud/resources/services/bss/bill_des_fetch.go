@@ -30,7 +30,7 @@ func fetchBssDescribeinstanceBill(_ context.Context, meta schema.ClientMeta, _ *
 			request.BillingCycle = billingCycle
 			pageNum := 1
 			total := 0
-			DesmaxLimit := 100
+			desmaxLimit := 100
 			request.PageNum = requests.NewInteger(pageNum)
 			request.BillingDate = billingDate
 			request.PageSize = requests.NewInteger(DesmaxLimit)
