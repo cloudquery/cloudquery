@@ -13,6 +13,7 @@ The following tables depend on aws_guardduty_detectors:
   - [aws_guardduty_detector_findings](aws_guardduty_detector_findings)
   - [aws_guardduty_detector_ip_sets](aws_guardduty_detector_ip_sets)
   - [aws_guardduty_detector_members](aws_guardduty_detector_members)
+  - [aws_guardduty_detector_publishing_destinations](aws_guardduty_detector_publishing_destinations)
 
 ## Columns
 

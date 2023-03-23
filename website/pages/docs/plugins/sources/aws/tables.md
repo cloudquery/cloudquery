@@ -309,6 +309,7 @@
   - [aws_guardduty_detector_findings](tables/aws_guardduty_detector_findings)
   - [aws_guardduty_detector_ip_sets](tables/aws_guardduty_detector_ip_sets)
   - [aws_guardduty_detector_members](tables/aws_guardduty_detector_members)
+  - [aws_guardduty_detector_publishing_destinations](tables/aws_guardduty_detector_publishing_destinations)
 - [aws_iam_accounts](tables/aws_iam_accounts)
 - [aws_iam_credential_reports](tables/aws_iam_credential_reports)
 - [aws_iam_groups](tables/aws_iam_groups)

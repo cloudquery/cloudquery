@@ -30,13 +30,6 @@ func buildDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	m.EXPECT().GetDetector(gomock.Any(), gomock.Any(), gomock.Any()).Return(&d, nil)
 
-	var member gdTypes.Member
-	if err := faker.FakeObject(&member); err != nil {
-		t.Fatal(err)
-	}
-	member.UpdatedAt = aws.String(time.Now().Format(time.RFC3339))
-	member.InvitedAt = aws.String(time.Now().Format(time.RFC3339))
-
 	var finding gdTypes.Finding
 	if err := faker.FakeObject(&finding); err != nil {
 		t.Fatal(err)
@@ -69,6 +62,20 @@ func buildDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 	m.EXPECT().GetIPSet(gomock.Any(), gomock.Any(), gomock.Any()).Return(&ipset, nil)
 
+	var dest gdTypes.Destination
+	if err := faker.FakeObject(&dest); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListPublishingDestinations(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&guardduty.ListPublishingDestinationsOutput{Destinations: []gdTypes.Destination{dest}}, nil,
+	)
+
+	var member gdTypes.Member
+	if err := faker.FakeObject(&member); err != nil {
+		t.Fatal(err)
+	}
+	member.UpdatedAt = aws.String(time.Now().Format(time.RFC3339))
+	member.InvitedAt = aws.String(time.Now().Format(time.RFC3339))
 	m.EXPECT().ListMembers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&guardduty.ListMembersOutput{Members: []gdTypes.Member{member}}, nil,
 	)

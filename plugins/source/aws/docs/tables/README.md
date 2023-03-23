@@ -309,6 +309,7 @@
   - [aws_guardduty_detector_findings](../../../../../website/tables/aws/aws_guardduty_detector_findings.md)
   - [aws_guardduty_detector_ip_sets](../../../../../website/tables/aws/aws_guardduty_detector_ip_sets.md)
   - [aws_guardduty_detector_members](../../../../../website/tables/aws/aws_guardduty_detector_members.md)
+  - [aws_guardduty_detector_publishing_destinations](../../../../../website/tables/aws/aws_guardduty_detector_publishing_destinations.md)
 - [aws_iam_accounts](../../../../../website/tables/aws/aws_iam_accounts.md)
 - [aws_iam_credential_reports](../../../../../website/tables/aws/aws_iam_credential_reports.md)
 - [aws_iam_groups](../../../../../website/tables/aws/aws_iam_groups.md)

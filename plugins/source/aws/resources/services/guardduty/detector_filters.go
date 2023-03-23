@@ -24,6 +24,9 @@ func detectorFilters() *schema.Table {
 				Name:     "detector_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 		},
 	}
