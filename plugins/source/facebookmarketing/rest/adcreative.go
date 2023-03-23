@@ -100,7 +100,7 @@ func (facebookClient *FacebookClient) ListAdcreatives(ctx context.Context, page 
 		RawQuery: query.Encode(),
 	}
 
-	request, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String() /*body*/, nil)
+	request, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String() /* body */, nil)
 	if err != nil {
 		return nil, "", sanitizeUrlError(err)
 	}

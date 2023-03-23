@@ -63,8 +63,8 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		Authorizer: hubspot.NewTokenAuthorizer(authToken),
 		Spec:       hubspotSpec,
 		RateLimiter: rate.NewLimiter(
-			/*r=*/ rate.Limit(*hubspotSpec.MaxRequestsPerSecond),
-			/*b=*/ 1,
+			/* r= */ rate.Limit(*hubspotSpec.MaxRequestsPerSecond),
+			/* b= */ 1,
 		),
 	}, nil
 }
