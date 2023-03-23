@@ -72,3 +72,15 @@ func TestCreateTableWithEngine(t *testing.T) {
 
 	ensureContents(t, query, "create_table_engine.sql")
 }
+
+func TestDropTable(t *testing.T) {
+	query := DropTable(&schema.Table{Name: "table_name"}, "")
+
+	ensureContents(t, query, "drop_table.sql")
+}
+
+func TestDropTableOnCLuster(t *testing.T) {
+	query := DropTable(&schema.Table{Name: "table_name"}, "my_cluster")
+
+	ensureContents(t, query, "drop_table_cluster.sql")
+}

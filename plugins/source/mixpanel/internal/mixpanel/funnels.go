@@ -35,7 +35,6 @@ func (c *Client) QueryFunnel(ctx context.Context, id int64, startDate, endDate s
 
 	var d struct {
 		Data map[string]FunnelData `json:"data"`
-		//Meta any                   `json:"meta"`
 	}
 	err := c.Request(ctx, http.MethodGet, "/api/2.0/funnels", qp, &d)
 	if err != nil {
