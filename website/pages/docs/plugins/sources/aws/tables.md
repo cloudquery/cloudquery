@@ -150,6 +150,7 @@
 - [aws_dynamodb_tables](tables/aws_dynamodb_tables)
   - [aws_dynamodb_table_continuous_backups](tables/aws_dynamodb_table_continuous_backups)
   - [aws_dynamodb_table_replica_auto_scalings](tables/aws_dynamodb_table_replica_auto_scalings)
+- [aws_dynamodbstreams_streams](tables/aws_dynamodbstreams_streams)
 - [aws_ec2_account_attributes](tables/aws_ec2_account_attributes)
 - [aws_ec2_byoip_cidrs](tables/aws_ec2_byoip_cidrs)
 - [aws_ec2_customer_gateways](tables/aws_ec2_customer_gateways)

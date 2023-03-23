@@ -150,6 +150,7 @@
 - [aws_dynamodb_tables](../../../../../website/tables/aws/aws_dynamodb_tables.md)
   - [aws_dynamodb_table_continuous_backups](../../../../../website/tables/aws/aws_dynamodb_table_continuous_backups.md)
   - [aws_dynamodb_table_replica_auto_scalings](../../../../../website/tables/aws/aws_dynamodb_table_replica_auto_scalings.md)
+- [aws_dynamodbstreams_streams](../../../../../website/tables/aws/aws_dynamodbstreams_streams.md)
 - [aws_ec2_account_attributes](../../../../../website/tables/aws/aws_ec2_account_attributes.md)
 - [aws_ec2_byoip_cidrs](../../../../../website/tables/aws/aws_ec2_byoip_cidrs.md)
 - [aws_ec2_customer_gateways](../../../../../website/tables/aws/aws_ec2_customer_gateways.md)
