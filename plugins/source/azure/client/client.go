@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
@@ -144,6 +145,18 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		c.Options = &arm.ClientOptions{ClientOptions: azcore.ClientOptions{Cloud: cloudConfig}}
 	}
 
+	// NewDefaultAzureCredential builds a chain of credentials, and reports errors via the log listener
+	// This is currently the way we have to get the errors and report them to the user
+	// Any credential that has errors is ignored and the next one in the chain is tried when authenticating
+	// So it's useful to report all the errors
+	// It's logged as information as we don't know which credential chain the user intended to use
+	log.SetEvents(azidentity.EventAuthentication)
+	log.SetListener(func(e log.Event, s string) {
+		if strings.HasPrefix(s, "NewDefaultAzureCredential failed") {
+			c.Logger().Info().Str("azure-sdk-for-go", "azidentity").Msg(s)
+		}
+	})
+
 	var credsOptions *azidentity.DefaultAzureCredentialOptions
 	if c.Options != nil {
 		credsOptions = &azidentity.DefaultAzureCredentialOptions{ClientOptions: c.Options.ClientOptions}
@@ -153,6 +166,8 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 	if err != nil {
 		return nil, err
 	}
+
+	log.SetListener(nil)
 
 	// if subscription are not specified discover subscriptions with default credentials
 	if len(c.subscriptions) == 0 {
