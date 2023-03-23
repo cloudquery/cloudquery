@@ -4,7 +4,7 @@ This table shows data for Azure Compute Skus.
 
 https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list?tabs=HTTP#resourceskusresult
 
-The composite primary key for this table is (**subscription_id**, **_sku_hash**, **name**).
+The composite primary key for this table is (**subscription_id**, **locations_hash**, **capabilities_hash**, **name**, **resource_type**).
 
 ## Columns
 
@@ -15,7 +15,8 @@ The composite primary key for this table is (**subscription_id**, **_sku_hash**,
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |subscription_id (PK)|String|
-|_sku_hash (PK)|String|
+|locations_hash (PK)|String|
+|capabilities_hash (PK)|String|
 |api_versions|StringArray|
 |capabilities|JSON|
 |capacity|JSON|
@@ -25,7 +26,7 @@ The composite primary key for this table is (**subscription_id**, **_sku_hash**,
 |location_info|JSON|
 |locations|StringArray|
 |name (PK)|String|
-|resource_type|String|
+|resource_type (PK)|String|
 |restrictions|JSON|
 |size|String|
 |tier|String|
