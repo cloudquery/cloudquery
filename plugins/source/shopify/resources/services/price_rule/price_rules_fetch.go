@@ -52,6 +52,7 @@ func fetchPriceRules(ctx context.Context, meta schema.ClientMeta, parent *schema
 		}
 
 		cursor = cur
+		p = nil
 	}
 
 	if cl.Backend != nil {

@@ -51,6 +51,7 @@ func fetchCustomers(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		}
 
 		cursor = cur
+		p = nil
 	}
 
 	if cl.Backend != nil {

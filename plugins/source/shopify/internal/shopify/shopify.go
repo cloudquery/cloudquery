@@ -125,7 +125,13 @@ func (s *Client) request(ctx context.Context, edge string, params url.Values) (r
 func (s *Client) retryableRequest(ctx context.Context, edge string, params url.Values) (*http.Response, *time.Duration, error) {
 	log := s.opts.Log.With().Str("edge", edge).Interface("query_params", params).Logger()
 
-	u := s.baseURL + edge + "?" + params.Encode()
+	u := s.baseURL + edge
+	if strings.Contains(u, "?") {
+		u += "&" + params.Encode()
+	} else {
+		u += "?" + params.Encode()
+	}
+	log.Trace().Str("url", u).Msg("requesting...")
 
 	var (
 		body []byte
