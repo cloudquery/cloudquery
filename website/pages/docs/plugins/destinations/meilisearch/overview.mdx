@@ -1,0 +1,75 @@
+---
+name: Meilisearch
+---
+# Meilisearch Destination Plugin
+
+import { Callout } from 'nextra-theme-docs'
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+
+<Badge text={"Latest: " + getLatestVersion("destination", "meilisearch")}/>
+
+The Meilisearch plugin syncs data from any [CloudQuery source plugins](https://www.cloudquery.io/docs/plugins/sources/overview)
+to a [Meilisearch](https://www.meilisearch.com) instance.
+
+## Example config
+
+<Configuration />
+
+The Meilisearch destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size)
+and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+
+It supports `append` and `overwrite` write modes. Write mode selection is required through
+[`write_mode`](/docs/reference/destination-spec#write_mode).
+
+## Meilisearch Spec
+
+This is the spec used by the Meilisearch destination plugin.
+
+- `host` (`string`, required)
+
+  A Meilisearch instance host & port to use.
+
+  Example: `http://localhost:7700`
+
+  <Callout type="info">
+    If your Meilisearch instance uses private SSL certificate, make sure to specify `ca_cert` option, too.
+  </Callout>
+
+
+- `api_key` (`string`, required)
+
+  Meilisearch API key, granted the following actions:
+
+  - `documents.add`
+  - `indexes.create`
+  - `indexes.get`
+  - `indexes.update`
+  - `tasks.get`
+  - `settings.get`
+  - `settings.update`
+  - `version`
+
+  <Callout type="info">
+    Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+  </Callout>
+
+
+- `timeout` (`string`, optional) (default: `5m`)
+
+  Meilisearch API client timeout.
+
+- `ca_cert` (string, optional)
+
+  PEM-encoded certificate authorities.
+  When set, a certificate pool will be created by appending the certificates to the system pool.
+  See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example)
+  for how to read this value from a file.
+
+## Underlying library
+
+We use the official [meilisearch-go](https://github.com/meilisearch/meilisearch-go) package.
+It is tested against Meilisearch v1.1.0-rc.1.
+Please [open an issue](https://github.com/cloudquery/cloudquery/issues/new?labels=bug&template=bug_report.yml&title=bug(meilisearch)%3A+%3Ctitle%3E)
+if you encounter any problems with this (or another) version.

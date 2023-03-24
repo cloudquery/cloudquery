@@ -110,6 +110,8 @@ licensors
 Lightsail
 Lucene
 Mailchimp
+Meilisearch
+meilisearch
 Metabase
 Metastore
 Mixpanel
