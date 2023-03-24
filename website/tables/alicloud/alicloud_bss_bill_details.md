@@ -1,6 +1,8 @@
 # Table: alicloud_bss_bill_details
 
-This table shows data for Alicloud Bss Bill Details.
+This table shows data for Alibaba Cloud BSS Bill Details.
+
+https://help.aliyun.com/document_detail/100392.html
 
 The composite primary key for this table is (**billing_cycle**, **account_id**, **subscription_type**, **commodity_code**, **product_code**, **product_type**, **pip_code**, **record_id**).
 
