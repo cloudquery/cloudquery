@@ -28,10 +28,10 @@ func fetchBillDetails(_ context.Context, meta schema.ClientMeta, _ *schema.Resou
 			request.BillingCycle = billingCycle
 			pageNum := 1
 			total := 0
-			DetailsmaxLimit := 100
+			detailsMaxLimit := 100
 			request.PageNum = requests.NewInteger(pageNum)
 			request.BillingDate = billingDate
-			request.PageSize = requests.NewInteger(DetailsmaxLimit)
+			request.PageSize = requests.NewInteger(detailsMaxLimit)
 			request.Granularity = "DAILY"
 			for {
 				response, err := c.Services().BSS.QueryInstanceBill(request)
