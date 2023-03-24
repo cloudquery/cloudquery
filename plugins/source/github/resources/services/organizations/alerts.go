@@ -20,13 +20,19 @@ func alerts() *schema.Table {
 
 func fetchAlerts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
+	opts := &github.ListAlertsOptions{ListCursorOptions: github.ListCursorOptions{PerPage: 99}}
 
-	alerts, _, err := c.Github.Dependabot.ListOrgAlerts(ctx, c.Org, nil)
-	if err != nil {
-		return err
+	for {
+		alerts, resp, err := c.Github.Dependabot.ListOrgAlerts(ctx, c.Org, opts)
+		if err != nil {
+			return err
+		}
+		res <- alerts
+		opts.After = resp.After
+		if resp.After == "" {
+			break
+		}
 	}
-
-	res <- alerts
 
 	return nil
 }
