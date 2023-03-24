@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"runtime"
 
+	"github.com/aws/aws-sdk-go-v2/service/autoscalingplans"
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
@@ -121,6 +122,7 @@ var clients = []any{
 	&apigatewayv2.Client{},
 	&computeoptimizer.Client{},
 	&applicationautoscaling.Client{},
+	&autoscalingplans.Client{},
 	&apprunner.Client{},
 	&appstream.Client{},
 	&appsync.Client{},

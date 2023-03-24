@@ -42,6 +42,6 @@ func CreateTable(table *schema.Table, cluster string, engine *Engine) string {
 	return strBuilder.String()
 }
 
-func DropTable(table *schema.Table) string {
-	return "DROP TABLE IF EXISTS " + sanitizeID(table.Name)
+func DropTable(table *schema.Table, cluster string) string {
+	return "DROP TABLE IF EXISTS " + tableNamePart(table.Name, cluster)
 }
