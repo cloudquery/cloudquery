@@ -1,0 +1,12 @@
+{
+  "overview": "Overview",
+  "configuration": "Configuration",
+  "authentication": "Authentication",
+  "tables": "Tables",
+  "_authentication": {
+    "display": "hidden"
+  },
+  "_configuration": {
+    "display": "hidden"
+  }
+}
