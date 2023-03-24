@@ -52,6 +52,7 @@ func fetchProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		}
 
 		cursor = cur
+		p = nil
 	}
 
 	if cl.Backend != nil {
