@@ -10,6 +10,9 @@ The primary key for this table is **arn**.
 
 This table depends on [aws_eventbridge_event_buses](aws_eventbridge_event_buses).
 
+The following tables depend on aws_eventbridge_event_bus_rules:
+  - [aws_eventbridge_event_bus_targets](aws_eventbridge_event_bus_targets)
+
 ## Columns
 
 | Name          | Type          |

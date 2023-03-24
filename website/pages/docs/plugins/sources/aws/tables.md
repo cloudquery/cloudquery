@@ -261,6 +261,7 @@
 - [aws_eventbridge_endpoints](tables/aws_eventbridge_endpoints)
 - [aws_eventbridge_event_buses](tables/aws_eventbridge_event_buses)
   - [aws_eventbridge_event_bus_rules](tables/aws_eventbridge_event_bus_rules)
+    - [aws_eventbridge_event_bus_targets](tables/aws_eventbridge_event_bus_targets)
 - [aws_eventbridge_event_sources](tables/aws_eventbridge_event_sources)
 - [aws_eventbridge_replays](tables/aws_eventbridge_replays)
 - [aws_firehose_delivery_streams](tables/aws_firehose_delivery_streams)
