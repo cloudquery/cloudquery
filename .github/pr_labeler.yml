@@ -46,10 +46,10 @@ github:
   - plugins/source/github/**/*
 gitlab:
   - plugins/source/gitlab/**/*
-googleanalytics:
-  - plugins/destination/googleanalytics/**/*
 googleads:
   - plugins/destination/googleads/**/*
+googleanalytics:
+  - plugins/destination/googleanalytics/**/*
 gremlin:
   - plugins/destination/gremlin/**/*
 hackernews:
