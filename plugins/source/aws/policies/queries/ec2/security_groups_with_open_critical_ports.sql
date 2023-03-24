@@ -9,7 +9,7 @@ select
     id as resource_id,
     case when
         (ip = '0.0.0.0/0' or ip = '::/0')
-        and (from_port is null and to_port is null) -- all prots
+        and ((from_port is null and to_port is null) -- all prots
         or 20 between from_port and to_port
         or 21 between from_port and to_port
         or 22 between from_port and to_port
@@ -33,7 +33,7 @@ select
         or 8088 between from_port and to_port
         or 8888 between from_port and to_port
         or 9200 between from_port and to_port
-        or 9300 between from_port and to_port
+        or 9300 between from_port and to_port)
         then 'fail'
         else 'pass'
     end
