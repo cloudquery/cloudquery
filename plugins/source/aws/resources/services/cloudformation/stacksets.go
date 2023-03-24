@@ -63,7 +63,7 @@ func fetchCloudformationStackSets(ctx context.Context, meta schema.ClientMeta, _
 		for paginator.HasMorePages() {
 			page, err = paginator.NextPage(ctx)
 			if err != nil {
-				// Maybe try logging this error?
+				c.Logger().Info().Err(err).Msgf("failed to list stack sets with callAs: %s", string(callAs))
 				break
 			}
 			for _, summary := range page.Summaries {
