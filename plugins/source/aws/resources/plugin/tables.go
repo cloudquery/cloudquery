@@ -151,6 +151,7 @@ func tables() []*schema.Table {
 		batch.JobQueues(),
 		batch.JobDefinitions(),
 		cloudformation.Stacks(),
+		cloudformation.StackSets(),
 		cloudfront.CachePolicies(),
 		cloudfront.Distributions(),
 		cloudhsmv2.Backups(),
