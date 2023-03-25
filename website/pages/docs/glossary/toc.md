@@ -4,3 +4,4 @@ This is a collection of terms and use-cases that are used throughout,  CloudQuer
 
 - [What is The Modern Data Stack?](./what-is-the-modern-data-stack)
 - [What is Infrastructure Data Lake](./what-is-infrastructure-data-lake.mdx)
+- [What is a CSPM](./what-is-a-cspm)
