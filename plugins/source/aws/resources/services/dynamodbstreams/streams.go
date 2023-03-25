@@ -32,7 +32,6 @@ func Streams() *schema.Table {
 				},
 			},
 		},
-		Relations: []*schema.Table{},
 	}
 }
 
