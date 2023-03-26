@@ -1,4 +1,4 @@
-# Glossary Table of Contents
+# Overview
 
 This is a collection of terms and use-cases that are used across CloudQuery documentation and blogs.
 
