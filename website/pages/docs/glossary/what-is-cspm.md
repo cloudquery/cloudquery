@@ -19,5 +19,5 @@ It helps organizations to reduce the risk of data breaches, protect sensitive in
 # Open Source CSPM
 
 Previously we covered [what is the modern data stack](https://www.cloudquery.io/blog/what-is-the-modern-data-stack) and how we can build an infrastructure data lake.
-By having an infrastructure data lake you can very easily build your own customizable CSPM with just standard SQL queries and views that you can monitor and visualize with your go-to BI tools and avoid the yet-another-dashboard fatigue and learning new proprietary query languages.
+By having an infrastructure data lake you can easily build your own customizable CSPM with just standard SQL queries and views that you can monitor and visualize with your go-to BI tools and avoid the yet-another-dashboard fatigue and learning new proprietary query languages.
 Check out our full guide on how to use CloudQuery, pre-built queries, views and Grafana dashboards to build an [open-source CSPM](https://www.cloudquery.io/how-to-guides/open-source-cspm)
