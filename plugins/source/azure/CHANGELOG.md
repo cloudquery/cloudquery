@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v6.1.0...plugins-source-azure-v6.2.0) (2023-03-26)
+
+
+### Features
+
+* **azure-resources:** Add Compute VM Patch Assessments table `azure_compute_virtual_machine_patch_assessments`. This might be slow to sync on some accounts and can be skipped if needed via `skip_tables: ["azure_compute_virtual_machine_patch_assessments"]` ([7603b38](https://github.com/cloudquery/cloudquery/commit/7603b384d338dcac4499ee1c51c97356d15227bb))
+
 ## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v6.0.0...plugins-source-azure-v6.1.0) (2023-03-23)
 
 
