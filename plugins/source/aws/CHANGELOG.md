@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [15.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v15.6.0...plugins-source-aws-v15.7.0) (2023-03-26)
+
+
+### Features
+
+* **aws:** Add Support For DynamoDB Resources ([#9376](https://github.com/cloudquery/cloudquery/issues/9376)) ([bde468b](https://github.com/cloudquery/cloudquery/commit/bde468bcbc73ba32e0fcf075e256248560f6a693))
+* **aws:** Add Support for Stack Sets ([#7924](https://github.com/cloudquery/cloudquery/issues/7924)) ([555a240](https://github.com/cloudquery/cloudquery/commit/555a2407ef0ba27bd3e08324b6122fed6839e471))
+* **aws:** More EventBridge resources ([#9408](https://github.com/cloudquery/cloudquery/issues/9408)) ([86a4c7b](https://github.com/cloudquery/cloudquery/commit/86a4c7bdf303a97c10042765ecaabc5d7f8e4342))
+
+
+### Bug Fixes
+
+* **aws-policies:** Fix query for open critical ports for AWS security groups ([#9410](https://github.com/cloudquery/cloudquery/issues/9410)) ([a8a6dc7](https://github.com/cloudquery/cloudquery/commit/a8a6dc7d740a705f6805382a032a7508b9001ae2))
+* **aws:** Only resolve ec2 image launch permissions when the image is owned by the AWS Account ([#9406](https://github.com/cloudquery/cloudquery/issues/9406)) ([16b33c4](https://github.com/cloudquery/cloudquery/commit/16b33c4f752e024e67a10fae083af263250fdb21))
+
 ## [15.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v15.5.0...plugins-source-aws-v15.6.0) (2023-03-23)
 
 
