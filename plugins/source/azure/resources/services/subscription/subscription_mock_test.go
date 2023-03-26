@@ -7,6 +7,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
@@ -20,6 +21,8 @@ func createSubscriptions(router *mux.Router) error {
 
 	emptyStr := ""
 	item.NextLink = &emptyStr
+	item.Value[0].ID = to.Ptr("/subscriptions/sub-id")
+	item.Value[0].SubscriptionID = to.Ptr("sub-id")
 
 	router.HandleFunc("/subscriptions", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)

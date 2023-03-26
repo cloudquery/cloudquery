@@ -19,8 +19,6 @@ func createAccount(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 	m.EXPECT().Get(gomock.Any()).Return(&data, nil, nil)
 
-	//add children mocks
-
 	return client.Services{
 		Account: m,
 	}

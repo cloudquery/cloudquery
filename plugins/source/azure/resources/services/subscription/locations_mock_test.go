@@ -15,7 +15,7 @@ func createLocations(router *mux.Router) error {
 		return err
 	}
 
-	router.HandleFunc("/subscriptions/test string/locations", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/sub-id/locations", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

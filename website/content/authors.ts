@@ -98,8 +98,8 @@ export const CLOUDQUERY_TEAM: Map<Author> = {
     },
     alex: {
         name: "Aleksandr Shcherbakov",
-        url: "https://twitter.com/candiduslynx",
-        urlText: "@candiduslynx",
+        url: "https://github.com/candiduslynx",
+        urlText: "candiduslynx",
         image_url: "/images/people/alex.png",
     },
     kemal: {

@@ -91,7 +91,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) (err erro
 func (c *Client) dropTable(ctx context.Context, table *schema.Table) (err error) {
 	c.logger.Debug().Str("table", table.Name).Msg("Dropping table")
 
-	return c.conn.Exec(ctx, queries.DropTable(table))
+	return c.conn.Exec(ctx, queries.DropTable(table, c.spec.Cluster))
 }
 
 func needsTableDrop(change schema.TableColumnChange) bool {

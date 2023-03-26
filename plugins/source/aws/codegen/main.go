@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"runtime"
 
+	"github.com/aws/aws-sdk-go-v2/service/autoscalingplans"
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
@@ -21,6 +22,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
+	"github.com/aws/aws-sdk-go-v2/service/batch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
@@ -120,12 +122,14 @@ var clients = []any{
 	&apigatewayv2.Client{},
 	&computeoptimizer.Client{},
 	&applicationautoscaling.Client{},
+	&autoscalingplans.Client{},
 	&apprunner.Client{},
 	&appstream.Client{},
 	&appsync.Client{},
 	&athena.Client{},
 	&autoscaling.Client{},
 	&backup.Client{},
+	&batch.Client{},
 	&cloudformation.Client{},
 	&cloudfront.Client{},
 	&cloudhsmv2.Client{},

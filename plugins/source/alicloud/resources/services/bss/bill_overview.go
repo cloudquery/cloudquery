@@ -4,7 +4,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
-	//"github.com/cloudquery/cloudquery/plugins/source/alicloud/client"
 )
 
 func BillOverview() *schema.Table {

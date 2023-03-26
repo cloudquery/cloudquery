@@ -113,6 +113,8 @@ export default withNextra({
   reactStrictMode: true,
   experimental: {
     legacyBrowsers: false,
+    // default is 128KB
+    largePageDataBytes: 512 * 1000,
   },
   env: {
     VERCEL_GIT_REPO_OWNER: process.env.VERCEL_GIT_REPO_OWNER,
