@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS `table_name` ON CLUSTER `my_cluster`

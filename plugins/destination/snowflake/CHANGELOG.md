@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.16](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.1.15...plugins-destination-snowflake-v1.1.16) (2023-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/credentials to v1.13.17 ([#9228](https://github.com/cloudquery/cloudquery/issues/9228)) ([b203f7f](https://github.com/cloudquery/cloudquery/commit/b203f7fb10a73e542cdf7e19d9f8fcce5af1f001))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.58 ([#9229](https://github.com/cloudquery/cloudquery/issues/9229)) ([f8654b4](https://github.com/cloudquery/cloudquery/commit/f8654b4deaaa1a38c5f653a382c1eb6cff6cec74))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.0 ([#9167](https://github.com/cloudquery/cloudquery/issues/9167)) ([49d6477](https://github.com/cloudquery/cloudquery/commit/49d647730a85ea6fae51e97194ba61c0625d1331))
+
 ## [1.1.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.1.14...plugins-destination-snowflake-v1.1.15) (2023-03-14)
 
 

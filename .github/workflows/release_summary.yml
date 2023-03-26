@@ -15,6 +15,8 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          # required so the commit triggers workflow runs
+          token: ${{ secrets.GH_CQ_BOT }}
       - name: Get plugin name
         id: plugin
         run: |
@@ -28,7 +30,7 @@ jobs:
           echo "latest=${tag}" >> $GITHUB_OUTPUT
       - name: Generate diff
         run: |
-          git diff ${{ steps.tag.outputs.latest }}..HEAD website/tables/${{ steps.plugin.outputs.name }} > scripts/table_diff/diff.txt
+          git diff ${{ steps.tag.outputs.latest }}..HEAD -- website/tables/${{ steps.plugin.outputs.name }} > scripts/table_diff/diff.txt
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
@@ -54,7 +56,7 @@ jobs:
             const changesList = changes.map(change => {
               const { breaking, text } = change
               if (breaking) {
-                return `- :warning: BREAKING CHANGE: ${text}`
+                return `- ${text} (:warning: breaking)`
               }
               return `- ${text}`
             }).join('\n')
@@ -73,9 +75,12 @@ jobs:
             const currentChangelog = fs.readFileSync(changelogPath, 'utf8')
             // drop existing summary if it exists
             const title = 'This Release has the Following Changes to Tables'
-            const sliceIndex = currentChangelog.includes(title) ? 2 : 1
+            let sliceIndex = currentChangelog.includes(title) ? 2 : 1
+            // Move summary after breaking changes if they exist
+            const newlyAddedSection = currentChangelog.split("## [")[0]
+            sliceIndex = newlyAddedSection.includes("BREAKING CHANGES") ? sliceIndex + 1 : sliceIndex
             const changelogParts = currentChangelog.split('###')
-            const newChangelog = [changelogParts[0], ` ${title}\n${changes}\n\n`, ...changelogParts.slice(sliceIndex)].join('###')
+            const newChangelog = [...changelogParts.slice(0, sliceIndex), ` ${title}\n${changes}\n\n`, ...changelogParts.slice(sliceIndex)].join('###')
             fs.writeFileSync(changelogPath, newChangelog)
       - uses: actions/github-script@v6
         name: Update PR description
@@ -91,8 +96,10 @@ jobs:
             const currentDescriptionParts = currentDescription.split('###')
             // drop existing summary if it exists
             const title = 'This Release has the Following Changes to Tables'
-            const sliceIndex = currentDescription.includes(title) ? 2 : 1
-            const newDescription = [currentDescriptionParts[0], ` ${title}\n${changes}\n\n`, ...currentDescriptionParts.slice(sliceIndex)].join('###')
+            let sliceIndex = currentDescription.includes(title) ? 2 : 1
+            // Move summary after breaking changes if they exist
+            sliceIndex = currentDescription.includes("BREAKING CHANGES") ? sliceIndex + 1 : sliceIndex
+            const newDescription = [...currentDescriptionParts.slice(0, sliceIndex), ` ${title}\n${changes}\n\n`, ...currentDescriptionParts.slice(sliceIndex)].join('###')
             await github.rest.pulls.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -105,3 +112,4 @@ jobs:
         with:
           commit_message: "chore: Add tables changes to changelog"
           file_pattern: "plugins/source/${{ steps.plugin.outputs.name }}/CHANGELOG.md"
+          author: cq-bot <cq-bot@users.noreply.github.com>

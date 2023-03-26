@@ -5,6 +5,44 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v6.0.0...plugins-source-azure-v6.1.0) (2023-03-23)
+
+
+### Features
+
+* **azure-auth:** Log `DefaultAzureCredential` credentials errors ([#9363](https://github.com/cloudquery/cloudquery/issues/9363)) ([b38013b](https://github.com/cloudquery/cloudquery/commit/b38013b67ff15e6b43926c8543b0b9ef9c7e65ac))
+* **azure:** Discover resource groups and namespaces in parallel ([#9382](https://github.com/cloudquery/cloudquery/issues/9382)) ([4e6e882](https://github.com/cloudquery/cloudquery/commit/4e6e8821a9ba02e2cc8e6d43102fcd36ab2b4c6f))
+
+
+### Bug Fixes
+
+* **azure-resources:** Pass correct subscription ID when listing subscription locations ([#9369](https://github.com/cloudquery/cloudquery/issues/9369)) ([6ca92c7](https://github.com/cloudquery/cloudquery/commit/6ca92c7363c3d7699159e1ec27daf82702730f09))
+* **azure:** Remove redundant `SingleSubscriptionMultiplex` ([#9365](https://github.com/cloudquery/cloudquery/issues/9365)) ([33fc767](https://github.com/cloudquery/cloudquery/commit/33fc76796f488bc2a3a544799ac3a954e0072671))
+
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.2.0...plugins-source-azure-v6.0.0) (2023-03-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* **resources:** Remove `subscription_id` column from `azure_billing_enrollment_accounts` and `azure_billing_accounts` tables, as those tables are not tied to a specific subscription.
+
+### This Release has the Following Changes to Tables
+- Table `azure_compute_virtual_machine_scale_set_network_interfaces` was added
+
+### Features
+
+* Add azure_resources_resource_groups table ([#9158](https://github.com/cloudquery/cloudquery/issues/9158)) ([6ed30fc](https://github.com/cloudquery/cloudquery/commit/6ed30fc4af6f6aa28644a2441dbe7e86615940a1))
+* **azure-resources:** Add compute gallery images and versions ([#9180](https://github.com/cloudquery/cloudquery/issues/9180)) ([3c39ce6](https://github.com/cloudquery/cloudquery/commit/3c39ce6f750d68b4aed93a7118aed4ac714dbfc7))
+* **azure-resources:** Add Compute SSH Public Keys ([#9182](https://github.com/cloudquery/cloudquery/issues/9182)) ([de0407a](https://github.com/cloudquery/cloudquery/commit/de0407a6bbc63de5b4598b5edcb2ed5d7de7ff0f))
+* **azure-resources:** VM Scale Set Network Interfaces ([#9299](https://github.com/cloudquery/cloudquery/issues/9299)) ([db6f782](https://github.com/cloudquery/cloudquery/commit/db6f78214f8978df54ed1d02b1e999d14121f1b0))
+* **azure:** File Shares ([#9163](https://github.com/cloudquery/cloudquery/issues/9163)) ([5ea94a8](https://github.com/cloudquery/cloudquery/commit/5ea94a8d3e23710e650dffcf0fd5c31a5f5d03c3)), closes [#9137](https://github.com/cloudquery/cloudquery/issues/9137)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.0 ([#9167](https://github.com/cloudquery/cloudquery/issues/9167)) ([49d6477](https://github.com/cloudquery/cloudquery/commit/49d647730a85ea6fae51e97194ba61c0625d1331))
+* **resources:** Don't list billing and enrollment accounts per subscription ([a083b34](https://github.com/cloudquery/cloudquery/commit/a083b3450f288776036301f39a6d2478ad4af793))
+
 ## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.1.2...plugins-source-azure-v5.2.0) (2023-03-15)
 
 

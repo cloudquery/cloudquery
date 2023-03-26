@@ -14,7 +14,9 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appsync"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/athena"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscalingplans"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/batch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudfront"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudhsmv2"
@@ -117,6 +119,9 @@ func tables() []*schema.Table {
 		apigatewayv2.DomainNames(),
 		apigatewayv2.VpcLinks(),
 		applicationautoscaling.Policies(),
+		applicationautoscaling.ScalableTargets(),
+		applicationautoscaling.ScalingActivities(),
+		applicationautoscaling.ScheduledActions(),
 		apprunner.AutoScalingConfigurations(),
 		apprunner.Connections(),
 		apprunner.ObservabilityConfigurations(),
@@ -138,11 +143,15 @@ func tables() []*schema.Table {
 		autoscaling.Groups(),
 		autoscaling.LaunchConfigurations(),
 		autoscaling.ScheduledActions(),
+		autoscalingplans.Plans(),
 		backup.GlobalSettings(),
 		backup.Plans(),
 		backup.RegionSettings(),
 		backup.Vaults(),
+		batch.JobQueues(),
+		batch.JobDefinitions(),
 		cloudformation.Stacks(),
+		cloudformation.StackSets(),
 		cloudfront.CachePolicies(),
 		cloudfront.Distributions(),
 		cloudhsmv2.Backups(),
@@ -412,6 +421,7 @@ func tables() []*schema.Table {
 		s3.AccessPoints(),
 		s3.Accounts(),
 		s3.Buckets(),
+		sagemaker.Apps(),
 		sagemaker.EndpointConfigurations(),
 		sagemaker.Models(),
 		sagemaker.NotebookInstances(),
@@ -446,6 +456,7 @@ func tables() []*schema.Table {
 		ssm.InventorySchemas(),
 		ssm.Parameters(),
 		ssm.PatchBaselines(),
+		ssm.Sessions(),
 		ssoadmin.Instances(),
 		stepfunctions.Activities(),
 		stepfunctions.StateMachines(),
