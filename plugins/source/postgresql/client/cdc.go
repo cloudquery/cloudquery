@@ -174,7 +174,7 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 						values[colName] = nil
 					case 'u': // unchanged toast
 						// This TOAST value was not changed. TOAST values are not stored in the tuple, and logical replication doesn't want to spend a disk read to fetch its value for you.
-					case 't': //text
+					case 't': // text
 						val, err := decodeTextColumnData(typeMap, col.Data, rel.Columns[idx].DataType)
 						if err != nil {
 							return fmt.Errorf("error decoding column data: %w", err)
@@ -201,7 +201,7 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 						values[colName] = nil
 					case 'u': // unchanged toast
 						// This TOAST value was not changed. TOAST values are not stored in the tuple, and logical replication doesn't want to spend a disk read to fetch its value for you.
-					case 't': //text
+					case 't': // text
 						val, err := decodeTextColumnData(typeMap, col.Data, rel.Columns[idx].DataType)
 						if err != nil {
 							return fmt.Errorf("error decoding column data: %w", err)
@@ -227,7 +227,7 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 						values[colName] = nil
 					case 'u': // unchanged toast
 						// This TOAST value was not changed. TOAST values are not stored in the tuple, and logical replication doesn't want to spend a disk read to fetch its value for you.
-					case 't': //text
+					case 't': // text
 						val, err := decodeTextColumnData(typeMap, col.Data, rel.Columns[idx].DataType)
 						if err != nil {
 							return fmt.Errorf("error decoding column data: %w", err)

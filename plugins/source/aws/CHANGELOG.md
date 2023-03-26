@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [15.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v15.5.0...plugins-source-aws-v15.6.0) (2023-03-23)
+
+
+### Features
+
+* **aws:** Autoscaling Plans ([#9328](https://github.com/cloudquery/cloudquery/issues/9328)) ([b438d31](https://github.com/cloudquery/cloudquery/commit/b438d311a0ac994e3268b4dd739ee2b2d4451997))
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_autoscaling_plan_resources` was added
+- Table `aws_autoscaling_plans` was added
+
+### This Release has the Following Changes to Tables
+- Table `aws_autoscaling_plan_resources` was added
+- Table `aws_autoscaling_plans` was added
+
+### Bug Fixes
+
+* **aws:** Paginate EBS Snapshots for more consistent throughput ([#9374](https://github.com/cloudquery/cloudquery/issues/9374)) ([156013a](https://github.com/cloudquery/cloudquery/commit/156013a358597840b2c312561b09d4a3688e1d45))
+* **aws:** Skip backtrack fetching if backtrack is disabled for RDS cluster ([#9352](https://github.com/cloudquery/cloudquery/issues/9352)) ([3109a6c](https://github.com/cloudquery/cloudquery/commit/3109a6c628428c2740461f0c38e183d6baed3774)), closes [#9351](https://github.com/cloudquery/cloudquery/issues/9351)
+
 ## [15.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v15.4.0...plugins-source-aws-v15.5.0) (2023-03-21)
 
 

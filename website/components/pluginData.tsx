@@ -97,20 +97,6 @@ export const SOURCE_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
   },
   {
-    name: "Google Analytics",
-    logo: "/images/logos/plugins/ga.svg",
-    id: "googleanalytics",
-    kind: "official",
-    category: "marketing-analytics",
-  },
-  {
-    name: "Google Cloud Platform",
-    logo: "/images/logos/plugins/gcp.svg",
-    id: "gcp",
-    kind: "official",
-    category: "cloud-infrastructure",
-  },
-  {
     name: "GitHub",
     logo: "/images/logos/plugins/github.svg",
     logoDark: "/images/logos/plugins/github-dark.svg",
@@ -124,6 +110,27 @@ export const SOURCE_PLUGINS: Plugin[] = [
     id: "gitlab",
     kind: "official",
     category: "engineering-analytics",
+  },
+  {
+    name: "Google Ads",
+    id: "googleads",
+    kind: "official",
+    category: "marketing-analytics",
+    logo: "/images/logos/plugins/ga2.svg",
+  },
+  {
+    name: "Google Analytics",
+    logo: "/images/logos/plugins/ga.svg",
+    id: "googleanalytics",
+    kind: "official",
+    category: "marketing-analytics",
+  },
+  {
+    name: "Google Cloud Platform",
+    logo: "/images/logos/plugins/gcp.svg",
+    id: "gcp",
+    kind: "official",
+    category: "cloud-infrastructure",
   },
   {
     name: "Hacker News API",
@@ -543,6 +550,13 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/cloudinary.svg",
   },
   {
+    name: "Crowdstrike",
+    id: "crowdstrike",
+    href: "https://github.com/cloudquery/cloudquery/issues/9133",
+    kind: "unpublished",
+    category: "security",
+  },
+  {
     name: "Detrack",
     id: "detrack",
     href: "https://github.com/cloudquery/cloudquery/issues/9054",
@@ -555,14 +569,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/8135",
     kind: "unpublished",
     category: "marketing-analytics",
-  },
-  {
-    name: "Google Ads",
-    id: "google-ads",
-    href: "https://github.com/cloudquery/cloudquery/issues/8642",
-    kind: "unpublished",
-    category: "marketing-analytics",
-    logo: "/images/logos/plugins/google-ads.svg",
   },
   {
     name: "Google Sheets",
@@ -579,6 +585,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/hashicorp-vault.svg",
+    logoDark: "/images/logos/plugins/hashicorp-vault-dark.svg",
   },
   {
     name: "Infoblox",
@@ -587,6 +594,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/infoblox.svg",
+    logoDark: "/images/logos/plugins/infoblox-dark.svg",
   },
   {
     name: "Intercom",
@@ -636,6 +644,14 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     category: "project-management",
   },
   {
+    name: "MongoDB Atlas",
+    id: "mongodb-atlas",
+    href: "https://github.com/cloudquery/cloudquery/issues/9134",
+    kind: "unpublished",
+    category: "databases",
+    logo: "/images/logos/plugins/mongodb.svg",
+  },
+  {
     name: "Microsoft SQL Server",
     id: "mssql",
     href: "https://github.com/cloudquery/cloudquery/issues/8861",
@@ -682,12 +698,27 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/paypal.svg",
   },
   {
+    name: "Pendo",
+    id: "pendo",
+    href: "https://github.com/cloudquery/cloudquery/issues/9360",
+    kind: "unpublished",
+    category: "marketing-analytics",
+  },
+  {
     name: "Prisma",
     id: "prisma",
     href: "https://github.com/cloudquery/cloudquery/issues/6582",
     kind: "unpublished",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/prisma.svg",
+    logoDark: "/images/logos/plugins/prisma-dark.svg",
+  },
+  {
+    name: "Render",
+    id: "render",
+    href: "https://github.com/cloudquery/cloudquery/issues/9161",
+    kind: "unpublished",
+    category: "cloud-infrastructure",
   },
   {
     name: "Reddit Advertising",
@@ -703,6 +734,13 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9052",
     kind: "unpublished",
     category: "fleet-management",
+  },
+  {
+    name: "SentinelOne",
+    id: "sentinel-one",
+    href: "https://github.com/cloudquery/cloudquery/issues/9136",
+    kind: "unpublished",
+    category: "security",
   },
   {
     name: "Shippo",
@@ -728,6 +766,14 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/s3.svg",
   },
   {
+    name: "Snowflake Configuration",
+    id: "snowflake-config",
+    href: "https://github.com/cloudquery/cloudquery/issues/9135",
+    kind: "unpublished",
+    category: "databases",
+    logo: "/images/logos/plugins/snowflake.svg",
+  },
+  {
     name: "Sonatype Nexus",
     id: "sonatype-nexus",
     href: "https://github.com/cloudquery/cloudquery/issues/7640",
@@ -736,12 +782,27 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/sonatype.svg",
   },
   {
+    name: "Sophos",
+    id: "sophos",
+    href: "https://github.com/cloudquery/cloudquery/issues/9131",
+    kind: "unpublished",
+    category: "security",
+  },
+  {
     name: "Square",
     id: "square",
     href: "https://github.com/cloudquery/cloudquery/issues/9037",
     kind: "unpublished",
     category: "cloud-finops",
     logo: "/images/logos/plugins/square.svg",
+    logoDark: "/images/logos/plugins/square-dark.svg",
+  },
+  {
+    name: "Tenable",
+    id: "tenable",
+    href: "https://github.com/cloudquery/cloudquery/issues/9132",
+    kind: "unpublished",
+    category: "security",
   },
   {
     name: "Twilio",
@@ -766,6 +827,7 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/typeform.svg",
+    logoDark: "/images/logos/plugins/typeform-dark.svg",
   },
   {
     name: "Zoho Campaign",

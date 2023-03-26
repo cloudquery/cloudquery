@@ -59,11 +59,9 @@ type ServicesManager struct {
 }
 
 const (
-	defaultRegion              = "us-east-1"
-	awsFailedToConfigureErrMsg = "failed to retrieve credentials for account %s. AWS Error: %w, detected aws env variables: %s"
-	awsOrgsFailedToFindMembers = "failed to list Org member accounts. Make sure that your credentials have the proper permissions"
-	defaultVar                 = "default"
-	cloudfrontScopeRegion      = defaultRegion
+	defaultRegion         = "us-east-1"
+	defaultVar            = "default"
+	cloudfrontScopeRegion = defaultRegion
 )
 
 var errInvalidRegion = errors.New("region wildcard \"*\" is only supported as first argument")

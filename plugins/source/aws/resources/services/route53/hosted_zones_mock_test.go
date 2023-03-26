@@ -26,7 +26,6 @@ func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) client.S
 	if err := faker.FakeObject(&tag); err != nil {
 		t.Fatal(err)
 	}
-	//create id that is usually returned by aws
 	hzId := *h.Id
 	newId := fmt.Sprintf("/%s/%s", types.TagResourceTypeHostedzone, *h.Id)
 	h.Id = &newId

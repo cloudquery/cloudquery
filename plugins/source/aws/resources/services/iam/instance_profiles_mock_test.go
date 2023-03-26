@@ -24,7 +24,6 @@ func buildIamInstanceProfiles(t *testing.T, ctrl *gomock.Controller) client.Serv
 			InstanceProfiles: []iamTypes.InstanceProfile{p},
 		}, nil)
 
-	//get tags
 	tag := iamTypes.Tag{}
 	err = faker.FakeObject(&tag)
 	if err != nil {
