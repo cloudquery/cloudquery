@@ -103,6 +103,9 @@
     "plugins/source/gitlab": {
       "component": "plugins-source-gitlab"
     },
+    "plugins/source/googleads": {
+      "component": "plugins-source-googleads"
+    },
     "plugins/source/googleanalytics": {
       "component": "plugins-source-googleanalytics"
     },

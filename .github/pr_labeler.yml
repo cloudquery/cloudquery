@@ -46,6 +46,8 @@ github:
   - plugins/source/github/**/*
 gitlab:
   - plugins/source/gitlab/**/*
+googleads:
+  - plugins/destination/googleads/**/*
 googleanalytics:
   - plugins/destination/googleanalytics/**/*
 gremlin:

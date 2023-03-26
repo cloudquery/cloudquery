@@ -75,7 +75,6 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetAccessKeyLastUsed(gomock.Any(), gomock.Any()).Return(
 		&akl, nil)
 
-	//list user inline policies
 	var l []string
 	err = faker.FakeObject(&l)
 	if err != nil {
@@ -86,7 +85,6 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 			PolicyNames: l,
 		}, nil)
 
-	//get policy
 	p := iam.GetUserPolicyOutput{}
 	err = faker.FakeObject(&p)
 	if err != nil {
@@ -101,8 +99,6 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&iam.ListSSHPublicKeysOutput{
 			SSHPublicKeys: []types.SSHPublicKeyMetadata{sshPublicKey},
 		}, nil)
-
-	// get signing key
 
 	sc := types.SigningCertificate{}
 	err = faker.FakeObject(&sc)

@@ -5,6 +5,20 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v6.0.0...plugins-source-azure-v6.1.0) (2023-03-23)
+
+
+### Features
+
+* **azure-auth:** Log `DefaultAzureCredential` credentials errors ([#9363](https://github.com/cloudquery/cloudquery/issues/9363)) ([b38013b](https://github.com/cloudquery/cloudquery/commit/b38013b67ff15e6b43926c8543b0b9ef9c7e65ac))
+* **azure:** Discover resource groups and namespaces in parallel ([#9382](https://github.com/cloudquery/cloudquery/issues/9382)) ([4e6e882](https://github.com/cloudquery/cloudquery/commit/4e6e8821a9ba02e2cc8e6d43102fcd36ab2b4c6f))
+
+
+### Bug Fixes
+
+* **azure-resources:** Pass correct subscription ID when listing subscription locations ([#9369](https://github.com/cloudquery/cloudquery/issues/9369)) ([6ca92c7](https://github.com/cloudquery/cloudquery/commit/6ca92c7363c3d7699159e1ec27daf82702730f09))
+* **azure:** Remove redundant `SingleSubscriptionMultiplex` ([#9365](https://github.com/cloudquery/cloudquery/issues/9365)) ([33fc767](https://github.com/cloudquery/cloudquery/commit/33fc76796f488bc2a3a544799ac3a954e0072671))
+
 ## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.2.0...plugins-source-azure-v6.0.0) (2023-03-21)
 
 

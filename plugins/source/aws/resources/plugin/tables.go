@@ -14,6 +14,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appsync"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/athena"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscalingplans"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/batch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation"
@@ -142,6 +143,7 @@ func tables() []*schema.Table {
 		autoscaling.Groups(),
 		autoscaling.LaunchConfigurations(),
 		autoscaling.ScheduledActions(),
+		autoscalingplans.Plans(),
 		backup.GlobalSettings(),
 		backup.Plans(),
 		backup.RegionSettings(),
@@ -149,6 +151,7 @@ func tables() []*schema.Table {
 		batch.JobQueues(),
 		batch.JobDefinitions(),
 		cloudformation.Stacks(),
+		cloudformation.StackSets(),
 		cloudfront.CachePolicies(),
 		cloudfront.Distributions(),
 		cloudhsmv2.Backups(),
