@@ -35,7 +35,7 @@ Achieving SOC2 compliance requires a comprehensive approach to data security and
 
 # Open Source SOC2 Report
 
-Previously we covered [what is the modern data stack](https://www.cloudquery.io/blog/what-is-the-modern-data-stack) and how we can build an infrastructure data lake. By having an infrastructure data lake you can easily build your own customizable CIEM with just standard SQL queries and views that you can monitor and visualize with your go-to BI tools and avoid the yet-another-dashboard fatigue and learning new proprietary query languages. Check out our full guide on how to use CloudQuery, pre-built queries, views and Grafana dashboards to build an open-source SOC2 Report (a TODO blog)
+Previously we covered [what is the modern data stack](/blog/what-is-the-modern-data-stack) and how we can build an infrastructure data lake. By having an infrastructure data lake you can easily build your own customizable CIEM with just standard SQL queries and views that you can monitor and visualize with your go-to BI tools and avoid the yet-another-dashboard fatigue and learning new proprietary query languages. Check out our full guide on how to use CloudQuery, pre-built queries, views and Grafana dashboards to build an open-source SOC2 Report (a TODO blog)
 
 # Conclusion
 
