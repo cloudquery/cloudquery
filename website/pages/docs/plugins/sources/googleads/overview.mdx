@@ -1,0 +1,15 @@
+---
+name: Google Ads
+---
+# Google Ads Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+
+<Badge text={"Latest: " + getLatestVersion("source", `googleads`)}/>
+
+The CloudQuery Google Ads plugin for CloudQuery pulls configuration from
+[Google Ads API](https://developers.google.com/google-ads/api/)
+and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+
