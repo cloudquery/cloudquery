@@ -33,6 +33,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/docdb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dynamodb"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dynamodbstreams"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecr"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecrpublic"
@@ -198,6 +199,7 @@ func tables() []*schema.Table {
 		dynamodb.Exports(),
 		dynamodb.GlobalTables(),
 		dynamodb.Tables(),
+		dynamodbstreams.Streams(),
 		ec2.AccountAttributes(),
 		ec2.AvailabilityZones(),
 		ec2.ByoipCidrs(),
