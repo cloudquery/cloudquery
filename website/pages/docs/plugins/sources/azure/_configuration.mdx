@@ -6,9 +6,10 @@ spec:
   path: "cloudquery/azure"
   version: "VERSION_SOURCE_AZURE"
   destinations: ["DESTINATION_NAME"]
-  # For the Azure plugin we recommend a lower concurrency setting than the default to avoid hitting memory limits
-  # See more in https://www.cloudquery.io/docs/advanced-topics/performance-tuning#tune-concurrency
-  concurrency: 1000
+
+  # for accounts with many subscriptions, we recommend creating separate configurations for the tables below
+  # as they can consume a lot of memory and time. See more here https://github.com/cloudquery/cloudquery/issues/9269
+  skip_tables: ["azure_compute_skus", "azure_*_definitions","azure_authorization_role_assignments"]
 
   spec:
     # Azure Spec section
