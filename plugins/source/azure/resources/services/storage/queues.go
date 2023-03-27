@@ -9,19 +9,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func file_shares() *schema.Table {
+func queues() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_storage_file_shares",
-		Resolver:    fetchFileShares,
-		Description: "https://learn.microsoft.com/en-us/rest/api/storagerp/file-shares/list?tabs=HTTP#fileshareitem",
-		Transform:   transformers.TransformWithStruct(&armstorage.FileShareItem{}, transformers.WithPrimaryKeys("ID")),
+		Name:        "azure_storage_queues",
+		Resolver:    fetchQueues,
+		Description: "https://learn.microsoft.com/en-us/rest/api/storagerp/queue/list?tabs=HTTP#listqueue",
+		Transform:   transformers.TransformWithStruct(&armstorage.ListQueue{}, transformers.WithPrimaryKeys("ID")),
 		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 
-func fetchFileShares(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc, err := armstorage.NewFileSharesClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armstorage.NewQueueClient(cl.SubscriptionId, cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

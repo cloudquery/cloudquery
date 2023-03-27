@@ -1,8 +1,8 @@
-# Table: azure_storage_blob_services
+# Table: azure_storage_queues
 
-This table shows data for Azure Storage Blob Services.
+This table shows data for Azure Storage Queues.
 
-https://learn.microsoft.com/en-us/rest/api/storagerp/blob-services/list?tabs=HTTP#blobserviceproperties
+https://learn.microsoft.com/en-us/rest/api/storagerp/queue/list?tabs=HTTP#listqueue
 
 The primary key for this table is **id**.
 
@@ -22,5 +22,4 @@ This table depends on [azure_storage_accounts](azure_storage_accounts).
 |properties|JSON|
 |id (PK)|String|
 |name|String|
-|sku|JSON|
 |type|String|
