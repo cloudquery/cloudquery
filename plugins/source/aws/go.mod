@@ -11,7 +11,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.1
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.7
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.6
-	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.6
+	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.7
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.7
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.17.6
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.16.1
