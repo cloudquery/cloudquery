@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-mysql-v1.0.1...plugins-source-mysql-v1.0.2) (2023-03-26)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.0 ([#9167](https://github.com/cloudquery/cloudquery/issues/9167)) ([49d6477](https://github.com/cloudquery/cloudquery/commit/49d647730a85ea6fae51e97194ba61c0625d1331))
+
 ## [1.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-mysql-v1.0.1...plugins-source-mysql-v1.0.2) (2023-03-21)
 
 

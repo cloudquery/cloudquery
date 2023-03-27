@@ -13,21 +13,24 @@ import (
 
 func buildEventBridgeEventBusesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEventbridgeClient(ctrl)
-	bus := types.EventBus{}
-	err := faker.FakeObject(&bus)
-	if err != nil {
+
+	var bus types.EventBus
+	if err := faker.FakeObject(&bus); err != nil {
 		t.Fatal(err)
 	}
 
-	rule := types.Rule{}
-	err = faker.FakeObject(&rule)
-	if err != nil {
+	var rule types.Rule
+	if err := faker.FakeObject(&rule); err != nil {
 		t.Fatal(err)
 	}
 
-	tags := eventbridge.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tags)
-	if err != nil {
+	var tags eventbridge.ListTagsForResourceOutput
+	if err := faker.FakeObject(&tags); err != nil {
+		t.Fatal(err)
+	}
+
+	var target types.Target
+	if err := faker.FakeObject(&target); err != nil {
 		t.Fatal(err)
 	}
 
@@ -41,6 +44,10 @@ func buildEventBridgeEventBusesMock(t *testing.T, ctrl *gomock.Controller) clien
 		}, nil)
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(2).Return(
 		&tags, nil)
+	m.EXPECT().ListTargetsByRule(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&eventbridge.ListTargetsByRuleOutput{
+			Targets: []types.Target{target},
+		}, nil)
 
 	return client.Services{
 		Eventbridge: m,
