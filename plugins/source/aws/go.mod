@@ -24,7 +24,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.7
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.6
-	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.6
+	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.7
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.5
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.5
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.5
