@@ -13,9 +13,9 @@ import (
 
 func buildEventbridgeReplaysMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEventbridgeClient(ctrl)
-	object := types.Replay{}
-	err := faker.FakeObject(&object)
-	if err != nil {
+
+	var object types.Replay
+	if err := faker.FakeObject(&object); err != nil {
 		t.Fatal(err)
 	}
 
@@ -24,9 +24,15 @@ func buildEventbridgeReplaysMock(t *testing.T, ctrl *gomock.Controller) client.S
 			Replays: []types.Replay{object},
 		}, nil)
 
-	tagsOutput := eventbridge.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tagsOutput)
-	if err != nil {
+	var desc eventbridge.DescribeReplayOutput
+	if err := faker.FakeObject(&desc); err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().DescribeReplay(gomock.Any(), gomock.Any(), gomock.Any()).Return(&desc, nil)
+
+	var tagsOutput eventbridge.ListTagsForResourceOutput
+	if err := faker.FakeObject(&tagsOutput); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
