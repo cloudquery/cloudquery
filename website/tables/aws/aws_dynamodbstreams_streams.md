@@ -1,6 +1,6 @@
 # Table: aws_dynamodbstreams_streams
 
-This table shows data for Dynamodbstreams Streams.
+This table shows data for Amazon DynamoDB Streams.
 
 https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_streams_StreamDescription.html
 
