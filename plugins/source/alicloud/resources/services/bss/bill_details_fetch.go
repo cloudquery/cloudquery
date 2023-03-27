@@ -95,7 +95,7 @@ func getDetailsBillingCycles() []string {
 	var months []string
 	curMonth := time.Now().Format("2006-01")
 	months = append(months, curMonth)
-	lastMonth := time.Now().AddDate(0, -1, 0).Format("2006-01")
+	lastMonth := time.Now().AddDate(0, 0, -5).Format("2006-01")
 	if lastMonth != curMonth {
 		months = append(months, lastMonth)
 	}
