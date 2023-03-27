@@ -20,7 +20,7 @@ func alerts() *schema.Table {
 
 func fetchAlerts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	opts := &github.ListAlertsOptions{ListCursorOptions: github.ListCursorOptions{PerPage: 99}}
+	opts := &github.ListAlertsOptions{ListCursorOptions: github.ListCursorOptions{PerPage: 100}}
 
 	for {
 		alerts, resp, err := c.Github.Dependabot.ListOrgAlerts(ctx, c.Org, opts)
