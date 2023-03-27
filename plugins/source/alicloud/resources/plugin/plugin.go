@@ -21,6 +21,7 @@ func Plugin() *source.Plugin {
 		[]*schema.Table{
 			bss.BillOverview(),
 			bss.Bill(),
+			bss.BillDetails(),
 			ecs.Instances(),
 			oss.Buckets(),
 		},
