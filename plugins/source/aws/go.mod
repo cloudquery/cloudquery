@@ -4,15 +4,15 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.7
-	github.com/aws/aws-sdk-go-v2/config v1.18.18
+	github.com/aws/aws-sdk-go-v2/config v1.18.19
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.18
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.58
-	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.7
+	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.8
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.1
-	github.com/aws/aws-sdk-go-v2/service/acm v1.17.6
+	github.com/aws/aws-sdk-go-v2/service/acm v1.17.7
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.5
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.6
-	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.6
+	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.7
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.17.6
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.19.0
@@ -115,13 +115,13 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.5
+	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.6
 	github.com/aws/aws-sdk-go-v2/service/batch v1.21.6
 	github.com/aws/aws-sdk-go-v2/service/computeoptimizer v1.21.4
 	github.com/aws/aws-sdk-go-v2/service/support v1.14.1
 )
 
-require github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.5
+require github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.6
 
 require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.22 // indirect; indirect // indirect
@@ -143,7 +143,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.1 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.31 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.25 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.31 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.32 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.22.4
 	github.com/aws/aws-sdk-go-v2/service/backup v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/glue v1.40.0
