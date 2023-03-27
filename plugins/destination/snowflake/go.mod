@@ -22,11 +22,11 @@ require (
 	github.com/Azure/azure-pipeline-go v0.2.3 // indirect
 	github.com/Azure/azure-storage-blob-go v0.15.0 // indirect
 	github.com/apache/arrow/go/arrow v0.0.0-20211112161151-bc219186db40 // indirect
-	github.com/aws/aws-sdk-go-v2 v1.17.6 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2 v1.17.7 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.17 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.58 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.30 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.31 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.24 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.22 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect; indirect // indirect
