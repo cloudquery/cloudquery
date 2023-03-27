@@ -12,36 +12,38 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func detectorMembers() *schema.Table {
-	tableName := "aws_guardduty_detector_members"
+func detectorPublishingDestinations() *schema.Table {
+	tableName := "aws_guardduty_detector_publishing_destinations"
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html`,
-		Resolver:    fetchDetectorMembers,
-		Transform:   transformers.TransformWithStruct(&types.Member{}),
+		Resolver:    fetchGuarddutyDetectorPublishingDestinations,
+		Transform:   transformers.TransformWithStruct(&types.Destination{}, transformers.WithPrimaryKeys("DestinationId")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
-			client.DefaultRegionColumn(false),
 			{
 				Name:     "detector_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 		},
 	}
 }
 
-func fetchDetectorMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchGuarddutyDetectorPublishingDestinations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	detector := parent.Item.(*models.DetectorWrapper)
 	c := meta.(*client.Client)
 	svc := c.Services().Guardduty
-	config := &guardduty.ListMembersInput{DetectorId: aws.String(detector.Id)}
+	config := &guardduty.ListPublishingDestinationsInput{DetectorId: aws.String(detector.Id)}
 	for {
-		output, err := svc.ListMembers(ctx, config)
+		output, err := svc.ListPublishingDestinations(ctx, config)
 		if err != nil {
 			return err
 		}
-		res <- output.Members
+		res <- output.Destinations
 		if output.NextToken == nil {
 			return nil
 		}
