@@ -9,10 +9,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.59
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.8
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.1
-	github.com/aws/aws-sdk-go-v2/service/acm v1.17.6
+	github.com/aws/aws-sdk-go-v2/service/acm v1.17.7
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.5
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.6
-	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.6
+	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.7
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.17.6
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.19.0
@@ -22,15 +22,15 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.5
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.1
-	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.5
+	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.7
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.6
-	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.6
+	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.7
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.5
-	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.5
+	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.6
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.5
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.29.6
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5
-	github.com/aws/aws-sdk-go-v2/service/dax v1.12.5
+	github.com/aws/aws-sdk-go-v2/service/dax v1.12.6
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.7
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.5
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.6
@@ -115,13 +115,13 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.5
+	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.6
 	github.com/aws/aws-sdk-go-v2/service/batch v1.21.6
-	github.com/aws/aws-sdk-go-v2/service/computeoptimizer v1.21.4
+	github.com/aws/aws-sdk-go-v2/service/computeoptimizer v1.21.5
 	github.com/aws/aws-sdk-go-v2/service/support v1.14.1
 )
 
-require github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.5
+require github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.6
 
 require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.23 // indirect; indirect // indirect
