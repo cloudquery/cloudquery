@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.7
 	github.com/aws/aws-sdk-go-v2/config v1.18.19
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.18
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.58
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.59
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.8
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.1
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.7
@@ -76,7 +76,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.6
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.31.0
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.29.0
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.63.0
 	github.com/aws/aws-sdk-go-v2/service/savingsplans v1.12.0
@@ -124,8 +124,8 @@ require (
 require github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.6
 
 require (
-	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.22 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.25 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.23 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.26 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.6 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/getsentry/sentry-go v0.18.0 // indirect
@@ -150,7 +150,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.23 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.25 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.24 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.14.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/shield v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/sso v1.12.6 // indirect
 	github.com/aws/aws-sdk-go-v2/service/transfer v1.28.0
