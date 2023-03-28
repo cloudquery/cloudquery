@@ -13,7 +13,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockElasticloadbalancingv2Client(ctrl)
 	w := mocks.NewMockWafv2Client(ctrl)
 	l := elbv2Types.LoadBalancer{}
@@ -72,6 +72,18 @@ func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 		Certificates: []elbv2Types.Certificate{c},
 	}, nil)
 
+	r := elbv2Types.Rule{}
+	if err := faker.FakeObject(&r); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().DescribeRules(
+		gomock.Any(),
+		&elasticloadbalancingv2.DescribeRulesInput{ListenerArn: lis.ListenerArn},
+		gomock.Any(),
+	).Return(&elasticloadbalancingv2.DescribeRulesOutput{
+		Rules: []elbv2Types.Rule{r},
+	}, nil)
+
 	return client.Services{
 		Elasticloadbalancingv2: m,
 		Wafv2:                  w,
@@ -99,5 +111,5 @@ func fakeLoadBalancerAttributes() *elasticloadbalancingv2.DescribeLoadBalancerAt
 }
 
 func TestElbv2LoadBalancers(t *testing.T) {
-	client.AwsMockTestHelper(t, LoadBalancers(), buildElbv2LoadBalancers, client.TestOptions{})
+	client.AwsMockTestHelper(t, LoadBalancers(), buildLoadBalancers, client.TestOptions{})
 }
