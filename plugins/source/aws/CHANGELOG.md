@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [15.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v15.6.0...plugins-source-aws-v15.7.0) (2023-03-28)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_cloudformation_stack_set_operation_results` was added
+- Table `aws_cloudformation_stack_set_operations` was added
+- Table `aws_cloudformation_stack_sets` was added
+- Table `aws_dynamodb_backups` was added
+- Table `aws_dynamodb_exports` was added
+- Table `aws_dynamodb_global_tables` was added
+- Table `aws_dynamodbstreams_streams` was added
+- Table `aws_eventbridge_event_bus_targets` was added
+- Table `aws_eventbridge_replays`: column added with name `description` and type `String`
+- Table `aws_eventbridge_replays`: column added with name `destination` and type `JSON`
+- Table `aws_eventbridge_replays`: column added with name `replay_arn` and type `String`
+- Table `aws_guardduty_detector_filters` was added
+- Table `aws_guardduty_detector_findings` was added
+- Table `aws_guardduty_detector_intel_sets` was added
+- Table `aws_guardduty_detector_ip_sets` was added
+- Table `aws_guardduty_detector_publishing_destinations` was added
+
 ### Features
 
 * **aws-services:** Support newly added regions ([#9466](https://github.com/cloudquery/cloudquery/issues/9466)) ([be51234](https://github.com/cloudquery/cloudquery/commit/be5123482351c2f6e4bf362e5b8fa03c0d712c9c))
