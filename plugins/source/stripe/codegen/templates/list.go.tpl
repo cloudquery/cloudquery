@@ -69,10 +69,8 @@ func fetch{{.TableName | ToPascal}}(ctx context.Context, meta schema.ClientMeta,
 {{.ListParams}}
 		}
 
-		{{- if len .ExpandFields}}
 		{{- range .ExpandFields}}
 		lp.AddExpand("{{.}}")
-		{{- end}}
 		{{- end}}
 
 {{if .StateParamName}}
