@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v1.1.2...plugins-source-alicloud-v1.2.0) (2023-03-28)
+
+
+### This Release has the Following Changes to Tables
+- Table `alicloud_bss_bill_details` was added
+
+### Features
+
+* **alicloud:** Add daily bill table ([#9380](https://github.com/cloudquery/cloudquery/issues/9380)) ([8993d5c](https://github.com/cloudquery/cloudquery/commit/8993d5c956786d1c0b06c53e453bf53dc0bf74ad))
+
 ## [1.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v1.1.1...plugins-source-alicloud-v1.1.2) (2023-03-21)
 
 
