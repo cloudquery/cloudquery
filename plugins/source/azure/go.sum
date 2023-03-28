@@ -186,8 +186,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2 v2.1.0 h
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2 v2.1.0/go.mod h1:9cvVd/AvgCW3ki18aWkDiqmR0u1DTmZ2fQoHoH3gZbA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay v1.0.0 h1:MpzuhAA8DyFfJ2mcVnfBE+OsS7r2oWGnJ0zoCuZ2OYc=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay v1.0.0/go.mod h1:mcgbqUk0SJX+X93DQdseYYzpbMcgx4yJp2qDeOj9OXA=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations v1.1.0 h1:0OO/3K+SKt45gXiOU4gHRILOLeNOUZdqeNO47Mq6iN8=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations v1.1.0/go.mod h1:2FDnHkGwh1BFK1ZQt+iDJU47Cg9Y28F0W3FSI389NOA=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations/v3 v3.0.0 h1:/wK/LSPeJKYjgaPkAYi/hpUc9wcKTaum+IyUIOa/Lsg=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations/v3 v3.0.0/go.mod h1:1DD4wCjAufOvIGFMOk4XODh0mjlnj0hotuLqojPdtFE=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlinks v1.0.0 h1:9KeYw7g7JXq4Z6bFBZZRPjADHMGmSmzlpGeqo0VA6VI=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlinks v1.0.0/go.mod h1:9FjUkH1/nF2gWJYWI2U2NdxrGw7ZHqnG/oqTNky2WHE=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy v0.6.0 h1:YNsHXVXpZ9LE1/HYFEN9nd0fU0Ifl5gC47p/y1Gourc=
