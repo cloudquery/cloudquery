@@ -11,14 +11,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func listenerCertificates() *schema.Table {
-	tableName := "aws_elbv2_listener_certificates"
+func listenerRules() *schema.Table {
+	tableName := "aws_elbv2_listener_rules"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Certificate.html`,
-		Resolver:    fetchListenerCertificates,
+		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Rule.html`,
+		Resolver:    fetchListenerRules,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
-		Transform:   transformers.TransformWithStruct(&types.Certificate{}),
+		Transform:   transformers.TransformWithStruct(&types.Rule{}, transformers.WithPrimaryKeys("RuleArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -31,20 +31,20 @@ func listenerCertificates() *schema.Table {
 	}
 }
 
-func fetchListenerCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchListenerRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	region := c.Region
 	svc := c.Services().Elasticloadbalancingv2
 	listener := parent.Item.(types.Listener)
-	config := elbv2.DescribeListenerCertificatesInput{ListenerArn: listener.ListenerArn}
+	config := elbv2.DescribeRulesInput{ListenerArn: listener.ListenerArn}
 	for {
-		response, err := svc.DescribeListenerCertificates(ctx, &config, func(options *elbv2.Options) {
+		response, err := svc.DescribeRules(ctx, &config, func(options *elbv2.Options) {
 			options.Region = region
 		})
 		if err != nil {
 			return err
 		}
-		res <- response.Certificates
+		res <- response.Rules
 		if aws.ToString(response.NextMarker) == "" {
 			break
 		}
