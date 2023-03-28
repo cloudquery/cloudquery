@@ -1,0 +1,68 @@
+# What is an Infrastructure Data Lake?
+
+An infrastructure data lake is a centralized repository aimed at maintaining and managing all configuration metadata from your cloud infrastructure, such as users, computers, network, storage, and related cloud resources. The infrastructure data lake is also a fundamental piece for a consistent, scalable, and customizable implementation of other key solutions such as asset inventory, CSPM, CIEM, FinOps, and anything else that requires access to the configuration data.
+
+In this blog, we will go through how an infrastructure data lake looks and how to build one.
+
+## Architecture
+
+A good starting point is to first look at our post titled [What is the Modern Data Stack](/blog/what-is-the-modern-data-stack), given that an infrastructure data lake is basically a use-case specific implementation on top of the modern data stack.
+
+By taking the modern data stack approach to implement your infrastructure data lake, you can reuse already existing tools in your enterprise such as storage, data-lakes, and visualization tools, avoiding yet-another-tool fatigue.
+
+![Infrastructure Data Lake](/images/docs/glossary/the_modern_data_stack.png)
+
+## Data sources
+
+For cloud infrastructure, you mostly want to work with cloud APIs such as AWS, Azure, GCP, Cloudflare, and any other relevant APIs that are part of your infrastructure and you want to get visibility into. You can check out all the supported CloudQuery [source](/docs/plugins/sources/overview) plugins, and for each plugin, you can decide on which resource/tables you want to sync to decrease the amount of compute and storage needed.
+
+## Ingestion (Extract-Load)
+
+For ingestion, you need to use an ELT (Extract-Load-Transform) tool that supports the [sources](/docs/plugins/sources/overview) and [destinations](/docs/plugins/destinations/overview) that you need. CloudQuery (as you are on the CloudQuery website :) ) is an open-source, high-performance ELT framework that supports more than 40 sources and 15 destinations with great coverage for cloud infrastructure APIs.
+
+## Storage
+
+For storage, you can literally use anything from a simple PostgreSQL database to a data warehouse such as BigQuery or a data lake such as S3 and Athena. This will mostly depend on what you already have in the organization, the amount of data, and what teams inside the organization are familiar with.
+
+## Transformation
+
+The basic normalization happens on the CloudQuery side, where APIs are transformed into structured data through tables in the destination. This already gives users the power to query every resource and create interesting joins to gain new insights between resources and clouds. However, as use-cases expand, it is advisable to create new views that materialize complex queries and connections, making it easy for everyone to query and visualize them. For example, asset inventory views that normalize all resources to a single view, whether inside one cloud or across, and compliance views that summarize checks across your cloud environments.
+
+## Visualization
+
+Running raw SQL queries is great, but sometimes, you might want to put a fancy graph or visualization that helps you monitor, take a quick look, and know what's going on, as well as share with other non-technical users. To do this, you can plug in your favorite BI tools such as Grafana, Preset, PowerBI, or anything else you already use.
+
+Ingestion, storage, transformation, and visualization are the key steps in the pipeline that can take you pretty far. However, as you move forward, you can further enhance your production process with other tools in the modern-data-stack ecosystem, such as monitoring and governance tools.
+
+## Monitoring
+
+Ingestion, storage, transformation and visualization are the key steps in the pipeline which can bring you pretty far. Though as you move forward you can productionize even more with other tools in the modern-data-stack ecosystem such as monitoring and governance tools.
+
+# Use Cases
+
+The infrastructure data lake is a key component to be able to build a number of popular use-cases in a customizable and scalable way.
+
+## Cloud Asset Inventory
+
+Once all the configuration data is in your data lake it’s easy to create any view or correlation with standard data tools. For example by normalizing resources in different clouds you can create a cross cloud asset inventory view and visualize it. Take a look at how to build an [open source cloud asset inventory with CloudQuery and Grafana](/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana), which includes pre-built views and dashboards.
+
+## CSPM
+
+Cloud Security Posture Management (CSPM) is a popular solution for security professionals to audit and monitor their cloud configurations for security best practices and their internal policies. Those solutions usually come as pre-packaged dashboards with pre-built rules and custom query languages. The upside of those solutions is that it is easy to get started but often when some customization is needed it’s hard to access the raw data with standard data tools and integrate to any other standard visualization tools which.
+
+## FinOps
+
+Optimizing cost, placing guard-rails and tagging best practices is a  full-time job especially in big cloud environments. But to understand what you need to optimize you need access to both your cost data (such as AWS CUR data) and your infrastructure in queryable manager to be able to drive insights.
+
+For example check out:
+
+- “[Correlating Costs to resources for Azure cost optimization](/blog/azure-cost-optimization-with-cloudquery)”
+- “[How to Enrich AWS Cost and Usage Data with Cloud infrastructure Data in Athena](/how-to-guides/query-aws-cost-and-usage-athena)”
+
+## CIEM
+
+Cloud Infrastructure Entitlement Management (CIEM) - Is the process of managing identities and privileges in cloud environments. In layman terms is the process of understanding who has access to what. This can be done by querying tables such as [aws_iam_*](/docs/plugins/sources/aws/tables) and correlating with other resources or even normalizing users across cloud providers such as [gcp_iam_*](/docs/plugins/sources/gcp/tables) . Or even ad-hoc analysis such as “[Finding Cross-Account AWS Event Bridge Usage](/blog/how-to-find-cross-account-aws-eventbridge-usage)”
+
+# Get Started with CloudQuery
+
+Check out our [quick start guide](/docs/quickstart) or drop on our [Discord](/discord) and join our thriving community!
