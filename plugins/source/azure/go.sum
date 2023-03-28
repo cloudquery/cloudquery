@@ -208,8 +208,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvi
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine v0.7.0/go.mod h1:Tc8Vb197cKEUe0wMj10qC+k/DSLDaFPHj282HrkTZWI=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage v1.2.0 h1:Ma67P/GGprNwsslzEH6+Kb8nybI8jpDTm4Wmzu2ReK8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage v1.2.0/go.mod h1:c+Lifp3EDEamAkPVzMooRNOK6CZjNSdEnf1A7jsI9u4=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v2 v2.0.0 h1:60V+CBUyW2qCFT0cZmhSv/0Uix4bqjb7/DTNvZ83U1A=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v2 v2.0.0/go.mod h1:Vk4F/ip+NpYSq6KtOCR2aDSfUkgS8Hs+5ZERwsYBefk=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v3 v3.0.0 h1:qKRZHbeQiCLAkturaiZ7S2tXBsIMeLpN0j5ZjNnNT6c=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v3 v3.0.0/go.mod h1:h8JOxgBLAzXxyBkq616ey3mxnSWz/e7Mi67R3Re85dQ=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics v1.0.0 h1:IDuSHsqMhi6PysfqSycxXBz7WOYRGSvw31IK/Zio8cA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics v1.0.0/go.mod h1:44ZAL1LS24yrReci8LqmY3tY9sX0wf/wXadZNT8SQHY=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription v1.0.0 h1:vsovXlTyKHZXnqzQyt7QMVkwpJBDkHchQL53qXaGBRY=
