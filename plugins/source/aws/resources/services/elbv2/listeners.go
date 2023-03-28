@@ -39,6 +39,7 @@ func listeners() *schema.Table {
 
 		Relations: []*schema.Table{
 			listenerCertificates(),
+			listenerRules(),
 		},
 	}
 }

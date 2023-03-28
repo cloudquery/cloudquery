@@ -72,6 +72,18 @@ func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		Certificates: []elbv2Types.Certificate{c},
 	}, nil)
 
+	r := elbv2Types.Rule{}
+	if err := faker.FakeObject(&r); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().DescribeRules(
+		gomock.Any(),
+		&elasticloadbalancingv2.DescribeRulesInput{ListenerArn: lis.ListenerArn},
+		gomock.Any(),
+	).Return(&elasticloadbalancingv2.DescribeRulesOutput{
+		Rules: []elbv2Types.Rule{r},
+	}, nil)
+
 	return client.Services{
 		Elasticloadbalancingv2: m,
 		Wafv2:                  w,
