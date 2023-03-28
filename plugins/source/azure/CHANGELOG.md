@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v6.1.0...plugins-source-azure-v6.2.0) (2023-03-28)
 
 
+### This Release has the Following Changes to Tables
+- Table `azure_compute_capacity_reservation_groups` was added
+- Table `azure_compute_capacity_reservations` was added
+- Table `azure_compute_virtual_machine_patch_assessments` was added
+- Table `azure_storage_blob_services`: column added with name `subscription_id` and type `String`
+- Table `azure_storage_containers`: column added with name `subscription_id` and type `String`
+- Table `azure_storage_file_shares`: column added with name `subscription_id` and type `String`
+- Table `azure_storage_queue_services` was added
+- Table `azure_storage_queues` was added
+- Table `azure_storage_tables`: column added with name `subscription_id` and type `String`
+
 ### Features
 
 * **azure-resources:** Add Capacity Reservation Groups and Reservations ([#9460](https://github.com/cloudquery/cloudquery/issues/9460)) ([4ade667](https://github.com/cloudquery/cloudquery/commit/4ade667539e8176ae09ac1d29eb3eb50cb43500b))
