@@ -20,7 +20,7 @@ SOC2 compliance is important for several reasons:
 3. Meeting regulatory requirements: SOC2 compliance may be required by certain industries or regulatory bodies, such as HIPAA for healthcare organizations.
 4. Competitive advantage: SOC2 compliance can give a company a competitive advantage by demonstrating a commitment to data security and privacy that sets it apart from its competitors.
 
-## How to Achieve SOC2 Compliance?
+## How to Achieve SOC2 Compliance
 
 Achieving SOC2 compliance requires a comprehensive approach to data security and privacy. Here are the key steps to achieving SOC2 compliance:
 
