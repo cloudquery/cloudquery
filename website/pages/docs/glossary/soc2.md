@@ -1,8 +1,10 @@
-# What is SOC2 Compliance and Why Does it Matter?
-
-In this blog we will talk shortly about what SOC2 is and how to build an open source SOC2 report on top of your infrastructure data lake.
-
 # What is SOC2 Compliance?
+
+#### (And Why Does it Matter?)
+
+In this blog we will talk shortly about what SOC2 is, why it matters, and how to build an open source SOC2 report on top of your infrastructure data lake.
+
+## What is SOC2 Compliance?
 
 SOC2 (Service Organization Control 2) compliance is a set of auditing standards that measures how well a company manages and protects its customers' data. The SOC2 compliance framework was developed by the AICPA to provide a standardized way to assess and report on a company's data security practices.
 
@@ -14,7 +16,7 @@ SOC2 compliance covers five key trust service categories:
 4. Confidentiality: This category assesses the company's policies and procedures for protecting sensitive data from unauthorized access, disclosure, and misuse.
 5. Privacy: This category evaluates the company's practices for collecting, using, and disclosing personal information in accordance with applicable laws and regulations.
 
-# Why Does SOC2 Compliance Matter?
+## Why Does SOC2 Compliance Matter?
 
 SOC2 compliance is important for several reasons:
 
@@ -23,7 +25,7 @@ SOC2 compliance is important for several reasons:
 3. Meeting regulatory requirements: SOC2 compliance may be required by certain industries or regulatory bodies, such as HIPAA for healthcare organizations.
 4. Competitive advantage: SOC2 compliance can give a company a competitive advantage by demonstrating a commitment to data security and privacy that sets it apart from its competitors.
 
-# How to Achieve SOC2 Compliance?
+## How to Achieve SOC2 Compliance?
 
 Achieving SOC2 compliance requires a comprehensive approach to data security and privacy. Here are the key steps to achieving SOC2 compliance:
 
@@ -33,10 +35,10 @@ Achieving SOC2 compliance requires a comprehensive approach to data security and
 4. Monitor and test: Monitor and test the effectiveness of the controls to ensure ongoing compliance.
 5. Obtain an independent audit: Engage an independent auditor to conduct an SOC2 audit and issue a report.
 
-# Open Source SOC2 Report
+## Open Source SOC2 Report
 
-Previously we covered [what is the modern data stack](/blog/what-is-the-modern-data-stack) and how we can build an infrastructure data lake. By having an infrastructure data lake you can easily build your own customizable CIEM with just standard SQL queries and views that you can monitor and visualize with your go-to BI tools and avoid the yet-another-dashboard fatigue and learning new proprietary query languages. Check out our full guide on how to use CloudQuery, pre-built queries, views and Grafana dashboards to build an open-source SOC2 Report (a TODO blog)
+By having an [infrastructure data lake](/docs/glossary/what-is-infrastructure-data-lake) you can easily build your own customizable [CIEM](/docs/glossary/what-is-ciem) with just standard SQL queries and views that you can monitor and visualize with your go-to BI tools and avoid the yet-another-dashboard fatigue and learning new proprietary query languages.
 
-# Conclusion
+## Conclusion
 
 SOC2 compliance is an important standard for companies that handle sensitive customer data. Achieving SOC2 compliance requires a comprehensive approach to data security and privacy, including defining scope, conducting a risk assessment, implementing controls, monitoring and testing, and obtaining an independent audit. By achieving SOC2 compliance, companies can protect their customers' data, build trust, meet regulatory requirements, and gain a competitive advantage in the marketplace.

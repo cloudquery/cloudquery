@@ -1,3 +1,4 @@
+# What is the Modern Data Stack?
 
 The data world has become a complex landscape, full of acronyms and buzzwords. In this post we will give a birds-eye view of the modern data stack and demystify some of the terminology.
 
@@ -20,7 +21,7 @@ The modern data stack started gaining popularity in the early 2010s, enabled by 
 
 The introduction of data warehouses and data lakes also made it possible to shift Extract-Transform-Load (ELT) workloads to Extract-Load-Transform (ELT). This approach moves transformation to the data warehouse and data lake which gives much more flexibility to teams working with the data without the need to ingest the data again and running compute intensive operations.
 
-# Architecture
+## Architecture
 
 ![The Modern Data Stack Architecture](/images/blog/what_is_the_modern_data_stack/architecture.png)
 
@@ -30,7 +31,7 @@ The introduction of data warehouses and data lakes also made it possible to shif
 
 This refers to the data we want to ingest and involves different types of sources:
 
-- **Databases**: Companies have many databases for different workloads. Since these databases are not optimized for analytical workloads, it is often necessary to ingest data from production databases to analytical databases where you can run complex queries without impacting the production system. Additionally, there have been many advances around Change Data Capture ([CDC](https://www.cloudquery.io/blog/postgres-cdc-to-any-destination)) for databases, allowing you to ingest data in real-time from databases. This enables efficient, near-real time syncing between source databases and destinations.
+- **Databases**: Companies have many databases for different workloads. Since these databases are not optimized for analytical workloads, it is often necessary to ingest data from production databases to analytical databases where you can run complex queries without impacting the production system. Additionally, there have been many advances around Change Data Capture ([CDC](/blog/postgres-cdc-to-any-destination)) for databases, allowing you to ingest data in real-time from databases. This enables efficient, near-real time syncing between source databases and destinations.
 - **APIs**: Most SaaS products expose their data via APIs. So, data for anything from marketing or finance products such as Salesforce and Stripe, to infrastructure platforms such as AWS, GCP, Azure can be loaded.**
 - **Event Streams**: This is another popular source type where you might want to subscribe to an event queue and send it to an analytical destination.
 
@@ -46,7 +47,7 @@ Other important features of EL tools:
 - **Performance -** The better the performance, the cheaper the EL workload will be, and the faster data will be ingested.
 - **Pluggable Architecture -** Given the large number of sources and destinations, it is essential that sources and destinations are decoupled; otherwise, each source will need to support a growing number of destinations.
 
-You can learn more about CloudQuery’s [Architecture](https://www.cloudquery.io/docs/developers/architecture) and How we’ve built [CloudQuery a High Performance ELT Framework in Go](https://www.cloudquery.io/blog/building-cloudquery).
+You can learn more about CloudQuery’s [Architecture](/docs/developers/architecture) and How we’ve built [CloudQuery a High Performance ELT Framework in Go](/blog/building-cloudquery).
 
 ## Data Storage
 
@@ -82,7 +83,7 @@ Other optional analysis tools are [Jupyter Notebook](https://jupyter.org/) that 
 
 The number of use cases for all that data is infinite. Some popular use cases even have their own acronyms, such as CSPM (Cloud Security Posture Management), CDP (Customer Data Platform), IDP (Infrastructure Data Platform) and CNAPP (Cloud-Native Application Protection Platform). The integration of different data sources often enables unique data science, business insight, security and machine learning use cases, among others.
 
-# What Does the Future Hold?
+## What Does the Future Hold?
 
 Even though the modern data stack was born a decade ago, its growing popularity is leading to fast-paced and exciting innovation in every component of the stack.
 

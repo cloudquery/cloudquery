@@ -1,9 +1,5 @@
 # What is Cloud Security Posture Management (CSPM)?
 
-In this blog we will talk shortly about what a CSPM is and how to build an open source CSPM on top of your infrastructure data lake.
-
-# Overview
-
 Cloud Security Posture Management (CSPM), which refers to the set of processes, tools, and technologies used to manage and monitor the security posture of cloud-based infrastructure and applications.
 
 CSPM plays an essential role in identifying and addressing security risks and compliance issues in cloud environments.
@@ -18,6 +14,4 @@ It helps organizations to reduce the risk of data breaches, protect sensitive in
 
 # Open Source CSPM
 
-Previously we covered [what is the modern data stack](https://www.cloudquery.io/blog/what-is-the-modern-data-stack) and how we can build an infrastructure data lake.
-By having an infrastructure data lake you can easily build your own customizable CSPM with just standard SQL queries and views that you can monitor and visualize with your go-to BI tools and avoid the yet-another-dashboard fatigue and learning new proprietary query languages.
-Check out our full guide on how to use CloudQuery, pre-built queries, views and Grafana dashboards to build an [open-source CSPM](https://www.cloudquery.io/how-to-guides/open-source-cspm)
+The [What is the Modern Data Stack](/docs/glossary/what-is-the-modern-data-stack) post covers what the modern data stack is, and how we can build an infrastructure data lake. With an infrastructure data lake in place, you can build your own customizable CSPM with just standard SQL queries and views that you can monitor and visualize with your go-to BI tools and avoid the yet-another-dashboard fatigue and learning new proprietary query languages. Check out our full guide on how to use CloudQuery, pre-built queries, views and Grafana dashboards to [build an open-source CSPM](/how-to-guides/open-source-cspm).
