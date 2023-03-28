@@ -18,7 +18,7 @@ func EventSubscriptions() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_EventSubscription.html`,
-		Resolver:    fetchRedshiftEventSubscriptions,
+		Resolver:    fetchEventSubscriptions,
 		Transform:   transformers.TransformWithStruct(&types.EventSubscription{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
@@ -42,7 +42,7 @@ func EventSubscriptions() *schema.Table {
 	}
 }
 
-func fetchRedshiftEventSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchEventSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Redshift
 	var params redshift.DescribeEventSubscriptionsInput

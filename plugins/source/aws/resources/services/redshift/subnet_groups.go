@@ -17,7 +17,7 @@ func SubnetGroups() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_ClusterSubnetGroup.html`,
-		Resolver:    fetchRedshiftSubnetGroups,
+		Resolver:    fetchSubnetGroups,
 		Transform:   transformers.TransformWithStruct(&types.ClusterSubnetGroup{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
@@ -41,7 +41,7 @@ func SubnetGroups() *schema.Table {
 	}
 }
 
-func fetchRedshiftSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config redshift.DescribeClusterSubnetGroupsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Redshift

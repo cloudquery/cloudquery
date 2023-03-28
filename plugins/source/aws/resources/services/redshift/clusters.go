@@ -17,7 +17,7 @@ func Clusters() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_Cluster.html`,
-		Resolver:    fetchRedshiftClusters,
+		Resolver:    fetchClusters,
 		Transform:   transformers.TransformWithStruct(&types.Cluster{}, transformers.WithSkipFields("ClusterParameterGroups")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
@@ -52,7 +52,7 @@ func Clusters() *schema.Table {
 	}
 }
 
-func fetchRedshiftClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config redshift.DescribeClustersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Redshift

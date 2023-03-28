@@ -18,7 +18,7 @@ func snapshots() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_Snapshot.html`,
-		Resolver:    fetchRedshiftSnapshots,
+		Resolver:    fetchSnapshots,
 		Transform:   transformers.TransformWithStruct(&types.Snapshot{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
@@ -43,7 +43,7 @@ func snapshots() *schema.Table {
 	}
 }
 
-func fetchRedshiftSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Redshift
 	cluster := parent.Item.(types.Cluster)

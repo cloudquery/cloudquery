@@ -1,7 +1,7 @@
 package redshift
 
 import (
-	context "context"
+	"context"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
@@ -16,7 +16,7 @@ func clusterParameters() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_Parameter.html`,
-		Resolver:    fetchRedshiftClusterParameters,
+		Resolver:    fetchClusterParameters,
 		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
@@ -43,7 +43,7 @@ func clusterParameters() *schema.Table {
 	}
 }
 
-func fetchRedshiftClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	group := parent.Item.(types.ClusterParameterGroupStatus)
 	c := meta.(*client.Client)
 	svc := c.Services().Redshift
