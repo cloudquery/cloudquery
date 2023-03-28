@@ -16,7 +16,7 @@ func listenerCertificates() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Certificate.html`,
-		Resolver:    fetchElbv2ListenerCertificates,
+		Resolver:    fetchListenerCertificates,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.Certificate{}),
 		Columns: []schema.Column{
@@ -31,7 +31,7 @@ func listenerCertificates() *schema.Table {
 	}
 }
 
-func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchListenerCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	region := c.Region
 	svc := c.Services().Elasticloadbalancingv2

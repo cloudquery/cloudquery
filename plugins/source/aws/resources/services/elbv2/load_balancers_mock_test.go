@@ -13,7 +13,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockElasticloadbalancingv2Client(ctrl)
 	w := mocks.NewMockWafv2Client(ctrl)
 	l := elbv2Types.LoadBalancer{}
@@ -99,5 +99,5 @@ func fakeLoadBalancerAttributes() *elasticloadbalancingv2.DescribeLoadBalancerAt
 }
 
 func TestElbv2LoadBalancers(t *testing.T) {
-	client.AwsMockTestHelper(t, LoadBalancers(), buildElbv2LoadBalancers, client.TestOptions{})
+	client.AwsMockTestHelper(t, LoadBalancers(), buildLoadBalancers, client.TestOptions{})
 }

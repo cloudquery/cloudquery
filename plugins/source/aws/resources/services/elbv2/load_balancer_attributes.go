@@ -15,7 +15,7 @@ func loadBalancerAttributes() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_LoadBalancerAttribute.html`,
-		Resolver:    fetchElbv2LoadBalancerAttributes,
+		Resolver:    fetchLoadBalancerAttributes,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.LoadBalancerAttribute{}),
 		Columns: []schema.Column{
@@ -30,7 +30,7 @@ func loadBalancerAttributes() *schema.Table {
 	}
 }
 
-func fetchElbv2LoadBalancerAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchLoadBalancerAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	lb := parent.Item.(types.LoadBalancer)
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticloadbalancingv2

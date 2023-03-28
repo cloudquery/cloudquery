@@ -16,7 +16,7 @@ func TargetGroups() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_TargetGroup.html`,
-		Resolver:    fetchElbv2TargetGroups,
+		Resolver:    fetchTargetGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.TargetGroup{}),
 		Columns: []schema.Column{
@@ -25,7 +25,7 @@ func TargetGroups() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: resolveElbv2targetGroupTags,
+				Resolver: resolveTargetGroupTags,
 			},
 			{
 				Name:     "arn",
@@ -43,7 +43,7 @@ func TargetGroups() *schema.Table {
 	}
 }
 
-func fetchElbv2TargetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchTargetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config elbv2.DescribeTargetGroupsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticloadbalancingv2
@@ -61,7 +61,7 @@ func fetchElbv2TargetGroups(ctx context.Context, meta schema.ClientMeta, parent 
 	return nil
 }
 
-func resolveElbv2targetGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveTargetGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().Elasticloadbalancingv2

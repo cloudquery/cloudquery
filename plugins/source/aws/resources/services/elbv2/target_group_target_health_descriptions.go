@@ -15,7 +15,7 @@ func targetGroupTargetHealthDescriptions() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_TargetHealthDescription.html`,
-		Resolver:    fetchElbv2TargetGroupTargetHealthDescriptions,
+		Resolver:    fetchTargetGroupTargetHealthDescriptions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.TargetHealthDescription{}),
 		Columns: []schema.Column{
@@ -30,7 +30,7 @@ func targetGroupTargetHealthDescriptions() *schema.Table {
 	}
 }
 
-func fetchElbv2TargetGroupTargetHealthDescriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchTargetGroupTargetHealthDescriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Elasticloadbalancingv2
 	tg := parent.Item.(types.TargetGroup)

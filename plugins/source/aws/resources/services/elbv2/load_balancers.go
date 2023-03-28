@@ -19,7 +19,7 @@ func LoadBalancers() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_LoadBalancer.html`,
-		Resolver:    fetchElbv2LoadBalancers,
+		Resolver:    fetchLoadBalancers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.LoadBalancer{}),
 		Columns: []schema.Column{
@@ -28,12 +28,12 @@ func LoadBalancers() *schema.Table {
 			{
 				Name:     "web_acl_arn",
 				Type:     schema.TypeString,
-				Resolver: resolveElbv2loadBalancerWebACLArn,
+				Resolver: resolveLoadBalancerWebACLArn,
 			},
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: resolveElbv2loadBalancerTags,
+				Resolver: resolveLoadBalancerTags,
 			},
 			{
 				Name:     "arn",
@@ -52,7 +52,7 @@ func LoadBalancers() *schema.Table {
 	}
 }
 
-func fetchElbv2LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config elbv2.DescribeLoadBalancersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticloadbalancingv2
@@ -69,7 +69,7 @@ func fetchElbv2LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
-func resolveElbv2loadBalancerWebACLArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveLoadBalancerWebACLArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.LoadBalancer)
 	// only application load balancer can have web acl arn
 	if p.Type != types.LoadBalancerTypeEnumApplication {
@@ -95,7 +95,7 @@ func resolveElbv2loadBalancerWebACLArn(ctx context.Context, meta schema.ClientMe
 	return resource.Set(c.Name, response.WebACL.ARN)
 }
 
-func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveLoadBalancerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	region := cl.Region
 	svc := cl.Services().Elasticloadbalancingv2
