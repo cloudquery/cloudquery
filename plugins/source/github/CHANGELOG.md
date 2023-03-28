@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v4.1.2...plugins-source-github-v4.1.3) (2023-03-28)
+
+
+### Bug Fixes
+
+* **github:** Add pagination for dependabot resources ([#9461](https://github.com/cloudquery/cloudquery/issues/9461)) ([730f448](https://github.com/cloudquery/cloudquery/commit/730f4488da286687d844317509677aa7fb5a4822))
+
 ## [4.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v4.1.1...plugins-source-github-v4.1.2) (2023-03-21)
 
 
