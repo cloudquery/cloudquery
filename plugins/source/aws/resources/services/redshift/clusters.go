@@ -48,6 +48,8 @@ func Clusters() *schema.Table {
 		Relations: []*schema.Table{
 			snapshots(),
 			clusterParameterGroups(),
+			endpointAccess(),
+			endpointAuthorization(),
 		},
 	}
 }
