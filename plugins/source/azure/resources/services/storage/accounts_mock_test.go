@@ -41,7 +41,13 @@ func createAccounts(router *mux.Router) error {
 	if err := createFileShares(router); err != nil {
 		return err
 	}
-	return createBlobServices(router)
+	if err := createBlobServices(router); err != nil {
+		return err
+	}
+	if err := createQueueServices(router); err != nil {
+		return err
+	}
+	return createQueues(router)
 }
 
 func TestAccounts(t *testing.T) {

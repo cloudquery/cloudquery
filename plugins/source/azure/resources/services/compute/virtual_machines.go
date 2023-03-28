@@ -26,6 +26,7 @@ func VirtualMachines() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			VirtualMachineExtensions(),
+			virtualMachinePatchAssessments(),
 		},
 	}
 }
