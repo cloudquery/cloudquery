@@ -1,8 +1,6 @@
 # What is ASM?
 
-In this post we will talk shortly about what Attack Surface Management (ASM) is, and how to build an open source ASM on top of your infrastructure data lake.
-
-As cyber threats continue to increase in complexity and frequency, it's more important than ever for businesses to adopt effective cybersecurity measures. One critical component of cybersecurity is Attack Surface Management (ASM).
+As cyber threats continue to increase in complexity and frequency, it's more important than ever for businesses to adopt effective cybersecurity measures. One critical component of cybersecurity is Attack Surface Management (ASM). In this post we will talk shortly about what Attack Surface Management (ASM) is, and how to build an open source ASM on top of your infrastructure data lake.
 
 Attack Surface Management is the process of identifying and managing all the potential points of attack on a company's IT infrastructure. This includes everything from networks and servers to applications and endpoints. By identifying these vulnerabilities, businesses can take steps to reduce their risk of cyber attacks.
 
