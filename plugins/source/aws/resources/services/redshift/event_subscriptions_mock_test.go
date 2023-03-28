@@ -12,7 +12,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildRedshiftEventSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEventSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockRedshiftClient(ctrl)
 
 	var s types.EventSubscription
@@ -36,5 +36,5 @@ func buildRedshiftEventSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) 
 }
 
 func TestRedshiftEventSubscriptions(t *testing.T) {
-	client.AwsMockTestHelper(t, EventSubscriptions(), buildRedshiftEventSubscriptionsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, EventSubscriptions(), buildEventSubscriptionsMock, client.TestOptions{})
 }

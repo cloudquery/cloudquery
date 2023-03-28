@@ -1,13 +1,15 @@
 package redshift
 
 import (
+	"context"
+
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ClusterParameterGroups() *schema.Table {
+func clusterParameterGroups() *schema.Table {
 	tableName := "aws_redshift_cluster_parameter_groups"
 	return &schema.Table{
 		Name:        tableName,
@@ -38,7 +40,13 @@ func ClusterParameterGroups() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ClusterParameters(),
+			clusterParameters(),
 		},
 	}
+}
+
+func fetchRedshiftClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cluster := parent.Item.(types.Cluster)
+	res <- cluster.ClusterParameterGroups
+	return nil
 }

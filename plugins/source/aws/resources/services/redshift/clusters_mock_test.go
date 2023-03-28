@@ -12,7 +12,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildRedshiftClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockRedshiftClient(ctrl)
 	g := types.Cluster{}
 	err := faker.FakeObject(&g)
@@ -65,7 +65,7 @@ func buildRedshiftClustersMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	}
 }
 
-func buildRedshiftSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockRedshiftClient(ctrl)
 
 	g := types.ClusterSubnetGroup{}
@@ -84,9 +84,9 @@ func buildRedshiftSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) client
 }
 
 func TestRedshiftClusters(t *testing.T) {
-	client.AwsMockTestHelper(t, Clusters(), buildRedshiftClustersMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Clusters(), buildClustersMock, client.TestOptions{})
 }
 
 func TestRedshiftSubnetGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, SubnetGroups(), buildRedshiftSubnetGroupsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, SubnetGroups(), buildSubnetGroupsMock, client.TestOptions{})
 }
