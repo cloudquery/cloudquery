@@ -100,8 +100,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalake
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore v1.0.0/go.mod h1:kgpZFXL9MK9aftdmcLgLjc3Db56zd2AOcZUZLmfdvs4=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration v1.0.0 h1:puR2uxcQbS85h5A4a5UlYby8v0s7/ko3GVKokPS2gew=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration v1.0.0/go.mod h1:OiWYqcAOX+iO7Vsa7ofhugKZjL0FGYdaAcBBVdRLpYA=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization v1.0.0 h1:E404espBxzBWw7BlZa7TONlqMEH7P3P8XCe686PSmZQ=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization v1.0.0/go.mod h1:XM/9J9tLtumXaGIJwbsbm7WlsZwxOtKB34HwmFW9qyU=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2 v2.0.0 h1:mRHrQVq185pTtaq+kBZ74Z5L2prjMMLvkLbW3ol/n2Q=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization/v2 v2.0.0/go.mod h1:gpl6uxSTrvS/ZIPSFmH4l5TiLBg3gQtETxSdCmuGyIA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub v0.2.0 h1:ydSmHFhSLo5ULTh848qxApOLpQFXqAzm4A3LaSGlEDo=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub v0.2.0/go.mod h1:ywFY77hIaBQCssCHNLFqltIcZK6wN7sPbW9E/86H6rQ=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops v0.5.0 h1:eeLvcM6lclZ8QKwP5BV9xNT47oG2KjwmqxsuGXNGUPw=
