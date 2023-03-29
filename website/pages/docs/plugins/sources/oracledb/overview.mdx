@@ -1,0 +1,32 @@
+---
+name: OracleDB
+---
+# OracleDB Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+import { Callout } from 'nextra-theme-docs'
+import Configuration from "./_configuration.mdx";
+
+<Badge text={"Latest: " + getLatestVersion("source", "oracledb")}/>
+
+The CloudQuery OracleDB plugin syncs your OracleDB database to any of the supported CloudQuery destinations (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+Supported database versions are >= 18c (see more about database release schedule [here](https://support.oracle.com/knowledge/Oracle%20Database%20Products/742060_1.html)).
+
+### Example
+
+This example configures a OracleDB source, located at `localhost:1521`. The (top level) spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
+
+<Configuration/>
+
+## OracleDB spec
+
+This is the (nested) spec used by the OracleDB destination plugin.
+
+- `connection_string` (string, required)
+
+  Connection string to connect to the database in the format `oracle://<user<>:<password>@<server>:<port>/<service_name>`. See the [Go driver documentation](https://github.com/sijms/go-ora) for more details.
+
+<Callout type="info">
+Make sure you use [environment variable expansion](/docs/advanced-topics/environment-variable-substitution) in production instead of committing the credentials to the configuration file directly.
+</Callout>

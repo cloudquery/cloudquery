@@ -142,6 +142,9 @@
     "plugins/source/oracle": {
       "component": "plugins-source-oracle"
     },
+    "plugins/source/oracledb": {
+      "component": "plugins-source-oracledb"
+    },
     "plugins/source/pagerduty": {
       "component": "plugins-source-pagerduty"
     },

@@ -207,6 +207,13 @@ export const SOURCE_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
   },
   {
+    name: "Oracle Database",
+    logo: "/images/logos/plugins/oracle.svg",
+    id: "oracledb",
+    kind: "official",
+    category: "databases",
+  },
+  {
     name: "Pagerduty",
     logo: "/images/logos/plugins/pagerduty.svg",
     id: "pagerduty",
