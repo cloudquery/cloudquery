@@ -59,7 +59,11 @@ func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resourc
 			policies[*p.PolicyArn] = p.PolicyName
 		}
 	}
-	return resource.Set("policies", policies)
+	err := resource.Set(c.Name, policies)
+	if err != nil {
+		return err
+	}
+	return resource.Set("attached_policies", policies)
 }
 
 func resolveRolesAssumeRolePolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

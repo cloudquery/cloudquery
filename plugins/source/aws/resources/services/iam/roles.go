@@ -24,6 +24,10 @@ func Roles() *schema.Table {
 				Resolver: resolveIamRolePolicies,
 			},
 			{
+				Name: "attached_policies",
+				Type: schema.TypeJSON,
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RoleId"),
@@ -44,7 +48,7 @@ func Roles() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			RolePolicies(),
+			rolePolicies(),
 			roleLastAccessedDetails(),
 		},
 	}

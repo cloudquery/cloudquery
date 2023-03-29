@@ -32,13 +32,20 @@ func resolveIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, resour
 	config := iam.ListAttachedGroupPoliciesInput{
 		GroupName: r.GroupName,
 	}
-	response, err := svc.ListAttachedGroupPolicies(ctx, &config)
+	policyMap := map[string]*string{}
+	paginator := iam.NewListAttachedGroupPoliciesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		for _, p := range page.AttachedPolicies {
+			policyMap[*p.PolicyArn] = p.PolicyName
+		}
+	}
+	err := resource.Set(c.Name, policyMap)
 	if err != nil {
 		return err
 	}
-	policyMap := map[string]*string{}
-	for _, p := range response.AttachedPolicies {
-		policyMap[*p.PolicyArn] = p.PolicyName
-	}
-	return resource.Set(c.Name, policyMap)
+	return resource.Set("attached_policies", policyMap)
 }

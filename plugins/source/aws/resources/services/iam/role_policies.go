@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func RolePolicies() *schema.Table {
+func rolePolicies() *schema.Table {
 	tableName := "aws_iam_role_policies"
 	return &schema.Table{
 		Name:                tableName,
