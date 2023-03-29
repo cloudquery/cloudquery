@@ -394,6 +394,13 @@ export const DESTINATION_PLUGINS: Plugin[] = [
     category: "databases",
   },
   {
+    name: "Meilisearch",
+    logo: "/images/logos/plugins/meilisearch.svg",
+    id: "meilisearch",
+    kind: "official",
+    category: "databases",
+  },
+  {
     name: "Microsoft SQL Server",
     logo: "/images/logos/plugins/mssql.svg",
     id: "mssql",
