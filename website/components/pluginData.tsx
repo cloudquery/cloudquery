@@ -681,14 +681,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     category: "product-analytics",
   },
   {
-    name: "OracleDB",
-    id: "oracledb",
-    href: "https://github.com/cloudquery/cloudquery/issues/8862",
-    kind: "unpublished",
-    category: "databases",
-    logo: "/images/logos/plugins/oracle.svg",
-  },
-  {
     name: "OnFleet",
     id: "onfleet",
     href: "https://github.com/cloudquery/cloudquery/issues/9053",
