@@ -1,6 +1,6 @@
 # Table: k8s_batch_cron_jobs
 
-This table shows data for K8s Batch Cron Jobs.
+This table shows data for Kubernetes (K8s) Batch Cron Jobs.
 
 The primary key for this table is **uid**.
 

@@ -1,6 +1,6 @@
 # Table: k8s_core_resource_quotas
 
-This table shows data for K8s Core Resource Quotas.
+This table shows data for Kubernetes (K8s) Core Resource Quotas.
 
 The primary key for this table is **uid**.
 

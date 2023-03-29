@@ -1,6 +1,6 @@
 # Table: k8s_storage_csi_nodes
 
-This table shows data for K8s Storage Csi Nodes.
+This table shows data for Kubernetes (K8s) Storage Container Storage Interface (CSI) Nodes.
 
 The primary key for this table is **uid**.
 

@@ -1,6 +1,8 @@
 package plugin
 
 import (
+	"strings"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/admissionregistration"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/apps"
@@ -16,13 +18,37 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/policy"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/rbac"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/storage"
+	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"golang.org/x/exp/maps"
 )
 
-var (
-	Version = "development"
-)
+var Version = "Development"
+
+var googleAdsExceptions = map[string]string{
+	"admissionregistration": "Admission Registration",
+	"crds":                  "Custom Resource Definitions (CRDs)",
+	"csi":                   "Container Storage Interface (CSI)",
+	"hpas":                  "Horizontal Pod Autoscalers (HPAs)",
+	"k8s":                   "Kubernetes (K8s)",
+	"pvcs":                  "Persistent Volume Claims (PVCs)",
+	"pvs":                   "Persistent Volumes (PVs)",
+	"rbac":                  "Role-Based Access Control (RBAC)",
+}
+
+func titleTransformer(table *schema.Table) string {
+	if table.Title != "" {
+		return table.Title
+	}
+	exceptions := maps.Clone(source.DefaultTitleExceptions)
+	for k, v := range googleAdsExceptions {
+		exceptions[k] = v
+	}
+	csr := caser.New(caser.WithCustomExceptions(exceptions))
+	t := csr.ToTitle(table.Name)
+	return strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
+}
 
 func Plugin() *source.Plugin {
 	return source.NewPlugin(
@@ -73,5 +99,6 @@ func Plugin() *source.Plugin {
 			storage.VolumeAttachments(),
 		},
 		client.Configure,
+		source.WithTitleTransformer(titleTransformer),
 	)
 }

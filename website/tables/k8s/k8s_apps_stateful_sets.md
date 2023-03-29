@@ -1,6 +1,6 @@
 # Table: k8s_apps_stateful_sets
 
-This table shows data for K8s Apps Stateful Sets.
+This table shows data for Kubernetes (K8s) Apps Stateful Sets.
 
 The primary key for this table is **uid**.
 

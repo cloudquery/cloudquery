@@ -1,6 +1,6 @@
 # Table: k8s_admissionregistration_validating_webhook_configurations
 
-This table shows data for K8s Admissionregistration Validating Webhook Configurations.
+This table shows data for Kubernetes (K8s) Admission Registration Validating Webhook Configurations.
 
 The primary key for this table is **uid**.
 

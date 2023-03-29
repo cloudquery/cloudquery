@@ -1,6 +1,6 @@
 # Table: k8s_nodes_runtime_classes
 
-This table shows data for K8s Nodes Runtime Classes.
+This table shows data for Kubernetes (K8s) Nodes Runtime Classes.
 
 The primary key for this table is **uid**.
 
