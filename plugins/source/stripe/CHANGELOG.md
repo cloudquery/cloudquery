@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-stripe-v1.1.2...plugins-source-stripe-v1.1.3) (2023-03-29)
+
+
+### Bug Fixes
+
+* **stripe:** Expand fields on prices ([#9465](https://github.com/cloudquery/cloudquery/issues/9465)) ([9eac5ab](https://github.com/cloudquery/cloudquery/commit/9eac5abcb8e9df7b76c85188c0c60f30942b0984))
+
 ## [1.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-stripe-v1.1.1...plugins-source-stripe-v1.1.2) (2023-03-21)
 
 

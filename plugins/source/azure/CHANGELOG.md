@@ -5,6 +5,40 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v6.1.0...plugins-source-azure-v6.2.0) (2023-03-28)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_compute_capacity_reservation_groups` was added
+- Table `azure_compute_capacity_reservations` was added
+- Table `azure_compute_virtual_machine_patch_assessments` was added
+- Table `azure_storage_blob_services`: column added with name `subscription_id` and type `String`
+- Table `azure_storage_containers`: column added with name `subscription_id` and type `String`
+- Table `azure_storage_file_shares`: column added with name `subscription_id` and type `String`
+- Table `azure_storage_queue_services` was added
+- Table `azure_storage_queues` was added
+- Table `azure_storage_tables`: column added with name `subscription_id` and type `String`
+
+### Features
+
+* **azure-resources:** Add Capacity Reservation Groups and Reservations ([#9460](https://github.com/cloudquery/cloudquery/issues/9460)) ([4ade667](https://github.com/cloudquery/cloudquery/commit/4ade667539e8176ae09ac1d29eb3eb50cb43500b))
+* **azure-resources:** Add Compute VM Patch Assessments table `azure_compute_virtual_machine_patch_assessments`. This might be slow to sync on some accounts and can be skipped if needed via `skip_tables: ["azure_compute_virtual_machine_patch_assessments"]` ([7603b38](https://github.com/cloudquery/cloudquery/commit/7603b384d338dcac4499ee1c51c97356d15227bb))
+* **azure-resources:** Add Missing Storage Account tables and columns ([#9462](https://github.com/cloudquery/cloudquery/issues/9462)) ([e452dd3](https://github.com/cloudquery/cloudquery/commit/e452dd3a53efb52b095af3f389a093c0177544f4))
+
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v6.0.0...plugins-source-azure-v6.1.0) (2023-03-23)
+
+
+### Features
+
+* **azure-auth:** Log `DefaultAzureCredential` credentials errors ([#9363](https://github.com/cloudquery/cloudquery/issues/9363)) ([b38013b](https://github.com/cloudquery/cloudquery/commit/b38013b67ff15e6b43926c8543b0b9ef9c7e65ac))
+* **azure:** Discover resource groups and namespaces in parallel ([#9382](https://github.com/cloudquery/cloudquery/issues/9382)) ([4e6e882](https://github.com/cloudquery/cloudquery/commit/4e6e8821a9ba02e2cc8e6d43102fcd36ab2b4c6f))
+
+
+### Bug Fixes
+
+* **azure-resources:** Pass correct subscription ID when listing subscription locations ([#9369](https://github.com/cloudquery/cloudquery/issues/9369)) ([6ca92c7](https://github.com/cloudquery/cloudquery/commit/6ca92c7363c3d7699159e1ec27daf82702730f09))
+* **azure:** Remove redundant `SingleSubscriptionMultiplex` ([#9365](https://github.com/cloudquery/cloudquery/issues/9365)) ([33fc767](https://github.com/cloudquery/cloudquery/commit/33fc76796f488bc2a3a544799ac3a954e0072671))
+
 ## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.2.0...plugins-source-azure-v6.0.0) (2023-03-21)
 
 

@@ -14,7 +14,7 @@ To run the tests, you will need a running ClickHouse instance.
 You can use the [docker-compose.yaml](docker-compose.yaml) file to start one:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 This will start a ClickHouse instance and create the `cloudquery` database along with user `cq` (password: `test`).

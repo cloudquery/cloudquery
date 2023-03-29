@@ -46,10 +46,10 @@ github:
   - plugins/source/github/**/*
 gitlab:
   - plugins/source/gitlab/**/*
-googleanalytics:
-  - plugins/destination/googleanalytics/**/*
 googleads:
   - plugins/destination/googleads/**/*
+googleanalytics:
+  - plugins/destination/googleanalytics/**/*
 gremlin:
   - plugins/destination/gremlin/**/*
 hackernews:
@@ -66,6 +66,8 @@ kafka:
   - plugins/destination/kafka/**/*
 launchdarkly:
   - plugins/source/launchdarkly/**/*
+meilisearch:
+  - plugins/destination/meilisearch/**/*
 mixpanel:
   - plugins/source/mixpanel/**/*
 mongodb:

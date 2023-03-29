@@ -40,6 +40,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodbstreams"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
@@ -146,6 +147,7 @@ var clients = []any{
 	&directconnect.Client{},
 	&docdb.Client{},
 	&dynamodb.Client{},
+	&dynamodbstreams.Client{},
 	&ec2.Client{},
 	&ecr.Client{},
 	&ecrpublic.Client{},

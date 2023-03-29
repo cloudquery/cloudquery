@@ -20,6 +20,12 @@ func createVirtualMachines(router *mux.Router) error {
 
 	emptyStr := ""
 	item.NextLink = &emptyStr
+	s := armcompute.WindowsVMGuestPatchModeAutomaticByPlatform
+	for i := range item.VirtualMachineListResult.Value {
+		item.VirtualMachineListResult.Value[i].Properties.OSProfile.WindowsConfiguration.PatchSettings = &armcompute.PatchSettings{
+			PatchMode: &s, // required for virtual_machine_patch_assessments_mock_test.go
+		}
+	}
 
 	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/virtualMachines", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
@@ -49,6 +55,10 @@ func createVirtualMachines(router *mux.Router) error {
 			return
 		}
 	})
+
+	if err := createVirtualMachineAssessPatches(router); err != nil {
+		return err
+	}
 
 	return createVirtualMachineExtensions(router)
 }

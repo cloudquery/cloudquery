@@ -1,0 +1,22 @@
+services:
+  meilisearch:
+    container_name: meilisearch
+    image:          getmeili/meilisearch:v1.1.0-rc.1
+    environment:
+    - MEILI_ENV=development
+    - MEILI_MASTER_KEY=${MEILI_MASTER_KEY:-test}
+    - MEILI_NO_ANALYTICS=true
+    - MEILI_LOG_LEVEL=WARN
+
+    ports:
+    - target:    7700
+      published: 7700
+    networks:
+    - meilisearch
+    volumes:
+    - ./data.ms:/data.ms
+
+networks:
+  meilisearch:
+    name:   meilisearch
+    driver: bridge

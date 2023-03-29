@@ -34,6 +34,9 @@
     "plugins/destination/kafka": {
       "component": "plugins-destination-kafka"
     },
+    "plugins/destination/meilisearch": {
+      "component": "plugins-destination-meilisearch"
+    },
     "plugins/destination/mongodb": {
       "component": "plugins-destination-mongodb"
     },
@@ -103,11 +106,11 @@
     "plugins/source/gitlab": {
       "component": "plugins-source-gitlab"
     },
-    "plugins/source/googleanalytics": {
-      "component": "plugins-source-googleanalytics"
-    },
     "plugins/source/googleads": {
       "component": "plugins-source-googleads"
+    },
+    "plugins/source/googleanalytics": {
+      "component": "plugins-source-googleanalytics"
     },
     "plugins/source/hackernews": {
       "component": "plugins-source-hackernews"

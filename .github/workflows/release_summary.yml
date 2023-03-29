@@ -8,13 +8,16 @@ on:
 
 jobs:
   release-summary:
-    if:  startsWith(github.head_ref, 'release-please--branches--main--components--plugins-source')
+    # only run on release-please branches and if there is only one commit to avoid a recursive workflow run
+    if:  startsWith(github.head_ref, 'release-please--branches--main--components--plugins-source') && github.event.pull_request.commits == 1
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          # required so the commit triggers workflow runs
+          token: ${{ secrets.GH_CQ_BOT }}
       - name: Get plugin name
         id: plugin
         run: |
@@ -71,12 +74,10 @@ jobs:
             const changelogPath = `plugins/source/${process.env.PLUGIN_NAME}/CHANGELOG.md`
             const changes = process.env.CHANGES.replaceAll('\\n', '\n')
             const currentChangelog = fs.readFileSync(changelogPath, 'utf8')
-            // drop existing summary if it exists
             const title = 'This Release has the Following Changes to Tables'
-            let sliceIndex = currentChangelog.includes(title) ? 2 : 1
             // Move summary after breaking changes if they exist
             const newlyAddedSection = currentChangelog.split("## [")[0]
-            sliceIndex = newlyAddedSection.includes("BREAKING CHANGES") ? sliceIndex + 1 : sliceIndex
+            const sliceIndex = newlyAddedSection.includes("BREAKING CHANGES") ? 2 : 1
             const changelogParts = currentChangelog.split('###')
             const newChangelog = [...changelogParts.slice(0, sliceIndex), ` ${title}\n${changes}\n\n`, ...changelogParts.slice(sliceIndex)].join('###')
             fs.writeFileSync(changelogPath, newChangelog)
@@ -92,11 +93,9 @@ jobs:
             const currentDescription = process.env.PR_BODY
             const changes = process.env.CHANGES.replaceAll('\\n', '\n')
             const currentDescriptionParts = currentDescription.split('###')
-            // drop existing summary if it exists
             const title = 'This Release has the Following Changes to Tables'
-            let sliceIndex = currentDescription.includes(title) ? 2 : 1
             // Move summary after breaking changes if they exist
-            sliceIndex = currentDescription.includes("BREAKING CHANGES") ? sliceIndex + 1 : sliceIndex
+            const sliceIndex = currentDescription.includes("BREAKING CHANGES") ? 2 : 1
             const newDescription = [...currentDescriptionParts.slice(0, sliceIndex), ` ${title}\n${changes}\n\n`, ...currentDescriptionParts.slice(sliceIndex)].join('###')
             await github.rest.pulls.update({
               owner: context.repo.owner,
@@ -108,8 +107,6 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4
         if: ${{ steps.get-changes.outputs.result != '' }}
         with:
-          # required so the commit triggers workflow runs
-          token: ${{ secrets.GH_CQ_BOT }}
           commit_message: "chore: Add tables changes to changelog"
           file_pattern: "plugins/source/${{ steps.plugin.outputs.name }}/CHANGELOG.md"
           author: cq-bot <cq-bot@users.noreply.github.com>
