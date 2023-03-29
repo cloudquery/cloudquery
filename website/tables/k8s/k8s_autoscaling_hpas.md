@@ -1,6 +1,6 @@
 # Table: k8s_autoscaling_hpas
 
-This table shows data for K8s Autoscaling Hpas.
+This table shows data for Kubernetes (K8s) Autoscaling Horizontal Pod Autoscalers (HPAs).
 
 The primary key for this table is **uid**.
 

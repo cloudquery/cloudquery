@@ -1,6 +1,6 @@
 # Table: k8s_core_pods
 
-This table shows data for K8s Core Pods.
+This table shows data for Kubernetes (K8s) Core Pods.
 
 The primary key for this table is **uid**.
 

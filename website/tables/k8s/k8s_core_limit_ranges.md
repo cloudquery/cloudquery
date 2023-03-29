@@ -1,6 +1,6 @@
 # Table: k8s_core_limit_ranges
 
-This table shows data for K8s Core Limit Ranges.
+This table shows data for Kubernetes (K8s) Core Limit Ranges.
 
 The primary key for this table is **uid**.
 

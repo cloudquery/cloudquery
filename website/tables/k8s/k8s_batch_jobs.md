@@ -1,6 +1,6 @@
 # Table: k8s_batch_jobs
 
-This table shows data for K8s Batch Jobs.
+This table shows data for Kubernetes (K8s) Batch Jobs.
 
 The primary key for this table is **uid**.
 
