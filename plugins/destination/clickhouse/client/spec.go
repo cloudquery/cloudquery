@@ -2,6 +2,7 @@ package client
 
 import (
 	"crypto/x509"
+	"fmt"
 	"os"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
@@ -45,7 +46,9 @@ func (s *Spec) Options() (*clickhouse.Options, error) {
 			}
 		}
 
-		tlsConfig.RootCAs.AppendCertsFromPEM(caCert)
+		if ok := tlsConfig.RootCAs.AppendCertsFromPEM(caCert); !ok {
+			return nil, fmt.Errorf("failed to append \"ca_cert\" value")
+		}
 	}
 
 	return options, nil
