@@ -5,7 +5,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/serve"
 )
 
-const sentryDSN = "https://128084695e12456cb6b9be9b32f097da@o1396617.ingest.sentry.io/4504830878416896"
+const sentryDSN = "https://3613e006170b45399a66a93c992225e4@o1396617.ingest.sentry.io/4504922534445056"
 
 func main() {
 	serve.Source(plugin.Plugin(), serve.WithSourceSentryDSN(sentryDSN))
