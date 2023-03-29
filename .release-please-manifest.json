@@ -118,5 +118,7 @@
   "plugins/destination/gremlin": "1.0.2",
   "plugins/destination/gremlin+FILLER": "0.0.0",
   "plugins/source/googleads": "1.0.0",
-  "plugins/destination/meilisearch": "1.0.0"
+  "plugins/source/googleads+FILLER": "0.0.0",
+  "plugins/destination/meilisearch": "1.0.0",
+  "plugins/destination/meilisearch+FILLER": "1.0.0"
 }
