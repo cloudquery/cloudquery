@@ -23,11 +23,6 @@ func Groups() *schema.Table {
 				Resolver: resolveIamGroupPolicies,
 			},
 			{
-				Name: "attached_policies",
-				Type: schema.TypeJSON,
-			},
-
-			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("GroupId"),
@@ -38,6 +33,7 @@ func Groups() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
+			groupAttachedPolicies(),
 			groupPolicies(),
 			groupLastAccessedDetails(),
 		},
