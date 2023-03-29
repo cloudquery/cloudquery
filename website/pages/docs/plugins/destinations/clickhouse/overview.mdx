@@ -40,11 +40,10 @@ This is the (nested) spec used by the ClickHouse destination plugin.
 
 - `ca_cert` (string, optional. Default: not used)
 
-  If you need to use a custom CA to connect to ClickHouse instance you can use `ca_cert` option.
-  The following values are supported:
-
-  - Path to cert file
-  - CA cert data in plain text (or substituted from environment variable)
+  PEM-encoded certificate authorities.
+  When set, a certificate pool will be created by appending the certificates to the system pool.
+  See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example)
+  for how to read this value from a file.
 
 - `engine` (optional, structure documented [below](#clickhouse-table-engine). Default: `MergeTree` engine)
 
