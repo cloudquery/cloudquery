@@ -38,7 +38,7 @@ func Groups() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			GroupPolicies(),
+			groupPolicies(),
 			groupLastAccessedDetails(),
 		},
 	}
