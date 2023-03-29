@@ -4,7 +4,7 @@ This table shows data for Redshift Events.
 
 https://docs.aws.amazon.com/redshift/latest/APIReference/API_Event.html.
 
-Only events occurred in the last hour are returned.
+Only events occurred in the last 14 days are returned.
 
 The primary key for this table is **_cq_id**.
 

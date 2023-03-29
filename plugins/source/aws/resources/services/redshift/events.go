@@ -17,7 +17,7 @@ func Events() *schema.Table {
 		Name: tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_Event.html.
 
-Only events occurred in the last hour are returned.`,
+Only events occurred in the last 14 days are returned.`,
 		Resolver:  fetchEvents,
 		Transform: transformers.TransformWithStruct(&types.Event{}),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
@@ -33,8 +33,7 @@ func fetchEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	svc := cl.Services().Redshift
 
 	config := redshift.DescribeEventsInput{
-		// Default values are here for clarity
-		Duration:   aws.Int32(60),
+		Duration:   aws.Int32(60 * 24 * 14), // 14 days (maximum)
 		MaxRecords: aws.Int32(100),
 	}
 	for {
