@@ -15,7 +15,6 @@ func groupPolicies() *schema.Table {
 		Resolver:            fetchIamGroupPolicies,
 		PreResourceResolver: getGroupPolicy,
 		Transform:           transformers.TransformWithStruct(&iam.GetGroupPolicyOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
