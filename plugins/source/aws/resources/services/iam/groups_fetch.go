@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
-	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -25,27 +24,4 @@ func fetchIamGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		config.Marker = response.Marker
 	}
 	return nil
-}
-func resolveIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Group)
-	svc := meta.(*client.Client).Services().Iam
-	config := iam.ListAttachedGroupPoliciesInput{
-		GroupName: r.GroupName,
-	}
-	policyMap := map[string]*string{}
-	paginator := iam.NewListAttachedGroupPoliciesPaginator(svc, &config)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return err
-		}
-		for _, p := range page.AttachedPolicies {
-			policyMap[*p.PolicyArn] = p.PolicyName
-		}
-	}
-	err := resource.Set(c.Name, policyMap)
-	if err != nil {
-		return err
-	}
-	return resource.Set("attached_policies", policyMap)
 }

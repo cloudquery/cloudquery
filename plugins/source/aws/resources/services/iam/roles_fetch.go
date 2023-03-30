@@ -38,34 +38,6 @@ func getRole(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 	return nil
 }
 
-func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(*types.Role)
-	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
-	input := iam.ListAttachedRolePoliciesInput{
-		RoleName: r.RoleName,
-	}
-	policies := map[string]*string{}
-	paginator := iam.NewListAttachedRolePoliciesPaginator(svc, &input)
-	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
-		if err != nil {
-			if cl.IsNotFoundError(err) {
-				return nil
-			}
-			return err
-		}
-		for _, p := range response.AttachedPolicies {
-			policies[*p.PolicyArn] = p.PolicyName
-		}
-	}
-	err := resource.Set(c.Name, policies)
-	if err != nil {
-		return err
-	}
-	return resource.Set("attached_policies", policies)
-}
-
 func resolveRolesAssumeRolePolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.Role)
 	if r.AssumeRolePolicyDocument == nil {

@@ -41,7 +41,7 @@ func Users() *schema.Table {
 		Relations: []*schema.Table{
 			UserAccessKeys(),
 			UserGroups(),
-			UserAttachedPolicies(),
+			userAttachedPolicies(),
 			UserPolicies(),
 			SshPublicKeys(),
 			SigningCertificates(),
