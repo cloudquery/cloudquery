@@ -16,10 +16,18 @@ func Groups() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html`,
 		Resolver:    fetchIamGroups,
-		Transform:   transformers.TransformWithStruct(&types.Group{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.Group{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("GroupId"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
 		},
 		Relations: []*schema.Table{
 			groupAttachedPolicies(),
