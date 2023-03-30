@@ -8,11 +8,12 @@ import (
 )
 
 func restApiResourceMethodIntegrations() *schema.Table {
+	tableName := "aws_apigateway_rest_api_resource_method_integrations"
 	return &schema.Table{
-		Name:        "aws_apigateway_rest_api_resource_method_integrations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Integration.html`,
 		Resolver:    fetchApigatewayRestApiResourceMethodIntegration,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&apigateway.GetIntegrationOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
@@ -41,6 +42,5 @@ func restApiResourceMethodIntegrations() *schema.Table {
 				},
 			},
 		},
-		Relations: []*schema.Table{},
 	}
 }

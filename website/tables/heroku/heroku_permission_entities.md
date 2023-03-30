@@ -1,5 +1,7 @@
 # Table: heroku_permission_entities
 
+This table shows data for Heroku Permission Entities.
+
 https://devcenter.heroku.com/articles/platform-api-reference#permission-entity
 
 The primary key for this table is **id**.

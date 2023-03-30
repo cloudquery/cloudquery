@@ -13,7 +13,7 @@ func Balance() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_balance",
 		Description: `https://stripe.com/docs/api/balance`,
-		Transform:   transformers.TransformWithStruct(&stripe.Balance{}, client.SharedTransformers(transformers.WithSkipFields("APIResource"))...),
+		Transform:   client.TransformWithStruct(&stripe.Balance{}, transformers.WithSkipFields("APIResource")),
 		Resolver:    fetchBalance,
 	}
 }

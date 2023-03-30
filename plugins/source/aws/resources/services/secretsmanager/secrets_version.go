@@ -8,12 +8,13 @@ import (
 )
 
 func SecretVersions() *schema.Table {
+	tableName := "aws_secretsmanager_secret_versions"
 	return &schema.Table{
-		Name:        "aws_secretsmanager_secret_versions",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecretVersionIds.html`,
 		Resolver:    fetchSecretsmanagerSecretsVersions,
 		Transform:   transformers.TransformWithStruct(&types.SecretVersionsListEntry{}, transformers.WithPrimaryKeys("VersionId")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("secretsmanager"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "secretsmanager"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

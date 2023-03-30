@@ -1,5 +1,7 @@
 # Table: aws_eventbridge_api_destinations
 
+This table shows data for Amazon EventBridge API Destinations.
+
 https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_ApiDestination.html
 
 The primary key for this table is **arn**.

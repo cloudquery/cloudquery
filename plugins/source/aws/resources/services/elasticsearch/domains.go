@@ -8,12 +8,13 @@ import (
 )
 
 func Domains() *schema.Table {
+	tableName := "aws_elasticsearch_domains"
 	return &schema.Table{
-		Name:                "aws_elasticsearch_domains",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_DomainStatus.html`,
 		Resolver:            fetchElasticsearchDomains,
 		PreResourceResolver: getDomain,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("es"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "es"),
 		Transform:           transformers.TransformWithStruct(&types.ElasticsearchDomainStatus{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

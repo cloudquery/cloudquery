@@ -1,5 +1,7 @@
 # Table: azure_network_load_balancers
 
+This table shows data for Azure Network Load Balancers.
+
 https://learn.microsoft.com/en-us/rest/api/load-balancer/load-balancers/list?tabs=HTTP#loadbalancer
 
 The primary key for this table is **id**.

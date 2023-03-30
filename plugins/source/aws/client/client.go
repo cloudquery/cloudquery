@@ -39,6 +39,7 @@ type Client struct {
 	Partition            string
 	LanguageCode         string
 	Backend              backend.Backend
+	specificRegions      bool
 }
 
 type AwsLogger struct {
@@ -58,11 +59,9 @@ type ServicesManager struct {
 }
 
 const (
-	defaultRegion              = "us-east-1"
-	awsFailedToConfigureErrMsg = "failed to retrieve credentials for account %s. AWS Error: %w, detected aws env variables: %s"
-	awsOrgsFailedToFindMembers = "failed to list Org member accounts. Make sure that your credentials have the proper permissions"
-	defaultVar                 = "default"
-	cloudfrontScopeRegion      = defaultRegion
+	defaultRegion         = "us-east-1"
+	defaultVar            = "default"
+	cloudfrontScopeRegion = defaultRegion
 )
 
 var errInvalidRegion = errors.New("region wildcard \"*\" is only supported as first argument")
@@ -374,8 +373,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 			return nil, err
 		}
 
+		client.specificRegions = true
 		if isAllRegions(localRegions) {
 			logger.Info().Msg("All regions specified in `cloudquery.yml`. Assuming all regions")
+			client.specificRegions = false
 		}
 
 		awsCfg, err := configureAwsClient(ctx, logger, &awsConfig, account, adminAccountSts)

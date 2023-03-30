@@ -1,5 +1,7 @@
 # Table: azure_security_assessments
 
+This table shows data for Azure Security Assessments.
+
 https://learn.microsoft.com/en-us/rest/api/defenderforcloud/assessments/list?tabs=HTTP#securityassessment
 
 The primary key for this table is **id**.

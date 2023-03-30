@@ -8,11 +8,12 @@ import (
 )
 
 func ScheduledActions() *schema.Table {
+	tableName := "aws_autoscaling_scheduled_actions"
 	return &schema.Table{
-		Name:        "aws_autoscaling_scheduled_actions",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScheduledUpdateGroupAction.html`,
 		Resolver:    fetchAutoscalingScheduledActions,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "autoscaling"),
 		Transform:   transformers.TransformWithStruct(&types.ScheduledUpdateGroupAction{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

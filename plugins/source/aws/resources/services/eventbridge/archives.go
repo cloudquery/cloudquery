@@ -1,6 +1,11 @@
 package eventbridge
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -8,11 +13,12 @@ import (
 )
 
 func Archives() *schema.Table {
+	tableName := "aws_eventbridge_archives"
 	return &schema.Table{
-		Name:        "aws_eventbridge_archives",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Archive.html`,
-		Resolver:    fetchEventbridgeArchives,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
+		Resolver:    fetchArchives,
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "events"),
 		Transform:   transformers.TransformWithStruct(&types.Archive{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -27,4 +33,36 @@ func Archives() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchArchives(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var input eventbridge.ListArchivesInput
+	c := meta.(*client.Client)
+	svc := c.Services().Eventbridge
+	for {
+		response, err := svc.ListArchives(ctx, &input)
+		if err != nil {
+			return err
+		}
+		res <- response.Archives
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		input.NextToken = response.NextToken
+	}
+	return nil
+}
+
+func resolveArchiveArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+
+	a := arn.ARN{
+		Partition: cl.Partition,
+		Service:   "events",
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  "archive/" + aws.ToString(resource.Item.(types.Archive).ArchiveName),
+	}
+
+	return resource.Set(c.Name, a.String())
 }

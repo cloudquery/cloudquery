@@ -1,5 +1,7 @@
 # Table: aws_config_config_rules
 
+This table shows data for Config Config Rules.
+
 https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConfigRules.html
 
 The primary key for this table is **arn**.

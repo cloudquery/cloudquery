@@ -1,5 +1,7 @@
 # Table: gcp_compute_zones
 
+This table shows data for GCP Compute Zones.
+
 https://cloud.google.com/compute/docs/reference/rest/v1/zones/list#response-body
 
 The primary key for this table is **self_link**.

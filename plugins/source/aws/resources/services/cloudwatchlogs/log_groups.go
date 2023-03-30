@@ -11,11 +11,12 @@ import (
 )
 
 func LogGroups() *schema.Table {
+	tableName := "aws_cloudwatchlogs_log_groups"
 	return &schema.Table{
-		Name:        "aws_cloudwatchlogs_log_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_LogGroup.html`,
 		Resolver:    fetchCloudwatchlogsLogGroups,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("logs"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "logs"),
 		Transform:   transformers.TransformWithStruct(&types.LogGroup{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

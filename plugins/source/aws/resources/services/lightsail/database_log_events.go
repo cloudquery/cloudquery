@@ -8,12 +8,13 @@ import (
 )
 
 func DatabaseLogEvents() *schema.Table {
+	tableName := "aws_lightsail_database_log_events"
 	return &schema.Table{
-		Name:        "aws_lightsail_database_log_events",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_GetRelationalDatabaseLogEvents.html`,
 		Resolver:    fetchLightsailDatabaseLogEvents,
 		Transform:   transformers.TransformWithStruct(&models.LogEventWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lightsail"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

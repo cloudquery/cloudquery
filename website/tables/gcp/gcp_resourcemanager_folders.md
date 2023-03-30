@@ -1,5 +1,7 @@
 # Table: gcp_resourcemanager_folders
 
+This table shows data for GCP Resourcemanager Folders.
+
 https://cloud.google.com/resource-manager/reference/rest/v3/folders#Folder
 
 The composite primary key for this table is (**organization_id**, **name**).

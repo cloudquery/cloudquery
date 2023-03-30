@@ -1,5 +1,7 @@
 # Table: gcp_compute_interconnects
 
+This table shows data for GCP Compute Interconnects.
+
 The primary key for this table is **self_link**.
 
 ## Columns

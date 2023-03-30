@@ -1,6 +1,7 @@
 # CloudQuery ClickHouse Destination Plugin
 
-This destination plugin lets you sync data from any CloudQuery source to a ClickHouse database.
+This destination plugin lets you sync data from any [CloudQuery source](https://www.cloudquery.io/docs/plugins/sources)
+to a [ClickHouse](https://clickhouse.com) database.
 
 ## Links
 

@@ -1,5 +1,7 @@
 # Table: oracle_virtualnetwork_vcns
 
+This table shows data for Oracle Virtual Network Vcns.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

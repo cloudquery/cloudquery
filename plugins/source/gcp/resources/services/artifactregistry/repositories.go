@@ -13,7 +13,7 @@ func Repositories() *schema.Table {
 		Description: `https://cloud.google.com/artifact-registry/docs/reference/rest/v1/projects.locations.repositories#Repository`,
 		Resolver:    fetchRepositories,
 		Multiplex:   client.ProjectMultiplexEnabledServices("artifactregistry.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Repository{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.Repository{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

@@ -1,5 +1,7 @@
 # Table: heroku_builds
 
+This table shows data for Heroku Builds.
+
 https://devcenter.heroku.com/articles/platform-api-reference#build
 
 The primary key for this table is **id**.

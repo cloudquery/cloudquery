@@ -7,7 +7,7 @@ select
     t.account_id,
     t.arn as resource_id,
   case when
-    b.point_in_time_recovery_description->>'ContinuousBackupsStatus' is distinct from 'ENABLED'
+    b.point_in_time_recovery_description->>'PointInTimeRecoveryStatus' is distinct from 'ENABLED'
     then 'fail'
     else 'pass'
   end as status

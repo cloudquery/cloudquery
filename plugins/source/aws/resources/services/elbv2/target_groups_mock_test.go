@@ -11,7 +11,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildElbv2TargetGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildTargetGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockElasticloadbalancingv2Client(ctrl)
 	l := elbv2Types.TargetGroup{}
 	err := faker.FakeObject(&l)
@@ -43,5 +43,5 @@ func buildElbv2TargetGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 }
 
 func TestElbv2TargetGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, TargetGroups(), buildElbv2TargetGroups, client.TestOptions{})
+	client.AwsMockTestHelper(t, TargetGroups(), buildTargetGroups, client.TestOptions{})
 }

@@ -1,5 +1,7 @@
 # Table: aws_ssm_associations
 
+This table shows data for AWS Systems Manager (SSM) Associations.
+
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_Association.html
 
 The composite primary key for this table is (**account_id**, **region**, **association_id**).

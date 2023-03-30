@@ -1,8 +1,15 @@
 # Table: aws_ssm_documents
 
+This table shows data for AWS Systems Manager (SSM) Documents.
+
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DocumentDescription.html
 
 The primary key for this table is **arn**.
+
+## Relations
+
+The following tables depend on aws_ssm_documents:
+  - [aws_ssm_document_versions](aws_ssm_document_versions)
 
 ## Columns
 

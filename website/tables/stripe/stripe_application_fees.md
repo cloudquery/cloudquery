@@ -1,5 +1,7 @@
 # Table: stripe_application_fees
 
+This table shows data for Stripe Application Fees.
+
 https://stripe.com/docs/api/application_fees
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: gcp_aiplatform_index_endpoints
 
+This table shows data for GCP AI Platform Index Endpoints.
+
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.indexEndpoints#IndexEndpoint
 
 The composite primary key for this table is (**project_id**, **name**).
@@ -27,3 +29,4 @@ This table depends on [gcp_aiplatform_indexendpoint_locations](gcp_aiplatform_in
 |update_time|Timestamp|
 |network|String|
 |enable_private_service_connect|Bool|
+|private_service_connect_config|JSON|

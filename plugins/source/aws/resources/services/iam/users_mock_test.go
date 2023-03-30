@@ -3,6 +3,7 @@ package iam
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -74,7 +75,6 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetAccessKeyLastUsed(gomock.Any(), gomock.Any()).Return(
 		&akl, nil)
 
-	//list user inline policies
 	var l []string
 	err = faker.FakeObject(&l)
 	if err != nil {
@@ -85,7 +85,6 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 			PolicyNames: l,
 		}, nil)
 
-	//get policy
 	p := iam.GetUserPolicyOutput{}
 	err = faker.FakeObject(&p)
 	if err != nil {
@@ -101,8 +100,6 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 			SSHPublicKeys: []types.SSHPublicKeyMetadata{sshPublicKey},
 		}, nil)
 
-	// get signing key
-
 	sc := types.SigningCertificate{}
 	err = faker.FakeObject(&sc)
 	if err != nil {
@@ -112,6 +109,18 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&iam.ListSigningCertificatesOutput{
 			Certificates: []types.SigningCertificate{sc},
 		}, nil)
+
+	m.EXPECT().GenerateServiceLastAccessedDetails(gomock.Any(), gomock.Any(), gomock.Any()).Return(&iam.GenerateServiceLastAccessedDetailsOutput{JobId: aws.String("JobId")}, nil)
+
+	lastAccessed := []types.ServiceLastAccessed{}
+	err = faker.FakeObject(&lastAccessed)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().GetServiceLastAccessedDetails(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&iam.GetServiceLastAccessedDetailsOutput{ServicesLastAccessed: lastAccessed, JobStatus: types.JobStatusTypeCompleted},
+		nil,
+	)
 
 	return client.Services{
 		Iam: m,

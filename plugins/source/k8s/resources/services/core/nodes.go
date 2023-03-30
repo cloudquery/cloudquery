@@ -15,24 +15,12 @@ func Nodes() *schema.Table {
 		Name:      "k8s_core_nodes",
 		Resolver:  fetchNodes,
 		Multiplex: client.ContextMultiplex,
-		Transform: transformers.TransformWithStruct(&v1.Node{},
-			client.SharedTransformersWithMoreSkipFields([]string{
-				"DoNotUseExternalID", // Deprecated
-			})...),
-		Columns: []schema.Column{
-			{
-				Name:     "context",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveContext,
-			},
-			{
-				Name:     "uid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+		Transform: client.TransformWithStruct(&v1.Node{},
+			client.WithMoreSkipFields("DoNotUseExternalID"),
+			transformers.WithPrimaryKeys("UID"),
+		),
+		Columns: schema.ColumnList{
+			client.ContextColumn,
 			{
 				Name:     "spec_pod_cidr",
 				Type:     schema.TypeCIDR,

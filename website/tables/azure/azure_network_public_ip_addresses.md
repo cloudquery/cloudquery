@@ -1,5 +1,7 @@
 # Table: azure_network_public_ip_addresses
 
+This table shows data for Azure Network Public IP Addresses.
+
 https://learn.microsoft.com/en-us/rest/api/virtualnetwork/public-ip-addresses/list?tabs=HTTP#publicipaddress
 
 The primary key for this table is **id**.

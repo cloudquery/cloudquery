@@ -1,0 +1,51 @@
+---
+title: "How Hexagon built an Infrastructure Data Lake with CloudQuery"
+tag: engineering
+date: 2023/03/16
+description: >-
+  In this post, Hexagon shares the details of how they built an Infrastructure Data Lake with CloudQuery
+author: hermanschaaf,peterfigueiredo
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+Here at CloudQuery we’ve been working on an open source framework to enable companies to build their own infrastructure data platforms – a single source of truth for all of your infrastructure data, stored in a database or data lake. Today we are excited to share the story of how Hexagon, the global leader in digital reality solutions, combining sensor, software and autonomous technologies, was able to use CloudQuery to build their own serverless infrastructure data lake using AWS S3, Glue and Athena.
+
+## Architecture
+
+The Hexagon Cloud Center of Excellence (CCoE) team (co-authors of this post) wanted to build a fully serverless data lake that would be able to collect data from all of Hexagon’s cloud accounts and store it in a single location: their data lake. They also wanted to be able to query this data using SQL, and to be able to visualise it using their existing tools (like AWS QuickSight). Lastly, they wanted to be able to explore the history of their cloud configuration over time. To accomplish this, they built a serverless data pipeline that uses CloudQuery to collect data from all of their cloud accounts, and then stores it in S3. They then use Glue to ingest the data into Glue DB in a format that Athena can query, and finally Athena is used to query the data and visualise it using QuickSight.
+
+The different stages are shown in the high-level architecture diagram below:
+
+![Hexagon Architecture](/images/blog/how-hexagon-built-an-infrastructure-data-lake/hexagon-architecture.png)
+
+- In Step 1, an EventBridge cron rule is triggered on a daily basis. This event triggers the creation of two ECS tasks in an ECS Cluster (Step 2).
+- In Step 3, the AWS CLI fetches the latest plugin configs from the Master S3 Bucket and in Step 4, CloudQuery CLI, performs API calls to all child accounts and collects all the data (Step 5). This is then stored in an S3 Bucket in a dedicated account for CloudQuery. This data is in Parquet format, using the S3 destination plugin (Step 6).
+- In Step 7, a Glue Crawler is triggered on a daily basis to ingest the data from the S3 Bucket. This is then dumped into a Glue DB (Step 8). Please note each resource type has its own Glue table.
+- Step 11 starts by an EvenBridge cron rule triggered on a daily basis. This rule will then summon a Lambda function ([provided by CloudQuery](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/views/athena)). This function (Step 12) updates a resource view called `aws_resources`: a single view that contains all resources from all accounts.
+- Lastly, a lifecycle rule created in S3 permanently deletes all the data older than 7 days old (in order to keep the cost of hosting the data low).
+
+With all the above steps completed, Athena is now able to query the data, either by resource type or by using the `aws_resources` view. The tables and views can also be loaded into QuickSight (via dataset), where graphs and dashboards can be created.
+
+## Results
+
+Overall, this project was a great success. The Hexagon CCoE team was able to build a serverless data lake that collects data from all of Hexagon’s cloud accounts and stores it in a single location. They are now able to query this data using SQL and to visualise it using QuickSight, their dashboard tool of choice.
+
+Having a fully serverless solution was an important requirement for Hexagon. This decision brought lots of benefits since there is no need for time-consuming updates and virtually zero maintenance.
+Both the Cloud provider and CloudQuery will maintain and support the whole solution, which makes it extremely attractive. This brought to Hexagon confidence they made the right decision, both by choosing CloudQuery and the serverless approach.
+
+## Challenges
+
+As with any large undertaking, there were some challenges along the way. The Hexagon CCoE team were some of the first to try out new CloudQuery features in the S3 destination, and they became active members of the CloudQuery community. They helped us improve the product by providing feedback, sharing ideas and testing new versions. Here are some of the new features that were added to CloudQuery, at least in part, due to their collaboration:
+
+- Parquet support: When Hexagon started the project, the CloudQuery file destination was still relatively nascent, and only supported CSV and JSON. Errors in the interpretation of JSON types by the Glue Crawler quickly proved that Parquet support would be necessary sooner rather than later. We added Parquet support to the file destination plugin, and Hexagon was able to use it to store their data in Parquet format.
+- Data partitioning: In an early iteration, the pipeline first wrote the data to an S3 bucket with one directory per table and no other partitioning. A Glue job then read the data from the bucket and wrote it back to the bucket, this time adding a daily partition. This second step could later be removed entirely, as the CloudQuery file destination plugin added support for partitioning on initial write.
+- Resource view for Athena: CloudQuery started out as a tool for querying cloud resources using Postgres, so initially we only supported a resources view for AWS that was compatible with Postgres. However, Athena doesn’t support views that query the information schema, so a different solution was needed. We added a Lambda function that can be run to get a list of all tables, then build or update a resources view from that. This Lambda can be triggered by a CloudWatch Event Rule when the CloudQuery sync finishes, so it’s always up-to-date.
+
+## Conclusion
+
+We’d like to thank the Hexagon CCoE team for collaborating with us to push the boundaries of what is possible with CloudQuery, being active community members and for sharing their story with everyone.
+
+If you are also interested in setting up an AWS infrastructure data lake using Glue and Athena, like Hexagon, you can follow our how-to guide: [How to Load Infrastructure Data into AWS Athena](https://www.cloudquery.io/how-to-guides/how-to-load-infrastructure-data-into-athena). Or if you have any other questions or comments, we are always happy to chat on our Discord.

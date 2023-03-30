@@ -2,7 +2,6 @@ package transfers
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func Transfers() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_transfers",
 		Description: `https://stripe.com/docs/api/transfers`,
-		Transform:   transformers.TransformWithStruct(&stripe.Transfer{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.Transfer{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchTransfers,
 
 		Columns: []schema.Column{

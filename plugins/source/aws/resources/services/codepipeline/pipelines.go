@@ -8,12 +8,13 @@ import (
 )
 
 func Pipelines() *schema.Table {
+	tableName := "aws_codepipeline_pipelines"
 	return &schema.Table{
-		Name:                "aws_codepipeline_pipelines",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_GetPipeline.html`,
 		Resolver:            fetchCodepipelinePipelines,
 		PreResourceResolver: getPipeline,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("codepipeline"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "codepipeline"),
 		Transform:           transformers.TransformWithStruct(&codepipeline.GetPipelineOutput{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

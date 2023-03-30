@@ -8,11 +8,12 @@ import (
 )
 
 func SecurityGroups() *schema.Table {
+	tableName := "aws_ec2_security_groups"
 	return &schema.Table{
-		Name:        "aws_ec2_security_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SecurityGroup.html`,
 		Resolver:    fetchEc2SecurityGroups,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.SecurityGroup{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

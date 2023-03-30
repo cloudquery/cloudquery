@@ -1,19 +1,22 @@
 package redshift
 
 import (
+	"context"
+
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ClusterParameterGroups() *schema.Table {
+func clusterParameterGroups() *schema.Table {
+	tableName := "aws_redshift_cluster_parameter_groups"
 	return &schema.Table{
-		Name:        "aws_redshift_cluster_parameter_groups",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_ClusterParameterGroupStatus.html`,
-		Resolver:    fetchRedshiftClusterParameterGroups,
+		Resolver:    fetchClusterParameterGroups,
 		Transform:   transformers.TransformWithStruct(&types.ClusterParameterGroupStatus{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -37,7 +40,13 @@ func ClusterParameterGroups() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ClusterParameters(),
+			clusterParameters(),
 		},
 	}
+}
+
+func fetchClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cluster := parent.Item.(types.Cluster)
+	res <- cluster.ClusterParameterGroups
+	return nil
 }

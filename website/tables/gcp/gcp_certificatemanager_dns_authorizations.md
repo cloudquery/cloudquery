@@ -1,5 +1,7 @@
 # Table: gcp_certificatemanager_dns_authorizations
 
+This table shows data for GCP Certificatemanager DNS Authorizations.
+
 https://cloud.google.com/certificate-manager/docs/reference/rest/v1/projects.locations.dnsAuthorizations#DnsAuthorization
 
 The composite primary key for this table is (**project_id**, **name**).

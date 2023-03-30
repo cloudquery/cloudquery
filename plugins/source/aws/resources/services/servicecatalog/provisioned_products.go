@@ -8,12 +8,13 @@ import (
 )
 
 func ProvisionedProducts() *schema.Table {
+	tableName := "aws_servicecatalog_provisioned_products"
 	return &schema.Table{
-		Name:        "aws_servicecatalog_provisioned_products",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProvisionedProductAttribute.html`,
 		Resolver:    fetchServicecatalogProvisionedProducts,
 		Transform:   transformers.TransformWithStruct(&types.ProvisionedProductAttribute{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("servicecatalog"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

@@ -1,0 +1,86 @@
+name: Destination Plugin Gremlin Workflow
+
+on:
+  pull_request:
+    paths:
+      - "plugins/destination/gremlin/**"
+      - ".github/workflows/dest_gremlin.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/destination/gremlin/**"
+      - ".github/workflows/dest_gremlin.yml"
+
+jobs:
+  plugins-destination-gremlin:
+    timeout-minutes: 30
+    name: "plugins/destination/gremlin"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/destination/gremlin
+    services:
+      gremlin-server:
+        image: tinkerpop/gremlin-server:3.6.2
+        ports:
+          - 8182:8182
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/gremlin/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/gremlin/go.sum
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.52.1
+          working-directory: plugins/destination/gremlin
+          args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      - name: Test Gremlin
+        run: make test
+  validate-release:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    env:
+      CGO_ENABLED: 0
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/destination/gremlin/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.5-release-cache-plugins-destination-gremlin
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/gremlin/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/destination/gremlin/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

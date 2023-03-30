@@ -1,5 +1,7 @@
 # Table: gcp_compute_backend_services
 
+This table shows data for GCP Compute Backend Services.
+
 https://cloud.google.com/compute/docs/reference/rest/v1/backendServices#BackendService
 
 The primary key for this table is **self_link**.

@@ -28,6 +28,7 @@
 - [k8s_core_secrets](tables/k8s_core_secrets)
 - [k8s_core_service_accounts](tables/k8s_core_service_accounts)
 - [k8s_core_services](tables/k8s_core_services)
+- [k8s_crds](tables/k8s_crds)
 - [k8s_discovery_endpoint_slices](tables/k8s_discovery_endpoint_slices)
 - [k8s_networking_ingress_classes](tables/k8s_networking_ingress_classes)
 - [k8s_networking_ingresses](tables/k8s_networking_ingresses)

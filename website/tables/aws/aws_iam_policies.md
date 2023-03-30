@@ -1,8 +1,15 @@
 # Table: aws_iam_policies
 
+This table shows data for IAM Policies.
+
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_ManagedPolicyDetail.html
 
 The composite primary key for this table is (**account_id**, **id**).
+
+## Relations
+
+The following tables depend on aws_iam_policies:
+  - [aws_iam_policy_last_accessed_details](aws_iam_policy_last_accessed_details)
 
 ## Columns
 

@@ -11,12 +11,13 @@ import (
 )
 
 func Roots() *schema.Table {
+	tableName := "aws_organizations_roots"
 	return &schema.Table{
-		Name:        "aws_organizations_roots",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Root.html`,
 		Resolver:    fetchOrganizationsRoots,
 		Transform:   transformers.TransformWithStruct(&types.Root{}, transformers.WithPrimaryKeys("Arn")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("organizations"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

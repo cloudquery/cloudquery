@@ -11,8 +11,9 @@ import (
 )
 
 func Organizations() *schema.Table {
+	tableName := "aws_organizations"
 	return &schema.Table{
-		Name:        "aws_organizations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html`,
 		Resolver:    fetchOrganizationsOrganizations,
 		Transform: transformers.TransformWithStruct(
@@ -22,7 +23,7 @@ func Organizations() *schema.Table {
 			),
 			transformers.WithPrimaryKeys("Arn"),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer("organizations"),
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
 		Columns:   []schema.Column{client.DefaultAccountIDColumn(true)},
 	}
 }

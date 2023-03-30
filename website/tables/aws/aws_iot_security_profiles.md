@@ -1,5 +1,7 @@
 # Table: aws_iot_security_profiles
 
+This table shows data for AWS IoT Security Profiles.
+
 https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeSecurityProfile.html
 
 The primary key for this table is **arn**.

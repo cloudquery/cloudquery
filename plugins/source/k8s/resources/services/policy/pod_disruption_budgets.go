@@ -15,14 +15,8 @@ func PodDisruptionBudgets() *schema.Table {
 		Name:      "k8s_policy_pod_disruption_budgets",
 		Resolver:  fetchPodDisruptionBudgets,
 		Multiplex: client.ContextNamespaceMultiplex,
-		Transform: transformers.TransformWithStruct(&policy.PodDisruptionBudget{}, append(client.SharedTransformers(), transformers.WithPrimaryKeys("UID"))...),
-		Columns: []schema.Column{
-			{
-				Name:     "context",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveContext,
-			},
-		},
+		Transform: client.TransformWithStruct(&policy.PodDisruptionBudget{}, transformers.WithPrimaryKeys("UID")),
+		Columns:   schema.ColumnList{client.ContextColumn},
 	}
 }
 

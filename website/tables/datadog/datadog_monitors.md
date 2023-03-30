@@ -1,5 +1,7 @@
 # Table: datadog_monitors
 
+This table shows data for Datadog Monitors.
+
 The composite primary key for this table is (**account_name**, **id**).
 
 ## Relations

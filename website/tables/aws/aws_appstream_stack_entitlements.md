@@ -1,5 +1,7 @@
 # Table: aws_appstream_stack_entitlements
 
+This table shows data for Amazon AppStream Stack Entitlements.
+
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Entitlement.html
 
 The composite primary key for this table is (**account_id**, **region**, **stack_name**, **name**).

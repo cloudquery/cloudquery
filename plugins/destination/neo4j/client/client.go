@@ -27,7 +27,7 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	}
 	var spec Spec
 	if err := destSpec.UnmarshalSpec(&spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal BigQuery spec: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal neo4j spec: %w", err)
 	}
 	spec.SetDefaults()
 	if err := spec.Validate(); err != nil {
@@ -35,7 +35,9 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	}
 
 	c.pluginSpec = spec
-	c.client, err = neo4j.NewDriverWithContext(c.pluginSpec.ConnectionString, neo4j.BasicAuth(c.pluginSpec.Username, c.pluginSpec.Password, ""))
+	c.client, err = neo4j.NewDriverWithContext(c.pluginSpec.ConnectionString, neo4j.BasicAuth(c.pluginSpec.Username, c.pluginSpec.Password, ""), func(c *neo4j.Config) {
+		c.Log = &Logger{Base: logger}
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -48,4 +50,11 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 
 func (c *Client) Close(ctx context.Context) error {
 	return c.client.Close(ctx)
+}
+
+func (c *Client) LoggedSession(ctx context.Context, cf neo4j.SessionConfig) neo4j.SessionWithContext {
+	if c.logger.GetLevel() <= zerolog.DebugLevel {
+		cf.BoltLogger = &Logger{Base: c.logger}
+	}
+	return c.client.NewSession(ctx, cf)
 }

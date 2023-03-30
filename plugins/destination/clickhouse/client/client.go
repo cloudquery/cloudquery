@@ -15,14 +15,12 @@ import (
 )
 
 type Client struct {
-	database string
-	cluster  string
 	conn     clickhouse.Conn
+	database string
+	spec     *Spec
 
 	logger zerolog.Logger
-
-	spec specs.Destination
-
+	mode   specs.MigrateMode
 	destination.UnimplementedUnmanagedWriter
 }
 
@@ -36,17 +34,22 @@ func (c *Client) Close(context.Context) error {
 	return c.conn.Close()
 }
 
-func New(_ context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
-	if spec.WriteMode != specs.WriteModeAppend {
+func New(_ context.Context, logger zerolog.Logger, dstSpec specs.Destination) (destination.Client, error) {
+	if dstSpec.WriteMode != specs.WriteModeAppend {
 		return nil, fmt.Errorf("clickhouse destination only supports append mode")
 	}
 
-	var pluginSpec Spec
-	if err := spec.UnmarshalSpec(&pluginSpec); err != nil {
+	var spec Spec
+	if err := dstSpec.UnmarshalSpec(&spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 
-	options, err := pluginSpec.Options()
+	spec.SetDefaults()
+	if err := spec.Validate(); err != nil {
+		return nil, err
+	}
+
+	options, err := spec.Options()
 	if err != nil {
 		return nil, fmt.Errorf("failed to prepare connect options %w", err)
 	}
@@ -54,7 +57,7 @@ func New(_ context.Context, logger zerolog.Logger, spec specs.Destination) (dest
 	l := logger.With().
 		Str("module", "dest-clickhouse").
 		Str("database", options.Auth.Database).
-		Str("cluster", pluginSpec.Cluster).
+		Str("cluster", spec.Cluster).
 		Logger()
 	options.Debugf = l.Printf
 
@@ -75,10 +78,10 @@ func New(_ context.Context, logger zerolog.Logger, spec specs.Destination) (dest
 	}
 
 	return &Client{
-		database: options.Auth.Database,
-		cluster:  pluginSpec.Cluster,
 		conn:     conn,
+		database: options.Auth.Database,
+		spec:     &spec,
 		logger:   l,
-		spec:     spec,
+		mode:     dstSpec.MigrateMode,
 	}, nil
 }

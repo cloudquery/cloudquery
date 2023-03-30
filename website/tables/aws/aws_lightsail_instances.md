@@ -1,5 +1,7 @@
 # Table: aws_lightsail_instances
 
+This table shows data for Lightsail Instances.
+
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Instance.html
 
 The primary key for this table is **arn**.

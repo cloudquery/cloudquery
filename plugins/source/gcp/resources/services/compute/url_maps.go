@@ -19,7 +19,7 @@ func UrlMaps() *schema.Table {
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/urlMaps#UrlMap`,
 		Resolver:    fetchUrlMaps,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.UrlMap{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.UrlMap{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

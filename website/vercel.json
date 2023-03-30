@@ -197,6 +197,46 @@
     {
       "source": "/docs/plugins/sources/tailscale/configuration",
       "destination": "/docs/plugins/sources/tailscale/overview"
+    },
+    {
+      "source": "/docs/cq-vs-others/airbyte",
+      "destination": "/docs/cq-vs-others/airbyte-alternative-cloudquery"
+    },
+    {
+      "source": "/docs/cq-vs-others/aws-config",
+      "destination": "/docs/cq-vs-others/aws-config-alternative-cloudquery"
+    },
+    {
+      "source": "/docs/cq-vs-others/cloudsploit",
+      "destination": "/docs/cq-vs-others/cloudsploit-alternative-cloudquery"
+    },
+    {
+      "source": "/docs/cq-vs-others/cspms",
+      "destination": "/docs/cq-vs-others/cspm-alternative-cloudquery"
+    },
+    {
+      "source": "/docs/cq-vs-others/fivetran",
+      "destination": "/docs/cq-vs-others/fivetran-alternative-cloudquery"
+    },
+    {
+      "source": "/docs/cq-vs-others/google-cloud-asset-inventory",
+      "destination": "/docs/cq-vs-others/google-cloud-asset-inventory-alternative-cloudquery"
+    },
+    {
+      "source": "/docs/cq-vs-others/steampipe",
+      "destination": "/docs/cq-vs-others/steampipe-alternative-cloudquery"
+    },
+    {
+      "source": "/blog/how-hexagon-built-an-infrastructure-data-platform",
+      "destination": "/blog/how-hexagon-built-an-infrastructure-data-lake"
+    },
+    {
+      "source": "/contact",
+      "destination": "https://docs.google.com/forms/d/e/1FAIpQLSfSbz6B1z7SsqbqqadjnA2EJ6QoZ67S1NCtjjImCLlMacGkyg/viewform?usp=sf_link"
+    },
+    {
+      "source": "/docs/support",
+      "destination": "/pricing"
     }
   ]
 }

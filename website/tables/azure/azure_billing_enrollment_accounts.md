@@ -1,5 +1,7 @@
 # Table: azure_billing_enrollment_accounts
 
+This table shows data for Azure Billing Enrollment Accounts.
+
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling@v0.5.0#EnrollmentAccountSummary
 
 The primary key for this table is **id**.
@@ -12,7 +14,6 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|subscription_id|String|
 |properties|JSON|
 |id (PK)|String|
 |name|String|

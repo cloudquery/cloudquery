@@ -1,5 +1,7 @@
 # Table: oracle_identity_tagging_work_requests
 
+This table shows data for Oracle Identity Tagging Work Requests.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: heroku_pipeline_couplings
 
+This table shows data for Heroku Pipeline Couplings.
+
 https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling
 
 The primary key for this table is **id**.

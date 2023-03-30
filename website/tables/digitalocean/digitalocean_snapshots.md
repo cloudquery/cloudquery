@@ -1,5 +1,7 @@
 # Table: digitalocean_snapshots
 
+This table shows data for DigitalOcean Snapshots.
+
 The primary key for this table is **id**.
 
 ## Columns

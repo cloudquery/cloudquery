@@ -1,5 +1,7 @@
 # Table: azure_subscription_subscriptions
 
+This table shows data for Azure Subscription Subscriptions.
+
 https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list?tabs=HTTP#subscription
 
 The primary key for this table is **id**.

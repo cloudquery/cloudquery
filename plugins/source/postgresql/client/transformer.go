@@ -129,13 +129,6 @@ func (*Transformer) TransformMacaddr(v *schema.Macaddr) any {
 }
 
 func (*Transformer) TransformMacaddrArray(v *schema.MacaddrArray) any {
-	// if c.pgType == pgTypeCockroachDB {
-	// 	r := pgtype.FlatArray[pgtype.Text]{}
-	// 	for _, e := range v.Elements {
-	// 		r = append(r, pgtype.Text{String: e.String(), Valid: e.Status == schema.Present})
-	// 	}
-	// 	return &r
-	// }
 	r := pgtype.FlatArray[net.HardwareAddr]{}
 	for _, e := range v.Elements {
 		r = append(r, e.Addr)

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/specs"
 )
 
 const streamARN = "cq-playground-test"
@@ -13,9 +14,11 @@ func TestPluginJSON(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("firehose", "development", New, destination.WithDefaultBatchSize(500))
 		},
-		Spec{
-			NoRotate:  true,
-			StreamARN: streamARN,
+		specs.Destination{
+			Spec: &Spec{
+				NoRotate:  true,
+				StreamARN: streamARN,
+			},
 		},
 		destination.PluginTestSuiteTests{
 			SkipAppend:                true,

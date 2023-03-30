@@ -1,5 +1,7 @@
 # Table: oracle_identity_policies
 
+This table shows data for Oracle Identity Policies.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

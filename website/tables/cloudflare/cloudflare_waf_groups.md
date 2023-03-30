@@ -1,5 +1,7 @@
 # Table: cloudflare_waf_groups
 
+This table shows data for Cloudflare WAF Groups.
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

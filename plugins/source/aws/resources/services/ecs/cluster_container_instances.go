@@ -8,11 +8,12 @@ import (
 )
 
 func ClusterContainerInstances() *schema.Table {
+	tableName := "aws_ecs_cluster_container_instances"
 	return &schema.Table{
-		Name:        "aws_ecs_cluster_container_instances",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerInstance.html`,
 		Resolver:    fetchEcsClusterContainerInstances,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ecs"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ecs"),
 		Transform:   transformers.TransformWithStruct(&types.ContainerInstance{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -1,5 +1,7 @@
 # Table: stripe_invoice_items
 
+This table shows data for Stripe Invoice Items.
+
 https://stripe.com/docs/api/invoiceitems
 
 The primary key for this table is **id**.

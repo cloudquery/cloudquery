@@ -1,5 +1,7 @@
 # Table: gcp_artifactregistry_docker_images
 
+This table shows data for GCP Artifact Registry Docker Images.
+
 https://cloud.google.com/artifact-registry/docs/reference/rest/v1/projects.locations.repositories.dockerImages#DockerImage
 
 The composite primary key for this table is (**project_id**, **name**).
@@ -24,3 +26,4 @@ This table depends on [gcp_artifactregistry_repositories](gcp_artifactregistry_r
 |upload_time|Timestamp|
 |media_type|String|
 |build_time|Timestamp|
+|update_time|Timestamp|

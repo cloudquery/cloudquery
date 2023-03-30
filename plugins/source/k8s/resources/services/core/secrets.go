@@ -15,26 +15,11 @@ func Secrets() *schema.Table {
 		Name:      "k8s_core_secrets",
 		Resolver:  fetchSecrets,
 		Multiplex: client.ContextMultiplex,
-		Transform: transformers.TransformWithStruct(&v1.Secret{},
-			client.SharedTransformersWithMoreSkipFields([]string{
-				"Data",
-				"StringData",
-			})...),
-		Columns: []schema.Column{
-			{
-				Name:     "context",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveContext,
-			},
-			{
-				Name:     "uid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform: client.TransformWithStruct(&v1.Secret{},
+			client.WithMoreSkipFields("Data", "StringData"),
+			transformers.WithPrimaryKeys("UID"),
+		),
+		Columns: schema.ColumnList{client.ContextColumn},
 	}
 }
 

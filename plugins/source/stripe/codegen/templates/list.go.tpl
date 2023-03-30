@@ -2,7 +2,7 @@ package {{.Service}}
 
 import (
 	"context"
-{{if .StateParamName}}
+{{- if .StateParamName}}
 	"fmt"
 	"strconv"
 {{end}}
@@ -19,10 +19,10 @@ func {{.TableName | ToPascal}}() *schema.Table {
 		{{- if .Description}}
       Description: `{{.Description}}`,
     {{- end}}
-      Transform:   transformers.TransformWithStruct(&stripe.{{.StructName}}{}, client.SharedTransformers(
+      Transform:   client.TransformWithStruct(&stripe.{{.StructName}}{},
 {{- if .SkipFields}}transformers.WithSkipFields({{.SkipFields | QuoteJoin}}),{{end -}}
 {{- if .IgnoreInTests}}transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer({{.IgnoreInTests | QuoteJoin}})),{{end -}}
-				)...),
+				),
       Resolver:    fetch{{.TableName | ToPascal}},
 {{if .HasIDPK}}
 		  Columns: []schema.Column{
@@ -68,6 +68,10 @@ func fetch{{.TableName | ToPascal}}(ctx context.Context, meta schema.ClientMeta,
 		lp := &stripe.{{.TableName | ToPascal | Singularize}}ListParams{
 {{.ListParams}}
 		}
+
+		{{- range .ExpandFields}}
+		lp.AddExpand("{{.}}")
+		{{- end}}
 
 {{if .StateParamName}}
 		const key = "{{.TableName}}"

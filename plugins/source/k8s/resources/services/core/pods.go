@@ -15,24 +15,12 @@ func Pods() *schema.Table {
 		Name:      "k8s_core_pods",
 		Resolver:  fetchPods,
 		Multiplex: client.ContextMultiplex,
-		Transform: transformers.TransformWithStruct(&v1.Pod{},
-			client.SharedTransformersWithMoreSkipFields([]string{
-				"DeprecatedServiceAccount", // Deprecated
-			})...),
-		Columns: []schema.Column{
-			{
-				Name:     "context",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveContext,
-			},
-			{
-				Name:     "uid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+		Transform: client.TransformWithStruct(&v1.Pod{},
+			client.WithMoreSkipFields("DeprecatedServiceAccount"),
+			transformers.WithPrimaryKeys("UID"),
+		),
+		Columns: schema.ColumnList{
+			client.ContextColumn,
 			{
 				Name:     "status_host_ip",
 				Type:     schema.TypeInet,

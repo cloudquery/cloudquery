@@ -8,12 +8,13 @@ import (
 )
 
 func FargateProfiles() *schema.Table {
+	tableName := "aws_eks_fargate_profiles"
 	return &schema.Table{
-		Name:                "aws_eks_fargate_profiles",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/eks/latest/APIReference/API_FargateProfile.html`,
 		Resolver:            fetchFargateProfiles,
 		PreResourceResolver: getFargateProfile,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("eks"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "eks"),
 		Transform:           transformers.TransformWithStruct(&types.FargateProfile{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -27,6 +28,5 @@ func FargateProfiles() *schema.Table {
 				},
 			},
 		},
-		Relations: []*schema.Table{},
 	}
 }

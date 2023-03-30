@@ -8,12 +8,13 @@ import (
 )
 
 func Findings() *schema.Table {
+	tableName := "aws_inspector_findings"
 	return &schema.Table{
-		Name:        "aws_inspector_findings",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/inspector/v1/APIReference/API_Finding.html`,
 		Resolver:    fetchInspectorFindings,
 		Transform:   transformers.TransformWithStruct(&types.Finding{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("inspector"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "inspector"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

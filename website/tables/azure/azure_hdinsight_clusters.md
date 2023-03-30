@@ -1,5 +1,7 @@
 # Table: azure_hdinsight_clusters
 
+This table shows data for Azure HDInsight Clusters.
+
 https://learn.microsoft.com/en-us/rest/api/hdinsight/2021-06-01/clusters/list?tabs=HTTP#cluster
 
 The primary key for this table is **id**.

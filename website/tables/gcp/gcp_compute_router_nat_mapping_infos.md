@@ -1,5 +1,7 @@
 # Table: gcp_compute_router_nat_mapping_infos
 
+This table shows data for GCP Compute Router Nat Mapping Infos.
+
 https://cloud.google.com/compute/docs/reference/rest/v1/routers/getNatMappingInfo#response-body
 
 The primary key for this table is **_cq_id**.

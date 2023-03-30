@@ -11,11 +11,12 @@ import (
 )
 
 func SpotFleetRequests() *schema.Table {
+	tableName := "aws_ec2_spot_fleet_requests"
 	return &schema.Table{
-		Name:        "aws_ec2_spot_fleet_requests",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SpotFleetRequestConfig.html`,
 		Resolver:    fetchEC2SpotFleetRequests,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.SpotFleetRequestConfig{}, transformers.WithPrimaryKeys("SpotFleetRequestId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

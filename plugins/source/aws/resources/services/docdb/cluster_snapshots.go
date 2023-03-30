@@ -8,11 +8,12 @@ import (
 )
 
 func ClusterSnapshots() *schema.Table {
+	tableName := "aws_docdb_cluster_snapshots"
 	return &schema.Table{
-		Name:        "aws_docdb_cluster_snapshots",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterSnapshot.html`,
 		Resolver:    fetchDocdbClusterSnapshots,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
 		Transform:   transformers.TransformWithStruct(&types.DBClusterSnapshot{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

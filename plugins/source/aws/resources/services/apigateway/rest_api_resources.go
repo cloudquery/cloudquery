@@ -8,11 +8,12 @@ import (
 )
 
 func RestApiResources() *schema.Table {
+	tableName := "aws_apigateway_rest_api_resources"
 	return &schema.Table{
-		Name:        "aws_apigateway_rest_api_resources",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Resource.html`,
 		Resolver:    fetchApigatewayRestApiResources,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Resource{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

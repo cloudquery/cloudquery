@@ -1,5 +1,7 @@
 # Table: oracle_compute_dedicated_vm_hosts
 
+This table shows data for Oracle Compute Dedicated Virtual Machine (VM) Hosts.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

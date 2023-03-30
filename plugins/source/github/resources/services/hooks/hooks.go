@@ -14,8 +14,7 @@ func Hooks() *schema.Table {
 		Name:      "github_hooks",
 		Resolver:  fetchHooks,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.Hook{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
+		Transform: client.TransformWithStruct(&github.Hook{}, transformers.WithPrimaryKeys("ID")),
 		Columns:   []schema.Column{client.OrgColumn},
 		Relations: []*schema.Table{deliveries()},
 	}
