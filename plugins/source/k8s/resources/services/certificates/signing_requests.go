@@ -5,7 +5,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	v1 "k8s.io/api/certificates/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -15,8 +14,17 @@ func SigningRequests() *schema.Table {
 		Name:      "k8s_certificates_signing_requests",
 		Resolver:  fetchSigningRequests,
 		Multiplex: client.ContextMultiplex,
-		Transform: client.TransformWithStruct(&v1.CertificateSigningRequest{}, transformers.WithPrimaryKeys("UID")),
-		Columns:   schema.ColumnList{client.ContextColumn},
+		Transform: client.TransformWithStruct(&v1.CertificateSigningRequest{}),
+		Columns: schema.ColumnList{
+			client.ContextColumn,
+			{
+				// TODO: remove once https://github.com/cloudquery/plugin-sdk/pull/739 is released
+				Name:            "uid",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("UID"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
 	}
 }
 
