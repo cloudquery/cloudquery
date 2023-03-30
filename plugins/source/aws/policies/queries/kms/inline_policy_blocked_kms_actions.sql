@@ -45,7 +45,7 @@ from
         ) as statement
         inner join
             aws_iam_roles on
-                aws_iam_roles.arn = aws_iam_role_policies.role_arn
+                aws_iam_roles.id = aws_iam_role_policies.role_id
         where lower(arn) not like 'arn:aws:iam::%:role/aws-service-role/%'
         union
         -- select all group policies
@@ -63,7 +63,7 @@ from
                         )
                     when 'array' then policy_document -> 'Statement' end
         ) as statement
-        inner join aws_iam_groups on aws_iam_groups.arn = aws_iam_group_policies.group_arn) as t
+        inner join aws_iam_groups on aws_iam_groups.id = aws_iam_group_policies.group_id) as t
 where
     statement ->> 'Effect' = 'Allow'
     and lower(statement::TEXT)::JSONB -> 'resource' ?| array[
