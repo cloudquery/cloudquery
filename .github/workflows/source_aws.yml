@@ -48,11 +48,22 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
+        id:   set-up-go-1x
         uses: actions/setup-go@v3
         with:
           go-version-file: plugins/source/aws/go.mod
           cache: true
           cache-dependency-path: plugins/source/aws/go.sum
+      - name: Restore build cache
+        uses: actions/cache@v3
+        with:
+          path: |
+                ~/go/pkg/mod
+                ~/.cache/go-build
+                ~/Library/Caches/go-build
+                ~\AppData\Local\go-build
+          key: ${{ runner.os }}-go-${{ steps.set-up-go-1x.outputs.go-version }}-source-aws-${{ hashFiles('plugins/source/aws/go.sum') }}
+          restore-keys: ${{ runner.os }}-go-${{ steps.set-up-go-1x.outputs.go-version }}-source-aws-
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
@@ -98,20 +109,24 @@ jobs:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/checkout@v3
-      - uses: actions/cache@v3
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/aws/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-aws
       - name: Set up Go
+        id:   set-up-go-release
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
         with:
           go-version-file: plugins/source/aws/go.mod
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+                ~/go/pkg/mod
+                ~/.cache/go-build
+                ~/Library/Caches/go-build
+                ~\AppData\Local\go-build
+          key: |
+            ${{ runner.os }}-go-${{ steps.set-up-go-release.outputs.go-version }}-release-cache-aws-${{ hashFiles('plugins/source/aws/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.set-up-go-release.outputs.go-version }}-release-cache-aws-
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: goreleaser/goreleaser-action@v3
