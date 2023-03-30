@@ -30,9 +30,9 @@ The following tables depend on aws_guardduty_detectors:
 |id (PK)|String|
 |service_role|String|
 |status|String|
-|created_at|String|
+|created_at|Timestamp|
 |data_sources|JSON|
 |finding_publishing_frequency|String|
 |tags|JSON|
-|updated_at|String|
+|updated_at|Timestamp|
 |result_metadata|JSON|
