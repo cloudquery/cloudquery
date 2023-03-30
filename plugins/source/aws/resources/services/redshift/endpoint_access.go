@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func endpointAccess() *schema.Table {
@@ -17,7 +16,7 @@ func endpointAccess() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_EndpointAccess.html`,
 		Resolver:    fetchEndpointAccess,
-		Transform:   transformers.TransformWithStruct(&types.EndpointAccess{}),
+		Transform:   client.TransformWithStruct(&types.EndpointAccess{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
