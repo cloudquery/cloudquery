@@ -20,7 +20,6 @@ func rolePolicies() *schema.Table {
 		Resolver:            fetchIamRolePolicies,
 		PreResourceResolver: getRolePolicy,
 		Transform:           transformers.TransformWithStruct(&iam.GetRolePolicyOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
