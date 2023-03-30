@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func GroupPolicies() *schema.Table {
+func groupPolicies() *schema.Table {
 	tableName := "aws_iam_group_policies"
 	return &schema.Table{
 		Name:                tableName,
