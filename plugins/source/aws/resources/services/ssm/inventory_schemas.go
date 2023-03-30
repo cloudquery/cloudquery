@@ -8,12 +8,13 @@ import (
 )
 
 func InventorySchemas() *schema.Table {
+	tableName := "aws_ssm_inventory_schemas"
 	return &schema.Table{
-		Name:        "aws_ssm_inventory_schemas",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InventoryItemSchema.html`,
 		Resolver:    fetchSsmInventorySchemas,
 		Transform:   transformers.TransformWithStruct(&types.InventoryItemSchema{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ssm"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ssm"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

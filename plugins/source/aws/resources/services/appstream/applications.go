@@ -8,11 +8,12 @@ import (
 )
 
 func Applications() *schema.Table {
+	tableName := "aws_appstream_applications"
 	return &schema.Table{
-		Name:        "aws_appstream_applications",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Application.html`,
 		Resolver:    fetchAppstreamApplications,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "appstream2"),
 		Transform:   transformers.TransformWithStruct(&types.Application{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

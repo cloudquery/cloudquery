@@ -1,5 +1,7 @@
 # Table: gcp_secretmanager_secrets
 
+This table shows data for GCP Secret Manager Secrets.
+
 https://cloud.google.com/secret-manager/docs/reference/rest/v1/projects.secrets#Secret
 
 The primary key for this table is **name**.
@@ -21,3 +23,4 @@ The primary key for this table is **name**.
 |etag|String|
 |rotation|JSON|
 |version_aliases|JSON|
+|annotations|JSON|

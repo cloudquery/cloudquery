@@ -8,12 +8,13 @@ import (
 )
 
 func WebAcls() *schema.Table {
+	tableName := "aws_wafregional_web_acls"
 	return &schema.Table{
-		Name:        "aws_wafregional_web_acls",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_WebACL.html`,
 		Resolver:    fetchWafregionalWebAcls,
 		Transform:   transformers.TransformWithStruct(&types.WebACL{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("waf-regional"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "waf-regional"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

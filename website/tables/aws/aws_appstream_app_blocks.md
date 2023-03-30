@@ -1,5 +1,7 @@
 # Table: aws_appstream_app_blocks
 
+This table shows data for Amazon AppStream App Blocks.
+
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_AppBlock.html
 
 The primary key for this table is **arn**.

@@ -72,7 +72,7 @@ Specify which tables to skip when syncing the source plugin. It accepts wildcard
 
 (`bool`, optional, default: `false`, introduced in CLI `v2.3.7`)
 
-If set to `true`, tables that depend on the tables specified in `tables` will not be synced, unless specifically selected themselves. This allows you to choose precisely which tables to sync, and prevents automatically syncing new dependent tables that may be added to the plugin in future versions.
+If set to `true`, tables that depend on the tables specified in `tables` will not be synced, unless specifically selected themselves. This allows you to choose precisely which tables to sync, and prevents automatically syncing new dependent tables that may be added to the plugin in future versions. Note that if you specify a table that depends on another table, CloudQuery will still automatically include the parent table(s).
 
 ### destinations
 
@@ -103,6 +103,16 @@ The backend to use for storing the state of incremental tables. Currently, the o
 (`object`, optional, introduced in CLI `v2.1.0`)
 
 The backend spec is specific to the backend used. For the `local` backend, the only option is `path`, which specifies the name of the directory to use when storing metadata files.
+
+<!-- vale off -->
+### deterministic_cq_id
+<!-- vale on -->
+
+(`bool`, optional, default: `false`, introduced in CLI `v2.4.1`)
+
+A flag that indicates whether the value of `_cq_id` should be a UUID that is a hash of the primary keys or a random UUID. If a resource has no primary keys defined the value will always be a random UUID
+
+Supported by source plugins released on 2023-03-08 and later
 
 ### spec
 

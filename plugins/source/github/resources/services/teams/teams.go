@@ -14,8 +14,7 @@ func Teams() *schema.Table {
 		Name:      "github_teams",
 		Resolver:  fetchTeams,
 		Multiplex: client.OrgMultiplex,
-		Transform: transformers.TransformWithStruct(&github.Team{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
+		Transform: client.TransformWithStruct(&github.Team{}, transformers.WithPrimaryKeys("ID")),
 		Columns:   []schema.Column{client.OrgColumn},
 		Relations: []*schema.Table{members(), repositories()},
 	}

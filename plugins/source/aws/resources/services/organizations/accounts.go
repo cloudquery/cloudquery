@@ -11,12 +11,13 @@ import (
 )
 
 func Accounts() *schema.Table {
+	tableName := "aws_organizations_accounts"
 	return &schema.Table{
-		Name:        "aws_organizations_accounts",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html`,
 		Resolver:    fetchOrganizationsAccounts,
 		Transform:   transformers.TransformWithStruct(&types.Account{}, transformers.WithPrimaryKeys("Arn")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("organizations"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
@@ -24,6 +25,9 @@ func Accounts() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: resolveAccountTags,
 			},
+		},
+		Relations: []*schema.Table{
+			delegatedServices(),
 		},
 	}
 }

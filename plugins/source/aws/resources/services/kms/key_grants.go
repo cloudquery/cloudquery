@@ -8,12 +8,13 @@ import (
 )
 
 func KeyGrants() *schema.Table {
+	tableName := "aws_kms_key_grants"
 	return &schema.Table{
-		Name:        "aws_kms_key_grants",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/kms/latest/APIReference/API_GrantListEntry.html`,
 		Resolver:    fetchKmsKeyGrants,
 		Transform:   transformers.TransformWithStruct(&types.GrantListEntry{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("kms"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "kms"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -1,5 +1,7 @@
 # Table: k8s_networking_network_policies
 
+This table shows data for Kubernetes (K8s) Networking Network Policies.
+
 The primary key for this table is **uid**.
 
 ## Columns
@@ -11,11 +13,11 @@ The primary key for this table is **uid**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |context|String|
-|uid (PK)|String|
 |kind|String|
 |api_version|String|
 |name|String|
 |namespace|String|
+|uid (PK)|String|
 |resource_version|String|
 |generation|Int|
 |deletion_grace_period_seconds|Int|

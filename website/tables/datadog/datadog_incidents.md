@@ -1,5 +1,7 @@
 # Table: datadog_incidents
 
+This table shows data for Datadog Incidents.
+
 The composite primary key for this table is (**account_name**, **id**).
 
 ## Relations

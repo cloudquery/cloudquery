@@ -14,8 +14,7 @@ func Repositories() *schema.Table {
 		Name:      "github_repositories",
 		Resolver:  fetchRepositories,
 		Multiplex: client.OrgRepositoryMultiplex,
-		Transform: transformers.TransformWithStruct(&github.Repository{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
+		Transform: client.TransformWithStruct(&github.Repository{}, transformers.WithPrimaryKeys("ID")),
 		Columns:   []schema.Column{client.OrgColumn},
 		Relations: []*schema.Table{alerts(), releases(), secrets()},
 	}

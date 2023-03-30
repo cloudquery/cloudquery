@@ -1,5 +1,7 @@
 # Table: aws_cloudtrail_events
 
+This table shows data for AWS CloudTrail Events.
+
 https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Event.html
 
 The primary key for this table is **event_id**.

@@ -1,5 +1,7 @@
 # Table: stripe_payment_methods
 
+This table shows data for Stripe Payment Methods.
+
 https://stripe.com/docs/api/payment_methods
 
 The primary key for this table is **id**.

@@ -8,11 +8,12 @@ import (
 )
 
 func Pipelines() *schema.Table {
+	tableName := "aws_elastictranscoder_pipelines"
 	return &schema.Table{
-		Name:        "aws_elastictranscoder_pipelines",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elastictranscoder/latest/developerguide/list-pipelines.html`,
 		Resolver:    fetchElastictranscoderPipelines,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elastictranscoder"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elastictranscoder"),
 		Transform:   transformers.TransformWithStruct(&types.Pipeline{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

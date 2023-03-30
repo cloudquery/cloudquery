@@ -1,5 +1,7 @@
 # Table: gcp_aiplatform_batch_prediction_jobs
 
+This table shows data for GCP AI Platform Batch Prediction Jobs.
+
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.batchPredictionJobs#BatchPredictionJob
 
 The composite primary key for this table is (**project_id**, **name**).
@@ -23,6 +25,7 @@ This table depends on [gcp_aiplatform_job_locations](gcp_aiplatform_job_location
 |model_version_id|String|
 |unmanaged_container_model|JSON|
 |input_config|JSON|
+|instance_config|JSON|
 |model_parameters|JSON|
 |output_config|JSON|
 |dedicated_resources|JSON|

@@ -1,5 +1,7 @@
 # Table: aws_sagemaker_endpoint_configurations
 
+This table shows data for Amazon SageMaker Endpoint Configurations.
+
 https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeEndpointConfig.html
 
 The primary key for this table is **arn**.

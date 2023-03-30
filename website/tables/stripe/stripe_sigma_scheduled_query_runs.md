@@ -1,5 +1,7 @@
 # Table: stripe_sigma_scheduled_query_runs
 
+This table shows data for Stripe Sigma Scheduled Query Runs.
+
 https://stripe.com/docs/api/sigma_scheduled_query_runs
 
 The primary key for this table is **id**.

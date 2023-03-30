@@ -56,6 +56,7 @@ func fetchOrders(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 		}
 
 		cursor = cur
+		p = nil
 	}
 
 	if cl.Backend != nil {

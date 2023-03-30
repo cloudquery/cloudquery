@@ -1,5 +1,7 @@
 # Table: aws_support_case_communications
 
+This table shows data for Support Case Communications.
+
 https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeCommunications.html
 
 The primary key for this table is **_cq_id**.

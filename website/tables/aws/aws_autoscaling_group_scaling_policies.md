@@ -1,5 +1,7 @@
 # Table: aws_autoscaling_group_scaling_policies
 
+This table shows data for Auto Scaling Group Scaling Policies.
+
 https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScalingPolicy.html
 
 The primary key for this table is **arn**.

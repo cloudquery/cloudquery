@@ -3,7 +3,6 @@ package storage
 import (
 	pb "cloud.google.com/go/iam"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
@@ -13,7 +12,7 @@ func BucketPolicies() *schema.Table {
 		Description: `https://cloud.google.com/iam/docs/reference/rest/v1/Policy`,
 		Resolver:    fetchBucketPolicies,
 		Multiplex:   client.ProjectMultiplexEnabledServices("storage.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Policy3{}, client.Options()...),
+		Transform:   client.TransformWithStruct(&pb.Policy3{}),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

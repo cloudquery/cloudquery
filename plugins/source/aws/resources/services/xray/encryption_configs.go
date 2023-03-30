@@ -8,12 +8,13 @@ import (
 )
 
 func EncryptionConfigs() *schema.Table {
+	tableName := "aws_xray_encryption_configs"
 	return &schema.Table{
-		Name:        "aws_xray_encryption_configs",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/xray/latest/api/API_EncryptionConfig.html`,
 		Resolver:    fetchXrayEncryptionConfigs,
 		Transform:   transformers.TransformWithStruct(&types.EncryptionConfig{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("xray"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "xray"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

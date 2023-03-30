@@ -1,5 +1,7 @@
 # Table: stripe_issuing_disputes
 
+This table shows data for Stripe Issuing Disputes.
+
 https://stripe.com/docs/api/issuing_disputes
 
 The primary key for this table is **id**.

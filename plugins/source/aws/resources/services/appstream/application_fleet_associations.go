@@ -8,11 +8,12 @@ import (
 )
 
 func ApplicationFleetAssociations() *schema.Table {
+	tableName := "aws_appstream_application_fleet_associations"
 	return &schema.Table{
-		Name:        "aws_appstream_application_fleet_associations",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_ApplicationFleetAssociation.html`,
 		Resolver:    fetchAppstreamApplicationFleetAssociations,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "appstream2"),
 		Transform:   transformers.TransformWithStruct(&types.ApplicationFleetAssociation{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

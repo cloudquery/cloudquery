@@ -2,7 +2,6 @@ package prices
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func Prices() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_prices",
 		Description: `https://stripe.com/docs/api/prices`,
-		Transform:   transformers.TransformWithStruct(&stripe.Price{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.Price{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchPrices,
 
 		Columns: []schema.Column{
@@ -45,6 +44,8 @@ func fetchPrices(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	cl := meta.(*client.Client)
 
 	lp := &stripe.PriceListParams{}
+	lp.AddExpand("data.currency_options")
+	lp.AddExpand("data.tiers")
 
 	const key = "prices"
 

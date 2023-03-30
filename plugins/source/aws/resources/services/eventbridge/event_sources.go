@@ -1,6 +1,10 @@
 package eventbridge
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -8,11 +12,12 @@ import (
 )
 
 func EventSources() *schema.Table {
+	tableName := "aws_eventbridge_event_sources"
 	return &schema.Table{
-		Name:        "aws_eventbridge_event_sources",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_EventSource.html`,
-		Resolver:    fetchEventbridgeEventSources,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
+		Resolver:    fetchEventSources,
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "events"),
 		Transform:   transformers.TransformWithStruct(&types.EventSource{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -27,4 +32,22 @@ func EventSources() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchEventSources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var input eventbridge.ListEventSourcesInput
+	c := meta.(*client.Client)
+	svc := c.Services().Eventbridge
+	for {
+		response, err := svc.ListEventSources(ctx, &input)
+		if err != nil {
+			return err
+		}
+		res <- response.EventSources
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		input.NextToken = response.NextToken
+	}
+	return nil
 }

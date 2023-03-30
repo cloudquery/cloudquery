@@ -13,7 +13,7 @@ func ManagedZones() *schema.Table {
 		Description: `https://cloud.google.com/dns/docs/reference/v1/managedZones#resource`,
 		Resolver:    fetchManagedZones,
 		Multiplex:   client.ProjectMultiplexEnabledServices("dns.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.ManagedZone{}, append(client.Options(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&pb.ManagedZone{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

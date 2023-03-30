@@ -1,5 +1,7 @@
 # Table: aws_ec2_network_interfaces
 
+This table shows data for Amazon Elastic Compute Cloud (EC2) Network Interfaces.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkInterface.html
 
 The primary key for this table is **arn**.

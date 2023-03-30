@@ -11,11 +11,12 @@ import (
 )
 
 func SpotInstanceRequests() *schema.Table {
+	tableName := "aws_ec2_spot_instance_requests"
 	return &schema.Table{
-		Name:        "aws_ec2_spot_instance_requests",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SpotInstanceRequest.html`,
 		Resolver:    fetchEC2SpotInstanceRequests,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.SpotInstanceRequest{}, transformers.WithPrimaryKeys("SpotInstanceRequestId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

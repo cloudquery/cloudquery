@@ -1,5 +1,7 @@
 # Table: aws_redshift_clusters
 
+This table shows data for Redshift Clusters.
+
 https://docs.aws.amazon.com/redshift/latest/APIReference/API_Cluster.html
 
 The primary key for this table is **arn**.
@@ -8,6 +10,8 @@ The primary key for this table is **arn**.
 
 The following tables depend on aws_redshift_clusters:
   - [aws_redshift_cluster_parameter_groups](aws_redshift_cluster_parameter_groups)
+  - [aws_redshift_endpoint_access](aws_redshift_endpoint_access)
+  - [aws_redshift_endpoint_authorization](aws_redshift_endpoint_authorization)
   - [aws_redshift_snapshots](aws_redshift_snapshots)
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: aws_lightsail_container_service_deployments
 
+This table shows data for Lightsail Container Service Deployments.
+
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_ContainerServiceDeployment.html
 
 The primary key for this table is **_cq_id**.

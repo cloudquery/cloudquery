@@ -3,27 +3,55 @@ alicloud:
 aws:
   - plugins/source/aws/**/*
 awspricing:
-  - plugins/source/awspricing/**/*  
+  - plugins/source/awspricing/**/*
+azblob:
+  - plugins/destination/azblob/**/*
 azure:
   - plugins/source/azure/**/*
 azuredevops:
   - plugins/source/azuredevops/**/*
+bigquery:
+  - plugins/destination/bigquery/**/*
+cli:
+  - cli/**/*
+clickhouse:
+  - plugins/destination/clickhouse/**/*
 cloudflare:
   - plugins/source/cloudflare/**/*
+csv:
+  - plugins/destination/csv/**/*
 datadog:
   - plugins/source/datadog/**/*
 digitalocean:
   - plugins/source/digitalocean/**/*
+duckdb:
+  - plugins/destination/duckdb/**/*
+elasticsearch:
+  - plugins/destination/elasticsearch/**/*
+facebookmarketing:
+  - plugins/source/facebookmarketing/**/*
 fastly:
   - plugins/source/fastly/**/*
+file:
+  - plugins/destination/file/**/*
+firehose:
+  - plugins/destination/firehose/**/*
 gandi:
   - plugins/source/gandi/**/*
 gcp:
   - plugins/source/gcp/**/*
+gcs:
+  - plugins/destination/gcs/**/*
 github:
   - plugins/source/github/**/*
 gitlab:
   - plugins/source/gitlab/**/*
+googleads:
+  - plugins/destination/googleads/**/*
+googleanalytics:
+  - plugins/destination/googleanalytics/**/*
+gremlin:
+  - plugins/destination/gremlin/**/*
 hackernews:
   - plugins/source/hackernews/**/*
 heroku:
@@ -32,58 +60,16 @@ homebrew:
   - plugins/source/homebrew/**/*
 hubspot:
   - plugins/source/hubspot/**/*
-plausible:
-  - plugins/source/plausible/**/*
-source-postgresql:
-  - plugins/source/postgresql/**/*
 k8s:
   - plugins/source/k8s/**/*
+kafka:
+  - plugins/destination/kafka/**/*
 launchdarkly:
   - plugins/source/launchdarkly/**/*
+meilisearch:
+  - plugins/destination/meilisearch/**/*
 mixpanel:
   - plugins/source/mixpanel/**/*
-okta:
-  - plugins/source/okta/**/*
-oracle:
-  - plugins/source/oracle/**/*
-salesforce:
-  - plugins/source/salesforce/**/*
-slack:
-  - plugins/source/slack/**/*
-shopify:
-  - plugins/source/shopify/**/*
-stripe:
-  - plugins/source/stripe/**/*
-pagerduty:
-  - plugins/source/pagerduty/**/*
-snyk:
-  - plugins/source/snyk/**/*
-terraform:
-  - plugins/source/terraform/**/*
-tailscale:
-  - plugins/source/tailscale/**/*
-vercel:
-  - plugins/source/vercel/**/*
-azblob:
-  - plugins/destination/azblob/**/*
-postgresql:
-  - plugins/destination/postgresql/**/*
-sqlite:
-  - plugins/destination/sqlite/**/*
-s3:
-  - plugins/destination/s3/**/*
-csv:
-  - plugins/destination/csv/**/*
-elasticsearch:
-  - plugins/destination/elasticsearch/**/*
-file:
-  - plugins/destination/file/**/*
-gcs:
-  - plugins/destination/gcs/**/*
-snowflake:
-  - plugins/destination/snowflake/**/*
-bigquery:
-  - plugins/destination/bigquery/**/*
 mongodb:
   - plugins/destination/mongodb/**/*
 mssql:
@@ -92,13 +78,41 @@ mysql:
   - plugins/destination/mysql/**/*
 neo4j:
   - plugins/destination/neo4j/**/*
-kafka:
-  - plugins/destination/kafka/**/*
-firehose:
-  - plugins/destination/firehose/**/*  
-clickhouse:
-  - plugins/destination/clickhouse/**/*
+okta:
+  - plugins/source/okta/**/*
+oracle:
+  - plugins/source/oracle/**/*
+pagerduty:
+  - plugins/source/pagerduty/**/*
+plausible:
+  - plugins/source/plausible/**/*
+postgresql:
+  - plugins/destination/postgresql/**/*
+s3:
+  - plugins/destination/s3/**/*
+salesforce:
+  - plugins/source/salesforce/**/*
+shopify:
+  - plugins/source/shopify/**/*
+slack:
+  - plugins/source/slack/**/*
+snowflake:
+  - plugins/destination/snowflake/**/*
+snyk:
+  - plugins/source/snyk/**/*
+source-mysql:
+  - plugins/source/mysql/**/*
+source-postgresql:
+  - plugins/source/postgresql/**/*
+sqlite:
+  - plugins/destination/sqlite/**/*
+stripe:
+  - plugins/source/stripe/**/*
+tailscale:
+  - plugins/source/tailscale/**/*
+terraform:
+  - plugins/source/terraform/**/*
+vercel:
+  - plugins/source/vercel/**/*
 website:
   - website/**/*
-cli:
-  - cli/**/*

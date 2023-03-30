@@ -1,5 +1,7 @@
 # Table: slack_conversation_replies
 
+This table shows data for Slack Conversation Replies.
+
 https://api.slack.com/methods/conversations.replies
 
 The composite primary key for this table is (**team_id**, **channel_id**, **ts**).

@@ -1,5 +1,7 @@
 # Table: azure_sql_transparent_data_encryptions
 
+This table shows data for Azure SQL Transparent Data Encryptions.
+
 https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/transparent-data-encryptions/list-by-database?tabs=HTTP#logicaldatabasetransparentdataencryption
 
 The primary key for this table is **id**.

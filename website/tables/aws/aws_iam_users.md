@@ -1,5 +1,7 @@
 # Table: aws_iam_users
 
+This table shows data for IAM Users.
+
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_User.html
 
 The composite primary key for this table is (**id**, **account_id**).
@@ -12,6 +14,7 @@ The following tables depend on aws_iam_users:
   - [aws_iam_user_access_keys](aws_iam_user_access_keys)
   - [aws_iam_user_attached_policies](aws_iam_user_attached_policies)
   - [aws_iam_user_groups](aws_iam_user_groups)
+  - [aws_iam_user_last_accessed_details](aws_iam_user_last_accessed_details)
   - [aws_iam_user_policies](aws_iam_user_policies)
 
 ## Columns

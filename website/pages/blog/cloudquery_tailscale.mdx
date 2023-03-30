@@ -1,0 +1,116 @@
+---
+title: Announcing the CloudQuery Tailscale Source Plugin
+tag: announcement
+date: 2023/03/21
+description: >-
+  This tutorial will show you the basic of ingesting your Tailscale configuration to any database/data lake with CloudQuery
+author: yevgenypats
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+## Introduction
+
+The [Tailscale](https://tailscale.com/) source plugin for CloudQuery is now officially maintained by Tailscale — big thanks to the Tailscale team!
+
+With the new Tailscale plugin you can now easily query Tailscale config and bring config data to your infrastructure/operational lake. 
+This way you can have all your infrastructure data in one place and correlate between different services.
+
+
+As part of its initial release, the Tailscale plugin supports pulling data for the following APIs:
+ - [`tailscale_acls`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/tailscale/docs/tables/tailscale_acls.md) table
+ - [`tailscale_devices`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/tailscale/docs/tables/tailscale_devices.md) table
+ - [`tailscale_device_routes`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/tailscale/docs/tables/tailscale_device_routes.md) table
+ - [`tailscale_dns_nameservers`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/tailscale/docs/tables/tailscale_dns_nameservers.md) table
+ - [`tailscale_dns_searchpaths`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/tailscale/docs/tables/tailscale_dns_searchpaths.md) table
+ - [`tailscale_keys`](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/tailscale/docs/tables/tailscale_keys.md) table
+
+Let's look at a few useful queries.
+
+## Configuration
+
+First, let's quickly look at the source configuration so the plugin. The example below syncs the `tailscale_devices` table to PostgreSQL, making use of the new OAuth client to authenticate.
+
+```yaml copy
+kind: source
+# Common source-plugin configuration
+spec:
+  name: tailscale
+  path: cloudquery/tailscale
+  version: "VERSION_SOURCE_TAILSCALE"
+  tables: ["tailscale_devices"]
+  destinations: ["postgresql"]
+  # Tailscale specific configuration
+  spec:
+    client_id: "YOUR_CLIENT_ID"
+    client_secret: "${TAILSCALE_CLIENT_SECRET}"
+    tailnet: "cloudquery.io"
+```
+
+## Example Queries
+
+Let's look at a few useful queries we can do just with the Tailscale tables.
+
+### Unseen devices
+
+Find all devices that weren't seen for more than 30 days:
+
+```sql copy
+select name, id, last_seen from tailscale_devices where last_seen < NOW() - INTERVAL '30 DAY';
+```
+
+```text
+    tailnet    |             name              |        id         |      last_seen      
+---------------+-------------------------------+-------------------+---------------------
+ cloudquery.io | example-name.tail341.ts.net   | 12345678082367896 | 2023-01-07 12:43:18
+```
+
+### Key expiry disabled
+
+Find all devices with key expiry disabled
+
+```sql copy
+select name, id, last_seen from tailscale_devices where key_expiry_disabled;
+```
+
+```text
+    tailnet    |             name              |        id         |      last_seen      
+---------------+-------------------------------+-------------------+---------------------
+ cloudquery.io | example-name.tail341.ts.net   | 12345678082367896 | 2023-01-07 12:43:18
+```
+
+### Distribution of devices
+
+Learn about how Tailscale client are distributed in your org across devices
+
+```sql copy
+select count(*), os from tailscale_devices group by os;
+```
+
+```text
+ count |  os   
+-------+-------
+   102 | macOS
+   103 | linux
+   70  | window
+```
+
+### Find all devices of disabled Okta users
+
+Other cool things once you have Tailscale configuration in your database/datalake is that you can join and query it with data from other CloudQuery [source plugins](/docs/plugins/sources/overview).
+
+For example, the following will show all devices of users that were deactivated on Okta:
+
+```sql copy
+select td.tailnet, td.name, td.id, td.user, td.last_seen
+from tailscale_devices td
+    left join okta_users ou 
+        on td.user = ou.profile->>'email'
+where ou.stats != 'ACTIVE'
+```
+
+## Summary
+
+Using data from the new Tailscale source plugin you can slice and dice your Tailscale data in many ways, but the examples in this post should give you a good starting point.

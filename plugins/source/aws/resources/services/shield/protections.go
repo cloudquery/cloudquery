@@ -8,12 +8,13 @@ import (
 )
 
 func Protections() *schema.Table {
+	tableName := "aws_shield_protections"
 	return &schema.Table{
-		Name:        "aws_shield_protections",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_Protection.html`,
 		Resolver:    fetchShieldProtections,
 		Transform:   transformers.TransformWithStruct(&types.Protection{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("shield"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "shield"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

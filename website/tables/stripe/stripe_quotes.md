@@ -1,5 +1,7 @@
 # Table: stripe_quotes
 
+This table shows data for Stripe Quotes.
+
 https://stripe.com/docs/api/quotes
 
 The primary key for this table is **id**.

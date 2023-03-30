@@ -1,5 +1,7 @@
 # Table: gcp_beyondcorp_app_gateways
 
+This table shows data for GCP Beyondcorp App Gateways.
+
 https://cloud.google.com/beyondcorp/docs/reference/rest/v1/projects.locations.appGateways#AppGateway
 
 The composite primary key for this table is (**project_id**, **name**).

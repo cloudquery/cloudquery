@@ -1,5 +1,7 @@
 # Table: aws_appstream_users
 
+This table shows data for Amazon AppStream Users.
+
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_User.html
 
 The primary key for this table is **arn**.

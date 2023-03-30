@@ -1,5 +1,7 @@
 # Table: oracle_filestorage_replications
 
+This table shows data for Oracle File Storage Replications.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: aws_kafka_clusters
 
+This table shows data for Kafka Clusters.
+
 https://docs.aws.amazon.com/MSK/2.0/APIReference/v2-clusters-clusterarn.html#v2-clusters-clusterarn-properties
 
 The primary key for this table is **arn**.

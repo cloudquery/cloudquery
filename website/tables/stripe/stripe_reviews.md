@@ -1,5 +1,7 @@
 # Table: stripe_reviews
 
+This table shows data for Stripe Reviews.
+
 https://stripe.com/docs/api/reviews
 
 The primary key for this table is **id**.

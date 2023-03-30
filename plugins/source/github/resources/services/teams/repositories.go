@@ -13,11 +13,10 @@ import (
 
 func repositories() *schema.Table {
 	return &schema.Table{
-		Name:     "github_team_repositories",
-		Resolver: fetchRepositories,
-		Transform: transformers.TransformWithStruct(&github.Repository{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
-		Columns: []schema.Column{client.OrgColumn, teamIDColumn},
+		Name:      "github_team_repositories",
+		Resolver:  fetchRepositories,
+		Transform: client.TransformWithStruct(&github.Repository{}, transformers.WithPrimaryKeys("ID")),
+		Columns:   []schema.Column{client.OrgColumn, teamIDColumn},
 	}
 }
 

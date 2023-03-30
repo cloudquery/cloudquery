@@ -8,11 +8,12 @@ import (
 )
 
 func AppBlocks() *schema.Table {
+	tableName := "aws_appstream_app_blocks"
 	return &schema.Table{
-		Name:        "aws_appstream_app_blocks",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_AppBlock.html`,
 		Resolver:    fetchAppstreamAppBlocks,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("appstream2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "appstream2"),
 		Transform:   transformers.TransformWithStruct(&types.AppBlock{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

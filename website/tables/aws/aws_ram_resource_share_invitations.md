@@ -1,5 +1,7 @@
 # Table: aws_ram_resource_share_invitations
 
+This table shows data for RAM Resource Share Invitations.
+
 https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceShareInvitation.html
 
 The composite primary key for this table is (**account_id**, **region**, **arn**, **receiver_combined**).

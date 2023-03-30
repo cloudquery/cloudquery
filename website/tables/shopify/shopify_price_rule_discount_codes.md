@@ -1,5 +1,7 @@
 # Table: shopify_price_rule_discount_codes
 
+This table shows data for Shopify Price Rule Discount Codes.
+
 The composite primary key for this table is (**id**, **price_rule_id**).
 
 ## Relations

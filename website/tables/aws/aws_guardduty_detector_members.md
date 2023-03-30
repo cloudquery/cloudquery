@@ -1,5 +1,7 @@
 # Table: aws_guardduty_detector_members
 
+This table shows data for Amazon GuardDuty Detector Members.
+
 https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html
 
 The primary key for this table is **_cq_id**.
@@ -22,7 +24,7 @@ This table depends on [aws_guardduty_detectors](aws_guardduty_detectors).
 |email|String|
 |master_id|String|
 |relationship_status|String|
-|updated_at|String|
+|updated_at|Timestamp|
 |administrator_id|String|
 |detector_id|String|
-|invited_at|String|
+|invited_at|Timestamp|

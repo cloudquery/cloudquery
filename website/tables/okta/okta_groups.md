@@ -1,5 +1,7 @@
 # Table: okta_groups
 
+This table shows data for Okta Groups.
+
 The primary key for this table is **id**.
 
 ## Relations

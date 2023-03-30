@@ -1,5 +1,7 @@
 # Table: heroku_domains
 
+This table shows data for Heroku Domains.
+
 https://devcenter.heroku.com/articles/platform-api-reference#domain
 
 The primary key for this table is **id**.

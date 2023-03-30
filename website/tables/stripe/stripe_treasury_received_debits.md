@@ -1,5 +1,7 @@
 # Table: stripe_treasury_received_debits
 
+This table shows data for Stripe Treasury Received Debits.
+
 https://stripe.com/docs/api/treasury_received_debits
 
 The primary key for this table is **id**.

@@ -8,11 +8,12 @@ import (
 )
 
 func Vpcs() *schema.Table {
+	tableName := "aws_ec2_vpcs"
 	return &schema.Table{
-		Name:        "aws_ec2_vpcs",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Vpc.html`,
 		Resolver:    fetchEc2Vpcs,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.Vpc{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

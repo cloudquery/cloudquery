@@ -17,7 +17,7 @@ func Routers() *schema.Table {
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/routers/list#response-body`,
 		Resolver:    fetchRouters,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.Router{}, append(client.Options(), transformers.WithPrimaryKeys("Id"))...),
+		Transform:   client.TransformWithStruct(&pb.Router{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

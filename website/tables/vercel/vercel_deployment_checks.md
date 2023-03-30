@@ -1,5 +1,7 @@
 # Table: vercel_deployment_checks
 
+This table shows data for Vercel Deployment Checks.
+
 The composite primary key for this table is (**deployment_id**, **id**).
 It supports incremental syncs.
 ## Relations

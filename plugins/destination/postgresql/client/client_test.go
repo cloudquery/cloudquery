@@ -29,9 +29,11 @@ func TestPgPlugin(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("postgresql", "development", New)
 		},
-		Spec{
-			ConnectionString: getTestConnection(),
-			PgxLogLevel:      LogLevelTrace,
+		specs.Destination{
+			Spec: &Spec{
+				ConnectionString: getTestConnection(),
+				PgxLogLevel:      LogLevelTrace,
+			},
 		},
 		destination.PluginTestSuiteTests{
 			MigrateStrategyOverwrite: strategy,

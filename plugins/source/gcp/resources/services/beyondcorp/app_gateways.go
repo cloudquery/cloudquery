@@ -19,7 +19,7 @@ func AppGateways() *schema.Table {
 		Description: `https://cloud.google.com/beyondcorp/docs/reference/rest/v1/projects.locations.appGateways#AppGateway`,
 		Resolver:    fetchAppGateways,
 		Multiplex:   client.ProjectMultiplexEnabledServices("beyondcorp.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.AppGateway{}, append(client.Options(), transformers.WithPrimaryKeys("Name"))...),
+		Transform:   client.TransformWithStruct(&pb.AppGateway{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

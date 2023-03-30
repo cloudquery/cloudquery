@@ -1,5 +1,7 @@
 # Table: gcp_appengine_apps
 
+This table shows data for GCP App Engine Apps.
+
 https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps#Application
 
 The composite primary key for this table is (**project_id**, **name**).

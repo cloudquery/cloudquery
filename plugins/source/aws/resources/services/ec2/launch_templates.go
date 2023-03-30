@@ -8,12 +8,13 @@ import (
 )
 
 func LaunchTemplates() *schema.Table {
+	tableName := "aws_ec2_launch_templates"
 	return &schema.Table{
-		Name:        "aws_ec2_launch_templates",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchTemplate.html`,
 		Resolver:    fetchEc2LaunchTemplates,
 		Transform:   transformers.TransformWithStruct(&types.LaunchTemplate{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

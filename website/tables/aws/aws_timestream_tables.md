@@ -1,5 +1,7 @@
 # Table: aws_timestream_tables
 
+This table shows data for Timestream Tables.
+
 https://docs.aws.amazon.com/timestream/latest/developerguide/API_Table.html
 
 The primary key for this table is **arn**.

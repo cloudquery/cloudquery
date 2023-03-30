@@ -19,7 +19,7 @@ func ForwardingRules() *schema.Table {
 		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/forwardingRules#ForwardingRule`,
 		Resolver:    fetchForwardingRules,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.ForwardingRule{}, append(client.Options(), transformers.WithPrimaryKeys("SelfLink"))...),
+		Transform:   client.TransformWithStruct(&pb.ForwardingRule{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

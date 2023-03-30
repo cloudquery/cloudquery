@@ -1,5 +1,7 @@
 # Table: oracle_database_cloud_autonomous_vm_clusters
 
+This table shows data for Oracle Database Cloud Autonomous Virtual Machine (VM) Clusters.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: aws_s3_bucket_lifecycles
 
+This table shows data for S3 Bucket Lifecycles.
+
 https://docs.aws.amazon.com/AmazonS3/latest/API/API_LifecycleRule.html
 
 The primary key for this table is **_cq_id**.

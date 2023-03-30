@@ -1,5 +1,7 @@
 # Table: gcp_artifactregistry_files
 
+This table shows data for GCP Artifact Registry Files.
+
 https://cloud.google.com/artifact-registry/docs/reference/rest/v1/projects.locations.repositories.files#File
 
 The composite primary key for this table is (**project_id**, **name**).
@@ -23,3 +25,4 @@ This table depends on [gcp_artifactregistry_repositories](gcp_artifactregistry_r
 |create_time|Timestamp|
 |update_time|Timestamp|
 |owner|String|
+|fetch_time|Timestamp|

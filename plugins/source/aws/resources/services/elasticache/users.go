@@ -8,11 +8,12 @@ import (
 )
 
 func Users() *schema.Table {
+	tableName := "aws_elasticache_users"
 	return &schema.Table{
-		Name:        "aws_elasticache_users",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_User.html`,
 		Resolver:    fetchElasticacheUsers,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
 		Transform:   transformers.TransformWithStruct(&types.User{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -1,5 +1,7 @@
 # Table: gcp_run_locations
 
+This table shows data for GCP Run Locations.
+
 https://cloud.google.com/run/docs/reference/rest/v1/projects.locations#Location
 
 The composite primary key for this table is (**project_id**, **name**).

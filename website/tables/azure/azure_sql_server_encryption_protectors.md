@@ -1,5 +1,7 @@
 # Table: azure_sql_server_encryption_protectors
 
+This table shows data for Azure SQL Server Encryption Protectors.
+
 https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/encryption-protectors/list-by-server?tabs=HTTP#encryptionprotector
 
 The primary key for this table is **id**.

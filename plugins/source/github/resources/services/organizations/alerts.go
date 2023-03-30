@@ -11,23 +11,28 @@ import (
 
 func alerts() *schema.Table {
 	return &schema.Table{
-		Name:     "github_organization_dependabot_alerts",
-		Resolver: fetchAlerts,
-		Transform: transformers.TransformWithStruct(&github.DependabotAlert{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("HTMLURL"))...),
-		Columns: []schema.Column{client.OrgColumn},
+		Name:      "github_organization_dependabot_alerts",
+		Resolver:  fetchAlerts,
+		Transform: client.TransformWithStruct(&github.DependabotAlert{}, transformers.WithPrimaryKeys("HTMLURL")),
+		Columns:   []schema.Column{client.OrgColumn},
 	}
 }
 
 func fetchAlerts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
+	opts := &github.ListAlertsOptions{ListCursorOptions: github.ListCursorOptions{PerPage: 100}}
 
-	alerts, _, err := c.Github.Dependabot.ListOrgAlerts(ctx, c.Org, nil)
-	if err != nil {
-		return err
+	for {
+		alerts, resp, err := c.Github.Dependabot.ListOrgAlerts(ctx, c.Org, opts)
+		if err != nil {
+			return err
+		}
+		res <- alerts
+		opts.After = resp.After
+		if resp.After == "" {
+			break
+		}
 	}
-
-	res <- alerts
 
 	return nil
 }

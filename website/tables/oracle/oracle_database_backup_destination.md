@@ -1,5 +1,7 @@
 # Table: oracle_database_backup_destination
 
+This table shows data for Oracle Database Backup Destination.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

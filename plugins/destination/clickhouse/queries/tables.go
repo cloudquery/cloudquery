@@ -16,7 +16,7 @@ func sortKeys(table *schema.Table) []string {
 	return keys
 }
 
-func CreateTable(table *schema.Table, cluster string) string {
+func CreateTable(table *schema.Table, cluster string, engine *Engine) string {
 	normalized := normalizeTable(table)
 	strBuilder := strings.Builder{}
 	strBuilder.WriteString("CREATE TABLE ")
@@ -32,7 +32,9 @@ func CreateTable(table *schema.Table, cluster string) string {
 		}
 		strBuilder.WriteString("\n")
 	}
-	strBuilder.WriteString(") ENGINE = MergeTree ORDER BY (")
+	strBuilder.WriteString(") ENGINE = ")
+	strBuilder.WriteString(engine.String())
+	strBuilder.WriteString(" ORDER BY (")
 	sortingKeys := sanitized(sortKeys(normalized)...)
 	strBuilder.WriteString(strings.Join(sortingKeys, ", "))
 	strBuilder.WriteString(")")
@@ -40,6 +42,6 @@ func CreateTable(table *schema.Table, cluster string) string {
 	return strBuilder.String()
 }
 
-func DropTable(table *schema.Table) string {
-	return "DROP TABLE IF EXISTS " + sanitizeID(table.Name)
+func DropTable(table *schema.Table, cluster string) string {
+	return "DROP TABLE IF EXISTS " + tableNamePart(table.Name, cluster)
 }

@@ -8,11 +8,12 @@ import (
 )
 
 func Presets() *schema.Table {
+	tableName := "aws_elastictranscoder_presets"
 	return &schema.Table{
-		Name:        "aws_elastictranscoder_presets",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elastictranscoder/latest/developerguide/list-presets.html`,
 		Resolver:    fetchElastictranscoderPresets,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elastictranscoder"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elastictranscoder"),
 		Transform:   transformers.TransformWithStruct(&types.Preset{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

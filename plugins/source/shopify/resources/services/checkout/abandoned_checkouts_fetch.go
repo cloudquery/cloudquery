@@ -52,6 +52,7 @@ func fetchAbandonedCheckouts(ctx context.Context, meta schema.ClientMeta, parent
 		}
 
 		cursor = cur
+		p = nil
 	}
 
 	if cl.Backend != nil {

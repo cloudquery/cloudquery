@@ -8,11 +8,12 @@ import (
 )
 
 func CachePolicies() *schema.Table {
+	tableName := "aws_cloudfront_cache_policies"
 	return &schema.Table{
-		Name:        "aws_cloudfront_cache_policies",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_CachePolicySummary.html`,
 		Resolver:    fetchCloudfrontCachePolicies,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudfront"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "cloudfront"),
 		Transform:   transformers.TransformWithStruct(&types.CachePolicySummary{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

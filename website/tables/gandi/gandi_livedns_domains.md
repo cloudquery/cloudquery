@@ -1,5 +1,7 @@
 # Table: gandi_livedns_domains
 
+This table shows data for Gandi LiveDNS Domains.
+
 The primary key for this table is **fqdn**.
 
 ## Relations

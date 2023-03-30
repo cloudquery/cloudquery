@@ -8,11 +8,12 @@ import (
 )
 
 func UpdateActions() *schema.Table {
+	tableName := "aws_elasticache_update_actions"
 	return &schema.Table{
-		Name:        "aws_elasticache_update_actions",
+		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_UpdateAction.html`,
 		Resolver:    fetchElasticacheUpdateAction,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
 		Transform:   transformers.TransformWithStruct(&types.UpdateAction{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

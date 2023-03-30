@@ -1,8 +1,15 @@
 # Table: aws_ec2_vpc_endpoint_services
 
+This table shows data for Amazon Elastic Compute Cloud (EC2) VPC Endpoint Services.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ServiceDetail.html
 
 The primary key for this table is **arn**.
+
+## Relations
+
+The following tables depend on aws_ec2_vpc_endpoint_services:
+  - [aws_ec2_vpc_endpoint_service_permissions](aws_ec2_vpc_endpoint_service_permissions)
 
 ## Columns
 
