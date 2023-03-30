@@ -10,10 +10,10 @@ type ImageScanWrapper struct {
 	ImageTag    *string
 	ImageDigest *string
 
-	ImageScanFindings *types.ImageScanFindings
+	*types.ImageScanFindings
 
 	// The current state of the scan.
-	ImageScanStatus *types.ImageScanStatus
+	*types.ImageScanStatus
 
 	RegistryId *string
 

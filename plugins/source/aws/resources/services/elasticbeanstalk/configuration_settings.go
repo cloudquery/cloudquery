@@ -4,6 +4,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticbeanstalk/models"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ConfigurationSettings() *schema.Table {
@@ -13,7 +14,7 @@ func ConfigurationSettings() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ConfigurationSettingsDescription.html`,
 		Resolver:    fetchElasticbeanstalkConfigurationSettings,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticbeanstalk"),
-		Transform:   client.TransformWithStruct(models.ConfigurationSettingsDescriptionWrapper{}),
+		Transform:   client.TransformWithStruct(models.ConfigurationSettingsDescriptionWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Detectors() *schema.Table {
@@ -16,7 +17,7 @@ func Detectors() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetDetector.html`,
 		Resolver:            fetchGuarddutyDetectors,
 		PreResourceResolver: getDetector,
-		Transform:           client.TransformWithStruct(&models.DetectorWrapper{}),
+		Transform:           client.TransformWithStruct(&models.DetectorWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

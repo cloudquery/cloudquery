@@ -13,7 +13,6 @@ import (
 
 var (
 	options = []transformers.StructTransformerOption{
-		transformers.WithUnwrapAllEmbeddedStructs(),
 		transformers.WithTypeTransformer(timestampTypeTransformer),
 		transformers.WithResolverTransformer(timestampResolverTransformer),
 	}
