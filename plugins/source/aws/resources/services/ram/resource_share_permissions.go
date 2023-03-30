@@ -17,6 +17,14 @@ func ResourceSharePermissions() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
+				Name:     "resource_share_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "permission",
 				Type:     schema.TypeJSON,
 				Resolver: resolveResourceSharePermissionDetailPermission,
