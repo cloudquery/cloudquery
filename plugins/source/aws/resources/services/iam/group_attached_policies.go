@@ -49,8 +49,6 @@ func fetchIamGroupAttachedPolicies(ctx context.Context, meta schema.ClientMeta, 
 			return err
 		}
 		res <- page.AttachedPolicies
-
 	}
 	return nil
-
 }
