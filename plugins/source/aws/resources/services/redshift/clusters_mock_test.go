@@ -12,7 +12,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildRedshiftClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockRedshiftClient(ctrl)
 	g := types.Cluster{}
 	err := faker.FakeObject(&g)
@@ -60,33 +60,48 @@ func buildRedshiftClustersMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		nil,
 	)
 
-	return client.Services{
-		Redshift: m,
-	}
-}
-
-func buildRedshiftSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockRedshiftClient(ctrl)
-
-	g := types.ClusterSubnetGroup{}
-	err := faker.FakeObject(&g)
-	if err != nil {
+	var eacc types.EndpointAccess
+	if err := faker.FakeObject(&eacc); err != nil {
 		t.Fatal(err)
 	}
+	eacc.ClusterIdentifier = g.ClusterIdentifier
 
-	m.EXPECT().DescribeClusterSubnetGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&redshift.DescribeClusterSubnetGroupsOutput{
-			ClusterSubnetGroups: []types.ClusterSubnetGroup{g},
-		}, nil)
+	m.EXPECT().DescribeEndpointAccess(
+		gomock.Any(),
+		&redshift.DescribeEndpointAccessInput{
+			ClusterIdentifier: g.ClusterIdentifier,
+			MaxRecords:        aws.Int32(100),
+		},
+		gomock.Any(),
+	).Return(
+		&redshift.DescribeEndpointAccessOutput{EndpointAccessList: []types.EndpointAccess{eacc}},
+		nil,
+	)
+
+	var eauth types.EndpointAuthorization
+	if err := faker.FakeObject(&eauth); err != nil {
+		t.Fatal(err)
+	}
+	eauth.ClusterIdentifier = g.ClusterIdentifier
+
+	m.EXPECT().DescribeEndpointAuthorization(
+		gomock.Any(),
+		&redshift.DescribeEndpointAuthorizationInput{
+			Account:           aws.String("testAccount"),
+			ClusterIdentifier: g.ClusterIdentifier,
+			MaxRecords:        aws.Int32(100),
+		},
+		gomock.Any(),
+	).Return(
+		&redshift.DescribeEndpointAuthorizationOutput{EndpointAuthorizationList: []types.EndpointAuthorization{eauth}},
+		nil,
+	)
+
 	return client.Services{
 		Redshift: m,
 	}
 }
 
 func TestRedshiftClusters(t *testing.T) {
-	client.AwsMockTestHelper(t, Clusters(), buildRedshiftClustersMock, client.TestOptions{})
-}
-
-func TestRedshiftSubnetGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, SubnetGroups(), buildRedshiftSubnetGroupsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Clusters(), buildClustersMock, client.TestOptions{})
 }
