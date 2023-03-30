@@ -1,6 +1,6 @@
 # Table: k8s_core_component_statuses
 
-This table shows data for K8s Core Component Statuses.
+This table shows data for Kubernetes (K8s) Core Component Statuses.
 
 The primary key for this table is **uid**.
 

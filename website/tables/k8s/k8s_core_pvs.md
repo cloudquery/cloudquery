@@ -1,6 +1,6 @@
 # Table: k8s_core_pvs
 
-This table shows data for K8s Core Pvs.
+This table shows data for Kubernetes (K8s) Core Persistent Volumes (PVs).
 
 The primary key for this table is **uid**.
 

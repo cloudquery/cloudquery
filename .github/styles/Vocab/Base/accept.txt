@@ -110,6 +110,8 @@ licensors
 Lightsail
 Lucene
 Mailchimp
+Meilisearch
+meilisearch
 Metabase
 Metastore
 Mixpanel
@@ -212,3 +214,7 @@ Deregistering
 Macie
 overprivileged
 Overprivileged
+productionize
+cybersecurity
+cyber
+Remediation

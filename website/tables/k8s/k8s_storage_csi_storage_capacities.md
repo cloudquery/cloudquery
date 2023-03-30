@@ -1,6 +1,6 @@
 # Table: k8s_storage_csi_storage_capacities
 
-This table shows data for K8s Storage Csi Storage Capacities.
+This table shows data for Kubernetes (K8s) Storage Container Storage Interface (CSI) Storage Capacities.
 
 The primary key for this table is **uid**.
 

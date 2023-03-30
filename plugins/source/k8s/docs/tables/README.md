@@ -28,6 +28,7 @@
 - [k8s_core_secrets](../../../../../website/tables/k8s/k8s_core_secrets.md)
 - [k8s_core_service_accounts](../../../../../website/tables/k8s/k8s_core_service_accounts.md)
 - [k8s_core_services](../../../../../website/tables/k8s/k8s_core_services.md)
+- [k8s_crds](../../../../../website/tables/k8s/k8s_crds.md)
 - [k8s_discovery_endpoint_slices](../../../../../website/tables/k8s/k8s_discovery_endpoint_slices.md)
 - [k8s_networking_ingress_classes](../../../../../website/tables/k8s/k8s_networking_ingress_classes.md)
 - [k8s_networking_ingresses](../../../../../website/tables/k8s/k8s_networking_ingresses.md)

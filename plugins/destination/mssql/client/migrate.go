@@ -81,7 +81,7 @@ func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
 	return normalized
 }
 
-func (c *Client) nonAutoMigrableTables(tables schema.Tables, schemaTables schema.Tables) (names []string, changes [][]schema.TableColumnChange) {
+func (c *Client) nonAutoMigratableTables(tables schema.Tables, schemaTables schema.Tables) (names []string, changes [][]schema.TableColumnChange) {
 	var tableChanges [][]schema.TableColumnChange
 	for _, t := range tables {
 		schemaTable := schemaTables.Get(t.Name)
@@ -153,9 +153,9 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	normalizedTables := c.normalizedTables(tables)
 
 	if c.spec.MigrateMode != specs.MigrateModeForced {
-		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(normalizedTables, schemaTables)
-		if len(nonAutoMigrableTables) > 0 {
-			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigrableTables, ","), changes)
+		nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTables, schemaTables)
+		if len(nonAutoMigratableTables) > 0 {
+			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigratableTables, ","), changes)
 		}
 	}
 

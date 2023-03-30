@@ -1,6 +1,6 @@
 # Table: k8s_networking_ingress_classes
 
-This table shows data for K8s Networking Ingress Classes.
+This table shows data for Kubernetes (K8s) Networking Ingress Classes.
 
 The primary key for this table is **uid**.
 

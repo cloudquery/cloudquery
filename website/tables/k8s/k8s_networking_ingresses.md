@@ -1,6 +1,6 @@
 # Table: k8s_networking_ingresses
 
-This table shows data for K8s Networking Ingresses.
+This table shows data for Kubernetes (K8s) Networking Ingresses.
 
 The primary key for this table is **uid**.
 

@@ -1,6 +1,6 @@
 # Table: k8s_networking_network_policies
 
-This table shows data for K8s Networking Network Policies.
+This table shows data for Kubernetes (K8s) Networking Network Policies.
 
 The primary key for this table is **uid**.
 

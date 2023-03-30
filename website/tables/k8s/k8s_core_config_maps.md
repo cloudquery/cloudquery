@@ -1,6 +1,6 @@
 # Table: k8s_core_config_maps
 
-This table shows data for K8s Core Config Maps.
+This table shows data for Kubernetes (K8s) Core Config Maps.
 
 The primary key for this table is **uid**.
 

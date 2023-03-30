@@ -1,6 +1,6 @@
 # Table: k8s_rbac_cluster_roles
 
-This table shows data for K8s Rbac Cluster Roles.
+This table shows data for Kubernetes (K8s) Role-Based Access Control (RBAC) Cluster Roles.
 
 The primary key for this table is **uid**.
 

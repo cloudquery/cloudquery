@@ -1,6 +1,6 @@
 # Table: k8s_rbac_role_bindings
 
-This table shows data for K8s Rbac Role Bindings.
+This table shows data for Kubernetes (K8s) Role-Based Access Control (RBAC) Role Bindings.
 
 The primary key for this table is **uid**.
 

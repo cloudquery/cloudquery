@@ -1,6 +1,6 @@
 # Table: k8s_core_nodes
 
-This table shows data for K8s Core Nodes.
+This table shows data for Kubernetes (K8s) Core Nodes.
 
 The primary key for this table is **uid**.
 
