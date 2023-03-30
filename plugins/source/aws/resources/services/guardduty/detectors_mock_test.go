@@ -34,6 +34,9 @@ func buildDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err := faker.FakeObject(&finding); err != nil {
 		t.Fatal(err)
 	}
+	finding.CreatedAt = aws.String(time.Now().Format(time.RFC3339))
+	finding.UpdatedAt = aws.String(time.Now().Format(time.RFC3339))
+
 	finding.Id = aws.String("test-finding")
 	m.EXPECT().ListFindings(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&guardduty.ListFindingsOutput{FindingIds: []string{*finding.Id}}, nil,
