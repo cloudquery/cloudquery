@@ -6,7 +6,7 @@ https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html.
 The `request_account_id` and `request_region` columns are added to show the account and region of where the request was made from.
 This is useful when multi region and account aggregation is enabled.
 
-The composite primary key for this table is (**request_account_id**, **request_region**, **aws_account_id**, **created_at**, **description**, **generator_id**, **id**, **product_arn**, **schema_version**, **title**, **region**).
+The composite primary key for this table is (**request_account_id**, **request_region**, **aws_account_id**, **created_at**, **description**, **generator_id**, **id**, **product_arn**, **schema_version**, **title**, **updated_at**, **region**).
 
 ## Columns
 
@@ -27,7 +27,7 @@ The composite primary key for this table is (**request_account_id**, **request_r
 |resources|JSON|
 |schema_version (PK)|String|
 |title (PK)|String|
-|updated_at|Timestamp|
+|updated_at (PK)|Timestamp|
 |action|JSON|
 |company_name|String|
 |compliance|JSON|
