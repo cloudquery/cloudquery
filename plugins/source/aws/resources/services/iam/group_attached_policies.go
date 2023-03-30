@@ -16,7 +16,7 @@ func groupAttachedPolicies() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachedPolicy.html`,
 		Resolver:    fetchIamGroupAttachedPolicies,
-		Transform:   transformers.TransformWithStruct(&types.AttachedPolicy{}, transformers.WithPrimaryKeys("PolicyName")),
+		Transform:   transformers.TransformWithStruct(&types.AttachedPolicy{}, transformers.WithPrimaryKeys("PolicyArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
@@ -26,11 +26,6 @@ func groupAttachedPolicies() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "policy_document",
-				Type:     schema.TypeJSON,
-				Resolver: resolveIamGroupPolicyPolicyDocument,
 			},
 		},
 	}
