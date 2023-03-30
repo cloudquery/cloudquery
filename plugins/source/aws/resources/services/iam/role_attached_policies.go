@@ -18,11 +18,11 @@ func roleAttachedPolicies() *schema.Table {
 		Resolver:    fetchIamRoleAttachedPolicies,
 		Transform:   transformers.TransformWithStruct(&types.AttachedPolicy{}, transformers.WithPrimaryKeys("PolicyArn")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "role_arn",
+				Name:     "role_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Resolver: schema.ParentColumnResolver("id"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

@@ -4,7 +4,7 @@ This table shows data for IAM Roles.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_Role.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**account_id**, **id**).
 
 ## Relations
 
@@ -21,10 +21,11 @@ The following tables depend on aws_iam_roles:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
+|account_id (PK)|String|
+|id (PK)|String|
 |assume_role_policy_document|JSON|
 |tags|JSON|
-|arn (PK)|String|
+|arn|String|
 |create_date|Timestamp|
 |path|String|
 |role_id|String|
