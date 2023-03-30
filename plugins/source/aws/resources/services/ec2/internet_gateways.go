@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func InternetGateways() *schema.Table {
@@ -14,7 +13,7 @@ func InternetGateways() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InternetGateway.html`,
 		Resolver:    fetchEc2InternetGateways,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.InternetGateway{}),
+		Transform:   client.TransformWithStruct(&types.InternetGateway{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

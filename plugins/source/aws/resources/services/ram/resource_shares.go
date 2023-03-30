@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ram/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ResourceShares() *schema.Table {
@@ -13,7 +12,7 @@ func ResourceShares() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceShare.html`,
 		Resolver:    fetchRamResourceShares,
-		Transform:   transformers.TransformWithStruct(&types.ResourceShare{}),
+		Transform:   client.TransformWithStruct(&types.ResourceShare{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ram"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

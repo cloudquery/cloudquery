@@ -16,7 +16,7 @@ func Instances() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBInstance.html`,
 		Resolver:    fetchRdsInstances,
-		Transform:   transformers.TransformWithStruct(&types.DBInstance{}, transformers.WithSkipFields("TagList")),
+		Transform:   client.TransformWithStruct(&types.DBInstance{}, transformers.WithSkipFields("TagList")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

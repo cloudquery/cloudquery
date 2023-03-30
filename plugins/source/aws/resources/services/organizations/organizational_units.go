@@ -19,12 +19,9 @@ func OrganizationalUnits() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/organizations/latest/APIReference/API_OrganizationalUnit.html`,
 		Resolver:            fetchOUs,
 		PreResourceResolver: getOU,
-		Transform: transformers.TransformWithStruct(
-			&types.OrganizationalUnit{},
-			transformers.WithPrimaryKeys("Arn"),
-		),
-		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
-		Columns:   []schema.Column{client.DefaultAccountIDColumn(true)},
+		Transform:           client.TransformWithStruct(&types.OrganizationalUnit{}, transformers.WithPrimaryKeys("Arn")),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
+		Columns:             []schema.Column{client.DefaultAccountIDColumn(true)},
 	}
 }
 

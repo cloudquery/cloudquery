@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/batch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func JobDefinitions() *schema.Table {
@@ -18,7 +17,7 @@ func JobDefinitions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/batch/latest/APIReference/API_DescribeJobDefinitions.html`,
 		Resolver:    fetchBatchJobDefinitions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "batch"),
-		Transform:   transformers.TransformWithStruct(&types.JobDefinition{}),
+		Transform:   client.TransformWithStruct(&types.JobDefinition{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

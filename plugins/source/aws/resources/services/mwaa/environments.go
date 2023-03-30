@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/mwaa/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Environments() *schema.Table {
@@ -13,7 +12,7 @@ func Environments() *schema.Table {
 		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/mwaa/latest/API/API_Environment.html`,
 		Resolver:            fetchMwaaEnvironments,
-		Transform:           transformers.TransformWithStruct(&types.Environment{}),
+		Transform:           client.TransformWithStruct(&types.Environment{}),
 		PreResourceResolver: getEnvironment,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "airflow"),
 		Columns: []schema.Column{

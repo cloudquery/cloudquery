@@ -4,7 +4,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail/models"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Trails() *schema.Table {
@@ -14,7 +13,7 @@ func Trails() *schema.Table {
 		Description: `https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Trail.html`,
 		Resolver:    fetchCloudtrailTrails,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "cloudtrail"),
-		Transform:   transformers.TransformWithStruct(&models.CloudTrailWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:   client.TransformWithStruct(&models.CloudTrailWrapper{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

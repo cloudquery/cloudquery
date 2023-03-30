@@ -4,7 +4,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail/models"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Distributions() *schema.Table {
@@ -13,7 +12,7 @@ func Distributions() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_GetDistributions.html`,
 		Resolver:    fetchLightsailDistributions,
-		Transform:   transformers.TransformWithStruct(&models.DistributionWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:   client.TransformWithStruct(&models.DistributionWrapper{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lightsail"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

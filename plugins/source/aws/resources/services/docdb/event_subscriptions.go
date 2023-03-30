@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func EventSubscriptions() *schema.Table {
@@ -14,7 +13,7 @@ func EventSubscriptions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventSubscription.html`,
 		Resolver:    fetchDocdbEventSubscriptions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
-		Transform:   transformers.TransformWithStruct(&types.EventSubscription{}),
+		Transform:   client.TransformWithStruct(&types.EventSubscription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

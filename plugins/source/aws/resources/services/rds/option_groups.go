@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func OptionGroups() *schema.Table {
@@ -16,7 +15,7 @@ func OptionGroups() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_OptionGroup.html`,
 		Resolver:    fetchOptionGroups,
-		Transform:   transformers.TransformWithStruct(&types.OptionGroup{}),
+		Transform:   client.TransformWithStruct(&types.OptionGroup{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

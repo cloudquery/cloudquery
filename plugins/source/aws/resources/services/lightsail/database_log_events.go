@@ -4,7 +4,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail/models"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func DatabaseLogEvents() *schema.Table {
@@ -13,7 +12,7 @@ func DatabaseLogEvents() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_GetRelationalDatabaseLogEvents.html`,
 		Resolver:    fetchLightsailDatabaseLogEvents,
-		Transform:   transformers.TransformWithStruct(&models.LogEventWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:   client.TransformWithStruct(&models.LogEventWrapper{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lightsail"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

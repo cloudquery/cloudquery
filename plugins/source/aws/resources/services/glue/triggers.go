@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Triggers() *schema.Table {
@@ -14,7 +13,7 @@ func Triggers() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/glue/latest/webapi/API_Trigger.html`,
 		Resolver:            fetchGlueTriggers,
 		PreResourceResolver: getTrigger,
-		Transform:           transformers.TransformWithStruct(&types.Trigger{}),
+		Transform:           client.TransformWithStruct(&types.Trigger{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

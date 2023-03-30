@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ClusterServices() *schema.Table {
@@ -14,7 +13,7 @@ func ClusterServices() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Service.html`,
 		Resolver:    fetchEcsClusterServices,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ecs"),
-		Transform:   transformers.TransformWithStruct(&types.Service{}),
+		Transform:   client.TransformWithStruct(&types.Service{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

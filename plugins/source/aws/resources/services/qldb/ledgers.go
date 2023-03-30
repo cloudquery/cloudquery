@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Ledgers() *schema.Table {
@@ -14,7 +13,7 @@ func Ledgers() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/qldb/latest/developerguide/API_DescribeLedger.html`,
 		Resolver:            fetchQldbLedgers,
 		PreResourceResolver: getLedger,
-		Transform:           transformers.TransformWithStruct(&qldb.DescribeLedgerOutput{}),
+		Transform:           client.TransformWithStruct(&qldb.DescribeLedgerOutput{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "qldb"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

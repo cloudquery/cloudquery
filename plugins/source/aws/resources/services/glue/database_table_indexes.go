@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func DatabaseTableIndexes() *schema.Table {
@@ -13,7 +12,7 @@ func DatabaseTableIndexes() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_PartitionIndexDescriptor.html`,
 		Resolver:    fetchGlueDatabaseTableIndexes,
-		Transform:   transformers.TransformWithStruct(&types.PartitionIndexDescriptor{}),
+		Transform:   client.TransformWithStruct(&types.PartitionIndexDescriptor{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

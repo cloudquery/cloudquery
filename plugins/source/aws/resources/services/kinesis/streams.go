@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kinesis/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Streams() *schema.Table {
@@ -14,7 +13,7 @@ func Streams() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/kinesis/latest/APIReference/API_StreamDescriptionSummary.html`,
 		Resolver:            fetchKinesisStreams,
 		PreResourceResolver: getStream,
-		Transform:           transformers.TransformWithStruct(&types.StreamDescriptionSummary{}),
+		Transform:           client.TransformWithStruct(&types.StreamDescriptionSummary{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "kinesis"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

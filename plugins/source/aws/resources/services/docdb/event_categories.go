@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func EventCategories() *schema.Table {
@@ -14,7 +13,7 @@ func EventCategories() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventCategoriesMap.html`,
 		Resolver:    fetchDocdbEventCategories,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
-		Transform:   transformers.TransformWithStruct(&types.EventCategoriesMap{}),
+		Transform:   client.TransformWithStruct(&types.EventCategoriesMap{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

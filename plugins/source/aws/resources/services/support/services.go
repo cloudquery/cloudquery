@@ -19,7 +19,7 @@ func Services() *schema.Table {
 		Name:        "aws_support_services",
 		Description: `https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeServices.html`,
 		Resolver:    fetchServices,
-		Transform:   transformers.TransformWithStruct(&types.Service{}, transformers.WithPrimaryKeys("Code")),
+		Transform:   client.TransformWithStruct(&types.Service{}, transformers.WithPrimaryKeys("Code")),
 		Multiplex:   client.ServiceAccountRegionsLanguageCodeMultiplex(tableName, "support", servicesSupportedLanguageCodes),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

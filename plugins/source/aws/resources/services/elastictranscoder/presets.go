@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elastictranscoder/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Presets() *schema.Table {
@@ -14,7 +13,7 @@ func Presets() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elastictranscoder/latest/developerguide/list-presets.html`,
 		Resolver:    fetchElastictranscoderPresets,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elastictranscoder"),
-		Transform:   transformers.TransformWithStruct(&types.Preset{}),
+		Transform:   client.TransformWithStruct(&types.Preset{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

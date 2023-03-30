@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Pipelines() *schema.Table {
@@ -15,7 +14,7 @@ func Pipelines() *schema.Table {
 		Resolver:            fetchCodepipelinePipelines,
 		PreResourceResolver: getPipeline,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "codepipeline"),
-		Transform:           transformers.TransformWithStruct(&codepipeline.GetPipelineOutput{}),
+		Transform:           client.TransformWithStruct(&codepipeline.GetPipelineOutput{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

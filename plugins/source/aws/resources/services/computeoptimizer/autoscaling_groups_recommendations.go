@@ -18,7 +18,7 @@ func AutoscalingGroupsRecommendations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/compute-optimizer/latest/APIReference/API_AutoScalingGroupRecommendation.html`,
 		Resolver:    fetchAutoscalingGroupsRecommendations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "compute-optimizer"),
-		Transform:   transformers.TransformWithStruct(&types.AutoScalingGroupRecommendation{}, transformers.WithPrimaryKeys("AutoScalingGroupArn")),
+		Transform:   client.TransformWithStruct(&types.AutoScalingGroupRecommendation{}, transformers.WithPrimaryKeys("AutoScalingGroupArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 		},

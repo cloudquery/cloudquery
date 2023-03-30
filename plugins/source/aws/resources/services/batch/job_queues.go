@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/batch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func JobQueues() *schema.Table {
@@ -18,7 +17,7 @@ func JobQueues() *schema.Table {
 		Description: `https://docs.aws.amazon.com/batch/latest/APIReference/API_DescribeJobQueues.html`,
 		Resolver:    fetchBatchJobQueues,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "batch"),
-		Transform:   transformers.TransformWithStruct(&types.JobQueueDetail{}),
+		Transform:   client.TransformWithStruct(&types.JobQueueDetail{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -4,7 +4,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms/models"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ReplicationInstances() *schema.Table {
@@ -14,7 +13,7 @@ func ReplicationInstances() *schema.Table {
 		Description: `https://docs.aws.amazon.com/dms/latest/APIReference/API_ReplicationInstance.html`,
 		Resolver:    fetchDmsReplicationInstances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "dms"),
-		Transform:   transformers.TransformWithStruct(&models.ReplicationInstanceWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:   client.TransformWithStruct(&models.ReplicationInstanceWrapper{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

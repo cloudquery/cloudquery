@@ -25,7 +25,7 @@ func userLastAccessedDetails() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
 		Resolver:    fetchUserLastAccessedDetails,
-		Transform:   transformers.TransformWithStruct(&LastAccessed{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
+		Transform:   client.TransformWithStruct(&LastAccessed{}, transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -39,7 +39,7 @@ func roleLastAccessedDetails() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
 		Resolver:    fetchRoleLastAccessedDetails,
-		Transform:   transformers.TransformWithStruct(&LastAccessed{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
+		Transform:   client.TransformWithStruct(&LastAccessed{}, transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -53,7 +53,7 @@ func groupLastAccessedDetails() *schema.Table {
 		Name:        "aws_iam_group_last_accessed_details",
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
 		Resolver:    fetchGroupLastAccessedDetails,
-		Transform:   transformers.TransformWithStruct(&LastAccessed{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
+		Transform:   client.TransformWithStruct(&LastAccessed{}, transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -67,7 +67,7 @@ func policyLastAccessedDetails() *schema.Table {
 		Name:        "aws_iam_policy_last_accessed_details",
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
 		Resolver:    fetchPolicyLastAccessedDetails,
-		Transform:   transformers.TransformWithStruct(&LastAccessed{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
+		Transform:   client.TransformWithStruct(&LastAccessed{}, transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

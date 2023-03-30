@@ -18,7 +18,7 @@ func stackSetOperations() *schema.Table {
 		Resolver:            fetchCloudformationStackSetOperations,
 		PreResourceResolver: getStackSetOperation,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(table_name, "cloudformation"),
-		Transform:           transformers.TransformWithStruct(&models.ExpandedStackSetOperation{}, transformers.WithUnwrapStructFields("StackSetOperation"), transformers.WithSkipFields("CallAs"), transformers.WithPrimaryKeys("OperationId", "CreationTimestamp")),
+		Transform:           client.TransformWithStruct(&models.ExpandedStackSetOperation{}, transformers.WithUnwrapStructFields("StackSetOperation"), transformers.WithSkipFields("CallAs"), transformers.WithPrimaryKeys("OperationId", "CreationTimestamp")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Volumes() *schema.Table {
@@ -13,7 +12,7 @@ func Volumes() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_Volume.html`,
 		Resolver:    fetchFsxVolumes,
-		Transform:   transformers.TransformWithStruct(&types.Volume{}),
+		Transform:   client.TransformWithStruct(&types.Volume{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "fsx"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -15,10 +15,9 @@ func Findings() *schema.Table {
 ` + "The `request_account_id` and `request_region` columns are added to show the account and region of where the request was made from." + `
 This is useful when multi region and account aggregation is enabled.`,
 		Resolver: fetchFindings,
-		Transform: transformers.TransformWithStruct(&types.AwsSecurityFinding{},
-			transformers.WithTypeTransformer(client.TimestampTypeTransformer),
-			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
-			transformers.WithPrimaryKeys("AwsAccountId", "Region", "CreatedAt", "Description", "GeneratorId", "Id", "ProductArn", "SchemaVersion", "Title")),
+		Transform: client.TransformWithStruct(&types.AwsSecurityFinding{},
+			transformers.WithPrimaryKeys("AwsAccountId", "Region", "CreatedAt", "Description", "GeneratorId", "Id", "ProductArn", "SchemaVersion", "Title"),
+		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "securityhub"),
 		Columns: []schema.Column{
 			{

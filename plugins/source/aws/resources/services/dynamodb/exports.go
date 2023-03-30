@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Exports() *schema.Table {
@@ -18,7 +17,7 @@ func Exports() *schema.Table {
 		Resolver:            listExports,
 		PreResourceResolver: getExport,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "dynamodb"),
-		Transform:           transformers.TransformWithStruct(&types.ExportDescription{}),
+		Transform:           client.TransformWithStruct(&types.ExportDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

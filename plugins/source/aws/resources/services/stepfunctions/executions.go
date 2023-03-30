@@ -17,7 +17,7 @@ func executions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeExecution.html`,
 		Resolver:            fetchStepfunctionsExecutions,
 		PreResourceResolver: getExecution,
-		Transform:           transformers.TransformWithStruct(&sfn.DescribeExecutionOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Transform:           client.TransformWithStruct(&sfn.DescribeExecutionOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "states"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func RegistrySchemas() *schema.Table {
@@ -14,7 +13,7 @@ func RegistrySchemas() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/glue/latest/webapi/API_GetSchema.html`,
 		Resolver:            fetchGlueRegistrySchemas,
 		PreResourceResolver: getRegistrySchema,
-		Transform:           transformers.TransformWithStruct(&glue.GetSchemaOutput{}),
+		Transform:           client.TransformWithStruct(&glue.GetSchemaOutput{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

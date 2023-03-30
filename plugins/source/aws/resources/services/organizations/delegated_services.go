@@ -16,7 +16,7 @@ func delegatedServices() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_DelegatedService.html`,
 		Resolver:    fetchOrganizationsDelegatedServices,
-		Transform:   transformers.TransformWithStruct(&types.DelegatedService{}, transformers.WithPrimaryKeys("ServicePrincipal")),
+		Transform:   client.TransformWithStruct(&types.DelegatedService{}, transformers.WithPrimaryKeys("ServicePrincipal")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},

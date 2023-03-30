@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glacier/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Vaults() *schema.Table {
@@ -13,7 +12,7 @@ func Vaults() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/amazonglacier/latest/dev/api-vaults-get.html`,
 		Resolver:    fetchGlacierVaults,
-		Transform:   transformers.TransformWithStruct(&types.DescribeVaultOutput{}),
+		Transform:   client.TransformWithStruct(&types.DescribeVaultOutput{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glacier"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

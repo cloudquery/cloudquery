@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func EbsVolumesStatuses() *schema.Table {
@@ -14,7 +13,7 @@ func EbsVolumesStatuses() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VolumeStatusItem.html`,
 		Resolver:    fetchEc2EbsVolumeStatuses,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.VolumeStatusItem{}),
+		Transform:   client.TransformWithStruct(&types.VolumeStatusItem{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

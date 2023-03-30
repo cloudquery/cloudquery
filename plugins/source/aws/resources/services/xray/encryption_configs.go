@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/xray/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func EncryptionConfigs() *schema.Table {
@@ -13,7 +12,7 @@ func EncryptionConfigs() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/xray/latest/api/API_EncryptionConfig.html`,
 		Resolver:    fetchXrayEncryptionConfigs,
-		Transform:   transformers.TransformWithStruct(&types.EncryptionConfig{}),
+		Transform:   client.TransformWithStruct(&types.EncryptionConfig{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "xray"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 type KeyPolicy struct {
@@ -22,7 +21,7 @@ func KeyPolicies() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/kms/latest/APIReference/API_GetKeyPolicy.html`,
 		Resolver:    fetchKeyPolicies,
-		Transform:   transformers.TransformWithStruct(&KeyPolicy{}),
+		Transform:   client.TransformWithStruct(&KeyPolicy{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "kms"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

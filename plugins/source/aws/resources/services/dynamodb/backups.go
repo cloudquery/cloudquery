@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Backups() *schema.Table {
@@ -19,7 +18,7 @@ func Backups() *schema.Table {
 		Resolver:            listBackups,
 		PreResourceResolver: getBackup,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "dynamodb"),
-		Transform:           transformers.TransformWithStruct(&types.BackupDescription{}),
+		Transform:           client.TransformWithStruct(&types.BackupDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

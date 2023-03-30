@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func RateBasedRules() *schema.Table {
@@ -13,7 +12,7 @@ func RateBasedRules() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_RateBasedRule.html`,
 		Resolver:    fetchWafregionalRateBasedRules,
-		Transform:   transformers.TransformWithStruct(&types.RateBasedRule{}),
+		Transform:   client.TransformWithStruct(&types.RateBasedRule{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "waf-regional"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

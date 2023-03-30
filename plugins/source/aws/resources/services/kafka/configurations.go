@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kafka/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Configurations() *schema.Table {
@@ -13,7 +12,7 @@ func Configurations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-configuration.html`,
 		Resolver:    fetchKafkaConfigurations,
-		Transform:   transformers.TransformWithStruct(&types.Configuration{}),
+		Transform:   client.TransformWithStruct(&types.Configuration{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "kafka"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -14,7 +14,7 @@ func clusterInstanceGroups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/emr/latest/APIReference/API_InstanceGroup.html`,
 		Resolver:    fetchClusterInstanceGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticmapreduce"),
-		Transform:   transformers.TransformWithStruct(&types.InstanceGroup{}, transformers.WithPrimaryKeys("Id")),
+		Transform:   client.TransformWithStruct(&types.InstanceGroup{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

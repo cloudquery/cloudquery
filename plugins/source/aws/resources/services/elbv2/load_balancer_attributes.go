@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func loadBalancerAttributes() *schema.Table {
@@ -17,7 +16,7 @@ func loadBalancerAttributes() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_LoadBalancerAttribute.html`,
 		Resolver:    fetchLoadBalancerAttributes,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
-		Transform:   transformers.TransformWithStruct(&types.LoadBalancerAttribute{}),
+		Transform:   client.TransformWithStruct(&types.LoadBalancerAttribute{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

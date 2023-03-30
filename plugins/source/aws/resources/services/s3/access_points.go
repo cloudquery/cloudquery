@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3control/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func AccessPoints() *schema.Table {
@@ -16,7 +15,7 @@ func AccessPoints() *schema.Table {
 	return &schema.Table{
 		Name:      tableName,
 		Resolver:  fetchAccessPoints,
-		Transform: transformers.TransformWithStruct(&types.AccessPoint{}),
+		Transform: client.TransformWithStruct(&types.AccessPoint{}),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "s3-control"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

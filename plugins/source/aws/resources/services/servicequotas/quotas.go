@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Quotas() *schema.Table {
@@ -12,7 +11,7 @@ func Quotas() *schema.Table {
 		Name:        "aws_servicequotas_quotas",
 		Description: `https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceQuota.html`,
 		Resolver:    fetchServicequotasQuotas,
-		Transform:   transformers.TransformWithStruct(&types.ServiceQuota{}),
+		Transform:   client.TransformWithStruct(&types.ServiceQuota{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

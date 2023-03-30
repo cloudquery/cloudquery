@@ -10,7 +10,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Documents() *schema.Table {
@@ -20,7 +19,7 @@ func Documents() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DocumentDescription.html`,
 		Resolver:            fetchSsmDocuments,
 		PreResourceResolver: getDocument,
-		Transform:           transformers.TransformWithStruct(&types.DocumentDescription{}),
+		Transform:           client.TransformWithStruct(&types.DocumentDescription{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "ssm"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

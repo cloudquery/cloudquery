@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecrpublic/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Repositories() *schema.Table {
@@ -14,7 +13,7 @@ func Repositories() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonECRPublic/latest/APIReference/API_Repository.html`,
 		Resolver:    fetchEcrpublicRepositories,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "api.ecr-public"),
-		Transform:   transformers.TransformWithStruct(&types.Repository{}),
+		Transform:   client.TransformWithStruct(&types.Repository{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

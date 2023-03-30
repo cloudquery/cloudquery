@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func WebAcls() *schema.Table {
@@ -13,7 +12,7 @@ func WebAcls() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_WebACL.html`,
 		Resolver:    fetchWafregionalWebAcls,
-		Transform:   transformers.TransformWithStruct(&types.WebACL{}),
+		Transform:   client.TransformWithStruct(&types.WebACL{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "waf-regional"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

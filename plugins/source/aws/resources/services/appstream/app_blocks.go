@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func AppBlocks() *schema.Table {
@@ -14,7 +13,7 @@ func AppBlocks() *schema.Table {
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_AppBlock.html`,
 		Resolver:    fetchAppstreamAppBlocks,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "appstream2"),
-		Transform:   transformers.TransformWithStruct(&types.AppBlock{}),
+		Transform:   client.TransformWithStruct(&types.AppBlock{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

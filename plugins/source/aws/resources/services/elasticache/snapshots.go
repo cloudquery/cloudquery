@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticache/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Snapshots() *schema.Table {
@@ -14,7 +13,7 @@ func Snapshots() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_Snapshot.html`,
 		Resolver:    fetchElasticacheSnapshots,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
-		Transform:   transformers.TransformWithStruct(&types.Snapshot{}),
+		Transform:   client.TransformWithStruct(&types.Snapshot{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

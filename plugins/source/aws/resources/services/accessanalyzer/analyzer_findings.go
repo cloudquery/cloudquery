@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func AnalyzerFindings() *schema.Table {
@@ -12,7 +11,7 @@ func AnalyzerFindings() *schema.Table {
 		Name:        "aws_accessanalyzer_analyzer_findings",
 		Description: `https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_FindingSummary.html`,
 		Resolver:    fetchAccessanalyzerAnalyzerFindings,
-		Transform:   transformers.TransformWithStruct(&types.FindingSummary{}),
+		Transform:   client.TransformWithStruct(&types.FindingSummary{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

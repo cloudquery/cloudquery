@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Roles() *schema.Table {
@@ -14,7 +13,7 @@ func Roles() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_Role.html`,
 		Resolver:            fetchIamRoles,
 		PreResourceResolver: getRole,
-		Transform:           transformers.TransformWithStruct(&types.Role{}),
+		Transform:           client.TransformWithStruct(&types.Role{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

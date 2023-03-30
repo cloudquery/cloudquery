@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func TrainingJobs() *schema.Table {
@@ -14,7 +13,7 @@ func TrainingJobs() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeTrainingJob.html`,
 		Resolver:            fetchSagemakerTrainingJobs,
 		PreResourceResolver: getTrainingJob,
-		Transform:           transformers.TransformWithStruct(&sagemaker.DescribeTrainingJobOutput{}),
+		Transform:           client.TransformWithStruct(&sagemaker.DescribeTrainingJobOutput{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "api.sagemaker"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

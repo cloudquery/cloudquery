@@ -18,7 +18,7 @@ func trustedAdvisorCheckResults() *schema.Table {
 		Name:        "aws_support_trusted_advisor_check_results",
 		Description: `https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeTrustedAdvisorCheckResult.html`,
 		Resolver:    fetchTrustedAdvisorCheckResults,
-		Transform:   transformers.TransformWithStruct(&types.TrustedAdvisorCheckResult{}, transformers.WithPrimaryKeys("CheckId")),
+		Transform:   client.TransformWithStruct(&types.TrustedAdvisorCheckResult{}, transformers.WithPrimaryKeys("CheckId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

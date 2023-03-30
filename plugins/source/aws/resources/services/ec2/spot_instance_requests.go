@@ -17,7 +17,7 @@ func SpotInstanceRequests() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SpotInstanceRequest.html`,
 		Resolver:    fetchEC2SpotInstanceRequests,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.SpotInstanceRequest{}, transformers.WithPrimaryKeys("SpotInstanceRequestId")),
+		Transform:   client.TransformWithStruct(&types.SpotInstanceRequest{}, transformers.WithPrimaryKeys("SpotInstanceRequestId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

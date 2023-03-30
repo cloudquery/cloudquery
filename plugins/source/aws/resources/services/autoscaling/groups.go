@@ -4,7 +4,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling/models"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Groups() *schema.Table {
@@ -14,7 +13,7 @@ func Groups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_AutoScalingGroup.html`,
 		Resolver:    fetchAutoscalingGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "autoscaling"),
-		Transform:   transformers.TransformWithStruct(&models.AutoScalingGroupWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:   client.TransformWithStruct(&models.AutoScalingGroupWrapper{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

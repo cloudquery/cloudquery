@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Snapshots() *schema.Table {
@@ -13,7 +12,7 @@ func Snapshots() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_Snapshot.html`,
 		Resolver:    fetchFsxSnapshots,
-		Transform:   transformers.TransformWithStruct(&types.Snapshot{}),
+		Transform:   client.TransformWithStruct(&types.Snapshot{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "fsx"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

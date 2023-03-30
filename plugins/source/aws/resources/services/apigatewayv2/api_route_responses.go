@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ApiRouteResponses() *schema.Table {
@@ -14,7 +13,7 @@ func ApiRouteResponses() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_RouteResponse.html`,
 		Resolver:    fetchApigatewayv2ApiRouteResponses,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
-		Transform:   transformers.TransformWithStruct(&types.RouteResponse{}),
+		Transform:   client.TransformWithStruct(&types.RouteResponse{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),

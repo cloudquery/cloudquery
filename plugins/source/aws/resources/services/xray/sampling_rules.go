@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/xray/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func SamplingRules() *schema.Table {
@@ -13,7 +12,7 @@ func SamplingRules() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/xray/latest/api/API_SamplingRuleRecord.html`,
 		Resolver:    fetchXraySamplingRules,
-		Transform:   transformers.TransformWithStruct(&types.SamplingRuleRecord{}),
+		Transform:   client.TransformWithStruct(&types.SamplingRuleRecord{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "xray"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

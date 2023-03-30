@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func imageAttributesLaunchPermissions() *schema.Table {
@@ -16,7 +15,7 @@ func imageAttributesLaunchPermissions() *schema.Table {
 		Name:        "aws_ec2_image_launch_permissions",
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchPermission.html`,
 		Resolver:    fetchEc2ImageAttributeLaunchPermissions,
-		Transform:   transformers.TransformWithStruct(&types.LaunchPermission{}),
+		Transform:   client.TransformWithStruct(&types.LaunchPermission{}),
 		Columns: []schema.Column{
 			{
 				Name:     "image_arn",

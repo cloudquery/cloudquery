@@ -18,7 +18,7 @@ func LambdaFunctionsRecommendations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/compute-optimizer/latest/APIReference/API_LambdaFunctionRecommendation.html`,
 		Resolver:    fetchLambdaFunctionsRecommendations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "compute-optimizer"),
-		Transform:   transformers.TransformWithStruct(&types.LambdaFunctionRecommendation{}, transformers.WithPrimaryKeys("FunctionArn")),
+		Transform:   client.TransformWithStruct(&types.LambdaFunctionRecommendation{}, transformers.WithPrimaryKeys("FunctionArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 		},

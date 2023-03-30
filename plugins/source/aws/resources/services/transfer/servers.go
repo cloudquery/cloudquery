@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/transfer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Servers() *schema.Table {
@@ -14,7 +13,7 @@ func Servers() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/transfer/latest/userguide/API_DescribedServer.html`,
 		Resolver:            fetchTransferServers,
 		PreResourceResolver: getServer,
-		Transform:           transformers.TransformWithStruct(&types.DescribedServer{}),
+		Transform:           client.TransformWithStruct(&types.DescribedServer{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "transfer"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

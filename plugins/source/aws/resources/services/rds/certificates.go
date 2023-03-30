@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Certificates() *schema.Table {
@@ -13,7 +12,7 @@ func Certificates() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Certificate.html`,
 		Resolver:    fetchRdsCertificates,
-		Transform:   transformers.TransformWithStruct(&types.Certificate{}),
+		Transform:   client.TransformWithStruct(&types.Certificate{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

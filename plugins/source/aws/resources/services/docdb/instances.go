@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Instances() *schema.Table {
@@ -14,7 +13,7 @@ func Instances() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBInstance.html`,
 		Resolver:    fetchDocdbInstances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
-		Transform:   transformers.TransformWithStruct(&types.DBInstance{}),
+		Transform:   client.TransformWithStruct(&types.DBInstance{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

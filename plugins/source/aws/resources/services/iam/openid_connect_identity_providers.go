@@ -4,7 +4,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func OpenidConnectIdentityProviders() *schema.Table {
@@ -14,7 +13,7 @@ func OpenidConnectIdentityProviders() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetOpenIDConnectProvider.html`,
 		Resolver:            fetchIamOpenidConnectIdentityProviders,
 		PreResourceResolver: getOpenIdConnectIdentityProvider,
-		Transform:           transformers.TransformWithStruct(&models.IamOpenIdIdentityProviderWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:           client.TransformWithStruct(&models.IamOpenIdIdentityProviderWrapper{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

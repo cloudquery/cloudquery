@@ -13,7 +13,7 @@ func Secrets() *schema.Table {
 		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecrets.html`,
 		Resolver:            fetchSecretsmanagerSecrets,
-		Transform:           transformers.TransformWithStruct(&secretsmanager.DescribeSecretOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Transform:           client.TransformWithStruct(&secretsmanager.DescribeSecretOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		PreResourceResolver: getSecret,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "secretsmanager"),
 		Columns: []schema.Column{

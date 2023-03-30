@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func listeners() *schema.Table {
@@ -18,7 +17,7 @@ func listeners() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Listener.html`,
 		Resolver:    fetchElbv2Listeners,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
-		Transform:   transformers.TransformWithStruct(&types.Listener{}),
+		Transform:   client.TransformWithStruct(&types.Listener{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

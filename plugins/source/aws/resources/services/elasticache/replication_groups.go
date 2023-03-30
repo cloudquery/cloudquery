@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticache/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ReplicationGroups() *schema.Table {
@@ -14,7 +13,7 @@ func ReplicationGroups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ReplicationGroup.html`,
 		Resolver:    fetchElasticacheReplicationGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
-		Transform:   transformers.TransformWithStruct(&types.ReplicationGroup{}),
+		Transform:   client.TransformWithStruct(&types.ReplicationGroup{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

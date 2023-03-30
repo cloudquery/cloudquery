@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/firehose/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func DeliveryStreams() *schema.Table {
@@ -15,7 +14,7 @@ func DeliveryStreams() *schema.Table {
 		Resolver:            fetchFirehoseDeliveryStreams,
 		PreResourceResolver: getDeliveryStream,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "firehose"),
-		Transform:           transformers.TransformWithStruct(&types.DeliveryStreamDescription{}),
+		Transform:           client.TransformWithStruct(&types.DeliveryStreamDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

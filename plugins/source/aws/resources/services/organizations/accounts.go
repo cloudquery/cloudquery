@@ -16,7 +16,7 @@ func Accounts() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html`,
 		Resolver:    fetchOrganizationsAccounts,
-		Transform:   transformers.TransformWithStruct(&types.Account{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   client.TransformWithStruct(&types.Account{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apprunner/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Connections() *schema.Table {
@@ -14,7 +13,7 @@ func Connections() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_Connection.html`,
 		Resolver:    fetchApprunnerConnections,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apprunner"),
-		Transform:   transformers.TransformWithStruct(&types.ConnectionSummary{}),
+		Transform:   client.TransformWithStruct(&types.ConnectionSummary{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

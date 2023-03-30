@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Functions() *schema.Table {
@@ -14,7 +13,7 @@ func Functions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/lambda/latest/dg/API_GetFunction.html`,
 		Resolver:            fetchLambdaFunctions,
 		PreResourceResolver: getFunction,
-		Transform:           transformers.TransformWithStruct(&lambda.GetFunctionOutput{}),
+		Transform:           client.TransformWithStruct(&lambda.GetFunctionOutput{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -4,7 +4,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns/models"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Subscriptions() *schema.Table {
@@ -14,7 +13,7 @@ func Subscriptions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/sns/latest/api/API_GetSubscriptionAttributes.html`,
 		Resolver:            fetchSnsSubscriptions,
 		PreResourceResolver: getSnsSubscription,
-		Transform:           transformers.TransformWithStruct(&models.Subscription{}),
+		Transform:           client.TransformWithStruct(&models.Subscription{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "sns"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

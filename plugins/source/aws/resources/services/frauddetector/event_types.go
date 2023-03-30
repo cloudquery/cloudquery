@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/frauddetector/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func EventTypes() *schema.Table {
@@ -14,7 +13,7 @@ func EventTypes() *schema.Table {
 		Description: `https://docs.aws.amazon.com/frauddetector/latest/api/API_EventType.html`,
 		Resolver:    fetchFrauddetectorEventTypes,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "frauddetector"),
-		Transform:   transformers.TransformWithStruct(&types.EventType{}),
+		Transform:   client.TransformWithStruct(&types.EventType{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

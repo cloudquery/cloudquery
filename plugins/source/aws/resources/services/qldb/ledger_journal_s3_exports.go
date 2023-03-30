@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/qldb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func LedgerJournalS3Exports() *schema.Table {
@@ -13,7 +12,7 @@ func LedgerJournalS3Exports() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalS3ExportDescription.html`,
 		Resolver:    fetchQldbLedgerJournalS3Exports,
-		Transform:   transformers.TransformWithStruct(&types.JournalS3ExportDescription{}),
+		Transform:   client.TransformWithStruct(&types.JournalS3ExportDescription{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "qldb"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

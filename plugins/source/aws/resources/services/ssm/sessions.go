@@ -18,7 +18,7 @@ func Sessions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_Session.html. 
 Only Active sessions are fetched.`,
 		Resolver:  fetchSsmSessions,
-		Transform: transformers.TransformWithStruct(&types.Session{}, transformers.WithPrimaryKeys("SessionId")),
+		Transform: client.TransformWithStruct(&types.Session{}, transformers.WithPrimaryKeys("SessionId")),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "ssm"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

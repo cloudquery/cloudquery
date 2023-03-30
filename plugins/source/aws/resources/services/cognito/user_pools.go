@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func UserPools() *schema.Table {
@@ -15,7 +14,7 @@ func UserPools() *schema.Table {
 		Resolver:            fetchCognitoUserPools,
 		PreResourceResolver: getUserPool,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "cognito-identity"),
-		Transform:           transformers.TransformWithStruct(&types.UserPoolType{}),
+		Transform:           client.TransformWithStruct(&types.UserPoolType{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

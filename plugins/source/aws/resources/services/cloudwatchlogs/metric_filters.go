@@ -19,7 +19,7 @@ func MetricFilters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_MetricFilter.html`,
 		Resolver:    fetchCloudwatchlogsMetricFilters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "logs"),
-		Transform:   transformers.TransformWithStruct(&types.MetricFilter{}, transformers.WithPrimaryKeys("FilterName")),
+		Transform:   client.TransformWithStruct(&types.MetricFilter{}, transformers.WithPrimaryKeys("FilterName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

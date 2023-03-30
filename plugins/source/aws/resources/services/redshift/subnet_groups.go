@@ -9,7 +9,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func SubnetGroups() *schema.Table {
@@ -18,7 +17,7 @@ func SubnetGroups() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_ClusterSubnetGroup.html`,
 		Resolver:    fetchSubnetGroups,
-		Transform:   transformers.TransformWithStruct(&types.ClusterSubnetGroup{}),
+		Transform:   client.TransformWithStruct(&types.ClusterSubnetGroup{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

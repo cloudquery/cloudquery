@@ -15,7 +15,7 @@ func Schedules() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/scheduler/latest/APIReference/API_GetScheduleOutput.html`,
 		Resolver:            fetchSchedulerSchedules,
 		PreResourceResolver: getSchedule,
-		Transform:           transformers.TransformWithStruct(&scheduler.GetScheduleOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Transform:           client.TransformWithStruct(&scheduler.GetScheduleOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "scheduler"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

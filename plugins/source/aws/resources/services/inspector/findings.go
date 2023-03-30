@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/inspector/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Findings() *schema.Table {
@@ -13,7 +12,7 @@ func Findings() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/inspector/v1/APIReference/API_Finding.html`,
 		Resolver:    fetchInspectorFindings,
-		Transform:   transformers.TransformWithStruct(&types.Finding{}),
+		Transform:   client.TransformWithStruct(&types.Finding{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "inspector"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

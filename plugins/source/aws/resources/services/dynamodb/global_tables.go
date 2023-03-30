@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func GlobalTables() *schema.Table {
@@ -21,7 +20,7 @@ This table only contains version 2017.11.29 (Legacy) Global Tables. See aws_dyna
 		Resolver:            fetchGlobalTables,
 		PreResourceResolver: getGlobalTable,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "dynamodb"),
-		Transform:           transformers.TransformWithStruct(&types.GlobalTableDescription{}),
+		Transform:           client.TransformWithStruct(&types.GlobalTableDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

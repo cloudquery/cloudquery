@@ -17,7 +17,7 @@ func SpotFleetRequests() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SpotFleetRequestConfig.html`,
 		Resolver:    fetchEC2SpotFleetRequests,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.SpotFleetRequestConfig{}, transformers.WithPrimaryKeys("SpotFleetRequestId")),
+		Transform:   client.TransformWithStruct(&types.SpotFleetRequestConfig{}, transformers.WithPrimaryKeys("SpotFleetRequestId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

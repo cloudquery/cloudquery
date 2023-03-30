@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func TrafficPolicyVersions() *schema.Table {
@@ -13,7 +12,7 @@ func TrafficPolicyVersions() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicy.html`,
 		Resolver:    fetchRoute53TrafficPolicyVersions,
-		Transform:   transformers.TransformWithStruct(&types.TrafficPolicy{}),
+		Transform:   client.TransformWithStruct(&types.TrafficPolicy{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

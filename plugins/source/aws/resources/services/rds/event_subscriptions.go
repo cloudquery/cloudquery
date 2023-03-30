@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func EventSubscriptions() *schema.Table {
@@ -13,7 +12,7 @@ func EventSubscriptions() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_EventSubscription.html`,
 		Resolver:    fetchRdsEventSubscriptions,
-		Transform:   transformers.TransformWithStruct(&types.EventSubscription{}),
+		Transform:   client.TransformWithStruct(&types.EventSubscription{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

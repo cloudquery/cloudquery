@@ -12,7 +12,7 @@ func Accounts() *schema.Table {
 	return &schema.Table{
 		Name:      tableName,
 		Resolver:  fetchS3Accounts,
-		Transform: transformers.TransformWithStruct(&models.PublicAccessBlockConfigurationWrapper{}, transformers.WithUnwrapStructFields("PublicAccessBlockConfiguration")),
+		Transform: client.TransformWithStruct(&models.PublicAccessBlockConfigurationWrapper{}, transformers.WithUnwrapStructFields("PublicAccessBlockConfiguration")),
 		Multiplex: client.AccountMultiplex(tableName),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

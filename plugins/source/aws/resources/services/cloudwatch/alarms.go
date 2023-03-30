@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Alarms() *schema.Table {
@@ -14,7 +13,7 @@ func Alarms() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricAlarm.html`,
 		Resolver:    fetchCloudwatchAlarms,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "logs"),
-		Transform:   transformers.TransformWithStruct(&types.MetricAlarm{}),
+		Transform:   client.TransformWithStruct(&types.MetricAlarm{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

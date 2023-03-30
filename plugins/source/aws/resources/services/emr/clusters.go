@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Clusters() *schema.Table {
@@ -15,7 +14,7 @@ func Clusters() *schema.Table {
 		Resolver:            fetchEmrClusters,
 		PreResourceResolver: getCluster,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "elasticmapreduce"),
-		Transform:           transformers.TransformWithStruct(&types.Cluster{}),
+		Transform:           client.TransformWithStruct(&types.Cluster{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

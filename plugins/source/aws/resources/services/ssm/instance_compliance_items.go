@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func InstanceComplianceItems() *schema.Table {
@@ -13,7 +12,7 @@ func InstanceComplianceItems() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ComplianceItem.html`,
 		Resolver:    fetchSsmInstanceComplianceItems,
-		Transform:   transformers.TransformWithStruct(&types.ComplianceItem{}),
+		Transform:   client.TransformWithStruct(&types.ComplianceItem{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ssm"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

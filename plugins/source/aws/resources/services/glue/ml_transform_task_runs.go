@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func MlTransformTaskRuns() *schema.Table {
@@ -13,7 +12,7 @@ func MlTransformTaskRuns() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_TaskRun.html`,
 		Resolver:    fetchGlueMlTransformTaskRuns,
-		Transform:   transformers.TransformWithStruct(&types.TaskRun{}),
+		Transform:   client.TransformWithStruct(&types.TaskRun{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

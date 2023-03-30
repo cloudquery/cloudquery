@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func TableReplicaAutoScalings() *schema.Table {
@@ -14,7 +13,7 @@ func TableReplicaAutoScalings() *schema.Table {
 		Description: `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ReplicaAutoScalingDescription.html`,
 		Resolver:    fetchDynamodbTableReplicaAutoScalings,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "dynamodb"),
-		Transform:   transformers.TransformWithStruct(&types.ReplicaAutoScalingDescription{}),
+		Transform:   client.TransformWithStruct(&types.ReplicaAutoScalingDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

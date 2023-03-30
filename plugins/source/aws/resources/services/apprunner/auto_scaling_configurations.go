@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apprunner/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func AutoScalingConfigurations() *schema.Table {
@@ -15,7 +14,7 @@ func AutoScalingConfigurations() *schema.Table {
 		Resolver:            fetchApprunnerAutoScalingConfigurations,
 		PreResourceResolver: getAutoScalingConfiguration,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "apprunner"),
-		Transform:           transformers.TransformWithStruct(&types.AutoScalingConfiguration{}),
+		Transform:           client.TransformWithStruct(&types.AutoScalingConfiguration{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecr/models"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func repositoryImageScanFindings() *schema.Table {
@@ -17,7 +16,7 @@ func repositoryImageScanFindings() *schema.Table {
 		Name:        "aws_ecr_repository_image_scan_findings",
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageScanFindings.html`,
 		Resolver:    fetchEcrRepositoryImageScanFindings,
-		Transform:   transformers.TransformWithStruct(&models.ImageScanWrapper{}),
+		Transform:   client.TransformWithStruct(&models.ImageScanWrapper{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

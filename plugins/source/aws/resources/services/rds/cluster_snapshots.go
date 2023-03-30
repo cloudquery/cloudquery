@@ -13,7 +13,7 @@ func ClusterSnapshots() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBClusterSnapshot.html`,
 		Resolver:    fetchRdsClusterSnapshots,
-		Transform:   transformers.TransformWithStruct(&types.DBClusterSnapshot{}, transformers.WithSkipFields("TagList")),
+		Transform:   client.TransformWithStruct(&types.DBClusterSnapshot{}, transformers.WithSkipFields("TagList")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func InstancePatches() *schema.Table {
@@ -13,7 +12,7 @@ func InstancePatches() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_PatchComplianceData.html`,
 		Resolver:    fetchSsmInstancePatches,
-		Transform:   transformers.TransformWithStruct(&types.PatchComplianceData{}),
+		Transform:   client.TransformWithStruct(&types.PatchComplianceData{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ssm"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

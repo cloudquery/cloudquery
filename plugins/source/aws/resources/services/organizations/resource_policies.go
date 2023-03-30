@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ResourcePolicies() *schema.Table {
@@ -16,7 +15,7 @@ func ResourcePolicies() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_DescribeResourcePolicy.html`,
 		Resolver:    fetchOrganizationsResourcePolicies,
-		Transform:   transformers.TransformWithStruct(&types.ResourcePolicy{}),
+		Transform:   client.TransformWithStruct(&types.ResourcePolicy{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

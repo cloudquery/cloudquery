@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ApiModels() *schema.Table {
@@ -14,7 +13,7 @@ func ApiModels() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Model.html`,
 		Resolver:    fetchApigatewayv2ApiModels,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
-		Transform:   transformers.TransformWithStruct(&types.Model{}),
+		Transform:   client.TransformWithStruct(&types.Model{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),

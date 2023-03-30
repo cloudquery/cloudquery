@@ -10,7 +10,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func snapshots() *schema.Table {
@@ -19,7 +18,7 @@ func snapshots() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_Snapshot.html`,
 		Resolver:    fetchSnapshots,
-		Transform:   transformers.TransformWithStruct(&types.Snapshot{}),
+		Transform:   client.TransformWithStruct(&types.Snapshot{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func BrokerConfigurationRevisions() *schema.Table {
@@ -14,7 +13,7 @@ func BrokerConfigurationRevisions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id-revisions.html`,
 		Resolver:            fetchMqBrokerConfigurationRevisions,
 		PreResourceResolver: getMqBrokerConfigurationRevision,
-		Transform:           transformers.TransformWithStruct(&mq.DescribeConfigurationRevisionOutput{}),
+		Transform:           client.TransformWithStruct(&mq.DescribeConfigurationRevisionOutput{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "mq"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

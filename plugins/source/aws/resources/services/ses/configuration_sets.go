@@ -14,8 +14,7 @@ func ConfigurationSets() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetConfigurationSet.html`,
 		Resolver:            fetchSesConfigurationSets,
 		PreResourceResolver: getConfigurationSet,
-		Transform: transformers.TransformWithStruct(
-			&sesv2.GetConfigurationSetOutput{},
+		Transform: client.TransformWithStruct(&sesv2.GetConfigurationSetOutput{},
 			transformers.WithSkipFields("ResultMetadata"),
 			transformers.WithNameTransformer(client.CreateTrimPrefixTransformer("configuration_set_")),
 		),

@@ -17,7 +17,7 @@ func Apps() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeApp.html`,
 		Resolver:            fetchSagemakerApps,
 		PreResourceResolver: getApp,
-		Transform:           transformers.TransformWithStruct(&sagemaker.DescribeAppOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Transform:           client.TransformWithStruct(&sagemaker.DescribeAppOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "api.sagemaker"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

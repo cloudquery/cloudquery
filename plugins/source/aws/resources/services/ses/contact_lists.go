@@ -14,7 +14,7 @@ func ContactLists() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetContactList.html`,
 		Resolver:            fetchSesContactLists,
 		PreResourceResolver: getContactList,
-		Transform:           transformers.TransformWithStruct(&sesv2.GetContactListOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Transform:           client.TransformWithStruct(&sesv2.GetContactListOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "email"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

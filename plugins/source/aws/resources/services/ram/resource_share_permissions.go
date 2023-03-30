@@ -11,7 +11,7 @@ func ResourceSharePermissions() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ram_resource_share_permissions",
 		Description: `https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceSharePermissionSummary.html`,
-		Transform:   transformers.TransformWithStruct(&types.ResourceSharePermissionSummary{}, transformers.WithPrimaryKeys("Arn", "Version")),
+		Transform:   client.TransformWithStruct(&types.ResourceSharePermissionSummary{}, transformers.WithPrimaryKeys("Arn", "Version")),
 		Resolver:    fetchRamResourceSharePermissions,
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

@@ -13,7 +13,7 @@ func LedgerJournalKinesisStreams() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalKinesisStreamDescription.html`,
 		Resolver:    fetchQldbLedgerJournalKinesisStreams,
-		Transform:   transformers.TransformWithStruct(&types.JournalKinesisStreamDescription{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   client.TransformWithStruct(&types.JournalKinesisStreamDescription{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "qldb"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

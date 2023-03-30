@@ -4,7 +4,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda/models"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func FunctionAliases() *schema.Table {
@@ -14,7 +13,7 @@ func FunctionAliases() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/lambda/latest/dg/API_AliasConfiguration.html`,
 		Resolver:            fetchLambdaFunctionAliases,
 		PreResourceResolver: getFunctionAliasURLConfig,
-		Transform:           transformers.TransformWithStruct(&models.AliasWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:           client.TransformWithStruct(&models.AliasWrapper{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

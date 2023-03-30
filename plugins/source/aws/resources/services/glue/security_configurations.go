@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func SecurityConfigurations() *schema.Table {
@@ -13,7 +12,7 @@ func SecurityConfigurations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_SecurityConfiguration.html`,
 		Resolver:    fetchGlueSecurityConfigurations,
-		Transform:   transformers.TransformWithStruct(&types.SecurityConfiguration{}),
+		Transform:   client.TransformWithStruct(&types.SecurityConfiguration{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

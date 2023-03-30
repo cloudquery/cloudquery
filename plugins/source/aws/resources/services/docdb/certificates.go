@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Certificates() *schema.Table {
@@ -14,7 +13,7 @@ func Certificates() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Certificate.html`,
 		Resolver:    fetchDocdbCertificates,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
-		Transform:   transformers.TransformWithStruct(&types.Certificate{}),
+		Transform:   client.TransformWithStruct(&types.Certificate{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),

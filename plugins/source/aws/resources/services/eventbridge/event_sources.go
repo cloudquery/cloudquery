@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func EventSources() *schema.Table {
@@ -18,7 +17,7 @@ func EventSources() *schema.Table {
 		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_EventSource.html`,
 		Resolver:    fetchEventSources,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "events"),
-		Transform:   transformers.TransformWithStruct(&types.EventSource{}),
+		Transform:   client.TransformWithStruct(&types.EventSource{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

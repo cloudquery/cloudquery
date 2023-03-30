@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Plans() *schema.Table {
@@ -15,7 +14,7 @@ func Plans() *schema.Table {
 		Resolver:            fetchBackupPlans,
 		PreResourceResolver: getPlan,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "backup"),
-		Transform:           transformers.TransformWithStruct(&backup.GetBackupPlanOutput{}),
+		Transform:           client.TransformWithStruct(&backup.GetBackupPlanOutput{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

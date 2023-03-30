@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ClusterSnapshots() *schema.Table {
@@ -13,7 +12,7 @@ func ClusterSnapshots() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-snapshots.html#DescribeDBClusterSnapshots`,
 		Resolver:    fetchNeptuneClusterSnapshots,
-		Transform:   transformers.TransformWithStruct(&types.DBClusterSnapshot{}),
+		Transform:   client.TransformWithStruct(&types.DBClusterSnapshot{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "neptune"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

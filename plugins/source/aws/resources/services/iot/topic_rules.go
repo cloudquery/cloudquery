@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func TopicRules() *schema.Table {
@@ -13,7 +12,7 @@ func TopicRules() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_GetTopicRule.html`,
 		Resolver:    fetchIotTopicRules,
-		Transform:   transformers.TransformWithStruct(&iot.GetTopicRuleOutput{}),
+		Transform:   client.TransformWithStruct(&iot.GetTopicRuleOutput{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

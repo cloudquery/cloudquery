@@ -17,7 +17,7 @@ func detectorFilters() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetFilter.html`,
 		Resolver:            fetchDetectorFilters,
 		PreResourceResolver: getDetectorFilter,
-		Transform:           transformers.TransformWithStruct(&guardduty.GetFilterOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
+		Transform:           client.TransformWithStruct(&guardduty.GetFilterOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
 			{

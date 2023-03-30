@@ -13,7 +13,7 @@ func Resources() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/ram/latest/APIReference/API_Resource.html`,
 		Resolver:    fetchRamResources,
-		Transform:   transformers.TransformWithStruct(&types.Resource{}, transformers.WithPrimaryKeys("Arn", "ResourceShareArn")),
+		Transform:   client.TransformWithStruct(&types.Resource{}, transformers.WithPrimaryKeys("Arn", "ResourceShareArn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ram"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func LogGroups() *schema.Table {
@@ -17,7 +16,7 @@ func LogGroups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_LogGroup.html`,
 		Resolver:    fetchCloudwatchlogsLogGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "logs"),
-		Transform:   transformers.TransformWithStruct(&types.LogGroup{}),
+		Transform:   client.TransformWithStruct(&types.LogGroup{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/backup/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func VaultRecoveryPoints() *schema.Table {
@@ -14,7 +13,7 @@ func VaultRecoveryPoints() *schema.Table {
 		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_RecoveryPointByBackupVault.html`,
 		Resolver:    fetchBackupVaultRecoveryPoints,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "backup"),
-		Transform:   transformers.TransformWithStruct(&types.RecoveryPointByBackupVault{}),
+		Transform:   client.TransformWithStruct(&types.RecoveryPointByBackupVault{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

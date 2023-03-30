@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ClusterParameters() *schema.Table {
@@ -14,7 +13,7 @@ func ClusterParameters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Parameter.html`,
 		Resolver:    fetchDocdbClusterParameters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
-		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
+		Transform:   client.TransformWithStruct(&types.Parameter{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

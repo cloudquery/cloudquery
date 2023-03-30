@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func UsagePlanKeys() *schema.Table {
@@ -14,7 +13,7 @@ func UsagePlanKeys() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_UsagePlanKey.html`,
 		Resolver:    fetchApigatewayUsagePlanKeys,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
-		Transform:   transformers.TransformWithStruct(&types.UsagePlanKey{}),
+		Transform:   client.TransformWithStruct(&types.UsagePlanKey{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),

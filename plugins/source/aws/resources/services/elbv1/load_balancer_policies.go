@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func LoadBalancerPolicies() *schema.Table {
@@ -14,7 +13,7 @@ func LoadBalancerPolicies() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/2012-06-01/APIReference/API_PolicyDescription.html`,
 		Resolver:    fetchElbv1LoadBalancerPolicies,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
-		Transform:   transformers.TransformWithStruct(&types.PolicyDescription{}),
+		Transform:   client.TransformWithStruct(&types.PolicyDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Domains() *schema.Table {
@@ -15,7 +14,7 @@ func Domains() *schema.Table {
 		Resolver:            fetchElasticsearchDomains,
 		PreResourceResolver: getDomain,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "es"),
-		Transform:           transformers.TransformWithStruct(&types.ElasticsearchDomainStatus{}),
+		Transform:           client.TransformWithStruct(&types.ElasticsearchDomainStatus{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

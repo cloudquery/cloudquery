@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Environments() *schema.Table {
@@ -14,7 +13,7 @@ func Environments() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/APIReference/API_EnvironmentDescription.html`,
 		Resolver:    fetchElasticbeanstalkEnvironments,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticbeanstalk"),
-		Transform:   transformers.TransformWithStruct(&types.EnvironmentDescription{}),
+		Transform:   client.TransformWithStruct(&types.EnvironmentDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{

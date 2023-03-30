@@ -8,7 +8,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation/models"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func stackSetOperationResults() *schema.Table {
@@ -19,7 +18,7 @@ func stackSetOperationResults() *schema.Table {
 The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from.`,
 		Resolver:  fetchCloudformationStackSetOperationResults,
 		Multiplex: client.ServiceAccountRegionMultiplexer(table_name, "cloudformation"),
-		Transform: transformers.TransformWithStruct(&types.StackSetOperationResultSummary{}),
+		Transform: client.TransformWithStruct(&types.StackSetOperationResultSummary{}),
 		Columns: []schema.Column{
 			{
 				Name:     "request_account_id",

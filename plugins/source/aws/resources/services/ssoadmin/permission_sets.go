@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func PermissionSets() *schema.Table {
@@ -14,7 +13,7 @@ func PermissionSets() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_PermissionSet.html`,
 		Resolver:            fetchSsoadminPermissionSets,
 		PreResourceResolver: getSsoadminPermissionSet,
-		Transform:           transformers.TransformWithStruct(&types.PermissionSet{}),
+		Transform:           client.TransformWithStruct(&types.PermissionSet{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "identitystore"),
 		Columns: []schema.Column{
 			{

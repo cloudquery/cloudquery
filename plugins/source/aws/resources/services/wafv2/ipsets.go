@@ -4,7 +4,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Ipsets() *schema.Table {
@@ -13,7 +12,7 @@ func Ipsets() *schema.Table {
 		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/waf/latest/APIReference/API_IPSet.html`,
 		Resolver:            fetchWafv2Ipsets,
-		Transform:           transformers.TransformWithStruct(&types.IPSet{}),
+		Transform:           client.TransformWithStruct(&types.IPSet{}),
 		PreResourceResolver: getIpset,
 		Multiplex:           client.ServiceAccountRegionScopeMultiplexer(tableName, "waf-regional"),
 		Columns: []schema.Column{

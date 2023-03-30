@@ -22,7 +22,12 @@ This table depends on [aws_ecr_repository_images](aws_ecr_repository_images).
 |region|String|
 |image_tag|String|
 |image_digest|String|
-|image_scan_findings|JSON|
-|image_scan_status|JSON|
+|enhanced_findings|JSON|
+|finding_severity_counts|JSON|
+|findings|JSON|
+|image_scan_completed_at|Timestamp|
+|vulnerability_source_updated_at|Timestamp|
+|description|String|
+|status|String|
 |registry_id|String|
 |repository_name|String|

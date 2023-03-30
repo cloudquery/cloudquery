@@ -17,7 +17,7 @@ func documentVersions() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DocumentVersionInfo.html`,
 		Resolver:    fetchSsmDocumentVersions,
-		Transform:   transformers.TransformWithStruct(&types.DocumentVersionInfo{}, transformers.WithPrimaryKeys("DocumentVersion")),
+		Transform:   client.TransformWithStruct(&types.DocumentVersionInfo{}, transformers.WithPrimaryKeys("DocumentVersion")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
