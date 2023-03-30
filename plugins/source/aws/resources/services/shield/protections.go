@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/shield/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Protections() *schema.Table {
@@ -12,7 +13,7 @@ func Protections() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_Protection.html`,
 		Resolver:    fetchShieldProtections,
-		Transform:   client.TransformWithStruct(&types.Protection{}),
+		Transform:   transformers.TransformWithStruct(&types.Protection{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "shield"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

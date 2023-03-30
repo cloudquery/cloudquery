@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func detectorMembers() *schema.Table {
@@ -17,7 +18,10 @@ func detectorMembers() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html`,
 		Resolver:    fetchDetectorMembers,
-		Transform:   client.TransformWithStruct(&types.Member{}),
+		Transform: transformers.TransformWithStruct(&types.Member{},
+			transformers.WithTypeTransformer(client.TimestampTypeTransformer),
+			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
+		),
 		Columns: []schema.Column{
 			client.DefaultRegionColumn(false),
 			{

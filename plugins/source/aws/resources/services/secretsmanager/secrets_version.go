@@ -13,7 +13,7 @@ func SecretVersions() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecretVersionIds.html`,
 		Resolver:    fetchSecretsmanagerSecretsVersions,
-		Transform:   client.TransformWithStruct(&types.SecretVersionsListEntry{}, transformers.WithPrimaryKeys("VersionId")),
+		Transform:   transformers.TransformWithStruct(&types.SecretVersionsListEntry{}, transformers.WithPrimaryKeys("VersionId")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "secretsmanager"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -16,7 +16,10 @@ func clusterBacktracks() *schema.Table {
 		Name:        "aws_rds_cluster_backtracks",
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DescribeDBClusterBacktracks.html`,
 		Resolver:    fetchRdsClusterBacktracks,
-		Transform:   client.TransformWithStruct(&types.DBClusterBacktrack{}, transformers.WithPrimaryKeys("BacktrackIdentifier")),
+		Transform: transformers.TransformWithStruct(
+			&types.DBClusterBacktrack{},
+			transformers.WithPrimaryKeys("BacktrackIdentifier"),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

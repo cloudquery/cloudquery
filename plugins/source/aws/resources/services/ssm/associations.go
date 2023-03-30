@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Associations() *schema.Table {
@@ -12,7 +13,7 @@ func Associations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_Association.html`,
 		Resolver:    fetchSsmAssociations,
-		Transform:   client.TransformWithStruct(&types.Association{}),
+		Transform:   transformers.TransformWithStruct(&types.Association{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ssm"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

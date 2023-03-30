@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Backups() *schema.Table {
@@ -12,7 +13,7 @@ func Backups() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_Backup.html`,
 		Resolver:    fetchFsxBackups,
-		Transform:   client.TransformWithStruct(&types.Backup{}),
+		Transform:   transformers.TransformWithStruct(&types.Backup{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "fsx"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

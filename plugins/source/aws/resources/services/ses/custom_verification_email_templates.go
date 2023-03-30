@@ -14,7 +14,8 @@ func CustomVerificationEmailTemplates() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetCustomVerificationEmailTemplate.html`,
 		Resolver:            fetchSesCustomVerificationEmailTemplates,
 		PreResourceResolver: getCustomVerificationEmailTemplate,
-		Transform: client.TransformWithStruct(&sesv2.GetCustomVerificationEmailTemplateOutput{},
+		Transform: transformers.TransformWithStruct(
+			&sesv2.GetCustomVerificationEmailTemplateOutput{},
 			transformers.WithSkipFields("ResultMetadata"),
 			transformers.WithNameTransformer(client.CreateTrimPrefixTransformer("template_")),
 		),

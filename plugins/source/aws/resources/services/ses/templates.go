@@ -4,6 +4,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses/models"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Templates() *schema.Table {
@@ -13,7 +14,7 @@ func Templates() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailTemplate.html`,
 		Resolver:            fetchSesTemplates,
 		PreResourceResolver: getTemplate,
-		Transform:           client.TransformWithStruct(&models.Template{}),
+		Transform:           transformers.TransformWithStruct(&models.Template{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "email"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

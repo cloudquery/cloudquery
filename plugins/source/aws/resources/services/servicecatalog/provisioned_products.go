@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ProvisionedProducts() *schema.Table {
@@ -12,7 +13,7 @@ func ProvisionedProducts() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProvisionedProductAttribute.html`,
 		Resolver:    fetchServicecatalogProvisionedProducts,
-		Transform:   client.TransformWithStruct(&types.ProvisionedProductAttribute{}),
+		Transform:   transformers.TransformWithStruct(&types.ProvisionedProductAttribute{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

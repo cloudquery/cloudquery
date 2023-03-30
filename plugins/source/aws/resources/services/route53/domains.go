@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Domains() *schema.Table {
@@ -13,7 +14,7 @@ func Domains() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_GetDomainDetail.html`,
 		Resolver:            fetchRoute53Domains,
 		PreResourceResolver: getDomain,
-		Transform:           client.TransformWithStruct(&route53domains.GetDomainDetailOutput{}),
+		Transform:           transformers.TransformWithStruct(&route53domains.GetDomainDetailOutput{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "route53domains"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ReservedInstances() *schema.Table {
@@ -15,7 +16,7 @@ func ReservedInstances() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_ReservedDBInstance.html`,
 		Resolver:    fetchRdsReservedInstances,
-		Transform:   client.TransformWithStruct(&types.ReservedDBInstance{}),
+		Transform:   transformers.TransformWithStruct(&types.ReservedDBInstance{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

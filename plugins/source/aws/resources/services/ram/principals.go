@@ -13,8 +13,11 @@ func Principals() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/ram/latest/APIReference/API_Principal.html`,
 		Resolver:    fetchRamPrincipals,
-		Transform:   client.TransformWithStruct(&types.Principal{}, transformers.WithPrimaryKeys("Id", "ResourceShareArn")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ram"),
+		Transform: transformers.TransformWithStruct(
+			&types.Principal{},
+			transformers.WithPrimaryKeys("Id", "ResourceShareArn"),
+		),
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "ram"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

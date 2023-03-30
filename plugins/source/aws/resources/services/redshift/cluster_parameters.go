@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func clusterParameters() *schema.Table {
@@ -16,7 +17,7 @@ func clusterParameters() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_Parameter.html`,
 		Resolver:    fetchClusterParameters,
-		Transform:   client.TransformWithStruct(&types.Parameter{}),
+		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

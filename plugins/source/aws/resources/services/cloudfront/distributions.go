@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Distributions() *schema.Table {
@@ -14,7 +15,7 @@ func Distributions() *schema.Table {
 		Resolver:            fetchCloudfrontDistributions,
 		PreResourceResolver: getDistribution,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "cloudfront"),
-		Transform:           client.TransformWithStruct(&types.Distribution{}),
+		Transform:           transformers.TransformWithStruct(&types.Distribution{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

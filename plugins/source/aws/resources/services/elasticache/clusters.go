@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticache/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Clusters() *schema.Table {
@@ -13,7 +14,7 @@ func Clusters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheCluster.html`,
 		Resolver:    fetchElasticacheClusters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
-		Transform:   client.TransformWithStruct(&types.CacheCluster{}),
+		Transform:   transformers.TransformWithStruct(&types.CacheCluster{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

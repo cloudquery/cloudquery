@@ -17,7 +17,7 @@ func StateMachines() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeStateMachine.html`,
 		Resolver:            fetchStepfunctionsStateMachines,
 		PreResourceResolver: getStepFunction,
-		Transform:           client.TransformWithStruct(&sfn.DescribeStateMachineOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Transform:           transformers.TransformWithStruct(&sfn.DescribeStateMachineOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "states"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

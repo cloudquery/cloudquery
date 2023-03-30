@@ -18,7 +18,7 @@ func Plans() *schema.Table {
 		Description: `https://docs.aws.amazon.com/autoscaling/plans/APIReference/API_ScalingPlan.html`,
 		Resolver:    fetchPlans,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "autoscaling-plans"),
-		Transform:   client.TransformWithStruct(&types.ScalingPlan{}, transformers.WithPrimaryKeys("ScalingPlanName")),
+		Transform:   transformers.TransformWithStruct(&types.ScalingPlan{}, transformers.WithPrimaryKeys("ScalingPlanName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func bucketLifecycles() *schema.Table {
@@ -15,7 +16,7 @@ func bucketLifecycles() *schema.Table {
 		Name:        "aws_s3_bucket_lifecycles",
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_LifecycleRule.html`,
 		Resolver:    fetchS3BucketLifecycles,
-		Transform:   client.TransformWithStruct(&types.LifecycleRule{}),
+		Transform:   transformers.TransformWithStruct(&types.LifecycleRule{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

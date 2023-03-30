@@ -16,7 +16,7 @@ func eventBusRules() *schema.Table {
 		Name:        "aws_eventbridge_event_bus_rules",
 		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Rule.html`,
 		Resolver:    fetchEventBusRules,
-		Transform:   client.TransformWithStruct(&types.Rule{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.Rule{}, transformers.WithPrimaryKeys("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

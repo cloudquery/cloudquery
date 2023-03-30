@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/identitystore/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func GroupMemberships() *schema.Table {
@@ -12,7 +13,7 @@ func GroupMemberships() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/singlesignon/latest/IdentityStoreAPIReference/API_GroupMembership.html`,
 		Resolver:    fetchIdentitystoreGroupMemberships,
-		Transform:   client.TransformWithStruct(&types.GroupMembership{}),
+		Transform:   transformers.TransformWithStruct(&types.GroupMembership{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "identitystore"),
 		Columns: []schema.Column{
 			{

@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sfn/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Activities() *schema.Table {
@@ -15,7 +16,7 @@ func Activities() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/step-functions/latest/apireference/API_ListActivities.html`,
 		Resolver:    fetchStepfunctionsActivities,
-		Transform:   client.TransformWithStruct(&types.ActivityListItem{}),
+		Transform:   transformers.TransformWithStruct(&types.ActivityListItem{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "states"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func TrailEventSelectors() *schema.Table {
@@ -13,7 +14,7 @@ func TrailEventSelectors() *schema.Table {
 		Description: `https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_EventSelector.html`,
 		Resolver:    fetchCloudtrailTrailEventSelectors,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "cloudtrail"),
-		Transform:   client.TransformWithStruct(&types.EventSelector{}),
+		Transform:   transformers.TransformWithStruct(&types.EventSelector{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

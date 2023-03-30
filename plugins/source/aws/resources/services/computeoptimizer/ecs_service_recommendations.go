@@ -18,7 +18,7 @@ func EcsServiceRecommendations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/compute-optimizer/latest/APIReference/API_ECSServiceRecommendation.html`,
 		Resolver:    fetchEcsServiceRecommendations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "compute-optimizer"),
-		Transform:   client.TransformWithStruct(&types.ECSServiceRecommendation{}, transformers.WithPrimaryKeys("ServiceArn")),
+		Transform:   transformers.TransformWithStruct(&types.ECSServiceRecommendation{}, transformers.WithPrimaryKeys("ServiceArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 		},

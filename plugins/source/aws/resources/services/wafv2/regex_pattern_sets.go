@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func RegexPatternSets() *schema.Table {
@@ -13,7 +14,7 @@ func RegexPatternSets() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/waf/latest/APIReference/API_RegexPatternSet.html`,
 		Resolver:            fetchWafv2RegexPatternSets,
 		PreResourceResolver: getRegexPatternSet,
-		Transform:           client.TransformWithStruct(&types.RegexPatternSet{}),
+		Transform:           transformers.TransformWithStruct(&types.RegexPatternSet{}),
 		Multiplex:           client.ServiceAccountRegionScopeMultiplexer(tableName, "waf-regional"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

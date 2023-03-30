@@ -19,7 +19,7 @@ func TrustedAdvisorChecks() *schema.Table {
 		Name:        "aws_support_trusted_advisor_checks",
 		Description: `https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeTrustedAdvisorChecks.html`,
 		Resolver:    fetchTrustedAdvisorChecks,
-		Transform:   client.TransformWithStruct(&types.TrustedAdvisorCheckDescription{}, transformers.WithPrimaryKeys("Id")),
+		Transform:   transformers.TransformWithStruct(&types.TrustedAdvisorCheckDescription{}, transformers.WithPrimaryKeys("Id")),
 		Multiplex:   client.ServiceAccountRegionsLanguageCodeMultiplex(tableName, "support", checksSupportedLanguageCodes),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

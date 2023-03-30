@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodbstreams/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Streams() *schema.Table {
@@ -18,7 +19,7 @@ func Streams() *schema.Table {
 		Resolver:            listStreams,
 		PreResourceResolver: describeStream,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "streams.dynamodb"),
-		Transform:           client.TransformWithStruct(&types.StreamDescription{}),
+		Transform:           transformers.TransformWithStruct(&types.StreamDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

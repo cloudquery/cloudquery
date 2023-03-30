@@ -14,7 +14,7 @@ func restApiResourceMethodIntegrations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Integration.html`,
 		Resolver:    fetchApigatewayRestApiResourceMethodIntegration,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
-		Transform:   client.TransformWithStruct(&apigateway.GetIntegrationOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Transform:   transformers.TransformWithStruct(&apigateway.GetIntegrationOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),

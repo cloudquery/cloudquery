@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Things() *schema.Table {
@@ -12,7 +13,7 @@ func Things() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_ThingAttribute.html`,
 		Resolver:    fetchIotThings,
-		Transform:   client.TransformWithStruct(&types.ThingAttribute{}),
+		Transform:   transformers.TransformWithStruct(&types.ThingAttribute{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

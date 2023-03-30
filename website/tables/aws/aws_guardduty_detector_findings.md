@@ -21,14 +21,14 @@ This table depends on [aws_guardduty_detectors](aws_guardduty_detectors).
 |detector_arn|String|
 |account_id|String|
 |arn (PK)|String|
-|created_at|Timestamp|
+|created_at|String|
 |id|String|
 |region|String|
 |resource|JSON|
 |schema_version|String|
 |severity|Float|
 |type|String|
-|updated_at|Timestamp|
+|updated_at|String|
 |confidence|Float|
 |description|String|
 |partition|String|

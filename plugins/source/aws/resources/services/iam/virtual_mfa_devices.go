@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func VirtualMfaDevices() *schema.Table {
@@ -12,7 +13,7 @@ func VirtualMfaDevices() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_VirtualMFADevice.html`,
 		Resolver:    fetchIamVirtualMfaDevices,
-		Transform:   client.TransformWithStruct(&types.VirtualMFADevice{}),
+		Transform:   transformers.TransformWithStruct(&types.VirtualMFADevice{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

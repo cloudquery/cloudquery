@@ -13,7 +13,8 @@ func HostedZones() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_HostedZone.html`,
 		Resolver:    fetchRoute53HostedZones,
-		Transform: client.TransformWithStruct(&models.Route53HostedZoneWrapper{},
+		Transform: transformers.TransformWithStruct(
+			&models.Route53HostedZoneWrapper{},
 			transformers.WithUnwrapStructFields("HostedZone"),
 			transformers.WithNameTransformer(client.CreateReplaceTransformer(map[string]string{"vp_cs": "vpcs"})),
 		),

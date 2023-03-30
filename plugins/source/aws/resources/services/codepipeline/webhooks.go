@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Webhooks() *schema.Table {
@@ -13,7 +14,7 @@ func Webhooks() *schema.Table {
 		Description: `https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_ListWebhookItem.html`,
 		Resolver:    fetchCodepipelineWebhooks,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "codepipeline"),
-		Transform:   client.TransformWithStruct(&types.ListWebhookItem{}),
+		Transform:   transformers.TransformWithStruct(&types.ListWebhookItem{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

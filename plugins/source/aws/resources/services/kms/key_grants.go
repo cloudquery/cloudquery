@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func KeyGrants() *schema.Table {
@@ -12,7 +13,7 @@ func KeyGrants() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/kms/latest/APIReference/API_GrantListEntry.html`,
 		Resolver:    fetchKmsKeyGrants,
-		Transform:   client.TransformWithStruct(&types.GrantListEntry{}),
+		Transform:   transformers.TransformWithStruct(&types.GrantListEntry{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "kms"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

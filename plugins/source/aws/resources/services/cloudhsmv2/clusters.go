@@ -14,7 +14,7 @@ func Clusters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_Cluster.html`,
 		Resolver:    fetchCloudhsmv2Clusters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "cloudhsmv2"),
-		Transform:   client.TransformWithStruct(&types.Cluster{}, transformers.WithSkipFields("TagList")),
+		Transform:   transformers.TransformWithStruct(&types.Cluster{}, transformers.WithSkipFields("TagList")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

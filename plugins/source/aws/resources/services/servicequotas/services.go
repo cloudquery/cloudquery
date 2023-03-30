@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Services() *schema.Table {
@@ -12,7 +13,7 @@ func Services() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceInfo.html`,
 		Resolver:    fetchServicequotasServices,
-		Transform:   client.TransformWithStruct(&types.ServiceInfo{}),
+		Transform:   transformers.TransformWithStruct(&types.ServiceInfo{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "servicequotas"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

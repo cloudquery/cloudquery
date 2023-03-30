@@ -17,7 +17,7 @@ func Cases() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeCases.html`,
 		Resolver:    fetchCases,
-		Transform:   client.TransformWithStruct(&types.CaseDetails{}, transformers.WithPrimaryKeys("CaseId")),
+		Transform:   transformers.TransformWithStruct(&types.CaseDetails{}, transformers.WithPrimaryKeys("CaseId")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "support"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

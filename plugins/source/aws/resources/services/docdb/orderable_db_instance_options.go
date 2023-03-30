@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func OrderableDbInstanceOptions() *schema.Table {
@@ -13,7 +14,7 @@ func OrderableDbInstanceOptions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_OrderableDBInstanceOption.html`,
 		Resolver:    fetchDocdbOrderableDbInstanceOptions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
-		Transform:   client.TransformWithStruct(&types.OrderableDBInstanceOption{}),
+		Transform:   transformers.TransformWithStruct(&types.OrderableDBInstanceOption{}),
 		Columns:     []schema.Column{},
 	}
 }

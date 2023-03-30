@@ -18,7 +18,7 @@ func ScalingActivities() *schema.Table {
 		Description: `https://docs.aws.amazon.com/autoscaling/application/APIReference/API_ScalingActivity.html`,
 		Resolver:    fetchScalingActivities,
 		Multiplex:   client.ServiceAccountRegionNamespaceMultiplexer(tableName, "application-autoscaling"),
-		Transform:   client.TransformWithStruct(&types.ScalingActivity{}, transformers.WithPrimaryKeys("ResourceId")),
+		Transform:   transformers.TransformWithStruct(&types.ScalingActivity{}, transformers.WithPrimaryKeys("ResourceId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

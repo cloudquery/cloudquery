@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func DataCatalogDatabases() *schema.Table {
@@ -13,7 +14,7 @@ func DataCatalogDatabases() *schema.Table {
 		Description: `https://docs.aws.amazon.com/athena/latest/APIReference/API_Database.html`,
 		Resolver:    fetchAthenaDataCatalogDatabases,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "athena"),
-		Transform:   client.TransformWithStruct(&types.Database{}),
+		Transform:   transformers.TransformWithStruct(&types.Database{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

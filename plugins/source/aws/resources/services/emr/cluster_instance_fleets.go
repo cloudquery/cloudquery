@@ -14,7 +14,7 @@ func clusterInstanceFleets() *schema.Table {
 		Description: `https://docs.aws.amazon.com/emr/latest/APIReference/API_InstanceFleet.html`,
 		Resolver:    fetchClusterInstanceFleets,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticmapreduce"),
-		Transform:   client.TransformWithStruct(&types.InstanceFleet{}, transformers.WithPrimaryKeys("Id")),
+		Transform:   transformers.TransformWithStruct(&types.InstanceFleet{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

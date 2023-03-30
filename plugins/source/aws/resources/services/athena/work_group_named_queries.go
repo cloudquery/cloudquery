@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func WorkGroupNamedQueries() *schema.Table {
@@ -14,7 +15,7 @@ func WorkGroupNamedQueries() *schema.Table {
 		Resolver:            fetchAthenaWorkGroupNamedQueries,
 		PreResourceResolver: getWorkGroupNamedQuery,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "athena"),
-		Transform:           client.TransformWithStruct(&types.NamedQuery{}),
+		Transform:           transformers.TransformWithStruct(&types.NamedQuery{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

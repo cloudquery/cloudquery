@@ -20,7 +20,7 @@ func SeverityLevels() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeSeverityLevels.html`,
 		Resolver:    fetchSeverityLevels,
-		Transform:   client.TransformWithStruct(&types.SeverityLevel{}, transformers.WithPrimaryKeys("Code")),
+		Transform:   transformers.TransformWithStruct(&types.SeverityLevel{}, transformers.WithPrimaryKeys("Code")),
 		Multiplex:   client.ServiceAccountRegionsLanguageCodeMultiplex(tableName, "support", severitySupportedLanguageCodes),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

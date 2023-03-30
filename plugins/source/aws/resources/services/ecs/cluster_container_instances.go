@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ClusterContainerInstances() *schema.Table {
@@ -13,7 +14,7 @@ func ClusterContainerInstances() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerInstance.html`,
 		Resolver:    fetchEcsClusterContainerInstances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ecs"),
-		Transform:   client.TransformWithStruct(&types.ContainerInstance{}),
+		Transform:   transformers.TransformWithStruct(&types.ContainerInstance{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

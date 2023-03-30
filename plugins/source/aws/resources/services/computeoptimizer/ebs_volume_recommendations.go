@@ -18,7 +18,7 @@ func EbsVolumeRecommendations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/compute-optimizer/latest/APIReference/API_VolumeRecommendation.html`,
 		Resolver:    fetchEbsVolumeRecommendations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "compute-optimizer"),
-		Transform:   client.TransformWithStruct(&types.VolumeRecommendation{}, transformers.WithPrimaryKeys("VolumeArn")),
+		Transform:   transformers.TransformWithStruct(&types.VolumeRecommendation{}, transformers.WithPrimaryKeys("VolumeArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 		},

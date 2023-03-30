@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func HostedZoneQueryLoggingConfigs() *schema.Table {
@@ -12,7 +13,7 @@ func HostedZoneQueryLoggingConfigs() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_QueryLoggingConfig.html`,
 		Resolver:    fetchRoute53HostedZoneQueryLoggingConfigs,
-		Transform:   client.TransformWithStruct(&types.QueryLoggingConfig{}),
+		Transform:   transformers.TransformWithStruct(&types.QueryLoggingConfig{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

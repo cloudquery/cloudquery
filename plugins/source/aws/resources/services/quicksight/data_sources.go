@@ -13,7 +13,7 @@ func DataSources() *schema.Table {
 		Name:        tableName,
 		Description: "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_DataSource.html",
 		Resolver:    fetchQuicksightDataSources,
-		Transform: client.TransformWithStruct(&types.DataSource{},
+		Transform: transformers.TransformWithStruct(&types.DataSource{},
 			transformers.WithPrimaryKeys("Arn"),
 			transformers.WithSkipFields("AlternateDataSourceParameters"),
 		),

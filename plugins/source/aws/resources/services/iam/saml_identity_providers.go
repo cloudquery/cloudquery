@@ -14,7 +14,8 @@ func SamlIdentityProviders() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_SAMLProviderListEntry.html`,
 		Resolver:            fetchIamSamlIdentityProviders,
 		PreResourceResolver: getSamlIdentityProvider,
-		Transform: client.TransformWithStruct(&models.IAMSAMLIdentityProviderWrapper{},
+		Transform: transformers.TransformWithStruct(
+			&models.IAMSAMLIdentityProviderWrapper{},
 			transformers.WithUnwrapAllEmbeddedStructs(),
 			transformers.WithSkipFields("ResultMetadata"),
 		),

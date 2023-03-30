@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Databases() *schema.Table {
@@ -12,7 +13,7 @@ func Databases() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_Database.html`,
 		Resolver:    fetchGlueDatabases,
-		Transform:   client.TransformWithStruct(&types.Database{}),
+		Transform:   transformers.TransformWithStruct(&types.Database{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

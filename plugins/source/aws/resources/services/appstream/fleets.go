@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Fleets() *schema.Table {
@@ -13,7 +14,7 @@ func Fleets() *schema.Table {
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Fleet.html`,
 		Resolver:    fetchAppstreamFleets,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "appstream2"),
-		Transform:   client.TransformWithStruct(&types.Fleet{}),
+		Transform:   transformers.TransformWithStruct(&types.Fleet{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

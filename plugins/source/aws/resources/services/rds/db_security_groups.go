@@ -13,7 +13,8 @@ func DbSecurityGroups() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSecurityGroup.html`,
 		Resolver:    fetchRdsDbSecurityGroups,
-		Transform: client.TransformWithStruct(&types.DBSecurityGroup{},
+		Transform: transformers.TransformWithStruct(
+			&types.DBSecurityGroup{},
 			transformers.WithNameTransformer(client.CreateReplaceTransformer(map[string]string{"e_c2": "ec2"})),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "rds"),

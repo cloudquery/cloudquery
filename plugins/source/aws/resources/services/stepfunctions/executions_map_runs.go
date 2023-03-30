@@ -17,7 +17,7 @@ func mapRuns() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeMapRun.html`,
 		Resolver:            fetchStepfunctionsMapRuns,
 		PreResourceResolver: getMapRun,
-		Transform:           client.TransformWithStruct(&sfn.DescribeMapRunOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Transform:           transformers.TransformWithStruct(&sfn.DescribeMapRunOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "states"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -18,7 +18,7 @@ func ScalableTargets() *schema.Table {
 		Description: `https://docs.aws.amazon.com/autoscaling/application/APIReference/API_ScalableTarget.html`,
 		Resolver:    fetchScalableTargets,
 		Multiplex:   client.ServiceAccountRegionNamespaceMultiplexer(tableName, "application-autoscaling"),
-		Transform:   client.TransformWithStruct(&types.ScalableTarget{}, transformers.WithPrimaryKeys("ResourceId")),
+		Transform:   transformers.TransformWithStruct(&types.ScalableTarget{}, transformers.WithPrimaryKeys("ResourceId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

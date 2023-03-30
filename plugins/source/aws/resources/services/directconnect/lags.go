@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Lags() *schema.Table {
@@ -13,7 +14,7 @@ func Lags() *schema.Table {
 		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Lag.html`,
 		Resolver:    fetchDirectconnectLags,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "directconnect"),
-		Transform:   client.TransformWithStruct(&types.Lag{}),
+		Transform:   transformers.TransformWithStruct(&types.Lag{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

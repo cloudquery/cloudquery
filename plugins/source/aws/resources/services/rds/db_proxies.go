@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func DbProxies() *schema.Table {
@@ -12,7 +13,7 @@ func DbProxies() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBProxy.html`,
 		Resolver:    fetchDbProxies,
-		Transform:   client.TransformWithStruct(&types.DBProxy{}),
+		Transform:   transformers.TransformWithStruct(&types.DBProxy{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

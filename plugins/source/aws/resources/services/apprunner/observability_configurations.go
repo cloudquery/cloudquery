@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apprunner/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ObservabilityConfigurations() *schema.Table {
@@ -14,7 +15,7 @@ func ObservabilityConfigurations() *schema.Table {
 		Resolver:            fetchApprunnerObservabilityConfigurations,
 		PreResourceResolver: getObservabilityConfiguration,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "apprunner"),
-		Transform:           client.TransformWithStruct(&types.ObservabilityConfiguration{}),
+		Transform:           transformers.TransformWithStruct(&types.ObservabilityConfiguration{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

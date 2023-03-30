@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func VirtualGateways() *schema.Table {
@@ -13,7 +14,7 @@ func VirtualGateways() *schema.Table {
 		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_VirtualGateway.html`,
 		Resolver:    fetchDirectconnectVirtualGateways,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "directconnect"),
-		Transform:   client.TransformWithStruct(&types.VirtualGateway{}),
+		Transform:   transformers.TransformWithStruct(&types.VirtualGateway{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

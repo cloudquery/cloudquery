@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func SubscribedRuleGroups() *schema.Table {
@@ -12,7 +13,7 @@ func SubscribedRuleGroups() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_SubscribedRuleGroupSummary.html`,
 		Resolver:    fetchWafSubscribedRuleGroups,
-		Transform:   client.TransformWithStruct(&types.SubscribedRuleGroupSummary{}),
+		Transform:   transformers.TransformWithStruct(&types.SubscribedRuleGroupSummary{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "waf"),
 		Columns: []schema.Column{
 			{

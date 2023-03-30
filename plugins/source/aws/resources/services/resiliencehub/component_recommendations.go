@@ -13,7 +13,7 @@ func appComponentRecommendations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_ComponentRecommendation.html`,
 		Resolver:    fetchComponentRecommendations,
-		Transform:   client.TransformWithStruct(&types.ComponentRecommendation{}, transformers.WithPrimaryKeys("AppComponentName")),
+		Transform:   transformers.TransformWithStruct(&types.ComponentRecommendation{}, transformers.WithPrimaryKeys("AppComponentName")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
 		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, assessmentARN},
 	}

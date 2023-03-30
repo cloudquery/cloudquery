@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/golang/mock/gomock"
 )
 
@@ -18,7 +19,7 @@ func communications() *schema.Table {
 		Name:        "aws_support_case_communications",
 		Description: `https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeCommunications.html`,
 		Resolver:    fetchCommunications,
-		Transform:   client.TransformWithStruct(&types.Communication{}),
+		Transform:   transformers.TransformWithStruct(&types.Communication{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 		},

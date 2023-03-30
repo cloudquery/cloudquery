@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func RuleGroups() *schema.Table {
@@ -12,7 +13,7 @@ func RuleGroups() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_RuleGroup.html`,
 		Resolver:    fetchWafregionalRuleGroups,
-		Transform:   client.TransformWithStruct(&types.RuleGroup{}),
+		Transform:   transformers.TransformWithStruct(&types.RuleGroup{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "waf-regional"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

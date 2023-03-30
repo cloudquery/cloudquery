@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Users() *schema.Table {
@@ -13,7 +14,7 @@ func Users() *schema.Table {
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_User.html`,
 		Resolver:    fetchAppstreamUsers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "appstream2"),
-		Transform:   client.TransformWithStruct(&types.User{}),
+		Transform:   transformers.TransformWithStruct(&types.User{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

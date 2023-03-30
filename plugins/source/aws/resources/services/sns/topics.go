@@ -4,6 +4,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns/models"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Topics() *schema.Table {
@@ -13,7 +14,7 @@ func Topics() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/sns/latest/api/API_GetTopicAttributes.html`,
 		Resolver:            fetchSnsTopics,
 		PreResourceResolver: getTopic,
-		Transform:           client.TransformWithStruct(&models.Topic{}),
+		Transform:           transformers.TransformWithStruct(&models.Topic{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "sns"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func DbParameterGroups() *schema.Table {
@@ -12,7 +13,7 @@ func DbParameterGroups() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBParameterGroup.html`,
 		Resolver:    fetchRdsDbParameterGroups,
-		Transform:   client.TransformWithStruct(&types.DBParameterGroup{}),
+		Transform:   transformers.TransformWithStruct(&types.DBParameterGroup{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

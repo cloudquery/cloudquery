@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func DataShares() *schema.Table {
@@ -16,7 +17,7 @@ func DataShares() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_DataShare.html`,
 		Resolver:    fetchDataShares,
-		Transform:   client.TransformWithStruct(&types.DataShare{}),
+		Transform:   transformers.TransformWithStruct(&types.DataShare{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

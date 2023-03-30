@@ -16,7 +16,8 @@ func Organizations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html`,
 		Resolver:    fetchOrganizationsOrganizations,
-		Transform: client.TransformWithStruct(&types.Organization{},
+		Transform: transformers.TransformWithStruct(
+			&types.Organization{},
 			transformers.WithSkipFields(
 				"AvailablePolicyTypes", // deprecated and misleading field according to docs
 			),

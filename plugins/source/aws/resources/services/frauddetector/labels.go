@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Labels() *schema.Table {
@@ -14,7 +15,7 @@ func Labels() *schema.Table {
 		Description: `https://docs.aws.amazon.com/frauddetector/latest/api/API_Label.html`,
 		Resolver:    fetchFrauddetectorLabels,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "frauddetector"),
-		Transform:   client.TransformWithStruct(&types.Label{}),
+		Transform:   transformers.TransformWithStruct(&types.Label{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -17,7 +17,7 @@ func planResources() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/autoscaling/plans/APIReference/API_ScalingPlanResource.html`,
 		Resolver:    fetchPlanResources,
-		Transform:   client.TransformWithStruct(&types.ScalingPlanResource{}, transformers.WithPrimaryKeys("ScalingPlanName", "ResourceId")),
+		Transform:   transformers.TransformWithStruct(&types.ScalingPlanResource{}, transformers.WithPrimaryKeys("ScalingPlanName", "ResourceId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

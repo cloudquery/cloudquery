@@ -16,7 +16,7 @@ func DelegatedAdministrators() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_DelegatedAdministrator.html`,
 		Resolver:    fetchOrganizationsDelegatedAdmins,
-		Transform:   client.TransformWithStruct(&types.DelegatedAdministrator{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.DelegatedAdministrator{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

@@ -14,7 +14,7 @@ func FunctionAliases() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/lambda/latest/dg/API_AliasConfiguration.html`,
 		Resolver:            fetchLambdaFunctionAliases,
 		PreResourceResolver: getFunctionAliasURLConfig,
-		Transform:           client.TransformWithStruct(&models.AliasWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:           transformers.TransformWithStruct(&models.AliasWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

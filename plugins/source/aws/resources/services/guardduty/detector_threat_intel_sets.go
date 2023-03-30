@@ -18,7 +18,7 @@ func detectorThreatIntelSets() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetThreatIntelSet.html`,
 		Resolver:            fetchDetectorThreatIntelSets,
 		PreResourceResolver: getDetectorThreatIntelSet,
-		Transform:           client.TransformWithStruct(&guardduty.GetThreatIntelSetOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
+		Transform:           transformers.TransformWithStruct(&guardduty.GetThreatIntelSetOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
 			{

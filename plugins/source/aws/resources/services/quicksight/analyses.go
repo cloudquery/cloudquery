@@ -14,7 +14,7 @@ func Analyses() *schema.Table {
 		Description:         "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Analysis.html",
 		Resolver:            fetchQuicksightAnalyses,
 		PreResourceResolver: getAnalysis,
-		Transform:           client.TransformWithStruct(&types.Analysis{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:           transformers.TransformWithStruct(&types.Analysis{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "quicksight"),
 		Columns:             []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true), tagsCol},
 	}

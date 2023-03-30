@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func SubnetGroups() *schema.Table {
@@ -12,7 +13,7 @@ func SubnetGroups() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-subnets.html#DescribeDBSubnetGroups`,
 		Resolver:    fetchNeptuneSubnetGroups,
-		Transform:   client.TransformWithStruct(&types.DBSubnetGroup{}),
+		Transform:   transformers.TransformWithStruct(&types.DBSubnetGroup{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "neptune"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

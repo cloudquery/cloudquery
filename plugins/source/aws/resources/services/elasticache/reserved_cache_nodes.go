@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticache/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ReservedCacheNodes() *schema.Table {
@@ -13,7 +14,7 @@ func ReservedCacheNodes() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ReservedCacheNode.html`,
 		Resolver:    fetchElasticacheReservedCacheNodes,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
-		Transform:   client.TransformWithStruct(&types.ReservedCacheNode{}),
+		Transform:   transformers.TransformWithStruct(&types.ReservedCacheNode{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

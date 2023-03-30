@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func StorageVirtualMachines() *schema.Table {
@@ -12,7 +13,7 @@ func StorageVirtualMachines() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_StorageVirtualMachine.html`,
 		Resolver:    fetchFsxStorageVirtualMachines,
-		Transform:   client.TransformWithStruct(&types.StorageVirtualMachine{}),
+		Transform:   transformers.TransformWithStruct(&types.StorageVirtualMachine{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "fsx"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

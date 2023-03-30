@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eks/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func NodeGroups() *schema.Table {
@@ -14,7 +15,7 @@ func NodeGroups() *schema.Table {
 		Resolver:            fetchNodeGroups,
 		PreResourceResolver: getNodeGroup,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "eks"),
-		Transform:           client.TransformWithStruct(&types.Nodegroup{}),
+		Transform:           transformers.TransformWithStruct(&types.Nodegroup{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

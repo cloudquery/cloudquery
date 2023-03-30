@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func BrokerUsers() *schema.Table {
@@ -12,7 +13,7 @@ func BrokerUsers() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers-broker-id-users-username.html`,
 		Resolver:    fetchMqBrokerUsers,
-		Transform:   client.TransformWithStruct(&mq.DescribeUserOutput{}),
+		Transform:   transformers.TransformWithStruct(&mq.DescribeUserOutput{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "mq"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -14,7 +14,7 @@ func Trails() *schema.Table {
 		Description: `https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Trail.html`,
 		Resolver:    fetchCloudtrailTrails,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "cloudtrail"),
-		Transform:   client.TransformWithStruct(&models.CloudTrailWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:   transformers.TransformWithStruct(&models.CloudTrailWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

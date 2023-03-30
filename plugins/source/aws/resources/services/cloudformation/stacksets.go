@@ -19,7 +19,7 @@ func StackSets() *schema.Table {
 		Resolver:            fetchCloudformationStackSets,
 		PreResourceResolver: getStackSet,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(table_name, "cloudformation"),
-		Transform:           client.TransformWithStruct(&models.ExpandedStackSet{}, transformers.WithUnwrapStructFields("StackSet"), transformers.WithSkipFields("CallAs")),
+		Transform:           transformers.TransformWithStruct(&models.ExpandedStackSet{}, transformers.WithUnwrapStructFields("StackSet"), transformers.WithSkipFields("CallAs")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

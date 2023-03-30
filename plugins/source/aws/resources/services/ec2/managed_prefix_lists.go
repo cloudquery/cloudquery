@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ManagedPrefixLists() *schema.Table {
@@ -17,7 +18,7 @@ func ManagedPrefixLists() *schema.Table {
 The 'request_account_id' and 'request_region' columns are added to show the account_id and region of where the request was made from.`,
 		Resolver:  fetchEc2ManagedPrefixLists,
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform: client.TransformWithStruct(&types.ManagedPrefixList{}),
+		Transform: transformers.TransformWithStruct(&types.ManagedPrefixList{}),
 		Columns: []schema.Column{
 			{
 				Name:            "request_account_id",

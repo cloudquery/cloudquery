@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func GroupScalingPolicies() *schema.Table {
@@ -13,7 +14,7 @@ func GroupScalingPolicies() *schema.Table {
 		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScalingPolicy.html`,
 		Resolver:    fetchAutoscalingGroupScalingPolicies,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "autoscaling"),
-		Transform:   client.TransformWithStruct(&types.ScalingPolicy{}),
+		Transform:   transformers.TransformWithStruct(&types.ScalingPolicy{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

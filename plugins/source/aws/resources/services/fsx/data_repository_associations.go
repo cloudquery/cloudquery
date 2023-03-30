@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func DataRepositoryAssociations() *schema.Table {
@@ -12,7 +13,7 @@ func DataRepositoryAssociations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/fsx/latest/APIReference/API_DataRepositoryAssociation.html`,
 		Resolver:    fetchFsxDataRepositoryAssociations,
-		Transform:   client.TransformWithStruct(&types.DataRepositoryAssociation{}),
+		Transform:   transformers.TransformWithStruct(&types.DataRepositoryAssociation{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "fsx"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

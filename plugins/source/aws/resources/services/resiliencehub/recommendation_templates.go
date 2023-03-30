@@ -13,7 +13,7 @@ func recommendationTemplates() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_RecommendationTemplate.html`,
 		Resolver:    fetchRecommendationTemplates,
-		Transform:   client.TransformWithStruct(&types.RecommendationTemplate{}, transformers.WithPrimaryKeys("AppArn", "AssessmentArn")),
+		Transform:   transformers.TransformWithStruct(&types.RecommendationTemplate{}, transformers.WithPrimaryKeys("AppArn", "AssessmentArn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
 		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), arnColumn("RecommendationTemplateArn")},
 	}

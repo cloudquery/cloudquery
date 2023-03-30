@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/amp/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Workspaces() *schema.Table {
@@ -14,7 +15,7 @@ func Workspaces() *schema.Table {
 		Resolver:            fetchAmpWorkspaces,
 		PreResourceResolver: describeWorkspace,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "amp"),
-		Transform:           client.TransformWithStruct(&types.WorkspaceDescription{}),
+		Transform:           transformers.TransformWithStruct(&types.WorkspaceDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -19,7 +19,7 @@ func Replays() *schema.Table {
 		Resolver:            fetchReplays,
 		PreResourceResolver: getReplay,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "events"),
-		Transform:           client.TransformWithStruct(&eventbridge.DescribeReplayOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Transform:           transformers.TransformWithStruct(&eventbridge.DescribeReplayOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

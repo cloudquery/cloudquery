@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appsync/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func GraphqlApis() *schema.Table {
@@ -13,7 +14,7 @@ func GraphqlApis() *schema.Table {
 		Description: `https://docs.aws.amazon.com/appsync/latest/APIReference/API_GraphqlApi.html`,
 		Resolver:    fetchAppsyncGraphqlApis,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "appsync"),
-		Transform:   client.TransformWithStruct(&types.GraphqlApi{}),
+		Transform:   transformers.TransformWithStruct(&types.GraphqlApi{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

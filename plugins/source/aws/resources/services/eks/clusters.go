@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eks/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Clusters() *schema.Table {
@@ -14,7 +15,7 @@ func Clusters() *schema.Table {
 		Resolver:            fetchEksClusters,
 		PreResourceResolver: getEksCluster,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "eks"),
-		Transform:           client.TransformWithStruct(&types.Cluster{}),
+		Transform:           transformers.TransformWithStruct(&types.Cluster{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

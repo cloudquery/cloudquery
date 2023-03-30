@@ -14,7 +14,7 @@ func restApiResourceMethods() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Method.html`,
 		Resolver:    fetchApigatewayRestApiResourceMethods,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
-		Transform:   client.TransformWithStruct(&apigateway.GetMethodOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Transform:   transformers.TransformWithStruct(&apigateway.GetMethodOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),

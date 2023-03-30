@@ -17,7 +17,7 @@ func detectorIPSets() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetFilter.html`,
 		Resolver:            fetchDetectorIPSets,
 		PreResourceResolver: getDetectorIPSet,
-		Transform:           client.TransformWithStruct(&guardduty.GetIPSetOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
+		Transform:           transformers.TransformWithStruct(&guardduty.GetIPSetOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
 			{

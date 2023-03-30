@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func InstanceProfiles() *schema.Table {
@@ -12,7 +13,7 @@ func InstanceProfiles() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_InstanceProfile.html`,
 		Resolver:    fetchIamInstanceProfiles,
-		Transform:   client.TransformWithStruct(&types.InstanceProfile{}),
+		Transform:   transformers.TransformWithStruct(&types.InstanceProfile{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

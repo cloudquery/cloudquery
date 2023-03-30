@@ -13,9 +13,8 @@ func ResourceTypes() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/ram/latest/APIReference/API_ServiceNameAndResourceType.html`,
 		Resolver:    fetchRamResourceTypes,
-		Transform: client.TransformWithStruct(&types.ServiceNameAndResourceType{},
-			transformers.WithPrimaryKeys("ResourceType", "ServiceName"),
-		),
+		Transform: transformers.TransformWithStruct(&types.ServiceNameAndResourceType{},
+			transformers.WithPrimaryKeys("ResourceType", "ServiceName")),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "ram"),
 		Columns: []schema.Column{
 			{

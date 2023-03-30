@@ -16,7 +16,7 @@ func EnrollmentStatuses() *schema.Table {
 		Description: `https://docs.aws.amazon.com/compute-optimizer/latest/APIReference/API_GetEnrollmentStatus.html`,
 		Resolver:    fetchEnrollmentStatus,
 		Multiplex:   client.AccountMultiplex(tableName),
-		Transform:   client.TransformWithStruct(&computeoptimizer.GetEnrollmentStatusOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Transform:   transformers.TransformWithStruct(&computeoptimizer.GetEnrollmentStatusOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},

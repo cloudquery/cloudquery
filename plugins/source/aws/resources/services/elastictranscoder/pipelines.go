@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elastictranscoder/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Pipelines() *schema.Table {
@@ -13,7 +14,7 @@ func Pipelines() *schema.Table {
 		Description: `https://docs.aws.amazon.com/elastictranscoder/latest/developerguide/list-pipelines.html`,
 		Resolver:    fetchElastictranscoderPipelines,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elastictranscoder"),
-		Transform:   client.TransformWithStruct(&types.Pipeline{}),
+		Transform:   transformers.TransformWithStruct(&types.Pipeline{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

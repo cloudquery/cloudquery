@@ -13,11 +13,8 @@ func BrokerConfigurations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id.html`,
 		Resolver:    fetchMqBrokerConfigurations,
-		Transform: client.TransformWithStruct(&mq.DescribeConfigurationOutput{},
-			transformers.WithSkipFields("ResultMetadata"),
-			transformers.WithPrimaryKeys("Arn"),
-		),
-		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "mq"),
+		Transform:   transformers.TransformWithStruct(&mq.DescribeConfigurationOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeys("Arn")),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "mq"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

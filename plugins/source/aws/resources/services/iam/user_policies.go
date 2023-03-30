@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func UserPolicies() *schema.Table {
@@ -13,7 +14,7 @@ func UserPolicies() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetUserPolicy.html`,
 		Resolver:            fetchIamUserPolicies,
 		PreResourceResolver: getUserPolicy,
-		Transform:           client.TransformWithStruct(&iam.GetUserPolicyOutput{}),
+		Transform:           transformers.TransformWithStruct(&iam.GetUserPolicyOutput{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

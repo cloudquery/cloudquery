@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func appVersionResources() *schema.Table {
@@ -12,7 +13,7 @@ func appVersionResources() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_PhysicalResource.html`,
 		Resolver:    fetchAppVersionResources,
-		Transform:   client.TransformWithStruct(&types.PhysicalResource{}),
+		Transform:   transformers.TransformWithStruct(&types.PhysicalResource{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, appVersion,

@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func bucketGrants() *schema.Table {
@@ -15,7 +16,7 @@ func bucketGrants() *schema.Table {
 		Name:        "aws_s3_bucket_grants",
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_Grant.html`,
 		Resolver:    fetchS3BucketGrants,
-		Transform:   client.TransformWithStruct(&types.Grant{}),
+		Transform:   transformers.TransformWithStruct(&types.Grant{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

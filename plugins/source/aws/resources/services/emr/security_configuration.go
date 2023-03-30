@@ -14,7 +14,7 @@ func SecurityConfigurations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/emr/latest/APIReference/API_DescribeSecurityConfiguration.html`,
 		Resolver:    fetchSecurityConfigurations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticmapreduce"),
-		Transform:   client.TransformWithStruct(&types.SecurityConfigurationSummary{}, transformers.WithPrimaryKeys("Name")),
+		Transform:   transformers.TransformWithStruct(&types.SecurityConfigurationSummary{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

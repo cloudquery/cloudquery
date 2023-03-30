@@ -14,7 +14,7 @@ func EngineVersions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html`,
 		Resolver:    fetchDocdbEngineVersions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
-		Transform: client.TransformWithStruct(&types.DBEngineVersion{},
+		Transform: transformers.TransformWithStruct(&types.DBEngineVersion{},
 			transformers.WithPrimaryKeys("Engine", "EngineVersion")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

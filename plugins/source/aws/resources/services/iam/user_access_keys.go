@@ -14,7 +14,7 @@ func UserAccessKeys() *schema.Table {
 		Description:          `https://docs.aws.amazon.com/IAM/latest/APIReference/API_AccessKeyMetadata.html`,
 		Resolver:             fetchIamUserAccessKeys,
 		PostResourceResolver: postIamUserAccessKeyResolver,
-		Transform:            client.TransformWithStruct(&models.AccessKeyWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:            transformers.TransformWithStruct(&models.AccessKeyWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Multiplex:            client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

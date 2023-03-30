@@ -14,7 +14,7 @@ func Identities() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_GetEmailIdentity.html`,
 		Resolver:            fetchSesIdentities,
 		PreResourceResolver: getIdentity,
-		Transform:           client.TransformWithStruct(&models.EmailIdentity{}, transformers.WithUnwrapStructFields("GetEmailIdentityOutput"), transformers.WithSkipFields("ResultMetadata")),
+		Transform:           transformers.TransformWithStruct(&models.EmailIdentity{}, transformers.WithUnwrapStructFields("GetEmailIdentityOutput"), transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "email"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

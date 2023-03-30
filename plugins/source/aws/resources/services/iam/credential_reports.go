@@ -12,7 +12,8 @@ func CredentialReports() *schema.Table {
 	return &schema.Table{
 		Name:     tableName,
 		Resolver: fetchIamCredentialReports,
-		Transform: client.TransformWithStruct(&models.CredentialReportEntry{},
+		Transform: transformers.TransformWithStruct(
+			&models.CredentialReportEntry{},
 			transformers.WithSkipFields(
 				"AccessKey1LastRotated",
 				"AccessKey1LastUsedDate",

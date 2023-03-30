@@ -11,17 +11,7 @@ import (
 	"github.com/thoas/go-funk"
 )
 
-var (
-	options = []transformers.StructTransformerOption{
-		transformers.WithTypeTransformer(timestampTypeTransformer),
-		transformers.WithResolverTransformer(timestampResolverTransformer),
-	}
-)
-
-func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) schema.Transform {
-	return transformers.TransformWithStruct(t, append(options, opts...)...)
-}
-func timestampTypeTransformer(field reflect.StructField) (schema.ValueType, error) {
+func TimestampTypeTransformer(field reflect.StructField) (schema.ValueType, error) {
 	if !strings.HasSuffix(field.Name, "At") {
 		return schema.TypeInvalid, nil // fallback
 	}
@@ -35,8 +25,8 @@ func timestampTypeTransformer(field reflect.StructField) (schema.ValueType, erro
 	return schema.TypeTimestamp, nil
 }
 
-func timestampResolverTransformer(field reflect.StructField, path string) schema.ColumnResolver {
-	if t, _ := timestampTypeTransformer(field); t != schema.TypeTimestamp {
+func TimestampResolverTransformer(field reflect.StructField, path string) schema.ColumnResolver {
+	if t, _ := TimestampTypeTransformer(field); t != schema.TypeTimestamp {
 		return transformers.DefaultResolverTransformer(field, path)
 	}
 

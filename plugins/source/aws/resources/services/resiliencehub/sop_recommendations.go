@@ -13,7 +13,7 @@ func sopRecommendations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_SopRecommendation.html`,
 		Resolver:    fetchSopRecommendations,
-		Transform:   client.TransformWithStruct(&types.SopRecommendation{}, transformers.WithPrimaryKeys("RecommendationId")),
+		Transform:   transformers.TransformWithStruct(&types.SopRecommendation{}, transformers.WithPrimaryKeys("RecommendationId")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
 		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, assessmentARN},
 	}

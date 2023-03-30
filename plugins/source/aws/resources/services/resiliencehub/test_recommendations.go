@@ -13,7 +13,7 @@ func testRecommendations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_TestRecommendation.html`,
 		Resolver:    fetchTestRecommendations,
-		Transform:   client.TransformWithStruct(&types.TestRecommendation{}, transformers.WithPrimaryKeys("RecommendationId")),
+		Transform:   transformers.TransformWithStruct(&types.TestRecommendation{}, transformers.WithPrimaryKeys("RecommendationId")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
 		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, assessmentARN},
 	}

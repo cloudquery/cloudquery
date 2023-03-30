@@ -15,7 +15,7 @@ func bucketWebsites() *schema.Table {
 		Name:        "aws_s3_bucket_websites",
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_WebsiteConfiguration.html`,
 		Resolver:    fetchS3BucketWebsites,
-		Transform:   client.TransformWithStruct(&s3.GetBucketWebsiteOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Transform:   transformers.TransformWithStruct(&s3.GetBucketWebsiteOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

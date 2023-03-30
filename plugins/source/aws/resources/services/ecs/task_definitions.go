@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func TaskDefinitions() *schema.Table {
@@ -14,7 +15,7 @@ func TaskDefinitions() *schema.Table {
 		Resolver:            fetchEcsTaskDefinitions,
 		PreResourceResolver: getTaskDefinition,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "ecs"),
-		Transform:           client.TransformWithStruct(&types.TaskDefinition{}),
+		Transform:           transformers.TransformWithStruct(&types.TaskDefinition{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

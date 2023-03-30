@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func bucketEncryptionRules() *schema.Table {
@@ -15,7 +16,7 @@ func bucketEncryptionRules() *schema.Table {
 		Name:        "aws_s3_bucket_encryption_rules",
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_ServerSideEncryptionRule.html`,
 		Resolver:    fetchS3BucketEncryptionRules,
-		Transform:   client.TransformWithStruct(&types.ServerSideEncryptionRule{}),
+		Transform:   transformers.TransformWithStruct(&types.ServerSideEncryptionRule{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

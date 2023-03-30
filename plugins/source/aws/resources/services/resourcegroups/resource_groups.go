@@ -14,7 +14,7 @@ func ResourceGroups() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/ARG/latest/APIReference/API_GetGroupQuery.html`,
 		Resolver:            fetchResourcegroupsResourceGroups,
 		PreResourceResolver: getResourceGroup,
-		Transform:           client.TransformWithStruct(&models.ResourceGroupWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:           transformers.TransformWithStruct(&models.ResourceGroupWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "resource-groups"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

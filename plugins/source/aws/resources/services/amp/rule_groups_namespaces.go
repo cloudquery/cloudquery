@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/amp/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func RuleGroupsNamespaces() *schema.Table {
@@ -12,7 +13,7 @@ func RuleGroupsNamespaces() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-APIReference.html#AMP-APIReference-RuleGroupsNamespaceDescription`,
 		Resolver:            fetchAmpRuleGroupsNamespaces,
 		PreResourceResolver: describeRuleGroupsNamespace,
-		Transform:           client.TransformWithStruct(&types.RuleGroupsNamespaceDescription{}),
+		Transform:           transformers.TransformWithStruct(&types.RuleGroupsNamespaceDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

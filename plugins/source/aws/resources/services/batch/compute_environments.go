@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/batch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ComputeEnvironments() *schema.Table {
@@ -17,7 +18,7 @@ func ComputeEnvironments() *schema.Table {
 		Description: `https://docs.aws.amazon.com/batch/latest/APIReference/API_DescribeComputeEnvironments.html`,
 		Resolver:    fetchBatchComputeEnvironments,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "batch"),
-		Transform:   client.TransformWithStruct(&types.ComputeEnvironmentDetail{}),
+		Transform:   transformers.TransformWithStruct(&types.ComputeEnvironmentDetail{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

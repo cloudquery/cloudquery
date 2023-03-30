@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func EndpointConfigurations() *schema.Table {
@@ -13,7 +14,7 @@ func EndpointConfigurations() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeEndpointConfig.html`,
 		Resolver:            fetchSagemakerEndpointConfigurations,
 		PreResourceResolver: getEndpointConfiguration,
-		Transform:           client.TransformWithStruct(&sagemaker.DescribeEndpointConfigOutput{}),
+		Transform:           transformers.TransformWithStruct(&sagemaker.DescribeEndpointConfigOutput{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "api.sagemaker"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ApiKeys() *schema.Table {
@@ -13,7 +14,7 @@ func ApiKeys() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_ApiKey.html`,
 		Resolver:    fetchApigatewayApiKeys,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
-		Transform:   client.TransformWithStruct(&types.ApiKey{}),
+		Transform:   transformers.TransformWithStruct(&types.ApiKey{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

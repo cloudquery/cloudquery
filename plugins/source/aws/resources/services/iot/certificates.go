@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Certificates() *schema.Table {
@@ -17,7 +18,7 @@ func Certificates() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/iot/latest/apireference/API_CertificateDescription.html`,
 		Resolver:            fetchIotCertificates,
 		PreResourceResolver: getCertificate,
-		Transform:           client.TransformWithStruct(&types.CertificateDescription{}),
+		Transform:           transformers.TransformWithStruct(&types.CertificateDescription{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -14,7 +14,7 @@ func ReplicationInstances() *schema.Table {
 		Description: `https://docs.aws.amazon.com/dms/latest/APIReference/API_ReplicationInstance.html`,
 		Resolver:    fetchDmsReplicationInstances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "dms"),
-		Transform:   client.TransformWithStruct(&models.ReplicationInstanceWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:   transformers.TransformWithStruct(&models.ReplicationInstanceWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

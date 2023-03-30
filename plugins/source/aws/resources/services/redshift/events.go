@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func Events() *schema.Table {
@@ -18,7 +19,7 @@ func Events() *schema.Table {
 
 Only events occurred in the last 14 days are returned.`,
 		Resolver:  fetchEvents,
-		Transform: client.TransformWithStruct(&types.Event{}),
+		Transform: transformers.TransformWithStruct(&types.Event{}),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

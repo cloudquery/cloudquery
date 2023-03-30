@@ -4,6 +4,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
 func ClusterParameterGroups() *schema.Table {
@@ -12,7 +13,7 @@ func ClusterParameterGroups() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-parameters.html#DescribeDBParameters`,
 		Resolver:    fetchNeptuneClusterParameterGroups,
-		Transform:   client.TransformWithStruct(&types.DBClusterParameterGroup{}),
+		Transform:   transformers.TransformWithStruct(&types.DBClusterParameterGroup{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "neptune"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
