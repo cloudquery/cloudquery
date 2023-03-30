@@ -8,9 +8,10 @@ require (
 	github.com/google/gnostic v0.6.9
 	github.com/rs/zerolog v1.29.0
 	github.com/thoas/go-funk v0.9.3
-	k8s.io/api v0.26.1
-	k8s.io/apimachinery v0.26.1
-	k8s.io/client-go v0.26.1
+	k8s.io/api v0.26.3
+	k8s.io/apiextensions-apiserver v0.26.3
+	k8s.io/apimachinery v0.26.3
+	k8s.io/client-go v0.26.3
 )
 
 require (
@@ -47,7 +48,7 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2 // indirect; indirect // indirect // indirect
+	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2 // indirect // indirect // indirect
 	golang.org/x/mod v0.7.0 // indirect
 	golang.org/x/net v0.7.0 // indirect; indirect // indirect
 	golang.org/x/oauth2 v0.4.0 // indirect

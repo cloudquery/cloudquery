@@ -667,14 +667,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/mssql.svg",
   },
   {
-    name: "MySQL",
-    id: "mysql",
-    href: "https://github.com/cloudquery/cloudquery/issues/8411",
-    kind: "unpublished",
-    category: "databases",
-    logo: "/images/logos/plugins/mysql.svg",
-  },
-  {
     name: "New Relic",
     id: "new-relic",
     href: "https://github.com/cloudquery/cloudquery/issues/9040",

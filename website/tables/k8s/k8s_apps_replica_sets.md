@@ -1,6 +1,6 @@
 # Table: k8s_apps_replica_sets
 
-This table shows data for K8s Apps Replica Sets.
+This table shows data for Kubernetes (K8s) Apps Replica Sets.
 
 The primary key for this table is **uid**.
 
@@ -13,11 +13,11 @@ The primary key for this table is **uid**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |context|String|
-|uid (PK)|String|
 |kind|String|
 |api_version|String|
 |name|String|
 |namespace|String|
+|uid (PK)|String|
 |resource_version|String|
 |generation|Int|
 |deletion_grace_period_seconds|Int|

@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 	v1 "k8s.io/api/admissionregistration/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -14,22 +15,8 @@ func MutatingWebhookConfigurations() *schema.Table {
 		Name:      "k8s_admissionregistration_mutating_webhook_configurations",
 		Resolver:  fetchMutatingWebhookConfigurations,
 		Multiplex: client.ContextMultiplex,
-		Transform: client.TransformWithStruct(&v1.MutatingWebhookConfiguration{}),
-		Columns: []schema.Column{
-			{
-				Name:     "context",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveContext,
-			},
-			{
-				Name:     "uid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform: client.TransformWithStruct(&v1.MutatingWebhookConfiguration{}, transformers.WithPrimaryKeys("UID")),
+		Columns:   schema.ColumnList{client.ContextColumn},
 	}
 }
 

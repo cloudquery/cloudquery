@@ -15,19 +15,14 @@ func SigningRequests() *schema.Table {
 		Resolver:  fetchSigningRequests,
 		Multiplex: client.ContextMultiplex,
 		Transform: client.TransformWithStruct(&v1.CertificateSigningRequest{}),
-		Columns: []schema.Column{
+		Columns: schema.ColumnList{
+			client.ContextColumn,
 			{
-				Name:     "context",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveContext,
-			},
-			{
-				Name:     "uid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				// TODO: remove once https://github.com/cloudquery/plugin-sdk/pull/739 is released
+				Name:            "uid",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("UID"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 	}

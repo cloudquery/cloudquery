@@ -140,10 +140,17 @@ title: Export data from ${source.name} to ${destination.name}
 }
 
 function generateFiles() {
+    const sources = new Set<string>();
+    const destinations = new Set<string>();
+
     let hasAuthFile = {};
 
     // Loop through each source plugin and generate or copy MDX files
     [...SOURCE_PLUGINS, ...UNPUBLISHED_SOURCE_PLUGINS].forEach((source) => {
+      if (sources.has(source.id)) {
+        throw new Error("Duplicate source id: " + source.id + ". Did you forget to remove an unpublished plugin you implemented?");
+      }
+      sources.add(source.id);
       recreateDirectory(outputDir + "/" + source.id);
 
       const hasConfiguration = copySourceConfigurationFile(source);
@@ -158,6 +165,10 @@ function generateFiles() {
 
     // Loop through each destination plugin and generate or copy MDX files
     DESTINATION_PLUGINS.forEach((destination) => {
+        if (destinations.has(destination.id)) {
+            throw new Error("Duplicate destination id: " + destination.id);
+        }
+        destinations.add(destination.id);
         recreateDirectory(mdxDestinationComponentDir + "/" + destination.id);
 
         const hasConfiguration = copyDestinationConfigurationFile(destination);

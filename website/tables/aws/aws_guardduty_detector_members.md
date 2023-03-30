@@ -24,7 +24,7 @@ This table depends on [aws_guardduty_detectors](aws_guardduty_detectors).
 |email|String|
 |master_id|String|
 |relationship_status|String|
-|updated_at|String|
+|updated_at|Timestamp|
 |administrator_id|String|
 |detector_id|String|
-|invited_at|String|
+|invited_at|Timestamp|
