@@ -3,7 +3,6 @@ package iam
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
@@ -40,19 +39,15 @@ func fetchIamAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 	if err := decoder.Decode(summary.SummaryMap); err != nil {
 		return err
 	}
-	config := iam.ListAccountAliasesInput{}
-	for {
-		response, err := svc.ListAccountAliases(ctx, &config)
+
+	paginator := iam.NewListAccountAliasesPaginator(svc, &iam.ListAccountAliasesInput{})
+
+	for paginator.HasMorePages() {
+		response, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
 		accSummary.Aliases = append(accSummary.Aliases, response.AccountAliases...)
-
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
 	}
 	res <- accSummary
 	return nil

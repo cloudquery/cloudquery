@@ -60,14 +60,15 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	p := parent.Item.(*types.User)
 	svc := meta.(*client.Client).Services().Iam
 	config.UserName = p.UserName
-	for {
-		output, err := svc.ListAccessKeys(ctx, &config)
+	paginator := iam.NewListAccessKeysPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
 		keys := make([]models.AccessKeyWrapper, len(output.AccessKeyMetadata))
-		for i, key := range output.AccessKeyMetadata {
+		for i, key := range page.AccessKeyMetadata {
 			switch i {
 			case 0:
 				keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
@@ -78,10 +79,6 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 			}
 		}
 		res <- keys
-		if output.Marker == nil {
-			break
-		}
-		config.Marker = output.Marker
 	}
 	return nil
 }
