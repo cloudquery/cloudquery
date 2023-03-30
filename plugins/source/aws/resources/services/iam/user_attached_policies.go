@@ -1,6 +1,9 @@
 package iam
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -14,7 +17,6 @@ func userAttachedPolicies() *schema.Table {
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachedPolicy.html`,
 		Resolver:    fetchIamUserAttachedPolicies,
 		Transform:   transformers.TransformWithStruct(&types.AttachedPolicy{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
@@ -40,4 +42,21 @@ func userAttachedPolicies() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	p := parent.Item.(*types.User)
+	svc := meta.(*client.Client).Services().Iam
+	config := iam.ListAttachedUserPoliciesInput{
+		UserName: p.UserName,
+	}
+	paginator := iam.NewListAttachedUserPoliciesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		output, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- output.AttachedPolicies
+	}
+	return nil
 }
