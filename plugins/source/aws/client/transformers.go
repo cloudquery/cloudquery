@@ -17,12 +17,11 @@ func TimestampTypeTransformer(field reflect.StructField) (schema.ValueType, erro
 	}
 
 	switch field.Type {
-	case reflect.TypeOf(""), reflect.TypeOf(new(string)): // nop
+	case reflect.TypeOf(""), reflect.TypeOf(new(string)):
+		return schema.TypeTimestamp, nil
 	default:
 		return schema.TypeInvalid, nil // fallback
 	}
-
-	return schema.TypeTimestamp, nil
 }
 
 func TimestampResolverTransformer(field reflect.StructField, path string) schema.ColumnResolver {
