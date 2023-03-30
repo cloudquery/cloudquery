@@ -16,7 +16,7 @@ func roleAttachedPolicies() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachedPolicy.html`,
 		Resolver:    fetchIamRoleAttachedPolicies,
-		Transform:   transformers.TransformWithStruct(&types.AttachedPolicy{}),
+		Transform:   transformers.TransformWithStruct(&types.AttachedPolicy{}, transformers.WithPrimaryKeys("PolicyName")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -24,14 +24,6 @@ func roleAttachedPolicies() *schema.Table {
 				Name:     "role_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "policy_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicyName"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
