@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func UserAttachedPolicies() *schema.Table {
+func userAttachedPolicies() *schema.Table {
 	tableName := "aws_iam_user_attached_policies"
 	return &schema.Table{
 		Name:        tableName,

@@ -1,13 +1,16 @@
 package iam
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func UserGroups() *schema.Table {
+func userGroups() *schema.Table {
 	tableName := "aws_iam_user_groups"
 	return &schema.Table{
 		Name:        tableName,
@@ -32,4 +35,19 @@ func UserGroups() *schema.Table {
 			},
 		},
 	}
+}
+func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var config iam.ListGroupsForUserInput
+	p := parent.Item.(*types.User)
+	svc := meta.(*client.Client).Services().Iam
+	config.UserName = p.UserName
+	paginator := iam.NewListGroupsForUserPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		output, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- output.Groups
+	}
+	return nil
 }
