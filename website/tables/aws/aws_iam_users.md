@@ -4,7 +4,7 @@ This table shows data for IAM Users.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_User.html
 
-The composite primary key for this table is (**id**, **account_id**).
+The composite primary key for this table is (**account_id**, **id**).
 
 ## Relations
 
@@ -25,10 +25,10 @@ The following tables depend on aws_iam_users:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|arn|String|
-|id (PK)|String|
 |account_id (PK)|String|
+|id (PK)|String|
 |tags|JSON|
+|arn|String|
 |create_date|Timestamp|
 |path|String|
 |user_id|String|
