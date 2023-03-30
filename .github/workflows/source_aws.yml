@@ -47,12 +47,21 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 2
-      - name: Set up Go 1.x
+      - name: Set up Go
+        id:   set-up-go
         uses: actions/setup-go@v3
         with:
-          go-version-file: plugins/source/aws/go.mod
-          cache: true
+          go-version-file:       plugins/source/aws/go.mod
+          cache:                 true
           cache-dependency-path: plugins/source/aws/go.sum
+      - name: Restore build cache
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+                ~/.cache/go-build
+                ~/Library/Caches/go-build
+                ~\AppData\Local\go-build
+          key:  ${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-source-aws-${{ hashFiles('plugins/source/aws/go.sum') }}
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
@@ -73,6 +82,15 @@ jobs:
         run: go build .
       - name: Test
         run: make test
+      - name: Save build cache
+        if:   github.ref == 'refs/heads/main'
+        uses: actions/cache/save@v3
+        with:
+          path: |
+                ~/.cache/go-build
+                ~/Library/Caches/go-build
+                ~\AppData\Local\go-build
+          key:  ${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-source-aws-${{ hashFiles('plugins/source/aws/go.sum') }}
       # Sanity integration test, only for release PRs
       - name: Setup CloudQuery
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
@@ -89,6 +107,7 @@ jobs:
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
         run: cloudquery sync test/sanity.yml --log-console
   validate-release:
+    if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
     timeout-minutes: 60
     needs: [resolve-runner]
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
@@ -96,32 +115,38 @@ jobs:
       CGO_ENABLED: 0
     steps:
       - name: Checkout
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/checkout@v3
-      - uses: actions/cache@v3
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/aws/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-aws
       - name: Set up Go
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        id:   set-up-go
         uses: actions/setup-go@v3
         with:
-          go-version-file: plugins/source/aws/go.mod
+          go-version-file:       plugins/source/aws/go.mod
+          cache:                 true
+          cache-dependency-path: plugins/source/aws/go.sum
+      - name: Restore build cache
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+                ~/.cache/go-build
+                ~/Library/Caches/go-build
+                ~\AppData\Local\go-build
+          key:  ${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-source-aws-${{ hashFiles('plugins/source/aws/go.sum') }}
       - name: Install GoReleaser
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: goreleaser/goreleaser-action@v3
         with:
           distribution: goreleaser-pro
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --timeout 50m --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/aws/.goreleaser.yaml
+        run: >
+             goreleaser release
+             --timeout 50m
+             --snapshot
+             --clean
+             --skip-validate
+             --skip-publish
+             --skip-sign
+             -f ./plugins/source/aws/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
   test-policies:
@@ -149,12 +174,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set up Go 1.x
+      - name: Set up Go
+        id:   set-up-go
         uses: actions/setup-go@v3
         with:
-          go-version-file: plugins/source/aws/go.mod
-          cache: true
+          go-version-file:       plugins/source/aws/go.mod
+          cache:                 true
           cache-dependency-path: plugins/source/aws/go.sum
+      - name: Restore build cache
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+                ~/.cache/go-build
+                ~/Library/Caches/go-build
+                ~\AppData\Local\go-build
+          key: ${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-source-aws-${{ hashFiles('plugins/source/aws/go.sum') }}
+          restore-keys: ${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-source-aws-
       - name: Build
         run: go build .
       - name: Setup CloudQuery
