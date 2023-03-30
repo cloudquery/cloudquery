@@ -1,13 +1,18 @@
 package iam
 
 import (
+	"context"
+	"encoding/json"
+	"net/url"
+
 	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func RolePolicies() *schema.Table {
+func rolePolicies() *schema.Table {
 	tableName := "aws_iam_role_policies"
 	return &schema.Table{
 		Name:                tableName,
@@ -15,7 +20,6 @@ func RolePolicies() *schema.Table {
 		Resolver:            fetchIamRolePolicies,
 		PreResourceResolver: getRolePolicy,
 		Transform:           transformers.TransformWithStruct(&iam.GetRolePolicyOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
@@ -41,4 +45,54 @@ func RolePolicies() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Iam
+	role := parent.Item.(*types.Role)
+	paginator := iam.NewListRolePoliciesPaginator(svc, &iam.ListRolePoliciesInput{
+		RoleName: role.RoleName,
+	})
+	for paginator.HasMorePages() {
+		output, err := paginator.NextPage(ctx)
+		if err != nil {
+			if c.IsNotFoundError(err) {
+				return nil
+			}
+			return err
+		}
+		res <- output.PolicyNames
+	}
+	return nil
+}
+
+func getRolePolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Iam
+	p := resource.Item.(string)
+	role := resource.Parent.Item.(*types.Role)
+
+	policyResult, err := svc.GetRolePolicy(ctx, &iam.GetRolePolicyInput{PolicyName: &p, RoleName: role.RoleName})
+	if err != nil {
+		return err
+	}
+	resource.Item = policyResult
+	return nil
+}
+
+func resolveRolePoliciesPolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	r := resource.Item.(*iam.GetRolePolicyOutput)
+
+	decodedDocument, err := url.QueryUnescape(*r.PolicyDocument)
+	if err != nil {
+		return err
+	}
+
+	var document map[string]any
+	err = json.Unmarshal([]byte(decodedDocument), &document)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, document)
 }
