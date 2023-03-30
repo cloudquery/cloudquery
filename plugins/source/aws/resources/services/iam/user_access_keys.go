@@ -67,7 +67,7 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 			return err
 		}
 
-		keys := make([]models.AccessKeyWrapper, len(output.AccessKeyMetadata))
+		keys := make([]models.AccessKeyWrapper, len(page.AccessKeyMetadata))
 		for i, key := range page.AccessKeyMetadata {
 			switch i {
 			case 0:
