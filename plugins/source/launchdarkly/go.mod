@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/launchdarkly
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.44.0
+	github.com/cloudquery/plugin-sdk v1.44.1
 	github.com/gorilla/mux v1.8.0
 	github.com/launchdarkly/api-client-go/v11 v11.0.0
 	github.com/rs/zerolog v1.29.0
