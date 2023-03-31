@@ -41,7 +41,7 @@ jobs:
               ~/.cache/go-build
               ~/Library/Caches/go-build
               ~\AppData\Local\go-build
-        key:  ${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-${{ inputs.type }}-${{ inputs.plugin }}-${{ hashFiles('plugins/source/${{ inputs.plugin }}/go.sum') }}
+        key:  ${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-${{ inputs.type }}-${{ inputs.plugin }}-${{ hashFiles(plugins/source/${{ inputs.plugin }}/go.sum) }}
     - name: Install GoReleaser
       uses: goreleaser/goreleaser-action@v3
       with:
