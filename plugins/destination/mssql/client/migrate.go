@@ -59,26 +59,28 @@ func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema
 	return schemaTables, nil
 }
 
-func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
-	var normalized schema.Tables
-	for _, table := range tables.FlattenTables() {
-		table := table
-		for i := range table.Columns {
-			// Since multiple schema types can map to the same MSSQL type we need to normalize them to avoid false positives when detecting schema changes
-			// This should never return an error
-			typ, _ := queries.SchemaType(table.Name, table.Columns[i].Name, queries.SQLType(table.Columns[i].Type))
-			table.Columns[i].Type = typ
-		}
-		// If there are no PKs, we use CqID as PK
-		pks := table.PrimaryKeys()
-		if !c.pkEnabled() || len(pks) == 0 {
-			table.Columns.Get(schema.CqIDColumn.Name).CreationOptions.PrimaryKey = true
-		}
+func (c *Client) normalizeTable(table *schema.Table) {
+	for i := range table.Columns {
+		// Since multiple schema types can map to the same MSSQL type we need to normalize them to avoid false positives when detecting schema changes
+		// This should never return an error
+		typ, _ := queries.SchemaType(table.Name, table.Columns[i].Name, queries.SQLType(table.Columns[i].Type))
+		table.Columns[i].Type = typ
 
-		normalized = append(normalized, table)
+		if !c.pkEnabled() {
+			table.Columns[i].CreationOptions.PrimaryKey = false
+		}
+		if table.Columns[i].CreationOptions.PrimaryKey {
+			table.Columns[i].CreationOptions.NotNull = true
+		}
 	}
+}
 
-	return normalized
+func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
+	flattenedTables := tables.FlattenTables()
+	for _, table := range flattenedTables {
+		c.normalizeTable(table)
+	}
+	return flattenedTables
 }
 
 func (c *Client) nonAutoMigratableTables(tables schema.Tables, schemaTables schema.Tables) (names []string, changes [][]schema.TableColumnChange) {
@@ -150,7 +152,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 		return err
 	}
 
-	normalizedTables := c.normalizedTables(tables)
+	normalizedTables := c.normalizeTables(tables)
 
 	if c.spec.MigrateMode != specs.MigrateModeForced {
 		nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTables, schemaTables)
