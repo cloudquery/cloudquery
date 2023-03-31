@@ -27,6 +27,14 @@ func ClusterServices() *schema.Table {
 				},
 			},
 			{
+				Name:     "cluster_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: client.ResolveTags,
