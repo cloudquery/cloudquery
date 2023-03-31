@@ -1,8 +1,12 @@
 package autoscaling
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
@@ -25,4 +29,21 @@ func groupLifecycleHooks() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchAutoscalingGroupLifecycleHooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	p := parent.Item.(models.AutoScalingGroupWrapper)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Autoscaling
+	config := autoscaling.DescribeLifecycleHooksInput{AutoScalingGroupName: p.AutoScalingGroupName}
+
+	output, err := svc.DescribeLifecycleHooks(ctx, &config)
+	if err != nil {
+		if isAutoScalingGroupNotExistsError(err) {
+			return nil
+		}
+		return err
+	}
+	res <- output.LifecycleHooks
+	return nil
 }
