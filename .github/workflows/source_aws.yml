@@ -14,27 +14,16 @@ on:
 
 jobs:
   resolve-runner:
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    outputs:
-      runner: ${{ steps.resolve.outputs.runner }}
-    steps:
-      - name: Check if should use large runner
-        id: large-runner
-        # We want to speed runs on the main branch which prime the cache
-        # We allow large runners only in this case to prevent forks from abusing them (it's enforced via runner groups access rules)
-        # IF YOU WANT TO USE A LARGE RUNNER YOU NEED TO ADD THE WORKFLOW TO THE `CloudQuery releases` GROUP IN https://github.com/organizations/cloudquery/settings/actions/runner-groups
-        if: github.event_name == 'push'
-        run: |
-          echo "runner=cloudquery-release-runner" >> $GITHUB_OUTPUT
-      - name: Resolve runner
-        id: resolve
-        run: |
-          RUNNER=${{ steps.large-runner.outputs.runner }}
-          echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
-  plugins-source-aws:
+    uses: cloudquery/cloudquery/.github/workflows/reusable_resolve_runner.yml@feat/workflows/reusable
+  test:
+    needs: [ resolve-runner ]
+    uses: cloudquery/cloudquery/.github/workflows/reusable_test_source.yml@feat/workflows/reusable
+    with:
+      plugin: aws
+      runner: ${{ needs.resolve-runner.outputs.runner }}
+  sanity-check:
+    if: startsWith(github.head_ref, 'release-please--branches--main--components')
     timeout-minutes: 45
-    name: "plugins/source/aws"
     needs: [resolve-runner]
     permissions:
       id-token: write
@@ -44,86 +33,46 @@ jobs:
       run:
         working-directory: ./plugins/source/aws
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-      - name: Set up Go 1.x
+      - name: Set up Go
+        id:   set-up-go
         uses: actions/setup-go@v3
         with:
-          go-version-file: plugins/source/aws/go.mod
-          cache: true
+          go-version-file:       plugins/source/aws/go.mod
+          cache:                 true
           cache-dependency-path: plugins/source/aws/go.sum
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+      - name: Restore build cache
+        uses: actions/cache/restore@v3
         with:
-          version: v1.52.2
-          working-directory: plugins/source/aws
-          args: "--config ../../.golangci.yml"
-          skip-pkg-cache: true
-          skip-build-cache: true
+          path: |
+                ~/.cache/go-build
+                ~/Library/Caches/go-build
+                ~\AppData\Local\go-build
+          key:  source-aws-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-${{ hashFiles('plugins/source/aws/go.sum') }}
+          # no direct cache hit, however, even a partial hit might be beneficial
+          restore-keys: source-aws-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-
       - name: Get dependencies
         run: go get -t -d ./...
-      - name: gen
-        if: github.event_name == 'pull_request'
-        run: make gen
-      - name: Fail if generation updated files
-        if: github.event_name == 'pull_request'
-        run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
       - name: Build
         run: go build .
-      - name: Test
-        run: make test
-      # Sanity integration test, only for release PRs
       - name: Setup CloudQuery
-        if: startsWith(github.head_ref, 'release-please--branches--main--components')
         uses: cloudquery/setup-cloudquery@v3
         with:
           version: 'v2.0.22'
       - name: Configure AWS credentials
-        if: startsWith(github.head_ref, 'release-please--branches--main--components')
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: arn:aws:iam::615713231484:role/cq-playground-aws-github-action
           aws-region: us-east-1
       - name: Run sync
-        if: startsWith(github.head_ref, 'release-please--branches--main--components')
         run: cloudquery sync test/sanity.yml --log-console
   validate-release:
-    timeout-minutes: 60
-    needs: [resolve-runner]
-    runs-on: ${{ needs.resolve-runner.outputs.runner }}
-    env:
-      CGO_ENABLED: 0
-    steps:
-      - name: Checkout
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/checkout@v3
-      - uses: actions/cache@v3
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/aws/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-aws
-      - name: Set up Go
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v3
-        with:
-          go-version-file: plugins/source/aws/go.mod
-      - name: Install GoReleaser
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: goreleaser/goreleaser-action@v3
-        with:
-          distribution: goreleaser-pro
-          version: latest
-          install-only: true
-      - name: Run GoReleaser Dry-Run
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --timeout 50m --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/aws/.goreleaser.yaml
-        env:
-          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+    if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+    needs: [ resolve-runner ]
+    uses: cloudquery/cloudquery/.github/workflows/reusable_validate_release.yml@feat/workflows/reusable
+    with:
+      plugin: aws
+      type:   source
+      runner: ${{ needs.resolve-runner.outputs.runner }}
   test-policies:
     timeout-minutes: 30
     needs: [resolve-runner]
@@ -149,12 +98,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set up Go 1.x
+      - name: Set up Go
+        id:   set-up-go
         uses: actions/setup-go@v3
         with:
-          go-version-file: plugins/source/aws/go.mod
-          cache: true
+          go-version-file:       plugins/source/aws/go.mod
+          cache:                 true
           cache-dependency-path: plugins/source/aws/go.sum
+      - name: Restore build cache
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+                ~/.cache/go-build
+                ~/Library/Caches/go-build
+                ~\AppData\Local\go-build
+          key:  source-aws-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-${{ hashFiles('plugins/source/aws/go.sum') }}
+          # no direct cache hit, however, even a partial hit might be beneficial
+          restore-keys: source-aws-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-
       - name: Build
         run: go build .
       - name: Setup CloudQuery
