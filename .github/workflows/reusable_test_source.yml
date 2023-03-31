@@ -1,0 +1,73 @@
+name: Source plugin test
+
+on:
+  workflow_call:
+    inputs:
+      plugin:
+        description: 'Plugin dir (e.g. "aws")'
+        type:        string
+        required:    true
+      runner:
+        description: 'Runner to be used (default: "ubuntu-latest")'
+        type:        string
+        required:    false
+        default:     'ubuntu-latest'
+
+jobs:
+  test:
+    timeout-minutes: 45
+    permissions:
+      id-token: write
+      contents: read
+    runs-on:         ${{ inputs.runner }}
+    defaults:
+      run:
+        working-directory: ./plugins/source/${{ inputs.plugin }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+    - name: Set up Go
+      id:   set-up-go
+      uses: actions/setup-go@v3
+      with:
+        go-version-file:       plugins/source/${{ inputs.plugin }}/go.mod
+        cache:                 true
+        cache-dependency-path: plugins/source/${{ inputs.plugin }}/go.sum
+    - name: Restore build cache
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+              ~/.cache/go-build
+              ~/Library/Caches/go-build
+              ~\AppData\Local\go-build
+        key:  ${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-source-${{ inputs.plugin }}-${{ hashFiles('plugins/source/${{ inputs.plugin }}/go.sum') }}
+    - name: golangci-lint
+      uses: golangci/golangci-lint-action@v3
+      with:
+        version:           v1.52.1
+        working-directory: plugins/source/${{ inputs.plugin }}
+        args:              "--config ../../.golangci.yml"
+        skip-pkg-cache:    true
+        skip-build-cache:  true
+    - name: Get dependencies
+      run:  go get -t -d ./...
+    - name: gen
+      if:   github.event_name == 'pull_request'
+      run:  make gen
+    - name: Fail if generation updated files
+      if:   github.event_name == 'pull_request'
+      run:  test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
+    - name: Build
+      run:  go build .
+    - name: Test
+      run:  make test
+    - name: Save build cache
+      if:   github.ref == 'refs/heads/main'
+      uses: actions/cache/save@v3
+      with:
+        path: |
+              ~/.cache/go-build
+              ~/Library/Caches/go-build
+              ~\AppData\Local\go-build
+        key:  ${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-source-${{ inputs.plugin }}-${{ hashFiles('plugins/source/${{ inputs.plugin }}/go.sum') }}

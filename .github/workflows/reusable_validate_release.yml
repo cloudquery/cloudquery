@@ -1,0 +1,61 @@
+name: Validate plugin release
+
+on:
+  workflow_call:
+    inputs:
+      plugin:
+        description: 'Plugin dir (e.g. "aws", "postgresql")'
+        type:        string
+        required:    true
+      type:
+        description: 'Plugin type ("source" or "destination")'
+        type:        string
+        required:    true
+      runner:
+        description: 'Runner to be used (default: "ubuntu-latest")'
+        type:        string
+        required:    false
+        default:     'ubuntu-latest'
+
+jobs:
+  validate-release:
+    if:              startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+    timeout-minutes: 30
+    runs-on:         ${{ inputs.runner }}
+    env:
+      CGO_ENABLED: 0
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Set up Go
+      id:   set-up-go
+      with:
+        go-version-file:       plugins/${{ inputs.type }}/${{ inputs.plugin }}/go.mod
+        cache:                 true
+        cache-dependency-path: plugins/${{ inputs.type }}/${{ inputs.plugin }}/go.sum
+    - name: Restore build cache
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+              ~/.cache/go-build
+              ~/Library/Caches/go-build
+              ~\AppData\Local\go-build
+        key:  ${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-${{ inputs.type }}-${{ inputs.plugin }}-${{ hashFiles('plugins/source/${{ inputs.plugin }}/go.sum') }}
+    - name: Install GoReleaser
+      uses: goreleaser/goreleaser-action@v3
+      with:
+        distribution: goreleaser-pro
+        version:      latest
+        install-only: true
+    - name: Run GoReleaser Dry-Run
+      run:  >
+            goreleaser release
+            --timeout 50m
+            --snapshot
+            --clean
+            --skip-validate
+            --skip-publish
+            --skip-sign
+            -f ./plugins/${{ inputs.type }}/${{ inputs.plugin }}/.goreleaser.yaml
+      env:
+        GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
