@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	cloud.google.com/go/bigquery v1.47.0
-	github.com/cloudquery/plugin-sdk v1.44.0
+	github.com/cloudquery/plugin-sdk v1.44.1
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/sync v0.1.0
 	google.golang.org/api v0.110.0
