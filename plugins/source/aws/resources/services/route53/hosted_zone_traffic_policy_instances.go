@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func HostedZoneTrafficPolicyInstances() *schema.Table {
+func hostedZoneTrafficPolicyInstances() *schema.Table {
 	tableName := "aws_route53_hosted_zone_traffic_policy_instances"
 	return &schema.Table{
 		Name:        tableName,

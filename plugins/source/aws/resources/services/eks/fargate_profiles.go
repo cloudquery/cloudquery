@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func FargateProfiles() *schema.Table {
+func fargateProfiles() *schema.Table {
 	tableName := "aws_eks_fargate_profiles"
 	return &schema.Table{
 		Name:                tableName,

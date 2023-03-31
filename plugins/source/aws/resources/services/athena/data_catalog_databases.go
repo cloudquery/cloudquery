@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func DataCatalogDatabases() *schema.Table {
+func dataCatalogDatabases() *schema.Table {
 	tableName := "aws_athena_data_catalog_databases"
 	return &schema.Table{
 		Name:        tableName,
@@ -37,7 +37,7 @@ func DataCatalogDatabases() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			DataCatalogDatabaseTables(),
+			dataCatalogDatabaseTables(),
 		},
 	}
 }

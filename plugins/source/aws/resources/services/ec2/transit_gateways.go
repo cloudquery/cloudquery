@@ -39,11 +39,11 @@ func TransitGateways() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			TransitGatewayAttachments(),
-			TransitGatewayRouteTables(),
-			TransitGatewayVpcAttachments(),
-			TransitGatewayPeeringAttachments(),
-			TransitGatewayMulticastDomains(),
+			transitGatewayAttachments(),
+			transitGatewayRouteTables(),
+			transitGatewayVpcAttachments(),
+			transitGatewayPeeringAttachments(),
+			transitGatewayMulticastDomains(),
 		},
 	}
 }

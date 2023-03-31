@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func BucketAccessKeys() *schema.Table {
+func bucketAccessKeys() *schema.Table {
 	tableName := "aws_lightsail_bucket_access_keys"
 	return &schema.Table{
 		Name:        tableName,

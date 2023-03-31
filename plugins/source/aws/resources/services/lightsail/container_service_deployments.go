@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ContainerServiceDeployments() *schema.Table {
+func containerServiceDeployments() *schema.Table {
 	tableName := "aws_lightsail_container_service_deployments"
 	return &schema.Table{
 		Name:        tableName,

@@ -39,7 +39,7 @@ func ConfigurationSets() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ConfigurationSetEventDestinations(),
+			configurationSetEventDestinations(),
 		},
 	}
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func BrokerConfigurationRevisions() *schema.Table {
+func brokerConfigurationRevisions() *schema.Table {
 	tableName := "aws_mq_broker_configuration_revisions"
 	return &schema.Table{
 		Name:                tableName,

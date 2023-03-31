@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func TransitGatewayVpcAttachments() *schema.Table {
+func transitGatewayVpcAttachments() *schema.Table {
 	tableName := "aws_ec2_transit_gateway_vpc_attachments"
 	return &schema.Table{
 		Name:        tableName,

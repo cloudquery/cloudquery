@@ -34,7 +34,7 @@ func ClusterParameterGroups() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ClusterParameterGroupParameters(),
+			clusterParameterGroupParameters(),
 		},
 	}
 }

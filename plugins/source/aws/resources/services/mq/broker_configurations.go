@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func BrokerConfigurations() *schema.Table {
+func brokerConfigurations() *schema.Table {
 	tableName := "aws_mq_broker_configurations"
 	return &schema.Table{
 		Name:        tableName,
@@ -26,7 +26,7 @@ func BrokerConfigurations() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			BrokerConfigurationRevisions(),
+			brokerConfigurationRevisions(),
 		},
 	}
 }

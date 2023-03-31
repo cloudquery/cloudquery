@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func HostedZoneResourceRecordSets() *schema.Table {
+func hostedZoneResourceRecordSets() *schema.Table {
 	tableName := "aws_route53_hosted_zone_resource_record_sets"
 	return &schema.Table{
 		Name:        tableName,

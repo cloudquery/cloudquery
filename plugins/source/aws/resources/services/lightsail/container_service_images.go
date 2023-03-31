@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ContainerServiceImages() *schema.Table {
+func containerServiceImages() *schema.Table {
 	tableName := "aws_lightsail_container_service_images"
 	return &schema.Table{
 		Name:        tableName,

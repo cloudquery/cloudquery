@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func BrokerUsers() *schema.Table {
+func brokerUsers() *schema.Table {
 	tableName := "aws_mq_broker_users"
 	return &schema.Table{
 		Name:        tableName,

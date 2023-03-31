@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func FunctionVersions() *schema.Table {
+func functionVersions() *schema.Table {
 	tableName := "aws_lambda_function_versions"
 	return &schema.Table{
 		Name:        tableName,

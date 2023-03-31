@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func LoadBalancerPolicies() *schema.Table {
+func loadBalancerPolicies() *schema.Table {
 	tableName := "aws_elbv1_load_balancer_policies"
 	return &schema.Table{
 		Name:        tableName,

@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ClusterOperations() *schema.Table {
+func clusterOperations() *schema.Table {
 	tableName := "aws_kafka_cluster_operations"
 	return &schema.Table{
 		Name:        tableName,

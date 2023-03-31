@@ -28,7 +28,7 @@ func Applications() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			ApplicationFleetAssociations(),
+			applicationFleetAssociations(),
 		},
 	}
 }

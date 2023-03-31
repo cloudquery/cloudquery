@@ -40,7 +40,7 @@ func Secrets() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			SecretVersions(),
+			secretVersions(),
 		},
 	}
 }

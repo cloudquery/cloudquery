@@ -34,7 +34,7 @@ func Registries() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			RegistrySchemas(),
+			registrySchemas(),
 		},
 	}
 }

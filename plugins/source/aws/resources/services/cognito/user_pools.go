@@ -30,7 +30,7 @@ func UserPools() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			UserPoolIdentityProviders(),
+			userPoolIdentityProviders(),
 		},
 	}
 }

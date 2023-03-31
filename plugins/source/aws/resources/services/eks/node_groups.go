@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func NodeGroups() *schema.Table {
+func nodeGroups() *schema.Table {
 	tableName := "aws_eks_cluster_node_groups"
 	return &schema.Table{
 		Name:                tableName,

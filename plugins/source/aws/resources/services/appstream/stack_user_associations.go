@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func StackUserAssociations() *schema.Table {
+func stackUserAssociations() *schema.Table {
 	tableName := "aws_appstream_stack_user_associations"
 	return &schema.Table{
 		Name:        tableName,

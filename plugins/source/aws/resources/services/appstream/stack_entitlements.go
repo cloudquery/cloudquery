@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func StackEntitlements() *schema.Table {
+func stackEntitlements() *schema.Table {
 	tableName := "aws_appstream_stack_entitlements"
 	return &schema.Table{
 		Name:        tableName,

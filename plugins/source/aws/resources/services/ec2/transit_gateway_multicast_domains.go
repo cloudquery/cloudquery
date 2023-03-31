@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func TransitGatewayMulticastDomains() *schema.Table {
+func transitGatewayMulticastDomains() *schema.Table {
 	tableName := "aws_ec2_transit_gateway_multicast_domains"
 	return &schema.Table{
 		Name:        tableName,

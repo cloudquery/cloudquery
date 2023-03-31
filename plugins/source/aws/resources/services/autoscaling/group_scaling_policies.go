@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func GroupScalingPolicies() *schema.Table {
+func groupScalingPolicies() *schema.Table {
 	tableName := "aws_autoscaling_group_scaling_policies"
 	return &schema.Table{
 		Name:        tableName,

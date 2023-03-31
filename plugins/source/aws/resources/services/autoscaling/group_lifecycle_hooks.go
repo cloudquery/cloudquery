@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func GroupLifecycleHooks() *schema.Table {
+func groupLifecycleHooks() *schema.Table {
 	tableName := "aws_autoscaling_group_lifecycle_hooks"
 	return &schema.Table{
 		Name:        tableName,

@@ -28,7 +28,7 @@ func LoadBalancers() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			LoadBalancerPolicies(),
+			loadBalancerPolicies(),
 		},
 	}
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func FunctionEventSourceMappings() *schema.Table {
+func functionEventSourceMappings() *schema.Table {
 	tableName := "aws_lambda_function_event_source_mappings"
 	return &schema.Table{
 		Name:        tableName,

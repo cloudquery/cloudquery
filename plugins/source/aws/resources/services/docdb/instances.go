@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Instances() *schema.Table {
+func instances() *schema.Table {
 	tableName := "aws_docdb_instances"
 	return &schema.Table{
 		Name:        tableName,

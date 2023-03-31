@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func TrailEventSelectors() *schema.Table {
+func trailEventSelectors() *schema.Table {
 	tableName := "aws_cloudtrail_trail_event_selectors"
 	return &schema.Table{
 		Name:        tableName,

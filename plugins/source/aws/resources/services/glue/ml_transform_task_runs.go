@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func MlTransformTaskRuns() *schema.Table {
+func mlTransformTaskRuns() *schema.Table {
 	tableName := "aws_glue_ml_transform_task_runs"
 	return &schema.Table{
 		Name:        tableName,

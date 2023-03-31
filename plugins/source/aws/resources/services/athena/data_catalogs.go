@@ -35,7 +35,7 @@ func DataCatalogs() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			DataCatalogDatabases(),
+			dataCatalogDatabases(),
 		},
 	}
 }

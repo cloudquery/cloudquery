@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func WorkGroupNamedQueries() *schema.Table {
+func workGroupNamedQueries() *schema.Table {
 	tableName := "aws_athena_work_group_named_queries"
 	return &schema.Table{
 		Name:                tableName,

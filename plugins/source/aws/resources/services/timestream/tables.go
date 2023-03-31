@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Tables() *schema.Table {
+func tables() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_timestream_tables",
 		Description: `https://docs.aws.amazon.com/timestream/latest/developerguide/API_Table.html`,

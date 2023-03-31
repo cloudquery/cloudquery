@@ -39,7 +39,7 @@ func MlTransforms() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			MlTransformTaskRuns(),
+			mlTransformTaskRuns(),
 		},
 	}
 }

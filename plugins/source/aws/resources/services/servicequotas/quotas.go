@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Quotas() *schema.Table {
+func quotas() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_servicequotas_quotas",
 		Description: `https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceQuota.html`,

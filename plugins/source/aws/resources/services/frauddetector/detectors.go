@@ -34,7 +34,7 @@ func Detectors() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			Rules(),
+			rules(),
 		},
 	}
 }

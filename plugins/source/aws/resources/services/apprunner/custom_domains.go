@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func CustomDomains() *schema.Table {
+func customDomains() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_apprunner_custom_domains",
 		Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_CustomDomain.html`,

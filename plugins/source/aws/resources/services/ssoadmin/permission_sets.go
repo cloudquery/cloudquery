@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func PermissionSets() *schema.Table {
+func permissionSets() *schema.Table {
 	tableName := "aws_ssoadmin_permission_sets"
 	return &schema.Table{
 		Name:                tableName,
@@ -25,7 +25,7 @@ func PermissionSets() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			AccountAssignments(),
+			accountAssignments(),
 		},
 	}
 }

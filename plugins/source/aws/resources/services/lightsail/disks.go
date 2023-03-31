@@ -33,7 +33,7 @@ func Disks() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			DiskSnapshots(),
+			diskSnapshots(),
 		},
 	}
 }

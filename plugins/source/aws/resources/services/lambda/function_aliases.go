@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func FunctionAliases() *schema.Table {
+func functionAliases() *schema.Table {
 	tableName := "aws_lambda_function_aliases"
 	return &schema.Table{
 		Name:                tableName,

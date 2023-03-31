@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ApiIntegrationResponses() *schema.Table {
+func apiIntegrationResponses() *schema.Table {
 	tableName := "aws_apigatewayv2_api_integration_responses"
 	return &schema.Table{
 		Name:        tableName,

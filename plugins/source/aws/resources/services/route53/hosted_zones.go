@@ -32,9 +32,9 @@ func HostedZones() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			HostedZoneQueryLoggingConfigs(),
-			HostedZoneResourceRecordSets(),
-			HostedZoneTrafficPolicyInstances(),
+			hostedZoneQueryLoggingConfigs(),
+			hostedZoneResourceRecordSets(),
+			hostedZoneTrafficPolicyInstances(),
 		},
 	}
 }

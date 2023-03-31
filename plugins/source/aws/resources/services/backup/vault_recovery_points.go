@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func VaultRecoveryPoints() *schema.Table {
+func vaultRecoveryPoints() *schema.Table {
 	tableName := "aws_backup_vault_recovery_points"
 	return &schema.Table{
 		Name:        tableName,

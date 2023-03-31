@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func PlanSelections() *schema.Table {
+func planSelections() *schema.Table {
 	tableName := "aws_backup_plan_selections"
 	return &schema.Table{
 		Name:        tableName,

@@ -28,7 +28,7 @@ func DomainNames() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			DomainNameRestApiMappings(),
+			domainNameRestApiMappings(),
 		},
 	}
 }

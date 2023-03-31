@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func DiskSnapshots() *schema.Table {
+func diskSnapshots() *schema.Table {
 	tableName := "aws_lightsail_disk_snapshots"
 	return &schema.Table{
 		Name:        tableName,

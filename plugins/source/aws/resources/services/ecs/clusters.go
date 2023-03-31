@@ -34,9 +34,9 @@ func Clusters() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ClusterTasks(),
-			ClusterServices(),
-			ClusterContainerInstances(),
+			clusterTasks(),
+			clusterServices(),
+			clusterContainerInstances(),
 		},
 	}
 }

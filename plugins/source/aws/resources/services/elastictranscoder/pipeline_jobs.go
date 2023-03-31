@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func PipelineJobs() *schema.Table {
+func pipelineJobs() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_elastictranscoder_pipeline_jobs",
 		Description: `https://docs.aws.amazon.com/elastictranscoder/latest/developerguide/list-jobs-by-pipeline.html`,

@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ApiAuthorizers() *schema.Table {
+func apiAuthorizers() *schema.Table {
 	tableName := "aws_apigatewayv2_api_authorizers"
 	return &schema.Table{
 		Name:        tableName,

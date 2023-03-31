@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ModelVersions() *schema.Table {
+func modelVersions() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_frauddetector_model_versions",
 		Description: `https://docs.aws.amazon.com/frauddetector/latest/api/API_ModelVersionDetail.html`,

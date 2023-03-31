@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ClusterContainerInstances() *schema.Table {
+func clusterContainerInstances() *schema.Table {
 	tableName := "aws_ecs_cluster_container_instances"
 	return &schema.Table{
 		Name:        tableName,

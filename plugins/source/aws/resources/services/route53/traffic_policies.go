@@ -28,7 +28,7 @@ func TrafficPolicies() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			TrafficPolicyVersions(),
+			trafficPolicyVersions(),
 		},
 	}
 }

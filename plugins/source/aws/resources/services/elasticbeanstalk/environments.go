@@ -44,8 +44,8 @@ func Environments() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ConfigurationSettings(),
-			ConfigurationOptions(),
+			configurationSettings(),
+			configurationOptions(),
 		},
 	}
 }

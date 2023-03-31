@@ -29,7 +29,7 @@ func Models() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ModelVersions(),
+			modelVersions(),
 		},
 	}
 }

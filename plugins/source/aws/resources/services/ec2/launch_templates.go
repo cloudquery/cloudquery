@@ -34,7 +34,7 @@ func LaunchTemplates() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			LaunchTemplateVersions(),
+			launchTemplateVersions(),
 		},
 	}
 }

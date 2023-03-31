@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func LoadBalancerTlsCertificates() *schema.Table {
+func loadBalancerTlsCertificates() *schema.Table {
 	tableName := "aws_lightsail_load_balancer_tls_certificates"
 	return &schema.Table{
 		Name:        tableName,

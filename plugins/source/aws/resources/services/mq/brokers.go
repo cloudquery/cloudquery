@@ -30,8 +30,8 @@ func Brokers() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			BrokerConfigurations(),
-			BrokerUsers(),
+			brokerConfigurations(),
+			brokerUsers(),
 		},
 	}
 }

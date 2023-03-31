@@ -33,7 +33,7 @@ func LoadBalancers() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			LoadBalancerTlsCertificates(),
+			loadBalancerTlsCertificates(),
 		},
 	}
 }

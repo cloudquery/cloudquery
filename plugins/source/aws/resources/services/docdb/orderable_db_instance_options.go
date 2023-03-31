@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func OrderableDbInstanceOptions() *schema.Table {
+func orderableDbInstanceOptions() *schema.Table {
 	tableName := "aws_docdb_orderable_db_instance_options"
 	return &schema.Table{
 		Name:        tableName,

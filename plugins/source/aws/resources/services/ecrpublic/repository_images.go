@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func RepositoryImages() *schema.Table {
+func repositoryImages() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ecrpublic_repository_images",
 		Description: `https://docs.aws.amazon.com/AmazonECRPublic/latest/APIReference/API_ImageDetail.html`,

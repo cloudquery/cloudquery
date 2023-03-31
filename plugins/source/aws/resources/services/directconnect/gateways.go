@@ -33,8 +33,8 @@ func Gateways() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			GatewayAssociations(),
-			GatewayAttachments(),
+			gatewayAssociations(),
+			gatewayAttachments(),
 		},
 	}
 }

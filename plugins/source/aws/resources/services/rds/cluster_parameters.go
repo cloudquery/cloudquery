@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ClusterParameters() *schema.Table {
+func clusterParameters() *schema.Table {
 	tableName := "aws_rds_cluster_parameters"
 	return &schema.Table{
 		Name:        tableName,

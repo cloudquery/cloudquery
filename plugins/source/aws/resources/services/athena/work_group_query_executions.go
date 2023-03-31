@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func WorkGroupQueryExecutions() *schema.Table {
+func workGroupQueryExecutions() *schema.Table {
 	tableName := "aws_athena_work_group_query_executions"
 	return &schema.Table{
 		Name:                tableName,

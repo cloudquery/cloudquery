@@ -48,8 +48,8 @@ func Groups() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			GroupScalingPolicies(),
-			GroupLifecycleHooks(),
+			groupScalingPolicies(),
+			groupLifecycleHooks(),
 		},
 	}
 }

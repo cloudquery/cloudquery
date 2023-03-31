@@ -34,7 +34,7 @@ func EngineVersions() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ClusterParameters(),
+			clusterParameters(),
 		},
 	}
 }

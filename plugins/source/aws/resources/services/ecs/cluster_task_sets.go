@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ClusterTaskSets() *schema.Table {
+func clusterTaskSets() *schema.Table {
 	tableName := "aws_ecs_cluster_task_sets"
 	return &schema.Table{
 		Name:        tableName,

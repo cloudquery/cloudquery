@@ -34,9 +34,9 @@ func Vaults() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			VaultAccessPolicies(),
-			VaultLockPolicies(),
-			VaultNotifications(),
+			vaultAccessPolicies(),
+			vaultLockPolicies(),
+			vaultNotifications(),
 		},
 	}
 }

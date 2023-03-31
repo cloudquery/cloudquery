@@ -33,12 +33,12 @@ func Apis() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			ApiAuthorizers(),
-			ApiDeployments(),
-			ApiIntegrations(),
-			ApiModels(),
-			ApiRoutes(),
-			ApiStages(),
+			apiAuthorizers(),
+			apiDeployments(),
+			apiIntegrations(),
+			apiModels(),
+			apiRoutes(),
+			apiStages(),
 		},
 	}
 }

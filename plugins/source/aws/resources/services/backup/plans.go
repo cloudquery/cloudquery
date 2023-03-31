@@ -35,7 +35,7 @@ func Plans() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			PlanSelections(),
+			planSelections(),
 		},
 	}
 }

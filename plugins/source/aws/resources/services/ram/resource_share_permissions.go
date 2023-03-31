@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ResourceSharePermissions() *schema.Table {
+func resourceSharePermissions() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_ram_resource_share_permissions",
 		Description: `https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceSharePermissionSummary.html`,

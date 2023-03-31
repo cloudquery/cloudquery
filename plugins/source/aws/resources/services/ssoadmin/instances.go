@@ -17,7 +17,7 @@ func Instances() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "identitystore"),
 
 		Relations: []*schema.Table{
-			PermissionSets(),
+			permissionSets(),
 		},
 	}
 }

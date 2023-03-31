@@ -44,7 +44,7 @@ func Vaults() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			VaultRecoveryPoints(),
+			vaultRecoveryPoints(),
 		},
 	}
 }

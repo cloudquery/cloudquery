@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func FunctionConcurrencyConfigs() *schema.Table {
+func functionConcurrencyConfigs() *schema.Table {
 	tableName := "aws_lambda_function_concurrency_configs"
 	return &schema.Table{
 		Name:        tableName,

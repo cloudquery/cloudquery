@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func InstancePortStates() *schema.Table {
+func instancePortStates() *schema.Table {
 	tableName := "aws_lightsail_instance_port_states"
 	return &schema.Table{
 		Name:        tableName,

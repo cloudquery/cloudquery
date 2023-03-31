@@ -26,9 +26,9 @@ func Databases() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			DatabaseParameters(),
-			DatabaseEvents(),
-			DatabaseLogEvents(),
+			databaseParameters(),
+			databaseEvents(),
+			databaseLogEvents(),
 		},
 	}
 }

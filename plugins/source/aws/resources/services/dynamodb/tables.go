@@ -39,8 +39,8 @@ func Tables() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			TableReplicaAutoScalings(),
-			TableContinuousBackups(),
+			tableReplicaAutoScalings(),
+			tableContinuousBackups(),
 		},
 	}
 }

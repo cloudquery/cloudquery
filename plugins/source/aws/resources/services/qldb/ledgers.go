@@ -35,8 +35,8 @@ func Ledgers() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			LedgerJournalKinesisStreams(),
-			LedgerJournalS3Exports(),
+			ledgerJournalKinesisStreams(),
+			ledgerJournalS3Exports(),
 		},
 	}
 }

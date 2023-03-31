@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func UserPoolIdentityProviders() *schema.Table {
+func userPoolIdentityProviders() *schema.Table {
 	tableName := "aws_cognito_user_pool_identity_providers"
 	return &schema.Table{
 		Name:                tableName,

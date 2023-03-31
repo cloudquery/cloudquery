@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ConformancePackRuleCompliances() *schema.Table {
+func conformancePackRuleCompliances() *schema.Table {
 	tableName := "aws_config_conformance_pack_rule_compliances"
 	return &schema.Table{
 		Name:        tableName,

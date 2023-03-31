@@ -34,8 +34,8 @@ func Services() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			Operations(),
-			CustomDomains(),
+			operations(),
+			customDomains(),
 		},
 	}
 }

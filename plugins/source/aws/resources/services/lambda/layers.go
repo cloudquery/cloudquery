@@ -29,7 +29,7 @@ func Layers() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			LayerVersions(),
+			layerVersions(),
 		},
 	}
 }

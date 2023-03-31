@@ -37,7 +37,7 @@ func Services() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			Quotas(),
+			quotas(),
 		},
 	}
 }

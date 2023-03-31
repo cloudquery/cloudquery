@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func VaultNotifications() *schema.Table {
+func vaultNotifications() *schema.Table {
 	tableName := "aws_glacier_vault_notifications"
 	return &schema.Table{
 		Name:        tableName,

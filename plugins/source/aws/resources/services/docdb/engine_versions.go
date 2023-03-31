@@ -22,8 +22,8 @@ func EngineVersions() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ClusterParameters(),
-			OrderableDbInstanceOptions(),
+			clusterParameters(),
+			orderableDbInstanceOptions(),
 		},
 	}
 }

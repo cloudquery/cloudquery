@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func Nodes() *schema.Table {
+func nodes() *schema.Table {
 	tableName := "aws_kafka_nodes"
 	return &schema.Table{
 		Name:        tableName,

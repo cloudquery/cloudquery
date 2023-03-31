@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func LaunchTemplateVersions() *schema.Table {
+func launchTemplateVersions() *schema.Table {
 	tableName := "aws_ec2_launch_template_versions"
 	return &schema.Table{
 		Name:        tableName,

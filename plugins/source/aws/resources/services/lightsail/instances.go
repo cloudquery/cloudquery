@@ -38,7 +38,7 @@ func Instances() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			InstancePortStates(),
+			instancePortStates(),
 		},
 	}
 }

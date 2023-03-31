@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func AccountAssignments() *schema.Table {
+func accountAssignments() *schema.Table {
 	tableName := "aws_ssoadmin_account_assignments"
 	return &schema.Table{
 		Name:        tableName,

@@ -29,7 +29,7 @@ func Pipelines() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			PipelineJobs(),
+			pipelineJobs(),
 		},
 	}
 }

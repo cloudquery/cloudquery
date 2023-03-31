@@ -34,8 +34,8 @@ func Clusters() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ClusterSnapshots(),
-			Instances(),
+			clusterSnapshots(),
+			instances(),
 		},
 	}
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func DataCatalogDatabaseTables() *schema.Table {
+func dataCatalogDatabaseTables() *schema.Table {
 	tableName := "aws_athena_data_catalog_database_tables"
 	return &schema.Table{
 		Name:        tableName,

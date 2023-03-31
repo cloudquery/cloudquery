@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func LedgerJournalKinesisStreams() *schema.Table {
+func ledgerJournalKinesisStreams() *schema.Table {
 	tableName := "aws_qldb_ledger_journal_kinesis_streams"
 	return &schema.Table{
 		Name:        tableName,

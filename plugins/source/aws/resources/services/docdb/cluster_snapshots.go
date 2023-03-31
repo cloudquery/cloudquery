@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ClusterSnapshots() *schema.Table {
+func clusterSnapshots() *schema.Table {
 	tableName := "aws_docdb_cluster_snapshots"
 	return &schema.Table{
 		Name:        tableName,

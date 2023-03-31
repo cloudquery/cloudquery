@@ -29,8 +29,8 @@ func Stacks() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			StackEntitlements(),
-			StackUserAssociations(),
+			stackEntitlements(),
+			stackUserAssociations(),
 		},
 	}
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func WorkGroupPreparedStatements() *schema.Table {
+func workGroupPreparedStatements() *schema.Table {
 	tableName := "aws_athena_work_group_prepared_statements"
 	return &schema.Table{
 		Name:                tableName,

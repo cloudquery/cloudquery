@@ -33,8 +33,8 @@ func ContainerServices() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ContainerServiceDeployments(),
-			ContainerServiceImages(),
+			containerServiceDeployments(),
+			containerServiceImages(),
 		},
 	}
 }

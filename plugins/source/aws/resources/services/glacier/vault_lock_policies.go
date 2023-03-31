@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func VaultLockPolicies() *schema.Table {
+func vaultLockPolicies() *schema.Table {
 	tableName := "aws_glacier_vault_lock_policies"
 	return &schema.Table{
 		Name:        tableName,

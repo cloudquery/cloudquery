@@ -29,7 +29,7 @@ func ConformancePacks() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ConformancePackRuleCompliances(),
+			conformancePackRuleCompliances(),
 		},
 	}
 }

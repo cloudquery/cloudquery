@@ -29,7 +29,7 @@ func ConfigRules() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ConfigRuleCompliances(),
+			configRuleCompliances(),
 		},
 	}
 }

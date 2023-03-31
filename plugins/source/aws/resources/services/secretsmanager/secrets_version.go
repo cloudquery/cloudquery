@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func SecretVersions() *schema.Table {
+func secretVersions() *schema.Table {
 	tableName := "aws_secretsmanager_secret_versions"
 	return &schema.Table{
 		Name:        tableName,

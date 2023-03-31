@@ -60,11 +60,11 @@ func Functions() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			FunctionEventInvokeConfigs(),
-			FunctionAliases(),
-			FunctionVersions(),
-			FunctionConcurrencyConfigs(),
-			FunctionEventSourceMappings(),
+			functionEventInvokeConfigs(),
+			functionAliases(),
+			functionVersions(),
+			functionConcurrencyConfigs(),
+			functionEventSourceMappings(),
 		},
 	}
 }

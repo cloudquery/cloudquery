@@ -35,9 +35,9 @@ func WorkGroups() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			WorkGroupPreparedStatements(),
-			WorkGroupQueryExecutions(),
-			WorkGroupNamedQueries(),
+			workGroupPreparedStatements(),
+			workGroupQueryExecutions(),
+			workGroupNamedQueries(),
 		},
 	}
 }

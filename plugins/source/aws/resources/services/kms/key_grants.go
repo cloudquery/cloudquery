@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func KeyGrants() *schema.Table {
+func keyGrants() *schema.Table {
 	tableName := "aws_kms_key_grants"
 	return &schema.Table{
 		Name:        tableName,

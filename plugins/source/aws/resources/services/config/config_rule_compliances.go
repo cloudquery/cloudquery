@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ConfigRuleCompliances() *schema.Table {
+func configRuleCompliances() *schema.Table {
 	tableName := "aws_config_config_rule_compliances"
 	return &schema.Table{
 		Name:        tableName,

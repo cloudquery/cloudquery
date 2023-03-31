@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func GroupMemberships() *schema.Table {
+func groupMemberships() *schema.Table {
 	tableName := "aws_identitystore_group_memberships"
 	return &schema.Table{
 		Name:        tableName,

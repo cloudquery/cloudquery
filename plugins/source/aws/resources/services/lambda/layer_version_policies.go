@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func LayerVersionPolicies() *schema.Table {
+func layerVersionPolicies() *schema.Table {
 	tableName := "aws_lambda_layer_version_policies"
 	return &schema.Table{
 		Name:        tableName,

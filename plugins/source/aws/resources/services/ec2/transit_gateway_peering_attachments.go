@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func TransitGatewayPeeringAttachments() *schema.Table {
+func transitGatewayPeeringAttachments() *schema.Table {
 	tableName := "aws_ec2_transit_gateway_peering_attachments"
 	return &schema.Table{
 		Name:        tableName,

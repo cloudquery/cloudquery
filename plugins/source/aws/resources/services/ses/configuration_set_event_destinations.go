@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ConfigurationSetEventDestinations() *schema.Table {
+func configurationSetEventDestinations() *schema.Table {
 	tableName := "aws_ses_configuration_set_event_destinations"
 	return &schema.Table{
 		Name:        tableName,

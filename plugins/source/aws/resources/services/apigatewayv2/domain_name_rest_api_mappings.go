@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func DomainNameRestApiMappings() *schema.Table {
+func domainNameRestApiMappings() *schema.Table {
 	tableName := "aws_apigatewayv2_domain_name_rest_api_mappings"
 	return &schema.Table{
 		Name:        tableName,

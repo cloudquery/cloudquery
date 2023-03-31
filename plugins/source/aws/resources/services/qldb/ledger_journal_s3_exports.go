@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func LedgerJournalS3Exports() *schema.Table {
+func ledgerJournalS3Exports() *schema.Table {
 	tableName := "aws_qldb_ledger_journal_s3_exports"
 	return &schema.Table{
 		Name:        tableName,

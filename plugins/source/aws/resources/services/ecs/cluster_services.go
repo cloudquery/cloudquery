@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ClusterServices() *schema.Table {
+func clusterServices() *schema.Table {
 	tableName := "aws_ecs_cluster_services"
 	return &schema.Table{
 		Name:        tableName,
@@ -33,7 +33,7 @@ func ClusterServices() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			ClusterTaskSets(),
+			clusterTaskSets(),
 		},
 	}
 }

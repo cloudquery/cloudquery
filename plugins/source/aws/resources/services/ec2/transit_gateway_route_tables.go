@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func TransitGatewayRouteTables() *schema.Table {
+func transitGatewayRouteTables() *schema.Table {
 	tableName := "aws_ec2_transit_gateway_route_tables"
 	return &schema.Table{
 		Name:        tableName,

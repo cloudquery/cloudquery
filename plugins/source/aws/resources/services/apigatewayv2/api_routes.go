@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ApiRoutes() *schema.Table {
+func apiRoutes() *schema.Table {
 	tableName := "aws_apigatewayv2_api_routes"
 	return &schema.Table{
 		Name:        tableName,
@@ -38,7 +38,7 @@ func ApiRoutes() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			ApiRouteResponses(),
+			apiRouteResponses(),
 		},
 	}
 }

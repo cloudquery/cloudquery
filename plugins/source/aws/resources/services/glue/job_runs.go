@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func JobRuns() *schema.Table {
+func jobRuns() *schema.Table {
 	tableName := "aws_glue_job_runs"
 	return &schema.Table{
 		Name:        tableName,

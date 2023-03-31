@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func HostedZoneQueryLoggingConfigs() *schema.Table {
+func hostedZoneQueryLoggingConfigs() *schema.Table {
 	tableName := "aws_route53_hosted_zone_query_logging_configs"
 	return &schema.Table{
 		Name:        tableName,

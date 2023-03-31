@@ -31,7 +31,7 @@ func Buckets() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			BucketAccessKeys(),
+			bucketAccessKeys(),
 		},
 	}
 }

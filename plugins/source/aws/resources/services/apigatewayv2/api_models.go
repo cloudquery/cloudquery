@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ApiModels() *schema.Table {
+func apiModels() *schema.Table {
 	tableName := "aws_apigatewayv2_api_models"
 	return &schema.Table{
 		Name:        tableName,

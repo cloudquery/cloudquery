@@ -34,7 +34,7 @@ func Databases() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			Tables(),
+			tables(),
 		},
 	}
 }

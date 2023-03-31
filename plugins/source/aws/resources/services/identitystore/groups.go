@@ -17,7 +17,7 @@ func Groups() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "identitystore"),
 
 		Relations: []*schema.Table{
-			GroupMemberships(),
+			groupMemberships(),
 		},
 	}
 }

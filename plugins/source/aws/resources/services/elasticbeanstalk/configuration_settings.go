@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ConfigurationSettings() *schema.Table {
+func configurationSettings() *schema.Table {
 	tableName := "aws_elasticbeanstalk_configuration_settings"
 	return &schema.Table{
 		Name:        tableName,

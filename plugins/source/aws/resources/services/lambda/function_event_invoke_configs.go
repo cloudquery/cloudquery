@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func FunctionEventInvokeConfigs() *schema.Table {
+func functionEventInvokeConfigs() *schema.Table {
 	tableName := "aws_lambda_function_event_invoke_configs"
 	return &schema.Table{
 		Name:        tableName,

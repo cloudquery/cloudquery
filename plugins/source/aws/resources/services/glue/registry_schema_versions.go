@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func RegistrySchemaVersions() *schema.Table {
+func registrySchemaVersions() *schema.Table {
 	tableName := "aws_glue_registry_schema_versions"
 	return &schema.Table{
 		Name:                tableName,

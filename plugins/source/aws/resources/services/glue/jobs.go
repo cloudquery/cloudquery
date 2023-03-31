@@ -34,7 +34,7 @@ func Jobs() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			JobRuns(),
+			jobRuns(),
 		},
 	}
 }

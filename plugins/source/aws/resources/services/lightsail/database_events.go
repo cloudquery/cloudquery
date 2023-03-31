@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func DatabaseEvents() *schema.Table {
+func databaseEvents() *schema.Table {
 	tableName := "aws_lightsail_database_events"
 	return &schema.Table{
 		Name:        tableName,

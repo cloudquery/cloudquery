@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ApplicationFleetAssociations() *schema.Table {
+func applicationFleetAssociations() *schema.Table {
 	tableName := "aws_appstream_application_fleet_associations"
 	return &schema.Table{
 		Name:        tableName,

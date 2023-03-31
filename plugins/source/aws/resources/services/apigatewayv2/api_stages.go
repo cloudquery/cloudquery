@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ApiStages() *schema.Table {
+func apiStages() *schema.Table {
 	tableName := "aws_apigatewayv2_api_stages"
 	return &schema.Table{
 		Name:        tableName,
