@@ -39,7 +39,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.18.7 // indirect
 	github.com/getsentry/sentry-go v0.18.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect

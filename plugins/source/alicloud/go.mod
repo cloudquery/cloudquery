@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/alicloud
 go 1.19
 
 require (
-	github.com/aliyun/alibaba-cloud-sdk-go v1.62.197
+	github.com/aliyun/alibaba-cloud-sdk-go v1.62.266
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.6+incompatible
 	github.com/cloudquery/codegen v0.2.1
 	github.com/cloudquery/plugin-sdk v1.44.1
@@ -23,7 +23,7 @@ require (
 require (
 	github.com/getsentry/sentry-go v0.18.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect

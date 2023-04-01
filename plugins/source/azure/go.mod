@@ -116,7 +116,7 @@ require (
 	github.com/getsentry/sentry-go v0.18.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect; indirect // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect

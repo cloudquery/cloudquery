@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudquery/plugin-sdk v1.44.1
-	github.com/marcboeker/go-duckdb v1.2.1
+	github.com/marcboeker/go-duckdb v1.2.2
 	github.com/rs/zerolog v1.29.0
 )
 
@@ -18,7 +18,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.18.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.3.0
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
