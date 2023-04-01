@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/cloudquery/plugin-sdk v1.44.1
 	github.com/gorilla/mux v1.8.0
-	github.com/okta/okta-sdk-golang/v3 v3.0.1
+	github.com/okta/okta-sdk-golang/v3 v3.0.2
 	github.com/rs/zerolog v1.29.0
 	github.com/thoas/go-funk v0.9.3
 )
