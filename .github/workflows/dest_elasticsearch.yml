@@ -47,7 +47,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.52.1
+          version: v1.52.2
           working-directory: plugins/destination/elasticsearch
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
