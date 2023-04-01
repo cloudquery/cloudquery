@@ -32,7 +32,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.8.2 // indirect
 	github.com/xitongsys/parquet-go v1.6.2 // indirect
-	github.com/xitongsys/parquet-go-source v0.0.0-20221025031416-9877e685ef65 // indirect
+	github.com/xitongsys/parquet-go-source v0.0.0-20230312005205-fbbcdea5f512 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect; indirect // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
