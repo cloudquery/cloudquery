@@ -2479,6 +2479,50 @@ func (mr *MockBssopenapiClientMockRecorder) QueryResellerAvailableQuotaWithChan(
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryResellerAvailableQuotaWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryResellerAvailableQuotaWithChan), arg0)
 }
 
+// QueryResellerUserAlarmThreshold mocks base method.
+func (m *MockBssopenapiClient) QueryResellerUserAlarmThreshold(arg0 *bssopenapi.QueryResellerUserAlarmThresholdRequest) (*bssopenapi.QueryResellerUserAlarmThresholdResponse, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryResellerUserAlarmThreshold", arg0)
+	ret0, _ := ret[0].(*bssopenapi.QueryResellerUserAlarmThresholdResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QueryResellerUserAlarmThreshold indicates an expected call of QueryResellerUserAlarmThreshold.
+func (mr *MockBssopenapiClientMockRecorder) QueryResellerUserAlarmThreshold(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryResellerUserAlarmThreshold", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryResellerUserAlarmThreshold), arg0)
+}
+
+// QueryResellerUserAlarmThresholdWithCallback mocks base method.
+func (m *MockBssopenapiClient) QueryResellerUserAlarmThresholdWithCallback(arg0 *bssopenapi.QueryResellerUserAlarmThresholdRequest, arg1 func(*bssopenapi.QueryResellerUserAlarmThresholdResponse, error)) <-chan int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryResellerUserAlarmThresholdWithCallback", arg0, arg1)
+	ret0, _ := ret[0].(<-chan int)
+	return ret0
+}
+
+// QueryResellerUserAlarmThresholdWithCallback indicates an expected call of QueryResellerUserAlarmThresholdWithCallback.
+func (mr *MockBssopenapiClientMockRecorder) QueryResellerUserAlarmThresholdWithCallback(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryResellerUserAlarmThresholdWithCallback", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryResellerUserAlarmThresholdWithCallback), arg0, arg1)
+}
+
+// QueryResellerUserAlarmThresholdWithChan mocks base method.
+func (m *MockBssopenapiClient) QueryResellerUserAlarmThresholdWithChan(arg0 *bssopenapi.QueryResellerUserAlarmThresholdRequest) (<-chan *bssopenapi.QueryResellerUserAlarmThresholdResponse, <-chan error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryResellerUserAlarmThresholdWithChan", arg0)
+	ret0, _ := ret[0].(<-chan *bssopenapi.QueryResellerUserAlarmThresholdResponse)
+	ret1, _ := ret[1].(<-chan error)
+	return ret0, ret1
+}
+
+// QueryResellerUserAlarmThresholdWithChan indicates an expected call of QueryResellerUserAlarmThresholdWithChan.
+func (mr *MockBssopenapiClientMockRecorder) QueryResellerUserAlarmThresholdWithChan(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryResellerUserAlarmThresholdWithChan", reflect.TypeOf((*MockBssopenapiClient)(nil).QueryResellerUserAlarmThresholdWithChan), arg0)
+}
+
 // QueryResourcePackageInstances mocks base method.
 func (m *MockBssopenapiClient) QueryResourcePackageInstances(arg0 *bssopenapi.QueryResourcePackageInstancesRequest) (*bssopenapi.QueryResourcePackageInstancesResponse, error) {
 	m.ctrl.T.Helper()

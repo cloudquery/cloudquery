@@ -17,7 +17,7 @@ require (
 )
 
 require (
-	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2 // indirect; indirect // indirect // indirect
+	golang.org/x/exp v0.0.0-20230321023759-10a507213a29 // indirect; indirect // indirect
 	golang.org/x/sync v0.1.0 // indirect
 )
 
