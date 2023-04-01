@@ -4,7 +4,7 @@ This table shows data for Amazon Elastic Container Service (ECS) Cluster Service
 
 https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Service.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**arn**, **cluster_arn**).
 
 ## Relations
 
@@ -26,7 +26,7 @@ The following tables depend on aws_ecs_cluster_services:
 |arn (PK)|String|
 |tags|JSON|
 |capacity_provider_strategy|JSON|
-|cluster_arn|String|
+|cluster_arn (PK)|String|
 |created_at|Timestamp|
 |created_by|String|
 |deployment_configuration|JSON|

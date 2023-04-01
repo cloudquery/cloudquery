@@ -15,13 +15,12 @@ func GlobalClusters() *schema.Table {
 	tableName := "aws_neptune_global_clusters"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#DescribeDBInstances`,
+		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-global-dbs.html#GlobalCluster`,
 		Resolver:    fetchNeptuneGlobalClusters,
 		Transform:   transformers.TransformWithStruct(&types.GlobalCluster{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "neptune"),
+		Multiplex:   client.AccountMultiplex(tableName),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
@@ -29,11 +28,6 @@ func GlobalClusters() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveNeptuneGlobalClusterTags,
 			},
 		},
 	}
