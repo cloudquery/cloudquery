@@ -98,16 +98,19 @@ func resolveKeysTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	}
 	svc := meta.(*client.Client).Services().Kms
 	params := kms.ListResourceTagsInput{KeyId: key.KeyId}
-	var tags []types.Tag
 	paginator := kms.NewListResourceTagsPaginator(svc, &params)
+	tags := make(map[string]string)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		tags = append(tags, page.Tags...)
+		// Cannot use client.TagToMap because key/val names are different
+		for _, v := range page.Tags {
+			tags[aws.ToString(v.TagKey)] = aws.ToString(v.TagValue)
+		}
 	}
-	return resource.Set(c.Name, client.TagsToMap(tags))
+	return resource.Set(c.Name, tags)
 }
 
 func resolveKeysRotationEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
