@@ -1,6 +1,9 @@
 package cognito
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -26,4 +29,39 @@ func userPoolIdentityProviders() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	pool := parent.Item.(*types.UserPoolType)
+	c := meta.(*client.Client)
+	svc := c.Services().Cognitoidentityprovider
+
+	params := cognitoidentityprovider.ListIdentityProvidersInput{UserPoolId: pool.Id}
+	paginator := cognitoidentityprovider.NewListIdentityProvidersPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.Providers
+	}
+	return nil
+}
+
+func getUserPoolIdentityProvider(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Cognitoidentityprovider
+	item := resource.Item.(types.ProviderDescription)
+	pool := resource.Parent.Item.(*types.UserPoolType)
+
+	pd, err := svc.DescribeIdentityProvider(ctx, &cognitoidentityprovider.DescribeIdentityProviderInput{
+		ProviderName: item.ProviderName,
+		UserPoolId:   pool.Id,
+	})
+	if err != nil {
+		return err
+	}
+
+	resource.Item = pd.IdentityProvider
+	return nil
 }

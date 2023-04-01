@@ -1,6 +1,9 @@
 package cognito
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -33,4 +36,36 @@ func UserPools() *schema.Table {
 			userPoolIdentityProviders(),
 		},
 	}
+}
+
+func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Cognitoidentityprovider
+	params := cognitoidentityprovider.ListUserPoolsInput{
+		// we want max results to reduce List calls as much as possible, services limited to less than or equal to 60"
+		MaxResults: 60,
+	}
+	paginator := cognitoidentityprovider.NewListUserPoolsPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.UserPools
+	}
+	return nil
+}
+
+func getUserPool(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Cognitoidentityprovider
+	item := resource.Item.(types.UserPoolDescriptionType)
+
+	upo, err := svc.DescribeUserPool(ctx, &cognitoidentityprovider.DescribeUserPoolInput{UserPoolId: item.Id})
+	if err != nil {
+		return err
+	}
+
+	resource.Item = upo.UserPool
+	return nil
 }

@@ -1,6 +1,10 @@
 package qldb
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/qldb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -25,4 +29,26 @@ func ledgerJournalKinesisStreams() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchQldbLedgerJournalKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	ledger := parent.Item.(*qldb.DescribeLedgerOutput)
+	cl := meta.(*client.Client)
+	config := &qldb.ListJournalKinesisStreamsForLedgerInput{
+		LedgerName: ledger.Name,
+		MaxResults: aws.Int32(100),
+	}
+	for {
+		response, err := cl.Services().Qldb.ListJournalKinesisStreamsForLedger(ctx, config)
+		if err != nil {
+			return err
+		}
+
+		res <- response.Streams
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		config.NextToken = response.NextToken
+	}
+	return nil
 }
