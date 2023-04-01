@@ -69,7 +69,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 // sanitizeJSONKeys replaces all invalid characters in JSON keys with underscores.
 // It does the replacement in-place, modifying the original object. This is required
 // for compatibility with Athena.
-func sanitizeJSONKeys(obj any) {
+func 	sanitizeJSONKeys(obj any) {
 	value := reflect.ValueOf(obj)
 	switch value.Kind() {
 	case reflect.Map:

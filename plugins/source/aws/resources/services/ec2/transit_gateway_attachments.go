@@ -1,6 +1,10 @@
 package ec2
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -30,4 +34,31 @@ func transitGatewayAttachments() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchEc2TransitGatewayAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	r := parent.Item.(types.TransitGateway)
+
+	config := ec2.DescribeTransitGatewayAttachmentsInput{
+		Filters: []types.Filter{
+			{
+				Name:   aws.String("transit-gateway-id"),
+				Values: []string{*r.TransitGatewayId},
+			},
+		},
+	}
+	c := meta.(*client.Client)
+	svc := c.Services().Ec2
+	for {
+		output, err := svc.DescribeTransitGatewayAttachments(ctx, &config)
+		if err != nil {
+			return err
+		}
+		res <- output.TransitGatewayAttachments
+		if aws.ToString(output.NextToken) == "" {
+			break
+		}
+		config.NextToken = output.NextToken
+	}
+	return nil
 }
