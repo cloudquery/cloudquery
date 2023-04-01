@@ -51,6 +51,7 @@ The composite primary key for this table is (**account_id**, **region_id**, **in
 |os_version|String|
 |spot_price_limit|Float|
 |os_name|String|
+|instance_owner_id|Int|
 |os_name_en|String|
 |serial_number|String|
 |region_id (PK)|String|
