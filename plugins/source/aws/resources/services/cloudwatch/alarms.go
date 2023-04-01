@@ -54,7 +54,6 @@ func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, parent *
 			return err
 		}
 		res <- page.MetricAlarms
-
 	}
 	return nil
 }

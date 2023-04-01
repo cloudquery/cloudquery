@@ -106,7 +106,6 @@ func resolveKeysTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 			return err
 		}
 		tags = append(tags, page.Tags...)
-
 	}
 	return resource.Set(c.Name, client.TagsToMap(tags))
 }
