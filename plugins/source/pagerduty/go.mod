@@ -6,7 +6,7 @@ require (
 	github.com/PagerDuty/go-pagerduty v1.6.0
 	github.com/cloudquery/plugin-sdk v1.44.1
 	github.com/rs/zerolog v1.29.0
-	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2
+	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
 	golang.org/x/time v0.0.0-20220922220347-f3bd1da661af
 	gopkg.in/yaml.v3 v3.0.1
 )
