@@ -30,7 +30,7 @@ require (
 	github.com/go-openapi/jsonreference v0.20.2 // indirect; indirect // indirect // indirect
 	github.com/go-openapi/swag v0.22.3 // indirect; indirect // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/gofuzz v1.1.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
