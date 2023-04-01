@@ -24,9 +24,9 @@ The following tables depend on aws_ecs_cluster_services:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|cluster_arn (PK)|String|
 |tags|JSON|
 |capacity_provider_strategy|JSON|
+|cluster_arn (PK)|String|
 |created_at|Timestamp|
 |created_by|String|
 |deployment_configuration|JSON|

@@ -14,7 +14,7 @@ func ClusterServices() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Service.html`,
 		Resolver:    fetchEcsClusterServices,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ecs"),
-		Transform:   transformers.TransformWithStruct(&types.Service{}),
+		Transform:   transformers.TransformWithStruct(&types.Service{}, transformers.WithPrimaryKeys("ClusterArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -22,14 +22,6 @@ func ClusterServices() *schema.Table {
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ServiceArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "cluster_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
