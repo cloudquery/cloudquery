@@ -36,6 +36,7 @@ func buildKinesisStreams(t *testing.T, ctrl *gomock.Controller) client.Services 
 		t.Fatal(err)
 	}
 	streams.HasMoreStreams = aws.Bool(false)
+	streams.NextToken = nil
 	k.EXPECT().ListStreams(gomock.Any(), gomock.Any(), gomock.Any()).Return(&streams, nil)
 
 	stream := kinesis.DescribeStreamSummaryOutput{
