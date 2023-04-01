@@ -6,7 +6,7 @@ require (
 	github.com/cloudquery/plugin-sdk v1.44.1
 	github.com/google/uuid v1.3.0
 	github.com/jackc/pglogrepl v0.0.0-20230318140337-5ef673a9d169
-	github.com/jackc/pgx-zerolog v0.0.0-20230124015146-7c83b3e9b2bd
+	github.com/jackc/pgx-zerolog v0.0.0-20230315001418-f978528409eb
 	github.com/jackc/pgx/v5 v5.3.1
 	github.com/rs/zerolog v1.29.0
 )
