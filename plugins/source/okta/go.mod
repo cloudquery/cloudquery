@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/cloudquery/plugin-sdk v1.44.1
 	github.com/gorilla/mux v1.8.0
-	github.com/okta/okta-sdk-golang/v3 v3.0.1
+	github.com/okta/okta-sdk-golang/v3 v3.0.2
 	github.com/rs/zerolog v1.29.0
 	github.com/thoas/go-funk v0.9.3
 )
@@ -20,7 +20,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
 	github.com/getsentry/sentry-go v0.18.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
