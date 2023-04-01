@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudquery/plugin-sdk v1.44.1
-	github.com/marcboeker/go-duckdb v1.2.1
+	github.com/marcboeker/go-duckdb v1.2.2
 	github.com/rs/zerolog v1.29.0
 )
 
