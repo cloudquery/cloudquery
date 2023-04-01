@@ -57,22 +57,22 @@ func getNotebookInstance(ctx context.Context, meta schema.ClientMeta, resource *
 	return nil
 }
 
-func resolveSagemakerNotebookInstanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+func resolveSagemakerNotebookInstanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	r := resource.Item.(*WrappedSageMakerNotebookInstance)
 	c := meta.(*client.Client)
 	svc := c.Services().Sagemaker
 	config := sagemaker.ListTagsInput{
 		ResourceArn: &r.NotebookInstanceArn,
 	}
-	response, err := svc.ListTags(ctx, &config)
-	if err != nil {
-		return err
+	paginator := sagemaker.NewListTagsPaginator(svc, &config)
+	var tags []types.Tag
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		tags = append(tags, page.Tags...)
 	}
 
-	tags := make(map[string]*string, len(response.Tags))
-	for _, t := range response.Tags {
-		tags[*t.Key] = t.Value
-	}
-
-	return resource.Set("tags", tags)
+	return resource.Set(col.Name, client.TagsToMap(tags))
 }

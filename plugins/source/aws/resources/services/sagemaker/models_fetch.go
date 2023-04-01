@@ -56,17 +56,24 @@ func getModel(ctx context.Context, meta schema.ClientMeta, resource *schema.Reso
 	return nil
 }
 
-func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	r := resource.Item.(*WrappedSageMakerModel)
 	c := meta.(*client.Client)
 	svc := c.Services().Sagemaker
 
-	response, err := svc.ListTags(ctx, &sagemaker.ListTagsInput{
+	config := &sagemaker.ListTagsInput{
 		ResourceArn: r.ModelArn,
-	})
-	if err != nil {
-		return err
 	}
 
-	return resource.Set("tags", client.TagsToMap(response.Tags))
+	paginator := sagemaker.NewListTagsPaginator(svc, config)
+	var tags []types.Tag
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		tags = append(tags, page.Tags...)
+	}
+
+	return resource.Set(col.Name, client.TagsToMap(tags))
 }

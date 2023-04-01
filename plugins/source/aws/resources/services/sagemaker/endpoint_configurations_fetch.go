@@ -3,7 +3,6 @@ package sagemaker
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -14,18 +13,13 @@ func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.Clien
 	c := meta.(*client.Client)
 	svc := c.Services().Sagemaker
 	config := sagemaker.ListEndpointConfigsInput{}
-	for {
-		response, err := svc.ListEndpointConfigs(ctx, &config)
+	paginator := sagemaker.NewListEndpointConfigsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		res <- response.EndpointConfigs
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.EndpointConfigs
 	}
 	return nil
 }
@@ -46,22 +40,22 @@ func getEndpointConfiguration(ctx context.Context, meta schema.ClientMeta, resou
 	return nil
 }
 
-func resolveSagemakerEndpointConfigurationTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
+func resolveSagemakerEndpointConfigurationTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	r := resource.Item.(*sagemaker.DescribeEndpointConfigOutput)
 	c := meta.(*client.Client)
 	svc := c.Services().Sagemaker
 	config := sagemaker.ListTagsInput{
 		ResourceArn: r.EndpointConfigArn,
 	}
-	response, err := svc.ListTags(ctx, &config)
-	if err != nil {
-		return err
+	paginator := sagemaker.NewListTagsPaginator(svc, &config)
+	var tags []types.Tag
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		tags = append(tags, page.Tags...)
 	}
 
-	tags := make(map[string]*string, len(response.Tags))
-	for _, t := range response.Tags {
-		tags[*t.Key] = t.Value
-	}
-
-	return resource.Set("tags", tags)
+	return resource.Set(col.Name, client.TagsToMap(tags))
 }
