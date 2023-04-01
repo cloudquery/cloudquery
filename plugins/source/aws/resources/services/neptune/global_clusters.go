@@ -50,14 +50,3 @@ func fetchNeptuneGlobalClusters(ctx context.Context, meta schema.ClientMeta, par
 	}
 	return nil
 }
-
-func resolveNeptuneGlobalClusterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	s := resource.Item.(types.GlobalCluster)
-	cl := meta.(*client.Client)
-	svc := cl.Services().Neptune
-	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: s.GlobalClusterArn})
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, client.TagsToMap(out.TagList))
-}
