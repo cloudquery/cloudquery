@@ -109,7 +109,7 @@ require (
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
 	github.com/cloudquery/plugin-sdk v1.44.1
-	github.com/gocarina/gocsv v0.0.0-20230226133904-70c27cb2918a
+	github.com/gocarina/gocsv v0.0.0-20230325173030-9a18a846a479
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
 	github.com/mitchellh/hashstructure/v2 v2.0.2
@@ -135,7 +135,7 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2 // indirect; indirect // indirect // indirect
+	golang.org/x/exp v0.0.0-20230321023759-10a507213a29 // indirect; indirect // indirect
 )
 
 require (
