@@ -114,7 +114,7 @@ func resolveIpsetTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 		if err != nil {
 			return err
 		}
-		//TODO: Replace with client.TagsToMap
+		// TODO: Replace with client.TagsToMap
 		if result != nil || result.TagInfoForResource != nil {
 			for _, t := range result.TagInfoForResource.TagList {
 				tags[aws.ToString(t.Key)] = aws.ToString(t.Value)

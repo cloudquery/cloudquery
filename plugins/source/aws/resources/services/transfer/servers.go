@@ -44,7 +44,7 @@ func fetchTransferServers(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	svc := c.Services().Transfer
 	input := transfer.ListServersInput{MaxResults: aws.Int32(1000)}
-	//TODO: Replace with paginator
+	// TODO: Replace with paginator
 	for {
 		result, err := svc.ListServers(ctx, &input)
 		if err != nil {
