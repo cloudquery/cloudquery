@@ -1,6 +1,9 @@
 package ecs
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -30,4 +33,38 @@ func clusterContainerInstances() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cluster := parent.Item.(types.Cluster)
+	svc := meta.(*client.Client).Services().Ecs
+	config := ecs.ListContainerInstancesInput{
+		Cluster: cluster.ClusterArn,
+	}
+	for {
+		listContainerInstances, err := svc.ListContainerInstances(ctx, &config)
+		if err != nil {
+			return err
+		}
+		if len(listContainerInstances.ContainerInstanceArns) == 0 {
+			return nil
+		}
+		describeServicesInput := ecs.DescribeContainerInstancesInput{
+			Cluster:            cluster.ClusterArn,
+			ContainerInstances: listContainerInstances.ContainerInstanceArns,
+			Include:            []types.ContainerInstanceField{types.ContainerInstanceFieldTags},
+		}
+		describeContainerInstances, err := svc.DescribeContainerInstances(ctx, &describeServicesInput)
+		if err != nil {
+			return err
+		}
+
+		res <- describeContainerInstances.ContainerInstances
+
+		if listContainerInstances.NextToken == nil {
+			break
+		}
+		config.NextToken = listContainerInstances.NextToken
+	}
+	return nil
 }
