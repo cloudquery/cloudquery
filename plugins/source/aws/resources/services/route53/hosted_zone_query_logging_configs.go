@@ -1,8 +1,15 @@
 package route53
 
 import (
+	"context"
+	"fmt"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
@@ -32,4 +39,34 @@ func hostedZoneQueryLoggingConfigs() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchRoute53HostedZoneQueryLoggingConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	r := parent.Item.(*models.Route53HostedZoneWrapper)
+	svc := meta.(*client.Client).Services().Route53
+	config := route53.ListQueryLoggingConfigsInput{HostedZoneId: r.Id}
+	for {
+		response, err := svc.ListQueryLoggingConfigs(ctx, &config, func(options *route53.Options) {})
+		if err != nil {
+			return err
+		}
+		res <- response.QueryLoggingConfigs
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		config.NextToken = response.NextToken
+	}
+	return nil
+}
+
+func resolveRoute53HostedZoneQueryLoggingConfigsArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	ql := resource.Item.(types.QueryLoggingConfig)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.Route53Service),
+		Region:    "",
+		AccountID: "",
+		Resource:  fmt.Sprintf("queryloggingconfig/%s", aws.ToString(ql.Id)),
+	}.String())
 }
