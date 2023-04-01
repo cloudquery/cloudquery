@@ -1,6 +1,9 @@
 package lightsail
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -37,4 +40,16 @@ func ContainerServices() *schema.Table {
 			containerServiceImages(),
 		},
 	}
+}
+
+func fetchLightsailContainerServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var input lightsail.GetContainerServicesInput
+	c := meta.(*client.Client)
+	svc := c.Services().Lightsail
+	response, err := svc.GetContainerServices(ctx, &input)
+	if err != nil {
+		return err
+	}
+	res <- response.ContainerServices
+	return nil
 }
