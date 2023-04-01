@@ -38,6 +38,7 @@ func buildSageMakerModels(t *testing.T, ctrl *gomock.Controller) client.Services
 	if err := faker.FakeObject(&tagsOut); err != nil {
 		t.Fatal(err)
 	}
+	tagsOut.NextToken = nil
 	m.EXPECT().ListTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&tagsOut, nil,
 	)
