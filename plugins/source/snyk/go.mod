@@ -8,7 +8,7 @@ require (
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/pavel-snyk/snyk-sdk-go v0.4.1
 	github.com/rs/zerolog v1.29.0
-	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2
+	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
 )
 
 require (
