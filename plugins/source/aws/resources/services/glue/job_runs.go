@@ -1,6 +1,12 @@
 package glue
 
 import (
+	"context"
+	"fmt"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -25,4 +31,34 @@ func jobRuns() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchGlueJobRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Glue
+	input := glue.GetJobRunsInput{
+		JobName: parent.Item.(types.Job).Name,
+	}
+	for {
+		result, err := svc.GetJobRuns(ctx, &input)
+		if err != nil {
+			return err
+		}
+		res <- result.JobRuns
+		if aws.ToString(result.NextToken) == "" {
+			break
+		}
+		input.NextToken = result.NextToken
+	}
+	return nil
+}
+
+func jobARN(cl *client.Client, name string) string {
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.GlueService),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("job/%s", name),
+	}.String()
 }
