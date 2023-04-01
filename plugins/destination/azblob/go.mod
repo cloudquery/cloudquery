@@ -15,7 +15,7 @@ replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/apache/arrow/go/v12 v12.0.0-20230308100140-fcc17e356175 // indirect
+	github.com/apache/arrow/go/v12 v12.0.0-20230331222054-7e19111f2f81 // indirect
 	github.com/goccy/go-json v0.10.0 // indirect
 	github.com/google/flatbuffers v23.3.3+incompatible // indirect
 	github.com/klauspost/asmfmt v1.3.2 // indirect
