@@ -30,12 +30,12 @@ require (
 	github.com/go-openapi/jsonreference v0.20.2 // indirect; indirect // indirect // indirect
 	github.com/go-openapi/swag v0.22.3 // indirect; indirect // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/gofuzz v1.1.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
-	github.com/imdario/mergo v0.3.13 // indirect; indirect // indirect
+	github.com/imdario/mergo v0.3.15 // indirect; indirect // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -67,7 +67,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/klog/v2 v2.80.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20230228151317-19cbebb19cb7 // indirect; indirect // indirect // indirect // indirect
-	k8s.io/utils v0.0.0-20230220204549-a5ecb0141aa5 // indirect; indirect // indirect
+	k8s.io/utils v0.0.0-20230313181309-38a27ef9d749 // indirect; indirect // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect; indirect // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3 // indirect
 	sigs.k8s.io/yaml v1.3.0 // indirect
