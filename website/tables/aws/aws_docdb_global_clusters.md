@@ -15,7 +15,6 @@ The primary key for this table is **arn**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
-|region|String|
 |arn (PK)|String|
 |database_name|String|
 |deletion_protection|Bool|
