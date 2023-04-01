@@ -2,8 +2,10 @@ package athena
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -105,4 +107,14 @@ func resolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, res
 		params.NextToken = result.NextToken
 	}
 	return resource.Set(c.Name, tags)
+}
+
+func createWorkGroupArn(cl *client.Client, groupName string) string {
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.Athena),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("workgroup/%s", groupName),
+	}.String()
 }

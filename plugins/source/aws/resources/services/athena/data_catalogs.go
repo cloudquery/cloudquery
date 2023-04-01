@@ -2,8 +2,10 @@ package athena
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -106,4 +108,14 @@ func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, r
 		client.TagsIntoMap(page.Tags, tags)
 	}
 	return resource.Set(c.Name, tags)
+}
+
+func createDataCatalogArn(cl *client.Client, catalogName string) string {
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.Athena),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("datacatalog/%s", catalogName),
+	}.String()
 }
