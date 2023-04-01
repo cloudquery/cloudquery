@@ -11,7 +11,7 @@ require (
 
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
-	github.com/apache/arrow/go/v12 v12.0.0-20230306000349-d5b3b4737838 // indirect
+	github.com/apache/arrow/go/v12 v12.0.0-20230331222054-7e19111f2f81 // indirect
 	github.com/goccy/go-json v0.9.11 // indirect
 	github.com/google/flatbuffers v2.0.8+incompatible // indirect
 	github.com/klauspost/asmfmt v1.3.2 // indirect

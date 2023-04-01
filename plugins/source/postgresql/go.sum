@@ -133,8 +133,8 @@ github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
 github.com/jackc/pgio v1.0.0 h1:g12B9UwVnzGhueNavwioyEEpAmqMe1E/BN9ES+8ovkE=
 github.com/jackc/pgio v1.0.0/go.mod h1:oP+2QK2wFfUWgr+gxjoBH9KGBb31Eio69xUb0w5bYf8=
-github.com/jackc/pglogrepl v0.0.0-20221125161640-1e972958ba03 h1:fEPLGDtOJ06CzwKVJJujXnL0gW63A6gLbe8JTG0NPxE=
-github.com/jackc/pglogrepl v0.0.0-20221125161640-1e972958ba03/go.mod h1:P5+MSYwllwjij1PDNGA4NF6hpomKWs0CmuagKUW9s0c=
+github.com/jackc/pglogrepl v0.0.0-20230318140337-5ef673a9d169 h1:r3eRvbo5j+OfO8NFYRUK7q162ZVHRb5sVT/A865RpuY=
+github.com/jackc/pglogrepl v0.0.0-20230318140337-5ef673a9d169/go.mod h1:P5+MSYwllwjij1PDNGA4NF6hpomKWs0CmuagKUW9s0c=
 github.com/jackc/pgpassfile v1.0.0 h1:/6Hmqy13Ss2zCq62VdNG8tM1wchn8zjSGOBJ6icpsIM=
 github.com/jackc/pgpassfile v1.0.0/go.mod h1:CEx0iS5ambNFdcRtxPj5JhEz+xB6uRky5eyVu/W2HEg=
 github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b/go.mod h1:vsD4gTJCa9TptPL8sPkXrLZ+hDuNrZCnj29CQpr4X1E=
