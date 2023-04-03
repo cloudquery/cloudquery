@@ -74,7 +74,7 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 			}
 			res <- &models.Route53HostedZoneWrapper{
 				HostedZone:      h,
-				Tags:            client.TagsToMap(getRoute53tagsByResourceID(*h.Id, tagsResponse.ResourceTagSets)),
+				Tags:            client.TagsToMap(getTags(*h.Id, tagsResponse.ResourceTagSets)),
 				DelegationSetId: delegationSetId,
 				VPCs:            gotHostedZone.VPCs,
 			}

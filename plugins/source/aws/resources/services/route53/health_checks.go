@@ -65,7 +65,7 @@ func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, paren
 		for _, h := range healthChecks {
 			wrapper := Route53HealthCheckWrapper{
 				HealthCheck: h,
-				Tags:        client.TagsToMap(getRoute53tagsByResourceID(*h.Id, tagsResponse.ResourceTagSets)),
+				Tags:        client.TagsToMap(getTags(*h.Id, tagsResponse.ResourceTagSets)),
 			}
 			res <- wrapper
 		}
