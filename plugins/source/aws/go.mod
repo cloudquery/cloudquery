@@ -48,7 +48,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.6
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.6
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.6
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.6
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.7
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.7
 	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.6
 	github.com/aws/aws-sdk-go-v2/service/emr v1.22.2
@@ -56,10 +56,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.8
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.21.0
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.28.7
-	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.6
+	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.7
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.17.6
 	github.com/aws/aws-sdk-go-v2/service/iam v1.19.8
-	github.com/aws/aws-sdk-go-v2/service/identitystore v1.16.5
+	github.com/aws/aws-sdk-go-v2/service/identitystore v1.16.6
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.13.5
 	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.11.7
 	github.com/aws/aws-sdk-go-v2/service/iot v1.33.0
