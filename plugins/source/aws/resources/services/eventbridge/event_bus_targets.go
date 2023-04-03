@@ -36,11 +36,6 @@ func eventBusTargets() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveEventBusTargetTags,
-			},
 		},
 	}
 }
@@ -67,9 +62,4 @@ func fetchEventBusTargets(ctx context.Context, meta schema.ClientMeta, parent *s
 		input.NextToken = response.NextToken
 	}
 	return nil
-}
-
-func resolveEventBusTargetTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	targetArn := resource.Item.(types.Target).Arn
-	return resolveTags(ctx, meta, resource, c, *targetArn)
 }
