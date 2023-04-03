@@ -35,17 +35,13 @@ func fetchSsmSessions(ctx context.Context, meta schema.ClientMeta, parent *schem
 		State:   types.SessionStateActive,
 		Filters: []types.SessionFilter{{Key: types.SessionFilterKeyOwner, Value: aws.String("Self")}},
 	}
-	for {
-		output, err := svc.DescribeSessions(ctx, &params)
+	paginator := ssm.NewDescribeSessionsPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.Sessions
-
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		params.NextToken = output.NextToken
+		res <- page.Sessions
 	}
 	return nil
 }
