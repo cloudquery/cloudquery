@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"context"
-	"strconv"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -30,8 +29,8 @@ func fetchAlerts(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 			return err
 		}
 		res <- alerts
-		opts.Page = strconv.FormatInt(int64(resp.NextPage), 10)
-		if resp.NextPage == 0 {
+		opts.After = resp.After
+		if len(resp.After) == 0 {
 			break
 		}
 	}
