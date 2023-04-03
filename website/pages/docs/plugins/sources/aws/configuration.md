@@ -47,6 +47,10 @@ spec:
     - aws_elasticache_parameter_groups
     - aws_elasticache_reserved_cache_nodes_offerings
     - aws_elasticache_service_updates
+    - aws_iam_group_last_accessed_details
+    - aws_iam_policy_last_accessed_details
+    - aws_iam_role_last_accessed_details
+    - aws_iam_user_last_accessed_details
     - aws_neptune_cluster_parameter_groups
     - aws_neptune_db_parameter_groups
     - aws_rds_cluster_parameter_groups

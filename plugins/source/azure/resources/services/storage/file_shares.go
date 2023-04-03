@@ -15,6 +15,7 @@ func file_shares() *schema.Table {
 		Resolver:    fetchFileShares,
 		Description: "https://learn.microsoft.com/en-us/rest/api/storagerp/file-shares/list?tabs=HTTP#fileshareitem",
 		Transform:   transformers.TransformWithStruct(&armstorage.FileShareItem{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

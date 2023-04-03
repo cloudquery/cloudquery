@@ -1,6 +1,6 @@
 # Table: k8s_core_pods
 
-This table shows data for K8s Core Pods.
+This table shows data for Kubernetes (K8s) Core Pods.
 
 The primary key for this table is **uid**.
 
@@ -13,7 +13,6 @@ The primary key for this table is **uid**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |context|String|
-|uid (PK)|String|
 |status_host_ip|Inet|
 |status_pod_ip|Inet|
 |status_pod_ips|InetArray|
@@ -21,6 +20,7 @@ The primary key for this table is **uid**.
 |api_version|String|
 |name|String|
 |namespace|String|
+|uid (PK)|String|
 |resource_version|String|
 |generation|Int|
 |deletion_grace_period_seconds|Int|

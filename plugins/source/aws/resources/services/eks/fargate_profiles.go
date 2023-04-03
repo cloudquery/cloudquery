@@ -28,6 +28,5 @@ func FargateProfiles() *schema.Table {
 				},
 			},
 		},
-		Relations: []*schema.Table{},
 	}
 }

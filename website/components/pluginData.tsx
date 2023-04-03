@@ -394,6 +394,13 @@ export const DESTINATION_PLUGINS: Plugin[] = [
     category: "databases",
   },
   {
+    name: "Meilisearch",
+    logo: "/images/logos/plugins/meilisearch.svg",
+    id: "meilisearch",
+    kind: "official",
+    category: "databases",
+  },
+  {
     name: "Microsoft SQL Server",
     logo: "/images/logos/plugins/mssql.svg",
     id: "mssql",
@@ -658,14 +665,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     kind: "unpublished",
     category: "databases",
     logo: "/images/logos/plugins/mssql.svg",
-  },
-  {
-    name: "MySQL",
-    id: "mysql",
-    href: "https://github.com/cloudquery/cloudquery/issues/8411",
-    kind: "unpublished",
-    category: "databases",
-    logo: "/images/logos/plugins/mysql.svg",
   },
   {
     name: "New Relic",
