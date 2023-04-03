@@ -84,14 +84,23 @@ func resolveDynamodbGlobalTableTags(ctx context.Context, meta schema.ClientMeta,
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Dynamodb
-	response, err := svc.ListTagsOfResource(ctx, &dynamodb.ListTagsOfResourceInput{
+	var tags []types.Tag
+	input := &dynamodb.ListTagsOfResourceInput{
 		ResourceArn: table.GlobalTableArn,
-	})
-	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
-		return err
 	}
-	return resource.Set(c.Name, client.TagsToMap(response.Tags))
+	for {
+		response, err := svc.ListTagsOfResource(ctx, input)
+		if err != nil {
+			if cl.IsNotFoundError(err) {
+				return nil
+			}
+			return err
+		}
+		tags = append(tags, response.Tags...)
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		input.NextToken = response.NextToken
+	}
+	return resource.Set(c.Name, client.TagsToMap(tags))
 }
