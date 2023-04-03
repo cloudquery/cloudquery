@@ -29,9 +29,6 @@ func Subscriptions() *schema.Table {
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SubscriptionArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "delivery_policy",
