@@ -3,9 +3,9 @@ module github.com/cloudquery/cloudquery/plugins/destination/meilisearch
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.44.0
+	github.com/cloudquery/plugin-sdk v1.44.1
 	github.com/google/uuid v1.3.0
-	github.com/meilisearch/meilisearch-go v0.23.1
+	github.com/meilisearch/meilisearch-go v0.24.0
 	github.com/rs/zerolog v1.29.0
 	github.com/valyala/fasthttp v1.45.0
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29

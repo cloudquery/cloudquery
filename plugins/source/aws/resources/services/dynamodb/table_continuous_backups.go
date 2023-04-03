@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func TableContinuousBackups() *schema.Table {
+func tableContinuousBackups() *schema.Table {
 	tableName := "aws_dynamodb_table_continuous_backups"
 	return &schema.Table{
 		Name:        tableName,

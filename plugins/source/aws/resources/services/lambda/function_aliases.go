@@ -1,13 +1,17 @@
 package lambda
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/lambda"
+	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func FunctionAliases() *schema.Table {
+func functionAliases() *schema.Table {
 	tableName := "aws_lambda_function_aliases"
 	return &schema.Table{
 		Name:                tableName,
@@ -34,4 +38,55 @@ func FunctionAliases() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	p := parent.Item.(*lambda.GetFunctionOutput)
+	if p.Configuration == nil {
+		return nil
+	}
+
+	c := meta.(*client.Client)
+	svc := c.Services().Lambda
+	config := lambda.ListAliasesInput{
+		FunctionName: p.Configuration.FunctionName,
+	}
+
+	for {
+		output, err := svc.ListAliases(ctx, &config)
+		if err != nil {
+			return err
+		}
+		if err != nil {
+			if c.IsNotFoundError(err) {
+				return nil
+			}
+			return err
+		}
+		res <- output.Aliases
+
+		if output.NextMarker == nil {
+			break
+		}
+		config.Marker = output.NextMarker
+	}
+	return nil
+}
+
+func getFunctionAliasURLConfig(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Lambda
+	alias := resource.Item.(types.AliasConfiguration)
+	p := resource.Parent.Item.(*lambda.GetFunctionOutput)
+
+	urlConfig, err := svc.GetFunctionUrlConfig(ctx, &lambda.GetFunctionUrlConfigInput{
+		FunctionName: p.Configuration.FunctionName,
+		Qualifier:    alias.Name,
+	})
+	if err != nil && !c.IsNotFoundError(err) {
+		return err
+	}
+
+	resource.Item = &models.AliasWrapper{AliasConfiguration: &alias, UrlConfig: urlConfig}
+	return nil
 }

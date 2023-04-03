@@ -76,7 +76,7 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			}
 			for _, image := range resp.Images {
 				if aws.ToString(image.OwnerId) != c.AccountID {
-					res <- resp.Images
+					res <- image
 				}
 			}
 		}

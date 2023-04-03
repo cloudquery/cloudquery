@@ -1,6 +1,10 @@
 package glue
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -34,7 +38,41 @@ func Registries() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			RegistrySchemas(),
+			registrySchemas(),
 		},
 	}
+}
+
+func fetchGlueRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Glue
+	input := glue.ListRegistriesInput{MaxResults: aws.Int32(100)}
+	for {
+		result, err := svc.ListRegistries(ctx, &input)
+		if err != nil {
+			return err
+		}
+		res <- result.Registries
+		if aws.ToString(result.NextToken) == "" {
+			break
+		}
+		input.NextToken = result.NextToken
+	}
+	return nil
+}
+
+func resolveGlueRegistryTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Glue
+	r := resource.Item.(types.RegistryListItem)
+	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
+		ResourceArn: r.RegistryArn,
+	})
+	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return nil
+		}
+		return err
+	}
+	return resource.Set(c.Name, result.Tags)
 }
