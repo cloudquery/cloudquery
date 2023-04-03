@@ -24,7 +24,7 @@ This table only contains version 2017.11.29 (Legacy) Global Tables. See aws_dyna
 		Transform:           transformers.TransformWithStruct(&types.GlobalTableDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultRegionColumn(true),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
