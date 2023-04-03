@@ -43,6 +43,7 @@ func buildDynamodbGlobalTablesMock(t *testing.T, ctrl *gomock.Controller) client
 	if err := faker.FakeObject(&tags); err != nil {
 		t.Fatal(err)
 	}
+	tags.NextToken = nil
 	m.EXPECT().ListTagsOfResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		tags,
 		nil,
