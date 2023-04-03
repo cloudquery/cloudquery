@@ -16,8 +16,8 @@ func BillDetails() *schema.Table {
 		Transform: transformers.TransformWithStruct(
 			&BillDetailsModel{},
 			transformers.WithPrimaryKeys(
-				"BillingCycle", "AccountID", "ProductCode",
-				"ProductType", "PipCode", "RecordID", "SubscriptionType", "CommodityCode",
+				"BillingCycle", "BillingDate","AccountID", "ProductCode",
+				"ProductType", "PipCode", "RecordID", "SubscriptionType", "CommodityCode","InstanceID",
 			),
 		),
 	}
