@@ -44,13 +44,17 @@ func fetchKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 	svc := c.Services().Kinesis
 	input := kinesis.ListStreamsInput{}
-	paginator := kinesis.NewListStreamsPaginator(svc, &input)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+	// TODO: Use Paginator
+	for {
+		response, err := svc.ListStreams(ctx, &input)
 		if err != nil {
 			return err
 		}
-		res <- page.StreamNames
+		res <- response.StreamNames
+		if !aws.ToBool(response.HasMoreStreams) {
+			break
+		}
+		input.ExclusiveStartStreamName = aws.String(response.StreamNames[len(response.StreamNames)-1])
 	}
 	return nil
 }

@@ -77,6 +77,7 @@ func resolvePipelineTags(ctx context.Context, meta schema.ClientMeta, resource *
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Codepipeline
+	// TODO: Support Pagination
 	response, err := svc.ListTagsForResource(ctx, &codepipeline.ListTagsForResourceInput{
 		ResourceArn: pipeline.Metadata.PipelineArn,
 	})

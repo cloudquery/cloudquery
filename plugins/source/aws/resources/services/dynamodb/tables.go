@@ -90,6 +90,7 @@ func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resou
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Dynamodb
+	// TODO: Support Pagination
 	response, err := svc.ListTagsOfResource(ctx, &dynamodb.ListTagsOfResourceInput{
 		ResourceArn: table.TableArn,
 	})

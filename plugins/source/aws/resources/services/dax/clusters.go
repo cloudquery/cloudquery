@@ -65,7 +65,7 @@ func resolveClusterTags(ctx context.Context, meta schema.ClientMeta, resource *s
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Dax
-
+	// TODO: Support Pagination
 	response, err := svc.ListTags(ctx, &dax.ListTagsInput{
 		ResourceName: cluster.ClusterArn,
 	})
