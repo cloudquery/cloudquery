@@ -16,7 +16,7 @@ func eventBusTargets() *schema.Table {
 		Name:        "aws_eventbridge_event_bus_targets",
 		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Target.html`,
 		Resolver:    fetchEventBusTargets,
-		Transform:   transformers.TransformWithStruct(&types.Target{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.Target{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
