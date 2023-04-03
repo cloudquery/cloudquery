@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/gitlab
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.44.0
+	github.com/cloudquery/plugin-sdk v1.44.1
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/rs/zerolog v1.29.0
 	github.com/xanzy/go-gitlab v0.74.0
@@ -19,7 +19,7 @@ require (
 require (
 	github.com/getsentry/sentry-go v0.18.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
@@ -29,16 +29,16 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.7.2 // indirect; indirect // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.17 // indirect
+	github.com/mattn/go-isatty v0.0.18 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
-	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2 // indirect; indirect // indirect // indirect
+	golang.org/x/exp v0.0.0-20230321023759-10a507213a29 // indirect; indirect // indirect
 	golang.org/x/net v0.7.0 // indirect; indirect // indirect
 	golang.org/x/oauth2 v0.4.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/time v0.0.0-20220922220347-f3bd1da661af // indirect
 	google.golang.org/appengine v1.6.7 // indirect

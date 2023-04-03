@@ -1,13 +1,15 @@
 package mq
 
 import (
+	"context"
+
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func BrokerConfigurations() *schema.Table {
+func brokerConfigurations() *schema.Table {
 	tableName := "aws_mq_broker_configurations"
 	return &schema.Table{
 		Name:        tableName,
@@ -26,7 +28,45 @@ func BrokerConfigurations() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			BrokerConfigurationRevisions(),
+			brokerConfigurationRevisions(),
 		},
 	}
+}
+
+func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	broker := parent.Item.(*mq.DescribeBrokerOutput)
+	// Ensure Configurations is not nil
+	// This *might* occur during initial creation of broker
+	if broker.Configurations == nil {
+		return nil
+	}
+	c := meta.(*client.Client)
+	svc := c.Services().Mq
+	list := broker.Configurations.History
+	if broker.Configurations.Current != nil {
+		list = append(list, *broker.Configurations.Current)
+	}
+
+	// History might contain same Id multiple times (maybe with different revisions) but we're only interested in the latest revision of each
+	dupes := make(map[string]struct{}, len(list))
+	configurations := make([]mq.DescribeConfigurationOutput, 0, len(list))
+	for _, cfg := range list {
+		if cfg.Id == nil {
+			continue
+		}
+
+		if _, ok := dupes[*cfg.Id]; ok {
+			continue
+		}
+		dupes[*cfg.Id] = struct{}{}
+
+		input := mq.DescribeConfigurationInput{ConfigurationId: cfg.Id}
+		output, err := svc.DescribeConfiguration(ctx, &input)
+		if err != nil {
+			return err
+		}
+		configurations = append(configurations, *output)
+	}
+	res <- configurations
+	return nil
 }

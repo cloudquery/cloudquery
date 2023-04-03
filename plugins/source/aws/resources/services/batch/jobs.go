@@ -21,7 +21,7 @@ var allJobStatuses = []types.JobStatus{
 	types.JobStatusFailed,
 }
 
-func Jobs() *schema.Table {
+func jobs() *schema.Table {
 	tableName := "aws_batch_jobs"
 	return &schema.Table{
 		Name:        tableName,

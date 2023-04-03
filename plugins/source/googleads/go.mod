@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/googleads
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.44.0
+	github.com/cloudquery/plugin-sdk v1.44.1
 	github.com/rs/zerolog v1.29.0
 	github.com/shenzhencenter/google-ads-pb v1.4.0
 	github.com/stretchr/testify v1.8.2
