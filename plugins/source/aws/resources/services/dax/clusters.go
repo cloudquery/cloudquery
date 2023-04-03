@@ -66,20 +66,11 @@ func resolveClusterTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	cl := meta.(*client.Client)
 	svc := cl.Services().Dax
 
-	var tags []types.Tag
-	input := dax.ListTagsInput{
+	response, err := svc.ListTags(ctx, &dax.ListTagsInput{
 		ResourceName: cluster.ClusterArn,
+	})
+	if err != nil {
+		return err
 	}
-	for {
-		response, err := svc.ListTags(ctx, &input)
-		if err != nil {
-			return err
-		}
-		tags = append(tags, response.Tags...)
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
-	}
-	return resource.Set(c.Name, client.TagsToMap(tags))
+	return resource.Set(c.Name, client.TagsToMap(response.Tags))
 }

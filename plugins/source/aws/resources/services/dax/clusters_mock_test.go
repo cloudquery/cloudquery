@@ -32,7 +32,6 @@ func buildDAXClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	if err := faker.FakeObject(&tags); err != nil {
 		t.Fatal(err)
 	}
-	tags.NextToken = nil
 	m.EXPECT().ListTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		tags,
 		nil,

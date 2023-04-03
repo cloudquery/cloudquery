@@ -90,27 +90,18 @@ func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resou
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Dynamodb
-	var tags []types.Tag
-	input := &dynamodb.ListTagsOfResourceInput{
+	response, err := svc.ListTagsOfResource(ctx, &dynamodb.ListTagsOfResourceInput{
 		ResourceArn: table.TableArn,
-	}
-	for {
-		response, err := svc.ListTagsOfResource(ctx, input)
-
-		if err != nil {
-			if cl.IsNotFoundError(err) {
-				return nil
-			}
-			return err
+	})
+	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return nil
 		}
-		tags = append(tags, response.Tags...)
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		return err
 	}
-	return resource.Set(c.Name, client.TagsToMap(tags))
+	return resource.Set(c.Name, client.TagsToMap(response.Tags))
 }
+
 func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	par := parent.Item.(*types.TableDescription)
 
