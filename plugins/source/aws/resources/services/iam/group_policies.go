@@ -57,6 +57,7 @@ func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 			}
 			return err
 		}
+
 		res <- page.PolicyNames
 	}
 	return nil
