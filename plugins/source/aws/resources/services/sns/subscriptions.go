@@ -20,7 +20,7 @@ func Subscriptions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/sns/latest/api/API_GetSubscriptionAttributes.html`,
 		Resolver:            fetchSnsSubscriptions,
 		PreResourceResolver: getSnsSubscription,
-		Transform:           transformers.TransformWithStruct(&models.Subscription{}),
+		Transform:           transformers.TransformWithStruct(&models.Subscription{}, transformers.WithPrimaryKeys("Owner", "Protocol", "TopicArn", "Endpoint")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "sns"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
