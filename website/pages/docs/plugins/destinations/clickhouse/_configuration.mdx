@@ -1,10 +1,11 @@
 ```yaml copy
 kind: destination
 spec:
-  name:     "clickhouse"
-  registry: "github"
-  path:     "cloudquery/clickhouse"
-  version:  "VERSION_DESTINATION_CLICKHOUSE"
+  name:       "clickhouse"
+  registry:   "github"
+  path:       "cloudquery/clickhouse"
+  version:    "VERSION_DESTINATION_CLICKHOUSE"
+  write_mode: "append"
 
   spec:
     connection_string: "clickhouse://${CH_USER}:${CH_PASSWORD}@localhost:9000/${CH_DATABASE}"
