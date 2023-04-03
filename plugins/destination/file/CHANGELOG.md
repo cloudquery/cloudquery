@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v1.3.1...plugins-destination-file-v2.0.0) (2023-03-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* Add ability to override CSV File options (headers and delimiters) ([#9144](https://github.com/cloudquery/cloudquery/issues/9144))
+
+### Features
+
+* Add ability to override CSV File options (headers and delimiters) ([#9144](https://github.com/cloudquery/cloudquery/issues/9144)) ([b0620c7](https://github.com/cloudquery/cloudquery/commit/b0620c7295155b4dfcaa42f8ab3826fb5a603124))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.0 ([#9167](https://github.com/cloudquery/cloudquery/issues/9167)) ([49d6477](https://github.com/cloudquery/cloudquery/commit/49d647730a85ea6fae51e97194ba61c0625d1331))
+
+## [1.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v1.3.0...plugins-destination-file-v1.3.1) (2023-03-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes to v1.5.1 ([#8951](https://github.com/cloudquery/cloudquery/issues/8951)) ([197559e](https://github.com/cloudquery/cloudquery/commit/197559e71e5d01b5a7fa194008ffc6e3cd22705f))
+
 ## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v1.2.1...plugins-destination-file-v1.3.0) (2023-03-07)
 
 

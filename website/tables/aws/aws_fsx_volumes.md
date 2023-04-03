@@ -1,5 +1,7 @@
 # Table: aws_fsx_volumes
 
+This table shows data for Amazon FSx Volumes.
+
 https://docs.aws.amazon.com/fsx/latest/APIReference/API_Volume.html
 
 The primary key for this table is **arn**.

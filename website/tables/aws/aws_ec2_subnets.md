@@ -1,5 +1,7 @@
 # Table: aws_ec2_subnets
 
+This table shows data for Amazon Elastic Compute Cloud (EC2) Subnets.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Subnet.html
 
 The primary key for this table is **arn**.

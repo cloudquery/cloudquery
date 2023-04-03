@@ -5,6 +5,7 @@ name: AWS Pricing
 
 import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("source", `awspricing`)}/>
 
@@ -12,20 +13,9 @@ The AWS Pricing Source plugin for CloudQuery extracts data from the [AWS Bulk Pr
 
 ## Configuration
 
-The following configuration syncs from AWS Pricing service to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/quickstart) if you need help setting up the destination.
+The following configuration syncs from AWS Pricing service to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/quickstart) if you need help setting up the destination.
 
-```yaml copy
-kind: source
-spec:
-  name: "awspricing"
-  path: "cloudquery/awspricing"
-  version: "VERSION_SOURCE_AWSPRICING"
-  tables: ["*"]
-  destinations: 
-    - "postgresql"
-  spec:
-```
-
+<Configuration/>
 
 ## AWS Pricing Spec
 

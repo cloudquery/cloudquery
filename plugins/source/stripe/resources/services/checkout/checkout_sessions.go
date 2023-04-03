@@ -13,7 +13,7 @@ func CheckoutSessions() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_checkout_sessions",
 		Description: `https://stripe.com/docs/api/checkout_sessions`,
-		Transform:   transformers.TransformWithStruct(&stripe.CheckoutSession{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"))...),
+		Transform:   client.TransformWithStruct(&stripe.CheckoutSession{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchCheckoutSessions,
 
 		Columns: []schema.Column{

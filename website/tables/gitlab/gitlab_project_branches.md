@@ -1,5 +1,7 @@
 # Table: gitlab_project_branches
 
+This table shows data for Gitlab Project Branches.
+
 The composite primary key for this table is (**project_id**, **name**).
 
 ## Relations

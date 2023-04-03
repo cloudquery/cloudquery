@@ -1,5 +1,7 @@
 # Table: github_hooks
 
+This table shows data for Github Hooks.
+
 The composite primary key for this table is (**org**, **id**).
 
 ## Relations

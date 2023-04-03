@@ -1,5 +1,7 @@
 # Table: azure_network_interfaces
 
+This table shows data for Azure Network Interfaces.
+
 https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-interfaces/list?tabs=HTTP#networkinterface
 
 The primary key for this table is **id**.

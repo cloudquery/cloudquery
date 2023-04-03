@@ -1,5 +1,7 @@
 # Table: stripe_transfers
 
+This table shows data for Stripe Transfers.
+
 https://stripe.com/docs/api/transfers
 
 The primary key for this table is **id**.

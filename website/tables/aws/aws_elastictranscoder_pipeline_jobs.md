@@ -1,5 +1,7 @@
 # Table: aws_elastictranscoder_pipeline_jobs
 
+This table shows data for Amazon Elastic Transcoder Pipeline Jobs.
+
 https://docs.aws.amazon.com/elastictranscoder/latest/developerguide/list-jobs-by-pipeline.html
 
 The primary key for this table is **arn**.

@@ -1,5 +1,7 @@
 # Table: azure_postgresql_server_firewall_rules
 
+This table shows data for Azure PostgreSQL Server Firewall Rules.
+
 https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/firewall-rules/list-by-server?tabs=HTTP#firewallrule
 
 The primary key for this table is **id**.

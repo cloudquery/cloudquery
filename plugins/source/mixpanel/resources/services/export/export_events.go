@@ -21,7 +21,7 @@ func ExportEvents() *schema.Table {
 		Description:          `https://developer.mixpanel.com/reference/raw-event-export`,
 		Resolver:             fetchExportEvents,
 		PostResourceResolver: postExportEvents,
-		Transform:            transformers.TransformWithStruct(&mixpanel.ExportEvent{}, client.SharedTransformers(transformers.WithPrimaryKeys("Event"))...),
+		Transform:            client.TransformWithStruct(&mixpanel.ExportEvent{}, transformers.WithPrimaryKeys("Event")),
 		IsIncremental:        true,
 		Columns: []schema.Column{
 			{

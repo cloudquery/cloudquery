@@ -1,5 +1,7 @@
 # Table: fastly_service_backends
 
+This table shows data for Fastly Service Backends.
+
 https://developer.fastly.com/reference/api/services/backend/
 
 The composite primary key for this table is (**name**, **service_id**, **service_version**).

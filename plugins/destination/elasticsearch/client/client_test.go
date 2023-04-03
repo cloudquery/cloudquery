@@ -25,8 +25,10 @@ func TestPlugin(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("elasticsearch", "development", New, destination.WithManagedWriter())
 		},
-		Spec{
-			Addresses: []string{address},
+		specs.Destination{
+			Spec: &Spec{
+				Addresses: []string{address},
+			},
 		},
 		destination.PluginTestSuiteTests{
 			SkipMigrateOverwriteForce: true,

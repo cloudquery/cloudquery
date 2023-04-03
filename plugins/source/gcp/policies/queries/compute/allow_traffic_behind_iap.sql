@@ -3,7 +3,7 @@ WITH combined AS (
 )
 
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
-SELECT DISTINCT gcf.id                                                                                                                                                                                     AS resource_id,
+SELECT DISTINCT gcf.name                                                                                                                                                                                   AS resource_id,
                 :'execution_time'::timestamp                                                                                                                                                               AS execution_time,
                 :'framework'                                                                                                                                                                               AS framework,
                 :'check_id'                                                                                                                                                                                AS check_id,

@@ -11,11 +11,10 @@ import (
 
 func assets() *schema.Table {
 	return &schema.Table{
-		Name:     "github_release_assets",
-		Resolver: fetchAssets,
-		Transform: transformers.TransformWithStruct(&github.ReleaseAsset{},
-			append(client.SharedTransformers(), transformers.WithPrimaryKeys("ID"))...),
-		Columns: []schema.Column{client.OrgColumn, client.RepositoryIDColumn},
+		Name:      "github_release_assets",
+		Resolver:  fetchAssets,
+		Transform: client.TransformWithStruct(&github.ReleaseAsset{}, transformers.WithPrimaryKeys("ID")),
+		Columns:   []schema.Column{client.OrgColumn, client.RepositoryIDColumn},
 	}
 }
 

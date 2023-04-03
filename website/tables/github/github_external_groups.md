@@ -1,5 +1,7 @@
 # Table: github_external_groups
 
+This table shows data for Github External Groups.
+
 The composite primary key for this table is (**org**, **group_id**).
 
 ## Columns

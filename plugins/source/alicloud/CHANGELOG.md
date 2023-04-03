@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v1.1.2...plugins-source-alicloud-v1.2.0) (2023-03-28)
+
+
+### This Release has the Following Changes to Tables
+- Table `alicloud_bss_bill_details` was added
+
+### Features
+
+* **alicloud:** Add daily bill table ([#9380](https://github.com/cloudquery/cloudquery/issues/9380)) ([8993d5c](https://github.com/cloudquery/cloudquery/commit/8993d5c956786d1c0b06c53e453bf53dc0bf74ad))
+
+## [1.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v1.1.1...plugins-source-alicloud-v1.1.2) (2023-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.0 ([#9167](https://github.com/cloudquery/cloudquery/issues/9167)) ([49d6477](https://github.com/cloudquery/cloudquery/commit/49d647730a85ea6fae51e97194ba61c0625d1331))
+
+## [1.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v1.1.0...plugins-source-alicloud-v1.1.1) (2023-03-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.43.0 ([#8949](https://github.com/cloudquery/cloudquery/issues/8949)) ([31dfc63](https://github.com/cloudquery/cloudquery/commit/31dfc634850b699ba7bb7876399270a7367d6c7e))
+
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v1.0.7...plugins-source-alicloud-v1.1.0) (2023-03-07)
 
 

@@ -1,5 +1,7 @@
 # Table: stripe_issuing_cards
 
+This table shows data for Stripe Issuing Cards.
+
 https://stripe.com/docs/api/issuing_cards
 
 The primary key for this table is **id**.

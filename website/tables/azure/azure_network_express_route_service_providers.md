@@ -1,5 +1,7 @@
 # Table: azure_network_express_route_service_providers
 
+This table shows data for Azure Network Express Route Service Providers.
+
 https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-service-providers/list?tabs=HTTP#expressrouteserviceprovider
 
 The composite primary key for this table is (**subscription_id**, **id**).

@@ -1,5 +1,7 @@
 # Table: slack_conversation_histories
 
+This table shows data for Slack Conversation Histories.
+
 https://api.slack.com/methods/conversations.history
 
 The composite primary key for this table is (**channel_id**, **team_id**, **ts**).

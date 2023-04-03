@@ -1,5 +1,7 @@
 # Table: aws_elasticache_events
 
+This table shows data for Elasticache Events.
+
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_Event.html
 
 The primary key for this table is **_event_hash**.

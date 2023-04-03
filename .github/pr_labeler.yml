@@ -24,8 +24,12 @@ datadog:
   - plugins/source/datadog/**/*
 digitalocean:
   - plugins/source/digitalocean/**/*
+duckdb:
+  - plugins/destination/duckdb/**/*
 elasticsearch:
   - plugins/destination/elasticsearch/**/*
+facebookmarketing:
+  - plugins/source/facebookmarketing/**/*
 fastly:
   - plugins/source/fastly/**/*
 file:
@@ -42,6 +46,12 @@ github:
   - plugins/source/github/**/*
 gitlab:
   - plugins/source/gitlab/**/*
+googleads:
+  - plugins/destination/googleads/**/*
+googleanalytics:
+  - plugins/destination/googleanalytics/**/*
+gremlin:
+  - plugins/destination/gremlin/**/*
 hackernews:
   - plugins/source/hackernews/**/*
 heroku:
@@ -56,6 +66,8 @@ kafka:
   - plugins/destination/kafka/**/*
 launchdarkly:
   - plugins/source/launchdarkly/**/*
+meilisearch:
+  - plugins/destination/meilisearch/**/*
 mixpanel:
   - plugins/source/mixpanel/**/*
 mongodb:
@@ -88,6 +100,8 @@ snowflake:
   - plugins/destination/snowflake/**/*
 snyk:
   - plugins/source/snyk/**/*
+source-mysql:
+  - plugins/source/mysql/**/*
 source-postgresql:
   - plugins/source/postgresql/**/*
 sqlite:

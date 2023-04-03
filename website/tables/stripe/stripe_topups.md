@@ -1,5 +1,7 @@
 # Table: stripe_topups
 
+This table shows data for Stripe Topups.
+
 https://stripe.com/docs/api/topups
 
 The primary key for this table is **id**.

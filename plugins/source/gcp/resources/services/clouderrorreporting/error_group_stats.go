@@ -7,7 +7,6 @@ import (
 
 	pb "cloud.google.com/go/errorreporting/apiv1beta1/errorreportingpb"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	errorreporting "cloud.google.com/go/errorreporting/apiv1beta1"
@@ -19,7 +18,7 @@ func ErrorGroupStats() *schema.Table {
 		Description: `https://cloud.google.com/error-reporting/reference/rest/v1beta1/projects.groupStats/list#ErrorGroupStats`,
 		Resolver:    fetchErrorGroupStats,
 		Multiplex:   client.ProjectMultiplexEnabledServices("clouderrorreporting.googleapis.com"),
-		Transform:   transformers.TransformWithStruct(&pb.ErrorGroupStats{}, client.Options()...),
+		Transform:   client.TransformWithStruct(&pb.ErrorGroupStats{}),
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

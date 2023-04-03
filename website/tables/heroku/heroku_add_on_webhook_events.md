@@ -1,5 +1,7 @@
 # Table: heroku_add_on_webhook_events
 
+This table shows data for Heroku Add On Webhook Events.
+
 https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-event
 
 The primary key for this table is **id**.

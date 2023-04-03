@@ -43,7 +43,7 @@ require (
 	cloud.google.com/go/vpcaccess v1.6.0
 	cloud.google.com/go/websecurityscanner v1.5.0
 	cloud.google.com/go/workflows v1.10.0
-	github.com/cloudquery/plugin-sdk v1.42.0
+	github.com/cloudquery/plugin-sdk v1.44.0
 	github.com/golang/mock v1.6.0
 	github.com/googleapis/gax-go/v2 v2.7.0
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3

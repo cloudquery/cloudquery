@@ -1,5 +1,7 @@
 # Table: heroku_app_transfers
 
+This table shows data for Heroku App Transfers.
+
 https://devcenter.heroku.com/articles/platform-api-reference#app-transfer
 
 The primary key for this table is **id**.

@@ -1,5 +1,7 @@
 # Table: oracle_identity_dynamic_groups
 
+This table shows data for Oracle Identity Dynamic Groups.
+
 The primary key for this table is **id**.
 
 ## Columns

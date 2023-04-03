@@ -1,5 +1,7 @@
 # Table: stripe_treasury_inbound_transfers
 
+This table shows data for Stripe Treasury Inbound Transfers.
+
 https://stripe.com/docs/api/treasury_inbound_transfers
 
 The primary key for this table is **id**.

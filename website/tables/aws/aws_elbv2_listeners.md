@@ -1,5 +1,7 @@
 # Table: aws_elbv2_listeners
 
+This table shows data for Amazon Elastic Load Balancer (ELB) v2 Listeners.
+
 https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Listener.html
 
 The primary key for this table is **arn**.
@@ -10,6 +12,7 @@ This table depends on [aws_elbv2_load_balancers](aws_elbv2_load_balancers).
 
 The following tables depend on aws_elbv2_listeners:
   - [aws_elbv2_listener_certificates](aws_elbv2_listener_certificates)
+  - [aws_elbv2_listener_rules](aws_elbv2_listener_rules)
 
 ## Columns
 

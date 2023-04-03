@@ -1,5 +1,7 @@
 # Table: aws_s3_bucket_grants
 
+This table shows data for S3 Bucket Grants.
+
 https://docs.aws.amazon.com/AmazonS3/latest/API/API_Grant.html
 
 The composite primary key for this table is (**bucket_arn**, **grantee_type**, **grantee_id**, **permission**).

@@ -1,5 +1,7 @@
 # Table: aws_ec2_transit_gateway_attachments
 
+This table shows data for Amazon Elastic Compute Cloud (EC2) Transit Gateway Attachments.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayAttachment.html
 
 The primary key for this table is **_cq_id**.

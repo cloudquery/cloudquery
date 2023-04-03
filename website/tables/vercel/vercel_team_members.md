@@ -1,5 +1,7 @@
 # Table: vercel_team_members
 
+This table shows data for Vercel Team Members.
+
 The composite primary key for this table is (**team_id**, **uid**).
 It supports incremental syncs.
 ## Relations

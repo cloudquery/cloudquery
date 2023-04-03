@@ -1,5 +1,7 @@
 # Table: aws_elasticsearch_versions
 
+This table shows data for Elasticsearch Versions.
+
 https://docs.aws.amazon.com/opensearch-service/latest/APIReference/API_ListVersions.html
 
 The composite primary key for this table is (**account_id**, **region**, **version**).

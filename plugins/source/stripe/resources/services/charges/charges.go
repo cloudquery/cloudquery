@@ -2,7 +2,6 @@ package charges
 
 import (
 	"context"
-
 	"fmt"
 	"strconv"
 
@@ -16,7 +15,7 @@ func Charges() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_charges",
 		Description: `https://stripe.com/docs/api/charges`,
-		Transform:   transformers.TransformWithStruct(&stripe.Charge{}, client.SharedTransformers(transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Destination", "Dispute", "Level3", "Source")))...),
+		Transform:   client.TransformWithStruct(&stripe.Charge{}, transformers.WithSkipFields("APIResource", "ID"), transformers.WithIgnoreInTestsTransformer(client.CreateIgnoreInTestsTransformer("Destination", "Dispute", "Level3", "Source"))),
 		Resolver:    fetchCharges,
 
 		Columns: []schema.Column{

@@ -1,5 +1,7 @@
 # Table: stripe_plans
 
+This table shows data for Stripe Plans.
+
 https://stripe.com/docs/api/plans
 
 The primary key for this table is **id**.

@@ -22,6 +22,9 @@ func Accounts() *schema.Table {
 			tables(),
 			containers(),
 			blob_services(),
+			file_shares(),
+			queues(),
+			queueServices(),
 		},
 	}
 }

@@ -13,6 +13,9 @@
     "plugins/destination/clickhouse": {
       "component": "plugins-destination-clickhouse"
     },
+    "plugins/destination/duckdb": {
+      "component": "plugins-destination-duckdb"
+    },
     "plugins/destination/elasticsearch": {
       "component": "plugins-destination-elasticsearch"
     },
@@ -25,8 +28,14 @@
     "plugins/destination/gcs": {
       "component": "plugins-destination-gcs"
     },
+    "plugins/destination/gremlin": {
+      "component": "plugins-destination-gremlin"
+    },
     "plugins/destination/kafka": {
       "component": "plugins-destination-kafka"
+    },
+    "plugins/destination/meilisearch": {
+      "component": "plugins-destination-meilisearch"
     },
     "plugins/destination/mongodb": {
       "component": "plugins-destination-mongodb"
@@ -79,6 +88,9 @@
     "plugins/source/digitalocean": {
       "component": "plugins-source-digitalocean"
     },
+    "plugins/source/facebookmarketing": {
+      "component": "plugins-source-facebookmarketing"
+    },
     "plugins/source/fastly": {
       "component": "plugins-source-fastly"
     },
@@ -93,6 +105,12 @@
     },
     "plugins/source/gitlab": {
       "component": "plugins-source-gitlab"
+    },
+    "plugins/source/googleads": {
+      "component": "plugins-source-googleads"
+    },
+    "plugins/source/googleanalytics": {
+      "component": "plugins-source-googleanalytics"
     },
     "plugins/source/hackernews": {
       "component": "plugins-source-hackernews"
@@ -114,6 +132,9 @@
     },
     "plugins/source/mixpanel": {
       "component": "plugins-source-mixpanel"
+    },
+    "plugins/source/mysql": {
+      "component": "plugins-source-mysql"
     },
     "plugins/source/okta": {
       "component": "plugins-source-okta"

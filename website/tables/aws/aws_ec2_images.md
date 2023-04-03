@@ -1,8 +1,15 @@
 # Table: aws_ec2_images
 
+This table shows data for Amazon Elastic Compute Cloud (EC2) Images.
+
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Image.html
 
 The composite primary key for this table is (**account_id**, **region**, **arn**).
+
+## Relations
+
+The following tables depend on aws_ec2_images:
+  - [aws_ec2_image_launch_permissions](aws_ec2_image_launch_permissions)
 
 ## Columns
 

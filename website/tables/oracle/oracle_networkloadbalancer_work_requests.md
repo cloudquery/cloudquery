@@ -1,5 +1,7 @@
 # Table: oracle_networkloadbalancer_work_requests
 
+This table shows data for Oracle Networkloadbalancer Work Requests.
+
 The composite primary key for this table is (**region**, **compartment_id**, **id**).
 
 ## Columns

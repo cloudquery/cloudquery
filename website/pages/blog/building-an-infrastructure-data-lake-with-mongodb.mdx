@@ -1,0 +1,110 @@
+---
+title: Building an Infrastructure Data Lake with MongoDB
+tag: tutorial
+date: 2023/03/27
+description: >-
+  This tutorial will show how to get your cloud infrastructure data from any supported CloudQuery source into MongoDB
+author: kemal
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+## Introduction
+
+The cloud infrastructure landscape has grown exponentially in recent years, bringing with it increased complexity and an overwhelming amount of data. To effectively manage this data and ensure that cloud resources are being optimized, developers need powerful tools that are both flexible and scalable. In this blog post, we will explore how CloudQuery, when combined with MongoDB, can help developers build a robust cloud infrastructure data lake for improved management and monitoring of cloud resources.
+
+## What is CloudQuery?
+
+CloudQuery is an open-source ELT (Extract, Load, Transform) tool designed to transfer data from supported sources to supported destinations, such as your cloud infrastructure data to MongoDB. By pulling data from various cloud providers and platforms, CloudQuery enables developers to create a holistic view of their infrastructure, simplifying the management and monitoring process.
+
+## Why MongoDB?
+
+MongoDB, a widely-used open-source NoSQL database, boasts exceptional performance, scalability, and versatility.
+Its document-based data model is tailored to handle significant amounts of unstructured or semi-structured data, a common feature in cloud infrastructure data.
+As MongoDB is particularly adept at storing and querying JSON data, it is well-suited for managing cloud infrastructure data that frequently consists of JSON objects.
+This proficiency allows for streamlined management and organization of the various data structures found in cloud infrastructure management.
+By utilizing MongoDB as the destination for CloudQuery, developers can efficiently store and manage their cloud infrastructure data in an organized fashion.
+
+## Setting up CloudQuery
+
+To start building your cloud infrastructure data lake with CloudQuery and MongoDB, you'll first need to set up CloudQuery. Follow the quickstart guide, which offers precompiled binaries for various platforms, including [Windows](https://www.cloudquery.io/docs/quickstart/windows), [macOS](https://www.cloudquery.io/docs/quickstart/macOS), and [Linux](https://www.cloudquery.io/docs/quickstart/linux). Follow the links to the guide for your respective platform.
+
+Next, create a configuration file that specifies the cloud providers and resources you want to include in your infrastructure data lake. For example, you might include [AWS](https://www.cloudquery.io/integrations/aws), [Google Cloud](https://www.cloudquery.io/integrations/gcp), and [Azure](https://www.cloudquery.io/integrations/azure), along with their respective resource types such as EC2 instances, S3 buckets, and virtual machines. You can find all supported cloud providers and resources in [CloudQuery integrations](https://www.cloudquery.io/integrations).
+
+## Setting up sources
+
+### Example with AWS, Azure and MongoDB
+
+- Go to the CloudQuery integrations page for [AWS to MongoDB](https://www.cloudquery.io/integrations/aws/mongodb) and follow it to create `aws.yaml` and `mongodb.yaml` files.
+
+- Go to the CloudQuery integrations page for [Azure to MongoDB](https://www.cloudquery.io/integrations/azure/mongodb) and follow it to create `azure.yaml` file. `mongodb.yaml` file should have the same content as the previous one.
+
+## Syncing Cloud Infrastructure Data
+
+With CloudQuery and MongoDB configured, you can now begin fetching your cloud infrastructure data. Run the following command to start the process:
+
+```bash
+cloudquery sync aws.yaml azure.yaml mongodb.yaml
+```
+
+CloudQuery will now fetch the specified resources from your cloud providers and transfer the data to MongoDB. This process can take some time, depending on the number of resources you are fetching and the size of your cloud infrastructure.
+
+## Querying and Analyzing Cloud Infrastructure Data
+
+Now that your cloud infrastructure data is stored in MongoDB, you can use the MongoDB query language (MQL) to analyze and visualize it. Here are some ideas for how you might use MongoDB to analyze your cloud infrastructure data:
+
+- Calculate the total cost of your EC2 instances or identify unused resources that could be terminated to save on costs
+
+- Use the [MongoDB aggregation framework](https://www.mongodb.com/docs/manual/aggregation/) to group and summarize data
+
+- Use the [MongoDB Compass GUI](https://www.mongodb.com/products/compass) to visualize your data in a more intuitive manner
+
+### Example Queries
+
+Here are some example MongoDB queries that you could use to analyze CloudQuery infrastructure data for AWS. Please note that these queries assume that you have already synced your AWS data using CloudQuery into MongoDB.
+
+Count the total number of EC2 instances:
+
+```mql
+db.aws_ec2_instances.aggregate([
+  { $group: { _id: null, count: { $sum: 1 } } }
+])
+```
+
+Find EC2 instances with a specific instance type (e.g., "t3.medium"):
+
+```mql
+db.aws_ec2_instances.find({ instance_type: "t3.medium" })
+```
+
+Find security groups that allow unrestricted access to a specific port (e.g., port 22 for SSH):
+
+```mql
+db.aws_ec2_security_groups.find({
+  "ip_permissions": {
+    $elemMatch: {
+      FromPort: 22,
+      ToPort: 22,
+      IpRanges: {
+        $elemMatch: {
+          CidrIp: "0.0.0.0/0"
+        }
+      }
+    }
+  }
+})
+```
+
+These are just a few examples of the types of queries you can perform using MongoDB to analyze your cloud infrastructure data from AWS. Depending on your specific needs and the resources you have synced, you can create custom queries to gain insights into your cloud infrastructure.
+
+## Conclusion
+
+By combining the power of CloudQuery and MongoDB, developers can build a robust cloud infrastructure data lake that simplifies the management and monitoring of cloud resources. With this approach, organizations can gain valuable insights into their cloud infrastructure, optimize resource usage, and ultimately reduce costs.
+
+In this short tutorial we just showed how to get your cloud infrastructure data from any supported CloudQuery source into MongoDB. The number of use cases around MongoDB is really infinite and it all depends on what you are trying to achieve and optimize for. CloudQuery with MongoDB is a powerful tool for analysis which ensures cheap storage and fast querying on large amount of data.
+
+We hope you enjoyed this tutorial and found it useful. If you have any questions or feedback, please reach out to us on [Discord](https://www.cloudquery.io/discord) or [Twitter](https://twitter.com/cloudqueryio).
+
+

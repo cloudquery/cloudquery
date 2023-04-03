@@ -1,5 +1,7 @@
 # Table: fastly_service_health_checks
 
+This table shows data for Fastly Service Health Checks.
+
 https://developer.fastly.com/reference/api/services/healthcheck/
 
 The composite primary key for this table is (**name**, **service_id**, **service_version**).

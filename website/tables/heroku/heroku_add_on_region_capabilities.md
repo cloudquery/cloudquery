@@ -1,5 +1,7 @@
 # Table: heroku_add_on_region_capabilities
 
+This table shows data for Heroku Add On Region Capabilities.
+
 https://devcenter.heroku.com/articles/platform-api-reference#add-on-region-capability
 
 The primary key for this table is **id**.

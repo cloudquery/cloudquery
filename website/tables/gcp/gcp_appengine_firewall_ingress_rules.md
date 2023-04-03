@@ -1,5 +1,7 @@
 # Table: gcp_appengine_firewall_ingress_rules
 
+This table shows data for GCP App Engine Firewall Ingress Rules.
+
 https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.firewall.ingressRules#FirewallRule
 
 The primary key for this table is **_cq_id**.

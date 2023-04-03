@@ -1,5 +1,7 @@
 # Table: aws_kms_aliases
 
+This table shows data for AWS Key Management Service (AWS KMS) Aliases.
+
 https://docs.aws.amazon.com/kms/latest/APIReference/API_AliasListEntry.html
 
 The primary key for this table is **arn**.

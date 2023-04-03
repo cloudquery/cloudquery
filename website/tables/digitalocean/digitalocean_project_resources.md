@@ -1,5 +1,7 @@
 # Table: digitalocean_project_resources
 
+This table shows data for DigitalOcean Project Resources.
+
 The primary key for this table is **urn**.
 
 ## Relations

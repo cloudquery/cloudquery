@@ -1,5 +1,7 @@
 # Table: aws_apigateway_vpc_links
 
+This table shows data for Amazon API Gateway VPC Links.
+
 https://docs.aws.amazon.com/apigateway/latest/api/API_VpcLink.html
 
 The composite primary key for this table is (**account_id**, **arn**).

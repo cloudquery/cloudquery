@@ -1,5 +1,7 @@
 # Table: gcp_appengine_authorized_domains
 
+This table shows data for GCP App Engine Authorized Domains.
+
 https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.authorizedDomains#AuthorizedDomain
 
 The composite primary key for this table is (**project_id**, **name**).
