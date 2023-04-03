@@ -1,6 +1,12 @@
 package apigatewayv2
 
 import (
+	"context"
+	"fmt"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -33,12 +39,42 @@ func Apis() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			ApiAuthorizers(),
-			ApiDeployments(),
-			ApiIntegrations(),
-			ApiModels(),
-			ApiRoutes(),
-			ApiStages(),
+			apiAuthorizers(),
+			apiDeployments(),
+			apiIntegrations(),
+			apiModels(),
+			apiRoutes(),
+			apiStages(),
 		},
 	}
+}
+
+func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var config apigatewayv2.GetApisInput
+	c := meta.(*client.Client)
+	svc := c.Services().Apigatewayv2
+	for {
+		response, err := svc.GetApis(ctx, &config)
+
+		if err != nil {
+			return err
+		}
+		res <- response.Items
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		config.NextToken = response.NextToken
+	}
+	return nil
+}
+
+func resolveApiArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/apis/%s", aws.ToString(resource.Item.(types.Api).ApiId)),
+	}.String())
 }
