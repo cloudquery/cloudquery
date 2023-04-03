@@ -104,7 +104,7 @@ func resolveIpsetTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 	cl := meta.(*client.Client)
 	svc := cl.Services().Wafv2
 	s := resource.Item.(*types.IPSet)
-	tags := make(map[string]string)
+	var tagList []types.Tag
 	params := wafv2.ListTagsForResourceInput{ResourceARN: s.ARN}
 
 	for {
@@ -114,16 +114,11 @@ func resolveIpsetTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 		if err != nil {
 			return err
 		}
-		// TODO: Replace with client.TagsToMap
-		if result != nil || result.TagInfoForResource != nil {
-			for _, t := range result.TagInfoForResource.TagList {
-				tags[aws.ToString(t.Key)] = aws.ToString(t.Value)
-			}
-		}
+		tagList = append(tagList, result.TagInfoForResource.TagList...)
 		if aws.ToString(result.NextMarker) == "" {
 			break
 		}
 		params.NextMarker = result.NextMarker
 	}
-	return resource.Set(c.Name, tags)
+	return resource.Set(c.Name, client.TagsToMap(tagList))
 }
