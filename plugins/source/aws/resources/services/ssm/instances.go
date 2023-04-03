@@ -35,8 +35,8 @@ func Instances() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			InstanceComplianceItems(),
-			InstancePatches(),
+			instanceComplianceItems(),
+			instancePatches(),
 		},
 	}
 }
