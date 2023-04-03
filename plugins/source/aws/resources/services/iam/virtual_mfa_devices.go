@@ -46,5 +46,6 @@ func fetchIamVirtualMfaDevices(ctx context.Context, meta schema.ClientMeta, pare
 		}
 		res <- page.VirtualMFADevices
 	}
+
 	return nil
 }
