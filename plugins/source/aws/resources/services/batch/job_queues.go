@@ -37,7 +37,7 @@ func JobQueues() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			Jobs(),
+			jobs(),
 		},
 	}
 }

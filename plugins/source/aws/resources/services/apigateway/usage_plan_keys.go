@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func UsagePlanKeys() *schema.Table {
+func usagePlanKeys() *schema.Table {
 	tableName := "aws_apigateway_usage_plan_keys"
 	return &schema.Table{
 		Name:        tableName,
