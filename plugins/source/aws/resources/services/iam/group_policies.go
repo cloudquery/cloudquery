@@ -50,14 +50,14 @@ func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	paginator := iam.NewListGroupPoliciesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil
 			}
 			return err
 		}
-		res <- output.PolicyNames
+		res <- page.PolicyNames
 	}
 	return nil
 }

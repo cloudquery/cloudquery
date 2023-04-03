@@ -44,18 +44,13 @@ func fetchTransferServers(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	svc := c.Services().Transfer
 	input := transfer.ListServersInput{MaxResults: aws.Int32(1000)}
-	// TODO: Replace with paginator
-	for {
-		result, err := svc.ListServers(ctx, &input)
+	paginator := transfer.NewListServersPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- result.Servers
-
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
+		res <- page.Servers
 	}
 	return nil
 }
@@ -78,20 +73,17 @@ func resolveServersTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	svc := cl.Services().Transfer
 	server := resource.Item.(*types.DescribedServer)
 	input := transfer.ListTagsForResourceInput{Arn: server.Arn}
-	tags := make(map[string]string)
-	for {
-		result, err := svc.ListTagsForResource(ctx, &input)
+	var tags []types.Tag
+	paginator := transfer.NewListTagsForResourcePaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				continue
 			}
 			return err
 		}
-		client.TagsIntoMap(result.Tags, tags)
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
+		tags = append(tags, page.Tags...)
 	}
-	return resource.Set(c.Name, tags)
+	return resource.Set(c.Name, client.TagsToMap(tags))
 }

@@ -39,15 +39,13 @@ func fetchIamAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 	if err := decoder.Decode(summary.SummaryMap); err != nil {
 		return err
 	}
-
 	paginator := iam.NewListAccountAliasesPaginator(svc, &iam.ListAccountAliasesInput{})
-
 	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		accSummary.Aliases = append(accSummary.Aliases, response.AccountAliases...)
+		accSummary.Aliases = append(accSummary.Aliases, page.AccountAliases...)
 	}
 	res <- accSummary
 	return nil
