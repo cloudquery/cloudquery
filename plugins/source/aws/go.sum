@@ -163,8 +163,8 @@ github.com/aws/aws-sdk-go-v2/service/emr v1.22.2 h1:uNW2WtiZOftp8f1xVCySaCD+YdQp
 github.com/aws/aws-sdk-go-v2/service/emr v1.22.2/go.mod h1:jM9pY4xoh7VynsxOSFoAlVIhjcx2LO8b95K+YWWYYoY=
 github.com/aws/aws-sdk-go-v2/service/eventbridge v1.17.0 h1:+uhUWMs/eLtCB7h3Z6mKbnBbneyKqzj3jwQzPYR/Lk8=
 github.com/aws/aws-sdk-go-v2/service/eventbridge v1.17.0/go.mod h1:YLJlg6D8anm5tkNO68n5rSXo0N86Chp8HIGbdwL1dzk=
-github.com/aws/aws-sdk-go-v2/service/firehose v1.16.7 h1:gC7Y0VCjtytM8EOSJIvZOH9PN6sOPW5JEBwY2DUP1qA=
-github.com/aws/aws-sdk-go-v2/service/firehose v1.16.7/go.mod h1:5aiWy3ROWJO7NaoQ3gFK5TlQAybg3on4q/ubpoQkpj0=
+github.com/aws/aws-sdk-go-v2/service/firehose v1.16.8 h1:0HdZmc3SOZVZteGpw1i6NiVoOs6kdQuXJ2j/NSXZxSA=
+github.com/aws/aws-sdk-go-v2/service/firehose v1.16.8/go.mod h1:UrdWYJdaHvyQKk472H0exoQ6X58eln5GP6qA2xzyt8w=
 github.com/aws/aws-sdk-go-v2/service/frauddetector v1.21.0 h1:HIcghBvpkx0OSPOzd0F7RreFzOmFijS6Xgb2nCMH5LQ=
 github.com/aws/aws-sdk-go-v2/service/frauddetector v1.21.0/go.mod h1:oArmB2ikSpX0dBgd035hl0nvcLMlorcq9z9GbNT0CNo=
 github.com/aws/aws-sdk-go-v2/service/fsx v1.28.6 h1:5qbqLCxEFSwVvRO7wg35ZATQBAMNxNR5Ae6/EQaUYZY=
