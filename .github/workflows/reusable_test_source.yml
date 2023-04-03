@@ -37,11 +37,13 @@ jobs:
     - name: Restore build cache
       uses: actions/cache/restore@v3
       with:
-        path: |
-              ~/.cache/go-build
-              ~/Library/Caches/go-build
-              ~\AppData\Local\go-build
-        key:  ${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-source-${{ inputs.plugin }}-${{ hashFiles(format('plugins/source/{0}/go.sum', inputs.plugin)) }}
+        path:         |
+                      ~/.cache/go-build
+                      ~/Library/Caches/go-build
+                      ~\AppData\Local\go-build
+        key:          source-${{ inputs.plugin }}-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-${{ hashFiles(format('plugins/source/{0}/go.sum', inputs.plugin)) }}
+        # no direct cache hit, however, even a partial hit might be beneficial
+        restore-keys: source-${{ inputs.plugin }}-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-
     - name: golangci-lint
       uses: golangci/golangci-lint-action@v3
       with:
@@ -70,4 +72,4 @@ jobs:
               ~/.cache/go-build
               ~/Library/Caches/go-build
               ~\AppData\Local\go-build
-        key:  ${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-source-${{ inputs.plugin }}-${{ hashFiles(format('plugins/source/{0}/go.sum', inputs.plugin)) }}
+        key:  source-${{ inputs.plugin }}-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-${{ hashFiles(format('plugins/source/{0}/go.sum', inputs.plugin)) }}

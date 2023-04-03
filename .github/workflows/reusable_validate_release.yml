@@ -37,11 +37,13 @@ jobs:
     - name: Restore build cache
       uses: actions/cache/restore@v3
       with:
-        path: |
-              ~/.cache/go-build
-              ~/Library/Caches/go-build
-              ~\AppData\Local\go-build
-        key:  ${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-${{ inputs.type }}-${{ inputs.plugin }}-${{ hashFiles(format('plugins/{0}/{1}/go.sum', inputs.type, inputs.plugin)) }}
+        path:         |
+                      ~/.cache/go-build
+                      ~/Library/Caches/go-build
+                      ~\AppData\Local\go-build
+        key:          ${{ inputs.type }}-${{ inputs.plugin }}-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-${{ hashFiles(format('plugins/{0}/{1}/go.sum', inputs.type, inputs.plugin)) }}
+        # no direct cache hit, however, even a partial hit might be beneficial
+        restore-keys: ${{ inputs.type }}-${{ inputs.plugin }}-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-
     - name: Install GoReleaser
       uses: goreleaser/goreleaser-action@v3
       with:
