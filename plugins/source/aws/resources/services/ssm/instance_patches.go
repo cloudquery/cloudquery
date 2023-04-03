@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func InstancePatches() *schema.Table {
+func instancePatches() *schema.Table {
 	tableName := "aws_ssm_instance_patches"
 	return &schema.Table{
 		Name:        tableName,

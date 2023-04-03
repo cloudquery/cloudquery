@@ -41,22 +41,31 @@ func (c *Client) verifyVersion() error {
 		return err
 	}
 
-	major, _, ok := strings.Cut(version.PkgVersion, ".")
-	if !ok {
+	parts := strings.Split(version.PkgVersion, ".")
+	if len(parts) < 3 {
 		return fmt.Errorf("malformed version %q (expected \"major.minor.patch\"", version)
 	}
 
-	num, err := strconv.ParseInt(major, 10, 32)
+	major, err := strconv.Atoi(parts[0])
 	if err != nil {
-		return fmt.Errorf("failed to parse %q as major version: %w", major, err)
+		return fmt.Errorf("failed to parse major version (%q): %w", parts[0], err)
 	}
 
-	const minVersion = 1
-	if num < minVersion {
-		return fmt.Errorf("unsupported Meilisearch version %d (must be >= %d)", num, minVersion)
+	minor, err := strconv.Atoi(parts[1])
+	if err != nil {
+		return fmt.Errorf("failed to parse minor version (%q): %w", parts[1], err)
 	}
 
-	return nil
+	const (
+		minMajor = 1
+		minMinor = 1
+	)
+
+	if (major > minMajor) || (major == minMajor && minor >= minMinor) {
+		return nil
+	}
+
+	return fmt.Errorf("unsupported Meilisearch version %s (must be >= 1.1)", version.PkgVersion)
 }
 
 func New(_ context.Context, logger zerolog.Logger, dstSpec specs.Destination) (destination.Client, error) {
