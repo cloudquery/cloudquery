@@ -3,6 +3,9 @@
 ## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v4.1.3...plugins-source-github-v5.0.0) (2023-04-04)
 
 
+### This Release has the Following Changes to Tables
+- Table `github_issues`: column added with name `repository_id (PK)` and type `Int` (:warning: breaking)
+
 ### ⚠ BREAKING CHANGES
 
 * **github:** Add `repository_id` to `github_issues` primary key ([#9615](https://github.com/cloudquery/cloudquery/issues/9615))
