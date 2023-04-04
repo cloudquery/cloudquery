@@ -27,7 +27,13 @@ jobs:
       - name: Get latest tag
         id: tag
         run: |
-          tag=$(git describe --tags --match 'plugins-source-${{ steps.plugin.outputs.name }}*' --abbrev=0)
+          tag_prefix='plugins-source-${{ steps.plugin.outputs.name }}*'
+          if [[ $(git tag --list "${tag_prefix}" | wc -l) -gt 0 ]]; then
+             tag=$(git describe --tags --match "${tag_prefix}" --abbrev=0)
+          else
+             echo "Use empty git tree as diff base"
+             tag=$(git hash-object -t tree /dev/null)
+          fi
           echo "latest=${tag}" >> $GITHUB_OUTPUT
       - name: Generate diff
         run: |
