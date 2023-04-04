@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v6.2.0...plugins-source-azure-v7.0.0) (2023-04-04)
 
 
+### This Release has the Following Changes to Tables
+- Table `azure_desktopvirtualization_host_pools`: column added with name `system_data` and type `JSON`
+
 ### ⚠ BREAKING CHANGES
 
 * **deps:** In `v2` of the Azure Go `desktopvirtualization` client, the `MigrationRequest` field was removed from the `HostPoolProperties` struct. This means that the `azure_desktopvirtualization_host_pools->properties` JSON column will not have that field anymore. If you're relying on it in a query, you'd need to update it.
