@@ -47,26 +47,12 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 2
-      - name: Set up Go
-        id:   set-up-go
+      - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
           go-version-file: plugins/source/aws/go.mod
           cache: true
           cache-dependency-path: plugins/source/aws/go.sum
-      - name: Restore build cache
-        uses: actions/cache/restore@v3
-        with:
-          path:         |
-                        ~/.cache/go-build
-                        ~/Library/Caches/go-build
-                        ~\AppData\Local\go-build
-          key:          source-aws-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-${{ hashFiles('plugins/source/aws/go.sum') }}
-          # no direct cache hit, however, even a partial hit might be beneficial
-          restore-keys: source-aws-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-
-      - name: Get dependencies
-        run: go get -t -d ./...
-      # Lint should run after deps, as the dependencies might introduce deprecation to used functions
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
@@ -75,6 +61,8 @@ jobs:
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true
+      - name: Get dependencies
+        run: go get -t -d ./...
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -100,15 +88,6 @@ jobs:
       - name: Run sync
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
         run: cloudquery sync test/sanity.yml --log-console
-      - name: Save build cache
-        if:   github.ref == 'refs/heads/main'
-        uses: actions/cache/save@v3
-        with:
-          path: |
-                ~/.cache/go-build
-                ~/Library/Caches/go-build
-                ~\AppData\Local\go-build
-          key:  source-aws-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-${{ hashFiles('plugins/source/aws/go.sum') }}
   validate-release:
     timeout-minutes: 60
     needs: [resolve-runner]
@@ -119,25 +98,21 @@ jobs:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/aws/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-aws
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        id:   set-up-go
         uses: actions/setup-go@v3
         with:
           go-version-file: plugins/source/aws/go.mod
-          cache: true
-          cache-dependency-path: plugins/source/aws/go.sum
-      - name: Restore build cache
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/cache/restore@v3
-        with:
-          path:         |
-                        ~/.cache/go-build
-                        ~/Library/Caches/go-build
-                        ~\AppData\Local\go-build
-          key:          source-aws-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-${{ hashFiles('plugins/source/aws/go.sum') }}
-          # no direct cache hit, however, even a partial hit might be beneficial
-          restore-keys: source-aws-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-
+          cache: false
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: goreleaser/goreleaser-action@v3
@@ -175,23 +150,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set up Go
-        id:   set-up-go
+      - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
           go-version-file: plugins/source/aws/go.mod
-          cache: true
-          cache-dependency-path: plugins/source/aws/go.sum
-      - name: Restore build cache
-        uses: actions/cache/restore@v3
-        with:
-          path:         |
-                        ~/.cache/go-build
-                        ~/Library/Caches/go-build
-                        ~\AppData\Local\go-build
-          key:          source-aws-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-${{ hashFiles('plugins/source/aws/go.sum') }}
-          # no direct cache hit, however, even a partial hit might be beneficial
-          restore-keys: source-aws-${{ runner.os }}-go-${{ steps.set-up-go.outputs.go-version }}-
+          cache: false
       - name: Build
         run: go build .
       - name: Setup CloudQuery
