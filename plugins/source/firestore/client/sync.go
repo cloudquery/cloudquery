@@ -22,10 +22,6 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 }
 
 func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- *schema.Resource) error {
-	colMap := make(map[string]struct{}, len(table.Columns))
-	for _, col := range table.Columns {
-		colMap[col.Name] = struct{}{}
-	}
 	var err error
 	lastDocumentId := ""
 	maxBatchSize := c.maxBatchSize

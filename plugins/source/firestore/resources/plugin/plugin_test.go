@@ -34,8 +34,7 @@ func TestPlugin(t *testing.T) {
 		Destinations: []string{"test"},
 		Tables:       []string{"test_firestore_source"},
 		Spec: client.Spec{
-			ProjectID:          "test-project",
-			ServiceAccountJSON: getTestConnectionString(),
+			ProjectID: "test-project",
 		},
 	}
 	err := p.Init(ctx, spec)
