@@ -16,6 +16,7 @@ jobs:
   resolve-runner:
     uses: cloudquery/cloudquery/.github/workflows/reusable_resolve_runner.yml@feat/workflows/reusable
   test:
+    name: "plugins/source/aws"
     needs: [ resolve-runner ]
     uses: cloudquery/cloudquery/.github/workflows/reusable_test_source.yml@feat/workflows/reusable
     with:
