@@ -19,4 +19,4 @@ CWPP solutions can offer the following benefits:
 
 # Open Source CWPP
 
-We previously covered [the modern data stack](https://www.cloudquery.io/blog/what-is-the-modern-data-stack) and how to get started with building an infrastructure data lake.  With that foundational infrastructure data lake, you can now build your own open-source CWPP to improve overall security, simplify management of cloud security, ensure compliance, and reduce overall cost of cloud security.
+In [What is an Infrastructure Data Lake](/docs/glossary/what-is-infrastructure-data-lake), we covered what is an infrastructure data lake and how to get started with building your own.  With that foundational infrastructure data lake, you can now build your own open-source CWPP to improve overall security, simplify management of cloud security, ensure compliance, and reduce overall cost of cloud security.

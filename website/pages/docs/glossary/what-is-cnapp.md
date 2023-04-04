@@ -16,6 +16,6 @@ CNAPP solutions offer benefits with monitoring cloud-native applications and inf
 
 # Open Source CNAPP
 
-We previously covered [the modern data stack](https://www.cloudquery.io/blog/what-is-the-modern-data-stack) and how to get started with building an infrastructure data lake.  With that foundational infrastructure data lake, we can now build your own open-source CNAPP with standard SQL queries and views that you can monitor, visualize, and customize to your specific needs.
+In [What is an Infrastructure Data Lake](/docs/glossary/what-is-infrastructure-data-lake), we covered what is an infrastructure data lake and how to get started with building your own.  With that foundational infrastructure data lake, we can now build your own open-source CNAPP with standard SQL queries and views that you can monitor, visualize, and customize to your specific needs.
 
 CloudQuery pulls information from various sources that contribute to a holistic view for an effective CNAPP.  As your organization grows and evolves with different technologies and architectures, your infrastructure data lake can grow with you by adding various sources.  Check out CloudQuery to see how to build a customizable open-source CNAPP.
