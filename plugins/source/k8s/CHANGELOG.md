@@ -1,5 +1,25 @@
 # Changelog
 
+## [3.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v3.3.2...plugins-source-k8s-v3.4.0) (2023-04-04)
+
+
+### Features
+
+* **k8s:** Add CRDs support ([#9504](https://github.com/cloudquery/cloudquery/issues/9504)) ([d4b03a4](https://github.com/cloudquery/cloudquery/commit/d4b03a43d42e20119b0ced371dd9988c0fc3ccf3)), closes [#7800](https://github.com/cloudquery/cloudquery/issues/7800)
+* **k8s:** Improve tables descriptions in docs ([#9510](https://github.com/cloudquery/cloudquery/issues/9510)) ([e6de98e](https://github.com/cloudquery/cloudquery/commit/e6de98ed55758bdbe2758eac42749908da00521c))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 10a5072 ([#9587](https://github.com/cloudquery/cloudquery/issues/9587)) ([31f913f](https://github.com/cloudquery/cloudquery/commit/31f913f8e3538a2ba41b089bb11eae78aaf42ab2))
+* **deps:** Update k8s.io/kube-openapi digest to f5883ff ([#9589](https://github.com/cloudquery/cloudquery/issues/9589)) ([229c5da](https://github.com/cloudquery/cloudquery/commit/229c5da79be1afb352e3ea4d53ed3471395d7e30))
+* **deps:** Update k8s.io/utils digest to 38a27ef ([#9590](https://github.com/cloudquery/cloudquery/issues/9590)) ([2bcbcf2](https://github.com/cloudquery/cloudquery/commit/2bcbcf25360d6e40e626763840e7c633be927d73))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.1 ([#9520](https://github.com/cloudquery/cloudquery/issues/9520)) ([202c31b](https://github.com/cloudquery/cloudquery/commit/202c31b2788c3df35b5df7d07fdc750f92e7bb23))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.2 ([#9661](https://github.com/cloudquery/cloudquery/issues/9661)) ([a27dc84](https://github.com/cloudquery/cloudquery/commit/a27dc84a9b67b68b5b75b04dd3afe13e2c556082))
+* **deps:** Update module github.com/go-logr/logr to v1.2.4 ([#9605](https://github.com/cloudquery/cloudquery/issues/9605)) ([2ed0dc1](https://github.com/cloudquery/cloudquery/commit/2ed0dc15043598b0e3f68549e4732f08cc7f4ab9))
+* **deps:** Update module github.com/imdario/mergo to v0.3.15 ([#9607](https://github.com/cloudquery/cloudquery/issues/9607)) ([2659ba4](https://github.com/cloudquery/cloudquery/commit/2659ba431168ce159588e398148e459deb33f92b))
+* **deps:** Update module github.com/mattn/go-isatty to v0.0.18 ([#9609](https://github.com/cloudquery/cloudquery/issues/9609)) ([5b2908e](https://github.com/cloudquery/cloudquery/commit/5b2908e8260c6e48f8c5fd6b8bd6c772f0c779d1))
+
 ## [3.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v3.3.1...plugins-source-k8s-v3.3.2) (2023-03-21)
 
 
