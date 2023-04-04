@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/url"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -49,8 +48,9 @@ func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 	config := iam.ListGroupPoliciesInput{
 		GroupName: group.GroupName,
 	}
-	for {
-		output, err := svc.ListGroupPolicies(ctx, &config)
+	paginator := iam.NewListGroupPoliciesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil
@@ -58,12 +58,7 @@ func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 			return err
 		}
 
-		res <- output.PolicyNames
-
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		config.Marker = output.Marker
+		res <- page.PolicyNames
 	}
 	return nil
 }

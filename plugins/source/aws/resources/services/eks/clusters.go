@@ -39,20 +39,15 @@ func Clusters() *schema.Table {
 }
 
 func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var config eks.ListClustersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Eks
-	// TODO: replace with paginator
-	for {
-		listClustersOutput, err := svc.ListClusters(ctx, &config)
+	paginator := eks.NewListClustersPaginator(svc, &eks.ListClustersInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- listClustersOutput.Clusters
-		if listClustersOutput.NextToken == nil {
-			break
-		}
-		config.NextToken = listClustersOutput.NextToken
+		res <- page.Clusters
 	}
 	return nil
 }
