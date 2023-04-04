@@ -1,13 +1,16 @@
 package ecs
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ClusterServices() *schema.Table {
+func clusterServices() *schema.Table {
 	tableName := "aws_ecs_cluster_services"
 	return &schema.Table{
 		Name:        tableName,
@@ -33,7 +36,41 @@ func ClusterServices() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			ClusterTaskSets(),
+			clusterTaskSets(),
 		},
 	}
+}
+
+func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cluster := parent.Item.(types.Cluster)
+	svc := meta.(*client.Client).Services().Ecs
+	config := ecs.ListServicesInput{
+		Cluster: cluster.ClusterArn,
+	}
+	for {
+		listServicesOutput, err := svc.ListServices(ctx, &config)
+		if err != nil {
+			return err
+		}
+		if len(listServicesOutput.ServiceArns) == 0 {
+			return nil
+		}
+		describeServicesInput := ecs.DescribeServicesInput{
+			Cluster:  cluster.ClusterArn,
+			Services: listServicesOutput.ServiceArns,
+			Include:  []types.ServiceField{types.ServiceFieldTags},
+		}
+		describeServicesOutput, err := svc.DescribeServices(ctx, &describeServicesInput)
+		if err != nil {
+			return err
+		}
+
+		res <- describeServicesOutput.Services
+
+		if listServicesOutput.NextToken == nil {
+			break
+		}
+		config.NextToken = listServicesOutput.NextToken
+	}
+	return nil
 }

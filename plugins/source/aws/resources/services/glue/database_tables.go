@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func DatabaseTables() *schema.Table {
+func databaseTables() *schema.Table {
 	tableName := "aws_glue_database_tables"
 	return &schema.Table{
 		Name:        tableName,
@@ -37,7 +37,7 @@ func DatabaseTables() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			DatabaseTableIndexes(),
+			databaseTableIndexes(),
 		},
 	}
 }

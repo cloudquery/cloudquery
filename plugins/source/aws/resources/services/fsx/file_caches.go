@@ -1,6 +1,10 @@
 package fsx
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -33,4 +37,35 @@ func FileCaches() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchFsxFileCaches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Fsx
+	input := fsx.DescribeFileCachesInput{MaxResults: aws.Int32(1000)}
+	paginator := fsx.NewDescribeFileCachesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		result, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- result.FileCaches
+	}
+	return nil
+}
+
+func resolveFileCacheTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	item := resource.Item.(types.FileCache)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Fsx
+	var tags []types.Tag
+	paginator := fsx.NewListTagsForResourcePaginator(svc, &fsx.ListTagsForResourceInput{ResourceARN: item.ResourceARN})
+	for paginator.HasMorePages() {
+		result, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		tags = append(tags, result.Tags...)
+	}
+	return resource.Set(c.Name, client.TagsToMap(tags))
 }

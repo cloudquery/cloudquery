@@ -16,7 +16,7 @@ type KeyPolicy struct {
 	Policy *string
 }
 
-func KeyPolicies() *schema.Table {
+func keyPolicies() *schema.Table {
 	tableName := "aws_kms_key_policies"
 	return &schema.Table{
 		Name:        tableName,
