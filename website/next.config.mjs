@@ -67,7 +67,7 @@ const replaceMdxPluginNames = (node) => {
     Object.entries(pluginNamePatterns).forEach(([key, pattern]) => {
       const match = node.value.match(pattern);
       if (match) {
-        node.value = node.value.replace(pattern, "postgres"); // default to postgres
+        node.value = node.value.replace(pattern, "postgresql"); // default to postgresql
       }
     });
   }
