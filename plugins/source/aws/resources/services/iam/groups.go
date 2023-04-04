@@ -22,11 +22,6 @@ func Groups() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "policies",
-				Type:     schema.TypeJSON,
-				Resolver: resolveIamGroupPolicies,
-			},
-			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("GroupId"),
@@ -37,8 +32,9 @@ func Groups() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			groupPolicies(),
+			groupAttachedPolicies(),
 			groupLastAccessedDetails(),
+			groupPolicies(),
 		},
 	}
 }
@@ -58,21 +54,4 @@ func fetchIamGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		config.Marker = response.Marker
 	}
 	return nil
-}
-
-func resolveIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Group)
-	svc := meta.(*client.Client).Services().Iam
-	config := iam.ListAttachedGroupPoliciesInput{
-		GroupName: r.GroupName,
-	}
-	response, err := svc.ListAttachedGroupPolicies(ctx, &config)
-	if err != nil {
-		return err
-	}
-	policyMap := map[string]*string{}
-	for _, p := range response.AttachedPolicies {
-		policyMap[*p.PolicyArn] = p.PolicyName
-	}
-	return resource.Set(c.Name, policyMap)
 }
