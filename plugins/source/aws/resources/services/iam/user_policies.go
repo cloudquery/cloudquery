@@ -19,13 +19,16 @@ func userPolicies() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetUserPolicy.html`,
 		Resolver:            fetchIamUserPolicies,
 		PreResourceResolver: getUserPolicy,
-		Transform:           transformers.TransformWithStruct(&iam.GetUserPolicyOutput{}),
+		Transform:           transformers.TransformWithStruct(&iam.GetUserPolicyOutput{}, transformers.WithPrimaryKeys("PolicyName")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "user_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "user_id",

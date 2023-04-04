@@ -18,7 +18,7 @@ func groupAttachedPolicies() *schema.Table {
 		Resolver:    fetchIamGroupAttachedPolicies,
 		Transform:   transformers.TransformWithStruct(&types.AttachedPolicy{}, transformers.WithPrimaryKeys("PolicyArn")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "group_arn",
 				Type:     schema.TypeString,

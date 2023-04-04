@@ -18,19 +18,19 @@ func userGroups() *schema.Table {
 		Resolver:    fetchIamUserGroups,
 		Transform:   transformers.TransformWithStruct(&types.Group{}, transformers.WithPrimaryKeys("Arn")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "user_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "user_id",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 		},
 	}

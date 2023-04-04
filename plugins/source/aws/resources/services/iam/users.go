@@ -23,9 +23,9 @@ func Users() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "id",
+				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UserId"),
+				Resolver: schema.PathResolver("Arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

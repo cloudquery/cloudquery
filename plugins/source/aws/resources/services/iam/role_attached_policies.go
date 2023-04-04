@@ -20,9 +20,9 @@ func roleAttachedPolicies() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "role_id",
+				Name:     "role_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
+				Resolver: schema.ParentColumnResolver("arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

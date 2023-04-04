@@ -4,7 +4,7 @@ This table shows data for IAM Groups.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html
 
-The composite primary key for this table is (**account_id**, **id**).
+The composite primary key for this table is (**account_id**, **arn**).
 
 ## Relations
 
@@ -22,8 +22,7 @@ The following tables depend on aws_iam_groups:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
-|id (PK)|String|
-|arn|String|
+|arn (PK)|String|
 |create_date|Timestamp|
 |group_id|String|
 |group_name|String|
