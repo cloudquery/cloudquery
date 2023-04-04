@@ -24,11 +24,6 @@ func Roles() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "policies",
-				Type:     schema.TypeJSON,
-				Resolver: resolveIamRolePolicies,
-			},
-			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RoleId"),
@@ -49,8 +44,9 @@ func Roles() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			rolePolicies(),
+			roleAttachedPolicies(),
 			roleLastAccessedDetails(),
+			rolePolicies(),
 		},
 	}
 }
@@ -80,30 +76,6 @@ func getRole(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 	}
 	resource.Item = roleDetails.Role
 	return nil
-}
-
-func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(*types.Role)
-	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
-	input := iam.ListAttachedRolePoliciesInput{
-		RoleName: r.RoleName,
-	}
-	policies := map[string]*string{}
-	paginator := iam.NewListAttachedRolePoliciesPaginator(svc, &input)
-	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
-		if err != nil {
-			if cl.IsNotFoundError(err) {
-				return nil
-			}
-			return err
-		}
-		for _, p := range response.AttachedPolicies {
-			policies[*p.PolicyArn] = p.PolicyName
-		}
-	}
-	return resource.Set("policies", policies)
 }
 
 func resolveRolesAssumeRolePolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
