@@ -13,16 +13,6 @@ func Organizations() *schema.Table {
 		Description: `https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Organization`,
 		Resolver:    fetchOrganizations,
 		Multiplex:   client.SingleOrganization,
-		Transform:   transformers.TransformWithStruct(&snyk.Organization{}),
-		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&snyk.Organization{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
