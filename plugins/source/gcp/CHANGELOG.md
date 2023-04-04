@@ -8,6 +8,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [8.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v8.4.2...plugins-source-gcp-v8.4.3) (2023-04-04)
 
 
+### This Release has the Following Changes to Tables
+- Table `gcp_aiplatform_batch_prediction_jobs`: column added with name `disable_container_logging` and type `Bool`
+- Table `gcp_aiplatform_batch_prediction_jobs`: column order changed for `encryption_spec`
+- Table `gcp_bigquery_datasets`: column added with name `default_rounding_mode` and type `String`
+- Table `gcp_bigquery_tables`: column added with name `default_rounding_mode` and type `String`
+- Table `gcp_clouddeploy_releases`: column added with name `condition` and type `JSON`
+- Table `gcp_clouddeploy_releases`: column order changed for `target_renders`
+- Table `gcp_clouddeploy_rollouts`: column added with name `controller_rollout` and type `String`
+- Table `gcp_clouddeploy_rollouts`: column order changed for `metadata`
+- Table `gcp_compute_forwarding_rules`: column added with name `base_forwarding_rule` and type `String`
+- Table `gcp_compute_forwarding_rules`: column added with name `source_ip_ranges` and type `StringArray`
+- Table `gcp_kms_crypto_key_versions`: column added with name `external_destruction_failure_reason` and type `String`
+- Table `gcp_kms_crypto_key_versions`: column added with name `generation_failure_reason` and type `String`
+- Table `gcp_kms_ekm_connections`: column added with name `crypto_space_path` and type `String`
+- Table `gcp_kms_ekm_connections`: column added with name `key_management_mode` and type `String`
+- Table `gcp_kms_ekm_connections`: column order changed for `etag`
+- Table `gcp_livestream_channels`: column added with name `encryptions` and type `JSON`
+- Table `gcp_livestream_channels`: column added with name `input_config` and type `JSON`
+- Table `gcp_livestream_channels`: column added with name `timecode_config` and type `JSON`
+- Table `gcp_livestream_channels`: column order changed for `log_config`
+- Table `gcp_translate_glossaries`: column added with name `display_name` and type `String`
+- Table `gcp_translate_glossaries`: column order changed for `end_time`
+
 ### Bug Fixes
 
 * **deps:** Update github.com/cncf/xds/go digest to 32f1caf ([#9562](https://github.com/cloudquery/cloudquery/issues/9562)) ([62bd1e5](https://github.com/cloudquery/cloudquery/commit/62bd1e5e4e9aa26fee75cda33ab08f0232796682))
