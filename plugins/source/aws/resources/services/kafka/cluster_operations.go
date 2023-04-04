@@ -1,13 +1,16 @@
 package kafka
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kafka/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func ClusterOperations() *schema.Table {
+func clusterOperations() *schema.Table {
 	tableName := "aws_kafka_cluster_operations"
 	return &schema.Table{
 		Name:        tableName,
@@ -37,4 +40,24 @@ func ClusterOperations() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchKafkaClusterOperations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	if parent.Item.(*types.Cluster).ClusterType == types.ClusterTypeServerless {
+		// serverless clusters do not support cluster operations
+		return nil
+	}
+
+	var input = getListClusterOperationsInput(parent)
+	c := meta.(*client.Client)
+	svc := c.Services().Kafka
+	paginator := kafka.NewListClusterOperationsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.ClusterOperationInfoList
+	}
+	return nil
 }

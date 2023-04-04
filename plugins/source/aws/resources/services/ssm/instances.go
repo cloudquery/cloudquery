@@ -35,27 +35,21 @@ func Instances() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			InstanceComplianceItems(),
-			InstancePatches(),
+			instanceComplianceItems(),
+			instancePatches(),
 		},
 	}
 }
 
 func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services().Ssm
-
-	var input ssm.DescribeInstanceInformationInput
-	for {
-		output, err := svc.DescribeInstanceInformation(ctx, &input)
+	svc := meta.(*client.Client).Services().Ssm
+	paginator := ssm.NewDescribeInstanceInformationPaginator(svc, &ssm.DescribeInstanceInformationInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.InstanceInformationList
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		input.NextToken = output.NextToken
+		res <- page.InstanceInformationList
 	}
 	return nil
 }

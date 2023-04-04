@@ -15,6 +15,21 @@ type indexSchema struct {
 	Attributes []string
 }
 
+func (i *indexSchema) init(index *meilisearch.Index) (*indexSchema, error) {
+	i.UID = index.UID
+	i.PrimaryKey = index.PrimaryKey
+
+	attrs, err := index.GetFilterableAttributes()
+	if err != nil {
+		return nil, err
+	}
+	if attrs != nil {
+		i.Attributes = *attrs
+	}
+
+	return i, nil
+}
+
 func (i *indexSchema) canMigrate(o *indexSchema) bool {
 	return i.UID == o.UID && i.PrimaryKey == o.PrimaryKey
 }
@@ -36,25 +51,6 @@ func (c *Client) tablesIndexSchemas(tables schema.Tables) map[string]*indexSchem
 	return res
 }
 
-func (c *Client) getIndexSchema(uid string) (*indexSchema, error) {
-	index, err := c.Meilisearch.GetIndex(uid)
-	if err != nil {
-		return nil, err
-	}
-
-	res := &indexSchema{UID: index.UID, PrimaryKey: index.PrimaryKey}
-
-	attrs, err := index.GetFilterableAttributes()
-	if err != nil {
-		return nil, err
-	}
-	if attrs != nil {
-		res.Attributes = *attrs
-	}
-
-	return res, nil
-}
-
 func (c *Client) indexes() (map[string]*indexSchema, error) {
 	req := &meilisearch.IndexesQuery{Limit: 100, Offset: 0}
 
@@ -66,10 +62,8 @@ func (c *Client) indexes() (map[string]*indexSchema, error) {
 			return nil, err
 		}
 
-		for _, shallow := range resp.Results {
-			// we need to perform GetIndex, as the index returned doesn't have client field initialized
-			// see https://github.com/meilisearch/meilisearch-go/pull/426
-			entry, err := c.getIndexSchema(shallow.UID)
+		for _, index := range resp.Results {
+			entry, err := new(indexSchema).init(&index)
 			if err != nil {
 				return nil, err
 			}

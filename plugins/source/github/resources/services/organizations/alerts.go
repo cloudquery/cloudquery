@@ -29,7 +29,7 @@ func fetchAlerts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 		}
 		res <- alerts
 		opts.After = resp.After
-		if resp.After == "" {
+		if len(resp.After) == 0 {
 			break
 		}
 	}

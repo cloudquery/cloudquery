@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func TrafficPolicyVersions() *schema.Table {
+func trafficPolicyVersions() *schema.Table {
 	tableName := "aws_route53_traffic_policy_versions"
 	return &schema.Table{
 		Name:        tableName,

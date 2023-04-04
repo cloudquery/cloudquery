@@ -54,16 +54,14 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 		},
 	}
 	svc := meta.(*client.Client).Services().Iam
-	for {
-		response, err := svc.GetAccountAuthorizationDetails(ctx, &config)
+	paginator := iam.NewGetAccountAuthorizationDetailsPaginator(svc, &config)
+
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.Policies
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
+		res <- page.Policies
 	}
 	return nil
 }
