@@ -3,7 +3,7 @@ package kafka
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kafka/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -51,16 +51,13 @@ func fetchKafkaClusterOperations(ctx context.Context, meta schema.ClientMeta, pa
 	var input = getListClusterOperationsInput(parent)
 	c := meta.(*client.Client)
 	svc := c.Services().Kafka
-	for {
-		response, err := svc.ListClusterOperations(ctx, &input)
+	paginator := kafka.NewListClusterOperationsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.ClusterOperationInfoList
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		res <- page.ClusterOperationInfoList
 	}
 	return nil
 }

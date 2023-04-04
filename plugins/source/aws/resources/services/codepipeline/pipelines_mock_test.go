@@ -44,6 +44,7 @@ func buildPipelines(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err := faker.FakeObject(&tags); err != nil {
 		t.Fatal(err)
 	}
+	tags.NextToken = nil
 	mock.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		tags,
 		nil,

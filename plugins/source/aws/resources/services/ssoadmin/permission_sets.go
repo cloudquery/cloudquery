@@ -3,7 +3,6 @@ package ssoadmin
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -75,17 +74,13 @@ func fetchSsoadminPermissionSets(ctx context.Context, meta schema.ClientMeta, pa
 	config := ssoadmin.ListPermissionSetsInput{
 		InstanceArn: instance_arn,
 	}
-
-	for {
-		response, err := svc.ListPermissionSets(ctx, &config)
+	paginator := ssoadmin.NewListPermissionSetsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.PermissionSets
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.PermissionSets
 	}
 
 	return nil

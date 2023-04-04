@@ -28,13 +28,13 @@ func Instances() *schema.Table {
 func fetchSsoadminInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client).Services().Ssoadmin
 	config := ssoadmin.ListInstancesInput{}
-	response, err := svc.ListInstances(ctx, &config)
-	if err != nil {
-		return err
-	}
-	// TODO: replace with paginator
-	for _, i := range response.Instances {
-		res <- i
+	paginator := ssoadmin.NewListInstancesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		output, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- output.Instances
 	}
 	return nil
 }
