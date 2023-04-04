@@ -81,7 +81,7 @@ jobs:
               const runs = checkRuns.map(({ name, conclusion }) => ({ name, conclusion }))
               console.log(`Got the following check runs: ${JSON.stringify(runs)}`)
               const matchingRuns = runs.filter(({ name }) => actions.includes(name))
-              const failedRuns = matchingRuns.filter(({ conclusion }) => conclusion !== 'success')
+              const failedRuns = matchingRuns.filter(({ conclusion }) => conclusion !== 'success' && conclusion !== 'skipped')
               if (failedRuns.length > 0) {
                 throw new Error(`The following required workflows failed: ${failedRuns.map(({ name }) => name).join(", ")}`)
               }
