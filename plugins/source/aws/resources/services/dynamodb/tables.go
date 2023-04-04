@@ -90,17 +90,25 @@ func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resou
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Dynamodb
-	// TODO: Support Pagination
-	response, err := svc.ListTagsOfResource(ctx, &dynamodb.ListTagsOfResourceInput{
+	var tags []types.Tag
+	input := &dynamodb.ListTagsOfResourceInput{
 		ResourceArn: table.TableArn,
-	})
-	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
-		return err
 	}
-	return resource.Set(c.Name, client.TagsToMap(response.Tags))
+	for {
+		res, err := svc.ListTagsOfResource(ctx, input)
+		if err != nil {
+			if cl.IsNotFoundError(err) {
+				return nil
+			}
+			return err
+		}
+		tags = append(tags, res.Tags...)
+		if aws.ToString(res.NextToken) == "" {
+			break
+		}
+		input.NextToken = res.NextToken
+	}
+	return resource.Set(c.Name, client.TagsToMap(tags))
 }
 
 func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {

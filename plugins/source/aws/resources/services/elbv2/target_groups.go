@@ -3,7 +3,6 @@ package elbv2
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -44,19 +43,15 @@ func TargetGroups() *schema.Table {
 }
 
 func fetchTargetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var config elbv2.DescribeTargetGroupsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticloadbalancingv2
-	for {
-		response, err := svc.DescribeTargetGroups(ctx, &config)
+	paginator := elbv2.NewDescribeTargetGroupsPaginator(svc, &elbv2.DescribeTargetGroupsInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.TargetGroups
-		if aws.ToString(response.NextMarker) == "" {
-			break
-		}
-		config.Marker = response.NextMarker
+		res <- page.TargetGroups
 	}
 	return nil
 }

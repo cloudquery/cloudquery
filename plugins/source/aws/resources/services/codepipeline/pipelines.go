@@ -77,15 +77,18 @@ func resolvePipelineTags(ctx context.Context, meta schema.ClientMeta, resource *
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Codepipeline
-	// TODO: Support Pagination
-	response, err := svc.ListTagsForResource(ctx, &codepipeline.ListTagsForResourceInput{
+	paginator := codepipeline.NewListTagsForResourcePaginator(svc, &codepipeline.ListTagsForResourceInput{
 		ResourceArn: pipeline.Metadata.PipelineArn,
 	})
-	if err != nil {
-		return err
+	var tags []types.Tag
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		tags = append(tags, page.Tags...)
 	}
-
-	return resource.Set(c.Name, client.TagsToMap(response.Tags))
+	return resource.Set(c.Name, client.TagsToMap(tags))
 }
 
 func resolvePipelineArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

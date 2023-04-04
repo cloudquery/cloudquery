@@ -121,21 +121,19 @@ func resolveWafRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resour
 		AccountID: cl.AccountID,
 		Resource:  fmt.Sprintf("rulegroup/%s", aws.ToString(ruleGroup.RuleGroupId)),
 	}.String()
-	// TODO: Replace With client.TagsToMap
-	outputTags := make(map[string]*string)
+
+	var outputTags []types.Tag
 	tagsConfig := waf.ListTagsForResourceInput{ResourceARN: aws.String(arnStr)}
 	for {
 		tags, err := service.ListTagsForResource(ctx, &tagsConfig)
 		if err != nil {
 			return err
 		}
-		for _, t := range tags.TagInfoForResource.TagList {
-			outputTags[*t.Key] = t.Value
-		}
+		outputTags = append(outputTags, tags.TagInfoForResource.TagList...)
 		if aws.ToString(tags.NextMarker) == "" {
 			break
 		}
 		tagsConfig.NextMarker = tags.NextMarker
 	}
-	return resource.Set("tags", outputTags)
+	return resource.Set("tags", client.TagsToMap(outputTags))
 }
