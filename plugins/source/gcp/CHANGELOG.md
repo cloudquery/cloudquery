@@ -5,6 +5,41 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v8.4.2...plugins-source-gcp-v8.4.3) (2023-04-04)
+
+
+### This Release has the Following Changes to Tables
+- Table `gcp_aiplatform_batch_prediction_jobs`: column added with name `disable_container_logging` and type `Bool`
+- Table `gcp_aiplatform_batch_prediction_jobs`: column order changed for `encryption_spec`
+- Table `gcp_bigquery_datasets`: column added with name `default_rounding_mode` and type `String`
+- Table `gcp_bigquery_tables`: column added with name `default_rounding_mode` and type `String`
+- Table `gcp_clouddeploy_releases`: column added with name `condition` and type `JSON`
+- Table `gcp_clouddeploy_releases`: column order changed for `target_renders`
+- Table `gcp_clouddeploy_rollouts`: column added with name `controller_rollout` and type `String`
+- Table `gcp_clouddeploy_rollouts`: column order changed for `metadata`
+- Table `gcp_compute_forwarding_rules`: column added with name `base_forwarding_rule` and type `String`
+- Table `gcp_compute_forwarding_rules`: column added with name `source_ip_ranges` and type `StringArray`
+- Table `gcp_kms_crypto_key_versions`: column added with name `external_destruction_failure_reason` and type `String`
+- Table `gcp_kms_crypto_key_versions`: column added with name `generation_failure_reason` and type `String`
+- Table `gcp_kms_ekm_connections`: column added with name `crypto_space_path` and type `String`
+- Table `gcp_kms_ekm_connections`: column added with name `key_management_mode` and type `String`
+- Table `gcp_kms_ekm_connections`: column order changed for `etag`
+- Table `gcp_livestream_channels`: column added with name `encryptions` and type `JSON`
+- Table `gcp_livestream_channels`: column added with name `input_config` and type `JSON`
+- Table `gcp_livestream_channels`: column added with name `timecode_config` and type `JSON`
+- Table `gcp_livestream_channels`: column order changed for `log_config`
+- Table `gcp_translate_glossaries`: column added with name `display_name` and type `String`
+- Table `gcp_translate_glossaries`: column order changed for `end_time`
+
+### Bug Fixes
+
+* **deps:** Update github.com/cncf/xds/go digest to 32f1caf ([#9562](https://github.com/cloudquery/cloudquery/issues/9562)) ([62bd1e5](https://github.com/cloudquery/cloudquery/commit/62bd1e5e4e9aa26fee75cda33ab08f0232796682))
+* **deps:** Update golang.org/x/exp digest to 10a5072 ([#9587](https://github.com/cloudquery/cloudquery/issues/9587)) ([31f913f](https://github.com/cloudquery/cloudquery/commit/31f913f8e3538a2ba41b089bb11eae78aaf42ab2))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.1 ([#9520](https://github.com/cloudquery/cloudquery/issues/9520)) ([202c31b](https://github.com/cloudquery/cloudquery/commit/202c31b2788c3df35b5df7d07fdc750f92e7bb23))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.2 ([#9661](https://github.com/cloudquery/cloudquery/issues/9661)) ([a27dc84](https://github.com/cloudquery/cloudquery/commit/a27dc84a9b67b68b5b75b04dd3afe13e2c556082))
+* **deps:** Update module github.com/mattn/go-isatty to v0.0.18 ([#9609](https://github.com/cloudquery/cloudquery/issues/9609)) ([5b2908e](https://github.com/cloudquery/cloudquery/commit/5b2908e8260c6e48f8c5fd6b8bd6c772f0c779d1))
+* **gcp:** Fix typo and condition in the CIS GCP Policy 6.3.6 ([#9381](https://github.com/cloudquery/cloudquery/issues/9381)) ([e2bd07f](https://github.com/cloudquery/cloudquery/commit/e2bd07fda6e354e92b17b6ab517ca03ae1814b86))
+
 ## [8.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v8.4.1...plugins-source-gcp-v8.4.2) (2023-03-21)
 
 
