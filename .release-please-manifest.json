@@ -85,7 +85,7 @@
   "plugins/source/plausible+FILLER": "0.0.0",
   "plugins/source/shopify": "1.1.4",
   "plugins/source/shopify+FILLER": "0.0.0",
-  "plugins/source/stripe": "1.1.3",
+  "plugins/source/stripe": "1.1.4",
   "plugins/source/stripe+FILLER": "0.0.0",
   "plugins/source/mixpanel": "1.1.3",
   "plugins/source/mixpanel+FILLER": "0.0.0",
