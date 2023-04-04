@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func DatabaseParameters() *schema.Table {
+func databaseParameters() *schema.Table {
 	tableName := "aws_lightsail_database_parameters"
 	return &schema.Table{
 		Name:        tableName,

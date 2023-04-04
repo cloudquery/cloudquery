@@ -12,6 +12,9 @@ import Configuration from "./_configuration.mdx";
 
 This destination plugin lets you sync data from a CloudQuery source to [ClickHouse](https://clickhouse.com/) database.
 
+It supports `append` write mode only.
+Write mode selection is required through [`write_mode`](/docs/reference/destination-spec#write_mode).
+
 Supported database versions: >= `22.1.2`
 
 ## Configuration
@@ -40,11 +43,10 @@ This is the (nested) spec used by the ClickHouse destination plugin.
 
 - `ca_cert` (string, optional. Default: not used)
 
-  If you need to use a custom CA to connect to ClickHouse instance you can use `ca_cert` option.
-  The following values are supported:
-
-  - Path to cert file
-  - CA cert data in plain text (or substituted from environment variable)
+  PEM-encoded certificate authorities.
+  When set, a certificate pool will be created by appending the certificates to the system pool.
+  See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example)
+  for how to read this value from a file.
 
 - `engine` (optional, structure documented [below](#clickhouse-table-engine). Default: `MergeTree` engine)
 
@@ -68,10 +70,11 @@ This option allows to specify a custom table engine to be used.
 ```yaml copy
 kind: destination
 spec:
-  name:     "clickhouse"
-  registry: "github"
-  path:     "cloudquery/clickhouse"
-  version:  "VERSION_DESTINATION_CLICKHOUSE"
+  name:       "clickhouse"
+  registry:   "github"
+  path:       "cloudquery/clickhouse"
+  version:    "VERSION_DESTINATION_CLICKHOUSE"
+  write_mode: "append"
 
   spec:
     connection_string: "clickhouse://${CH_USER}:${CH_PASSWORD}@localhost:9000/${CH_DATABASE}"
@@ -96,10 +99,11 @@ Make sure not to use it in production environment.
 ```yaml copy
 kind: destination
 spec:
-  name:     "clickhouse"
-  registry: "github"
-  path:     "cloudquery/clickhouse"
-  version:  "VERSION_DESTINATION_CLICKHOUSE"
+  name:       "clickhouse"
+  registry:   "github"
+  path:       "cloudquery/clickhouse"
+  version:    "VERSION_DESTINATION_CLICKHOUSE"
+  write_mode: "append"
 
   spec:
     connection_string: "clickhouse://${CH_USER}:${CH_PASSWORD}@localhost:9000/${CH_DATABASE}?debug=true"

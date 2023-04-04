@@ -66,6 +66,8 @@ kafka:
   - plugins/destination/kafka/**/*
 launchdarkly:
   - plugins/source/launchdarkly/**/*
+meilisearch:
+  - plugins/destination/meilisearch/**/*
 mixpanel:
   - plugins/source/mixpanel/**/*
 mongodb:

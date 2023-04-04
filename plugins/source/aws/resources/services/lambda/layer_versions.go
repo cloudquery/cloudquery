@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func LayerVersions() *schema.Table {
+func layerVersions() *schema.Table {
 	tableName := "aws_lambda_layer_versions"
 	return &schema.Table{
 		Name:        tableName,
@@ -34,7 +34,7 @@ func LayerVersions() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			LayerVersionPolicies(),
+			layerVersionPolicies(),
 		},
 	}
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 	v1 "k8s.io/api/batch/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -14,22 +15,8 @@ func CronJobs() *schema.Table {
 		Name:      "k8s_batch_cron_jobs",
 		Resolver:  fetchCronJobs,
 		Multiplex: client.APIFilterContextMultiplex("/apis/batch/v1/cronjobs"),
-		Transform: client.TransformWithStruct(&v1.CronJob{}),
-		Columns: []schema.Column{
-			{
-				Name:     "context",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveContext,
-			},
-			{
-				Name:     "uid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform: client.TransformWithStruct(&v1.CronJob{}, transformers.WithPrimaryKeys("UID")),
+		Columns:   schema.ColumnList{client.ContextColumn},
 	}
 }
 

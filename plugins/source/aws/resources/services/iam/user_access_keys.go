@@ -1,13 +1,17 @@
 package iam
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func UserAccessKeys() *schema.Table {
+func userAccessKeys() *schema.Table {
 	tableName := "aws_iam_user_access_keys"
 	return &schema.Table{
 		Name:                 tableName,
@@ -49,4 +53,52 @@ func UserAccessKeys() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var config iam.ListAccessKeysInput
+	p := parent.Item.(*types.User)
+	svc := meta.(*client.Client).Services().Iam
+	config.UserName = p.UserName
+	paginator := iam.NewListAccessKeysPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		keys := make([]models.AccessKeyWrapper, len(page.AccessKeyMetadata))
+		for i, key := range page.AccessKeyMetadata {
+			switch i {
+			case 0:
+				keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
+			case 1:
+				keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
+			default:
+				keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key}
+			}
+		}
+		res <- keys
+	}
+	return nil
+}
+
+func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	r := resource.Item.(models.AccessKeyWrapper)
+	if r.AccessKeyId == nil {
+		return nil
+	}
+	svc := meta.(*client.Client).Services().Iam
+	output, err := svc.GetAccessKeyLastUsed(ctx, &iam.GetAccessKeyLastUsedInput{AccessKeyId: r.AccessKeyId})
+	if err != nil {
+		return err
+	}
+	if output.AccessKeyLastUsed != nil {
+		if err := resource.Set("last_used", output.AccessKeyLastUsed.LastUsedDate); err != nil {
+			return err
+		}
+		if err := resource.Set("last_used_service_name", output.AccessKeyLastUsed.ServiceName); err != nil {
+			return err
+		}
+	}
+	return nil
 }
