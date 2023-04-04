@@ -5,6 +5,17 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v4.2.3...plugins-source-digitalocean-v4.2.4) (2023-04-04)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 10a5072 ([#9587](https://github.com/cloudquery/cloudquery/issues/9587)) ([31f913f](https://github.com/cloudquery/cloudquery/commit/31f913f8e3538a2ba41b089bb11eae78aaf42ab2))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/internal/checksum to v1.1.26 ([#9633](https://github.com/cloudquery/cloudquery/issues/9633)) ([e5200db](https://github.com/cloudquery/cloudquery/commit/e5200db3e6eb3c41aadbd978d77f7b5c9d66626f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.1 ([#9520](https://github.com/cloudquery/cloudquery/issues/9520)) ([202c31b](https://github.com/cloudquery/cloudquery/commit/202c31b2788c3df35b5df7d07fdc750f92e7bb23))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.2 ([#9661](https://github.com/cloudquery/cloudquery/issues/9661)) ([a27dc84](https://github.com/cloudquery/cloudquery/commit/a27dc84a9b67b68b5b75b04dd3afe13e2c556082))
+* **deps:** Update module github.com/mattn/go-isatty to v0.0.18 ([#9609](https://github.com/cloudquery/cloudquery/issues/9609)) ([5b2908e](https://github.com/cloudquery/cloudquery/commit/5b2908e8260c6e48f8c5fd6b8bd6c772f0c779d1))
+
 ## [4.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v4.2.2...plugins-source-digitalocean-v4.2.3) (2023-03-28)
 
 
