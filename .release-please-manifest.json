@@ -75,7 +75,7 @@
   "plugins/source/hackernews+FILLER": "0.0.0",
   "scaffold": "1.6.6",
   "scaffold+FILLER": "0.0.0",
-  "plugins/source/oracle": "1.1.3",
+  "plugins/source/oracle": "1.1.4",
   "plugins/source/oracle+FILLER": "0.0.0",
   "plugins/source/alicloud": "2.0.0",
   "plugins/source/alicloud+FILLER": "0.0.0",
