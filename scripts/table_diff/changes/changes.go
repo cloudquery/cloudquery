@@ -177,6 +177,10 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 			})
 		}
 	}
+
+	// check PK:
+	// Only if all of the Columns are the same before and after the change should
+	// we consider this a "primary key order" change
 	ordering := func(a, b string) bool { return a < b }
 	diff := cmp.Diff(addedPK, deletedPK, cmpopts.SortSlices(ordering))
 	if len(addedPK) > 0 && diff == "" {
