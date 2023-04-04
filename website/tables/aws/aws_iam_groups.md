@@ -9,6 +9,7 @@ The composite primary key for this table is (**account_id**, **id**).
 ## Relations
 
 The following tables depend on aws_iam_groups:
+  - [aws_iam_group_attached_policies](aws_iam_group_attached_policies)
   - [aws_iam_group_last_accessed_details](aws_iam_group_last_accessed_details)
   - [aws_iam_group_policies](aws_iam_group_policies)
 
@@ -21,7 +22,6 @@ The following tables depend on aws_iam_groups:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
-|policies|JSON|
 |id (PK)|String|
 |arn|String|
 |create_date|Timestamp|
