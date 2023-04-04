@@ -33,7 +33,7 @@ func userPolicies() *schema.Table {
 			{
 				Name:     "user_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
+				Resolver: schema.ParentColumnResolver("user_id"),
 			},
 			{
 				Name:     "policy_document",

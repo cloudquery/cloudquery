@@ -30,7 +30,7 @@ func signingCertificates() *schema.Table {
 			{
 				Name:     "user_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
+				Resolver: schema.ParentColumnResolver("user_id"),
 			},
 		},
 	}
