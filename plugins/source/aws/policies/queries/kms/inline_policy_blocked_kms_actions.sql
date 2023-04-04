@@ -26,7 +26,7 @@ from
         ) as statement
         inner join
             aws_iam_users on
-                aws_iam_roles.account_id = aws_iam_role_policies.account_id and
+                aws_iam_users.account_id = aws_iam_user_policies.account_id and
                 aws_iam_users.arn = aws_iam_user_policies.user_arn
         union
         -- select all role policies
