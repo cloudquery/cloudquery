@@ -38,7 +38,7 @@ func userAttachedPolicies() *schema.Table {
 			{
 				Name:     "user_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("user_id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},
 	}
