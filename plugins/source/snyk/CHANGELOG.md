@@ -3,6 +3,13 @@
 ## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-snyk-v1.2.2...plugins-source-snyk-v2.0.0) (2023-04-04)
 
 
+### This Release has the Following Changes to Tables
+- Table `snyk_dependencies`: column added with name `organization_id (PK)` and type `String` (:warning: breaking)
+- Table `snyk_integrations`: primary key constraint added to column `organization_id` (:warning: breaking)
+- Table `snyk_integrations`: column order changed for `id`
+- Table `snyk_organizations`: column order changed for `id`
+- Table `snyk_projects`: primary key constraint added to column `organization_id` (:warning: breaking)
+
 ### ⚠ BREAKING CHANGES
 
 * **snyk:** Added `organization_id` to primary keys to ensure no duplicate primary keys are encountered. The following tables are affected:
