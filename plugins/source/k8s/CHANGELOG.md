@@ -3,6 +3,49 @@
 ## [3.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v3.3.2...plugins-source-k8s-v3.4.0) (2023-04-04)
 
 
+### This Release has the Following Changes to Tables
+- Table `k8s_admissionregistration_mutating_webhook_configurations`: column order changed for `uid`
+- Table `k8s_admissionregistration_validating_webhook_configurations`: column order changed for `uid`
+- Table `k8s_apps_daemon_sets`: column order changed for `uid`
+- Table `k8s_apps_deployments`: column order changed for `uid`
+- Table `k8s_apps_replica_sets`: column order changed for `uid`
+- Table `k8s_apps_stateful_sets`: column order changed for `uid`
+- Table `k8s_autoscaling_hpas`: column order changed for `uid`
+- Table `k8s_batch_cron_jobs`: column order changed for `uid`
+- Table `k8s_batch_jobs`: column order changed for `uid`
+- Table `k8s_certificates_signing_requests`: column order changed for `uid`
+- Table `k8s_coordination_leases`: column order changed for `uid`
+- Table `k8s_core_component_statuses`: column order changed for `uid`
+- Table `k8s_core_config_maps`: column order changed for `uid`
+- Table `k8s_core_endpoints`: column order changed for `uid`
+- Table `k8s_core_events`: column order changed for `uid`
+- Table `k8s_core_limit_ranges`: column order changed for `uid`
+- Table `k8s_core_namespaces`: column order changed for `uid`
+- Table `k8s_core_nodes`: column order changed for `uid`
+- Table `k8s_core_pods`: column order changed for `uid`
+- Table `k8s_core_pvcs`: column order changed for `uid`
+- Table `k8s_core_pvs`: column order changed for `uid`
+- Table `k8s_core_replication_controllers`: column order changed for `uid`
+- Table `k8s_core_resource_quotas`: column order changed for `uid`
+- Table `k8s_core_secrets`: column order changed for `uid`
+- Table `k8s_core_service_accounts`: column order changed for `uid`
+- Table `k8s_core_services`: column order changed for `uid`
+- Table `k8s_crds` was added
+- Table `k8s_discovery_endpoint_slices`: column order changed for `uid`
+- Table `k8s_networking_ingress_classes`: column order changed for `uid`
+- Table `k8s_networking_ingresses`: column order changed for `uid`
+- Table `k8s_networking_network_policies`: column order changed for `uid`
+- Table `k8s_nodes_runtime_classes`: column order changed for `uid`
+- Table `k8s_rbac_cluster_role_bindings`: column order changed for `uid`
+- Table `k8s_rbac_cluster_roles`: column order changed for `uid`
+- Table `k8s_rbac_role_bindings`: column order changed for `uid`
+- Table `k8s_rbac_roles`: column order changed for `uid`
+- Table `k8s_storage_csi_drivers`: column order changed for `uid`
+- Table `k8s_storage_csi_nodes`: column order changed for `uid`
+- Table `k8s_storage_csi_storage_capacities`: column order changed for `uid`
+- Table `k8s_storage_storage_classes`: column order changed for `uid`
+- Table `k8s_storage_volume_attachments`: column order changed for `uid`
+
 ### Features
 
 * **k8s:** Add CRDs support ([#9504](https://github.com/cloudquery/cloudquery/issues/9504)) ([d4b03a4](https://github.com/cloudquery/cloudquery/commit/d4b03a43d42e20119b0ced371dd9988c0fc3ccf3)), closes [#7800](https://github.com/cloudquery/cloudquery/issues/7800)
