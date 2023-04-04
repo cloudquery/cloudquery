@@ -9,6 +9,7 @@ The composite primary key for this table is (**account_id**, **id**).
 ## Relations
 
 The following tables depend on aws_iam_roles:
+  - [aws_iam_role_attached_policies](aws_iam_role_attached_policies)
   - [aws_iam_role_last_accessed_details](aws_iam_role_last_accessed_details)
   - [aws_iam_role_policies](aws_iam_role_policies)
 
@@ -21,7 +22,6 @@ The following tables depend on aws_iam_roles:
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
-|policies|JSON|
 |id (PK)|String|
 |assume_role_policy_document|JSON|
 |tags|JSON|
