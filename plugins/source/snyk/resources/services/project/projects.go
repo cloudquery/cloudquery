@@ -13,21 +13,7 @@ func Projects() *schema.Table {
 		Description: `https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Project`,
 		Resolver:    fetchProjects,
 		Multiplex:   client.ByOrganization,
-		Transform:   transformers.TransformWithStruct(&snyk.Project{}),
-		Columns: []schema.Column{
-			{
-				Name:     "organization_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveOrganizationID,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&snyk.Project{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.OrganizationID},
 	}
 }

@@ -14,25 +14,13 @@ func Integrations() *schema.Table {
 		Resolver:            fetchIntegrations,
 		PreResourceResolver: getIntegration,
 		Multiplex:           client.ByOrganization,
-		Transform:           transformers.TransformWithStruct(&snyk.Integration{}),
+		Transform:           transformers.TransformWithStruct(&snyk.Integration{}, transformers.WithPrimaryKeys("ID")),
 		Columns: []schema.Column{
-			{
-				Name:     "organization_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveOrganizationID,
-			},
+			client.OrganizationID,
 			{
 				Name:     "settings",
 				Type:     schema.TypeJSON,
 				Resolver: getIntegrationSettings,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 		},
 	}
