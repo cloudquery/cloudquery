@@ -41,3 +41,4 @@ The following tables depend on gcp_clouddeploy_releases:
 |skaffold_version|String|
 |target_artifacts|JSON|
 |target_renders|JSON|
+|condition|JSON|
