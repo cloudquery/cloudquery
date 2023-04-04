@@ -4,7 +4,7 @@ This table shows data for IAM SSH Public Keys.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_SSHPublicKeyMetadata.html
 
-The composite primary key for this table is (**account_id**, **user_arn**, **ssh_public_key_id**).
+The primary key for this table is **ssh_public_key_id**.
 
 ## Relations
 
@@ -18,8 +18,8 @@ This table depends on [aws_iam_users](aws_iam_users).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id (PK)|String|
-|user_arn (PK)|String|
+|account_id|String|
+|user_arn|String|
 |user_id|String|
 |ssh_public_key_id (PK)|String|
 |status|String|

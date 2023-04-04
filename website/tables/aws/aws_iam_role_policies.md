@@ -20,7 +20,7 @@ This table depends on [aws_iam_roles](aws_iam_roles).
 |_cq_parent_id|UUID|
 |account_id (PK)|String|
 |role_arn (PK)|String|
-|policy_document|JSON|
 |policy_name (PK)|String|
+|policy_document|JSON|
 |role_name|String|
 |result_metadata|JSON|

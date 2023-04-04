@@ -4,7 +4,7 @@ This table shows data for IAM Role Last Accessed Details.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html
 
-The composite primary key for this table is (**account_id**, **role_arn**, **service_namespace**).
+The composite primary key for this table is (**arn**, **service_namespace**).
 
 ## Relations
 
@@ -18,8 +18,8 @@ This table depends on [aws_iam_roles](aws_iam_roles).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id (PK)|String|
-|role_arn (PK)|String|
+|account_id|String|
+|arn (PK)|String|
 |job_id|String|
 |service_name|String|
 |service_namespace (PK)|String|

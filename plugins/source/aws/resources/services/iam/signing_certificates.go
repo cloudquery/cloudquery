@@ -18,7 +18,7 @@ func signingCertificates() *schema.Table {
 		Resolver:    fetchUserSigningCertificates,
 		Transform:   transformers.TransformWithStruct(&types.SigningCertificate{}, transformers.WithPrimaryKeys("CertificateId")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
+			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "user_arn",
 				Type:     schema.TypeString,
@@ -30,7 +30,7 @@ func signingCertificates() *schema.Table {
 			{
 				Name:     "user_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("user_id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},
 	}

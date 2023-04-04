@@ -19,10 +19,18 @@ func Roles() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_Role.html`,
 		Resolver:            fetchIamRoles,
 		PreResourceResolver: getRole,
-		Transform:           transformers.TransformWithStruct(&types.Role{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:           transformers.TransformWithStruct(&types.Role{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RoleId"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
 			{
 				Name:     "assume_role_policy_document",
 				Type:     schema.TypeJSON,
@@ -34,10 +42,11 @@ func Roles() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 		},
+
 		Relations: []*schema.Table{
 			roleAttachedPolicies(),
-			rolePolicies(),
 			roleLastAccessedDetails(),
+			rolePolicies(),
 		},
 	}
 }

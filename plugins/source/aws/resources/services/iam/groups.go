@@ -3,6 +3,7 @@ package iam
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -21,18 +22,19 @@ func Groups() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "arn",
+				Name:     "id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
+				Resolver: schema.PathResolver("GroupId"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
 			},
 		},
+
 		Relations: []*schema.Table{
 			groupAttachedPolicies(),
-			groupPolicies(),
 			groupLastAccessedDetails(),
+			groupPolicies(),
 		},
 	}
 }
@@ -40,13 +42,16 @@ func Groups() *schema.Table {
 func fetchIamGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListGroupsInput
 	svc := meta.(*client.Client).Services().Iam
-	paginator := iam.NewListGroupsPaginator(svc, &config)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+	for {
+		response, err := svc.ListGroups(ctx, &config)
 		if err != nil {
 			return err
 		}
-		res <- page.Groups
+		res <- response.Groups
+		if aws.ToString(response.Marker) == "" {
+			break
+		}
+		config.Marker = response.Marker
 	}
 	return nil
 }
