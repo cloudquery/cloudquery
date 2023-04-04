@@ -1,0 +1,14 @@
+variables:
+  component: source/firestore
+  binary: firestore
+
+project_name: plugins/source/firestore
+
+monorepo:
+  tag_prefix: plugins-source-firestore-
+  dir: plugins/source/firestore
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml
