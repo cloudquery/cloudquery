@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
@@ -68,10 +67,22 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 			lastDocumentId = docSnap.Ref.ID
 			item := docSnap.Data()
 			resource := schema.NewResourceData(table, nil, item)
-			resource.Set("_id", docSnap.Ref.ID)
-			resource.Set("_created_at", docSnap.CreateTime)
-			resource.Set("_updated_at", docSnap.UpdateTime)
-			resource.Set("data", item)
+			err = resource.Set("_id", docSnap.Ref.ID)
+			if err != nil {
+				return err
+			}
+			err = resource.Set("_created_at", docSnap.CreateTime)
+			if err != nil {
+				return err
+			}
+			err = resource.Set("_updated_at", docSnap.UpdateTime)
+			if err != nil {
+				return err
+			}
+			err = resource.Set("data", item)
+			if err != nil {
+				return err
+			}
 			c.metrics.TableClient[table.Name][c.ID()].Resources++
 			res <- resource
 		}
@@ -86,56 +97,6 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 	return err
 }
 
-func updateColumn(item map[string]interface{}, columns schema.ColumnList) schema.ColumnList {
-	var newCols schema.ColumnList
-	colsMap := make(map[string]struct{})
-	for _, col := range columns {
-		colsMap[col.Name] = struct{}{}
-	}
-	for key, value := range item {
-		if value == nil {
-			continue
-		}
-		_, found := colsMap[key]
-		if !found {
-			schemaType := determineSchemaType(value)
-			if schemaType == schema.TypeInvalid {
-				continue
-			}
-			newCols = append(newCols, schema.Column{
-				Name: key,
-				Type: schemaType,
-			})
-		}
-	}
-	return newCols
-}
-
-func determineSchemaType(value interface{}) schema.ValueType {
-	switch value.(type) {
-	case bool:
-		return schema.TypeBool
-	case time.Time:
-		return schema.TypeTimestamp
-	case []byte:
-		return schema.TypeByteArray
-	case []string:
-		return schema.TypeStringArray
-	case float64, float32:
-		return schema.TypeFloat
-	case int8, int16, int32, int64:
-		return schema.TypeInt
-	case []int8, []int16, []int32, []int64:
-		return schema.TypeIntArray
-	case map[string]interface{}, []interface{}:
-		return schema.TypeJSON
-	case string:
-		return schema.TypeString
-	default:
-		return schema.TypeInvalid
-	}
-}
-
 func (c *Client) syncTables(ctx context.Context, res chan<- *schema.Resource) error {
 	eg, ctx := errgroup.WithContext(ctx)
 	eg.SetLimit(len(c.Tables))
@@ -143,10 +104,7 @@ func (c *Client) syncTables(ctx context.Context, res chan<- *schema.Resource) er
 	for _, table := range c.Tables {
 		t := table
 		eg.Go(func() error {
-			if err := c.syncTable(ctx, t, res); err != nil {
-				return err
-			}
-			return nil
+			return c.syncTable(ctx, t, res)
 		})
 	}
 	return eg.Wait()

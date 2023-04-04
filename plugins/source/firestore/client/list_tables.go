@@ -16,7 +16,7 @@ type Stringer interface {
 	String() string
 }
 
-func (c *Client) listTables(ctx context.Context, client *firestore.Client) (schema.Tables, error) {
+func (*Client) listTables(ctx context.Context, client *firestore.Client) (schema.Tables, error) {
 	var schemaTables schema.Tables
 	collections := client.Collections(ctx)
 	for {
