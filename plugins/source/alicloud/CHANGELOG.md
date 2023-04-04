@@ -3,6 +3,11 @@
 ## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v1.2.0...plugins-source-alicloud-v2.0.0) (2023-04-04)
 
 
+### This Release has the Following Changes to Tables
+- Table `alicloud_bss_bill_details`: primary key constraint added to column `billing_date` (:warning: breaking)
+- Table `alicloud_bss_bill_details`: primary key constraint added to column `instance_id` (:warning: breaking)
+- Table `alicloud_ecs_instances`: column added with name `instance_owner_id` and type `Int`
+
 ### ⚠ BREAKING CHANGES
 
 * **alicloud:** Add `billing_date` and `instance_id` to `alicloud_bss_bill_details` primary key ([#9639](https://github.com/cloudquery/cloudquery/issues/9639))
