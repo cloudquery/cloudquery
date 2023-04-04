@@ -126,6 +126,7 @@ var GcpServices = map[string]bool{
 	"file.googleapis.com":                             true,
 	"firebase.googleapis.com":                         true,
 	"firebaseappcheck.googleapis.com":                 true,
+	"firebaseappdistribution.googleapis.com":          true,
 	"firebasedatabase.googleapis.com":                 true,
 	"firebasedynamiclinks.googleapis.com":             true,
 	"firebasehosting.googleapis.com":                  true,
