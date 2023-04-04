@@ -3,7 +3,6 @@ package elbv2
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -51,19 +50,16 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticloadbalancingv2
-	for {
-		response, err := svc.DescribeListeners(ctx, &config)
+	paginator := elbv2.NewDescribeListenersPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil
 			}
 			return err
 		}
-		res <- response.Listeners
-		if aws.ToString(response.NextMarker) == "" {
-			break
-		}
-		config.Marker = response.NextMarker
+		res <- page.Listeners
 	}
 	return nil
 }

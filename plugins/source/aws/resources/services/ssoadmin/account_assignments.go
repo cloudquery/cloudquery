@@ -3,7 +3,6 @@ package ssoadmin
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -25,25 +24,18 @@ func accountAssignments() *schema.Table {
 func fetchSsoadminAccountAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Ssoadmin
-	permission_set_arn := parent.Item.(*types.PermissionSet).PermissionSetArn
-	instance_arn := parent.Parent.Item.(types.InstanceMetadata).InstanceArn
 	config := ssoadmin.ListAccountAssignmentsInput{
 		AccountId:        &cl.AccountID,
-		InstanceArn:      instance_arn,
-		PermissionSetArn: permission_set_arn,
+		InstanceArn:      parent.Parent.Item.(types.InstanceMetadata).InstanceArn,
+		PermissionSetArn: parent.Item.(*types.PermissionSet).PermissionSetArn,
 	}
-	// TODO: replace with paginator
-	for {
-		response, err := svc.ListAccountAssignments(ctx, &config)
+	paginator := ssoadmin.NewListAccountAssignmentsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.AccountAssignments
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.AccountAssignments
 	}
-
 	return nil
 }
