@@ -184,7 +184,6 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 	ordering := func(a, b string) bool { return a < b }
 	diff := cmp.Diff(addedPK, deletedPK, cmpopts.SortSlices(ordering))
 	if len(addedPK) > 0 && diff == "" {
-		// if they are unequal the pk added/removed is correct.
 		changes = append(changes, change{
 			Text: fmt.Sprintf("Table %s: primary key order changed from %s to %s",
 				backtickStrings(
