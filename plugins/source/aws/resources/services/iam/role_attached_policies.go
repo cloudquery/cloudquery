@@ -10,43 +10,40 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func userGroups() *schema.Table {
-	tableName := "aws_iam_user_groups"
+func roleAttachedPolicies() *schema.Table {
+	tableName := "aws_iam_role_attached_policies"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html`,
-		Resolver:    fetchIamUserGroups,
-		Transform:   transformers.TransformWithStruct(&types.Group{}, transformers.WithPrimaryKeys("Arn")),
+		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachedPolicy.html`,
+		Resolver:    fetchIamRoleAttachedPolicies,
+		Transform:   transformers.TransformWithStruct(&types.AttachedPolicy{}, transformers.WithPrimaryKeys("PolicyArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "user_arn",
+				Name:     "role_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
 			},
-			{
-				Name:     "user_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("user_id"),
-			},
 		},
 	}
 }
-func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var config iam.ListGroupsForUserInput
-	p := parent.Item.(*types.User)
+
+func fetchIamRoleAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	p := parent.Item.(*types.Role)
 	svc := meta.(*client.Client).Services().Iam
-	config.UserName = p.UserName
-	paginator := iam.NewListGroupsForUserPaginator(svc, &config)
+	config := iam.ListAttachedRolePoliciesInput{
+		RoleName: p.RoleName,
+	}
+	paginator := iam.NewListAttachedRolePoliciesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.Groups
+		res <- output.AttachedPolicies
 	}
 	return nil
 }
