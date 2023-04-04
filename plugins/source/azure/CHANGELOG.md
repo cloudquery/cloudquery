@@ -5,6 +5,25 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v6.2.0...plugins-source-azure-v7.0.0) (2023-04-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** In `v2` of the Azure Go `desktopvirtualization` client, the `MigrationRequest` field was removed from the `HostPoolProperties` struct. This means that the `azure_desktopvirtualization_host_pools->properties` JSON column will not have that field anymore. If you're relying on it in a query, you'd need to update it.
+* **deps:** In `v1` of the Azure Go `containerregistry` client, the `AnonymousPullEnabled` field was removed from the `RegistryProperties` struct. This means that the `azure_containerregistry_registries->properties` JSON column will not have that field anymore. If you're relying on it in a query, you'd need to update it.
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 10a5072 ([#9587](https://github.com/cloudquery/cloudquery/issues/9587)) ([31f913f](https://github.com/cloudquery/cloudquery/commit/31f913f8e3538a2ba41b089bb11eae78aaf42ab2))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry to v1 ([0c0562f](https://github.com/cloudquery/cloudquery/commit/0c0562f8109fc674e1d5170f1cb50c2da0972fa7))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization to v2 ([ed7ab5b](https://github.com/cloudquery/cloudquery/commit/ed7ab5bee900eb47e8a3fe5dbd3ed8645376467b))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations to v3 ([#9470](https://github.com/cloudquery/cloudquery/issues/9470)) ([c3c97b9](https://github.com/cloudquery/cloudquery/commit/c3c97b9987e0a57ea2d8fc2d13e5cf1c990b25f7))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v2 to v3 ([#9471](https://github.com/cloudquery/cloudquery/issues/9471)) ([8505c4c](https://github.com/cloudquery/cloudquery/commit/8505c4cd6449b6dbb0fde7f8663c82ceaad397a1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.1 ([#9520](https://github.com/cloudquery/cloudquery/issues/9520)) ([202c31b](https://github.com/cloudquery/cloudquery/commit/202c31b2788c3df35b5df7d07fdc750f92e7bb23))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.2 ([#9661](https://github.com/cloudquery/cloudquery/issues/9661)) ([a27dc84](https://github.com/cloudquery/cloudquery/commit/a27dc84a9b67b68b5b75b04dd3afe13e2c556082))
+* **deps:** Update module github.com/mattn/go-isatty to v0.0.18 ([#9609](https://github.com/cloudquery/cloudquery/issues/9609)) ([5b2908e](https://github.com/cloudquery/cloudquery/commit/5b2908e8260c6e48f8c5fd6b8bd6c772f0c779d1))
+
 ## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v6.1.0...plugins-source-azure-v6.2.0) (2023-03-28)
 
 
