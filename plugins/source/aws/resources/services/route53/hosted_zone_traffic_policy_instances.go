@@ -1,13 +1,20 @@
 package route53
 
 import (
+	"context"
+	"fmt"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func HostedZoneTrafficPolicyInstances() *schema.Table {
+func hostedZoneTrafficPolicyInstances() *schema.Table {
 	tableName := "aws_route53_hosted_zone_traffic_policy_instances"
 	return &schema.Table{
 		Name:        tableName,
@@ -33,4 +40,34 @@ func HostedZoneTrafficPolicyInstances() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchRoute53HostedZoneTrafficPolicyInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	r := parent.Item.(*models.Route53HostedZoneWrapper)
+	config := route53.ListTrafficPolicyInstancesByHostedZoneInput{HostedZoneId: r.Id}
+	svc := meta.(*client.Client).Services().Route53
+	for {
+		response, err := svc.ListTrafficPolicyInstancesByHostedZone(ctx, &config)
+		if err != nil {
+			return err
+		}
+		res <- response.TrafficPolicyInstances
+		if aws.ToString(response.TrafficPolicyInstanceNameMarker) == "" {
+			break
+		}
+		config.TrafficPolicyInstanceNameMarker = response.TrafficPolicyInstanceNameMarker
+	}
+	return nil
+}
+
+func resolveRoute53HostedZoneTrafficPolicyInstancesArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	tp := resource.Item.(types.TrafficPolicyInstance)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.Route53Service),
+		Region:    "",
+		AccountID: "",
+		Resource:  fmt.Sprintf("trafficpolicyinstance/%s", aws.ToString(tp.Id)),
+	}.String())
 }

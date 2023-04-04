@@ -23,3 +23,5 @@ This table depends on [gcp_kms_locations](gcp_kms_locations).
 |create_time|Timestamp|
 |service_resolvers|JSON|
 |etag|String|
+|key_management_mode|String|
+|crypto_space_path|String|

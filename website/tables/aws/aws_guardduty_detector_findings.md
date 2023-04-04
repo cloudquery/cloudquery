@@ -4,7 +4,7 @@ This table shows data for Amazon GuardDuty Detector Findings.
 
 https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Finding.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**detector_arn**, **arn**).
 
 ## Relations
 
@@ -18,7 +18,7 @@ This table depends on [aws_guardduty_detectors](aws_guardduty_detectors).
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|detector_arn|String|
+|detector_arn (PK)|String|
 |account_id|String|
 |arn (PK)|String|
 |created_at|Timestamp|

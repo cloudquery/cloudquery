@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func GatewayAttachments() *schema.Table {
+func gatewayAttachments() *schema.Table {
 	tableName := "aws_directconnect_gateway_attachments"
 	return &schema.Table{
 		Name:        tableName,

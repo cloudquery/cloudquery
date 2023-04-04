@@ -20,6 +20,7 @@ The primary key for this table is **self_link**.
 |all_ports|Bool|
 |allow_global_access|Bool|
 |backend_service|String|
+|base_forwarding_rule|String|
 |creation_timestamp|String|
 |description|String|
 |fingerprint|String|
@@ -44,5 +45,6 @@ The primary key for this table is **self_link**.
 |service_directory_registrations|JSON|
 |service_label|String|
 |service_name|String|
+|source_ip_ranges|StringArray|
 |subnetwork|String|
 |target|String|

@@ -2,7 +2,7 @@
 
 This table shows data for Neptune Global Clusters.
 
-https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#DescribeDBInstances
+https://docs.aws.amazon.com/neptune/latest/userguide/api-global-dbs.html#GlobalCluster
 
 The primary key for this table is **arn**.
 
@@ -15,9 +15,7 @@ The primary key for this table is **arn**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
-|region|String|
 |arn (PK)|String|
-|tags|JSON|
 |deletion_protection|Bool|
 |engine|String|
 |engine_version|String|

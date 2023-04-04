@@ -13,21 +13,20 @@ func Issues() *schema.Table {
 	return &schema.Table{
 		Name:      "github_issues",
 		Resolver:  fetchIssues,
-		Multiplex: client.OrgMultiplex,
+		Multiplex: client.OrgRepositoryMultiplex,
 		Transform: client.TransformWithStruct(&github.Issue{}, transformers.WithPrimaryKeys("ID")),
-		Columns:   []schema.Column{client.OrgColumn},
+		Columns:   []schema.Column{client.OrgColumn, client.RepositoryIDColumn},
 	}
 }
 
 func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	opts := &github.IssueListOptions{
-		Filter:      "all",
+	opts := &github.IssueListByRepoOptions{
 		State:       "all",
 		ListOptions: github.ListOptions{PerPage: 100},
 	}
 	for {
-		issues, resp, err := c.Github.Issues.ListByOrg(ctx, c.Org, opts)
+		issues, resp, err := c.Github.Issues.ListByRepo(ctx, c.Org, *c.Repository.Name, opts)
 		if err != nil {
 			return err
 		}

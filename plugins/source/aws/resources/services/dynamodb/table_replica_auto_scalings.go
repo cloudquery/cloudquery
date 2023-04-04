@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func TableReplicaAutoScalings() *schema.Table {
+func tableReplicaAutoScalings() *schema.Table {
 	tableName := "aws_dynamodb_table_replica_auto_scalings"
 	return &schema.Table{
 		Name:        tableName,
