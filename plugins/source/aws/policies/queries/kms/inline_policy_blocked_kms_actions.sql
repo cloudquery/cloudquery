@@ -65,7 +65,7 @@ from
                         )
                     when 'array' then policy_document -> 'Statement' end
         ) as statement
-        inner join on
+        inner join aws_iam_groups on
             aws_iam_groups.account_id = aws_iam_group_policies.account_id and
             aws_iam_groups on aws_iam_groups.arn = aws_iam_group_policies.group_arn
         ) as t
