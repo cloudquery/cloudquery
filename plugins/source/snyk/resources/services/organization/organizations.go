@@ -1,6 +1,8 @@
 package organization
 
 import (
+	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -13,16 +15,24 @@ func Organizations() *schema.Table {
 		Description: `https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Organization`,
 		Resolver:    fetchOrganizations,
 		Multiplex:   client.SingleOrganization,
-		Transform:   transformers.TransformWithStruct(&snyk.Organization{}),
-		Columns: []schema.Column{
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&snyk.Organization{}, transformers.WithPrimaryKeys("ID")),
 	}
+}
+
+func fetchOrganizations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+
+	result, _, err := c.Orgs.List(ctx)
+	if err != nil {
+		return err
+	}
+
+	// limit organizations
+	for _, org := range result {
+		if c.WantOrganization(org.ID) {
+			res <- org
+		}
+	}
+
+	return nil
 }

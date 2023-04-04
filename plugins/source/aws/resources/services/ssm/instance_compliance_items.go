@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func InstanceComplianceItems() *schema.Table {
+func instanceComplianceItems() *schema.Table {
 	tableName := "aws_ssm_instance_compliance_items"
 	return &schema.Table{
 		Name:        tableName,

@@ -1,6 +1,12 @@
 package apigateway
 
 import (
+	"context"
+	"fmt"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -28,15 +34,42 @@ func RestApis() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			RestApiAuthorizers(),
-			RestApiDeployments(),
-			RestApiDocumentationParts(),
-			RestApiDocumentationVersions(),
-			RestApiGatewayResponses(),
-			RestApiModels(),
-			RestApiRequestValidators(),
-			RestApiResources(),
-			RestApiStages(),
+			restApiAuthorizers(),
+			restApiDeployments(),
+			restApiDocumentationParts(),
+			restApiDocumentationVersions(),
+			restApiGatewayResponses(),
+			restApiModels(),
+			restApiRequestValidators(),
+			restApiResources(),
+			restApiStages(),
 		},
 	}
+}
+
+func fetchApigatewayRestApis(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	config := apigateway.GetRestApisInput{
+		Limit: aws.Int32(500),
+	}
+	c := meta.(*client.Client)
+	svc := c.Services().Apigateway
+	for p := apigateway.NewGetRestApisPaginator(svc, &config); p.HasMorePages(); {
+		response, err := p.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- response.Items
+	}
+	return nil
+}
+func resolveApigatewayRestAPIArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	rapi := resource.Item.(types.RestApi)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/restapis/%s", aws.ToString(rapi.Id)),
+	}.String())
 }

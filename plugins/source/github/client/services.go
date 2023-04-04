@@ -59,6 +59,7 @@ type OrganizationsService interface {
 //go:generate mockgen -package=mocks -destination=./mocks/mock_issues.go . IssuesService
 type IssuesService interface {
 	ListByOrg(ctx context.Context, org string, opts *github.IssueListOptions) ([]*github.Issue, *github.Response, error)
+	ListByRepo(ctx context.Context, owner string, repo string, opts *github.IssueListByRepoOptions) ([]*github.Issue, *github.Response, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_actions.go . ActionsService

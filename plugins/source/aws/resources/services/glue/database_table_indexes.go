@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func DatabaseTableIndexes() *schema.Table {
+func databaseTableIndexes() *schema.Table {
 	tableName := "aws_glue_database_table_indexes"
 	return &schema.Table{
 		Name:        tableName,

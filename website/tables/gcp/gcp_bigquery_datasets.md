@@ -26,6 +26,7 @@ The following tables depend on gcp_bigquery_datasets:
 |default_collation|String|
 |default_encryption_configuration|JSON|
 |default_partition_expiration_ms|Int|
+|default_rounding_mode|String|
 |default_table_expiration_ms|Int|
 |description|String|
 |etag|String|

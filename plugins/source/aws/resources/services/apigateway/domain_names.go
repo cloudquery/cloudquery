@@ -1,6 +1,12 @@
 package apigateway
 
 import (
+	"context"
+	"fmt"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -28,7 +34,32 @@ func DomainNames() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			DomainNameBasePathMappings(),
+			domainNameBasePathMappings(),
 		},
 	}
+}
+
+func fetchApigatewayDomainNames(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var config apigateway.GetDomainNamesInput
+	c := meta.(*client.Client)
+	svc := c.Services().Apigateway
+	for p := apigateway.NewGetDomainNamesPaginator(svc, &config); p.HasMorePages(); {
+		response, err := p.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- response.Items
+	}
+	return nil
+}
+func resolveApigatewayDomainNameArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	domain := resource.Item.(types.DomainName)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/domainnames/%s", aws.ToString(domain.DomainName)),
+	}.String())
 }

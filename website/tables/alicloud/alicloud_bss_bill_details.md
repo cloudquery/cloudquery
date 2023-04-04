@@ -4,7 +4,7 @@ This table shows data for Alibaba Cloud BSS Bill Details.
 
 https://help.aliyun.com/document_detail/100392.html
 
-The composite primary key for this table is (**billing_cycle**, **account_id**, **subscription_type**, **commodity_code**, **product_code**, **product_type**, **pip_code**, **record_id**).
+The composite primary key for this table is (**billing_cycle**, **billing_date**, **account_id**, **subscription_type**, **commodity_code**, **product_code**, **product_type**, **pip_code**, **record_id**, **instance_id**).
 
 ## Columns
 
@@ -15,7 +15,7 @@ The composite primary key for this table is (**billing_cycle**, **account_id**, 
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |billing_cycle (PK)|String|
-|billing_date|String|
+|billing_date (PK)|String|
 |account_id (PK)|String|
 |account_name|String|
 |product_name|String|
@@ -45,5 +45,5 @@ The composite primary key for this table is (**billing_cycle**, **account_id**, 
 |owner_id|String|
 |record_id (PK)|String|
 |resource_group|String|
-|instance_id|String|
+|instance_id (PK)|String|
 |cash_amount|Float|
