@@ -113,7 +113,7 @@
   "plugins/source/facebookmarketing+FILLER": "0.0.0",
   "plugins/source/googleanalytics": "1.0.3",
   "plugins/source/googleanalytics+FILLER": "0.0.0",
-  "plugins/source/mysql": "1.0.2",
+  "plugins/source/mysql": "1.0.3",
   "plugins/source/mysql+FILLER": "0.0.0",
   "plugins/destination/gremlin": "1.0.2",
   "plugins/destination/gremlin+FILLER": "0.0.0",
