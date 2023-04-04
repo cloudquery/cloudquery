@@ -23,6 +23,7 @@ This table depends on [gcp_bigquery_datasets](gcp_bigquery_datasets).
 |clustering|JSON|
 |creation_time|Int|
 |default_collation|String|
+|default_rounding_mode|String|
 |description|String|
 |encryption_configuration|JSON|
 |etag|String|
