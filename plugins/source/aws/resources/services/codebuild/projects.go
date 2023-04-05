@@ -3,7 +3,6 @@ package codebuild
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -43,24 +42,20 @@ func fetchCodebuildProjects(ctx context.Context, meta schema.ClientMeta, parent 
 	c := meta.(*client.Client)
 	svc := c.Services().Codebuild
 	config := codebuild.ListProjectsInput{}
-	for {
-		response, err := svc.ListProjects(ctx, &config)
+	paginator := codebuild.NewListProjectsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		if len(response.Projects) == 0 {
-			break
+		if len(page.Projects) == 0 {
+			continue
 		}
-		projectsOutput, err := svc.BatchGetProjects(ctx, &codebuild.BatchGetProjectsInput{Names: response.Projects})
+		projectsOutput, err := svc.BatchGetProjects(ctx, &codebuild.BatchGetProjectsInput{Names: page.Projects})
 		if err != nil {
 			return err
 		}
-
 		res <- projectsOutput.Projects
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
 	}
 	return nil
 }

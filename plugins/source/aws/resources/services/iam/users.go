@@ -21,20 +21,15 @@ func Users() *schema.Table {
 		Transform:           transformers.TransformWithStruct(&types.User{}),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Arn"),
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UserId"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
 			},
-			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,

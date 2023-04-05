@@ -4,7 +4,7 @@ This table shows data for Snyk Projects.
 
 https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Project
 
-The primary key for this table is **id**.
+The composite primary key for this table is (**organization_id**, **id**).
 
 ## Columns
 
@@ -14,7 +14,7 @@ The primary key for this table is **id**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|organization_id|String|
+|organization_id (PK)|String|
 |id (PK)|String|
 |name|String|
 |origin|String|

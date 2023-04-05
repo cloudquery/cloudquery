@@ -189,15 +189,15 @@ func Test_getChanges(t *testing.T) {
 			wantChanges: []change{
 				{
 					Text:     "Table `gcp_resourcemanager_projects`: primary key constraint added to column `name`",
-					Breaking: false,
+					Breaking: true,
 				},
 				{
 					Text:     "Table `gcp_resourcemanager_projects`: primary key constraint added to column `project_id`",
-					Breaking: false,
+					Breaking: true,
 				},
 				{
 					Text:     "Table `gcp_resourcemanager_projects`: primary key constraint removed from column `_cq_id`",
-					Breaking: false,
+					Breaking: true,
 				},
 			},
 		},
@@ -211,15 +211,29 @@ func Test_getChanges(t *testing.T) {
 				},
 				{
 					Text:     "Table `aws_ses_configuration_sets`: primary key constraint removed from column `account_id`",
-					Breaking: false,
+					Breaking: true,
 				},
 				{
 					Text:     "Table `aws_ses_configuration_sets`: primary key constraint removed from column `name`",
-					Breaking: false,
+					Breaking: true,
 				},
 				{
 					Text:     "Table `aws_ses_configuration_sets`: primary key constraint removed from column `region`",
-					Breaking: false,
+					Breaking: true,
+				},
+			},
+		},
+		{
+			name:         "Should not report PK order change if they were other PK changes",
+			diffDataFile: "testdata/pr_9677_diff.txt",
+			wantChanges: []change{
+				{
+					Text:     "Table `aws_iam_users`: column `id` removed from table",
+					Breaking: true,
+				},
+				{
+					Text:     "Table `aws_iam_users`: primary key constraint added to column `arn`",
+					Breaking: true,
 				},
 			},
 		},
