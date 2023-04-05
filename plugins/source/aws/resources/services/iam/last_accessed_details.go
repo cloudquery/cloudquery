@@ -25,9 +25,17 @@ func userLastAccessedDetails() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
 		Resolver:    fetchUserLastAccessedDetails,
-		Transform:   transformers.TransformWithStruct(&LastAccessed{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
+		Transform:   transformers.TransformWithStruct(&LastAccessed{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithPrimaryKeys("ServiceNamespace"), transformers.WithSkipFields("Arn")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
+			{
+				Name:     "user_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
 		},
 	}
 }
@@ -38,9 +46,17 @@ func roleLastAccessedDetails() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
 		Resolver:    fetchRoleLastAccessedDetails,
-		Transform:   transformers.TransformWithStruct(&LastAccessed{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
+		Transform:   transformers.TransformWithStruct(&LastAccessed{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithPrimaryKeys("ServiceNamespace"), transformers.WithSkipFields("Arn")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
+			{
+				Name:     "role_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
 		},
 	}
 }
@@ -51,9 +67,17 @@ func groupLastAccessedDetails() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html`,
 		Resolver:    fetchGroupLastAccessedDetails,
-		Transform:   transformers.TransformWithStruct(&LastAccessed{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithPrimaryKeys("Arn", "ServiceNamespace")),
+		Transform:   transformers.TransformWithStruct(&LastAccessed{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithPrimaryKeys("ServiceNamespace"), transformers.WithSkipFields("Arn")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
+			{
+				Name:     "group_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
 		},
 	}
 }
