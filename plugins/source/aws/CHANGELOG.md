@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [16.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v16.0.0...plugins-source-aws-v16.0.1) (2023-04-05)
+
+
+### Bug Fixes
+
+* **aws:** Properly Handle Pagination for Guardduty Findings ([#9746](https://github.com/cloudquery/cloudquery/issues/9746)) ([b9249e0](https://github.com/cloudquery/cloudquery/commit/b9249e0b960b3b3776d83e9bdb1a283f548817a4))
+
 ## [16.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v15.7.0...plugins-source-aws-v16.0.0) (2023-04-05)
 
 
