@@ -18,10 +18,12 @@ jobs:
       - uses: actions/github-script@v6
         env:
           FILES: ${{ steps.changed-files.outputs.all }}
+          CAN_SKIP: validate-release
         with:
           script: |
             const fs = require("fs");
             const files = process.env.FILES.split(' ')
+            const can_skip = process.env.CAN_SKIP.split(' ')
             console.log(files)
             if (files.length >= 300) {
               // This is a GitHub limitation https://github.com/cloudquery/cloudquery/issues/2688
@@ -81,7 +83,7 @@ jobs:
               const runs = checkRuns.map(({ name, conclusion }) => ({ name, conclusion }))
               console.log(`Got the following check runs: ${JSON.stringify(runs)}`)
               const matchingRuns = runs.filter(({ name }) => actions.includes(name))
-              const failedRuns = matchingRuns.filter(({ conclusion }) => conclusion !== 'success')
+              const failedRuns = matchingRuns.filter(({ name, conclusion }) => !(conclusion == 'success' || (can_skip.includes(name) && conclusion == 'skipped')))
               if (failedRuns.length > 0) {
                 throw new Error(`The following required workflows failed: ${failedRuns.map(({ name }) => name).join(", ")}`)
               }
