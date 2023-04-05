@@ -45,3 +45,4 @@ This table depends on [gcp_aiplatform_job_locations](gcp_aiplatform_job_location
 |update_time|Timestamp|
 |labels|JSON|
 |encryption_spec|JSON|
+|disable_container_logging|Bool|

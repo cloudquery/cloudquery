@@ -3,49 +3,49 @@ module github.com/cloudquery/plugins/source/gcp
 go 1.19
 
 require (
-	cloud.google.com/go/aiplatform v1.35.0
+	cloud.google.com/go/aiplatform v1.36.1
 	cloud.google.com/go/apigateway v1.5.0
-	cloud.google.com/go/apikeys v0.5.0
-	cloud.google.com/go/appengine v1.6.0
-	cloud.google.com/go/artifactregistry v1.11.1
+	cloud.google.com/go/apikeys v0.6.0
+	cloud.google.com/go/appengine v1.7.0
+	cloud.google.com/go/artifactregistry v1.12.0
 	cloud.google.com/go/baremetalsolution v0.5.0
 	cloud.google.com/go/batch v0.7.0
-	cloud.google.com/go/beyondcorp v0.4.0
+	cloud.google.com/go/beyondcorp v0.5.0
 	cloud.google.com/go/bigtable v1.18.1
-	cloud.google.com/go/billing v1.12.0
+	cloud.google.com/go/billing v1.13.0
 	cloud.google.com/go/binaryauthorization v1.5.0
 	cloud.google.com/go/certificatemanager v1.6.0
-	cloud.google.com/go/compute v1.18.0
-	cloud.google.com/go/container v1.13.1
-	cloud.google.com/go/containeranalysis v0.7.0
-	cloud.google.com/go/deploy v1.6.0
+	cloud.google.com/go/compute v1.19.0
+	cloud.google.com/go/container v1.14.0
+	cloud.google.com/go/containeranalysis v0.9.0
+	cloud.google.com/go/deploy v1.8.0
 	cloud.google.com/go/domains v0.8.0
 	cloud.google.com/go/errorreporting v0.3.0
-	cloud.google.com/go/functions v1.10.0
-	cloud.google.com/go/iam v0.12.0
-	cloud.google.com/go/iot v1.5.0
-	cloud.google.com/go/kms v1.8.0
+	cloud.google.com/go/functions v1.12.0
+	cloud.google.com/go/iam v0.13.0
+	cloud.google.com/go/iot v1.6.0
+	cloud.google.com/go/kms v1.10.0
 	cloud.google.com/go/logging v1.7.0
 	cloud.google.com/go/longrunning v0.4.1
-	cloud.google.com/go/monitoring v1.12.0
+	cloud.google.com/go/monitoring v1.13.0
 	cloud.google.com/go/redis v1.11.0
-	cloud.google.com/go/resourcemanager v1.5.0
-	cloud.google.com/go/run v0.8.0
-	cloud.google.com/go/scheduler v1.8.0
+	cloud.google.com/go/resourcemanager v1.6.0
+	cloud.google.com/go/run v0.9.0
+	cloud.google.com/go/scheduler v1.9.0
 	cloud.google.com/go/secretmanager v1.10.0
-	cloud.google.com/go/securitycenter v1.18.1
-	cloud.google.com/go/serviceusage v1.5.0
+	cloud.google.com/go/securitycenter v1.19.0
+	cloud.google.com/go/serviceusage v1.6.0
 	cloud.google.com/go/storage v1.28.1
-	cloud.google.com/go/translate v1.5.0
-	cloud.google.com/go/video v1.12.0
-	cloud.google.com/go/vision/v2 v2.6.0
-	cloud.google.com/go/vmmigration v1.5.0
+	cloud.google.com/go/translate v1.7.0
+	cloud.google.com/go/video v1.14.0
+	cloud.google.com/go/vision/v2 v2.7.0
+	cloud.google.com/go/vmmigration v1.6.0
 	cloud.google.com/go/vpcaccess v1.6.0
 	cloud.google.com/go/websecurityscanner v1.5.0
 	cloud.google.com/go/workflows v1.10.0
-	github.com/cloudquery/plugin-sdk v1.44.1
+	github.com/cloudquery/plugin-sdk v1.44.2
 	github.com/golang/mock v1.6.0
-	github.com/googleapis/gax-go/v2 v2.7.0
+	github.com/googleapis/gax-go/v2 v2.7.1
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3
 	github.com/iancoleman/strcase v0.2.0
@@ -56,10 +56,10 @@ require (
 	github.com/thoas/go-funk v0.9.3
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
 	golang.org/x/sync v0.1.0
-	google.golang.org/api v0.110.0
-	google.golang.org/genproto v0.0.0-20230227214838-9b19f0bdc514
-	google.golang.org/grpc v1.53.0
-	google.golang.org/protobuf v1.28.1
+	google.golang.org/api v0.114.0
+	google.golang.org/genproto v0.0.0-20230331144136-dcfb400f0633
+	google.golang.org/grpc v1.54.0
+	google.golang.org/protobuf v1.30.0
 )
 
 require (
@@ -73,7 +73,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/envoyproxy/go-control-plane v0.10.3 // indirect
 	github.com/envoyproxy/protoc-gen-validate v0.9.1 // indirect
-	github.com/getsentry/sentry-go v0.18.0 // indirect
+	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
@@ -87,12 +87,12 @@ require (
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/mod v0.7.0 // indirect
-	golang.org/x/net v0.7.0 // indirect; indirect // indirect
-	golang.org/x/oauth2 v0.5.0 // indirect
+	golang.org/x/mod v0.8.0 // indirect
+	golang.org/x/net v0.8.0 // indirect; indirect // indirect
+	golang.org/x/oauth2 v0.6.0 // indirect
 	golang.org/x/sys v0.6.0 // indirect
-	golang.org/x/text v0.7.0 // indirect
-	golang.org/x/tools v0.3.0 // indirect
+	golang.org/x/text v0.8.0 // indirect
+	golang.org/x/tools v0.6.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

@@ -16,7 +16,7 @@ func eventBusTargets() *schema.Table {
 		Name:        "aws_eventbridge_event_bus_targets",
 		Description: `https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Target.html`,
 		Resolver:    fetchEventBusTargets,
-		Transform:   transformers.TransformWithStruct(&types.Target{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.Target{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -35,11 +35,6 @@ func eventBusTargets() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveEventBusTargetTags,
 			},
 		},
 	}
@@ -67,9 +62,4 @@ func fetchEventBusTargets(ctx context.Context, meta schema.ClientMeta, parent *s
 		input.NextToken = response.NextToken
 	}
 	return nil
-}
-
-func resolveEventBusTargetTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	targetArn := resource.Item.(types.Target).Arn
-	return resolveTags(ctx, meta, resource, c, *targetArn)
 }
