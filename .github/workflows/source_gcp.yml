@@ -5,33 +5,18 @@ on:
     paths:
       - "plugins/source/gcp/**"
       - ".github/workflows/source_gcp.yml"
+      - ".github/workflows/resolve_runner.yml"
   push:
     branches:
       - main
     paths:
       - "plugins/source/gcp/**"
       - ".github/workflows/source_gcp.yml"
+      - ".github/workflows/resolve_runner.yml"
 
 jobs:
   resolve-runner:
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    outputs:
-      runner: ${{ steps.resolve.outputs.runner }}
-    steps:
-      - name: Check if should use large runner
-        id: large-runner
-        # We want to speed runs on the main branch which prime the cache
-        # We allow large runners only in this case to prevent forks from abusing them (it's enforced via runner groups access rules)
-        # IF YOU WANT TO USE A LARGE RUNNER YOU NEED TO ADD THE WORKFLOW TO THE `CloudQuery releases` GROUP IN https://github.com/organizations/cloudquery/settings/actions/runner-groups
-        if: github.event_name == 'push'
-        run: |
-          echo "runner=cloudquery-release-runner" >> $GITHUB_OUTPUT
-      - name: Resolve runner
-        id: resolve
-        run: |
-          RUNNER=${{ steps.large-runner.outputs.runner }}
-          echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
+    uses: ./.github/workflows/resolve_runner.yml
   plugins-source-gcp:
     timeout-minutes: 30
     name: "plugins/source/gcp"
