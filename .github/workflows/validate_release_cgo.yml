@@ -17,7 +17,6 @@ jobs:
   validate-release:
     # this if check is left here as a precautionary measure, as the proper way to do it is in the caller workflow
     if:              startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-    name:            Validate release (with cgo enabled)
     timeout-minutes: 60
     runs-on:         ${{ inputs.runner }}
     container:
