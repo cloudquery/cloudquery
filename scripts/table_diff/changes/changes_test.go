@@ -224,7 +224,7 @@ func Test_getChanges(t *testing.T) {
 			},
 		},
 		{
-			name:         "Should mark PK order change as breaking",
+			name:         "Should not report PK order change if they were other PK changes",
 			diffDataFile: "testdata/pr_9677_diff.txt",
 			wantChanges: []change{
 				{
