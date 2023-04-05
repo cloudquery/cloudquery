@@ -19,21 +19,13 @@ func rolePolicies() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetRolePolicy.html`,
 		Resolver:            fetchIamRolePolicies,
 		PreResourceResolver: getRolePolicy,
-		Transform:           transformers.TransformWithStruct(&iam.GetRolePolicyOutput{}),
+		Transform:           transformers.TransformWithStruct(&iam.GetRolePolicyOutput{}, transformers.WithPrimaryKeys("PolicyName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "role_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "policy_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicyName"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
