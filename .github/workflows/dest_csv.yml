@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/destination/csv/**"
       - ".github/workflows/dest_csv.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/destination/csv/**"
       - ".github/workflows/dest_csv.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-destination-csv:

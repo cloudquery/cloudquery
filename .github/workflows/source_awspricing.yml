@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/awspricing/**"
       - ".github/workflows/source_awspricing.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/awspricing/**"
       - ".github/workflows/source_awspricing.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-awspricing:

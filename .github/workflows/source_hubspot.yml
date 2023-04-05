@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/hubspot/**"
       - ".github/workflows/source_hubspot.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/hubspot/**"
       - ".github/workflows/source_hubspot.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-hubspot:

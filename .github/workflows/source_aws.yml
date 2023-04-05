@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/aws/**"
       - ".github/workflows/source_aws.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/aws/**"
       - ".github/workflows/source_aws.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   resolve-runner:

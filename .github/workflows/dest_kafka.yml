@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/destination/kafka/**"
       - ".github/workflows/dest_kafka.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/destination/kafka/**"
       - ".github/workflows/dest_kafka.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-destination-kafka:

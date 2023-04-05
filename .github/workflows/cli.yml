@@ -5,12 +5,14 @@ on:
     paths:
       - "cli/**"
       - ".github/workflows/cli.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "cli/**"
       - ".github/workflows/cli.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   resolve-runner:

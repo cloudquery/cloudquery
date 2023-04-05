@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/destination/gcs/**"
       - ".github/workflows/dest_gcs.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/destination/gcs/**"
       - ".github/workflows/dest_gcs.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-destination-gcs:

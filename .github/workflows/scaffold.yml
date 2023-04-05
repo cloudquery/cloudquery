@@ -5,12 +5,14 @@ on:
     paths:
       - "scaffold/**"
       - ".github/workflows/scaffold.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "scaffold/**"
       - ".github/workflows/scaffold.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   scaffold:

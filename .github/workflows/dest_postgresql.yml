@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/destination/postgresql/**"
       - ".github/workflows/dest_postgresql.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/destination/postgresql/**"
       - ".github/workflows/dest_postgresql.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-destination-postgresql:

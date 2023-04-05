@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/digitalocean/**"
       - ".github/workflows/source_digitalocean.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/digitalocean/**"
       - ".github/workflows/source_digitalocean.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-digitalocean:

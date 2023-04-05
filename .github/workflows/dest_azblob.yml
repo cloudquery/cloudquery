@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/destination/azblob/**"
       - ".github/workflows/dest_azblob.yml"
+      - ".github/workflows/validate_release.yml"
   push:
     branches:
       - main
     paths:
       - "plugins/destination/azblob/**"
       - ".github/workflows/dest_azblob.yml"
+      - ".github/workflows/validate_release.yml"
 
 jobs:
   plugins-destination-azblob:

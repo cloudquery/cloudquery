@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/destination/elasticsearch/**"
       - ".github/workflows/dest_elasticsearch.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/destination/elasticsearch/**"
       - ".github/workflows/dest_elasticsearch.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-destination-elasticsearch:

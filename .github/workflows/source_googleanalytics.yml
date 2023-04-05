@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/googleanalytics/**"
       - ".github/workflows/source_googleanalytics.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/googleanalytics/**"
       - ".github/workflows/source_googleanalytics.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-googleanalytics:

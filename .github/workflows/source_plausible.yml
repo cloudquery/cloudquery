@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/plausible/**"
       - ".github/workflows/source_plausible.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/plausible/**"
       - ".github/workflows/source_plausible.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-plausible:

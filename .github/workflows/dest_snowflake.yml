@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/destination/snowflake/**"
       - ".github/workflows/dest_snowflake.yml"
+      - .github/workflows/validate_release_cgo.yml
   push:
     branches:
       - main
     paths:
       - "plugins/destination/snowflake/**"
       - ".github/workflows/dest_snowflake.yml"
+      - .github/workflows/validate_release_cgo.yml
 
 jobs:
   plugins-destination-snowflake:

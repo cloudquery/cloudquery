@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/hackernews/**"
       - ".github/workflows/source_hackernews.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/hackernews/**"
       - ".github/workflows/source_hackernews.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-hackernews:

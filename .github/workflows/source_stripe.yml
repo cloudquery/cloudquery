@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/stripe/**"
       - ".github/workflows/source_stripe.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/stripe/**"
       - ".github/workflows/source_stripe.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-stripe:

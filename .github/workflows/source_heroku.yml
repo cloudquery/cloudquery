@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/heroku/**"
       - ".github/workflows/source_heroku.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/heroku/**"
       - ".github/workflows/source_heroku.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-heroku:

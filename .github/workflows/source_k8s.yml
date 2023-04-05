@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/k8s/**"
       - ".github/workflows/source_k8s.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/k8s/**"
       - ".github/workflows/source_k8s.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   resolve-runner:

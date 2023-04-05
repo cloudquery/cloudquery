@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/vercel/**"
       - ".github/workflows/source_vercel.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/vercel/**"
       - ".github/workflows/source_vercel.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-vercel:

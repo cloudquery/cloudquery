@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/destination/gremlin/**"
       - ".github/workflows/dest_gremlin.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/destination/gremlin/**"
       - ".github/workflows/dest_gremlin.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-destination-gremlin:

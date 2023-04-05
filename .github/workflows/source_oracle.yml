@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/oracle/**"
       - ".github/workflows/source_oracle.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/oracle/**"
       - ".github/workflows/source_oracle.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-oracle:

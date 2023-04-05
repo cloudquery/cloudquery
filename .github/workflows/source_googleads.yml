@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/googleads/**"
       - ".github/workflows/source_googleads.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/googleads/**"
       - ".github/workflows/source_googleads.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-googleads:

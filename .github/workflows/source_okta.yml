@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/okta/**"
       - ".github/workflows/source_okta.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/okta/**"
       - ".github/workflows/source_okta.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-okta:

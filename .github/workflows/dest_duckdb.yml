@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/destination/duckdb/**"
       - ".github/workflows/dest_duckdb.yml"
+      - .github/workflows/validate_release_cgo.yml
   push:
     branches:
       - main
     paths:
       - "plugins/destination/duckdb/**"
       - ".github/workflows/dest_duckdb.yml"
+      - .github/workflows/validate_release_cgo.yml
 
 jobs:
   plugins-destination-duckdb:

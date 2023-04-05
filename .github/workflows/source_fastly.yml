@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/fastly/**"
       - ".github/workflows/source_fastly.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/fastly/**"
       - ".github/workflows/source_fastly.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-fastly:

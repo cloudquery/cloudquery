@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/mysql/**"
       - ".github/workflows/source_mysql.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/mysql/**"
       - ".github/workflows/source_mysql.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-mysql:

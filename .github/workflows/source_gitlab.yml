@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/gitlab/**"
       - ".github/workflows/source_gitlab.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/gitlab/**"
       - ".github/workflows/source_gitlab.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-github:

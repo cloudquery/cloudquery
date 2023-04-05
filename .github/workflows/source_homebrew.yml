@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/homebrew/**"
       - ".github/workflows/source_homebrew.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/homebrew/**"
       - ".github/workflows/source_homebrew.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-homebrew:

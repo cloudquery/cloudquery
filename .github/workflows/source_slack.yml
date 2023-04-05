@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/slack/**"
       - ".github/workflows/source_slack.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/slack/**"
       - ".github/workflows/source_slack.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-slack:

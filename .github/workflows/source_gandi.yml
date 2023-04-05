@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/gandi/**"
       - ".github/workflows/source_gandi.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/gandi/**"
       - ".github/workflows/source_gandi.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-gandi:

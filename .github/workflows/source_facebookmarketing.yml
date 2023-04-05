@@ -5,12 +5,14 @@ on:
     paths:
       - "plugins/source/facebookmarketing/**"
       - ".github/workflows/source_facebookmarketing.yml"
+      - .github/workflows/validate_release.yml
   push:
     branches:
       - main
     paths:
       - "plugins/source/facebookmarketing/**"
       - ".github/workflows/source_facebookmarketing.yml"
+      - .github/workflows/validate_release.yml
 
 jobs:
   plugins-source-facebookmarketing:
