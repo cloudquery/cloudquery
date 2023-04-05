@@ -1,0 +1,68 @@
+name: Validate release
+
+on:
+  workflow_call:
+    inputs:
+      path:
+        description: 'Go mod directory (e.g. "plugins/source/aws", "plugins/destination/csv", "cli")'
+        type:        string
+        required:    true
+      runner:
+        description: 'Runner to be used (default: "ubuntu-latest")'
+        type:        string
+        required:    false
+        default:     'ubuntu-latest'
+      CGO_ENABLED:
+        description: 'CGO_ENABLED value to be used (default: 0)'
+        type:        number
+        required:    false
+        default:     0
+
+jobs:
+  validate-release:
+    # this if check is here as we check for 'validate-release / validate-release' run
+    if:              startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+    timeout-minutes: 60
+    runs-on:         ${{ inputs.runner }}
+    env:
+      CGO_ENABLED: 0
+    steps:
+    - id:  dash-path
+      run: |
+           echo "dashed=$(echo ${{ inputs.path }} | tr '/' '-')" >> $GITHUB_OUTPUT
+    - name: Checkout
+      uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      with:
+        path:         |
+                      ~/.cache/go-build
+                      ~/go/pkg/mod
+        key:          ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles(format('{0}/go.sum', inputs.path)) }}
+        # actually, this value is never ever saved, but left for consistency (renaming cache keys os out of scope)
+        restore-keys: |
+                      ${{ runner.os }}-go-1.19.5-release-cache-${{ steps.dash-path.outputs.dashed }}
+    - name: Set up Go
+      id:   set-up-go
+      uses: actions/setup-go@v3
+      with:
+        go-version-file:       ${{ inputs.path }}/go.mod
+        cache:                 true
+        cache-dependency-path: ${{ inputs.path }}/go.sum
+    - name: Install GoReleaser
+      uses: goreleaser/goreleaser-action@v3
+      with:
+        distribution: goreleaser-pro
+        version:      latest
+        install-only: true
+    - name: Run GoReleaser Dry-Run
+      run:  >
+            goreleaser release
+            --timeout 50m
+            --snapshot
+            --clean
+            --skip-validate
+            --skip-publish
+            --skip-sign
+            -f ${{ inputs.path }}/.goreleaser.yaml
+      env:
+        GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
