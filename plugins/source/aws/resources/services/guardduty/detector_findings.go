@@ -44,28 +44,25 @@ func fetchDetectorFindings(ctx context.Context, meta schema.ClientMeta, parent *
 	config := &guardduty.ListFindingsInput{
 		DetectorId: &detector.Id,
 	}
-	for {
-		output, err := svc.ListFindings(ctx, config)
+	paginator := guardduty.NewListFindingsPaginator(svc, config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		if len(output.FindingIds) == 0 {
-			return nil
+		if len(page.FindingIds) == 0 {
+			continue
 		}
 
 		f, err := svc.GetFindings(ctx, &guardduty.GetFindingsInput{
 			DetectorId: &detector.Id,
-			FindingIds: output.FindingIds,
+			FindingIds: page.FindingIds,
 		})
 		if err != nil {
 			return err
 		}
 
 		res <- f.Findings
-
-		if output.NextToken == nil {
-			return nil
-		}
-		config.NextToken = output.NextToken
 	}
+	return nil
 }
