@@ -3,8 +3,9 @@
 This table shows data for Amazon Elastic Compute Cloud (EC2) Subnets.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Subnet.html
+The 'request_account_id' and 'request_region' columns are added to show from where the request was made.
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**request_account_id**, **request_region**, **arn**).
 
 ## Columns
 
@@ -14,8 +15,8 @@ The primary key for this table is **arn**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
+|request_account_id (PK)|String|
+|request_region (PK)|String|
 |arn (PK)|String|
 |tags|JSON|
 |assign_ipv6_address_on_creation|Bool|
