@@ -18,16 +18,19 @@ func sshPublicKeys() *schema.Table {
 		Resolver:    fetchIamSshPublicKeys,
 		Transform:   transformers.TransformWithStruct(&types.SSHPublicKeyMetadata{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "user_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "user_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
+				Resolver: schema.ParentColumnResolver("user_id"),
 			},
 			{
 				Name:     "ssh_public_key_id",

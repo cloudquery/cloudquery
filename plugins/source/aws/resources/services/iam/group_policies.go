@@ -19,18 +19,16 @@ func groupPolicies() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetGroupPolicy.html`,
 		Resolver:            fetchIamGroupPolicies,
 		PreResourceResolver: getGroupPolicy,
-		Transform:           transformers.TransformWithStruct(&iam.GetGroupPolicyOutput{}),
+		Transform:           transformers.TransformWithStruct(&iam.GetGroupPolicyOutput{}, transformers.WithPrimaryKeys("PolicyName")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "group_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
-			},
-			{
-				Name:     "group_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "policy_document",
