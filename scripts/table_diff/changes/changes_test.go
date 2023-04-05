@@ -224,6 +224,20 @@ func Test_getChanges(t *testing.T) {
 			},
 		},
 		{
+			name:         "Should not report PK order change if they were other PK changes",
+			diffDataFile: "testdata/pr_9677_diff.txt",
+			wantChanges: []change{
+				{
+					Text:     "Table `aws_iam_users`: column `id` removed from table",
+					Breaking: true,
+				},
+				{
+					Text:     "Table `aws_iam_users`: primary key constraint added to column `arn`",
+					Breaking: true,
+				},
+			},
+		},
+		{
 			name:         "Should mark PK order change as breaking",
 			diffDataFile: "testdata/pr_6012_diff.txt",
 			wantChanges: []change{
