@@ -18,13 +18,15 @@ jobs:
       - uses: actions/github-script@v6
         env:
           FILES: ${{ steps.changed-files.outputs.all }}
-          CAN_SKIP: validate-release
+          CAN_SKIP: |
+            validate-release
         with:
           script: |
             const fs = require("fs");
             const files = process.env.FILES.split(' ')
-            const can_skip = process.env.CAN_SKIP.split(' ')
             console.log(files)
+            const can_skip = process.env.CAN_SKIP.split(' ')
+            console.log(can_skip)
             if (files.length >= 300) {
               // This is a GitHub limitation https://github.com/cloudquery/cloudquery/issues/2688
               throw new Error('Too many files changed. Skipping check. Please split your PR into multiple ones.')
