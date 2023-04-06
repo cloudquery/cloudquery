@@ -34,7 +34,6 @@ func ByoipCidrs() *schema.Table {
 }
 
 func fetchEc2ByoipCidrs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-
 	c := meta.(*client.Client)
 	// DescribeByoipCidrs does not work in next regions, so we ignore them.
 	if _, ok := map[string]struct{}{
