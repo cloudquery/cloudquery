@@ -71,7 +71,7 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 
 		res <- describeTasks.Tasks
 
-		if listTasks.NextToken == nil {
+		if aws.ToString(listTasks.NextToken) == "" {
 			break
 		}
 		config.NextToken = listTasks.NextToken

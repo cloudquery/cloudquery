@@ -3,6 +3,7 @@ package elasticsearch
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -49,7 +50,7 @@ func fetchElasticsearchVpcEndpoints(ctx context.Context, meta schema.ClientMeta,
 			vpcEndpointIDs = append(vpcEndpointIDs, *summary.VpcEndpointId)
 		}
 
-		if out.NextToken == nil {
+		if aws.ToString(out.NextToken) == "" {
 			break
 		}
 

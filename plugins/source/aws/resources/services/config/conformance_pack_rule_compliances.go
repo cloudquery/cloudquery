@@ -3,6 +3,7 @@ package config
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -66,13 +67,13 @@ func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.
 						Annotation:                 conformancePackComplianceDetail.Annotation,
 					}
 				}
-				if output.NextToken == nil {
+				if aws.ToString(output.NextToken) == "" {
 					break
 				}
 				detailParams.NextToken = output.NextToken
 			}
 		}
-		if resp.NextToken == nil {
+		if aws.ToString(resp.NextToken) == "" {
 			break
 		}
 		params.NextToken = resp.NextToken

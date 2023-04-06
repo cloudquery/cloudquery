@@ -3,6 +3,7 @@ package ecs
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -61,7 +62,7 @@ func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMe
 
 		res <- describeContainerInstances.ContainerInstances
 
-		if listContainerInstances.NextToken == nil {
+		if aws.ToString(listContainerInstances.NextToken) == "" {
 			break
 		}
 		config.NextToken = listContainerInstances.NextToken
