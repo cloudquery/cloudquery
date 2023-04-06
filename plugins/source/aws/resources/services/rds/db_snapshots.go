@@ -3,7 +3,6 @@ package rds
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -48,16 +47,13 @@ func fetchRdsDbSnapshots(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 	svc := c.Services().Rds
 	var input rds.DescribeDBSnapshotsInput
-	for {
-		output, err := svc.DescribeDBSnapshots(ctx, &input)
+	paginator := rds.NewDescribeDBSnapshotsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return nil
 		}
-		res <- output.DBSnapshots
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		input.Marker = output.Marker
+		res <- page.DBSnapshots
 	}
 	return nil
 }

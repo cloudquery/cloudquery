@@ -47,16 +47,13 @@ func fetchEventSubscriptions(ctx context.Context, meta schema.ClientMeta, parent
 	svc := cl.Services().Redshift
 	var params redshift.DescribeEventSubscriptionsInput
 	params.MaxRecords = aws.Int32(100)
-	for {
-		result, err := svc.DescribeEventSubscriptions(ctx, &params)
+	paginator := redshift.NewDescribeEventSubscriptionsPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- result.EventSubscriptionsList
-		if aws.ToString(result.Marker) == "" {
-			break
-		}
-		params.Marker = result.Marker
+		res <- page.EventSubscriptionsList
 	}
 	return nil
 }

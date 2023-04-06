@@ -81,30 +81,25 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 		}
 		return nil
 	}
-
-	for {
-		response, err := svc.ListHostedZones(ctx, &config)
+	paginator := route53.NewListHostedZonesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
-		for i := 0; i < len(response.HostedZones); i += 10 {
+		for i := 0; i < len(page.HostedZones); i += 10 {
 			end := i + 10
 
-			if end > len(response.HostedZones) {
-				end = len(response.HostedZones)
+			if end > len(page.HostedZones) {
+				end = len(page.HostedZones)
 			}
-			zones := response.HostedZones[i:end]
+			zones := page.HostedZones[i:end]
 			err := processHostedZonesBundle(zones)
 			if err != nil {
 				return err
 			}
 		}
-
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
 	}
 	return nil
 }
