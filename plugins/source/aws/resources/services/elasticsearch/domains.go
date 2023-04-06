@@ -95,8 +95,8 @@ func resolveAuthorizedPrincipals(ctx context.Context, meta schema.ClientMeta, re
 	input := &elasticsearchservice.ListVpcEndpointAccessInput{
 		DomainName: resource.Item.(*types.ElasticsearchDomainStatus).DomainName,
 	}
-
 	var principals []types.AuthorizedPrincipal
+
 	for {
 		out, err := svc.ListVpcEndpointAccess(ctx, input)
 		if err != nil {

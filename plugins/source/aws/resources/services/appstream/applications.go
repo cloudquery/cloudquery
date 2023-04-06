@@ -41,6 +41,7 @@ func fetchAppstreamApplications(ctx context.Context, meta schema.ClientMeta, par
 	var input appstream.DescribeApplicationsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
+
 	for {
 		response, err := svc.DescribeApplications(ctx, &input)
 		if err != nil {

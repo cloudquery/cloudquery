@@ -39,20 +39,16 @@ func fetchLambdaFunctionEventInvokeConfigs(ctx context.Context, meta schema.Clie
 	config := lambda.ListFunctionEventInvokeConfigsInput{
 		FunctionName: p.Configuration.FunctionName,
 	}
-
-	for {
-		output, err := svc.ListFunctionEventInvokeConfigs(ctx, &config)
+	paginator := lambda.NewListFunctionEventInvokeConfigsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err
 		}
-		res <- output.FunctionEventInvokeConfigs
-		if output.NextMarker == nil {
-			break
-		}
-		config.Marker = output.NextMarker
+		res <- page.FunctionEventInvokeConfigs
 	}
 	return nil
 }

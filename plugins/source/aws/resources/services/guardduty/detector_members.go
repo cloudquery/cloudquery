@@ -38,15 +38,13 @@ func fetchDetectorMembers(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	svc := c.Services().Guardduty
 	config := &guardduty.ListMembersInput{DetectorId: aws.String(detector.Id)}
-	for {
-		output, err := svc.ListMembers(ctx, config)
+	paginator := guardduty.NewListMembersPaginator(svc, config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.Members
-		if aws.ToString(output.NextToken) == "" {
-			return nil
-		}
-		config.NextToken = output.NextToken
+		res <- page.Members
 	}
+	return nil
 }

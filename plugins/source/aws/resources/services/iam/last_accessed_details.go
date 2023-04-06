@@ -132,7 +132,6 @@ func fetchLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, arn *
 		JobId:    jobId,
 		MaxItems: aws.Int32(1000),
 	}
-
 	for {
 		details, err := svc.GetServiceLastAccessedDetails(ctx, &config)
 		if err != nil {

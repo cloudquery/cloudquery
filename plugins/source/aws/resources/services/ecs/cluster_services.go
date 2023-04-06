@@ -3,7 +3,6 @@ package ecs
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -48,17 +47,18 @@ func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent
 	config := ecs.ListServicesInput{
 		Cluster: cluster.ClusterArn,
 	}
-	for {
-		listServicesOutput, err := svc.ListServices(ctx, &config)
+	paginator := ecs.NewListServicesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		if len(listServicesOutput.ServiceArns) == 0 {
-			return nil
+		if len(page.ServiceArns) == 0 {
+			continue
 		}
 		describeServicesInput := ecs.DescribeServicesInput{
 			Cluster:  cluster.ClusterArn,
-			Services: listServicesOutput.ServiceArns,
+			Services: page.ServiceArns,
 			Include:  []types.ServiceField{types.ServiceFieldTags},
 		}
 		describeServicesOutput, err := svc.DescribeServices(ctx, &describeServicesInput)
@@ -67,11 +67,6 @@ func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent
 		}
 
 		res <- describeServicesOutput.Services
-
-		if aws.ToString(listServicesOutput.NextToken) == "" {
-			break
-		}
-		config.NextToken = listServicesOutput.NextToken
 	}
 	return nil
 }
