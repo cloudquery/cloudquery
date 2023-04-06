@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/aws/smithy-go"
@@ -55,7 +56,7 @@ func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, pa
 			return err
 		}
 		res <- resp.ConformancePackDetails
-		if resp.NextToken == nil {
+		if aws.ToString(resp.NextToken) == "" {
 			break
 		}
 		config.NextToken = resp.NextToken

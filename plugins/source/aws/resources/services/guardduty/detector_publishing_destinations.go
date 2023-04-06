@@ -44,7 +44,7 @@ func fetchGuarddutyDetectorPublishingDestinations(ctx context.Context, meta sche
 			return err
 		}
 		res <- output.Destinations
-		if output.NextToken == nil {
+		if aws.ToString(output.NextToken) == "" {
 			return nil
 		}
 		config.NextToken = output.NextToken

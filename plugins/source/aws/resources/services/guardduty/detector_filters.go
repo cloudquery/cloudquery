@@ -3,6 +3,7 @@ package guardduty
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
@@ -47,7 +48,7 @@ func fetchDetectorFilters(ctx context.Context, meta schema.ClientMeta, parent *s
 		}
 		res <- output.FilterNames
 
-		if output.NextToken == nil {
+		if aws.ToString(output.NextToken) == "" {
 			return nil
 		}
 		config.NextToken = output.NextToken

@@ -44,7 +44,7 @@ func fetchDetectorThreatIntelSets(ctx context.Context, meta schema.ClientMeta, p
 			return err
 		}
 		res <- output.ThreatIntelSetIds
-		if output.NextToken == nil {
+		if aws.ToString(output.NextToken) == "" {
 			return nil
 		}
 		config.NextToken = output.NextToken

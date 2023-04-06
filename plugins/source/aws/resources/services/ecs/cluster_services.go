@@ -3,6 +3,7 @@ package ecs
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -67,7 +68,7 @@ func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent
 
 		res <- describeServicesOutput.Services
 
-		if listServicesOutput.NextToken == nil {
+		if aws.ToString(listServicesOutput.NextToken) == "" {
 			break
 		}
 		config.NextToken = listServicesOutput.NextToken

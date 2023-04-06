@@ -63,7 +63,7 @@ func fetchAppstreamStackUserAssociations(ctx context.Context, meta schema.Client
 			return err
 		}
 		res <- response.UserStackAssociations
-		if response.NextToken == nil {
+		if aws.ToString(response.NextToken) == "" {
 			break
 		}
 		input.NextToken = response.NextToken
