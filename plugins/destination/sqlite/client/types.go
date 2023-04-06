@@ -12,36 +12,10 @@ func (*Client) SchemaTypeToSqlite(t schema.ValueType) string {
 		return "integer"
 	case schema.TypeFloat:
 		return "real"
-	case schema.TypeUUID:
-		return "text"
-	case schema.TypeString:
-		return "text"
 	case schema.TypeByteArray:
 		return "blob"
-	case schema.TypeStringArray:
-		return "text"
-	case schema.TypeTimestamp:
-		return "timestamp"
-	case schema.TypeJSON:
-		return "text"
-	case schema.TypeUUIDArray:
-		return "text"
-	case schema.TypeCIDR:
-		return "text"
-	case schema.TypeCIDRArray:
-		return "text"
-	case schema.TypeMacAddr:
-		return "text"
-	case schema.TypeMacAddrArray:
-		return "text"
-	case schema.TypeInet:
-		return "text"
-	case schema.TypeInetArray:
-		return "text"
-	case schema.TypeIntArray:
-		return "text"
 	default:
-		panic("unknown type")
+		return "text"
 	}
 }
 

@@ -5,22 +5,32 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
+	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 )
 
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
+func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan arrow.Record) error {
 	var sql string
 	for r := range res {
-		table := tables.Get(r.TableName)
+		tableName, ok := r.Schema().Metadata().GetValue(schema.MetadataTableName)
+		if !ok {
+			return fmt.Errorf("failed to get table name from record metadata")
+		}
+		table := tables.Get(tableName)
 		if c.spec.WriteMode == specs.WriteModeAppend {
 			sql = c.insert(table)
 		} else {
 			sql = c.upsert(table)
 		}
-		if _, err := c.db.Exec(sql, r.Data...); err != nil {
-			return fmt.Errorf("failed to execute '%s': %w", sql, err)
+		vals, err := transformRecord(r)
+		if err != nil {
+			return fmt.Errorf("failed to transform record: %w", err)
+		}
+		for _, v := range vals {
+			if _, err := c.db.Exec(sql, v...); err != nil {
+				return fmt.Errorf("failed to execute '%s': %w", sql, err)
+			}
 		}
 	}
 
