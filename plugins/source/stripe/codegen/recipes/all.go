@@ -148,6 +148,7 @@ var AllResources = []*Resource{
 	{
 		DataStruct:     &stripe.Price{},
 		StateParamName: createdStateParam,
+		ExpandFields:   []string{"data.currency_options", "data.tiers"},
 	},
 	{
 		DataStruct:     &stripe.Product{},

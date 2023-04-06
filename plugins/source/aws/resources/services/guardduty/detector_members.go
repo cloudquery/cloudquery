@@ -18,8 +18,10 @@ func detectorMembers() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html`,
 		Resolver:    fetchDetectorMembers,
-		Transform:   transformers.TransformWithStruct(&types.Member{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
+		Transform: transformers.TransformWithStruct(&types.Member{},
+			transformers.WithTypeTransformer(client.TimestampTypeTransformer),
+			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
+		),
 		Columns: []schema.Column{
 			client.DefaultRegionColumn(false),
 			{

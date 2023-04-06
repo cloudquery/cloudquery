@@ -411,6 +411,8 @@ func tables() []*schema.Table {
 		rds.ReservedInstances(),
 		rds.SubnetGroups(),
 		redshift.Clusters(),
+		redshift.DataShares(),
+		redshift.Events(),
 		redshift.EventSubscriptions(),
 		redshift.SubnetGroups(),
 		resiliencehub.Apps(),

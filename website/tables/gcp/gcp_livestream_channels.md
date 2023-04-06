@@ -29,3 +29,6 @@ The composite primary key for this table is (**project_id**, **name**).
 |streaming_state|String|
 |streaming_error|JSON|
 |log_config|JSON|
+|timecode_config|JSON|
+|encryptions|JSON|
+|input_config|JSON|

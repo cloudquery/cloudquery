@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func GatewayAssociations() *schema.Table {
+func gatewayAssociations() *schema.Table {
 	tableName := "aws_directconnect_gateway_associations"
 	return &schema.Table{
 		Name:        tableName,

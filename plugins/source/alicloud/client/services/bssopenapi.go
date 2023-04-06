@@ -174,6 +174,9 @@ type BssopenapiClient interface {
 	QueryResellerAvailableQuota(*bssopenapi.QueryResellerAvailableQuotaRequest) (*bssopenapi.QueryResellerAvailableQuotaResponse, error)
 	QueryResellerAvailableQuotaWithCallback(*bssopenapi.QueryResellerAvailableQuotaRequest, func(*bssopenapi.QueryResellerAvailableQuotaResponse, error)) <-chan int
 	QueryResellerAvailableQuotaWithChan(*bssopenapi.QueryResellerAvailableQuotaRequest) (<-chan *bssopenapi.QueryResellerAvailableQuotaResponse, <-chan error)
+	QueryResellerUserAlarmThreshold(*bssopenapi.QueryResellerUserAlarmThresholdRequest) (*bssopenapi.QueryResellerUserAlarmThresholdResponse, error)
+	QueryResellerUserAlarmThresholdWithCallback(*bssopenapi.QueryResellerUserAlarmThresholdRequest, func(*bssopenapi.QueryResellerUserAlarmThresholdResponse, error)) <-chan int
+	QueryResellerUserAlarmThresholdWithChan(*bssopenapi.QueryResellerUserAlarmThresholdRequest) (<-chan *bssopenapi.QueryResellerUserAlarmThresholdResponse, <-chan error)
 	QueryResourcePackageInstances(*bssopenapi.QueryResourcePackageInstancesRequest) (*bssopenapi.QueryResourcePackageInstancesResponse, error)
 	QueryResourcePackageInstancesWithCallback(*bssopenapi.QueryResourcePackageInstancesRequest, func(*bssopenapi.QueryResourcePackageInstancesResponse, error)) <-chan int
 	QueryResourcePackageInstancesWithChan(*bssopenapi.QueryResourcePackageInstancesRequest) (<-chan *bssopenapi.QueryResourcePackageInstancesResponse, <-chan error)

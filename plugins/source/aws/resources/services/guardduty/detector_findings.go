@@ -17,13 +17,20 @@ func detectorFindings() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Finding.html`,
 		Resolver:    fetchDetectorFindings,
-		Transform:   transformers.TransformWithStruct(&types.Finding{}, transformers.WithPrimaryKeys("Arn")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
+		Transform: transformers.TransformWithStruct(&types.Finding{},
+			transformers.WithTypeTransformer(client.TimestampTypeTransformer),
+			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
+			transformers.WithPrimaryKeys("Arn"),
+		),
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
 			{
 				Name:     "detector_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 		},
 	}
@@ -37,28 +44,25 @@ func fetchDetectorFindings(ctx context.Context, meta schema.ClientMeta, parent *
 	config := &guardduty.ListFindingsInput{
 		DetectorId: &detector.Id,
 	}
-	for {
-		output, err := svc.ListFindings(ctx, config)
+	paginator := guardduty.NewListFindingsPaginator(svc, config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		if len(output.FindingIds) == 0 {
-			return nil
+		if len(page.FindingIds) == 0 {
+			continue
 		}
 
 		f, err := svc.GetFindings(ctx, &guardduty.GetFindingsInput{
 			DetectorId: &detector.Id,
-			FindingIds: output.FindingIds,
+			FindingIds: page.FindingIds,
 		})
 		if err != nil {
 			return err
 		}
 
 		res <- f.Findings
-
-		if aws.ToString(output.NextToken) == "" {
-			return nil
-		}
-		config.NextToken = output.NextToken
 	}
+	return nil
 }

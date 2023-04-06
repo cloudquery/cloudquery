@@ -41,3 +41,4 @@ The following tables depend on gcp_clouddeploy_rollouts:
 |deploy_failure_cause|String|
 |phases|JSON|
 |metadata|JSON|
+|controller_rollout|String|

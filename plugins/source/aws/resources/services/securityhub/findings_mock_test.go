@@ -2,7 +2,9 @@ package securityhub
 
 import (
 	"testing"
+	"time"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -18,6 +20,10 @@ func buildFindings(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err != nil {
 		t.Fatal(err)
 	}
+	findings.CreatedAt = aws.String(time.Now().Format(time.RFC3339))
+	findings.UpdatedAt = aws.String(time.Now().Format(time.RFC3339))
+	findings.FirstObservedAt = aws.String(time.Now().Format(time.RFC3339))
+	findings.LastObservedAt = aws.String(time.Now().Format(time.RFC3339))
 
 	shMock.EXPECT().GetFindings(
 		gomock.Any(),

@@ -494,6 +494,46 @@ func (mr *MockOssClientMockRecorder) GetBucketRequestPayment(arg0 interface{}, a
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBucketRequestPayment", reflect.TypeOf((*MockOssClient)(nil).GetBucketRequestPayment), varargs...)
 }
 
+// GetBucketResourceGroup mocks base method.
+func (m *MockOssClient) GetBucketResourceGroup(arg0 string, arg1 ...oss.Option) (oss.GetBucketResourceGroupResult, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetBucketResourceGroup", varargs...)
+	ret0, _ := ret[0].(oss.GetBucketResourceGroupResult)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBucketResourceGroup indicates an expected call of GetBucketResourceGroup.
+func (mr *MockOssClientMockRecorder) GetBucketResourceGroup(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBucketResourceGroup", reflect.TypeOf((*MockOssClient)(nil).GetBucketResourceGroup), varargs...)
+}
+
+// GetBucketResourceGroupXml mocks base method.
+func (m *MockOssClient) GetBucketResourceGroupXml(arg0 string, arg1 ...oss.Option) (string, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetBucketResourceGroupXml", varargs...)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBucketResourceGroupXml indicates an expected call of GetBucketResourceGroupXml.
+func (mr *MockOssClientMockRecorder) GetBucketResourceGroupXml(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBucketResourceGroupXml", reflect.TypeOf((*MockOssClient)(nil).GetBucketResourceGroupXml), varargs...)
+}
+
 // GetBucketStat mocks base method.
 func (m *MockOssClient) GetBucketStat(arg0 string, arg1 ...oss.Option) (oss.GetBucketStatResult, error) {
 	m.ctrl.T.Helper()
@@ -512,6 +552,46 @@ func (mr *MockOssClientMockRecorder) GetBucketStat(arg0 interface{}, arg1 ...int
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0}, arg1...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBucketStat", reflect.TypeOf((*MockOssClient)(nil).GetBucketStat), varargs...)
+}
+
+// GetBucketStyle mocks base method.
+func (m *MockOssClient) GetBucketStyle(arg0, arg1 string, arg2 ...oss.Option) (oss.GetBucketStyleResult, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetBucketStyle", varargs...)
+	ret0, _ := ret[0].(oss.GetBucketStyleResult)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBucketStyle indicates an expected call of GetBucketStyle.
+func (mr *MockOssClientMockRecorder) GetBucketStyle(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBucketStyle", reflect.TypeOf((*MockOssClient)(nil).GetBucketStyle), varargs...)
+}
+
+// GetBucketStyleXml mocks base method.
+func (m *MockOssClient) GetBucketStyleXml(arg0, arg1 string, arg2 ...oss.Option) (string, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetBucketStyleXml", varargs...)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBucketStyleXml indicates an expected call of GetBucketStyleXml.
+func (mr *MockOssClientMockRecorder) GetBucketStyleXml(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBucketStyleXml", reflect.TypeOf((*MockOssClient)(nil).GetBucketStyleXml), varargs...)
 }
 
 // GetBucketTagging mocks base method.
@@ -673,6 +753,26 @@ func (mr *MockOssClientMockRecorder) GetUserQoSInfo(arg0 ...interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserQoSInfo", reflect.TypeOf((*MockOssClient)(nil).GetUserQoSInfo), arg0...)
 }
 
+// ListBucketCname mocks base method.
+func (m *MockOssClient) ListBucketCname(arg0 string, arg1 ...oss.Option) (oss.ListBucketCnameResult, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListBucketCname", varargs...)
+	ret0, _ := ret[0].(oss.ListBucketCnameResult)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListBucketCname indicates an expected call of ListBucketCname.
+func (mr *MockOssClientMockRecorder) ListBucketCname(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListBucketCname", reflect.TypeOf((*MockOssClient)(nil).ListBucketCname), varargs...)
+}
+
 // ListBucketInventory mocks base method.
 func (m *MockOssClient) ListBucketInventory(arg0, arg1 string, arg2 ...oss.Option) (oss.ListInventoryConfigurationsResult, error) {
 	m.ctrl.T.Helper()
@@ -711,6 +811,46 @@ func (mr *MockOssClientMockRecorder) ListBucketInventoryXml(arg0, arg1 interface
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListBucketInventoryXml", reflect.TypeOf((*MockOssClient)(nil).ListBucketInventoryXml), varargs...)
+}
+
+// ListBucketStyle mocks base method.
+func (m *MockOssClient) ListBucketStyle(arg0 string, arg1 ...oss.Option) (oss.GetBucketListStyleResult, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListBucketStyle", varargs...)
+	ret0, _ := ret[0].(oss.GetBucketListStyleResult)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListBucketStyle indicates an expected call of ListBucketStyle.
+func (mr *MockOssClientMockRecorder) ListBucketStyle(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListBucketStyle", reflect.TypeOf((*MockOssClient)(nil).ListBucketStyle), varargs...)
+}
+
+// ListBucketStyleXml mocks base method.
+func (m *MockOssClient) ListBucketStyleXml(arg0 string, arg1 ...oss.Option) (string, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListBucketStyleXml", varargs...)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListBucketStyleXml indicates an expected call of ListBucketStyleXml.
+func (mr *MockOssClientMockRecorder) ListBucketStyleXml(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListBucketStyleXml", reflect.TypeOf((*MockOssClient)(nil).ListBucketStyleXml), varargs...)
 }
 
 // ListBuckets mocks base method.
