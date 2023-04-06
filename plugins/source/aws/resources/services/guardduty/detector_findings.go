@@ -56,7 +56,7 @@ func fetchDetectorFindings(ctx context.Context, meta schema.ClientMeta, parent *
 
 		res <- f.Findings
 
-		if output.NextToken == nil {
+		if aws.ToString(output.NextToken) == "" {
 			return nil
 		}
 		config.NextToken = output.NextToken

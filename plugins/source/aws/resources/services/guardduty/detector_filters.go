@@ -47,7 +47,7 @@ func fetchDetectorFilters(ctx context.Context, meta schema.ClientMeta, parent *s
 		}
 		res <- output.FilterNames
 
-		if output.NextToken == nil {
+		if aws.ToString(output.NextToken) == "" {
 			return nil
 		}
 		config.NextToken = output.NextToken

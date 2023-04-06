@@ -71,7 +71,7 @@ func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.
 						Annotation:                 conformancePackComplianceDetail.Annotation,
 					}
 				}
-				if output.NextToken == nil {
+				if aws.ToString(output.NextToken) == "" {
 					break
 				}
 				detailParams.NextToken = output.NextToken

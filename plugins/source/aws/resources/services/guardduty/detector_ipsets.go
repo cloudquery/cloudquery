@@ -47,7 +47,7 @@ func fetchDetectorIPSets(ctx context.Context, meta schema.ClientMeta, parent *sc
 		}
 		res <- output.IpSetIds
 
-		if output.NextToken == nil {
+		if aws.ToString(output.NextToken) == "" {
 			return nil
 		}
 		config.NextToken = output.NextToken
