@@ -156,10 +156,7 @@ func normalizeColumn(column schema.Column) schema.Column {
 		panic("unsupported type " + t.String())
 	}
 
-	res.CreationOptions = column.CreationOptions
-	if !res.CreationOptions.NotNull {
-		res.CreationOptions.NotNull = column.CreationOptions.PrimaryKey
-	}
+	res.CreationOptions.NotNull = column.CreationOptions.NotNull || column.CreationOptions.PrimaryKey
 
 	return res
 }
