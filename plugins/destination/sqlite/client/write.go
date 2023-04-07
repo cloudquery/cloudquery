@@ -10,18 +10,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/specs"
 )
 
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan arrow.Record) error {
+func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan arrow.Record) error {
 	var sql string
 	for r := range res {
-		tableName, ok := r.Schema().Metadata().GetValue(schema.MetadataTableName)
-		if !ok {
-			return fmt.Errorf("failed to get table name from record metadata")
-		}
-		table := tables.Get(tableName)
 		if c.spec.WriteMode == specs.WriteModeAppend {
-			sql = c.insert(table)
+			sql = c.insert(r.Schema())
 		} else {
-			sql = c.upsert(table)
+			sql = c.upsert(r.Schema())
 		}
 		vals, err := transformRecord(r)
 		if err != nil {
@@ -37,12 +32,16 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan arr
 	return nil
 }
 
-func (*Client) insert(table *schema.Table) string {
+func (*Client) insert(sc *arrow.Schema) string {
 	var sb strings.Builder
+	tableName, ok := sc.Metadata().GetValue(schema.MetadataTableName)
+	if !ok {
+		panic("missing table name in schema metadata")
+	}
 	sb.WriteString("insert into ")
-	sb.WriteString(`"` + table.Name + `"`)
+	sb.WriteString(`"` + tableName + `"`)
 	sb.WriteString(" (")
-	columns := table.Columns
+	columns := sc.Fields()
 	columnsLen := len(columns)
 	for i, c := range columns {
 		sb.WriteString(`"` + c.Name + `"`)
@@ -63,12 +62,16 @@ func (*Client) insert(table *schema.Table) string {
 	return sb.String()
 }
 
-func (*Client) upsert(table *schema.Table) string {
+func (*Client) upsert(sc *arrow.Schema) string {
 	var sb strings.Builder
+	tableName, ok := sc.Metadata().GetValue(schema.MetadataTableName)
+	if !ok {
+		panic("missing table name in schema metadata")
+	}
 	sb.WriteString("insert or replace into ")
-	sb.WriteString(`"` + table.Name + `"`)
+	sb.WriteString(`"` + tableName + `"`)
 	sb.WriteString(" (")
-	columns := table.Columns
+	columns := sc.Fields()
 	columnsLen := len(columns)
 	for i, c := range columns {
 		sb.WriteString(`"` + c.Name + `"`)

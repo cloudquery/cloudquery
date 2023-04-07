@@ -8,11 +8,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
-	for _, table := range tables.FlattenTables() {
+func (c *Client) DeleteStale(ctx context.Context, tables schema.Schemas, source string, syncTime time.Time) error {
+	for _, table := range tables {
 		var sb strings.Builder
 		sb.WriteString("delete from ")
-		sb.WriteString(`"` + table.Name + `"`)
+		sb.WriteString(`"` + schema.TableName(table) + `"`)
 		sb.WriteString(" where ")
 		sb.WriteString(`"` + schema.CqSourceNameColumn.Name + `"`)
 		sb.WriteString(" = $1 and datetime(")

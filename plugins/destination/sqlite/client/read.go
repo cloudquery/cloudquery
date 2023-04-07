@@ -3,6 +3,7 @@ package client
 import (
 	"bytes"
 	"context"
+	"database/sql"
 	"fmt"
 	"strings"
 
@@ -18,59 +19,23 @@ const (
 	readSQL = `SELECT %s FROM "%s" WHERE _cq_source_name = $1 order by _cq_sync_time asc`
 )
 
-func (*Client) createResultsArray(table *schema.Table) []any {
-	results := make([]any, 0, len(table.Columns))
-	for _, col := range table.Columns {
-		switch col.Type {
-		case schema.TypeBool:
-			var r bool
+func (*Client) createResultsArray(table *arrow.Schema) []any {
+	results := make([]any, 0, len(table.Fields()))
+	for _, col := range table.Fields() {
+		switch col.Type.ID() {
+		case arrow.BOOL:
+			var r sql.NullBool
 			results = append(results, &r)
-		case schema.TypeInt:
-			var r int
-			results = append(results, &r)
-		case schema.TypeFloat:
-			var r float64
-			results = append(results, &r)
-		case schema.TypeUUID:
-			var r string
-			results = append(results, &r)
-		case schema.TypeString:
-			var r string
-			results = append(results, &r)
-		case schema.TypeByteArray:
+		case arrow.BINARY, arrow.LARGE_BINARY:
 			var r []byte
 			results = append(results, &r)
-		case schema.TypeStringArray:
-			var r string
+		case arrow.INT8, arrow.INT16, arrow.INT32, arrow.INT64, arrow.UINT8, arrow.UINT16, arrow.UINT32, arrow.UINT64:
+			var r int
 			results = append(results, &r)
-		case schema.TypeTimestamp:
-			var r string
+		case arrow.FLOAT16, arrow.FLOAT32, arrow.FLOAT64:
+			var r float64
 			results = append(results, &r)
-		case schema.TypeJSON:
-			var r string
-			results = append(results, &r)
-		case schema.TypeUUIDArray:
-			var r string
-			results = append(results, &r)
-		case schema.TypeCIDR:
-			var r string
-			results = append(results, &r)
-		case schema.TypeCIDRArray:
-			var r string
-			results = append(results, &r)
-		case schema.TypeMacAddr:
-			var r string
-			results = append(results, &r)
-		case schema.TypeMacAddrArray:
-			var r string
-			results = append(results, &r)
-		case schema.TypeInet:
-			var r string
-			results = append(results, &r)
-		case schema.TypeInetArray:
-			var r string
-			results = append(results, &r)
-		case schema.TypeIntArray:
+		default:
 			var r string
 			results = append(results, &r)
 		}
@@ -85,7 +50,12 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 	for i, val := range values {
 		switch sc.Field(i).Type.ID() {
 		case arrow.BOOL:
-			bldr.Field(i).(*array.BooleanBuilder).Append(*val.(*bool))
+			if val.(*sql.NullBool).Valid {
+				bldr.Field(i).(*array.BooleanBuilder).Append(val.(*sql.NullBool).Bool)
+			} else {
+				bldr.Field(i).(*array.BooleanBuilder).AppendNull()
+			}
+			// bldr.Field(i).(*array.BooleanBuilder).Append(*val.(*bool))
 		case arrow.INT8:
 			bldr.Field(i).(*array.Int8Builder).Append(int8(*val.(*int)))
 		case arrow.INT16:
@@ -130,22 +100,23 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
-	colNames := make([]string, 0, len(table.Columns))
-	for _, col := range table.Columns {
+func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
+	colNames := make([]string, 0, len(table.Fields()))
+	for _, col := range table.Fields() {
 		colNames = append(colNames, `"`+col.Name+`"`)
 	}
 	cols := strings.Join(colNames, ", ")
-	rows, err := c.db.Query(fmt.Sprintf(readSQL, cols, table.Name), sourceName)
+	tableName := schema.TableName(table)
+	rows, err := c.db.Query(fmt.Sprintf(readSQL, cols, tableName), sourceName)
 	if err != nil {
 		return err
 	}
 	for rows.Next() {
 		values := c.createResultsArray(table)
 		if err := rows.Scan(values...); err != nil {
-			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
+			return fmt.Errorf("failed to read from table %s: %w", tableName, err)
 		}
-		record, err := reverseTransform(table.ToArrowSchema(), values)
+		record, err := reverseTransform(table, values)
 		if err != nil {
 			return err
 		}
