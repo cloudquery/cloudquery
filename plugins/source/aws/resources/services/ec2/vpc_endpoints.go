@@ -40,21 +40,15 @@ func VpcEndpoints() *schema.Table {
 	}
 }
 func fetchEc2VpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var config ec2.DescribeVpcEndpointsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
-	for {
-		output, err := svc.DescribeVpcEndpoints(ctx, &config, func(o *ec2.Options) {
-			o.Region = c.Region
-		})
+	paginator := ec2.NewDescribeVpcEndpointsPaginator(svc, &ec2.DescribeVpcEndpointsInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.VpcEndpoints
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
+		res <- page.VpcEndpoints
 	}
 	return nil
 }

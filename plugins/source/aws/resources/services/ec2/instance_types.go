@@ -36,22 +36,15 @@ func InstanceTypes() *schema.Table {
 }
 
 func fetchEc2InstanceTypes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var config ec2.DescribeInstanceTypesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
-
-	for {
-		response, err := svc.DescribeInstanceTypes(ctx, &config, func(options *ec2.Options) {
-			options.Region = c.Region
-		})
+	paginator := ec2.NewDescribeInstanceTypesPaginator(svc, &ec2.DescribeInstanceTypesInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.InstanceTypes
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.InstanceTypes
 	}
 
 	return nil

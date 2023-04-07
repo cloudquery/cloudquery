@@ -46,6 +46,7 @@ func fetchApigatewayRestApiRequestValidators(ctx context.Context, meta schema.Cl
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
 	config := apigateway.GetRequestValidatorsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
+	// No paginator available
 	for {
 		response, err := svc.GetRequestValidators(ctx, &config)
 		if err != nil {

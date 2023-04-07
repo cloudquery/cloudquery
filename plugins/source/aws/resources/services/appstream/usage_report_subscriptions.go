@@ -38,6 +38,7 @@ func fetchAppstreamUsageReportSubscriptions(ctx context.Context, meta schema.Cli
 	var input appstream.DescribeUsageReportSubscriptionsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
+	// No paginator available
 	for {
 		response, err := svc.DescribeUsageReportSubscriptions(ctx, &input)
 		if err != nil {

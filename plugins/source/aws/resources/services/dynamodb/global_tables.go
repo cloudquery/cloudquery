@@ -49,6 +49,7 @@ func fetchGlobalTables(ctx context.Context, meta schema.ClientMeta, parent *sche
 	config := dynamodb.ListGlobalTablesInput{
 		RegionName: aws.String(c.Region),
 	}
+	// No paginator available
 	for {
 		output, err := svc.ListGlobalTables(ctx, &config)
 		if err != nil {
@@ -88,6 +89,7 @@ func resolveDynamodbGlobalTableTags(ctx context.Context, meta schema.ClientMeta,
 	input := &dynamodb.ListTagsOfResourceInput{
 		ResourceArn: table.GlobalTableArn,
 	}
+	// // No paginator available
 	for {
 		response, err := svc.ListTagsOfResource(ctx, input)
 		if err != nil {

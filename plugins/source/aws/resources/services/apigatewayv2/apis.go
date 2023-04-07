@@ -53,6 +53,7 @@ func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, parent *
 	var config apigatewayv2.GetApisInput
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
+	// No paginator available
 	for {
 		response, err := svc.GetApis(ctx, &config)
 

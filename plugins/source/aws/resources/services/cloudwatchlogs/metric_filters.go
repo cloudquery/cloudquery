@@ -39,16 +39,13 @@ func fetchCloudwatchlogsMetricFilters(ctx context.Context, meta schema.ClientMet
 	var config cloudwatchlogs.DescribeMetricFiltersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudwatchlogs
-	for {
-		response, err := svc.DescribeMetricFilters(ctx, &config)
+	paginator := cloudwatchlogs.NewDescribeMetricFiltersPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.MetricFilters
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.MetricFilters
 	}
 	return nil
 }
