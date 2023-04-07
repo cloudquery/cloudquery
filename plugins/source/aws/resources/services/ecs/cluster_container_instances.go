@@ -3,7 +3,6 @@ package ecs
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -42,17 +41,18 @@ func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMe
 	config := ecs.ListContainerInstancesInput{
 		Cluster: cluster.ClusterArn,
 	}
-	for {
-		listContainerInstances, err := svc.ListContainerInstances(ctx, &config)
+	paginator := ecs.NewListContainerInstancesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		if len(listContainerInstances.ContainerInstanceArns) == 0 {
-			return nil
+		if len(page.ContainerInstanceArns) == 0 {
+			continue
 		}
 		describeServicesInput := ecs.DescribeContainerInstancesInput{
 			Cluster:            cluster.ClusterArn,
-			ContainerInstances: listContainerInstances.ContainerInstanceArns,
+			ContainerInstances: page.ContainerInstanceArns,
 			Include:            []types.ContainerInstanceField{types.ContainerInstanceFieldTags},
 		}
 		describeContainerInstances, err := svc.DescribeContainerInstances(ctx, &describeServicesInput)
@@ -61,11 +61,6 @@ func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMe
 		}
 
 		res <- describeContainerInstances.ContainerInstances
-
-		if aws.ToString(listContainerInstances.NextToken) == "" {
-			break
-		}
-		config.NextToken = listContainerInstances.NextToken
 	}
 	return nil
 }

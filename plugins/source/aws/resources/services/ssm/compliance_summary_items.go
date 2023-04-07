@@ -40,17 +40,13 @@ func fetchSsmComplianceSummaryItems(ctx context.Context, meta schema.ClientMeta,
 	params := ssm.ListComplianceSummariesInput{
 		MaxResults: aws.Int32(50),
 	}
-	for {
-		output, err := svc.ListComplianceSummaries(ctx, &params)
+	paginator := ssm.NewListComplianceSummariesPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.ComplianceSummaryItems
-
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		params.NextToken = output.NextToken
+		res <- page.ComplianceSummaryItems
 	}
 	return nil
 }

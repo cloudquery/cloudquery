@@ -38,17 +38,15 @@ func fetchDetectorThreatIntelSets(ctx context.Context, meta schema.ClientMeta, p
 	c := meta.(*client.Client)
 	svc := c.Services().Guardduty
 	config := &guardduty.ListThreatIntelSetsInput{DetectorId: aws.String(detector.Id)}
-	for {
-		output, err := svc.ListThreatIntelSets(ctx, config)
+	paginator := guardduty.NewListThreatIntelSetsPaginator(svc, config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.ThreatIntelSetIds
-		if aws.ToString(output.NextToken) == "" {
-			return nil
-		}
-		config.NextToken = output.NextToken
+		res <- page.ThreatIntelSetIds
 	}
+	return nil
 }
 
 func getDetectorThreatIntelSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {

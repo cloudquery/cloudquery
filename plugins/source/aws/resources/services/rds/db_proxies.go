@@ -3,7 +3,6 @@ package rds
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -43,16 +42,13 @@ func fetchDbProxies(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	c := meta.(*client.Client)
 	svc := c.Services().Rds
 	input := rds.DescribeDBProxiesInput{}
-	for {
-		output, err := svc.DescribeDBProxies(ctx, &input)
+	paginator := rds.NewDescribeDBProxiesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.DBProxies
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		input.Marker = output.Marker
+		res <- page.DBProxies
 	}
 	return nil
 }

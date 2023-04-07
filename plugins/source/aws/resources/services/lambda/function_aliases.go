@@ -51,9 +51,9 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 	config := lambda.ListAliasesInput{
 		FunctionName: p.Configuration.FunctionName,
 	}
-
-	for {
-		output, err := svc.ListAliases(ctx, &config)
+	paginator := lambda.NewListAliasesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
@@ -63,12 +63,7 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 			}
 			return err
 		}
-		res <- output.Aliases
-
-		if output.NextMarker == nil {
-			break
-		}
-		config.Marker = output.NextMarker
+		res <- page.Aliases
 	}
 	return nil
 }

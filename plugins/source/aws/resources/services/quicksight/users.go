@@ -33,7 +33,7 @@ func fetchQuicksightUsers(ctx context.Context, meta schema.ClientMeta, parent *s
 		Namespace:    aws.String(defaultNamespace),
 	}
 	var ae smithy.APIError
-
+	// No paginator available
 	for {
 		out, err := svc.ListUsers(ctx, &input)
 		if err != nil {

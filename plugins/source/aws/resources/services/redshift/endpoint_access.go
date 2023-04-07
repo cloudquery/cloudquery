@@ -41,17 +41,13 @@ func fetchEndpointAccess(ctx context.Context, meta schema.ClientMeta, parent *sc
 		ClusterIdentifier: cluster.ClusterIdentifier,
 		MaxRecords:        aws.Int32(100),
 	}
-	for {
-		response, err := svc.DescribeEndpointAccess(ctx, &config)
+	paginator := redshift.NewDescribeEndpointAccessPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.EndpointAccessList
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
+		res <- page.EndpointAccessList
 	}
-
 	return nil
 }
