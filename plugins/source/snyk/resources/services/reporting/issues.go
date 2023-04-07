@@ -10,14 +10,17 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-const issuesTableName = "snyk_reporting_issues"
+const (
+	issuesTableName = "snyk_reporting_issues"
+	maxRequests     = 10 // limit the number of concurrent requests to 10
+)
 
 func Issues() *schema.Table {
 	return &schema.Table{
 		Name:        issuesTableName,
 		Description: `https://snyk.docs.apiary.io/#reference/reporting-api/get-list-of-latest-issues`,
 		Resolver:    fetchIssues,
-		Multiplex:   nil,
+		Multiplex:   client.ByOrganization,
 		Transform: transformers.TransformWithStruct(
 			&legacy.ListReportingIssueResult{},
 		),
@@ -61,7 +64,7 @@ func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 		pages++
 	}
 	g, gctx := errgroup.WithContext(ctx)
-	g.SetLimit(10) // limit the number of concurrent requests to 10
+	g.SetLimit(maxRequests)
 
 	for i := 2; i <= pages; i++ {
 		r := req
