@@ -38,17 +38,16 @@ func Analyzers() *schema.Table {
 }
 
 func fetchAccessanalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	config := accessanalyzer.ListAnalyzersInput{}
 	c := meta.(*client.Client)
 	svc := c.Services().Accessanalyzer
-	paginator := accessanalyzer.NewListAnalyzersPaginator(svc, &config)
+	paginator := accessanalyzer.NewListAnalyzersPaginator(svc, &accessanalyzer.ListAnalyzersInput{})
 	for paginator.HasMorePages() {
 		// no need to override API call options anymore: https://github.com/aws/aws-sdk-go-v2/issues/1260
-		response, err := svc.ListAnalyzers(ctx, &config)
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.Analyzers
+		res <- page.Analyzers
 	}
 	return nil
 }
