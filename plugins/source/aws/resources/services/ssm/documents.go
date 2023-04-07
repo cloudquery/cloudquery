@@ -57,17 +57,13 @@ func fetchSsmDocuments(ctx context.Context, meta schema.ClientMeta, parent *sche
 	params := ssm.ListDocumentsInput{
 		Filters: []types.DocumentKeyValuesFilter{{Key: aws.String("Owner"), Values: []string{"Self"}}},
 	}
-	for {
-		output, err := svc.ListDocuments(ctx, &params)
+	paginator := ssm.NewListDocumentsPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.DocumentIdentifiers
-
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		params.NextToken = output.NextToken
+		res <- page.DocumentIdentifiers
 	}
 	return nil
 }
@@ -96,6 +92,7 @@ func resolveDocumentPermission(ctx context.Context, meta schema.ClientMeta, reso
 		PermissionType: types.DocumentPermissionTypeShare,
 	}
 	var permissions []*ssm.DescribeDocumentPermissionOutput
+	// No paginator
 	for {
 		output, err := svc.DescribeDocumentPermission(ctx, &input)
 		if err != nil {

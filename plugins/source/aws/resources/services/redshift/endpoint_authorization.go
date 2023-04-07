@@ -42,17 +42,13 @@ func fetchEndpointAuthorization(ctx context.Context, meta schema.ClientMeta, par
 		ClusterIdentifier: cluster.ClusterIdentifier,
 		MaxRecords:        aws.Int32(100),
 	}
-	for {
-		response, err := svc.DescribeEndpointAuthorization(ctx, &config)
+	paginator := redshift.NewDescribeEndpointAuthorizationPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.EndpointAuthorizationList
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
+		res <- page.EndpointAuthorizationList
 	}
-
 	return nil
 }

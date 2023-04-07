@@ -41,19 +41,16 @@ func fetchLambdaFunctionEventSourceMappings(ctx context.Context, meta schema.Cli
 	config := lambda.ListEventSourceMappingsInput{
 		FunctionName: p.Configuration.FunctionName,
 	}
-	for {
-		output, err := svc.ListEventSourceMappings(ctx, &config)
+	paginator := lambda.NewListEventSourceMappingsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err
 		}
-		res <- output.EventSourceMappings
-		if output.NextMarker == nil {
-			break
-		}
-		config.Marker = output.NextMarker
+		res <- page.EventSourceMappings
 	}
 	return nil
 }

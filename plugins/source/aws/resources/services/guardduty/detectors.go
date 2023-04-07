@@ -3,7 +3,6 @@ package guardduty
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
@@ -56,18 +55,15 @@ func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent
 	c := meta.(*client.Client)
 	svc := c.Services().Guardduty
 	config := &guardduty.ListDetectorsInput{}
-	for {
-		output, err := svc.ListDetectors(ctx, config)
+	paginator := guardduty.NewListDetectorsPaginator(svc, config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.DetectorIds
-
-		if aws.ToString(output.NextToken) == "" {
-			return nil
-		}
-		config.NextToken = output.NextToken
+		res <- page.DetectorIds
 	}
+	return nil
 }
 
 func getDetector(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
