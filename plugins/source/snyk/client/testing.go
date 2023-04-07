@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/cloudquery/plugins/source/snyk/internal/legacy"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -40,12 +41,13 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 			return nil, fmt.Errorf("failed to create client: %w", err)
 		}
 
+		legacyClient := legacy.NewClient("test-key", legacy.WithBaseURL(ts.URL))
 		c := &Client{
 			Client:        snykClient,
+			LegacyClient:  legacyClient,
 			logger:        logger,
 			organizations: []string{"test-org"},
 		}
-
 		return c, nil
 	}
 
