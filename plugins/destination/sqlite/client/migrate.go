@@ -31,8 +31,8 @@ func (c *Client) sqliteTables(schemas schema.Schemas) (schema.Schemas, error) {
 	var schemaTables schema.Schemas
 	for _, sc := range schemas {
 		var fields []arrow.Field
-		tableName, ok := sc.Metadata().GetValue(schema.MetadataTableName)
-		if !ok {
+		tableName := schema.TableName(sc)
+		if tableName == "" {
 			return nil, fmt.Errorf("schema %s has no table name", sc.String())
 		}
 		info, err := c.getTableInfo(tableName)
@@ -43,20 +43,20 @@ func (c *Client) sqliteTables(schemas schema.Schemas) (schema.Schemas, error) {
 			return nil, err
 		}
 		for _, col := range info.columns {
-			md := make(map[string]string, 0)
+			var fieldMetadata schema.MetadataFieldOptions
 			if col.pk != 0 {
-				md[schema.MetadataPrimaryKey] = schema.MetadataPrimaryKeyTrue
+				fieldMetadata.PrimaryKey = true
 			}
 			fields = append(fields, arrow.Field{
 				Name: col.name,
 				Type: c.sqliteTypeToArrowType(col.typ),
 				Nullable: !col.notNull,
-				Metadata: arrow.MetadataFrom(md),
+				Metadata: schema.NewFieldMetadataFromOptions(fieldMetadata),
 			})
 		}
-		tableMd := make(map[string]string, 0)
-		tableMd[schema.MetadataTableName] = tableName
-		m := arrow.MetadataFrom(tableMd)
+		var tableMetadata schema.MetadataSchemaOptions
+		tableMetadata.TableName = tableName
+		m := schema.NewSchemaMetadataFromOptions(tableMetadata)
 		schemaTables = append(schemaTables, arrow.NewSchema(fields, &m))
 	}
 	return schemaTables, nil
@@ -156,8 +156,8 @@ func (c *Client) Migrate(ctx context.Context, schemas schema.Schemas) error {
 	}
 
 	for _, table := range schemas {
-		tableName, ok := table.Metadata().GetValue(schema.MetadataTableName)
-		if !ok {
+		tableName := schema.TableName(table)
+		if tableName == "" {
 			return fmt.Errorf("schema %s has no table name", table.String())
 		}
 		c.logger.Info().Str("table", tableName).Msg("Migrating table")
@@ -174,7 +174,6 @@ func (c *Client) Migrate(ctx context.Context, schemas schema.Schemas) error {
 			}
 		} else {
 			changes := schema.GetSchemaChanges(table, sqlite)
-			// changes := table.GetChanges(sqlite)
 			if c.canAutoMigrate(changes) {
 				c.logger.Info().Str("table", tableName).Msg("Table exists, auto-migrating")
 				if err := c.autoMigrateTable(table, changes); err != nil {
