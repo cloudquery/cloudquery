@@ -3,6 +3,7 @@ package ads
 import (
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/source/googleads/client"
 	"github.com/cloudquery/cloudquery/plugins/source/googleads/gaql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -27,9 +28,8 @@ WHERE ad_group_label.ad_group = "customers/123/adGroups/456"`
 	)
 }
 
-func testAdGroupLabels(t *testing.T) map[string][]*services.GoogleAdsRow {
+func testAdGroupLabels(t *testing.T) client.MockedResponses {
 	var label resources.AdGroupLabel
 	require.NoError(t, faker.FakeObject(&label))
-	row := &services.GoogleAdsRow{AdGroupLabel: &label}
-	return map[string][]*services.GoogleAdsRow{"ad_group_label": {row}}
+	return client.MockedResponses{"ad_group_label": {&services.GoogleAdsRow{AdGroupLabel: &label}}}
 }
