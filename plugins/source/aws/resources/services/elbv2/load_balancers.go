@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
@@ -56,16 +55,13 @@ func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *sch
 	var config elbv2.DescribeLoadBalancersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticloadbalancingv2
-	for {
-		response, err := svc.DescribeLoadBalancers(ctx, &config)
+	paginator := elbv2.NewDescribeLoadBalancersPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.LoadBalancers
-		if aws.ToString(response.NextMarker) == "" {
-			break
-		}
-		config.Marker = response.NextMarker
+		res <- page.LoadBalancers
 	}
 	return nil
 }

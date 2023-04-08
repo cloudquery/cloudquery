@@ -38,7 +38,7 @@ func fetchElasticbeanstalkApplicationVersions(ctx context.Context, meta schema.C
 	var config elasticbeanstalk.DescribeApplicationVersionsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticbeanstalk
-
+	// No paginator available
 	for {
 		output, err := svc.DescribeApplicationVersions(ctx, &config)
 		if err != nil {

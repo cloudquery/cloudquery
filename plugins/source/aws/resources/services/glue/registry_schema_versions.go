@@ -82,6 +82,7 @@ func resolveGlueRegistrySchemaVersionMetadata(ctx context.Context, meta schema.C
 		SchemaVersionId: s.SchemaVersionId,
 	}
 	metadata := make(map[string]types.MetadataInfo)
+	// No paginator available
 	for {
 		result, err := svc.QuerySchemaVersionMetadata(ctx, input)
 		if err != nil {

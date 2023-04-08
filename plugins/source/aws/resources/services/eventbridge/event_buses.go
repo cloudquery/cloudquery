@@ -46,6 +46,7 @@ func fetchEventBuses(ctx context.Context, meta schema.ClientMeta, parent *schema
 	var input eventbridge.ListEventBusesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Eventbridge
+	// No paginator available
 	for {
 		response, err := svc.ListEventBuses(ctx, &input)
 		if err != nil {

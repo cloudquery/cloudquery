@@ -36,10 +36,10 @@ func VpcEndpoints() *schema.Table {
 
 func fetchElasticsearchVpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client).Services().Elasticsearchservice
-
+	// get the IDs first
 	listInput := new(elasticsearchservice.ListVpcEndpointsInput)
 	var vpcEndpointIDs []string
-	// get the IDs first
+	// No paginator available
 	for {
 		out, err := svc.ListVpcEndpoints(ctx, listInput)
 		if err != nil {

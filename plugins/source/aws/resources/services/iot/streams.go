@@ -35,18 +35,18 @@ func Streams() *schema.Table {
 }
 
 func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	input := iot.ListStreamsInput{
-		MaxResults: aws.Int32(250),
-	}
 	c := meta.(*client.Client)
-
 	svc := c.Services().Iot
-	for {
-		response, err := svc.ListStreams(ctx, &input)
+	paginator := iot.NewListStreamsPaginator(svc, &iot.ListStreamsInput{
+		MaxResults: aws.Int32(250),
+	})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		for _, s := range response.Streams {
+		for _, s := range page.Streams {
+			// TODO: Handle resolution in parallel with PreResourceResolver
 			stream, err := svc.DescribeStream(ctx, &iot.DescribeStreamInput{
 				StreamId: s.StreamId,
 			}, func(options *iot.Options) {
@@ -59,10 +59,6 @@ func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema
 			}
 			res <- stream.StreamInfo
 		}
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
 	}
 	return nil
 }
