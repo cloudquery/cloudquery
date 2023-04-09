@@ -37,7 +37,7 @@ func getTestDB(ctx context.Context) (*sql.DB, error) {
 func getTestConnectionString() string {
 	testConn := os.Getenv("CQ_SOURCE_ORACLE_DB_TEST_CONNECTION_STRING")
 	if testConn == "" {
-		return "oracle://cq:test@localhost:1521/cloudquery"
+		return "oracle://cq:test@localhost:/cloudquery"
 	}
 	return testConn
 }
