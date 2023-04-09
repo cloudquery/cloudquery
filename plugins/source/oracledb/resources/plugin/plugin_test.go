@@ -127,7 +127,7 @@ func TestPlugin(t *testing.T) {
 	defer db.Close()
 
 	testTable := testdata.TestSourceTable("test_oracledb_source")
-	if _, err := db.ExecContext(ctx, "DROP TABLE \"test_oracledb_source\" purge"); err != nil {
+	if _, err := db.ExecContext(ctx, "DROP TABLE \"test_oracledb_source\""); err != nil {
 		if !isNotExistsError(err) {
 			t.Fatal(err)
 		}
@@ -141,7 +141,7 @@ func TestPlugin(t *testing.T) {
 	}
 
 	otherTable := testdata.TestSourceTable("other_oracledb_table")
-	if _, err := db.ExecContext(ctx, "DROP TABLE \"other_oracledb_table\" purge"); err != nil {
+	if _, err := db.ExecContext(ctx, "DROP TABLE \"other_oracledb_table\""); err != nil {
 		if !isNotExistsError(err) {
 			t.Fatal(err)
 		}
@@ -218,7 +218,7 @@ func TestPerformance(t *testing.T) {
 		data := testdata.GenTestData(table)
 
 		group.Go(func() error {
-			if _, err := db.ExecContext(gtx, fmt.Sprintf("DROP TABLE \"%s\" purge", table.Name)); err != nil {
+			if _, err := db.ExecContext(gtx, fmt.Sprintf("DROP TABLE \"%s\"", table.Name)); err != nil {
 				if !isNotExistsError(err) {
 					return err
 				}

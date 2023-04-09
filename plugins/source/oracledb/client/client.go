@@ -16,10 +16,11 @@ import (
 )
 
 type Client struct {
-	logger  zerolog.Logger
-	metrics *source.Metrics
-	Tables  schema.Tables
-	db      *sql.DB
+	logger      zerolog.Logger
+	metrics     *source.Metrics
+	Tables      schema.Tables
+	db          *sql.DB
+	Concurrency uint64
 
 	timezoneOffset time.Duration
 }
@@ -56,7 +57,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 
 	t := time.Now()
 	_, offset := t.Zone()
-	c := &Client{logger: logger.With().Str("module", "oracledb-source").Logger(), db: db, timezoneOffset: time.Duration(offset) * time.Second}
+	c := &Client{logger: logger.With().Str("module", "oracledb-source").Logger(), db: db, timezoneOffset: time.Duration(offset) * time.Second, Concurrency: spec.Concurrency}
 	c.Tables, err = c.listTables(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)

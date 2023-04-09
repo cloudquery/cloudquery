@@ -8,6 +8,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"golang.org/x/sync/errgroup"
 )
 
 func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *schema.Resource) error {
@@ -85,12 +86,14 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 }
 
 func (c *Client) syncTables(ctx context.Context, res chan<- *schema.Resource) error {
+	group, gctx := errgroup.WithContext(ctx)
+	group.SetLimit(int(c.Concurrency))
 	for _, table := range c.Tables {
-		if err := c.syncTable(ctx, table, res); err != nil {
+		if err := c.syncTable(gctx, table, res); err != nil {
 			return err
 		}
 	}
-	return nil
+	return group.Wait()
 }
 
 func (c *Client) resourceFromValues(tableName string, values []any) (*schema.Resource, error) {
