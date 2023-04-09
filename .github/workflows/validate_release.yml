@@ -12,12 +12,6 @@ on:
         type:        string
         required:    false
         default:     'ubuntu-latest'
-      CGO_ENABLED:
-        description: 'CGO_ENABLED value to be used (default: 0)'
-        type:        number
-        required:    false
-        default:     0
-
 jobs:
   validate-release:
     # this if check is here as we check for 'validate-release / validate-release' run
