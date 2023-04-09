@@ -54,10 +54,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	}
 	defer conn.Close()
 
-	db.SetConnMaxLifetime(time.Minute * 3)
-	db.SetMaxOpenConns(10)
-	db.SetMaxIdleConns(10)
-
 	t := time.Now()
 	_, offset := t.Zone()
 	c := &Client{logger: logger.With().Str("module", "oracledb-source").Logger(), db: db, timezoneOffset: time.Duration(offset) * time.Second}

@@ -154,7 +154,6 @@ func TestPlugin(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// Init the plugin so we can call migrate
 	if err := p.Init(ctx, spec); err != nil {
 		t.Fatal(err)
 	}
@@ -187,4 +186,76 @@ func TestPlugin(t *testing.T) {
 		expectedStrings[i] = v.String()
 	}
 	require.Equal(t, expectedStrings, actualStrings)
+}
+
+func TestPerformance(t *testing.T) {
+	p := Plugin()
+	ctx := context.Background()
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	p.SetLogger(l)
+	spec := specs.Source{
+		Name:         "test_oracledb_source",
+		Path:         "cloudquery/oracledb",
+		Version:      "vDevelopment",
+		Destinations: []string{"test"},
+		Tables:       []string{"test_oracledb_source_performance_*"},
+		Spec: client.Spec{
+			ConnectionString: getTestConnectionString(),
+		},
+	}
+	db, err := getTestDB(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+
+	group, gtx := errgroup.WithContext(ctx)
+	const numTables = 20
+	for i := 0; i < numTables; i++ {
+		table := testdata.TestSourceTable(fmt.Sprintf("test_oracledb_source_performance_%d", i))
+		data := testdata.GenTestData(table)
+
+		group.Go(func() error {
+			if _, err := db.ExecContext(gtx, fmt.Sprintf("DROP TABLE \"%s\" purge", table.Name)); err != nil {
+				if !isNotExistsError(err) {
+					return err
+				}
+			}
+			if err := createTable(gtx, db, table); err != nil {
+				return err
+			}
+			if err := insertTable(gtx, db, table, data); err != nil {
+				return err
+			}
+
+			return nil
+		})
+	}
+
+	if err := group.Wait(); err != nil {
+		t.Fatal(err)
+	}
+
+	if err := p.Init(ctx, spec); err != nil {
+		t.Fatal(err)
+	}
+
+	res := make(chan *schema.Resource, 1)
+	g := errgroup.Group{}
+	g.Go(func() error {
+		defer close(res)
+		return p.Sync(ctx, res)
+	})
+	totalResources := 0
+	for range res {
+		totalResources++
+	}
+	err = g.Wait()
+	if err != nil {
+		t.Fatal("got unexpected error:", err)
+	}
+
+	require.Equal(t, numTables, totalResources)
 }
