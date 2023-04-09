@@ -66,7 +66,7 @@ func (c *Client) upsert(table *schema.Table, data []any) error {
 			sb.WriteString(`"` + col.Name + `"`)
 			sb.WriteString(" = ")
 			sb.WriteString(fmt.Sprintf("$%d ", i+1))
-			if i < len(pks) - 1 {
+			if i < len(pks)-1 {
 				sb.WriteString("and ")
 			}
 			pkData[i] = data[table.Columns.Index(k)]
