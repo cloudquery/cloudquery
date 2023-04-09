@@ -63,17 +63,13 @@ func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, paren
 	config := lambda.ListLayerVersionsInput{
 		LayerName: p.LayerName,
 	}
-
-	for {
-		output, err := svc.ListLayerVersions(ctx, &config)
+	paginator := lambda.NewListLayerVersionsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.LayerVersions
-		if output.NextMarker == nil {
-			break
-		}
-		config.Marker = output.NextMarker
+		res <- page.LayerVersions
 	}
 	return nil
 }

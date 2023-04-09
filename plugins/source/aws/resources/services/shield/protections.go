@@ -3,7 +3,6 @@ package shield
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/shield/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -42,20 +41,16 @@ func fetchShieldProtections(ctx context.Context, meta schema.ClientMeta, parent 
 	c := meta.(*client.Client)
 	svc := c.Services().Shield
 	config := shield.ListProtectionsInput{}
-	for {
-		output, err := svc.ListProtections(ctx, &config)
+	paginator := shield.NewListProtectionsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil
 			}
 			return err
 		}
-		res <- output.Protections
-
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
+		res <- page.Protections
 	}
 	return nil
 }

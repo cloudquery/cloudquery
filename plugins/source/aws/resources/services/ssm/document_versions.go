@@ -41,6 +41,7 @@ func fetchSsmDocumentVersions(ctx context.Context, meta schema.ClientMeta, paren
 	params := ssm.ListDocumentVersionsInput{
 		Name: item.Name,
 	}
+	// No paginator
 	for {
 		output, err := svc.ListDocumentVersions(ctx, &params)
 		if err != nil {

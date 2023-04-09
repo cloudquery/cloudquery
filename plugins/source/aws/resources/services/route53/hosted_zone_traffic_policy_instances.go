@@ -46,6 +46,7 @@ func fetchRoute53HostedZoneTrafficPolicyInstances(ctx context.Context, meta sche
 	r := parent.Item.(*models.Route53HostedZoneWrapper)
 	config := route53.ListTrafficPolicyInstancesByHostedZoneInput{HostedZoneId: r.Id}
 	svc := meta.(*client.Client).Services().Route53
+	// No paginator available
 	for {
 		response, err := svc.ListTrafficPolicyInstancesByHostedZone(ctx, &config)
 		if err != nil {
