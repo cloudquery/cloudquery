@@ -30,7 +30,7 @@ jobs:
               throw new Error('Too many files changed. Skipping check. Please split your PR into multiple ones.')
             }
 
-            const can_skip = process.env.CAN_SKIP.split("\n")
+            const canSkip = ['validate-release / validate-release']
 
             let now = new Date().getTime()
             const deadline = now + 60 * 1000 * 50
