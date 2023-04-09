@@ -18,8 +18,6 @@ jobs:
       - uses: actions/github-script@v6
         env:
           FILES: ${{ steps.changed-files.outputs.all }}
-          CAN_SKIP: |-
-            validate-release / validate-release
         with:
           script: |
             const fs = require("fs");
