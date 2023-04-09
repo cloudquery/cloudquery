@@ -40,18 +40,15 @@ func fetchDetectorIPSets(ctx context.Context, meta schema.ClientMeta, parent *sc
 	config := &guardduty.ListIPSetsInput{
 		DetectorId: &detector.Id,
 	}
-	for {
-		output, err := svc.ListIPSets(ctx, config)
+	paginator := guardduty.NewListIPSetsPaginator(svc, config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.IpSetIds
-
-		if output.NextToken == nil {
-			return nil
-		}
-		config.NextToken = output.NextToken
+		res <- page.IpSetIds
 	}
+	return nil
 }
 
 func getDetectorIPSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {

@@ -3,6 +3,7 @@ package appstream
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -46,7 +47,7 @@ func fetchAppstreamApplications(ctx context.Context, meta schema.ClientMeta, par
 			return err
 		}
 		res <- response.Applications
-		if response.NextToken == nil {
+		if aws.ToString(response.NextToken) == "" {
 			break
 		}
 		input.NextToken = response.NextToken

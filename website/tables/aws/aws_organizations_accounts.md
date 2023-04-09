@@ -3,8 +3,9 @@
 This table shows data for Organizations Accounts.
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html
+The 'request_account_id' column is added to show from where the request was made.
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**request_account_id**, **arn**).
 
 ## Relations
 
@@ -19,7 +20,7 @@ The following tables depend on aws_organizations_accounts:
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
+|request_account_id (PK)|String|
 |tags|JSON|
 |arn (PK)|String|
 |email|String|

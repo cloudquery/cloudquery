@@ -3,7 +3,6 @@ package route53
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -72,29 +71,25 @@ func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, paren
 		return nil
 	}
 
-	for {
-		response, err := svc.ListHealthChecks(ctx, &config)
+	paginator := route53.NewListHealthChecksPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
-		for i := 0; i < len(response.HealthChecks); i += 10 {
+		for i := 0; i < len(page.HealthChecks); i += 10 {
 			end := i + 10
 
-			if end > len(response.HealthChecks) {
-				end = len(response.HealthChecks)
+			if end > len(page.HealthChecks) {
+				end = len(page.HealthChecks)
 			}
-			zones := response.HealthChecks[i:end]
+			zones := page.HealthChecks[i:end]
 			err := processHealthChecksBundle(zones)
 			if err != nil {
 				return err
 			}
 		}
-
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
 	}
 	return nil
 }

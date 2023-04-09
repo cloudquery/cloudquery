@@ -41,20 +41,16 @@ func fetchLambdaFunctionConcurrencyConfigs(ctx context.Context, meta schema.Clie
 	config := lambda.ListProvisionedConcurrencyConfigsInput{
 		FunctionName: p.Configuration.FunctionName,
 	}
-
-	for {
-		output, err := svc.ListProvisionedConcurrencyConfigs(ctx, &config)
+	paginator := lambda.NewListProvisionedConcurrencyConfigsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err
 		}
-		res <- output.ProvisionedConcurrencyConfigs
-		if output.NextMarker == nil {
-			break
-		}
-		config.Marker = output.NextMarker
+		res <- page.ProvisionedConcurrencyConfigs
 	}
 	return nil
 }

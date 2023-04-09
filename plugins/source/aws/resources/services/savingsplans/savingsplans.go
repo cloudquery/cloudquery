@@ -39,6 +39,7 @@ func fetchSavingsPlans(ctx context.Context, meta schema.ClientMeta, parent *sche
 	config := savingsplans.DescribeSavingsPlansInput{
 		MaxResults: aws.Int32(1000),
 	}
+	// no paginator available
 	for {
 		response, err := svc.DescribeSavingsPlans(ctx, &config)
 		if err != nil {

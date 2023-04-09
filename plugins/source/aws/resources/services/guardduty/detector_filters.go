@@ -40,18 +40,15 @@ func fetchDetectorFilters(ctx context.Context, meta schema.ClientMeta, parent *s
 	config := &guardduty.ListFiltersInput{
 		DetectorId: &detector.Id,
 	}
-	for {
-		output, err := svc.ListFilters(ctx, config)
+	paginator := guardduty.NewListFiltersPaginator(svc, config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.FilterNames
-
-		if output.NextToken == nil {
-			return nil
-		}
-		config.NextToken = output.NextToken
+		res <- page.FilterNames
 	}
+	return nil
 }
 
 func getDetectorFilter(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {

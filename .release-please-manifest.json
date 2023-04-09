@@ -1,7 +1,7 @@
 {
   "cli": "2.5.3",
   "cli+FILLER": "0.0.0",
-  "plugins/source/aws": "15.7.0",
+  "plugins/source/aws": "16.0.1",
   "plugins/source/aws+FILLER": "0.0.0",
   "plugins/source/azure": "7.0.0",
   "plugins/source/azure+FILLER": "0.0.0",
@@ -69,7 +69,7 @@
   "plugins/destination/azblob+FILLER": "0.0.0",
   "plugins/destination/neo4j": "1.1.4",
   "plugins/destination/neo4j+FILLER": "0.0.0",
-  "plugins/destination/kafka": "2.0.9",
+  "plugins/destination/kafka": "2.0.10",
   "plugins/destination/kafka+FILLER": "0.0.0",
   "plugins/source/hackernews": "1.2.3",
   "plugins/source/hackernews+FILLER": "0.0.0",

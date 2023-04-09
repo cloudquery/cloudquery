@@ -33,7 +33,7 @@ func fetchQuicksightFolders(ctx context.Context, meta schema.ClientMeta, parent 
 		AwsAccountId: aws.String(cl.AccountID),
 	}
 	var ae smithy.APIError
-
+	// No paginator available
 	for {
 		out, err := svc.ListFolders(ctx, &input)
 		if err != nil {
