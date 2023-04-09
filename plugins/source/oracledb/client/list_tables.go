@@ -3,12 +3,14 @@ package client
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type column struct {
+	id       int
 	name     string
 	dataType string
 	notNull  bool
@@ -54,7 +56,8 @@ func (c *Client) updateTableConstraints(ctx context.Context, table *schema.Table
 }
 
 func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
-	query := `SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE, DATA_LENGTH, NULLABLE FROM USER_TAB_COLS ORDER BY TABLE_NAME, COLUMN_ID`
+	// Please note we don't use ORDER BY here because it's slower than sorting in memory via Go sort.SliceStable
+	query := `SELECT TABLE_NAME, COLUMN_ID, COLUMN_NAME, DATA_TYPE, DATA_LENGTH, NULLABLE FROM USER_TAB_COLS`
 	rows, err := c.db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
@@ -63,12 +66,13 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 	schemaTables := make(map[string][]column)
 	for rows.Next() {
 		var tableName string
+		var columnId int
 		var columnName string
 		var dataType string
 		var dataLength int
 		var nullable string
 
-		if err := rows.Scan(&tableName, &columnName, &dataType, &dataLength, &nullable); err != nil {
+		if err := rows.Scan(&tableName, &columnId, &columnName, &dataType, &dataLength, &nullable); err != nil {
 			return nil, err
 		}
 		dataType = strings.ToLower(dataType)
@@ -76,6 +80,7 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 			dataType = fmt.Sprintf("%s(%d)", dataType, dataLength)
 		}
 		schemaTables[tableName] = append(schemaTables[tableName], column{
+			id:       columnId,
 			name:     columnName,
 			dataType: dataType,
 			notNull:  nullable == "N",
@@ -87,6 +92,9 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		table := schema.Table{
 			Name: tableName,
 		}
+		sort.SliceStable(columns, func(i, j int) bool {
+			return columns[i].id < columns[j].id
+		})
 		for _, column := range columns {
 			table.Columns = append(table.Columns, schema.Column{
 				Name:            column.name,
@@ -100,6 +108,10 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		}
 		tables = append(tables, &table)
 	}
+
+	sort.SliceStable(tables, func(i, j int) bool {
+		return tables[i].Name < tables[j].Name
+	})
 
 	return tables, nil
 }
