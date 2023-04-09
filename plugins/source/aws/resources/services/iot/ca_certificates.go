@@ -46,12 +46,14 @@ func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent 
 	c := meta.(*client.Client)
 
 	svc := c.Services().Iot
-	for {
-		response, err := svc.ListCACertificates(ctx, &input)
+	paginator := iot.NewListCACertificatesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		for _, ca := range response.Certificates {
+		for _, ca := range page.Certificates {
+			// TODO: Handle resolution in parallel with PreResourceResolver
 			cert, err := svc.DescribeCACertificate(ctx, &iot.DescribeCACertificateInput{
 				CertificateId: ca.CertificateId,
 			}, func(options *iot.Options) {
@@ -62,10 +64,6 @@ func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent 
 			}
 			res <- cert.CertificateDescription
 		}
-		if aws.ToString(response.NextMarker) == "" {
-			break
-		}
-		input.Marker = response.NextMarker
 	}
 	return nil
 }
@@ -77,22 +75,16 @@ func ResolveIotCaCertificateCertificates(ctx context.Context, meta schema.Client
 		CaCertificateId: i.CertificateId,
 		PageSize:        aws.Int32(250),
 	}
-
 	var certs []string
-	for {
-		response, err := svc.ListCertificatesByCA(ctx, &input)
+	paginator := iot.NewListCertificatesByCAPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		for _, ct := range response.Certificates {
+		for _, ct := range page.Certificates {
 			certs = append(certs, *ct.CertificateId)
 		}
-
-		if aws.ToString(response.NextMarker) == "" {
-			break
-		}
-		input.Marker = response.NextMarker
 	}
 	return resource.Set(c.Name, certs)
 }

@@ -47,6 +47,7 @@ func fetchAppstreamStackEntitlements(ctx context.Context, meta schema.ClientMeta
 	input.StackName = parent.Item.(types.Stack).Name
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
+	// No paginator available
 	for {
 		response, err := svc.DescribeEntitlements(ctx, &input)
 		if err != nil {

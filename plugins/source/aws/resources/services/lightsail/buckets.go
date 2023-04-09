@@ -44,6 +44,7 @@ func fetchLightsailBuckets(ctx context.Context, meta schema.ClientMeta, parent *
 	var input lightsail.GetBucketsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
+	// No paginator available
 	for {
 		response, err := svc.GetBuckets(ctx, &input)
 		if err != nil {

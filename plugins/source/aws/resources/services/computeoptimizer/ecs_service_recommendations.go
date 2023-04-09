@@ -33,7 +33,7 @@ func fetchEcsServiceRecommendations(ctx context.Context, meta schema.ClientMeta,
 	input := computeoptimizer.GetECSServiceRecommendationsInput{
 		MaxResults: aws.Int32(1000),
 	}
-
+	// No paginator available
 	for {
 		response, err := svc.GetECSServiceRecommendations(ctx, &input)
 		if err != nil {

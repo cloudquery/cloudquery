@@ -50,16 +50,13 @@ func fetchEc2TransitGatewayPeeringAttachments(ctx context.Context, meta schema.C
 
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
-	for {
-		output, err := svc.DescribeTransitGatewayPeeringAttachments(ctx, &config)
+	paginator := ec2.NewDescribeTransitGatewayPeeringAttachmentsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.TransitGatewayPeeringAttachments
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
+		res <- page.TransitGatewayPeeringAttachments
 	}
 	return nil
 }

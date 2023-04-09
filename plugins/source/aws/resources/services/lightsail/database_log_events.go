@@ -71,6 +71,7 @@ func fetchLogEvents(ctx context.Context, res chan<- any, c *client.Client, datab
 		StartTime:              &startTime,
 		EndTime:                &endTime,
 	}
+	// No paginator available
 	for {
 		response, err := svc.GetRelationalDatabaseLogEvents(ctx, &input)
 		if err != nil {

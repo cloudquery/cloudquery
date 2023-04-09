@@ -49,16 +49,13 @@ func fetchNeptuneDbParameterGroups(ctx context.Context, meta schema.ClientMeta, 
 	input := neptune.DescribeDBParameterGroupsInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
 	}
-	for {
-		output, err := svc.DescribeDBParameterGroups(ctx, &input)
+	paginator := neptune.NewDescribeDBParameterGroupsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.DBParameterGroups
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		input.Marker = output.Marker
+		res <- page.DBParameterGroups
 	}
 	return nil
 }
@@ -68,8 +65,9 @@ func fetchNeptuneDbParameterGroupDbParameters(ctx context.Context, meta schema.C
 	svc := cl.Services().Neptune
 	g := parent.Item.(types.DBParameterGroup)
 	input := neptune.DescribeDBParametersInput{DBParameterGroupName: g.DBParameterGroupName}
-	for {
-		output, err := svc.DescribeDBParameters(ctx, &input)
+	paginator := neptune.NewDescribeDBParametersPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if client.IsAWSError(err, "DBParameterGroupNotFound") {
 				cl.Logger().Warn().Err(err).Msg("received DBParameterGroupNotFound on DescribeDBParameters")
@@ -77,11 +75,7 @@ func fetchNeptuneDbParameterGroupDbParameters(ctx context.Context, meta schema.C
 			}
 			return err
 		}
-		res <- output.Parameters
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		input.Marker = output.Marker
+		res <- page.Parameters
 	}
 	return nil
 }

@@ -44,14 +44,14 @@ func fetchIotTopicRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 	input := iot.ListTopicRulesInput{
 		MaxResults: aws.Int32(250),
 	}
-
-	for {
-		response, err := svc.ListTopicRules(ctx, &input)
+	paginator := iot.NewListTopicRulesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		for _, s := range response.Rules {
+		for _, s := range page.Rules {
+			// TODO: Handle in parallel using PreResourceResolver
 			rule, err := svc.GetTopicRule(ctx, &iot.GetTopicRuleInput{
 				RuleName: s.RuleName,
 			}, func(options *iot.Options) {
@@ -62,11 +62,6 @@ func fetchIotTopicRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 			}
 			res <- rule
 		}
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
 	}
 	return nil
 }
@@ -78,20 +73,13 @@ func ResolveIotTopicRuleTags(ctx context.Context, meta schema.ClientMeta, resour
 		ResourceArn: i.RuleArn,
 	}
 	tags := make(map[string]string)
-
-	for {
-		response, err := svc.ListTagsForResource(ctx, &input)
-
+	paginator := iot.NewListTagsForResourcePaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		client.TagsIntoMap(response.Tags, tags)
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		client.TagsIntoMap(page.Tags, tags)
 	}
 	return resource.Set(c.Name, tags)
 }

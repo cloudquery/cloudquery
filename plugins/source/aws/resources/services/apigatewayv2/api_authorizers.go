@@ -53,6 +53,7 @@ func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
+	// No paginator available
 	for {
 		response, err := svc.GetAuthorizers(ctx, &config)
 

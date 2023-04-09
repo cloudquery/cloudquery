@@ -3,7 +3,6 @@ package mq
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/aws/aws-sdk-go-v2/service/mq/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -44,17 +43,13 @@ func fetchMqBrokers(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	var config mq.ListBrokersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Mq
-	for {
-		response, err := svc.ListBrokers(ctx, &config)
+	paginator := mq.NewListBrokersPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.BrokerSummaries
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.BrokerSummaries
 	}
 	return nil
 }

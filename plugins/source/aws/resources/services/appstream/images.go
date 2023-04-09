@@ -27,17 +27,13 @@ func fetchAppstreamImages(ctx context.Context, meta schema.ClientMeta, parent *s
 	input := appstream.DescribeImagesInput{MaxResults: aws.Int32(25)}
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
-	for {
-		response, err := svc.DescribeImages(ctx, &input)
+	paginator := appstream.NewDescribeImagesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.Images
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		res <- page.Images
 	}
 	return nil
 }

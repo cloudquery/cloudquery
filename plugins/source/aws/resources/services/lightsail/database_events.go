@@ -39,6 +39,7 @@ func fetchLightsailDatabaseEvents(ctx context.Context, meta schema.ClientMeta, p
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
+	// No paginator available
 	for {
 		response, err := svc.GetRelationalDatabaseEvents(ctx, &input)
 		if err != nil {

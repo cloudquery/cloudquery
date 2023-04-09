@@ -54,6 +54,7 @@ func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *sc
 	svc := c.Services().Dynamodb
 
 	config := dynamodb.ListTablesInput{}
+	// No paginator available
 	for {
 		output, err := svc.ListTables(ctx, &config)
 		if err != nil {
@@ -94,6 +95,7 @@ func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resou
 	input := &dynamodb.ListTagsOfResourceInput{
 		ResourceArn: table.TableArn,
 	}
+	// No paginator available
 	for {
 		res, err := svc.ListTagsOfResource(ctx, input)
 		if err != nil {

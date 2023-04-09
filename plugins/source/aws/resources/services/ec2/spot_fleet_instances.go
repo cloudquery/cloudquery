@@ -48,6 +48,7 @@ func fetchEC2SpotFleetInstances(ctx context.Context, meta schema.ClientMeta, par
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
+	// No paginator available
 	for {
 		output, err := svc.DescribeSpotFleetInstances(ctx, &config)
 		if err != nil {

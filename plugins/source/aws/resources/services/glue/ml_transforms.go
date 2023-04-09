@@ -51,17 +51,13 @@ func MlTransforms() *schema.Table {
 func fetchGlueMlTransforms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
-	input := glue.GetMLTransformsInput{}
-	for {
-		result, err := svc.GetMLTransforms(ctx, &input)
+	paginator := glue.NewGetMLTransformsPaginator(svc, &glue.GetMLTransformsInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- result.Transforms
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
+		res <- page.Transforms
 	}
 	return nil
 }

@@ -37,6 +37,7 @@ func fetchListenerCertificates(ctx context.Context, meta schema.ClientMeta, pare
 	svc := c.Services().Elasticloadbalancingv2
 	listener := parent.Item.(types.Listener)
 	config := elbv2.DescribeListenerCertificatesInput{ListenerArn: listener.ListenerArn}
+	// No paginator available
 	for {
 		response, err := svc.DescribeListenerCertificates(ctx, &config, func(options *elbv2.Options) {
 			options.Region = region

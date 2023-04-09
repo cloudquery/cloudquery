@@ -46,18 +46,14 @@ func fetchIotThingTypes(ctx context.Context, meta schema.ClientMeta, parent *sch
 	c := meta.(*client.Client)
 
 	svc := c.Services().Iot
-	for {
-		response, err := svc.ListThingTypes(ctx, &input)
+	paginator := iot.NewListThingTypesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
-		res <- response.ThingTypes
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		res <- page.ThingTypes
 	}
 	return nil
 }
@@ -69,20 +65,13 @@ func ResolveIotThingTypeTags(ctx context.Context, meta schema.ClientMeta, resour
 		ResourceArn: i.ThingTypeArn,
 	}
 	tags := make(map[string]string)
-
-	for {
-		response, err := svc.ListTagsForResource(ctx, &input)
-
+	paginator := iot.NewListTagsForResourcePaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		client.TagsIntoMap(response.Tags, tags)
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		client.TagsIntoMap(page.Tags, tags)
 	}
 	return resource.Set(c.Name, tags)
 }

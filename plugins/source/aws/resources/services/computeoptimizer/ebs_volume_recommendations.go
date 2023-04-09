@@ -33,7 +33,7 @@ func fetchEbsVolumeRecommendations(ctx context.Context, meta schema.ClientMeta, 
 	input := computeoptimizer.GetEBSVolumeRecommendationsInput{
 		MaxResults: aws.Int32(1000),
 	}
-
+	// No paginator available
 	for {
 		response, err := svc.GetEBSVolumeRecommendations(ctx, &input)
 		if err != nil {
