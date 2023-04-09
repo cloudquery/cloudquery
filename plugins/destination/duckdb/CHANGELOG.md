@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v1.0.4...plugins-destination-duckdb-v1.0.5) (2023-04-09)
+
+
+### Bug Fixes
+
+* **duckdb:** Fix multiple pks in delete from ([#9775](https://github.com/cloudquery/cloudquery/issues/9775)) ([706217f](https://github.com/cloudquery/cloudquery/commit/706217fef50703ee228f4df20d95eb55d934fb86))
+
+## [1.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v1.0.3...plugins-destination-duckdb-v1.0.4) (2023-04-09)
+
+
+### Bug Fixes
+
+* **duckdb:** Support multiple PKs ([#9772](https://github.com/cloudquery/cloudquery/issues/9772)) ([d94d87d](https://github.com/cloudquery/cloudquery/commit/d94d87da16ab6df52dd3705c5f6c60cd151a26fc))
+
 ## [1.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v1.0.2...plugins-destination-duckdb-v1.0.3) (2023-04-04)
 
 

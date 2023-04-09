@@ -3,6 +3,7 @@ package campaigns
 import (
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/source/googleads/client"
 	"github.com/cloudquery/cloudquery/plugins/source/googleads/gaql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -32,9 +33,8 @@ WHERE campaign_criterion.campaign = "customers/123/campaigns/456"`
 	)
 }
 
-func testCampaignCriteria(t *testing.T) map[string][]*services.GoogleAdsRow {
+func testCampaignCriteria(t *testing.T) client.MockedResponses {
 	var criterion resources.CampaignCriterion
 	require.NoError(t, faker.FakeObject(&criterion))
-	row := &services.GoogleAdsRow{CampaignCriterion: &criterion}
-	return map[string][]*services.GoogleAdsRow{"campaign_criterion": {row}}
+	return client.MockedResponses{"campaign_criterion": {&services.GoogleAdsRow{CampaignCriterion: &criterion}}}
 }

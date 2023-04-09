@@ -59,12 +59,16 @@ func (c *Client) upsert(table *schema.Table, data []any) error {
 		sb.WriteString("delete from ")
 		sb.WriteString(`"` + table.Name + `"`)
 		sb.WriteString(" where ")
-		pkData := make([]any, len(table.PrimaryKeys()))
-		for i, k := range table.PrimaryKeys() {
+		pks := table.PrimaryKeys()
+		pkData := make([]any, len(pks))
+		for i, k := range pks {
 			col := table.Columns.Get(k)
 			sb.WriteString(`"` + col.Name + `"`)
 			sb.WriteString(" = ")
-			sb.WriteString(fmt.Sprintf("$%d", i+1))
+			sb.WriteString(fmt.Sprintf("$%d ", i+1))
+			if i < len(pks)-1 {
+				sb.WriteString("and ")
+			}
 			pkData[i] = data[table.Columns.Index(k)]
 		}
 		sql := sb.String()

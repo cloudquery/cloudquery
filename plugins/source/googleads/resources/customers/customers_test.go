@@ -9,6 +9,7 @@ import (
 	"github.com/shenzhencenter/google-ads-pb/resources"
 	"github.com/shenzhencenter/google-ads-pb/services"
 	"github.com/stretchr/testify/require"
+	"golang.org/x/exp/maps"
 )
 
 func TestCustomersQuery(t *testing.T) {
@@ -50,14 +51,12 @@ FROM customer`
 	require.Equal(t, expected, gaql.Query(new(resources.Customer), nil, customerOptions))
 }
 
-func testCustomers(t *testing.T) map[string][]*services.GoogleAdsRow {
+func testCustomers(t *testing.T) client.MockedResponses {
 	var customer resources.Customer
 	require.NoError(t, faker.FakeObject(&customer))
-	row := &services.GoogleAdsRow{Customer: &customer}
-	return client.MapsCombine(
-		map[string][]*services.GoogleAdsRow{"customer": {row}},
-		testCustomerLabels(t),
-	)
+	responses := client.MockedResponses{"customer": {&services.GoogleAdsRow{Customer: &customer}}}
+	maps.Copy(responses, testCustomerLabels(t))
+	return responses
 }
 
 func TestCustomers(t *testing.T) {
