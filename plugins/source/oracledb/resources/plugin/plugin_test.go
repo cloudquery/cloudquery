@@ -226,11 +226,8 @@ func TestPerformance(t *testing.T) {
 			if err := createTable(gtx, db, table); err != nil {
 				return err
 			}
-			if err := insertTable(gtx, db, table, data); err != nil {
-				return err
-			}
 
-			return nil
+			return insertTable(gtx, db, table, data)
 		})
 	}
 
