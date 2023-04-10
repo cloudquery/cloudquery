@@ -7,13 +7,13 @@ import (
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/client"
-	"github.com/cloudquery/cloudquery/plugins/source/snyk/internal/legacy"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/julienschmidt/httprouter"
+	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 )
 
 func createIssues(mux *httprouter.Router) error {
-	var resp legacy.ListReportingIssuesResponse
+	var resp snyk.ListReportingIssuesResponse
 	if err := faker.FakeObject(&resp); err != nil {
 		return err
 	}

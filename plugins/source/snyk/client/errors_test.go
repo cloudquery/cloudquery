@@ -3,11 +3,12 @@ package client
 import (
 	"context"
 	"errors"
+	"net/http"
 	"os"
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/plugins/source/snyk/internal/legacy"
+	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 	"github.com/rs/zerolog"
 )
 
@@ -54,7 +55,13 @@ func TestRetryOnRateLimitError(t *testing.T) {
 		got := c.RetryOnError(ctx, "table_name", func() error {
 			if i == 0 {
 				i++
-				return legacy.HTTPError{Code: 429}
+				return &snyk.ErrorResponse{
+					Response: &snyk.Response{
+						Response:      &http.Response{StatusCode: http.StatusInternalServerError},
+						SnykRequestID: "",
+					},
+					ErrorElement: snyk.ErrorElement{},
+				}
 			}
 			return nil
 		})

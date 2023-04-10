@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/client"
-	"github.com/cloudquery/cloudquery/plugins/source/snyk/internal/legacy"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
@@ -23,7 +22,7 @@ func Issues() *schema.Table {
 		Resolver:    fetchIssues,
 		Multiplex:   client.ByOrganization,
 		Transform: transformers.TransformWithStruct(
-			&legacy.ListReportingIssueResult{},
+			&snyk.ListReportingIssueResult{},
 		),
 		Columns: schema.ColumnList{
 			client.OrganizationID,
