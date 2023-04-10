@@ -51,6 +51,7 @@ func fetchLightsailInstances(ctx context.Context, meta schema.ClientMeta, parent
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	input := lightsail.GetInstancesInput{}
+	// No paginator available
 	for {
 		output, err := svc.GetInstances(ctx, &input)
 		if err != nil {

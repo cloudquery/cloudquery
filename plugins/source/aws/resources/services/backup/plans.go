@@ -48,17 +48,13 @@ func fetchBackupPlans(ctx context.Context, meta schema.ClientMeta, parent *schem
 	cl := meta.(*client.Client)
 	svc := cl.Services().Backup
 	params := backup.ListBackupPlansInput{MaxResults: aws.Int32(1000)} // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupPlans.html
-	for {
-		result, err := svc.ListBackupPlans(ctx, &params)
+	paginator := backup.NewListBackupPlansPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- result.BackupPlansList
-
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		params.NextToken = result.NextToken
+		res <- page.BackupPlansList
 	}
 	return nil
 }
@@ -85,21 +81,15 @@ func resolvePlanTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	svc := cl.Services().Backup
 	params := backup.ListTagsInput{ResourceArn: plan.BackupPlanArn}
 	tags := make(map[string]string)
-	for {
-		result, err := svc.ListTags(ctx, &params)
-		if result == nil {
-			break
-		}
+	paginator := backup.NewListTagsPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		for k, v := range result.Tags {
+		for k, v := range page.Tags {
 			tags[k] = v
 		}
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		params.NextToken = result.NextToken
 	}
 	return resource.Set(c.Name, tags)
 }

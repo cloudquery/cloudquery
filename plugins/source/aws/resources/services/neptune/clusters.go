@@ -45,16 +45,13 @@ func fetchNeptuneClusters(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Neptune
-	for {
-		response, err := svc.DescribeDBClusters(ctx, &config)
+	paginator := neptune.NewDescribeDBClustersPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.DBClusters
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
+		res <- page.DBClusters
 	}
 	return nil
 }

@@ -50,6 +50,7 @@ func fetchEventBusTargets(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Eventbridge
+	// No paginator available
 	for {
 		response, err := svc.ListTargetsByRule(ctx, &input)
 		if err != nil {

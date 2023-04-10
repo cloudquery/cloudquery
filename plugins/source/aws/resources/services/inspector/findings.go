@@ -46,14 +46,24 @@ func Findings() *schema.Table {
 func fetchInspectorFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Inspector
-	input := inspector.ListFindingsInput{MaxResults: aws.Int32(500)}
-	for {
-		response, err := svc.ListFindings(ctx, &input)
+	input := inspector.ListFindingsInput{MaxResults: aws.Int32(50)}
+	paginator := inspector.NewListFindingsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		if len(response.FindingArns) > 0 {
-			out, err := svc.DescribeFindings(ctx, &inspector.DescribeFindingsInput{FindingArns: response.FindingArns})
+		if len(page.FindingArns) == 0 {
+			continue
+		}
+
+		batch := 10
+		for i := 0; i < len(page.FindingArns); i += batch {
+			j := i + batch
+			if j >= len(page.FindingArns) {
+				j = len(page.FindingArns) - 1
+			}
+			out, err := svc.DescribeFindings(ctx, &inspector.DescribeFindingsInput{FindingArns: page.FindingArns[i:j]})
 			if err != nil {
 				if c.IsNotFoundError(err) {
 					continue
@@ -62,10 +72,6 @@ func fetchInspectorFindings(ctx context.Context, meta schema.ClientMeta, parent 
 			}
 			res <- out.Findings
 		}
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
 	}
 	return nil
 }

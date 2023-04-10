@@ -40,6 +40,7 @@ func listBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	svc := c.Services().Dynamodb
 
 	config := dynamodb.ListBackupsInput{}
+	// No paginator available
 	for {
 		output, err := svc.ListBackups(ctx, &config)
 		if err != nil {

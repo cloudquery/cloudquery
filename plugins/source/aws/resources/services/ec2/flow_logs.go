@@ -44,16 +44,13 @@ func fetchEc2FlowLogs(ctx context.Context, meta schema.ClientMeta, parent *schem
 	var config ec2.DescribeFlowLogsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
-	for {
-		output, err := svc.DescribeFlowLogs(ctx, &config)
+	paginator := ec2.NewDescribeFlowLogsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.FlowLogs
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
+		res <- page.FlowLogs
 	}
 	return nil
 }

@@ -50,6 +50,7 @@ func fetchAppstreamApplicationFleetAssociations(ctx context.Context, meta schema
 
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
+	// No paginator available
 	for {
 		response, err := svc.DescribeApplicationFleetAssociations(ctx, &input)
 		if err != nil {

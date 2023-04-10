@@ -3,7 +3,6 @@ package glacier
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/glacier"
 	"github.com/aws/aws-sdk-go-v2/service/glacier/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -48,18 +47,13 @@ func Vaults() *schema.Table {
 func fetchGlacierVaults(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Glacier
-	input := glacier.ListVaultsInput{}
-	for {
-		output, err := svc.ListVaults(ctx, &input)
+	paginator := glacier.NewListVaultsPaginator(svc, &glacier.ListVaultsInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.VaultList
-
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		input.Marker = output.Marker
+		res <- page.VaultList
 	}
 	return nil
 }

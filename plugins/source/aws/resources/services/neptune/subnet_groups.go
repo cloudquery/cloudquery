@@ -71,16 +71,13 @@ func fetchNeptuneSubnetGroups(ctx context.Context, meta schema.ClientMeta, paren
 
 	c := meta.(*client.Client)
 	svc := c.Services().Neptune
-	for {
-		response, err := svc.DescribeDBSubnetGroups(ctx, &config)
+	paginator := neptune.NewDescribeDBSubnetGroupsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.DBSubnetGroups
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
+		res <- page.DBSubnetGroups
 	}
 	return nil
 }

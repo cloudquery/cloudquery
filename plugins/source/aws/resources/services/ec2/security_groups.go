@@ -44,18 +44,13 @@ func fetchEc2SecurityGroups(ctx context.Context, meta schema.ClientMeta, parent 
 	var config ec2.DescribeSecurityGroupsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
-	for {
-		output, err := svc.DescribeSecurityGroups(ctx, &config, func(o *ec2.Options) {
-			o.Region = c.Region
-		})
+	paginator := ec2.NewDescribeSecurityGroupsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.SecurityGroups
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
+		res <- page.SecurityGroups
 	}
 	return nil
 }

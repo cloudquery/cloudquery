@@ -33,7 +33,7 @@ func fetchEc2InstanceRecommendations(ctx context.Context, meta schema.ClientMeta
 	input := computeoptimizer.GetEC2InstanceRecommendationsInput{
 		MaxResults: aws.Int32(1000),
 	}
-
+	// No paginator available
 	for {
 		response, err := svc.GetEC2InstanceRecommendations(ctx, &input)
 		if err != nil {

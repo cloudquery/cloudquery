@@ -46,6 +46,7 @@ func fetchApigatewayRestApiDocumentationParts(ctx context.Context, meta schema.C
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
 	config := apigateway.GetDocumentationPartsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
+	// No paginator available
 	for {
 		response, err := svc.GetDocumentationParts(ctx, &config)
 		if err != nil {

@@ -38,6 +38,7 @@ func fetchApiDestinations(ctx context.Context, meta schema.ClientMeta, parent *s
 	var input eventbridge.ListApiDestinationsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Eventbridge
+	// No paginator available
 	for {
 		response, err := svc.ListApiDestinations(ctx, &input)
 		if err != nil {

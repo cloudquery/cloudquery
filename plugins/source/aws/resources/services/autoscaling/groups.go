@@ -70,18 +70,13 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 			input.AutoScalingGroupNames = append(input.AutoScalingGroupNames, *h.AutoScalingGroupName)
 		}
 		var configurations []types.NotificationConfiguration
-		for {
-			output, err := svc.DescribeNotificationConfigurations(ctx, &input, func(o *autoscaling.Options) {
-				o.Region = c.Region
-			})
+		paginator := autoscaling.NewDescribeNotificationConfigurationsPaginator(svc, &input)
+		for paginator.HasMorePages() {
+			page, err := paginator.NextPage(ctx)
 			if err != nil {
 				return err
 			}
-			configurations = append(configurations, output.NotificationConfigurations...)
-			if aws.ToString(output.NextToken) == "" {
-				break
-			}
-			input.NextToken = output.NextToken
+			configurations = append(configurations, page.NotificationConfigurations...)
 		}
 		for _, gr := range groups {
 			wrapper := models.AutoScalingGroupWrapper{
@@ -94,12 +89,13 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 
 	config := autoscaling.DescribeAutoScalingGroupsInput{}
-	for {
-		output, err := svc.DescribeAutoScalingGroups(ctx, &config)
+	paginator := autoscaling.NewDescribeAutoScalingGroupsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		groups := output.AutoScalingGroups
+		groups := page.AutoScalingGroups
 		for i := 0; i < len(groups); i += 255 {
 			end := i + 255
 
@@ -112,11 +108,6 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 				return err
 			}
 		}
-
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
 	}
 	return nil
 }
@@ -127,6 +118,7 @@ func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.Clien
 	svc := cl.Services().Autoscaling
 	config := autoscaling.DescribeLoadBalancersInput{AutoScalingGroupName: p.AutoScalingGroupName}
 	j := map[string]any{}
+	// No paginator available
 	for {
 		output, err := svc.DescribeLoadBalancers(ctx, &config)
 		if err != nil {
@@ -152,6 +144,7 @@ func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta s
 	svc := cl.Services().Autoscaling
 	config := autoscaling.DescribeLoadBalancerTargetGroupsInput{AutoScalingGroupName: p.AutoScalingGroupName}
 	j := map[string]any{}
+	// No paginator available
 	for {
 		output, err := svc.DescribeLoadBalancerTargetGroups(ctx, &config)
 		if err != nil {

@@ -3,7 +3,6 @@ package identitystore
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/identitystore"
 	"github.com/aws/aws-sdk-go-v2/service/identitystore/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -36,17 +35,13 @@ func fetchIdentitystoreGroupMemberships(ctx context.Context, meta schema.ClientM
 		GroupId:         group.GroupId,
 		IdentityStoreId: group.IdentityStoreId,
 	}
-	for {
-		response, err := svc.ListGroupMemberships(ctx, &config)
+	paginator := identitystore.NewListGroupMembershipsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.GroupMemberships
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.GroupMemberships
 	}
 	return nil
 }
