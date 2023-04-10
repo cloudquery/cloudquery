@@ -141,7 +141,7 @@ jobs:
           go-version-file: plugins/source/aws/go.mod
           cache: true
           cache-dependency-path: plugins/source/aws/go.sum
-          cache-prefix: policies-cache-
+          cache-key-prefix: policies-cache-
       - name: Build
         run: go build .
       - name: Setup CloudQuery
