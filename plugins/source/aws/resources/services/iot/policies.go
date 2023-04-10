@@ -69,20 +69,7 @@ func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	return nil
 }
 func ResolveIotPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
-	input := iot.ListTagsForResourceInput{
-		ResourceArn: resource.Item.(*iot.GetPolicyOutput).PolicyArn,
-	}
-	tags := make(map[string]string)
-
-	paginator := iot.NewListTagsForResourcePaginator(svc, &input)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return err
-		}
-		client.TagsIntoMap(page.Tags, tags)
-	}
-	return resource.Set(c.Name, tags)
+	i := resource.Item.(*iot.GetPolicyOutput)
+	svc := meta.(*client.Client).Services().Iot
+	return resolveIotTags(ctx, svc, resource, c, i.PolicyArn)
 }
