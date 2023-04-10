@@ -26,20 +26,14 @@ jobs:
     env:
       CGO_ENABLED: 0
     steps:
-    - id:  dash-path
-      run: |
-           echo "dashed=$(echo ${{ inputs.path }} | tr '/' '-')" >> $GITHUB_OUTPUT
     - name: Checkout
       uses: actions/checkout@v3
     - uses: actions/cache@v3
       with:
-        path:         |
-                      ~/.cache/go-build
-                      ~/go/pkg/mod
-        key:          ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles(format('{0}/go.sum', inputs.path)) }}
-        # actually, this value is never ever saved, but left for consistency (renaming cache keys os out of scope)
-        restore-keys: |
-                      ${{ runner.os }}-go-1.19.5-release-cache-${{ steps.dash-path.outputs.dashed }}
+        path: |
+              ~/.cache/go-build
+              ~/go/pkg/mod
+        key:  ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles(format('{0}/go.sum', inputs.path)) }}
     - name: Set up Go
       id:   set-up-go
       uses: actions/setup-go@v3
