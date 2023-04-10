@@ -67,7 +67,7 @@ func getJobs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 	if err != nil {
 		return err
 	}
-	resource.Item = output
+	resource.Item = output.Job
 	return nil
 }
 
