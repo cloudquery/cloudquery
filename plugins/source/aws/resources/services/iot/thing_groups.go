@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
+	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -13,11 +14,12 @@ import (
 func ThingGroups() *schema.Table {
 	tableName := "aws_iot_thing_groups"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeThingGroup.html`,
-		Resolver:    fetchIotThingGroups,
-		Transform:   transformers.TransformWithStruct(&iot.DescribeThingGroupOutput{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
+		Name:                tableName,
+		Description:         `https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeThingGroup.html`,
+		Resolver:            fetchIotThingGroups,
+		PreResourceResolver: getThingGroup,
+		Transform:           transformers.TransformWithStruct(&iot.DescribeThingGroupOutput{}),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -61,21 +63,25 @@ func fetchIotThingGroups(ctx context.Context, meta schema.ClientMeta, parent *sc
 		if err != nil {
 			return err
 		}
-		for _, g := range page.ThingGroups {
-			// TODO: Handle resolution in parallel with PreResourceResolver
-			group, err := svc.DescribeThingGroup(ctx, &iot.DescribeThingGroupInput{
-				ThingGroupName: g.GroupName,
-			}, func(options *iot.Options) {
-				options.Region = c.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- group
-		}
+		res <- page.ThingGroups
 	}
 	return nil
 }
+
+func getThingGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+
+	output, err := svc.DescribeThingGroup(ctx, &iot.DescribeThingGroupInput{
+		ThingGroupName: resource.Item.(types.GroupNameAndArn).GroupName,
+	})
+	if err != nil {
+		return err
+	}
+	resource.Item = output
+	return nil
+}
+
 func ResolveIotThingGroupThingsInGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
 	cl := meta.(*client.Client)
