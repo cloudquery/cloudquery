@@ -98,7 +98,7 @@ jobs:
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
     defaults:
       run:
-        working-directory: ./plugins/source/aws
+        working-directory: ./plugins/source/azure
     services:
       postgres:
         image: postgres:11
