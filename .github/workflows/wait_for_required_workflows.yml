@@ -52,8 +52,12 @@ jobs:
 
             // Most modules should have a 'validate-release' job
             for (const action of actions) {
-              // add 'validate-release / validate-release' as we use reusable with same job id
-              actions = [...actions, 'validate-release / validate-release']
+              if (action === 'plugins/source/aws') {
+                // add 'validate-release / validate-release' as we use reusable with same job id
+                actions = [...actions, 'validate-release / validate-release']
+              } else {
+                actions = [...actions, 'validate-release']
+              }
             }
 
             // We test the CLI on multiple OSes, so we need to wait for all of them
