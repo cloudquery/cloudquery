@@ -14,11 +14,12 @@ import (
 func Jobs() *schema.Table {
 	tableName := "aws_iot_jobs"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_Job.html`,
-		Resolver:    fetchIotJobs,
-		Transform:   transformers.TransformWithStruct(&types.Job{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
+		Name:                tableName,
+		Description:         `https://docs.aws.amazon.com/iot/latest/apireference/API_Job.html`,
+		Resolver:            fetchIotJobs,
+		PreResourceResolver: getJobs,
+		Transform:           transformers.TransformWithStruct(&types.Job{}),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -51,22 +52,25 @@ func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 		if err != nil {
 			return err
 		}
-
-		for _, s := range page.Jobs {
-			// TODO: Handle resolution in parallel with PreResourceResolver
-			job, err := svc.DescribeJob(ctx, &iot.DescribeJobInput{
-				JobId: s.JobId,
-			}, func(options *iot.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- job.Job
-		}
+		res <- page.Jobs
 	}
 	return nil
 }
+
+func getJobs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+
+	output, err := svc.DescribeJob(ctx, &iot.DescribeJobInput{
+		JobId: resource.Item.(types.JobSummary).JobId,
+	})
+	if err != nil {
+		return err
+	}
+	resource.Item = output
+	return nil
+}
+
 func ResolveIotJobTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*types.Job)
 	cl := meta.(*client.Client)
