@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
+	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -13,11 +14,12 @@ import (
 func TopicRules() *schema.Table {
 	tableName := "aws_iot_topic_rules"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_GetTopicRule.html`,
-		Resolver:    fetchIotTopicRules,
-		Transform:   transformers.TransformWithStruct(&iot.GetTopicRuleOutput{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
+		Name:                tableName,
+		Description:         `https://docs.aws.amazon.com/iot/latest/apireference/API_GetTopicRule.html`,
+		Resolver:            fetchIotTopicRules,
+		PreResourceResolver: getTopicRule,
+		Transform:           transformers.TransformWithStruct(&iot.GetTopicRuleOutput{}),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -50,21 +52,25 @@ func fetchIotTopicRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 		if err != nil {
 			return err
 		}
-		for _, s := range page.Rules {
-			// TODO: Handle in parallel using PreResourceResolver
-			rule, err := svc.GetTopicRule(ctx, &iot.GetTopicRuleInput{
-				RuleName: s.RuleName,
-			}, func(options *iot.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- rule
-		}
+		res <- page.Rules
 	}
 	return nil
 }
+
+func getTopicRule(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+
+	output, err := svc.GetTopicRule(ctx, &iot.GetTopicRuleInput{
+		RuleName: resource.Item.(types.TopicRuleListItem).RuleName,
+	})
+	if err != nil {
+		return err
+	}
+	resource.Item = output
+	return nil
+}
+
 func ResolveIotTopicRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.GetTopicRuleOutput)
 	cl := meta.(*client.Client)
