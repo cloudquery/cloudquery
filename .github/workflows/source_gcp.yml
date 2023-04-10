@@ -35,7 +35,7 @@ jobs:
           go-version-file: plugins/source/gcp/go.mod
           cache: true
           cache-dependency-path: plugins/source/gcp/go.sum
-          cache-prefix: test-cache-
+          cache-key-prefix: test-cache-
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
