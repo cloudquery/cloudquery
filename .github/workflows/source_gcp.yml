@@ -30,11 +30,12 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: erezrokah/setup-go@feat/add_cache_prefix
         with:
           go-version-file: plugins/source/gcp/go.mod
           cache: true
           cache-dependency-path: plugins/source/gcp/go.sum
+          cache-prefix: test-cache-
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
@@ -117,11 +118,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: erezrokah/setup-go@feat/add_cache_prefix
         with:
           go-version-file: plugins/source/gcp/go.mod
           cache: true
           cache-dependency-path: plugins/source/gcp/go.sum
+          cache-prefix: policies-cache-
       - name: Build
         run: go build .
       - name: Setup CloudQuery
