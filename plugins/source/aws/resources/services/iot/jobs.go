@@ -71,5 +71,4 @@ func ResolveIotJobTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 	i := resource.Item.(*types.Job)
 	svc := meta.(*client.Client).Services().Iot
 	return resolveIotTags(ctx, svc, resource, c, i.JobArn)
-
 }
