@@ -18,7 +18,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/pavel-snyk/snyk-sdk-go => github.com/cloudquery/snyk-sdk-go v0.1.0
+replace github.com/pavel-snyk/snyk-sdk-go => github.com/cloudquery/snyk-sdk-go v0.2.0
 
 require (
 	github.com/getsentry/sentry-go v0.20.0 // indirect
