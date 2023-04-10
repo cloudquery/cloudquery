@@ -123,5 +123,4 @@ func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resou
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
 	svc := meta.(*client.Client).Services().Iot
 	return resolveIotTags(ctx, svc, resource, c, i.ThingGroupArn)
-
 }
