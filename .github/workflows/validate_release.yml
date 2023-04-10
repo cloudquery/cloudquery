@@ -12,6 +12,11 @@ on:
         type:        string
         required:    false
         default:     'ubuntu-latest'
+    secrets:
+      GORELEASER_KEY:
+        description: 'GoReleaser key'
+        required:    true
+
 jobs:
   validate-release:
     # this if check is here as we check for 'validate-release / validate-release' run
