@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       path:
-        description: 'Go mod directory (e.g. "plugins/source/aws", "plugins/destination/csv", "cli")'
+        description: 'Go mod directory (e.g. "plugins/source/aws", "plugins/destination/file", "cli")'
         type:        string
         required:    true
       runner:
