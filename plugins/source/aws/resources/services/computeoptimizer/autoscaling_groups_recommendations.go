@@ -33,7 +33,7 @@ func fetchAutoscalingGroupsRecommendations(ctx context.Context, meta schema.Clie
 	input := computeoptimizer.GetAutoScalingGroupRecommendationsInput{
 		MaxResults: aws.Int32(1000),
 	}
-
+	// No paginator available
 	for {
 		response, err := svc.GetAutoScalingGroupRecommendations(ctx, &input)
 		if err != nil {

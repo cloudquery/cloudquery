@@ -50,12 +50,14 @@ func fetchIotBillingGroups(ctx context.Context, meta schema.ClientMeta, parent *
 	c := meta.(*client.Client)
 
 	svc := c.Services().Iot
-	for {
-		response, err := svc.ListBillingGroups(ctx, &input)
+	paginator := iot.NewListBillingGroupsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		for _, g := range response.BillingGroups {
+		// TODO: Handle resolution in parallel with PreResourceResolver
+		for _, g := range page.BillingGroups {
 			group, err := svc.DescribeBillingGroup(ctx, &iot.DescribeBillingGroupInput{
 				BillingGroupName: g.GroupName,
 			}, func(options *iot.Options) {
@@ -66,14 +68,11 @@ func fetchIotBillingGroups(ctx context.Context, meta schema.ClientMeta, parent *
 			}
 			res <- group
 		}
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
 	}
 	return nil
 }
+
+// TODO: Move this to a new table
 func resolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeBillingGroupOutput)
 	cl := meta.(*client.Client)
@@ -82,20 +81,14 @@ func resolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.Client
 		BillingGroupName: i.BillingGroupName,
 		MaxResults:       aws.Int32(250),
 	}
-
 	var things []string
-	for {
-		response, err := svc.ListThingsInBillingGroup(ctx, &input)
+	paginator := iot.NewListThingsInBillingGroupPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		things = append(things, response.Things...)
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		things = append(things, page.Things...)
 	}
 	return resource.Set(c.Name, things)
 }
@@ -107,20 +100,13 @@ func resolveIotBillingGroupTags(ctx context.Context, meta schema.ClientMeta, res
 		ResourceArn: i.BillingGroupArn,
 	}
 	tags := make(map[string]string)
-
-	for {
-		response, err := svc.ListTagsForResource(ctx, &input)
-
+	paginator := iot.NewListTagsForResourcePaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		client.TagsIntoMap(response.Tags, tags)
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		client.TagsIntoMap(page.Tags, tags)
 	}
 	return resource.Set(c.Name, tags)
 }

@@ -49,14 +49,15 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 	input := iot.ListSecurityProfilesInput{
 		MaxResults: aws.Int32(250),
 	}
-
-	for {
-		response, err := svc.ListSecurityProfiles(ctx, &input)
+	paginator := iot.NewListSecurityProfilesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
-		for _, s := range response.SecurityProfileIdentifiers {
+		for _, s := range page.SecurityProfileIdentifiers {
+			// TODO: Handle resolution in parallel with PreResourceResolver
 			profile, err := svc.DescribeSecurityProfile(ctx, &iot.DescribeSecurityProfileInput{
 				SecurityProfileName: s.Name,
 			}, func(options *iot.Options) {
@@ -67,11 +68,6 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 			}
 			res <- profile
 		}
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
 	}
 	return nil
 }
@@ -85,20 +81,16 @@ func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMet
 	}
 
 	var targets []string
-	for {
-		response, err := svc.ListTargetsForSecurityProfile(ctx, &input)
+	paginator := iot.NewListTargetsForSecurityProfilePaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
-		for _, t := range response.SecurityProfileTargets {
+		for _, t := range page.SecurityProfileTargets {
 			targets = append(targets, *t.Arn)
 		}
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
 	}
 	return resource.Set(c.Name, targets)
 }
@@ -110,20 +102,13 @@ func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, 
 		ResourceArn: i.SecurityProfileArn,
 	}
 	tags := make(map[string]string)
-
-	for {
-		response, err := svc.ListTagsForResource(ctx, &input)
-
+	paginator := iot.NewListTagsForResourcePaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		client.TagsIntoMap(response.Tags, tags)
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		client.TagsIntoMap(page.Tags, tags)
 	}
 	return resource.Set(c.Name, tags)
 }

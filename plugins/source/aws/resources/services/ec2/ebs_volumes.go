@@ -44,16 +44,13 @@ func fetchEc2EbsVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
 	config := ec2.DescribeVolumesInput{}
-	for {
-		response, err := svc.DescribeVolumes(ctx, &config)
+	paginator := ec2.NewDescribeVolumesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.Volumes
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.Volumes
 	}
 	return nil
 }

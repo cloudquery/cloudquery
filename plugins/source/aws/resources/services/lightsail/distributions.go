@@ -45,7 +45,9 @@ func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, pa
 	var input lightsail.GetDistributionsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
+	// No paginator available
 	for {
+		// Validate the region for this in client/data.json
 		response, err := svc.GetDistributions(ctx, &input, func(options *lightsail.Options) {
 			// Set region to default global region
 			options.Region = "us-east-1"
@@ -56,6 +58,7 @@ func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, pa
 
 		errs, ctx := errgroup.WithContext(ctx)
 		errs.SetLimit(MaxGoroutines)
+		// TODO: Replace with column resolver
 		for _, d := range response.Distributions {
 			func(d types.LightsailDistribution) {
 				errs.Go(func() error {

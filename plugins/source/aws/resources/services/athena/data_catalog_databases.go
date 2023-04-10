@@ -3,7 +3,6 @@ package athena
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -52,17 +51,13 @@ func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta
 	input := athena.ListDatabasesInput{
 		CatalogName: parent.Item.(types.DataCatalog).Name,
 	}
-	for {
-		response, err := svc.ListDatabases(ctx, &input)
+	paginator := athena.NewListDatabasesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.DatabaseList
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		res <- page.DatabaseList
 	}
 	return nil
 }

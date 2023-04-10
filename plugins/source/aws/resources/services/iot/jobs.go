@@ -45,14 +45,15 @@ func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	input := iot.ListJobsInput{
 		MaxResults: aws.Int32(250),
 	}
-
-	for {
-		response, err := svc.ListJobs(ctx, &input)
+	paginator := iot.NewListJobsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
-		for _, s := range response.Jobs {
+		for _, s := range page.Jobs {
+			// TODO: Handle resolution in parallel with PreResourceResolver
 			job, err := svc.DescribeJob(ctx, &iot.DescribeJobInput{
 				JobId: s.JobId,
 			}, func(options *iot.Options) {
@@ -63,11 +64,6 @@ func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 			}
 			res <- job.Job
 		}
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
 	}
 	return nil
 }
@@ -80,19 +76,13 @@ func ResolveIotJobTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 	}
 	tags := make(map[string]string)
 
-	for {
-		response, err := svc.ListTagsForResource(ctx, &input)
-
+	paginator := iot.NewListTagsForResourcePaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		client.TagsIntoMap(response.Tags, tags)
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		client.TagsIntoMap(page.Tags, tags)
 	}
 	return resource.Set(c.Name, tags)
 }

@@ -40,6 +40,7 @@ func fetchApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 	config := amplify.ListAppsInput{
 		MaxResults: int32(100),
 	}
+	// No paginator available
 	for {
 		output, err := svc.ListApps(ctx, &config)
 		if err != nil {

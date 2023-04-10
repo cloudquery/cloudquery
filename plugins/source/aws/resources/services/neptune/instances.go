@@ -46,16 +46,13 @@ func fetchNeptuneInstances(ctx context.Context, meta schema.ClientMeta, parent *
 
 	c := meta.(*client.Client)
 	svc := c.Services().Neptune
-	for {
-		response, err := svc.DescribeDBInstances(ctx, &config)
+	paginator := neptune.NewDescribeDBInstancesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.DBInstances
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
+		res <- page.DBInstances
 	}
 	return nil
 }

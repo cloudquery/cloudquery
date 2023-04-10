@@ -3,7 +3,6 @@ package glue
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -37,18 +36,14 @@ func Classifiers() *schema.Table {
 func fetchGlueClassifiers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Glue
-	input := glue.GetClassifiersInput{}
-	for {
-		output, err := svc.GetClassifiers(ctx, &input)
+
+	paginator := glue.NewGetClassifiersPaginator(svc, &glue.GetClassifiersInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.Classifiers
-
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		input.NextToken = output.NextToken
+		res <- page.Classifiers
 	}
 	return nil
 }

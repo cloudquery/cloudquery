@@ -38,6 +38,7 @@ func fetchAppstreamImageBuilders(ctx context.Context, meta schema.ClientMeta, pa
 	var input appstream.DescribeImageBuildersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
+	// No paginator available
 	for {
 		response, err := svc.DescribeImageBuilders(ctx, &input)
 		if err != nil {

@@ -44,7 +44,9 @@ func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _
 	var config apigatewayv2.GetDomainNamesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
+	// No paginator available
 	for {
+		// TODO: This fix has been merged in the SDK, so this workaround can be removed
 		response, err := svc.GetDomainNames(ctx, &config, func(options *apigatewayv2.Options) {
 			options.Region = c.Region
 			// NOTE: Swapping OperationDeserializer until this is fixed: https://github.com/aws/aws-sdk-go-v2/issues/1282

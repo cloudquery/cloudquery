@@ -33,6 +33,7 @@ func fetchPlanResources(ctx context.Context, meta schema.ClientMeta, parent *sch
 	config := autoscalingplans.DescribeScalingPlanResourcesInput{
 		ScalingPlanName: p.ScalingPlanName,
 	}
+	// No paginator available
 	for {
 		output, err := svc.DescribeScalingPlanResources(ctx, &config)
 		if err != nil {

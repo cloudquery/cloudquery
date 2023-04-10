@@ -45,6 +45,7 @@ func fetchListenerRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 	svc := c.Services().Elasticloadbalancingv2
 	listener := parent.Item.(types.Listener)
 	config := elbv2.DescribeRulesInput{ListenerArn: listener.ListenerArn}
+	// no paginator available
 	for {
 		response, err := svc.DescribeRules(ctx, &config, func(options *elbv2.Options) {
 			options.Region = region

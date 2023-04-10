@@ -55,12 +55,14 @@ func fetchIotThingGroups(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 
 	svc := c.Services().Iot
-	for {
-		response, err := svc.ListThingGroups(ctx, &input)
+	paginator := iot.NewListThingGroupsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		for _, g := range response.ThingGroups {
+		for _, g := range page.ThingGroups {
+			// TODO: Handle resolution in parallel with PreResourceResolver
 			group, err := svc.DescribeThingGroup(ctx, &iot.DescribeThingGroupInput{
 				ThingGroupName: g.GroupName,
 			}, func(options *iot.Options) {
@@ -71,11 +73,6 @@ func fetchIotThingGroups(ctx context.Context, meta schema.ClientMeta, parent *sc
 			}
 			res <- group
 		}
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
 	}
 	return nil
 }
@@ -89,18 +86,14 @@ func ResolveIotThingGroupThingsInGroup(ctx context.Context, meta schema.ClientMe
 	}
 
 	var things []string
-	for {
-		response, err := svc.ListThingsInThingGroup(ctx, &input)
+	paginator := iot.NewListThingsInThingGroupPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
-		things = append(things, response.Things...)
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		things = append(things, page.Things...)
 	}
 	return resource.Set(c.Name, things)
 }
@@ -114,20 +107,15 @@ func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, r
 	}
 
 	var policies []string
-	for {
-		response, err := svc.ListAttachedPolicies(ctx, &input)
+	paginator := iot.NewListAttachedPoliciesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		for _, p := range response.Policies {
+		for _, p := range page.Policies {
 			policies = append(policies, *p.PolicyArn)
 		}
-
-		if aws.ToString(response.NextMarker) == "" {
-			break
-		}
-		input.Marker = response.NextMarker
 	}
 	return resource.Set(c.Name, policies)
 }
@@ -139,20 +127,13 @@ func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resou
 		ResourceArn: i.ThingGroupArn,
 	}
 	tags := make(map[string]string)
-
-	for {
-		response, err := svc.ListTagsForResource(ctx, &input)
-
+	paginator := iot.NewListTagsForResourcePaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		client.TagsIntoMap(response.Tags, tags)
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		client.TagsIntoMap(page.Tags, tags)
 	}
 	return resource.Set(c.Name, tags)
 }

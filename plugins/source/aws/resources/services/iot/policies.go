@@ -45,14 +45,16 @@ func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	input := iot.ListPoliciesInput{
 		PageSize: aws.Int32(250),
 	}
+	paginator := iot.NewListPoliciesPaginator(svc, &input)
 
-	for {
-		response, err := svc.ListPolicies(ctx, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
-		for _, s := range response.Policies {
+		for _, s := range page.Policies {
+			// TODO: Handle resolution in parallel with PreResourceResolver
 			profile, err := svc.GetPolicy(ctx, &iot.GetPolicyInput{
 				PolicyName: s.PolicyName,
 			}, func(options *iot.Options) {
@@ -63,36 +65,24 @@ func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 			}
 			res <- profile
 		}
-
-		if aws.ToString(response.NextMarker) == "" {
-			break
-		}
-		input.Marker = response.NextMarker
 	}
 	return nil
 }
 func ResolveIotPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i := resource.Item.(*iot.GetPolicyOutput)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Iot
 	input := iot.ListTagsForResourceInput{
-		ResourceArn: i.PolicyArn,
+		ResourceArn: resource.Item.(*iot.GetPolicyOutput).PolicyArn,
 	}
 	tags := make(map[string]string)
 
-	for {
-		response, err := svc.ListTagsForResource(ctx, &input)
-
+	paginator := iot.NewListTagsForResourcePaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		client.TagsIntoMap(response.Tags, tags)
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		client.TagsIntoMap(page.Tags, tags)
 	}
 	return resource.Set(c.Name, tags)
 }

@@ -46,16 +46,13 @@ func fetchGlueTriggers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	c := meta.(*client.Client)
 	svc := c.Services().Glue
 	input := glue.ListTriggersInput{MaxResults: aws.Int32(200)}
-	for {
-		response, err := svc.ListTriggers(ctx, &input)
+	paginator := glue.NewListTriggersPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.TriggerNames
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		res <- page.TriggerNames
 	}
 	return nil
 }

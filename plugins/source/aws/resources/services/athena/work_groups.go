@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
@@ -92,19 +91,16 @@ func resolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, res
 	arnStr := createWorkGroupArn(cl, *wg.Name)
 	params := athena.ListTagsForResourceInput{ResourceARN: &arnStr}
 	tags := make(map[string]string)
-	for {
-		result, err := svc.ListTagsForResource(ctx, &params)
+	paginator := athena.NewListTagsForResourcePaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err
 		}
-		client.TagsIntoMap(result.Tags, tags)
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		params.NextToken = result.NextToken
+		client.TagsIntoMap(page.Tags, tags)
 	}
 	return resource.Set(c.Name, tags)
 }

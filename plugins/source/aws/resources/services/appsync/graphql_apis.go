@@ -38,6 +38,7 @@ func fetchAppsyncGraphqlApis(ctx context.Context, meta schema.ClientMeta, parent
 	var config appsync.ListGraphqlApisInput
 	c := meta.(*client.Client)
 	svc := c.Services().Appsync
+	// No paginator available
 	for {
 		output, err := svc.ListGraphqlApis(ctx, &config, func(options *appsync.Options) {
 			options.Region = c.Region
