@@ -127,19 +127,6 @@ func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, r
 }
 func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
-	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
-	input := iot.ListTagsForResourceInput{
-		ResourceArn: i.ThingGroupArn,
-	}
-	tags := make(map[string]string)
-	paginator := iot.NewListTagsForResourcePaginator(svc, &input)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return err
-		}
-		client.TagsIntoMap(page.Tags, tags)
-	}
-	return resource.Set(c.Name, tags)
+	svc := meta.(*client.Client).Services().Iot
+	return resolveIotTags(ctx, svc, resource, c, i.ThingGroupArn)
 }
