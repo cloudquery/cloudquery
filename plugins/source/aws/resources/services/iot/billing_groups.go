@@ -96,5 +96,4 @@ func resolveIotBillingGroupTags(ctx context.Context, meta schema.ClientMeta, res
 	i := resource.Item.(*iot.DescribeBillingGroupOutput)
 	svc := meta.(*client.Client).Services().Iot
 	return resolveIotTags(ctx, svc, resource, c, i.BillingGroupArn)
-
 }
