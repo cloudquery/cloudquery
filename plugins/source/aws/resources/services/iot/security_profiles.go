@@ -101,19 +101,6 @@ func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMet
 }
 func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
-	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
-	input := iot.ListTagsForResourceInput{
-		ResourceArn: i.SecurityProfileArn,
-	}
-	tags := make(map[string]string)
-	paginator := iot.NewListTagsForResourcePaginator(svc, &input)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return err
-		}
-		client.TagsIntoMap(page.Tags, tags)
-	}
-	return resource.Set(c.Name, tags)
+	svc := meta.(*client.Client).Services().Iot
+	return resolveIotTags(ctx, svc, resource, c, i.SecurityProfileArn)
 }
