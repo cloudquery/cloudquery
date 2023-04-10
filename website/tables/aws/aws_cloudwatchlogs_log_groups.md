@@ -9,6 +9,7 @@ The primary key for this table is **arn**.
 ## Relations
 
 The following tables depend on aws_cloudwatchlogs_log_groups:
+  - [aws_cloudwatchlogs_log_group_data_protection_policies](aws_cloudwatchlogs_log_group_data_protection_policies)
   - [aws_cloudwatchlogs_log_group_subscription_filters](aws_cloudwatchlogs_log_group_subscription_filters)
 
 ## Columns
