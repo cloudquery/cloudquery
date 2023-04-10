@@ -14,11 +14,12 @@ import (
 func CaCertificates() *schema.Table {
 	tableName := "aws_iot_ca_certificates"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_CACertificateDescription.html`,
-		Resolver:    fetchIotCaCertificates,
-		Transform:   transformers.TransformWithStruct(&types.CACertificateDescription{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
+		Name:                tableName,
+		Description:         `https://docs.aws.amazon.com/iot/latest/apireference/API_CACertificateDescription.html`,
+		Resolver:            fetchIotCaCertificates,
+		PreResourceResolver: getCaCertificate,
+		Transform:           transformers.TransformWithStruct(&types.CACertificateDescription{}),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -52,21 +53,25 @@ func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent 
 		if err != nil {
 			return err
 		}
-		for _, ca := range page.Certificates {
-			// TODO: Handle resolution in parallel with PreResourceResolver
-			cert, err := svc.DescribeCACertificate(ctx, &iot.DescribeCACertificateInput{
-				CertificateId: ca.CertificateId,
-			}, func(options *iot.Options) {
-				options.Region = c.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- cert.CertificateDescription
-		}
+		res <- page.Certificates
 	}
 	return nil
 }
+
+func getCaCertificate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+
+	output, err := svc.DescribeCACertificate(ctx, &iot.DescribeCACertificateInput{
+		CertificateId: resource.Item.(types.CACertificate).CertificateId,
+	})
+	if err != nil {
+		return err
+	}
+	resource.Item = output.CertificateDescription
+	return nil
+}
+
 func ResolveIotCaCertificateCertificates(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*types.CACertificateDescription)
 	cl := meta.(*client.Client)
