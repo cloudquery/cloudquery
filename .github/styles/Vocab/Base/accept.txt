@@ -190,6 +190,7 @@ unmarshalling
 upsert
 upserts
 upserted
+upvote
 uuid
 UUID
 Vercel
