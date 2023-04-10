@@ -67,32 +67,65 @@ jobs:
                 actions = [...actions, 'test-policies']
               }
             }
+                  
+            pending = new Map()
+            for (const action of actions) {
+              if (pending.has(action)) {
+                pending.set(action, pending.get(action) + 1)
+              } else {
+                pending.set(action, 1)
+              }
+            }
+                  
+            // We'll store IDs for the processed entries in this array
+            processed = []
 
-            pendingActions = [...actions]
-            console.log(`Waiting for ${pendingActions.join(", ")}`)
+            console.log(`Actions: ${actions.join(", ")}`)
             while (now <= deadline) {
+              console.log(`Waiting for ${pending.keys().join(", ")}`)
+
               const checkRuns = await github.paginate(github.rest.checks.listForRef, {
                 owner: 'cloudquery',
                 repo: 'cloudquery',
                 ref: context.payload.pull_request.head.sha,
                 status: 'completed',
                 per_page: 100
-              })
+              }).filter(({ id }) => !processed.includes(id)) // we filter out the runs we already processed
+              
               const runs = checkRuns.map(({ id, name, conclusion }) => ({ id, name, conclusion }))
               console.log(`Got the following check runs: ${JSON.stringify(runs)}`)
-              const matchingRuns = runs.filter(({ name }) => actions.includes(name))
+              
+              // save to processed
+              processed = [...processed, ...runs.map(({ id }) => ({ id }))]
+
+              const matchingRuns = runs.filter(({ name }) => pending.keys().includes(name))
               const failedRuns = matchingRuns.filter(({ conclusion }) => conclusion !== 'success')
               if (failedRuns.length > 0) {
                 throw new Error(`The following required workflows failed: ${failedRuns.map(({ name }) => name).join(", ")}`)
               }
               console.log(`Matching runs: ${matchingRuns.map(({ name }) => name).join(", ")}`)
-              console.log(`Actions: ${actions.join(", ")}`)
-              if (matchingRuns.length === actions.length) {
+              
+              for (const run of matchingRuns) {
+                const name = run.name
+                if (!pending.has(name)) {
+                  // We didn't account for this check but matched this.
+                  // This should never happen.
+                  throw new Error(`Extra check matched: ${run}`)
+                }
+                // update value
+                const left = pending.get(name)
+                if (left === 1) {
+                  pending.delete(name)
+                } else {
+                  pending.set(name, left - 1)
+                }
+              }
+              
+              if (pending.size === 0) {
                 console.log("All required workflows have passed")
                 return
               }
-              pendingActions = actions.filter(action => !runs.some(({ name }) => name === action))
-              console.log(`Waiting for ${pendingActions.join(", ")}`)
+
               await new Promise(r => setTimeout(r, 5000));
               now = new Date().getTime()
             }
