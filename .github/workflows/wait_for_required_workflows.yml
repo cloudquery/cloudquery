@@ -82,7 +82,7 @@ jobs:
 
             console.log(`Actions: ${actions.join(", ")}`)
             while (now <= deadline) {
-              console.log(`Waiting for ${pending.keys().join(", ")}`)
+              console.log(`Waiting for ${Array.from(pending.keys()).join(", ")}`)
 
               const checkRuns = await github.paginate(github.rest.checks.listForRef, {
                 owner: 'cloudquery',
@@ -98,7 +98,7 @@ jobs:
               // save to processed
               processed = [...processed, ...runs.map(({ id }) => ({ id }))]
 
-              const matchingRuns = runs.filter(({ name }) => pending.keys().includes(name))
+              const matchingRuns = runs.filter(({ name }) => pending.has(name))
               const failedRuns = matchingRuns.filter(({ conclusion }) => conclusion !== 'success')
               if (failedRuns.length > 0) {
                 throw new Error(`The following required workflows failed: ${failedRuns.map(({ name }) => name).join(", ")}`)
