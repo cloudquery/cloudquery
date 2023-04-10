@@ -35,7 +35,7 @@ jobs:
           go-version-file: plugins/source/azure/go.mod
           cache: true
           cache-dependency-path: plugins/source/azure/go.sum
-          cache-prefix: test-cache-
+          cache-key-prefix: test-cache-
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
