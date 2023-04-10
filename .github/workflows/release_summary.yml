@@ -39,7 +39,7 @@ jobs:
         run: |
           git diff ${{ steps.tag.outputs.latest }}..HEAD -- website/tables/${{ steps.plugin.outputs.name }} > scripts/table_diff/diff.txt
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: scripts/table_diff/go.mod
           cache: true

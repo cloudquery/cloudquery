@@ -29,7 +29,7 @@ jobs:
           fetch-depth: 2
      
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/destination/firehose/go.mod
           cache: true
@@ -73,12 +73,12 @@ jobs:
             ${{ runner.os }}-go-1.19.4-release-cache-plugins-destination-firehose
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/destination/firehose/go.mod
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v4
         with:
           distribution: goreleaser-pro
           version: latest

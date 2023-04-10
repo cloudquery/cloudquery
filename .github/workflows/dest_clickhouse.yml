@@ -26,7 +26,7 @@ jobs:
         working-directory: plugins/destination/clickhouse
     services:
       clickhouse:
-        image:   clickhouse/clickhouse-server:22.12.6
+        image:   clickhouse/clickhouse-server:23.3.1
         env:
           CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
           CLICKHOUSE_PASSWORD:                  ${{ env.DB_PASSWORD }}
@@ -47,7 +47,7 @@ jobs:
       with:
         fetch-depth: 2
     - name: Set up Go 1.x
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v4
       with:
         go-version-file:       plugins/destination/clickhouse/go.mod
         cache:                 true
@@ -88,12 +88,12 @@ jobs:
                       ${{ runner.os }}-go-1.19.4-release-cache-plugins-destination-clickhouse
     - name: Set up Go
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v4
       with:
         go-version-file: plugins/destination/clickhouse/go.mod
     - name: Install GoReleaser
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-      uses: goreleaser/goreleaser-action@v3
+      uses: goreleaser/goreleaser-action@v4
       with:
         distribution: goreleaser-pro
         version:      latest
