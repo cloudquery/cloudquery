@@ -24,14 +24,14 @@ require (
 	github.com/apache/arrow/go/arrow v0.0.0-20211112161151-bc219186db40 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.17.8 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.13.18 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.19 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.60 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.31 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.25 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.32 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.26 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.23 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.26 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.25 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.26 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.14.0 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.31.1 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
