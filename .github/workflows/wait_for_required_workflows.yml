@@ -78,11 +78,7 @@ jobs:
                 status: 'completed',
                 per_page: 100
               })
-
-              // filter as sometimes we can see duplicates (1st page fetch -> new check finished -> 2nd page fetch)
-              const rawRuns = checkRuns.map(({ id, name, conclusion }) => ({ id, name, conclusion }))
-              const runs = rawRuns.filter((element, index) => rawRuns.indexOf(element) === index)
-
+              const runs = checkRuns.map(({ id, name, conclusion }) => ({ id, name, conclusion }))
               console.log(`Got the following check runs: ${JSON.stringify(runs)}`)
               const matchingRuns = runs.filter(({ name }) => actions.includes(name))
               const failedRuns = matchingRuns.filter(({ conclusion }) => conclusion !== 'success')

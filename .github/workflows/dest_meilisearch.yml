@@ -14,7 +14,7 @@ on:
 
 jobs:
   plugins-destination-meilisearch:
-    name: "plugins/destination/meilisearch"
+    name:            plugins/destination/meilisearch
     runs-on:         ubuntu-latest
     timeout-minutes: 30
     env:

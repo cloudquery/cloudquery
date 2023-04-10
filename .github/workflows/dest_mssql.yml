@@ -14,7 +14,7 @@ on:
 
 jobs:
   plugins-destination-mssql:
-    name: "plugins/destination/mssql"
+    name:            "plugins/destination/mssql"
     runs-on:         ubuntu-latest
     timeout-minutes: 30
     env:

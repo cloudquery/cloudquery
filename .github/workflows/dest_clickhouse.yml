@@ -14,7 +14,7 @@ on:
 
 jobs:
   plugins-destination-clickhouse:
-    name: "plugins/destination/clickhouse"
+    name:            plugins/destination/clickhouse
     runs-on:         ubuntu-latest
     timeout-minutes: 30
     env:
