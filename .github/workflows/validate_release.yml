@@ -39,9 +39,7 @@ jobs:
       id:   set-up-go
       uses: actions/setup-go@v3
       with:
-        go-version-file:       ${{ inputs.path }}/go.mod
-        cache:                 true
-        cache-dependency-path: ${{ inputs.path }}/go.sum
+        go-version-file: ${{ inputs.path }}/go.mod
     - name: Install GoReleaser
       uses: goreleaser/goreleaser-action@v3
       with:
