@@ -25,7 +25,8 @@ This is the (nested) spec used by the OracleDB destination plugin.
 
 - `connection_string` (string, required)
 
-  Connection string to connect to the database in the format `oracle://<user<>:<password>@<server>:<port>/<service_name>`. See the [Go driver documentation](https://github.com/sijms/go-ora) for more details.
+  Connection string to connect to the database in the format `oracle://<user<>:<password>@<server>:<port>/<service_name>`. To use the default `1521` port, you can omit it from the connection string, but still need to keep the `:`, for example `oracle://<user<>:<password>@<server>:/<service_name>`.
+  See the [Go driver documentation](https://github.com/sijms/go-ora) for more details.
 
 <Callout type="info">
 Make sure you use [environment variable expansion](/docs/advanced-topics/environment-variable-substitution) in production instead of committing the credentials to the configuration file directly.
