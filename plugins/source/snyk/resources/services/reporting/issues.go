@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/internal/legacy"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -42,7 +43,7 @@ func Issues() *schema.Table {
 func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 
-	req := legacy.ListReportingIssuesRequest{
+	req := snyk.ListReportingIssuesRequest{
 		Page:    1,
 		PerPage: 1000,
 		SortBy:  "severity",
@@ -50,12 +51,16 @@ func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 		GroupBy: "issue",
 	}
 	total := 0
-	resp, err := c.LegacyClient.ListLatestReportingIssues(ctx, req)
+	var (
+		resp *snyk.ListReportingIssuesResponse
+		err  error
+	)
+	err = c.RetryOnError(ctx, issuesTableName, func() error {
+		resp, _, err = c.Client.Reporting.ListLatestIssues(ctx, req)
+		return err
+	})
 	if err != nil {
 		return err
-	}
-	if resp == nil || len(resp.Results) == 0 {
-		return nil
 	}
 	res <- resp.Results
 	total = resp.Total
@@ -71,7 +76,7 @@ func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 		r.Page = i
 		g.Go(func() error {
 			return c.RetryOnError(gctx, issuesTableName, func() error {
-				issues, err := c.LegacyClient.ListLatestReportingIssues(ctx, r)
+				issues, _, err := c.Client.Reporting.ListLatestIssues(ctx, r)
 				if err != nil {
 					return err
 				}

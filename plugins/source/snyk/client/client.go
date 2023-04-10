@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/cloudquery/plugins/source/snyk/internal/legacy"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -20,7 +19,6 @@ const (
 
 type Client struct {
 	*snyk.Client
-	LegacyClient *legacy.Client
 
 	OrganizationID string
 	organizations  []string
@@ -53,10 +51,8 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 		return nil, fmt.Errorf("failed to create Snyk client: %w", err)
 	}
 
-	legacyClient := legacy.NewClient(snykSpec.APIKey)
 	c := &Client{
 		Client:        client,
-		LegacyClient:  legacyClient,
 		logger:        logger,
 		organizations: snykSpec.Organizations,
 		maxRetries:    defaultMaxRetries,

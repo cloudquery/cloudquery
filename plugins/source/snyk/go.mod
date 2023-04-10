@@ -4,7 +4,6 @@ go 1.19
 
 require (
 	github.com/cloudquery/plugin-sdk v1.44.2
-	github.com/deepmap/oapi-codegen v1.12.4
 	github.com/google/uuid v1.3.0
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/pavel-snyk/snyk-sdk-go v0.4.1
@@ -13,14 +12,13 @@ require (
 )
 
 require (
-	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.8.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/pavel-snyk/snyk-sdk-go => github.com/cloudquery/snyk-sdk-go v0.1.0
+replace github.com/pavel-snyk/snyk-sdk-go => github.com/cloudquery/snyk-sdk-go v0.2.0
 
 require (
 	github.com/getsentry/sentry-go v0.20.0 // indirect
@@ -36,7 +34,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	golang.org/x/net v0.8.0 // indirect; indirect // indirect
-	golang.org/x/sync v0.1.0 // indirect
+	golang.org/x/sync v0.1.0
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect
 	google.golang.org/genproto v0.0.0-20230331144136-dcfb400f0633 // indirect; indirect // indirect

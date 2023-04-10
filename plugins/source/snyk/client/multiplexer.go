@@ -21,7 +21,6 @@ func ByOrganization(meta schema.ClientMeta) []schema.ClientMeta {
 func (c *Client) WithOrganization(organizationID string) schema.ClientMeta {
 	return &Client{
 		Client:         c.Client,
-		LegacyClient:   c.LegacyClient,
 		OrganizationID: organizationID,
 		organizations:  c.organizations,
 		logger:         c.logger.With().Str("organization", organizationID).Logger(),

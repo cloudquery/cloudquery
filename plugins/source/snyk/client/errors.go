@@ -2,20 +2,20 @@ package client
 
 import (
 	"context"
-	"errors"
 	"math/rand"
 	"net/http"
 	"time"
 
-	"github.com/cloudquery/cloudquery/plugins/source/snyk/internal/legacy"
+	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 )
 
 // RetryOnError will run the given resolver function and retry on rate limit exceeded errors
 // or other retryable errors (like internal server errors) after waiting some amount of time.
 func (c *Client) RetryOnError(ctx context.Context, tableName string, f func() error) error {
 	retries := 0
-	for err := f(); err != nil; err = f() {
-		if isRetryable(err) {
+	var err error
+	for err = f(); retries < c.maxRetries; err = f() {
+		if shouldRetry(err) {
 			retryAfter := time.Duration(rand.Float64() * float64(c.backoff))
 			retries++
 			c.logger.Info().Str("table", tableName).Msgf("Got retryable error (%v), retrying in %.2fs (%d/%d)", err, retryAfter.Seconds(), retries, c.maxRetries)
@@ -28,13 +28,15 @@ func (c *Client) RetryOnError(ctx context.Context, tableName string, f func() er
 		}
 		return err
 	}
-	return nil
+	return err
 }
 
-func isRetryable(err error) bool {
-	var httpErr legacy.HTTPError
-	if errors.As(err, &httpErr) {
-		return httpErr.Code >= http.StatusInternalServerError || httpErr.Code == http.StatusTooManyRequests
+func shouldRetry(err error) bool {
+	if err == nil {
+		return false
+	}
+	if resp, ok := err.(*snyk.ErrorResponse); ok {
+		return resp.Response.StatusCode >= http.StatusInternalServerError || resp.Response.StatusCode == http.StatusTooManyRequests
 	}
 	return false
 }

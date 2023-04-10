@@ -14,8 +14,13 @@ type Spec struct {
 	// By default, will fetch from all organizations available for user.
 	Organizations []string `json:"organizations,omitempty"`
 
-	// EndpointURL is optional parameter to override the API URL for snyk.Client.
+	// EndpointURL is an optional parameter to override the API URL for snyk.Client.
+	// It defaults to https://api.snyk.io/api/
 	EndpointURL string `json:"endpoint_url,omitempty"`
+
+	// LegacyEndpointURL is an optional parameter to override the API URL for legacy.Client.
+	// It defaults to https://api.snyk.io/v1/
+	LegacyEndpointURL string `json:"legacy_endpoint_url,omitempty"`
 }
 
 func (s *Spec) getClient(version string) (*snyk.Client, error) {
