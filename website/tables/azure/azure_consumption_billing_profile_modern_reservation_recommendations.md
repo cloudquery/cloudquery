@@ -1,6 +1,6 @@
-# Table: azure_consumption_billing_profile_reservation_recommendations
+# Table: azure_consumption_billing_profile_modern_reservation_recommendations
 
-This table shows data for Azure Consumption Billing Profile Reservation Recommendations.
+This table shows data for Azure Consumption Billing Profile Modern Reservation Recommendations.
 
 https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#modernreservationrecommendation
 

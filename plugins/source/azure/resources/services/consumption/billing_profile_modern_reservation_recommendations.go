@@ -11,9 +11,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
-func BillingProfileReservationRecommendations() *schema.Table {
+func BillingProfileModernReservationRecommendations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_billing_profile_reservation_recommendations",
+		Name:        "azure_consumption_billing_profile_modern_reservation_recommendations",
 		Resolver:    fetchBillingProfileReservationRecommendations,
 		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#modernreservationrecommendation",
 		Multiplex:   client.BillingAccountProfileMultiplex,
