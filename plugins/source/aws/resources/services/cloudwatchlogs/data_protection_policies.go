@@ -15,7 +15,7 @@ func dataProtectionPolicy() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_GetDataProtectionPolicy.html`,
-		Resolver:    fetchCloudwatchlogsDataProtectionPolicy,
+		Resolver:    fetchDataProtectionPolicy,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "logs"),
 		Transform:   transformers.TransformWithStruct(&cloudwatchlogs.GetDataProtectionPolicyOutput{}, transformers.WithPrimaryKeys("LogGroupIdentifier"), transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
@@ -33,7 +33,7 @@ func dataProtectionPolicy() *schema.Table {
 		},
 	}
 }
-func fetchCloudwatchlogsDataProtectionPolicy(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchDataProtectionPolicy(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := cloudwatchlogs.GetDataProtectionPolicyInput{
 		LogGroupIdentifier: parent.Item.(types.LogGroup).Arn,
 	}
