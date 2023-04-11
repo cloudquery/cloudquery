@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func (c *Client) ensureTVP(ctx context.Context, table *schema.Table) (err error) {

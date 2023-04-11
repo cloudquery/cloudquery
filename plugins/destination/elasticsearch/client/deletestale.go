@@ -7,7 +7,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/core/deletebyquery"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 	"golang.org/x/sync/errgroup"

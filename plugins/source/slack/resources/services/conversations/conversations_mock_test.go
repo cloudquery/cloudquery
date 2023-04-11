@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
 	"github.com/cloudquery/cloudquery/plugins/source/slack/client/mocks"
 	"github.com/cloudquery/cloudquery/plugins/source/slack/client/services"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/slack-go/slack"
 )

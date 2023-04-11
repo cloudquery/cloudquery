@@ -6,7 +6,7 @@ import (
 	"google.golang.org/api/iterator"
 
 	pb "cloud.google.com/go/errorreporting/apiv1beta1/errorreportingpb"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	errorreporting "cloud.google.com/go/errorreporting/apiv1beta1"

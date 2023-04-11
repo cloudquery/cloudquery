@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/pkg/errors"
 )
 

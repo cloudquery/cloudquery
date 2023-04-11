@@ -5,7 +5,7 @@ import (
 
 	"google.golang.org/api/iterator"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	"cloud.google.com/go/bigtable"

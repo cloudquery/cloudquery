@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/go-gandi/go-gandi/livedns"
 )
 

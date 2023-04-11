@@ -21,7 +21,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/spaces"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/storage"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/vpcs"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func Tables() []*schema.Table {

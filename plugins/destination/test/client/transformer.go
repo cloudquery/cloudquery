@@ -1,6 +1,6 @@
 package client
 
-import "github.com/cloudquery/plugin-sdk/schema"
+import "github.com/cloudquery/plugin-sdk/v2/schema"
 
 func (*Client) TransformBool(v *schema.Bool) any {
 	return v.String()

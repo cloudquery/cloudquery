@@ -2,8 +2,8 @@ package conversations
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"github.com/slack-go/slack"
 )
 

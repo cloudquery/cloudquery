@@ -10,15 +10,15 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/gorilla/mux"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 )
 

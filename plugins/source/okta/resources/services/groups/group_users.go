@@ -3,7 +3,7 @@ package groups
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/services/groups/models"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func GroupUsers() *schema.Table {

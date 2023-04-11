@@ -6,9 +6,9 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/resources/services/domains"
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/resources/services/livedns"
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/resources/services/simplehosting"
-	"github.com/cloudquery/plugin-sdk/caser"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/caser"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 var (

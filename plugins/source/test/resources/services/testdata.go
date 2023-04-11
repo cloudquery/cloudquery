@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/testdata"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/testdata"
 )
 
 func TestDataTable() *schema.Table {

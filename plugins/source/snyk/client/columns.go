@@ -1,6 +1,6 @@
 package client
 
-import "github.com/cloudquery/plugin-sdk/schema"
+import "github.com/cloudquery/plugin-sdk/v2/schema"
 
 var OrganizationID = schema.Column{
 	Name:     "organization_id",

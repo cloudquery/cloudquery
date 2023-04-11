@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client/mocks"
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client/services"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/hermanschaaf/hackernews"
 )

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {

@@ -3,8 +3,8 @@ package stats
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/client"
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/resources/services/stats/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func StatsServices() *schema.Table {

@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/grpc"
 )

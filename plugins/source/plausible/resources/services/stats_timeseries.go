@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/plausible/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func StatsTimeseries() *schema.Table {

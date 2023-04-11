@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/services/integration"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/services/organization"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/services/project"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func tables() []*schema.Table {

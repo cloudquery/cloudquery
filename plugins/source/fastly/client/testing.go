@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/client/services"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/fastly/go-fastly/v7/fastly"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"

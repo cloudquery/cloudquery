@@ -3,8 +3,8 @@ package client
 import (
 	"reflect"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 // We can't use the *time.Time type because facebook's time format is not RFC3339.

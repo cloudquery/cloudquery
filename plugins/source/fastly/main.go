@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/serve"
+	"github.com/cloudquery/plugin-sdk/v2/serve"
 )
 
 const sentryDSN = "https://c4e711b87a8846de90e5ba2c785fb901@o1396617.ingest.sentry.io/4504379395604480"

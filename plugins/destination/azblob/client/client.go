@@ -9,8 +9,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/cloudquery/filetypes"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 )
 

@@ -8,8 +8,8 @@ import (
 	s3controlTypes "github.com/aws/aws-sdk-go-v2/service/s3control/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"github.com/pkg/errors"
 )
 

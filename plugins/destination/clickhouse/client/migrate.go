@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"golang.org/x/sync/errgroup"
 )
 

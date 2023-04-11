@@ -6,7 +6,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/cloudquery/plugins/source/github/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-github/v48/github"
 )

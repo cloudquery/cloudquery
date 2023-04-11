@@ -1,7 +1,7 @@
 package plugin
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugins/source/gcp/resources/services"
 	"github.com/cloudquery/plugins/source/gcp/resources/services/aiplatform"
 	"github.com/cloudquery/plugins/source/gcp/resources/services/apigateway"

@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/roles"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/synthetics"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/users"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func Tables() []*schema.Table {

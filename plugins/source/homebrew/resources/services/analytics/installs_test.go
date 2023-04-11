@@ -8,7 +8,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/client"
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/internal/homebrew"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 )
 
 func buildInstalls(t *testing.T) *homebrew.Client {

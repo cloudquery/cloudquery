@@ -2,7 +2,7 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 )
 
 var (

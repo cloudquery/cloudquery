@@ -8,7 +8,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/client"
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/gorilla/mux"
 )
 

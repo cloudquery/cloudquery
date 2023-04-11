@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func ResolveSiteID(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

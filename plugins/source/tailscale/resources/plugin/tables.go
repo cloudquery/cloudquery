@@ -5,7 +5,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/tailscale/resources/services/device"
 	"github.com/cloudquery/cloudquery/plugins/source/tailscale/resources/services/dns"
 	"github.com/cloudquery/cloudquery/plugins/source/tailscale/resources/services/key"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func tables() []*schema.Table {

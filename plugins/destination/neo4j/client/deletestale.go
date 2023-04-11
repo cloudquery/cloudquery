@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 

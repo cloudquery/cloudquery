@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	heroku "github.com/heroku/heroku-go/v5"
 	"github.com/julienschmidt/httprouter"
 )

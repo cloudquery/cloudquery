@@ -4,8 +4,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/client"
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/internal/homebrew"
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/resources/services/analytics"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 var (

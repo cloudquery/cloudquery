@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func Read(sourceName string, table *schema.Table) (query string, params []any) {

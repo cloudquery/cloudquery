@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func detectorIPSets() *schema.Table {

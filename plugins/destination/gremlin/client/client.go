@@ -12,8 +12,8 @@ import (
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
 	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
 	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 )
 

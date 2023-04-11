@@ -4,7 +4,7 @@ import (
 	"context"
 
 	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 

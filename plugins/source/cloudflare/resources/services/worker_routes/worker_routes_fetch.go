@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func fetchWorkerRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {

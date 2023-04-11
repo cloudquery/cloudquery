@@ -5,7 +5,7 @@ import (
 
 	"github.com/PagerDuty/go-pagerduty"
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func MembersResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

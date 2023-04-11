@@ -5,9 +5,9 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/facebookmarketing/client"
 	"github.com/cloudquery/cloudquery/plugins/source/facebookmarketing/resources/services"
-	"github.com/cloudquery/plugin-sdk/caser"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/caser"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 var (

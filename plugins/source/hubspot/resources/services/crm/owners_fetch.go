@@ -6,7 +6,7 @@ import (
 	"github.com/clarkmcc/go-hubspot"
 	"github.com/clarkmcc/go-hubspot/generated/v3/owners"
 	"github.com/cloudquery/cloudquery/plugins/source/hubspot/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func fetchOwners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {

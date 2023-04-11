@@ -3,8 +3,8 @@ package plugin
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/salesforce/client"
 	"github.com/cloudquery/cloudquery/plugins/source/salesforce/resources/services"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 var (

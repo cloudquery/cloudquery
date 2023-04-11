@@ -8,8 +8,8 @@ import (
 	"sync/atomic"
 
 	"github.com/Shopify/sarama"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func (c *Client) createTopics(_ context.Context, tables schema.Tables) error {

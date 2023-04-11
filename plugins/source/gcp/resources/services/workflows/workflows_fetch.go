@@ -5,7 +5,7 @@ import (
 
 	workflows "cloud.google.com/go/workflows/apiv1"
 	pb "cloud.google.com/go/workflows/apiv1/workflowspb"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/api/iterator"
 )

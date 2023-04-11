@@ -9,9 +9,9 @@ import (
 
 	"github.com/beatlabs/github-auth/app/inst"
 	"github.com/beatlabs/github-auth/key"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/gofri/go-github-ratelimit/github_ratelimit"
 	"github.com/google/go-github/v48/github"
 	"github.com/rs/zerolog"

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 // Extract region from service list

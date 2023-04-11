@@ -5,7 +5,7 @@ import (
 
 	vpcaccess "cloud.google.com/go/vpcaccess/apiv1"
 	pb "cloud.google.com/go/vpcaccess/apiv1/vpcaccesspb"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/api/iterator"
 	locationpb "google.golang.org/genproto/googleapis/cloud/location"

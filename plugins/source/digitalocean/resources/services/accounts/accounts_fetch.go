@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func fetchAccountsAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {

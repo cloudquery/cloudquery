@@ -5,7 +5,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 // DeleteStale is not currently implemented for BigQuery, as it only supports "append" write mode.

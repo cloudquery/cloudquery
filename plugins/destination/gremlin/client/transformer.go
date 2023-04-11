@@ -3,7 +3,7 @@ package client
 import (
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func (*Client) TransformBool(v *schema.Bool) any {

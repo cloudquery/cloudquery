@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	destination "github.com/cloudquery/plugin-sdk/clients/destination/v0"
-	"github.com/cloudquery/plugin-sdk/specs"
+	destination "github.com/cloudquery/plugin-sdk/v2/clients/destination/v0"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog/log"
 )
 

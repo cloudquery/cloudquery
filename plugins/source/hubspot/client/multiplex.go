@@ -1,6 +1,6 @@
 package client
 
-import "github.com/cloudquery/plugin-sdk/schema"
+import "github.com/cloudquery/plugin-sdk/v2/schema"
 
 func ObjectTypeMultiplex(objectTypes []string) func(schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {

@@ -9,7 +9,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/client"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/internal/mixpanel"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/gorilla/mux"
 )
 

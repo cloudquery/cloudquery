@@ -13,7 +13,7 @@ import (
 	"text/template"
 
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/codegen/recipes"
-	"github.com/cloudquery/plugin-sdk/caser"
+	"github.com/cloudquery/plugin-sdk/v2/caser"
 	"github.com/gertd/go-pluralize"
 )
 

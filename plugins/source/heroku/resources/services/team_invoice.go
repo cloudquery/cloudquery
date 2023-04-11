@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	heroku "github.com/heroku/heroku-go/v5"
 	"github.com/pkg/errors"
 )

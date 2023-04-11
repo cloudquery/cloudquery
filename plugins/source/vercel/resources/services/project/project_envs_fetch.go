@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/client"
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func fetchProjectEnvs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {

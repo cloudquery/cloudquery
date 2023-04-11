@@ -8,7 +8,7 @@ import (
 
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
 	"github.com/cenkalti/backoff/v4"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {

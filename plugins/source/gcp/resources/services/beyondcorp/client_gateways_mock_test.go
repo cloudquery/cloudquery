@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	pb "cloud.google.com/go/beyondcorp/clientgateways/apiv1/clientgatewayspb"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/grpc"
 )

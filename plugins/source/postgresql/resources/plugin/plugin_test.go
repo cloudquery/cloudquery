@@ -12,8 +12,8 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/postgresql/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/google/uuid"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"

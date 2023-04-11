@@ -6,8 +6,8 @@ import (
 	"google.golang.org/api/iterator"
 
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	certificatemanager "cloud.google.com/go/certificatemanager/apiv1"

@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	mssql "github.com/microsoft/go-mssqldb"
 	"github.com/rs/zerolog"
 )

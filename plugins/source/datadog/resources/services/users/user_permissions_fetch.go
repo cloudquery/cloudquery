@@ -5,7 +5,7 @@ import (
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func fetchUserPermissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {

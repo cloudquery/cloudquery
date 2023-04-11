@@ -2,8 +2,8 @@ package videotranscoder
 
 import (
 	pb "cloud.google.com/go/video/transcoder/apiv1/transcoderpb"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 

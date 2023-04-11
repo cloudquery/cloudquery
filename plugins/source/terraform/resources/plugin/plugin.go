@@ -3,8 +3,8 @@ package plugin
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/client"
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/resources/services"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 var (

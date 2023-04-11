@@ -2,8 +2,8 @@ package billing
 
 import (
 	pb "cloud.google.com/go/billing/budgets/apiv1/budgetspb"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 

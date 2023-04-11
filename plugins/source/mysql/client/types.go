@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func SQLType(t schema.ValueType) string {
