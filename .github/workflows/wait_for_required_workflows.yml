@@ -37,21 +37,10 @@ jobs:
               `.github/workflows/validate_release_cgo.yml`
             ].filter(dependency => files.includes(dependency))
             const matchesByDependency = (file, contents) => {
-              console.log(`matchesByDependency(${file}, contents)`)
-              if (file === `.github/workflows/source_aws.yml`) {
-                console.log(`check aws src`)
-                console.log(contents)                  
+              if (!dependencies.includes(file)) {
+                return false
               }
-              for (dependency of dependencies) {
-                if (file === `.github/workflows/source_aws.yml`) {
-                  console.log(`check: - ${dependency}, result: ${contents.includes(`- ${dependency}`)}`)                  
-                }
-                if (contents.includes(`- ${dependency}`)) {
-                  console.log(`Match ${file} because of changed dependency: ${dependency}`)
-                  return true
-                }
-              }
-              return false
+              return contents.includes(`uses: ./${dependency}`)
             }
 
             const matchesWorkflow = (file, action) => {
