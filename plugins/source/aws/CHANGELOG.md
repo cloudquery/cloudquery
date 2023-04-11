@@ -6,6 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [16.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v16.0.1...plugins-source-aws-v16.1.0) (2023-04-11)
+
+
+### Features
+
+* **aws-services:** Support newly added regions ([#9821](https://github.com/cloudquery/cloudquery/issues/9821)) ([4d7f388](https://github.com/cloudquery/cloudquery/commit/4d7f38890433ee97310794b11656c6386aab41c3))
+* **aws:** Parallelize resolution of  `aws_iot_billing_groups` ([#9809](https://github.com/cloudquery/cloudquery/issues/9809)) ([e759661](https://github.com/cloudquery/cloudquery/commit/e7596615a12ab19d59bc21f79a6de91f4898d7be))
+* **aws:** Parallelize resolution of `aws_iot_ca_certificates` ([#9808](https://github.com/cloudquery/cloudquery/issues/9808)) ([d491460](https://github.com/cloudquery/cloudquery/commit/d49146046a0efb743f37044edce2cd24da7376da))
+* **aws:** Parallelize resolution of `aws_iot_jobs` ([#9810](https://github.com/cloudquery/cloudquery/issues/9810)) ([9b85678](https://github.com/cloudquery/cloudquery/commit/9b85678a17d0d7a8d1b4d44593bd4594e1cef658))
+* **aws:** Parallelize resolution of `aws_iot_policies` ([#9806](https://github.com/cloudquery/cloudquery/issues/9806)) ([b9a9d06](https://github.com/cloudquery/cloudquery/commit/b9a9d06fa9ec4d303f27281ac733c226ec1ac9f7))
+* **aws:** Parallelize resolution of `aws_iot_security_profiles` ([#9807](https://github.com/cloudquery/cloudquery/issues/9807)) ([45705f1](https://github.com/cloudquery/cloudquery/commit/45705f1910478c8f7e56070a6632299b897dc621))
+* **aws:** Parallelize resolution of `aws_iot_streams` ([#9804](https://github.com/cloudquery/cloudquery/issues/9804)) ([9b622e0](https://github.com/cloudquery/cloudquery/commit/9b622e087c946849cd5aaa9a8d8d506e1020afa4))
+* **aws:** Parallelize resolution of `aws_iot_thing_groups` ([#9805](https://github.com/cloudquery/cloudquery/issues/9805)) ([f5047b9](https://github.com/cloudquery/cloudquery/commit/f5047b928f948d37fac4052ba27b75ffe2ded254))
+* **aws:** Parallelize resolution of `aws_iot_topic_rules` ([#9803](https://github.com/cloudquery/cloudquery/issues/9803)) ([d344815](https://github.com/cloudquery/cloudquery/commit/d34481566ff997527cbdc7720f76efa6795048c5))
+
+
+### Bug Fixes
+
+* **aws-policies:** Update Query to properly handle a string and array ([#9815](https://github.com/cloudquery/cloudquery/issues/9815)) ([012347f](https://github.com/cloudquery/cloudquery/commit/012347ff6c533e72f1f48f03fb973e46b31dabe9)), closes [#9763](https://github.com/cloudquery/cloudquery/issues/9763)
+* **aws:** Inspector Classic fetch details use proper limits ([#9816](https://github.com/cloudquery/cloudquery/issues/9816)) ([225a796](https://github.com/cloudquery/cloudquery/commit/225a796a83832a003bb2b509f602130d29e8ae59))
+* **aws:** Replace Manually paginated calls with paginator where available ([#9765](https://github.com/cloudquery/cloudquery/issues/9765)) ([b64d152](https://github.com/cloudquery/cloudquery/commit/b64d152719c48fdc80118e88951c3dd1c4f45135))
+* **aws:** Replace more manual pagination with Paginator objects ([#9754](https://github.com/cloudquery/cloudquery/issues/9754)) ([1d27dca](https://github.com/cloudquery/cloudquery/commit/1d27dcac0ccece45e2a2adea4803b5d9f5a458af))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.17.8 ([#9781](https://github.com/cloudquery/cloudquery/issues/9781)) ([69bb790](https://github.com/cloudquery/cloudquery/commit/69bb790afbeac9ff01a41e71c8f631fb60fe64d1))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.20 ([#9782](https://github.com/cloudquery/cloudquery/issues/9782)) ([1febd5b](https://github.com/cloudquery/cloudquery/commit/1febd5bbd944459a2fcbe380eb90385ecccfb079))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.61 ([#9791](https://github.com/cloudquery/cloudquery/issues/9791)) ([f9dcef8](https://github.com/cloudquery/cloudquery/commit/f9dcef81bb81da123b6820ef2c4b204325e64203))
+* Fix case on arn attribute ([#9757](https://github.com/cloudquery/cloudquery/issues/9757)) ([0719095](https://github.com/cloudquery/cloudquery/commit/0719095cdcaa5526f58286431cbe2e1dd2228c0b))
+* Use aws.ToString(output.NextToken) when checking tokens ([#9750](https://github.com/cloudquery/cloudquery/issues/9750)) ([7670494](https://github.com/cloudquery/cloudquery/commit/767049489fffa359beac6a4ec00ad76ceeb16224))
+
 ## [16.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v16.0.0...plugins-source-aws-v16.0.1) (2023-04-05)
 
 
