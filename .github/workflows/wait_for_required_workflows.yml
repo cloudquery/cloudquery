@@ -38,7 +38,7 @@ jobs:
             ].filter(dependency => files.includes(dependency))
             const matchesByDependency = (file, contents) => {
               for (dependency of dependencies) {
-                if (contents.includes(dependency)) {
+                if (contents.includes(`uses: ./${dependency}`)) {
                   console.log(`Match ${file} because of changed dependency: ${dependency}`)
                   return true
                 }
