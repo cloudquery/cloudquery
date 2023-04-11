@@ -7,17 +7,17 @@ require (
 	github.com/cloudquery/plugin-sdk v1.45.0
 =======
 	github.com/apache/arrow/go/v12 v12.0.0-20230411081405-61b89df503c8
+<<<<<<< HEAD
 	github.com/cloudquery/plugin-sdk/v2 v2.0.0
 >>>>>>> ecbe6fb8a (update to sdk v2)
+=======
+	github.com/cloudquery/plugin-sdk/v2 v2.0.1
+>>>>>>> 695d677fa (fix gomod)
 	github.com/mattn/go-sqlite3 v1.14.16
 	github.com/rs/zerolog v1.29.0
 )
 
-replace github.com/cloudquery/plugin-sdk/v2 => ../../../../plugin-sdk
-
-// replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230411104610-3a54448fd59b
-
-replace github.com/apache/arrow/go/v12 => ../../../../arrow/go
+replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230411134648-a5b71cd453c8
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
