@@ -65,6 +65,7 @@ jobs:
                 extra = [...extra, ...base]
               }
               console.log('Extra files to be added to diff: ${extra}')
+              return extra
             }
             
             // add extra files
