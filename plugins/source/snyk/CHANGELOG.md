@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-snyk-v2.0.0...plugins-source-snyk-v2.0.1) (2023-04-11)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/snyk-sdk-go to v0.2.0 ([#9795](https://github.com/cloudquery/cloudquery/issues/9795)) ([ab5380f](https://github.com/cloudquery/cloudquery/commit/ab5380f1b2367526c0dfa9b52ceb715f6fc63d83))
+
 ## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-snyk-v1.2.2...plugins-source-snyk-v2.0.0) (2023-04-04)
 
 
