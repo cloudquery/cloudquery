@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
+	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -13,11 +14,12 @@ import (
 func SecurityProfiles() *schema.Table {
 	tableName := "aws_iot_security_profiles"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeSecurityProfile.html`,
-		Resolver:    fetchIotSecurityProfiles,
-		Transform:   transformers.TransformWithStruct(&iot.DescribeSecurityProfileOutput{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
+		Name:                tableName,
+		Description:         `https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeSecurityProfile.html`,
+		Resolver:            fetchIotSecurityProfiles,
+		PreResourceResolver: getSecurityProfile,
+		Transform:           transformers.TransformWithStruct(&iot.DescribeSecurityProfileOutput{}),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -55,22 +57,25 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 		if err != nil {
 			return err
 		}
-
-		for _, s := range page.SecurityProfileIdentifiers {
-			// TODO: Handle resolution in parallel with PreResourceResolver
-			profile, err := svc.DescribeSecurityProfile(ctx, &iot.DescribeSecurityProfileInput{
-				SecurityProfileName: s.Name,
-			}, func(options *iot.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- profile
-		}
+		res <- page.SecurityProfileIdentifiers
 	}
 	return nil
 }
+
+func getSecurityProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+
+	output, err := svc.DescribeSecurityProfile(ctx, &iot.DescribeSecurityProfileInput{
+		SecurityProfileName: resource.Item.(types.SecurityProfileIdentifier).Name,
+	})
+	if err != nil {
+		return err
+	}
+	resource.Item = output
+	return nil
+}
+
 func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
 	cl := meta.(*client.Client)

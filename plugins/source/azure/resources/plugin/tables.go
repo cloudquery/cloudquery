@@ -134,6 +134,7 @@ func tables() []*schema.Table {
 		cdn.Profiles(),
 		cognitiveservices.Accounts(),
 		cognitiveservices.DeletedAccounts(),
+		compute.AvailabilitySets(),
 		compute.CapacityReservationGroups(),
 		compute.CloudServices(),
 		compute.DiskAccesses(),
