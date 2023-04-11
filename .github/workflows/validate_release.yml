@@ -1,4 +1,4 @@
-name: Validate release
+name: Validate release (trigger test)
 
 on:
   workflow_call:
