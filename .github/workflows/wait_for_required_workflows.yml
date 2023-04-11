@@ -92,9 +92,6 @@ jobs:
                 per_page: 100
               })).filter(({ id }) => !processed.includes(id)) // we filter out the runs we already processed
                   
-              // save to processed
-              processed = [...processed, ...checkRuns.map(({ id }) => id )]
-
               const runs = checkRuns.map(({ id, name, conclusion }) => ({ id, name, conclusion }))
               console.log(`Got the following check runs: ${JSON.stringify(runs)}`)
               
@@ -107,12 +104,23 @@ jobs:
               console.log(`Matching runs: ${matchingRuns.map(({ name }) => name).join(", ")}`)
               
               for (const run of matchingRuns) {
-                const name = run.name
+                const { id, name } = run
+                
+                // check if it was already processed (~ we have duplicate in output)
+                if (processed.includes(id)) {
+                  console.log(`Duplicate run encountered: ${run}`)
+                  continue
+                }
+                
+                // save id to the processed array
+                processed = [...processed, id]
+
                 if (!pending.has(name)) {
                   // We didn't account for this check but matched this.
                   // This should never happen.
                   throw new Error(`Extra check matched: ${run}`)
                 }
+
                 // update value
                 const left = pending.get(name)
                 if (left === 1) {
@@ -131,5 +139,3 @@ jobs:
               now = new Date().getTime()
             }
             throw new Error(`Timed out waiting for ${pendingActions.join(', ')}`)
-
-            
