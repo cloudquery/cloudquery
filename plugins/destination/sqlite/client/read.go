@@ -1,18 +1,15 @@
 package client
 
 import (
-	"bytes"
 	"context"
 	"database/sql"
 	"fmt"
 	"strings"
 
-	"github.com/goccy/go-json"
-
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"
 	"github.com/apache/arrow/go/v12/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 const (
@@ -30,13 +27,13 @@ func (*Client) createResultsArray(table *arrow.Schema) []any {
 			var r []byte
 			results = append(results, &r)
 		case arrow.INT8, arrow.INT16, arrow.INT32, arrow.INT64, arrow.UINT8, arrow.UINT16, arrow.UINT32, arrow.UINT64:
-			var r int
+			var r sql.NullInt64
 			results = append(results, &r)
 		case arrow.FLOAT16, arrow.FLOAT32, arrow.FLOAT64:
-			var r float64
+			var r sql.NullFloat64
 			results = append(results, &r)
 		default:
-			var r string
+			var r sql.NullString
 			results = append(results, &r)
 		}
 	}
@@ -55,45 +52,120 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 			} else {
 				bldr.Field(i).(*array.BooleanBuilder).AppendNull()
 			}
-			// bldr.Field(i).(*array.BooleanBuilder).Append(*val.(*bool))
 		case arrow.INT8:
-			bldr.Field(i).(*array.Int8Builder).Append(int8(*val.(*int)))
+			v := val.(*sql.NullInt64)
+			if !v.Valid {
+				bldr.Field(i).AppendNull()
+			} else {
+				bldr.Field(i).(*array.Int8Builder).Append(int8(v.Int64))
+			}
 		case arrow.INT16:
-			bldr.Field(i).(*array.Int16Builder).Append(int16(*val.(*int)))
+			v := val.(*sql.NullInt64)
+			if !v.Valid {
+				bldr.Field(i).AppendNull()
+			} else {
+				bldr.Field(i).(*array.Int16Builder).Append(int16(v.Int64))
+			}
 		case arrow.INT32:
-			bldr.Field(i).(*array.Int32Builder).Append(int32(*val.(*int)))
+			v := val.(*sql.NullInt64)
+			if !v.Valid {
+				bldr.Field(i).AppendNull()
+			} else {
+				bldr.Field(i).(*array.Int32Builder).Append(int32(v.Int64))
+			}
 		case arrow.INT64:
-			bldr.Field(i).(*array.Int64Builder).Append(int64(*val.(*int)))
+			v := val.(*sql.NullInt64)
+			if !v.Valid {
+				bldr.Field(i).AppendNull()
+			} else {
+				bldr.Field(i).(*array.Int64Builder).Append(int64(v.Int64))
+			}
 		case arrow.UINT8:
-			bldr.Field(i).(*array.Uint8Builder).Append(uint8(*val.(*int)))
+			v := val.(*sql.NullInt64)
+			if !v.Valid {
+				bldr.Field(i).AppendNull()
+			} else {
+				bldr.Field(i).(*array.Uint8Builder).Append(uint8(v.Int64))
+			}
 		case arrow.UINT16:
-			bldr.Field(i).(*array.Uint16Builder).Append(uint16(*val.(*int)))
+			v := val.(*sql.NullInt64)
+			if !v.Valid {
+				bldr.Field(i).AppendNull()
+			} else {
+				bldr.Field(i).(*array.Uint16Builder).Append(uint16(v.Int64))
+			}
 		case arrow.UINT32:
-			bldr.Field(i).(*array.Uint32Builder).Append(uint32(*val.(*int)))
+			v := val.(*sql.NullInt64)
+			if !v.Valid {
+				bldr.Field(i).AppendNull()
+			} else {
+				bldr.Field(i).(*array.Uint32Builder).Append(uint32(v.Int64))
+			}
 		case arrow.UINT64:
-			bldr.Field(i).(*array.Uint64Builder).Append(uint64(*val.(*int)))
+			v := val.(*sql.NullInt64)
+			if !v.Valid {
+				bldr.Field(i).AppendNull()
+			} else {
+				bldr.Field(i).(*array.Uint64Builder).Append(uint64(v.Int64))
+			}
 		case arrow.FLOAT32:
-			bldr.Field(i).(*array.Float32Builder).Append(float32(*val.(*float64)))
+			v := val.(*sql.NullFloat64)
+			if !v.Valid {
+				bldr.Field(i).AppendNull()
+			} else {
+				bldr.Field(i).(*array.Float32Builder).Append(float32(val.(*sql.NullFloat64).Float64))
+			}
 		case arrow.FLOAT64:
-			bldr.Field(i).(*array.Float64Builder).Append(*val.(*float64))
+			v := val.(*sql.NullFloat64)
+			if !v.Valid {
+				bldr.Field(i).AppendNull()
+			} else {
+				bldr.Field(i).(*array.Float64Builder).Append(val.(*sql.NullFloat64).Float64)
+			}
 		case arrow.STRING:
-			bldr.Field(i).(*array.StringBuilder).Append(*val.(*string))
+			v := val.(*sql.NullString)
+			if !v.Valid {
+				bldr.Field(i).AppendNull()
+			} else {
+				bldr.Field(i).(*array.StringBuilder).Append(val.(*sql.NullString).String)
+			}
 		case arrow.BINARY:
-			bldr.Field(i).(*array.BinaryBuilder).Append(*val.(*[]byte))
-		case arrow.DATE32, arrow.DATE64,
-		arrow.TIMESTAMP,
-		arrow.TIME32, arrow.TIME64,
-		arrow.INTERVAL_DAY_TIME,
-		arrow.DECIMAL128, arrow.DECIMAL256:
-			dec := json.NewDecoder(bytes.NewReader([]byte(`"` + *val.(*string) + `"`)))
-			if err := bldr.Field(i).UnmarshalOne(dec); err != nil {
-				return nil, fmt.Errorf("failed to unmarshal %s. field: %v. err: %w", *val.(*string), bldr.Field(i).Type(), err)
+			if *val.(*[]byte) == nil {
+				bldr.Field(i).AppendNull()
+			} else {
+				bldr.Field(i).(*array.BinaryBuilder).Append(*val.(*[]byte))
 			}
+
+		// case arrow.DATE32, arrow.DATE64,
+		// arrow.TIMESTAMP,
+		// arrow.TIME32, arrow.TIME64,
+		// arrow.INTERVAL_DAY_TIME,
+		// arrow.DECIMAL128, arrow.DECIMAL256:
+			// if *val.(*string) == "null" {
+			// 	bldr.Field(i).AppendNull()
+			// 	continue
+			// }
+			// dec := json.NewDecoder(bytes.NewReader([]byte(`"` + *val.(*string) + `"`)))
+			// if err := bldr.Field(i).UnmarshalOne(dec); err != nil {
+			// 	return nil, fmt.Errorf("failed to unmarshal %s. field: %v. err: %w", *val.(*string), bldr.Field(i).Type(), err)
+			// }
 		default:
-			dec := json.NewDecoder(bytes.NewReader([]byte(*val.(*string) )))
-			if err := bldr.Field(i).UnmarshalOne(dec); err != nil {
-				return nil, fmt.Errorf("failed to unmarshal %s. field: %v. err: %w", *val.(*string), bldr.Field(i).Type(), err)
+			v := val.(*sql.NullString)
+			if !v.Valid {
+				bldr.Field(i).AppendNull()
+			} else {
+				if err := bldr.Field(i).AppendValueFromString(val.(*sql.NullString).String); err != nil {
+					return nil, fmt.Errorf("failed to AppendValueFromString %s. field: %v. name: %s err: %w", *val.(*string), bldr.Field(i).Type(), sc.Fields()[i].Name, err)
+				}
 			}
+			// if *val.(*string) == "null" {
+			// 	bldr.Field(i).AppendNull()
+			// 	continue
+			// }
+			// dec := json.NewDecoder(bytes.NewReader([]byte(*val.(*string) )))
+			// if err := bldr.Field(i).UnmarshalOne(dec); err != nil {
+			// 	return nil, fmt.Errorf("failed to unmarshal %s. field: %v. err: %w", *val.(*string), bldr.Field(i).Type(), err)
+			// }
 		}
 	}
 	rec := bldr.NewRecord()

@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 )
 
 const (
@@ -239,8 +239,8 @@ func (c *Client) createTableIfNotExist(sc *arrow.Schema) error {
 		if i != totalColumns-1 {
 			sb.WriteString(",")
 		}
-		isPk, ok := col.Metadata.GetValue(schema.MetadataPrimaryKey)
-		if c.enabledPks() && ok && isPk == schema.MetadataPrimaryKeyTrue {
+
+		if c.enabledPks() && schema.IsPk(col) {
 			primaryKeys = append(primaryKeys, `"`+col.Name+`"`)
 		}
 	}

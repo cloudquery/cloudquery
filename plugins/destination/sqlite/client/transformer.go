@@ -1,7 +1,6 @@
 package client
 
 import (
-	"encoding/json"
 	"strings"
 
 	"github.com/apache/arrow/go/v12/arrow"
@@ -9,6 +8,9 @@ import (
 )
 
 func getValue(arr arrow.Array, i int) (any, error) {
+	if !arr.IsValid(i) {
+		return nil, nil
+	}
 	switch arr.DataType().ID() {
 	case arrow.BOOL:
 		return arr.(*array.Boolean).Value(i), nil
@@ -38,26 +40,28 @@ func getValue(arr arrow.Array, i int) (any, error) {
 		return arr.(*array.Binary).Value(i), nil
 	case arrow.FIXED_SIZE_BINARY:
 		return arr.(*array.FixedSizeBinary).Value(i), nil
-	case arrow.DATE32, arrow.DATE64,
-			 arrow.TIMESTAMP,
-			 arrow.TIME32, arrow.TIME64,
-			 arrow.INTERVAL_DAY_TIME,
-			 arrow.DECIMAL128, arrow.DECIMAL256:
-			 v := arr.GetOneForMarshal(i)
-			 // check if v is a string with go reflection
-			 b, err := json.Marshal(v)
-			 if err != nil {
-				 return nil, err
-			 }
-			return strings.Trim(string(b), "\""), nil
+	// case arrow.DATE32, arrow.DATE64,
+	// 		 arrow.TIMESTAMP,
+	// 		 arrow.TIME32, arrow.TIME64,
+	// 		 arrow.INTERVAL_DAY_TIME,
+	// 		 arrow.DECIMAL128, arrow.DECIMAL256:
+	// 		 v := arr.GetOneForMarshal(i)
+	// 		 // check if v is a string with go reflection
+	// 		 b, err := json.Marshal(v)
+	// 		 if err != nil {
+	// 			 return nil, err
+	// 		 }
+	// 		return strings.Trim(string(b), "\""), nil
 	default:
-		v := arr.GetOneForMarshal(i)
-		// check if v is a string with go reflection
-		b, err := json.Marshal(v)
-		if err != nil {
-			return nil, err
-		}
-		return string(b), nil
+		return arr.ValueStr(i), nil
+
+		// v := arr.GetOneForMarshal(i)
+		// // check if v is a string with go reflection
+		// b, err := json.Marshal(v)
+		// if err != nil {
+		// 	return nil, err
+		// }
+		// return string(b), nil
 	}
 }
 
