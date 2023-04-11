@@ -50,7 +50,7 @@ jobs:
               return
             }
 
-            // Most modules should have a 'validate-release' job
+            // Most modules should have a 'validate-release' job.
             const reusedValidateRelease = [
               'plugins/source/aws',
               'plugins/destination/duckdb',
