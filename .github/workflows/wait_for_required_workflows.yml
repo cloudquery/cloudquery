@@ -32,7 +32,7 @@ jobs:
             const deadline = now + 60 * 1000 * 50
             
             const repoWorkflows = fs.readdirSync('.github/workflows', { withFileTypes: true }).filter(dirent => dirent.isFile()).map(dirent => `.github/workflows/${dirent.name}`)
-            console.log('Repo workflows: ${repoWorkflows}')
+            console.log('Repo workflows: [${repoWorkflows.join(", ")}]')
             // now read all of them and look for the lines of `uses: .github/workflows/SOME_WORKFLOW_FILE`
             const dependent = (changedWorkflows) => {
               if (changedWorkflows.length === 0) {
