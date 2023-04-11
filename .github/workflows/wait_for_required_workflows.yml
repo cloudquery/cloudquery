@@ -39,14 +39,14 @@ jobs:
               // now read the fs to find all dependent workflows
               const maybeDependent = repoWorkflows.filter(w => !changedWorkflows.includes(w))
               extra = []
-              const useRegex = /uses\:\s+"?'?(\.\/\.github\/workflows\/[^\n\s]+)"?'?/g;
+              const useRegex = /uses\:\s+"?'?\.\/\.github\/workflows\/[^\n\s]+"?'?/g;
               const workflowRegex = /\.\/\.github\/workflows\/[^\n\s"']+/
               for (workflow of maybeDependent) {
                 try {
                   const contents = fs.readFileSync(workflow, 'utf8')
                   const matches = contents.match(useRegex).map(m => m.match(workflowRegex)[0])
-                  const matchesOnChanged = matches.filter(m => changedWorkflows.includes(m)
-                  if (matchesOnChanged.length > 0 ) {
+                  const matchesOnChanged = matches.filter(m => changedWorkflows.includes(m))
+                  if (matchesOnChanged.length > 0) {
                     console.log(`Add ${workflow} to the changed files per change of ${matchesOnChanged}`)
                     extra = [...extra, workflow]
                   }
@@ -58,7 +58,7 @@ jobs:
             }
             
             const forcedByDependency = () => {
-              base = files.filter(name => name.startsWith('.github/workflows/')
+              base = files.filter(name => name.startsWith('.github/workflows/'))
               extra = []
               for (base.length > 0) {
                 base = dependent(base)
