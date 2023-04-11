@@ -21,7 +21,7 @@ jobs:
         with:
           script: |
             const fs = require("fs");
-            const files = process.env.FILES.split(' ')
+            let files = process.env.FILES.split(' ')
             console.log(files)
             if (files.length >= 300) {
               // This is a GitHub limitation https://github.com/cloudquery/cloudquery/issues/2688
@@ -29,6 +29,47 @@ jobs:
             }
             let now = new Date().getTime()
             const deadline = now + 60 * 1000 * 50
+            
+            const repoWorkflows = fs.readdirSync('.github/workflows', { withFileTypes: true }).filter(dirent => dirent.isFile()).map(dirent => `.github/workflows/${dirent.name}`)
+            // now read all of them and look for the lines of `uses: .github/workflows/SOME_WORKFLOW_FILE`
+            const dependent = (changedWorkflows) => {
+              if (changedWorkflows.length === 0) {
+                return []
+              }
+              // now read the fs to find all dependent workflows
+              const maybeDependent = repoWorkflows.filter(w => !changedWorkflows.includes(w))
+              extra = []
+              const useRegex = /uses\:\s+"?'?(\.\/\.github\/workflows\/[^\n\s]+)"?'?/g;
+              const workflowRegex = /\.\/\.github\/workflows\/[^\n\s"']+/
+              for (workflow of maybeDependent) {
+                try {
+                  const contents = fs.readFileSync(workflow, 'utf8')
+                  const matches = contents.match(useRegex).map(m => m.match(workflowRegex)[0])
+                  const matchesOnChanged = matches.filter(m => changedWorkflows.includes(m)
+                  if (matchesOnChanged.length > 0 ) {
+                    console.log(`Add ${workflow} to the changed files per change of ${matchesOnChanged}`)
+                    extra = [...extra, workflow]
+                  }
+                } catch {
+                  continue
+                }
+              }
+              return extra
+            }
+            
+            const forcedByDependency = () => {
+              base = files.filter(name => name.startsWith('.github/workflows/')
+              extra = []
+              for (base.length > 0) {
+                base = dependent(base)
+                extra = [...extra, ...base]
+              }
+              console.log('Extra files to be added to diff: ${extra}')
+            }
+            
+            // add extra files
+            files = [...files, ...forcedByDependency()]
+                  
             const matchesWorkflow = (file, action) => {
               if (!file.startsWith('.github/workflows/')) {
                 return false
