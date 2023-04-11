@@ -1,0 +1,28 @@
+name: Resolve runner
+on:
+  workflow_call:
+    outputs:
+      runner:
+        description: 'Runner to be used (default: "ubuntu-latest")'
+        value:       ${{ jobs.resolve.outputs.runner }}
+
+jobs:
+  resolve:
+    name:            Resolve runner
+    timeout-minutes: 5
+    runs-on:         ubuntu-latest
+    outputs:
+      runner: ${{ steps.resolve.outputs.runner }}
+    steps:
+    - name: Check if should use large runner
+      id:   large-runner
+      # We want to speed runs on the release branch
+      # We allow large runners only in this case to prevent forks from abusing them (it's enforced via runner groups access rules)
+      # IF YOU WANT TO USE A LARGE RUNNER YOU NEED TO ADD THE WORKFLOW TO THE `CloudQuery releases` GROUP IN https://github.com/organizations/cloudquery/settings/actions/runner-groups
+      if:   github.event_name == 'push'
+      run:  |
+            echo "runner=cloudquery-release-runner" >> $GITHUB_OUTPUT
+    - id:  resolve
+      run: |
+           RUNNER=${{ steps.large-runner.outputs.runner }}
+           echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
