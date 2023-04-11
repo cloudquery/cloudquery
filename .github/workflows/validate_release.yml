@@ -1,0 +1,59 @@
+name: Validate release
+
+on:
+  workflow_call:
+    inputs:
+      path:
+        description: 'Go mod directory (e.g. "plugins/source/aws", "plugins/destination/file", "cli")'
+        type:        string
+        required:    true
+      runner:
+        description: 'Runner to be used (default: "ubuntu-latest")'
+        type:        string
+        required:    false
+        default:     'ubuntu-latest'
+    secrets:
+      GORELEASER_KEY:
+        description: 'GoReleaser key'
+        required:    true
+
+jobs:
+  validate-release:
+    # this if check is here as we check for 'validate-release / validate-release' run
+    if:              startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+    timeout-minutes: 60
+    runs-on:         ${{ inputs.runner }}
+    env:
+      CGO_ENABLED: 0
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      with:
+        path: |
+              ~/.cache/go-build
+              ~/go/pkg/mod
+        key:  ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles(format('{0}/go.sum', inputs.path)) }}
+    - name: Set up Go
+      id:   set-up-go
+      uses: actions/setup-go@v3
+      with:
+        go-version-file: ${{ inputs.path }}/go.mod
+    - name: Install GoReleaser
+      uses: goreleaser/goreleaser-action@v3
+      with:
+        distribution: goreleaser-pro
+        version:      latest
+        install-only: true
+    - name: Run GoReleaser Dry-Run
+      run:  >
+            goreleaser release
+            --timeout 50m
+            --snapshot
+            --clean
+            --skip-validate
+            --skip-publish
+            --skip-sign
+            -f ${{ inputs.path }}/.goreleaser.yaml
+      env:
+        GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
