@@ -40,6 +40,14 @@ func buildCloudwatchLogsLogGroupsMock(t *testing.T, ctrl *gomock.Controller) cli
 
 	m.EXPECT().ListTagsLogGroup(gomock.Any(), gomock.Any(), gomock.Any()).Return(tags, nil)
 
+	dataProtectionPolicy := &cloudwatchlogs.GetDataProtectionPolicyOutput{}
+	err = faker.FakeObject(dataProtectionPolicy)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().GetDataProtectionPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(dataProtectionPolicy, nil)
+
 	return client.Services{
 		Cloudwatchlogs: m,
 	}
