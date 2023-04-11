@@ -34,8 +34,12 @@ jobs:
               if (!file.startsWith('.github/workflows/')) {
                 return false
               }
-              const contents = fs.readFileSync(file, 'utf8');
-              return contents.includes(`name: "${action}"`)
+              try {
+                const contents = fs.readFileSync(file, 'utf8');
+                return contents.includes(`name: "${action}"`)
+              } catch {
+                return false
+              }
             }
             const matchesFile = (action) => {
               return files.some(file => file.startsWith(`${action}/`) || matchesWorkflow(file, action))
