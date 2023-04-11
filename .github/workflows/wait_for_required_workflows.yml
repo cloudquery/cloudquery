@@ -47,7 +47,7 @@ jobs:
                   const matches = contents.match(useRegex).map(m => m.match(workflowRegex)[0])
                   const matchesOnChanged = matches.filter(m => changedWorkflows.includes(m))
                   if (matchesOnChanged.length > 0) {
-                    console.log(`Add ${workflow} to the changed files per change of ${matchesOnChanged}`)
+                    console.log(`Add ${workflow} to the changed files per change of [${matchesOnChanged.join(", ")}]`)
                     extra = [...extra, workflow]
                   }
                 } catch {
