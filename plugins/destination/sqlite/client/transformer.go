@@ -40,28 +40,8 @@ func getValue(arr arrow.Array, i int) (any, error) {
 		return arr.(*array.Binary).Value(i), nil
 	case arrow.FIXED_SIZE_BINARY:
 		return arr.(*array.FixedSizeBinary).Value(i), nil
-	// case arrow.DATE32, arrow.DATE64,
-	// 		 arrow.TIMESTAMP,
-	// 		 arrow.TIME32, arrow.TIME64,
-	// 		 arrow.INTERVAL_DAY_TIME,
-	// 		 arrow.DECIMAL128, arrow.DECIMAL256:
-	// 		 v := arr.GetOneForMarshal(i)
-	// 		 // check if v is a string with go reflection
-	// 		 b, err := json.Marshal(v)
-	// 		 if err != nil {
-	// 			 return nil, err
-	// 		 }
-	// 		return strings.Trim(string(b), "\""), nil
 	default:
 		return arr.ValueStr(i), nil
-
-		// v := arr.GetOneForMarshal(i)
-		// // check if v is a string with go reflection
-		// b, err := json.Marshal(v)
-		// if err != nil {
-		// 	return nil, err
-		// }
-		// return string(b), nil
 	}
 }
 
