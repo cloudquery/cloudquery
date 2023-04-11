@@ -51,8 +51,14 @@ jobs:
             }
 
             // Most modules should have a 'validate-release' job
+            const reusedValidateRelease = [
+              'plugins/source/aws',
+              'plugins/destination/duckdb',
+              'plugins/destination/snowflake',
+              'plugins/destination/sqlite'
+            ]
             for (const action of actions) {
-              if (action === 'plugins/source/aws') {
+              if (reusedValidateRelease.includes(action)) {
                 // add 'validate-release / validate-release' as we use reusable with same job id
                 actions = [...actions, 'validate-release / validate-release']
               } else {
