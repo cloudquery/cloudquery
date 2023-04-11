@@ -30,12 +30,28 @@ jobs:
             const canSkip = ['validate-release / validate-release']
             let now = new Date().getTime()
             const deadline = now + 60 * 1000 * 50
+                  
+            const dependencies = [
+              `.github/workflows/resolve_runner.yml`,
+              `.github/workflows/validate_release.yml`,
+              `.github/workflows/validate_release_cgo.yml`
+            ].filter(dependency => files.includes(dependency))
+            const matchesByDependency = (file, contents) => {
+              for (dependency of dependencies) {
+                if (contents.includes(dependency)) {
+                  console.log(`Match ${file} because of changed dependency: ${dependency}`)
+                  return true
+                }
+              }
+              return false
+            }
+
             const matchesWorkflow = (file, action) => {
               if (!file.startsWith('.github/workflows/')) {
                 return false
               }
               const contents = fs.readFileSync(file, 'utf8');
-              return contents.includes(`name: "${action}"`)
+              return contents.includes(`name: "${action}"`) || matchesByDependency(file, contents)
             }
             const matchesFile = (action) => {
               return files.some(file => file.startsWith(`${action}/`) || matchesWorkflow(file, action))
