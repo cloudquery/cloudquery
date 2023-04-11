@@ -40,7 +40,6 @@ func (*Client) createResultsArray(table *arrow.Schema) []any {
 	return results
 }
 
-
 func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 	defer bldr.Release()
@@ -135,20 +134,6 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 			} else {
 				bldr.Field(i).(*array.BinaryBuilder).Append(*val.(*[]byte))
 			}
-
-		// case arrow.DATE32, arrow.DATE64,
-		// arrow.TIMESTAMP,
-		// arrow.TIME32, arrow.TIME64,
-		// arrow.INTERVAL_DAY_TIME,
-		// arrow.DECIMAL128, arrow.DECIMAL256:
-			// if *val.(*string) == "null" {
-			// 	bldr.Field(i).AppendNull()
-			// 	continue
-			// }
-			// dec := json.NewDecoder(bytes.NewReader([]byte(`"` + *val.(*string) + `"`)))
-			// if err := bldr.Field(i).UnmarshalOne(dec); err != nil {
-			// 	return nil, fmt.Errorf("failed to unmarshal %s. field: %v. err: %w", *val.(*string), bldr.Field(i).Type(), err)
-			// }
 		default:
 			v := val.(*sql.NullString)
 			if !v.Valid {
@@ -158,14 +143,6 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 					return nil, fmt.Errorf("failed to AppendValueFromString %s. field: %v. name: %s err: %w", *val.(*string), bldr.Field(i).Type(), sc.Fields()[i].Name, err)
 				}
 			}
-			// if *val.(*string) == "null" {
-			// 	bldr.Field(i).AppendNull()
-			// 	continue
-			// }
-			// dec := json.NewDecoder(bytes.NewReader([]byte(*val.(*string) )))
-			// if err := bldr.Field(i).UnmarshalOne(dec); err != nil {
-			// 	return nil, fmt.Errorf("failed to unmarshal %s. field: %v. err: %w", *val.(*string), bldr.Field(i).Type(), err)
-			// }
 		}
 	}
 	rec := bldr.NewRecord()

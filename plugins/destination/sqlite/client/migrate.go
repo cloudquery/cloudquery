@@ -48,8 +48,8 @@ func (c *Client) sqliteTables(schemas schema.Schemas) (schema.Schemas, error) {
 				fieldMetadata.PrimaryKey = true
 			}
 			fields = append(fields, arrow.Field{
-				Name: col.name,
-				Type: c.sqliteTypeToArrowType(col.typ),
+				Name:     col.name,
+				Type:     c.sqliteTypeToArrowType(col.typ),
 				Nullable: !col.notNull,
 				Metadata: schema.NewFieldMetadataFromOptions(fieldMetadata),
 			})
@@ -61,7 +61,6 @@ func (c *Client) sqliteTables(schemas schema.Schemas) (schema.Schemas, error) {
 	}
 	return schemaTables, nil
 }
-
 
 func (c *Client) normalizeSchemas(scs schema.Schemas) schema.Schemas {
 	var normalized schema.Schemas
@@ -79,8 +78,8 @@ func (c *Client) normalizeSchemas(scs schema.Schemas) schema.Schemas {
 				}
 			}
 			fields = append(fields, arrow.Field{
-				Name: f.Name,
-				Type: c.arrowTypeToSqlite(f.Type),
+				Name:     f.Name,
+				Type:     c.arrowTypeToSqlite(f.Type),
 				Nullable: f.Nullable,
 				Metadata: arrow.NewMetadata(keys, values),
 			})
@@ -92,7 +91,6 @@ func (c *Client) normalizeSchemas(scs schema.Schemas) schema.Schemas {
 
 	return normalized
 }
-
 
 func (c *Client) nonAutoMigrableTables(tables schema.Schemas, sqliteTables schema.Schemas) ([]string, [][]schema.FieldChange) {
 	var result []string
