@@ -77,7 +77,7 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 			if !v.Valid {
 				bldr.Field(i).AppendNull()
 			} else {
-				bldr.Field(i).(*array.Int64Builder).Append(int64(v.Int64))
+				bldr.Field(i).(*array.Int64Builder).Append(v.Int64)
 			}
 		case arrow.UINT8:
 			v := val.(*sql.NullInt64)

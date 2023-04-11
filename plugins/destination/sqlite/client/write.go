@@ -18,10 +18,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan ar
 		} else {
 			sql = c.upsert(r.Schema())
 		}
-		vals, err := transformRecord(r)
-		if err != nil {
-			return fmt.Errorf("failed to transform record: %w", err)
-		}
+		vals := transformRecord(r)
 		for _, v := range vals {
 			if _, err := c.db.Exec(sql, v...); err != nil {
 				return fmt.Errorf("failed to execute '%s': %w", sql, err)
