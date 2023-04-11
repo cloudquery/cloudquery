@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - feat/ci/reuse/wait
 
 jobs:
   wait_for_required_workflows:

@@ -1,4 +1,4 @@
-name: Resolve runner
+name: Resolve runner (we're just triggering the test)
 on:
   workflow_call:
     outputs:
