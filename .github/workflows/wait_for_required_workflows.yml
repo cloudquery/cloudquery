@@ -60,7 +60,7 @@ jobs:
             const forcedByDependency = () => {
               base = files.filter(name => name.startsWith('.github/workflows/'))
               extra = []
-              for (base.length > 0) {
+              while (base.length > 0) {
                 base = dependent(base)
                 extra = [...extra, ...base]
               }
