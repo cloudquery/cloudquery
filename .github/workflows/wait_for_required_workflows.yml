@@ -64,10 +64,8 @@ jobs:
               let base = files.filter(name => name.startsWith('.github/workflows/'))
               let extra = []
               while (base.length > 0) {
-                console.log(`forcedByDependency iteration for base = [${base.join(", ")}]`)
                 base = dependent(base)
                 extra = [...extra, ...base]
-                console.log(`>>>Extra files to be added to diff: [${extra.join(", ")}]`)
               }
               console.log(`Extra files to be added to diff: [${extra.join(", ")}]`)
               return extra
