@@ -40,7 +40,7 @@ jobs:
               if (!dependencies.includes(file)) {
                 return false
               }
-              return contents.includes(`uses: ./${dependency}`)
+              return contents.includes(`uses: ./${file}`)
             }
 
             const matchesWorkflow = (file, action) => {
