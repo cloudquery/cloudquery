@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.0.0...plugins-source-azure-v7.1.0) (2023-04-11)
 
 
+### This Release has the Following Changes to Tables
+- Table `azure_compute_availability_sets` was added
+
 ### Features
 
 * **azure-resources:** Add Compute Availability Sets ([#9779](https://github.com/cloudquery/cloudquery/issues/9779)) ([6090451](https://github.com/cloudquery/cloudquery/commit/60904510c6192db8c90d8795f645cf8fdd5cfecb))
