@@ -35,6 +35,7 @@ jobs:
             console.log(`Repo workflows: [${repoWorkflows.join(", ")}]`)
             // now read all of them and look for the lines of `uses: .github/workflows/SOME_WORKFLOW_FILE`
             const dependent = (changedWorkflows) => {
+              console.log(`dependent(${changedWorkflows.join(", ")})`)
               if (changedWorkflows.length === 0) {
                 return []
               }
@@ -63,6 +64,7 @@ jobs:
               let base = files.filter(name => name.startsWith('.github/workflows/'))
               let extra = []
               while (base.length > 0) {
+                console.log(`forcedByDependency iteration for base = [${base.join(", ")}]`)
                 base = dependent(base)
                 extra = [...extra, ...base]
               }
