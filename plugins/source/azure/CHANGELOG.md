@@ -5,6 +5,14 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.0.0...plugins-source-azure-v7.1.0) (2023-04-11)
+
+
+### Features
+
+* **azure-resources:** Add Compute Availability Sets ([#9779](https://github.com/cloudquery/cloudquery/issues/9779)) ([6090451](https://github.com/cloudquery/cloudquery/commit/60904510c6192db8c90d8795f645cf8fdd5cfecb))
+* **azure:** Add discovery concurrency setting ([#9811](https://github.com/cloudquery/cloudquery/issues/9811)) ([45543ec](https://github.com/cloudquery/cloudquery/commit/45543ecbac54fd633b6686abdf55718c37934b03))
+
 ## [7.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v6.2.0...plugins-source-azure-v7.0.0) (2023-04-04)
 
 
