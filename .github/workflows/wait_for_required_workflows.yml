@@ -27,6 +27,7 @@ jobs:
               // This is a GitHub limitation https://github.com/cloudquery/cloudquery/issues/2688
               throw new Error('Too many files changed. Skipping check. Please split your PR into multiple ones.')
             }
+            const canSkip = ['validate-release / validate-release']
             let now = new Date().getTime()
             const deadline = now + 60 * 1000 * 50
             const matchesWorkflow = (file, action) => {
@@ -51,7 +52,12 @@ jobs:
 
             // Most modules should have a 'validate-release' job
             for (const action of actions) {
-              actions = [...actions, 'validate-release']
+              if (action === 'plugins/source/aws') {
+                // add 'validate-release / validate-release' as we use reusable with same job id
+                actions = [...actions, 'validate-release / validate-release']
+              } else {
+                actions = [...actions, 'validate-release']
+              }
             }
 
             // We test the CLI on multiple OSes, so we need to wait for all of them
@@ -82,7 +88,7 @@ jobs:
               const runs = runsWithPossibleDuplicates.filter((run, index, self) => self.findIndex(({ id }) => id === run.id) === index)
               console.log(`Got the following check runs: ${JSON.stringify(runs)}`)
               const matchingRuns = runs.filter(({ name }) => actions.includes(name))
-              const failedRuns = matchingRuns.filter(({ conclusion }) => conclusion !== 'success')
+              const failedRuns = matchingRuns.filter(({ name, conclusion }) => !(conclusion === 'success' || (canSkip.includes(name) && conclusion === 'skipped')))
               if (failedRuns.length > 0) {
                 throw new Error(`The following required workflows failed: ${failedRuns.map(({ name }) => name).join(", ")}`)
               }
