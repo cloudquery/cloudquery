@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/mysql
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.44.2
+	github.com/cloudquery/plugin-sdk v1.45.0
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
