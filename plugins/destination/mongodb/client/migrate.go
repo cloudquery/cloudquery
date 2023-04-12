@@ -22,8 +22,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 }
 
 func (c *Client) migrateTable(ctx context.Context, table *schema.Table) error {
-	indexModels := c.getIndexTemplates(table)
-	for _, mdl := range indexModels {
+	for _, mdl := range c.getIndexTemplates(table) {
 		res, err := c.client.Database(c.pluginSpec.Database).Collection(table.Name).Indexes().CreateOne(ctx, mdl)
 		switch {
 		case err == nil:
@@ -33,7 +32,7 @@ func (c *Client) migrateTable(ctx context.Context, table *schema.Table) error {
 			if err := c.migrateTableOnConflict(ctx, table, mdl); err != nil {
 				return err
 			}
-		case isIndexAlreadyExistsWithADifferentNameError(err):
+		case isIndexOptionsConflictError(err):
 			c.logger.Debug().Str("table", table.Name).Err(err).Msg("skipped create index")
 		default:
 			return fmt.Errorf("create index on %s: %w", table.Name, err)
@@ -106,10 +105,12 @@ func isIndexConflictError(err error) bool {
 	return cmdErr.Name == "IndexKeySpecsConflict"
 }
 
-func isIndexAlreadyExistsWithADifferentNameError(err error) bool {
+func isIndexOptionsConflictError(err error) bool {
 	cmdErr, ok := err.(mongo.CommandError)
 	if !ok {
 		return false
 	}
-	return cmdErr.Name == "IndexOptionsConflict" // Index already exists with a different name: %s
+
+	// This is either "Index already exists with a different name: %s" error or due to uniqueness change
+	return cmdErr.Name == "IndexOptionsConflict"
 }
