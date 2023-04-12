@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [16.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v16.1.0...plugins-source-aws-v16.2.0) (2023-04-12)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_cloudwatchlogs_log_group_data_protection_policies` was added
+
+### Features
+
+* **aws:** Add Support for Cloudwatch Logs Data Protection Policy ([#9818](https://github.com/cloudquery/cloudquery/issues/9818)) ([9014726](https://github.com/cloudquery/cloudquery/commit/901472697dbd6370079659d0f08d8ef01865b987))
+
+
+### Bug Fixes
+
+* **aws:** Update module github.com/cloudquery/plugin-sdk to v1.45.0  ([#9856](https://github.com/cloudquery/cloudquery/issues/9856)) ([7aa0b5f](https://github.com/cloudquery/cloudquery/commit/7aa0b5fe0520a9905717e299f2702dd1f362ed5b))
+
 ## [16.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v16.0.1...plugins-source-aws-v16.1.0) (2023-04-11)
 
 
