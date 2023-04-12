@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v1.0.3...plugins-destination-gremlin-v1.1.0) (2023-04-12)
+
+
+### Features
+
+* **gremlin:** Refresh IAM auth as necessary ([#9106](https://github.com/cloudquery/cloudquery/issues/9106)) ([423e397](https://github.com/cloudquery/cloudquery/commit/423e39748da6f1263c60858c28cb1a5c51889309))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.17.8 ([#9781](https://github.com/cloudquery/cloudquery/issues/9781)) ([69bb790](https://github.com/cloudquery/cloudquery/commit/69bb790afbeac9ff01a41e71c8f631fb60fe64d1))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.20 ([#9782](https://github.com/cloudquery/cloudquery/issues/9782)) ([1febd5b](https://github.com/cloudquery/cloudquery/commit/1febd5bbd944459a2fcbe380eb90385ecccfb079))
+
 ## [1.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v1.0.2...plugins-destination-gremlin-v1.0.3) (2023-04-04)
 
 
