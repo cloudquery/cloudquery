@@ -53,7 +53,7 @@ jobs:
       - name: Test firestore
         run: make test
         env:
-          FIRESTORE_EMULATOR_HOST: firestore:8080
+          FIRESTORE_EMULATOR_HOST: localhost:8080
   validate-release:
     timeout-minutes: 30
     runs-on: ubuntu-latest
