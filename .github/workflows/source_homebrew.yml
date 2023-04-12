@@ -33,9 +33,11 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.51.2
+          version: v1.52.2
           working-directory: plugins/source/homebrew
           args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
       - name: gen

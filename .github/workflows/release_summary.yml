@@ -8,13 +8,16 @@ on:
 
 jobs:
   release-summary:
-    if:  startsWith(github.head_ref, 'release-please--branches--main--components--plugins-source')
+    # only run on release-please branches and if there is only one commit to avoid a recursive workflow run
+    if:  startsWith(github.head_ref, 'release-please--branches--main--components--plugins-source') && github.event.pull_request.commits == 1
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          # required so the commit triggers workflow runs
+          token: ${{ secrets.GH_CQ_BOT }}
       - name: Get plugin name
         id: plugin
         run: |
@@ -24,11 +27,17 @@ jobs:
       - name: Get latest tag
         id: tag
         run: |
-          tag=$(git describe --tags --match 'plugins-source-${{ steps.plugin.outputs.name }}*' --abbrev=0)
+          tag_prefix='plugins-source-${{ steps.plugin.outputs.name }}*'
+          if [[ $(git tag --list "${tag_prefix}" | wc -l) -gt 0 ]]; then
+             tag=$(git describe --tags --match "${tag_prefix}" --abbrev=0)
+          else
+             echo "Use empty git tree as diff base"
+             tag=$(git hash-object -t tree /dev/null)
+          fi
           echo "latest=${tag}" >> $GITHUB_OUTPUT
       - name: Generate diff
         run: |
-          git diff ${{ steps.tag.outputs.latest }}..HEAD website/tables/${{ steps.plugin.outputs.name }} > scripts/table_diff/diff.txt
+          git diff ${{ steps.tag.outputs.latest }}..HEAD -- website/tables/${{ steps.plugin.outputs.name }} > scripts/table_diff/diff.txt
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
@@ -54,7 +63,7 @@ jobs:
             const changesList = changes.map(change => {
               const { breaking, text } = change
               if (breaking) {
-                return `- :warning: BREAKING CHANGE: ${text}`
+                return `- ${text} (:warning: breaking)`
               }
               return `- ${text}`
             }).join('\n')
@@ -71,11 +80,12 @@ jobs:
             const changelogPath = `plugins/source/${process.env.PLUGIN_NAME}/CHANGELOG.md`
             const changes = process.env.CHANGES.replaceAll('\\n', '\n')
             const currentChangelog = fs.readFileSync(changelogPath, 'utf8')
-            // drop existing summary if it exists
             const title = 'This Release has the Following Changes to Tables'
-            const sliceIndex = currentChangelog.includes(title) ? 2 : 1
+            // Move summary after breaking changes if they exist
+            const newlyAddedSection = currentChangelog.split("## [")[0]
+            const sliceIndex = newlyAddedSection.includes("BREAKING CHANGES") ? 2 : 1
             const changelogParts = currentChangelog.split('###')
-            const newChangelog = [changelogParts[0], ` ${title}\n${changes}\n\n`, ...changelogParts.slice(sliceIndex)].join('###')
+            const newChangelog = [...changelogParts.slice(0, sliceIndex), ` ${title}\n${changes}\n\n`, ...changelogParts.slice(sliceIndex)].join('###')
             fs.writeFileSync(changelogPath, newChangelog)
       - uses: actions/github-script@v6
         name: Update PR description
@@ -89,10 +99,10 @@ jobs:
             const currentDescription = process.env.PR_BODY
             const changes = process.env.CHANGES.replaceAll('\\n', '\n')
             const currentDescriptionParts = currentDescription.split('###')
-            // drop existing summary if it exists
             const title = 'This Release has the Following Changes to Tables'
-            const sliceIndex = currentDescription.includes(title) ? 2 : 1
-            const newDescription = [currentDescriptionParts[0], ` ${title}\n${changes}\n\n`, ...currentDescriptionParts.slice(sliceIndex)].join('###')
+            // Move summary after breaking changes if they exist
+            const sliceIndex = currentDescription.includes("BREAKING CHANGES") ? 2 : 1
+            const newDescription = [...currentDescriptionParts.slice(0, sliceIndex), ` ${title}\n${changes}\n\n`, ...currentDescriptionParts.slice(sliceIndex)].join('###')
             await github.rest.pulls.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -105,3 +115,4 @@ jobs:
         with:
           commit_message: "chore: Add tables changes to changelog"
           file_pattern: "plugins/source/${{ steps.plugin.outputs.name }}/CHANGELOG.md"
+          author: cq-bot <cq-bot@users.noreply.github.com>

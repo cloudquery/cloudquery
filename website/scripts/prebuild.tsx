@@ -2,10 +2,11 @@ const fs = require("fs");
 const path = require("path");
 
 // Read the plugin data file
-import {Plugin, SOURCE_PLUGINS, DESTINATION_PLUGINS} from "../components/pluginData";
+import {Plugin, SOURCE_PLUGINS, UNPUBLISHED_SOURCE_PLUGINS, DESTINATION_PLUGINS} from "../components/pluginData";
 
 // Define the directories to write the MDX files to
-const outputDir = "./pages/integrations";
+const outputDir = "./integrations";
+const metaJSONsDir = "./pages/integrations";
 const mdxSourceComponentDir = "./components/mdx/plugins/source";
 const mdxDestinationComponentDir = "./components/mdx/plugins/destination";
 
@@ -89,46 +90,10 @@ function createSourceIntegrationFile(source: Plugin) {
 title: ${source.name} Data Integration
 ---
 
-import Integration from "../../components/pages/IntegrationSource";
-import {getPlugin} from "../../components/pluginData";
-
-<Integration
-  source={getPlugin("source", "${source.id}")}
-/>`;
+<IntegrationSource source="${source.id}" />`;
 
     // Write the contents to the new file
     fs.writeFileSync(filePath, fileContents);
-}
-
-function createMetaFiles() {
-    const metaFileContents = `{
-  "*": {
-    "theme": {
-      "sidebar": false,
-      "breadcrumb": true,
-      "typesetting": "default",
-      "toc": false,
-      "footer": true,
-      "pagination": false
-    }
-  }
-}
-`;
-
-    // Write _meta.json for sources
-    const metaFilePath = path.join(
-        outputDir,
-        `_meta.json`
-    );
-    fs.writeFileSync(metaFilePath, metaFileContents);
-
-    SOURCE_PLUGINS.forEach((source) => {
-        const metaFileSourcePath = path.join(
-            outputDir,
-            `${source.id}/_meta.json`
-        );
-        fs.writeFileSync(metaFileSourcePath, metaFileContents);
-    });
 }
 
 function createSourceDestinationIntegrationFile(source: Plugin, destination: Plugin, sourceHasAuth: boolean, destHasAuth: boolean) {
@@ -146,24 +111,14 @@ function createSourceDestinationIntegrationFile(source: Plugin, destination: Plu
 title: Export data from ${source.name} to ${destination.name}
 ---
 
-import Integration from "../../../components/pages/IntegrationSourceDestination";
-import {getPlugin} from "../../../components/pluginData";
-${isOfficialSource ? `import SourceConfiguration from "../../../components/mdx/plugins/source/${source.id}/${destination.id}/_configuration.mdx";` : `` }
-${sourceHasAuth ? `import SourceAuthentication from "../../../components/mdx/plugins/source/${source.id}/_authentication.mdx";` : ``} 
-${isOfficialDestination ? `import DestinationConfiguration from "../../../components/mdx/plugins/destination/${destination.id}/_configuration.mdx";` : `` }
-${destHasAuth ? `import DestinationAuthentication from "../../../components/mdx/plugins/destination/${destination.id}/_authentication.mdx";` : ``}
-import SyncCommand from "../../../components/mdx/plugins/source/${source.id}/${destination.id}/_sync.mdx";
-
-<Integration
-  source={getPlugin("source", "${source.id}")}
-  ${isOfficialSource ? `sourceConfiguration={<SourceConfiguration />}` : ``}
-  ${sourceHasAuth ? `sourceAuthentication={<SourceAuthentication />}` : ``}
-  destination={getPlugin("destination", "${destination.id}")}
-  ${isOfficialDestination ? `destinationConfiguration={<DestinationConfiguration />}` : ``}
-  ${destHasAuth ? `destinationAuthentication={<DestinationAuthentication />}` : ``}
-  syncCommand={<SyncCommand />}
-/>
-`;
+<IntegrationDestination 
+    source="${source.id}" 
+    destination="${destination.id}" 
+    isOfficialSource={${isOfficialSource}} 
+    isOfficialDestination={${isOfficialDestination}}
+    sourceHasAuth={${sourceHasAuth}}
+    destHasAuth={${destHasAuth}}
+/>`;
 
     // Write the contents to the new file
     fs.writeFileSync(filePath, fileContents);
@@ -185,10 +140,17 @@ import SyncCommand from "../../../components/mdx/plugins/source/${source.id}/${d
 }
 
 function generateFiles() {
+    const sources = new Set<string>();
+    const destinations = new Set<string>();
+
     let hasAuthFile = {};
 
     // Loop through each source plugin and generate or copy MDX files
-    SOURCE_PLUGINS.forEach((source) => {
+    [...SOURCE_PLUGINS, ...UNPUBLISHED_SOURCE_PLUGINS].forEach((source) => {
+      if (sources.has(source.id)) {
+        throw new Error("Duplicate source id: " + source.id + ". Did you forget to remove an unpublished plugin you implemented?");
+      }
+      sources.add(source.id);
       recreateDirectory(outputDir + "/" + source.id);
 
       const hasConfiguration = copySourceConfigurationFile(source);
@@ -203,6 +165,10 @@ function generateFiles() {
 
     // Loop through each destination plugin and generate or copy MDX files
     DESTINATION_PLUGINS.forEach((destination) => {
+        if (destinations.has(destination.id)) {
+            throw new Error("Duplicate destination id: " + destination.id);
+        }
+        destinations.add(destination.id);
         recreateDirectory(mdxDestinationComponentDir + "/" + destination.id);
 
         const hasConfiguration = copyDestinationConfigurationFile(destination);
@@ -215,15 +181,13 @@ function generateFiles() {
     });
 
     // Create the source -> destination integration files
-    SOURCE_PLUGINS.forEach((source: Plugin) => {
+    [...SOURCE_PLUGINS, ...UNPUBLISHED_SOURCE_PLUGINS].forEach((source: Plugin) => {
        DESTINATION_PLUGINS.forEach((destination: Plugin) => {
            const sourceHasAuth = hasAuthFile['source-' + source.id];
            const destHasAuth = hasAuthFile['destination-' + destination.id];
            createSourceDestinationIntegrationFile(source, destination, sourceHasAuth, destHasAuth);
        });
     });
-
-    createMetaFiles();
 }
 
 

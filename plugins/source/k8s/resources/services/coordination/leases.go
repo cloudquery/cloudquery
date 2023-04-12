@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 	v1 "k8s.io/api/coordination/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -14,22 +15,8 @@ func Leases() *schema.Table {
 		Name:      "k8s_coordination_leases",
 		Resolver:  fetchLeases,
 		Multiplex: client.ContextMultiplex,
-		Transform: client.TransformWithStruct(&v1.Lease{}),
-		Columns: []schema.Column{
-			{
-				Name:     "context",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveContext,
-			},
-			{
-				Name:     "uid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform: client.TransformWithStruct(&v1.Lease{}, transformers.WithPrimaryKeys("UID")),
+		Columns:   schema.ColumnList{client.ContextColumn},
 	}
 }
 

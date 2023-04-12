@@ -12,6 +12,8 @@ azuredevops:
   - plugins/source/azuredevops/**/*
 bigquery:
   - plugins/destination/bigquery/**/*
+ci:
+  - .github/workflows/**/*
 cli:
   - cli/**/*
 clickhouse:
@@ -46,6 +48,8 @@ github:
   - plugins/source/github/**/*
 gitlab:
   - plugins/source/gitlab/**/*
+googleads:
+  - plugins/destination/googleads/**/*
 googleanalytics:
   - plugins/destination/googleanalytics/**/*
 gremlin:
@@ -64,6 +68,8 @@ kafka:
   - plugins/destination/kafka/**/*
 launchdarkly:
   - plugins/source/launchdarkly/**/*
+meilisearch:
+  - plugins/destination/meilisearch/**/*
 mixpanel:
   - plugins/source/mixpanel/**/*
 mongodb:

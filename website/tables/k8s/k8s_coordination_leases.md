@@ -1,6 +1,6 @@
 # Table: k8s_coordination_leases
 
-This table shows data for K8s Coordination Leases.
+This table shows data for Kubernetes (K8s) Coordination Leases.
 
 The primary key for this table is **uid**.
 
@@ -13,11 +13,11 @@ The primary key for this table is **uid**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |context|String|
-|uid (PK)|String|
 |kind|String|
 |api_version|String|
 |name|String|
 |namespace|String|
+|uid (PK)|String|
 |resource_version|String|
 |generation|Int|
 |deletion_grace_period_seconds|Int|

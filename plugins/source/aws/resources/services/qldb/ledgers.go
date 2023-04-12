@@ -1,7 +1,10 @@
 package qldb
 
 import (
+	"context"
+
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
+	"github.com/aws/aws-sdk-go-v2/service/qldb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -35,8 +38,50 @@ func Ledgers() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			LedgerJournalKinesisStreams(),
-			LedgerJournalS3Exports(),
+			ledgerJournalKinesisStreams(),
+			ledgerJournalS3Exports(),
 		},
 	}
+}
+
+func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Qldb
+	config := qldb.ListLedgersInput{}
+	paginator := qldb.NewListLedgersPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.Ledgers
+	}
+	return nil
+}
+
+func getLedger(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Qldb
+	l := resource.Item.(types.LedgerSummary)
+
+	response, err := svc.DescribeLedger(ctx, &qldb.DescribeLedgerInput{Name: l.Name})
+	if err != nil {
+		return err
+	}
+	resource.Item = response
+	return nil
+}
+
+func resolveQldbLedgerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	ledger := resource.Item.(*qldb.DescribeLedgerOutput)
+
+	cl := meta.(*client.Client)
+	svc := cl.Services().Qldb
+	response, err := svc.ListTagsForResource(ctx, &qldb.ListTagsForResourceInput{
+		ResourceArn: ledger.Arn,
+	})
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, response.Tags)
 }

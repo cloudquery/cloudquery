@@ -106,7 +106,7 @@ GCP CIS v1.2.0 performs the following checks:
   - Ensure "user connections" database flag for Cloud SQL SQL Server instance is set as appropriate (Automated)
   - Ensure "user options" database flag for Cloud SQL SQL Server instance is not configured (Automated)
   - Ensure "remote access" database flag for Cloud SQL SQL Server instance is set to "off" (Automated)
-  - Ensure "3625 (trace flag)" database flag for Cloud SQL SQL Server instance is set to "off" (Automated)
+  - Ensure "3625 (trace flag)" database flag for Cloud SQL SQL Server instance is set to "on" (Automated)
   - Ensure that the "contained database authentication" database flag for Cloud SQL on the SQL Server instance is set to "off" (Automated)
   - Ensure that the Cloud SQL database instance requires all incoming connections to use SSL (Automated)
   - Ensure that Cloud SQL database instances are not open to the world (Automated)

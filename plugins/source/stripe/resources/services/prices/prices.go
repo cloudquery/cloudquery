@@ -44,6 +44,8 @@ func fetchPrices(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	cl := meta.(*client.Client)
 
 	lp := &stripe.PriceListParams{}
+	lp.AddExpand("data.currency_options")
+	lp.AddExpand("data.tiers")
 
 	const key = "prices"
 

@@ -29,9 +29,11 @@ func TestPlugin(t *testing.T) {
 		func() *destination.Plugin {
 			return destination.NewPlugin("mongodb", "development", New, destination.WithManagedWriter())
 		},
-		Spec{
-			ConnectionString: getTestConnection(),
-			Database:         "destination_mongodb_test",
+		specs.Destination{
+			Spec: &Spec{
+				ConnectionString: getTestConnection(),
+				Database:         "destination_mongodb_test",
+			},
 		},
 		destination.PluginTestSuiteTests{
 			SkipMigrateOverwriteForce: true,

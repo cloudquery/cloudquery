@@ -1,6 +1,10 @@
 package elasticsearch
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -28,4 +32,50 @@ func VpcEndpoints() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchElasticsearchVpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	svc := meta.(*client.Client).Services().Elasticsearchservice
+	// get the IDs first
+	listInput := new(elasticsearchservice.ListVpcEndpointsInput)
+	var vpcEndpointIDs []string
+	// No paginator available
+	for {
+		out, err := svc.ListVpcEndpoints(ctx, listInput)
+		if err != nil {
+			return err
+		}
+
+		for _, summary := range out.VpcEndpointSummaryList {
+			vpcEndpointIDs = append(vpcEndpointIDs, *summary.VpcEndpointId)
+		}
+
+		if aws.ToString(out.NextToken) == "" {
+			break
+		}
+
+		listInput.NextToken = out.NextToken
+	}
+
+	// slice in parts
+	const maxLen = 100
+	for len(vpcEndpointIDs) > 0 {
+		var part []string
+		if len(vpcEndpointIDs) > maxLen {
+			part, vpcEndpointIDs = vpcEndpointIDs[:maxLen], vpcEndpointIDs[maxLen:]
+		} else {
+			part, vpcEndpointIDs = vpcEndpointIDs, nil
+		}
+
+		out, err := svc.DescribeVpcEndpoints(ctx,
+			&elasticsearchservice.DescribeVpcEndpointsInput{VpcEndpointIds: part},
+		)
+		if err != nil {
+			return err
+		}
+
+		res <- out.VpcEndpoints
+	}
+
+	return nil
 }

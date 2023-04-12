@@ -3,12 +3,11 @@ package reservations
 import (
 	"encoding/json"
 	"net/http"
-
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations/v3"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
 )

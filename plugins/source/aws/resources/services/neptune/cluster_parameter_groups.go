@@ -1,6 +1,10 @@
 package neptune
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -34,7 +38,24 @@ func ClusterParameterGroups() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			ClusterParameterGroupParameters(),
+			clusterParameterGroupParameters(),
 		},
 	}
+}
+
+func fetchNeptuneClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Neptune
+	input := neptune.DescribeDBClusterParameterGroupsInput{
+		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
+	}
+	paginator := neptune.NewDescribeDBClusterParameterGroupsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.DBClusterParameterGroups
+	}
+	return nil
 }

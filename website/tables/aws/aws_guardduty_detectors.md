@@ -9,7 +9,12 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 ## Relations
 
 The following tables depend on aws_guardduty_detectors:
+  - [aws_guardduty_detector_filters](aws_guardduty_detector_filters)
+  - [aws_guardduty_detector_findings](aws_guardduty_detector_findings)
+  - [aws_guardduty_detector_intel_sets](aws_guardduty_detector_intel_sets)
+  - [aws_guardduty_detector_ip_sets](aws_guardduty_detector_ip_sets)
   - [aws_guardduty_detector_members](aws_guardduty_detector_members)
+  - [aws_guardduty_detector_publishing_destinations](aws_guardduty_detector_publishing_destinations)
 
 ## Columns
 
@@ -25,9 +30,9 @@ The following tables depend on aws_guardduty_detectors:
 |id (PK)|String|
 |service_role|String|
 |status|String|
-|created_at|String|
+|created_at|Timestamp|
 |data_sources|JSON|
 |finding_publishing_frequency|String|
 |tags|JSON|
-|updated_at|String|
+|updated_at|Timestamp|
 |result_metadata|JSON|

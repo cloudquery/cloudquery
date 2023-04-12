@@ -1,6 +1,9 @@
 package kafka
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kafka/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -27,4 +30,19 @@ func Configurations() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchKafkaConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var input kafka.ListConfigurationsInput
+	c := meta.(*client.Client)
+	svc := c.Services().Kafka
+	paginator := kafka.NewListConfigurationsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.Configurations
+	}
+	return nil
 }

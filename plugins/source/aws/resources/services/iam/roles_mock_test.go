@@ -44,7 +44,6 @@ func buildRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 			AttachedPolicies: []iamTypes.AttachedPolicy{p},
 		}, nil)
 
-	// list policies by role
 	var l []string
 	err = faker.FakeObject(&l)
 	if err != nil {
@@ -55,7 +54,6 @@ func buildRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 			PolicyNames: l,
 		}, nil)
 
-	//get policy
 	pd := iam.GetRolePolicyOutput{}
 	err = faker.FakeObject(&pd)
 	if err != nil {
@@ -65,7 +63,6 @@ func buildRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetRolePolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&pd, nil)
 
-	//get tags
 	tag := iamTypes.Tag{}
 	err = faker.FakeObject(&tag)
 	if err != nil {

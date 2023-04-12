@@ -1,13 +1,19 @@
 package apigatewayv2
 
 import (
+	"context"
+	"fmt"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func DomainNameRestApiMappings() *schema.Table {
+func domainNameRestApiMappings() *schema.Table {
 	tableName := "aws_apigatewayv2_domain_name_rest_api_mappings"
 	return &schema.Table{
 		Name:        tableName,
@@ -33,4 +39,37 @@ func DomainNameRestApiMappings() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchApigatewayv2DomainNameRestApiMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	r := parent.Item.(types.DomainName)
+	config := apigatewayv2.GetApiMappingsInput{
+		DomainName: r.DomainName,
+	}
+	c := meta.(*client.Client)
+	svc := c.Services().Apigatewayv2
+	for {
+		response, err := svc.GetApiMappings(ctx, &config)
+
+		if err != nil {
+			return err
+		}
+		res <- response.Items
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		config.NextToken = response.NextToken
+	}
+	return nil
+}
+
+func resolveDomainNameRestApiMappingArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/domainnames/%s/apimappings/%s", aws.ToString(resource.Parent.Item.(types.DomainName).DomainName), aws.ToString(resource.Item.(types.ApiMapping).ApiMappingId)),
+	}.String())
 }

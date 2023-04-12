@@ -21,7 +21,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 
 	newSchema := queries.NormalizedTables(tables)
 	if c.mode != specs.MigrateModeForced {
-		nonSafeMigratableTables, changes := c.nonAutoMigrableTables(newSchema, currentSchema)
+		nonSafeMigratableTables, changes := c.nonAutoMigratableTables(newSchema, currentSchema)
 		if len(nonSafeMigratableTables) > 0 {
 			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonSafeMigratableTables, ","), changes)
 		}
@@ -55,7 +55,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return eg.Wait()
 }
 
-func (c *Client) nonAutoMigrableTables(tables schema.Tables, currentTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
+func (c *Client) nonAutoMigratableTables(tables schema.Tables, currentTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
 	var result []string
 	var tableChanges [][]schema.TableColumnChange
 	for _, t := range tables {
@@ -91,7 +91,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) (err erro
 func (c *Client) dropTable(ctx context.Context, table *schema.Table) (err error) {
 	c.logger.Debug().Str("table", table.Name).Msg("Dropping table")
 
-	return c.conn.Exec(ctx, queries.DropTable(table))
+	return c.conn.Exec(ctx, queries.DropTable(table, c.spec.Cluster))
 }
 
 func needsTableDrop(change schema.TableColumnChange) bool {

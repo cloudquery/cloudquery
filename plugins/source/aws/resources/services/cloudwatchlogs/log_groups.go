@@ -37,6 +37,7 @@ func LogGroups() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			subscriptionFilters(),
+			dataProtectionPolicy(),
 		},
 	}
 }

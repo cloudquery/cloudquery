@@ -1,6 +1,9 @@
 package elbv2
 
 import (
+	"context"
+
+	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -12,7 +15,7 @@ func TargetGroups() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_TargetGroup.html`,
-		Resolver:    fetchElbv2TargetGroups,
+		Resolver:    fetchTargetGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.TargetGroup{}),
 		Columns: []schema.Column{
@@ -21,7 +24,7 @@ func TargetGroups() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: resolveElbv2targetGroupTags,
+				Resolver: resolveTargetGroupTags,
 			},
 			{
 				Name:     "arn",
@@ -34,7 +37,49 @@ func TargetGroups() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			TargetGroupTargetHealthDescriptions(),
+			targetGroupTargetHealthDescriptions(),
 		},
 	}
+}
+
+func fetchTargetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Elasticloadbalancingv2
+	paginator := elbv2.NewDescribeTargetGroupsPaginator(svc, &elbv2.DescribeTargetGroupsInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.TargetGroups
+	}
+	return nil
+}
+
+func resolveTargetGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	region := meta.(*client.Client).Region
+	svc := meta.(*client.Client).Services().Elasticloadbalancingv2
+	targetGroup := resource.Item.(types.TargetGroup)
+	tagsOutput, err := svc.DescribeTags(ctx, &elbv2.DescribeTagsInput{
+		ResourceArns: []string{
+			*targetGroup.TargetGroupArn,
+		},
+	}, func(o *elbv2.Options) {
+		o.Region = region
+	})
+	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return nil
+		}
+		return err
+	}
+	if len(tagsOutput.TagDescriptions) == 0 {
+		return nil
+	}
+	tags := make(map[string]*string)
+	for _, s := range tagsOutput.TagDescriptions[0].Tags {
+		tags[*s.Key] = s.Value
+	}
+	return resource.Set(c.Name, tags)
 }

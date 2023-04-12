@@ -31,5 +31,7 @@ This table depends on [gcp_kms_crypto_keys](gcp_kms_crypto_keys).
 |import_job|String|
 |import_time|Timestamp|
 |import_failure_reason|String|
+|generation_failure_reason|String|
+|external_destruction_failure_reason|String|
 |external_protection_level_options|JSON|
 |reimport_eligible|Bool|

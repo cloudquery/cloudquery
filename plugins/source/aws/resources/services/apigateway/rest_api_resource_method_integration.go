@@ -1,7 +1,13 @@
 package apigateway
 
 import (
+	"context"
+	"fmt"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
+	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -42,6 +48,34 @@ func restApiResourceMethodIntegrations() *schema.Table {
 				},
 			},
 		},
-		Relations: []*schema.Table{},
 	}
+}
+
+func fetchApigatewayRestApiResourceMethodIntegration(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	resource := parent.Parent.Item.(types.Resource)
+	method := parent.Item.(*apigateway.GetMethodOutput)
+	api := parent.Parent.Parent.Item.(types.RestApi)
+
+	c := meta.(*client.Client)
+	svc := c.Services().Apigateway
+	config := apigateway.GetIntegrationInput{RestApiId: api.Id, ResourceId: resource.Id, HttpMethod: method.HttpMethod}
+	resp, err := svc.GetIntegration(ctx, &config)
+	if err != nil {
+		return err
+	}
+	res <- resp
+	return nil
+}
+func resolveApigatewayRestAPIResourceMethodIntegrationArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	r := resource.Parent.Parent.Item.(types.Resource)
+	method := resource.Parent.Item.(*apigateway.GetMethodOutput)
+	rapi := resource.Parent.Parent.Parent.Item.(types.RestApi)
+	return resource.Set(c.Name, arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.ApigatewayService),
+		Region:    cl.Region,
+		AccountID: "",
+		Resource:  fmt.Sprintf("/restapis/%s/resources/%s/methods/%s/integration", aws.ToString(rapi.Id), aws.ToString(r.Id), aws.ToString(method.HttpMethod)),
+	}.String())
 }

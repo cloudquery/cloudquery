@@ -1,5 +1,44 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v1.2.0...plugins-source-alicloud-v2.0.0) (2023-04-04)
+
+
+### This Release has the Following Changes to Tables
+- Table `alicloud_bss_bill_details`: primary key constraint added to column `billing_date` (:warning: breaking)
+- Table `alicloud_bss_bill_details`: primary key constraint added to column `instance_id` (:warning: breaking)
+- Table `alicloud_ecs_instances`: column added with name `instance_owner_id` and type `Int`
+
+### ⚠ BREAKING CHANGES
+
+* **alicloud:** Add `billing_date` and `instance_id` to `alicloud_bss_bill_details` primary key ([#9639](https://github.com/cloudquery/cloudquery/issues/9639))
+
+### Bug Fixes
+
+* **alicloud:** Add `billing_date` and `instance_id` to `alicloud_bss_bill_details` primary key ([#9639](https://github.com/cloudquery/cloudquery/issues/9639)) ([c68cf92](https://github.com/cloudquery/cloudquery/commit/c68cf92c746e857a198cda4d5e04aae92badf241))
+* **deps:** Update golang.org/x/exp digest to 10a5072 ([#9587](https://github.com/cloudquery/cloudquery/issues/9587)) ([31f913f](https://github.com/cloudquery/cloudquery/commit/31f913f8e3538a2ba41b089bb11eae78aaf42ab2))
+* **deps:** Update module github.com/aliyun/alibaba-cloud-sdk-go to v1.62.266 ([#9601](https://github.com/cloudquery/cloudquery/issues/9601)) ([f7135db](https://github.com/cloudquery/cloudquery/commit/f7135dbf074050d5a8eccaaf0135bd7ce326d90e))
+* **deps:** Update module github.com/aliyun/aliyun-oss-go-sdk to v2.2.7 ([#9602](https://github.com/cloudquery/cloudquery/issues/9602)) ([81f1cb7](https://github.com/cloudquery/cloudquery/commit/81f1cb7a0e71d3205822aae104530a533549b8b7))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.1 ([#9520](https://github.com/cloudquery/cloudquery/issues/9520)) ([202c31b](https://github.com/cloudquery/cloudquery/commit/202c31b2788c3df35b5df7d07fdc750f92e7bb23))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.2 ([#9661](https://github.com/cloudquery/cloudquery/issues/9661)) ([a27dc84](https://github.com/cloudquery/cloudquery/commit/a27dc84a9b67b68b5b75b04dd3afe13e2c556082))
+* **deps:** Update module github.com/mattn/go-isatty to v0.0.18 ([#9609](https://github.com/cloudquery/cloudquery/issues/9609)) ([5b2908e](https://github.com/cloudquery/cloudquery/commit/5b2908e8260c6e48f8c5fd6b8bd6c772f0c779d1))
+
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v1.1.2...plugins-source-alicloud-v1.2.0) (2023-03-28)
+
+
+### This Release has the Following Changes to Tables
+- Table `alicloud_bss_bill_details` was added
+
+### Features
+
+* **alicloud:** Add daily bill table ([#9380](https://github.com/cloudquery/cloudquery/issues/9380)) ([8993d5c](https://github.com/cloudquery/cloudquery/commit/8993d5c956786d1c0b06c53e453bf53dc0bf74ad))
+
+## [1.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v1.1.1...plugins-source-alicloud-v1.1.2) (2023-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.0 ([#9167](https://github.com/cloudquery/cloudquery/issues/9167)) ([49d6477](https://github.com/cloudquery/cloudquery/commit/49d647730a85ea6fae51e97194ba61c0625d1331))
+
 ## [1.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v1.1.0...plugins-source-alicloud-v1.1.1) (2023-03-14)
 
 

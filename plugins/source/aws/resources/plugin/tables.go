@@ -14,7 +14,9 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appsync"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/athena"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscalingplans"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/batch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudfront"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudhsmv2"
@@ -31,6 +33,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/docdb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dynamodb"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dynamodbstreams"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecr"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecrpublic"
@@ -117,6 +120,9 @@ func tables() []*schema.Table {
 		apigatewayv2.DomainNames(),
 		apigatewayv2.VpcLinks(),
 		applicationautoscaling.Policies(),
+		applicationautoscaling.ScalableTargets(),
+		applicationautoscaling.ScalingActivities(),
+		applicationautoscaling.ScheduledActions(),
 		apprunner.AutoScalingConfigurations(),
 		apprunner.Connections(),
 		apprunner.ObservabilityConfigurations(),
@@ -138,11 +144,15 @@ func tables() []*schema.Table {
 		autoscaling.Groups(),
 		autoscaling.LaunchConfigurations(),
 		autoscaling.ScheduledActions(),
+		autoscalingplans.Plans(),
 		backup.GlobalSettings(),
 		backup.Plans(),
 		backup.RegionSettings(),
 		backup.Vaults(),
+		batch.JobQueues(),
+		batch.JobDefinitions(),
 		cloudformation.Stacks(),
+		cloudformation.StackSets(),
 		cloudfront.CachePolicies(),
 		cloudfront.Distributions(),
 		cloudhsmv2.Backups(),
@@ -185,7 +195,11 @@ func tables() []*schema.Table {
 		docdb.GlobalClusters(),
 		docdb.PendingMaintenanceActions(),
 		docdb.SubnetGroups(),
+		dynamodb.Backups(),
+		dynamodb.Exports(),
+		dynamodb.GlobalTables(),
 		dynamodb.Tables(),
+		dynamodbstreams.Streams(),
 		ec2.AccountAttributes(),
 		ec2.AvailabilityZones(),
 		ec2.ByoipCidrs(),
@@ -397,6 +411,8 @@ func tables() []*schema.Table {
 		rds.ReservedInstances(),
 		rds.SubnetGroups(),
 		redshift.Clusters(),
+		redshift.DataShares(),
+		redshift.Events(),
 		redshift.EventSubscriptions(),
 		redshift.SubnetGroups(),
 		resiliencehub.Apps(),
@@ -412,6 +428,7 @@ func tables() []*schema.Table {
 		s3.AccessPoints(),
 		s3.Accounts(),
 		s3.Buckets(),
+		sagemaker.Apps(),
 		sagemaker.EndpointConfigurations(),
 		sagemaker.Models(),
 		sagemaker.NotebookInstances(),
@@ -446,6 +463,7 @@ func tables() []*schema.Table {
 		ssm.InventorySchemas(),
 		ssm.Parameters(),
 		ssm.PatchBaselines(),
+		ssm.Sessions(),
 		ssoadmin.Instances(),
 		stepfunctions.Activities(),
 		stepfunctions.StateMachines(),

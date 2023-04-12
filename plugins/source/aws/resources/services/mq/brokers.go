@@ -1,7 +1,10 @@
 package mq
 
 import (
+	"context"
+
 	"github.com/aws/aws-sdk-go-v2/service/mq"
+	"github.com/aws/aws-sdk-go-v2/service/mq/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -30,8 +33,36 @@ func Brokers() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			BrokerConfigurations(),
-			BrokerUsers(),
+			brokerConfigurations(),
+			brokerUsers(),
 		},
 	}
+}
+
+func fetchMqBrokers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var config mq.ListBrokersInput
+	c := meta.(*client.Client)
+	svc := c.Services().Mq
+	paginator := mq.NewListBrokersPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.BrokerSummaries
+	}
+	return nil
+}
+
+func getMqBroker(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Mq
+	bs := resource.Item.(types.BrokerSummary)
+
+	output, err := svc.DescribeBroker(ctx, &mq.DescribeBrokerInput{BrokerId: bs.BrokerId})
+	if err != nil {
+		return err
+	}
+	resource.Item = output
+	return nil
 }

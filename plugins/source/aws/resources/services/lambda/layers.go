@@ -1,6 +1,9 @@
 package lambda
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -29,7 +32,62 @@ func Layers() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			LayerVersions(),
+			layerVersions(),
 		},
 	}
+}
+
+func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var input lambda.ListLayersInput
+	c := meta.(*client.Client)
+	svc := c.Services().Lambda
+	paginator := lambda.NewListLayersPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+
+		res <- page.Layers
+	}
+	return nil
+}
+func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	p := parent.Item.(types.LayersListItem)
+	svc := meta.(*client.Client).Services().Lambda
+	config := lambda.ListLayerVersionsInput{
+		LayerName: p.LayerName,
+	}
+	paginator := lambda.NewListLayerVersionsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.LayerVersions
+	}
+	return nil
+}
+func fetchLambdaLayerVersionPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	p := parent.Item.(types.LayerVersionsListItem)
+
+	pp := parent.Parent.Item.(types.LayersListItem)
+	c := meta.(*client.Client)
+	svc := c.Services().Lambda
+
+	config := lambda.GetLayerVersionPolicyInput{
+		LayerName:     pp.LayerName,
+		VersionNumber: p.Version,
+	}
+
+	output, err := svc.GetLayerVersionPolicy(ctx, &config)
+	if err != nil {
+		if client.IsAWSError(err, "ResourceNotFoundException") {
+			return nil
+		}
+		return err
+	}
+	res <- output
+
+	return nil
 }

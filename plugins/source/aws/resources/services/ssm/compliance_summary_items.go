@@ -1,6 +1,10 @@
 package ssm
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -27,4 +31,22 @@ func ComplianceSummaryItems() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchSsmComplianceSummaryItems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Ssm
+
+	params := ssm.ListComplianceSummariesInput{
+		MaxResults: aws.Int32(50),
+	}
+	paginator := ssm.NewListComplianceSummariesPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.ComplianceSummaryItems
+	}
+	return nil
 }

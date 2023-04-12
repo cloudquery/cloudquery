@@ -1,6 +1,10 @@
 package ec2
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -27,4 +31,28 @@ func ByoipCidrs() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchEc2ByoipCidrs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	// DescribeByoipCidrs does not work in next regions, so we ignore them.
+	if _, ok := map[string]struct{}{
+		"cn-north-1":     {},
+		"cn-northwest-1": {},
+	}[c.Region]; ok {
+		return nil
+	}
+	svc := c.Services().Ec2
+	config := ec2.DescribeByoipCidrsInput{
+		MaxResults: aws.Int32(100),
+	}
+	paginator := ec2.NewDescribeByoipCidrsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.ByoipCidrs
+	}
+	return nil
 }

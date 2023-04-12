@@ -67,7 +67,7 @@ const replaceMdxPluginNames = (node) => {
     Object.entries(pluginNamePatterns).forEach(([key, pattern]) => {
       const match = node.value.match(pattern);
       if (match) {
-        node.value = node.value.replace(pattern, "postgres"); // default to postgres
+        node.value = node.value.replace(pattern, "postgresql"); // default to postgresql
       }
     });
   }
@@ -113,6 +113,8 @@ export default withNextra({
   reactStrictMode: true,
   experimental: {
     legacyBrowsers: false,
+    // default is 128KB
+    largePageDataBytes: 512 * 1000,
   },
   env: {
     VERCEL_GIT_REPO_OWNER: process.env.VERCEL_GIT_REPO_OWNER,

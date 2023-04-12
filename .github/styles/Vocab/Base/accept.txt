@@ -56,6 +56,7 @@ discoverability
 Docusaurus
 ELB
 ELBs
+Embeddable
 ENI
 ENIs
 env
@@ -109,6 +110,8 @@ licensors
 Lightsail
 Lucene
 Mailchimp
+Meilisearch
+meilisearch
 Metabase
 Metastore
 Mixpanel
@@ -139,6 +142,7 @@ Promtail
 protobuf
 Pulumi
 queryable
+Raasveldt
 ransform
 readme
 README
@@ -186,6 +190,7 @@ unmarshalling
 upsert
 upserts
 upserted
+upvote
 uuid
 UUID
 Vercel
@@ -202,3 +207,15 @@ Yandex
 Yevgeny
 zsh
 Zsh
+Reachability
+deregister
+Deregister
+deregistering
+Deregistering
+Macie
+overprivileged
+Overprivileged
+productionize
+cybersecurity
+cyber
+Remediation

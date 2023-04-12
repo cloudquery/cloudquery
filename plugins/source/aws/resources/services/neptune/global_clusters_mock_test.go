@@ -3,7 +3,6 @@ package neptune
 import (
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -20,17 +19,6 @@ func buildNeptuneGlobalClusters(t *testing.T, ctrl *gomock.Controller) client.Se
 	}
 	mock.EXPECT().DescribeGlobalClusters(gomock.Any(), &neptune.DescribeGlobalClustersInput{}, gomock.Any()).Return(
 		&neptune.DescribeGlobalClustersOutput{GlobalClusters: []types.GlobalCluster{gc}},
-		nil,
-	)
-
-	mock.EXPECT().ListTagsForResource(
-		gomock.Any(),
-		&neptune.ListTagsForResourceInput{ResourceName: gc.GlobalClusterArn},
-		gomock.Any(),
-	).Return(
-		&neptune.ListTagsForResourceOutput{
-			TagList: []types.Tag{{Key: aws.String("key"), Value: aws.String("value")}},
-		},
 		nil,
 	)
 	return client.Services{Neptune: mock}

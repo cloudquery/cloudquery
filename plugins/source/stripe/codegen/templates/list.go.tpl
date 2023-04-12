@@ -2,7 +2,7 @@ package {{.Service}}
 
 import (
 	"context"
-{{if .StateParamName}}
+{{- if .StateParamName}}
 	"fmt"
 	"strconv"
 {{end}}
@@ -68,6 +68,10 @@ func fetch{{.TableName | ToPascal}}(ctx context.Context, meta schema.ClientMeta,
 		lp := &stripe.{{.TableName | ToPascal | Singularize}}ListParams{
 {{.ListParams}}
 		}
+
+		{{- range .ExpandFields}}
+		lp.AddExpand("{{.}}")
+		{{- end}}
 
 {{if .StateParamName}}
 		const key = "{{.TableName}}"

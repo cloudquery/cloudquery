@@ -1,13 +1,17 @@
 package ec2
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func TransitGatewayAttachments() *schema.Table {
+func transitGatewayAttachments() *schema.Table {
 	tableName := "aws_ec2_transit_gateway_attachments"
 	return &schema.Table{
 		Name:        tableName,
@@ -30,4 +34,28 @@ func TransitGatewayAttachments() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchEc2TransitGatewayAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	r := parent.Item.(types.TransitGateway)
+
+	config := ec2.DescribeTransitGatewayAttachmentsInput{
+		Filters: []types.Filter{
+			{
+				Name:   aws.String("transit-gateway-id"),
+				Values: []string{*r.TransitGatewayId},
+			},
+		},
+	}
+	c := meta.(*client.Client)
+	svc := c.Services().Ec2
+	paginator := ec2.NewDescribeTransitGatewayAttachmentsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.TransitGatewayAttachments
+	}
+	return nil
 }

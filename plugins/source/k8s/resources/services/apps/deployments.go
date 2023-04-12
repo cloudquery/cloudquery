@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/transformers"
 	v1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -14,22 +15,8 @@ func Deployments() *schema.Table {
 		Name:      "k8s_apps_deployments",
 		Resolver:  fetchDeployments,
 		Multiplex: client.ContextMultiplex,
-		Transform: client.TransformWithStruct(&v1.Deployment{}),
-		Columns: []schema.Column{
-			{
-				Name:     "context",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveContext,
-			},
-			{
-				Name:     "uid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform: client.TransformWithStruct(&v1.Deployment{}, transformers.WithPrimaryKeys("UID")),
+		Columns:   schema.ColumnList{client.ContextColumn},
 	}
 }
 

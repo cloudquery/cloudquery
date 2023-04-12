@@ -1,6 +1,9 @@
 package accessanalyzer
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -28,8 +31,23 @@ func Analyzers() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			AnalyzerFindings(),
-			AnalyzerArchiveRules(),
+			analyzerFindings(),
+			analyzerArchiveRules(),
 		},
 	}
+}
+
+func fetchAccessanalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Accessanalyzer
+	paginator := accessanalyzer.NewListAnalyzersPaginator(svc, &accessanalyzer.ListAnalyzersInput{})
+	for paginator.HasMorePages() {
+		// no need to override API call options anymore: https://github.com/aws/aws-sdk-go-v2/issues/1260
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.Analyzers
+	}
+	return nil
 }

@@ -1,5 +1,42 @@
 # Changelog
 
+## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v1.2.1...plugins-destination-firehose-v1.2.2) (2023-04-04)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v12 digest to 7e19111 ([#9561](https://github.com/cloudquery/cloudquery/issues/9561)) ([dab17b9](https://github.com/cloudquery/cloudquery/commit/dab17b9c73e93aeafa06a4643db5b932a5a463c9))
+* **deps:** Update github.com/xitongsys/parquet-go-source digest to fbbcdea ([#9566](https://github.com/cloudquery/cloudquery/issues/9566)) ([4256350](https://github.com/cloudquery/cloudquery/commit/4256350bd8a727963fc244dccc5f13cd97b0e5cd))
+* **deps:** Update golang.org/x/exp digest to 10a5072 ([#9587](https://github.com/cloudquery/cloudquery/issues/9587)) ([31f913f](https://github.com/cloudquery/cloudquery/commit/31f913f8e3538a2ba41b089bb11eae78aaf42ab2))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/firehose to v1.16.8 ([#9626](https://github.com/cloudquery/cloudquery/issues/9626)) ([279dd25](https://github.com/cloudquery/cloudquery/commit/279dd25a7beb80528c98564832916c825d34c6cf))
+* **deps:** Update module github.com/cloudquery/filetypes to v1.6.2 ([#9659](https://github.com/cloudquery/cloudquery/issues/9659)) ([11d3160](https://github.com/cloudquery/cloudquery/commit/11d3160ac65294eafe76de038f939f5aa06fb247))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.1 ([#9520](https://github.com/cloudquery/cloudquery/issues/9520)) ([202c31b](https://github.com/cloudquery/cloudquery/commit/202c31b2788c3df35b5df7d07fdc750f92e7bb23))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.2 ([#9661](https://github.com/cloudquery/cloudquery/issues/9661)) ([a27dc84](https://github.com/cloudquery/cloudquery/commit/a27dc84a9b67b68b5b75b04dd3afe13e2c556082))
+* **deps:** Update module github.com/mattn/go-isatty to v0.0.18 ([#9609](https://github.com/cloudquery/cloudquery/issues/9609)) ([5b2908e](https://github.com/cloudquery/cloudquery/commit/5b2908e8260c6e48f8c5fd6b8bd6c772f0c779d1))
+
+## [1.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v1.2.0...plugins-destination-firehose-v1.2.1) (2023-03-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.17.7 ([#9425](https://github.com/cloudquery/cloudquery/issues/9425)) ([c8a4ab1](https://github.com/cloudquery/cloudquery/commit/c8a4ab1aaf52a1ae68f816b26b6bf7c47910501e))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.19 ([#9426](https://github.com/cloudquery/cloudquery/issues/9426)) ([2017697](https://github.com/cloudquery/cloudquery/commit/2017697a59970f61c79e713054e8d3e4e482c453))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/credentials to v1.13.18 ([#9427](https://github.com/cloudquery/cloudquery/issues/9427)) ([b2ef029](https://github.com/cloudquery/cloudquery/commit/b2ef0292574d3fa03b7cba8d8a6d25031210079a))
+
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v1.1.1...plugins-destination-firehose-v1.2.0) (2023-03-21)
+
+
+### Features
+
+* **firehose:** Update to filetypes v1.6.0 ([#9154](https://github.com/cloudquery/cloudquery/issues/9154)) ([b1bc0f0](https://github.com/cloudquery/cloudquery/commit/b1bc0f0377f9f89aee9b86d8a5d9477d5faf31ad))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.18 ([#9227](https://github.com/cloudquery/cloudquery/issues/9227)) ([f630ecc](https://github.com/cloudquery/cloudquery/commit/f630ecc28c19e8388626c823954dca9f561e3920))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/firehose to v1.16.7 ([#9244](https://github.com/cloudquery/cloudquery/issues/9244)) ([43a4a7e](https://github.com/cloudquery/cloudquery/commit/43a4a7e5c84cc317a64dca6bb333125b813ac748))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.0 ([#9167](https://github.com/cloudquery/cloudquery/issues/9167)) ([49d6477](https://github.com/cloudquery/cloudquery/commit/49d647730a85ea6fae51e97194ba61c0625d1331))
+
 ## [1.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v1.1.0...plugins-destination-firehose-v1.1.1) (2023-03-14)
 
 

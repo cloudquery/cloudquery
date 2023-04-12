@@ -1,6 +1,10 @@
 package appstream
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -17,4 +21,19 @@ func Images() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Image{}, transformers.WithPrimaryKeys("Arn")),
 		Columns:     []schema.Column{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true)},
 	}
+}
+
+func fetchAppstreamImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	input := appstream.DescribeImagesInput{MaxResults: aws.Int32(25)}
+	c := meta.(*client.Client)
+	svc := c.Services().Appstream
+	paginator := appstream.NewDescribeImagesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.Images
+	}
+	return nil
 }

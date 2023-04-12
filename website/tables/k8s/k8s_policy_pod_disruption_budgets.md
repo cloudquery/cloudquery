@@ -1,6 +1,6 @@
 # Table: k8s_policy_pod_disruption_budgets
 
-This table shows data for K8s Policy Pod Disruption Budgets.
+This table shows data for Kubernetes (K8s) Policy Pod Disruption Budgets.
 
 The primary key for this table is **uid**.
 

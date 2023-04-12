@@ -17,6 +17,7 @@ func Galleries() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_galleries", client.Namespacemicrosoft_compute),
 		Transform:   transformers.TransformWithStruct(&armcompute.Gallery{}, transformers.WithPrimaryKeys("ID")),
 		Columns:     schema.ColumnList{client.SubscriptionID},
+		Relations:   []*schema.Table{galleryImages()},
 	}
 }
 

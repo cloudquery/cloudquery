@@ -1,0 +1,102 @@
+name: Destination Plugin Meilisearch Workflow
+
+on:
+  pull_request:
+    paths:
+    - plugins/destination/meilisearch/**
+    - .github/workflows/dest_meilisearch.yml
+  push:
+    branches:
+    - main
+    paths:
+    - plugins/destination/meilisearch/**
+    - .github/workflows/dest_meilisearch.yml
+
+jobs:
+  plugins-destination-meilisearch:
+    name: "plugins/destination/meilisearch"
+    runs-on:         ubuntu-latest
+    timeout-minutes: 30
+    env:
+      MEILI_MASTER_KEY: test
+    defaults:
+      run:
+        working-directory: plugins/destination/meilisearch
+    services:
+      meilisearch:
+        image:   getmeili/meilisearch:v1.1.0
+        env:
+          MEILI_ENV:          development
+          MEILI_MASTER_KEY:   ${{ env.MEILI_MASTER_KEY }}
+          MEILI_NO_ANALYTICS: true
+          MEILI_LOG_LEVEL:    WARN
+        ports:
+        - 7700:7700
+        options: >-
+                 --health-cmd "wget --no-verbose --tries=1 --spider http://localhost:7700/health || exit 1"
+                 --health-interval 60s
+                 --health-timeout 30s
+                 --health-start-period 20s
+                 --health-retries 5
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v3
+      with:
+        go-version-file:       plugins/destination/meilisearch/go.mod
+        cache:                 true
+        cache-dependency-path: plugins/destination/meilisearch/go.sum
+    - name: golangci-lint
+      uses: cloudquery/golangci-lint-action@master
+      with:
+        version:           v1.51.2
+        working-directory: plugins/destination/meilisearch
+        args:              "--config ../../.golangci.yml"
+        skip-pkg-cache:    true
+        skip-build-cache:  true
+    - name: Get dependencies
+      run:  go get -t -d ./...
+    - name: Build
+      run:  go build .
+    - name: Test Meilisearch
+      env:
+        CQ_DEST_MEILI_TEST_HOST:    "http://localhost:7700"
+        CQ_DEST_MEILI_TEST_API_KEY: ${{ env.MEILI_MASTER_KEY }}
+      run:  make test
+  validate-release:
+    timeout-minutes: 30
+    runs-on:         ubuntu-latest
+    env:
+      CGO_ENABLED: 0
+    steps:
+    - name: Checkout
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      with:
+        path:         |
+                      ~/.cache/go-build
+                      ~/go/pkg/mod
+        key:          ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/destination/meilisearch/go.sum') }}
+        restore-keys: |
+                      ${{ runner.os }}-go-1.19.4-release-cache-plugins-destination-meilisearch
+    - name: Set up Go
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      uses: actions/setup-go@v3
+      with:
+        go-version-file: plugins/destination/meilisearch/go.mod
+    - name: Install GoReleaser
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      uses: goreleaser/goreleaser-action@v3
+      with:
+        distribution: goreleaser-pro
+        version:      latest
+        install-only: true
+    - name: Run GoReleaser Dry-Run
+      if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+      run:  goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/destination/meilisearch/.goreleaser.yaml
+      env:
+        GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

@@ -1,13 +1,17 @@
 package qldb
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/qldb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func LedgerJournalKinesisStreams() *schema.Table {
+func ledgerJournalKinesisStreams() *schema.Table {
 	tableName := "aws_qldb_ledger_journal_kinesis_streams"
 	return &schema.Table{
 		Name:        tableName,
@@ -25,4 +29,23 @@ func LedgerJournalKinesisStreams() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchQldbLedgerJournalKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	ledger := parent.Item.(*qldb.DescribeLedgerOutput)
+	svc := meta.(*client.Client).Services().Qldb
+	config := &qldb.ListJournalKinesisStreamsForLedgerInput{
+		LedgerName: ledger.Name,
+		MaxResults: aws.Int32(100),
+	}
+	paginator := qldb.NewListJournalKinesisStreamsForLedgerPaginator(svc, config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+
+		res <- page.Streams
+	}
+	return nil
 }

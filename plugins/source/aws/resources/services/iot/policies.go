@@ -1,6 +1,10 @@
 package iot
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -10,11 +14,12 @@ import (
 func Policies() *schema.Table {
 	tableName := "aws_iot_policies"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_Policy.html`,
-		Resolver:    fetchIotPolicies,
-		Transform:   transformers.TransformWithStruct(&types.Policy{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
+		Name:                tableName,
+		Description:         `https://docs.aws.amazon.com/iot/latest/apireference/API_Policy.html`,
+		Resolver:            fetchIotPolicies,
+		PreResourceResolver: getPolicy,
+		Transform:           transformers.TransformWithStruct(&types.Policy{}),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -33,4 +38,42 @@ func Policies() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+	input := iot.ListPoliciesInput{
+		PageSize: aws.Int32(250),
+	}
+	paginator := iot.NewListPoliciesPaginator(svc, &input)
+
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.Policies
+	}
+	return nil
+}
+
+func getPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+
+	output, err := svc.GetPolicy(ctx, &iot.GetPolicyInput{
+		PolicyName: resource.Item.(types.Policy).PolicyName,
+	})
+	if err != nil {
+		return err
+	}
+	resource.Item = output
+	return nil
+}
+
+func ResolveIotPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	i := resource.Item.(*iot.GetPolicyOutput)
+	svc := meta.(*client.Client).Services().Iot
+	return resolveIotTags(ctx, svc, resource, c, i.PolicyArn)
 }

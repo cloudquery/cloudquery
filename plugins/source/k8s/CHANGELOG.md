@@ -1,5 +1,75 @@
 # Changelog
 
+## [3.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v3.3.2...plugins-source-k8s-v3.4.0) (2023-04-04)
+
+
+### This Release has the Following Changes to Tables
+- Table `k8s_admissionregistration_mutating_webhook_configurations`: column order changed for `uid`
+- Table `k8s_admissionregistration_validating_webhook_configurations`: column order changed for `uid`
+- Table `k8s_apps_daemon_sets`: column order changed for `uid`
+- Table `k8s_apps_deployments`: column order changed for `uid`
+- Table `k8s_apps_replica_sets`: column order changed for `uid`
+- Table `k8s_apps_stateful_sets`: column order changed for `uid`
+- Table `k8s_autoscaling_hpas`: column order changed for `uid`
+- Table `k8s_batch_cron_jobs`: column order changed for `uid`
+- Table `k8s_batch_jobs`: column order changed for `uid`
+- Table `k8s_certificates_signing_requests`: column order changed for `uid`
+- Table `k8s_coordination_leases`: column order changed for `uid`
+- Table `k8s_core_component_statuses`: column order changed for `uid`
+- Table `k8s_core_config_maps`: column order changed for `uid`
+- Table `k8s_core_endpoints`: column order changed for `uid`
+- Table `k8s_core_events`: column order changed for `uid`
+- Table `k8s_core_limit_ranges`: column order changed for `uid`
+- Table `k8s_core_namespaces`: column order changed for `uid`
+- Table `k8s_core_nodes`: column order changed for `uid`
+- Table `k8s_core_pods`: column order changed for `uid`
+- Table `k8s_core_pvcs`: column order changed for `uid`
+- Table `k8s_core_pvs`: column order changed for `uid`
+- Table `k8s_core_replication_controllers`: column order changed for `uid`
+- Table `k8s_core_resource_quotas`: column order changed for `uid`
+- Table `k8s_core_secrets`: column order changed for `uid`
+- Table `k8s_core_service_accounts`: column order changed for `uid`
+- Table `k8s_core_services`: column order changed for `uid`
+- Table `k8s_crds` was added
+- Table `k8s_discovery_endpoint_slices`: column order changed for `uid`
+- Table `k8s_networking_ingress_classes`: column order changed for `uid`
+- Table `k8s_networking_ingresses`: column order changed for `uid`
+- Table `k8s_networking_network_policies`: column order changed for `uid`
+- Table `k8s_nodes_runtime_classes`: column order changed for `uid`
+- Table `k8s_rbac_cluster_role_bindings`: column order changed for `uid`
+- Table `k8s_rbac_cluster_roles`: column order changed for `uid`
+- Table `k8s_rbac_role_bindings`: column order changed for `uid`
+- Table `k8s_rbac_roles`: column order changed for `uid`
+- Table `k8s_storage_csi_drivers`: column order changed for `uid`
+- Table `k8s_storage_csi_nodes`: column order changed for `uid`
+- Table `k8s_storage_csi_storage_capacities`: column order changed for `uid`
+- Table `k8s_storage_storage_classes`: column order changed for `uid`
+- Table `k8s_storage_volume_attachments`: column order changed for `uid`
+
+### Features
+
+* **k8s:** Add CRDs support ([#9504](https://github.com/cloudquery/cloudquery/issues/9504)) ([d4b03a4](https://github.com/cloudquery/cloudquery/commit/d4b03a43d42e20119b0ced371dd9988c0fc3ccf3)), closes [#7800](https://github.com/cloudquery/cloudquery/issues/7800)
+* **k8s:** Improve tables descriptions in docs ([#9510](https://github.com/cloudquery/cloudquery/issues/9510)) ([e6de98e](https://github.com/cloudquery/cloudquery/commit/e6de98ed55758bdbe2758eac42749908da00521c))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 10a5072 ([#9587](https://github.com/cloudquery/cloudquery/issues/9587)) ([31f913f](https://github.com/cloudquery/cloudquery/commit/31f913f8e3538a2ba41b089bb11eae78aaf42ab2))
+* **deps:** Update k8s.io/kube-openapi digest to f5883ff ([#9589](https://github.com/cloudquery/cloudquery/issues/9589)) ([229c5da](https://github.com/cloudquery/cloudquery/commit/229c5da79be1afb352e3ea4d53ed3471395d7e30))
+* **deps:** Update k8s.io/utils digest to 38a27ef ([#9590](https://github.com/cloudquery/cloudquery/issues/9590)) ([2bcbcf2](https://github.com/cloudquery/cloudquery/commit/2bcbcf25360d6e40e626763840e7c633be927d73))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.1 ([#9520](https://github.com/cloudquery/cloudquery/issues/9520)) ([202c31b](https://github.com/cloudquery/cloudquery/commit/202c31b2788c3df35b5df7d07fdc750f92e7bb23))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.2 ([#9661](https://github.com/cloudquery/cloudquery/issues/9661)) ([a27dc84](https://github.com/cloudquery/cloudquery/commit/a27dc84a9b67b68b5b75b04dd3afe13e2c556082))
+* **deps:** Update module github.com/go-logr/logr to v1.2.4 ([#9605](https://github.com/cloudquery/cloudquery/issues/9605)) ([2ed0dc1](https://github.com/cloudquery/cloudquery/commit/2ed0dc15043598b0e3f68549e4732f08cc7f4ab9))
+* **deps:** Update module github.com/imdario/mergo to v0.3.15 ([#9607](https://github.com/cloudquery/cloudquery/issues/9607)) ([2659ba4](https://github.com/cloudquery/cloudquery/commit/2659ba431168ce159588e398148e459deb33f92b))
+* **deps:** Update module github.com/mattn/go-isatty to v0.0.18 ([#9609](https://github.com/cloudquery/cloudquery/issues/9609)) ([5b2908e](https://github.com/cloudquery/cloudquery/commit/5b2908e8260c6e48f8c5fd6b8bd6c772f0c779d1))
+
+## [3.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v3.3.1...plugins-source-k8s-v3.3.2) (2023-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.0 ([#9167](https://github.com/cloudquery/cloudquery/issues/9167)) ([49d6477](https://github.com/cloudquery/cloudquery/commit/49d647730a85ea6fae51e97194ba61c0625d1331))
+
 ## [3.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v3.3.0...plugins-source-k8s-v3.3.1) (2023-03-14)
 
 

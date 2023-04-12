@@ -1,6 +1,10 @@
 package iot
 
 import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -33,4 +37,28 @@ func ThingTypes() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchIotThingTypes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	input := iot.ListThingTypesInput{
+		MaxResults: aws.Int32(250),
+	}
+	c := meta.(*client.Client)
+
+	svc := c.Services().Iot
+	paginator := iot.NewListThingTypesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+
+		res <- page.ThingTypes
+	}
+	return nil
+}
+func ResolveIotThingTypeTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	i := resource.Item.(types.ThingTypeDefinition)
+	svc := meta.(*client.Client).Services().Iot
+	return resolveIotTags(ctx, svc, resource, c, i.ThingTypeArn)
 }

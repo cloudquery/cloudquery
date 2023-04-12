@@ -5,6 +5,107 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.0.0...plugins-source-azure-v7.1.0) (2023-04-11)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_compute_availability_sets` was added
+
+### Features
+
+* **azure-resources:** Add Compute Availability Sets ([#9779](https://github.com/cloudquery/cloudquery/issues/9779)) ([6090451](https://github.com/cloudquery/cloudquery/commit/60904510c6192db8c90d8795f645cf8fdd5cfecb))
+* **azure:** Add discovery concurrency setting ([#9811](https://github.com/cloudquery/cloudquery/issues/9811)) ([45543ec](https://github.com/cloudquery/cloudquery/commit/45543ecbac54fd633b6686abdf55718c37934b03))
+
+## [7.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v6.2.0...plugins-source-azure-v7.0.0) (2023-04-04)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_desktopvirtualization_host_pools`: column added with name `system_data` and type `JSON`
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** In `v2` of the Azure Go `desktopvirtualization` client, the `MigrationRequest` field was removed from the `HostPoolProperties` struct. This means that the `azure_desktopvirtualization_host_pools->properties` JSON column will not have that field anymore. If you're relying on it in a query, you'd need to update it.
+* **deps:** In `v1` of the Azure Go `containerregistry` client, the `AnonymousPullEnabled` field was removed from the `RegistryProperties` struct. This means that the `azure_containerregistry_registries->properties` JSON column will not have that field anymore. If you're relying on it in a query, you'd need to update it.
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 10a5072 ([#9587](https://github.com/cloudquery/cloudquery/issues/9587)) ([31f913f](https://github.com/cloudquery/cloudquery/commit/31f913f8e3538a2ba41b089bb11eae78aaf42ab2))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry to v1 ([0c0562f](https://github.com/cloudquery/cloudquery/commit/0c0562f8109fc674e1d5170f1cb50c2da0972fa7))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization to v2 ([ed7ab5b](https://github.com/cloudquery/cloudquery/commit/ed7ab5bee900eb47e8a3fe5dbd3ed8645376467b))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations to v3 ([#9470](https://github.com/cloudquery/cloudquery/issues/9470)) ([c3c97b9](https://github.com/cloudquery/cloudquery/commit/c3c97b9987e0a57ea2d8fc2d13e5cf1c990b25f7))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v2 to v3 ([#9471](https://github.com/cloudquery/cloudquery/issues/9471)) ([8505c4c](https://github.com/cloudquery/cloudquery/commit/8505c4cd6449b6dbb0fde7f8663c82ceaad397a1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.1 ([#9520](https://github.com/cloudquery/cloudquery/issues/9520)) ([202c31b](https://github.com/cloudquery/cloudquery/commit/202c31b2788c3df35b5df7d07fdc750f92e7bb23))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.2 ([#9661](https://github.com/cloudquery/cloudquery/issues/9661)) ([a27dc84](https://github.com/cloudquery/cloudquery/commit/a27dc84a9b67b68b5b75b04dd3afe13e2c556082))
+* **deps:** Update module github.com/mattn/go-isatty to v0.0.18 ([#9609](https://github.com/cloudquery/cloudquery/issues/9609)) ([5b2908e](https://github.com/cloudquery/cloudquery/commit/5b2908e8260c6e48f8c5fd6b8bd6c772f0c779d1))
+
+## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v6.1.0...plugins-source-azure-v6.2.0) (2023-03-28)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_compute_capacity_reservation_groups` was added
+- Table `azure_compute_capacity_reservations` was added
+- Table `azure_compute_virtual_machine_patch_assessments` was added
+- Table `azure_storage_blob_services`: column added with name `subscription_id` and type `String`
+- Table `azure_storage_containers`: column added with name `subscription_id` and type `String`
+- Table `azure_storage_file_shares`: column added with name `subscription_id` and type `String`
+- Table `azure_storage_queue_services` was added
+- Table `azure_storage_queues` was added
+- Table `azure_storage_tables`: column added with name `subscription_id` and type `String`
+
+### Features
+
+* **azure-resources:** Add Capacity Reservation Groups and Reservations ([#9460](https://github.com/cloudquery/cloudquery/issues/9460)) ([4ade667](https://github.com/cloudquery/cloudquery/commit/4ade667539e8176ae09ac1d29eb3eb50cb43500b))
+* **azure-resources:** Add Compute VM Patch Assessments table `azure_compute_virtual_machine_patch_assessments`. This might be slow to sync on some accounts and can be skipped if needed via `skip_tables: ["azure_compute_virtual_machine_patch_assessments"]` ([7603b38](https://github.com/cloudquery/cloudquery/commit/7603b384d338dcac4499ee1c51c97356d15227bb))
+* **azure-resources:** Add Missing Storage Account tables and columns ([#9462](https://github.com/cloudquery/cloudquery/issues/9462)) ([e452dd3](https://github.com/cloudquery/cloudquery/commit/e452dd3a53efb52b095af3f389a093c0177544f4))
+
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v6.0.0...plugins-source-azure-v6.1.0) (2023-03-23)
+
+
+### Features
+
+* **azure-auth:** Log `DefaultAzureCredential` credentials errors ([#9363](https://github.com/cloudquery/cloudquery/issues/9363)) ([b38013b](https://github.com/cloudquery/cloudquery/commit/b38013b67ff15e6b43926c8543b0b9ef9c7e65ac))
+* **azure:** Discover resource groups and namespaces in parallel ([#9382](https://github.com/cloudquery/cloudquery/issues/9382)) ([4e6e882](https://github.com/cloudquery/cloudquery/commit/4e6e8821a9ba02e2cc8e6d43102fcd36ab2b4c6f))
+
+
+### Bug Fixes
+
+* **azure-resources:** Pass correct subscription ID when listing subscription locations ([#9369](https://github.com/cloudquery/cloudquery/issues/9369)) ([6ca92c7](https://github.com/cloudquery/cloudquery/commit/6ca92c7363c3d7699159e1ec27daf82702730f09))
+* **azure:** Remove redundant `SingleSubscriptionMultiplex` ([#9365](https://github.com/cloudquery/cloudquery/issues/9365)) ([33fc767](https://github.com/cloudquery/cloudquery/commit/33fc76796f488bc2a3a544799ac3a954e0072671))
+
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.2.0...plugins-source-azure-v6.0.0) (2023-03-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* **resources:** Remove `subscription_id` column from `azure_billing_enrollment_accounts` and `azure_billing_accounts` tables, as those tables are not tied to a specific subscription.
+
+### This Release has the Following Changes to Tables
+- Table `azure_compute_virtual_machine_scale_set_network_interfaces` was added
+
+### Features
+
+* Add azure_resources_resource_groups table ([#9158](https://github.com/cloudquery/cloudquery/issues/9158)) ([6ed30fc](https://github.com/cloudquery/cloudquery/commit/6ed30fc4af6f6aa28644a2441dbe7e86615940a1))
+* **azure-resources:** Add compute gallery images and versions ([#9180](https://github.com/cloudquery/cloudquery/issues/9180)) ([3c39ce6](https://github.com/cloudquery/cloudquery/commit/3c39ce6f750d68b4aed93a7118aed4ac714dbfc7))
+* **azure-resources:** Add Compute SSH Public Keys ([#9182](https://github.com/cloudquery/cloudquery/issues/9182)) ([de0407a](https://github.com/cloudquery/cloudquery/commit/de0407a6bbc63de5b4598b5edcb2ed5d7de7ff0f))
+* **azure-resources:** VM Scale Set Network Interfaces ([#9299](https://github.com/cloudquery/cloudquery/issues/9299)) ([db6f782](https://github.com/cloudquery/cloudquery/commit/db6f78214f8978df54ed1d02b1e999d14121f1b0))
+* **azure:** File Shares ([#9163](https://github.com/cloudquery/cloudquery/issues/9163)) ([5ea94a8](https://github.com/cloudquery/cloudquery/commit/5ea94a8d3e23710e650dffcf0fd5c31a5f5d03c3)), closes [#9137](https://github.com/cloudquery/cloudquery/issues/9137)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.44.0 ([#9167](https://github.com/cloudquery/cloudquery/issues/9167)) ([49d6477](https://github.com/cloudquery/cloudquery/commit/49d647730a85ea6fae51e97194ba61c0625d1331))
+* **resources:** Don't list billing and enrollment accounts per subscription ([a083b34](https://github.com/cloudquery/cloudquery/commit/a083b3450f288776036301f39a6d2478ad4af793))
+
+## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.1.2...plugins-source-azure-v5.2.0) (2023-03-15)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_appservice_web_app_configurations` was added
+
+### Features
+
+* **azure:** Add azure_appservice_web_app_configurations resource ([#9109](https://github.com/cloudquery/cloudquery/issues/9109)) ([ff44c4a](https://github.com/cloudquery/cloudquery/commit/ff44c4a9f293c5e82574a4f88fdf0d696eb8c2c6)), closes [#8531](https://github.com/cloudquery/cloudquery/issues/8531)
+
 ## [5.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v5.1.1...plugins-source-azure-v5.1.2) (2023-03-14)
 
 

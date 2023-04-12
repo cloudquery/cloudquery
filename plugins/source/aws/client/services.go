@@ -15,7 +15,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/autoscalingplans"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
+	"github.com/aws/aws-sdk-go-v2/service/batch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
@@ -33,6 +35,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodbstreams"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
@@ -123,6 +126,8 @@ func initServices(region string, c aws.Config) Services {
 		Appsync:                   appsync.NewFromConfig(awsCfg),
 		Athena:                    athena.NewFromConfig(awsCfg),
 		Autoscaling:               autoscaling.NewFromConfig(awsCfg),
+		Autoscalingplans:          autoscalingplans.NewFromConfig(awsCfg),
+		Batch:                     batch.NewFromConfig(awsCfg),
 		Backup:                    backup.NewFromConfig(awsCfg),
 		Cloudformation:            cloudformation.NewFromConfig(awsCfg),
 		Cloudfront:                cloudfront.NewFromConfig(awsCfg),
@@ -141,6 +146,7 @@ func initServices(region string, c aws.Config) Services {
 		Directconnect:             directconnect.NewFromConfig(awsCfg),
 		Docdb:                     docdb.NewFromConfig(awsCfg),
 		Dynamodb:                  dynamodb.NewFromConfig(awsCfg),
+		Dynamodbstreams:           dynamodbstreams.NewFromConfig(awsCfg),
 		Ec2:                       ec2.NewFromConfig(awsCfg),
 		Ecr:                       ecr.NewFromConfig(awsCfg),
 		Ecrpublic:                 ecrpublic.NewFromConfig(awsCfg),
@@ -228,7 +234,9 @@ type Services struct {
 	Appsync                   services.AppsyncClient
 	Athena                    services.AthenaClient
 	Autoscaling               services.AutoscalingClient
+	Autoscalingplans          services.AutoscalingplansClient
 	Backup                    services.BackupClient
+	Batch                     services.BatchClient
 	Cloudformation            services.CloudformationClient
 	Cloudfront                services.CloudfrontClient
 	Cloudhsmv2                services.Cloudhsmv2Client
@@ -246,6 +254,7 @@ type Services struct {
 	Directconnect             services.DirectconnectClient
 	Docdb                     services.DocdbClient
 	Dynamodb                  services.DynamodbClient
+	Dynamodbstreams           services.DynamodbstreamsClient
 	Ec2                       services.Ec2Client
 	Ecr                       services.EcrClient
 	Ecrpublic                 services.EcrpublicClient

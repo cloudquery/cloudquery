@@ -1,6 +1,10 @@
 package redshift
 
 import (
+	"context"
+	"fmt"
+
+	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -12,7 +16,7 @@ func SubnetGroups() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_ClusterSubnetGroup.html`,
-		Resolver:    fetchRedshiftSubnetGroups,
+		Resolver:    fetchSubnetGroups,
 		Transform:   transformers.TransformWithStruct(&types.ClusterSubnetGroup{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
@@ -34,4 +38,25 @@ func SubnetGroups() *schema.Table {
 			},
 		},
 	}
+}
+
+func fetchSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var config redshift.DescribeClusterSubnetGroupsInput
+	c := meta.(*client.Client)
+	svc := c.Services().Redshift
+	paginator := redshift.NewDescribeClusterSubnetGroupsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		res <- page.ClusterSubnetGroups
+	}
+	return nil
+}
+
+func resolveSubnetGroupArn() schema.ColumnResolver {
+	return client.ResolveARN(client.RedshiftService, func(resource *schema.Resource) ([]string, error) {
+		return []string{fmt.Sprintf("subnetgroup:%s", *resource.Item.(types.ClusterSubnetGroup).ClusterSubnetGroupName)}, nil
+	})
 }

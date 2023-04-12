@@ -20,7 +20,7 @@ func buildIssues(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
 	someId := int64(5555555)
 	cs.Repository = &github.Repository{ID: &someId}
 
-	mock.EXPECT().ListByOrg(gomock.Any(), "testorg", gomock.Any()).Return(
+	mock.EXPECT().ListByRepo(gomock.Any(), "testorg", gomock.Any(), gomock.Any()).Return(
 		[]*github.Issue{&cs}, &github.Response{}, nil)
 
 	return client.GithubServices{Issues: mock}

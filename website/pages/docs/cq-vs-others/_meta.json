@@ -1,10 +1,10 @@
 {
   "overview": "Overview",
-  "airbyte": "CloudQuery vs Airbyte",
-  "aws-config": "CloudQuery vs AWS Config",
-  "cloudsploit": "CloudQuery vs CloudSploit",
-  "fivetran": "CloudQuery vs Fivetran",
-  "google-cloud-asset-inventory": "CloudQuery vs Google Cloud Asset Inventory",
-  "cspms": "CloudQuery vs CSPMs (Cloud Security Posture Management)",
-  "steampipe": "CloudQuery vs Steampipe"
+  "airbyte-alternative-cloudquery": "CloudQuery vs Airbyte",
+  "aws-config-alternative-cloudquery": "CloudQuery vs AWS Config",
+  "cloudsploit-alternative-cloudquery": "CloudQuery vs CloudSploit",
+  "fivetran-alternative-cloudquery": "CloudQuery vs Fivetran",
+  "google-cloud-asset-inventory-alternative-cloudquery": "CloudQuery vs Google Cloud Asset Inventory",
+  "cspm-alternative-cloudquery": "CloudQuery vs CSPMs (Cloud Security Posture Management)",
+  "steampipe-alternative-cloudquery": "CloudQuery vs Steampipe"
 }

@@ -1,8 +1,8 @@
 ---
-title: How to use CloudQuery for Attack Surface Management and Graph Visualization
+title: How to Build an Open Source ASM for Attack Surface Management with CloudQuery and Neo4j
 tag: tutorial
 description: >-
-  How to use CloudQuery for Attack Surface Management (ASM) and Graph Visualization with Neo4j
+  How to Build an Open Source ASM for Attack Surface Management with CloudQuery and Neo4j, including pre-built queries and views.
 author: jsonkao
 ---
 
@@ -136,7 +136,7 @@ Now, we'll create relationships between IAM Users and directly attached managed 
 MATCH 
   (iamusers:aws_iam_users), 
   (attachp:aws_iam_user_attached_policies)
-WHERE iamusers.arn = inlinep.user_arn
+WHERE iamusers.arn = attachp.user_arn
 CREATE (iamusers)-[r:has_attached_policy]->(attachp)
 RETURN type(r)
 ```
