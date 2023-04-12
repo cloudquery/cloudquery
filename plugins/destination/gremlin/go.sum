@@ -35,8 +35,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/toml v1.0.0/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
 github.com/BurntSushi/toml v1.2.0 h1:Rt8g24XnyGTyglgET/PRUNlrUeu9F5L+7FilkXfZgs0=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/apache/tinkerpop/gremlin-go/v3 v3.6.3-0.20230314235727-6feccd9fbd62 h1:fRtabrh20YuGvHj/aUjfdsQD0NmciOktwPtbq4QUKYI=
-github.com/apache/tinkerpop/gremlin-go/v3 v3.6.3-0.20230314235727-6feccd9fbd62/go.mod h1:ShdBr3mA2HmIFW6dJIbTPElOBUN0hWrW6fgMO4qjLDY=
+github.com/apache/tinkerpop/gremlin-go/v3 v3.6.3-0.20230406114351-fd8d7faf1f5c h1:PPDGK+Pu3zSRaImhY5Fr4+eu5QitlycZ/o/9gnGrlwI=
+github.com/apache/tinkerpop/gremlin-go/v3 v3.6.3-0.20230406114351-fd8d7faf1f5c/go.mod h1:ShdBr3mA2HmIFW6dJIbTPElOBUN0hWrW6fgMO4qjLDY=
 github.com/avast/retry-go/v4 v4.3.3 h1:G56Bp6mU0b5HE1SkaoVjscZjlQb0oy4mezwY/cGH19w=
 github.com/aws/aws-sdk-go-v2 v1.17.5/go.mod h1:uzbQtefpm44goOPmdKyAlXSNcwlRgF3ePWVW6EtJvvw=
 github.com/aws/aws-sdk-go-v2 v1.17.6 h1:Y773UK7OBqhzi5VDXMi1zVGsoj+CVHs2eaC2bDsLwi0=
