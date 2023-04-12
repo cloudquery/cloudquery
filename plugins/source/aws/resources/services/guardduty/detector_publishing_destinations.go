@@ -38,15 +38,13 @@ func fetchGuarddutyDetectorPublishingDestinations(ctx context.Context, meta sche
 	c := meta.(*client.Client)
 	svc := c.Services().Guardduty
 	config := &guardduty.ListPublishingDestinationsInput{DetectorId: aws.String(detector.Id)}
-	for {
-		output, err := svc.ListPublishingDestinations(ctx, config)
+	paginator := guardduty.NewListPublishingDestinationsPaginator(svc, config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.Destinations
-		if output.NextToken == nil {
-			return nil
-		}
-		config.NextToken = output.NextToken
+		res <- page.Destinations
 	}
+	return nil
 }

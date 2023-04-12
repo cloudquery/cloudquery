@@ -41,32 +41,13 @@ func fetchLightsailDatabases(ctx context.Context, meta schema.ClientMeta, parent
 	var input lightsail.GetRelationalDatabasesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
+	// No paginator available
 	for {
 		response, err := svc.GetRelationalDatabases(ctx, &input)
 		if err != nil {
 			return err
 		}
 		res <- response.RelationalDatabases
-		if aws.ToString(response.NextPageToken) == "" {
-			break
-		}
-		input.PageToken = response.NextPageToken
-	}
-	return nil
-}
-func fetchLightsailDatabaseParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	r := parent.Item.(types.RelationalDatabase)
-	input := lightsail.GetRelationalDatabaseParametersInput{
-		RelationalDatabaseName: r.Name,
-	}
-	c := meta.(*client.Client)
-	svc := c.Services().Lightsail
-	for {
-		response, err := svc.GetRelationalDatabaseParameters(ctx, &input)
-		if err != nil {
-			return err
-		}
-		res <- response.Parameters
 		if aws.ToString(response.NextPageToken) == "" {
 			break
 		}

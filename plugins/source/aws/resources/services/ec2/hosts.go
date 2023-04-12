@@ -44,18 +44,13 @@ func fetchEc2Hosts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
 	input := ec2.DescribeHostsInput{}
-	for {
-		output, err := svc.DescribeHosts(ctx, &input, func(o *ec2.Options) {
-			o.Region = c.Region
-		})
+	paginator := ec2.NewDescribeHostsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.Hosts
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		input.NextToken = output.NextToken
+		res <- page.Hosts
 	}
 	return nil
 }

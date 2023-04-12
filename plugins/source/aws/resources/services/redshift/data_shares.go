@@ -33,16 +33,13 @@ func fetchDataShares(ctx context.Context, meta schema.ClientMeta, parent *schema
 	config := redshift.DescribeDataSharesInput{
 		MaxRecords: aws.Int32(100),
 	}
-	for {
-		response, err := svc.DescribeDataShares(ctx, &config)
+	paginator := redshift.NewDescribeDataSharesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.DataShares
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
+		res <- page.DataShares
 	}
 
 	return nil

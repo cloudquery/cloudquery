@@ -60,6 +60,7 @@ func fetchRoute53TrafficPolicyVersions(ctx context.Context, meta schema.ClientMe
 	r := parent.Item.(types.TrafficPolicySummary)
 	config := route53.ListTrafficPolicyVersionsInput{Id: r.Id}
 	svc := meta.(*client.Client).Services().Route53
+	// no paginator available
 	for {
 		response, err := svc.ListTrafficPolicyVersions(ctx, &config)
 		if err != nil {

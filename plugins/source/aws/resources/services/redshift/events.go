@@ -36,16 +36,13 @@ func fetchEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 		Duration:   aws.Int32(60 * 24 * 14), // 14 days (maximum)
 		MaxRecords: aws.Int32(100),
 	}
-	for {
-		result, err := svc.DescribeEvents(ctx, &config)
+	paginator := redshift.NewDescribeEventsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- result.Events
-		if aws.ToString(result.Marker) == "" {
-			break
-		}
-		config.Marker = result.Marker
+		res <- page.Events
 	}
 	return nil
 }

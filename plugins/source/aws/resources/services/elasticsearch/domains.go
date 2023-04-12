@@ -3,6 +3,7 @@ package elasticsearch
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -96,6 +97,7 @@ func resolveAuthorizedPrincipals(ctx context.Context, meta schema.ClientMeta, re
 	}
 
 	var principals []types.AuthorizedPrincipal
+	// No paginator available
 	for {
 		out, err := svc.ListVpcEndpointAccess(ctx, input)
 		if err != nil {
@@ -104,7 +106,7 @@ func resolveAuthorizedPrincipals(ctx context.Context, meta schema.ClientMeta, re
 
 		principals = append(principals, out.AuthorizedPrincipalList...)
 
-		if out.NextToken == nil {
+		if aws.ToString(out.NextToken) == "" {
 			break
 		}
 

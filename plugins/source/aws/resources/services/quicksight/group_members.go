@@ -42,6 +42,7 @@ func fetchQuicksightGroupMembers(ctx context.Context, meta schema.ClientMeta, pa
 		Namespace:    aws.String(defaultNamespace),
 		GroupName:    item.GroupName,
 	}
+	// No paginator available
 	for {
 		out, err := svc.ListGroupMemberships(ctx, &input)
 		if err != nil {

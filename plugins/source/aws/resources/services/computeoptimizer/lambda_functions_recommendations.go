@@ -33,7 +33,7 @@ func fetchLambdaFunctionsRecommendations(ctx context.Context, meta schema.Client
 	input := computeoptimizer.GetLambdaFunctionRecommendationsInput{
 		MaxResults: aws.Int32(1000),
 	}
-
+	// No paginator available
 	for {
 		response, err := svc.GetLambdaFunctionRecommendations(ctx, &input)
 		if err != nil {

@@ -9,6 +9,7 @@ import (
 	"github.com/shenzhencenter/google-ads-pb/resources"
 	"github.com/shenzhencenter/google-ads-pb/services"
 	"github.com/stretchr/testify/require"
+	"golang.org/x/exp/maps"
 )
 
 func TestCampaignsQuery(t *testing.T) {
@@ -83,15 +84,13 @@ FROM campaign`
 	require.Equal(t, expected, gaql.Query(new(resources.Campaign), nil, campaignOptions))
 }
 
-func testCampaigns(t *testing.T) map[string][]*services.GoogleAdsRow {
+func testCampaigns(t *testing.T) client.MockedResponses {
 	var campaign resources.Campaign
 	require.NoError(t, faker.FakeObject(&campaign))
-	row := &services.GoogleAdsRow{Campaign: &campaign}
-	return client.MapsCombine(
-		map[string][]*services.GoogleAdsRow{"campaign": {row}},
-		testCampaignCriteria(t),
-		testCampaignLabels(t),
-	)
+	responses := client.MockedResponses{"campaign": {&services.GoogleAdsRow{Campaign: &campaign}}}
+	maps.Copy(responses, testCampaignCriteria(t))
+	maps.Copy(responses, testCampaignLabels(t))
+	return responses
 }
 
 func TestCampaigns(t *testing.T) {

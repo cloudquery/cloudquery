@@ -46,6 +46,7 @@ func fetchLightsailLoadBalancers(ctx context.Context, meta schema.ClientMeta, pa
 	var input lightsail.GetLoadBalancersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
+	// No paginator available
 	for {
 		response, err := svc.GetLoadBalancers(ctx, &input)
 		if err != nil {

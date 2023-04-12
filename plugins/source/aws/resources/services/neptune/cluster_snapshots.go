@@ -50,16 +50,13 @@ func fetchNeptuneClusterSnapshots(ctx context.Context, meta schema.ClientMeta, p
 	input := neptune.DescribeDBClusterSnapshotsInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
 	}
-	for {
-		output, err := svc.DescribeDBClusterSnapshots(ctx, &input)
+	paginator := neptune.NewDescribeDBClusterSnapshotsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return nil
 		}
-		res <- output.DBClusterSnapshots
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		input.Marker = output.Marker
+		res <- page.DBClusterSnapshots
 	}
 	return nil
 }

@@ -37,6 +37,7 @@ func fetchLightsailAlarms(ctx context.Context, meta schema.ClientMeta, parent *s
 	var input lightsail.GetAlarmsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
+	// No paginator available
 	for {
 		response, err := svc.GetAlarms(ctx, &input)
 		if err != nil {

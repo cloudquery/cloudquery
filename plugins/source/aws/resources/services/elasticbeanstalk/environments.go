@@ -58,6 +58,7 @@ func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMe
 	var config elasticbeanstalk.DescribeEnvironmentsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticbeanstalk
+	// No paginator available
 	for {
 		response, err := svc.DescribeEnvironments(ctx, &config)
 		if err != nil {

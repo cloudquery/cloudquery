@@ -45,16 +45,13 @@ func fetchNeptuneEventSubscriptions(ctx context.Context, meta schema.ClientMeta,
 	input := neptune.DescribeEventSubscriptionsInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
 	}
-	for {
-		out, err := svc.DescribeEventSubscriptions(ctx, &input)
+	paginator := neptune.NewDescribeEventSubscriptionsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- out.EventSubscriptionsList
-		if aws.ToString(out.Marker) == "" {
-			break
-		}
-		input.Marker = out.Marker
+		res <- page.EventSubscriptionsList
 	}
 	return nil
 }

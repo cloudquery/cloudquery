@@ -45,18 +45,13 @@ func Workflows() *schema.Table {
 func fetchGlueWorkflows(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
-	input := glue.ListWorkflowsInput{MaxResults: aws.Int32(25)}
-	for {
-		result, err := svc.ListWorkflows(ctx, &input)
+	paginator := glue.NewListWorkflowsPaginator(svc, &glue.ListWorkflowsInput{MaxResults: aws.Int32(25)})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- result.Workflows
-
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
+		res <- page.Workflows
 	}
 	return nil
 }

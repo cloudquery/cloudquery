@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -58,16 +57,13 @@ func fetchClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	var config redshift.DescribeClustersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Redshift
-	for {
-		response, err := svc.DescribeClusters(ctx, &config)
+	paginator := redshift.NewDescribeClustersPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.Clusters
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
+		res <- page.Clusters
 	}
 	return nil
 }

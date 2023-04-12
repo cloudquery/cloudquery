@@ -38,6 +38,7 @@ func fetchAppstreamFleets(ctx context.Context, meta schema.ClientMeta, parent *s
 	var input appstream.DescribeFleetsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
+	// No paginator available
 	for {
 		response, err := svc.DescribeFleets(ctx, &input)
 		if err != nil {

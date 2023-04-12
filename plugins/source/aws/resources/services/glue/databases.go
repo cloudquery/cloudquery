@@ -48,17 +48,13 @@ func Databases() *schema.Table {
 func fetchGlueDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
-	input := glue.GetDatabasesInput{}
-	for {
-		result, err := svc.GetDatabases(ctx, &input)
+	paginator := glue.NewGetDatabasesPaginator(svc, &glue.GetDatabasesInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- result.DatabaseList
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
+		res <- page.DatabaseList
 	}
 	return nil
 }
@@ -86,16 +82,13 @@ func fetchGlueDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent
 	input := glue.GetTablesInput{
 		DatabaseName: r.Name,
 	}
-	for {
-		result, err := svc.GetTables(ctx, &input)
+	paginator := glue.NewGetTablesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- result.TableList
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
+		res <- page.TableList
 	}
 	return nil
 }
@@ -105,16 +98,13 @@ func fetchGlueDatabaseTableIndexes(ctx context.Context, meta schema.ClientMeta, 
 	d := parent.Parent.Item.(types.Database)
 	t := parent.Item.(types.Table)
 	input := glue.GetPartitionIndexesInput{DatabaseName: d.Name, CatalogId: d.CatalogId, TableName: t.Name}
-	for {
-		result, err := svc.GetPartitionIndexes(ctx, &input)
+	paginator := glue.NewGetPartitionIndexesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- result.PartitionIndexDescriptorList
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
+		res <- page.PartitionIndexDescriptorList
 	}
 	return nil
 }

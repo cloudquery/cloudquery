@@ -40,20 +40,16 @@ func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, pa
 	config := lambda.ListVersionsByFunctionInput{
 		FunctionName: p.Configuration.FunctionName,
 	}
-
-	for {
-		output, err := svc.ListVersionsByFunction(ctx, &config)
+	paginator := lambda.NewListVersionsByFunctionPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if meta.(*client.Client).IsNotFoundError(err) {
 				return nil
 			}
 			return err
 		}
-		res <- output.Versions
-		if output.NextMarker == nil {
-			break
-		}
-		config.Marker = output.NextMarker
+		res <- page.Versions
 	}
 	return nil
 }

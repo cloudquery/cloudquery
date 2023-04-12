@@ -3,7 +3,6 @@ package lambda
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -42,18 +41,14 @@ func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	var input lambda.ListLayersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lambda
-	for {
-		response, err := svc.ListLayers(ctx, &input)
+	paginator := lambda.NewListLayersPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
-		res <- response.Layers
-
-		if aws.ToString(response.NextMarker) == "" {
-			break
-		}
-		input.Marker = response.NextMarker
+		res <- page.Layers
 	}
 	return nil
 }
@@ -63,17 +58,13 @@ func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, paren
 	config := lambda.ListLayerVersionsInput{
 		LayerName: p.LayerName,
 	}
-
-	for {
-		output, err := svc.ListLayerVersions(ctx, &config)
+	paginator := lambda.NewListLayerVersionsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.LayerVersions
-		if output.NextMarker == nil {
-			break
-		}
-		config.Marker = output.NextMarker
+		res <- page.LayerVersions
 	}
 	return nil
 }

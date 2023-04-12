@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
+	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -13,11 +14,12 @@ import (
 func SecurityProfiles() *schema.Table {
 	tableName := "aws_iot_security_profiles"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeSecurityProfile.html`,
-		Resolver:    fetchIotSecurityProfiles,
-		Transform:   transformers.TransformWithStruct(&iot.DescribeSecurityProfileOutput{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
+		Name:                tableName,
+		Description:         `https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeSecurityProfile.html`,
+		Resolver:            fetchIotSecurityProfiles,
+		PreResourceResolver: getSecurityProfile,
+		Transform:           transformers.TransformWithStruct(&iot.DescribeSecurityProfileOutput{}),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -49,32 +51,31 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 	input := iot.ListSecurityProfilesInput{
 		MaxResults: aws.Int32(250),
 	}
-
-	for {
-		response, err := svc.ListSecurityProfiles(ctx, &input)
+	paginator := iot.NewListSecurityProfilesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		for _, s := range response.SecurityProfileIdentifiers {
-			profile, err := svc.DescribeSecurityProfile(ctx, &iot.DescribeSecurityProfileInput{
-				SecurityProfileName: s.Name,
-			}, func(options *iot.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- profile
-		}
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		res <- page.SecurityProfileIdentifiers
 	}
 	return nil
 }
+
+func getSecurityProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+
+	output, err := svc.DescribeSecurityProfile(ctx, &iot.DescribeSecurityProfileInput{
+		SecurityProfileName: resource.Item.(types.SecurityProfileIdentifier).Name,
+	})
+	if err != nil {
+		return err
+	}
+	resource.Item = output
+	return nil
+}
+
 func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
 	cl := meta.(*client.Client)
@@ -85,45 +86,21 @@ func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMet
 	}
 
 	var targets []string
-	for {
-		response, err := svc.ListTargetsForSecurityProfile(ctx, &input)
+	paginator := iot.NewListTargetsForSecurityProfilePaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
-		for _, t := range response.SecurityProfileTargets {
+		for _, t := range page.SecurityProfileTargets {
 			targets = append(targets, *t.Arn)
 		}
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
 	}
 	return resource.Set(c.Name, targets)
 }
 func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
-	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
-	input := iot.ListTagsForResourceInput{
-		ResourceArn: i.SecurityProfileArn,
-	}
-	tags := make(map[string]string)
-
-	for {
-		response, err := svc.ListTagsForResource(ctx, &input)
-
-		if err != nil {
-			return err
-		}
-
-		client.TagsIntoMap(response.Tags, tags)
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
-	}
-	return resource.Set(c.Name, tags)
+	svc := meta.(*client.Client).Services().Iot
+	return resolveIotTags(ctx, svc, resource, c, i.SecurityProfileArn)
 }

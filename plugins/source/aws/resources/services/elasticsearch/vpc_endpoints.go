@@ -3,6 +3,7 @@ package elasticsearch
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -35,10 +36,10 @@ func VpcEndpoints() *schema.Table {
 
 func fetchElasticsearchVpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client).Services().Elasticsearchservice
-
+	// get the IDs first
 	listInput := new(elasticsearchservice.ListVpcEndpointsInput)
 	var vpcEndpointIDs []string
-	// get the IDs first
+	// No paginator available
 	for {
 		out, err := svc.ListVpcEndpoints(ctx, listInput)
 		if err != nil {
@@ -49,7 +50,7 @@ func fetchElasticsearchVpcEndpoints(ctx context.Context, meta schema.ClientMeta,
 			vpcEndpointIDs = append(vpcEndpointIDs, *summary.VpcEndpointId)
 		}
 
-		if out.NextToken == nil {
+		if aws.ToString(out.NextToken) == "" {
 			break
 		}
 

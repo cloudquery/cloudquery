@@ -42,20 +42,16 @@ func DevEndpoints() *schema.Table {
 func fetchGlueDevEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
-	input := glue.GetDevEndpointsInput{}
-	for {
-		result, err := svc.GetDevEndpoints(ctx, &input)
+	paginator := glue.NewGetDevEndpointsPaginator(svc, &glue.GetDevEndpointsInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err
 		}
-		res <- result.DevEndpoints
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
+		res <- page.DevEndpoints
 	}
 	return nil
 }
