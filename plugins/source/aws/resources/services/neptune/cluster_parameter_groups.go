@@ -49,17 +49,13 @@ func fetchNeptuneClusterParameterGroups(ctx context.Context, meta schema.ClientM
 	input := neptune.DescribeDBClusterParameterGroupsInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
 	}
-
-	for {
-		output, err := svc.DescribeDBClusterParameterGroups(ctx, &input)
+	paginator := neptune.NewDescribeDBClusterParameterGroupsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.DBClusterParameterGroups
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		input.Marker = output.Marker
+		res <- page.DBClusterParameterGroups
 	}
 	return nil
 }

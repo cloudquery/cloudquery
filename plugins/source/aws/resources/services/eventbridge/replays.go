@@ -39,6 +39,7 @@ func fetchReplays(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	var input eventbridge.ListReplaysInput
 	c := meta.(*client.Client)
 	svc := c.Services().Eventbridge
+	// No paginator available
 	for {
 		response, err := svc.ListReplays(ctx, &input)
 		if err != nil {

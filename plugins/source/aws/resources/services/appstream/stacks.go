@@ -43,6 +43,7 @@ func fetchAppstreamStacks(ctx context.Context, meta schema.ClientMeta, parent *s
 	var input appstream.DescribeStacksInput
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
+	// No paginator available
 	for {
 		response, err := svc.DescribeStacks(ctx, &input)
 		if err != nil {

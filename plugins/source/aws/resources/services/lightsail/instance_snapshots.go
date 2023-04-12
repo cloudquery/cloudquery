@@ -42,6 +42,7 @@ func fetchLightsailInstanceSnapshots(ctx context.Context, meta schema.ClientMeta
 	var input lightsail.GetInstanceSnapshotsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
+	// No paginator available
 	for {
 		response, err := svc.GetInstanceSnapshots(ctx, &input)
 		if err != nil {

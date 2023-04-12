@@ -3,7 +3,6 @@ package elbv1
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	elbv1 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -69,30 +68,24 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 		}
 		return nil
 	}
-
-	var config elbv1.DescribeLoadBalancersInput
-	for {
-		response, err := svc.DescribeLoadBalancers(ctx, &config)
+	paginator := elbv1.NewDescribeLoadBalancersPaginator(svc, &elbv1.DescribeLoadBalancersInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
-		for i := 0; i < len(response.LoadBalancerDescriptions); i += 20 {
+		for i := 0; i < len(page.LoadBalancerDescriptions); i += 20 {
 			end := i + 20
 
-			if end > len(response.LoadBalancerDescriptions) {
-				end = len(response.LoadBalancerDescriptions)
+			if end > len(page.LoadBalancerDescriptions) {
+				end = len(page.LoadBalancerDescriptions)
 			}
-			loadBalancers := response.LoadBalancerDescriptions[i:end]
+			loadBalancers := page.LoadBalancerDescriptions[i:end]
 			if err := processLoadBalancers(loadBalancers); err != nil {
 				return err
 			}
 		}
-
-		if aws.ToString(response.NextMarker) == "" {
-			break
-		}
-		config.Marker = response.NextMarker
 	}
 
 	return nil

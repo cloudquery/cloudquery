@@ -3,7 +3,6 @@ package qldb
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/qldb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -49,17 +48,13 @@ func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 	c := meta.(*client.Client)
 	svc := c.Services().Qldb
 	config := qldb.ListLedgersInput{}
-	for {
-		response, err := svc.ListLedgers(ctx, &config)
+	paginator := qldb.NewListLedgersPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.Ledgers
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.Ledgers
 	}
 	return nil
 }

@@ -59,16 +59,13 @@ func fetchBackupVaults(ctx context.Context, meta schema.ClientMeta, parent *sche
 	cl := meta.(*client.Client)
 	svc := cl.Services().Backup
 	params := backup.ListBackupVaultsInput{MaxResults: aws.Int32(1000)} // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupVaults.html
-	for {
-		result, err := svc.ListBackupVaults(ctx, &params)
+	paginator := backup.NewListBackupVaultsPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- result.BackupVaultList
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		params.NextToken = result.NextToken
+		res <- page.BackupVaultList
 	}
 	return nil
 }
@@ -79,23 +76,16 @@ func resolveVaultTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 	svc := cl.Services().Backup
 	params := backup.ListTagsInput{ResourceArn: vault.BackupVaultArn}
 	tags := make(map[string]string)
-	for {
-		result, err := svc.ListTags(ctx, &params, func(o *backup.Options) {
-			o.Region = cl.Region
-		})
-		if result == nil {
-			break
-		}
+	paginator := backup.NewListTagsPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
+
 		if err != nil {
 			return err
 		}
-		for k, v := range result.Tags {
+		for k, v := range page.Tags {
 			tags[k] = v
 		}
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		params.NextToken = result.NextToken
 	}
 	return resource.Set(c.Name, tags)
 }

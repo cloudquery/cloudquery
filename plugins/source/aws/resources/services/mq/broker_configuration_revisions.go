@@ -49,6 +49,7 @@ func fetchMqBrokerConfigurationRevisions(ctx context.Context, meta schema.Client
 	svc := c.Services().Mq
 
 	input := mq.ListConfigurationRevisionsInput{ConfigurationId: cfg.Id}
+	// No paginator available
 	for {
 		output, err := svc.ListConfigurationRevisions(ctx, &input)
 		if err != nil {

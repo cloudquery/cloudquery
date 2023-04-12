@@ -3,7 +3,6 @@ package codepipeline
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
@@ -45,17 +44,13 @@ func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, par
 	c := meta.(*client.Client)
 	svc := c.Services().Codepipeline
 	config := codepipeline.ListPipelinesInput{}
-	for {
-		response, err := svc.ListPipelines(ctx, &config)
+	paginator := codepipeline.NewListPipelinesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.Pipelines
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.Pipelines
 	}
 	return nil
 }

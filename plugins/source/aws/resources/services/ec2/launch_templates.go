@@ -48,16 +48,13 @@ func fetchEc2LaunchTemplates(ctx context.Context, meta schema.ClientMeta, parent
 	var config ec2.DescribeLaunchTemplatesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
-	for {
-		output, err := svc.DescribeLaunchTemplates(ctx, &config)
+	paginator := ec2.NewDescribeLaunchTemplatesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.LaunchTemplates
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
+		res <- page.LaunchTemplates
 	}
 	return nil
 }

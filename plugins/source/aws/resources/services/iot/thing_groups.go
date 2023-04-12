@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
+	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
@@ -13,11 +14,12 @@ import (
 func ThingGroups() *schema.Table {
 	tableName := "aws_iot_thing_groups"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeThingGroup.html`,
-		Resolver:    fetchIotThingGroups,
-		Transform:   transformers.TransformWithStruct(&iot.DescribeThingGroupOutput{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iot"),
+		Name:                tableName,
+		Description:         `https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeThingGroup.html`,
+		Resolver:            fetchIotThingGroups,
+		PreResourceResolver: getThingGroup,
+		Transform:           transformers.TransformWithStruct(&iot.DescribeThingGroupOutput{}),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -55,30 +57,31 @@ func fetchIotThingGroups(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 
 	svc := c.Services().Iot
-	for {
-		response, err := svc.ListThingGroups(ctx, &input)
+	paginator := iot.NewListThingGroupsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		for _, g := range response.ThingGroups {
-			group, err := svc.DescribeThingGroup(ctx, &iot.DescribeThingGroupInput{
-				ThingGroupName: g.GroupName,
-			}, func(options *iot.Options) {
-				options.Region = c.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- group
-		}
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		res <- page.ThingGroups
 	}
 	return nil
 }
+
+func getThingGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+
+	output, err := svc.DescribeThingGroup(ctx, &iot.DescribeThingGroupInput{
+		ThingGroupName: resource.Item.(types.GroupNameAndArn).GroupName,
+	})
+	if err != nil {
+		return err
+	}
+	resource.Item = output
+	return nil
+}
+
 func ResolveIotThingGroupThingsInGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
 	cl := meta.(*client.Client)
@@ -89,18 +92,14 @@ func ResolveIotThingGroupThingsInGroup(ctx context.Context, meta schema.ClientMe
 	}
 
 	var things []string
-	for {
-		response, err := svc.ListThingsInThingGroup(ctx, &input)
+	paginator := iot.NewListThingsInThingGroupPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
-		things = append(things, response.Things...)
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		things = append(things, page.Things...)
 	}
 	return resource.Set(c.Name, things)
 }
@@ -114,45 +113,20 @@ func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, r
 	}
 
 	var policies []string
-	for {
-		response, err := svc.ListAttachedPolicies(ctx, &input)
+	paginator := iot.NewListAttachedPoliciesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		for _, p := range response.Policies {
+		for _, p := range page.Policies {
 			policies = append(policies, *p.PolicyArn)
 		}
-
-		if aws.ToString(response.NextMarker) == "" {
-			break
-		}
-		input.Marker = response.NextMarker
 	}
 	return resource.Set(c.Name, policies)
 }
 func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
-	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
-	input := iot.ListTagsForResourceInput{
-		ResourceArn: i.ThingGroupArn,
-	}
-	tags := make(map[string]string)
-
-	for {
-		response, err := svc.ListTagsForResource(ctx, &input)
-
-		if err != nil {
-			return err
-		}
-
-		client.TagsIntoMap(response.Tags, tags)
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
-	}
-	return resource.Set(c.Name, tags)
+	svc := meta.(*client.Client).Services().Iot
+	return resolveIotTags(ctx, svc, resource, c, i.ThingGroupArn)
 }

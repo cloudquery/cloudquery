@@ -38,6 +38,7 @@ func fetchAppstreamAppBlocks(ctx context.Context, meta schema.ClientMeta, parent
 	var input appstream.DescribeAppBlocksInput
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
+	// No paginator available
 	for {
 		response, err := svc.DescribeAppBlocks(ctx, &input)
 		if err != nil {

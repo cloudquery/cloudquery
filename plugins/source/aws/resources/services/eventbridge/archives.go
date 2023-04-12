@@ -39,6 +39,7 @@ func fetchArchives(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	var input eventbridge.ListArchivesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Eventbridge
+	// No paginator available
 	for {
 		response, err := svc.ListArchives(ctx, &input)
 		if err != nil {

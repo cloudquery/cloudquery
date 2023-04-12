@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
@@ -50,16 +49,13 @@ func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent
 	c := meta.(*client.Client)
 	svc := c.Services().Athena
 	input := athena.ListDataCatalogsInput{}
-	for {
-		response, err := svc.ListDataCatalogs(ctx, &input)
+	paginator := athena.NewListDataCatalogsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.DataCatalogsSummary
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		res <- page.DataCatalogsSummary
 	}
 	return nil
 }

@@ -40,6 +40,7 @@ func listStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	svc := c.Services().Dynamodbstreams
 
 	config := dynamodbstreams.ListStreamsInput{}
+	// No paginator available
 	for {
 		output, err := svc.ListStreams(ctx, &config)
 		if err != nil {

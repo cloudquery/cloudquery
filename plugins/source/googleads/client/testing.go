@@ -16,14 +16,15 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/shenzhencenter/google-ads-pb/clients"
 	"github.com/shenzhencenter/google-ads-pb/services"
-	"golang.org/x/exp/maps"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/api/option"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-func MockTestHelper(t *testing.T, table *schema.Table, responses map[string][]*services.GoogleAdsRow) {
+type MockedResponses map[string][]*services.GoogleAdsRow
+
+func MockTestHelper(t *testing.T, table *schema.Table, responses MockedResponses) {
 	version := "vDev"
 	t.Helper()
 
@@ -116,17 +117,4 @@ func (s *fakeGoogleAdsServiceServer) SearchStream(req *services.SearchGoogleAdsS
 	}
 
 	return srv.Send(&services.SearchGoogleAdsStreamResponse{Results: rows.([]*services.GoogleAdsRow)})
-}
-
-func MapsCombine(m ...map[string][]*services.GoogleAdsRow) map[string][]*services.GoogleAdsRow {
-	if len(m) == 0 {
-		return nil
-	}
-	c := maps.Clone(m[0])
-	for _, next := range m[1:] {
-		for k, v := range next {
-			c[k] = v
-		}
-	}
-	return c
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/shenzhencenter/google-ads-pb/resources"
 	"github.com/shenzhencenter/google-ads-pb/services"
 	"github.com/stretchr/testify/require"
+	"golang.org/x/exp/maps"
 )
 
 func TestGroupCriteriaQuery(t *testing.T) {
@@ -64,12 +65,10 @@ WHERE ad_group_criterion.ad_group = "customers/123/adGroups/456"`
 	)
 }
 
-func testAdGroupCriteria(t *testing.T) map[string][]*services.GoogleAdsRow {
+func testAdGroupCriteria(t *testing.T) client.MockedResponses {
 	var criterion resources.AdGroupCriterion
 	require.NoError(t, faker.FakeObject(&criterion))
-	row := &services.GoogleAdsRow{AdGroupCriterion: &criterion}
-	return client.MapsCombine(
-		map[string][]*services.GoogleAdsRow{"ad_group_criterion": {row}},
-		testAdGroupCriterionLabels(t),
-	)
+	responses := client.MockedResponses{"ad_group_criterion": {&services.GoogleAdsRow{AdGroupCriterion: &criterion}}}
+	maps.Copy(responses, testAdGroupCriterionLabels(t))
+	return responses
 }

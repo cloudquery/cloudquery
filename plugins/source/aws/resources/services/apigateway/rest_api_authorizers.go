@@ -46,6 +46,7 @@ func fetchApigatewayRestApiAuthorizers(ctx context.Context, meta schema.ClientMe
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
 	config := apigateway.GetAuthorizersInput{RestApiId: r.Id, Limit: aws.Int32(500)}
+	// No paginator available
 	for {
 		response, err := svc.GetAuthorizers(ctx, &config)
 		if err != nil {

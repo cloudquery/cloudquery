@@ -56,6 +56,7 @@ func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, par
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
+	// No paginator available
 	for {
 		response, err := svc.GetRoutes(ctx, &config)
 

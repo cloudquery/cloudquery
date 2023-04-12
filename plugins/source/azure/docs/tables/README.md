@@ -46,6 +46,7 @@
   - [azure_cdn_security_policies](../../../../../website/tables/azure/azure_cdn_security_policies.md)
 - [azure_cognitiveservices_accounts](../../../../../website/tables/azure/azure_cognitiveservices_accounts.md)
 - [azure_cognitiveservices_deleted_accounts](../../../../../website/tables/azure/azure_cognitiveservices_deleted_accounts.md)
+- [azure_compute_availability_sets](../../../../../website/tables/azure/azure_compute_availability_sets.md)
 - [azure_compute_capacity_reservation_groups](../../../../../website/tables/azure/azure_compute_capacity_reservation_groups.md)
   - [azure_compute_capacity_reservations](../../../../../website/tables/azure/azure_compute_capacity_reservations.md)
 - [azure_compute_cloud_services](../../../../../website/tables/azure/azure_compute_cloud_services.md)

@@ -3,6 +3,7 @@ package customers
 import (
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/source/googleads/client"
 	"github.com/cloudquery/cloudquery/plugins/source/googleads/gaql"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -27,9 +28,8 @@ WHERE customer_label.customer = "customers/123"`
 	)
 }
 
-func testCustomerLabels(t *testing.T) map[string][]*services.GoogleAdsRow {
+func testCustomerLabels(t *testing.T) client.MockedResponses {
 	var label resources.CustomerLabel
 	require.NoError(t, faker.FakeObject(&label))
-	row := &services.GoogleAdsRow{CustomerLabel: &label}
-	return map[string][]*services.GoogleAdsRow{"customer_label": {row}}
+	return client.MockedResponses{"customer_label": {&services.GoogleAdsRow{CustomerLabel: &label}}}
 }

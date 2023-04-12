@@ -38,16 +38,13 @@ func fetchEc2EbsVolumeStatuses(ctx context.Context, meta schema.ClientMeta, _ *s
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
 	config := ec2.DescribeVolumeStatusInput{MaxResults: aws.Int32(1000)}
-	for {
-		response, err := svc.DescribeVolumeStatus(ctx, &config)
+	paginator := ec2.NewDescribeVolumeStatusPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.VolumeStatuses
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.VolumeStatuses
 	}
 	return nil
 }

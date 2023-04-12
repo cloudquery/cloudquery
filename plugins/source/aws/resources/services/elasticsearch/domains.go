@@ -97,6 +97,7 @@ func resolveAuthorizedPrincipals(ctx context.Context, meta schema.ClientMeta, re
 	}
 
 	var principals []types.AuthorizedPrincipal
+	// No paginator available
 	for {
 		out, err := svc.ListVpcEndpointAccess(ctx, input)
 		if err != nil {

@@ -44,25 +44,20 @@ func Repositories() *schema.Table {
 }
 
 func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	maxResults := int32(1000)
-	config := ecrpublic.DescribeRepositoriesInput{
-		MaxResults: &maxResults,
-	}
 	c := meta.(*client.Client)
 	svc := c.Services().Ecrpublic
-	for {
-		output, err := svc.DescribeRepositories(ctx, &config)
+	paginator := ecrpublic.NewDescribeRepositoriesPaginator(svc, &ecrpublic.DescribeRepositoriesInput{
+		MaxResults: aws.Int32(1000),
+	})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if client.IsAWSError(err, "UnsupportedCommandException") {
 				return nil
 			}
 			return err
 		}
-		res <- output.Repositories
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
+		res <- page.Repositories
 	}
 	return nil
 }

@@ -32,8 +32,8 @@ func Plans() *schema.Table {
 func fetchPlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Autoscalingplans
-
 	config := autoscalingplans.DescribeScalingPlansInput{}
+	// No paginator available
 	for {
 		output, err := svc.DescribeScalingPlans(ctx, &config)
 		if err != nil {

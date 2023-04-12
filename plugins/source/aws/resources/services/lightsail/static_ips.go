@@ -37,6 +37,7 @@ func fetchLightsailStaticIps(ctx context.Context, meta schema.ClientMeta, parent
 	var input lightsail.GetStaticIpsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
+	// No paginator available
 	for {
 		response, err := svc.GetStaticIps(ctx, &input)
 		if err != nil {
