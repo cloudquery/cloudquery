@@ -25,16 +25,17 @@ func (c *Client) migrateTable(ctx context.Context, table *schema.Table) error {
 	indexModels := c.getIndexTemplates(table)
 	for _, mdl := range indexModels {
 		res, err := c.client.Database(c.pluginSpec.Database).Collection(table.Name).Indexes().CreateOne(ctx, mdl)
-		if err == nil {
+		switch {
+		case err == nil:
 			c.logger.Debug().Str("index_name", res).Str("table", table.Name).Msg("created index")
-		} else if isIndexConflictError(err) {
+		case isIndexConflictError(err):
 			c.logger.Debug().Str("index_name", res).Str("table", table.Name).Err(err).Msg("create index conflict")
 			if err := c.migrateTableOnConflict(ctx, table, mdl); err != nil {
 				return err
 			}
-		} else if isIndexAlreadyExistsWithADifferentNameError(err) {
+		case isIndexAlreadyExistsWithADifferentNameError(err):
 			c.logger.Debug().Str("table", table.Name).Err(err).Msg("skipped create index")
-		} else {
+		default:
 			return fmt.Errorf("create index on %s: %w", table.Name, err)
 		}
 	}
