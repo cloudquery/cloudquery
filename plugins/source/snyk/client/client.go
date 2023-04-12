@@ -82,7 +82,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	options := []snyk.ClientOption{
 		snyk.WithUserAgent("cloudquery/snyk/" + spec.Version),
 		snyk.WithLogger(&snykLogger),
-		snyk.WithLogRequests(snykSpec.Debug),
+		snyk.WithLogRequests(true), // these will be filtered out by the logger if not in debug mode
 	}
 	if len(snykSpec.EndpointURL) > 0 {
 		options = append(options, snyk.WithBaseURL(snykSpec.EndpointURL))
