@@ -63,15 +63,15 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 			lastDocumentId = docSnap.Ref.ID
 			item := docSnap.Data()
 			resource := schema.NewResourceData(table, nil, item)
-			err = resource.Set("_id", docSnap.Ref.ID)
+			err = resource.Set("__id", docSnap.Ref.ID)
 			if err != nil {
 				return err
 			}
-			err = resource.Set("_created_at", docSnap.CreateTime)
+			err = resource.Set("__created_at", docSnap.CreateTime)
 			if err != nil {
 				return err
 			}
-			err = resource.Set("_updated_at", docSnap.UpdateTime)
+			err = resource.Set("__updated_at", docSnap.UpdateTime)
 			if err != nil {
 				return err
 			}

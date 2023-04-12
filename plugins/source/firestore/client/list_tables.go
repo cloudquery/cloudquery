@@ -29,7 +29,7 @@ func (*Client) listTables(ctx context.Context, client *firestore.Client) (schema
 		}
 		columns := make(schema.ColumnList, 0, 4)
 		columns = append(columns, schema.Column{
-			Name: "_id",
+			Name: "__id",
 			Type: schema.TypeString,
 			CreationOptions: schema.ColumnCreationOptions{
 				PrimaryKey: true,
@@ -38,11 +38,11 @@ func (*Client) listTables(ctx context.Context, client *firestore.Client) (schema
 			},
 		})
 		columns = append(columns, schema.Column{
-			Name: "_created_at",
+			Name: "__created_at",
 			Type: schema.TypeTimestamp,
 		})
 		columns = append(columns, schema.Column{
-			Name: "_updated_at",
+			Name: "__updated_at",
 			Type: schema.TypeTimestamp,
 		})
 		columns = append(columns, schema.Column{

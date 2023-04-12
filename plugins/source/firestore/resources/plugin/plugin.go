@@ -5,12 +5,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 )
 
-var Version = "v1"
+var version = "v1"
 
 func Plugin() *source.Plugin {
 	return source.NewPlugin(
 		"firestore",
-		Version,
+		version,
 		nil,
 		client.Configure,
 		source.WithDynamicTableOption(getDynamicTables),

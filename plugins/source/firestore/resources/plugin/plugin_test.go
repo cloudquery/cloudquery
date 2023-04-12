@@ -1,4 +1,4 @@
-package plugin
+package plugin_test
 
 import (
 	"context"
@@ -7,26 +7,22 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/firestore/client"
+	"github.com/cloudquery/cloudquery/plugins/source/firestore/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 )
 
-func getTestConnectionString() string {
-	testConn := os.Getenv("CQ_SOURCE_FIRESTORE_TEST_CONNECTION_STRING")
-	if testConn == "" {
-		return `{}`
-	}
-	return testConn
-}
-
 func TestPlugin(t *testing.T) {
-	p := Plugin()
+	p := plugin.Plugin()
 	ctx := context.Background()
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	p.SetLogger(l)
+
+	tableSetup(t, ctx, "test_firestore_source")
+
 	spec := specs.Source{
 		Name:         "test_firestore_source",
 		Path:         "cloudquery/firestore",
@@ -34,9 +30,33 @@ func TestPlugin(t *testing.T) {
 		Destinations: []string{"test"},
 		Tables:       []string{"test_firestore_source"},
 		Spec: client.Spec{
-			ProjectID: "test-project",
+			ProjectID: "cqtest-project",
 		},
 	}
-	err := p.Init(ctx, spec)
-	require.NoError(t, err)
+	require.NoError(t, p.Init(ctx, spec))
+}
+
+func TestPlugin_OrderBy(t *testing.T) {
+	p := plugin.Plugin()
+	ctx := context.Background()
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	p.SetLogger(l)
+
+	tableSetup(t, ctx, "test_firestore_source")
+
+	spec := specs.Source{
+		Name:         "test_firestore_source",
+		Path:         "cloudquery/firestore",
+		Version:      "vDevelopment",
+		Destinations: []string{"test"},
+		Tables:       []string{"test_firestore_source"},
+		Spec: client.Spec{
+			ProjectID: "cqtest-project",
+			OrderByField: "test",
+			OrderByDirection: "DESC",
+		},
+	}
+	require.NoError(t, p.Init(ctx, spec))
 }
