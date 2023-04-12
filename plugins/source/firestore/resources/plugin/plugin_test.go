@@ -21,7 +21,7 @@ func TestPlugin(t *testing.T) {
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	p.SetLogger(l)
 
-	tableSetup(t, ctx, "test_firestore_source")
+	tableSetup(ctx, t, "test_firestore_source")
 
 	spec := specs.Source{
 		Name:         "test_firestore_source",
@@ -44,7 +44,7 @@ func TestPlugin_OrderBy(t *testing.T) {
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	p.SetLogger(l)
 
-	tableSetup(t, ctx, "test_firestore_source")
+	tableSetup(ctx, t, "test_firestore_source")
 
 	spec := specs.Source{
 		Name:         "test_firestore_source",
@@ -53,8 +53,8 @@ func TestPlugin_OrderBy(t *testing.T) {
 		Destinations: []string{"test"},
 		Tables:       []string{"test_firestore_source"},
 		Spec: client.Spec{
-			ProjectID: "cqtest-project",
-			OrderByField: "test",
+			ProjectID:        "cqtest-project",
+			OrderByField:     "test",
 			OrderByDirection: "DESC",
 		},
 	}

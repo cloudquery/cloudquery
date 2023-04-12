@@ -23,8 +23,8 @@ func TestDynamicTables(t *testing.T) {
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	p.SetLogger(l)
 
-	tableSetup(t, ctx, "test_firestore_source")
-	tableSetup(t, ctx, "test_firestore_source2")
+	tableSetup(ctx, t, "test_firestore_source")
+	tableSetup(ctx, t, "test_firestore_source2")
 
 	spec := specs.Source{
 		Name:         "test_firestore_source",
@@ -47,7 +47,7 @@ func TestDynamicTables(t *testing.T) {
 	require.Contains(t, tables, "test_firestore_source2")
 }
 
-func tableSetup(t *testing.T, ctx context.Context, tableName string) {
+func tableSetup(ctx context.Context, t *testing.T, tableName string) {
 	// insert test data
 	store, err := firestore.NewClient(ctx, "cqtest-project")
 	require.NoError(t, err)
@@ -67,10 +67,10 @@ func tableSetup(t *testing.T, ctx context.Context, tableName string) {
 	}
 }
 
-func testData() []map[string]interface{} {
-	randData := make([]map[string]interface{}, 0)
+func testData() []map[string]any {
+	randData := make([]map[string]any, 0)
 	for i := 0; i < 100; i++ {
-		randData = append(randData, map[string]interface{}{
+		randData = append(randData, map[string]any{
 			"key1": i,
 			"key":  rand.Int(),
 		})
