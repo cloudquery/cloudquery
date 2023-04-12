@@ -55,7 +55,7 @@ func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 		err  error
 	)
 	err = c.RetryOnError(ctx, issuesTableName, func() error {
-		resp, _, err = c.Client.Reporting.ListLatestIssues(ctx, req)
+		resp, _, err = c.Client.Reporting.ListLatestIssues(ctx, c.OrganizationID, req)
 		return err
 	})
 	if err != nil {
@@ -75,7 +75,7 @@ func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 		r.Page = i
 		g.Go(func() error {
 			return c.RetryOnError(gctx, issuesTableName, func() error {
-				issues, _, err := c.Client.Reporting.ListLatestIssues(ctx, r)
+				issues, _, err := c.Client.Reporting.ListLatestIssues(ctx, c.OrganizationID, r)
 				if err != nil {
 					return err
 				}

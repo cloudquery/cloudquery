@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/julienschmidt/httprouter"
+	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 	"github.com/rs/zerolog"
 )
 
@@ -31,11 +32,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 		}
 		ts.Start()
 
-		snykClient, err := (&Spec{
-			APIKey:        "test-key",
-			Organizations: []string{"test-org"},
-			EndpointURL:   ts.URL + "/", // requires trailing slash
-		}).getClient(version)
+		snykClient := snyk.NewClient("test-key", snyk.WithBaseURL(ts.URL+"/"))
 		if err != nil {
 			return nil, fmt.Errorf("failed to create client: %w", err)
 		}
