@@ -4,12 +4,21 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
-	index, err := c.Meilisearch.GetIndex(table.Name)
+func releaseRecords(records []arrow.Record) {
+	for _, record := range records {
+		record.Release()
+	}
+}
+
+func (c *Client) WriteTableBatch(ctx context.Context, sc *arrow.Schema, records []arrow.Record) error {
+	defer releaseRecords(records)
+
+	index, err := c.Meilisearch.GetIndex(schema.TableName(sc))
 	if err != nil {
 		return err
 	}
@@ -17,16 +26,20 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	var transformer rowTransformer
 	switch c.dstSpec.WriteMode {
 	case specs.WriteModeAppend:
-		transformer = toMap(table)
+		transformer = toMap(sc)
 	case specs.WriteModeOverwrite, specs.WriteModeOverwriteDeleteStale:
-		transformer = toMapWithHash(table)
+		transformer = toMapWithHash(sc)
 	default:
 		return fmt.Errorf("unsupported write mode %q", c.dstSpec.WriteMode.String())
 	}
 
-	docs := make([]map[string]any, len(data))
-	for i, item := range data {
-		docs[i] = transformer(item)
+	docs := make([]map[string]any, 0, len(records)) // at least 1 row in record
+	for _, record := range records {
+		rows, err := transformer(record)
+		if err != nil {
+			return err
+		}
+		docs = append(docs, rows...)
 	}
 
 	taskInfo, err := index.AddDocuments(&docs, c.pkColumn)
@@ -35,31 +48,39 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	}
 
 	if err := c.waitTask(ctx, taskInfo); err != nil {
-		return fmt.Errorf("failed to write %d items to index %q: %w", len(data), index.UID, err)
+		return fmt.Errorf("failed to write %d items to index %q: %w", len(docs), index.UID, err)
 	}
 
 	return nil
 }
 
-type rowTransformer func(item []any) map[string]any
+type rowTransformer func(record arrow.Record) ([]map[string]any, error)
 
-func toMap(table *schema.Table) rowTransformer {
-	columns := table.Columns.Names()
-	return func(item []any) map[string]any {
-		res := make(map[string]any, len(columns))
-		for i, col := range columns {
-			res[col] = item[i]
+func toMap(sc *arrow.Schema) rowTransformer {
+	columns := make([]string, len(sc.Fields()))
+	for i, fld := range sc.Fields() {
+		columns[i] = fld.Name
+	}
+	return func(record arrow.Record) ([]map[string]any, error) {
+		byColumn := make(map[string][]any, len(columns))
+		for i, col := range record.Columns() {
+			byColumn[columns[i]] = getValues(col)
 		}
-		return res
+		return transpose(byColumn, int(record.NumRows())), nil
 	}
 }
 
-func toMapWithHash(table *schema.Table) rowTransformer {
-	m := toMap(table)
-	h := hashUUID(table)
-	return func(item []any) map[string]any {
-		res := m(item)
-		res[hashColumnName] = h(item)
-		return res
+func toMapWithHash(sc *arrow.Schema) rowTransformer {
+	m := toMap(sc)
+	h := hashUUID(sc)
+	return func(record arrow.Record) ([]map[string]any, error) {
+		rows, err := m(record)
+		if err != nil {
+			return nil, err
+		}
+		for _, row := range rows {
+			row[hashColumnName] = h(row)
+		}
+		return rows, nil
 	}
 }
