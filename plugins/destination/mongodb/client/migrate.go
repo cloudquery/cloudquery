@@ -22,19 +22,21 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 }
 
 func (c *Client) migrateTable(ctx context.Context, table *schema.Table) error {
-	indexModel := getIndexTemplate(table)
-	if indexModel != nil {
-		res, err := c.client.Database(c.pluginSpec.Database).Collection(table.Name).Indexes().CreateOne(ctx, *indexModel)
-		if err != nil && isIndexConflictError(err) {
+	indexModels := c.getIndexTemplates(table)
+	for _, mdl := range indexModels {
+		res, err := c.client.Database(c.pluginSpec.Database).Collection(table.Name).Indexes().CreateOne(ctx, mdl)
+		if err == nil {
+			c.logger.Debug().Str("index_name", res).Str("table", table.Name).Msg("created index")
+		} else if isIndexConflictError(err) {
 			c.logger.Debug().Str("index_name", res).Str("table", table.Name).Err(err).Msg("create index conflict")
-			if err := c.migrateTableOnConflict(ctx, table, indexModel); err != nil {
+			if err := c.migrateTableOnConflict(ctx, table, mdl); err != nil {
 				return err
 			}
-		} else if err != nil {
+		} else if isIndexAlreadyExistsWithADifferentNameError(err) {
+			c.logger.Debug().Str("table", table.Name).Err(err).Msg("skipped create index")
+		} else {
 			return fmt.Errorf("create index on %s: %w", table.Name, err)
 		}
-
-		c.logger.Debug().Str("index_name", res).Str("table", table.Name).Msg("created index")
 	}
 
 	for _, subTable := range table.Relations {
@@ -46,39 +48,53 @@ func (c *Client) migrateTable(ctx context.Context, table *schema.Table) error {
 	return nil
 }
 
-func (c *Client) migrateTableOnConflict(ctx context.Context, table *schema.Table, indexModel *mongo.IndexModel) error {
+func (c *Client) migrateTableOnConflict(ctx context.Context, table *schema.Table, mdl mongo.IndexModel) error {
 	if c.spec.MigrateMode != specs.MigrateModeForced {
 		return fmt.Errorf("collection %s requires forced migration due to changes in unique indexes. use 'migrate_mode: forced'", table.Name)
 	}
 
-	if _, err := c.client.Database(c.pluginSpec.Database).Collection(table.Name).Indexes().DropOne(ctx, *indexModel.Options.Name); err != nil {
+	if _, err := c.client.Database(c.pluginSpec.Database).Collection(table.Name).Indexes().DropOne(ctx, *mdl.Options.Name); err != nil {
 		return fmt.Errorf("drop index on %s: %w", table.Name, err)
 	}
-	if _, err := c.client.Database(c.pluginSpec.Database).Collection(table.Name).Indexes().CreateOne(ctx, *indexModel); err != nil {
+	res, err := c.client.Database(c.pluginSpec.Database).Collection(table.Name).Indexes().CreateOne(ctx, mdl)
+	if err != nil {
 		return fmt.Errorf("recreate index on %s: %w", table.Name, err)
 	}
+	c.logger.Debug().Str("index_name", res).Str("table", table.Name).Msg("recreated index")
 	return nil
 }
 
-func getIndexTemplate(table *schema.Table) *mongo.IndexModel {
+func (c *Client) getIndexTemplates(table *schema.Table) []mongo.IndexModel {
+	var indexes []mongo.IndexModel
+
 	pks := table.PrimaryKeys()
-	if len(pks) == 0 {
-		return nil
+	if len(pks) > 0 {
+		indexCols := bson.D{}
+		for _, col := range pks {
+			indexCols = append(indexCols, bson.E{Key: col, Value: 1})
+		}
+
+		pkIndexName := "cq_pk"
+		indexes = append(indexes, mongo.IndexModel{
+			Keys: indexCols,
+			Options: &options.IndexOptions{
+				Unique: &[]bool{true}[0],
+				Name:   &pkIndexName,
+			},
+		})
 	}
 
-	indexCols := bson.D{}
-	for _, col := range pks {
-		indexCols = append(indexCols, bson.E{Key: col, Value: 1})
+	if c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale {
+		delIndexName := "cq_del"
+		indexes = append(indexes, mongo.IndexModel{
+			Keys: bson.D{{Key: schema.CqSourceNameColumn.Name, Value: 1}, {Key: schema.CqSyncTimeColumn.Name, Value: 1}},
+			Options: &options.IndexOptions{
+				Name: &delIndexName,
+			},
+		})
 	}
-	indexName := "cq_pk"
 
-	return &mongo.IndexModel{
-		Keys: indexCols,
-		Options: &options.IndexOptions{
-			Unique: &[]bool{true}[0],
-			Name:   &indexName,
-		},
-	}
+	return indexes
 }
 
 func isIndexConflictError(err error) bool {
@@ -87,4 +103,12 @@ func isIndexConflictError(err error) bool {
 		return false
 	}
 	return cmdErr.Name == "IndexKeySpecsConflict"
+}
+
+func isIndexAlreadyExistsWithADifferentNameError(err error) bool {
+	cmdErr, ok := err.(mongo.CommandError)
+	if !ok {
+		return false
+	}
+	return cmdErr.Name == "IndexOptionsConflict" // Index already exists with a different name: %s
 }
