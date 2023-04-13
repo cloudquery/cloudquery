@@ -2,7 +2,7 @@
 
 This table shows data for Snyk Dependencies.
 
-https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Dependency
+https://snyk.docs.apiary.io/#reference/dependencies/dependencies-by-organization/list-all-dependencies
 
 The composite primary key for this table is (**organization_id**, **id**).
 
