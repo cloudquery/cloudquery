@@ -182,6 +182,7 @@ func tables() []*schema.Table {
 		consumption.BillingAccountTags(),
 		consumption.SubscriptionBudgets(),
 		consumption.SubscriptionMarketplaces(),
+		consumption.SubscriptionPriceSheets(),
 		consumption.SubscriptionReservationRecommendations(),
 		consumption.SubscriptionTags(),
 		customerinsights.Hubs(),

@@ -92,6 +92,7 @@
 - [azure_consumption_billing_profile_reservation_transactions](../../../../../website/tables/azure/azure_consumption_billing_profile_reservation_transactions.md)
 - [azure_consumption_subscription_budgets](../../../../../website/tables/azure/azure_consumption_subscription_budgets.md)
 - [azure_consumption_subscription_marketplaces](../../../../../website/tables/azure/azure_consumption_subscription_marketplaces.md)
+- [azure_consumption_subscription_price_sheets](../../../../../website/tables/azure/azure_consumption_subscription_price_sheets.md)
 - [azure_consumption_subscription_reservation_recommendations](../../../../../website/tables/azure/azure_consumption_subscription_reservation_recommendations.md)
 - [azure_consumption_subscription_tags](../../../../../website/tables/azure/azure_consumption_subscription_tags.md)
 - [azure_containerinstance_container_groups](../../../../../website/tables/azure/azure_containerinstance_container_groups.md)
