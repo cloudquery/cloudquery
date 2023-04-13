@@ -2,7 +2,7 @@
 
 This table shows data for Snyk Projects.
 
-https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Project
+https://snyk.docs.apiary.io/#reference/projects/all-projects/list-all-projects
 
 The composite primary key for this table is (**organization_id**, **id**).
 
