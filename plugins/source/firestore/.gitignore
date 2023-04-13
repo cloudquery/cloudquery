@@ -1,0 +1,5 @@
+firestore
+config.yaml
+*.log
+dist/
+.gr.yaml
