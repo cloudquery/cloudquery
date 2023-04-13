@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func SingleOrganization(meta schema.ClientMeta) []schema.ClientMeta {
@@ -24,5 +24,7 @@ func (c *Client) WithOrganization(organizationID string) schema.ClientMeta {
 		OrganizationID: organizationID,
 		organizations:  c.organizations,
 		logger:         c.logger.With().Str("organization", organizationID).Logger(),
+		maxRetries:     c.maxRetries,
+		backoff:        c.backoff,
 	}
 }
