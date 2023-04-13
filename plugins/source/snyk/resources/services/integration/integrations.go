@@ -4,15 +4,15 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 )
 
 func Integrations() *schema.Table {
 	return &schema.Table{
 		Name:                "snyk_integrations",
-		Description:         `https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Integration`,
+		Description:         `https://snyk.docs.apiary.io/#reference/integrations/integrations/list`,
 		Resolver:            fetchIntegrations,
 		PreResourceResolver: getIntegration,
 		Multiplex:           client.ByOrganization,
