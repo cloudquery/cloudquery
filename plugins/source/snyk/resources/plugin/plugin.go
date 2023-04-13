@@ -23,6 +23,7 @@ func Snyk() *source.Plugin {
 			organization.Organizations(),
 			project.Projects(),
 			reporting.Issues(),
+			reporting.LatestIssues(),
 		},
 		client.Configure,
 	)
