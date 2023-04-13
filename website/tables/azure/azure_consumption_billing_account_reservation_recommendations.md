@@ -1,8 +1,8 @@
-# Table: azure_consumption_billing_profile_modern_reservation_recommendations
+# Table: azure_consumption_billing_account_reservation_recommendations
 
-This table shows data for Azure Consumption Billing Profile Modern Reservation Recommendations.
+This table shows data for Azure Consumption Billing Account Reservation Recommendations.
 
-https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#modernreservationrecommendation
+https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#legacyreservationrecommendation
 
 The primary key for this table is **id**.
 
@@ -15,7 +15,6 @@ The primary key for this table is **id**.
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |kind|String|
-|properties|JSON|
 |etag|String|
 |id (PK)|String|
 |location|String|

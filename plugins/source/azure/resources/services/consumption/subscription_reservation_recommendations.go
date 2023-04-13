@@ -11,23 +11,24 @@ import (
 	"github.com/cloudquery/plugin-sdk/transformers"
 )
 
-func BillingAccountLegacyReservationRecommendations() *schema.Table {
+func SubscriptionReservationRecommendations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_billing_account_legacy_reservation_recommendations",
-		Resolver:    fetchBillingAccountLegacyReservationRecommendations,
+		Name:        "azure_consumption_subscription_reservation_recommendations",
+		Resolver:    fetchSubscriptionReservationRecommendations,
 		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#legacyreservationrecommendation",
-		Multiplex:   client.LegacyBillingAccountMultiplex,
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_consumption_subscription_reservation_recommendations", client.Namespacemicrosoft_consumption),
 		Transform:   transformers.TransformWithStruct(&armconsumption.LegacyReservationRecommendation{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 
-func fetchBillingAccountLegacyReservationRecommendations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchSubscriptionReservationRecommendations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armconsumption.NewReservationRecommendationsClient(cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(*cl.BillingAccount.ID, nil)
+	scope := "subscriptions/" + cl.SubscriptionId
+	pager := svc.NewListPager(scope, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

@@ -13,7 +13,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func createBillingProfileModernReservationRecommendations(router *mux.Router) error {
+func createBillingProfileReservationRecommendations(router *mux.Router) error {
 	var item armconsumption.ModernReservationRecommendation
 	if err := faker.FakeObject(&item); err != nil {
 		return err
@@ -41,6 +41,6 @@ func createBillingProfileModernReservationRecommendations(router *mux.Router) er
 	return nil
 }
 
-func TestBillingProfileModernReservationRecommendations(t *testing.T) {
-	client.MockTestHelper(t, BillingProfileModernReservationRecommendations(), createBillingProfileModernReservationRecommendations)
+func TestBillingProfileReservationRecommendations(t *testing.T) {
+	client.MockTestHelper(t, BillingProfileReservationRecommendations(), createBillingProfileReservationRecommendations)
 }

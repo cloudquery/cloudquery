@@ -1,6 +1,6 @@
-# Table: azure_consumption_billing_account_legacy_reservation_recommendations
+# Table: azure_consumption_subscription_reservation_recommendations
 
-This table shows data for Azure Consumption Billing Account Legacy Reservation Recommendations.
+This table shows data for Azure Consumption Subscription Reservation Recommendations.
 
 https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#legacyreservationrecommendation
 
