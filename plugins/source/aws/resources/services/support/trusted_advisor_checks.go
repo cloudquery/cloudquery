@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/support"
 	"github.com/aws/aws-sdk-go-v2/service/support/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 var checksSupportedLanguageCodes = []string{"en", "fr", "de", "id", "it", "ja", "ko", "pt_BR", "es", "zh", "zh_TW"}

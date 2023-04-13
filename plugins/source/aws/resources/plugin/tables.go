@@ -99,7 +99,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/workspaces"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/xray"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func tables() []*schema.Table {
