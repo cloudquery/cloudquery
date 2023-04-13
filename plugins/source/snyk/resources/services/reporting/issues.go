@@ -45,8 +45,6 @@ func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 	req := snyk.ListReportingIssuesRequest{
 		Page:    1,
 		PerPage: 1000,
-		SortBy:  "severity",
-		Order:   "desc",
 		GroupBy: "issue",
 	}
 	total := 0

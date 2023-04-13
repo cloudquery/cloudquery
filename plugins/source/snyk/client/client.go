@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/plugins/source"
@@ -79,7 +80,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	snykLogger := SnykLogger{
 		logger: logger,
 	}
+	httpClient := http.DefaultClient
+	httpClient.Timeout = 1 * time.Minute
 	options := []snyk.ClientOption{
+		snyk.WithHTTPClient(httpClient),
 		snyk.WithUserAgent("cloudquery/snyk/" + spec.Version),
 		snyk.WithLogger(&snykLogger),
 		snyk.WithLogRequests(true), // these will be filtered out by the logger if not in debug mode

@@ -24,5 +24,7 @@ func (c *Client) WithOrganization(organizationID string) schema.ClientMeta {
 		OrganizationID: organizationID,
 		organizations:  c.organizations,
 		logger:         c.logger.With().Str("organization", organizationID).Logger(),
+		maxRetries:     c.maxRetries,
+		backoff:        c.backoff,
 	}
 }
