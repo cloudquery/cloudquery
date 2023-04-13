@@ -52,6 +52,30 @@ func TestSpec_Validate(t *testing.T) {
 			},
 			want: errors.New("cannot use to without from"),
 		},
+		{
+			name: "only from",
+			spec: Spec{
+				APIKey: "test",
+				TableOptions: TableOptions{
+					SnykReportingIssues: SnykReportingIssuesOptions{
+						From: "2020-01-01",
+					},
+				},
+			},
+			want: nil,
+		},
+		{
+			name: "only period",
+			spec: Spec{
+				APIKey: "test",
+				TableOptions: TableOptions{
+					SnykReportingIssues: SnykReportingIssuesOptions{
+						Period: "30d",
+					},
+				},
+			},
+			want: nil,
+		},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
