@@ -21,6 +21,7 @@ const (
 type Client struct {
 	*snyk.Client
 
+	Spec           Spec
 	OrganizationID string
 	organizations  []string
 
@@ -110,6 +111,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	}
 	c := &Client{
 		Client:        client,
+		Spec:          *snykSpec,
 		logger:        logger,
 		organizations: snykSpec.Organizations,
 		maxRetries:    maxRetries,

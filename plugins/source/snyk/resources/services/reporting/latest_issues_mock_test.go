@@ -12,7 +12,7 @@ import (
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 )
 
-func createIssues(mux *httprouter.Router) error {
+func createLatestIssues(mux *httprouter.Router) error {
 	var resp snyk.ListReportingIssuesResponse
 	if err := faker.FakeObject(&resp); err != nil {
 		return err
@@ -36,6 +36,6 @@ func createIssues(mux *httprouter.Router) error {
 	return nil
 }
 
-func TestIssues(t *testing.T) {
-	client.MockTestHelper(t, Issues(), createIssues)
+func TestLatestIssues(t *testing.T) {
+	client.MockTestHelper(t, LatestIssues(), createLatestIssues)
 }
