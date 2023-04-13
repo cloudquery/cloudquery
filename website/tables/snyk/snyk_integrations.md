@@ -2,7 +2,7 @@
 
 This table shows data for Snyk Integrations.
 
-https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Integration
+https://snyk.docs.apiary.io/#reference/integrations/integrations/list
 
 The composite primary key for this table is (**organization_id**, **id**).
 
