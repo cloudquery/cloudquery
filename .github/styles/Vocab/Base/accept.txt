@@ -73,6 +73,7 @@ Fastly
 financials
 firehose
 Firehose
+Firestore
 Fivetran
 format_spec
 Gandi
