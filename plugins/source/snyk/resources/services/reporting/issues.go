@@ -54,7 +54,7 @@ func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 	from := c.Spec.TableOptions.SnykReportingIssues.FromTime()
 	to := c.Spec.TableOptions.SnykReportingIssues.ToTime()
 	err = c.RetryOnError(ctx, issuesTableName, func() error {
-		resp, _, err = c.Client.Reporting.ListIssues(ctx, from, to, c.OrganizationID, req)
+		resp, _, err = c.Client.Reporting.ListIssues(ctx, c.OrganizationID, from, to, req)
 		return err
 	})
 	if err != nil {
@@ -74,7 +74,7 @@ func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 		r.Page = i
 		g.Go(func() error {
 			return c.RetryOnError(gctx, issuesTableName, func() error {
-				issues, _, err := c.Client.Reporting.ListIssues(ctx, from, to, c.OrganizationID, r)
+				issues, _, err := c.Client.Reporting.ListIssues(ctx, c.OrganizationID, from, to, r)
 				if err != nil {
 					return err
 				}

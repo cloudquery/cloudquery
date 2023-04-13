@@ -29,7 +29,7 @@ func TestSpec_Validate(t *testing.T) {
 			name: "period with to/from",
 			spec: Spec{
 				APIKey: "test",
-				TableOptions: &TableOptions{
+				TableOptions: TableOptions{
 					SnykReportingIssues: SnykReportingIssuesOptions{
 						From:   "2020-01-01",
 						To:     "2020-01-01",
@@ -43,7 +43,7 @@ func TestSpec_Validate(t *testing.T) {
 			name: "to without from",
 			spec: Spec{
 				APIKey: "test",
-				TableOptions: &TableOptions{
+				TableOptions: TableOptions{
 					SnykReportingIssues: SnykReportingIssuesOptions{
 						To:     "2020-01-01",
 						Period: "1d",

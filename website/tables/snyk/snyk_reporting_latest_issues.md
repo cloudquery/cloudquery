@@ -1,8 +1,8 @@
-# Table: snyk_reporting_issues
+# Table: snyk_reporting_latest_issues
 
-This table shows data for Snyk Reporting Issues.
+This table shows data for Snyk Reporting Latest Issues.
 
-https://snyk.docs.apiary.io/#reference/reporting-api/issues/get-list-of-issues
+https://snyk.docs.apiary.io/#reference/reporting-api/get-list-of-latest-issues
 
 The composite primary key for this table is (**organization_id**, **id**).
 
