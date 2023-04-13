@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/serve"
+	"github.com/cloudquery/plugin-sdk/v2/serve"
 )
 
 const sentryDSN = "https://c2101fe3c5fd4f91a095b2b37dc6364a@o1396617.ingest.sentry.io/4504333793165313"

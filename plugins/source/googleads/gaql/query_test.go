@@ -3,7 +3,7 @@ package gaql
 import (
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/shenzhencenter/google-ads-pb/resources"
 	"github.com/stretchr/testify/require"
 )

@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.61
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.31.2
 	github.com/cloudquery/filetypes v1.6.2
-	github.com/cloudquery/plugin-sdk v1.44.2
+	github.com/cloudquery/plugin-sdk v1.45.0
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0

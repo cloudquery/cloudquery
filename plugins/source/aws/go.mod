@@ -108,7 +108,7 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-sdk v1.44.2
+	github.com/cloudquery/plugin-sdk v1.45.0
 	github.com/gocarina/gocsv v0.0.0-20230325173030-9a18a846a479
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9

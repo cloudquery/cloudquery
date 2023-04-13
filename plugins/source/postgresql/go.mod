@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/postgresql
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v1.44.2
+	github.com/cloudquery/plugin-sdk v1.45.0
 	github.com/google/uuid v1.3.0
 	github.com/jackc/pglogrepl v0.0.0-20230318140337-5ef673a9d169
 	github.com/jackc/pgx-zerolog v0.0.0-20230315001418-f978528409eb
