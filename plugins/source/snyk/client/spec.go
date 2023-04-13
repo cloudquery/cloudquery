@@ -2,8 +2,6 @@ package client
 
 import (
 	"fmt"
-
-	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 )
 
 type Spec struct {
@@ -14,19 +12,14 @@ type Spec struct {
 	// By default, will fetch from all organizations available for user.
 	Organizations []string `json:"organizations,omitempty"`
 
-	// EndpointURL is optional parameter to override the API URL for snyk.Client.
+	// EndpointURL is an optional parameter to override the API URL for snyk.Client.
+	// It defaults to https://api.snyk.io/api/
 	EndpointURL string `json:"endpoint_url,omitempty"`
 }
 
-func (s *Spec) getClient(version string) (*snyk.Client, error) {
+func (s *Spec) Validate() error {
 	if len(s.APIKey) == 0 {
-		return nil, fmt.Errorf("missing API key")
+		return fmt.Errorf("missing API key")
 	}
-
-	options := []snyk.ClientOption{snyk.WithUserAgent("cloudquery/snyk/" + version)}
-	if len(s.EndpointURL) > 0 {
-		options = append(options, snyk.WithBaseURL(s.EndpointURL))
-	}
-
-	return snyk.NewClient(s.APIKey, options...), nil
+	return nil
 }
