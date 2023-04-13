@@ -150,6 +150,7 @@ recurse
 region_codes
 remediation
 remediations
+retryable
 RESTful
 runtime
 runtimes
