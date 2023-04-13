@@ -9,7 +9,7 @@ require (
 )
 
 require (
-	github.com/sijms/go-ora/v2 v2.6.10
+	github.com/sijms/go-ora/v2 v2.6.16
 	golang.org/x/sync v0.1.0
 )
 

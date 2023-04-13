@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"time"
 
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -21,8 +20,6 @@ type Client struct {
 	Tables      schema.Tables
 	db          *sql.DB
 	Concurrency uint64
-
-	timezoneOffset time.Duration
 }
 
 var _ schema.ClientMeta = (*Client)(nil)
@@ -55,9 +52,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	}
 	defer conn.Close()
 
-	t := time.Now()
-	_, offset := t.Zone()
-	c := &Client{logger: logger.With().Str("module", "oracledb-source").Logger(), db: db, timezoneOffset: time.Duration(offset) * time.Second, Concurrency: spec.Concurrency}
+	c := &Client{logger: logger.With().Str("module", "oracledb-source").Logger(), db: db, Concurrency: spec.Concurrency}
 	c.Tables, err = c.listTables(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)

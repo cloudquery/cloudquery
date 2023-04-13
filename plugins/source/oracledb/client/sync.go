@@ -100,12 +100,6 @@ func (c *Client) resourceFromValues(tableName string, values []any) (*schema.Res
 	table := c.Tables.Get(tableName)
 	resource := schema.NewResourceData(table, nil, values)
 	for i, col := range table.Columns {
-		// See https://github.com/sijms/go-ora/issues/338
-		// go-ora loads timestamp columns in local time, so we need to offset them to UTC
-		if v, ok := values[i].(**time.Time); ok {
-			normalizedTime := (*v).UTC().Add(c.timezoneOffset)
-			values[i] = &normalizedTime
-		}
 		if err := resource.Set(col.Name, values[i]); err != nil {
 			return nil, err
 		}
