@@ -22,3 +22,9 @@ This is the (nested) spec used by the Snyk source plugin.
 
 - `endpoint_url` (string, optional. Default: not used):
   Endpoint URL to make the API requests to.
+
+- `retries` (integer, optional. Default: 10):
+  Number of retries to make when a request fails with a retryable error code.
+
+- `retry_delay_seconds` (integer, optional. Default: 65):
+  Number of seconds to wait between retries. Jitter is added to this value.
