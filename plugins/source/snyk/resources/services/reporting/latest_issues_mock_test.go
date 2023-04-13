@@ -12,14 +12,14 @@ import (
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 )
 
-func createIssues(mux *httprouter.Router) error {
+func createLatestIssues(mux *httprouter.Router) error {
 	var resp snyk.ListReportingIssuesResponse
 	if err := faker.FakeObject(&resp); err != nil {
 		return err
 	}
 	resp.Total = 2001
 	i := 0
-	mux.POST("/v1/reporting/issues/", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	mux.POST("/v1/reporting/issues/latest", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp.Results[0].Issue.ID = fmt.Sprintf("test-%d", i)
 		i++
 		b, err := json.Marshal(resp)
@@ -36,6 +36,6 @@ func createIssues(mux *httprouter.Router) error {
 	return nil
 }
 
-func TestIssues(t *testing.T) {
-	client.MockTestHelper(t, Issues(), createIssues)
+func TestLatestIssues(t *testing.T) {
+	client.MockTestHelper(t, LatestIssues(), createLatestIssues)
 }
