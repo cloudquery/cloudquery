@@ -3,9 +3,12 @@ package services
 import (
 	"context"
 	"strings"
+	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/testdata"
+	"github.com/apache/arrow/go/v12/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/testdata"
+	"github.com/google/uuid"
 )
 
 func TestDataTable() *schema.Table {
@@ -18,12 +21,15 @@ func TestDataTable() *schema.Table {
 		table.Columns[i].Resolver = schema.PathResolver(table.Columns[i].Name)
 	}
 
-	data := testdata.GenTestData(table)
+	data := testdata.GenTestData(memory.DefaultAllocator, schema.CQSchemaToArrow(table), testdata.GenTestDataOptions{
+		SourceName: "test",
+		SyncTime:   time.Now(),
+		MaxRows:    1,
+		StableUUID: uuid.Nil,
+	})
 	dataAsMap := make(map[string]any)
 	for i, c := range table.Columns {
-		if data[i].GetStatus() == schema.Present {
-			dataAsMap[c.Name] = data[i].String()
-		}
+		dataAsMap[c.Name] = data[0].Column(i).String()
 	}
 
 	table.Description = "Testdata table"
