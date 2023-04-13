@@ -2,8 +2,8 @@ package cdn
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func endpoints() *schema.Table {
