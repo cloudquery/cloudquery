@@ -45,7 +45,7 @@
   "plugins/source/vercel+FILLER": "0.0.0",
   "plugins/source/slack": "1.2.3",
   "plugins/source/slack+FILLER": "0.0.0",
-  "plugins/source/pagerduty": "1.4.3",
+  "plugins/source/pagerduty": "1.4.4",
   "plugins/source/pagerduty+FILLER": "0.0.0",
   "plugins/destination/mongodb": "1.1.5",
   "plugins/destination/mongodb+FILLER": "0.0.0",
