@@ -6,7 +6,7 @@ import (
 
 	websecurityscanner "cloud.google.com/go/websecurityscanner/apiv1"
 	pb "cloud.google.com/go/websecurityscanner/apiv1/websecurityscannerpb"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	gax "github.com/googleapis/gax-go/v2"
 	"google.golang.org/api/iterator"

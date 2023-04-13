@@ -7,7 +7,7 @@ import (
 
 	pb "cloud.google.com/go/run/apiv2/runpb"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	v2 "cloud.google.com/go/run/apiv2"
