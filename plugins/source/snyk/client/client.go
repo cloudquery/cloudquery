@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	defaultMaxRetries = 5
-	defaultBackoff    = 60 * time.Second
+	defaultMaxRetries = 10
+	defaultBackoff    = 65 * time.Second
 )
 
 type Client struct {
@@ -49,21 +49,22 @@ func (l *SnykLogger) Log(args ...any) {
 		l.logger.Debug().Interface("msg", args[0]).Msgf("Log from Snyk SDK")
 		return
 	}
+	m := l.logger.Debug()
 	if len(args)%2 != 0 {
-		l.logger.Debug().Interface("args", args).Msgf("Log from Snyk SDK")
+		for i := 0; i < len(args); i++ {
+			m = m.Interface(fmt.Sprintf("arg_%02d", i), args[i])
+		}
+		m.Msg("Log from Snyk SDK")
 		return
 	}
-	m := l.logger.Debug()
 	for i := 0; i < len(args); i += 2 {
 		k, ok := args[i].(string)
 		if !ok {
-			m = m.Interface(fmt.Sprintf("arg%02d", i), args[i])
-			m = m.Interface(fmt.Sprintf("arg%02d", i+1), args[i+1])
+			m = m.Interface(fmt.Sprintf("arg_%02d", i), args[i])
+			m = m.Interface(fmt.Sprintf("arg_%02d", i+1), args[i+1])
 			continue
 		}
-		if i+1 < len(args) {
-			m = m.Interface(k, args[i+1])
-		}
+		m = m.Interface(k, args[i+1])
 	}
 	m.Msg("Log from Snyk SDK")
 }
@@ -99,12 +100,20 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 		return nil, fmt.Errorf("failed to create Snyk client: %w", err)
 	}
 
+	maxRetries := defaultMaxRetries
+	if snykSpec.Retries > 0 {
+		maxRetries = snykSpec.Retries
+	}
+	backoff := defaultBackoff
+	if snykSpec.RetryDelaySeconds > 0 {
+		backoff = time.Duration(snykSpec.RetryDelaySeconds) * time.Second
+	}
 	c := &Client{
 		Client:        client,
 		logger:        logger,
 		organizations: snykSpec.Organizations,
-		maxRetries:    defaultMaxRetries,
-		backoff:       defaultBackoff,
+		maxRetries:    maxRetries,
+		backoff:       backoff,
 	}
 
 	return c, c.initOrganizations(ctx)

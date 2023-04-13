@@ -13,7 +13,7 @@ import (
 func Dependencies() *schema.Table {
 	return &schema.Table{
 		Name:        "snyk_dependencies",
-		Description: `https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Dependency`,
+		Description: `https://snyk.docs.apiary.io/#reference/dependencies/dependencies-by-organization/list-all-dependencies`,
 		Resolver:    fetchDependencies,
 		Multiplex:   client.ByOrganization,
 		Transform:   transformers.TransformWithStruct(&snyk.Dependency{}, transformers.WithPrimaryKeys("ID")),
