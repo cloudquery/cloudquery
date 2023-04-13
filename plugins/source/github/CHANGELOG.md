@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v5.0.0...plugins-source-github-v5.0.1) (2023-04-13)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.45.0 ([#9863](https://github.com/cloudquery/cloudquery/issues/9863)) ([2799d62](https://github.com/cloudquery/cloudquery/commit/2799d62518283ac304beecda9478f8f2db43cdc5))
+
 ## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v4.1.3...plugins-source-github-v5.0.0) (2023-04-04)
 
 
