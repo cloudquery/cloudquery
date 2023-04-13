@@ -11,14 +11,15 @@ import (
 )
 
 const (
-	issuesTableName = "snyk_reporting_issues"
+	latestIssuesTableName = "snyk_reporting_latest_issues"
+	maxRequests           = 10 // limit the number of concurrent requests to 10
 )
 
-func Issues() *schema.Table {
+func LatestIssues() *schema.Table {
 	return &schema.Table{
-		Name:        issuesTableName,
-		Description: `https://snyk.docs.apiary.io/#reference/reporting-api/issues/get-list-of-issues`,
-		Resolver:    fetchIssues,
+		Name:        latestIssuesTableName,
+		Description: `https://snyk.docs.apiary.io/#reference/reporting-api/get-list-of-latest-issues`,
+		Resolver:    fetchLatestIssues,
 		Multiplex:   client.ByOrganization,
 		Transform: transformers.TransformWithStruct(
 			&snyk.ListReportingIssueResult{},
@@ -38,7 +39,7 @@ func Issues() *schema.Table {
 	}
 }
 
-func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+func fetchLatestIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 
 	req := snyk.ListReportingIssuesRequest{
@@ -51,10 +52,8 @@ func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 		resp *snyk.ListReportingIssuesResponse
 		err  error
 	)
-	from := c.Spec.TableOptions.SnykReportingIssues.FromTime()
-	to := c.Spec.TableOptions.SnykReportingIssues.ToTime()
-	err = c.RetryOnError(ctx, issuesTableName, func() error {
-		resp, _, err = c.Client.Reporting.ListIssues(ctx, c.OrganizationID, from, to, req)
+	err = c.RetryOnError(ctx, latestIssuesTableName, func() error {
+		resp, _, err = c.Client.Reporting.ListLatestIssues(ctx, c.OrganizationID, req)
 		return err
 	})
 	if err != nil {
@@ -73,8 +72,8 @@ func fetchIssues(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 		r := req
 		r.Page = i
 		g.Go(func() error {
-			return c.RetryOnError(gctx, issuesTableName, func() error {
-				issues, _, err := c.Client.Reporting.ListIssues(ctx, c.OrganizationID, from, to, r)
+			return c.RetryOnError(gctx, latestIssuesTableName, func() error {
+				issues, _, err := c.Client.Reporting.ListLatestIssues(ctx, c.OrganizationID, r)
 				if err != nil {
 					return err
 				}
