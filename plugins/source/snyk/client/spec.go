@@ -15,6 +15,12 @@ type Spec struct {
 	// EndpointURL is an optional parameter to override the API URL for snyk.Client.
 	// It defaults to https://api.snyk.io/api/
 	EndpointURL string `json:"endpoint_url,omitempty"`
+
+	// Retries is an optional parameter to override the default number of retries for retryable requests.
+	Retries int `json:"retries,omitempty"`
+
+	// RetryDelaySeconds is an optional parameter to override the default backoff time for retryable requests.
+	RetryDelaySeconds int `json:"retry_delay_seconds,omitempty"`
 }
 
 func (s *Spec) Validate() error {

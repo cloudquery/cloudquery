@@ -12,7 +12,7 @@ import (
 func Integrations() *schema.Table {
 	return &schema.Table{
 		Name:                "snyk_integrations",
-		Description:         `https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Integration`,
+		Description:         `https://snyk.docs.apiary.io/#reference/integrations/integrations/list`,
 		Resolver:            fetchIntegrations,
 		PreResourceResolver: getIntegration,
 		Multiplex:           client.ByOrganization,

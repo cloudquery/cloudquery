@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"net/url"
 	"os"
 	"testing"
 	"time"
@@ -57,7 +58,17 @@ func TestRetryOnRateLimitError(t *testing.T) {
 				i++
 				return &snyk.ErrorResponse{
 					Response: &snyk.Response{
-						Response:      &http.Response{StatusCode: http.StatusInternalServerError},
+						Response: &http.Response{
+							StatusCode: http.StatusInternalServerError,
+							Request: &http.Request{
+								Method: "POST",
+								URL: &url.URL{
+									Scheme: "https",
+									Host:   "test.test.test",
+									Path:   "/api/v1/orgs/1234567890/projects",
+								},
+							},
+						},
 						SnykRequestID: "",
 					},
 					ErrorElement: snyk.ErrorElement{},

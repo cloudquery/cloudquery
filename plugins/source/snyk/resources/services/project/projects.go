@@ -12,7 +12,7 @@ import (
 func Projects() *schema.Table {
 	return &schema.Table{
 		Name:        "snyk_projects",
-		Description: `https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Project`,
+		Description: `https://snyk.docs.apiary.io/#reference/projects/all-projects/list-all-projects`,
 		Resolver:    fetchProjects,
 		Multiplex:   client.ByOrganization,
 		Transform:   transformers.TransformWithStruct(&snyk.Project{}, transformers.WithPrimaryKeys("ID")),
