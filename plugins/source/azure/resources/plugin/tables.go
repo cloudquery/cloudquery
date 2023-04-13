@@ -184,6 +184,7 @@ func tables() []*schema.Table {
 		consumption.SubscriptionMarketplaces(),
 		consumption.SubscriptionPriceSheets(),
 		consumption.SubscriptionReservationRecommendations(),
+		consumption.SubscriptionLegacyUsageDetails(),
 		consumption.SubscriptionTags(),
 		customerinsights.Hubs(),
 		dashboard.Grafana(),
