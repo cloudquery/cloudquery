@@ -57,7 +57,9 @@ func (l *SnykLogger) Log(args ...any) {
 	for i := 0; i < len(args); i += 2 {
 		k, ok := args[i].(string)
 		if !ok {
-
+			m = m.Interface(fmt.Sprintf("arg%02d", i), args[i])
+			m = m.Interface(fmt.Sprintf("arg%02d", i+1), args[i+1])
+			continue
 		}
 		if i+1 < len(args) {
 			m = m.Interface(k, args[i+1])
