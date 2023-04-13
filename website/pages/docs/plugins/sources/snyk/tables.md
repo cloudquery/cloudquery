@@ -7,3 +7,4 @@
 - [snyk_organizations](tables/snyk_organizations)
 - [snyk_projects](tables/snyk_projects)
 - [snyk_reporting_issues](tables/snyk_reporting_issues)
+- [snyk_reporting_latest_issues](tables/snyk_reporting_latest_issues)
