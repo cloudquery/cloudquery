@@ -20,6 +20,5 @@ This table depends on [github_repositories](github_repositories).
 |repository_id (PK)|Int|
 |name (PK)|String|
 |commit|JSON|
-|name|String|
 |protected|Bool|
 |protection|JSON|
