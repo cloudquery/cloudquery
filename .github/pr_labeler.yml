@@ -49,9 +49,9 @@ github:
 gitlab:
   - plugins/source/gitlab/**/*
 googleads:
-  - plugins/destination/googleads/**/*
+  - plugins/source/googleads/**/*
 googleanalytics:
-  - plugins/destination/googleanalytics/**/*
+  - plugins/source/googleanalytics/**/*
 gremlin:
   - plugins/destination/gremlin/**/*
 hackernews:
