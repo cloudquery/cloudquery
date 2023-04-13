@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func Query(a any, parent *schema.Resource, o ...*Options) string {
