@@ -3,8 +3,8 @@ package oss
 import (
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func Buckets() *schema.Table {
