@@ -1,7 +1,8 @@
-package project
+package reporting
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"testing"
 
@@ -11,16 +12,17 @@ import (
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 )
 
-func createProjects(mux *httprouter.Router) error {
-	var project snyk.Project
-	if err := faker.FakeObject(&project); err != nil {
+func createIssues(mux *httprouter.Router) error {
+	var resp snyk.ListReportingIssuesResponse
+	if err := faker.FakeObject(&resp); err != nil {
 		return err
 	}
-	mux.POST("/org/:orgID/projects", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		type projectsRoot struct {
-			Projects []snyk.Project `json:"projects,omitempty"`
-		}
-		b, err := json.Marshal(projectsRoot{Projects: []snyk.Project{project}})
+	resp.Total = 2001
+	i := 0
+	mux.POST("/v1/reporting/issues/latest", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp.Results[0].Issue.ID = fmt.Sprintf("test-%d", i)
+		i++
+		b, err := json.Marshal(resp)
 		if err != nil {
 			http.Error(w, "unable to marshal response: "+err.Error(), http.StatusBadRequest)
 			return
@@ -34,6 +36,6 @@ func createProjects(mux *httprouter.Router) error {
 	return nil
 }
 
-func TestProjects(t *testing.T) {
-	client.MockTestHelper(t, Projects(), createProjects)
+func TestIssues(t *testing.T) {
+	client.MockTestHelper(t, Issues(), createIssues)
 }

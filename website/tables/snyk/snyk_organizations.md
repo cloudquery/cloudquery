@@ -2,7 +2,7 @@
 
 This table shows data for Snyk Organizations.
 
-https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Organization
+https://snyk.docs.apiary.io/#reference/organizations/the-snyk-organization-for-a-request/list-all-the-organizations-a-user-belongs-to
 
 The primary key for this table is **id**.
 
