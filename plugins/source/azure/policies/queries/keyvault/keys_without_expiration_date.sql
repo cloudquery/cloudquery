@@ -4,16 +4,13 @@ SELECT :'execution_time'                                                AS execu
        :'check_id'                                                      AS check_id,
        'Ensure that the expiration date is set on all keys (Automated)' AS title,
        akv.subscription_id                                              AS subscription_id,
-       akv.id                                                           AS resource_id,
+       akvk.id                                                          AS resource_id,
        CASE
-           WHEN akvk.id IS NULL
-               OR (akvk.properties -> 'attributes'->>'enabled')::boolean IS DISTINCT FROM TRUE
-               OR (akvk.properties -> 'attributes'->>'exp') IS NULL
-               THEN 'fail'
+           WHEN (akvk.properties -> 'attributes'->>'enabled')::boolean = TRUE
+            AND (akvk.properties -> 'attributes'->>'exp') IS NULL
+           THEN 'fail'
            ELSE 'pass'
-           END                                                          AS status
+       END                                                              AS status
 FROM azure_keyvault_keyvault akv
-         LEFT JOIN
-     azure_keyvault_keyvault_keys akvk ON
-         akv._cq_id = akvk._cq_parent_id
-
+    JOIN azure_keyvault_keyvault_keys akvk
+      ON akv._cq_id = akvk._cq_parent_id
