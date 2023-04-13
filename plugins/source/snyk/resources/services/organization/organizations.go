@@ -4,15 +4,15 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 )
 
 func Organizations() *schema.Table {
 	return &schema.Table{
 		Name:        "snyk_organizations",
-		Description: `https://pkg.go.dev/github.com/pavel-snyk/snyk-sdk-go/snyk#Organization`,
+		Description: `https://snyk.docs.apiary.io/#reference/organizations/the-snyk-organization-for-a-request/list-all-the-organizations-a-user-belongs-to`,
 		Resolver:    fetchOrganizations,
 		Multiplex:   client.SingleOrganization,
 		Transform:   transformers.TransformWithStruct(&snyk.Organization{}, transformers.WithPrimaryKeys("ID")),
