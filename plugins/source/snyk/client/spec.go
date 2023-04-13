@@ -64,6 +64,11 @@ func (t TableOptions) Validate() error {
 	return nil
 }
 
+// SnykReportingIssuesOptions accepts these combinations:
+// - `from` + `to`
+// - `from` (default `to` is now)
+// - `period` (relative to now)
+// Other combinations should fail validation.
 type SnykReportingIssuesOptions struct {
 	From   string `json:"from"`   // e.g. 2020-01-01
 	To     string `json:"to"`     // e.g. 2020-01-01
