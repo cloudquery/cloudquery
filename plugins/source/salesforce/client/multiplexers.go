@@ -3,7 +3,7 @@ package client
 import (
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 var unsupportedObjects = map[string]bool{
