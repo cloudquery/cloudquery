@@ -1,4 +1,10 @@
 module.exports = async ({github, context, fs, files}) => {
+    console.log(files)
+    if (files.length >= 300) {
+        // This is a GitHub limitation https://github.com/cloudquery/cloudquery/issues/2688
+        throw new Error('Too many files changed. Skipping check. Please split your PR into multiple ones.')
+    }
+
     let now = new Date().getTime()
     const deadline = now + 60 * 1000 * 50
     const matchesWorkflow = (file, action) => {
