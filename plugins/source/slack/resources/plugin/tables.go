@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/slack/resources/services/files"
 	"github.com/cloudquery/cloudquery/plugins/source/slack/resources/services/teams"
 	"github.com/cloudquery/cloudquery/plugins/source/slack/resources/services/users"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func tables() []*schema.Table {
