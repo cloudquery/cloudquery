@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/transformers"
-	"github.com/google/go-github/v48/github"
+	"github.com/google/go-github/v49/github"
 )
 
 func Repositories() *schema.Table {
@@ -16,7 +16,7 @@ func Repositories() *schema.Table {
 		Multiplex: client.OrgRepositoryMultiplex,
 		Transform: client.TransformWithStruct(&github.Repository{}, transformers.WithPrimaryKeys("ID")),
 		Columns:   []schema.Column{client.OrgColumn},
-		Relations: []*schema.Table{alerts(), releases(), secrets()},
+		Relations: []*schema.Table{alerts(), releases(), secrets(), branches()},
 	}
 }
 

@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
-	"github.com/google/go-github/v48/github"
+	"github.com/google/go-github/v49/github"
 )
 
 func buildHooks(t *testing.T, ctrl *gomock.Controller) client.GithubServices {

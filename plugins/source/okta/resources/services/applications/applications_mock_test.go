@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/gorilla/mux"
 	"github.com/okta/okta-sdk-golang/v3/okta"
 )

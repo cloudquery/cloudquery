@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/launchdarkly/client"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/gorilla/mux"
 	ldapi "github.com/launchdarkly/api-client-go/v11"
 )
