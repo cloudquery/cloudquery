@@ -13,8 +13,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/worker_meta_data"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/worker_routes"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/zones"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 var (
