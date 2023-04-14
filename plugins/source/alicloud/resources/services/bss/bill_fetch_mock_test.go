@@ -6,7 +6,7 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/bssopenapi"
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client"
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/golang/mock/gomock"
 )
 
