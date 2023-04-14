@@ -6,8 +6,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/resources/services/domain"
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/resources/services/project"
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/resources/services/team"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 var (

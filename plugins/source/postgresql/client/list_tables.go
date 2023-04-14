@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 // this returns the following table in sorted manner:

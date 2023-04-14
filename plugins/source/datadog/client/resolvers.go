@@ -6,7 +6,7 @@ import (
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/thoas/go-funk"
 )
 

@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/oracle/oci-go-sdk/v65/common"
 	"github.com/oracle/oci-go-sdk/v65/networkfirewall"
 )
