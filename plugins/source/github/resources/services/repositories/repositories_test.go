@@ -10,7 +10,7 @@ import (
 	"github.com/google/go-github/v49/github"
 )
 
-func buildRepositiories(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
+func buildRepositories(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
 	mock := mocks.NewMockRepositoriesService(ctrl)
 
 	var release github.RepositoryRelease
@@ -29,6 +29,23 @@ func buildRepositiories(t *testing.T, ctrl *gomock.Controller) client.GithubServ
 	mock.EXPECT().ListReleaseAssets(gomock.Any(), "testorg", gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		[]*github.ReleaseAsset{&releaseAsset}, &github.Response{}, nil)
 
+	var branch github.Branch
+	if err := faker.FakeObject(&branch); err != nil {
+		t.Fatal(err)
+	}
+
+	mock.EXPECT().ListBranches(gomock.Any(), "testorg", gomock.Any(), gomock.Any()).Return(
+		[]*github.Branch{&branch}, &github.Response{}, nil)
+
+
+	var protection github.Protection
+	if err := faker.FakeObject(&protection); err != nil {
+		t.Fatal(err)
+	}
+
+	mock.EXPECT().GetBranchProtection(gomock.Any(), "testorg", gomock.Any(), gomock.Any()).Return(
+	&protection, &github.Response{}, nil)
+
 	dependabot := buildDependabot(t, ctrl)
 
 	return client.GithubServices{
@@ -38,5 +55,5 @@ func buildRepositiories(t *testing.T, ctrl *gomock.Controller) client.GithubServ
 }
 
 func TestRepos(t *testing.T) {
-	client.GithubMockTestHelper(t, Repositories(), buildRepositiories, client.TestOptions{})
+	client.GithubMockTestHelper(t, Repositories(), buildRepositories, client.TestOptions{})
 }
