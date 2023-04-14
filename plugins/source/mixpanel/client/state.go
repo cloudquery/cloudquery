@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/cloudquery/plugin-sdk/backend"
+	"github.com/cloudquery/plugin-sdk/v2/backend"
 )
 
 type BackendWrapper struct {
