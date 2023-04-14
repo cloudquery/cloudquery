@@ -37,14 +37,13 @@ func buildRepositories(t *testing.T, ctrl *gomock.Controller) client.GithubServi
 	mock.EXPECT().ListBranches(gomock.Any(), "testorg", gomock.Any(), gomock.Any()).Return(
 		[]*github.Branch{&branch}, &github.Response{}, nil)
 
-
 	var protection github.Protection
 	if err := faker.FakeObject(&protection); err != nil {
 		t.Fatal(err)
 	}
 
 	mock.EXPECT().GetBranchProtection(gomock.Any(), "testorg", gomock.Any(), gomock.Any()).Return(
-	&protection, &github.Response{}, nil)
+		&protection, &github.Response{}, nil)
 
 	dependabot := buildDependabot(t, ctrl)
 
