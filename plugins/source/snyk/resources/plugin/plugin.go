@@ -7,8 +7,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/services/organization"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/services/project"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/services/reporting"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 var Version = "Development"
@@ -23,6 +23,7 @@ func Snyk() *source.Plugin {
 			organization.Organizations(),
 			project.Projects(),
 			reporting.Issues(),
+			reporting.LatestIssues(),
 		},
 		client.Configure,
 	)

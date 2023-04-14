@@ -93,7 +93,7 @@ This is the (nested) spec used by the AWS source plugin.
 
   Regions to use.
 
-- `accounts` ([][account](#accounts)) (default: current account)
+- `accounts` ([][account](#account)) (default: current account)
 
   List of all accounts to fetch information from
 
@@ -130,7 +130,7 @@ This is the (nested) spec used by the AWS source plugin.
   The region that should be used for signing the request to the endpoint
 
 
-## accounts
+## account
 
 This is used to specify one or more accounts to extract information from. Note that it should be an array of objects, each with the following fields:
 
