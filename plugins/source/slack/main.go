@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/slack/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/serve"
+	"github.com/cloudquery/plugin-sdk/v2/serve"
 )
 
 const sentryDSN = "https://d6d0882d63ba412c8fa88f3d3722a9d9@o1396617.ingest.sentry.io/4504322445017088"
