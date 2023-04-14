@@ -28,5 +28,5 @@ jobs:
             }
 
             const fs = require("fs");
-            const script = require('.github/workflows/scripts/wait_for_required_workflows.js.js')
+            const script = require('./.github/workflows/scripts/wait_for_required_workflows.js.js')
             await script({github, context, fs, files})
