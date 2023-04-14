@@ -82,7 +82,7 @@ jobs:
           version: 'v2.0.22'
       - name: Configure AWS credentials
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::615713231484:role/cq-playground-aws-github-action
           aws-region: us-east-1
