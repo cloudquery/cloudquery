@@ -6,8 +6,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/resources/services/projects"
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/resources/services/settings"
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/resources/services/users"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 var (
