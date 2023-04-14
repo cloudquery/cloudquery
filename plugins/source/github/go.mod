@@ -5,7 +5,6 @@ go 1.19
 require (
 	github.com/cloudquery/plugin-sdk v1.45.0
 	github.com/golang/mock v1.6.0
-	github.com/google/go-github/v48 v48.2.0
 	github.com/rs/zerolog v1.29.0
 	github.com/thoas/go-funk v0.9.3 // indirect
 	golang.org/x/oauth2 v0.4.0
@@ -14,6 +13,7 @@ require (
 require (
 	github.com/beatlabs/github-auth v0.0.0-20220721134423-2b8d98e205d1
 	github.com/gofri/go-github-ratelimit v1.0.2
+	github.com/google/go-github/v49 v49.0.0
 )
 
 require (

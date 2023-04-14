@@ -9,7 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	github "github.com/google/go-github/v48/github"
+	github "github.com/google/go-github/v49/github"
 )
 
 // MockRepositoriesService is a mock of RepositoriesService interface.
@@ -51,6 +51,22 @@ func (mr *MockRepositoriesServiceMockRecorder) Get(arg0, arg1, arg2 interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockRepositoriesService)(nil).Get), arg0, arg1, arg2)
 }
 
+// GetBranchProtection mocks base method.
+func (m *MockRepositoriesService) GetBranchProtection(arg0 context.Context, arg1, arg2, arg3 string) (*github.Protection, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetBranchProtection", arg0, arg1, arg2, arg3)
+	ret0, _ := ret[0].(*github.Protection)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// GetBranchProtection indicates an expected call of GetBranchProtection.
+func (mr *MockRepositoriesServiceMockRecorder) GetBranchProtection(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBranchProtection", reflect.TypeOf((*MockRepositoriesService)(nil).GetBranchProtection), arg0, arg1, arg2, arg3)
+}
+
 // GetContents mocks base method.
 func (m *MockRepositoriesService) GetContents(arg0 context.Context, arg1, arg2, arg3 string, arg4 *github.RepositoryContentGetOptions) (*github.RepositoryContent, []*github.RepositoryContent, *github.Response, error) {
 	m.ctrl.T.Helper()
@@ -66,6 +82,22 @@ func (m *MockRepositoriesService) GetContents(arg0 context.Context, arg1, arg2, 
 func (mr *MockRepositoriesServiceMockRecorder) GetContents(arg0, arg1, arg2, arg3, arg4 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContents", reflect.TypeOf((*MockRepositoriesService)(nil).GetContents), arg0, arg1, arg2, arg3, arg4)
+}
+
+// ListBranches mocks base method.
+func (m *MockRepositoriesService) ListBranches(arg0 context.Context, arg1, arg2 string, arg3 *github.BranchListOptions) ([]*github.Branch, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListBranches", arg0, arg1, arg2, arg3)
+	ret0, _ := ret[0].([]*github.Branch)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListBranches indicates an expected call of ListBranches.
+func (mr *MockRepositoriesServiceMockRecorder) ListBranches(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListBranches", reflect.TypeOf((*MockRepositoriesService)(nil).ListBranches), arg0, arg1, arg2, arg3)
 }
 
 // ListByOrg mocks base method.
