@@ -21,12 +21,6 @@ jobs:
         with:
           script: |
             const files = process.env.FILES.split(' ')
-            console.log(files)
-            if (files.length >= 300) {
-              // This is a GitHub limitation https://github.com/cloudquery/cloudquery/issues/2688
-              throw new Error('Too many files changed. Skipping check. Please split your PR into multiple ones.')
-            }
-
             const fs = require("fs");
             const script = require('.github/workflows/scripts/wait_for_required_workflows.js')
             await script({github, context, fs, files})
