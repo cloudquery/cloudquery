@@ -9,11 +9,14 @@ import (
 	"testing"
 	"time"
 
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v12/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/source/mysql/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/cloudquery/plugin-sdk/testdata"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/plugin-sdk/v2/testdata"
 	"github.com/go-sql-driver/mysql"
+	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
@@ -80,7 +83,7 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 	return err
 }
 
-func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, data schema.CQTypes) error {
+func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, record arrow.Record) error {
 	sb := strings.Builder{}
 	sb.WriteString("INSERT INTO " + client.Identifier(table.Name))
 	sb.WriteString(" (")
@@ -93,6 +96,10 @@ func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, data sche
 	sb.WriteString(") VALUES (")
 	sb.WriteString(strings.TrimSuffix(strings.Repeat("?,", len(table.Columns)), ","))
 	sb.WriteString(")")
+	data, err := (&client.Transformer{}).RecordToCQTypes(table, record)
+	if err != nil {
+		return err
+	}
 	dbData := schema.TransformWithTransformer(&client.Transformer{}, data)
 	if _, err := db.ExecContext(ctx, sb.String(), dbData...); err != nil {
 		return err
@@ -130,8 +137,13 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, testTable); err != nil {
 		t.Fatal(err)
 	}
-	data := testdata.GenTestData(testTable)
-	if err := insertTable(ctx, db, testTable, data); err != nil {
+	data := testdata.GenTestData(memory.DefaultAllocator, schema.CQSchemaToArrow(testTable), testdata.GenTestDataOptions{
+		SourceName: "mysql",
+		SyncTime:   time.Now(),
+		MaxRows:    1,
+		StableUUID: uuid.Nil,
+	})
+	if err := insertTable(ctx, db, testTable, data[0]); err != nil {
 		t.Fatal(err)
 	}
 
@@ -142,8 +154,13 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, otherTable); err != nil {
 		t.Fatal(err)
 	}
-	otherData := testdata.GenTestData(otherTable)
-	if err := insertTable(ctx, db, otherTable, otherData); err != nil {
+	otherData := testdata.GenTestData(memory.DefaultAllocator, schema.CQSchemaToArrow(otherTable), testdata.GenTestDataOptions{
+		SourceName: "mysql",
+		SyncTime:   time.Now(),
+		MaxRows:    1,
+		StableUUID: uuid.Nil,
+	})
+	if err := insertTable(ctx, db, otherTable, otherData[0]); err != nil {
 		t.Fatal(err)
 	}
 
@@ -175,8 +192,10 @@ func TestPlugin(t *testing.T) {
 	for i, v := range gotData {
 		actualStrings[i] = v.String()
 	}
-	expectedStrings := make([]string, len(data))
-	for i, v := range data {
+	expectedStrings := make([]string, len(data[0].Columns()))
+	cqData, err := (&client.Transformer{}).RecordToCQTypes(testTable, data[0])
+	require.NoError(t, err)
+	for i, v := range cqData {
 		expectedStrings[i] = v.String()
 	}
 	require.Equal(t, expectedStrings, actualStrings)
