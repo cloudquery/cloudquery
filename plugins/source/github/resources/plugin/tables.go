@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/repositories"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/teams"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/traffic"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func Tables() []*schema.Table {
