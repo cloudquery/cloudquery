@@ -9,5 +9,5 @@ SELECT :'execution_time'                           AS execution_time,
            WHEN (properties -> 'encryptionSettingsCollection' ->> 'enabled')::boolean IS DISTINCT FROM TRUE
            THEN 'fail'
            ELSE 'pass'
-       END
+       END                                         AS status
 FROM azure_compute_disks;
