@@ -20,7 +20,5 @@ jobs:
           FILES: ${{ steps.changed-files.outputs.all }}
         with:
           script: |
-            const files = process.env.FILES.split(' ')
-            const fs = require("fs");
             const script = require('.github/workflows/scripts/wait_for_required_workflows.js')
-            await script({github, context, fs, files})
+            await script({github, context})
