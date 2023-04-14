@@ -5,7 +5,7 @@ import (
 
 	"github.com/PagerDuty/go-pagerduty"
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/client"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 )
 
 func buildMockHttpClient() *client.MockHttpClient {
