@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/client"
 	"github.com/cloudquery/cloudquery/plugins/source/gandi/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/go-gandi/go-gandi/livedns"
 	"github.com/golang/mock/gomock"
 )
