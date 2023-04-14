@@ -7,8 +7,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/resources/services/order"
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/resources/services/price_rule"
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/resources/services/product"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 var (

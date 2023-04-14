@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
