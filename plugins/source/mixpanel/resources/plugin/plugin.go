@@ -7,8 +7,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/resources/services/engage"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/resources/services/export"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/resources/services/funnels"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 var (
