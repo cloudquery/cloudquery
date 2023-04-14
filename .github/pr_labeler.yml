@@ -38,6 +38,8 @@ file:
   - plugins/destination/file/**/*
 firehose:
   - plugins/destination/firehose/**/*
+firestore:
+  - plugins/source/firestore/**/*
 gandi:
   - plugins/source/gandi/**/*
 gcp:

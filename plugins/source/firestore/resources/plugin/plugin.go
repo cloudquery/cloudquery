@@ -5,7 +5,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 )
 
-var version = "v1"
+var version = "development"
 
 func Plugin() *source.Plugin {
 	return source.NewPlugin(
