@@ -5,7 +5,7 @@ import (
 
 	compute "cloud.google.com/go/compute/apiv1"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	pb "cloud.google.com/go/compute/apiv1/computepb"

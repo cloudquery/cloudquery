@@ -1,7 +1,7 @@
 package aiplatform
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"google.golang.org/genproto/googleapis/cloud/location"
 )
 
