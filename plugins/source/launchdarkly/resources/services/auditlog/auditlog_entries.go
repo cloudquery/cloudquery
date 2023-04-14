@@ -6,8 +6,8 @@ import (
 	"strconv"
 
 	"github.com/cloudquery/cloudquery/plugins/source/launchdarkly/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	ldapi "github.com/launchdarkly/api-client-go/v11"
 )
 
