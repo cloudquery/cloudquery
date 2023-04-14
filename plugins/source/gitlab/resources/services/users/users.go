@@ -2,7 +2,7 @@ package users
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/xanzy/go-gitlab"
 )
 
