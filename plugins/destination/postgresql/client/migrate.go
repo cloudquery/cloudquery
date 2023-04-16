@@ -156,7 +156,7 @@ func (c *Client) normalizeTable(table *arrow.Schema, pgTable *arrow.Schema) *arr
 		}
 		if c.enabledPks() && schema.IsPk(f) {
 			metadata[schema.MetadataPrimaryKey] = schema.MetadataTrue
-			f.Nullable = true
+			f.Nullable = false
 		}
 		f.Metadata = arrow.MetadataFrom(metadata)
 		f.Type = c.PgToSchemaType(c.SchemaTypeToPg(f.Type))
