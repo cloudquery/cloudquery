@@ -17,6 +17,15 @@ func (c *Client) SchemaTypeToPg(t arrow.DataType) string {
 	}
 }
 
+func (c *Client) PgToSchemaType(t string) arrow.DataType {
+	switch c.pgType {
+	case pgTypeCockroachDB:
+		return c.CockroachToSchemaType(t)
+	default:
+		return c.Pg10ToSchemaType(t)
+	}
+}
+
 func (c *Client) SchemaTypeToPg10(t arrow.DataType) string {
 	switch v := t.(type) {
 	case *arrow.ListType:
@@ -58,14 +67,7 @@ func (c *Client) SchemaTypeToPg10(t arrow.DataType) string {
 	}
 }
 
-func (c *Client) PgToSchemaType(t string) arrow.DataType {
-	switch c.pgType {
-	case pgTypeCockroachDB:
-		return c.CockroachToSchemaType(t)
-	default:
-		return c.Pg10ToSchemaType(t)
-	}
-}
+
 
 func (c *Client) Pg10ToSchemaType(t string) arrow.DataType {
 	if strings.HasPrefix(t, "timestamp") {
