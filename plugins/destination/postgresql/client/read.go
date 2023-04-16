@@ -18,16 +18,7 @@ import (
 )
 
 const (
-	readSQL     = "SELECT %s FROM %s WHERE _cq_source_name = $1 order by _cq_sync_time asc"
-	readSQLJSON = `
-	SELECT row_to_json(t)
-FROM (
-  SELECT *
-  FROM %s
-  WHERE _cq_source_name = $1
-  ORDER BY _cq_sync_time ASC
-) t;
-	`
+	readSQL = "SELECT %s FROM %s WHERE _cq_source_name = $1 order by _cq_sync_time asc"
 )
 
 func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
