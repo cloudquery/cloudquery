@@ -147,29 +147,7 @@ func (c *Client) listPgTables(ctx context.Context, pluginTables schema.Schemas) 
 	return tables, nil
 }
 
-// func (c *Client) normalizeTableCockroach(table *arrow.Schema) *arrow.Schema {
-// 	for i := range table.Fields() {
-// 		if !c.enabledPks() {
-// 			table.Columns[i].CreationOptions.PrimaryKey = false
-// 		}
-// 		switch table.Columns[i].Type {
-// 		case schema.TypeCIDR:
-// 			table.Columns[i].Type = schema.TypeInet
-// 		case schema.TypeCIDRArray:
-// 			table.Columns[i].Type = schema.TypeInetArray
-// 		case schema.TypeMacAddr:
-// 			table.Columns[i].Type = schema.TypeString
-// 		case schema.TypeMacAddrArray:
-// 			table.Columns[i].Type = schema.TypeStringArray
-// 		}
-// 		if table.Columns[i].CreationOptions.PrimaryKey {
-// 			table.Columns[i].CreationOptions.NotNull = true
-// 		}
-// 	}
-// 	return table
-// }
-
-func (c *Client) normalizeTablePg(table *arrow.Schema, pgTable *arrow.Schema) *arrow.Schema {
+func (c *Client) normalizeTable(table *arrow.Schema, pgTable *arrow.Schema) *arrow.Schema {
 	fields := make([]arrow.Field, len(table.Fields()))
 	for i, f := range table.Fields() {
 		metadata := make(map[string]string, 0)
@@ -181,6 +159,7 @@ func (c *Client) normalizeTablePg(table *arrow.Schema, pgTable *arrow.Schema) *a
 			f.Nullable = true
 		}
 		f.Metadata = arrow.MetadataFrom(metadata)
+		f.Type = c.PgToSchemaType(c.SchemaTypeToPg(f.Type))
 		fields[i] = f
 	}
 	mdMap := make(map[string]string)
@@ -193,17 +172,6 @@ func (c *Client) normalizeTablePg(table *arrow.Schema, pgTable *arrow.Schema) *a
 	mdMap[schema.MetadataTableName] = schema.TableName(table)
 	md := arrow.MetadataFrom(mdMap)
 	return arrow.NewSchema(fields, &md)
-}
-
-func (c *Client) normalizeTable(table *arrow.Schema, pgTable *arrow.Schema) *arrow.Schema {
-	switch c.pgType {
-	// case pgTypeCockroachDB:
-	// 	return c.normalizeTableCockroach(table)
-	case pgTypePostgreSQL:
-		return c.normalizeTablePg(table, pgTable)
-	default:
-		panic("unknown pg type")
-	}
 }
 
 func (c *Client) autoMigrateTable(ctx context.Context, table *arrow.Schema, changes []schema.FieldChange) error {

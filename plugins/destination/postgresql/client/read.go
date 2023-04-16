@@ -21,7 +21,7 @@ const (
 	readSQL = "SELECT %s FROM %s WHERE _cq_source_name = $1 order by _cq_sync_time asc"
 )
 
-func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
+func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 	if val == nil {
 		bldr.AppendNull()
 		return nil
@@ -84,12 +84,20 @@ func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 		}
 		b.Append(val.(net.IPNet))
 	case *types.MacBuilder:
-		b.Append(val.(net.HardwareAddr))
+		if c.pgType == pgTypePostgreSQL {
+			b.Append(val.(net.HardwareAddr))
+		} else {
+			hardwareAddr, err := net.ParseMAC(val.(string))
+			if err != nil {
+				return err
+			}
+			b.Append(hardwareAddr)
+		}
 	case array.ListLikeBuilder:
 		b.Append(true)
 		valBuilder := b.ValueBuilder()
 		for _, v := range val.([]any) {
-			if err := reverseTransform(f, valBuilder, v); err != nil {
+			if err := c.reverseTransform(f, valBuilder, v); err != nil {
 				return err
 			}
 		}
@@ -105,10 +113,10 @@ func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 	return nil
 }
 
-func reverseTransformer(sc *arrow.Schema, values []any) (arrow.Record, error) {
+func (c *Client) reverseTransformer(sc *arrow.Schema, values []any) (arrow.Record, error) {
 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 	for i, f := range sc.Fields() {
-		if err := reverseTransform(f, bldr.Field(i), values[i]); err != nil {
+		if err := c.reverseTransform(f, bldr.Field(i), values[i]); err != nil {
 			return nil, err
 		}
 	}
@@ -134,7 +142,7 @@ func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName strin
 		if err != nil {
 			return err
 		}
-		rec, err := reverseTransformer(table, values)
+		rec, err := c.reverseTransformer(table, values)
 		if err != nil {
 			return err
 		}
