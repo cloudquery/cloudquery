@@ -30,29 +30,6 @@ FROM (
 	`
 )
 
-/*
-SELECT json_agg(row_to_json(t))
-FROM (
-  SELECT *
-  FROM cq_test_write_overwrite_1681638382
-  WHERE _cq_source_name = 'testOverwriteSource024dad75-d110-4ccc-8bef-79384c8b76b3'
-  ORDER BY _cq_sync_time ASC
-) t;
-
-SELECT (SELECT row_to_json(t) FROM (SELECT * FROM cq_test_write_overwrite_1681638382) t)
-FROM cq_test_write_overwrite_1681638382
-
-SELECT row_to_json(t) FROM (SELECT * FROM cq_test_write_overwrite_1681638382) t;
-
-SELECT row_to_json(t)
-FROM (
-  SELECT *
-  FROM cq_test_write_overwrite_1681638382
-  WHERE _cq_source_name = 'testOverwriteSource024dad75-d110-4ccc-8bef-79384c8b76b3'
-  ORDER BY _cq_sync_time ASC
-) t;
-*/
-
 func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 	if val == nil {
 		bldr.AppendNull()
@@ -175,41 +152,3 @@ func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName strin
 	rows.Close()
 	return nil
 }
-
-// func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
-// 	// colNames := make([]string, 0, len(table.Fields()))
-// 	// for _, col := range table.Fields() {
-// 	// 	colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
-// 	// }
-// 	// cols := strings.Join(colNames, ",")
-// 	tableName := schema.TableName(table)
-// 	sql := fmt.Sprintf(readSQLJSON, pgx.Identifier{tableName}.Sanitize())
-// 	rows, err := c.conn.Query(ctx, sql, sourceName)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, table)
-// 	defer bldr.Release()
-// 	for rows.Next() {
-// 		var jsonRow string
-// 		if err := rows.Scan(&jsonRow); err != nil {
-// 			return err
-// 		}
-// 		// values, err := rows.Values()
-// 		// if err != nil {
-// 		// 	return err
-// 		// }
-// 		fmt.Println(jsonRow)
-// 		if err := bldr.UnmarshalJSON([]byte(jsonRow)); err != nil {
-// 			return err
-// 		}
-// 		// rec, err := reverseTransformer(table, values)
-// 		// if err != nil {
-// 		// 	return err
-// 		// }
-// 	}
-// 	rows.Close()
-// 	rec := bldr.NewRecord()
-// 	res <- rec
-// 	return nil
-// }
