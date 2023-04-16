@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - feat/ci/move-wait-to-js-file # to make tests run
 
 jobs:
   wait_for_required_workflows:
