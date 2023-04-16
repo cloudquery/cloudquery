@@ -7,8 +7,6 @@ module.exports = () => {
     }
 
     const fs = require("fs");
-    let now = new Date().getTime()
-    const deadline = now + 60 * 1000 * 50
     const matchesWorkflow = (file, action) => {
         if (!file.startsWith('.github/workflows/')) {
             return false
@@ -28,10 +26,6 @@ module.exports = () => {
     const allComponents = ["cli", "scaffold", ...sources, ...destinations]
     console.log(`All components: ${allComponents.join(", ")}`)
     let actions = allComponents.filter(action => matchesFile(action))
-    if (actions.length === 0) {
-        console.log("No actions to wait for")
-        return
-    }
 
     // Most modules should have a 'validate-release' job
     for (const action of actions) {

@@ -1,9 +1,16 @@
 module.exports = async ({github, context}) => {
     const actions = JSON.parse(process.env.ACTIONS)
+    if (actions.length === 0) {
+        console.log("No actions to wait for")
+        return
+    }
     console.log(`Required actions: [${actions.join(", ")}]`)
 
+    let now = new Date().getTime()
+    const deadline = now + 60 * 1000 * 50
     pendingActions = [...actions]
     console.log(`Waiting for ${pendingActions.join(", ")}`)
+
     while (now <= deadline) {
         const checkRuns = await github.paginate(github.rest.checks.listForRef, {
             owner: 'cloudquery',
