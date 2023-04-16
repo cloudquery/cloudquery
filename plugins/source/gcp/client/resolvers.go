@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/spf13/cast"
 	"github.com/thoas/go-funk"
 	"google.golang.org/protobuf/reflect/protoreflect"

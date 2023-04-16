@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"cloud.google.com/go/iam"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 	oldapi "google.golang.org/api/storage/v1"
