@@ -13,8 +13,8 @@ type Spec struct {
 	UseBase64          bool   `json:"use_base64"`
 	ServiceAccountJSON string `json:"service_account_json"`
 	MaxBatchSize       int    `json:"max_batch_size"`
-	OrderByField       string `json:"order_by_field"`
-	OrderByDirection   string `json:"order_by_direction"`
+	OrderBy            string `json:"order_by"`
+	OrderDirection     string `json:"order_direction"`
 }
 
 func (s *Spec) Validate() error {
@@ -25,9 +25,9 @@ func (s *Spec) Validate() error {
 		}
 		s.ServiceAccountJSON = string(data)
 	}
-	s.OrderByDirection = strings.ToLower(s.OrderByDirection)
-	if s.OrderByDirection != "" && s.OrderByDirection != "asc" && s.OrderByDirection != "desc" {
-		return fmt.Errorf("invalid order_by_direction %s", s.OrderByDirection)
+	s.OrderDirection = strings.ToLower(s.OrderDirection)
+	if s.OrderDirection != "" && s.OrderDirection != "asc" && s.OrderDirection != "desc" {
+		return fmt.Errorf("invalid order_by_direction %s", s.OrderDirection)
 	}
 	if s.MaxBatchSize < 0 {
 		return fmt.Errorf("max_batch_size must be greater than 0")

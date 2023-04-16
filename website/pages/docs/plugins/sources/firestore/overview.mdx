@@ -46,13 +46,27 @@ spec:
 
 This is the (nested) spec used by Firestore Source Plugin
 
-- `project_id` ([]string) (default: auto detect. Will detect the project id from the credentials)
+- `project_id` ([]string, optional) (default: auto detect. Will detect the project id from the credentials)
 
   Specify project id to use when syncing Firestore resources. If not specified, the project id will be auto detected from the credentials. See more about auto detection [here](https://cloud.google.com/go/docs/reference/cloud.google.com/go/firestore/latest#cloud_google_com_go_firestore_DetectProjectID)
 
-- `service_account_json` (string) (default: empty).
+- `service_account_json` (string, optional) (default: empty).
 
   Firestore service account JSON content. Using service accounts is not recommended, but if it is used it is better to use [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution).
 
-- `use_base64` (bool) (default: false).
+- `use_base64` (bool, optional) (default: false).
   If true, the service account JSON content will treated as base64 encoded, and will be decoded before being used.
+
+- `max_batch_size` (int, optional) (default: 50000)
+
+  Maximum batch size for each request when reading Firestore data. You might need to be configure it depending on row data size and system resources.
+
+- `order_by` (string, optional) (default: empty)
+
+  The field(s) to order the results by. If not specified, the results will be ordered by document id.
+  This requires you to add an index on the field(s), which can only be done on the Firebase UI right now. See more [here](https://pkg.go.dev/cloud.google.com/go/firestore#Query.OrderBy)
+
+- `order_direction` (string, optional) (default: empty)
+
+  The direction to order the results by. Only used when `order_by` is specified.
+  Accepts `asc` or `desc`, and if not specified the results will be ordered in ascending order.
