@@ -1,4 +1,7 @@
 module.exports = async ({github, context}) => {
+    const cwd = process.cwd()
+    console.log(`CWD is: "${cwd}"`)
+
     const files = process.env.FILES.split(' ')
     console.log(files)
     if (files.length >= 300) {
