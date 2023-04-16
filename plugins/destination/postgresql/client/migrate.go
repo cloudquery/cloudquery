@@ -3,10 +3,12 @@ package client
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/jackc/pgx/v5"
 )
 
@@ -92,8 +94,10 @@ ORDER BY
 `
 )
 
-func (c *Client) listPgTables(ctx context.Context, pluginTables schema.Tables) (schema.Tables, error) {
-	var tables schema.Tables
+func (c *Client) listPgTables(ctx context.Context, pluginTables schema.Schemas) (schema.Schemas, error) {
+	var tables schema.Schemas
+	var fields []arrow.Field
+	tableMetaData := make(map[string]string)
 	sql := selectAllTables
 	if c.pgType == pgTypeCockroachDB {
 		sql = selectAllTablesCockroach
@@ -111,89 +115,103 @@ func (c *Client) listPgTables(ctx context.Context, pluginTables schema.Tables) (
 			return nil, err
 		}
 		// We don't want to migrate tables that are not a part of the spec, or non CloudQuery tables
-		if pluginTables.Get(tableName) == nil {
+		if pluginTables.SchemaByName(tableName) == nil {
 			continue
 		}
 		if ordinalPosition == 1 {
-			tables = append(tables, &schema.Table{
-				Name:    tableName,
-				Columns: make([]schema.Column, 0),
-			})
+			if fields != nil {
+				md := arrow.MetadataFrom(tableMetaData)
+				tables = append(tables, arrow.NewSchema(fields, &md))
+				fields = nil
+				tableMetaData = make(map[string]string, 0)
+			}
+			tableMetaData[schema.MetadataTableName] = tableName
 		}
-		table := tables[len(tables)-1]
 		if pkName != "" {
-			table.PkConstraintName = pkName
+			tableMetaData[schema.MetadataConstraintName] = pkName
 		}
 		schemaType := c.PgToSchemaType(columnType)
-		table.Columns = append(table.Columns, schema.Column{
-			Name: columnName,
-			CreationOptions: schema.ColumnCreationOptions{
-				PrimaryKey: isPrimaryKey,
-				NotNull:    notNull,
-			},
-			Type: schemaType,
+		fields = append(fields, arrow.Field{
+			Name:     columnName,
+			Type:     schemaType,
+			Nullable: !notNull,
+			Metadata: arrow.MetadataFrom(map[string]string{
+				schema.MetadataPrimaryKey: strconv.FormatBool(isPrimaryKey),
+			}),
 		})
+	}
+	if fields != nil {
+		md := arrow.MetadataFrom(tableMetaData)
+		tables = append(tables, arrow.NewSchema(fields, &md))
 	}
 	return tables, nil
 }
 
-func (c *Client) normalizeTableCockroach(table *schema.Table) *schema.Table {
-	for i := range table.Columns {
-		if !c.enabledPks() {
-			table.Columns[i].CreationOptions.PrimaryKey = false
+// func (c *Client) normalizeTableCockroach(table *arrow.Schema) *arrow.Schema {
+// 	for i := range table.Fields() {
+// 		if !c.enabledPks() {
+// 			table.Columns[i].CreationOptions.PrimaryKey = false
+// 		}
+// 		switch table.Columns[i].Type {
+// 		case schema.TypeCIDR:
+// 			table.Columns[i].Type = schema.TypeInet
+// 		case schema.TypeCIDRArray:
+// 			table.Columns[i].Type = schema.TypeInetArray
+// 		case schema.TypeMacAddr:
+// 			table.Columns[i].Type = schema.TypeString
+// 		case schema.TypeMacAddrArray:
+// 			table.Columns[i].Type = schema.TypeStringArray
+// 		}
+// 		if table.Columns[i].CreationOptions.PrimaryKey {
+// 			table.Columns[i].CreationOptions.NotNull = true
+// 		}
+// 	}
+// 	return table
+// }
+
+func (c *Client) normalizeTablePg(table *arrow.Schema, pgTable *arrow.Schema) *arrow.Schema {
+	fields := make([]arrow.Field, len(table.Fields()))
+	for i, f := range table.Fields() {
+		metadata := make(map[string]string, 0)
+		if !schema.IsPk(f) {
+			metadata[schema.MetadataPrimaryKey] = schema.MetadataFalse
 		}
-		switch table.Columns[i].Type {
-		case schema.TypeCIDR:
-			table.Columns[i].Type = schema.TypeInet
-		case schema.TypeCIDRArray:
-			table.Columns[i].Type = schema.TypeInetArray
-		case schema.TypeMacAddr:
-			table.Columns[i].Type = schema.TypeString
-		case schema.TypeMacAddrArray:
-			table.Columns[i].Type = schema.TypeStringArray
+		if c.enabledPks() && schema.IsPk(f) {
+			metadata[schema.MetadataPrimaryKey] = schema.MetadataTrue
+			f.Nullable = true
 		}
-		if table.Columns[i].CreationOptions.PrimaryKey {
-			table.Columns[i].CreationOptions.NotNull = true
+		f.Metadata = arrow.MetadataFrom(metadata)
+		fields[i] = f
+	}
+	mdMap := make(map[string]string)
+	if pgTable != nil {
+		mdMap[schema.MetadataTableName] = schema.TableName(pgTable)
+		if constraintName, ok := pgTable.Metadata().GetValue(schema.MetadataConstraintName); ok {
+			mdMap[schema.MetadataConstraintName] = constraintName
 		}
 	}
-	return table
+	mdMap[schema.MetadataTableName] = schema.TableName(table)
+	md := arrow.MetadataFrom(mdMap)
+	return arrow.NewSchema(fields, &md)
 }
 
-func (c *Client) normalizeTablePg(table *schema.Table) *schema.Table {
-	for i := range table.Columns {
-		if !c.enabledPks() {
-			table.Columns[i].CreationOptions.PrimaryKey = false
-		}
-		if table.Columns[i].CreationOptions.PrimaryKey {
-			table.Columns[i].CreationOptions.NotNull = true
-		}
-		// this is for backward compatibility as I believe this is as of right now defined on the source
-		if c.enabledPks() && len(table.PrimaryKeys()) == 0 {
-			cqIdColumn := table.Columns.Get(schema.CqIDColumn.Name)
-			if cqIdColumn != nil {
-				cqIdColumn.CreationOptions.PrimaryKey = true
-			}
-		}
-	}
-	return table
-}
-
-func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
+func (c *Client) normalizeTable(table *arrow.Schema, pgTable *arrow.Schema) *arrow.Schema {
 	switch c.pgType {
-	case pgTypeCockroachDB:
-		return c.normalizeTableCockroach(table)
+	// case pgTypeCockroachDB:
+	// 	return c.normalizeTableCockroach(table)
 	case pgTypePostgreSQL:
-		return c.normalizeTablePg(table)
+		return c.normalizeTablePg(table, pgTable)
 	default:
 		panic("unknown pg type")
 	}
 }
 
-func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
+func (c *Client) autoMigrateTable(ctx context.Context, table *arrow.Schema, changes []schema.FieldChange) error {
+	tableName := schema.TableName(table)
 	for _, change := range changes {
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
-			if err := c.addColumn(ctx, table.Name, change.Current); err != nil {
+			if err := c.addColumn(ctx, tableName, change.Current); err != nil {
 				return err
 			}
 		case schema.TableColumnChangeTypeRemove:
@@ -205,15 +223,15 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 	return nil
 }
 
-func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
+func (*Client) canAutoMigrate(changes []schema.FieldChange) bool {
 	for _, change := range changes {
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
-			if change.Current.CreationOptions.PrimaryKey || change.Current.CreationOptions.NotNull {
+			if schema.IsPk(change.Current) || !change.Current.Nullable {
 				return false
 			}
 		case schema.TableColumnChangeTypeRemove:
-			if change.Previous.CreationOptions.PrimaryKey || change.Previous.CreationOptions.NotNull {
+			if schema.IsPk(change.Previous) || !change.Previous.Nullable {
 				return false
 			}
 		case schema.TableColumnChangeTypeUpdate:
@@ -226,25 +244,26 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 }
 
 // normalize the requested schema to be compatible with what Postgres supports
-func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
-	flattenedTables := tables.FlattenTables()
-	for _, table := range flattenedTables {
-		c.normalizeTable(table)
+func (c *Client) normalizeTables(tables schema.Schemas, pgTables schema.Schemas) schema.Schemas {
+	var result schema.Schemas
+	for _, table := range tables {
+		pgTabe := pgTables.SchemaByName(schema.TableName(table))
+		result = append(result, c.normalizeTable(table, pgTabe))
 	}
-	return flattenedTables
+	return result
 }
 
-func (c *Client) nonAutoMigrableTables(tables schema.Tables, pgTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
+func (c *Client) nonAutoMigrableTables(tables schema.Schemas, pgTables schema.Schemas) ([]string, [][]schema.FieldChange) {
 	var result []string
-	var tableChanges [][]schema.TableColumnChange
+	var tableChanges [][]schema.FieldChange
 	for _, t := range tables {
-		pgTable := pgTables.Get(t.Name)
+		pgTable := pgTables.SchemaByName(schema.TableName(t))
 		if pgTable == nil {
 			continue
 		}
-		changes := t.GetChanges(pgTable)
+		changes := schema.GetSchemaChanges(t, pgTable)
 		if !c.canAutoMigrate(changes) {
-			result = append(result, t.Name)
+			result = append(result, schema.TableName(t))
 			tableChanges = append(tableChanges, changes)
 		}
 	}
@@ -252,12 +271,12 @@ func (c *Client) nonAutoMigrableTables(tables schema.Tables, pgTables schema.Tab
 }
 
 // This is the responsibility of the CLI of the client to lock before running migration
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {
 	pgTables, err := c.listPgTables(ctx, tables)
 	if err != nil {
 		return fmt.Errorf("failed listing postgres tables: %w", err)
 	}
-	tables = c.normalizeTables(tables)
+	tables = c.normalizeTables(tables, pgTables)
 	if c.spec.MigrateMode != specs.MigrateModeForced {
 		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(tables, pgTables)
 		if len(nonAutoMigrableTables) > 0 {
@@ -266,27 +285,28 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	}
 
 	for _, table := range tables {
-		c.logger.Info().Str("table", table.Name).Msg("Migrating table")
-		if len(table.Columns) == 0 {
-			c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
+		tableName := schema.TableName(table)
+		c.logger.Info().Str("table", tableName).Msg("Migrating table")
+		if len(table.Fields()) == 0 {
+			c.logger.Info().Str("table", tableName).Msg("Table with no columns, skipping")
 			continue
 		}
-		pgTable := pgTables.Get(table.Name)
+		pgTable := pgTables.SchemaByName(tableName)
 		if pgTable == nil {
-			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
+			c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
 			if err := c.createTableIfNotExist(ctx, table); err != nil {
 				return err
 			}
 		} else {
-			changes := table.GetChanges(pgTable)
+			changes := schema.GetSchemaChanges(table, pgTable)
 			if c.canAutoMigrate(changes) {
-				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
+				c.logger.Info().Str("table", tableName).Msg("Table exists, auto-migrating")
 				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
 					return err
 				}
 			} else {
-				c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
-				if err := c.dropTable(ctx, table.Name); err != nil {
+				c.logger.Info().Str("table", tableName).Msg("Table exists, force migration required")
+				if err := c.dropTable(ctx, tableName); err != nil {
 					return err
 				}
 				if err := c.createTableIfNotExist(ctx, table); err != nil {
@@ -315,7 +335,7 @@ func (c *Client) dropTable(ctx context.Context, tableName string) error {
 	return nil
 }
 
-func (c *Client) addColumn(ctx context.Context, tableName string, column schema.Column) error {
+func (c *Client) addColumn(ctx context.Context, tableName string, column arrow.Field) error {
 	c.logger.Info().Str("table", tableName).Str("column", column.Name).Msg("Column doesn't exist, creating")
 	columnName := pgx.Identifier{column.Name}.Sanitize()
 	columnType := c.SchemaTypeToPg(column.Type)
@@ -326,34 +346,35 @@ func (c *Client) addColumn(ctx context.Context, tableName string, column schema.
 	return nil
 }
 
-func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table) error {
+func (c *Client) createTableIfNotExist(ctx context.Context, table *arrow.Schema) error {
 	var sb strings.Builder
-	tableName := pgx.Identifier{table.Name}.Sanitize()
+	tName := schema.TableName(table)
+	tableName := pgx.Identifier{tName}.Sanitize()
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
 	sb.WriteString(tableName)
 	sb.WriteString(" (")
-	totalColumns := len(table.Columns)
+	totalColumns := len(table.Fields())
 
 	primaryKeys := []string{}
-	for i, col := range table.Columns {
+	for i, col := range table.Fields() {
 		pgType := c.SchemaTypeToPg(col.Type)
 		if pgType == "" {
-			c.logger.Warn().Str("table", table.Name).Str("column", col.Name).Msg("Column type is not supported, skipping")
+			c.logger.Warn().Str("table", tName).Str("column", col.Name).Msg("Column type is not supported, skipping")
 			continue
 		}
 		columnName := pgx.Identifier{col.Name}.Sanitize()
 		fieldDef := columnName + " " + pgType
-		if col.CreationOptions.Unique {
+		if schema.IsUnique(col) {
 			fieldDef += " UNIQUE"
 		}
-		if col.CreationOptions.NotNull {
+		if !col.Nullable {
 			fieldDef += " NOT NULL"
 		}
 		sb.WriteString(fieldDef)
 		if i != totalColumns-1 {
 			sb.WriteString(",")
 		}
-		if c.enabledPks() && col.CreationOptions.PrimaryKey {
+		if c.enabledPks() && schema.IsPk(col) {
 			primaryKeys = append(primaryKeys, col.Name)
 		}
 	}
@@ -361,7 +382,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	if len(primaryKeys) > 0 {
 		// add composite PK constraint on primary key columns
 		sb.WriteString(", CONSTRAINT ")
-		sb.WriteString(table.Name)
+		sb.WriteString(tName)
 		sb.WriteString("_cqpk PRIMARY KEY (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
@@ -369,7 +390,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	sb.WriteString(")")
 	_, err := c.conn.Exec(ctx, sb.String())
 	if err != nil {
-		return fmt.Errorf("failed to create table %s: %w", table.Name, err)
+		return fmt.Errorf("failed to create table %s: %w", tableName, err)
 	}
 	return nil
 }

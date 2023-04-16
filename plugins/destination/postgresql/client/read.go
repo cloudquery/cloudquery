@@ -3,23 +3,160 @@ package client
 import (
 	"context"
 	"fmt"
+	"net"
+	"net/netip"
 	"strings"
+	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v12/arrow/array"
+	"github.com/apache/arrow/go/v12/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 )
 
 const (
-	readSQL = "SELECT %s FROM %s WHERE _cq_source_name = $1 order by _cq_sync_time asc"
+	readSQL     = "SELECT %s FROM %s WHERE _cq_source_name = $1 order by _cq_sync_time asc"
+	readSQLJSON = `
+	SELECT row_to_json(t)
+FROM (
+  SELECT *
+  FROM %s
+  WHERE _cq_source_name = $1
+  ORDER BY _cq_sync_time ASC
+) t;
+	`
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
-	colNames := make([]string, 0, len(table.Columns))
-	for _, col := range table.Columns {
+/*
+SELECT json_agg(row_to_json(t))
+FROM (
+  SELECT *
+  FROM cq_test_write_overwrite_1681638382
+  WHERE _cq_source_name = 'testOverwriteSource024dad75-d110-4ccc-8bef-79384c8b76b3'
+  ORDER BY _cq_sync_time ASC
+) t;
+
+SELECT (SELECT row_to_json(t) FROM (SELECT * FROM cq_test_write_overwrite_1681638382) t)
+FROM cq_test_write_overwrite_1681638382
+
+SELECT row_to_json(t) FROM (SELECT * FROM cq_test_write_overwrite_1681638382) t;
+
+SELECT row_to_json(t)
+FROM (
+  SELECT *
+  FROM cq_test_write_overwrite_1681638382
+  WHERE _cq_source_name = 'testOverwriteSource024dad75-d110-4ccc-8bef-79384c8b76b3'
+  ORDER BY _cq_sync_time ASC
+) t;
+*/
+
+func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
+	if val == nil {
+		bldr.AppendNull()
+		return nil
+	}
+	switch b := bldr.(type) {
+	case *array.BooleanBuilder:
+		b.Append(val.(bool))
+	case *array.Int8Builder:
+		b.Append(val.(int8))
+	case *array.Int16Builder:
+		b.Append(val.(int16))
+	case *array.Int32Builder:
+		b.Append(val.(int32))
+	case *array.Int64Builder:
+		b.Append(val.(int64))
+	case *array.Uint8Builder:
+		b.Append(val.(uint8))
+	case *array.Uint16Builder:
+		b.Append(val.(uint16))
+	case *array.Uint32Builder:
+		b.Append(val.(uint32))
+	case *array.Uint64Builder:
+		b.Append(val.(uint64))
+	case *array.Float32Builder:
+		b.Append(val.(float32))
+	case *array.Float64Builder:
+		b.Append(val.(float64))
+	case *array.StringBuilder:
+		va, ok := val.(string)
+		if !ok {
+			panic(fmt.Sprintf("unsupported type %T with builder %T and column %s", val, bldr, f.Name))
+		}
+		b.Append(va)
+	case *array.LargeStringBuilder:
+		b.Append(val.(string))
+	case *array.BinaryBuilder:
+		b.Append(val.([]byte))
+	case *array.TimestampBuilder:
+		b.Append(arrow.Timestamp(val.(time.Time).UnixMicro()))
+	case *types.UUIDBuilder:
+		va, ok := val.([16]byte)
+		if !ok {
+			panic(fmt.Sprintf("unsupported type %T with builder %T", val, bldr))
+		}
+		u, err := uuid.FromBytes(va[:])
+		if err != nil {
+			return err
+		}
+		b.Append(u)
+	case *types.JSONBuilder:
+		b.Append(val)
+	case *types.InetBuilder:
+		if v, ok := val.(netip.Prefix); ok {
+			_, ipnet, err := net.ParseCIDR(v.String())
+			if err != nil {
+				return err
+			}
+			b.Append(*ipnet)
+			return nil
+		}
+		b.Append(val.(net.IPNet))
+	case *types.MacBuilder:
+		b.Append(val.(net.HardwareAddr))
+	case array.ListLikeBuilder:
+		b.Append(true)
+		valBuilder := b.ValueBuilder()
+		for _, v := range val.([]any) {
+			if err := reverseTransform(f, valBuilder, v); err != nil {
+				return err
+			}
+		}
+	default:
+		v, ok := val.(string)
+		if !ok {
+			panic(fmt.Sprintf("unsupported type %T with builder %T", val, bldr))
+		}
+		if err := bldr.AppendValueFromString(v); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func reverseTransformer(sc *arrow.Schema, values []any) (arrow.Record, error) {
+	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
+	for i, f := range sc.Fields() {
+		if err := reverseTransform(f, bldr.Field(i), values[i]); err != nil {
+			return nil, err
+		}
+	}
+	rec := bldr.NewRecord()
+	bldr.Release()
+	return rec, nil
+}
+
+func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
+	colNames := make([]string, 0, len(table.Fields()))
+	for _, col := range table.Fields() {
 		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
 	}
 	cols := strings.Join(colNames, ",")
-	sql := fmt.Sprintf(readSQL, cols, pgx.Identifier{table.Name}.Sanitize())
+	tableName := schema.TableName(table)
+	sql := fmt.Sprintf(readSQL, cols, pgx.Identifier{tableName}.Sanitize())
 	rows, err := c.conn.Query(ctx, sql, sourceName)
 	if err != nil {
 		return err
@@ -29,8 +166,50 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		if err != nil {
 			return err
 		}
-		res <- values
+		rec, err := reverseTransformer(table, values)
+		if err != nil {
+			return err
+		}
+		res <- rec
 	}
 	rows.Close()
 	return nil
 }
+
+// func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
+// 	// colNames := make([]string, 0, len(table.Fields()))
+// 	// for _, col := range table.Fields() {
+// 	// 	colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
+// 	// }
+// 	// cols := strings.Join(colNames, ",")
+// 	tableName := schema.TableName(table)
+// 	sql := fmt.Sprintf(readSQLJSON, pgx.Identifier{tableName}.Sanitize())
+// 	rows, err := c.conn.Query(ctx, sql, sourceName)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, table)
+// 	defer bldr.Release()
+// 	for rows.Next() {
+// 		var jsonRow string
+// 		if err := rows.Scan(&jsonRow); err != nil {
+// 			return err
+// 		}
+// 		// values, err := rows.Values()
+// 		// if err != nil {
+// 		// 	return err
+// 		// }
+// 		fmt.Println(jsonRow)
+// 		if err := bldr.UnmarshalJSON([]byte(jsonRow)); err != nil {
+// 			return err
+// 		}
+// 		// rec, err := reverseTransformer(table, values)
+// 		// if err != nil {
+// 		// 	return err
+// 		// }
+// 	}
+// 	rows.Close()
+// 	rec := bldr.NewRecord()
+// 	res <- rec
+// 	return nil
+// }

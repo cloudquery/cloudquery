@@ -1,12 +1,14 @@
 package client
 
 import (
+	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/plugin-sdk/v2/types"
 )
 
-func (c *Client) SchemaTypeToPg(t schema.ValueType) string {
+func (c *Client) SchemaTypeToPg(t arrow.DataType) string {
 	switch c.pgType {
 	case pgTypeCockroachDB:
 		return c.SchemaTypeToCockroach(t)
@@ -15,89 +17,87 @@ func (c *Client) SchemaTypeToPg(t schema.ValueType) string {
 	}
 }
 
-func (*Client) SchemaTypeToPg10(t schema.ValueType) string {
-	switch t {
-	case schema.TypeBool:
+func (c *Client) SchemaTypeToPg10(t arrow.DataType) string {
+	switch v := t.(type) {
+	case *arrow.ListType:
+		return c.SchemaTypeToPg10(v.Elem()) + "[]"
+	case *arrow.FixedSizeListType:
+		return c.SchemaTypeToPg10(v.Elem()) + fmt.Sprintf("[%d]", v.Len())
+	case *arrow.BooleanType:
 		return "boolean"
-	case schema.TypeInt:
+	case *arrow.Int8Type, *arrow.Uint8Type:
+		return "smallint"
+	case *arrow.Int16Type, *arrow.Uint16Type:
+		return "smallint"
+	case *arrow.Int32Type, *arrow.Uint32Type:
+		return "integer"
+	case *arrow.Int64Type, *arrow.Uint64Type:
 		return "bigint"
-	case schema.TypeFloat:
+	case *arrow.Float32Type:
+		return "real"
+	case *arrow.Float64Type:
 		return "double precision"
-	case schema.TypeUUID:
-		return "uuid"
-	case schema.TypeString:
+	case *arrow.StringType, *arrow.LargeStringType:
 		return "text"
-	case schema.TypeByteArray:
+	case *arrow.BinaryType, *arrow.LargeBinaryType:
 		return "bytea"
-	case schema.TypeStringArray:
-		return "text[]"
-	case schema.TypeTimestamp:
+	case *types.UUIDType:
+		return "uuid"
+	case *arrow.TimestampType:
 		return "timestamp without time zone"
-	case schema.TypeJSON:
+	case *types.JSONType:
 		return "jsonb"
-	case schema.TypeUUIDArray:
-		return "uuid[]"
-	case schema.TypeCIDR:
-		return "cidr"
-	case schema.TypeCIDRArray:
-		return "cidr[]"
-	case schema.TypeMacAddr:
+	case *arrow.StructType:
+		return "jsonb"
+	case *types.InetType:
+		return "inet"
+	case *types.MacType:
 		return "macaddr"
-	case schema.TypeMacAddrArray:
-		return "macaddr[]"
-	case schema.TypeInet:
-		return "inet"
-	case schema.TypeInetArray:
-		return "inet[]"
-	case schema.TypeIntArray:
-		return "bigint[]"
 	default:
-		panic("unknown type " + t.String())
+		return "text"
 	}
 }
 
-func (*Client) SchemaTypeToCockroach(t schema.ValueType) string {
-	switch t {
-	case schema.TypeBool:
+func (c *Client) SchemaTypeToCockroach(t arrow.DataType) string {
+	switch v := t.(type) {
+	case *arrow.ListType:
+		return c.SchemaTypeToCockroach(v.Elem()) + "[]"
+	case *arrow.FixedSizeListType:
+		return c.SchemaTypeToCockroach(v.Elem()) + fmt.Sprintf("[%d]", v.Len())
+	case *arrow.BooleanType:
 		return "boolean"
-	case schema.TypeInt:
+	case *arrow.Int8Type, *arrow.Uint8Type:
+		return "smallint"
+	case *arrow.Int16Type, *arrow.Uint16Type:
+		return "smallint"
+	case *arrow.Int32Type, *arrow.Uint32Type:
+		return "integer"
+	case *arrow.Int64Type, *arrow.Uint64Type:
 		return "bigint"
-	case schema.TypeFloat:
+	case *arrow.Float32Type:
+		return "real"
+	case *arrow.Float64Type:
 		return "double precision"
-	case schema.TypeUUID:
-		return "uuid"
-	case schema.TypeString:
+	case *arrow.StringType, *arrow.LargeStringType:
 		return "text"
-	case schema.TypeByteArray:
+	case *arrow.BinaryType, *arrow.LargeBinaryType:
 		return "bytea"
-	case schema.TypeStringArray:
-		return "text[]"
-	case schema.TypeTimestamp:
+	case *types.UUIDType:
+		return "uuid"
+	case *arrow.TimestampType:
 		return "timestamp without time zone"
-	case schema.TypeJSON:
+	case *types.JSONType:
 		return "jsonb"
-	case schema.TypeUUIDArray:
-		return "uuid[]"
-	case schema.TypeCIDR:
+	case *arrow.StructType:
+		return "jsonb"
+	case *types.InetType:
 		return "inet"
-	case schema.TypeCIDRArray:
-		return "inet[]"
-	case schema.TypeMacAddr:
-		return "text"
-	case schema.TypeMacAddrArray:
-		return "text[]"
-	case schema.TypeInet:
-		return "inet"
-	case schema.TypeInetArray:
-		return "inet[]"
-	case schema.TypeIntArray:
-		return "bigint[]"
 	default:
-		panic("unknown type " + t.String())
+		return "text"
 	}
 }
 
-func (c *Client) PgToSchemaType(t string) schema.ValueType {
+func (c *Client) PgToSchemaType(t string) arrow.DataType {
 	switch c.pgType {
 	case pgTypeCockroachDB:
 		return c.CockroachToSchemaType(t)
@@ -106,76 +106,73 @@ func (c *Client) PgToSchemaType(t string) schema.ValueType {
 	}
 }
 
-func (*Client) Pg10ToSchemaType(t string) schema.ValueType {
+func (c *Client) Pg10ToSchemaType(t string) arrow.DataType {
 	if strings.HasPrefix(t, "timestamp") {
-		return schema.TypeTimestamp
+		return arrow.FixedWidthTypes.Timestamp_us
+	}
+	if strings.HasSuffix(t, "[]") {
+		return arrow.ListOf(c.Pg10ToSchemaType(strings.TrimSuffix(t, "[]")))
 	}
 
 	switch t {
 	case "boolean":
-		return schema.TypeBool
-	case "bigint", "integer", "bigserial", "smallint", "smallserial", "serial":
-		return schema.TypeInt
-	case "double precision", "float", "real", "numeric":
-		return schema.TypeFloat
+		return arrow.FixedWidthTypes.Boolean
+	case "smallint":
+		return arrow.PrimitiveTypes.Int16
+	case "integer":
+		return arrow.PrimitiveTypes.Int32
+	case "bigint":
+		return arrow.PrimitiveTypes.Int64
+	case "real":
+		return arrow.PrimitiveTypes.Float32
+	case "double precision":
+		return arrow.PrimitiveTypes.Float64
 	case "uuid":
-		return schema.TypeUUID
+		return types.ExtensionTypes.UUID
 	case "bytea":
-		return schema.TypeByteArray
-	case "text[]":
-		return schema.TypeStringArray
+		return arrow.BinaryTypes.Binary
 	case "json", "jsonb":
-		return schema.TypeJSON
-	case "uuid[]":
-		return schema.TypeUUIDArray
+		return types.ExtensionTypes.JSON
 	case "cidr":
-		return schema.TypeCIDR
-	case "cidr[]":
-		return schema.TypeCIDRArray
+		return types.ExtensionTypes.Inet
 	case "macaddr", "macaddr8":
-		return schema.TypeMacAddr
-	case "macaddr[]", "macaddr8[]":
-		return schema.TypeMacAddrArray
+		return types.ExtensionTypes.Mac
 	case "inet":
-		return schema.TypeInet
-	case "inet[]":
-		return schema.TypeInetArray
-	case "bigint[]", "integer[]", "smallint[]", "bigserial[]", "smallserial[]", "serial[]":
-		return schema.TypeIntArray
+		return types.ExtensionTypes.Inet
 	default:
-		return schema.TypeString
+		return arrow.BinaryTypes.String
 	}
 }
 
-func (*Client) CockroachToSchemaType(t string) schema.ValueType {
+func (*Client) CockroachToSchemaType(t string) arrow.DataType {
 	if strings.HasPrefix(t, "timestamp") {
-		return schema.TypeTimestamp
+		return arrow.FixedWidthTypes.Timestamp_us
 	}
 
 	switch t {
 	case "boolean":
-		return schema.TypeBool
+		return arrow.FixedWidthTypes.Boolean
 	case "bigint", "int", "oid", "serial":
-		return schema.TypeInt
+		return arrow.PrimitiveTypes.Int64
 	case "decimal", "float":
-		return schema.TypeFloat
+		return arrow.PrimitiveTypes.Float64
 	case "uuid":
-		return schema.TypeUUID
+		return types.ExtensionTypes.UUID
 	case "bytea":
-		return schema.TypeByteArray
+		return arrow.BinaryTypes.Binary
 	case "text[]":
-		return schema.TypeStringArray
+		return arrow.ListOf(arrow.BinaryTypes.String)
 	case "jsonb":
-		return schema.TypeJSON
+		return types.ExtensionTypes.UUID
 	case "uuid[]":
-		return schema.TypeUUIDArray
+		return arrow.ListOf(types.ExtensionTypes.UUID)
 	case "inet":
-		return schema.TypeInet
+		return types.ExtensionTypes.Inet
 	case "inet[]":
-		return schema.TypeInetArray
+		return arrow.ListOf(types.ExtensionTypes.Inet)
 	case "bigint[]":
-		return schema.TypeIntArray
+		return arrow.ListOf(arrow.PrimitiveTypes.Int64)
 	default:
-		return schema.TypeString
+		return arrow.BinaryTypes.String
 	}
 }
