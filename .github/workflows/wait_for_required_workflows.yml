@@ -16,8 +16,19 @@ jobs:
         id: changed-files
         uses: Ana06/get-changed-files@v2.2.0
       - uses: actions/github-script@v6
+        name: Define required workflows
+        id: required-workflows
         env:
           FILES: ${{ steps.changed-files.outputs.all }}
+        with:
+          script: |
+            const script = require('.github/workflows/scripts/required_actions.js')
+            return script()
+      - uses: actions/github-script@v6
+        name: Wait for required workflows
+        id: wait
+        env:
+          ACTIONS: ${{steps.required-workflows.outputs.result}}
         with:
           script: |
             const script = require('.github/workflows/scripts/wait_for_required_workflows.js')
