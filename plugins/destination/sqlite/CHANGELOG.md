@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v1.3.6...plugins-destination-sqlite-v2.0.0) (2023-04-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose).
+
+### Features
+
+* **sqlite:** Migrate to apache arrow type system ([#9751](https://github.com/cloudquery/cloudquery/issues/9751)) ([549a38e](https://github.com/cloudquery/cloudquery/commit/549a38edd1dde027b16b33e1c151bdbd81a7066a))
+* Update to use arrow type system ([a55e0fb](https://github.com/cloudquery/cloudquery/commit/a55e0fb33d01d933483a60fedf6f01275ecd9120))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.45.0 ([#9863](https://github.com/cloudquery/cloudquery/issues/9863)) ([2799d62](https://github.com/cloudquery/cloudquery/commit/2799d62518283ac304beecda9478f8f2db43cdc5))
+* **sqlite:** Make arrow work with older sources ([#10141](https://github.com/cloudquery/cloudquery/issues/10141)) ([eef77bb](https://github.com/cloudquery/cloudquery/commit/eef77bbf5e80f86ee588e66786247b44bf96fa5a))
+
 ## [1.3.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v1.3.5...plugins-destination-sqlite-v1.3.6) (2023-04-04)
 
 
