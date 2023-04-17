@@ -91,7 +91,7 @@ func (c *Client) Pg10ToSchemaType(t string) arrow.DataType {
 	case "uuid":
 		return types.ExtensionTypes.UUID
 	case "bytea":
-		return arrow.BinaryTypes.Binary
+		return arrow.BinaryTypes.LargeBinary
 	case "json", "jsonb":
 		return types.ExtensionTypes.JSON
 	case "cidr":
@@ -101,6 +101,6 @@ func (c *Client) Pg10ToSchemaType(t string) arrow.DataType {
 	case "inet":
 		return types.ExtensionTypes.Inet
 	default:
-		return arrow.BinaryTypes.String
+		return arrow.BinaryTypes.LargeString
 	}
 }

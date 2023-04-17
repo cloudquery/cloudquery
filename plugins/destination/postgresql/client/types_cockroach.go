@@ -65,12 +65,12 @@ func (c *Client) CockroachToSchemaType(t string) arrow.DataType {
 	case "uuid":
 		return types.ExtensionTypes.UUID
 	case "bytea":
-		return arrow.BinaryTypes.Binary
+		return arrow.BinaryTypes.LargeBinary
 	case "jsonb", "json":
 		return types.ExtensionTypes.JSON
 	case "inet":
 		return types.ExtensionTypes.Inet
 	default:
-		return arrow.BinaryTypes.String
+		return arrow.BinaryTypes.LargeString
 	}
 }
