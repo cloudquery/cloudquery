@@ -136,7 +136,7 @@ Now, we'll create relationships between IAM Users and directly attached managed 
 MATCH 
   (iamusers:aws_iam_users), 
   (attachp:aws_iam_user_attached_policies)
-WHERE iamusers.arn = inlinep.user_arn
+WHERE iamusers.arn = attachp.user_arn
 CREATE (iamusers)-[r:has_attached_policy]->(attachp)
 RETURN type(r)
 ```

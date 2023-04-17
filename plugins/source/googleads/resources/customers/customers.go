@@ -5,8 +5,8 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/googleads/client"
 	"github.com/cloudquery/cloudquery/plugins/source/googleads/gaql"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"github.com/shenzhencenter/google-ads-pb/enums"
 	"github.com/shenzhencenter/google-ads-pb/resources"
 	"github.com/shenzhencenter/google-ads-pb/services"

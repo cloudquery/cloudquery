@@ -5,18 +5,33 @@ on:
     paths:
       - "plugins/source/azure/**"
       - ".github/workflows/source_azure.yml"
-      - ".github/workflows/resolve_runner.yml"
   push:
     branches:
       - main
     paths:
       - "plugins/source/azure/**"
       - ".github/workflows/source_azure.yml"
-      - ".github/workflows/resolve_runner.yml"
 
 jobs:
   resolve-runner:
-    uses: ./.github/workflows/resolve_runner.yml
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    outputs:
+      runner: ${{ steps.resolve.outputs.runner }}
+    steps:
+      - name: Check if should use large runner
+        id: large-runner
+        # We want to speed runs on the main branch which prime the cache
+        # We allow large runners only in this case to prevent forks from abusing them (it's enforced via runner groups access rules)
+        # IF YOU WANT TO USE A LARGE RUNNER YOU NEED TO ADD THE WORKFLOW TO THE `CloudQuery releases` GROUP IN https://github.com/organizations/cloudquery/settings/actions/runner-groups
+        if: github.event_name == 'push'
+        run: |
+          echo "runner=cloudquery-release-runner" >> $GITHUB_OUTPUT
+      - name: Resolve runner
+        id: resolve
+        run: |
+          RUNNER=${{ steps.large-runner.outputs.runner }}
+          echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
   plugins-source-azure:
     timeout-minutes: 30
     name: "plugins/source/azure"
@@ -30,11 +45,12 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: erezrokah/setup-go@feat/add_cache_prefix
         with:
           go-version-file: plugins/source/azure/go.mod
           cache: true
           cache-dependency-path: plugins/source/azure/go.sum
+          cache-key-prefix: test-cache-
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
@@ -97,7 +113,7 @@ jobs:
     runs-on: ${{ needs.resolve-runner.outputs.runner }}
     defaults:
       run:
-        working-directory: ./plugins/source/aws
+        working-directory: ./plugins/source/azure
     services:
       postgres:
         image: postgres:11
@@ -117,11 +133,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: erezrokah/setup-go@feat/add_cache_prefix
         with:
-          go-version-file: plugins/source/aws/go.mod
+          go-version-file: plugins/source/azure/go.mod
           cache: true
-          cache-dependency-path: plugins/source/aws/go.sum
+          cache-dependency-path: plugins/source/azure/go.sum
+          cache-key-prefix: policies-cache-
       - name: Build
         run: go build .
       - name: Setup CloudQuery

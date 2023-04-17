@@ -7,9 +7,9 @@ import (
 	"github.com/google/uuid"
 	"golang.org/x/exp/slices"
 
-	"github.com/cloudquery/plugin-sdk/clients/discovery/v0"
-	"github.com/cloudquery/plugin-sdk/registry"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/clients/discovery/v0"
+	"github.com/cloudquery/plugin-sdk/v2/registry"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )

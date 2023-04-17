@@ -16,7 +16,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/resources/services/teams"
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/resources/services/users"
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/resources/services/vendors"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func AllTables() []*schema.Table {

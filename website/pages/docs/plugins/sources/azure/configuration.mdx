@@ -20,3 +20,9 @@ This is the (nested) spec used by the Azure source plugin.
 
   The name of the cloud environment to use. Possible values are `AzureCloud`, `AzureChinaCloud`, `AzureUSGovernment`.
   See the [Azure CLI documentation for more information](https://learn.microsoft.com/en-us/cli/azure/manage-clouds-azure-cli).
+
+- `discovery_concurrency` (int) (default: 400)
+
+  During initialization the Azure source plugin discovers all resource groups and enabled resource providers per subscription, to be used later on during the sync process.
+  The plugin runs the discovery process in parallel. This setting controls the maximum number of concurrent requests to the Azure API during discovery.
+  Only accounts with many subscriptions should require modifying this setting, to either lower it to avoid network errors, or to increase it to speed up the discovery process.
