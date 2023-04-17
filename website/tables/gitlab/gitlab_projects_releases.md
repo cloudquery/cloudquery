@@ -30,3 +30,4 @@ This table depends on [gitlab_projects](gitlab_projects).
 |commit_path|String|
 |tag_path|String|
 |assets|JSON|
+|_links|JSON|
