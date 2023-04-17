@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {

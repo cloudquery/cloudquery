@@ -3,7 +3,7 @@ package queries
 import (
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func chType(column *schema.Column) string {
