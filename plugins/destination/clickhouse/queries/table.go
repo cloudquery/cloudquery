@@ -4,7 +4,6 @@ import (
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"golang.org/x/exp/maps"
 )
 
 func GetTablesSchema(database string) (query string, params []any) {
@@ -13,8 +12,8 @@ func GetTablesSchema(database string) (query string, params []any) {
 }
 
 // ScanTableSchemas doesn't close rows, so that's on caller.
-func ScanTableSchemas(rows driver.Rows) (schema.Tables, error) {
-	defs := make(map[string]*schema.Table)
+func ScanTableSchemas(rows driver.Rows) (schema.Schemas, error) {
+	defs := make(map[string][]arrow.Field)
 
 	var table, name, typ string
 	for rows.Next() {
@@ -24,36 +23,17 @@ func ScanTableSchemas(rows driver.Rows) (schema.Tables, error) {
 
 		def := defs[table]
 		if def == nil {
-			def = &schema.Table{Name: table}
-			defs[table] = def
+			defs[table] = append(defs[table], arrowField(name, typ))
 		}
-
-		def.Columns = append(def.Columns, cqCol(name, typ))
 	}
 
-	return maps.Values(defs), nil
-}
-
-// NormalizedTables returns flattened normalized table definitions
-func NormalizedTables(tables schema.Tables) schema.Tables {
-	flattened := tables.FlattenTables()
-	defs := make(schema.Tables, len(flattened))
-
-	for i, tbl := range flattened {
-		defs[i] = normalizeTable(tbl)
+	res := make(schema.Schemas, 0, len(defs))
+	for tableName, def := range defs {
+		metadata := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{tableName})
+		res = append(res, arrow.NewSchema(def, &metadata))
 	}
 
-	return defs
-}
-
-func normalizeTable(table *arrow.Schema) *schema.Table {
-	columns := make(schema.ColumnList, len(table.Fields()))
-
-	for i, field := range table.Fields() {
-		columns[i] = normalizeColumn(field)
-	}
-
-	return &schema.Table{Name: table.Name, Columns: columns}
+	return res, nil
 }
 
 func tableNamePart(table, cluster string) string {

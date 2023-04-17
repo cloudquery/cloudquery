@@ -7,42 +7,33 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
-func sortKeys(table *schema.Table) []string {
+func sortKeys(table *arrow.Schema) []string {
 	keys := make([]string, 0)
-	for _, col := range table.Columns {
-		if col.CreationOptions.NotNull {
-			keys = append(keys, col.Name)
+	for _, field := range table.Fields() {
+		if !field.Nullable {
+			keys = append(keys, field.Name)
 		}
 	}
 	return keys
 }
 
 func CreateTable(table *arrow.Schema, cluster string, engine *Engine) string {
-	normalized := normalizeTable(table)
 	strBuilder := strings.Builder{}
 	strBuilder.WriteString("CREATE TABLE ")
-	strBuilder.WriteString(tableNamePart(normalized.Name, cluster))
+	strBuilder.WriteString(tableNamePart(schema.TableName(table), cluster))
 	strBuilder.WriteString(" (\n")
-	for i, col := range normalized.Columns {
-		strBuilder.WriteString("  ")
-		strBuilder.WriteString(sanitizeID(col.Name))
-		strBuilder.WriteString(" ")
-		strBuilder.WriteString(chType(&col))
-		if i < len(normalized.Columns)-1 {
-			strBuilder.WriteString(",")
-		}
-		strBuilder.WriteString("\n")
-	}
-	strBuilder.WriteString(") ENGINE = ")
+	strBuilder.WriteString("  ")
+	strBuilder.WriteString(strings.Join(fieldsDefinitions(table.Fields()), "\n  "))
+	strBuilder.WriteString("\n) ENGINE = ")
 	strBuilder.WriteString(engine.String())
 	strBuilder.WriteString(" ORDER BY (")
-	sortingKeys := sanitized(sortKeys(normalized)...)
+	sortingKeys := sanitized(sortKeys(table)...)
 	strBuilder.WriteString(strings.Join(sortingKeys, ", "))
 	strBuilder.WriteString(")")
 
 	return strBuilder.String()
 }
 
-func DropTable(table *schema.Table, cluster string) string {
-	return "DROP TABLE IF EXISTS " + tableNamePart(table.Name, cluster)
+func DropTable(table *arrow.Schema, cluster string) string {
+	return "DROP TABLE IF EXISTS " + tableNamePart(schema.TableName(table), cluster)
 }
