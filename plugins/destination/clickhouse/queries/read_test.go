@@ -13,7 +13,7 @@ func TestRead(t *testing.T) {
 		sourceName = "cq_source"
 	)
 
-	query, params := Read(sourceName, &schema.Table{
+	query, params := Read(sourceName, schema.CQSchemaToArrow(&schema.Table{
 		Name: "table_name",
 		Columns: schema.ColumnList{
 			schema.CqIDColumn,
@@ -22,7 +22,7 @@ func TestRead(t *testing.T) {
 			schema.CqSyncTimeColumn,
 			schema.Column{Name: "extra_col", Type: schema.TypeFloat},
 		},
-	})
+	}))
 
 	ensureContents(t, query, "read.sql")
 	require.Equal(t, 1, len(params))
