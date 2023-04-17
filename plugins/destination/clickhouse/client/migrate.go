@@ -13,7 +13,7 @@ import (
 )
 
 // Migrate relies on the CLI/client to lock before running migration.
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {
 	currentSchema, err := c.getTableDefinitions(ctx)
 	if err != nil {
 		return err
