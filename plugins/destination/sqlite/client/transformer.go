@@ -1,79 +1,57 @@
 package client
 
 import (
-	"strings"
-
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v12/arrow/array"
 )
 
-func (*Client) TransformBool(v *schema.Bool) any {
-	return v.String()
+func getValue(arr arrow.Array, i int) any {
+	if !arr.IsValid(i) {
+		return nil
+	}
+	switch arr.DataType().ID() {
+	case arrow.BOOL:
+		return arr.(*array.Boolean).Value(i)
+	case arrow.INT8:
+		return arr.(*array.Int8).Value(i)
+	case arrow.INT16:
+		return arr.(*array.Int16).Value(i)
+	case arrow.INT32:
+		return arr.(*array.Int32).Value(i)
+	case arrow.INT64:
+		return arr.(*array.Int64).Value(i)
+	case arrow.UINT8:
+		return arr.(*array.Uint8).Value(i)
+	case arrow.UINT16:
+		return arr.(*array.Uint16).Value(i)
+	case arrow.UINT32:
+		return arr.(*array.Uint32).Value(i)
+	case arrow.UINT64:
+		return arr.(*array.Uint64).Value(i)
+	case arrow.FLOAT32:
+		return arr.(*array.Float32).Value(i)
+	case arrow.FLOAT64:
+		return arr.(*array.Float64).Value(i)
+	case arrow.STRING:
+		return arr.(*array.String).Value(i)
+	case arrow.BINARY:
+		return arr.(*array.Binary).Value(i)
+	case arrow.FIXED_SIZE_BINARY:
+		return arr.(*array.FixedSizeBinary).Value(i)
+	default:
+		return arr.ValueStr(i)
+	}
 }
 
-func (*Client) TransformBytea(v *schema.Bytea) any {
-	return v.Bytes
-}
-
-func (*Client) TransformFloat8(v *schema.Float8) any {
-	return v.String()
-}
-
-func (*Client) TransformInt8(v *schema.Int8) any {
-	return v.String()
-}
-
-func (*Client) TransformInt8Array(v *schema.Int8Array) any {
-	return v.String()
-}
-
-func (*Client) TransformJSON(v *schema.JSON) any {
-	return v.String()
-}
-
-func (*Client) TransformText(v *schema.Text) any {
-	return stripNulls(v.String())
-}
-
-func (*Client) TransformTextArray(v *schema.TextArray) any {
-	return stripNulls(v.String())
-}
-
-func (*Client) TransformTimestamptz(v *schema.Timestamptz) any {
-	return v.String()
-}
-
-func (*Client) TransformUUID(v *schema.UUID) any {
-	return v.String()
-}
-
-func (*Client) TransformUUIDArray(v *schema.UUIDArray) any {
-	return v.String()
-}
-
-func (*Client) TransformCIDR(v *schema.CIDR) any {
-	return v.String()
-}
-
-func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
-	return v.String()
-}
-
-func (*Client) TransformInet(v *schema.Inet) any {
-	return v.String()
-}
-
-func (*Client) TransformInetArray(v *schema.InetArray) any {
-	return v.String()
-}
-
-func (*Client) TransformMacaddr(v *schema.Macaddr) any {
-	return v.String()
-}
-
-func (*Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
-	return v.String()
-}
-
-func stripNulls(s string) string {
-	return strings.ReplaceAll(s, "\x00", "")
+func transformRecord(record arrow.Record) [][]any {
+	var res [][]any
+	for i := int64(0); i < record.NumRows(); i++ {
+		var row []any
+		for j := 0; int64(j) < record.NumCols(); j++ {
+			v := getValue(record.Column(j), int(i))
+			row = append(row, v)
+		}
+		res = append(res, row)
+	}
+	return res
 }

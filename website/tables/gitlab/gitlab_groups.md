@@ -57,3 +57,4 @@ The following tables depend on gitlab_groups:
 |extra_shared_runners_minutes_limit|Int|
 |prevent_forking_outside_group|Bool|
 |created_at|Timestamp|
+|ip_restriction_ranges|String|

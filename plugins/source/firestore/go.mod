@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	cloud.google.com/go/firestore v1.9.0
-	github.com/cloudquery/plugin-sdk/v2 v2.1.0
+	github.com/cloudquery/plugin-sdk/v2 v2.2.0
 	github.com/rs/zerolog v1.29.0
 	github.com/stretchr/testify v1.8.2
 	golang.org/x/sync v0.1.0
