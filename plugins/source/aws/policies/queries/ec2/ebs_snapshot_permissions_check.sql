@@ -19,7 +19,7 @@ SELECT DISTINCT
     -- this is under question because
     -- trusted accounts(user_id) do not violate this control
         OR user_id IS DISTINCT FROM ''
-    then 'pass'
-    else 'fail'
+    then 'fail'
+    else 'pass'
   end as status
 FROM snapshot_access_groups
