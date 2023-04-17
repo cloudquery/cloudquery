@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/filetypes"
+	"github.com/cloudquery/filetypes/csv"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/v2/specs"
 )
@@ -26,6 +27,10 @@ func TestPluginCSV(t *testing.T) {
 				Directory: t.TempDir(),
 				FileSpec: &filetypes.FileSpec{
 					Format: filetypes.FormatTypeCSV,
+					FormatSpec: csv.Spec{
+						SkipHeader: true,
+						Delimiter:  ",",
+					},
 				},
 				NoRotate: true,
 			},
