@@ -4,13 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func jobRuns() *schema.Table {
@@ -39,16 +38,13 @@ func fetchGlueJobRuns(ctx context.Context, meta schema.ClientMeta, parent *schem
 	input := glue.GetJobRunsInput{
 		JobName: parent.Item.(types.Job).Name,
 	}
-	for {
-		result, err := svc.GetJobRuns(ctx, &input)
+	paginator := glue.NewGetJobRunsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- result.JobRuns
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
+		res <- page.JobRuns
 	}
 	return nil
 }

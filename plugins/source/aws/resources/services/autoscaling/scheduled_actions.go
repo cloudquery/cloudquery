@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func ScheduledActions() *schema.Table {
@@ -40,18 +40,13 @@ func fetchAutoscalingScheduledActions(ctx context.Context, meta schema.ClientMet
 	params := &autoscaling.DescribeScheduledActionsInput{
 		MaxRecords: aws.Int32(100),
 	}
-	for {
-		output, err := svc.DescribeScheduledActions(ctx, params)
+	paginator := autoscaling.NewDescribeScheduledActionsPaginator(svc, params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		for _, scheduledUpdateGroupAction := range output.ScheduledUpdateGroupActions {
-			res <- scheduledUpdateGroupAction
-		}
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		params.NextToken = output.NextToken
+		res <- page.ScheduledUpdateGroupActions
 	}
 	return nil
 }

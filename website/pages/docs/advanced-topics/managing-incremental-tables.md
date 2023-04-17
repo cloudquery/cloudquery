@@ -14,4 +14,4 @@ When syncing incremental tables with the local backend, special care needs to be
 
 ## Other Backends
 
-While the CloudQuery CLI currently only supports the local backend, we intend on adding support for more backends in the near future. If you would like to see support for a Redis backend added, please 👍 [this issue](https://github.com/cloudquery/cloudquery/issues/6630) (or volunteer to implement it!). Or if there is another state backend you'd like to use, feel free to [open an issue on GitHub](https://github.com/cloudquery/cloudquery/issues).  
+While the CloudQuery CLI currently only supports the local backend, we intend on adding support for more backends in the near future. For example, if you would like to see support for a Postgres backend added, please 👍 [this issue](https://github.com/cloudquery/cloudquery/issues/6665). Or if there is another state backend you'd like to use, feel free to upvote the appropriate issue or [open a new issue on GitHub](https://github.com/cloudquery/cloudquery/issues).

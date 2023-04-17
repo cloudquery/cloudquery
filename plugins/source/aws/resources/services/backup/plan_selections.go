@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func planSelections() *schema.Table {
@@ -38,12 +38,13 @@ func fetchBackupPlanSelections(ctx context.Context, meta schema.ClientMeta, pare
 		BackupPlanId: plan.BackupPlanId,
 		MaxResults:   aws.Int32(1000), // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupSelections.html
 	}
-	for {
-		result, err := svc.ListBackupSelections(ctx, &params)
+	paginator := backup.NewListBackupSelectionsPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		for _, m := range result.BackupSelectionsList {
+		for _, m := range page.BackupSelectionsList {
 			s, err := svc.GetBackupSelection(
 				ctx,
 				&backup.GetBackupSelectionInput{BackupPlanId: plan.BackupPlanId, SelectionId: m.SelectionId},
@@ -58,10 +59,6 @@ func fetchBackupPlanSelections(ctx context.Context, meta schema.ClientMeta, pare
 				res <- *s
 			}
 		}
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		params.NextToken = result.NextToken
 	}
 	return nil
 }

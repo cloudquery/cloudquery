@@ -10,8 +10,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func hostedZoneQueryLoggingConfigs() *schema.Table {
@@ -45,16 +45,13 @@ func fetchRoute53HostedZoneQueryLoggingConfigs(ctx context.Context, meta schema.
 	r := parent.Item.(*models.Route53HostedZoneWrapper)
 	svc := meta.(*client.Client).Services().Route53
 	config := route53.ListQueryLoggingConfigsInput{HostedZoneId: r.Id}
-	for {
-		response, err := svc.ListQueryLoggingConfigs(ctx, &config, func(options *route53.Options) {})
+	paginator := route53.NewListQueryLoggingConfigsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.QueryLoggingConfigs
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.QueryLoggingConfigs
 	}
 	return nil
 }

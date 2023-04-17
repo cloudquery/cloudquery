@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func functionEventSourceMappings() *schema.Table {
@@ -41,19 +41,16 @@ func fetchLambdaFunctionEventSourceMappings(ctx context.Context, meta schema.Cli
 	config := lambda.ListEventSourceMappingsInput{
 		FunctionName: p.Configuration.FunctionName,
 	}
-	for {
-		output, err := svc.ListEventSourceMappings(ctx, &config)
+	paginator := lambda.NewListEventSourceMappingsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err
 		}
-		res <- output.EventSourceMappings
-		if output.NextMarker == nil {
-			break
-		}
-		config.Marker = output.NextMarker
+		res <- page.EventSourceMappings
 	}
 	return nil
 }

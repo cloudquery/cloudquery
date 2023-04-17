@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func SubnetGroups() *schema.Table {
@@ -71,16 +71,13 @@ func fetchNeptuneSubnetGroups(ctx context.Context, meta schema.ClientMeta, paren
 
 	c := meta.(*client.Client)
 	svc := c.Services().Neptune
-	for {
-		response, err := svc.DescribeDBSubnetGroups(ctx, &config)
+	paginator := neptune.NewDescribeDBSubnetGroupsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.DBSubnetGroups
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
+		res <- page.DBSubnetGroups
 	}
 	return nil
 }

@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodbstreams"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodbstreams/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func Streams() *schema.Table {
@@ -40,6 +40,7 @@ func listStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	svc := c.Services().Dynamodbstreams
 
 	config := dynamodbstreams.ListStreamsInput{}
+	// No paginator available
 	for {
 		output, err := svc.ListStreams(ctx, &config)
 		if err != nil {

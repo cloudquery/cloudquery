@@ -9,8 +9,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/aws/aws-sdk-go-v2/service/backup/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func vaultRecoveryPoints() *schema.Table {
@@ -51,16 +51,13 @@ func fetchBackupVaultRecoveryPoints(ctx context.Context, meta schema.ClientMeta,
 	svc := cl.Services().Backup
 	vault := parent.Item.(types.BackupVaultListMember)
 	params := backup.ListRecoveryPointsByBackupVaultInput{BackupVaultName: vault.BackupVaultName, MaxResults: aws.Int32(100)}
-	for {
-		result, err := svc.ListRecoveryPointsByBackupVault(ctx, &params)
+	paginator := backup.NewListRecoveryPointsByBackupVaultPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- result.RecoveryPoints
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		params.NextToken = result.NextToken
+		res <- page.RecoveryPoints
 	}
 	return nil
 }
@@ -92,10 +89,9 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 	svc := cl.Services().Backup
 	params := backup.ListTagsInput{ResourceArn: rp.RecoveryPointArn}
 	tags := make(map[string]string)
-	for {
-		result, err := svc.ListTags(ctx, &params, func(o *backup.Options) {
-			o.Region = cl.Region
-		})
+	paginator := backup.NewListTagsPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if client.IsAWSError(err, "ERROR_2603") {
 				// ignoring "ERROR_2603: Cannot find recovery point."
@@ -107,19 +103,9 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 			}
 			return err
 		}
-
-		if result == nil {
-			break
-		}
-
-		for k, v := range result.Tags {
+		for k, v := range page.Tags {
 			tags[k] = v
 		}
-
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		params.NextToken = result.NextToken
 	}
 	return resource.Set(c.Name, tags)
 }

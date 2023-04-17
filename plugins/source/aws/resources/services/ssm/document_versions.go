@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func documentVersions() *schema.Table {
@@ -41,6 +41,7 @@ func fetchSsmDocumentVersions(ctx context.Context, meta schema.ClientMeta, paren
 	params := ssm.ListDocumentVersionsInput{
 		Name: item.Name,
 	}
+	// No paginator
 	for {
 		output, err := svc.ListDocumentVersions(ctx, &params)
 		if err != nil {

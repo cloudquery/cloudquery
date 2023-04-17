@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func Environments() *schema.Table {
@@ -58,6 +58,7 @@ func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMe
 	var config elasticbeanstalk.DescribeEnvironmentsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticbeanstalk
+	// No paginator available
 	for {
 		response, err := svc.DescribeEnvironments(ctx, &config)
 		if err != nil {

@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func Images() *schema.Table {
@@ -27,17 +27,13 @@ func fetchAppstreamImages(ctx context.Context, meta schema.ClientMeta, parent *s
 	input := appstream.DescribeImagesInput{MaxResults: aws.Int32(25)}
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
-	for {
-		response, err := svc.DescribeImages(ctx, &input)
+	paginator := appstream.NewDescribeImagesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.Images
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		res <- page.Images
 	}
 	return nil
 }

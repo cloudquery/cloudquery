@@ -8,8 +8,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func ConformancePacks() *schema.Table {
@@ -43,22 +43,18 @@ func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, pa
 	c := meta.(*client.Client)
 	config := configservice.DescribeConformancePacksInput{}
 	var ae smithy.APIError
-	for {
-		resp, err := c.Services().Configservice.DescribeConformancePacks(ctx, &config)
-
+	configService := c.Services().Configservice
+	paginator := configservice.NewDescribeConformancePacksPaginator(configService, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		// This is a workaround until this bug is fixed = https://github.com/aws/aws-sdk-go-v2/issues/1539
 		if (c.Region == "af-south-1" || c.Region == "ap-northeast-3") && errors.As(err, &ae) && ae.ErrorCode() == "AccessDeniedException" {
 			return nil
 		}
-
 		if err != nil {
 			return err
 		}
-		res <- resp.ConformancePackDetails
-		if resp.NextToken == nil {
-			break
-		}
-		config.NextToken = resp.NextToken
+		res <- page.ConformancePackDetails
 	}
 	return nil
 }

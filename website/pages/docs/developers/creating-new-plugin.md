@@ -241,7 +241,7 @@ This will create a binary with the name of the plugin directory (so, `cq-source-
 kind: source
 spec:
   name: "xkcd"
-  registry: "path"
+  registry: "local"
   path: "/path/to/cq-source-xkcd"
   version: "v1.0.0"
   tables: 

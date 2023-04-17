@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func endpointAuthorization() *schema.Table {
@@ -42,17 +42,13 @@ func fetchEndpointAuthorization(ctx context.Context, meta schema.ClientMeta, par
 		ClusterIdentifier: cluster.ClusterIdentifier,
 		MaxRecords:        aws.Int32(100),
 	}
-	for {
-		response, err := svc.DescribeEndpointAuthorization(ctx, &config)
+	paginator := redshift.NewDescribeEndpointAuthorizationPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.EndpointAuthorizationList
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
+		res <- page.EndpointAuthorizationList
 	}
-
 	return nil
 }

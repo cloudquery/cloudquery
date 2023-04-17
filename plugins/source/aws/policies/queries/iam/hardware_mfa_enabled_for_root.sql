@@ -13,6 +13,6 @@ select
 from aws_iam_credential_reports cr
 left join
     aws_iam_virtual_mfa_devices mfa on
-        mfa.user->>'arn' = cr.arn
+        mfa.user->>'Arn' = cr.arn
 where cr.user = '<root_account>'
 group by mfa.serial_number, cr.mfa_active, cr.arn;

@@ -73,6 +73,7 @@ Fastly
 financials
 firehose
 Firehose
+Firestore
 Fivetran
 format_spec
 Gandi
@@ -150,6 +151,7 @@ recurse
 region_codes
 remediation
 remediations
+retryable
 RESTful
 runtime
 runtimes
@@ -190,6 +192,7 @@ unmarshalling
 upsert
 upserts
 upserted
+upvote
 uuid
 UUID
 Vercel

@@ -3,9 +3,10 @@ package ads
 import (
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/source/googleads/client"
 	"github.com/cloudquery/cloudquery/plugins/source/googleads/gaql"
-	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/shenzhencenter/google-ads-pb/resources"
 	"github.com/shenzhencenter/google-ads-pb/services"
 	"github.com/stretchr/testify/require"
@@ -27,9 +28,8 @@ WHERE ad_group_criterion_label.ad_group_criterion = "customers/123/adGroupCriter
 	)
 }
 
-func testAdGroupCriterionLabels(t *testing.T) map[string][]*services.GoogleAdsRow {
+func testAdGroupCriterionLabels(t *testing.T) client.MockedResponses {
 	var label resources.AdGroupCriterionLabel
 	require.NoError(t, faker.FakeObject(&label))
-	row := &services.GoogleAdsRow{AdGroupCriterionLabel: &label}
-	return map[string][]*services.GoogleAdsRow{"ad_group_criterion_label": {row}}
+	return client.MockedResponses{"ad_group_criterion_label": {&services.GoogleAdsRow{AdGroupCriterionLabel: &label}}}
 }

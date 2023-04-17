@@ -14,9 +14,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 	"github.com/thoas/go-funk"
 	"golang.org/x/exp/maps"
@@ -41,6 +41,8 @@ type Client struct {
 	ResourceGroup string
 	Creds         azcore.TokenCredential
 	Options       *arm.ClientOptions
+
+	pluginSpec *Spec
 }
 
 func (c *Client) discoverSubscriptions(ctx context.Context) error {
@@ -119,6 +121,7 @@ func (c *Client) discoverResourceGroups(ctx context.Context) error {
 	groupsLock, namespacesLock := sync.Mutex{}, sync.Mutex{}
 
 	errorGroup, gtx := errgroup.WithContext(ctx)
+	errorGroup.SetLimit(c.pluginSpec.DiscoveryConcurrency)
 	for _, subID := range c.subscriptions {
 		subID := subID
 		errorGroup.Go(func() error {
@@ -173,10 +176,13 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
 	}
 
+	spec.SetDefaults()
+
 	uniqueSubscriptions := funk.Uniq(spec.Subscriptions).([]string)
 	c := &Client{
 		logger:        logger,
 		subscriptions: uniqueSubscriptions,
+		pluginSpec:    &spec,
 	}
 
 	if spec.CloudName != "" {

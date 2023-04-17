@@ -4,12 +4,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ram"
 	"github.com/aws/aws-sdk-go-v2/service/ram/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func ResourceShareInvitations() *schema.Table {
@@ -47,17 +46,13 @@ func fetchRamResourceShareInvitations(ctx context.Context, meta schema.ClientMet
 	var input ram.GetResourceShareInvitationsInput = getResourceShareInvitationsInput()
 	c := meta.(*client.Client)
 	svc := c.Services().Ram
-	for {
-		response, err := svc.GetResourceShareInvitations(ctx, &input)
+	paginator := ram.NewGetResourceShareInvitationsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.ResourceShareInvitations
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		res <- page.ResourceShareInvitations
 	}
 	return nil
 }

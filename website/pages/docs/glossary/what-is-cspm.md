@@ -12,6 +12,6 @@ This includes ensuring that cloud environments comply with industry standards an
 In multi-cloud or hybrid cloud environments, where the complexity of the infrastructure and the different cloud providers used can pose significant security challenges, CSPM becomes critical.
 It helps organizations to reduce the risk of data breaches, protect sensitive information, and ensure compliance with regulatory requirements.
 
-# Open Source CSPM
+## Open Source CSPM
 
 The [What is the Modern Data Stack](/docs/glossary/what-is-the-modern-data-stack) post covers what the modern data stack is, and how we can build an infrastructure data lake. With an infrastructure data lake in place, you can build your own customizable CSPM with just standard SQL queries and views that you can monitor and visualize with your go-to BI tools and avoid the yet-another-dashboard fatigue and learning new proprietary query languages. Check out our full guide on how to use CloudQuery, pre-built queries, views and Grafana dashboards to [build an open-source CSPM](/how-to-guides/open-source-cspm).

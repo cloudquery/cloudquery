@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func Domains() *schema.Table {
@@ -47,18 +47,13 @@ func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 	svc := c.Services().Route53domains
 	var input route53domains.ListDomainsInput
-
-	for {
-		output, err := svc.ListDomains(ctx, &input)
+	paginator := route53domains.NewListDomainsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.Domains
-
-		if aws.ToString(output.NextPageMarker) == "" {
-			break
-		}
-		input.Marker = output.NextPageMarker
+		res <- page.Domains
 	}
 	return nil
 }

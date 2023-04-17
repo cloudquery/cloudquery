@@ -3,12 +3,11 @@ package rds
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func Clusters() *schema.Table {
@@ -46,16 +45,13 @@ func fetchRdsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	var config rds.DescribeDBClustersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Rds
-	for {
-		response, err := svc.DescribeDBClusters(ctx, &config)
+	paginator := rds.NewDescribeDBClustersPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.DBClusters
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
+		res <- page.DBClusters
 	}
 	return nil
 }

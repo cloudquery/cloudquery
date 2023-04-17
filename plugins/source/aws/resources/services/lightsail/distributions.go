@@ -8,8 +8,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -45,7 +45,9 @@ func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, pa
 	var input lightsail.GetDistributionsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
+	// No paginator available
 	for {
+		// Validate the region for this in client/data.json
 		response, err := svc.GetDistributions(ctx, &input, func(options *lightsail.Options) {
 			// Set region to default global region
 			options.Region = "us-east-1"
@@ -56,6 +58,7 @@ func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, pa
 
 		errs, ctx := errgroup.WithContext(ctx)
 		errs.SetLimit(MaxGoroutines)
+		// TODO: Replace with column resolver
 		for _, d := range response.Distributions {
 			func(d types.LightsailDistribution) {
 				errs.Go(func() error {

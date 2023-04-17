@@ -194,6 +194,7 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 	sb.WriteString(" (")
 	totalColumns := len(table.Columns)
 
+	var pks []string
 	for i, col := range table.Columns {
 		sqlType := c.SchemaTypeToDuckDB(col.Type)
 		if sqlType == "" {
@@ -202,10 +203,8 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 		}
 		// TODO: sanitize column name
 		fieldDef := `"` + col.Name + `" ` + sqlType
-		if c.enabledPks() {
-			if col.CreationOptions.PrimaryKey {
-				fieldDef += " PRIMARY KEY"
-			}
+		if col.CreationOptions.PrimaryKey {
+			pks = append(pks, col.Name)
 		}
 		if col.CreationOptions.NotNull {
 			fieldDef += " NOT NULL"
@@ -215,7 +214,16 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 			sb.WriteString(",")
 		}
 	}
-
+	if len(pks) > 0 && c.enabledPks() {
+		sb.WriteString(", PRIMARY KEY (")
+		for i, pk := range pks {
+			sb.WriteString(`"` + pk + `"`)
+			if i != len(pks)-1 {
+				sb.WriteString(",")
+			}
+		}
+		sb.WriteString(")")
+	}
 	sb.WriteString(")")
 	_, err := c.db.Exec(sb.String())
 	if err != nil {

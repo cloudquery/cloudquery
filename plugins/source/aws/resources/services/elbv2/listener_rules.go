@@ -7,8 +7,8 @@ import (
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func listenerRules() *schema.Table {
@@ -45,6 +45,7 @@ func fetchListenerRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 	svc := c.Services().Elasticloadbalancingv2
 	listener := parent.Item.(types.Listener)
 	config := elbv2.DescribeRulesInput{ListenerArn: listener.ListenerArn}
+	// no paginator available
 	for {
 		response, err := svc.DescribeRules(ctx, &config, func(options *elbv2.Options) {
 			options.Region = region

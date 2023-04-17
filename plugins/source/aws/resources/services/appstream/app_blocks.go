@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func AppBlocks() *schema.Table {
@@ -38,6 +38,7 @@ func fetchAppstreamAppBlocks(ctx context.Context, meta schema.ClientMeta, parent
 	var input appstream.DescribeAppBlocksInput
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
+	// No paginator available
 	for {
 		response, err := svc.DescribeAppBlocks(ctx, &input)
 		if err != nil {

@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func clusterTasks() *schema.Table {
@@ -51,30 +51,25 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 	config := ecs.ListTasksInput{
 		Cluster: cluster.ClusterArn,
 	}
-	for {
-		listTasks, err := svc.ListTasks(ctx, &config)
+	paginator := ecs.NewListTasksPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		if len(listTasks.TaskArns) == 0 {
-			return nil
+		if len(page.TaskArns) == 0 {
+			continue
 		}
 		describeServicesInput := ecs.DescribeTasksInput{
 			Cluster: cluster.ClusterArn,
-			Tasks:   listTasks.TaskArns,
+			Tasks:   page.TaskArns,
 			Include: []types.TaskField{types.TaskFieldTags},
 		}
 		describeTasks, err := svc.DescribeTasks(ctx, &describeServicesInput)
 		if err != nil {
 			return err
 		}
-
 		res <- describeTasks.Tasks
-
-		if listTasks.NextToken == nil {
-			break
-		}
-		config.NextToken = listTasks.NextToken
 	}
 	return nil
 }

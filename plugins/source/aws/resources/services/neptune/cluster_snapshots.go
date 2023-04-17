@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func ClusterSnapshots() *schema.Table {
@@ -50,16 +50,13 @@ func fetchNeptuneClusterSnapshots(ctx context.Context, meta schema.ClientMeta, p
 	input := neptune.DescribeDBClusterSnapshotsInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
 	}
-	for {
-		output, err := svc.DescribeDBClusterSnapshots(ctx, &input)
+	paginator := neptune.NewDescribeDBClusterSnapshotsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return nil
 		}
-		res <- output.DBClusterSnapshots
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		input.Marker = output.Marker
+		res <- page.DBClusterSnapshots
 	}
 	return nil
 }

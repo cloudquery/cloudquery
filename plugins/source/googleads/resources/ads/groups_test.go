@@ -5,10 +5,11 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/googleads/client"
 	"github.com/cloudquery/cloudquery/plugins/source/googleads/gaql"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/shenzhencenter/google-ads-pb/resources"
 	"github.com/shenzhencenter/google-ads-pb/services"
 	"github.com/stretchr/testify/require"
+	"golang.org/x/exp/maps"
 )
 
 func TestGroupsQuery(t *testing.T) {
@@ -48,16 +49,14 @@ FROM ad_group`
 	require.Equal(t, expected, gaql.Query(new(resources.AdGroup), nil, groupOptions))
 }
 
-func testAdGroups(t *testing.T) map[string][]*services.GoogleAdsRow {
+func testAdGroups(t *testing.T) client.MockedResponses {
 	var adGroup resources.AdGroup
 	require.NoError(t, faker.FakeObject(&adGroup))
-	row := &services.GoogleAdsRow{AdGroup: &adGroup}
-	return client.MapsCombine(
-		map[string][]*services.GoogleAdsRow{"ad_group": {row}},
-		testAdGroupLabels(t),
-		testAdGroupCriteria(t),
-		testAdGroupAds(t),
-	)
+	responses := client.MockedResponses{"ad_group": {&services.GoogleAdsRow{AdGroup: &adGroup}}}
+	maps.Copy(responses, testAdGroupLabels(t))
+	maps.Copy(responses, testAdGroupCriteria(t))
+	maps.Copy(responses, testAdGroupAds(t))
+	return responses
 }
 
 func TestAdGroups(t *testing.T) {

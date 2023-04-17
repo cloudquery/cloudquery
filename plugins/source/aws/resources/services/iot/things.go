@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func Things() *schema.Table {
@@ -46,16 +46,13 @@ func fetchIotThings(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	c := meta.(*client.Client)
 
 	svc := c.Services().Iot
-	for {
-		response, err := svc.ListThings(ctx, &input)
+	paginator := iot.NewListThingsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.Things
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		res <- page.Things
 	}
 	return nil
 }
@@ -68,19 +65,14 @@ func ResolveIotThingPrincipals(ctx context.Context, meta schema.ClientMeta, reso
 		MaxResults: aws.Int32(250),
 	}
 	var principals []string
-
-	for {
-		response, err := svc.ListThingPrincipals(ctx, &input)
+	paginator := iot.NewListThingPrincipalsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 
 		if err != nil {
 			return err
 		}
-		principals = append(principals, response.Principals...)
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		principals = append(principals, page.Principals...)
 	}
 	return resource.Set(c.Name, principals)
 }

@@ -3,12 +3,11 @@ package redshift
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func clusterParameters() *schema.Table {
@@ -51,17 +50,13 @@ func fetchClusterParameters(ctx context.Context, meta schema.ClientMeta, parent 
 	config := redshift.DescribeClusterParametersInput{
 		ParameterGroupName: group.ParameterGroupName,
 	}
-	for {
-		response, err := svc.DescribeClusterParameters(ctx, &config)
+	paginator := redshift.NewDescribeClusterParametersPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.Parameters
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
+		res <- page.Parameters
 	}
-
 	return nil
 }

@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func detectorThreatIntelSets() *schema.Table {
@@ -38,17 +38,15 @@ func fetchDetectorThreatIntelSets(ctx context.Context, meta schema.ClientMeta, p
 	c := meta.(*client.Client)
 	svc := c.Services().Guardduty
 	config := &guardduty.ListThreatIntelSetsInput{DetectorId: aws.String(detector.Id)}
-	for {
-		output, err := svc.ListThreatIntelSets(ctx, config)
+	paginator := guardduty.NewListThreatIntelSetsPaginator(svc, config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.ThreatIntelSetIds
-		if output.NextToken == nil {
-			return nil
-		}
-		config.NextToken = output.NextToken
+		res <- page.ThreatIntelSetIds
 	}
+	return nil
 }
 
 func getDetectorThreatIntelSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {

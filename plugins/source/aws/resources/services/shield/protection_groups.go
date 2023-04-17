@@ -3,12 +3,11 @@ package shield
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/shield/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func ProtectionGroups() *schema.Table {
@@ -42,20 +41,16 @@ func fetchShieldProtectionGroups(ctx context.Context, meta schema.ClientMeta, pa
 	c := meta.(*client.Client)
 	svc := c.Services().Shield
 	config := shield.ListProtectionGroupsInput{}
-	for {
-		output, err := svc.ListProtectionGroups(ctx, &config)
+	paginator := shield.NewListProtectionGroupsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil
 			}
 			return err
 		}
-		res <- output.ProtectionGroups
-
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
+		res <- page.ProtectionGroups
 	}
 	return nil
 }

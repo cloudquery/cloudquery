@@ -7,8 +7,8 @@ import (
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func listenerCertificates() *schema.Table {
@@ -37,6 +37,7 @@ func fetchListenerCertificates(ctx context.Context, meta schema.ClientMeta, pare
 	svc := c.Services().Elasticloadbalancingv2
 	listener := parent.Item.(types.Listener)
 	config := elbv2.DescribeListenerCertificatesInput{ListenerArn: listener.ListenerArn}
+	// No paginator available
 	for {
 		response, err := svc.DescribeListenerCertificates(ctx, &config, func(options *elbv2.Options) {
 			options.Region = region

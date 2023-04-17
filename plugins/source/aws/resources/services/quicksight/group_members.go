@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/quicksight"
 	"github.com/aws/aws-sdk-go-v2/service/quicksight/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func groupMembers() *schema.Table {
@@ -42,6 +42,7 @@ func fetchQuicksightGroupMembers(ctx context.Context, meta schema.ClientMeta, pa
 		Namespace:    aws.String(defaultNamespace),
 		GroupName:    item.GroupName,
 	}
+	// No paginator available
 	for {
 		out, err := svc.ListGroupMemberships(ctx, &input)
 		if err != nil {

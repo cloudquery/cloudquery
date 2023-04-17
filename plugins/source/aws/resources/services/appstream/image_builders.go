@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func ImageBuilders() *schema.Table {
@@ -38,6 +38,7 @@ func fetchAppstreamImageBuilders(ctx context.Context, meta schema.ClientMeta, pa
 	var input appstream.DescribeImageBuildersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Appstream
+	// No paginator available
 	for {
 		response, err := svc.DescribeImageBuilders(ctx, &input)
 		if err != nil {

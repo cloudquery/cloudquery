@@ -3,12 +3,11 @@ package neptune
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func clusterParameterGroupParameters() *schema.Table {
@@ -36,16 +35,13 @@ func fetchNeptuneClusterParameterGroupParameters(ctx context.Context, meta schem
 	svc := cl.Services().Neptune
 	g := parent.Item.(types.DBClusterParameterGroup)
 	input := neptune.DescribeDBClusterParametersInput{DBClusterParameterGroupName: g.DBClusterParameterGroupName}
-	for {
-		output, err := svc.DescribeDBClusterParameters(ctx, &input)
+	paginator := neptune.NewDescribeDBClusterParametersPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.Parameters
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		input.Marker = output.Marker
+		res <- page.Parameters
 	}
 	return nil
 }

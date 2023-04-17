@@ -8,8 +8,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/guardduty/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func detectorPublishingDestinations() *schema.Table {
@@ -38,15 +38,13 @@ func fetchGuarddutyDetectorPublishingDestinations(ctx context.Context, meta sche
 	c := meta.(*client.Client)
 	svc := c.Services().Guardduty
 	config := &guardduty.ListPublishingDestinationsInput{DetectorId: aws.String(detector.Id)}
-	for {
-		output, err := svc.ListPublishingDestinations(ctx, config)
+	paginator := guardduty.NewListPublishingDestinationsPaginator(svc, config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.Destinations
-		if output.NextToken == nil {
-			return nil
-		}
-		config.NextToken = output.NextToken
+		res <- page.Destinations
 	}
+	return nil
 }

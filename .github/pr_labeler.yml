@@ -12,6 +12,8 @@ azuredevops:
   - plugins/source/azuredevops/**/*
 bigquery:
   - plugins/destination/bigquery/**/*
+ci:
+  - .github/workflows/**/*
 cli:
   - cli/**/*
 clickhouse:
@@ -36,6 +38,8 @@ file:
   - plugins/destination/file/**/*
 firehose:
   - plugins/destination/firehose/**/*
+firestore:
+  - plugins/source/firestore/**/*
 gandi:
   - plugins/source/gandi/**/*
 gcp:
@@ -47,9 +51,9 @@ github:
 gitlab:
   - plugins/source/gitlab/**/*
 googleads:
-  - plugins/destination/googleads/**/*
+  - plugins/source/googleads/**/*
 googleanalytics:
-  - plugins/destination/googleanalytics/**/*
+  - plugins/source/googleanalytics/**/*
 gremlin:
   - plugins/destination/gremlin/**/*
 hackernews:

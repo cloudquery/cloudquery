@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func DelegationSets() *schema.Table {
@@ -38,7 +38,7 @@ func fetchRoute53DelegationSets(ctx context.Context, meta schema.ClientMeta, par
 	var config route53.ListReusableDelegationSetsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Route53
-
+	// no paginator available
 	for {
 		response, err := svc.ListReusableDelegationSets(ctx, &config)
 		if err != nil {

@@ -3,13 +3,12 @@ package servicecatalog
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog/types"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func Products() *schema.Table {
@@ -44,18 +43,13 @@ func fetchServicecatalogProducts(ctx context.Context, meta schema.ClientMeta, pa
 	svc := c.Services().Servicecatalog
 
 	listInput := new(servicecatalog.SearchProductsAsAdminInput)
-	for {
-		output, err := svc.SearchProductsAsAdmin(ctx, listInput)
+	paginator := servicecatalog.NewSearchProductsAsAdminPaginator(svc, listInput)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		res <- output.ProductViewDetails
-
-		if aws.ToString(output.NextPageToken) == "" {
-			break
-		}
-		listInput.PageToken = output.NextPageToken
+		res <- page.ProductViewDetails
 	}
 
 	return nil

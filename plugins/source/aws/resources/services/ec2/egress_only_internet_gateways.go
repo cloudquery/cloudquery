@@ -8,8 +8,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func EgressOnlyInternetGateways() *schema.Table {
@@ -44,16 +44,13 @@ func fetchEc2EgressOnlyInternetGateways(ctx context.Context, meta schema.ClientM
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
 	input := ec2.DescribeEgressOnlyInternetGatewaysInput{}
-	for {
-		output, err := svc.DescribeEgressOnlyInternetGateways(ctx, &input)
+	paginator := ec2.NewDescribeEgressOnlyInternetGatewaysPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.EgressOnlyInternetGateways
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		input.NextToken = output.NextToken
+		res <- page.EgressOnlyInternetGateways
 	}
 	return nil
 }

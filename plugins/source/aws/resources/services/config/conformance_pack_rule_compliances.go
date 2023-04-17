@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/config/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func conformancePackRuleCompliances() *schema.Table {
@@ -38,24 +38,26 @@ func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.
 	params := configservice.DescribeConformancePackComplianceInput{
 		ConformancePackName: conformancePackDetail.ConformancePackName,
 	}
-	for {
-		resp, err := cs.DescribeConformancePackCompliance(ctx, &params)
+	paginator := configservice.NewDescribeConformancePackCompliancePaginator(cs, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		for _, conformancePackRuleCompliance := range resp.ConformancePackRuleComplianceList {
+		for _, conformancePackRuleCompliance := range page.ConformancePackRuleComplianceList {
 			detailParams := &configservice.GetConformancePackComplianceDetailsInput{
 				ConformancePackName: conformancePackDetail.ConformancePackName,
 				Filters: &types.ConformancePackEvaluationFilters{
 					ConfigRuleNames: []string{*conformancePackRuleCompliance.ConfigRuleName},
 				},
 			}
-			for {
-				output, err := cs.GetConformancePackComplianceDetails(ctx, detailParams)
+			getPaginator := configservice.NewGetConformancePackComplianceDetailsPaginator(cs, detailParams)
+			for getPaginator.HasMorePages() {
+				getPage, err := getPaginator.NextPage(ctx)
 				if err != nil {
 					return err
 				}
-				for _, conformancePackComplianceDetail := range output.ConformancePackRuleEvaluationResults {
+				for _, conformancePackComplianceDetail := range getPage.ConformancePackRuleEvaluationResults {
 					res <- models.ConformancePackComplianceWrapper{
 						ComplianceType:             conformancePackRuleCompliance.ComplianceType,
 						ConfigRuleName:             conformancePackRuleCompliance.ConfigRuleName,
@@ -66,16 +68,8 @@ func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.
 						Annotation:                 conformancePackComplianceDetail.Annotation,
 					}
 				}
-				if output.NextToken == nil {
-					break
-				}
-				detailParams.NextToken = output.NextToken
 			}
 		}
-		if resp.NextToken == nil {
-			break
-		}
-		params.NextToken = resp.NextToken
 	}
 	return nil
 }

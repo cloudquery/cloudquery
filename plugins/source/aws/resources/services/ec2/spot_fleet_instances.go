@@ -8,8 +8,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func spotFleetInstances() *schema.Table {
@@ -48,6 +48,7 @@ func fetchEC2SpotFleetInstances(ctx context.Context, meta schema.ClientMeta, par
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
+	// No paginator available
 	for {
 		output, err := svc.DescribeSpotFleetInstances(ctx, &config)
 		if err != nil {

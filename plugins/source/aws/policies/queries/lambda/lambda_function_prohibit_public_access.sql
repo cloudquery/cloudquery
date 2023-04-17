@@ -19,5 +19,8 @@ where statement ->> 'Effect' = 'Allow'
     and (
         statement ->> 'Principal' = '*'
         or statement -> 'Principal' ->> 'AWS' = '*'
-        or (statement -> 'Principal' ->> 'AWS')::JSONB ? '*'
+         or ( case jsonb_typeof(statement -> 'Principal' -> 'AWS')
+            when 'string' then jsonb_build_array(statement -> 'Principal' ->> 'AWS')
+            when 'array' then (statement -> 'Principal' ->> 'AWS')::JSONB
+	     end)::JSONB ? '*'
     )

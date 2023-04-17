@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func ByoipCidrs() *schema.Table {
@@ -34,10 +34,6 @@ func ByoipCidrs() *schema.Table {
 }
 
 func fetchEc2ByoipCidrs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	config := ec2.DescribeByoipCidrsInput{
-		MaxResults: aws.Int32(100),
-	}
-
 	c := meta.(*client.Client)
 	// DescribeByoipCidrs does not work in next regions, so we ignore them.
 	if _, ok := map[string]struct{}{
@@ -47,16 +43,16 @@ func fetchEc2ByoipCidrs(ctx context.Context, meta schema.ClientMeta, parent *sch
 		return nil
 	}
 	svc := c.Services().Ec2
-	for {
-		response, err := svc.DescribeByoipCidrs(ctx, &config)
+	config := ec2.DescribeByoipCidrsInput{
+		MaxResults: aws.Int32(100),
+	}
+	paginator := ec2.NewDescribeByoipCidrsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.ByoipCidrs
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.ByoipCidrs
 	}
 	return nil
 }

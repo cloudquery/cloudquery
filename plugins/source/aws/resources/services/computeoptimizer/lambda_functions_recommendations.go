@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/computeoptimizer"
 	"github.com/aws/aws-sdk-go-v2/service/computeoptimizer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func LambdaFunctionsRecommendations() *schema.Table {
@@ -33,7 +33,7 @@ func fetchLambdaFunctionsRecommendations(ctx context.Context, meta schema.Client
 	input := computeoptimizer.GetLambdaFunctionRecommendationsInput{
 		MaxResults: aws.Int32(1000),
 	}
-
+	// No paginator available
 	for {
 		response, err := svc.GetLambdaFunctionRecommendations(ctx, &input)
 		if err != nil {

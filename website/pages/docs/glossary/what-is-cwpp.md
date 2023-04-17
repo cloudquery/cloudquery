@@ -4,7 +4,7 @@ With the growing adoption of cloud and organizations moving their operations and
 
 Cloud Workload Protection Platforms are solutions that aid organizations protect their cloud workloads against threats including unauthorized access, data breaches, and malware.  With the adoption of cloud and workloads becoming increasingly created on cloud platforms, these threats have changed and threat actors have adapted to cloud environments.  Data breaches include cloud storage breaches such as AWS S3 and Azure Blob storage while unauthorized access includes cloud privilege escalation and access via cloud access keys, such as IAM User access keys.
 
-# CWPP Benefits
+## CWPP Benefits
 
 CWPP solutions can offer the following benefits:
 
@@ -17,6 +17,6 @@ CWPP solutions can offer the following benefits:
 * Threat Detection: Cloud workloads and infrastructure add to the complexity of threats that face cloud workloads.  CWPP solutions can help detect threats and help mitigate those threats and potential vulnerable workloads and infrastructure to reduce security risk.
 
 
-# Open Source CWPP
+## Open Source CWPP
 
 In [What is an Infrastructure Data Lake](/docs/glossary/what-is-infrastructure-data-lake), we covered what is an infrastructure data lake and how to get started with building your own.  With that foundational infrastructure data lake, you can now build your own open-source CWPP to improve overall security, simplify management of cloud security, ensure compliance, and reduce overall cost of cloud security.

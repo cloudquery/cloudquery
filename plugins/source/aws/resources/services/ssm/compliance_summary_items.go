@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func ComplianceSummaryItems() *schema.Table {
@@ -40,17 +40,13 @@ func fetchSsmComplianceSummaryItems(ctx context.Context, meta schema.ClientMeta,
 	params := ssm.ListComplianceSummariesInput{
 		MaxResults: aws.Int32(50),
 	}
-	for {
-		output, err := svc.ListComplianceSummaries(ctx, &params)
+	paginator := ssm.NewListComplianceSummariesPaginator(svc, &params)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.ComplianceSummaryItems
-
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		params.NextToken = output.NextToken
+		res <- page.ComplianceSummaryItems
 	}
 	return nil
 }

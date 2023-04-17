@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/savingsplans"
 	"github.com/aws/aws-sdk-go-v2/service/savingsplans/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func Plans() *schema.Table {
@@ -39,6 +39,7 @@ func fetchSavingsPlans(ctx context.Context, meta schema.ClientMeta, parent *sche
 	config := savingsplans.DescribeSavingsPlansInput{
 		MaxResults: aws.Int32(1000),
 	}
+	// no paginator available
 	for {
 		response, err := svc.DescribeSavingsPlans(ctx, &config)
 		if err != nil {

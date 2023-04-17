@@ -9,8 +9,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func Triggers() *schema.Table {
@@ -46,16 +46,13 @@ func fetchGlueTriggers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	c := meta.(*client.Client)
 	svc := c.Services().Glue
 	input := glue.ListTriggersInput{MaxResults: aws.Int32(200)}
-	for {
-		response, err := svc.ListTriggers(ctx, &input)
+	paginator := glue.NewListTriggersPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- response.TriggerNames
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
+		res <- page.TriggerNames
 	}
 	return nil
 }

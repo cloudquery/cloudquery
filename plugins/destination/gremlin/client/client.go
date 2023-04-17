@@ -80,7 +80,7 @@ func (c *Client) Close(_ context.Context) error {
 	return nil
 }
 
-func (c *Client) getAuthInfo(ctx context.Context, baseURL string) (*gremlingo.AuthInfo, error) {
+func (c *Client) getAuthInfo(ctx context.Context, baseURL string) (gremlingo.AuthInfoProvider, error) {
 	switch c.pluginSpec.AuthMode {
 	case authModeNone:
 		return nil, nil
@@ -105,11 +105,15 @@ func (c *Client) getAuthInfo(ctx context.Context, baseURL string) (*gremlingo.Au
 			return nil, fmt.Errorf("unable to retrieve AWS credentials: %w", err)
 		}
 		signer := v4.NewSigner()
-		if err := signer.SignHTTP(ctx, cr, req, emptyStringSHA256, "neptune-db", c.pluginSpec.AWSRegion, time.Now()); err != nil {
-			return nil, err
+
+		gen := func() gremlingo.AuthInfoProvider {
+			if err := signer.SignHTTP(ctx, cr, req, emptyStringSHA256, "neptune-db", c.pluginSpec.AWSRegion, time.Now()); err != nil {
+				panic(err) // not ideal, but it's always nil
+			}
+			c.logger.Trace().Any("iam_headers", req.Header).Str("aws_region", c.pluginSpec.AWSRegion).Msg("IAM headers")
+			return gremlingo.HeaderAuthInfo(req.Header)
 		}
-		c.logger.Trace().Any("iam_headers", req.Header).Str("aws_region", c.pluginSpec.AWSRegion).Msg("IAM headers")
-		return gremlingo.HeaderAuthInfo(req.Header), nil
+		return gremlingo.NewDynamicAuth(gen), nil
 
 	default:
 		return nil, fmt.Errorf("unhandled auth mode %q", c.pluginSpec.AuthMode)

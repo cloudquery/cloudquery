@@ -9,8 +9,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func mlTransformTaskRuns() *schema.Table {
@@ -34,22 +34,17 @@ func mlTransformTaskRuns() *schema.Table {
 }
 
 func fetchGlueMlTransformTaskRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	r := parent.Item.(types.MLTransform)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
-	input := glue.GetMLTaskRunsInput{
-		TransformId: r.TransformId,
-	}
-	for {
-		result, err := svc.GetMLTaskRuns(ctx, &input)
+	paginator := glue.NewGetMLTaskRunsPaginator(svc, &glue.GetMLTaskRunsInput{
+		TransformId: parent.Item.(types.MLTransform).TransformId,
+	})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- result.TaskRuns
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
+		res <- page.TaskRuns
 	}
 	return nil
 }

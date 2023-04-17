@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func ResourcePolicies() *schema.Table {
@@ -43,6 +43,7 @@ func fetchCloudwatchlogsResourcePolicies(ctx context.Context, meta schema.Client
 	var config cloudwatchlogs.DescribeResourcePoliciesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudwatchlogs
+	// No paginator available
 	for {
 		response, err := svc.DescribeResourcePolicies(ctx, &config)
 		if err != nil {

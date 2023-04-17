@@ -3,12 +3,11 @@ package applicationautoscaling
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func ScheduledActions() *schema.Table {
@@ -41,18 +40,13 @@ func fetchScheduledActions(ctx context.Context, meta schema.ClientMeta, parent *
 	config := applicationautoscaling.DescribeScheduledActionsInput{
 		ServiceNamespace: types.ServiceNamespace(c.AutoscalingNamespace),
 	}
-	for {
-		output, err := svc.DescribeScheduledActions(ctx, &config)
+	paginator := applicationautoscaling.NewDescribeScheduledActionsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		res <- output.ScheduledActions
-
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
+		res <- page.ScheduledActions
 	}
 
 	return nil

@@ -3,9 +3,10 @@ package campaigns
 import (
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/source/googleads/client"
 	"github.com/cloudquery/cloudquery/plugins/source/googleads/gaql"
-	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/shenzhencenter/google-ads-pb/resources"
 	"github.com/shenzhencenter/google-ads-pb/services"
 	"github.com/stretchr/testify/require"
@@ -27,9 +28,8 @@ WHERE campaign_label.campaign = "customers/123/campaigns/456"`
 	)
 }
 
-func testCampaignLabels(t *testing.T) map[string][]*services.GoogleAdsRow {
+func testCampaignLabels(t *testing.T) client.MockedResponses {
 	var label resources.CampaignLabel
 	require.NoError(t, faker.FakeObject(&label))
-	row := &services.GoogleAdsRow{CampaignLabel: &label}
-	return map[string][]*services.GoogleAdsRow{"campaign_label": {row}}
+	return client.MockedResponses{"campaign_label": {&services.GoogleAdsRow{CampaignLabel: &label}}}
 }

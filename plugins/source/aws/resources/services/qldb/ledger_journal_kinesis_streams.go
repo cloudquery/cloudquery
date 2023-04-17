@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/qldb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func ledgerJournalKinesisStreams() *schema.Table {
@@ -33,22 +33,19 @@ func ledgerJournalKinesisStreams() *schema.Table {
 
 func fetchQldbLedgerJournalKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	ledger := parent.Item.(*qldb.DescribeLedgerOutput)
-	cl := meta.(*client.Client)
+	svc := meta.(*client.Client).Services().Qldb
 	config := &qldb.ListJournalKinesisStreamsForLedgerInput{
 		LedgerName: ledger.Name,
 		MaxResults: aws.Int32(100),
 	}
-	for {
-		response, err := cl.Services().Qldb.ListJournalKinesisStreamsForLedger(ctx, config)
+	paginator := qldb.NewListJournalKinesisStreamsForLedgerPaginator(svc, config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
-		res <- response.Streams
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.Streams
 	}
 	return nil
 }

@@ -3,12 +3,11 @@ package sagemaker
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func NotebookInstances() *schema.Table {
@@ -51,18 +50,14 @@ func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta
 	c := meta.(*client.Client)
 	svc := c.Services().Sagemaker
 	config := sagemaker.ListNotebookInstancesInput{}
-	for {
-		response, err := svc.ListNotebookInstances(ctx, &config)
+	paginator := sagemaker.NewListNotebookInstancesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
 
-		res <- response.NotebookInstances
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
+		res <- page.NotebookInstances
 	}
 	return nil
 }

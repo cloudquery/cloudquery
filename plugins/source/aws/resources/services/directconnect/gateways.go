@@ -9,8 +9,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func Gateways() *schema.Table {
@@ -49,6 +49,7 @@ func fetchDirectconnectGateways(ctx context.Context, meta schema.ClientMeta, par
 	var config directconnect.DescribeDirectConnectGatewaysInput
 	c := meta.(*client.Client)
 	svc := c.Services().Directconnect
+	// No paginator available
 	for {
 		output, err := svc.DescribeDirectConnectGateways(ctx, &config)
 		if err != nil {
@@ -68,6 +69,7 @@ func fetchDirectconnectGatewayAssociations(ctx context.Context, meta schema.Clie
 	c := meta.(*client.Client)
 	svc := c.Services().Directconnect
 	config := directconnect.DescribeDirectConnectGatewayAssociationsInput{DirectConnectGatewayId: gateway.DirectConnectGatewayId}
+	// No paginator available
 	for {
 		output, err := svc.DescribeDirectConnectGatewayAssociations(ctx, &config)
 		if err != nil {
@@ -87,6 +89,7 @@ func fetchDirectconnectGatewayAttachments(ctx context.Context, meta schema.Clien
 	c := meta.(*client.Client)
 	svc := c.Services().Directconnect
 	config := directconnect.DescribeDirectConnectGatewayAttachmentsInput{DirectConnectGatewayId: gateway.DirectConnectGatewayId}
+	// No paginator available
 	for {
 		output, err := svc.DescribeDirectConnectGatewayAttachments(ctx, &config)
 		if err != nil {

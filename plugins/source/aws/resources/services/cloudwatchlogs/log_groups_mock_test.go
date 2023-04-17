@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -39,6 +39,14 @@ func buildCloudwatchLogsLogGroupsMock(t *testing.T, ctrl *gomock.Controller) cli
 	}
 
 	m.EXPECT().ListTagsLogGroup(gomock.Any(), gomock.Any(), gomock.Any()).Return(tags, nil)
+
+	dataProtectionPolicy := &cloudwatchlogs.GetDataProtectionPolicyOutput{}
+	err = faker.FakeObject(dataProtectionPolicy)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().GetDataProtectionPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(dataProtectionPolicy, nil)
 
 	return client.Services{
 		Cloudwatchlogs: m,

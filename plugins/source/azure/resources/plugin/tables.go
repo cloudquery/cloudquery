@@ -91,7 +91,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/synapse"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsiot"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/workloads"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func tables() []*schema.Table {
@@ -134,6 +134,7 @@ func tables() []*schema.Table {
 		cdn.Profiles(),
 		cognitiveservices.Accounts(),
 		cognitiveservices.DeletedAccounts(),
+		compute.AvailabilitySets(),
 		compute.CapacityReservationGroups(),
 		compute.CloudServices(),
 		compute.DiskAccesses(),

@@ -3,12 +3,11 @@ package ssm
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func instanceComplianceItems() *schema.Table {
@@ -50,16 +49,13 @@ func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta
 	input := ssm.ListComplianceItemsInput{
 		ResourceIds: []string{*instance.InstanceId},
 	}
-	for {
-		output, err := svc.ListComplianceItems(ctx, &input)
+	paginator := ssm.NewListComplianceItemsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		res <- output.ComplianceItems
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		input.NextToken = output.NextToken
+		res <- page.ComplianceItems
 	}
 	return nil
 }

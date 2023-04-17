@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func functionAliases() *schema.Table {
@@ -51,9 +51,9 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 	config := lambda.ListAliasesInput{
 		FunctionName: p.Configuration.FunctionName,
 	}
-
-	for {
-		output, err := svc.ListAliases(ctx, &config)
+	paginator := lambda.NewListAliasesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx)
 		if err != nil {
 			return err
 		}
@@ -63,12 +63,7 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 			}
 			return err
 		}
-		res <- output.Aliases
-
-		if output.NextMarker == nil {
-			break
-		}
-		config.Marker = output.NextMarker
+		res <- page.Aliases
 	}
 	return nil
 }
