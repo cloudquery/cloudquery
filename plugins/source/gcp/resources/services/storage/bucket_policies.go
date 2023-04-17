@@ -2,7 +2,7 @@ package storage
 
 import (
 	pb "cloud.google.com/go/iam"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 

@@ -17,6 +17,7 @@
 - [github_repositories](../../../../../website/tables/github/github_repositories.md)
   - [github_releases](../../../../../website/tables/github/github_releases.md)
     - [github_release_assets](../../../../../website/tables/github/github_release_assets.md)
+  - [github_repository_branches](../../../../../website/tables/github/github_repository_branches.md)
   - [github_repository_dependabot_alerts](../../../../../website/tables/github/github_repository_dependabot_alerts.md)
   - [github_repository_dependabot_secrets](../../../../../website/tables/github/github_repository_dependabot_secrets.md)
 - [github_teams](../../../../../website/tables/github/github_teams.md)
