@@ -68,7 +68,6 @@ var GcpServices = map[string]bool{
 	"clouderrorreporting.googleapis.com":              true,
 	"cloudfunctions.googleapis.com":                   true,
 	"cloudidentity.googleapis.com":                    true,
-	"cloudiot.googleapis.com":                         true,
 	"cloudkms.googleapis.com":                         true,
 	"cloudprofiler.googleapis.com":                    true,
 	"cloudresourcemanager.googleapis.com":             true,
