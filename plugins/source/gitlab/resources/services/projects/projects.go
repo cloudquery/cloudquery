@@ -38,6 +38,7 @@ func Projects() *schema.Table {
 		Relations: []*schema.Table{
 			ProjectsReleases(),
 			ProjectBranches(),
+			ProjectMembers(),
 		},
 	}
 }
