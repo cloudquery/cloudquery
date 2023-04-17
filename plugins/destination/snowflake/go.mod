@@ -25,7 +25,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.8 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.20 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.61 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.62 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.32 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.26 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.24 // indirect; indirect // indirect
@@ -33,7 +33,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.27 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.26 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.14.1 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.31.2 // indirect
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.31.3 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
 	github.com/danieljoos/wincred v1.1.2 // indirect
 	github.com/dvsekhvalnov/jose2go v1.5.0 // indirect
