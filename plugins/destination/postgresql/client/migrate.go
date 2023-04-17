@@ -326,10 +326,6 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *arrow.Schema)
 	primaryKeys := []string{}
 	for i, col := range table.Fields() {
 		pgType := c.SchemaTypeToPg(col.Type)
-		if pgType == "" {
-			c.logger.Warn().Str("table", tName).Str("column", col.Name).Msg("Column type is not supported, skipping")
-			continue
-		}
 		columnName := pgx.Identifier{col.Name}.Sanitize()
 		fieldDef := columnName + " " + pgType
 		if schema.IsUnique(col) {
