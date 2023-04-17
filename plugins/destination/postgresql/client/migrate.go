@@ -346,8 +346,8 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *arrow.Schema)
 	if len(primaryKeys) > 0 {
 		// add composite PK constraint on primary key columns
 		sb.WriteString(", CONSTRAINT ")
-		sb.WriteString(tName)
-		sb.WriteString("_cqpk PRIMARY KEY (")
+		sb.WriteString(pgx.Identifier{tName + "_cqpk"}.Sanitize())
+		sb.WriteString(" PRIMARY KEY (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
 	}
