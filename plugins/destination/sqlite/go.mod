@@ -4,14 +4,12 @@ go 1.19
 
 require (
 	github.com/apache/arrow/go/v12 v12.0.0-20230411081405-61b89df503c8
-	github.com/cloudquery/plugin-sdk/v2 v2.0.1
+	github.com/cloudquery/plugin-sdk/v2 v2.2.1
 	github.com/mattn/go-sqlite3 v1.14.16
 	github.com/rs/zerolog v1.29.0
 )
 
 replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230416141001-e8315b3fff1c
-
-replace github.com/cloudquery/plugin-sdk/v2 => github.com/cloudquery/plugin-sdk/v2 v2.1.1-0.20230416180154-24c64539f75a
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
