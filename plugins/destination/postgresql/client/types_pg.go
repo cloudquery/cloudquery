@@ -69,6 +69,8 @@ func (c *Client) SchemaTypeToPg10(t arrow.DataType) string {
 
 func (c *Client) Pg10ToSchemaType(t string) arrow.DataType {
 	if strings.HasPrefix(t, "timestamp") {
+		// we use microsecond per postgres documentation:
+		// https://www.postgresql.org/docs/current/datatype-datetime.html
 		return arrow.FixedWidthTypes.Timestamp_us
 	}
 	if strings.HasSuffix(t, "[]") {
