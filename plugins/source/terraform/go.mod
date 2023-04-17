@@ -6,8 +6,8 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.8
 	github.com/aws/aws-sdk-go-v2/config v1.18.21
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.20
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.61
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.31.2
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.62
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.31.3
 	github.com/aws/aws-sdk-go-v2/service/sts v1.18.9
 	github.com/cloudquery/plugin-sdk/v2 v2.1.0
 	github.com/golang/mock v1.6.0
