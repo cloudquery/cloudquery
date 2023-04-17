@@ -11,7 +11,7 @@ import (
 func getTestConnection() string {
 	testConn := os.Getenv("CQ_DEST_PG_TEST_CONN")
 	if testConn == "" {
-		return "postgresql://root@localhost:26257/postgres?sslmode=disable"
+		return "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
 	}
 	return testConn
 }
