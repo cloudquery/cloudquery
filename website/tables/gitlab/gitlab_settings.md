@@ -16,13 +16,11 @@ The composite primary key for this table is (**base_url**, **id**).
 |id (PK)|Int|
 |abuse_notification_email|String|
 |admin_mode|Bool|
-|admin_notification_email|String|
 |after_sign_out_path|String|
 |after_sign_up_text|String|
 |akismet_api_key|String|
 |akismet_enabled|Bool|
 |allow_group_owners_to_manage_ldap|Bool|
-|allow_local_requests_from_hooks_and_services|Bool|
 |allow_local_requests_from_system_hooks|Bool|
 |allow_local_requests_from_web_hooks_and_services|Bool|
 |archive_builds_in_human_readable|String|
@@ -30,11 +28,11 @@ The composite primary key for this table is (**base_url**, **id**).
 |asset_proxy_enabled|Bool|
 |asset_proxy_url|String|
 |asset_proxy_secret_key|String|
-|asset_proxy_whitelist|StringArray|
 |authorized_keys_enabled|Bool|
 |auto_devops_domain|String|
 |auto_devops_enabled|Bool|
 |automatic_purchased_storage_allocation|Bool|
+|can_create_group|Bool|
 |check_namespace_plan|Bool|
 |commit_email_hostname|String|
 |container_expiration_policies_enable_historic_entries|Bool|
@@ -315,7 +313,6 @@ The composite primary key for this table is (**base_url**, **id**).
 |throttle_unauthenticated_deprecated_api_enabled|Bool|
 |throttle_unauthenticated_deprecated_api_period_in_seconds|Int|
 |throttle_unauthenticated_deprecated_api_requests_per_period|Int|
-|throttle_unauthenticated_enabled|Bool|
 |throttle_unauthenticated_files_api_enabled|Bool|
 |throttle_unauthenticated_files_api_period_in_seconds|Int|
 |throttle_unauthenticated_files_api_requests_per_period|Int|
@@ -325,8 +322,6 @@ The composite primary key for this table is (**base_url**, **id**).
 |throttle_unauthenticated_packages_api_enabled|Bool|
 |throttle_unauthenticated_packages_api_period_in_seconds|Int|
 |throttle_unauthenticated_packages_api_requests_per_period|Int|
-|throttle_unauthenticated_period_in_seconds|Int|
-|throttle_unauthenticated_requests_per_period|Int|
 |throttle_unauthenticated_web_enabled|Bool|
 |throttle_unauthenticated_web_period_in_seconds|Int|
 |throttle_unauthenticated_web_requests_per_period|Int|
@@ -342,7 +337,6 @@ The composite primary key for this table is (**base_url**, **id**).
 |user_deactivation_emails_enabled|Bool|
 |user_default_external|Bool|
 |user_default_internal_regex|String|
-|user_email_lookup_limit|Int|
 |user_oauth_applications|Bool|
 |user_show_add_ssh_key_message|Bool|
 |users_get_by_id_limit|Int|
@@ -351,3 +345,10 @@ The composite primary key for this table is (**base_url**, **id**).
 |web_ide_clientside_preview_enabled|Bool|
 |whats_new_variant|String|
 |wiki_page_max_content_bytes|Int|
+|admin_notification_email|String|
+|allow_local_requests_from_hooks_and_services|Bool|
+|asset_proxy_whitelist|StringArray|
+|throttle_unauthenticated_enabled|Bool|
+|throttle_unauthenticated_period_in_seconds|Int|
+|throttle_unauthenticated_requests_per_period|Int|
+|user_email_lookup_limit|Int|
