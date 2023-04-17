@@ -2,6 +2,7 @@ package queries
 
 import (
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
+	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"golang.org/x/exp/maps"
 )
@@ -45,11 +46,11 @@ func NormalizedTables(tables schema.Tables) schema.Tables {
 	return defs
 }
 
-func normalizeTable(table *schema.Table) *schema.Table {
-	columns := make(schema.ColumnList, len(table.Columns))
+func normalizeTable(table *arrow.Schema) *schema.Table {
+	columns := make(schema.ColumnList, len(table.Fields()))
 
-	for i, col := range table.Columns {
-		columns[i] = normalizeColumn(col)
+	for i, field := range table.Fields() {
+		columns[i] = normalizeColumn(field)
 	}
 
 	return &schema.Table{Name: table.Name, Columns: columns}
