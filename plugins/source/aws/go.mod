@@ -4,12 +4,12 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.8
-	github.com/aws/aws-sdk-go-v2/config v1.18.20
-	github.com/aws/aws-sdk-go-v2/credentials v1.13.19
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.61
-	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.8
+	github.com/aws/aws-sdk-go-v2/config v1.18.21
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.20
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.62
+	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.10
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.1
-	github.com/aws/aws-sdk-go-v2/service/acm v1.17.7
+	github.com/aws/aws-sdk-go-v2/service/acm v1.17.9
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.6
 	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.6
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.7
@@ -84,7 +84,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.31.2
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.31.3
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.29.0
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.63.0
 	github.com/aws/aws-sdk-go-v2/service/savingsplans v1.12.0
@@ -102,7 +102,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.20.0
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.35.0
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.16.0
-	github.com/aws/aws-sdk-go-v2/service/sts v1.18.8
+	github.com/aws/aws-sdk-go-v2/service/sts v1.18.9
 	github.com/aws/aws-sdk-go-v2/service/support v1.14.1
 	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/transfer v1.28.0
@@ -114,7 +114,7 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-sdk/v2 v2.1.0
+	github.com/cloudquery/plugin-sdk/v2 v2.2.0
 	github.com/gocarina/gocsv v0.0.0-20230325173030-9a18a846a479
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
@@ -145,8 +145,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.25 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.26 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.14.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.12.7 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.7 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.12.8 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.8 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/cloudquery/plugin-sdk v1.24.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect

@@ -53,9 +53,9 @@ func TestPlugin_OrderBy(t *testing.T) {
 		Destinations: []string{"test"},
 		Tables:       []string{"test_firestore_source"},
 		Spec: client.Spec{
-			ProjectID:        "cqtest-project",
-			OrderByField:     "test",
-			OrderByDirection: "DESC",
+			ProjectID:      "cqtest-project",
+			OrderBy:        "test",
+			OrderDirection: "DESC",
 		},
 	}
 	require.NoError(t, p.Init(ctx, spec))
