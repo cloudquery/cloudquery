@@ -354,7 +354,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *arrow.Schema)
 	sb.WriteString(")")
 	_, err := c.conn.Exec(ctx, sb.String())
 	if err != nil {
-		return fmt.Errorf("failed to create table %s: %w", tableName, err)
+		return fmt.Errorf("failed to create table %s: %w", tName, err)
 	}
 	return nil
 }
