@@ -4,11 +4,11 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.8
-	github.com/aws/aws-sdk-go-v2/config v1.18.20
-	github.com/aws/aws-sdk-go-v2/credentials v1.13.19
+	github.com/aws/aws-sdk-go-v2/config v1.18.21
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.20
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.61
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.31.2
-	github.com/aws/aws-sdk-go-v2/service/sts v1.18.8
+	github.com/aws/aws-sdk-go-v2/service/sts v1.18.9
 	github.com/cloudquery/plugin-sdk/v2 v2.1.0
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.29.0
@@ -31,8 +31,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.27 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.26 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.14.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.12.7 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.7 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.12.8 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.8 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
