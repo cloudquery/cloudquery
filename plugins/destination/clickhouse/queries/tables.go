@@ -3,6 +3,7 @@ package queries
 import (
 	"strings"
 
+	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
@@ -16,7 +17,7 @@ func sortKeys(table *schema.Table) []string {
 	return keys
 }
 
-func CreateTable(table *schema.Table, cluster string, engine *Engine) string {
+func CreateTable(table *arrow.Schema, cluster string, engine *Engine) string {
 	normalized := normalizeTable(table)
 	strBuilder := strings.Builder{}
 	strBuilder.WriteString("CREATE TABLE ")

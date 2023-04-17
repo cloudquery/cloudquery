@@ -3,48 +3,18 @@ package client
 import (
 	"time"
 
+	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/google/uuid"
 )
 
-func (*Client) TransformBool(v *schema.Bool) any {
-	if v.Status != schema.Present {
-		return nil
+func getValues(arr arrow.Array) []any {
+	res := make([]any, arr.Len())
+	for i := range res {
+		if arr.IsValid(i) && !arr.IsNull(i) {
+			res[i] = arr.GetOneForMarshal(i)
+		}
 	}
-	return v.Bool
-}
-
-func (*Client) TransformBytea(v *schema.Bytea) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	return v.Bytes
-}
-
-func (*Client) TransformFloat8(v *schema.Float8) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	return v.Float
-}
-
-func (*Client) TransformInt8(v *schema.Int8) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	return v.Int
-}
-
-func (*Client) TransformInt8Array(v *schema.Int8Array) any {
-	if v.Status != schema.Present {
-		return []int64(nil)
-	}
-
-	res := make([]int64, len(v.Elements))
-	for i, el := range v.Elements {
-		res[i] = el.Int
-	}
-
 	return res
 }
 
