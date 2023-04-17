@@ -26,7 +26,7 @@ type Client struct {
 
 var _ destination.Client = (*Client)(nil)
 
-func (*Client) DeleteStale(context.Context, schema.Tables, string, time.Time) error {
+func (*Client) DeleteStale(context.Context, schema.Schemas, string, time.Time) error {
 	return errors.New("DeleteStale is not implemented")
 }
 

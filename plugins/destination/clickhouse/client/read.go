@@ -5,11 +5,11 @@ import (
 	"reflect"
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
+	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
+func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
 	query, params := queries.Read(sourceName, table)
 
 	rows, err := c.conn.Query(ctx, query, params...)

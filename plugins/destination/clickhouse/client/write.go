@@ -3,11 +3,11 @@ package client
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
+func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, data []arrow.Record) error {
 	batch, err := c.conn.PrepareBatch(ctx, queries.Insert(table))
 	if err != nil {
 		return err
