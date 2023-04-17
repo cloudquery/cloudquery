@@ -24,7 +24,7 @@ require (
 	github.com/apache/arrow/go/arrow v0.0.0-20211112161151-bc219186db40 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.17.8 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect; indirect // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.13.19 // indirect; indirect // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.20 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.61 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.32 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.26 // indirect; indirect // indirect
