@@ -35,6 +35,9 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	if err := c.pluginSpec.Validate(); err != nil {
 		return nil, err
 	}
+	if c.pluginSpec.Directory != "" {
+		c.logger.Warn().Msg("the 'directory' configuration option will be removed in a future version, please use 'path' instead")
+	}
 	c.pluginSpec.SetDefaults()
 
 	filetypesClient, err := filetypes.NewClient(c.pluginSpec.FileSpec)

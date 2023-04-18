@@ -21,9 +21,9 @@ require (
 	golang.org/x/tools v0.7.0 // indirect
 )
 
-replace github.com/cloudquery/filetypes => github.com/cloudquery/filetypes v1.6.3-0.20230417161357-a73a7987dd55
+replace github.com/cloudquery/filetypes => ../../../../filetypes
 
-replace github.com/apache/arrow/go/v12 => ../../../../arrow/go
+replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230417154311-f9add0212acd
 
 require (
 	github.com/apache/thrift v0.18.1 // indirect
