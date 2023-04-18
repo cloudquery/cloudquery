@@ -87,6 +87,6 @@ func validateOUs(ous []string) error {
 
 func (s *Spec) SetDefaults() {
 	if s.InitializationConcurrency <= 0 {
-		s.InitializationConcurrency = 5
+		s.InitializationConcurrency = 1
 	}
 }
