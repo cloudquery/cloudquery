@@ -23,7 +23,7 @@ func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsPluginSpec S
 			LocalProfile: "",
 		}
 	}
-	awsCfg, err := configureAwsClient(ctx, logger, awsPluginSpec, *awsPluginSpec.Organization.AdminAccount, nil)
+	awsCfg, err := configureAwsSDK(ctx, logger, awsPluginSpec, *awsPluginSpec.Organization.AdminAccount, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -33,7 +33,7 @@ func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsPluginSpec S
 		return nil, nil, err
 	}
 	if awsPluginSpec.Organization.MemberCredentials != nil {
-		awsCfg, err = configureAwsClient(ctx, logger, awsPluginSpec, *awsPluginSpec.Organization.MemberCredentials, nil)
+		awsCfg, err = configureAwsSDK(ctx, logger, awsPluginSpec, *awsPluginSpec.Organization.MemberCredentials, nil)
 		if err != nil {
 			return nil, nil, err
 		}

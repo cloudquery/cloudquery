@@ -238,7 +238,7 @@ func getAccountId(ctx context.Context, awsCfg aws.Config) (*sts.GetCallerIdentit
 	return svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
 }
 
-func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsPluginSpec Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
+func configureAwsSDK(ctx context.Context, logger zerolog.Logger, awsPluginSpec Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
 	var err error
 	var awsCfg aws.Config
 
@@ -429,7 +429,7 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 		c.specificRegions = false
 	}
 
-	awsCfg, err := configureAwsClient(ctx, logger, awsPluginSpec, account, adminAccountSts)
+	awsCfg, err := configureAwsSDK(ctx, logger, awsPluginSpec, account, adminAccountSts)
 	if err != nil {
 		if account.source == "org" {
 			logger.Warn().Msg("Unable to assume role in account")
