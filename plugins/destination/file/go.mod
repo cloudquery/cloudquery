@@ -5,8 +5,8 @@ go 1.19
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apache/arrow/go/v12 v12.0.0-20230417014917-9888ac36c142
-	github.com/cloudquery/filetypes v1.6.2
-	github.com/cloudquery/plugin-sdk/v2 v2.2.0
+	github.com/cloudquery/filetypes/v2 v2.0.0
+	github.com/cloudquery/plugin-sdk/v2 v2.3.0
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/google/flatbuffers v2.0.8+incompatible // indirect
 	github.com/google/uuid v1.3.0
@@ -21,7 +21,7 @@ require (
 	golang.org/x/tools v0.7.0 // indirect
 )
 
-replace github.com/cloudquery/filetypes => ../../../../filetypes
+replace github.com/cloudquery/filetypes/v2 => ../../../../filetypes
 
 replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230417154311-f9add0212acd
 
@@ -29,7 +29,6 @@ require (
 	github.com/apache/thrift v0.18.1 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/klauspost/compress v1.16.3 // indirect
-	github.com/pierrec/lz4/v4 v4.1.17 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect; indirect // indirect
 )
 
@@ -58,5 +57,5 @@ require (
 
 require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
-	github.com/stretchr/objx v0.5.0 // indirect
+	github.com/pierrec/lz4/v4 v4.1.17 // indirect
 )

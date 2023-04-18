@@ -3,8 +3,8 @@ package client
 import (
 	"testing"
 
-	"github.com/cloudquery/filetypes"
-	"github.com/cloudquery/filetypes/csv"
+	"github.com/cloudquery/filetypes/v2"
+	"github.com/cloudquery/filetypes/v2/csv"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/v2/specs"
 )

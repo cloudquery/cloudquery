@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/cloudquery/filetypes"
+	"github.com/cloudquery/filetypes/v2"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/google/uuid"
 )
