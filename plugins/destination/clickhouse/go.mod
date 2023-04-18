@@ -4,20 +4,20 @@ go 1.19
 
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.6.5
-	github.com/cloudquery/plugin-sdk/v2 v2.2.0
+	github.com/cloudquery/plugin-sdk/v2 v2.3.4
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
 	github.com/stretchr/testify v1.8.2
-	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
 	golang.org/x/sync v0.1.0
 )
 
+// TODO: remove once the changes are merged to upstream
 replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230416141001-e8315b3fff1c
 
 require (
 	github.com/ClickHouse/ch-go v0.53.0 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/apache/arrow/go/v12 v12.0.0-20230401212133-adf33cc43010 // indirect
+	github.com/apache/arrow/go/v12 v12.0.0-20230401212133-adf33cc43010
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
@@ -52,6 +52,7 @@ require (
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.opentelemetry.io/otel v1.13.0 // indirect
 	go.opentelemetry.io/otel/trace v1.13.0 // indirect
+	golang.org/x/exp v0.0.0-20230321023759-10a507213a29 // indirect
 	golang.org/x/mod v0.8.0 // indirect
 	golang.org/x/net v0.9.0 // indirect; indirect // indirect
 	golang.org/x/sys v0.7.0 // indirect
