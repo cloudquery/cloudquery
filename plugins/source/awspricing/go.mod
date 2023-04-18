@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/awspricing
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk/v2 v2.3.0
+	github.com/cloudquery/plugin-sdk/v2 v2.3.1
 	github.com/rs/zerolog v1.29.0
 )
 
