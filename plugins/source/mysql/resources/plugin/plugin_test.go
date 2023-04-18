@@ -107,6 +107,12 @@ func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, record ar
 	return nil
 }
 
+func releaseRecords(records []arrow.Record) {
+	for _, record := range records {
+		record.Release()
+	}
+}
+
 func TestPlugin(t *testing.T) {
 	p := Plugin()
 	ctx := context.Background()
@@ -143,6 +149,8 @@ func TestPlugin(t *testing.T) {
 		MaxRows:    1,
 		StableUUID: uuid.Nil,
 	})
+	defer releaseRecords(data)
+
 	if err := insertTable(ctx, db, testTable, data[0]); err != nil {
 		t.Fatal(err)
 	}
@@ -160,6 +168,8 @@ func TestPlugin(t *testing.T) {
 		MaxRows:    1,
 		StableUUID: uuid.Nil,
 	})
+	defer releaseRecords(otherData)
+
 	if err := insertTable(ctx, db, otherTable, otherData[0]); err != nil {
 		t.Fatal(err)
 	}
