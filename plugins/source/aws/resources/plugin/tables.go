@@ -177,6 +177,7 @@ func tables() []*schema.Table {
 		config.ConfigRules(),
 		config.ConfigurationRecorders(),
 		config.ConformancePacks(),
+		config.DeliveryChannels(),
 		dax.Clusters(),
 		directconnect.Connections(),
 		directconnect.Gateways(),
