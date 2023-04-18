@@ -42,7 +42,6 @@ type Client struct {
 	LanguageCode         string
 	Backend              backend.Backend
 	specificRegions      bool
-	pluginSpec           *Spec
 }
 
 type AwsLogger struct {
@@ -121,8 +120,7 @@ func NewAwsClient(logger zerolog.Logger, spec *Spec, b backend.Backend) Client {
 		ServicesManager: ServicesManager{
 			services: ServicesPartitionAccountRegionMap{},
 		},
-		logger:     logger,
-		pluginSpec: spec,
+		logger: logger,
 	}
 }
 
@@ -240,7 +238,7 @@ func getAccountId(ctx context.Context, awsCfg aws.Config) (*sts.GetCallerIdentit
 	return svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
 }
 
-func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
+func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsPluginSpec Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
 	var err error
 	var awsCfg aws.Config
 
@@ -361,7 +359,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 
 	if awsPluginSpec.Organization != nil {
 		var err error
-		awsPluginSpec.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, &awsPluginSpec)
+		awsPluginSpec.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, awsPluginSpec)
 		if err != nil {
 			logger.Error().Err(err).Msg("error getting child accounts")
 			return nil, err
@@ -376,11 +374,11 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 	initLock := sync.Mutex{}
 
 	errorGroup, gtx := errgroup.WithContext(ctx)
-	errorGroup.SetLimit(client.pluginSpec.InitializationConcurrency)
+	errorGroup.SetLimit(awsPluginSpec.InitializationConcurrency)
 	for _, account := range awsPluginSpec.Accounts {
 		account := account
 		errorGroup.Go(func() error {
-			svcsDetail, err := client.setupAWSAccount(gtx, logger, adminAccountSts, account)
+			svcsDetail, err := client.setupAWSAccount(gtx, logger, awsPluginSpec, adminAccountSts, account)
 			if err != nil {
 				return err
 			}
@@ -410,14 +408,14 @@ type svcsDetail struct {
 	svcs      Services
 }
 
-func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, adminAccountSts AssumeRoleAPIClient, account Account) ([]svcsDetail, error) {
+func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, awsPluginSpec Spec, adminAccountSts AssumeRoleAPIClient, account Account) ([]svcsDetail, error) {
 	if account.AccountName == "" {
 		account.AccountName = account.ID
 	}
 
 	localRegions := account.Regions
 	if len(localRegions) == 0 {
-		localRegions = c.pluginSpec.Regions
+		localRegions = awsPluginSpec.Regions
 	}
 
 	if err := verifyRegions(localRegions); err != nil {
@@ -430,7 +428,7 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, adm
 		c.specificRegions = false
 	}
 
-	awsCfg, err := configureAwsClient(ctx, logger, c.pluginSpec, account, adminAccountSts)
+	awsCfg, err := configureAwsClient(ctx, logger, awsPluginSpec, account, adminAccountSts)
 	if err != nil {
 		if account.source == "org" {
 			logger.Warn().Msg("Unable to assume role in account")
