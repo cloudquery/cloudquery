@@ -1,7 +1,12 @@
 package client
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"encoding/json"
+	"strconv"
+	"strings"
+
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 // this is used for tests
@@ -134,4 +139,42 @@ func (*Transformer) TransformTextArray(v *schema.TextArray) any {
 	}
 
 	return v.String()
+}
+
+func (*Transformer) RecordToCQTypes(table *schema.Table, record arrow.Record) (schema.CQTypes, error) {
+	data := schema.NewResourceData(table, nil, nil).ToDestinationResource().Data
+	for i, col := range record.Columns() {
+		var val any
+		if col.IsValid(0) && !col.IsNull(0) {
+			val = col.ValueStr(0)
+		}
+		// special handling for arrays
+		switch table.Columns[i].Type {
+		case schema.TypeStringArray,
+			schema.TypeIntArray,
+			schema.TypeUUIDArray,
+			schema.TypeInetArray,
+			schema.TypeCIDRArray,
+			schema.TypeMacAddrArray:
+			parts := strings.Split(strings.TrimSuffix(strings.TrimPrefix(val.(string), "["), "]"), ",")
+			for i, pt := range parts {
+				unq, err := strconv.Unquote(pt)
+				if err != nil {
+					unq = pt
+				}
+				parts[i] = unq
+			}
+			val = "{" + strings.Join(parts, ",") + "}"
+		case schema.TypeJSON:
+			bytes, err := json.Marshal(val)
+			if err != nil {
+				return nil, err
+			}
+			val = bytes
+		}
+		if err := data[i].Set(val); err != nil {
+			return nil, err
+		}
+	}
+	return data, nil
 }

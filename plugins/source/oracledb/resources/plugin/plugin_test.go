@@ -10,10 +10,13 @@ import (
 	"testing"
 	"time"
 
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v12/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/source/oracledb/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/cloudquery/plugin-sdk/testdata"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/plugin-sdk/v2/testdata"
+	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
@@ -42,7 +45,25 @@ func getTestConnectionString() string {
 	return testConn
 }
 
+func preprocessTable(table *schema.Table) error {
+	// ensure that uuid and only uuid is PK
+	// caused by https://github.com/cloudquery/plugin-sdk/pull/768
+	for i := range table.Columns {
+		table.Columns[i].CreationOptions.PrimaryKey = false
+	}
+	const uidName = "uuid"
+	uid := table.Columns.Get(uidName)
+	if uid == nil {
+		return fmt.Errorf("missing %q column", uidName)
+	}
+	uid.CreationOptions.PrimaryKey = true
+	return nil
+}
+
 func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
+	if err := preprocessTable(table); err != nil {
+		return err
+	}
 	builder := strings.Builder{}
 	builder.WriteString("CREATE TABLE ")
 	builder.WriteString(client.Identifier(table.Name))
@@ -69,7 +90,7 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 	return err
 }
 
-func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, data schema.CQTypes) error {
+func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, record arrow.Record) error {
 	builder := strings.Builder{}
 	builder.WriteString("INSERT INTO " + client.Identifier(table.Name))
 	builder.WriteString(" (")
@@ -87,6 +108,10 @@ func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, data sche
 		}
 	}
 	builder.WriteString(")")
+	data, err := (&client.Transformer{}).RecordToCQTypes(table, record)
+	if err != nil {
+		return err
+	}
 	dbData := schema.TransformWithTransformer(&client.Transformer{}, data)
 	if _, err := db.ExecContext(ctx, builder.String(), dbData...); err != nil {
 		return err
@@ -101,6 +126,12 @@ func isNotExistsError(err error) bool {
 	}
 
 	return false
+}
+
+func releaseRecords(records []arrow.Record) {
+	for _, record := range records {
+		record.Release()
+	}
 }
 
 func TestPlugin(t *testing.T) {
@@ -135,8 +166,14 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, testTable); err != nil {
 		t.Fatal(err)
 	}
-	data := testdata.GenTestData(testTable)
-	if err := insertTable(ctx, db, testTable, data); err != nil {
+	data := testdata.GenTestData(memory.DefaultAllocator, schema.CQSchemaToArrow(testTable), testdata.GenTestDataOptions{
+		SourceName: "oracledb",
+		SyncTime:   time.Now(),
+		MaxRows:    1,
+		StableUUID: uuid.Nil,
+	})
+	defer releaseRecords(data)
+	if err := insertTable(ctx, db, testTable, data[0]); err != nil {
 		t.Fatal(err)
 	}
 
@@ -149,8 +186,14 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, otherTable); err != nil {
 		t.Fatal(err)
 	}
-	otherData := testdata.GenTestData(otherTable)
-	if err := insertTable(ctx, db, otherTable, otherData); err != nil {
+	otherData := testdata.GenTestData(memory.DefaultAllocator, schema.CQSchemaToArrow(testTable), testdata.GenTestDataOptions{
+		SourceName: "oracledb",
+		SyncTime:   time.Now(),
+		MaxRows:    1,
+		StableUUID: uuid.Nil,
+	})
+	defer releaseRecords(otherData)
+	if err := insertTable(ctx, db, otherTable, otherData[0]); err != nil {
 		t.Fatal(err)
 	}
 
@@ -181,9 +224,9 @@ func TestPlugin(t *testing.T) {
 	for i, v := range gotData {
 		actualStrings[i] = v.String()
 	}
-	expectedStrings := make([]string, len(data))
-	for i, v := range data {
-		expectedStrings[i] = v.String()
+	expectedStrings := make([]string, data[0].NumCols())
+	for i, col := range data[0].Columns() {
+		expectedStrings[i] = col.ValueStr(0)
 	}
 	require.Equal(t, expectedStrings, actualStrings)
 }
@@ -215,9 +258,15 @@ func TestPerformance(t *testing.T) {
 	const numTables = 20
 	for i := 0; i < numTables; i++ {
 		table := testdata.TestSourceTable(fmt.Sprintf("test_oracledb_source_performance_%d", i))
-		data := testdata.GenTestData(table)
+		data := testdata.GenTestData(memory.DefaultAllocator, schema.CQSchemaToArrow(table), testdata.GenTestDataOptions{
+			SourceName: "oracledb",
+			SyncTime:   time.Now(),
+			MaxRows:    1,
+			StableUUID: uuid.Nil,
+		})
 
 		group.Go(func() error {
+			defer releaseRecords(data)
 			if _, err := db.ExecContext(gtx, fmt.Sprintf("DROP TABLE \"%s\"", table.Name)); err != nil {
 				if !isNotExistsError(err) {
 					return err
@@ -227,7 +276,7 @@ func TestPerformance(t *testing.T) {
 				return err
 			}
 
-			return insertTable(gtx, db, table, data)
+			return insertTable(gtx, db, table, data[0])
 		})
 	}
 
