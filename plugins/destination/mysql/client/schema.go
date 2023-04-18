@@ -145,18 +145,17 @@ func (c *Client) createTable(ctx context.Context, table *arrow.Schema) error {
 			primaryKeysIndices = append(primaryKeysIndices, i)
 		}
 	}
-	pks := primaryKeysIndices
-	if len(pks) > 0 {
+	if len(primaryKeysIndices) > 0 {
 		builder.WriteString(",\n  ")
 		builder.WriteString(" PRIMARY KEY (")
-		for i, pk := range pks {
+		for i, pk := range primaryKeysIndices {
 			field := table.Field(pk)
 			builder.WriteString(identifier(field.Name))
 			if field.Type == arrow.BinaryTypes.LargeString {
 				// Since we use `text` for strings we need to specify the prefix length to use for the primary key
 				builder.WriteString("(64)")
 			}
-			if i < len(pks)-1 {
+			if i < len(primaryKeysIndices)-1 {
 				builder.WriteString(", ")
 			}
 		}
