@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/beatlabs/github-auth v0.0.0-20220721134423-2b8d98e205d1
-	github.com/cloudquery/plugin-sdk/v2 v2.2.2
+	github.com/cloudquery/plugin-sdk/v2 v2.3.0
 	github.com/gofri/go-github-ratelimit v1.0.2
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v49 v49.0.0
