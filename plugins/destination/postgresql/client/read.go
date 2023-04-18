@@ -52,7 +52,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.StringBuilder:
 		va, ok := val.(string)
 		if !ok {
-			panic(fmt.Sprintf("unsupported type %T with builder %T and column %s", val, bldr, f.Name))
+			return fmt.Errorf("unsupported type %T with builder %T and column %s", val, bldr, f.Name)
 		}
 		b.Append(va)
 	case *array.LargeStringBuilder:
@@ -64,7 +64,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *types.UUIDBuilder:
 		va, ok := val.([16]byte)
 		if !ok {
-			panic(fmt.Sprintf("unsupported type %T with builder %T", val, bldr))
+			return fmt.Errorf("unsupported type %T with builder %T", val, bldr)
 		}
 		u, err := uuid.FromBytes(va[:])
 		if err != nil {
@@ -104,7 +104,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	default:
 		v, ok := val.(string)
 		if !ok {
-			panic(fmt.Sprintf("unsupported type %T with builder %T", val, bldr))
+			return fmt.Errorf("unsupported type %T with builder %T", val, bldr)
 		}
 		if err := bldr.AppendValueFromString(v); err != nil {
 			return err
