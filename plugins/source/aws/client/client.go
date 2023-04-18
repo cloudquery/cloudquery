@@ -228,17 +228,17 @@ func getAccountId(ctx context.Context, awsCfg aws.Config) (*sts.GetCallerIdentit
 	return svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
 }
 
-func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
+func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
 	var err error
 	var awsCfg aws.Config
 
 	maxAttempts := 10
-	if awsConfig.MaxRetries != nil {
-		maxAttempts = *awsConfig.MaxRetries
+	if awsPluginSpec.MaxRetries != nil {
+		maxAttempts = *awsPluginSpec.MaxRetries
 	}
 	maxBackoff := 30
-	if awsConfig.MaxBackoff != nil {
-		maxBackoff = *awsConfig.MaxBackoff
+	if awsPluginSpec.MaxBackoff != nil {
+		maxBackoff = *awsPluginSpec.MaxBackoff
 	}
 
 	configFns := []func(*config.LoadOptions) error{
@@ -252,14 +252,14 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 			})
 		}),
 	}
-	if awsConfig.EndpointURL != "" {
+	if awsPluginSpec.EndpointURL != "" {
 		configFns = append(configFns, config.WithEndpointResolverWithOptions(aws.EndpointResolverWithOptionsFunc(
 			func(service, region string, options ...any) (aws.Endpoint, error) {
 				return aws.Endpoint{
-					URL:               awsConfig.EndpointURL,
-					HostnameImmutable: aws.ToBool(awsConfig.HostnameImmutable),
-					PartitionID:       awsConfig.PartitionID,
-					SigningRegion:     awsConfig.SigningRegion,
+					URL:               awsPluginSpec.EndpointURL,
+					HostnameImmutable: aws.ToBool(awsPluginSpec.HostnameImmutable),
+					PartitionID:       awsPluginSpec.PartitionID,
+					SigningRegion:     awsPluginSpec.SigningRegion,
 				}, nil
 			})),
 		)
@@ -315,7 +315,7 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 		})
 	}
 
-	if awsConfig.AWSDebug {
+	if awsPluginSpec.AWSDebug {
 		awsCfg.ClientLogMode = aws.LogRequestWithBody | aws.LogResponseWithBody | aws.LogRetries
 		awsCfg.Logger = AwsLogger{logger.With().Str("accountName", account.AccountName).Logger()}
 	}
@@ -330,13 +330,13 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, opts source.Options) (schema.ClientMeta, error) {
-	var awsConfig Spec
-	err := spec.UnmarshalSpec(&awsConfig)
+	var awsPluginSpec Spec
+	err := spec.UnmarshalSpec(&awsPluginSpec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 
-	err = awsConfig.Validate()
+	err = awsPluginSpec.Validate()
 	if err != nil {
 		return nil, fmt.Errorf("spec validation failed: %w", err)
 	}
@@ -345,28 +345,28 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 
 	var adminAccountSts AssumeRoleAPIClient
 
-	if awsConfig.Organization != nil {
+	if awsPluginSpec.Organization != nil {
 		var err error
-		awsConfig.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, &awsConfig)
+		awsPluginSpec.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, &awsPluginSpec)
 		if err != nil {
 			logger.Error().Err(err).Msg("error getting child accounts")
 			return nil, err
 		}
 	}
-	if len(awsConfig.Accounts) == 0 {
-		awsConfig.Accounts = append(awsConfig.Accounts, Account{
+	if len(awsPluginSpec.Accounts) == 0 {
+		awsPluginSpec.Accounts = append(awsPluginSpec.Accounts, Account{
 			ID: defaultVar,
 		})
 	}
 
-	for _, account := range awsConfig.Accounts {
+	for _, account := range awsPluginSpec.Accounts {
 		if account.AccountName == "" {
 			account.AccountName = account.ID
 		}
 
 		localRegions := account.Regions
 		if len(localRegions) == 0 {
-			localRegions = awsConfig.Regions
+			localRegions = awsPluginSpec.Regions
 		}
 
 		if err := verifyRegions(localRegions); err != nil {
@@ -379,7 +379,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 			client.specificRegions = false
 		}
 
-		awsCfg, err := configureAwsClient(ctx, logger, &awsConfig, account, adminAccountSts)
+		awsCfg, err := configureAwsClient(ctx, logger, &awsPluginSpec, account, adminAccountSts)
 		if err != nil {
 			if account.source == "org" {
 				logger.Warn().Msg("Unable to assume role in account")
