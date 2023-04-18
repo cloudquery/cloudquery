@@ -48,6 +48,8 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMn
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/arrow/go/v12 v12.0.0-20230417154311-f9add0212acd h1:G093N165IqQvq84MK3Ozi7QwfAWyfYywXijkOyxGJdI=
 github.com/cloudquery/arrow/go/v12 v12.0.0-20230417154311-f9add0212acd/go.mod h1:d+tV/eHZZ7Dz7RPrFKtPK02tpr+c9/PEd/zm8mDS9Vg=
+github.com/cloudquery/filetypes/v2 v2.0.0 h1:9aT9GGseaRCFjmtwJu1hDw2YW5cAPoaKhgWzsNHb+HQ=
+github.com/cloudquery/filetypes/v2 v2.0.0/go.mod h1:Bqo7+kG57gP2nuRy70qYzSEWoX6CjFY0As9RnfH6avQ=
 github.com/cloudquery/plugin-sdk/v2 v2.3.0 h1:+xZdmo8ESO2G61ji1jQif4q9EAIN8sMwOmtFJMiyytw=
 github.com/cloudquery/plugin-sdk/v2 v2.3.0/go.mod h1:/wAbhyQbdIUAMEL+Yo9zkgoBls83xt3ev6jLpJblIoU=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
