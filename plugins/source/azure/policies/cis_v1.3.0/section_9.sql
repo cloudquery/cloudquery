@@ -2,6 +2,7 @@
 \set check_id '9.1'
 \echo "Executing check 9.1"
 \ir ../queries/web/app_auth_unset.sql
+\set check_id '9.2'
 \echo "Executing check 9.2"
 \ir ../queries/web/app_allow_http.sql
 \set check_id '9.3'
