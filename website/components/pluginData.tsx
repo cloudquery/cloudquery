@@ -215,6 +215,13 @@ export const SOURCE_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
   },
   {
+    name: "Oracle Database",
+    logo: "/images/logos/plugins/oracle.svg",
+    id: "oracledb",
+    kind: "official",
+    category: "databases",
+  },
+  {
     name: "Pagerduty",
     logo: "/images/logos/plugins/pagerduty.svg",
     id: "pagerduty",
@@ -680,14 +687,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9040",
     kind: "unpublished",
     category: "product-analytics",
-  },
-  {
-    name: "OracleDB",
-    id: "oracledb",
-    href: "https://github.com/cloudquery/cloudquery/issues/8862",
-    kind: "unpublished",
-    category: "databases",
-    logo: "/images/logos/plugins/oracle.svg",
   },
   {
     name: "OnFleet",

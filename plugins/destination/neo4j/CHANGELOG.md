@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v1.1.4...plugins-destination-neo4j-v2.0.0) (2023-04-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose).
+
+### Features
+
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([97d4a9b](https://github.com/cloudquery/cloudquery/commit/97d4a9bee95ece4840bce7e2b9b8f2b23b3fa035))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.45.0 ([#9863](https://github.com/cloudquery/cloudquery/issues/9863)) ([2799d62](https://github.com/cloudquery/cloudquery/commit/2799d62518283ac304beecda9478f8f2db43cdc5))
+
 ## [1.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v1.1.3...plugins-destination-neo4j-v1.1.4) (2023-04-04)
 
 
