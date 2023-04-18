@@ -238,7 +238,7 @@ func getAccountId(ctx context.Context, awsCfg aws.Config) (*sts.GetCallerIdentit
 	return svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
 }
 
-func configureAwsSDK(ctx context.Context, logger zerolog.Logger, awsPluginSpec Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
+func configureAwsSDK(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
 	var err error
 	var awsCfg aws.Config
 
