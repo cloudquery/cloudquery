@@ -157,7 +157,7 @@ func (c *Client) upsert(table *arrow.Schema) string {
 		panic(fmt.Errorf("constraint_name not found in table metadata"))
 	}
 	sb.WriteString(" on conflict on constraint ")
-	sb.WriteString(constraintName)
+	sb.WriteString(pgx.Identifier{constraintName}.Sanitize())
 	sb.WriteString(" do update set ")
 	for i, column := range columns {
 		sb.WriteString(pgx.Identifier{column.Name}.Sanitize())
