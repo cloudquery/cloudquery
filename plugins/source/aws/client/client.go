@@ -5,20 +5,13 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
-	"github.com/aws/aws-sdk-go-v2/aws/retry"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
-	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/aws/smithy-go"
 	"github.com/aws/smithy-go/logging"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 	"github.com/cloudquery/plugin-sdk/v2/backend"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
@@ -184,151 +177,6 @@ func (c *Client) withLanguageCode(code string) *Client {
 	return &newC
 }
 
-func verifyRegions(regions []string) error {
-	availableRegions, err := getAvailableRegions()
-	if err != nil {
-		return err
-	}
-
-	// validate regions values
-	var hasWildcard bool
-	for i, region := range regions {
-		if region == "*" {
-			hasWildcard = true
-		}
-		if i != 0 && region == "*" {
-			return errInvalidRegion
-		}
-		if i > 0 && hasWildcard {
-			return errInvalidRegion
-		}
-		regionExist := availableRegions[region]
-		if !hasWildcard && !regionExist {
-			return errUnknownRegion(region)
-		}
-	}
-	return nil
-}
-func isAllRegions(regions []string) bool {
-	// if regions array is not valid return false
-	err := verifyRegions(regions)
-	if err != nil {
-		return false
-	}
-
-	wildcardAllRegions := false
-	if (len(regions) == 1 && regions[0] == "*") || (len(regions) == 0) {
-		wildcardAllRegions = true
-	}
-	return wildcardAllRegions
-}
-
-func getAccountId(ctx context.Context, awsCfg aws.Config) (*sts.GetCallerIdentityOutput, error) {
-	svc := sts.NewFromConfig(awsCfg)
-	return svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
-}
-
-func configureAwsSDK(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
-	var err error
-	var awsCfg aws.Config
-
-	maxAttempts := 10
-	if awsPluginSpec.MaxRetries != nil {
-		maxAttempts = *awsPluginSpec.MaxRetries
-	}
-	maxBackoff := 30
-	if awsPluginSpec.MaxBackoff != nil {
-		maxBackoff = *awsPluginSpec.MaxBackoff
-	}
-
-	configFns := []func(*config.LoadOptions) error{
-		config.WithDefaultRegion(defaultRegion),
-		// https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/retries-timeouts/
-		config.WithRetryer(func() aws.Retryer {
-			return retry.NewStandard(func(so *retry.StandardOptions) {
-				so.MaxAttempts = maxAttempts
-				so.MaxBackoff = time.Duration(maxBackoff) * time.Second
-				so.RateLimiter = &NoRateLimiter{}
-			})
-		}),
-	}
-	if awsPluginSpec.EndpointURL != "" {
-		configFns = append(configFns, config.WithEndpointResolverWithOptions(aws.EndpointResolverWithOptionsFunc(
-			func(service, region string, options ...any) (aws.Endpoint, error) {
-				return aws.Endpoint{
-					URL:               awsPluginSpec.EndpointURL,
-					HostnameImmutable: aws.ToBool(awsPluginSpec.HostnameImmutable),
-					PartitionID:       awsPluginSpec.PartitionID,
-					SigningRegion:     awsPluginSpec.SigningRegion,
-				}, nil
-			})),
-		)
-	}
-
-	if account.DefaultRegion != "" {
-		// According to the docs: If multiple WithDefaultRegion calls are made, the last call overrides the previous call values
-		configFns = append(configFns, config.WithDefaultRegion(account.DefaultRegion))
-	}
-
-	if account.LocalProfile != "" {
-		configFns = append(configFns, config.WithSharedConfigProfile(account.LocalProfile))
-	}
-
-	awsCfg, err = config.LoadDefaultConfig(ctx, configFns...)
-
-	if err != nil {
-		logger.Error().Err(err).Msg("error loading default config")
-		return awsCfg, err
-	}
-
-	if account.RoleARN != "" {
-		opts := make([]func(*stscreds.AssumeRoleOptions), 0, 1)
-		if account.ExternalID != "" {
-			opts = append(opts, func(opts *stscreds.AssumeRoleOptions) {
-				opts.ExternalID = &account.ExternalID
-			})
-		}
-		if account.RoleSessionName != "" {
-			opts = append(opts, func(opts *stscreds.AssumeRoleOptions) {
-				opts.RoleSessionName = account.RoleSessionName
-			})
-		}
-
-		if stsClient == nil {
-			stsClient = sts.NewFromConfig(awsCfg)
-		}
-		provider := stscreds.NewAssumeRoleProvider(stsClient, account.RoleARN, opts...)
-
-		awsCfg.Credentials = aws.NewCredentialsCache(provider, func(options *aws.CredentialsCacheOptions) {
-			// ExpiryWindow will allow the credentials to trigger refreshing prior to
-			// the credentials actually expiring. This is beneficial so race conditions
-			// with expiring credentials do not cause requests to fail unexpectedly
-			// due to ExpiredToken exceptions.
-			//
-			// An ExpiryWindow of 5 minute would cause calls to IsExpired() to return true
-			// 5 minutes before the credentials are actually expired. This can cause an
-			// increased number of requests to refresh the credentials to occur. We balance this with jitter.
-			options.ExpiryWindow = 5 * time.Minute
-			// Jitter is added to avoid the thundering herd problem of many refresh requests
-			// happening all at once.
-			options.ExpiryWindowJitterFrac = 0.5
-		})
-	}
-
-	if awsPluginSpec.AWSDebug {
-		awsCfg.ClientLogMode = aws.LogRequestWithBody | aws.LogResponseWithBody | aws.LogRetries
-		awsCfg.Logger = AwsLogger{logger.With().Str("accountName", account.AccountName).Logger()}
-	}
-
-	// Test out retrieving credentials
-	if _, err := awsCfg.Credentials.Retrieve(ctx); err != nil {
-		logger.Error().Err(err).Msg("error retrieving credentials")
-		return awsCfg, errRetrievingCredentials
-	}
-
-	return awsCfg, err
-}
-
 func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, opts source.Options) (schema.ClientMeta, error) {
 	var awsPluginSpec Spec
 	err := spec.UnmarshalSpec(&awsPluginSpec)
@@ -423,68 +271,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 		return nil, fmt.Errorf("no enabled accounts instantiated")
 	}
 	return &client, nil
-}
-
-func findEnabledRegions(ctx context.Context, logger zerolog.Logger, accountName string, ec2Client services.Ec2Client, localRegions []string, accountDefaultRegion string) []string {
-	// By default we should use the default region (us-east-1)
-	regionsToCheck := []string{defaultRegion}
-	// If user specifies a Default Region we should use it
-	if accountDefaultRegion != "" {
-		regionsToCheck = []string{accountDefaultRegion}
-		// If no default region and * is not specified we should use all specified regions
-	} else if len(localRegions) > 0 && !isAllRegions(localRegions) {
-		regionsToCheck = localRegions
-	}
-
-	for _, region := range regionsToCheck {
-		enabledRegions, err := getEnabledRegions(ctx, ec2Client, region)
-		if err != nil {
-			logger.Warn().Str("account", accountName).Err(err).Msgf("Failed to find disabled regions for account when checking: %s", region)
-			continue
-		}
-		filteredRegions := filterDisabledRegions(localRegions, enabledRegions)
-		if len(filteredRegions) > 0 {
-			return filteredRegions
-		}
-	}
-	return []string{}
-}
-
-func getEnabledRegions(ctx context.Context, ec2Client services.Ec2Client, region string) ([]types.Region, error) {
-	res, err := ec2Client.DescribeRegions(ctx,
-		&ec2.DescribeRegionsInput{AllRegions: aws.Bool(false)},
-		func(o *ec2.Options) {
-			o.Region = region
-		})
-	if err != nil {
-		return nil, err
-	}
-	return res.Regions, nil
-}
-
-func filterDisabledRegions(regions []string, enabledRegions []types.Region) []string {
-	regionsMap := map[string]bool{}
-	for _, r := range enabledRegions {
-		if r.RegionName != nil && r.OptInStatus != nil && *r.OptInStatus != "not-opted-in" {
-			regionsMap[*r.RegionName] = true
-		}
-	}
-
-	var filteredRegions []string
-	// Our list of regions might not always be the latest and most up to date list
-	// if a user specifies all regions via a "*" then they should get the most broad list possible
-	if isAllRegions(regions) {
-		for region := range regionsMap {
-			filteredRegions = append(filteredRegions, region)
-		}
-	} else {
-		for _, r := range regions {
-			if regionsMap[r] {
-				filteredRegions = append(filteredRegions, r)
-			}
-		}
-	}
-	return filteredRegions
 }
 
 func (a AwsLogger) Logf(classification logging.Classification, format string, v ...any) {
