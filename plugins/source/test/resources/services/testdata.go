@@ -21,15 +21,21 @@ func TestDataTable() *schema.Table {
 		table.Columns[i].Resolver = schema.PathResolver(table.Columns[i].Name)
 	}
 
-	data := testdata.GenTestData(memory.DefaultAllocator, schema.CQSchemaToArrow(table), testdata.GenTestDataOptions{
+	records := testdata.GenTestData(memory.DefaultAllocator, schema.CQSchemaToArrow(table), testdata.GenTestDataOptions{
 		SourceName: "test",
 		SyncTime:   time.Now(),
 		MaxRows:    1,
 		StableUUID: uuid.Nil,
 	})
+	defer func() {
+		for _, record := range records {
+			record.Release()
+		}
+	}()
+
 	dataAsMap := make(map[string]any)
 	for i, c := range table.Columns {
-		dataAsMap[c.Name] = data[0].Column(i).String()
+		dataAsMap[c.Name] = records[0].Column(i).String()
 	}
 
 	table.Description = "Testdata table"
