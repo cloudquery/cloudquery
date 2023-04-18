@@ -114,7 +114,7 @@ func (s *ServicesManager) InitServicesForPartitionAccountAndScope(partition, acc
 	s.wafScopeServices[partition][accountId] = &svcs
 }
 
-func NewAwsClient(logger zerolog.Logger, spec *Spec, b backend.Backend) Client {
+func NewAwsClient(logger zerolog.Logger, b backend.Backend) Client {
 	return Client{
 		Backend: b,
 		ServicesManager: ServicesManager{
@@ -353,7 +353,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 
 	awsPluginSpec.SetDefaults()
 
-	client := NewAwsClient(logger, &awsPluginSpec, opts.Backend)
+	client := NewAwsClient(logger, opts.Backend)
 
 	var adminAccountSts AssumeRoleAPIClient
 
