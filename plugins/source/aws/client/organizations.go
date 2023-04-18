@@ -15,25 +15,25 @@ import (
 )
 
 // Parses org configuration and grabs the appropriate accounts
-func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsConfig *Spec) ([]Account, AssumeRoleAPIClient, error) {
+func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec) ([]Account, AssumeRoleAPIClient, error) {
 	// If user doesn't specify any configs for admin account instantiate default values
-	if awsConfig.Organization.AdminAccount == nil {
-		awsConfig.Organization.AdminAccount = &Account{
+	if awsPluginSpec.Organization.AdminAccount == nil {
+		awsPluginSpec.Organization.AdminAccount = &Account{
 			AccountName:  "Default-Admin-Account",
 			LocalProfile: "",
 		}
 	}
-	awsCfg, err := configureAwsClient(ctx, logger, awsConfig, *awsConfig.Organization.AdminAccount, nil)
+	awsCfg, err := configureAwsClient(ctx, logger, awsPluginSpec, *awsPluginSpec.Organization.AdminAccount, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 	svc := organizations.NewFromConfig(awsCfg)
-	accounts, err := loadAccounts(ctx, awsConfig, svc)
+	accounts, err := loadAccounts(ctx, awsPluginSpec, svc)
 	if err != nil {
 		return nil, nil, err
 	}
-	if awsConfig.Organization.MemberCredentials != nil {
-		awsCfg, err = configureAwsClient(ctx, logger, awsConfig, *awsConfig.Organization.MemberCredentials, nil)
+	if awsPluginSpec.Organization.MemberCredentials != nil {
+		awsCfg, err = configureAwsClient(ctx, logger, awsPluginSpec, *awsPluginSpec.Organization.MemberCredentials, nil)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -42,13 +42,13 @@ func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsConfig *Spec
 }
 
 // Load accounts from the appropriate endpoint as well as normalizing response
-func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.OrganizationsClient) ([]Account, error) {
+func loadAccounts(ctx context.Context, awsPluginSpec *Spec, accountsApi services.OrganizationsClient) ([]Account, error) {
 	var rawAccounts []orgTypes.Account
 	var err error
-	if len(awsConfig.Organization.OrganizationUnits) > 0 {
-		rawAccounts, err = getOUAccounts(ctx, accountsApi, awsConfig.Organization)
+	if len(awsPluginSpec.Organization.OrganizationUnits) > 0 {
+		rawAccounts, err = getOUAccounts(ctx, accountsApi, awsPluginSpec.Organization)
 	} else {
-		rawAccounts, err = getAllAccounts(ctx, accountsApi, awsConfig.Organization)
+		rawAccounts, err = getAllAccounts(ctx, accountsApi, awsPluginSpec.Organization)
 	}
 
 	if err != nil {
@@ -73,7 +73,7 @@ func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.Org
 			Service:   "iam",
 			Region:    "",
 			AccountID: *account.Id,
-			Resource:  "role/" + awsConfig.Organization.ChildAccountRoleName,
+			Resource:  "role/" + awsPluginSpec.Organization.ChildAccountRoleName,
 		}
 		if parsed, err := arn.Parse(aws.ToString(account.Arn)); err == nil {
 			roleArn.Partition = parsed.Partition
@@ -82,10 +82,10 @@ func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi services.Org
 		accounts = append(accounts, Account{
 			ID:              *account.Id,
 			RoleARN:         roleArn.String(),
-			RoleSessionName: awsConfig.Organization.ChildAccountRoleSessionName,
-			ExternalID:      awsConfig.Organization.ChildAccountExternalID,
-			LocalProfile:    awsConfig.Organization.AdminAccount.LocalProfile,
-			Regions:         awsConfig.Organization.ChildAccountRegions,
+			RoleSessionName: awsPluginSpec.Organization.ChildAccountRoleSessionName,
+			ExternalID:      awsPluginSpec.Organization.ChildAccountExternalID,
+			LocalProfile:    awsPluginSpec.Organization.AdminAccount.LocalProfile,
+			Regions:         awsPluginSpec.Organization.ChildAccountRegions,
 			source:          "org",
 		})
 	}
