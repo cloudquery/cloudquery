@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"github.com/google/go-github/v48/github"
+	"github.com/google/go-github/v49/github"
 )
 
 type GithubServices struct {
@@ -36,6 +36,8 @@ type BillingService interface {
 type RepositoriesService interface {
 	Get(ctx context.Context, owner, repo string) (*github.Repository, *github.Response, error)
 	GetContents(ctx context.Context, owner, repo, path string, opts *github.RepositoryContentGetOptions) (fileContent *github.RepositoryContent, directoryContent []*github.RepositoryContent, resp *github.Response, err error)
+	GetBranchProtection(ctx context.Context, owner string, repo string, branch string) (*github.Protection, *github.Response, error)
+	ListBranches(ctx context.Context, owner string, repo string, opts *github.BranchListOptions) ([]*github.Branch, *github.Response, error)
 	ListByOrg(ctx context.Context, org string, opts *github.RepositoryListByOrgOptions) ([]*github.Repository, *github.Response, error)
 	ListReleases(ctx context.Context, owner, repo string, opts *github.ListOptions) ([]*github.RepositoryRelease, *github.Response, error)
 	ListReleaseAssets(ctx context.Context, owner, repo string, id int64, opts *github.ListOptions) ([]*github.ReleaseAsset, *github.Response, error)

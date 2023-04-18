@@ -5,7 +5,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {

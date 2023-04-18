@@ -8,7 +8,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/firestore/client"
 	"github.com/cloudquery/cloudquery/plugins/source/firestore/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 )
@@ -53,9 +53,9 @@ func TestPlugin_OrderBy(t *testing.T) {
 		Destinations: []string{"test"},
 		Tables:       []string{"test_firestore_source"},
 		Spec: client.Spec{
-			ProjectID:        "cqtest-project",
-			OrderByField:     "test",
-			OrderByDirection: "DESC",
+			ProjectID:      "cqtest-project",
+			OrderBy:        "test",
+			OrderDirection: "DESC",
 		},
 	}
 	require.NoError(t, p.Init(ctx, spec))

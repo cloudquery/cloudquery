@@ -10,7 +10,7 @@ import (
 	"cloud.google.com/go/firestore"
 	"github.com/cloudquery/cloudquery/plugins/source/firestore/client"
 	"github.com/cloudquery/cloudquery/plugins/source/firestore/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 )
