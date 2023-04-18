@@ -53,6 +53,14 @@ export const SOURCE_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
   },
   {
+    name: "Cloud Firestore",
+    logo: "/images/logos/plugins/firestore-light.svg",
+    logoDark: "/images/logos/plugins/firestore-dark.svg",
+    id: "firestore",
+    kind: "official",
+    category: "databases",
+  },
+  {
     name: "Cloudflare",
     logo: "/images/logos/plugins/cloudflare.svg",
     id: "cloudflare",

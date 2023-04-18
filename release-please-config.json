@@ -94,6 +94,9 @@
     "plugins/source/fastly": {
       "component": "plugins-source-fastly"
     },
+    "plugins/source/firestore": {
+      "component": "plugins-source-firestore"
+    },
     "plugins/source/gandi": {
       "component": "plugins-source-gandi"
     },

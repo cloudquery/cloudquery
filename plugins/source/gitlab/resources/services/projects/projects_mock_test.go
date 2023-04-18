@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/julienschmidt/httprouter"
 	"github.com/xanzy/go-gitlab"
 )
@@ -67,6 +67,23 @@ func buildProjects(mux *httprouter.Router) error {
 	mux.GET("/api/v4/projects/:projectId/repository/branches", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		fmt.Fprint(w, string(branchResp))
 	})
+
+	var projectMember *gitlab.ProjectMember
+	if err := faker.FakeObject(&projectMember, faker.WithMaxDepth(12)); err != nil {
+		return err
+	}
+
+	projectMember.ExpiresAt = &isoTime
+	projectMembers, err := json.Marshal([]*gitlab.ProjectMember{projectMember})
+	if err != nil {
+		return err
+	}
+
+	mux.GET("/api/v4/projects/:projectId/members",
+		func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+			fmt.Fprint(w, string(projectMembers))
+		})
+
 	return nil
 }
 

@@ -2,10 +2,10 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/firestore/client"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 )
 
-var version = "v1"
+var version = "development"
 
 func Plugin() *source.Plugin {
 	return source.NewPlugin(

@@ -19,7 +19,7 @@ func createIssues(mux *httprouter.Router) error {
 	}
 	resp.Total = 2001
 	i := 0
-	mux.POST("/v1/reporting/issues/latest", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	mux.POST("/v1/reporting/issues/", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp.Results[0].Issue.ID = fmt.Sprintf("test-%d", i)
 		i++
 		b, err := json.Marshal(resp)
