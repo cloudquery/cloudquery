@@ -37,11 +37,18 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
-	_, err := gosnowflake.ParseDSN(spec.ConnectionString)
+	cfg, err := gosnowflake.ParseDSN(spec.ConnectionString)
 	if err != nil {
 		return nil, err
 	}
-	db, err := sql.Open("snowflake", spec.ConnectionString)
+	binaryFormat := "BASE64"
+	cfg.Params["BINARY_INPUT_FORMAT"] = &binaryFormat
+	cfg.Params["BINARY_OUTPUT_FORMAT"] = &binaryFormat
+	dsn, err := gosnowflake.DSN(cfg)
+	if err != nil {
+		return nil, err
+	}
+	db, err := sql.Open("snowflake", dsn)
 	if err != nil {
 		return nil, err
 	}

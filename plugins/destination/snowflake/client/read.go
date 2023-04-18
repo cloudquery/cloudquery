@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -26,21 +27,53 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.BooleanBuilder:
 		b.Append(val.(bool))
 	case *array.Int8Builder:
-		b.Append(val.(int8))
+		u, err := strconv.ParseInt(val.(string), 10, 8)
+		if err != nil {
+			return err
+		}
+		b.Append(int8(u))
 	case *array.Int16Builder:
-		b.Append(val.(int16))
+		u, err := strconv.ParseInt(val.(string), 10, 16)
+		if err != nil {
+			return err
+		}
+		b.Append(int16(u))
 	case *array.Int32Builder:
-		b.Append(val.(int32))
+		u, err := strconv.ParseInt(val.(string), 10, 32)
+		if err != nil {
+			return err
+		}
+		b.Append(int32(u))
 	case *array.Int64Builder:
-		b.Append(val.(int64))
+		u, err := strconv.ParseInt(val.(string), 10, 64)
+		if err != nil {
+			return err
+		}
+		b.Append(u)
 	case *array.Uint8Builder:
-		b.Append(val.(uint8))
+		u, err := strconv.ParseUint(val.(string), 10, 8)
+		if err != nil {
+			return err
+		}
+		b.Append(uint8(u))
 	case *array.Uint16Builder:
-		b.Append(val.(uint16))
+		u, err := strconv.ParseUint(val.(string), 10, 16)
+		if err != nil {
+			return err
+		}
+		b.Append(uint16(u))
 	case *array.Uint32Builder:
-		b.Append(val.(uint32))
+		u, err := strconv.ParseUint(val.(string), 10, 32)
+		if err != nil {
+			return err
+		}
+		b.Append(uint32(u))
 	case *array.Uint64Builder:
-		b.Append(val.(uint64))
+		u, err := strconv.ParseUint(val.(string), 10, 64)
+		if err != nil {
+			return err
+		}
+		b.Append(u)
 	case *array.Float32Builder:
 		b.Append(val.(float32))
 	case *array.Float64Builder:
@@ -58,7 +91,17 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case array.ListLikeBuilder:
 		b.Append(true)
 		valBuilder := b.ValueBuilder()
-		for _, v := range val.([]any) {
+		s := val.(string)
+		var values []string
+		if strings.HasPrefix(s, "[\n  \"") {
+			values = snowflakeStrToArray(s)
+		} else if strings.HasPrefix(s, "[\n  ") {
+			values = snowflakeStrToIntArray(s)
+		} else {
+			return fmt.Errorf("unknown array format %s", s)
+		}
+		
+		for _, v := range values {
 			if err := c.reverseTransform(f, valBuilder, v); err != nil {
 				return err
 			}
@@ -78,7 +121,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 func (c *Client) reverseTransformer(sc *arrow.Schema, values []any) (arrow.Record, error) {
 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 	for i, f := range sc.Fields() {
-		if err := c.reverseTransform(f, bldr.Field(i), values[i]); err != nil {
+		if err := c.reverseTransform(f, bldr.Field(i), *values[i].(*any)); err != nil {
 			return nil, err
 		}
 	}

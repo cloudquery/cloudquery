@@ -20,8 +20,6 @@ func (c *Client) SchemaTypeToSnowflake(t arrow.DataType) string {
 		return "text"
 	case *arrow.BinaryType, *arrow.LargeBinaryType:
 		return "binary"
-	case *types.UUIDType:
-		return "uuid"
 	case *arrow.TimestampType:
 		return "timestamp_ntz"
 	case *types.JSONType, *arrow.StructType:
