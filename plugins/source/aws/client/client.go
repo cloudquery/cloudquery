@@ -228,10 +228,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 				return err
 			}
 			initLock.Lock()
+			defer initLock.Unlock()
 			for _, details := range svcsDetail {
 				client.ServicesManager.InitServices(details)
 			}
-			defer initLock.Unlock()
 			return nil
 		})
 	}
