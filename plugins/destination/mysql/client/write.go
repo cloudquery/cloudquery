@@ -30,7 +30,10 @@ func getInsertQueryBuild(table *arrow.Schema) *strings.Builder {
 
 func (c *Client) writeResources(ctx context.Context, query string, resources []arrow.Record) error {
 	for _, data := range resources {
-		transformedRecords := transformRecord(data)
+		transformedRecords, err := transformRecord(data)
+		if err != nil {
+			return err
+		}
 		for _, transformedRecord := range transformedRecords {
 			_, err := c.db.ExecContext(ctx, query, transformedRecord...)
 			data.Release()
@@ -68,6 +71,6 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, resou
 	case specs.WriteModeOverwrite, specs.WriteModeOverwriteDeleteStale:
 		return c.overwriteTableBatch(ctx, table, resources)
 	default:
-		panic("unsupported write mode " + c.spec.WriteMode.String())
+		return fmt.Errorf("unsupported write mode %s", c.spec.WriteMode.String())
 	}
 }

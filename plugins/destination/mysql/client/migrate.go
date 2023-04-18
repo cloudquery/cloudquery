@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/specs"
 )
 
-func normalizeSchemas(tables schema.Schemas) schema.Schemas {
+func normalizeSchemas(tables schema.Schemas) (schema.Schemas, error) {
 	var normalized schema.Schemas
 	for _, sc := range tables {
 		tableName := schema.TableName(sc)
@@ -28,7 +28,7 @@ func normalizeSchemas(tables schema.Schemas) schema.Schemas {
 			}
 			normalizedType, err := mySQLTypeToArrowType(tableName, f.Name, arrowTypeToMySqlStr(f.Type))
 			if err != nil {
-				panic(err)
+				return nil, err
 			}
 			fields = append(fields, arrow.Field{
 				Name:     f.Name,
@@ -42,7 +42,7 @@ func normalizeSchemas(tables schema.Schemas) schema.Schemas {
 		normalized = append(normalized, arrow.NewSchema(fields, &md))
 	}
 
-	return normalized
+	return normalized, nil
 }
 
 func (c *Client) nonAutoMigrtableTables(tables schema.Schemas, schemaTables schema.Schemas) (names []string, changes [][]schema.FieldChange) {
@@ -99,7 +99,10 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {
 		return err
 	}
 
-	normalizedTables := normalizeSchemas(tables)
+	normalizedTables, err := normalizeSchemas(tables)
+	if err != nil {
+		return err
+	}
 
 	if c.spec.MigrateMode != specs.MigrateModeForced {
 		nonAutoMigrtableTables, changes := c.nonAutoMigrtableTables(normalizedTables, schemaTables)

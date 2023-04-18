@@ -162,7 +162,7 @@ func reverseTransform(table *arrow.Schema, values []any) (arrow.Record, error) {
 			} else {
 				asUUID, err := uuid.FromBytes(*val.(*[]byte))
 				if err != nil {
-					panic(err)
+					return nil, err
 				}
 				recordBuilder.Field(i).(*types.UUIDBuilder).Append(asUUID)
 			}
