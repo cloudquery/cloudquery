@@ -2,99 +2,14 @@ package client
 
 import (
 	"context"
-	"errors"
-	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
-	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 	"github.com/rs/zerolog"
 )
-
-type svcsDetail struct {
-	partition string
-	accountId string
-	region    string
-	svcs      Services
-}
-
-func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec, adminAccountSts AssumeRoleAPIClient, account Account) ([]svcsDetail, error) {
-	if account.AccountName == "" {
-		account.AccountName = account.ID
-	}
-
-	logger = logger.With().Str("account", account.AccountName).Logger()
-
-	localRegions := account.Regions
-	if len(localRegions) == 0 {
-		localRegions = awsPluginSpec.Regions
-	}
-
-	if err := verifyRegions(localRegions); err != nil {
-		return nil, err
-	}
-
-	c.specificRegions = true
-	if isAllRegions(localRegions) {
-		logger.Info().Msg("All regions specified in `cloudquery.yml`. Assuming all regions")
-		c.specificRegions = false
-	}
-
-	awsCfg, err := configureAwsSDK(ctx, logger, awsPluginSpec, account, adminAccountSts)
-	if err != nil {
-		if account.source == "org" {
-			logger.Warn().Msg("Unable to assume role in account")
-			return nil, nil
-		}
-		var ae smithy.APIError
-		if errors.As(err, &ae) {
-			if strings.Contains(ae.ErrorCode(), "AccessDenied") {
-				logger.Warn().Str("account", account.AccountName).Err(err).Msg("Access denied for account")
-				return nil, nil
-			}
-		}
-		if errors.Is(err, errRetrievingCredentials) {
-			logger.Warn().Str("account", account.AccountName).Err(err).Msg("Could not retrieve credentials for account")
-			return nil, nil
-		}
-
-		return nil, err
-	}
-	account.Regions = findEnabledRegions(ctx, logger, account.AccountName, ec2.NewFromConfig(awsCfg), localRegions, account.DefaultRegion)
-	if len(account.Regions) == 0 {
-		logger.Warn().Str("account", account.AccountName).Err(err).Msg("No enabled regions provided in config for account")
-		return nil, nil
-	}
-	awsCfg.Region = account.Regions[0]
-	output, err := getAccountId(ctx, awsCfg)
-	if err != nil {
-		return nil, err
-	}
-	iamArn, err := arn.Parse(*output.Arn)
-	if err != nil {
-		return nil, err
-	}
-	svcsDetails := make([]svcsDetail, len(account.Regions)+1)
-	for i, region := range account.Regions {
-		svcsDetails[i] = svcsDetail{
-			partition: iamArn.Partition,
-			accountId: *output.Account,
-			region:    region,
-			svcs:      initServices(region, awsCfg),
-		}
-	}
-
-	svcsDetails[len(account.Regions)] = svcsDetail{
-		partition: iamArn.Partition,
-		accountId: *output.Account,
-		svcs:      initServices(cloudfrontScopeRegion, awsCfg),
-	}
-	return svcsDetails, nil
-}
 
 func findEnabledRegions(ctx context.Context, logger zerolog.Logger, accountName string, ec2Client services.Ec2Client, localRegions []string, accountDefaultRegion string) []string {
 	// By default we should use the default region (us-east-1)
