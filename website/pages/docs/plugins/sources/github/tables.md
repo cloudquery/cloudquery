@@ -17,6 +17,7 @@
 - [github_repositories](tables/github_repositories)
   - [github_releases](tables/github_releases)
     - [github_release_assets](tables/github_release_assets)
+  - [github_repository_branches](tables/github_repository_branches)
   - [github_repository_dependabot_alerts](tables/github_repository_dependabot_alerts)
   - [github_repository_dependabot_secrets](tables/github_repository_dependabot_secrets)
 - [github_teams](tables/github_teams)

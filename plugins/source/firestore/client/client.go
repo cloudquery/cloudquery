@@ -5,21 +5,21 @@ import (
 	"fmt"
 
 	"cloud.google.com/go/firestore"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 	"google.golang.org/api/option"
 )
 
 type Client struct {
-	logger           zerolog.Logger
-	metrics          *source.Metrics
-	Tables           schema.Tables
-	client           *firestore.Client
-	maxBatchSize     int
-	orderByField     string
-	orderByDirection string
+	logger         zerolog.Logger
+	metrics        *source.Metrics
+	Tables         schema.Tables
+	client         *firestore.Client
+	maxBatchSize   int
+	orderBy        string
+	orderDirection string
 }
 
 var _ schema.ClientMeta = (*Client)(nil)
@@ -57,9 +57,11 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	}
 	zctx := logger.With().Str("module", "firestore-source")
 	c := &Client{
-		logger:       zctx.Logger(),
-		client:       client,
-		maxBatchSize: firestoreSpec.MaxBatchSize,
+		logger:         zctx.Logger(),
+		client:         client,
+		maxBatchSize:   firestoreSpec.MaxBatchSize,
+		orderBy:        firestoreSpec.OrderBy,
+		orderDirection: firestoreSpec.OrderDirection,
 	}
 
 	c.Tables, err = c.listTables(ctx, client)

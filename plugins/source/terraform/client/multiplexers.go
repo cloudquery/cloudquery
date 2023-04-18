@@ -1,6 +1,6 @@
 package client
 
-import "github.com/cloudquery/plugin-sdk/schema"
+import "github.com/cloudquery/plugin-sdk/v2/schema"
 
 // BackendMultiplex add the ability to handle multiple backends in the same fetch
 func BackendMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
