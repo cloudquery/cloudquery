@@ -15,7 +15,7 @@ import (
 )
 
 // Parses org configuration and grabs the appropriate accounts
-func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsPluginSpec Spec) ([]Account, AssumeRoleAPIClient, error) {
+func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec) ([]Account, AssumeRoleAPIClient, error) {
 	// If user doesn't specify any configs for admin account instantiate default values
 	if awsPluginSpec.Organization.AdminAccount == nil {
 		awsPluginSpec.Organization.AdminAccount = &Account{
