@@ -10,15 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/specs"
 )
 
-func releaseRecords(records <-chan arrow.Record) {
-	for record := range records {
-		record.Release()
-	}
-}
-
 func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan arrow.Record) error {
-	defer releaseRecords(res)
-
 	var sql string
 	for r := range res {
 		if c.spec.WriteMode == specs.WriteModeAppend {
