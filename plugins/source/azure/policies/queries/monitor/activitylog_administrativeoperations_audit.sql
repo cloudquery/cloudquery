@@ -23,14 +23,15 @@ WITH alert_condition AS (
 	GROUP BY
 		subscription_id
 	)
-insert into azure_policy_results
+INSERT INTO azure_policy_results (execution_time, framework, check_id, title, subscription_id, resource_id, status)
 SELECT
   :'execution_time',
   :'framework',
   :'check_id',
   'An activity log alert should exist for specific Administrative operations',
   sub.id,
-  sub.id
+  sub.id,
+  'UNKNOWN'
 FROM
     azure_subscription_subscriptions sub
 	LEFT JOIN alert_condition A ON sub.id = A.subscription_id

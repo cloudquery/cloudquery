@@ -1,11 +1,12 @@
-insert into azure_policy_results
+INSERT INTO azure_policy_results (execution_time, framework, check_id, title, subscription_id, resource_id, status)
 SELECT
   :'execution_time',
   :'framework',
   :'check_id',
   'Latest TLS version should be used in your API App',
   subscription_id,
-  id
+  id,
+  'UNKNOWN'
 FROM azure_appservice_web_apps
 WHERE
   kind LIKE '%api'
