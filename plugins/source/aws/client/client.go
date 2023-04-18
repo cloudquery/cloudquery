@@ -372,7 +372,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 	}
 
 	initLock := sync.Mutex{}
-
 	errorGroup, gtx := errgroup.WithContext(ctx)
 	errorGroup.SetLimit(awsPluginSpec.InitializationConcurrency)
 	for _, account := range awsPluginSpec.Accounts {
@@ -412,6 +411,8 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 	if account.AccountName == "" {
 		account.AccountName = account.ID
 	}
+
+	logger = logger.With().Str("account", account.AccountName).Logger()
 
 	localRegions := account.Regions
 	if len(localRegions) == 0 {
