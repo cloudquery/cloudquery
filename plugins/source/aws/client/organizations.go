@@ -42,7 +42,7 @@ func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsPluginSpec *
 }
 
 // Load accounts from the appropriate endpoint as well as normalizing response
-func loadAccounts(ctx context.Context, awsPluginSpec Spec, accountsApi services.OrganizationsClient) ([]Account, error) {
+func loadAccounts(ctx context.Context, awsPluginSpec *Spec, accountsApi services.OrganizationsClient) ([]Account, error) {
 	var rawAccounts []orgTypes.Account
 	var err error
 	if len(awsPluginSpec.Organization.OrganizationUnits) > 0 {

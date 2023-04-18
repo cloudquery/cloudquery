@@ -359,7 +359,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 
 	if awsPluginSpec.Organization != nil {
 		var err error
-		awsPluginSpec.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, awsPluginSpec)
+		awsPluginSpec.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, &awsPluginSpec)
 		if err != nil {
 			logger.Error().Err(err).Msg("error getting child accounts")
 			return nil, err
@@ -377,7 +377,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 	for _, account := range awsPluginSpec.Accounts {
 		account := account
 		errorGroup.Go(func() error {
-			svcsDetail, err := client.setupAWSAccount(gtx, logger, awsPluginSpec, adminAccountSts, account)
+			svcsDetail, err := client.setupAWSAccount(gtx, logger, &awsPluginSpec, adminAccountSts, account)
 			if err != nil {
 				return err
 			}
@@ -407,7 +407,7 @@ type svcsDetail struct {
 	svcs      Services
 }
 
-func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, awsPluginSpec Spec, adminAccountSts AssumeRoleAPIClient, account Account) ([]svcsDetail, error) {
+func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec, adminAccountSts AssumeRoleAPIClient, account Account) ([]svcsDetail, error) {
 	if account.AccountName == "" {
 		account.AccountName = account.ID
 	}
