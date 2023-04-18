@@ -20,11 +20,11 @@ func transformArr(arr arrow.Array) []any {
 		case *array.Int32:
 			pgArr[i] = int64(a.Value(i))
 		case *array.Int64:
-			pgArr[i] = int64(a.Value(i))
+			pgArr[i] = a.Value(i)
 		case *array.Float32:
 			pgArr[i] = float64(a.Value(i))
 		case *array.Float64:
-			pgArr[i] = float64(a.Value(i))
+			pgArr[i] = a.Value(i)
 		case *array.Binary:
 			pgArr[i] = a.Value(i)
 		case *array.LargeBinary:

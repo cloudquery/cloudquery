@@ -3,16 +3,12 @@ package client
 import (
 	"context"
 	"fmt"
-	"net"
-	"net/netip"
 	"time"
 
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"
 	"github.com/apache/arrow/go/v12/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/types"
-	"github.com/google/uuid"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
@@ -36,7 +32,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.Int32Builder:
 		b.Append(int32(val.(int64)))
 	case *array.Int64Builder:
-		b.Append(int64(val.(int64)))
+		b.Append(val.(int64))
 	case *array.Uint8Builder:
 		b.Append(uint8(val.(int64)))
 	case *array.Uint16Builder:
@@ -61,28 +57,6 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		b.Append(val.([]byte))
 	case *array.TimestampBuilder:
 		b.Append(arrow.Timestamp(val.(time.Time).UnixMicro()))
-	case *types.UUIDBuilder:
-		va, ok := val.([16]byte)
-		if !ok {
-			return fmt.Errorf("unsupported type %T with builder %T", val, bldr)
-		}
-		u, err := uuid.FromBytes(va[:])
-		if err != nil {
-			return err
-		}
-		b.Append(u)
-	case *types.JSONBuilder:
-		b.Append(val)
-	case *types.InetBuilder:
-		if v, ok := val.(netip.Prefix); ok {
-			_, ipnet, err := net.ParseCIDR(v.String())
-			if err != nil {
-				return err
-			}
-			b.Append(*ipnet)
-			return nil
-		}
-		b.Append(val.(net.IPNet))
 	case array.ListLikeBuilder:
 		b.Append(true)
 		valBuilder := b.ValueBuilder()
@@ -115,14 +89,13 @@ func (c *Client) reverseTransformer(sc *arrow.Schema, node *neo4j.Node) (arrow.R
 	return rec, nil
 }
 
-
 func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
 	tableName := schema.TableName(table)
 	stmt := fmt.Sprintf(readCypher, tableName)
 
 	session := c.LoggedSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
-	session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
+	_, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		r, err := tx.Run(ctx, stmt, map[string]any{"cq_source_name": sourceName})
 		if err != nil {
 			return nil, err
@@ -144,5 +117,8 @@ func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName strin
 		}
 		return nil, nil
 	})
+	if err != nil {
+		return err
+	}
 	return session.Close(ctx)
 }
