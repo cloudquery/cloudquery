@@ -4,7 +4,7 @@ SELECT
   :'framework',
   :'check_id',
   'Function App should only be accessible over HTTPS',
-  subscription_id
+  subscription_id,
   id,
   case
     when kind LIKE 'functionapp%' AND (properties ->> 'httpsOnly')::boolean IS NOT TRUE
