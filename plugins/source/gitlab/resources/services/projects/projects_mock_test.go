@@ -67,6 +67,23 @@ func buildProjects(mux *httprouter.Router) error {
 	mux.GET("/api/v4/projects/:projectId/repository/branches", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		fmt.Fprint(w, string(branchResp))
 	})
+
+	var projectMember *gitlab.ProjectMember
+	if err := faker.FakeObject(&projectMember, faker.WithMaxDepth(12)); err != nil {
+		return err
+	}
+
+	projectMember.ExpiresAt = &isoTime
+	projectMembers, err := json.Marshal([]*gitlab.ProjectMember{projectMember})
+	if err != nil {
+		return err
+	}
+
+	mux.GET("/api/v4/projects/:projectId/members",
+		func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+			fmt.Fprint(w, string(projectMembers))
+		})
+
 	return nil
 }
 
