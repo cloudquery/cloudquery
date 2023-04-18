@@ -3,14 +3,14 @@ module github.com/cloudquery/cloudquery/plugins/destination/neo4j
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk/v2 v2.2.2
+	github.com/apache/arrow/go/v12 v12.0.0-20230418061731-a2548a79a191
+	github.com/cloudquery/plugin-sdk/v2 v2.3.1
 	github.com/neo4j/neo4j-go-driver/v5 v5.6.0
 	github.com/rs/zerolog v1.29.0
 )
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/apache/arrow/go/v12 v12.0.0-20230418061731-a2548a79a191 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/goccy/go-json v0.9.11 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
