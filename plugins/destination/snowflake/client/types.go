@@ -1,46 +1,32 @@
 package client
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/plugin-sdk/v2/types"
 )
 
-func (*Client) SchemaTypeToSnowflake(t schema.ValueType) string {
-	switch t {
-	case schema.TypeBool:
+func (c *Client) SchemaTypeToSnowflake(t arrow.DataType) string {
+	switch t.(type) {
+	case *arrow.ListType, *arrow.FixedSizeListType:
+		return "array"
+	case *arrow.BooleanType:
 		return "boolean"
-	case schema.TypeInt:
+	case *arrow.Int8Type, *arrow.Uint8Type, *arrow.Int16Type, *arrow.Uint16Type,
+		*arrow.Int32Type, *arrow.Uint32Type, *arrow.Int64Type, *arrow.Uint64Type:
 		return "number"
-	case schema.TypeFloat:
+	case *arrow.Float32Type, *arrow.Float64Type:
 		return "float"
-	case schema.TypeUUID:
+	case *arrow.StringType, *arrow.LargeStringType:
 		return "text"
-	case schema.TypeString:
-		return "text"
-	case schema.TypeByteArray:
+	case *arrow.BinaryType, *arrow.LargeBinaryType:
 		return "binary"
-	case schema.TypeStringArray:
-		return "array"
-	case schema.TypeTimestamp:
+	case *types.UUIDType:
+		return "uuid"
+	case *arrow.TimestampType:
 		return "timestamp_ntz"
-	case schema.TypeJSON:
+	case *types.JSONType, *arrow.StructType:
 		return "variant"
-	case schema.TypeUUIDArray:
-		return "array"
-	case schema.TypeCIDR:
-		return "text"
-	case schema.TypeCIDRArray:
-		return "array"
-	case schema.TypeMacAddr:
-		return "text"
-	case schema.TypeMacAddrArray:
-		return "array"
-	case schema.TypeInet:
-		return "text"
-	case schema.TypeInetArray:
-		return "array"
-	case schema.TypeIntArray:
-		return "array"
 	default:
-		panic("unknown type")
+		return "text"
 	}
 }

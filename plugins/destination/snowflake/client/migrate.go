@@ -50,13 +50,10 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {
 				return err
 			}
 		} else {
-			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
+			c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
 			if err := c.createTableIfNotExist(ctx, table); err != nil {
 				return err
 			}
-		}
-		if err := c.Migrate(ctx, table.Relations); err != nil {
-			return err
 		}
 	}
 	return nil
@@ -87,31 +84,27 @@ func (c *Client) autoMigrateTable(_ context.Context, table *arrow.Schema) error 
 		case snowflakeColumn == nil:
 			c.logger.Debug().Str("table", tableName).Str("column", col.Name).Msg("Column doesn't exist, creating")
 			sql := "alter table " + tableName + " add column \"" + columnName + "\"" + columnType
-			fmt.Println(sql)
 			if _, err := c.db.Exec(sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, tableName, err)
 			}
 		case !strings.EqualFold(snowflakeColumn.typ, columnType):
-			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. Try dropping the column and re-running", col.Name, table.Name, columnType, snowflakeColumn.typ)
+			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. Try dropping the column and re-running", col.Name, tableName, columnType, snowflakeColumn.typ)
 		}
 	}
 	return nil
 }
 
-func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) error {
+func (c *Client) createTableIfNotExist(_ context.Context, table *arrow.Schema) error {
 	var sb strings.Builder
 	// TODO sanitize tablename
+	tableName := schema.TableName(table)
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
-	sb.WriteString(table.Name)
+	sb.WriteString(tableName)
 	sb.WriteString(" (")
-	totalColumns := len(table.Columns)
+	totalColumns := len(table.Fields())
 
-	for i, col := range table.Columns {
+	for i, col := range table.Fields() {
 		sqlType := c.SchemaTypeToSnowflake(col.Type)
-		if sqlType == "" {
-			c.logger.Warn().Str("table", table.Name).Str("column", col.Name).Msg("Column type is not supported, skipping")
-			continue
-		}
 		// TODO: sanitize column name
 		fieldDef := `"` + col.Name + `" ` + sqlType
 		if col.Name == "_cq_id" {
