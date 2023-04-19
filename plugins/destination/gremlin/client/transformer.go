@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/apache/arrow/go/v12/arrow"
@@ -38,8 +39,7 @@ func transformArr(arr arrow.Array) []any {
 		case *array.LargeString:
 			dbArr[i] = stripNulls(a.Value(i))
 		case *array.Timestamp:
-			dbArr[i] = a.Value(i).ToTime(arrow.Microsecond).Truncate(time.Millisecond)
-			//dbArr[i] = a.Value(i).ToTime(arr.DataType().(*arrow.TimestampType).Unit).Format(time.RFC3339Nano)
+			dbArr[i] = a.Value(i).ToTime(arrow.Microsecond)
 		case array.ListLike:
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)
@@ -71,8 +71,7 @@ func transformValues(r arrow.Record) []map[string]any {
 }
 
 func stripNulls(s string) string {
-	return s
-	//return strings.ReplaceAll(s, "\x00", "")
+	return strings.ReplaceAll(s, "\x00", "")
 }
 
 func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
@@ -119,12 +118,7 @@ func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 		}
 		b.Append(byteArray)
 	case *array.TimestampBuilder:
-		//ts, err := time.Parse(time.RFC3339Nano, val.(string))
-		//if err != nil {
-		//	return err
-		//}
-		//b.Append(arrow.Timestamp(ts.UnixMicro()))
-		b.Append(arrow.Timestamp(val.(time.Time).Truncate(time.Millisecond).UnixMicro()))
+		b.Append(arrow.Timestamp(val.(time.Time).UnixMicro()))
 	case array.ListLikeBuilder:
 		b.Append(true)
 		valBuilder := b.ValueBuilder()
