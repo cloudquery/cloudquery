@@ -1,127 +1,71 @@
 package client
 
 import (
-	"strings"
-
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v12/arrow/array"
 )
 
-func (*Client) TransformBool(v *schema.Bool) any {
-	if v.Status == schema.Present {
-		return v.Bool
+func transformArr(arr arrow.Array) []any {
+	dbArr := make([]any, arr.Len())
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) || !arr.IsValid(i) {
+			dbArr[i] = nil
+			continue
+		}
+		switch a := arr.(type) {
+		case *array.Boolean:
+			dbArr[i] = a.Value(i)
+		case *array.Int16:
+			dbArr[i] = int64(a.Value(i))
+		case *array.Int32:
+			dbArr[i] = int64(a.Value(i))
+		case *array.Int64:
+			dbArr[i] = a.Value(i)
+		case *array.Float32:
+			dbArr[i] = float64(a.Value(i))
+		case *array.Float64:
+			dbArr[i] = a.Value(i)
+		case *array.Binary:
+			dbArr[i] = a.Value(i)
+		case *array.LargeBinary:
+			dbArr[i] = a.Value(i)
+		case *array.String:
+			dbArr[i] = stripNulls(a.Value(i))
+		case *array.LargeString:
+			dbArr[i] = stripNulls(a.Value(i))
+		case *array.Timestamp:
+			dbArr[i] = a.Value(i).ToTime(arrow.Microsecond) //.Round(time.Millisecond)
+		case array.ListLike:
+			start, end := a.ValueOffsets(i)
+			nested := array.NewSlice(a.ListValues(), start, end)
+			dbArr[i] = transformArr(nested)
+			nested.Release()
+		default:
+			dbArr[i] = stripNulls(arr.ValueStr(i))
+		}
 	}
-	return nil
+
+	return dbArr
 }
 
-func (*Client) TransformBytea(v *schema.Bytea) any {
-	if v.Status == schema.Present {
-		return v.String()
-	}
-	return nil
-}
+func transformValues(r arrow.Record) []map[string]any {
+	results := make([]map[string]any, r.NumRows())
 
-func (*Client) TransformFloat8(v *schema.Float8) any {
-	if v.Status == schema.Present {
-		return v.Float
+	for i := range results {
+		results[i] = make(map[string]any, r.NumCols())
 	}
-	return nil
-}
-
-func (*Client) TransformInt8(v *schema.Int8) any {
-	if v.Status == schema.Present {
-		return v.Int
+	sc := r.Schema()
+	for i := 0; i < int(r.NumCols()); i++ {
+		col := r.Column(i)
+		transformed := transformArr(col)
+		for l := 0; l < col.Len(); l++ {
+			results[l][sc.Field(i).Name] = transformed[l]
+		}
 	}
-	return nil
-}
-
-func (*Client) TransformInt8Array(v *schema.Int8Array) any {
-	if v.Status == schema.Present {
-		return v.String()
-	}
-	return nil
-}
-
-func (*Client) TransformJSON(v *schema.JSON) any {
-	if v.Status == schema.Present {
-		return string(v.Bytes)
-	}
-	return nil
-}
-
-func (*Client) TransformText(v *schema.Text) any {
-	if v.Status == schema.Present {
-		return stripNulls(v.String())
-	}
-	return nil
-}
-
-func (*Client) TransformTextArray(v *schema.TextArray) any {
-	return stripNulls(v.String())
-}
-
-func (*Client) TransformTimestamptz(v *schema.Timestamptz) any {
-	if v.Status == schema.Present {
-		return v.Time
-	}
-	return nil
-}
-
-func (*Client) TransformUUID(v *schema.UUID) any {
-	if v.Status == schema.Present {
-		return v.String()
-	}
-	return nil
-}
-
-func (*Client) TransformUUIDArray(v *schema.UUIDArray) any {
-	if v.Status == schema.Present {
-		return v.String()
-	}
-	return nil
-}
-
-func (*Client) TransformCIDR(v *schema.CIDR) any {
-	if v.Status == schema.Present {
-		return v.String()
-	}
-	return nil
-}
-
-func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
-	if v.Status == schema.Present {
-		return v.String()
-	}
-	return nil
-}
-
-func (*Client) TransformInet(v *schema.Inet) any {
-	if v.Status == schema.Present {
-		return v.String()
-	}
-	return nil
-}
-
-func (*Client) TransformInetArray(v *schema.InetArray) any {
-	if v.Status == schema.Present {
-		return v.String()
-	}
-	return nil
-}
-
-func (*Client) TransformMacaddr(v *schema.Macaddr) any {
-	if v.Status == schema.Present {
-		return v.String()
-	}
-	return nil
-}
-
-func (*Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
-	if v.Status == schema.Present {
-		return v.String()
-	}
-	return nil
+	return results
 }
 
 func stripNulls(s string) string {
-	return strings.ReplaceAll(s, "\x00", "")
+	return s
+	//return strings.ReplaceAll(s, "\x00", "")
 }
