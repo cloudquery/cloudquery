@@ -34,8 +34,9 @@ func TestDataTable() *schema.Table {
 	}()
 
 	dataAsMap := make(map[string]any)
-	for i, c := range table.Columns {
-		dataAsMap[c.Name] = records[0].Column(i).String()
+	record := records[0]
+	for i, col := range record.Columns() {
+		dataAsMap[record.ColumnName(i)] = col.ValueStr(0)
 	}
 
 	table.Description = "Testdata table"
