@@ -224,9 +224,11 @@ func TestPlugin(t *testing.T) {
 	for i, v := range gotData {
 		actualStrings[i] = v.String()
 	}
-	expectedStrings := make([]string, data[0].NumCols())
-	for i, col := range data[0].Columns() {
-		expectedStrings[i] = col.ValueStr(0)
+	dataCQ, err := (&client.Transformer{}).RecordToCQTypes(testTable, data[0])
+	require.NoError(t, err)
+	expectedStrings := make([]string, len(dataCQ))
+	for i, val := range dataCQ {
+		expectedStrings[i] = val.String()
 	}
 	require.Equal(t, expectedStrings, actualStrings)
 }
