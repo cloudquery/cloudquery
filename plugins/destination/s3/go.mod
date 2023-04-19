@@ -8,15 +8,15 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.20
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.61
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.31.2
-	github.com/cloudquery/filetypes/v2 v2.0.0
-	github.com/cloudquery/plugin-sdk/v2 v2.3.0
+	github.com/cloudquery/filetypes/v2 v2.0.1
+	github.com/cloudquery/plugin-sdk/v2 v2.3.2
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
 	github.com/stretchr/testify v1.8.2
 )
 
-replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230417154311-f9add0212acd
+replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230419074556-00ceafa3b033
 
 require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
