@@ -20,7 +20,7 @@ func sortKeys(table *arrow.Schema) []string {
 }
 
 func CreateTable(table *arrow.Schema, cluster string, engine *Engine) (string, error) {
-	definitions, err := typeconv.FieldDefinitions(table.Fields()...)
+	definitions, err := typeconv.CHDefinitions(table.Fields()...)
 	if err != nil {
 		return "", err
 	}

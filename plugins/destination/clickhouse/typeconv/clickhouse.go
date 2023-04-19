@@ -52,7 +52,7 @@ func chArrayType(list arrow.DataType) (string, error) {
 
 func chStructType(_struct *arrow.StructType) (string, error) {
 	// https://clickhouse.com/docs/en/sql-reference/data-types/tuple
-	fields, err := FieldDefinitions(_struct.Fields()...)
+	fields, err := CHDefinitions(_struct.Fields()...)
 	if err != nil {
 		return "", err
 	}
@@ -210,7 +210,7 @@ func fieldDefinition(field arrow.Field) (string, error) {
 	return util.SanitizeID(field.Name) + " " + fieldType, err
 }
 
-func FieldDefinitions(fields ...arrow.Field) ([]string, error) {
+func CHDefinitions(fields ...arrow.Field) ([]string, error) {
 	res := make([]string, len(fields))
 	for i, field := range fields {
 		fieldDef, err := fieldDefinition(field)
