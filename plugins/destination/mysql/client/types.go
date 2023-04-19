@@ -16,7 +16,6 @@ func mySQLTypeToArrowType(tableName string, columnName string, sqlType string) (
 		return arrow.FixedWidthTypes.Timestamp_us, nil
 	}
 	sqlTypeToSchemaType := map[string]arrow.DataType{
-		"bool":              arrow.FixedWidthTypes.Boolean,
 		"tinyint(1)":        arrow.FixedWidthTypes.Boolean,
 		"tinyint":           arrow.PrimitiveTypes.Int8,
 		"smallint":          arrow.PrimitiveTypes.Int16,
@@ -48,7 +47,9 @@ func mySQLTypeToArrowType(tableName string, columnName string, sqlType string) (
 func arrowTypeToMySqlStr(t arrow.DataType) string {
 	switch t.(type) {
 	case *arrow.BooleanType:
-		return "bool"
+		// we can use `bool` which is an alias for `tinyint(1)` but since MySQL information schema returns `tinyint(1)` we use it here as well
+		// to be aligned with `mySQLTypeToArrowType`
+		return "tinyint(1)"
 	case *arrow.Int8Type:
 		return "tinyint"
 	case *arrow.Int16Type:
