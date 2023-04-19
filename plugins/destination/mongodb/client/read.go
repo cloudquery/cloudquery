@@ -4,111 +4,107 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v12/arrow/array"
+	"github.com/apache/arrow/go/v12/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/types"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func (*Client) createResultsArray(res bson.M, table *schema.Table) []any {
-	results := make([]any, 0, len(table.Columns))
-	for _, col := range table.Columns {
-		val := res[col.Name]
-		if val == nil {
-			results = append(results, nil)
-			continue
+func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
+	if val == nil {
+		bldr.AppendNull()
+		return nil
+	}
+	switch b := bldr.(type) {
+	case *array.BooleanBuilder:
+		b.Append(val.(bool))
+	case *array.Int8Builder:
+		b.Append(val.(int8))
+	case *array.Int16Builder:
+		b.Append(val.(int16))
+	case *array.Int32Builder:
+		b.Append(val.(int32))
+	case *array.Int64Builder:
+		b.Append(val.(int64))
+	case *array.Uint8Builder:
+		b.Append(val.(uint8))
+	case *array.Uint16Builder:
+		b.Append(val.(uint16))
+	case *array.Uint32Builder:
+		b.Append(val.(uint32))
+	case *array.Uint64Builder:
+		b.Append(val.(uint64))
+	case *array.Float32Builder:
+		b.Append(val.(float32))
+	case *array.Float64Builder:
+		b.Append(val.(float64))
+	case *array.StringBuilder:
+		b.Append(val.(string))
+	case *array.LargeStringBuilder:
+		b.Append(val.(string))
+	case *array.BinaryBuilder:
+		b.Append(val.(primitive.Binary).Data)
+	case *array.TimestampBuilder:
+		b.Append(arrow.Timestamp((val).(primitive.DateTime).Time().UTC().UnixMicro()))
+	case *types.JSONBuilder:
+		b.Append(val.(primitive.M))
+	case array.ListLikeBuilder:
+		b.Append(true)
+		valBuilder := b.ValueBuilder()
+		for _, v := range val.(primitive.A) {
+			if err := c.reverseTransform(f, valBuilder, v); err != nil {
+				return err
+			}
 		}
-		switch col.Type {
-		case schema.TypeBool:
-			r := (val).(bool)
-			results = append(results, r)
-		case schema.TypeInt:
-			r := (val).(int64)
-			results = append(results, r)
-		case schema.TypeFloat:
-			r := (val).(float64)
-			results = append(results, r)
-		case schema.TypeUUID:
-			r := (val).(string)
-			results = append(results, r)
-		case schema.TypeString:
-			r := (val).(string)
-			results = append(results, r)
-		case schema.TypeByteArray:
-			r := (val).(primitive.Binary).Data
-			results = append(results, r)
-		case schema.TypeStringArray:
-			r := make([]string, len((val).(primitive.A)))
-			for i, v := range (val).(primitive.A) {
-				r[i] = v.(string)
-			}
-			results = append(results, r)
-		case schema.TypeTimestamp:
-			r := (val).(primitive.DateTime).Time().UTC()
-			results = append(results, r)
-		case schema.TypeJSON:
-			r := (val).(primitive.M)
-			results = append(results, r)
-		case schema.TypeUUIDArray:
-			r := make([]string, len((val).(primitive.A)))
-			for i, v := range (val).(primitive.A) {
-				r[i] = v.(string)
-			}
-			results = append(results, r)
-		case schema.TypeCIDR:
-			r := (val).(string)
-			results = append(results, r)
-		case schema.TypeCIDRArray:
-			r := make([]string, len((val).(primitive.A)))
-			for i, v := range (val).(primitive.A) {
-				r[i] = v.(string)
-			}
-			results = append(results, r)
-		case schema.TypeMacAddr:
-			r := (val).(string)
-			results = append(results, r)
-		case schema.TypeMacAddrArray:
-			r := make([]string, len((val).(primitive.A)))
-			for i, v := range (val).(primitive.A) {
-				r[i] = v.(string)
-			}
-			results = append(results, r)
-		case schema.TypeInet:
-			r := (val).(string)
-			results = append(results, r)
-		case schema.TypeInetArray:
-			r := make([]string, len((val).(primitive.A)))
-			for i, v := range (val).(primitive.A) {
-				r[i] = v.(string)
-			}
-			results = append(results, r)
-		case schema.TypeIntArray:
-			r := make([]int64, len((val).(primitive.A)))
-			for i, v := range (val).(primitive.A) {
-				r[i] = v.(int64)
-			}
-			results = append(results, r)
+	default:
+		v, ok := val.(string)
+		if !ok {
+			return fmt.Errorf("unsupported type %T with builder %T", val, bldr)
+		}
+		if err := bldr.AppendValueFromString(v); err != nil {
+			return err
 		}
 	}
-	return results
+	return nil
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
-	cur, err := c.client.Database(c.pluginSpec.Database).Collection(table.Name).Find(
+func (c *Client) reverseTransformer(sc *arrow.Schema, values primitive.M) (arrow.Record, error) {
+	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
+	for i, f := range sc.Fields() {
+		if err := c.reverseTransform(f, bldr.Field(i), values[sc.Field(i).Name]); err != nil {
+			return nil, err
+		}
+	}
+	rec := bldr.NewRecord()
+	bldr.Release()
+	return rec, nil
+}
+
+func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
+	tableName := schema.TableName(table)
+	cur, err := c.client.Database(c.pluginSpec.Database).Collection(tableName).Find(
 		ctx,
 		bson.M{"_cq_source_name": sourceName},
 		options.Find().SetSort(bson.M{"_cq_sync_time": 1}))
 	if err != nil {
-		return fmt.Errorf("failed to read table %s: %w", table.Name, err)
+		return fmt.Errorf("failed to read table %s: %w", tableName, err)
 	}
 	for cur.Next(ctx) {
 		var result bson.M
 		err := cur.Decode(&result)
 		if err != nil {
-			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
+			return fmt.Errorf("failed to read from table %s: %w", tableName, err)
 		}
-		values := c.createResultsArray(result, table)
-		res <- values
+		rec, err := c.reverseTransformer(table, result)
+		if err != nil {
+			return fmt.Errorf("failed to read from table %s: %w", tableName, err)
+		}
+		// values := c.createResultsArray(result, table)
+		res <- rec
 	}
 	return nil
 }
