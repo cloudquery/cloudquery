@@ -22,11 +22,35 @@ func (*Client) createResultsArray(table *arrow.Schema) []any {
 		case *arrow.BooleanType:
 			var r sql.NullBool
 			results = append(results, &r)
-		case *arrow.Int8Type, *arrow.Uint8Type, *arrow.Int16Type, *arrow.Uint16Type, *arrow.Int32Type, *arrow.Uint32Type, *arrow.Int64Type, *arrow.Uint64Type:
-			var r sql.NullInt64
+		case *arrow.Int8Type:
+			var r *int8
 			results = append(results, &r)
-		case *arrow.Float16Type, *arrow.Float32Type, *arrow.Float64Type:
-			var r sql.NullFloat64
+		case *arrow.Uint8Type:
+			var r *uint8
+			results = append(results, &r)
+		case *arrow.Int16Type:
+			var r *int16
+			results = append(results, &r)
+		case *arrow.Uint16Type:
+			var r *uint16
+			results = append(results, &r)
+		case *arrow.Int32Type:
+			var r *int32
+			results = append(results, &r)
+		case *arrow.Uint32Type:
+			var r *uint32
+			results = append(results, &r)
+		case *arrow.Int64Type:
+			var r *int64
+			results = append(results, &r)
+		case *arrow.Uint64Type:
+			var r *uint64
+			results = append(results, &r)
+		case *arrow.Float32Type:
+			var r *float32
+			results = append(results, &r)
+		case *arrow.Float64Type:
+			var r *float64
 			results = append(results, &r)
 		case *arrow.StringType, *arrow.LargeStringType:
 			var r sql.NullString
@@ -60,74 +84,74 @@ func reverseTransform(table *arrow.Schema, values []any) (arrow.Record, error) {
 				recordBuilder.Field(i).(*array.BooleanBuilder).AppendNull()
 			}
 		case *arrow.Int8Type:
-			v := val.(*sql.NullInt64)
-			if !v.Valid {
+			v := val.(**int8)
+			if *v == nil {
 				recordBuilder.Field(i).AppendNull()
 			} else {
-				recordBuilder.Field(i).(*array.Int8Builder).Append(int8(v.Int64))
+				recordBuilder.Field(i).(*array.Int8Builder).Append(**v)
 			}
 		case *arrow.Int16Type:
-			v := val.(*sql.NullInt64)
-			if !v.Valid {
+			v := val.(**int16)
+			if *v == nil {
 				recordBuilder.Field(i).AppendNull()
 			} else {
-				recordBuilder.Field(i).(*array.Int16Builder).Append(int16(v.Int64))
+				recordBuilder.Field(i).(*array.Int16Builder).Append(**v)
 			}
 		case *arrow.Int32Type:
-			v := val.(*sql.NullInt64)
-			if !v.Valid {
+			v := val.(**int32)
+			if *v == nil {
 				recordBuilder.Field(i).AppendNull()
 			} else {
-				recordBuilder.Field(i).(*array.Int32Builder).Append(int32(v.Int64))
+				recordBuilder.Field(i).(*array.Int32Builder).Append(**v)
 			}
 		case *arrow.Int64Type:
-			v := val.(*sql.NullInt64)
-			if !v.Valid {
+			v := val.(**int64)
+			if *v == nil {
 				recordBuilder.Field(i).AppendNull()
 			} else {
-				recordBuilder.Field(i).(*array.Int64Builder).Append(v.Int64)
+				recordBuilder.Field(i).(*array.Int64Builder).Append(**v)
 			}
 		case *arrow.Uint8Type:
-			v := val.(*sql.NullInt64)
-			if !v.Valid {
+			v := val.(**uint8)
+			if *v == nil {
 				recordBuilder.Field(i).AppendNull()
 			} else {
-				recordBuilder.Field(i).(*array.Uint8Builder).Append(uint8(v.Int64))
+				recordBuilder.Field(i).(*array.Uint8Builder).Append(**v)
 			}
 		case *arrow.Uint16Type:
-			v := val.(*sql.NullInt64)
-			if !v.Valid {
+			v := val.(**uint16)
+			if *v == nil {
 				recordBuilder.Field(i).AppendNull()
 			} else {
-				recordBuilder.Field(i).(*array.Uint16Builder).Append(uint16(v.Int64))
+				recordBuilder.Field(i).(*array.Uint16Builder).Append(**v)
 			}
 		case *arrow.Uint32Type:
-			v := val.(*sql.NullInt64)
-			if !v.Valid {
+			v := val.(**uint32)
+			if *v == nil {
 				recordBuilder.Field(i).AppendNull()
 			} else {
-				recordBuilder.Field(i).(*array.Uint32Builder).Append(uint32(v.Int64))
+				recordBuilder.Field(i).(*array.Uint32Builder).Append(**v)
 			}
 		case *arrow.Uint64Type:
-			v := val.(*sql.NullInt64)
-			if !v.Valid {
+			v := val.(**uint64)
+			if *v == nil {
 				recordBuilder.Field(i).AppendNull()
 			} else {
-				recordBuilder.Field(i).(*array.Uint64Builder).Append(uint64(v.Int64))
+				recordBuilder.Field(i).(*array.Uint64Builder).Append(**v)
 			}
 		case *arrow.Float32Type:
-			v := val.(*sql.NullFloat64)
-			if !v.Valid {
+			v := val.(**float32)
+			if *v == nil {
 				recordBuilder.Field(i).AppendNull()
 			} else {
-				recordBuilder.Field(i).(*array.Float32Builder).Append(float32(val.(*sql.NullFloat64).Float64))
+				recordBuilder.Field(i).(*array.Float32Builder).Append(**v)
 			}
 		case *arrow.Float64Type:
-			v := val.(*sql.NullFloat64)
-			if !v.Valid {
+			v := val.(**float64)
+			if *v == nil {
 				recordBuilder.Field(i).AppendNull()
 			} else {
-				recordBuilder.Field(i).(*array.Float64Builder).Append(val.(*sql.NullFloat64).Float64)
+				recordBuilder.Field(i).(*array.Float64Builder).Append(**v)
 			}
 		case *arrow.StringType:
 			v := val.(*sql.NullString)
