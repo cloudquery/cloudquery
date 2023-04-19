@@ -5,10 +5,11 @@ import (
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/stretchr/testify/require"
 )
 
 func TestCreateTable(t *testing.T) {
-	query := CreateTable(schema.CQSchemaToArrow(&schema.Table{
+	query, err := CreateTable(schema.CQSchemaToArrow(&schema.Table{
 		Name: "table_name",
 		Columns: schema.ColumnList{
 			schema.CqIDColumn,
@@ -24,12 +25,12 @@ func TestCreateTable(t *testing.T) {
 			schema.Column{Name: "extra_inet_arr_col", Type: schema.TypeInetArray},
 		},
 	}), "", DefaultEngine())
-
+	require.NoError(t, err)
 	ensureContents(t, query, "create_table.sql")
 }
 
 func TestCreateTableOnCluster(t *testing.T) {
-	query := CreateTable(schema.CQSchemaToArrow(&schema.Table{
+	query, err := CreateTable(schema.CQSchemaToArrow(&schema.Table{
 		Name: "table_name",
 		Columns: schema.ColumnList{
 			schema.CqIDColumn,
@@ -45,12 +46,12 @@ func TestCreateTableOnCluster(t *testing.T) {
 			schema.Column{Name: "extra_inet_arr_col", Type: schema.TypeInetArray},
 		},
 	}), "my_cluster", DefaultEngine())
-
+	require.NoError(t, err)
 	ensureContents(t, query, "create_table_cluster.sql")
 }
 
 func TestCreateTableWithEngine(t *testing.T) {
-	query := CreateTable(schema.CQSchemaToArrow(&schema.Table{
+	query, err := CreateTable(schema.CQSchemaToArrow(&schema.Table{
 		Name: "table_name",
 		Columns: schema.ColumnList{
 			schema.CqIDColumn,
@@ -69,7 +70,7 @@ func TestCreateTableWithEngine(t *testing.T) {
 		Name:       "ReplicatedMergeTree",
 		Parameters: []any{"a", "b", 1, int32(2), int64(3), float32(1.2), float64(3.4), json.Number("327"), false, true},
 	})
-
+	require.NoError(t, err)
 	ensureContents(t, query, "create_table_engine.sql")
 }
 

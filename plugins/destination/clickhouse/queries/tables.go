@@ -17,13 +17,17 @@ func sortKeys(table *arrow.Schema) []string {
 	return keys
 }
 
-func CreateTable(table *arrow.Schema, cluster string, engine *Engine) string {
+func CreateTable(table *arrow.Schema, cluster string, engine *Engine) (string, error) {
+	definitions, err := chFieldsDefinitions(table.Fields())
+	if err != nil {
+		return "", err
+	}
 	strBuilder := strings.Builder{}
 	strBuilder.WriteString("CREATE TABLE ")
 	strBuilder.WriteString(tableNamePart(schema.TableName(table), cluster))
 	strBuilder.WriteString(" (\n")
 	strBuilder.WriteString("  ")
-	strBuilder.WriteString(strings.Join(fieldsDefinitions(table.Fields()), "\n  "))
+	strBuilder.WriteString(strings.Join(definitions, ",\n  "))
 	strBuilder.WriteString("\n) ENGINE = ")
 	strBuilder.WriteString(engine.String())
 	strBuilder.WriteString(" ORDER BY (")
@@ -31,7 +35,7 @@ func CreateTable(table *arrow.Schema, cluster string, engine *Engine) string {
 	strBuilder.WriteString(strings.Join(sortingKeys, ", "))
 	strBuilder.WriteString(")")
 
-	return strBuilder.String()
+	return strBuilder.String(), nil
 }
 
 func DropTable(table *arrow.Schema, cluster string) string {
