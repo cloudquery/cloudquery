@@ -4,6 +4,8 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
@@ -18,7 +20,7 @@ func sortKeys(table *arrow.Schema) []string {
 }
 
 func CreateTable(table *arrow.Schema, cluster string, engine *Engine) (string, error) {
-	definitions, err := chFieldsDefinitions(table.Fields())
+	definitions, err := typeconv.FieldDefinitions(table.Fields()...)
 	if err != nil {
 		return "", err
 	}
@@ -31,7 +33,7 @@ func CreateTable(table *arrow.Schema, cluster string, engine *Engine) (string, e
 	strBuilder.WriteString("\n) ENGINE = ")
 	strBuilder.WriteString(engine.String())
 	strBuilder.WriteString(" ORDER BY (")
-	sortingKeys := sanitized(sortKeys(table)...)
+	sortingKeys := util.Sanitized(sortKeys(table)...)
 	strBuilder.WriteString(strings.Join(sortingKeys, ", "))
 	strBuilder.WriteString(")")
 
