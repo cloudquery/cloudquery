@@ -119,16 +119,11 @@ func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 		b.Append(byteArray)
 	case *array.TimestampBuilder:
 		t := val.(time.Time).UTC()
-		switch b.Type().(*arrow.TimestampType).Unit {
-		default:
-			fallthrough
-		case arrow.Microsecond:
-			b.Append(arrow.Timestamp(t.UnixMicro()))
-		case arrow.Millisecond:
-			b.Append(arrow.Timestamp(t.UnixMilli()))
-		case arrow.Second:
-			b.Append(arrow.Timestamp(t.Unix()))
+		ts, err := arrow.TimestampFromString(t.Format(time.RFC3339Nano), b.Type().(*arrow.TimestampType).Unit)
+		if err != nil {
+			return err
 		}
+		b.Append(ts)
 	case array.ListLikeBuilder:
 		b.Append(true)
 		valBuilder := b.ValueBuilder()
