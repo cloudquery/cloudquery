@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/apache/arrow/go/v12/arrow/array"
 	"github.com/apache/arrow/go/v12/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/source/mysql/client"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
@@ -198,6 +197,16 @@ func TestPlugin(t *testing.T) {
 	if totalResources != 1 {
 		t.Fatalf("expected 1 resource, got %d", totalResources)
 	}
-	gotRecord := schema.CQTypesOneToRecord(memory.DefaultAllocator, resource.GetValues(), schema.CQSchemaToArrow(testTable))
-	require.True(t, array.RecordApproxEqual(gotRecord, data[0]))
+	gotData := resource.GetValues()
+	actualStrings := make([]string, len(gotData))
+	for i, v := range gotData {
+		actualStrings[i] = v.String()
+	}
+	expectedStrings := make([]string, len(data[0].Columns()))
+	cqData, err := (&client.Transformer{}).RecordToCQTypes(testTable, data[0])
+	require.NoError(t, err)
+	for i, v := range cqData {
+		expectedStrings[i] = v.String()
+	}
+	require.Equal(t, expectedStrings, actualStrings)
 }
