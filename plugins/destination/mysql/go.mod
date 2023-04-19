@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/apache/arrow/go/v12 v12.0.0-20230401212133-adf33cc43010
-	github.com/cloudquery/plugin-sdk/v2 v2.2.2
+	github.com/cloudquery/plugin-sdk/v2 v2.3.1
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29

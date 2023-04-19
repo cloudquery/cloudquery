@@ -33,7 +33,7 @@ func normalizeSchemas(tables schema.Schemas) (schema.Schemas, error) {
 			fields = append(fields, arrow.Field{
 				Name:     f.Name,
 				Type:     normalizedType,
-				Nullable: f.Nullable,
+				Nullable: f.Nullable && !schema.IsPk(f),
 				Metadata: arrow.NewMetadata(keys, values),
 			})
 		}
