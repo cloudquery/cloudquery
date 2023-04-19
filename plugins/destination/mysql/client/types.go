@@ -31,8 +31,6 @@ func mySQLTypeToArrowType(tableName string, columnName string, sqlType string) (
 		"double":            arrow.PrimitiveTypes.Float64,
 		"binary(16)":        types.ExtensionTypes.UUID,
 		"blob":              arrow.BinaryTypes.LargeBinary,
-		"nvarchar(255)":     types.ExtensionTypes.Inet,
-		"varchar(255)":      types.ExtensionTypes.Inet,
 		"text":              arrow.BinaryTypes.LargeString,
 		"json":              types.ExtensionTypes.JSON,
 	}
@@ -83,8 +81,6 @@ func arrowTypeToMySqlStr(t arrow.DataType) string {
 		return "json"
 	case *arrow.StructType:
 		return "json"
-	case *types.InetType, *types.MacType:
-		return "nvarchar(255)"
 	default:
 		return "text"
 	}
