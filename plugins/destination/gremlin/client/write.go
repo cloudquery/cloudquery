@@ -28,8 +28,6 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, recor
 
 	pks := schema.PrimaryKeyIndices(table)
 	if len(pks) == 0 {
-		// If no primary keys are defined, use _cq_id
-		//pks = table.FieldIndices(schema.CqIDColumn.Name)
 		// If no primary keys are defined, use all columns
 		for i := range table.Fields() {
 			pks = append(pks, i)
