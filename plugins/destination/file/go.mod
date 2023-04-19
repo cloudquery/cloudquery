@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/file
 go 1.19
 
 require (
-	github.com/cloudquery/filetypes v1.6.2
+	github.com/cloudquery/filetypes/v2 v2.0.1
 	github.com/cloudquery/plugin-sdk v1.45.0
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
