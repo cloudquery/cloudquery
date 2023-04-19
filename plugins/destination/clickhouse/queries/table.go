@@ -23,10 +23,11 @@ func ScanTableSchemas(rows driver.Rows) (schema.Schemas, error) {
 			return nil, err
 		}
 
-		def := defs[table]
-		if def == nil {
-			defs[table] = append(defs[table], typeconv.ArrowField(name, typ))
+		field, err := typeconv.ArrowField(name, typ)
+		if err != nil {
+			return nil, err
 		}
+		defs[table] = append(defs[table], *field)
 	}
 
 	res := make(schema.Schemas, 0, len(defs))

@@ -7,7 +7,7 @@ import (
 )
 
 func AddColumn(table string, cluster string, field arrow.Field) (string, error) {
-	definitions, err := typeconv.CHDefinitions(field)
+	definitions, err := typeconv.ClickHouseDefinitions(field)
 	if err != nil {
 		return "", err
 	}
