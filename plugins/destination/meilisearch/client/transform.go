@@ -1,15 +1,11 @@
 package client
 
 import (
-	"encoding/json"
 	"fmt"
-	"net"
-	"strconv"
 
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v2/types"
-	"github.com/google/uuid"
 )
 
 func timestampValues(arr *array.Timestamp) []any {
@@ -85,42 +81,14 @@ func reverseTransform(builder array.Builder, val any) error {
 		builder.Append(val.(string))
 	case *array.LargeStringBuilder:
 		builder.Append(val.(string))
-	case *array.BinaryBuilder:
-		var data []byte
-		val := val.(string)
-		if val != "null" {
-			err := json.Unmarshal([]byte(strconv.Quote(val)), &data)
-			if err != nil {
-				return err
-			}
-		}
-		builder.Append(data)
 	case *array.TimestampBuilder:
 		ts, err := arrow.TimestampFromString(val.(string), arrow.Microsecond)
 		if err != nil {
 			return err
 		}
 		builder.Append(ts)
-	case *types.InetBuilder:
-		_, ipNet, err := net.ParseCIDR(val.(string))
-		if err != nil {
-			return err
-		}
-		builder.Append(*ipNet)
 	case *types.JSONBuilder:
 		builder.Append(val)
-	case *types.MacBuilder:
-		mac, err := net.ParseMAC(val.(string))
-		if err != nil {
-			return err
-		}
-		builder.Append(mac)
-	case *types.UUIDBuilder:
-		uid, err := uuid.Parse(val.(string))
-		if err != nil {
-			return err
-		}
-		builder.Append(uid)
 	case array.ListLikeBuilder:
 		builder.Append(true)
 		valueBuilder := builder.ValueBuilder()
