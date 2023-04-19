@@ -1,17 +1,17 @@
-package queries
+package util
 
 import (
 	"strings"
 )
 
-func sanitizeID(id string) string {
+func SanitizeID(id string) string {
 	return "`" + strings.ReplaceAll(id, string([]byte{0}), ``) + "`"
 }
 
-func sanitized(elems ...string) []string {
+func Sanitized(elems ...string) []string {
 	result := make([]string, len(elems))
 	for i, column := range elems {
-		result[i] = sanitizeID(column)
+		result[i] = SanitizeID(column)
 	}
 	return result
 }

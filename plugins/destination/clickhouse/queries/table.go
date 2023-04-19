@@ -3,6 +3,7 @@ package queries
 import (
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
@@ -38,7 +39,7 @@ func ScanTableSchemas(rows driver.Rows) (schema.Schemas, error) {
 
 func tableNamePart(table, cluster string) string {
 	if len(cluster) > 0 {
-		return sanitizeID(table) + " ON CLUSTER " + sanitizeID(cluster)
+		return util.SanitizeID(table) + " ON CLUSTER " + util.SanitizeID(cluster)
 	}
-	return sanitizeID(table)
+	return util.SanitizeID(table)
 }

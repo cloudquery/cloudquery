@@ -2,18 +2,20 @@ package queries
 
 import (
 	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 )
 
 func AddColumn(table string, cluster string, field arrow.Field) (string, error) {
-	definition, err := chFieldDefinition(field)
+	definitions, err := typeconv.FieldDefinitions(field)
 	if err != nil {
 		return "", err
 	}
-	return "ALTER TABLE " + tableNamePart(table, cluster) + " ADD COLUMN " + definition, nil
+	return "ALTER TABLE " + tableNamePart(table, cluster) + " ADD COLUMN " + definitions[0], nil
 }
 
 func DropColumn(table string, cluster string, field arrow.Field) string {
-	return "ALTER TABLE " + tableNamePart(table, cluster) + " DROP COLUMN " + sanitizeID(field.Name)
+	return "ALTER TABLE " + tableNamePart(table, cluster) + " DROP COLUMN " + util.SanitizeID(field.Name)
 }
 
 func ColumnNames(fields []arrow.Field) []string {
