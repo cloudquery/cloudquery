@@ -1,4 +1,4 @@
-package queries
+package typeconv
 
 import (
 	"strings"
@@ -6,7 +6,7 @@ import (
 	"github.com/apache/arrow/go/v12/arrow"
 )
 
-func arrowField(name, typ string) arrow.Field {
+func ArrowField(name, typ string) arrow.Field {
 	field := arrow.Field{Name: name}
 	if strings.HasPrefix(typ, "Nullable(") {
 		field.Nullable = true
