@@ -77,9 +77,7 @@ func arrowTypeToMySqlStr(t arrow.DataType) string {
 		return "binary(16)"
 	case *arrow.TimestampType:
 		return "datetime(6)"
-	case *types.JSONType:
-		return "json"
-	case *arrow.StructType:
+	case *arrow.StructType, *arrow.ListType, *types.JSONType:
 		return "json"
 	default:
 		return "text"
