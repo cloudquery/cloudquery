@@ -103,7 +103,6 @@ func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName strin
 		if err != nil {
 			return fmt.Errorf("failed to read from table %s: %w", tableName, err)
 		}
-		// values := c.createResultsArray(result, table)
 		res <- rec
 	}
 	return nil
