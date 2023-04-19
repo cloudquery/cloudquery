@@ -5,7 +5,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/types"
 )
 
-func (c *Client) SchemaTypeToSnowflake(t arrow.DataType) string {
+func (*Client) SchemaTypeToSnowflake(t arrow.DataType) string {
 	switch t.(type) {
 	case *arrow.ListType, *arrow.FixedSizeListType:
 		return "array"

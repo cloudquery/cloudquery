@@ -32,7 +32,6 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, resou
 
 	for _, r := range resources {
 		arr := array.RecordToStructArray(r)
-		defer arr.Release()
 		enc := json.NewEncoder(f)
 		enc.SetEscapeHTML(false)
 		for i := 0; i < arr.Len(); i++ {
@@ -42,6 +41,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, resou
 				return err
 			}
 		}
+		arr.Release()
 		r.Release()
 	}
 

@@ -90,6 +90,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		valBuilder := b.ValueBuilder()
 		s := val.(string)
 		var values []string
+		// nolint:gocritic,revive
 		if strings.HasPrefix(s, "[\n  \"") {
 			values = snowflakeStrToArray(s)
 		} else if strings.HasPrefix(s, "[\n  ") {
