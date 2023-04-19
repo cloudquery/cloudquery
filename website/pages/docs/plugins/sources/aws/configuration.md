@@ -11,7 +11,7 @@ spec:
   name: aws
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
-  tables: ["*"]
+  tables: ["aws_s3_buckets"]
   destinations: ["DESTINATION_NAME"]
   spec: 
     # AWS Spec section described below
@@ -22,43 +22,6 @@ spec:
         local_profile: "account1"
     aws_debug: false
 ```
-
-## Skipping tables with configuration parameters
-
-Some tables document the parameters and options available to your AWS accounts and don't correspond to real resources. If you don't need these tables, the time it takes to sync can be reduced by skipping these tables: 
-
-```yaml copy
-kind: source
-spec:
-  name: aws
-  path: cloudquery/aws
-  version: "VERSION_SOURCE_AWS"
-  tables: ["*"]
-
-  # Comment out any of the following tables if you want to sync them
-  # unless otherwise indicated they are configuration parameters rather than configured resources
-  skip_tables:
-    - aws_ec2_vpc_endpoint_services # this resource includes services that are available from AWS as well as other AWS Accounts
-    - aws_cloudtrail_events
-    - aws_docdb_cluster_parameter_groups
-    - aws_docdb_engine_versions
-    - aws_ec2_instance_types
-    - aws_elasticache_engine_versions
-    - aws_elasticache_parameter_groups
-    - aws_elasticache_reserved_cache_nodes_offerings
-    - aws_elasticache_service_updates
-    - aws_iam_group_last_accessed_details
-    - aws_iam_policy_last_accessed_details
-    - aws_iam_role_last_accessed_details
-    - aws_iam_user_last_accessed_details
-    - aws_neptune_cluster_parameter_groups
-    - aws_neptune_db_parameter_groups
-    - aws_rds_cluster_parameter_groups
-    - aws_rds_db_parameter_groups
-    - aws_rds_engine_versions
-    - aws_servicequotas_services
-  destinations: ["DESTINATION_NAME"]
-``` 
 
 ## AWS Organization Example
 
@@ -71,7 +34,7 @@ spec:
   registry: github
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
-  tables: ['*']
+  tables: ['aws_s3_buckets']
   destinations: ["DESTINATION_NAME"]
   spec:
     aws_debug: false

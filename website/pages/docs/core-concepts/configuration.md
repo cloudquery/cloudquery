@@ -16,7 +16,7 @@ spec:
   name: aws
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
-  tables: ["*"]
+  tables: ["aws_s3_buckets"]
   destinations: ["postgresql"]
 ```
 
@@ -46,7 +46,7 @@ spec:
   name: gcp
   path: cloudquery/gcp
   version: "VERSION_SOURCE_GCP"
-  tables: ["*"]
+  tables: ["gcp_storage_buckets"]
   destinations: ["postgresql"]
 ```
 
@@ -66,7 +66,7 @@ spec:
   name: aws
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
-  tables: ["*"]
+  tables: ["aws_s3_buckets"]
   destinations: ["postgresql"]
 ---
 kind: destination
