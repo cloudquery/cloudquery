@@ -48,11 +48,9 @@ func getValue(arr arrow.Array, i int) (any, error) {
 			return nil, err
 		}
 		return bUUID, nil
-	case *types.JSONArray:
+	default:
 		return a.ValueStr(i), nil
 	}
-
-	return arr.ValueStr(i), nil
 }
 
 func transformRecord(record arrow.Record) ([][]any, error) {
