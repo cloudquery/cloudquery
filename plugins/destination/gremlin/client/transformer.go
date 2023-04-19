@@ -39,7 +39,7 @@ func transformArr(arr arrow.Array) []any {
 		case *array.LargeString:
 			dbArr[i] = stripNulls(a.Value(i))
 		case *array.Timestamp:
-			dbArr[i] = a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit)
+			dbArr[i] = a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit).UTC()
 		case array.ListLike:
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)
@@ -118,15 +118,16 @@ func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 		}
 		b.Append(byteArray)
 	case *array.TimestampBuilder:
+		t := val.(time.Time).UTC()
 		switch b.Type().(*arrow.TimestampType).Unit {
 		default:
 			fallthrough
 		case arrow.Microsecond:
-			b.Append(arrow.Timestamp(val.(time.Time).UnixMicro()))
+			b.Append(arrow.Timestamp(t.UnixMicro()))
 		case arrow.Millisecond:
-			b.Append(arrow.Timestamp(val.(time.Time).UnixMilli()))
+			b.Append(arrow.Timestamp(t.UnixMilli()))
 		case arrow.Second:
-			b.Append(arrow.Timestamp(val.(time.Time).Unix()))
+			b.Append(arrow.Timestamp(t.Unix()))
 		}
 	case array.ListLikeBuilder:
 		b.Append(true)
