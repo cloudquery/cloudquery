@@ -1,8 +1,12 @@
 package client
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"
+	"github.com/apache/arrow/go/v12/arrow/memory"
 )
 
 func transformArr(arr arrow.Array) []any {
@@ -34,7 +38,8 @@ func transformArr(arr arrow.Array) []any {
 		case *array.LargeString:
 			dbArr[i] = stripNulls(a.Value(i))
 		case *array.Timestamp:
-			dbArr[i] = a.Value(i).ToTime(arrow.Microsecond) //.Round(time.Millisecond)
+			dbArr[i] = a.Value(i).ToTime(arrow.Microsecond).Truncate(time.Millisecond)
+			//dbArr[i] = a.Value(i).ToTime(arr.DataType().(*arrow.TimestampType).Unit).Format(time.RFC3339Nano)
 		case array.ListLike:
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)
@@ -68,4 +73,97 @@ func transformValues(r arrow.Record) []map[string]any {
 func stripNulls(s string) string {
 	return s
 	//return strings.ReplaceAll(s, "\x00", "")
+}
+
+func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
+	if val == nil {
+		bldr.AppendNull()
+		return nil
+	}
+	switch b := bldr.(type) {
+	case *array.BooleanBuilder:
+		b.Append(val.(bool))
+	case *array.Int8Builder:
+		b.Append(int8(val.(int64)))
+	case *array.Int16Builder:
+		b.Append(int16(val.(int64)))
+	case *array.Int32Builder:
+		b.Append(int32(val.(int64)))
+	case *array.Int64Builder:
+		b.Append(val.(int64))
+	case *array.Uint8Builder:
+		b.Append(uint8(val.(int64)))
+	case *array.Uint16Builder:
+		b.Append(uint16(val.(int64)))
+	case *array.Uint32Builder:
+		b.Append(uint32(val.(int64)))
+	case *array.Uint64Builder:
+		b.Append(uint64(val.(int64)))
+	case *array.Float32Builder:
+		b.Append(float32(val.(float64)))
+	case *array.Float64Builder:
+		b.Append(val.(float64))
+	case *array.StringBuilder:
+		va, ok := val.(string)
+		if !ok {
+			return fmt.Errorf("unsupported type %T with builder %T and column %s", val, bldr, f.Name)
+		}
+		b.Append(va)
+	case *array.LargeStringBuilder:
+		b.Append(val.(string))
+	case *array.BinaryBuilder:
+		v := val.([]any)
+		byteArray := make([]byte, len(v))
+		for i := range v {
+			byteArray[i] = v[i].(uint8)
+		}
+		b.Append(byteArray)
+	case *array.TimestampBuilder:
+		//ts, err := time.Parse(time.RFC3339Nano, val.(string))
+		//if err != nil {
+		//	return err
+		//}
+		//b.Append(arrow.Timestamp(ts.UnixMicro()))
+		b.Append(arrow.Timestamp(val.(time.Time).Truncate(time.Millisecond).UnixMicro()))
+	case array.ListLikeBuilder:
+		b.Append(true)
+		valBuilder := b.ValueBuilder()
+		for _, v := range val.([]any) {
+			if err := reverseTransform(f, valBuilder, v); err != nil {
+				return err
+			}
+		}
+	default:
+		v, ok := val.(string)
+		if !ok {
+			return fmt.Errorf("unsupported type %T with builder %T", val, bldr)
+		}
+		if err := bldr.AppendValueFromString(v); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func reverseTransformer(sc *arrow.Schema, data map[any]any) (arrow.Record, error) {
+	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
+
+	for i, f := range sc.Fields() {
+		if data[f.Name] == nil {
+			if err := reverseTransform(f, bldr.Field(i), nil); err != nil {
+				return nil, err
+			}
+			continue
+		}
+		data := data[f.Name].([]any)
+		if l := len(data); l != 1 {
+			return nil, fmt.Errorf("expected 1 value for %s, got %v", f.Name, l)
+		}
+		if err := reverseTransform(f, bldr.Field(i), data[0]); err != nil {
+			return nil, err
+		}
+	}
+	rec := bldr.NewRecord()
+	bldr.Release()
+	return rec, nil
 }
