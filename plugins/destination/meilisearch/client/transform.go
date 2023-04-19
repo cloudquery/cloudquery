@@ -77,16 +77,6 @@ func reverseTransform(builder array.Builder, val any) error {
 		builder.Append(float32(val.(float64)))
 	case *array.Float64Builder:
 		builder.Append(val.(float64))
-	case *array.StringBuilder:
-		builder.Append(val.(string))
-	case *array.LargeStringBuilder:
-		builder.Append(val.(string))
-	case *array.TimestampBuilder:
-		ts, err := arrow.TimestampFromString(val.(string), arrow.Microsecond)
-		if err != nil {
-			return err
-		}
-		builder.Append(ts)
 	case *types.JSONBuilder:
 		builder.Append(val)
 	case array.ListLikeBuilder:
