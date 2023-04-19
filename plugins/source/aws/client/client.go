@@ -184,7 +184,7 @@ func (c *Client) withLanguageCode(code string) *Client {
 	return &newC
 }
 
-// This is the entrypoint into configuring the AWS plugin. It is called by the plugin initialization in resources/plugin/aws.go
+// Configure is the entrypoint into configuring the AWS plugin. It is called by the plugin initialization in resources/plugin/aws.go
 func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, opts source.Options) (schema.ClientMeta, error) {
 	var awsPluginSpec Spec
 	err := spec.UnmarshalSpec(&awsPluginSpec)
