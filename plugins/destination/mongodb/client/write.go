@@ -14,7 +14,7 @@ import (
 )
 
 func transformArr(arr arrow.Array) []any {
-	pgArr := make([]any, arr.Len())
+	dbArr := make([]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
 		if arr.IsNull(i) || !arr.IsValid(i) {
 			pgArr[i] = nil
