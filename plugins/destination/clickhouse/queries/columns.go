@@ -4,8 +4,12 @@ import (
 	"github.com/apache/arrow/go/v12/arrow"
 )
 
-func AddColumn(table string, cluster string, field arrow.Field) string {
-	return "ALTER TABLE " + tableNamePart(table, cluster) + " ADD COLUMN " + sanitizeID(field.Name) + " " + chFieldType(field)
+func AddColumn(table string, cluster string, field arrow.Field) (string, error) {
+	definition, err := chFieldDefinition(field)
+	if err != nil {
+		return "", err
+	}
+	return "ALTER TABLE " + tableNamePart(table, cluster) + " ADD COLUMN " + definition, nil
 }
 
 func DropColumn(table string, cluster string, field arrow.Field) string {
