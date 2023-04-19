@@ -17,49 +17,49 @@ func transformArr(arr arrow.Array) []any {
 	dbArr := make([]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
 		if arr.IsNull(i) || !arr.IsValid(i) {
-			pgArr[i] = nil
+			dbArr[i] = nil
 			continue
 		}
 		switch a := arr.(type) {
 		case *array.Boolean:
-			pgArr[i] = a.Value(i)
+			dbArr[i] = a.Value(i)
 		case *array.Int16:
-			pgArr[i] = a.Value(i)
+			dbArr[i] = a.Value(i)
 		case *array.Int32:
-			pgArr[i] = a.Value(i)
+			dbArr[i] = a.Value(i)
 		case *array.Int64:
-			pgArr[i] = a.Value(i)
+			dbArr[i] = a.Value(i)
 		case *array.Float32:
-			pgArr[i] = a.Value(i)
+			dbArr[i] = a.Value(i)
 		case *array.Float64:
-			pgArr[i] = a.Value(i)
+			dbArr[i] = a.Value(i)
 		case *array.Binary:
-			pgArr[i] = a.Value(i)
+			dbArr[i] = a.Value(i)
 		case *array.LargeBinary:
-			pgArr[i] = a.Value(i)
+			dbArr[i] = a.Value(i)
 		case *array.String:
-			pgArr[i] = a.Value(i)
+			dbArr[i] = a.Value(i)
 		case *array.LargeString:
-			pgArr[i] = a.Value(i)
+			dbArr[i] = a.Value(i)
 		case *array.Timestamp:
-			pgArr[i] = a.Value(i).ToTime(arrow.Microsecond)
+			dbArr[i] = a.Value(i).ToTime(arrow.Microsecond)
 		case *types.JSONArray:
 			var val any
 			if err := json.Unmarshal([]byte(a.ValueStr(i)), &val); err != nil {
 				panic(err)
 			}
-			pgArr[i] = val
+			dbArr[i] = val
 		case array.ListLike:
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)
-			pgArr[i] = transformArr(nested)
+			dbArr[i] = transformArr(nested)
 			nested.Release()
 		default:
-			pgArr[i] = arr.ValueStr(i)
+			dbArr[i] = arr.ValueStr(i)
 		}
 	}
 
-	return pgArr
+	return dbArr
 }
 
 func (*Client) transformRecord(table *arrow.Schema, record arrow.Record) []any {
