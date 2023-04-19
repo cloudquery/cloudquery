@@ -3,6 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/snowflake
 go 1.19
 
 require (
+	github.com/apache/arrow/go/v12 v12.0.0-20230418102323-1deb740e02fa
 	github.com/cloudquery/plugin-sdk/v2 v2.3.0
 	github.com/rs/zerolog v1.29.0
 	github.com/snowflakedb/gosnowflake v1.6.18
@@ -10,7 +11,6 @@ require (
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/apache/arrow/go/v12 v12.0.0-20230418102323-1deb740e02fa // indirect
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/goccy/go-json v0.9.11 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
@@ -27,12 +27,14 @@ require (
 
 replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230416141001-e8315b3fff1c
 
+// replace github.com/cloudquery/plugin-sdk/v2 => ../../../../plugin-sdk
+
 require (
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.2 // indirect; indirect // indirect
 	github.com/Azure/azure-pipeline-go v0.2.3 // indirect
 	github.com/Azure/azure-storage-blob-go v0.15.0 // indirect
-	github.com/apache/arrow/go/arrow v0.0.0-20211112161151-bc219186db40 // indirect
+	github.com/apache/arrow/go/arrow v0.0.0-20211112161151-bc219186db40
 	github.com/aws/aws-sdk-go-v2 v1.17.8 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect; indirect // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.20 // indirect; indirect // indirect

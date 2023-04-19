@@ -11,7 +11,6 @@ import (
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/types"
 )
 
 const (
@@ -86,8 +85,6 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		b.Append(val.([]uint8))
 	case *array.TimestampBuilder:
 		b.Append(arrow.Timestamp(val.(time.Time).UnixMicro()))
-	case *types.JSONBuilder:
-		b.Append(val)
 	case array.ListLikeBuilder:
 		b.Append(true)
 		valBuilder := b.ValueBuilder()
@@ -100,7 +97,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		} else {
 			return fmt.Errorf("unknown array format %s", s)
 		}
-		
+
 		for _, v := range values {
 			if err := c.reverseTransform(f, valBuilder, v); err != nil {
 				return err
@@ -149,73 +146,10 @@ func snowflakeStrToArray(val string) []string {
 	strs := strings.Split(val, "\",\n  \"")
 	for i := range strs {
 		strs[i] = strings.ReplaceAll(strs[i], "\\\"", "\"")
+		strs[i] = strings.ReplaceAll(strs[i], "\\u0000", "\u0000")
 		strs[i] = strings.ReplaceAll(strs[i], "\\n", "\n")
 	}
 	return strs
-}
-
-func (*Client) createResultsArray(values []any, table *schema.Table) []any {
-	results := make([]any, 0, len(table.Columns))
-	for i, col := range table.Columns {
-		if values[i] == nil {
-			results = append(results, nil)
-			continue
-		}
-		switch col.Type {
-		case schema.TypeBool:
-			r := (*values[i].(*any)).(bool)
-			results = append(results, r)
-		case schema.TypeInt:
-			r := (*values[i].(*any)).(string)
-			results = append(results, r)
-		case schema.TypeFloat:
-			r := (*values[i].(*any)).(float64)
-			results = append(results, r)
-		case schema.TypeUUID:
-			r := (*values[i].(*any)).(string)
-			results = append(results, r)
-		case schema.TypeString:
-			r := (*values[i].(*any)).(string)
-			results = append(results, r)
-		case schema.TypeByteArray:
-			r := (*values[i].(*any)).([]uint8)
-			results = append(results, r)
-		case schema.TypeStringArray:
-			r := snowflakeStrToArray((*values[i].(*any)).(string))
-			results = append(results, r)
-		case schema.TypeTimestamp:
-			r := (*values[i].(*any)).(time.Time)
-			results = append(results, r)
-		case schema.TypeJSON:
-			r := (*values[i].(*any)).(string)
-			results = append(results, r)
-		case schema.TypeUUIDArray:
-			r := snowflakeStrToArray((*values[i].(*any)).(string))
-			results = append(results, r)
-		case schema.TypeCIDR:
-			r := (*values[i].(*any)).(string)
-			results = append(results, r)
-		case schema.TypeCIDRArray:
-			r := snowflakeStrToArray((*values[i].(*any)).(string))
-			results = append(results, r)
-		case schema.TypeMacAddr:
-			r := (*values[i].(*any)).(string)
-			results = append(results, r)
-		case schema.TypeMacAddrArray:
-			r := snowflakeStrToArray((*values[i].(*any)).(string))
-			results = append(results, r)
-		case schema.TypeInet:
-			r := (*values[i].(*any)).(string)
-			results = append(results, r)
-		case schema.TypeInetArray:
-			r := snowflakeStrToArray((*values[i].(*any)).(string))
-			results = append(results, r)
-		case schema.TypeIntArray:
-			r := snowflakeStrToIntArray((*values[i].(*any)).(string))
-			results = append(results, r)
-		}
-	}
-	return results
 }
 
 func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {

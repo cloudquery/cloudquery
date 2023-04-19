@@ -1,6 +1,7 @@
 package client
 
 import (
+	"os"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"

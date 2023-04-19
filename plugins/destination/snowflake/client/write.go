@@ -29,7 +29,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, resou
 		f.Close()
 		os.Remove(f.Name())
 	}()
-	
+
 	for _, r := range resources {
 		arr := array.RecordToStructArray(r)
 		defer arr.Release()
