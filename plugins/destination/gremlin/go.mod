@@ -14,7 +14,7 @@ require (
 
 replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230416141001-e8315b3fff1c
 
-replace github.com/cloudquery/plugin-sdk/v2 => github.com/disq/plugin-sdk/v2 v2.0.0-20230419141635-939b7cf8c8d7
+replace github.com/cloudquery/plugin-sdk/v2 => github.com/disq/plugin-sdk/v2 v2.0.0-20230419144405-0da5e31c79f5
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
