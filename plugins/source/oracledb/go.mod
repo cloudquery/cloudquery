@@ -3,9 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/oracledb
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v12 v12.0.0-20230401212133-adf33cc43010
-	github.com/cloudquery/plugin-sdk/v2 v2.3.7
-	github.com/google/uuid v1.3.0
+	github.com/cloudquery/plugin-sdk/v2 v2.3.8
 	github.com/rs/zerolog v1.29.0
 	github.com/sijms/go-ora/v2 v2.6.16
 	github.com/stretchr/testify v1.8.2
@@ -17,6 +15,7 @@ replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
+	github.com/apache/arrow/go/v12 v12.0.0-20230401212133-adf33cc43010 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
@@ -25,6 +24,7 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/flatbuffers v2.0.8+incompatible // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
