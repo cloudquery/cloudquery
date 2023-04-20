@@ -21,32 +21,36 @@ func params(t column.Type) string {
 type namedCol struct {
 	name    string
 	colType column.Type
-	iface   column.Interface
+}
+
+func tupleFieldSpec(spec string) *namedCol {
+	spec = strings.TrimSpace(spec)
+	if len(spec) == 0 {
+		return nil
+	}
+
+	if parts := strings.SplitN(spec, " ", 2); len(parts) == 2 {
+		if !strings.Contains(parts[0], "(") {
+			return &namedCol{
+				name:    strings.TrimSpace(parts[0]),
+				colType: column.Type(strings.TrimSpace(parts[1])),
+			}
+		}
+	}
+
+	return &namedCol{colType: column.Type(strings.TrimSpace(spec))}
 }
 
 func parseTupleType(t column.Type, tz *time.Location) ([]column.Interface, error) {
 	var (
-		element       []rune
-		elements      []namedCol
-		brackets      int
-		appendElement = func() {
-			if len(element) != 0 {
-				cType := strings.TrimSpace(string(element))
-				name := ""
-				if parts := strings.SplitN(cType, " ", 2); len(parts) == 2 {
-					if !strings.Contains(parts[0], "(") {
-						name = parts[0]
-						cType = parts[1]
-					}
-				}
-				elements = append(elements, namedCol{
-					name:    name,
-					colType: column.Type(strings.TrimSpace(cType)),
-				})
-			}
-		}
+		elements []namedCol
+		brackets int
 	)
-	for _, r := range params(t) {
+
+	p := params(t)
+	spec := make([]rune, 0, len(p))
+
+	for _, r := range p {
 		switch r {
 		case '(':
 			brackets++
@@ -54,14 +58,21 @@ func parseTupleType(t column.Type, tz *time.Location) ([]column.Interface, error
 			brackets--
 		case ',':
 			if brackets == 0 {
-				appendElement()
-				element = element[:0]
+				col := tupleFieldSpec(string(spec))
+				if col != nil {
+					elements = append(elements, *col)
+				}
+				spec = spec[:0] // cleanup
 				continue
 			}
 		}
-		element = append(element, r)
+		spec = append(spec, r)
 	}
-	appendElement()
+	col := tupleFieldSpec(string(spec))
+	if col != nil {
+		elements = append(elements, *col)
+	}
+
 	columns := make([]column.Interface, len(elements))
 	for i, ct := range elements {
 		if len(ct.name) == 0 {
