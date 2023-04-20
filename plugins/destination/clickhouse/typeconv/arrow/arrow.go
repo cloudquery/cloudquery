@@ -79,6 +79,7 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 		case 0:
 			unit = arrow.Second
 		case 3:
+			// This is the same as arrow.DATE64, so we need to canonize the schema
 			unit = arrow.Microsecond
 		case 6:
 			unit = arrow.Microsecond
@@ -128,7 +129,11 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 		}, nil
 
 	case *column.Tuple:
-		return structField(col)
+		dataType, err := structType(col)
+		if err != nil {
+			return nil, err
+		}
+		return &arrow.Field{Name: col.Name(), Type: dataType}, nil
 
 	case *column.UUID:
 		return &arrow.Field{Name: col.Name(), Type: new(types.UUIDType)}, nil

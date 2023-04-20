@@ -50,6 +50,7 @@ func arrayType(list arrow.DataType) (string, error) {
 	return "Array(" + elem + ")", nil
 }
 
+// TODO: use this implementation in conjunction with Tuple parsing
 func structType(_struct *arrow.StructType) (string, error) {
 	// https://clickhouse.com/docs/en/sql-reference/data-types/tuple
 	fields, err := Definitions(_struct.Fields()...)
@@ -161,7 +162,10 @@ func columnType(dataType arrow.DataType) (string, error) {
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/tuple
 	case arrow.STRUCT:
+		// TODO: use https://clickhouse.com/docs/en/sql-reference/data-types/tuple
+		// FOr now, however, use String
 		return structType(dataType.(*arrow.StructType))
+		//return "String", nil
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/map
 	case arrow.MAP:
