@@ -9,67 +9,67 @@ import (
 	"github.com/ClickHouse/clickhouse-go/v2/lib/column"
 	"github.com/ClickHouse/clickhouse-go/v2/lib/timezone"
 	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 	"github.com/cloudquery/plugin-sdk/v2/types"
 )
 
 func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
+	fieldName := util.UnquoteID(col.Name())
 	switch col := col.(type) {
 	case *column.Bool:
-		return &arrow.Field{Name: col.Name(), Type: new(arrow.BooleanType)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(arrow.BooleanType)}, nil
 
 	case *column.UInt8:
-		return &arrow.Field{Name: col.Name(), Type: new(arrow.Uint8Type)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(arrow.Uint8Type)}, nil
 	case *column.UInt16:
-		return &arrow.Field{Name: col.Name(), Type: new(arrow.Uint16Type)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(arrow.Uint16Type)}, nil
 	case *column.UInt32:
-		return &arrow.Field{Name: col.Name(), Type: new(arrow.Uint32Type)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(arrow.Uint32Type)}, nil
 	case *column.UInt64:
-		return &arrow.Field{Name: col.Name(), Type: new(arrow.Uint64Type)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(arrow.Uint64Type)}, nil
 	case *column.Int8:
-		return &arrow.Field{Name: col.Name(), Type: new(arrow.Int8Type)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(arrow.Int8Type)}, nil
 	case *column.Int16:
-		return &arrow.Field{Name: col.Name(), Type: new(arrow.Int16Type)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(arrow.Int16Type)}, nil
 	case *column.Int32:
-		return &arrow.Field{Name: col.Name(), Type: new(arrow.Int32Type)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(arrow.Int32Type)}, nil
 	case *column.Int64:
-		return &arrow.Field{Name: col.Name(), Type: new(arrow.Int64Type)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(arrow.Int64Type)}, nil
 
 	case *column.Float32:
-		return &arrow.Field{Name: col.Name(), Type: new(arrow.Float32Type)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(arrow.Float32Type)}, nil
 	case *column.Float64:
-		return &arrow.Field{Name: col.Name(), Type: new(arrow.Float64Type)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(arrow.Float64Type)}, nil
 
 	case *column.String:
-		return &arrow.Field{Name: col.Name(), Type: new(arrow.StringType)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(arrow.StringType)}, nil
 
 	case *column.FixedString:
 		// sadly, we need to parse manually here
 		var byteWidth int
-		if _, err := fmt.Sscanf(col.Type(), "FixedString(%d)", byteWidth); err != nil {
+		if _, err := fmt.Sscanf(string(col.Type()), "FixedString(%d)", &byteWidth); err != nil {
 			return nil, err
 		}
-		return &arrow.Field{Name: col.Name(), Type: &arrow.FixedSizeBinaryType{ByteWidth: byteWidth}}, nil
+		return &arrow.Field{Name: fieldName, Type: &arrow.FixedSizeBinaryType{ByteWidth: byteWidth}}, nil
 
 	case *column.Date32:
-		return &arrow.Field{Name: col.Name(), Type: new(arrow.Date32Type)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(arrow.Date32Type)}, nil
 
 	case *column.DateTime:
 		// need to parse
-		var name = strings.TrimSuffix(strings.TrimPrefix(col.Type(), "DateTime('"), "')")
+		param := params(col.Type())
+		name := strings.Trim(strings.TrimSpace(param), "'")
 		tz, err := timezone.Load(name)
 		if err != nil {
 			return nil, err
 		}
 
-		return &arrow.Field{Name: col.Name(), Type: &arrow.TimestampType{Unit: arrow.Second, TimeZone: tz.String()}}, nil
+		return &arrow.Field{Name: fieldName, Type: &arrow.TimestampType{Unit: arrow.Second, TimeZone: tz.String()}}, nil
 
 	case *column.DateTime64:
 		// need to parse
-		var params = strings.Split(
-			strings.TrimSuffix(strings.TrimPrefix(strings.TrimPrefix(col.Type(), "('"), "DateTime64'"), "')"),
-			",",
-		)
-		var tz *time.Location
+		params := strings.Split(params(col.Type()), ",")
+		var tz string
 		precision, err := strconv.Atoi(params[0])
 		if err != nil {
 			return nil, err
@@ -80,7 +80,7 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 			unit = arrow.Second
 		case 3:
 			// This is the same as arrow.DATE64, so we need to canonize the schema
-			unit = arrow.Microsecond
+			unit = arrow.Millisecond
 		case 6:
 			unit = arrow.Microsecond
 		case 9:
@@ -90,13 +90,15 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 		}
 
 		if len(params) > 1 {
-			tz, err = timezone.Load(strings.TrimSpace(params[1]))
+			name := strings.Trim(strings.TrimSpace(params[1]), "'")
+			zone, err := timezone.Load(name)
 			if err != nil {
 				return nil, err
 			}
+			tz = zone.String()
 		}
 
-		return &arrow.Field{Name: col.Name(), Type: &arrow.TimestampType{Unit: unit, TimeZone: tz.String()}}, nil
+		return &arrow.Field{Name: fieldName, Type: &arrow.TimestampType{Unit: unit, TimeZone: tz}}, nil
 
 	case *column.Decimal:
 		var decimal arrow.DecimalType
@@ -105,7 +107,7 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 		} else {
 			decimal = &arrow.Decimal256Type{Precision: int32(precision), Scale: int32(col.Scale())}
 		}
-		return &arrow.Field{Name: col.Name(), Type: decimal}, nil
+		return &arrow.Field{Name: fieldName, Type: decimal}, nil
 
 	case *column.Array:
 		base, err := fieldFromColumn(col.Base())
@@ -113,7 +115,7 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 			return nil, err
 		}
 		return &arrow.Field{
-			Name: col.Name(),
+			Name: fieldName,
 			Type: arrow.ListOfField(*base),
 		}, nil
 
@@ -123,23 +125,30 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 			return nil, err
 		}
 		return &arrow.Field{
-			Name:     col.Name(),
+			Name:     fieldName,
 			Type:     base.Type,
 			Nullable: true,
 		}, nil
+
+	case *column.Map:
+		dataType, err := mapType(col)
+		if err != nil {
+			return nil, err
+		}
+		return &arrow.Field{Name: fieldName, Type: dataType}, nil
 
 	case *column.Tuple:
 		dataType, err := structType(col)
 		if err != nil {
 			return nil, err
 		}
-		return &arrow.Field{Name: col.Name(), Type: dataType}, nil
+		return &arrow.Field{Name: fieldName, Type: dataType}, nil
 
 	case *column.UUID:
-		return &arrow.Field{Name: col.Name(), Type: new(types.UUIDType)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(types.UUIDType)}, nil
 
 	default:
-		return &arrow.Field{Name: col.Name(), Type: new(arrow.StringType)}, nil
+		return &arrow.Field{Name: fieldName, Type: new(arrow.StringType)}, nil
 	}
 }
 
