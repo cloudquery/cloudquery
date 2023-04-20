@@ -6,6 +6,6 @@ import (
 	"github.com/apache/arrow/go/v12/arrow"
 )
 
-func (c *Client) Read(ctx context.Context, arrowSchema *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
+func (*Client) Read(ctx context.Context, arrowSchema *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
 	panic("not implemented")
 }
