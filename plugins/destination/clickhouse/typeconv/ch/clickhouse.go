@@ -162,10 +162,7 @@ func columnType(dataType arrow.DataType) (string, error) {
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/tuple
 	case arrow.STRUCT:
-		// TODO: use https://clickhouse.com/docs/en/sql-reference/data-types/tuple
-		// FOr now, however, use String
 		return structType(dataType.(*arrow.StructType))
-		//return "String", nil
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/map
 	case arrow.MAP:

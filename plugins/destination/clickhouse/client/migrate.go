@@ -25,7 +25,7 @@ func (c *Client) Migrate(ctx context.Context, scs schema.Schemas) error {
 		return err
 	}
 	if c.mode != specs.MigrateModeForced {
-		nonSafeMigratableTables, changes := c.nonAutoMigratableTables(newSchema, currentSchema)
+		nonSafeMigratableTables, changes := nonAutoMigratableTables(newSchema, currentSchema)
 		if len(nonSafeMigratableTables) > 0 {
 			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonSafeMigratableTables, ","), changes)
 		}
@@ -60,7 +60,7 @@ func (c *Client) Migrate(ctx context.Context, scs schema.Schemas) error {
 	return eg.Wait()
 }
 
-func (c *Client) nonAutoMigratableTables(want, have schema.Schemas) ([]string, [][]schema.FieldChange) {
+func nonAutoMigratableTables(want, have schema.Schemas) ([]string, [][]schema.FieldChange) {
 	var result []string
 	var tableChanges [][]schema.FieldChange
 	for _, w := range want {
