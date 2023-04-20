@@ -2,6 +2,7 @@ package consumption
 
 import (
 	"context"
+	"net/url"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption"
@@ -26,10 +27,37 @@ func fetchSubscriptionPriceSheets(ctx context.Context, meta schema.ClientMeta, p
 	if err != nil {
 		return err
 	}
-	resp, err := svc.Get(ctx, &armconsumption.PriceSheetClientGetOptions{Expand: to.Ptr("properties/meterDetails")})
+	opts := &armconsumption.PriceSheetClientGetOptions{Expand: to.Ptr("properties/meterDetails")}
+	resp, err := svc.Get(ctx, opts)
 	if err != nil {
 		return err
 	}
+
+	// This is a workaround to get all price sheets
+	// Somehow related to https://github.com/Azure/azure-sdk-for-go/issues/4142
+	allPricesSheets := resp.PriceSheetResult.Properties.Pricesheets
+	nextLink := resp.PriceSheetResult.Properties.NextLink
+	for nextLink != nil {
+		parsedNextLink, err := url.Parse(*nextLink)
+		if err != nil {
+			cl.Logger().Warn().Err(err).Msgf("failed to parse next link: %q", *nextLink)
+			break
+		}
+		token := parsedNextLink.Query().Get("skiptoken")
+		if token == "" {
+			cl.Logger().Warn().Msgf("failed to get skiptoken from next link: %q", *nextLink)
+			break
+		}
+		opts.Skiptoken = to.Ptr(token)
+		paginatedResponse, err := svc.Get(ctx, opts)
+		if err != nil {
+			cl.Logger().Warn().Err(err).Msgf("failed to get paginated response for next link: %q", *nextLink)
+			break
+		}
+		allPricesSheets = append(allPricesSheets, paginatedResponse.PriceSheetResult.Properties.Pricesheets...)
+	}
+
+	resp.PriceSheetResult.Properties.Pricesheets = allPricesSheets
 	res <- resp.PriceSheetResult
 	return nil
 }

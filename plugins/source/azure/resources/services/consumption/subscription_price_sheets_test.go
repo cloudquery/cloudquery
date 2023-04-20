@@ -17,6 +17,7 @@ func createSubscriptionPriceSheets(router *mux.Router) error {
 	if err := faker.FakeObject(&resp); err != nil {
 		return err
 	}
+	resp.PriceSheetResult.Properties.NextLink = nil
 
 	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Consumption/pricesheets/default", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&resp)
