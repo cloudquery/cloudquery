@@ -6,57 +6,59 @@ import (
 	"strings"
 	"time"
 
+	"github.com/apache/arrow/go/v12/arrow"
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
 	"github.com/cenkalti/backoff/v4"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
+func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, records []arrow.Record) error {
 	session, closer, err := c.newSession()
 	if err != nil {
 		return err
 	}
 	defer closer()
 
-	rows := make([]map[string]any, len(resources))
-	for i, resource := range resources {
-		rows[i] = make(map[string]any)
-		for j, column := range table.Columns {
-			rows[i][column.Name] = resource[j]
+	tableName := schema.TableName(table)
+	rows := make([]map[string]any, 0)
+	for _, record := range records {
+		rows = append(rows, transformValues(record)...)
+	}
+
+	pks := schema.PrimaryKeyIndices(table)
+	if len(pks) == 0 {
+		// If no primary keys are defined, use all columns
+		for i := range table.Fields() {
+			pks = append(pks, i)
+		}
+	}
+	nonPKs := make(map[string]struct{})
+	for _, f := range table.Fields() {
+		if !schema.IsPk(f) {
+			nonPKs[f.Name] = struct{}{}
 		}
 	}
 
-	pks := table.PrimaryKeys()
-	if len(pks) == 0 {
-		// If no primary keys are defined, use all columns
-		pks = table.Columns.Names()
-	}
-	nonPKs := make(map[string]struct{})
-	for _, column := range table.Columns {
-		nonPKs[column.Name] = struct{}{}
-	}
-	for _, pk := range pks {
-		delete(nonPKs, pk)
-	}
-
-	g := gremlingo.Traversal_().WithRemote(session).V().HasLabel(table.Name)
+	g := gremlingo.Traversal_().WithRemote(session).V().HasLabel(tableName)
 	for i := range rows {
-		for _, column := range pks {
-			g = g.Has(column, rows[i][column])
+		for _, columnIndex := range pks {
+			colName := table.Field(columnIndex).Name
+			g = g.Has(colName, rows[i][colName])
 		}
 		g = g.Fold()
 
-		ins := AnonT.AddV(table.Name)
-		for _, column := range pks {
-			ins = ins.Property(column, rows[i][column])
+		ins := AnonT.AddV(tableName)
+		for _, columnIndex := range pks {
+			colName := table.Field(columnIndex).Name
+			ins = ins.Property(colName, rows[i][colName])
 		}
 		g = g.Coalesce(
 			AnonT.Unfold(),
 			ins,
 		)
 
-		for column := range nonPKs {
-			g = g.Property(gremlingo.Cardinality.Single, column, rows[i][column])
+		for colName := range nonPKs {
+			g = g.Property(gremlingo.Cardinality.Single, colName, rows[i][colName])
 		}
 	}
 
