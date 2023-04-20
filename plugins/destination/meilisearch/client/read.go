@@ -53,12 +53,12 @@ func (c *Client) Read(_ context.Context, sc *arrow.Schema, sourceName string, re
 
 func docToRecord(sc *arrow.Schema, doc map[string]any) (arrow.Record, error) {
 	builder := array.NewRecordBuilder(memory.DefaultAllocator, sc)
-	defer builder.Release()
 
 	for i, builder := range builder.Fields() {
 		if err := reverseTransform(builder, doc[sc.Field(i).Name]); err != nil {
 			return nil, err
 		}
 	}
+
 	return builder.NewRecord(), nil
 }

@@ -9,15 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/specs"
 )
 
-func releaseRecords(records []arrow.Record) {
-	for _, record := range records {
-		record.Release()
-	}
-}
-
 func (c *Client) WriteTableBatch(ctx context.Context, sc *arrow.Schema, records []arrow.Record) error {
-	defer releaseRecords(records)
-
 	index, err := c.Meilisearch.GetIndex(schema.TableName(sc))
 	if err != nil {
 		return err
