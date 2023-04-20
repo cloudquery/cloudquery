@@ -42,13 +42,13 @@ func (s *Spec) SetDefaults() {
 
 func (s *Spec) Validate() error {
 	if s.Directory == "" && s.Path == "" {
-		return fmt.Errorf("either directory or path must be set")
+		return fmt.Errorf("either `directory` or `path` must be set")
 	}
 	if s.Directory != "" && s.Path != "" {
-		return fmt.Errorf("only one of directory or path is allowed")
+		return fmt.Errorf("only one of `directory` or `path` is allowed")
 	}
 	if s.Format == "" {
-		return fmt.Errorf("format is required")
+		return fmt.Errorf("`format` is required")
 	}
 	return nil
 }
