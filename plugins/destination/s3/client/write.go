@@ -3,7 +3,6 @@ package client
 import (
 	"bytes"
 	"context"
-	"fmt"
 	"io"
 	"path"
 	"reflect"
@@ -38,15 +37,11 @@ func (c *Client) WriteTableBatch(ctx context.Context, arrowSchema *arrow.Schema,
 		return nil
 	}
 	tableName := schema.TableName(arrowSchema)
-
-	var err error
+	
 	mem := memory.DefaultAllocator
 	if c.pluginSpec.Athena {
 		for i, record := range data {
-			data[i], err = sanitizeRecordJSONKeys(mem, record)
-			if err != nil {
-				return fmt.Errorf("failed to sanitize JSON keys for Athena in table %v: %w", tableName, err)
-			}
+			data[i] = sanitizeRecordJSONKeys(mem, record)
 		}
 	}
 
@@ -73,33 +68,27 @@ func (c *Client) WriteTableBatch(ctx context.Context, arrowSchema *arrow.Schema,
 }
 
 // sanitizeRecordJSONKeys replaces all invalid characters in JSON keys with underscores. This is required
-// for compatibility with Athena. It returns a new record, and the old one is released.
-func sanitizeRecordJSONKeys(mem memory.Allocator, record arrow.Record) (arrow.Record, error) {
-	newRecordBuilder := array.NewRecordBuilder(mem, record.Schema())
-	defer record.Release()
-	defer newRecordBuilder.Release()
+// for compatibility with Athena.
+func sanitizeRecordJSONKeys(mem memory.Allocator, record arrow.Record) arrow.Record {
+	cols := make([]arrow.Array, record.NumCols())
 	for i := 0; i < int(record.NumCols()); i++ {
 		col := record.Column(i)
 		if arrow.TypeEqual(col.DataType(), types.NewJSONType()) {
+			b := types.NewJSONBuilder(array.NewExtensionBuilder(mem, types.NewJSONType()))
 			for r := 0; r < int(record.NumRows()); r++ {
+				if col.IsNull(r) {
+					b.AppendNull()
+					continue
+				}
 				obj := col.GetOneForMarshal(r)
 				sanitizeJSONKeysForObject(obj)
-				newRecordBuilder.Field(i).(*types.JSONBuilder).Append(obj)
+				b.Append(obj)
 			}
 			continue
 		}
-		for r := 0; r < int(record.NumRows()); r++ {
-			b, err := record.Column(i).MarshalJSON()
-			if err != nil {
-				return nil, fmt.Errorf("failed to marshal JSON for col %v: %w", record.Schema().Field(i).Name, err)
-			}
-			err = newRecordBuilder.Field(i).UnmarshalJSON(b)
-			if err != nil {
-				return nil, fmt.Errorf("failed to unmarshal JSON into row for col %v: %w", record.Schema().Field(i).Name, err)
-			}
-		}
+		cols[i] = col
 	}
-	return newRecordBuilder.NewRecord(), nil
+	return array.NewRecord(record.Schema(), cols, record.NumRows())
 }
 
 func sanitizeJSONKeysForObject(obj any) {
