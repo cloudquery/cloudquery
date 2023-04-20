@@ -12,8 +12,6 @@ import (
 	"sort"
 	"strings"
 	"text/template"
-
-	"golang.org/x/exp/slices"
 )
 
 //go:embed templates/*.go.tpl
@@ -66,11 +64,25 @@ func newPolicyInfo(name string, queries []Query, allTables []Table) *PolicyInfo 
 
 // Tables returns the unique set of tables needed to run all queries
 func (pi *PolicyInfo) setTables(allTables Tables) {
-	t := map[string]struct{}{}
-	var views []string
+	t, v := map[string]struct{}{}, map[string]struct{}{}
+
+	// Add all views detected from CREATE VIEW statements
+	for _, vi := range pi.Views {
+		v[vi] = struct{}{}
+	}
+	// Accessed views from queries, should be a subset of the above
 	for _, q := range pi.Queries {
-		views = append(views, q.Views...)
+		for _, vi := range q.Views {
+			v[vi] = struct{}{}
+		}
+	}
+
+	for _, q := range pi.Queries {
 		for _, table := range q.Tables {
+			if _, found := v[table]; found {
+				continue
+			}
+
 			t[table] = struct{}{}
 			ancestors := allTables.FindAncestors(table)
 			for _, a := range ancestors {
@@ -78,16 +90,8 @@ func (pi *PolicyInfo) setTables(allTables Tables) {
 			}
 		}
 	}
-	var final []string
-	for k := range t {
-		final = append(final, k)
-	}
-	sort.Strings(final)
-	pi.Tables = final
 
-	slices.Compact(views)
-	sort.Strings(views)
-	pi.Views = views
+	pi.Tables, pi.Views = keysOf(t), keysOf(v)
 }
 
 type Query struct {
@@ -133,6 +137,7 @@ func extractQueries(prefix, sqlPath string) ([]Query, error) {
 		for _, m := range tableMatches {
 			switch {
 			case strings.HasPrefix(m[1], prefix):
+				// This could be a table or still a view, will sort out later
 				q.Tables = append(q.Tables, m[1])
 				q.Path = sqlPath
 			case strings.HasPrefix(m[1], "view_"+prefix):
@@ -156,8 +161,8 @@ func extractQueries(prefix, sqlPath string) ([]Query, error) {
 		if len(mv) > 0 {
 			q.View = true
 			q.ViewName = mv[2]
-			if !strings.HasPrefix(q.ViewName, "view_"+prefix) {
-				return nil, fmt.Errorf("view %q in %s does not start with `view_%s`", q.ViewName, sqlPath, prefix)
+			if !strings.HasPrefix(q.ViewName, prefix+"_") && !strings.HasPrefix(q.ViewName, "view_"+prefix) {
+				return nil, fmt.Errorf("view %q in %s does not start with `%s_` or `view_%s`", q.ViewName, sqlPath, prefix, prefix)
 			}
 			queries = append(queries, q)
 		}
@@ -221,6 +226,15 @@ func readTablesJSON(filepath string) ([]Table, error) {
 	var tables []Table
 	err = json.Unmarshal(b, &tables)
 	return tables, err
+}
+
+func keysOf(m map[string]struct{}) []string {
+	var keys []string
+	for k := range m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	return keys
 }
 
 func main() {
