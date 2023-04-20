@@ -1,23 +1,19 @@
-package client
+package arrow
 
 import (
 	"fmt"
 
+	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/google/uuid"
 )
 
-func (*Client) ReverseTransformValues(table *schema.Table, values []any) (schema.CQTypes, error) {
-	res := make(schema.CQTypes, len(values))
-
-	for i, v := range values {
-		t := schema.NewCqTypeFromValueType(table.Columns[i].Type)
-		if err := t.Set(unwrap(t.Type(), v)); err != nil {
-			return nil, fmt.Errorf("failed to convert value %v to type %s: %w", v, table.Columns[i].Type, err)
-		}
-		res[i] = t
+func Record(sc *arrow.Schema, data []any) (arrow.Record, error) {
+	if len(data) != len(sc.Fields()) {
+		return nil, fmt.Errorf("mismatching field amount: have %d, want %d", len(data), len(sc.Fields()))
 	}
-	return res, nil
+
+	panic("implement")
 }
 
 func unwrap(t schema.ValueType, v any) any {

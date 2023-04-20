@@ -7,10 +7,11 @@ import (
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv"
 )
 
-func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
-	query, params := queries.Read(sourceName, table)
+func (c *Client) Read(ctx context.Context, sc *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
+	query, params := queries.Read(sourceName, sc)
 
 	rows, err := c.conn.Query(ctx, query, params...)
 	if err != nil {
@@ -21,13 +22,18 @@ func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName strin
 	columnTypes := rows.ColumnTypes()
 
 	for rows.Next() {
-		resource := rowArr(columnTypes)
+		row := rowArr(columnTypes)
 
-		if err := rows.Scan(resource...); err != nil {
+		if err := rows.Scan(row...); err != nil {
 			return err
 		}
 
-		res <- resource
+		record, err := typeconv.ArrowRecord(sc, row)
+		if err != nil {
+			return err
+		}
+
+		res <- record
 	}
 
 	return nil
