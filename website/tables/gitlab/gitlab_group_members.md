@@ -27,4 +27,5 @@ This table depends on [gitlab_groups](gitlab_groups).
 |web_url|String|
 |created_at|Timestamp|
 |access_level|Int|
+|email|String|
 |group_saml_identity|JSON|

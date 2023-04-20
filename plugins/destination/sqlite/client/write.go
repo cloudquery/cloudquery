@@ -24,7 +24,6 @@ func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan ar
 				return fmt.Errorf("failed to execute '%s': %w", sql, err)
 			}
 		}
-		r.Release()
 	}
 
 	return nil

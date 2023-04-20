@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.0.2...plugins-destination-sqlite-v2.0.3) (2023-04-19)
+
+
+### Bug Fixes
+
+* Add timestamp type ([#10202](https://github.com/cloudquery/cloudquery/issues/10202)) ([5bbf8dd](https://github.com/cloudquery/cloudquery/commit/5bbf8ddc0a25d873045184761611660d9dba1d15))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.4 ([#10196](https://github.com/cloudquery/cloudquery/issues/10196)) ([c6d2f59](https://github.com/cloudquery/cloudquery/commit/c6d2f59c7d77177a351cb82ecdc381dec6aad30c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.5 ([#10200](https://github.com/cloudquery/cloudquery/issues/10200)) ([5a33693](https://github.com/cloudquery/cloudquery/commit/5a33693fe29f7068b03d80be1859d6e479c42c0d))
+
+## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.0.1...plugins-destination-sqlite-v2.0.2) (2023-04-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.3 ([#10187](https://github.com/cloudquery/cloudquery/issues/10187)) ([b185248](https://github.com/cloudquery/cloudquery/commit/b1852480b6ec8b721d94c72d8435051352f26932))
+
+## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.0.0...plugins-destination-sqlite-v2.0.1) (2023-04-18)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.0 ([#10163](https://github.com/cloudquery/cloudquery/issues/10163)) ([9a7f214](https://github.com/cloudquery/cloudquery/commit/9a7f21460772200e7a588409ebc7eb19f97b195b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.1 ([#10175](https://github.com/cloudquery/cloudquery/issues/10175)) ([5b53423](https://github.com/cloudquery/cloudquery/commit/5b53423e72672f6c2bfb8ae00cfce1641410443e))
+* **sqlite:** Always release records ([#10154](https://github.com/cloudquery/cloudquery/issues/10154)) ([9fb86b9](https://github.com/cloudquery/cloudquery/commit/9fb86b981fac40caa78a3eb8020706b6658d8bd6))
+
 ## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v1.3.6...plugins-destination-sqlite-v2.0.0) (2023-04-17)
 
 
