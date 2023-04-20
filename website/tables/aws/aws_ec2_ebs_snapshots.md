@@ -3,8 +3,9 @@
 This table shows data for Amazon Elastic Compute Cloud (EC2) Amazon Elastic Block Store (EBS) Snapshots.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Snapshot.html
+The 'request_account_id' columns are added to show the account where the request was made from.
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**request_account_id**, **arn**).
 
 ## Columns
 
@@ -14,7 +15,7 @@ The primary key for this table is **arn**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
-|account_id|String|
+|request_account_id (PK)|String|
 |region|String|
 |arn (PK)|String|
 |attribute|JSON|
