@@ -19,8 +19,8 @@ tables:
 
 ### Queries
 {{ .Name }} performs the following checks:
-{{- range $query := .Queries }}
+{{- range $query := .Queries }}{{ if not $query.View }}
   - {{ $query.Title }}
-{{- end }}
+{{- end }}{{- end }}
 
 {{- end }}

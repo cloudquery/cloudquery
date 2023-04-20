@@ -12,6 +12,8 @@ AWS CIS V1.2.0 requires the following tables to be synced before the policy is e
 tables:
   - aws_cloudtrail_trail_event_selectors
   - aws_cloudtrail_trails
+  - aws_cloudwatch_alarms
+  - aws_cloudwatchlogs_metric_filters
   - aws_ec2_flow_logs
   - aws_ec2_security_groups
   - aws_ec2_vpcs
@@ -22,6 +24,7 @@ tables:
   - aws_iam_virtual_mfa_devices
   - aws_kms_keys
   - aws_s3_buckets
+  - aws_sns_subscriptions
 ```
 
 ### Queries
@@ -48,6 +51,20 @@ AWS CIS V1.2.0 performs the following checks:
   - Ensure rotation for customer created custom master keys is enabled (Scored)
   - VPC flow logging should be enabled in all VPCs
   - Ensure a log metric filter and alarm exist for Management Console sign-in without MFA (Scored)
+  - Ensure a log metric filter and alarm exist for usage of "root" account (Score)
+  - Ensure a log metric filter and alarm exist for IAM policy changes (Score)
+  - Ensure a log metric filter and alarm exist for CloudTrail configuration changes (Scored)
+  - Ensure a log metric filter and alarm exist for AWS Management Console authentication failures (Scored)
+  - Ensure a log metric filter and alarm exist for disabling or scheduled deletion of customer created CMKs (Scored)
+  - Ensure a log metric filter and alarm exist for S3 bucket policy changes (Scored)
+  - Ensure a log metric filter and alarm exist for AWS Config configuration changes (Scored)
+  - Ensure a log metric filter and alarm exist for security group changes (Scored)
+  - Ensure a log metric filter and alarm exist for changes to Network Access Control Lists (NACL) (Scored)
+  - Ensure a log metric filter and alarm exist for changes to network gateways (Scored)
+  - Ensure a log metric filter and alarm exist for route table changes (Scored)
+  - Ensure a log metric filter and alarm exist for VPC changes (Scored)
+  - Ensure no security groups allow ingress from 0.0.0.0/0 to port 22 (Scored)
+  - Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389 (Scored)
   - The VPC default security group should not allow inbound and outbound traffic
 ## AWS PCI DSS v3.2.1
 
@@ -59,6 +76,8 @@ tables:
   - aws_autoscaling_groups
   - aws_cloudtrail_trail_event_selectors
   - aws_cloudtrail_trails
+  - aws_cloudwatch_alarms
+  - aws_cloudwatchlogs_metric_filters
   - aws_codebuild_projects
   - aws_config_configuration_recorders
   - aws_dms_replication_instances
@@ -92,6 +111,7 @@ tables:
   - aws_s3_buckets
   - aws_sagemaker_notebook_instances
   - aws_secretsmanager_secrets
+  - aws_sns_subscriptions
   - aws_ssm_instance_compliance_items
   - aws_ssm_instances
   - aws_waf_web_acls
@@ -113,6 +133,7 @@ AWS PCI DSS v3.2.1 performs the following checks:
   - Amazon EBS snapshots should not be public, determined by the ability to be restorable by anyone
   - The VPC default security group should not allow inbound and outbound traffic
   - Unused EC2 EIPs should be removed
+  - Ensure no security groups allow ingress from 0.0.0.0/0 to port 22 (Scored)
   - VPC flow logging should be enabled in all VPCs
   - Application Load Balancer should be configured to redirect all HTTP requests to HTTPS
   - Elasticsearch domains should be in a VPC
@@ -155,6 +176,7 @@ AWS Foundational Security Best Practices requires the following tables to be syn
 ```yaml
 tables:
   - aws_acm_certificates
+  - aws_apigateway_rest_api_stages
   - aws_apigateway_rest_apis
   - aws_apigatewayv2_api_stages
   - aws_apigatewayv2_apis
@@ -239,6 +261,9 @@ AWS Foundational Security Best Practices performs the following checks:
   - certificate has less than 30 days to be renewed
   - API Gateway REST and WebSocket API logging should be enabled
   - API Gateway REST API stages should be configured to use SSL certificates for backend authentication
+  - API Gateway REST API stages should have AWS X-Ray tracing enabled
+  - API Gateway should be associated with an AWS WAF web ACL
+  - API Gateway REST API cache data should be encrypted at rest
   - Auto Scaling groups associated with a load balancer should use health checks
   - AWS Config should be enabled
   - CloudFront distributions should have a default root object configured
@@ -269,6 +294,8 @@ AWS Foundational Security Best Practices performs the following checks:
   - EC2 subnets should not automatically assign public IP addresses
   - Unused network access control lists should be removed
   - EC2 instances should not use multiple ENIs
+  - Aggregates rules of security groups with ports and IPs including ipv6
+  - Security groups should not allow unrestricted access to ports with high risk
   - Amazon ECS task definitions should have secure networking modes and user definitions
   - Amazon ECS services should not have public IP addresses assigned to them automatically
   - Amazon EFS should be configured to encrypt file data at rest using AWS KMS
@@ -362,6 +389,7 @@ AWS Public Egress requires the following tables to be synced before the policy i
 tables:
   - aws_ec2_instances
   - aws_ec2_route_tables
+  - aws_ec2_security_groups
   - aws_lambda_functions
 ```
 
