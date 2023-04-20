@@ -3,6 +3,47 @@
 ## [2.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v2.2.5...plugins-source-gitlab-v2.3.0) (2023-04-20)
 
 
+### This Release has the Following Changes to Tables
+- Table `gitlab_group_members`: column added with name `email` and type `String`
+- Table `gitlab_groups`: column added with name `ip_restriction_ranges` and type `String`
+- Table `gitlab_groups`: column order changed for `created_at`
+- Table `gitlab_project_members` was added
+- Table `gitlab_projects`: column added with name `can_create_merge_request_in` and type `Bool`
+- Table `gitlab_projects`: column added with name `ci_allow_fork_pipelines_to_run_in_parent_project` and type `Bool`
+- Table `gitlab_projects`: column added with name `ci_job_token_scope_enabled` and type `Bool`
+- Table `gitlab_projects`: column added with name `ci_opt_in_jwt` and type `Bool`
+- Table `gitlab_projects`: column added with name `environments_access_level` and type `String`
+- Table `gitlab_projects`: column added with name `feature_flags_access_level` and type `String`
+- Table `gitlab_projects`: column added with name `group_runners_enabled` and type `Bool`
+- Table `gitlab_projects`: column added with name `import_type` and type `String`
+- Table `gitlab_projects`: column added with name `import_url` and type `String`
+- Table `gitlab_projects`: column added with name `infrastructure_access_level` and type `String`
+- Table `gitlab_projects`: column added with name `issue_branch_template` and type `String`
+- Table `gitlab_projects`: column added with name `monitor_access_level` and type `String`
+- Table `gitlab_projects`: column added with name `mr_default_target_self` and type `Bool`
+- Table `gitlab_projects`: column added with name `releases_access_level` and type `String`
+- Table `gitlab_projects`: column added with name `requirements_enabled` and type `Bool`
+- Table `gitlab_projects`: column added with name `runner_token_expiration_interval` and type `Int`
+- Table `gitlab_projects`: column added with name `security_and_compliance_enabled` and type `Bool`
+- Table `gitlab_projects`: column order changed for `auto_cancel_pending_pipelines`
+- Table `gitlab_projects`: column order changed for `build_timeout`
+- Table `gitlab_projects`: column order changed for `ci_config_path`
+- Table `gitlab_projects`: column order changed for `ci_forward_deployment_enabled`
+- Table `gitlab_projects`: column order changed for `import_error`
+- Table `gitlab_projects`: column order changed for `import_status`
+- Table `gitlab_projects`: column order changed for `public_jobs`
+- Table `gitlab_projects_releases`: column added with name `_links` and type `JSON`
+- Table `gitlab_projects_releases`: column order changed for `assets`
+- Table `gitlab_settings`: column added with name `can_create_group` and type `Bool`
+- Table `gitlab_settings`: column order changed for `admin_notification_email`
+- Table `gitlab_settings`: column order changed for `allow_local_requests_from_hooks_and_services`
+- Table `gitlab_settings`: column order changed for `asset_proxy_whitelist`
+- Table `gitlab_settings`: column order changed for `throttle_unauthenticated_enabled`
+- Table `gitlab_settings`: column order changed for `throttle_unauthenticated_period_in_seconds`
+- Table `gitlab_settings`: column order changed for `throttle_unauthenticated_requests_per_period`
+- Table `gitlab_settings`: column order changed for `user_email_lookup_limit`
+- Table `gitlab_settings`: column order changed for `wiki_page_max_content_bytes`
+
 ### Features
 
 * **gitlab:** Add `gitlab_project_members` table ([#10122](https://github.com/cloudquery/cloudquery/issues/10122)) ([2171e7d](https://github.com/cloudquery/cloudquery/commit/2171e7d320c5605a6fa8ed4036312afe5af1e01d)), closes [#10121](https://github.com/cloudquery/cloudquery/issues/10121)
