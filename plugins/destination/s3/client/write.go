@@ -37,11 +37,10 @@ func (c *Client) WriteTableBatch(ctx context.Context, arrowSchema *arrow.Schema,
 		return nil
 	}
 	tableName := schema.TableName(arrowSchema)
-	
-	mem := memory.DefaultAllocator
+
 	if c.pluginSpec.Athena {
 		for i, record := range data {
-			data[i] = sanitizeRecordJSONKeys(mem, record)
+			data[i] = sanitizeRecordJSONKeys(record)
 		}
 	}
 
@@ -69,12 +68,11 @@ func (c *Client) WriteTableBatch(ctx context.Context, arrowSchema *arrow.Schema,
 
 // sanitizeRecordJSONKeys replaces all invalid characters in JSON keys with underscores. This is required
 // for compatibility with Athena.
-func sanitizeRecordJSONKeys(mem memory.Allocator, record arrow.Record) arrow.Record {
+func sanitizeRecordJSONKeys(record arrow.Record) arrow.Record {
 	cols := make([]arrow.Array, record.NumCols())
-	for i := 0; i < int(record.NumCols()); i++ {
-		col := record.Column(i)
+	for i, col := range record.Columns() {
 		if arrow.TypeEqual(col.DataType(), types.NewJSONType()) {
-			b := types.NewJSONBuilder(array.NewExtensionBuilder(mem, types.NewJSONType()))
+			b := types.NewJSONBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewJSONType()))
 			for r := 0; r < int(record.NumRows()); r++ {
 				if col.IsNull(r) {
 					b.AppendNull()
@@ -84,6 +82,7 @@ func sanitizeRecordJSONKeys(mem memory.Allocator, record arrow.Record) arrow.Rec
 				sanitizeJSONKeysForObject(obj)
 				b.Append(obj)
 			}
+			cols[i] = b.NewArray()
 			continue
 		}
 		cols[i] = col
