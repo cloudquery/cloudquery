@@ -167,7 +167,6 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, otherTable); err != nil {
 		t.Fatal(err)
 	}
-
 	otherData := testdata.GenTestDataV1(otherTable)
 	if err := insertTable(ctx, db, otherTable, otherData); err != nil {
 		t.Fatal(err)
@@ -201,8 +200,8 @@ func TestPlugin(t *testing.T) {
 		actualStrings[i] = v.String()
 	}
 	expectedStrings := make([]string, len(data))
-	for i, val := range data {
-		expectedStrings[i] = val.String()
+	for i, v := range data {
+		expectedStrings[i] = v.String()
 	}
 	require.Equal(t, expectedStrings, actualStrings)
 }
