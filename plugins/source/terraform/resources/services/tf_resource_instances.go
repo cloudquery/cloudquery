@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func TFResourceInstances() *schema.Table {

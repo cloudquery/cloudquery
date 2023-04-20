@@ -94,6 +94,9 @@
     "plugins/source/fastly": {
       "component": "plugins-source-fastly"
     },
+    "plugins/source/firestore": {
+      "component": "plugins-source-firestore"
+    },
     "plugins/source/gandi": {
       "component": "plugins-source-gandi"
     },
@@ -141,6 +144,9 @@
     },
     "plugins/source/oracle": {
       "component": "plugins-source-oracle"
+    },
+    "plugins/source/oracledb": {
+      "component": "plugins-source-oracledb"
     },
     "plugins/source/pagerduty": {
       "component": "plugins-source-pagerduty"

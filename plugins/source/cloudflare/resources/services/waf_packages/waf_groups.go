@@ -2,8 +2,8 @@ package waf_packages
 
 import (
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func WAFGroups() *schema.Table {

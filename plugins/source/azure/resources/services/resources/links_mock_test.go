@@ -9,7 +9,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/gorilla/mux"
 )
 

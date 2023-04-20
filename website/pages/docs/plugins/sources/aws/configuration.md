@@ -93,13 +93,18 @@ This is the (nested) spec used by the AWS source plugin.
 
   Regions to use.
 
-- `accounts` ([][account](#accounts)) (default: current account)
+- `accounts` ([][account](#account)) (default: current account)
 
   List of all accounts to fetch information from
 
 - `org` ([org](#org)) (default: not used)
 
   In AWS organization mode, CloudQuery will source all accounts underneath automatically
+
+- `initialization_concurrency` (int) (default: 4)
+
+  During initialization the AWS source plugin fetches information about each account and region. This setting controls how many accounts can be initialized concurrently.
+  Only configurations with many accounts (either hardcoded or discovered via Organizations) should require modifying this setting, to either lower it to avoid rate limit errors, or to increase it to speed up the initialization process.
 
 - `aws_debug` (bool) (default: false)
 
@@ -130,7 +135,8 @@ This is the (nested) spec used by the AWS source plugin.
   The region that should be used for signing the request to the endpoint
 
 
-## accounts
+
+## account
 
 This is used to specify one or more accounts to extract information from. Note that it should be an array of objects, each with the following fields:
 

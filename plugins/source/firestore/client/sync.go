@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"cloud.google.com/go/firestore"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/api/iterator"
 )
@@ -28,18 +28,18 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 	maxBatchSize := c.maxBatchSize
 	collection := c.client.Collection(table.Name)
 	for {
-		orderByField := firestore.DocumentID
-		if c.orderByField != "" {
-			orderByField = c.orderByField
+		orderBy := firestore.DocumentID
+		if c.orderBy != "" {
+			orderBy = c.orderBy
 		}
 
 		dir := firestore.Asc
-		if c.orderByDirection == "desc" {
+		if c.orderDirection == "desc" {
 			dir = firestore.Desc
 		}
 
 		query := collection.Query.
-			OrderBy(orderByField, dir).
+			OrderBy(orderBy, dir).
 			Limit(maxBatchSize)
 		if lastDocumentId != "" {
 			c.logger.Info().Msgf("Starting after %s", lastDocumentId)
