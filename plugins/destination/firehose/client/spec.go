@@ -19,6 +19,10 @@ func (s *Spec) SetDefaults() {
 		s.MaxRetries = new(int)
 		*s.MaxRetries = 5
 	}
+	if s.FileSpec == nil {
+		s.FileSpec = &filetypes.FileSpec{}
+	}
+	s.FileSpec.SetDefaults()
 }
 
 func (s *Spec) Validate() error {
@@ -32,6 +36,8 @@ func (s *Spec) Validate() error {
 	if parsedARN.Service != "firehose" {
 		return fmt.Errorf("kinesis firehose Stream ARN is invalid")
 	}
-
-	return nil
+	if s.Format == "" {
+		return fmt.Errorf("format is required")
+	}
+	return s.FileSpec.Validate()
 }

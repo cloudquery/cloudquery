@@ -21,7 +21,7 @@ const MaxRecordSizeBytes = 1024000
 const MaxBatchRecords = 500
 const MaxBatchSizeBytes = 4194000
 
-func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan arrow.Record) error {
+func (c *Client) Write(ctx context.Context, tables schema.Schemas, record <-chan arrow.Record) error {
 	parsedARN, err := arn.Parse(c.pluginSpec.StreamARN)
 	if err != nil {
 		c.logger.Error().Err(err).Msg("invalid firehose stream ARN")
@@ -37,59 +37,61 @@ func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan ar
 	}
 	batchSize := 0
 
-	for r := range res {
-		tableName := schema.TableName(r.Schema())
+	for rec := range record {
+		tableName := schema.TableName(rec.Schema())
 		table := tables.SchemaByName(tableName)
 		if table == nil {
 			panic(fmt.Errorf("table %s not found", tableName))
 		}
 
-		jsonObj := make(map[string]any, r.NumCols()+1)
-		for i := range r.Columns() {
-			jsonObj[r.ColumnName(i)] = r.Column(i).GetOneForMarshal(i)
-		}
-		// Add table name to the json object
-		// TODO: This should be added to the SDK so that it can be used for other plugins as well
-		jsonObj["_cq_table_name"] = tableName
-		b, err := json.Marshal(jsonObj)
-		if err != nil {
-			return err
-		}
-		dst := &bytes.Buffer{}
-		err = json.Compact(dst, b)
-		if err != nil {
-			return err
-		}
-		if len(dst.Bytes()) > MaxRecordSizeBytes {
-			c.logger.Warn().Msgf("skipping record because it is too large: %s", string(b))
-			continue
-		}
-
-		// If adding this record would exceed the batch size, send the batch
-		if len(dst.Bytes())+batchSize > min(c.spec.BatchSizeBytes, MaxBatchSizeBytes) {
-			err := c.sendBatch(ctx, recordsBatchInput, 0)
+		for row := int64(0); row < rec.NumRows(); row++ {
+			jsonObj := make(map[string]any, rec.NumCols()+1)
+			for i := range rec.Columns() {
+				jsonObj[rec.ColumnName(i)] = rec.Column(i).GetOneForMarshal(int(row))
+			}
+			// Add table name to the json object
+			// TODO: This should be added to the SDK so that it can be used for other plugins as well
+			jsonObj["_cq_table_name"] = tableName
+			b, err := json.Marshal(jsonObj)
 			if err != nil {
 				return err
 			}
-			recordsBatchInput.Records = nil
-			batchSize = 0
-		}
-
-		recordsBatchInput.Records = append(recordsBatchInput.Records, types.Record{
-			Data: dst.Bytes(),
-		})
-		// Store a running total of the batch size
-		batchSize += len(dst.Bytes())
-
-		// Send the batch if it is full
-		if len(recordsBatchInput.Records) == min(c.spec.BatchSize, MaxBatchRecords) {
-			err := c.sendBatch(ctx, recordsBatchInput, 0)
+			dst := &bytes.Buffer{}
+			err = json.Compact(dst, b)
 			if err != nil {
 				return err
 			}
-			// Reset the batch
-			recordsBatchInput.Records = nil
-			batchSize = 0
+			if len(dst.Bytes()) > MaxRecordSizeBytes {
+				c.logger.Warn().Msgf("skipping record because it is too large: %s", string(b))
+				continue
+			}
+
+			// If adding this record would exceed the batch size, send the batch
+			if len(dst.Bytes())+batchSize > min(c.spec.BatchSizeBytes, MaxBatchSizeBytes) {
+				err := c.sendBatch(ctx, recordsBatchInput, 0)
+				if err != nil {
+					return err
+				}
+				recordsBatchInput.Records = nil
+				batchSize = 0
+			}
+
+			recordsBatchInput.Records = append(recordsBatchInput.Records, types.Record{
+				Data: dst.Bytes(),
+			})
+			// Store a running total of the batch size
+			batchSize += len(dst.Bytes())
+
+			// Send the batch if it is full
+			if len(recordsBatchInput.Records) == min(c.spec.BatchSize, MaxBatchRecords) {
+				err := c.sendBatch(ctx, recordsBatchInput, 0)
+				if err != nil {
+					return err
+				}
+				// Reset the batch
+				recordsBatchInput.Records = nil
+				batchSize = 0
+			}
 		}
 	}
 	// Send the last batch

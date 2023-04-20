@@ -7,7 +7,7 @@ import Configuration from "./_configuration.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "firehose")}/>
 
-This destination plugin lets you sync data from a CloudQuery source to a Amazon Kinesis Firehose in various formats such as CSV, JSON.
+This destination plugin lets you sync data from a CloudQuery source to Amazon Kinesis Firehose in various formats such as CSV, JSON and Parquet.
 
 ## Authentication
 
@@ -32,4 +32,21 @@ It is important to note that Amazon Kinesis Firehose has the following limitatio
 - `stream_arn` (string) (required)
 
   Kinesis Firehose delivery stream where data will be sent.
+
+- `format` (string) (required)
+
+Format of the output file. Supported values are `csv`, `json` and `parquet`.
+
+- `format_spec` (map [format_spec](#format_spec)) (optional)
+Optional parameters to change the format of the file
+
+## format_spec
+
+- `delimiter` (string) (optional) (default: `,`)
+
+Character that will be used as want to use as the delimiter if the format type is `csv`
+
+- `skip_header` (bool) (optional) (default: false)
+
+Specifies if the first line of a file should be the headers (when format is `csv`).
 
