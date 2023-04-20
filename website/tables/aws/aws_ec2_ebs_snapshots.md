@@ -6,6 +6,11 @@ https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Snapshot.html
 
 The primary key for this table is **arn**.
 
+## Relations
+
+The following tables depend on aws_ec2_ebs_snapshots:
+  - [aws_ec2_ebs_snapshot_attributes](aws_ec2_ebs_snapshot_attributes)
+
 ## Columns
 
 | Name          | Type          |
