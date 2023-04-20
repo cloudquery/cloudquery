@@ -80,7 +80,6 @@ func (c *Client) reverseTransformer(sc *arrow.Schema, values primitive.M) (arrow
 		}
 	}
 	rec := bldr.NewRecord()
-	bldr.Release()
 	return rec, nil
 }
 

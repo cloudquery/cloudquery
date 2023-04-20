@@ -53,7 +53,6 @@ func transformArr(arr arrow.Array) []any {
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)
 			dbArr[i] = transformArr(nested)
-			nested.Release()
 		default:
 			dbArr[i] = arr.ValueStr(i)
 		}
@@ -124,11 +123,6 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *arrow.Schema, d
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, resources []arrow.Record) error {
-	defer func() {
-		for _, r := range resources {
-			r.Release()
-		}
-	}()
 	documents := c.transformRecords(table, resources)
 
 	pks := schema.PrimaryKeyIndices(table)
