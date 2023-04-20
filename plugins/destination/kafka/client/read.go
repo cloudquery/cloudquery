@@ -6,20 +6,22 @@ import (
 	"time"
 
 	"github.com/Shopify/sarama"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 const (
 	maxWaitTime = 3 * time.Second
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
+func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
 	consumer, err := sarama.NewConsumer(c.pluginSpec.Brokers, c.conf)
 	if err != nil {
 		return err
 	}
 	defer consumer.Close()
-	partitionConsumer, err := consumer.ConsumePartition(table.Name, 0, sarama.OffsetOldest)
+	tableName := schema.TableName(table)
+	partitionConsumer, err := consumer.ConsumePartition(tableName, 0, sarama.OffsetOldest)
 	if err != nil {
 		return err
 	}
