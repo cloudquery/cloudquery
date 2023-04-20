@@ -15,13 +15,19 @@ import (
 func EbsSnapshots() *schema.Table {
 	tableName := "aws_ec2_ebs_snapshots"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Snapshot.html`,
-		Resolver:    fetchEc2EbsSnapshots,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.Snapshot{}),
+		Name: tableName,
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Snapshot.html
+The 'request_account_id' columns are added to show the account where the request was made from.`,
+		Resolver:  fetchEc2EbsSnapshots,
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
+		Transform: transformers.TransformWithStruct(&types.Snapshot{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			{
+				Name:            "request_account_id",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
@@ -83,12 +89,13 @@ func resolveEbsSnapshotAttribute(ctx context.Context, meta schema.ClientMeta, re
 
 func resolveEbsSnapshotArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
+	s := resource.Item.(types.Snapshot)
 	a := arn.ARN{
 		Partition: cl.Partition,
 		Service:   "ec2",
 		Region:    cl.Region,
-		AccountID: cl.AccountID,
-		Resource:  "snapshot/" + aws.ToString(resource.Item.(types.Snapshot).SnapshotId),
+		AccountID: aws.ToString(s.OwnerId),
+		Resource:  "snapshot/" + aws.ToString(s.SnapshotId),
 	}
 	return resource.Set(c.Name, a.String())
 }
