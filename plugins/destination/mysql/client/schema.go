@@ -5,18 +5,19 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func identifier(name string) string {
 	return fmt.Sprintf("`%s`", name)
 }
 
-func (c *Client) getTableColumns(ctx context.Context, table *schema.Table) (schema.ColumnList, error) {
+func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]arrow.Field, error) {
 	query := `SELECT COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, CHARACTER_MAXIMUM_LENGTH, COLUMN_KEY FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ?;`
-	var tc schema.ColumnList
+	var fields []arrow.Field
 
-	rows, err := c.db.QueryContext(ctx, query, table.Name)
+	rows, err := c.db.QueryContext(ctx, query, tableName)
 	if err != nil {
 		return nil, err
 	}
@@ -32,63 +33,80 @@ func (c *Client) getTableColumns(ctx context.Context, table *schema.Table) (sche
 			return nil, err
 		}
 
-		schemaType, err := SchemaType(table.Name, name, typ)
+		schemaType, err := mySQLTypeToArrowType(tableName, name, typ)
 		if err != nil {
 			return nil, err
 		}
-		column := schema.Column{
-			Name: name, Type: schemaType,
-			CreationOptions: schema.ColumnCreationOptions{NotNull: nullable == "NO", PrimaryKey: key == "PRI"},
+		var fieldMetadata schema.MetadataFieldOptions
+		if key == "PRI" {
+			fieldMetadata.PrimaryKey = true
 		}
-		tc = append(tc, column)
+		field := arrow.Field{
+			Name:     name,
+			Type:     schemaType,
+			Nullable: nullable == "YES",
+			Metadata: schema.NewFieldMetadataFromOptions(fieldMetadata),
+		}
+		fields = append(fields, field)
 	}
 
-	return tc, nil
+	return fields, nil
 }
 
-func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
+func (c *Client) schemaTables(ctx context.Context, tables schema.Schemas) (schema.Schemas, error) {
 	query := `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE';`
 	rows, err := c.db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	schemaTables := make(schema.Tables, 0)
+	schemaTables := make(schema.Schemas, 0)
+	tableNames := make([]string, 0)
 	for rows.Next() {
 		var tableName string
 
 		if err := rows.Scan(&tableName); err != nil {
 			return nil, err
 		}
-		if tables.Get(tableName) == nil {
+
+		if tables.SchemaByName(tableName) == nil {
 			continue
 		}
-		schemaTables = append(schemaTables, &schema.Table{Name: tableName})
+
+		tableNames = append(tableNames, tableName)
 	}
 
-	for _, table := range schemaTables {
-		columns, err := c.getTableColumns(ctx, table)
+	for _, tableName := range tableNames {
+		fields, err := c.getTableColumns(ctx, tableName)
 		if err != nil {
 			return nil, err
 		}
-		table.Columns = columns
+
+		var tableMetadata schema.MetadataSchemaOptions
+		tableMetadata.TableName = tableName
+		m := schema.NewSchemaMetadataFromOptions(tableMetadata)
+		schemaTables = append(schemaTables, arrow.NewSchema(fields, &m))
 	}
 
 	return schemaTables, nil
 }
 
-func (c *Client) addColumn(ctx context.Context, table *schema.Table, column schema.Column) error {
+func (c *Client) addColumn(ctx context.Context, table *arrow.Schema, column arrow.Field) error {
+	tableName, ok := table.Metadata().GetValue(schema.MetadataTableName)
+	if !ok {
+		return fmt.Errorf("schema %s has no table name", table.String())
+	}
 	builder := strings.Builder{}
 	builder.WriteString("ALTER TABLE ")
-	builder.WriteString(identifier(table.Name))
+	builder.WriteString(identifier(tableName))
 	builder.WriteString(" ADD COLUMN ")
 	builder.WriteString(identifier(column.Name))
 	builder.WriteString(" ")
-	builder.WriteString(SQLType(column.Type))
-	if column.CreationOptions.NotNull {
+	builder.WriteString(arrowTypeToMySqlStr(column.Type))
+	if !column.Nullable {
 		builder.WriteString(" NOT NULL")
 	}
-	if column.CreationOptions.Unique {
+	if schema.IsUnique(column) {
 		builder.WriteString(" UNIQUE")
 	}
 	builder.WriteString(";")
@@ -96,36 +114,48 @@ func (c *Client) addColumn(ctx context.Context, table *schema.Table, column sche
 	return err
 }
 
-func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
+func (c *Client) createTable(ctx context.Context, table *arrow.Schema) error {
+	tableName, ok := table.Metadata().GetValue(schema.MetadataTableName)
+	if !ok {
+		return fmt.Errorf("schema %s has no table name", table.String())
+	}
+
+	totalColumns := len(table.Fields())
+	primaryKeysIndices := []int{}
+
 	builder := strings.Builder{}
 	builder.WriteString("CREATE TABLE ")
-	builder.WriteString(identifier(table.Name))
+	builder.WriteString(identifier(tableName))
 	builder.WriteString(" (\n  ")
-	for i, column := range table.Columns {
+	for i, column := range table.Fields() {
 		builder.WriteString(identifier(column.Name))
 		builder.WriteString(" ")
-		builder.WriteString(SQLType(column.Type))
-		if column.CreationOptions.Unique {
+		builder.WriteString(arrowTypeToMySqlStr(column.Type))
+		if schema.IsUnique(column) {
 			builder.WriteString(" UNIQUE")
 		}
-		if column.CreationOptions.NotNull {
+		if !column.Nullable {
 			builder.WriteString(" NOT NULL")
 		}
-		if i < len(table.Columns)-1 {
+		if i < totalColumns-1 {
 			builder.WriteString(",\n  ")
 		}
+
+		if c.pkEnabled() && schema.IsPk(column) {
+			primaryKeysIndices = append(primaryKeysIndices, i)
+		}
 	}
-	pks := table.PrimaryKeys()
-	if len(pks) > 0 {
+	if len(primaryKeysIndices) > 0 {
 		builder.WriteString(",\n  ")
 		builder.WriteString(" PRIMARY KEY (")
-		for i, pk := range pks {
-			builder.WriteString(identifier(pk))
-			if table.Columns.Get(pk).Type == schema.TypeString {
+		for i, pk := range primaryKeysIndices {
+			field := table.Field(pk)
+			builder.WriteString(identifier(field.Name))
+			if field.Type == arrow.BinaryTypes.LargeString {
 				// Since we use `text` for strings we need to specify the prefix length to use for the primary key
 				builder.WriteString("(64)")
 			}
-			if i < len(pks)-1 {
+			if i < len(primaryKeysIndices)-1 {
 				builder.WriteString(", ")
 			}
 		}
@@ -136,12 +166,17 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 	return err
 }
 
-func (c *Client) dropTable(ctx context.Context, table *schema.Table) error {
-	_, err := c.db.ExecContext(ctx, "DROP TABLE "+identifier(table.Name))
+func (c *Client) dropTable(ctx context.Context, table *arrow.Schema) error {
+	tableName, ok := table.Metadata().GetValue(schema.MetadataTableName)
+	if !ok {
+		return fmt.Errorf("schema %s has no table name", table.String())
+	}
+
+	_, err := c.db.ExecContext(ctx, "DROP TABLE "+identifier(tableName))
 	return err
 }
 
-func (c *Client) recreateTable(ctx context.Context, table *schema.Table) error {
+func (c *Client) recreateTable(ctx context.Context, table *arrow.Schema) error {
 	if err := c.dropTable(ctx, table); err != nil {
 		return err
 	}
