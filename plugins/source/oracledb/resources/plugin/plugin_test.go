@@ -47,6 +47,7 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 	builder.WriteString("CREATE TABLE ")
 	builder.WriteString(client.Identifier(table.Name))
 	builder.WriteString(" (\n  ")
+	pk := make([]string, 0, len(table.PrimaryKeys()))
 	for i, column := range table.Columns {
 		builder.WriteString(client.Identifier(column.Name))
 		builder.WriteString(" ")
@@ -57,23 +58,25 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 		if column.CreationOptions.Unique {
 			builder.WriteString(" UNIQUE")
 		}
+		if column.CreationOptions.PrimaryKey {
+			switch client.SQLType(column.Type) {
+			case "clob", "blob":
+			// nop, ORA-02329: column of datatype LOB cannot be unique or a primary key
+			default:
+				pk = append(pk, client.Identifier(column.Name))
+			}
+		}
 		if i < len(table.Columns)-1 {
 			builder.WriteString(",\n  ")
 		}
 	}
-	pk := table.PrimaryKeys()
 	if len(pk) > 0 {
 		// Need to move PK to a separate place
 		// caused by https://github.com/cloudquery/plugin-sdk/pull/768
 		builder.WriteString(",\n  CONSTRAINT ")
 		builder.WriteString(client.Identifier(table.Name + "_cq_pk"))
 		builder.WriteString(" PRIMARY KEY(")
-		for i, col := range pk {
-			builder.WriteString(client.Identifier(col))
-			if i < len(pk)-1 {
-				builder.WriteString(", ")
-			}
-		}
+		builder.WriteString(strings.Join(pk, ", ")) // already quoted
 		builder.WriteString(")")
 	}
 	builder.WriteString("\n)")
