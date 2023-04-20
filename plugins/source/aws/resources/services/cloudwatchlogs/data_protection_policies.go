@@ -34,8 +34,13 @@ func dataProtectionPolicy() *schema.Table {
 	}
 }
 func fetchDataProtectionPolicy(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	lg := parent.Item.(types.LogGroup)
+	if lg.DataProtectionStatus == "" { // Inactive Data Protection policy, don't attempt to fetch
+		return nil
+	}
+
 	config := cloudwatchlogs.GetDataProtectionPolicyInput{
-		LogGroupIdentifier: parent.Item.(types.LogGroup).Arn,
+		LogGroupIdentifier: lg.LogGroupName,
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudwatchlogs
