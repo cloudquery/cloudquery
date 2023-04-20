@@ -22,7 +22,6 @@ The following tables depend on aws_ec2_ebs_snapshots:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|attribute|JSON|
 |tags|JSON|
 |data_encryption_key_id|String|
 |description|String|
