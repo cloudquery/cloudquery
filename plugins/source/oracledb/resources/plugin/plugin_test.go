@@ -42,25 +42,7 @@ func getTestConnectionString() string {
 	return testConn
 }
 
-func preprocessTable(table *schema.Table) error {
-	// ensure that uuid and only uuid is PK
-	// caused by https://github.com/cloudquery/plugin-sdk/pull/768
-	for i := range table.Columns {
-		table.Columns[i].CreationOptions.PrimaryKey = false
-	}
-	const uidName = "uuid"
-	uid := table.Columns.Get(uidName)
-	if uid == nil {
-		return fmt.Errorf("missing %q column", uidName)
-	}
-	uid.CreationOptions.PrimaryKey = true
-	return nil
-}
-
 func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
-	if err := preprocessTable(table); err != nil {
-		return err
-	}
 	builder := strings.Builder{}
 	builder.WriteString("CREATE TABLE ")
 	builder.WriteString(client.Identifier(table.Name))
@@ -75,12 +57,24 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 		if column.CreationOptions.Unique {
 			builder.WriteString(" UNIQUE")
 		}
-		if column.CreationOptions.PrimaryKey {
-			builder.WriteString(" PRIMARY KEY")
-		}
 		if i < len(table.Columns)-1 {
 			builder.WriteString(",\n  ")
 		}
+	}
+	pk := table.PrimaryKeys()
+	if len(pk) > 0 {
+		// Need to move PK to a separate place
+		// caused by https://github.com/cloudquery/plugin-sdk/pull/768
+		builder.WriteString(",\n  CONSTRAINT ")
+		builder.WriteString(client.Identifier(table.Name + "_cq_pk"))
+		builder.WriteString(" PRIMARY KEY(")
+		for i, col := range pk {
+			builder.WriteString(client.Identifier(col))
+			if i < len(pk)-1 {
+				builder.WriteString(", ")
+			}
+		}
+		builder.WriteString(")")
 	}
 	builder.WriteString("\n)")
 	_, err := db.ExecContext(ctx, builder.String())
