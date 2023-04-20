@@ -6,6 +6,7 @@ require (
 	github.com/apache/arrow/go/v12 v12.0.0-20230401212133-adf33cc43010
 	github.com/cloudquery/plugin-sdk/v2 v2.3.7
 	github.com/go-sql-driver/mysql v1.7.0
+	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
 )
@@ -19,7 +20,6 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/flatbuffers v2.0.8+incompatible // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
