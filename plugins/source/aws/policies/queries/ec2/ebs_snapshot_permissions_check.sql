@@ -1,6 +1,6 @@
 insert into aws_policy_results
 WITH snapshot_access_groups AS (
-    SELECT account_id,
+    SELECT owner_id AS account_id,
            region,
            snapshot_id,
            JSONB_ARRAY_ELEMENTS(attribute->'CreateVolumePermissions') ->> 'Group' AS "group",
