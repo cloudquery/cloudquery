@@ -11,9 +11,9 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/oracledb/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/cloudquery/plugin-sdk/testdata"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/plugin-sdk/v2/testdata"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
@@ -47,6 +47,7 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 	builder.WriteString("CREATE TABLE ")
 	builder.WriteString(client.Identifier(table.Name))
 	builder.WriteString(" (\n  ")
+	pk := make([]string, 0, len(table.PrimaryKeys()))
 	for i, column := range table.Columns {
 		builder.WriteString(client.Identifier(column.Name))
 		builder.WriteString(" ")
@@ -58,11 +59,25 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 			builder.WriteString(" UNIQUE")
 		}
 		if column.CreationOptions.PrimaryKey {
-			builder.WriteString(" PRIMARY KEY")
+			switch client.SQLType(column.Type) {
+			case "clob", "blob":
+			// nop, ORA-02329: column of datatype LOB cannot be unique or a primary key
+			default:
+				pk = append(pk, client.Identifier(column.Name))
+			}
 		}
 		if i < len(table.Columns)-1 {
 			builder.WriteString(",\n  ")
 		}
+	}
+	if len(pk) > 0 {
+		// Need to move PK to a separate place
+		// caused by https://github.com/cloudquery/plugin-sdk/pull/768
+		builder.WriteString(",\n  CONSTRAINT ")
+		builder.WriteString(client.Identifier(table.Name + "_cq_pk"))
+		builder.WriteString(" PRIMARY KEY(")
+		builder.WriteString(strings.Join(pk, ", ")) // already quoted
+		builder.WriteString(")")
 	}
 	builder.WriteString("\n)")
 	_, err := db.ExecContext(ctx, builder.String())
@@ -135,7 +150,7 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, testTable); err != nil {
 		t.Fatal(err)
 	}
-	data := testdata.GenTestData(testTable)
+	data := testdata.GenTestDataV1(testTable)
 	if err := insertTable(ctx, db, testTable, data); err != nil {
 		t.Fatal(err)
 	}
@@ -149,7 +164,7 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, otherTable); err != nil {
 		t.Fatal(err)
 	}
-	otherData := testdata.GenTestData(otherTable)
+	otherData := testdata.GenTestDataV1(otherTable)
 	if err := insertTable(ctx, db, otherTable, otherData); err != nil {
 		t.Fatal(err)
 	}
@@ -215,7 +230,7 @@ func TestPerformance(t *testing.T) {
 	const numTables = 20
 	for i := 0; i < numTables; i++ {
 		table := testdata.TestSourceTable(fmt.Sprintf("test_oracledb_source_performance_%d", i))
-		data := testdata.GenTestData(table)
+		data := testdata.GenTestDataV1(table)
 
 		group.Go(func() error {
 			if _, err := db.ExecContext(gtx, fmt.Sprintf("DROP TABLE \"%s\"", table.Name)); err != nil {

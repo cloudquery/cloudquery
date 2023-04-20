@@ -101,6 +101,11 @@ This is the (nested) spec used by the AWS source plugin.
 
   In AWS organization mode, CloudQuery will source all accounts underneath automatically
 
+- `initialization_concurrency` (int) (default: 4)
+
+  During initialization the AWS source plugin fetches information about each account and region. This setting controls how many accounts can be initialized concurrently.
+  Only configurations with many accounts (either hardcoded or discovered via Organizations) should require modifying this setting, to either lower it to avoid rate limit errors, or to increase it to speed up the initialization process.
+
 - `aws_debug` (bool) (default: false)
 
   If true, will log AWS debug logs, including retries and other request/response metadata
@@ -128,6 +133,7 @@ This is the (nested) spec used by the AWS source plugin.
 - `custom_endpoint_signing_region` (string) (default: not used)
 
   The region that should be used for signing the request to the endpoint
+
 
 
 ## account

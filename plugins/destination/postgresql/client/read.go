@@ -121,7 +121,6 @@ func (c *Client) reverseTransformer(sc *arrow.Schema, values []any) (arrow.Recor
 		}
 	}
 	rec := bldr.NewRecord()
-	bldr.Release()
 	return rec, nil
 }
 
