@@ -6,8 +6,8 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.2
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.0.0
 	github.com/apache/arrow/go/v12 v12.0.0-20230417014917-9888ac36c142
-	github.com/cloudquery/filetypes/v2 v2.0.2
-	github.com/cloudquery/plugin-sdk/v2 v2.3.7
+	github.com/cloudquery/filetypes/v2 v2.0.3
+	github.com/cloudquery/plugin-sdk/v2 v2.3.8
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
 )

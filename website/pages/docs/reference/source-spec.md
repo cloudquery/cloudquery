@@ -14,7 +14,7 @@ spec:
   name: "aws"
   path: "cloudquery/aws"
   version: "VERSION_SOURCE_AWS"
-  tables: ["*"]
+  tables: ["aws_s3_buckets"]
   destinations: ["postgresql"]
 
   spec:
@@ -56,9 +56,11 @@ Configures how to retrieve the plugin. The contents depend on the value of `regi
 
 ### tables
 
-(`[]string`, optional, default: `["*"]`)
+(`[]string`, required)
 
-Tables to sync from the source plugin. It accepts wildcards. For example, to match all EC2-related tables, : `aws_ec2_*`. Matched tables will also sync all their descendant tables, unless these are skipped in `skip_tables`.
+> This option was changed to required in versions >= `v3.0.0` of the CloudQuery CLI. In previous versions it was optional and defaulted to `["*"]` (sync all tables).
+
+Tables to sync from the source plugin. It accepts wildcards. For example, to match all tables use `["*"]` and to match all EC2-related tables use `aws_ec2_*`. Matched tables will also sync all their descendant tables, unless these are skipped in `skip_tables`. Please note that syncing all tables can be slow on some plugins (e.g. AWS, GCP, Azure).
 
 ### skip_tables
 
