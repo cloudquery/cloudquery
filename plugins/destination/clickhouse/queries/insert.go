@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
-func Insert(table *arrow.Schema) string {
-	return `INSERT INTO ` + util.SanitizeID(schema.TableName(table)) +
-		`(` + strings.Join(util.Sanitized(ColumnNames(table.Fields())...), `, `) + `)`
+func Insert(sc *arrow.Schema) string {
+	return `INSERT INTO ` + util.SanitizeID(schema.TableName(sc)) +
+		`(` + strings.Join(util.Sanitized(ColumnNames(sc.Fields())...), `, `) + `)`
 }
