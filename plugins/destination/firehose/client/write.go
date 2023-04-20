@@ -9,47 +9,48 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/firehose/types"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 const MaxRecordSizeBytes = 1024000
 const MaxBatchRecords = 500
 const MaxBatchSizeBytes = 4194000
 
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
+func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan arrow.Record) error {
 	parsedARN, err := arn.Parse(c.pluginSpec.StreamARN)
 	if err != nil {
 		c.logger.Error().Err(err).Msg("invalid firehose stream ARN")
 		return err
 	}
-	resource := strings.Split(parsedARN.Resource, "/")
-	if len(resource) != 2 {
+	arnResource := strings.Split(parsedARN.Resource, "/")
+	if len(arnResource) != 2 {
 		c.logger.Error().Err(err).Msg("invalid firehose stream ARN")
 		return fmt.Errorf("invalid firehose stream ARN")
 	}
 	recordsBatchInput := &firehose.PutRecordBatchInput{
-		DeliveryStreamName: aws.String(resource[1]),
+		DeliveryStreamName: aws.String(arnResource[1]),
 	}
 	batchSize := 0
 
-	for resource := range res {
-		table := tables.Get(resource.TableName)
+	for r := range res {
+		tableName := schema.TableName(r.Schema())
+		table := tables.SchemaByName(tableName)
 		if table == nil {
-			panic(fmt.Errorf("table %s not found", resource.TableName))
+			panic(fmt.Errorf("table %s not found", tableName))
 		}
 
-		jsonObj := make(map[string]any, len(table.Columns)+1)
-		for i := range resource.Data {
-			jsonObj[table.Columns[i].Name] = resource.Data[i]
+		jsonObj := make(map[string]any, r.NumCols()+1)
+		for i := range r.Columns() {
+			jsonObj[r.ColumnName(i)] = r.Column(i).GetOneForMarshal(i)
 		}
 		// Add table name to the json object
 		// TODO: This should be added to the SDK so that it can be used for other plugins as well
-		jsonObj["_cq_table_name"] = table.Name
+		jsonObj["_cq_table_name"] = tableName
 		b, err := json.Marshal(jsonObj)
 		if err != nil {
 			return err

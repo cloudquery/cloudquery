@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
-	"github.com/cloudquery/filetypes"
+	"github.com/cloudquery/filetypes/v2"
 )
 
 type Spec struct {
