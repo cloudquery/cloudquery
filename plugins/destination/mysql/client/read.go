@@ -74,7 +74,6 @@ func (*Client) createResultsArray(table *arrow.Schema) []any {
 
 func reverseTransform(table *arrow.Schema, values []any) (arrow.Record, error) {
 	recordBuilder := array.NewRecordBuilder(memory.DefaultAllocator, table)
-	defer recordBuilder.Release()
 	for i, val := range values {
 		switch table.Field(i).Type.(type) {
 		case *arrow.BooleanType:
