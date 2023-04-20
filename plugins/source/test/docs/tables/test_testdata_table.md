@@ -16,6 +16,8 @@ The primary key for this table is **_cq_id**.
 |_cq_parent_id|UUID|
 |test_cq_id|UUID|
 |test_cq_parent_id|UUID|
+|uuid_pk|UUID|
+|string_pk|String|
 |bool|Bool|
 |int|Int|
 |float|Float|
