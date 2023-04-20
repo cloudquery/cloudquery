@@ -9,9 +9,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
-func Read(sourceName string, table *arrow.Schema) (query string, params []any) {
-	return "SELECT " + strings.Join(util.Sanitized(ColumnNames(table.Fields())...), ", ") + `
-FROM ` + util.SanitizeID(schema.TableName(table)) + `
+func Read(sourceName string, sc *arrow.Schema) (query string, params []any) {
+	return "SELECT " + strings.Join(util.Sanitized(ColumnNames(sc.Fields())...), ", ") + `
+FROM ` + util.SanitizeID(schema.TableName(sc)) + `
 WHERE ` + util.SanitizeID(schema.CqSourceNameColumn.Name) + ` = @sourceName
 ORDER BY ` + util.SanitizeID(schema.CqSyncTimeColumn.Name),
 		[]any{driver.NamedValue{Name: "sourceName", Value: sourceName}}
