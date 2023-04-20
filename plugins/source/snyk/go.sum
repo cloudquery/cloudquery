@@ -47,8 +47,8 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMn
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/arrow/go/v12 v12.0.0-20230411134648-a5b71cd453c8 h1:v4ST367e8h0VyazUy3O/8soQzpHHGxH/8Jng9YlhZH8=
 github.com/cloudquery/arrow/go/v12 v12.0.0-20230411134648-a5b71cd453c8/go.mod h1:d+tV/eHZZ7Dz7RPrFKtPK02tpr+c9/PEd/zm8mDS9Vg=
-github.com/cloudquery/plugin-sdk/v2 v2.3.5 h1:osG38I07jU+jqX1SH1UMKmCtMoRFLXbtgmHJPlSsco0=
-github.com/cloudquery/plugin-sdk/v2 v2.3.5/go.mod h1:/wAbhyQbdIUAMEL+Yo9zkgoBls83xt3ev6jLpJblIoU=
+github.com/cloudquery/plugin-sdk/v2 v2.3.6 h1:fzsmALscu9w6pZNB+6Aj4cobhqCCKorCDjV3EtkF8Ao=
+github.com/cloudquery/plugin-sdk/v2 v2.3.6/go.mod h1:/wAbhyQbdIUAMEL+Yo9zkgoBls83xt3ev6jLpJblIoU=
 github.com/cloudquery/snyk-sdk-go v0.4.0 h1:kT7oJN5plhoz+pYXCaUnArExw01UVbY8OnbPLy1U7JA=
 github.com/cloudquery/snyk-sdk-go v0.4.0/go.mod h1:LRL1TRuuM925gnyGp54WtS9p8S4yJMd0oS4JpLg+n7Y=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
