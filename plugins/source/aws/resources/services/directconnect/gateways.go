@@ -19,11 +19,11 @@ func Gateways() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGateway.html`,
 		Resolver:    fetchDirectconnectGateways,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "directconnect"),
+		Multiplex:   client.AccountMultiplex(tableName),
 		Transform:   transformers.TransformWithStruct(&types.DirectConnectGateway{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
@@ -56,46 +56,6 @@ func fetchDirectconnectGateways(ctx context.Context, meta schema.ClientMeta, par
 			return err
 		}
 		res <- output.DirectConnectGateways
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
-	}
-	return nil
-}
-
-func fetchDirectconnectGatewayAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	gateway := parent.Item.(types.DirectConnectGateway)
-	c := meta.(*client.Client)
-	svc := c.Services().Directconnect
-	config := directconnect.DescribeDirectConnectGatewayAssociationsInput{DirectConnectGatewayId: gateway.DirectConnectGatewayId}
-	// No paginator available
-	for {
-		output, err := svc.DescribeDirectConnectGatewayAssociations(ctx, &config)
-		if err != nil {
-			return err
-		}
-		res <- output.DirectConnectGatewayAssociations
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		config.NextToken = output.NextToken
-	}
-	return nil
-}
-
-func fetchDirectconnectGatewayAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	gateway := parent.Item.(types.DirectConnectGateway)
-	c := meta.(*client.Client)
-	svc := c.Services().Directconnect
-	config := directconnect.DescribeDirectConnectGatewayAttachmentsInput{DirectConnectGatewayId: gateway.DirectConnectGatewayId}
-	// No paginator available
-	for {
-		output, err := svc.DescribeDirectConnectGatewayAttachments(ctx, &config)
-		if err != nil {
-			return err
-		}
-		res <- output.DirectConnectGatewayAttachments
 		if aws.ToString(output.NextToken) == "" {
 			break
 		}

@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/tailscale
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk/v2 v2.1.0
+	github.com/cloudquery/plugin-sdk/v2 v2.3.8
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/rs/zerolog v1.29.0
 	github.com/tailscale/tailscale-client-go v1.8.0

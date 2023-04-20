@@ -3,10 +3,10 @@ module github.com/cloudquery/cloudquery/plugins/source/gitlab
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk/v2 v2.1.0
+	github.com/cloudquery/plugin-sdk/v2 v2.3.8
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/rs/zerolog v1.29.0
-	github.com/xanzy/go-gitlab v0.74.0
+	github.com/xanzy/go-gitlab v0.83.0
 )
 
 // TODO: remove once the changes are merged to upstream
@@ -45,7 +45,7 @@ require (
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29 // indirect
 	golang.org/x/mod v0.8.0 // indirect
 	golang.org/x/net v0.9.0 // indirect
-	golang.org/x/oauth2 v0.4.0 // indirect
+	golang.org/x/oauth2 v0.6.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.7.0 // indirect
 	golang.org/x/text v0.9.0 // indirect

@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 
 	"database/sql"
@@ -15,7 +15,6 @@ import (
 
 type Client struct {
 	destination.UnimplementedUnmanagedWriter
-	destination.DefaultReverseTransformer
 	db      *sql.DB
 	logger  zerolog.Logger
 	spec    specs.Destination
@@ -38,11 +37,18 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
-	_, err := gosnowflake.ParseDSN(spec.ConnectionString)
+	cfg, err := gosnowflake.ParseDSN(spec.ConnectionString)
 	if err != nil {
 		return nil, err
 	}
-	db, err := sql.Open("snowflake", spec.ConnectionString)
+	binaryFormat := "BASE64"
+	cfg.Params["BINARY_INPUT_FORMAT"] = &binaryFormat
+	cfg.Params["BINARY_OUTPUT_FORMAT"] = &binaryFormat
+	dsn, err := gosnowflake.DSN(cfg)
+	if err != nil {
+		return nil, err
+	}
+	db, err := sql.Open("snowflake", dsn)
 	if err != nil {
 		return nil, err
 	}

@@ -8,19 +8,20 @@ import (
 	"sync/atomic"
 
 	"github.com/Shopify/sarama"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
-func (c *Client) createTopics(_ context.Context, tables schema.Tables) error {
+func (c *Client) createTopics(_ context.Context, tables schema.Schemas) error {
 	c.conf.Version = sarama.V2_0_0_0
 	admin, err := sarama.NewClusterAdmin(c.pluginSpec.Brokers, c.conf)
 	if err != nil {
 		return err
 	}
 	defer admin.Close()
-	for _, table := range tables.FlattenTables() {
-		err := admin.CreateTopic(table.Name, &sarama.TopicDetail{
+	for _, table := range tables {
+		tableName := schema.TableName(table)
+		err := admin.CreateTopic(tableName, &sarama.TopicDetail{
 			NumPartitions:     1,
 			ReplicationFactor: 1,
 		}, false)
@@ -34,7 +35,7 @@ func (c *Client) createTopics(_ context.Context, tables schema.Tables) error {
 	return nil
 }
 
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
+func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan arrow.Record) error {
 	if err := c.createTopics(ctx, tables); err != nil {
 		return err
 	}
@@ -43,13 +44,14 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 	for r := range res {
 		var b bytes.Buffer
 		w := bufio.NewWriter(&b)
-		table := tables.Get(r.TableName)
-		if err := c.Client.WriteTableBatchFile(w, table, [][]any{r.Data}); err != nil {
+		sc := r.Schema()
+		tableName := schema.TableName(sc)
+		if err := c.Client.WriteTableBatchFile(w, sc, []arrow.Record{r}); err != nil {
 			return err
 		}
 		w.Flush()
 		messages = append(messages, &sarama.ProducerMessage{
-			Topic: r.TableName,
+			Topic: tableName,
 			Key:   nil,
 			Value: sarama.ByteEncoder(b.Bytes()),
 		})

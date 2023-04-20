@@ -320,8 +320,8 @@ github.com/cloudquery/codegen v0.2.1 h1:AWpGNKIFUyzI7vulYADXi/3SoksUaNXgTgIMuSrT
 github.com/cloudquery/codegen v0.2.1/go.mod h1:oJxzUuOC79fP36vBPU1BJ7n+jgQemS33y/mbgNq6vfM=
 github.com/cloudquery/plugin-sdk v1.24.0 h1:vgi3RImpSlnhacg/zbrpsbUEsYpG51UB5KVkNhpX1cs=
 github.com/cloudquery/plugin-sdk v1.24.0/go.mod h1:teMPyCON3uPdMsHvzpSiOg+IK2sOR5Tf9dYLreoURzI=
-github.com/cloudquery/plugin-sdk/v2 v2.1.0 h1:8gUagRAVVSqYxmkHKOXn4VRqdkUbiN1LHeRFVbqlAq0=
-github.com/cloudquery/plugin-sdk/v2 v2.1.0/go.mod h1:+S+5/L3/HcLs6tJk+jJ09ToJwF4ADbptCNzS63jhmY4=
+github.com/cloudquery/plugin-sdk/v2 v2.3.8 h1:6UzliJ1TW70Y40aQIQv6AXBY5ra7sWtlBo12UQsGF2A=
+github.com/cloudquery/plugin-sdk/v2 v2.3.8/go.mod h1:/wAbhyQbdIUAMEL+Yo9zkgoBls83xt3ev6jLpJblIoU=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=

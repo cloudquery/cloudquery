@@ -68,23 +68,23 @@
     },
     {
       "source": "/docs/recipes/aws-postgresql",
-      "destination": "/docs/recipes/sources/aws"
+      "destination": "/integrations/aws/postgresql"
     },
     {
       "source": "/docs/recipes/gcp-postgresql",
-      "destination": "/docs/recipes/sources/gcp"
+      "destination": "/integrations/gcp/postgresql"
     },
     {
       "source": "/docs/recipes/gcp-k8s-postgresql",
-      "destination": "/docs/recipes/sources/gcp-k8s"
+      "destination": "/integrations/gcp/postgresql"
     },
     {
       "source": "/docs/recipes/azure-postgresql",
-      "destination": "/docs/recipes/sources/azure"
+      "destination": "/integrations/azure/postgresql"
     },
     {
       "source": "/docs/recipes/aws-csv",
-      "destination": "/docs/recipes/destinations/csv"
+      "destination": "/integrations/aws/file"
     },
     {
       "source": "/docs/cli/fetch/overview",
@@ -237,6 +237,10 @@
     {
       "source": "/docs/support",
       "destination": "/pricing"
+    },
+    {
+      "source": "/docs/plugins/destinations/csv/overview",
+      "destination": "/docs/plugins/destinations/file/overview"
     }
   ]
 }

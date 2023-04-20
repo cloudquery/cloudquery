@@ -3,7 +3,7 @@ package client
 import (
 	"fmt"
 
-	"github.com/cloudquery/filetypes"
+	"github.com/cloudquery/filetypes/v2"
 )
 
 type Spec struct {
