@@ -44,7 +44,6 @@ func transformArr(arr arrow.Array) []any {
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)
 			dbArr[i] = transformArr(nested)
-			nested.Release()
 		default:
 			dbArr[i] = stripNulls(arr.ValueStr(i))
 		}
@@ -163,6 +162,5 @@ func reverseTransformer(sc *arrow.Schema, data map[any]any) (arrow.Record, error
 		}
 	}
 	rec := bldr.NewRecord()
-	bldr.Release()
 	return rec, nil
 }
