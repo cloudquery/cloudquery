@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/testdata"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/testdata"
 )
 
 func TestDataTable() *schema.Table {
@@ -18,7 +18,7 @@ func TestDataTable() *schema.Table {
 		table.Columns[i].Resolver = schema.PathResolver(table.Columns[i].Name)
 	}
 
-	data := testdata.GenTestData(table)
+	data := testdata.GenTestDataV1(table)
 	dataAsMap := make(map[string]any)
 	for i, c := range table.Columns {
 		if data[i].GetStatus() == schema.Present {

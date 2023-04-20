@@ -84,7 +84,6 @@ func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan ar
 		for _, rowVals := range rows {
 			batch.Queue(sql, rowVals...)
 		}
-		r.Release()
 		batchSize := batch.Len()
 		if batchSize >= c.batchSize {
 			br := c.conn.SendBatch(ctx, batch)
