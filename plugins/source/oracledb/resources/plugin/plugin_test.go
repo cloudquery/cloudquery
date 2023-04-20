@@ -10,13 +10,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/apache/arrow/go/v12/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/source/oracledb/client"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/cloudquery/plugin-sdk/v2/testdata"
-	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
@@ -90,7 +87,7 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 	return err
 }
 
-func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, record arrow.Record) error {
+func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, data schema.CQTypes) error {
 	builder := strings.Builder{}
 	builder.WriteString("INSERT INTO " + client.Identifier(table.Name))
 	builder.WriteString(" (")
@@ -108,10 +105,6 @@ func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, record ar
 		}
 	}
 	builder.WriteString(")")
-	data, err := (&client.Transformer{}).RecordToCQTypes(table, record)
-	if err != nil {
-		return err
-	}
 	dbData := schema.TransformWithTransformer(&client.Transformer{}, data)
 	if _, err := db.ExecContext(ctx, builder.String(), dbData...); err != nil {
 		return err
@@ -126,12 +119,6 @@ func isNotExistsError(err error) bool {
 	}
 
 	return false
-}
-
-func releaseRecords(records []arrow.Record) {
-	for _, record := range records {
-		record.Release()
-	}
 }
 
 func TestPlugin(t *testing.T) {
@@ -166,14 +153,8 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, testTable); err != nil {
 		t.Fatal(err)
 	}
-	data := testdata.GenTestData(memory.DefaultAllocator, schema.CQSchemaToArrow(testTable), testdata.GenTestDataOptions{
-		SourceName: "oracledb",
-		SyncTime:   time.Now(),
-		MaxRows:    1,
-		StableUUID: uuid.Nil,
-	})
-	defer releaseRecords(data)
-	if err := insertTable(ctx, db, testTable, data[0]); err != nil {
+	data := testdata.GenTestDataV1(testTable)
+	if err := insertTable(ctx, db, testTable, data); err != nil {
 		t.Fatal(err)
 	}
 
@@ -186,14 +167,9 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, otherTable); err != nil {
 		t.Fatal(err)
 	}
-	otherData := testdata.GenTestData(memory.DefaultAllocator, schema.CQSchemaToArrow(testTable), testdata.GenTestDataOptions{
-		SourceName: "oracledb",
-		SyncTime:   time.Now(),
-		MaxRows:    1,
-		StableUUID: uuid.Nil,
-	})
-	defer releaseRecords(otherData)
-	if err := insertTable(ctx, db, otherTable, otherData[0]); err != nil {
+
+	otherData := testdata.GenTestDataV1(otherTable)
+	if err := insertTable(ctx, db, otherTable, otherData); err != nil {
 		t.Fatal(err)
 	}
 
@@ -224,10 +200,8 @@ func TestPlugin(t *testing.T) {
 	for i, v := range gotData {
 		actualStrings[i] = v.String()
 	}
-	dataCQ, err := (&client.Transformer{}).RecordToCQTypes(testTable, data[0])
-	require.NoError(t, err)
-	expectedStrings := make([]string, len(dataCQ))
-	for i, val := range dataCQ {
+	expectedStrings := make([]string, len(data))
+	for i, val := range data {
 		expectedStrings[i] = val.String()
 	}
 	require.Equal(t, expectedStrings, actualStrings)
@@ -260,15 +234,9 @@ func TestPerformance(t *testing.T) {
 	const numTables = 20
 	for i := 0; i < numTables; i++ {
 		table := testdata.TestSourceTable(fmt.Sprintf("test_oracledb_source_performance_%d", i))
-		data := testdata.GenTestData(memory.DefaultAllocator, schema.CQSchemaToArrow(table), testdata.GenTestDataOptions{
-			SourceName: "oracledb",
-			SyncTime:   time.Now(),
-			MaxRows:    1,
-			StableUUID: uuid.Nil,
-		})
+		data := testdata.GenTestDataV1(table)
 
 		group.Go(func() error {
-			defer releaseRecords(data)
 			if _, err := db.ExecContext(gtx, fmt.Sprintf("DROP TABLE \"%s\"", table.Name)); err != nil {
 				if !isNotExistsError(err) {
 					return err
@@ -278,7 +246,7 @@ func TestPerformance(t *testing.T) {
 				return err
 			}
 
-			return insertTable(gtx, db, table, data[0])
+			return insertTable(gtx, db, table, data)
 		})
 	}
 
