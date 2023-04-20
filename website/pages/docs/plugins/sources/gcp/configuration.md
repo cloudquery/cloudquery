@@ -11,6 +11,7 @@ spec:
   name: "gcp"
   path: "cloudquery/gcp"
   version: "VERSION_SOURCE_GCP"
+  tables: ["gcp_storage_buckets"]
   destinations: ["postgresql"]
 
   spec:
@@ -73,6 +74,7 @@ spec:
   name: gcp
   path: "cloudquery/gcp"
   version: "VERSION_SOURCE_GCP"
+  tables: ["gcp_container_clusters"]
   destinations: ["<destination>"]
 ---
 kind: source
@@ -80,6 +82,7 @@ spec:
   name: k8s
   path: "cloudquery/k8s"
   version: "VERSION_SOURCE_K8S"
+  tables: ["*"]
   destinations: ["<destination>"]
 ```
 
