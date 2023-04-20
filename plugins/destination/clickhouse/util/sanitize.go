@@ -4,6 +4,10 @@ import (
 	"strings"
 )
 
+func UnquoteID(sanitizedID string) string {
+	return strings.Trim(sanitizedID, "`")
+}
+
 func SanitizeID(id string) string {
 	return "`" + strings.ReplaceAll(id, string([]byte{0}), ``) + "`"
 }
