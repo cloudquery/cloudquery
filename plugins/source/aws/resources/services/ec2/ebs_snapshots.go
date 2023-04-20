@@ -42,6 +42,9 @@ func EbsSnapshots() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 		},
+		Relations: []*schema.Table{
+			ebsSnapshotAttributes(),
+		},
 	}
 }
 
