@@ -20,8 +20,6 @@ clickhouse:
   - plugins/destination/clickhouse/**/*
 cloudflare:
   - plugins/source/cloudflare/**/*
-csv:
-  - plugins/destination/csv/**/*
 datadog:
   - plugins/source/datadog/**/*
 digitalocean:
