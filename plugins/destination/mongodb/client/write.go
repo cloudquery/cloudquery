@@ -49,6 +49,12 @@ func transformArr(arr arrow.Array) []any {
 				panic(err)
 			}
 			dbArr[i] = val
+		case *array.Struct:
+			var val any
+			if err := json.Unmarshal([]byte(a.ValueStr(i)), &val); err != nil {
+				panic(err)
+			}
+			dbArr[i] = val
 		case array.ListLike:
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)

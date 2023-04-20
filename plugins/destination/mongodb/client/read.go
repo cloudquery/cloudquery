@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/apache/arrow/go/v12/arrow"
@@ -52,6 +53,14 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		b.Append(arrow.Timestamp((val).(primitive.DateTime).Time().UTC().UnixMicro()))
 	case *types.JSONBuilder:
 		b.Append(val.(primitive.M))
+	case *array.StructBuilder:
+		v, err := json.Marshal(val.(primitive.M))
+		if err != nil {
+			return err
+		}
+		if err := b.UnmarshalJSON(v); err != nil {
+			return err
+		}
 	case array.ListLikeBuilder:
 		b.Append(true)
 		valBuilder := b.ValueBuilder()
