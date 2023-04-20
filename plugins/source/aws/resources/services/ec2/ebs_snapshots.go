@@ -64,6 +64,12 @@ func fetchEc2EbsSnapshots(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func resolveEbsSnapshotAttribute(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Snapshot)
+	cl := meta.(*client.Client)
+
+	if aws.ToString(r.OwnerId) != cl.AccountID {
+		return nil
+	}
+
 	svc := meta.(*client.Client).Services().Ec2
 	output, err := svc.DescribeSnapshotAttribute(ctx, &ec2.DescribeSnapshotAttributeInput{
 		Attribute:  types.SnapshotAttributeNameCreateVolumePermission,
