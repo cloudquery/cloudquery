@@ -18,6 +18,7 @@ spec:
   name: "cloudwidgets"
   registry: "local"
   path: "/home/user/path/to/plugin/binary"
+  tables: ['*']
 # other settings like tables, etc.
 ```
 
@@ -48,6 +49,7 @@ spec:
   name: "cloudwidgets"
   registry: "grpc"
   path: "localhost:7778"
+  tables: ['*']
 # other settings like tables, etc.
 ```
 

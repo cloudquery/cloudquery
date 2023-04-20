@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.1.18...plugins-destination-snowflake-v2.0.0) (2023-04-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose).
+
+### Features
+
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([2ab52fa](https://github.com/cloudquery/cloudquery/commit/2ab52fa1f3c39b21a00395440fcba658c50372ea))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.17.8 ([#9781](https://github.com/cloudquery/cloudquery/issues/9781)) ([69bb790](https://github.com/cloudquery/cloudquery/commit/69bb790afbeac9ff01a41e71c8f631fb60fe64d1))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/credentials to v1.13.19 ([#9789](https://github.com/cloudquery/cloudquery/issues/9789)) ([220b4af](https://github.com/cloudquery/cloudquery/commit/220b4af68c1ab74c685d35f82613d45191cfa449))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/credentials to v1.13.20 ([#10128](https://github.com/cloudquery/cloudquery/issues/10128)) ([b0517ec](https://github.com/cloudquery/cloudquery/commit/b0517ec247483d23224bbbd737481d5f151c5caf))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.61 ([#9791](https://github.com/cloudquery/cloudquery/issues/9791)) ([f9dcef8](https://github.com/cloudquery/cloudquery/commit/f9dcef81bb81da123b6820ef2c4b204325e64203))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.62 ([#10129](https://github.com/cloudquery/cloudquery/issues/10129)) ([13f8670](https://github.com/cloudquery/cloudquery/commit/13f867006cd17c92bc1b18022ab3a210266258d8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.45.0 ([#9863](https://github.com/cloudquery/cloudquery/issues/9863)) ([2799d62](https://github.com/cloudquery/cloudquery/commit/2799d62518283ac304beecda9478f8f2db43cdc5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.4 ([#10196](https://github.com/cloudquery/cloudquery/issues/10196)) ([c6d2f59](https://github.com/cloudquery/cloudquery/commit/c6d2f59c7d77177a351cb82ecdc381dec6aad30c))
+
 ## [1.1.18](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v1.1.17...plugins-destination-snowflake-v1.1.18) (2023-04-04)
 
 

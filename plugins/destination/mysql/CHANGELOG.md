@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v1.0.5...plugins-destination-mysql-v2.0.0) (2023-04-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose).
+* Timestamp fields type changed from `datetime` to `datetime(6)` to avoid losing fractional data
+* Mac Address and Inet column type changed from `nvarchar(255)` to `text` as we cannot assume `nvarchar(255)` columns represent valid Mac Address or Inet
+* Float fields type changed from `float` to `double` for increased precision
+
+### Features
+
+* Float fields type changed from `float` to `double` for increased precision  ([c5d3508](https://github.com/cloudquery/cloudquery/commit/c5d3508ddc5b95579e059f9532e2e64453b5ed86))
+* Mac Address and Inet column type changed from `nvarchar(255)` to `text` as we cannot assume `nvarchar(255)` columns represent valid Mac Address or Inet  ([c5d3508](https://github.com/cloudquery/cloudquery/commit/c5d3508ddc5b95579e059f9532e2e64453b5ed86))
+* Timestamp fields type changed from `datetime` to `datetime(6)` to avoid losing fractional data ([c5d3508](https://github.com/cloudquery/cloudquery/commit/c5d3508ddc5b95579e059f9532e2e64453b5ed86))
+* Update to plugin SDK v2  ([c5d3508](https://github.com/cloudquery/cloudquery/commit/c5d3508ddc5b95579e059f9532e2e64453b5ed86))
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([c5d3508](https://github.com/cloudquery/cloudquery/commit/c5d3508ddc5b95579e059f9532e2e64453b5ed86))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.45.0 ([#9863](https://github.com/cloudquery/cloudquery/issues/9863)) ([2799d62](https://github.com/cloudquery/cloudquery/commit/2799d62518283ac304beecda9478f8f2db43cdc5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.6 ([#10208](https://github.com/cloudquery/cloudquery/issues/10208)) ([91c80a7](https://github.com/cloudquery/cloudquery/commit/91c80a795b46480447cfaef67c4db721a31e3206))
+* Update to SDK v2.3.7, remove release calls ([#10209](https://github.com/cloudquery/cloudquery/issues/10209)) ([5442837](https://github.com/cloudquery/cloudquery/commit/544283754bda58ba5c053b2bc55a97de0f408e96))
+
 ## [1.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v1.0.4...plugins-destination-mysql-v1.0.5) (2023-04-04)
 
 

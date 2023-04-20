@@ -5,18 +5,17 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"sync"
 
-	"github.com/aws/aws-sdk-go-v2/aws/arn"
-	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
-	"github.com/aws/smithy-go"
 	"github.com/aws/smithy-go/logging"
 	"github.com/cloudquery/plugin-sdk/v2/backend"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
+	"golang.org/x/sync/errgroup"
 )
 
 type Client struct {
@@ -72,6 +71,14 @@ func (s *ServicesManager) ServicesByPartitionAccountAndRegion(partition, account
 
 func (s *ServicesManager) ServicesByAccountForWAFScope(partition, accountId string) *Services {
 	return s.wafScopeServices[partition][accountId]
+}
+
+func (s *ServicesManager) InitServices(details svcsDetail) {
+	if details.region != "" {
+		s.InitServicesForPartitionAccountAndRegion(details.partition, details.accountId, details.region, details.svcs)
+	} else {
+		s.InitServicesForPartitionAccountAndScope(details.partition, details.accountId, details.svcs)
+	}
 }
 
 func (s *ServicesManager) InitServicesForPartitionAccountAndRegion(partition, accountId, region string, svcs Services) {
@@ -177,6 +184,7 @@ func (c *Client) withLanguageCode(code string) *Client {
 	return &newC
 }
 
+// Configure is the entrypoint into configuring the AWS plugin. It is called by the plugin initialization in resources/plugin/aws.go
 func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, opts source.Options) (schema.ClientMeta, error) {
 	var awsPluginSpec Spec
 	err := spec.UnmarshalSpec(&awsPluginSpec)
@@ -188,6 +196,8 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 	if err != nil {
 		return nil, fmt.Errorf("spec validation failed: %w", err)
 	}
+
+	awsPluginSpec.SetDefaults()
 
 	client := NewAwsClient(logger, opts.Backend)
 
@@ -207,66 +217,29 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 		})
 	}
 
+	initLock := sync.Mutex{}
+	errorGroup, gtx := errgroup.WithContext(ctx)
+	errorGroup.SetLimit(awsPluginSpec.InitializationConcurrency)
 	for _, account := range awsPluginSpec.Accounts {
-		if account.AccountName == "" {
-			account.AccountName = account.ID
-		}
-
-		localRegions := account.Regions
-		if len(localRegions) == 0 {
-			localRegions = awsPluginSpec.Regions
-		}
-
-		if err := verifyRegions(localRegions); err != nil {
-			return nil, err
-		}
-
-		client.specificRegions = true
-		if isAllRegions(localRegions) {
-			logger.Info().Msg("All regions specified in `cloudquery.yml`. Assuming all regions")
-			client.specificRegions = false
-		}
-
-		awsCfg, err := configureAwsSDK(ctx, logger, &awsPluginSpec, account, adminAccountSts)
-		if err != nil {
-			if account.source == "org" {
-				logger.Warn().Msg("Unable to assume role in account")
-				continue
+		account := account
+		errorGroup.Go(func() error {
+			svcsDetail, err := client.setupAWSAccount(gtx, logger, &awsPluginSpec, adminAccountSts, account)
+			if err != nil {
+				return err
 			}
-			var ae smithy.APIError
-			if errors.As(err, &ae) {
-				if strings.Contains(ae.ErrorCode(), "AccessDenied") {
-					logger.Warn().Str("account", account.AccountName).Err(err).Msg("Access denied for account")
-					continue
-				}
+			initLock.Lock()
+			defer initLock.Unlock()
+			for _, details := range svcsDetail {
+				client.ServicesManager.InitServices(details)
 			}
-			if errors.Is(err, errRetrievingCredentials) {
-				logger.Warn().Str("account", account.AccountName).Err(err).Msg("Could not retrieve credentials for account")
-				continue
-			}
-
-			return nil, err
-		}
-		account.Regions = findEnabledRegions(ctx, logger, account.AccountName, ec2.NewFromConfig(awsCfg), localRegions, account.DefaultRegion)
-		if len(account.Regions) == 0 {
-			logger.Warn().Str("account", account.AccountName).Err(err).Msg("No enabled regions provided in config for account")
-			continue
-		}
-		awsCfg.Region = account.Regions[0]
-		output, err := getAccountId(ctx, awsCfg)
-		if err != nil {
-			return nil, err
-		}
-		iamArn, err := arn.Parse(*output.Arn)
-		if err != nil {
-			return nil, err
-		}
-
-		for _, region := range account.Regions {
-			client.ServicesManager.InitServicesForPartitionAccountAndRegion(iamArn.Partition, *output.Account, region, initServices(region, awsCfg))
-		}
-		client.ServicesManager.InitServicesForPartitionAccountAndScope(iamArn.Partition, *output.Account, initServices(cloudfrontScopeRegion, awsCfg))
+			return nil
+		})
 	}
+	err = errorGroup.Wait()
+	if err != nil {
+		return nil, err
+	}
+
 	if len(client.ServicesManager.services) == 0 {
 		return nil, fmt.Errorf("no enabled accounts instantiated")
 	}
