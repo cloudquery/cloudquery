@@ -5,8 +5,8 @@ import (
 	"path"
 	"strings"
 
-	source "github.com/cloudquery/plugin-sdk/clients/source/v1"
-	"github.com/cloudquery/plugin-sdk/specs"
+	source "github.com/cloudquery/plugin-sdk/v2/clients/source/v1"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )

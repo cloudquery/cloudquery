@@ -126,6 +126,8 @@
 - [aws_config_configuration_recorders](tables/aws_config_configuration_recorders)
 - [aws_config_conformance_packs](tables/aws_config_conformance_packs)
   - [aws_config_conformance_pack_rule_compliances](tables/aws_config_conformance_pack_rule_compliances)
+- [aws_config_delivery_channels](tables/aws_config_delivery_channels)
+  - [aws_config_delivery_channel_statuses](tables/aws_config_delivery_channel_statuses)
 - [aws_dax_clusters](tables/aws_dax_clusters)
 - [aws_db_proxies](tables/aws_db_proxies)
 - [aws_directconnect_connections](tables/aws_directconnect_connections)

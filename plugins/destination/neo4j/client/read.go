@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v12/arrow/array"
+	"github.com/apache/arrow/go/v12/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
@@ -14,96 +17,85 @@ const (
 	readCypher = "MATCH (t:%s {_cq_source_name: $cq_source_name}) RETURN t ORDER BY t._cq_sync_time ASC"
 )
 
-func (*Client) createResultsArray(table *schema.Table, node *neo4j.Node) []any {
-	results := make([]any, 0, len(table.Columns))
-	for _, col := range table.Columns {
-		if node.Props[col.Name] == nil {
-			results = append(results, nil)
-			continue
+func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
+	if val == nil {
+		bldr.AppendNull()
+		return nil
+	}
+	switch b := bldr.(type) {
+	case *array.BooleanBuilder:
+		b.Append(val.(bool))
+	case *array.Int8Builder:
+		b.Append(int8(val.(int64)))
+	case *array.Int16Builder:
+		b.Append(int16(val.(int64)))
+	case *array.Int32Builder:
+		b.Append(int32(val.(int64)))
+	case *array.Int64Builder:
+		b.Append(val.(int64))
+	case *array.Uint8Builder:
+		b.Append(uint8(val.(int64)))
+	case *array.Uint16Builder:
+		b.Append(uint16(val.(int64)))
+	case *array.Uint32Builder:
+		b.Append(uint32(val.(int64)))
+	case *array.Uint64Builder:
+		b.Append(uint64(val.(int64)))
+	case *array.Float32Builder:
+		b.Append(float32(val.(float64)))
+	case *array.Float64Builder:
+		b.Append(val.(float64))
+	case *array.StringBuilder:
+		va, ok := val.(string)
+		if !ok {
+			return fmt.Errorf("unsupported type %T with builder %T and column %s", val, bldr, f.Name)
 		}
-		switch col.Type {
-		case schema.TypeBool:
-			r := node.Props[col.Name].(bool)
-			results = append(results, &r)
-		case schema.TypeInt:
-			r := node.Props[col.Name].(int64)
-			results = append(results, &r)
-		case schema.TypeFloat:
-			r := node.Props[col.Name].(float64)
-			results = append(results, &r)
-		case schema.TypeUUID:
-			r := node.Props[col.Name].(string)
-			results = append(results, &r)
-		case schema.TypeString:
-			r := node.Props[col.Name].(string)
-			results = append(results, &r)
-		case schema.TypeByteArray:
-			r := node.Props[col.Name].([]byte)
-			results = append(results, &r)
-		case schema.TypeStringArray:
-			r := make([]string, len(node.Props[col.Name].([]any)))
-			for i, v := range node.Props[col.Name].([]any) {
-				r[i] = v.(string)
+		b.Append(va)
+	case *array.LargeStringBuilder:
+		b.Append(val.(string))
+	case *array.BinaryBuilder:
+		b.Append(val.([]byte))
+	case *array.TimestampBuilder:
+		b.Append(arrow.Timestamp(val.(time.Time).UnixMicro()))
+	case array.ListLikeBuilder:
+		b.Append(true)
+		valBuilder := b.ValueBuilder()
+		for _, v := range val.([]any) {
+			if err := c.reverseTransform(f, valBuilder, v); err != nil {
+				return err
 			}
-			results = append(results, r)
-		case schema.TypeTimestamp:
-			r := node.Props[col.Name].(time.Time)
-			results = append(results, &r)
-		case schema.TypeJSON:
-			r := node.Props[col.Name].(string)
-			results = append(results, &r)
-		case schema.TypeUUIDArray:
-			r := make([]string, len(node.Props[col.Name].([]any)))
-			for i, v := range node.Props[col.Name].([]any) {
-				r[i] = v.(string)
-			}
-			results = append(results, r)
-		case schema.TypeCIDR:
-			r := node.Props[col.Name].(string)
-			results = append(results, &r)
-		case schema.TypeCIDRArray:
-			r := make([]string, len(node.Props[col.Name].([]any)))
-			for i, v := range node.Props[col.Name].([]any) {
-				r[i] = v.(string)
-			}
-			results = append(results, r)
-		case schema.TypeMacAddr:
-			r := node.Props[col.Name].(string)
-			results = append(results, &r)
-		case schema.TypeMacAddrArray:
-			r := make([]string, len(node.Props[col.Name].([]any)))
-			for i, v := range node.Props[col.Name].([]any) {
-				r[i] = v.(string)
-			}
-			results = append(results, r)
-		case schema.TypeInet:
-			r := node.Props[col.Name].(string)
-			results = append(results, &r)
-		case schema.TypeInetArray:
-			r := make([]string, len(node.Props[col.Name].([]any)))
-			for i, v := range node.Props[col.Name].([]any) {
-				r[i] = v.(string)
-			}
-			results = append(results, r)
-		case schema.TypeIntArray:
-			r := make([]int64, len(node.Props[col.Name].([]any)))
-			for i, v := range node.Props[col.Name].([]any) {
-				r[i] = v.(int64)
-			}
-			results = append(results, r)
-		default:
-			panic(fmt.Sprintf("unsupported type for col %v: %v", col.Name, col.Type))
+		}
+	default:
+		v, ok := val.(string)
+		if !ok {
+			return fmt.Errorf("unsupported type %T with builder %T", val, bldr)
+		}
+		if err := bldr.AppendValueFromString(v); err != nil {
+			return err
 		}
 	}
-	return results
+	return nil
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
-	stmt := fmt.Sprintf(readCypher, table.Name)
+func (c *Client) reverseTransformer(sc *arrow.Schema, node *neo4j.Node) (arrow.Record, error) {
+	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
+	for i, f := range sc.Fields() {
+		if err := c.reverseTransform(f, bldr.Field(i), node.Props[f.Name]); err != nil {
+			return nil, err
+		}
+	}
+	rec := bldr.NewRecord()
+	bldr.Release()
+	return rec, nil
+}
+
+func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
+	tableName := schema.TableName(table)
+	stmt := fmt.Sprintf(readCypher, tableName)
 
 	session := c.LoggedSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
-	session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
+	_, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		r, err := tx.Run(ctx, stmt, map[string]any{"cq_source_name": sourceName})
 		if err != nil {
 			return nil, err
@@ -116,11 +108,17 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 			values := record.Values
 			for _, value := range values {
 				node := value.(neo4j.Node)
-				result := c.createResultsArray(table, &node)
-				res <- result
+				rec, err := c.reverseTransformer(table, &node)
+				if err != nil {
+					return nil, err
+				}
+				res <- rec
 			}
 		}
 		return nil, nil
 	})
+	if err != nil {
+		return err
+	}
 	return session.Close(ctx)
 }
