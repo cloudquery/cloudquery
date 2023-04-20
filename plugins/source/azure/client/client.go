@@ -140,7 +140,7 @@ func (c *Client) discoverBillingAccounts(ctx context.Context) error {
 }
 
 func (c *Client) discoverBillingPeriods(ctx context.Context) error {
-	c.BillingPeriods = make(map[string][]*armbilling.Period, len(c.subscriptions))
+	billingPeriods := make(map[string][]*armbilling.Period, len(c.subscriptions))
 	errorGroup, gtx := errgroup.WithContext(ctx)
 	errorGroup.SetLimit(c.pluginSpec.DiscoveryConcurrency)
 
@@ -165,12 +165,17 @@ func (c *Client) discoverBillingPeriods(ctx context.Context) error {
 
 			periodsLock.Lock()
 			defer periodsLock.Unlock()
-			c.BillingPeriods[subID] = periods
+			billingPeriods[subID] = periods
 
 			return nil
 		})
 	}
-	return errorGroup.Wait()
+	err := errorGroup.Wait()
+	if err != nil {
+		return err
+	}
+	c.BillingPeriods = billingPeriods
+	return nil
 }
 
 func (c *Client) discoverResourceGroups(ctx context.Context) error {
@@ -293,11 +298,11 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 	}
 
 	if err := c.discoverBillingAccounts(ctx); err != nil {
-		return nil, err
+		c.logger.Warn().Err(err).Msg("failed to discover billing accounts (skipping)")
 	}
 
 	if err := c.discoverBillingPeriods(ctx); err != nil {
-		return nil, err
+		c.logger.Warn().Err(err).Msg("failed to discover billing periods (skipping)")
 	}
 
 	return c, nil
