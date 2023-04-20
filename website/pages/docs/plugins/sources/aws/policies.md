@@ -12,6 +12,8 @@ AWS CIS V1.2.0 requires the following tables to be synced before the policy is e
 tables:
   - aws_cloudtrail_trail_event_selectors
   - aws_cloudtrail_trails
+  - aws_cloudwatch_alarms
+  - aws_cloudwatchlogs_metric_filters
   - aws_ec2_flow_logs
   - aws_ec2_security_groups
   - aws_ec2_vpcs
@@ -21,6 +23,7 @@ tables:
   - aws_iam_users
   - aws_iam_virtual_mfa_devices
   - aws_kms_keys
+  - aws_sns_subscriptions
   - aws_s3_buckets
 ```
 
