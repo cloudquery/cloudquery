@@ -8,13 +8,13 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.8
 	github.com/aws/aws-sdk-go-v2/config v1.18.21
 	github.com/cenkalti/backoff/v4 v4.2.0
-	github.com/cloudquery/plugin-sdk/v2 v2.3.4
+	github.com/cloudquery/plugin-sdk/v2 v2.3.7
 	github.com/rs/zerolog v1.29.0
 )
 
 replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230416141001-e8315b3fff1c
 
-replace github.com/cloudquery/plugin-sdk/v2 => github.com/disq/plugin-sdk/v2 v2.0.0-20230419144405-0da5e31c79f5
+replace github.com/cloudquery/plugin-sdk/v2 => github.com/cloudquery/plugin-sdk/v2 v2.3.8-0.20230420092138-d9d7d0ae7688
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
