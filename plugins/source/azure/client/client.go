@@ -48,6 +48,8 @@ type Client struct {
 	BillingAccounts []*armbilling.Account
 	BillingAccount  *armbilling.Account
 	BillingProfile  *armbilling.Profile
+	BillingPeriods  map[string][]*armbilling.Period
+	BillingPeriod   *armbilling.Period
 }
 
 func (c *Client) discoverSubscriptions(ctx context.Context) error {
@@ -135,6 +137,40 @@ func (c *Client) discoverBillingAccounts(ctx context.Context) error {
 	}
 	c.BillingAccounts = accounts
 	return nil
+}
+
+func (c *Client) discoverBillingPeriods(ctx context.Context) error {
+	c.BillingPeriods = make(map[string][]*armbilling.Period, len(c.subscriptions))
+	errorGroup, gtx := errgroup.WithContext(ctx)
+	errorGroup.SetLimit(c.pluginSpec.DiscoveryConcurrency)
+
+	periodsLock := sync.Mutex{}
+
+	for _, subID := range c.subscriptions {
+		subID := subID
+		errorGroup.Go(func() error {
+			periods := make([]*armbilling.Period, 0)
+			svc, err := armbilling.NewPeriodsClient(subID, c.Creds, c.Options)
+			if err != nil {
+				return err
+			}
+			pager := svc.NewListPager(nil)
+			for pager.More() {
+				p, err := pager.NextPage(gtx)
+				if err != nil {
+					return err
+				}
+				periods = append(periods, p.Value...)
+			}
+
+			periodsLock.Lock()
+			defer periodsLock.Unlock()
+			c.BillingPeriods[subID] = periods
+
+			return nil
+		})
+	}
+	return errorGroup.Wait()
 }
 
 func (c *Client) discoverResourceGroups(ctx context.Context) error {
@@ -260,6 +296,10 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		return nil, err
 	}
 
+	if err := c.discoverBillingPeriods(ctx); err != nil {
+		return nil, err
+	}
+
 	return c, nil
 }
 
@@ -276,6 +316,9 @@ func (c *Client) ID() string {
 	}
 	if c.BillingAccount != nil {
 		return fmt.Sprintf("billingAccounts/%s", *c.BillingAccount.Name)
+	}
+	if c.BillingPeriod != nil {
+		return fmt.Sprintf("subscriptions/%s/billingPeriods/%s", c.SubscriptionId, *c.BillingPeriod.Name)
 	}
 	return fmt.Sprintf("subscriptions/%s", c.SubscriptionId)
 }
@@ -306,5 +349,12 @@ func (c *Client) withBillingProfile(billingProfile *armbilling.Profile) *Client 
 	newC := *c
 	newC.logger = c.logger.With().Str("billing_profile", *billingProfile.ID).Logger()
 	newC.BillingProfile = billingProfile
+	return &newC
+}
+
+func (c *Client) withBillingPeriod(billingPeriod *armbilling.Period) *Client {
+	newC := *c
+	newC.logger = c.logger.With().Str("billing_period", *billingPeriod.ID).Logger()
+	newC.BillingPeriod = billingPeriod
 	return &newC
 }

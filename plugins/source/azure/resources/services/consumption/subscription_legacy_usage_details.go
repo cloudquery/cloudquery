@@ -14,7 +14,7 @@ func SubscriptionLegacyUsageDetails() *schema.Table {
 		Name:        "azure_consumption_subscription_legacy_usage_details",
 		Resolver:    fetchSubscriptionLegacyUsageDetails,
 		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/usage-details/list?tabs=HTTP#legacyusagedetail",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_consumption_subscription_legacy_usage_details", client.Namespacemicrosoft_consumption),
+		Multiplex:   client.SubscriptionBillingPeriodMultiplex,
 		Transform:   transformers.TransformWithStruct(&armconsumption.LegacyUsageDetail{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
@@ -25,8 +25,7 @@ func fetchSubscriptionLegacyUsageDetails(ctx context.Context, meta schema.Client
 	if err != nil {
 		return err
 	}
-	scope := "subscriptions/" + cl.SubscriptionId
-	pager := svc.NewListPager(scope, nil)
+	pager := svc.NewListPager(*cl.BillingPeriod.ID, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

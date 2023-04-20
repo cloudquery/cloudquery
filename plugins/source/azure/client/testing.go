@@ -94,6 +94,12 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	modernAccount.Properties.BillingProfiles.Value[0].ID = to.Ptr("/providers/Microsoft.Billing/billingAccounts/account-id/billingProfiles/profile-id")
 	modernAccount.Properties.BillingProfiles.Value[0].Name = to.Ptr("profile-id")
 
+	var billingPeriod armbilling.Period
+	if err := faker.FakeObject(&billingPeriod); err != nil {
+		t.Fatal(err)
+	}
+	billingPeriod.ID = to.Ptr("/subscriptions/" + TestSubscription + "/providers/Microsoft.Billing/billingPeriods/202205-1")
+
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro}).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		err := createServices(router)
@@ -127,6 +133,9 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 				TestSubscription: {resourceGroup},
 			},
 			BillingAccounts: []*armbilling.Account{&legacyAccount, &modernAccount},
+			BillingPeriods: map[string][]*armbilling.Period{
+				TestSubscription: {&billingPeriod},
+			},
 		}
 
 		return c, nil

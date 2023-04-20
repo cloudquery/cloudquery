@@ -104,3 +104,15 @@ func BillingAccountProfileMultiplex(meta schema.ClientMeta) []schema.ClientMeta 
 	}
 	return c
 }
+
+func SubscriptionBillingPeriodMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
+	client := meta.(*Client)
+	var c = make([]schema.ClientMeta, 0)
+	for _, subID := range client.subscriptions {
+		periodsForSubscription := client.BillingPeriods[subID]
+		for _, period := range periodsForSubscription {
+			c = append(c, client.withSubscription(subID).withBillingPeriod(period))
+		}
+	}
+	return c
+}

@@ -28,7 +28,7 @@ func createSubscriptionLegacyUsageDetails(router *mux.Router) error {
 	}
 	resp.NextLink = to.Ptr("")
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Consumption/usageDetails", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods/{periodName}/providers/Microsoft.Consumption/usageDetails", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&resp)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
