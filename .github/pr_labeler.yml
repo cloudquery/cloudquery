@@ -86,6 +86,8 @@ okta:
   - plugins/source/okta/**/*
 oracle:
   - plugins/source/oracle/**/*
+oracledb:
+  - plugins/source/oracledb/**/*
 pagerduty:
   - plugins/source/pagerduty/**/*
 plausible:
