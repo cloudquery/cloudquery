@@ -28,6 +28,7 @@ tables:
 ```
 
 ### Queries
+
 AWS CIS V1.2.0 performs the following checks:
   - Avoid the use of "root" account. Show used in last 30 days (Scored)
   - Ensure MFA is enabled for all IAM users that have a console password (Scored)
@@ -68,13 +69,13 @@ AWS CIS V1.2.0 performs the following checks:
   - The VPC default security group should not allow inbound and outbound traffic
 
 ### Dependent Views
+
 AWS CIS V1.2.0 depends on the following views:
 
   - view_aws_log_metric_filter_and_alarm *
   - view_aws_security_group_ingress_rules *
 
   * These views are automatically created or updated by this policy.
-
 ## AWS PCI DSS v3.2.1
 
 ### Requirements
@@ -128,6 +129,7 @@ tables:
 ```
 
 ### Queries
+
 AWS PCI DSS v3.2.1 performs the following checks:
   - Auto Scaling groups associated with a load balancer should use health checks
   - CloudTrail should have encryption at rest enabled
@@ -179,13 +181,13 @@ AWS PCI DSS v3.2.1 performs the following checks:
   - AWS WAF Classic global web ACL logging should be enabled
 
 ### Dependent Views
+
 AWS PCI DSS v3.2.1 depends on the following views:
 
   - view_aws_log_metric_filter_and_alarm *
   - view_aws_security_group_ingress_rules *
 
   * These views are automatically created or updated by this policy.
-
 ## AWS Foundational Security Best Practices
 
 ### Requirements
@@ -275,6 +277,7 @@ tables:
 ```
 
 ### Queries
+
 AWS Foundational Security Best Practices performs the following checks:
   - certificate has less than 30 days to be renewed
   - API Gateway REST and WebSocket API logging should be enabled
@@ -400,13 +403,13 @@ AWS Foundational Security Best Practices performs the following checks:
   - AWS WAF Classic global web ACL logging should be enabled
 
 ### Dependent Views
+
 AWS Foundational Security Best Practices depends on the following views:
 
   - view_aws_apigateway_method_settings *
   - view_aws_security_group_ingress_rules *
 
   * These views are automatically created or updated by this policy.
-
 ## AWS Public Egress
 
 ### Requirements
@@ -421,18 +424,19 @@ tables:
 ```
 
 ### Queries
+
 AWS Public Egress performs the following checks:
   - Find all ec2 instances that have unrestricted access to the internet with a wide open security group and routing
   - All ec2 instances that have unrestricted access to the internet via a security group
   - Find all lambda functions that have unrestricted access to the internet
 
 ### Dependent Views
+
 AWS Public Egress depends on the following views:
 
   - view_aws_security_group_egress_rules *
 
   * This view is automatically created or updated by this policy.
-
 ## AWS Publicly Available
 
 ### Requirements
@@ -451,6 +455,7 @@ tables:
 ```
 
 ### Queries
+
 AWS Publicly Available performs the following checks:
   - Find all API Gateway instances that are publicly accessible
   - Find all API Gateway V2 instances (HTTP and Webhook) that are publicly accessible
@@ -505,6 +510,7 @@ tables:
 ```
 
 ### Queries
+
 AWS Unused Resources performs the following checks:
   - Unused ACM certificate
   - Unused API Gateway API key
