@@ -114,9 +114,12 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 		if err != nil {
 			return nil, err
 		}
+		// We mark Array Nullable if it's value can be nullable
+		_, nullable := col.Base().(*column.Nullable)
 		return &arrow.Field{
-			Name: fieldName,
-			Type: arrow.ListOfField(*base),
+			Name:     fieldName,
+			Type:     arrow.ListOfField(*base),
+			Nullable: nullable,
 		}, nil
 
 	case *column.Nullable:
@@ -143,6 +146,10 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 			return nil, err
 		}
 		return &arrow.Field{Name: fieldName, Type: dataType}, nil
+
+	case *column.Nested:
+		// it'll be Array(Tuple(...))
+		return fieldFromColumn(col.Interface)
 
 	case *column.UUID:
 		return &arrow.Field{Name: fieldName, Type: new(types.UUIDType)}, nil

@@ -29,6 +29,19 @@ func TestCreateTable(t *testing.T) {
 	ensureContents(t, query, "create_table.sql")
 }
 
+func TestCreateTableNoOrderBy(t *testing.T) {
+	query, err := CreateTable(schema.CQSchemaToArrow(&schema.Table{
+		Name: "table_name",
+		Columns: schema.ColumnList{
+			schema.Column{Name: "extra_col", Type: schema.TypeFloat},
+			schema.Column{Name: "extra_inet_col", Type: schema.TypeInet},
+			schema.Column{Name: "extra_inet_arr_col", Type: schema.TypeInetArray},
+		},
+	}), "", DefaultEngine())
+	require.NoError(t, err)
+	ensureContents(t, query, "create_table_no_order_by.sql")
+}
+
 func TestCreateTableOnCluster(t *testing.T) {
 	query, err := CreateTable(schema.CQSchemaToArrow(&schema.Table{
 		Name: "table_name",

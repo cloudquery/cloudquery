@@ -2,7 +2,10 @@ package typeconv
 
 import (
 	"github.com/apache/arrow/go/v12/arrow"
+	_arrow "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow"
+	_clickhouse "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"golang.org/x/exp/slices"
 )
 
 func CanonizedSchemas(scs schema.Schemas) (schema.Schemas, error) {
@@ -19,7 +22,12 @@ func CanonizedSchemas(scs schema.Schemas) (schema.Schemas, error) {
 
 func CanonizedSchema(sc *arrow.Schema) (*arrow.Schema, error) {
 	fields := make([]arrow.Field, len(sc.Fields()))
+	pk := schema.PrimaryKeyIndices(sc)
 	for i, fld := range sc.Fields() {
+		if slices.Contains(pk, i) {
+			// we mark as non-nullable
+			fld.Nullable = false
+		}
 		canonized, err := CanonizedField(fld)
 		if err != nil {
 			return nil, err
@@ -35,11 +43,11 @@ func CanonizedSchema(sc *arrow.Schema) (*arrow.Schema, error) {
 // Several different Apache Arrow types will produce the same canonical type & that'll be the type we'll use in the database.
 func CanonizedField(field arrow.Field) (*arrow.Field, error) {
 	// 1 - convert to the ClickHouse
-	chType, err := ClickHouseDefinitions(field)
+	chType, err := _clickhouse.FieldType(field)
 	if err != nil {
 		return nil, err
 	}
 
 	// 2 - convert back to Apache Arrow
-	return ArrowField(field.Name, chType[0])
+	return _arrow.Field(field.Name, chType)
 }
