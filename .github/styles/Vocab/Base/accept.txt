@@ -102,6 +102,7 @@ IPs
 json
 JSON
 jsonb
+Kestra
 keyless
 Kibana
 Kinesis

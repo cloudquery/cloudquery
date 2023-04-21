@@ -6,7 +6,7 @@ date: 2023/04/21
 
 # Orchestrating CloudQuery Syncs with Kestra
 
-In this tutorial, we will show you how to run CloudQuery as a [Kestra](https://kestra.io/) flow, using the AWS source- and Postgresql destination plugins as an example.
+In this tutorial, we will show you how to run CloudQuery as a [Kestra](https://kestra.io/) flow, using the AWS source- and Postgresql destination plugins as an example. Kestra is an open source orchestration tool that allows you to schedule and monitor CloudQuery syncs. 
 
 ## Step 1: Install Kestra
 
@@ -64,6 +64,8 @@ We are using the Docker runner with a `Bash` task to run the `cloudquery sync` c
 
 The AWS config is just an example. It is configured to sync all EC2 tables and their relations. 
 
+![Kestra Flow Editor Screenshot](/images/docs/deployment/kestra-flow.png)
+
 import { Callout } from '@site/src/components/Callout';
 
 <Callout type="info">
@@ -76,10 +78,12 @@ With the config entered, click `Save`, then click `New Execution`. Click `OK` on
 
 If everything was set up correctly, you should now see the sync running in the `Executions` tab. You can click on the execution to see the logs for any errors.
 
+![Kestra Flow Execution Screenshot](/images/docs/deployment/kestra-execution.png)
+
 <Callout type="info">
 If you get an error related to config.yml not being found, try making the following change to the Kestra Docker-compose file to give the volume write access:
 
-```
+```yaml
 - /tmp/kestra-wd:/tmp/kestra-wd:rw
 ```
 </Callout>
@@ -95,7 +99,7 @@ triggers:
     cron: "0 6 * * *"
 ```
 
-This cron expression will run the flow every day at 6am. You can use [crontab.guru](https://crontab.guru/) to generate cron expressions for the destination you need and replace the one in the example above. Kestra also supports these special values for `cron`:
+This cron expression will run the flow every day at 06:00. You can use [crontab.guru](https://crontab.guru/) to generate cron expressions for the destination you need and replace the one in the example above. Kestra also supports these special values for `cron`:
 
 ```text
 @yearly
@@ -109,6 +113,6 @@ This cron expression will run the flow every day at 6am. You can use [crontab.gu
 
 With this in place, remember to click `Save` again. Your CloudQuery sync will now be run on a regular schedule.
 
-## More information
+## Next steps
 
-This tutorial was just a quick introduction to help you get started with a CloudQuery deployment on Kestra. For more information, check out the [CloudQuery docs](/docs) and the [Kestra docs](https://kestra.io/docs/).
+This tutorial was just a quick introduction to help you get started with a CloudQuery deployment on Kestra. For more information, check out the [CloudQuery docs](/docs) and the [Kestra docs](https://kestra.io/docs/). To productionize your Kestra deployment, you will likely need to deploy it to a cloud container environment, such as Kubernetes. For more information, see the [Kestra Deployment with Kubernetes guide](https://kestra.io/docs/administrator-guide/deployment/kubernetes). 
