@@ -1,0 +1,114 @@
+---
+title: Orchestrating CloudQuery Syncs with Kestra
+tag: tutorial
+date: 2023/04/21
+---
+
+# Orchestrating CloudQuery Syncs with Kestra
+
+In this tutorial, we will show you how to run CloudQuery as a [Kestra](https://kestra.io/) flow, using the AWS source- and Postgresql destination plugins as an example.
+
+## Step 1: Install Kestra
+
+Follow the [Kestra Deployment with Docker guide](https://kestra.io/docs/administrator-guide/deployment/docker) to run Kestra locally inside Docker containers. 
+
+When it's running, open http://localhost:8080 in your browser.  
+
+## Step 2: Set up a PostgreSQL database
+
+We will use a PostgreSQL database as a destination for our CloudQuery syncs. You can use any PostgreSQL database, but for this tutorial we will use a Docker container.
+
+```bash copy
+docker run --name cloudquery-postgres -e POSTGRES_PASSWORD=pass -p 5432:5432 -d postgres
+``` 
+
+## Step 2: Create a Kestra flow
+
+Inside the Kestra UI, go to the `Flows` tab and click on `Create`. You can now create a new flow with the following content:
+
+```yaml copy
+id: "cloudquery"
+namespace: "io.kestra"
+tasks:
+- id: "bash"
+  type: "io.kestra.core.tasks.scripts.Bash"
+  runner: DOCKER
+  inputFiles:
+    config.yml: |
+      kind: source
+      spec:
+        name: aws
+        path: cloudquery/aws
+        version: "VERSION_SOURCE_AWS"
+        tables: ["aws_ec2*"]
+        destinations: ["postgresql"]
+        spec:
+      ---
+      kind: destination
+      spec:
+        name: "postgresql"
+        version: "VERSION_DESTINATION_POSTGRESQL"
+        path: "cloudquery/postgresql"
+        write_mode: "overwrite-delete-stale"
+        spec:
+          connection_string: "postgresql://postgres:pass@host.docker.internal:5432/cloudquery?sslmode=disable"
+  dockerOptions:
+    image: ghcr.io/cloudquery/cloudquery:latest
+    entryPoint: [""]
+  warningOnStdErr: false
+  commands:
+  - '/app/cloudquery sync {{ workingDir }}/config.yml --log-console'
+```
+
+We are using the Docker runner with a `Bash` task to run the `cloudquery sync` command. The `inputFiles` section allows us to pass a configuration file to the task. It is also possible to read this configuration file from disk or a remote location, but we will keep it simple for now.
+
+The AWS config is just an example. It is configured to sync all EC2 tables and their relations. 
+
+import { Callout } from '@site/src/components/Callout';
+
+<Callout type="info">
+In our example config we are using the Postgres host `host.docker.internal` to connect to the database. This is a special hostname that Docker resolves to the host machine. Make sure to replace this with the hostname of your database if you are not running Postgres via Docker.
+</Callout>
+
+## Step 3: Run the flow
+
+With the config entered, click `Save`, then click `New Execution`. Click `OK` on the confirmation.
+
+If everything was set up correctly, you should now see the sync running in the `Executions` tab. You can click on the execution to see the logs for any errors.
+
+<Callout type="info">
+If you get an error related to config.yml not being found, try making the following change to the Kestra Docker-compose file to give the volume write access:
+
+```
+- /tmp/kestra-wd:/tmp/kestra-wd:rw
+```
+</Callout>
+
+## Step 4: Schedule the flow
+
+To run the flow periodically, we can add a trigger to run it on a schedule. Back in the Flow editor, add the following section:
+
+```yaml copy
+triggers:
+  - id: schedule
+    type: io.kestra.core.models.triggers.types.Schedule
+    cron: "0 6 * * *"
+```
+
+This cron expression will run the flow every day at 6am. You can use [crontab.guru](https://crontab.guru/) to generate cron expressions for the destination you need and replace the one in the example above. Kestra also supports these special values for `cron`:
+
+```text
+@yearly
+@annually
+@monthly
+@weekly
+@daily
+@midnight
+@hourly
+```
+
+With this in place, remember to click `Save` again. Your CloudQuery sync will now be run on a regular schedule.
+
+## More information
+
+This tutorial was just a quick introduction to help you get started with a CloudQuery deployment on Kestra. For more information, check out the [CloudQuery docs](/docs) and the [Kestra docs](https://kestra.io/docs/).

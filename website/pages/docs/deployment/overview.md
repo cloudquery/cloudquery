@@ -4,4 +4,10 @@ CloudQuery can run locally, but if you want to deploy in a remote non-ephemeral 
 
 We also provide a [Terraform module](https://github.com/cloudquery/terraform-aws-cloudquery) to spin up the infrastructure: k8s clusters, database and deployment of the helm chart via the Terraform helm-provider to provide a better deployment experience. Follow the example in the [AWS Terraform module](https://github.com/cloudquery/terraform-aws-cloudquery) or the helm chart to see how to deploy and configure CloudQuery to run periodically in the cloud.
 
-It is also possible to run CloudQuery periodically using GitHub Actions. For this, see our [GitHub Actions tutorial](/docs/deployment/github-actions).
+Apart from these options, we have also written some guides to help you get started on different platforms.
+
+## Tutorials
+
+ - [AWS ECS](/docs/deployment/ecs)
+ - [GitHub Actions](/docs/deployment/github-actions)
+ - [Kestra](/docs/deployment/kestra)
