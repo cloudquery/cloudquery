@@ -10,9 +10,9 @@ import Configuration from "./_configuration.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "file")}/>
 
-This destination plugin lets you sync data from a CloudQuery source to local files in various formats such as CSV, JSON, Parquet.
+This destination plugin lets you sync data from a CloudQuery source to local files in various formats. It currently supports CSV, line-delimited JSON and Parquet.
 
-This is useful in local environments, but also in production environments where scalability, performance and cost are requirements. For example, this plugin can be used as part of a system that syncs sources across multiple virtual machines, uploads CSV files to a remote storage (such as S3 or GCS), and finally loads them to data lakes such as BigQuery or Athena in batch mode.
+This plugin is useful in local environments, but also in production environments where scalability, performance and cost are requirements. For example, this plugin can be used as part of a system that syncs sources across multiple virtual machines, uploads Parquet files to a remote storage (such as S3 or GCS), and finally loads them to data lakes such as BigQuery or Athena in batch mode. If this is your end goal, you may also want to look at more specific destination cloud storage destination plugins such as [S3](/docs/plugins/destinations/s3/overview), [GCS](/docs/plugins/destinations/gcs/overview) or [Azure Blob Storage](/docs/plugins/destinations/azblob/overview).
 
 ## Example
 
@@ -20,11 +20,26 @@ This is useful in local environments, but also in production environments where 
 
 ## File Spec
 
-This is the (nested) spec used by the CSV destination Plugin.
+This is the (nested) spec used by the file destination Plugin.
 
-- `directory` (string) (required)
+- `path` (string) (required)
 
-  Directory where all CSV files will be written. A CSV file will be created per table.
+  Path template string that determines where files will be written. The path supports the following placeholder variables:
+
+  - `{{TABLE}}` will be replaced with the table name
+  - `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`
+  - `{{UUID}}` will be replaced with a random UUID to uniquely identify each file
+  - `{{YEAR}}` will be replaced with the current year in `YYYY` format
+  - `{{MONTH}}` will be replaced with the current month in `MM` format
+  - `{{DAY}}` will be replaced with the current day in `DD` format
+  - `{{HOUR}}` will be replaced with the current hour in `HH` format
+  - `{{MINUTE}}` will be replaced with the current minute in `mm` format
+
+  Note that timestamps are in UTC and will be the current time at the time the file is written, not when the sync started.
+
+- `directory` (string) (required if `path` is not set) (**deprecated**)
+
+  Directory where all files will be written. One file will be created per table. This is now deprecated in favor of `path` which allows more flexibility, and the `directory` option will be removed in a future version.
 
 - `format` (string) (required)
 
