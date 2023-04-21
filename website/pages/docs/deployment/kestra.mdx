@@ -64,7 +64,7 @@ tasks:
 
 We are using the Docker runner with a `Bash` task to run the `cloudquery sync` command. The `inputFiles` section allows us to pass a configuration file to the task. It is also possible to read this configuration file from disk or a remote location, but we will keep it simple for now.
 
-import { Callout } from '@site/src/components/Callout';
+import { Callout } from 'nextra-theme-docs';
 
 <Callout type="info">
 The example places the Postgres connection string in an environment variable. In production, you should use a secret manager like [Vault](https://www.vaultproject.io/) to load the connection string into environment variables.
