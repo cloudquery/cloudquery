@@ -18,9 +18,36 @@ tables:
 ```
 
 ### Queries
+
 {{ .Name }} performs the following checks:
-{{- range $query := .Queries }}
+{{- range $query := .Queries }}{{ if not $query.View }}
   - {{ $query.Title }}
+{{- end }}{{- end }}
+
+{{- if .DependentViews }}
+
+### Dependent Views
+
+{{ .Name }} depends on the following views:
+{{$createdViews := .CreatedViews }}
+{{- $num_created := 0}}
+{{- range $v := .DependentViews }}
+  - {{ $v }}{{ if index $createdViews $v }} `*`{{ $num_created = add $num_created 1 }}{{end}}
 {{- end }}
+
+{{- if gt $num_created 0}}
+
+  `*` {{if eq $num_created 1}}This view is{{else}}These views are{{end}} automatically created or updated by this policy.
+{{- end}}
+{{- end }}
+{{- if .UnusedViews }}
+
+### Unused Views
+
+{{ .Name }} creates {{if eq (len .UnusedViews) 1}}this view but does not use it:{{else}}these views but does not use them:{{end}}
+{{range $v := .UnusedViews }}
+  - {{ $v }}
+{{- end }}
+{{end}}
 
 {{- end }}
