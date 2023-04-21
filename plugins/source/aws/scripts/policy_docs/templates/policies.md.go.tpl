@@ -32,12 +32,12 @@ tables:
 {{$createdViews := .CreatedViews }}
 {{- $num_created := 0}}
 {{- range $v := .DependentViews }}
-  - {{ $v }}{{ if index $createdViews $v }} `*`{{ $num_created = add $num_created 1 }}{{end}}
+  - {{ $v }}{{ if index $createdViews $v }}<sup>*</sup>{{ $num_created = add $num_created 1 }}{{end}}
 {{- end }}
 
 {{- if gt $num_created 0}}
 
-  `*` {{if eq $num_created 1}}This view is{{else}}These views are{{end}} automatically created or updated by this policy.
+  <sup>*</sup> {{if eq $num_created 1}}This view is{{else}}These views are{{end}} automatically created or updated by this policy.
 {{- end}}
 {{- end }}
 {{- if .UnusedViews }}
