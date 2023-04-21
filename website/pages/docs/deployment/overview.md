@@ -8,6 +8,6 @@ Apart from these options, we have also written some guides to help you get start
 
 ## Tutorials
 
- - [AWS ECS](/docs/deployment/ecs)
+ - [Amazon ECS](/docs/deployment/ecs)
  - [GitHub Actions](/docs/deployment/github-actions)
  - [Kestra](/docs/deployment/kestra)
