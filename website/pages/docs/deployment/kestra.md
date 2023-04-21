@@ -51,22 +51,28 @@ tasks:
         path: "cloudquery/postgresql"
         write_mode: "overwrite-delete-stale"
         spec:
-          connection_string: "postgresql://postgres:pass@host.docker.internal:5432/cloudquery?sslmode=disable"
+          connection_string: ${PG_CONNECTION_STRING}
   dockerOptions:
     image: ghcr.io/cloudquery/cloudquery:latest
     entryPoint: [""]
   warningOnStdErr: false
+  env:
+    PG_CONNECTION_STRING: "postgresql://postgres:pass@host.docker.internal:5432/cloudquery?sslmode=disable"
   commands:
   - '/app/cloudquery sync {{ workingDir }}/config.yml --log-console'
 ```
 
 We are using the Docker runner with a `Bash` task to run the `cloudquery sync` command. The `inputFiles` section allows us to pass a configuration file to the task. It is also possible to read this configuration file from disk or a remote location, but we will keep it simple for now.
 
+import { Callout } from '@site/src/components/Callout';
+
+<Callout type="info">
+The example places the Postgres connection string in an environment variable. In production, you should use a secret manager like [Vault](https://www.vaultproject.io/) to load the connection string into environment variables.
+</Callout>
+
 The AWS config is just an example. It is configured to sync all EC2 tables and their relations. 
 
 ![Kestra Flow Editor Screenshot](/images/docs/deployment/kestra-flow.png)
-
-import { Callout } from '@site/src/components/Callout';
 
 <Callout type="info">
 In our example config we are using the Postgres host `host.docker.internal` to connect to the database. This is a special hostname that Docker resolves to the host machine. Make sure to replace this with the hostname of your database if you are not running Postgres via Docker.
