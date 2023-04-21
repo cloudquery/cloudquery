@@ -72,10 +72,10 @@ AWS CIS V1.2.0 performs the following checks:
 
 AWS CIS V1.2.0 depends on the following views:
 
-  - view_aws_log_metric_filter_and_alarm *
-  - view_aws_security_group_ingress_rules *
+  - view_aws_log_metric_filter_and_alarm `*`
+  - view_aws_security_group_ingress_rules `*`
 
-  * These views are automatically created or updated by this policy.
+  `*` These views are automatically created or updated by this policy.
 ## AWS PCI DSS v3.2.1
 
 ### Requirements
@@ -184,10 +184,10 @@ AWS PCI DSS v3.2.1 performs the following checks:
 
 AWS PCI DSS v3.2.1 depends on the following views:
 
-  - view_aws_log_metric_filter_and_alarm *
-  - view_aws_security_group_ingress_rules *
+  - view_aws_log_metric_filter_and_alarm `*`
+  - view_aws_security_group_ingress_rules `*`
 
-  * These views are automatically created or updated by this policy.
+  `*` These views are automatically created or updated by this policy.
 ## AWS Foundational Security Best Practices
 
 ### Requirements
@@ -406,10 +406,10 @@ AWS Foundational Security Best Practices performs the following checks:
 
 AWS Foundational Security Best Practices depends on the following views:
 
-  - view_aws_apigateway_method_settings *
-  - view_aws_security_group_ingress_rules *
+  - view_aws_apigateway_method_settings `*`
+  - view_aws_security_group_ingress_rules `*`
 
-  * These views are automatically created or updated by this policy.
+  `*` These views are automatically created or updated by this policy.
 ## AWS Public Egress
 
 ### Requirements
@@ -434,9 +434,9 @@ AWS Public Egress performs the following checks:
 
 AWS Public Egress depends on the following views:
 
-  - view_aws_security_group_egress_rules *
+  - view_aws_security_group_egress_rules `*`
 
-  * This view is automatically created or updated by this policy.
+  `*` This view is automatically created or updated by this policy.
 ## AWS Publicly Available
 
 ### Requirements
