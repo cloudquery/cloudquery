@@ -12,6 +12,8 @@ import (
 	"sort"
 	"strings"
 	"text/template"
+
+	"golang.org/x/exp/maps"
 )
 
 //go:embed templates/*.go.tpl
@@ -67,7 +69,7 @@ func newPolicyInfo(name string, queries []Query, allTables []Table) *PolicyInfo 
 
 // Tables returns the unique set of tables needed to run all queries
 func (pi *PolicyInfo) setTables(allTables Tables) {
-	t, v := map[string]bool{}, map[string]bool{}
+	t, v := map[string]struct{}{}, map[string]struct{}{}
 	pi.CreatedViews = map[string]bool{}
 
 	// Add all views detected from CREATE VIEW statements
@@ -80,7 +82,7 @@ func (pi *PolicyInfo) setTables(allTables Tables) {
 	// Accessed views from queries, should be a subset of the above
 	for _, q := range pi.Queries {
 		for _, vi := range q.Views {
-			v[vi] = true
+			v[vi] = struct{}{}
 		}
 	}
 
@@ -89,26 +91,30 @@ func (pi *PolicyInfo) setTables(allTables Tables) {
 		for _, table := range q.Tables {
 			if pi.CreatedViews[table] {
 				// This is a view, not a table
-				v[table] = true
+				v[table] = struct{}{}
 			}
 
-			t[table] = true
+			t[table] = struct{}{}
 			ancestors := allTables.FindAncestors(table)
 			for _, a := range ancestors {
-				t[a.Name] = true
+				t[a.Name] = struct{}{}
 			}
 		}
 	}
 
-	pi.Tables, pi.DependentViews = keysOf(t), keysOf(v)
+	pi.Tables, pi.DependentViews = maps.Keys(t), maps.Keys(v)
 
-	unused := make(map[string]bool, len(pi.CreatedViews))
+	unused := make(map[string]struct{}, len(pi.CreatedViews))
 	for k := range pi.CreatedViews {
 		if _, ok := v[k]; !ok {
-			unused[k] = true
+			unused[k] = struct{}{}
 		}
 	}
-	pi.UnusedViews = keysOf(unused)
+	pi.UnusedViews = maps.Keys(unused)
+
+	sort.Strings(pi.Tables)
+	sort.Strings(pi.DependentViews)
+	sort.Strings(pi.UnusedViews)
 }
 
 type Query struct {
@@ -249,15 +255,6 @@ func readTablesJSON(filepath string) ([]Table, error) {
 	var tables []Table
 	err = json.Unmarshal(b, &tables)
 	return tables, err
-}
-
-func keysOf(m map[string]bool) []string {
-	var keys []string
-	for k := range m {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	return keys
 }
 
 func main() {
