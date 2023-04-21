@@ -115,4 +115,4 @@ With this in place, remember to click `Save` again. Your CloudQuery sync will no
 
 ## Next steps
 
-This tutorial was just a quick introduction to help you get started with a CloudQuery deployment on Kestra. For more information, check out the [CloudQuery docs](/docs) and the [Kestra docs](https://kestra.io/docs/). To productionize your Kestra deployment, you will likely need to deploy it to a cloud container environment, such as Kubernetes. For more information, see the [Kestra Deployment with Kubernetes guide](https://kestra.io/docs/administrator-guide/deployment/kubernetes). 
+This tutorial was just a quick introduction to help you get started with a CloudQuery deployment on Kestra. You can now create additional Kestra tasks to perform transformations, send notifications and more. For more information, check out the [CloudQuery docs](/docs) and the [Kestra docs](https://kestra.io/docs/). To productionize your Kestra deployment, you will likely need to deploy it to a cloud container environment, such as Kubernetes. For more information, see the [Kestra Deployment with Kubernetes guide](https://kestra.io/docs/administrator-guide/deployment/kubernetes). 
