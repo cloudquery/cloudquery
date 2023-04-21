@@ -32,12 +32,10 @@ func (c *Client) writeResources(ctx context.Context, query string, resources []a
 	for _, data := range resources {
 		transformedRecords, err := transformRecord(data)
 		if err != nil {
-			data.Release()
 			return err
 		}
 		for _, transformedRecord := range transformedRecords {
 			_, err := c.db.ExecContext(ctx, query, transformedRecord...)
-			data.Release()
 			if err != nil {
 				return err
 			}

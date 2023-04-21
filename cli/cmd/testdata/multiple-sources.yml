@@ -4,6 +4,7 @@ spec:
   path: cloudquery/aws
   version: v15.3.0 # latest version of aws plugin
   destinations: [mysql]
+  tables: ["*"]
 ---
 kind: source
 spec:
@@ -11,6 +12,7 @@ spec:
   path: cloudquery/gcp
   version: v8.4.0 # latest version of gcp plugin
   destinations: [mysql]
+  tables: ["*"]
 ---
 kind: source
 spec:
@@ -18,6 +20,7 @@ spec:
   path: cloudquery/azure
   version: v5.1.1 # latest version of azure plugin
   destinations: [mysql]
+  tables: ["*"]
 ---
 kind: destination
 spec:

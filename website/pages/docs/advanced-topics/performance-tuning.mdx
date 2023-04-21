@@ -76,9 +76,7 @@ kind: source
 spec:
   name: "gcp"
   path: "cloudquery/gcp"
-  version: "VERSION_SOURCE_GCP"
-  destinations: ["postgresql"]
-  concurrency: 100000
   scheduler: "round-robin"  # experimental
+  ...
 ```
 
