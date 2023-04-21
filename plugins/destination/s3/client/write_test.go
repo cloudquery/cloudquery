@@ -25,7 +25,7 @@ func TestSanitizeJSONKeys(t *testing.T) {
 			"foo-bar": &[]string{"baz"}[0],
 		},
 	}
-	sanitizeJSONKeys(m)
+	sanitizeJSONKeysForObject(m)
 	want := map[string]any{
 		"foo": "bar",
 		"bar": map[string]any{
