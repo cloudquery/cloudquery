@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"sync"
 
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
@@ -17,10 +16,11 @@ import (
 func Buckets() *schema.Table {
 	tableName := "aws_s3_buckets"
 	return &schema.Table{
-		Name:      "aws_s3_buckets",
-		Resolver:  fetchS3Buckets,
-		Transform: transformers.TransformWithStruct(&models.WrappedBucket{}),
-		Multiplex: client.AccountMultiplex(tableName),
+		Name:                "aws_s3_buckets",
+		Resolver:            listS3Buckets,
+		PreResourceResolver: resolveS3BucketsAttributes,
+		Transform:           transformers.TransformWithStruct(&models.WrappedBucket{}),
+		Multiplex:           client.AccountMultiplex(tableName),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
@@ -43,7 +43,7 @@ func Buckets() *schema.Table {
 	}
 }
 
-func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+func listS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().S3
 	response, err := svc.ListBuckets(ctx, nil, func(options *s3.Options) {
@@ -52,40 +52,9 @@ func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 	if err != nil {
 		return err
 	}
-
-	var wg sync.WaitGroup
-	buckets := make(chan types.Bucket)
-	errs := make(chan error)
-	for i := 0; i < fetchS3BucketsPoolSize; i++ {
-		wg.Add(1)
-		go fetchS3BucketsWorker(ctx, meta, buckets, errs, res, &wg)
-	}
-	go func() {
-		defer close(buckets)
-		for _, bucket := range response.Buckets {
-			select {
-			case <-ctx.Done():
-				return
-			case buckets <- bucket:
-			}
-		}
-	}()
-	done := make(chan struct{})
-	go func() {
-		for err = range errs {
-			cl.Logger().Err(err).Msg("failed to fetch s3 bucket")
-		}
-		close(done)
-	}()
-	wg.Wait()
-	close(errs)
-	<-done
-
+	res <- response.Buckets
 	return nil
 }
-
-// fetchS3BucketsPoolSize describes the amount of go routines that resolve the S3 buckets
-const fetchS3BucketsPoolSize = 10
 
 // listBucketRegion identifies the canonical region for S3 based on the partition
 // in the future we might want to make this configurable if users are alright with the fact that performing this
@@ -101,23 +70,9 @@ func listBucketRegion(cl *client.Client) string {
 	}
 }
 
-func fetchS3BucketsWorker(ctx context.Context, meta schema.ClientMeta, buckets <-chan types.Bucket, errs chan<- error, res chan<- any, wg *sync.WaitGroup) {
-	defer wg.Done()
-	cl := meta.(*client.Client)
-	for bucket := range buckets {
-		wb := &models.WrappedBucket{Name: bucket.Name, CreationDate: bucket.CreationDate}
-		err := resolveS3BucketsAttributes(ctx, meta, wb)
-		if err != nil {
-			if !isBucketNotFoundError(cl, err) {
-				errs <- err
-			}
-			continue
-		}
-		res <- wb
-	}
-}
-
-func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
+func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
+	bucket := r.Item.(types.Bucket)
+	resource := &models.WrappedBucket{Name: bucket.Name, CreationDate: bucket.CreationDate}
 	c := meta.(*client.Client)
 	mgr := c.Services().S3manager
 
@@ -133,48 +88,27 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 	if output != "" {
 		resource.Region = output
 	}
-	if err = resolveBucketLogging(ctx, meta, resource, resource.Region); err != nil {
-		if isBucketNotFoundError(c, err) {
-			return nil
+
+	resolvers := []func(context.Context, schema.ClientMeta, *models.WrappedBucket, string) error{
+		resolveBucketLogging,
+		resolveBucketPolicy,
+		resolveBucketVersioning,
+		resolveBucketPublicAccessBlock,
+		resolveBucketReplication,
+		resolveBucketTagging,
+		resolveBucketOwnershipControls,
+	}
+	for _, resolver := range resolvers {
+		if err := resolver(ctx, meta, resource, resource.Region); err != nil {
+			r.Item = resource
+			if isBucketNotFoundError(c, err) {
+				return nil
+			}
+			return err
 		}
-		return err
 	}
-
-	if err = resolveBucketPolicy(ctx, meta, resource, resource.Region); err != nil {
-		return err
-	}
-
-	if err = resolveBucketVersioning(ctx, meta, resource, resource.Region); err != nil {
-		return err
-	}
-
-	if err = resolveBucketPublicAccessBlock(ctx, meta, resource, resource.Region); err != nil {
-		return err
-	}
-
-	if err = resolveBucketReplication(ctx, meta, resource, resource.Region); err != nil {
-		return err
-	}
-
-	if err = resolveBucketTagging(ctx, meta, resource, resource.Region); err != nil {
-		return err
-	}
-
-	return resolveBucketOwnershipControls(ctx, meta, resource, resource.Region)
-}
-
-func resolveBucketGranteeID(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	grantee := resource.Item.(types.Grant).Grantee
-	switch grantee.Type {
-	case types.TypeCanonicalUser:
-		return resource.Set(c.Name, *grantee.ID)
-	case types.TypeAmazonCustomerByEmail:
-		return resource.Set(c.Name, *grantee.EmailAddress)
-	case types.TypeGroup:
-		return resource.Set(c.Name, *grantee.URI)
-	default:
-		return fmt.Errorf("unsupported grantee type %q", grantee.Type)
-	}
+	r.Item = resource
+	return nil
 }
 
 func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket, bucketRegion string) error {
