@@ -7,7 +7,7 @@ import (
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv"
+	_arrow "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow"
 )
 
 func (c *Client) Read(ctx context.Context, sc *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
@@ -28,7 +28,7 @@ func (c *Client) Read(ctx context.Context, sc *arrow.Schema, sourceName string, 
 			return err
 		}
 
-		record, err := typeconv.ArrowRecord(sc, row)
+		record, err := _arrow.Record(sc, row)
 		if err != nil {
 			return err
 		}

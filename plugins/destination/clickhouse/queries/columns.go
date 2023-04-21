@@ -2,12 +2,12 @@ package queries
 
 import (
 	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv"
+	_clickhouse "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 )
 
 func AddColumn(table string, cluster string, field arrow.Field) (string, error) {
-	definitions, err := typeconv.ClickHouseDefinitions(field)
+	definitions, err := _clickhouse.Definitions(field)
 	if err != nil {
 		return "", err
 	}

@@ -42,7 +42,7 @@ func arrayType(list arrow.DataType) (string, error) {
 		return "", fmt.Errorf("unsupported Apache Arow list type: %s", list)
 	}
 
-	elem, err := fieldType(field) // adds Nullable
+	elem, err := FieldType(field) // adds Nullable
 	if err != nil {
 		return "", err
 	}
@@ -64,7 +64,7 @@ func structType(_struct *arrow.StructType) (string, error) {
 func mapType(_map *arrow.MapType) (string, error) {
 	// https://clickhouse.com/docs/en/sql-reference/data-types/map
 	// Keys can only be: String, Integer, LowCardinality, FixedString, UUID, Date, DateTime, Date32, Enum.
-	keyType, err := fieldType(_map.KeyField())
+	keyType, err := FieldType(_map.KeyField())
 	if err != nil {
 		return "", err
 	}
@@ -83,7 +83,7 @@ func mapType(_map *arrow.MapType) (string, error) {
 		return "", fmt.Errorf("unsupported Apache Arraw type for ClickHouse map key: %s", keyType)
 	}
 
-	itemType, err := fieldType(_map.ItemField()) // adds Nullable, too
+	itemType, err := FieldType(_map.ItemField()) // adds Nullable, too
 	if err != nil {
 		return "", err
 	}
@@ -178,7 +178,7 @@ func columnType(dataType arrow.DataType) (string, error) {
 	}
 }
 
-func fieldType(field arrow.Field) (string, error) {
+func FieldType(field arrow.Field) (string, error) {
 	typ, err := columnType(field.Type)
 	if err != nil {
 		return "", err
@@ -192,18 +192,18 @@ func fieldType(field arrow.Field) (string, error) {
 	return "Nullable(" + typ + ")", nil
 }
 
-func fieldDefinition(field arrow.Field) (string, error) {
-	fieldType, err := fieldType(field)
+func FieldDefinition(field arrow.Field) (string, error) {
+	fieldType, err := FieldType(field)
 	if err != nil {
 		return "", err
 	}
-	return util.SanitizeID(field.Name) + " " + fieldType, err
+	return util.SanitizeID(field.Name) + " " + fieldType, nil
 }
 
 func Definitions(fields ...arrow.Field) ([]string, error) {
 	res := make([]string, len(fields))
 	for i, field := range fields {
-		fieldDef, err := fieldDefinition(field)
+		fieldDef, err := FieldDefinition(field)
 		if err != nil {
 			return nil, err
 		}

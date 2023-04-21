@@ -3,13 +3,14 @@ package client
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"golang.org/x/exp/slices"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -25,9 +26,9 @@ func (c *Client) Migrate(ctx context.Context, scs schema.Schemas) error {
 		return err
 	}
 	if c.mode != specs.MigrateModeForced {
-		nonSafeMigratableTables, changes := nonAutoMigratableTables(newSchema, currentSchema)
-		if len(nonSafeMigratableTables) > 0 {
-			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonSafeMigratableTables, ","), changes)
+		unsafe := unsafeSchemaChanges(newSchema, currentSchema)
+		if len(unsafe) > 0 {
+			return fmt.Errorf("'migrate_mode: forced' is required for the following changes: \n%s", util.SchemasChangesPrettified(unsafe))
 		}
 	}
 
@@ -60,31 +61,29 @@ func (c *Client) Migrate(ctx context.Context, scs schema.Schemas) error {
 	return eg.Wait()
 }
 
-func nonAutoMigratableTables(want, have schema.Schemas) ([]string, [][]schema.FieldChange) {
-	var result []string
-	var tableChanges [][]schema.FieldChange
+func unsafeSchemaChanges(want, have schema.Schemas) map[string][]schema.FieldChange {
+	result := make(map[string][]schema.FieldChange)
 	for _, w := range want {
 		current := have.SchemaByName(schema.TableName(w))
 		if current == nil {
 			continue
 		}
-		changes := schema.GetSchemaChanges(w, current)
-		if canSafelyMigrate(changes) {
-			result = append(result, schema.TableName(w))
-			tableChanges = append(tableChanges, changes)
+		unsafe := unsafeChanges(schema.GetSchemaChanges(w, current))
+		if len(unsafe) > 0 {
+			result[schema.TableName(w)] = unsafe
 		}
 	}
-	return result, tableChanges
+	return result
 }
 
-func canSafelyMigrate(changes []schema.FieldChange) bool {
-	for _, change := range changes {
-		needsDrop := needsTableDrop(change)
-		if needsDrop {
-			return false
+func unsafeChanges(changes []schema.FieldChange) []schema.FieldChange {
+	unsafe := make([]schema.FieldChange, 0, len(changes))
+	for _, c := range changes {
+		if needsTableDrop(c) {
+			unsafe = append(unsafe, c)
 		}
 	}
-	return true
+	return slices.Clip(unsafe)
 }
 
 func (c *Client) createTable(ctx context.Context, sc *arrow.Schema) (err error) {
@@ -95,7 +94,10 @@ func (c *Client) createTable(ctx context.Context, sc *arrow.Schema) (err error) 
 		return err
 	}
 
-	return c.conn.Exec(ctx, query)
+	if err := c.conn.Exec(ctx, query); err != nil {
+		return fmt.Errorf("failed to create table, query:\n%s\nerror: %w", query, err)
+	}
+	return nil
 }
 
 func (c *Client) dropTable(ctx context.Context, sc *arrow.Schema) error {
@@ -118,15 +120,18 @@ func needsTableDrop(change schema.FieldChange) bool {
 	return true
 }
 
-func (c *Client) autoMigrate(ctx context.Context, have, want *arrow.Schema) (err error) {
+func (c *Client) autoMigrate(ctx context.Context, have, want *arrow.Schema) error {
 	changes := schema.GetSchemaChanges(want, have)
 
-	if !canSafelyMigrate(changes) {
-		// We already checked that the mode is forced, so just recreate
-		err := c.dropTable(ctx, have)
-		if err != nil {
+	if unsafe := unsafeChanges(changes); len(unsafe) > 0 {
+		if c.mode != specs.MigrateModeForced {
+			return fmt.Errorf("'migrate_mode: forced' is required for the following changes: \n%s", util.SchemaChangesPrettified(schema.TableName(want), unsafe))
+		}
+
+		if err := c.dropTable(ctx, have); err != nil {
 			return err
 		}
+
 		return c.createTable(ctx, want)
 	}
 
