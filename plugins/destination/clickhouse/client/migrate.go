@@ -16,17 +16,17 @@ import (
 
 // Migrate relies on the CLI/client to lock before running migration.
 func (c *Client) Migrate(ctx context.Context, scs schema.Schemas) error {
-	currentSchema, err := c.getTableDefinitions(ctx)
+	have, err := c.getTableDefinitions(ctx)
 	if err != nil {
 		return err
 	}
 
-	newSchema, err := typeconv.CanonizedSchemas(scs)
+	want, err := typeconv.CanonizedSchemas(scs)
 	if err != nil {
 		return err
 	}
 	if c.mode != specs.MigrateModeForced {
-		unsafe := unsafeSchemaChanges(newSchema, currentSchema)
+		unsafe := unsafeSchemaChanges(have, want)
 		if len(unsafe) > 0 {
 			return fmt.Errorf("'migrate_mode: forced' is required for the following changes: \n%s", util.SchemasChangesPrettified(unsafe))
 		}
@@ -36,32 +36,32 @@ func (c *Client) Migrate(ctx context.Context, scs schema.Schemas) error {
 	eg, ctx := errgroup.WithContext(ctx)
 	eg.SetLimit(maxConcurrentMigrate)
 
-	for _, sc := range newSchema {
-		sc := sc
+	for _, want := range want {
+		want := want
 		eg.Go(func() (err error) {
-			tableName := schema.TableName(sc)
+			tableName := schema.TableName(want)
 			c.logger.Info().Str("table", tableName).Msg("Migrating table started")
 			defer func() {
 				c.logger.Err(err).Str("table", tableName).Msg("Migrating table done")
 			}()
-			if len(sc.Fields()) == 0 {
+			if len(want.Fields()) == 0 {
 				c.logger.Warn().Str("table", tableName).Msg("Table with no columns, skip")
 				return nil
 			}
 
-			current := currentSchema.SchemaByName(tableName)
-			if current == nil {
-				return c.createTable(ctx, sc)
+			have := have.SchemaByName(tableName)
+			if have == nil {
+				return c.createTable(ctx, want)
 			}
 
-			return c.autoMigrate(ctx, sc, current)
+			return c.autoMigrate(ctx, have, want)
 		})
 	}
 
 	return eg.Wait()
 }
 
-func unsafeSchemaChanges(want, have schema.Schemas) map[string][]schema.FieldChange {
+func unsafeSchemaChanges(have, want schema.Schemas) map[string][]schema.FieldChange {
 	result := make(map[string][]schema.FieldChange)
 	for _, w := range want {
 		current := have.SchemaByName(schema.TableName(w))

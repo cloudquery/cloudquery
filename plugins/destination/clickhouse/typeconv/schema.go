@@ -49,5 +49,11 @@ func CanonizedField(field arrow.Field) (*arrow.Field, error) {
 	}
 
 	// 2 - convert back to Apache Arrow
-	return _arrow.Field(field.Name, chType)
+	canonized, err := _arrow.Field(field.Name, chType)
+	if err != nil {
+		return nil, err
+	}
+
+	canonized.Nullable = canonized.Nullable || field.Nullable // have to do this because of Array
+	return canonized, nil
 }
