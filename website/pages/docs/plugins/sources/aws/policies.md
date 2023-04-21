@@ -91,6 +91,7 @@ tables:
   - aws_codebuild_projects
   - aws_config_configuration_recorders
   - aws_dms_replication_instances
+  - aws_ec2_ebs_snapshot_attributes
   - aws_ec2_ebs_snapshots
   - aws_ec2_eips
   - aws_ec2_flow_logs
@@ -212,6 +213,7 @@ tables:
   - aws_dynamodb_table_continuous_backups
   - aws_dynamodb_table_replica_auto_scalings
   - aws_dynamodb_tables
+  - aws_ec2_ebs_snapshot_attributes
   - aws_ec2_ebs_snapshots
   - aws_ec2_ebs_volumes
   - aws_ec2_flow_logs
