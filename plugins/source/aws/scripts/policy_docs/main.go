@@ -50,7 +50,10 @@ type PolicyInfo struct {
 	Name    string
 	Queries []Query
 	Tables  []string
-	Views   []string
+
+	CreatedViews   map[string]bool
+	DependentViews []string
+	UnusedViews    []string
 }
 
 func newPolicyInfo(name string, queries []Query, allTables []Table) *PolicyInfo {
@@ -64,34 +67,48 @@ func newPolicyInfo(name string, queries []Query, allTables []Table) *PolicyInfo 
 
 // Tables returns the unique set of tables needed to run all queries
 func (pi *PolicyInfo) setTables(allTables Tables) {
-	t, v := map[string]struct{}{}, map[string]struct{}{}
+	t, v := map[string]bool{}, map[string]bool{}
+	pi.CreatedViews = map[string]bool{}
 
 	// Add all views detected from CREATE VIEW statements
-	for _, vi := range pi.Views {
-		v[vi] = struct{}{}
+	for _, q := range pi.Queries {
+		if q.View {
+			pi.CreatedViews[q.ViewName] = true
+		}
 	}
+
 	// Accessed views from queries, should be a subset of the above
 	for _, q := range pi.Queries {
 		for _, vi := range q.Views {
-			v[vi] = struct{}{}
+			v[vi] = true
 		}
 	}
 
 	for _, q := range pi.Queries {
+		// Add all tables from queries *and* views
 		for _, table := range q.Tables {
-			if _, found := v[table]; found {
-				continue
+			if pi.CreatedViews[table] {
+				// This is a view, not a table
+				v[table] = true
 			}
 
-			t[table] = struct{}{}
+			t[table] = true
 			ancestors := allTables.FindAncestors(table)
 			for _, a := range ancestors {
-				t[a.Name] = struct{}{}
+				t[a.Name] = true
 			}
 		}
 	}
 
-	pi.Tables, pi.Views = keysOf(t), keysOf(v)
+	pi.Tables, pi.DependentViews = keysOf(t), keysOf(v)
+
+	unused := make(map[string]bool, len(pi.CreatedViews))
+	for k := range pi.CreatedViews {
+		if _, ok := v[k]; !ok {
+			unused[k] = true
+		}
+	}
+	pi.UnusedViews = keysOf(unused)
 }
 
 type Query struct {
@@ -182,7 +199,13 @@ func extractQueries(prefix, sqlPath string) ([]Query, error) {
 }
 
 func writePolicyDocs(info []*PolicyInfo, outputPath string) error {
-	t, err := template.New("policies.md.go.tpl").ParseFS(templatesFS, "templates/policies.md.go.tpl")
+	t, err := template.New("policies.md.go.tpl").
+		Funcs(template.FuncMap{
+			"add": func(a int, b int) int {
+				return a + b
+			},
+		}).
+		ParseFS(templatesFS, "templates/policies.md.go.tpl")
 	if err != nil {
 		return fmt.Errorf("failed to parse template for README.md: %v", err)
 	}
@@ -228,7 +251,7 @@ func readTablesJSON(filepath string) ([]Table, error) {
 	return tables, err
 }
 
-func keysOf(m map[string]struct{}) []string {
+func keysOf(m map[string]bool) []string {
 	var keys []string
 	for k := range m {
 		keys = append(keys, k)

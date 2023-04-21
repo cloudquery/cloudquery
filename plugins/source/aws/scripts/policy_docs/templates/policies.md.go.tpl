@@ -23,4 +23,29 @@ tables:
   - {{ $query.Title }}
 {{- end }}{{- end }}
 
+{{- if .DependentViews }}
+
+### Dependent Views
+{{ .Name }} depends on the following views:
+{{$createdViews := .CreatedViews }}
+{{- $num_created := 0}}
+{{- range $v := .DependentViews }}
+  - {{ $v }}{{ if index $createdViews $v }} *{{ $num_created = add $num_created 1 }}{{end}}
+{{- end }}
+
+{{- if gt $num_created 0}}
+
+  * {{if eq $num_created 1}}This view is{{else}}These views are{{end}} automatically created or updated by this policy.
+{{end}}
+{{- end }}
+
+{{- if .UnusedViews }}
+### Unused Views
+  {{ .Name }} creates these views but does not use them:
+
+  {{- range $v := .UnusedViews }}
+    - {{ $v }}
+  {{- end }}
+{{end}}
+
 {{- end }}

@@ -66,6 +66,15 @@ AWS CIS V1.2.0 performs the following checks:
   - Ensure no security groups allow ingress from 0.0.0.0/0 to port 22 (Scored)
   - Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389 (Scored)
   - The VPC default security group should not allow inbound and outbound traffic
+
+### Dependent Views
+AWS CIS V1.2.0 depends on the following views:
+
+  - view_aws_log_metric_filter_and_alarm *
+  - view_aws_security_group_ingress_rules *
+
+  * These views are automatically created or updated by this policy.
+
 ## AWS PCI DSS v3.2.1
 
 ### Requirements
@@ -168,6 +177,15 @@ AWS PCI DSS v3.2.1 performs the following checks:
   - Instances managed by Systems Manager should have an association compliance status of COMPLIANT
   - EC2 instances should be managed by AWS Systems Manager
   - AWS WAF Classic global web ACL logging should be enabled
+
+### Dependent Views
+AWS PCI DSS v3.2.1 depends on the following views:
+
+  - view_aws_log_metric_filter_and_alarm *
+  - view_aws_security_group_ingress_rules *
+
+  * These views are automatically created or updated by this policy.
+
 ## AWS Foundational Security Best Practices
 
 ### Requirements
@@ -380,6 +398,15 @@ AWS Foundational Security Best Practices performs the following checks:
   - Instances managed by Systems Manager should have an association compliance status of COMPLIANT
   - SSM documents should not be public
   - AWS WAF Classic global web ACL logging should be enabled
+
+### Dependent Views
+AWS Foundational Security Best Practices depends on the following views:
+
+  - view_aws_apigateway_method_settings *
+  - view_aws_security_group_ingress_rules *
+
+  * These views are automatically created or updated by this policy.
+
 ## AWS Public Egress
 
 ### Requirements
@@ -398,6 +425,14 @@ AWS Public Egress performs the following checks:
   - Find all ec2 instances that have unrestricted access to the internet with a wide open security group and routing
   - All ec2 instances that have unrestricted access to the internet via a security group
   - Find all lambda functions that have unrestricted access to the internet
+
+### Dependent Views
+AWS Public Egress depends on the following views:
+
+  - view_aws_security_group_egress_rules *
+
+  * This view is automatically created or updated by this policy.
+
 ## AWS Publicly Available
 
 ### Requirements
