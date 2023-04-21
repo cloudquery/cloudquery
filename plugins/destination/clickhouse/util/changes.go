@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
+// TODO: remove after https://github.com/cloudquery/plugin-sdk/pull/817 is released
 func FieldChangePrettified(fc schema.FieldChange) string {
 	switch fc.Type {
 	case schema.TableColumnChangeTypeAdd:
