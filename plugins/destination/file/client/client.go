@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cloudquery/filetypes"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/filetypes/v2"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 )
 
@@ -34,6 +34,9 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 	if err := c.pluginSpec.Validate(); err != nil {
 		return nil, err
+	}
+	if c.pluginSpec.Directory != "" {
+		c.logger.Warn().Msg("deprecated: the `directory` configuration option will be removed in a future version, please use `path` instead")
 	}
 	c.pluginSpec.SetDefaults()
 
