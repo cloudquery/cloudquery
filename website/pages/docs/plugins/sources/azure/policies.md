@@ -8,36 +8,35 @@ This page documents the available CloudQuery SQL Policies for Azure. See the [re
 ### Requirements
 Azure CIS v1.3.0 requires the following tables to be synced before the policy is executed:
 
-```yaml copy
+```yaml
 tables:
+  - azure_appservice_web_app_auth_settings
+  - azure_appservice_web_apps
   - azure_compute_disks
   - azure_compute_virtual_machines
-  - azure_keyvault_keys
-  - azure_keyvault_secrets
-  - azure_keyvault_vaults
+  - azure_keyvault_keyvault
+  - azure_keyvault_keyvault_keys
+  - azure_keyvault_keyvault_secrets
   - azure_mysql_servers
-  - azure_postgresql_configurations
-  - azure_postgresql_firewall_rules
+  - azure_policy_assignments
+  - azure_postgresql_server_configurations
+  - azure_postgresql_server_firewall_rules
   - azure_postgresql_servers
   - azure_security_auto_provisioning_settings
-  - azure_security_contacts
   - azure_security_pricings
-  - azure_security_settings
-  - azure_sql_database_blob_auditing_policies
-  - azure_sql_database_threat_detection_policies
-  - azure_sql_databases
-  - azure_sql_encryption_protectors
   - azure_sql_server_admins
   - azure_sql_server_blob_auditing_policies
+  - azure_sql_server_database_blob_auditing_policies
+  - azure_sql_server_database_threat_protections
+  - azure_sql_server_databases
+  - azure_sql_server_encryption_protectors
   - azure_sql_server_vulnerability_assessments
   - azure_sql_servers
   - azure_sql_transparent_data_encryptions
-  - azure_web_apps
-  - azure_web_publishing_profiles
-  - azure_web_site_auth_settings
 ```
 
 ### Queries
+
 Azure CIS v1.3.0 performs the following checks:
   - Ensure that Azure Defender is set to On for Servers (Automatic)
   - Ensure that Azure Defender is set to On for App Service (Automatic)
@@ -47,11 +46,8 @@ Azure CIS v1.3.0 performs the following checks:
   - Ensure that Azure Defender is set to On for Kubernetes (Automatic)
   - Ensure that Azure Defender is set to On for Container Registries (Automatic)
   - Ensure that Azure Defender is set to On for Key Vault (Manual)
-  - Ensure that Microsoft Cloud App Security (MCAS) integration with Security Center is selected (Automatic)
   - Ensure that "Automatic provisioning of monitoring agent" is set to "On" (Automated)
   - Ensure any of the ASC Default policy setting is not set to "Disabled" (Automated)
-  - Ensure "Additional email addresses" is configured with a security contact email (Automated)
-  - Ensure that "Notify about alerts with the following severity" is set to "High" (Automated)
   - Ensure that "Auditing" is set to "On" (Automated)
   - Ensure that "Data encryption" is set to "On" on a SQL Database (Automated)
   - Ensure that "Auditing" Retention is "greater than 90 days" (Automated)
@@ -79,31 +75,40 @@ Azure CIS v1.3.0 performs the following checks:
   - Ensure the key vault is recoverable (Automated)
   - Ensure App Service Authentication is set on Azure App Service (Automated)
   - Ensure web app redirects all HTTP traffic to HTTPS in Azure App Service (Automated)
+  - Ensure web app is using the latest version of TLS encryption (Automated)
   - Ensure the web app has ''Client Certificates (Incoming client certificates)'' set to ''On'' (Automated)
   - Ensure that Register with Azure Active Directory is enabled on App Service (Automated)
-  - Ensure FTP deployments are disabled (Automated)
+
+### Dependent Views
+
+Azure CIS v1.3.0 depends on the following views:
+
+  - view_azure_security_policy_parameters<sup>*</sup>
+
+  <sup>*</sup> This view is automatically created or updated by this policy.
 ## Azure HIPAA HITRUST v9.2
 
 ### Requirements
 Azure HIPAA HITRUST v9.2 requires the following tables to be synced before the policy is executed:
 
-```yaml copy
+```yaml
 tables:
+  - azure_appservice_web_app_vnet_connections
+  - azure_appservice_web_apps
   - azure_authorization_role_assignments
   - azure_authorization_role_definitions
-  - azure_batch_accounts
+  - azure_batch_account
   - azure_compute_virtual_machine_extensions
   - azure_compute_virtual_machine_scale_sets
   - azure_compute_virtual_machines
-  - azure_container_managed_clusters
-  - azure_container_registries
-  - azure_cosmosdb_accounts
-  - azure_datalake_store_accounts
+  - azure_containerregistry_registries
+  - azure_containerservice_managed_clusters
+  - azure_cosmos_database_accounts
+  - azure_datalakestore_accounts
+  - azure_eventhub_namespace_network_rule_sets
   - azure_eventhub_namespaces
-  - azure_eventhub_network_rule_sets
-  - azure_keyvault_managed_hsms
-  - azure_keyvault_vaults
-  - azure_logic_diagnostic_settings
+  - azure_keyvault_keyvault
+  - azure_keyvault_keyvault_managed_hsms
   - azure_logic_workflows
   - azure_mariadb_servers
   - azure_monitor_activity_log_alerts
@@ -122,27 +127,27 @@ tables:
   - azure_security_assessments
   - azure_security_auto_provisioning_settings
   - azure_security_jit_network_access_policies
-  - azure_sql_backup_long_term_retention_policies
-  - azure_sql_database_vulnerability_assessment_scans
-  - azure_sql_databases
-  - azure_sql_encryption_protectors
   - azure_sql_managed_instance_encryption_protectors
   - azure_sql_managed_instance_vulnerability_assessments
   - azure_sql_managed_instances
   - azure_sql_server_blob_auditing_policies
+  - azure_sql_server_database_long_term_retention_policies
+  - azure_sql_server_database_vulnerability_assessment_scans
+  - azure_sql_server_database_vulnerability_assessments
+  - azure_sql_server_databases
+  - azure_sql_server_encryption_protectors
+  - azure_sql_server_virtual_network_rules
   - azure_sql_server_vulnerability_assessments
   - azure_sql_servers
   - azure_sql_transparent_data_encryptions
-  - azure_sql_virtual_network_rules
   - azure_storage_accounts
   - azure_streamanalytics_streaming_jobs
-  - azure_subscriptions
-  - azure_subscriptions_locations
-  - azure_web_apps
-  - azure_web_vnet_connections
+  - azure_subscription_subscription_locations
+  - azure_subscription_subscriptions
 ```
 
 ### Queries
+
 Azure HIPAA HITRUST v9.2 performs the following checks:
   - MFA should be enabled on accounts with owner permissions on your subscription
   - MFA should be enabled on accounts with write permissions on your subscription
@@ -224,3 +229,11 @@ Azure HIPAA HITRUST v9.2 performs the following checks:
   - Audit virtual machines without disaster recovery configured.
   - Azure Key Vault Managed HSM should have purge protection enabled
   - Ensure the key vault is recoverable (Automated)
+
+### Dependent Views
+
+Azure HIPAA HITRUST v9.2 depends on the following views:
+
+  - view_azure_nsg_rules<sup>*</sup>
+
+  <sup>*</sup> This view is automatically created or updated by this policy.
