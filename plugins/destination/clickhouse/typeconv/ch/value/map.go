@@ -7,10 +7,21 @@ import (
 	"github.com/ClickHouse/clickhouse-go/v2/lib/column"
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"
-	_clickhouse "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/definitions"
 )
 
 func mapValue(arr *array.Map) (any, error) {
+	// we need to check if we really want the map or string
+	def, err := definitions.MapType(arr.DataType().(*arrow.MapType))
+	if err != nil {
+		return nil, err
+	}
+	if def == "String" {
+		return valueStrData(arr), nil
+	}
+
+	// we really do need map here, so we need to construct the proper type to be scanned as well
+
 	// keys won't be nullable, but the FromArray output will render them as such
 	// We'll account for that later
 	keys, err := FromArray(arr.Keys())
@@ -56,7 +67,7 @@ func mapValue(arr *array.Map) (any, error) {
 }
 
 func scanType(field arrow.Field) (reflect.Type, error) {
-	fieldType, err := _clickhouse.FieldType(field)
+	fieldType, err := definitions.FieldType(field)
 	if err != nil {
 		return nil, err
 	}

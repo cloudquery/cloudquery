@@ -1,4 +1,4 @@
-package ch
+package definitions
 
 import (
 	"fmt"
@@ -82,7 +82,7 @@ func structType(_struct *arrow.StructType) (string, error) {
 	return "Tuple(" + strings.Join(fields, ", ") + ")", nil
 }
 
-func mapType(_map *arrow.MapType) (string, error) {
+func MapType(_map *arrow.MapType) (string, error) {
 	// https://clickhouse.com/docs/en/sql-reference/data-types/map
 	// Keys can only be: String, Integer, LowCardinality, FixedString, UUID, Date, DateTime, Date32, Enum.
 	keyType, err := FieldType(_map.KeyField())
@@ -101,7 +101,8 @@ func mapType(_map *arrow.MapType) (string, error) {
 	case strings.HasPrefix(keyType, "FixedString"):
 	case strings.HasPrefix(keyType, "Enum"):
 	default:
-		return "", fmt.Errorf("unsupported Apache Arraw type for ClickHouse map key: %s", keyType)
+		// fallback to String
+		return "String", nil
 	}
 
 	itemType, err := FieldType(_map.ItemField()) // adds Nullable, too
@@ -197,7 +198,7 @@ func dataType(dataType arrow.DataType) (string, error) {
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/map
 	case arrow.MAP:
-		return mapType(dataType.(*arrow.MapType))
+		return MapType(dataType.(*arrow.MapType))
 
 	// Only support CQ extensions for now
 	case arrow.EXTENSION:
