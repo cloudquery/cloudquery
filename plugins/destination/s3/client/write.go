@@ -10,9 +10,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v12/arrow/array"
+	"github.com/apache/arrow/go/v12/arrow/memory"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/types"
 	"github.com/google/uuid"
 )
 
@@ -28,19 +32,15 @@ const (
 
 var reInvalidJSONKey = regexp.MustCompile(`\W`)
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
+func (c *Client) WriteTableBatch(ctx context.Context, arrowSchema *arrow.Schema, data []arrow.Record) error {
 	if len(data) == 0 {
 		return nil
 	}
+	tableName := schema.TableName(arrowSchema)
 
 	if c.pluginSpec.Athena {
-		for _, resource := range data {
-			for u := range resource {
-				if table.Columns[u].Type != schema.TypeJSON {
-					continue
-				}
-				sanitizeJSONKeys(resource[u])
-			}
+		for i, record := range data {
+			data[i] = sanitizeRecordJSONKeys(record)
 		}
 	}
 
@@ -49,7 +49,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 
 	timeNow := time.Now().UTC()
 
-	if err := c.Client.WriteTableBatchFile(w, table, data); err != nil {
+	if err := c.Client.WriteTableBatchFile(w, arrowSchema, data); err != nil {
 		return err
 	}
 	// we don't upload in parallel here because AWS sdk moves the burden to the developer, and
@@ -57,7 +57,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	r := io.Reader(&b)
 	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
 		Bucket: aws.String(c.pluginSpec.Bucket),
-		Key:    aws.String(replacePathVariables(c.pluginSpec.Path, table.Name, uuid.NewString(), timeNow)),
+		Key:    aws.String(replacePathVariables(c.pluginSpec.Path, tableName, uuid.NewString(), timeNow)),
 		Body:   r,
 	}); err != nil {
 		return err
@@ -66,10 +66,31 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	return nil
 }
 
-// sanitizeJSONKeys replaces all invalid characters in JSON keys with underscores.
-// It does the replacement in-place, modifying the original object. This is required
+// sanitizeRecordJSONKeys replaces all invalid characters in JSON keys with underscores. This is required
 // for compatibility with Athena.
-func sanitizeJSONKeys(obj any) {
+func sanitizeRecordJSONKeys(record arrow.Record) arrow.Record {
+	cols := make([]arrow.Array, record.NumCols())
+	for i, col := range record.Columns() {
+		if arrow.TypeEqual(col.DataType(), types.NewJSONType()) {
+			b := types.NewJSONBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewJSONType()))
+			for r := 0; r < int(record.NumRows()); r++ {
+				if col.IsNull(r) {
+					b.AppendNull()
+					continue
+				}
+				obj := col.GetOneForMarshal(r)
+				sanitizeJSONKeysForObject(obj)
+				b.Append(obj)
+			}
+			cols[i] = b.NewArray()
+			continue
+		}
+		cols[i] = col
+	}
+	return array.NewRecord(record.Schema(), cols, record.NumRows())
+}
+
+func sanitizeJSONKeysForObject(obj any) {
 	value := reflect.ValueOf(obj)
 	switch value.Kind() {
 	case reflect.Map:
@@ -79,14 +100,14 @@ func sanitizeJSONKeys(obj any) {
 			if k.Kind() == reflect.String {
 				nk := reInvalidJSONKey.ReplaceAllString(k.String(), "_")
 				v := iter.Value()
-				sanitizeJSONKeys(v.Interface())
+				sanitizeJSONKeysForObject(v.Interface())
 				value.SetMapIndex(k, reflect.Value{})
 				value.SetMapIndex(reflect.ValueOf(nk), v)
 			}
 		}
 	case reflect.Slice:
 		for i := 0; i < value.Len(); i++ {
-			sanitizeJSONKeys(value.Index(i).Interface())
+			sanitizeJSONKeysForObject(value.Index(i).Interface())
 		}
 	}
 }
