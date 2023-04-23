@@ -8,6 +8,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.1.1...plugins-source-azure-v7.2.0) (2023-04-23)
 
 
+### This Release has the Following Changes to Tables
+- Table `azure_consumption_billing_account_balances` was added
+- Table `azure_consumption_billing_account_budgets` was added
+- Table `azure_consumption_billing_account_charges` was added
+- Table `azure_consumption_billing_account_events` was added
+- Table `azure_consumption_billing_account_legacy_usage_details` was added
+- Table `azure_consumption_billing_account_lots` was added
+- Table `azure_consumption_billing_account_marketplaces` was added
+- Table `azure_consumption_billing_account_modern_usage_details` was added
+- Table `azure_consumption_billing_account_reservation_recommendations` was added
+- Table `azure_consumption_billing_account_tags` was added
+- Table `azure_consumption_billing_profile_reservation_details` was added
+- Table `azure_consumption_billing_profile_reservation_recommendations` was added
+- Table `azure_consumption_billing_profile_reservation_summaries` was added
+- Table `azure_consumption_billing_profile_reservation_transactions` was added
+- Table `azure_consumption_subscription_budgets` was added
+- Table `azure_consumption_subscription_legacy_usage_details` was added
+- Table `azure_consumption_subscription_marketplaces` was added
+- Table `azure_consumption_subscription_price_sheets` was added
+- Table `azure_consumption_subscription_reservation_recommendations` was added
+- Table `azure_consumption_subscription_tags` was added
+
 ### Features
 
 * **azure-resources:** Add Consumption Resources ([#9117](https://github.com/cloudquery/cloudquery/issues/9117)) ([007421a](https://github.com/cloudquery/cloudquery/commit/007421ae13e3c6ad8c8b46dde915f03369b9a186))
