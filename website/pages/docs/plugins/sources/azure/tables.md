@@ -164,6 +164,7 @@
 - [azure_network_ip_groups](tables/azure_network_ip_groups)
 - [azure_network_load_balancers](tables/azure_network_load_balancers)
 - [azure_network_nat_gateways](tables/azure_network_nat_gateways)
+- [azure_network_private_link_services](tables/azure_network_private_link_services)
 - [azure_network_profiles](tables/azure_network_profiles)
 - [azure_network_public_ip_addresses](tables/azure_network_public_ip_addresses)
 - [azure_network_public_ip_prefixes](tables/azure_network_public_ip_prefixes)
