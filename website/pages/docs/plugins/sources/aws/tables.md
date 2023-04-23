@@ -165,6 +165,7 @@
 - [aws_ec2_customer_gateways](tables/aws_ec2_customer_gateways)
 - [aws_ec2_dhcp_options](tables/aws_ec2_dhcp_options)
 - [aws_ec2_ebs_snapshots](tables/aws_ec2_ebs_snapshots)
+  - [aws_ec2_ebs_snapshot_attributes](tables/aws_ec2_ebs_snapshot_attributes)
 - [aws_ec2_ebs_volume_statuses](tables/aws_ec2_ebs_volume_statuses)
 - [aws_ec2_ebs_volumes](tables/aws_ec2_ebs_volumes)
 - [aws_ec2_egress_only_internet_gateways](tables/aws_ec2_egress_only_internet_gateways)
