@@ -85,7 +85,6 @@ func (c *Client) reverseTransformer(sc *arrow.Schema, node *neo4j.Node) (arrow.R
 		}
 	}
 	rec := bldr.NewRecord()
-	bldr.Release()
 	return rec, nil
 }
 
