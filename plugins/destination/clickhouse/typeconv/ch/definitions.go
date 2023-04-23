@@ -10,6 +10,27 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/types"
 )
 
+func decimalType(precision, scale int32, minPrecision, maxPrecision int32) string {
+	// https://clickhouse.com/docs/en/sql-reference/data-types/decimal
+
+	if precision < scale {
+		precision = scale
+	}
+
+	switch {
+	case precision < minPrecision:
+		precision = minPrecision
+	case precision > maxPrecision:
+		precision = maxPrecision
+	}
+
+	if scale > precision {
+		scale = precision
+	}
+
+	return "Decimal(" + strconv.FormatInt(int64(precision), 10) + "," + strconv.FormatInt(int64(scale), 10) + ")"
+}
+
 func extensionType(extension arrow.ExtensionType) string {
 	switch extension.(type) {
 	// https://clickhouse.com/docs/en/sql-reference/data-types/uuid
@@ -91,7 +112,7 @@ func mapType(_map *arrow.MapType) (string, error) {
 	return "Map(" + keyType + ", " + itemType + ")", nil
 }
 
-func columnType(dataType arrow.DataType) (string, error) {
+func dataType(dataType arrow.DataType) (string, error) {
 	switch dataType.ID() {
 	// https://clickhouse.com/docs/en/sql-reference/data-types/boolean
 	case arrow.BOOL:
@@ -152,9 +173,19 @@ func columnType(dataType arrow.DataType) (string, error) {
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/decimal
 	case arrow.DECIMAL128:
-		return "Decimal128(" + strconv.FormatInt(int64(dataType.(*arrow.Decimal128Type).Scale), 10) + ")", nil
+		const (
+			minPrecision = 19
+			maxPrecision = 38
+		)
+		decimal := dataType.(*arrow.Decimal128Type)
+		return decimalType(decimal.Precision, decimal.Scale, minPrecision, maxPrecision), nil
 	case arrow.DECIMAL256:
-		return "Decimal256(" + strconv.FormatInt(int64(dataType.(*arrow.Decimal256Type).Scale), 10) + ")", nil
+		const (
+			minPrecision = 39
+			maxPrecision = 76
+		)
+		decimal := dataType.(*arrow.Decimal256Type)
+		return decimalType(decimal.Precision, decimal.Scale, minPrecision, maxPrecision), nil
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/array
 	case arrow.LIST, arrow.LARGE_LIST, arrow.FIXED_SIZE_LIST:
@@ -179,7 +210,7 @@ func columnType(dataType arrow.DataType) (string, error) {
 }
 
 func FieldType(field arrow.Field) (string, error) {
-	typ, err := columnType(field.Type)
+	typ, err := dataType(field.Type)
 	if err != nil {
 		return "", err
 	}
