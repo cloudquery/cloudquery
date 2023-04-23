@@ -18,19 +18,3 @@ func BatchAddRecord(batch driver.Batch, record arrow.Record) error {
 	}
 	return nil
 }
-
-func mapColumnData[K comparable, V any](keys []*K, items []*V) any {
-	if len(keys) != len(items) {
-		panic("keys & items have different len")
-	}
-
-	if len(keys) == 0 {
-		return nil
-	}
-
-	return nil
-	//mapType := reflect.MapOf(
-	//	reflect.TypeOf(*keys[0]),
-	//	reflect.TypeOf(*items[0]),
-	//)
-}

@@ -1,4 +1,4 @@
-package ch
+package definitions
 
 import (
 	"strings"
