@@ -37,11 +37,11 @@ cd plugins/source/aws/policies
 
 This is an alternative method to get the correct policies for a given AWS source plugin version, and is a better fit for automation.
 
-1. Go to https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws&expanded=true
-2. Find the release version that matches the AWS version in your source config
-3. Click on "Assets" to expand the list
-4. Download the Source Code zip file and unzip it.
-5. Change directory into policies: `cd plugins/source/aws/policies`
+The policies for every plugin version are also included in the release zip file. The following command will download the policies for AWS and unzip them into a directory called `policies`. Change `v16.3.0` to your currently configured version before running the command:
+
+```bash
+curl -iL https://github.com/cloudquery/cloudquery/releases/download/plugins-source-aws-v16.3.0/aws_linux_amd64.zip -o aws.zip && unzip aws.zip "policies/*"
+```
 
 ## Running
 
