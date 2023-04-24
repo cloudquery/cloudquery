@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/definitions"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"golang.org/x/exp/slices"
@@ -35,7 +35,7 @@ func CreateTable(sc *arrow.Schema, cluster string, engine *Engine) (string, erro
 	builder.WriteString("  ")
 	fields := sc.Fields()
 	for i, field := range fields {
-		builder.WriteString(definitions.FieldDefinition(field))
+		builder.WriteString(types.FieldDefinition(field))
 		if i < len(fields)-1 {
 			builder.WriteString(",\n  ")
 		}
