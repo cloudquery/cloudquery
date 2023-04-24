@@ -117,6 +117,7 @@ func needsTableDrop(change schema.FieldChange) bool {
 		return false
 	}
 
+	// TODO: add check for update + new type is extending the current type (uint8 -> uint16, float32 -> float64, new struct field, etc).
 	return true
 }
 
