@@ -22,6 +22,7 @@ const (
 	Namespacemicrosoft_containerinstance       = "microsoft.containerinstance"
 	Namespacemicrosoft_containerregistry       = "microsoft.containerregistry"
 	Namespacemicrosoft_containerservice        = "microsoft.containerservice"
+	Namespacemicrosoft_consumption             = "microsoft.consumption"
 	Namespacemicrosoft_customerinsights        = "microsoft.customerinsights"
 	Namespacemicrosoft_dashboard               = "microsoft.dashboard"
 	Namespacemicrosoft_databox                 = "microsoft.databox"
@@ -106,6 +107,7 @@ var namespaces = []string{
 	Namespacemicrosoft_containerinstance,
 	Namespacemicrosoft_containerregistry,
 	Namespacemicrosoft_containerservice,
+	Namespacemicrosoft_consumption,
 	Namespacemicrosoft_customerinsights,
 	Namespacemicrosoft_dashboard,
 	Namespacemicrosoft_databox,
