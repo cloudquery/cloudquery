@@ -5,8 +5,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/types"
 )
 
-func extensionType(extension arrow.ExtensionType) string {
-	switch extension.(type) {
+func extensionType(_type arrow.ExtensionType) string {
+	switch _type.(type) {
 	// https://clickhouse.com/docs/en/sql-reference/data-types/uuid
 	case *types.UUIDType:
 		return "UUID"

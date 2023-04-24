@@ -6,8 +6,8 @@ import (
 	"github.com/apache/arrow/go/v12/arrow"
 )
 
-func dataType(dataType arrow.DataType) string {
-	switch dataType.ID() {
+func dataType(_type arrow.DataType) string {
+	switch _type.ID() {
 	// https://clickhouse.com/docs/en/sql-reference/data-types/boolean
 	case arrow.BOOL:
 		return "Bool"
@@ -42,7 +42,7 @@ func dataType(dataType arrow.DataType) string {
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/fixedstring
 	case arrow.FIXED_SIZE_BINARY:
-		return "FixedString(" + strconv.Itoa(dataType.(*arrow.FixedSizeBinaryType).ByteWidth) + ")"
+		return "FixedString(" + strconv.Itoa(_type.(*arrow.FixedSizeBinaryType).ByteWidth) + ")"
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/date32
 	case arrow.DATE32:
@@ -52,44 +52,23 @@ func dataType(dataType arrow.DataType) string {
 	case arrow.DATE64:
 		return "DateTime64(3)" // 3 = milliseconds
 	case arrow.TIMESTAMP:
-		switch unit := dataType.(*arrow.TimestampType).Unit; unit {
-		case arrow.Second:
-			return "DateTime64(0)" // 0 = seconds
-		case arrow.Millisecond:
-			return "DateTime64(3)" // 3 = milliseconds
-		case arrow.Microsecond:
-			return "DateTime64(6)" // 3 = milliseconds
-		default:
-			return "DateTime64(9)" // 3 = milliseconds
-		}
+		return timestampType(_type.(*arrow.TimestampType))
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/decimal
-	case arrow.DECIMAL128:
-		const (
-			minPrecision = 19
-			maxPrecision = 38
-		)
-		decimal := dataType.(*arrow.Decimal128Type)
-		return decimalType(decimal.Precision, decimal.Scale, minPrecision, maxPrecision)
-	case arrow.DECIMAL256:
-		const (
-			minPrecision = 39
-			maxPrecision = 76
-		)
-		decimal := dataType.(*arrow.Decimal256Type)
-		return decimalType(decimal.Precision, decimal.Scale, minPrecision, maxPrecision)
+	case arrow.DECIMAL128, arrow.DECIMAL256:
+		return decimalType(_type.(arrow.DecimalType))
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/array
 	case arrow.LIST, arrow.LARGE_LIST, arrow.FIXED_SIZE_LIST:
-		return listType(dataType)
+		return listType(_type.(listDataType))
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/tuple
 	case arrow.STRUCT:
-		return structType(dataType.(*arrow.StructType))
+		return structType(_type.(*arrow.StructType))
 
 	// Only support CQ extensions for now
 	case arrow.EXTENSION:
-		return extensionType(dataType.(arrow.ExtensionType))
+		return extensionType(_type.(arrow.ExtensionType))
 
 	case arrow.MAP:
 		// TODO: support https://clickhouse.com/docs/en/sql-reference/data-types/map
