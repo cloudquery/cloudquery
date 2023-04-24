@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow/go/v12 v12.0.0-20230417014917-9888ac36c142
 	github.com/aws/aws-sdk-go-v2 v1.17.8
 	github.com/aws/aws-sdk-go-v2/config v1.18.21
-	github.com/cloudquery/plugin-sdk/v2 v2.3.8
+	github.com/cloudquery/plugin-sdk/v2 v2.4.0
 	github.com/rs/zerolog v1.29.0
 )
 
