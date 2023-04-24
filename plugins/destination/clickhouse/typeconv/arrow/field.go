@@ -62,46 +62,20 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 		return decimalType(name, col)
 
 	case *column.Array:
-		base, err := fieldFromColumn(col.Base())
-		if err != nil {
-			return nil, err
-		}
-		// We mark Array Nullable if it's value can be nullable
-		_, nullable := col.Base().(*column.Nullable)
-		return &arrow.Field{
-			Name:     name,
-			Type:     arrow.ListOfField(*base),
-			Nullable: nullable,
-		}, nil
-
-	case *column.Nullable:
-		base, err := fieldFromColumn(col.Base())
-		if err != nil {
-			return nil, err
-		}
-		return &arrow.Field{
-			Name:     name,
-			Type:     base.Type,
-			Nullable: true,
-		}, nil
-
-	case *column.Map:
-		dataType, err := mapType(col)
-		if err != nil {
-			return nil, err
-		}
-		return &arrow.Field{Name: name, Type: dataType}, nil
-
-	case *column.Tuple:
-		dataType, err := structType(col)
-		if err != nil {
-			return nil, err
-		}
-		return &arrow.Field{Name: name, Type: dataType}, nil
-
+		return arrayType(name, col)
 	case *column.Nested:
 		// it'll be Array(Tuple(...))
 		return fieldFromColumn(col.Interface)
+
+	case *column.Nullable:
+		return nullableType(name, col)
+
+	case *column.Map:
+		// TODO: parse into Apache Arrow map
+		return &arrow.Field{Name: name, Type: new(arrow.StringType)}, nil
+
+	case *column.Tuple:
+		return structType(name, col)
 
 	case *column.UUID:
 		return &arrow.Field{Name: name, Type: types.NewUUIDType()}, nil

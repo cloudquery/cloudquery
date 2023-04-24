@@ -66,11 +66,15 @@ func FromArray(arr arrow.Array) (any, error) {
 	case *array.Struct:
 		return structValue(arr)
 
-	case *array.Map: // before array.ListLike, as this also corresponds to array.ListLike interface
-		return mapValue(arr)
+	case *array.Map:
+		// TODO: once we parse into proper map just use this
+		return valueStrData(arr), nil
 
+	case *array.FixedSizeList:
+		return listValue(listWrapper{arr})
 	case array.ListLike:
 		return listValue(arr)
+
 	}
 
 	// default to string
