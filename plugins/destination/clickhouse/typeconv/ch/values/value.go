@@ -41,11 +41,11 @@ func FromArray(arr arrow.Array) (any, error) {
 		return primitiveValue[string](arr), nil
 
 	case *array.Binary:
-		return primitiveValue[[]byte](arr), nil
+		return byteArrValue(arr), nil
 	case *array.FixedSizeBinary:
-		return primitiveValue[[]byte](arr), nil
+		return byteArrValue(arr), nil
 	case *array.LargeBinary:
-		return primitiveValue[[]byte](arr), nil
+		return byteArrValue(arr), nil
 
 	case *array.Date32:
 		return dateValue[arrow.Date32](arr), nil
