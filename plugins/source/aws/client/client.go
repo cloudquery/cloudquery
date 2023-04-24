@@ -150,6 +150,7 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 		AutoscalingNamespace: c.AutoscalingNamespace,
 		WAFScope:             c.WAFScope,
 		Backend:              c.Backend,
+		Spec:                 c.Spec,
 	}
 }
 
@@ -163,6 +164,7 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 		AutoscalingNamespace: namespace,
 		WAFScope:             c.WAFScope,
 		Backend:              c.Backend,
+		Spec:                 c.Spec,
 	}
 }
 
@@ -176,6 +178,7 @@ func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, regi
 		AutoscalingNamespace: c.AutoscalingNamespace,
 		WAFScope:             scope,
 		Backend:              c.Backend,
+		Spec:                 c.Spec,
 	}
 }
 
