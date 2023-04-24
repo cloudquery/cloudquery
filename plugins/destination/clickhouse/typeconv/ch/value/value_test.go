@@ -13,13 +13,13 @@ import (
 func TestFromArray(t *testing.T) {
 	const N = 100
 
-	floats := make([]float64, N)
-	for i := range floats {
-		floats[i] = rand.Float64()*(math.MaxFloat64-1) + rand.Float64()
+	values := make([]float64, N)
+	for i := range values {
+		values[i] = rand.Float64()*(math.MaxFloat64-1) + rand.Float64()
 	}
 
 	bld := array.NewFloat64Builder(memory.DefaultAllocator)
-	for _, f := range floats {
+	for _, f := range values {
 		bld.Append(f)
 	}
 
@@ -30,6 +30,6 @@ func TestFromArray(t *testing.T) {
 	require.Equal(t, N, len(elems))
 	for i, elem := range elems {
 		require.NotNil(t, elem)
-		require.Exactly(t, floats[i], *elem)
+		require.Exactly(t, values[i], *elem)
 	}
 }
