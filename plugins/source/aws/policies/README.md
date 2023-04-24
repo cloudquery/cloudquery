@@ -10,6 +10,27 @@ CloudQuery SQL Policies for AWS
 - [AWS Publicly Available](./publicly_available/policy.sql)
 - [AWS Unused Resources](./unused_resources/policy.sql)
 
+## Installing
+
+Clone this repository locally:
+
+```bash
+git clone https://github.com/cloudquery/cloudquery.git cloudquery
+```
+
+Check out the tag matching the AWS Source plugin version you are using, so that the policy queries match the table schemas:
+
+```bash
+cd cloudquery
+git checkout plugins-source-aws-v16.3.0  # Example. Change to match the AWS version in your CloudQuery source config
+```
+
+Change directory into `plugins/source/aws/policies`:
+
+```bash
+cd plugins/source/aws/policies
+```
+
 ## Running
 
 You can execute policies with `psql`. For example:
