@@ -3,125 +3,77 @@ package client
 import (
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/google/uuid"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v12/arrow/array"
 )
 
-func (*Client) TransformBool(v *schema.Bool) any {
-	return v.Bool
-}
-
-func (*Client) TransformBytea(v *schema.Bytea) any {
-	return v.Bytes
-}
-
-func (*Client) TransformFloat8(v *schema.Float8) any {
-	return v.Float
-}
-
-func (*Client) TransformInt8(v *schema.Int8) any {
-	return v.Int
-}
-
-func (*Client) TransformInt8Array(v *schema.Int8Array) any {
-	res := make([]int64, len(v.Elements))
-	for i, e := range v.Elements {
-		res[i] = e.Int
+func transformArr(arr arrow.Array) []any {
+	pgArr := make([]any, arr.Len())
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) || !arr.IsValid(i) {
+			pgArr[i] = nil
+			continue
+		}
+		switch a := arr.(type) {
+		case *array.Boolean:
+			pgArr[i] = a.Value(i)
+		case *array.Int16:
+			pgArr[i] = a.Value(i)
+		case *array.Int32:
+			pgArr[i] = a.Value(i)
+		case *array.Int64:
+			pgArr[i] = a.Value(i)
+		case *array.Float32:
+			pgArr[i] = a.Value(i)
+		case *array.Float64:
+			pgArr[i] = a.Value(i)
+		case *array.Binary:
+			pgArr[i] = a.Value(i)
+		case *array.LargeBinary:
+			pgArr[i] = a.Value(i)
+		case *array.String:
+			if i == 0 {
+				pgArr[i] = nil
+			} else {
+				pgArr[i] = a.Value(i)
+			}
+		case *array.LargeString:
+			if i == 0 {
+				pgArr[i] = nil
+			} else {
+				pgArr[i] = a.Value(i)
+			}
+		case *array.Timestamp:
+			pgArr[i] = a.Value(i).ToTime(arrow.Microsecond)
+		case array.ListLike:
+			start, end := a.ValueOffsets(i)
+			nested := array.NewSlice(a.ListValues(), start, end)
+			pgArr[i] = transformArr(nested)
+		default:
+			pgArr[i] = arr.ValueStr(i)
+		}
 	}
-	return res
+
+	return pgArr
 }
 
-func (*Client) TransformJSON(v *schema.JSON) any {
-	if v.Status != schema.Present {
-		return nil
+func transformValues(r arrow.Record) [][]any {
+	results := make([][]any, r.NumRows())
+
+	for i := range results {
+		results[i] = make([]any, r.NumCols())
 	}
-	return string(v.Bytes)
+
+	for i := 0; i < int(r.NumCols()); i++ {
+		col := r.Column(i)
+		transformed := transformArr(col)
+		for l := 0; l < col.Len(); l++ {
+			results[l][i] = transformed[l]
+		}
+	}
+	return results
 }
 
-func (*Client) TransformText(v *schema.Text) any {
-	return stripNulls(v.String())
-}
-
-func (*Client) TransformTextArray(v *schema.TextArray) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	res := make([]string, len(v.Elements))
-	for i, e := range v.Elements {
-		res[i] = stripNulls(e.String())
-	}
-	return res
-}
-
-func (*Client) TransformTimestamptz(v *schema.Timestamptz) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	return v.Time
-}
-
-func (*Client) TransformUUID(v *schema.UUID) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	return uuid.UUID(v.Bytes).String()
-}
-
-func (*Client) TransformUUIDArray(v *schema.UUIDArray) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	res := make([]string, len(v.Elements))
-	for i, e := range v.Elements {
-		res[i] = uuid.UUID(e.Bytes).String()
-	}
-	return res
-}
-
-func (*Client) TransformCIDR(v *schema.CIDR) any {
-	return v.String()
-}
-
-func (*Client) TransformCIDRArray(v *schema.CIDRArray) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	res := make([]string, len(v.Elements))
-	for i, e := range v.Elements {
-		res[i] = e.String()
-	}
-	return res
-}
-
-func (*Client) TransformInet(v *schema.Inet) any {
-	return v.String()
-}
-
-func (*Client) TransformInetArray(v *schema.InetArray) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	res := make([]string, len(v.Elements))
-	for i, e := range v.Elements {
-		res[i] = e.String()
-	}
-	return res
-}
-
-func (*Client) TransformMacaddr(v *schema.Macaddr) any {
-	return v.Addr.String()
-}
-
-func (*Client) TransformMacaddrArray(v *schema.MacaddrArray) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	res := make([]string, len(v.Elements))
-	for i, e := range v.Elements {
-		res[i] = e.String()
-	}
-	return res
-}
 
 func stripNulls(s string) string {
 	return strings.ReplaceAll(s, "\x00", "")

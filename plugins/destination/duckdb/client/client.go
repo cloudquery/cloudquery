@@ -3,26 +3,28 @@ package client
 import (
 	"context"
 	"database/sql"
+	"database/sql/driver"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 
 	// import duckdb driver
-	_ "github.com/marcboeker/go-duckdb"
+	"github.com/marcboeker/go-duckdb"
 )
 
 type Client struct {
-	destination.UnimplementedManagedWriter
-	destination.DefaultReverseTransformer
+	destination.UnimplementedUnmanagedWriter
 	db      *sql.DB
+	connector driver.Connector
 	logger  zerolog.Logger
 	spec    specs.Destination
 	metrics destination.Metrics
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
+	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "duckdb-dest").Logger(),
 	}
@@ -32,13 +34,16 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	if err := spec.UnmarshalSpec(&duckdbSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal duckdb spec: %w", err)
 	}
-	duckdbSpec.SetDefaults()
-
-	db, err := sql.Open("duckdb", duckdbSpec.ConnectionString)
+	c.connector, err = duckdb.NewConnector(duckdbSpec.ConnectionString, nil)
+	db := sql.OpenDB(c.connector)
 	if err != nil {
 		return nil, err
 	}
 	c.db = db
+	_, err = c.db.Exec("INSTALL 'json'; LOAD 'json';")
+	if err != nil {
+		return nil, err
+	}
 	return c, nil
 }
 
