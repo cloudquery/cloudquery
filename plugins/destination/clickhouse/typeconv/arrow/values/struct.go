@@ -9,12 +9,13 @@ import (
 	"golang.org/x/exp/maps"
 )
 
-func buildStruct(builder *array.StructBuilder, value *map[string]any) error {
-	if value == (*map[string]any)(nil) {
+func buildStruct(builder *array.StructBuilder, value any) error {
+	v, ok := unwrap[map[string]any](value)
+	if !ok {
 		builder.AppendNull()
 		return nil
 	}
-	return appendStruct(builder, *value)
+	return appendStruct(builder, v)
 }
 
 func appendStruct(builder *array.StructBuilder, value map[string]any) error {

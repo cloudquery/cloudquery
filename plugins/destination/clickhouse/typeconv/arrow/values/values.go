@@ -1,12 +1,8 @@
 package values
 
 import (
-	"time"
-
 	"github.com/apache/arrow/go/v12/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v2/types"
-	"github.com/google/uuid"
-	"github.com/shopspring/decimal"
 )
 
 func buildValue(builder array.Builder, value any) error {
@@ -18,71 +14,71 @@ func buildValue(builder array.Builder, value any) error {
 
 	switch builder := builder.(type) {
 	case *array.BooleanBuilder:
-		buildPrimitive[bool](builder, *value.(**bool))
+		buildPrimitive[bool](builder, value)
 
 	case *array.Uint8Builder:
-		buildPrimitive[uint8](builder, *value.(**uint8))
+		buildPrimitive[uint8](builder, value)
 	case *array.Uint16Builder:
-		buildPrimitive[uint16](builder, *value.(**uint16))
+		buildPrimitive[uint16](builder, value)
 	case *array.Uint32Builder:
-		buildPrimitive[uint32](builder, *value.(**uint32))
+		buildPrimitive[uint32](builder, value)
 	case *array.Uint64Builder:
-		buildPrimitive[uint64](builder, *value.(**uint64))
+		buildPrimitive[uint64](builder, value)
 
 	case *array.Int8Builder:
-		buildPrimitive[int8](builder, *value.(**int8))
+		buildPrimitive[int8](builder, value)
 	case *array.Int16Builder:
-		buildPrimitive[int16](builder, *value.(**int16))
+		buildPrimitive[int16](builder, value)
 	case *array.Int32Builder:
-		buildPrimitive[int32](builder, *value.(**int32))
+		buildPrimitive[int32](builder, value)
 	case *array.Int64Builder:
-		buildPrimitive[int64](builder, *value.(**int64))
+		buildPrimitive[int64](builder, value)
 
 	case *array.Float16Builder:
-		buildFloat16(builder, *value.(**float32))
+		buildFloat16(builder, value)
 	case *array.Float32Builder:
-		buildPrimitive[float32](builder, *value.(**float32))
+		buildPrimitive[float32](builder, value)
 	case *array.Float64Builder:
-		buildPrimitive[float64](builder, *value.(**float64))
+		buildPrimitive[float64](builder, value)
 
 	case *array.StringBuilder:
-		buildPrimitive[string](builder, *value.(**string))
+		buildPrimitive[string](builder, value)
 
 	case *array.BinaryBuilder: // also handles the LargeSizeBinaryBuilder
-		buildBinary(builder, *value.(**string))
+		buildBinary(builder, value)
 	case *array.FixedSizeBinaryBuilder:
-		buildBinary(builder, *value.(**string))
+		buildBinary(builder, value)
 
 	case *array.Date32Builder:
-		buildDate32Values(builder, *value.(**time.Time))
+		buildDate32Values(builder, value)
 	case *array.Date64Builder:
-		buildDate64Values(builder, *value.(**time.Time))
+		buildDate64Values(builder, value)
 
 	case *array.TimestampBuilder:
-		return buildTimestampValues(builder, *value.(**time.Time))
+		return buildTimestampValues(builder, value)
 
 	case *array.Decimal128Builder:
-		buildDecimal128(builder, *value.(**decimal.Decimal))
+		buildDecimal128(builder, value)
 	case *array.Decimal256Builder:
-		buildDecimal256(builder, *value.(**decimal.Decimal))
+		buildDecimal256(builder, value)
 
 	case *types.UUIDBuilder:
-		buildUUID(builder, *value.(**uuid.UUID))
+		buildUUID(builder, value)
 	case *types.JSONBuilder, *types.InetBuilder, *types.MacBuilder:
-		return buildFromString(builder, *value.(**string))
+		return buildFromString(builder, value)
 
 	case *array.StructBuilder:
-		return buildStruct(builder, *value.(**map[string]any))
+		return buildStruct(builder, value)
 
 	case *array.MapBuilder:
 		// just before other list-like builders, as this one is special
-		return buildFromString(builder, *value.(**string))
+		return buildFromString(builder, value)
 
 	case array.ListLikeBuilder:
 		return buildList(builder, value)
 
 	default:
-		return buildFromString(builder, *value.(**string))
+		return buildFromString(builder, value)
 	}
 
 	return nil

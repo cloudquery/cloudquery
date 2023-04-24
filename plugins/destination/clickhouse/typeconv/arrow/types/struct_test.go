@@ -25,19 +25,37 @@ func Test_structType(t *testing.T) {
 		{
 			_type: "Tuple(`bool_list` Array(Bool), `bool_list_nullable` Array(Nullable(Bool)))",
 			expected: arrow.StructOf(
-				arrow.Field{Name: "bool_list", Type: arrow.ListOfNonNullable(new(arrow.BooleanType))},
-				arrow.Field{Name: "bool_list_nullable", Type: arrow.ListOf(new(arrow.BooleanType))},
+				arrow.Field{
+					Name: "bool_list",
+					Type: arrow.ListOfNonNullable(new(arrow.BooleanType)),
+				},
+				arrow.Field{
+					Name:     "bool_list_nullable",
+					Type:     arrow.ListOf(new(arrow.BooleanType)),
+					Nullable: true,
+				},
 			),
 		},
 		{
 			_type: "Tuple(`uuid_list` Array(Nullable(UUID)), `struct` Tuple(`bool_list` Array(Bool), `bool_list_nullable` Array(Nullable(Bool))))",
 			expected: arrow.StructOf(
-				arrow.Field{Name: "uuid_list", Type: arrow.ListOf(types.NewUUIDType())},
+				arrow.Field{
+					Name:     "uuid_list",
+					Type:     arrow.ListOf(types.NewUUIDType()),
+					Nullable: true,
+				},
 				arrow.Field{
 					Name: "struct",
 					Type: arrow.StructOf(
-						arrow.Field{Name: "bool_list", Type: arrow.ListOfNonNullable(new(arrow.BooleanType))},
-						arrow.Field{Name: "bool_list_nullable", Type: arrow.ListOf(new(arrow.BooleanType))},
+						arrow.Field{
+							Name: "bool_list",
+							Type: arrow.ListOfNonNullable(new(arrow.BooleanType)),
+						},
+						arrow.Field{
+							Name:     "bool_list_nullable",
+							Type:     arrow.ListOf(new(arrow.BooleanType)),
+							Nullable: true,
+						},
 					),
 				},
 			),

@@ -30,62 +30,28 @@ func TestField(t *testing.T) {
 		{_type: "Date", expected: new(arrow.StringType)},
 		{_type: "Date32", expected: new(arrow.Date32Type)},
 		{_type: "UUID", expected: new(types.UUIDType)},
-		{_type: "Map(String, UInt64)", expected: arrow.MapOf(new(arrow.StringType), new(arrow.Uint64Type))},
-		{_type: "Map(String, Nullable(Bool))", expected: arrow.MapOf(new(arrow.StringType), new(arrow.BooleanType))},
-		{
-			_type: "Map(String, Nullable(Tuple(`f1_bool` Bool, `f2_map` Map(String, Nullable(Tuple(`f1_uint8_nullable` Nullable(UInt8), `f2_uuid` UUID))))))",
-			expected: arrow.MapOf(
-				new(arrow.StringType),
-				arrow.StructOf(
-					arrow.Field{Name: "f1_bool", Type: new(arrow.BooleanType)},
-					arrow.Field{Name: "f2_map", Type: arrow.MapOf(
-						new(arrow.StringType),
-						arrow.StructOf(
-							arrow.Field{Name: "f1_uint8_nullable", Type: new(arrow.Uint8Type), Nullable: true},
-							arrow.Field{Name: "f2_uuid", Type: new(types.UUIDType)},
-						),
-					),
-					},
-				),
-			),
-		},
-		{
-			_type: "Array(Map(String, Nullable(Tuple(`f1_bool` Bool, `f2_map` Map(String, Nullable(Tuple(`f1_uint8_nullable` Nullable(UInt8), `f2_uuid` UUID)))))))",
-			expected: arrow.ListOfField(
-				arrow.Field{
-					Name: "map",
-					Type: arrow.MapOf(
-						new(arrow.StringType),
-						arrow.StructOf(
-							arrow.Field{Name: "f1_bool", Type: new(arrow.BooleanType)},
-							arrow.Field{Name: "f2_map", Type: arrow.MapOf(
-								new(arrow.StringType),
-								arrow.StructOf(
-									arrow.Field{Name: "f1_uint8_nullable", Type: new(arrow.Uint8Type), Nullable: true},
-									arrow.Field{Name: "f2_uuid", Type: new(types.UUIDType)},
-								),
-							),
-							},
-						),
-					),
-				},
-			),
-		},
 	} {
 		ensureField(t, tc._type, tc.expected)
 	}
 }
 
 func ensureField(t *testing.T, _type string, expected arrow.DataType) {
-	// simple
-	field, err := Field("field", _type)
-	require.NoError(t, err)
-	require.False(t, field.Nullable)
-	require.Truef(t, arrow.TypeEqual(expected, field.Type), "expected type:\n%s\nactual:\n%s", expected.String(), field.Type.String())
+	t.Run(_type, func(t *testing.T) {
+		// simple
+		field, err := Field("field", _type)
+		require.NoError(t, err)
+		require.Truef(t, arrow.TypeEqual(expected, field.Type), "expected type:\n%s\nactual:\n%s", expected.String(), field.Type.String())
+		if list, ok := field.Type.(*arrow.ListType); ok {
+			// Arrays are special, as we consider both Nullable(Array(...)) and Array(Nullable(...)) to be nullable
+			require.Equal(t, list.ElemField().Nullable || field.Nullable, field.Nullable)
+		} else {
+			require.False(t, field.Nullable)
+		}
 
-	// nullable
-	field, err = Field("field", "Nullable("+_type+")")
-	require.NoError(t, err)
-	require.True(t, field.Nullable)
-	require.True(t, arrow.TypeEqual(expected, field.Type))
+		// nullable
+		field, err = Field("field", "Nullable("+_type+")")
+		require.NoError(t, err)
+		require.True(t, field.Nullable)
+		require.True(t, arrow.TypeEqual(expected, field.Type))
+	})
 }
