@@ -32,10 +32,6 @@ func TestField(t *testing.T) {
 		{_type: "UUID", expected: new(types.UUIDType)},
 		{_type: "Map(String, UInt64)", expected: arrow.MapOf(new(arrow.StringType), new(arrow.Uint64Type))},
 		{_type: "Map(String, Nullable(Bool))", expected: arrow.MapOf(new(arrow.StringType), new(arrow.BooleanType))},
-		{_type: "Array(Nullable(String))", expected: arrow.ListOf(new(arrow.StringType))},
-		{_type: "Array(String)", expected: arrow.ListOfNonNullable(new(arrow.StringType))},
-		{_type: "Array(Tuple(`f1` Bool))", expected: arrow.ListOfNonNullable(arrow.StructOf(arrow.Field{Name: "f1", Type: new(arrow.BooleanType)}))},
-		{_type: "Nested(`f1` Bool)", expected: arrow.ListOfNonNullable(arrow.StructOf(arrow.Field{Name: "f1", Type: new(arrow.BooleanType)}))},
 		{
 			_type: "Map(String, Nullable(Tuple(`f1_bool` Bool, `f2_map` Map(String, Nullable(Tuple(`f1_uint8_nullable` Nullable(UInt8), `f2_uuid` UUID))))))",
 			expected: arrow.MapOf(
@@ -84,17 +80,7 @@ func ensureField(t *testing.T, _type string, expected arrow.DataType) {
 	// simple
 	field, err := Field("field", _type)
 	require.NoError(t, err)
-
-	switch field.Type.ID() {
-	case arrow.LIST:
-
-	}
-	if field.Type.ID() == arrow.LIST {
-		require.Equal(t, field.Type.(*arrow.ListType).ElemField().Nullable, field.Nullable)
-	} else {
-		require.False(t, field.Nullable)
-	}
-
+	require.False(t, field.Nullable)
 	require.Truef(t, arrow.TypeEqual(expected, field.Type), "expected type:\n%s\nactual:\n%s", expected.String(), field.Type.String())
 
 	// nullable

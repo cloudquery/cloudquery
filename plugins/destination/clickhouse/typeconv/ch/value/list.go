@@ -3,6 +3,7 @@ package value
 import (
 	"reflect"
 
+	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"
 )
 
@@ -23,8 +24,8 @@ func listValue(arr array.ListLike) (any, error) {
 			return nil, err
 		}
 		elems[i] = elem
-		if _type == nil {
-			_type = reflect.PointerTo(reflect.TypeOf(elem)) // we do []*(type) for nullable assignment
+		if _type == nil && elem != nil {
+			_type = reflect.TypeOf(elem)
 		}
 	}
 
@@ -33,10 +34,27 @@ func listValue(arr array.ListLike) (any, error) {
 		return nil, nil
 	}
 
-	res := reflect.MakeSlice(reflect.SliceOf(_type), len(elems), len(elems))
+	res := reflect.MakeSlice(reflect.SliceOf(reflect.PointerTo(_type)), len(elems), len(elems)) // we do []*(type) for nullable assignment
 	for i, elem := range elems {
-		res.Index(i).Set(reflect.Indirect(reflect.ValueOf(elem))) // we do []*(type) for nullable assignment
+		if elem == nil {
+			continue
+		}
+		val := reflect.New(_type)
+		val.Elem().Set(reflect.ValueOf(elem))
+		res.Index(i).Set(val)
 	}
 
 	return res.Interface(), nil
+}
+
+type listWrapper struct {
+	*array.FixedSizeList
+}
+
+var _ array.ListLike = listWrapper{}
+
+func (l listWrapper) ValueOffsets(i int) (start, end int64) {
+	n := int64(l.DataType().(*arrow.FixedSizeListType).Len())
+	off := int64(l.Offset())
+	return (off + int64(i)) * n, (off + int64(i+1)) * n
 }

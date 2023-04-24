@@ -10,4 +10,6 @@
 //
 // example:
 // Map(String, Map(UUID, Map(String, Tuple(`uint8` UInt8?, `uuid` UUID)?)?)?)? -> *map[string]*map[uuid.UUID]*map[string]*map[string]any
+//
+// Currently, Map will be mapped to string values
 package value

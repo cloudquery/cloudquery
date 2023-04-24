@@ -7,7 +7,7 @@ import (
 	"github.com/apache/arrow/go/v12/arrow"
 )
 
-func structType(tuple *column.Tuple) (*arrow.StructType, error) {
+func structType(name string, tuple *column.Tuple) (*arrow.Field, error) {
 	columns, err := parseTupleType(tuple.Type(), time.UTC)
 	if err != nil {
 		return nil, err
@@ -22,5 +22,5 @@ func structType(tuple *column.Tuple) (*arrow.StructType, error) {
 		fields[i] = *field
 	}
 
-	return arrow.StructOf(fields...), nil
+	return &arrow.Field{Name: name, Type: arrow.StructOf(fields...)}, nil
 }
