@@ -16,7 +16,7 @@ import (
 
 // Migrate relies on the CLI/client to lock before running migration.
 func (c *Client) Migrate(ctx context.Context, scs schema.Schemas) error {
-	have, err := c.getTableDefinitions(ctx)
+	have, err := c.getTableDefinitions(ctx, scs)
 	if err != nil {
 		return err
 	}
@@ -113,7 +113,7 @@ func needsTableDrop(change schema.FieldChange) bool {
 	}
 
 	// We can safely ignore removal of nullable columns without dropping the table
-	if change.Type == schema.TableColumnChangeTypeRemove && !change.Previous.Nullable {
+	if change.Type == schema.TableColumnChangeTypeRemove && change.Previous.Nullable {
 		return false
 	}
 

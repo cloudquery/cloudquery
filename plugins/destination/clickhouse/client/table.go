@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
-func (c *Client) getTableDefinitions(ctx context.Context) (schema.Schemas, error) {
+func (c *Client) getTableDefinitions(ctx context.Context, scs schema.Schemas) (schema.Schemas, error) {
 	// need proper description without flattened columns
 	const flattenNested0 = "SET flatten_nested = 0"
 	if err := c.conn.Exec(ctx, flattenNested0); err != nil {
@@ -21,5 +21,5 @@ func (c *Client) getTableDefinitions(ctx context.Context) (schema.Schemas, error
 	}
 	defer rows.Close()
 
-	return queries.ScanTableSchemas(rows)
+	return queries.ScanTableSchemas(rows, scs)
 }
