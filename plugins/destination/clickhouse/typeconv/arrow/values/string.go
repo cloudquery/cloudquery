@@ -5,9 +5,11 @@ import (
 )
 
 func buildFromString(builder array.Builder, value *string) error {
-	if value == nil {
+	switch {
+	case value == nil, value == (*string)(nil):
 		builder.AppendNull()
 		return nil
+	default:
+		return builder.AppendValueFromString(*value)
 	}
-	return builder.AppendValueFromString(*value)
 }

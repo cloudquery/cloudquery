@@ -10,7 +10,7 @@ import (
 
 func Test_timestampType(t *testing.T) {
 	type testCase struct {
-		_type    *arrow.TimestampType
+		_type    arrow.DataType
 		expected string
 	}
 
@@ -19,6 +19,12 @@ func Test_timestampType(t *testing.T) {
 	timeZone := loc.String()
 
 	for _, tc := range []testCase{
+		{_type: &arrow.Time32Type{Unit: 128}, expected: "String"},
+		{_type: &arrow.Time32Type{Unit: arrow.Second}, expected: "String"},
+		{_type: &arrow.Time32Type{Unit: arrow.Millisecond}, expected: "String"},
+		{_type: &arrow.Time64Type{Unit: 128}, expected: "String"},
+		{_type: &arrow.Time64Type{Unit: arrow.Microsecond}, expected: "String"},
+		{_type: &arrow.Time64Type{Unit: arrow.Nanosecond}, expected: "String"},
 		{_type: &arrow.TimestampType{Unit: 128}, expected: "String"},
 		{_type: &arrow.TimestampType{TimeZone: "NeverWhen"}, expected: "String"},
 		{_type: &arrow.TimestampType{Unit: arrow.Second}, expected: "DateTime64(0)"},

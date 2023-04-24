@@ -1,43 +1,60 @@
 package values
 
 import (
+	"time"
+
 	"github.com/apache/arrow/go/v12/arrow/array"
 )
 
 func buildValue(builder array.Builder, value any) error {
 	switch builder := builder.(type) {
 	case *array.BooleanBuilder:
-		buildPrimitiveValues[bool](builder, *value.(**bool))
+		buildPrimitive[bool](builder, *value.(**bool))
 
 	case *array.Uint8Builder:
-		buildPrimitiveValues[uint8](builder, *value.(**uint8))
+		buildPrimitive[uint8](builder, *value.(**uint8))
 	case *array.Uint16Builder:
-		buildPrimitiveValues[uint16](builder, *value.(**uint16))
+		buildPrimitive[uint16](builder, *value.(**uint16))
 	case *array.Uint32Builder:
-		buildPrimitiveValues[uint32](builder, *value.(**uint32))
+		buildPrimitive[uint32](builder, *value.(**uint32))
 	case *array.Uint64Builder:
-		buildPrimitiveValues[uint64](builder, *value.(**uint64))
+		buildPrimitive[uint64](builder, *value.(**uint64))
 
 	case *array.Int8Builder:
-		buildPrimitiveValues[int8](builder, *value.(**int8))
+		buildPrimitive[int8](builder, *value.(**int8))
 	case *array.Int16Builder:
-		buildPrimitiveValues[int16](builder, *value.(**int16))
+		buildPrimitive[int16](builder, *value.(**int16))
 	case *array.Int32Builder:
-		buildPrimitiveValues[int32](builder, *value.(**int32))
+		buildPrimitive[int32](builder, *value.(**int32))
 	case *array.Int64Builder:
-		buildPrimitiveValues[int64](builder, *value.(**int64))
+		buildPrimitive[int64](builder, *value.(**int64))
 
 	case *array.Float16Builder:
-		buildFloat16Values(builder, *value.(**float32))
+		buildFloat16(builder, *value.(**float32))
 	case *array.Float32Builder:
-		buildPrimitiveValues[float32](builder, *value.(**float32))
+		buildPrimitive[float32](builder, *value.(**float32))
 	case *array.Float64Builder:
-		buildPrimitiveValues[float64](builder, *value.(**float64))
+		buildPrimitive[float64](builder, *value.(**float64))
+
+	case *array.StringBuilder:
+		buildPrimitive[string](builder, *value.(**string))
+
+	case *array.BinaryBuilder: // also handles the LargeSizeBinaryBuilder
+		buildBinary(builder, *value.(**string))
+	case *array.FixedSizeBinaryBuilder:
+		buildBinary(builder, *value.(**string))
+
+	case *array.Date32Builder:
+		buildDate32Values(builder, *value.(**time.Time))
+	case *array.Date64Builder:
+		buildDate64Values(builder, *value.(**time.Time))
+
+	case *array.TimestampBuilder:
 
 	case *array.MapBuilder:
 		// just before other list-like builders, as this one is special
 	case array.ListLikeBuilder:
-		return buildListValues(builder, value)
+		return buildList(builder, value)
 	}
 	return nil
 }
