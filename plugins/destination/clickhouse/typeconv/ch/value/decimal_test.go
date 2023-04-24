@@ -15,7 +15,7 @@ import (
 func Test_decimal128Value(t *testing.T) {
 	const (
 		N     = 100
-		valid = 33
+		valid = 30
 	)
 	values := make([]float64, N)
 	for i := range values {
@@ -73,7 +73,7 @@ func Test_decimal128Value(t *testing.T) {
 func Test_decimal256Value(t *testing.T) {
 	const (
 		N     = 100
-		valid = 33
+		valid = 30
 	)
 
 	values := make([]float64, N)

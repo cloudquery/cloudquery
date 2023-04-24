@@ -7,15 +7,15 @@ import (
 	"github.com/google/uuid"
 )
 
-func extensionValue(arr array.ExtensionArray) (any, error) {
+func extensionValue(arr array.ExtensionArray) any {
 	switch arr := arr.(type) {
 	case *types.UUIDArray:
-		return marshalValue[uuid.UUID](arr), nil
+		return marshalValue[uuid.UUID](arr)
 	case *types.InetArray, *types.MacArray, *types.JSONArray:
-		return valueStrData(arr), nil
+		return valueStrData(arr)
 	default:
 		// we fallback here to string representation
-		return valueStrData(arr), nil
+		return valueStrData(arr)
 	}
 }
 

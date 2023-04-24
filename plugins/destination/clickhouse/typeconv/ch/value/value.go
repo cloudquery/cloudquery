@@ -61,7 +61,7 @@ func FromArray(arr arrow.Array) (any, error) {
 		return decimalValue[decimal256.Num](arr), nil
 
 	case array.ExtensionArray:
-		return extensionValue(arr)
+		return extensionValue(arr), nil
 
 	case *array.Struct:
 		return structValue(arr)

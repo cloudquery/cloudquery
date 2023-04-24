@@ -23,9 +23,7 @@ func Test_extensionUUID(t *testing.T) {
 		bld.Append(uid)
 	}
 
-	data, err := extensionValue(bld.NewArray().(array.ExtensionArray))
-	require.NoError(t, err)
-
+	data := extensionValue(bld.NewArray().(array.ExtensionArray))
 	uidArr := data.([]*uuid.UUID)
 
 	require.Equal(t, N, len(uidArr))
