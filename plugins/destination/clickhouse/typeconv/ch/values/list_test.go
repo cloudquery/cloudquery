@@ -49,6 +49,7 @@ func Test_listValue(t *testing.T) {
 		}
 	}
 }
+
 func Test_largeListValue(t *testing.T) {
 	const (
 		N     = 100
@@ -88,6 +89,7 @@ func Test_largeListValue(t *testing.T) {
 		}
 	}
 }
+
 func Test_fixedSizeListValue(t *testing.T) {
 	const (
 		N     = 100
