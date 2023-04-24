@@ -10,29 +10,29 @@ import (
 
 func TestFieldType(t *testing.T) {
 	type testCase struct {
-		data arrow.DataType
-		exp  string
+		data     arrow.DataType
+		expected string
 	}
 
 	for _, tc := range []testCase{
-		{data: new(arrow.BooleanType), exp: "Bool"},
-		{data: new(arrow.Int8Type), exp: "Int8"},
-		{data: new(arrow.Int16Type), exp: "Int16"},
-		{data: new(arrow.Int32Type), exp: "Int32"},
-		{data: new(arrow.Int64Type), exp: "Int64"},
-		{data: new(arrow.Uint8Type), exp: "UInt8"},
-		{data: new(arrow.Uint16Type), exp: "UInt16"},
-		{data: new(arrow.Uint32Type), exp: "UInt32"},
-		{data: new(arrow.Uint64Type), exp: "UInt64"},
-		{data: new(arrow.Float16Type), exp: "Float32"},
-		{data: new(arrow.Float32Type), exp: "Float32"},
-		{data: new(arrow.Float64Type), exp: "Float64"},
-		{data: &arrow.FixedSizeBinaryType{ByteWidth: 125}, exp: "FixedString(125)"},
-		{data: new(arrow.Date32Type), exp: "Date32"},
-		{data: new(arrow.Date64Type), exp: "DateTime64(3)"},
-		{data: arrow.MapOf(new(arrow.StringType), new(arrow.BooleanType)), exp: "String"},
+		{data: new(arrow.BooleanType), expected: "Bool"},
+		{data: new(arrow.Int8Type), expected: "Int8"},
+		{data: new(arrow.Int16Type), expected: "Int16"},
+		{data: new(arrow.Int32Type), expected: "Int32"},
+		{data: new(arrow.Int64Type), expected: "Int64"},
+		{data: new(arrow.Uint8Type), expected: "UInt8"},
+		{data: new(arrow.Uint16Type), expected: "UInt16"},
+		{data: new(arrow.Uint32Type), expected: "UInt32"},
+		{data: new(arrow.Uint64Type), expected: "UInt64"},
+		{data: new(arrow.Float16Type), expected: "Float32"},
+		{data: new(arrow.Float32Type), expected: "Float32"},
+		{data: new(arrow.Float64Type), expected: "Float64"},
+		{data: &arrow.FixedSizeBinaryType{ByteWidth: 125}, expected: "FixedString(125)"},
+		{data: new(arrow.Date32Type), expected: "Date32"},
+		{data: new(arrow.Date64Type), expected: "DateTime64(3)"},
+		{data: arrow.MapOf(new(arrow.StringType), new(arrow.BooleanType)), expected: "String"},
 	} {
-		ensureDefinition(t, tc.data, tc.exp)
+		ensureDefinition(t, tc.data, tc.expected)
 	}
 }
 
