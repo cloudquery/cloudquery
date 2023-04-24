@@ -39,7 +39,6 @@ func transformArr(arr arrow.Array) []any {
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)
 			pgArr[i] = transformArr(nested)
-			nested.Release()
 		default:
 			pgArr[i] = arr.ValueStr(i)
 		}
