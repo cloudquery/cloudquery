@@ -15,6 +15,7 @@ type Spec struct {
 	Region   string `json:"region,omitempty"`
 	Path     string `json:"path,omitempty"`
 	Athena   bool   `json:"athena,omitempty"`
+	NoTest   bool   `json:"no_test,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {
