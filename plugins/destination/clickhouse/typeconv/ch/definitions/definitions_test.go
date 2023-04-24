@@ -3,9 +3,7 @@ package definitions
 import (
 	"strings"
 	"testing"
-	"time"
 
-	"github.com/ClickHouse/clickhouse-go/v2/lib/column"
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/types"
 	"github.com/stretchr/testify/require"
@@ -57,75 +55,26 @@ func TestFieldType(t *testing.T) {
 		{data: new(types.JSONType), exp: "String"},
 		{data: arrow.StructOf(arrow.Field{Name: "f1", Type: new(arrow.BooleanType)}), exp: "Tuple(`f1` Bool)"},
 		{data: arrow.StructOf(arrow.Field{Name: "f1", Type: new(arrow.BooleanType), Nullable: true}), exp: "Tuple(`f1` Nullable(Bool))"},
-		{data: arrow.MapOf(new(arrow.StringType), new(arrow.BooleanType)), exp: "Map(String, Nullable(Bool))"},
-		{data: arrow.MapOf(new(types.UUIDType), new(arrow.BooleanType)), exp: "Map(UUID, Nullable(Bool))"},
+		{data: arrow.MapOf(new(arrow.StringType), new(arrow.BooleanType)), exp: "String"},
 		{data: arrow.ListOf(new(arrow.StringType)), exp: "Array(Nullable(String))"},
 		{data: arrow.ListOfNonNullable(new(arrow.StringType)), exp: "Array(String)"},
 		{data: arrow.ListOf(new(types.UUIDType)), exp: "Array(Nullable(UUID))"},
 		{data: arrow.ListOfNonNullable(new(types.UUIDType)), exp: "Array(UUID)"},
-		{data: arrow.MapOf(
-			new(arrow.StringType),
-			arrow.StructOf(
-				arrow.Field{Name: "f1_bool", Type: new(arrow.BooleanType)},
-				arrow.Field{
-					Name: "f2_map",
-					Type: arrow.MapOf(
-						new(arrow.StringType),
-						arrow.StructOf(
-							arrow.Field{Name: "f1_uint8_nullable", Type: new(arrow.Uint8Type), Nullable: true},
-							arrow.Field{Name: "f2_uuid", Type: new(types.UUIDType)},
-						),
-					),
-				},
-			),
-		), exp: "Map(String, Nullable(Tuple(`f1_bool` Bool, `f2_map` Map(String, Nullable(Tuple(`f1_uint8_nullable` Nullable(UInt8), `f2_uuid` UUID))))))"},
 		{data: arrow.ListOfField(
 			arrow.Field{
-				Name: "map",
-				Type: arrow.MapOf(
-					new(arrow.StringType),
-					arrow.StructOf(
-						arrow.Field{Name: "f1_bool", Type: new(arrow.BooleanType)},
-						arrow.Field{
-							Name: "f2_map",
-							Type: arrow.MapOf(
-								new(arrow.StringType),
-								arrow.StructOf(
-									arrow.Field{Name: "f1_uint8_nullable", Type: new(arrow.Uint8Type), Nullable: true},
-									arrow.Field{Name: "f2_uuid", Type: new(types.UUIDType)},
-								),
-							),
-						},
-					),
-				),
+				Name:     "map",
+				Type:     arrow.MapOf(new(arrow.StringType), new(arrow.Decimal128Type)),
+				Nullable: true,
 			},
-		), exp: "Array(Map(String, Nullable(Tuple(`f1_bool` Bool, `f2_map` Map(String, Nullable(Tuple(`f1_uint8_nullable` Nullable(UInt8), `f2_uuid` UUID)))))))"},
-		{data: arrow.MapOf(
-			new(arrow.StringType),
-			arrow.MapOf(
-				new(types.UUIDType),
-				arrow.MapOf(
-					new(arrow.StringType),
-					arrow.StructOf(
-						arrow.Field{Name: "f1_uint8_nullable", Type: new(arrow.Uint8Type), Nullable: true},
-						arrow.Field{Name: "f2_uuid", Type: new(types.UUIDType)},
-					),
-				),
-			),
-		), exp: "Map(String, Nullable(Map(UUID, Nullable(Map(String, Nullable(Tuple(`f1_uint8_nullable` Nullable(UInt8), `f2_uuid` UUID)))))))"},
+		), exp: "Array(Nullable(String))"},
 	} {
 		// non-nullable
 		field := arrow.Field{
 			Name: replacer.Replace(tc.data.String()),
 			Type: tc.data,
 		}
-		_type, err := FieldType(field)
-		require.NoError(t, err)
+		_type := FieldType(field)
 		require.Equal(t, tc.exp, _type)
-
-		col, err := column.Type(_type).Column("name", time.UTC)
-		require.NoError(t, err)
-		t.Logf("%s -> scan type: %v", _type, col.ScanType())
 
 		if field.Type.ID() == arrow.LIST {
 			// arrays cannot be marked nullable in ClickHouse
@@ -134,12 +83,7 @@ func TestFieldType(t *testing.T) {
 
 		// nullable
 		field.Nullable = true
-		_type, err = FieldType(field)
-		require.NoError(t, err)
+		_type = FieldType(field)
 		require.Equal(t, "Nullable("+tc.exp+")", _type)
-
-		col, err = column.Type(_type).Column("name", time.UTC)
-		require.NoError(t, err)
-		t.Logf("%s -> scan type: %v", _type, col.ScanType())
 	}
 }

@@ -12,7 +12,7 @@ import (
 
 func mapValue(arr *array.Map) (any, error) {
 	// we need to check if we really want the map or string
-	def, err := definitions.MapType(arr.DataType().(*arrow.MapType))
+	def, err := definitions.mapType(arr.DataType().(*arrow.MapType))
 	if err != nil {
 		return nil, err
 	}
