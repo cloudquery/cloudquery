@@ -8,10 +8,6 @@ import (
 )
 
 func buildList(builder array.ListLikeBuilder, values any) error {
-	if values == nil {
-		return nil
-	}
-
 	slice := reflect.Indirect(reflect.ValueOf(values))
 	switch slice.Kind() {
 	case reflect.Array, reflect.Slice:

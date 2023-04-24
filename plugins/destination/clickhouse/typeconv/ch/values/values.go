@@ -74,7 +74,6 @@ func FromArray(arr arrow.Array) (any, error) {
 		return listValue(listWrapper{arr})
 	case array.ListLike:
 		return listValue(arr)
-
 	}
 
 	// default to string
