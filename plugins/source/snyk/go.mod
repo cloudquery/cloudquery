@@ -39,7 +39,7 @@ replace (
 )
 
 require (
-	github.com/cloudquery/plugin-sdk/v2 v2.3.6
+	github.com/cloudquery/plugin-sdk/v2 v2.4.0
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect

@@ -16,7 +16,6 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, recor
 	rows := make([]map[string]any, 0)
 	for _, record := range records {
 		rows = append(rows, transformValues(record)...)
-		record.Release()
 	}
 	var sb strings.Builder
 	sb.WriteString("UNWIND $rows AS row MERGE (t:")

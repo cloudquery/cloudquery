@@ -4,7 +4,7 @@ This table shows data for Cloudwatchlogs Log Group Data Protection Policies.
 
 https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_GetDataProtectionPolicy.html
 
-The composite primary key for this table is (**log_group_arn**, **log_group_identifier**).
+The primary key for this table is **log_group_arn**.
 
 ## Relations
 
@@ -22,5 +22,5 @@ This table depends on [aws_cloudwatchlogs_log_groups](aws_cloudwatchlogs_log_gro
 |region|String|
 |log_group_arn (PK)|String|
 |last_updated_time|Int|
-|log_group_identifier (PK)|String|
+|log_group_identifier|String|
 |policy_document|String|

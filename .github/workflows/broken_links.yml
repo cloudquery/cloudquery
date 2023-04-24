@@ -85,5 +85,6 @@ jobs:
             --exclude mailchimp.com \
             --exclude returngis.net \
             --exclude plausible.io \
+            --exclude localhost \
             ${{ steps.vercel.outputs.url }} \
             | grep -v '───OK───' | grep -v '──SKIP──' | grep -v '0 broken'
