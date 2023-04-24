@@ -6,21 +6,21 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.8
 	github.com/aws/aws-sdk-go-v2/config v1.18.21
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.20
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.62
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.63
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.10
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.1
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.9
-	github.com/aws/aws-sdk-go-v2/service/amp v1.16.6
-	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.6
-	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.7
-	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.7
+	github.com/aws/aws-sdk-go-v2/service/amp v1.16.8
+	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.8
+	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.9
+	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.9
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.17.6
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/athena v1.22.4
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.26.2
-	github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.6
+	github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.8
 	github.com/aws/aws-sdk-go-v2/service/backup v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/batch v1.21.6
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.25.1
@@ -84,7 +84,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.14.0
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.26.0
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.14.0
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.31.3
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.32.0
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.29.0
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.63.0
 	github.com/aws/aws-sdk-go-v2/service/savingsplans v1.12.0

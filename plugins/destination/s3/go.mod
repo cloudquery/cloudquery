@@ -6,10 +6,10 @@ require (
 	github.com/apache/arrow/go/v12 v12.0.0-20230417014917-9888ac36c142
 	github.com/aws/aws-sdk-go-v2 v1.17.8
 	github.com/aws/aws-sdk-go-v2/config v1.18.21
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.62
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.31.3
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.63
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.32.0
 	github.com/cloudquery/filetypes/v2 v2.0.2
-	github.com/cloudquery/plugin-sdk/v2 v2.3.7
+	github.com/cloudquery/plugin-sdk/v2 v2.3.8
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
