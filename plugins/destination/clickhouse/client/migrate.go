@@ -61,8 +61,8 @@ func (c *Client) Migrate(ctx context.Context, scs schema.Schemas) error {
 	return eg.Wait()
 }
 
-func unsafeSchemaChanges(have, want schema.Schemas) map[string][]schema.FieldChange {
-	result := make(map[string][]schema.FieldChange)
+func unsafeSchemaChanges(have, want schema.Schemas) map[string]schema.FieldChanges {
+	result := make(map[string]schema.FieldChanges)
 	for _, w := range want {
 		current := have.SchemaByName(schema.TableName(w))
 		if current == nil {
@@ -76,7 +76,7 @@ func unsafeSchemaChanges(have, want schema.Schemas) map[string][]schema.FieldCha
 	return result
 }
 
-func unsafeChanges(changes []schema.FieldChange) []schema.FieldChange {
+func unsafeChanges(changes []schema.FieldChange) schema.FieldChanges {
 	unsafe := make([]schema.FieldChange, 0, len(changes))
 	for _, c := range changes {
 		if needsTableDrop(c) {
@@ -125,10 +125,7 @@ func (c *Client) autoMigrate(ctx context.Context, have, want *arrow.Schema) erro
 	changes := schema.GetSchemaChanges(want, have)
 
 	if unsafe := unsafeChanges(changes); len(unsafe) > 0 {
-		if c.mode != specs.MigrateModeForced {
-			return fmt.Errorf("'migrate_mode: forced' is required for the following changes: \n%s", util.SchemaChangesPrettified(schema.TableName(want), unsafe))
-		}
-
+		// we can get here only with migrate_mode: forced
 		if err := c.dropTable(ctx, have); err != nil {
 			return err
 		}
