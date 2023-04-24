@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"golang.org/x/exp/slices"
 )
 
 func GetTablesSchema(database string) (query string, params []any) {
@@ -14,7 +15,7 @@ func GetTablesSchema(database string) (query string, params []any) {
 }
 
 // ScanTableSchemas doesn't close rows, so that's on caller.
-func ScanTableSchemas(rows driver.Rows) (schema.Schemas, error) {
+func ScanTableSchemas(rows driver.Rows, need schema.Schemas) (schema.Schemas, error) {
 	defs := make(map[string][]arrow.Field)
 
 	var table, name, typ string
@@ -31,12 +32,15 @@ func ScanTableSchemas(rows driver.Rows) (schema.Schemas, error) {
 	}
 
 	res := make(schema.Schemas, 0, len(defs))
-	for tableName, def := range defs {
-		metadata := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{tableName})
-		res = append(res, arrow.NewSchema(def, &metadata))
+	for _, needed := range need {
+		tableName := schema.TableName(needed)
+		if def, ok := defs[tableName]; ok {
+			metadata := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{tableName})
+			res = append(res, arrow.NewSchema(def, &metadata))
+		}
 	}
 
-	return res, nil
+	return slices.Clip(res), nil
 }
 
 func tableNamePart(table, cluster string) string {
