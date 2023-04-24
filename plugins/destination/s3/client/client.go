@@ -62,7 +62,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	c.uploader = manager.NewUploader(c.s3Client)
 	c.downloader = manager.NewDownloader(c.s3Client)
 
-	if !c.pluginSpec.NoTest {
+	if *c.pluginSpec.TestWrite {
 		// we want to run this test because we want it to fail early if the bucket is not accessible
 		timeNow := time.Now().UTC()
 		if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{

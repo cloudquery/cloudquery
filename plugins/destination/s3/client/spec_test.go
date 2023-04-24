@@ -3,7 +3,7 @@ package client
 import (
 	"testing"
 
-	filetypes "github.com/cloudquery/filetypes/v2"
+	"github.com/cloudquery/filetypes/v2"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/require"
@@ -15,8 +15,8 @@ func TestSpec_SetDefaults(t *testing.T) {
 		Want Spec
 	}{
 
-		{Give: Spec{Path: "test/path", FileSpec: &filetypes.FileSpec{Format: "json"}}, Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}}},
-		{Give: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}}, Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}}},
+		{Give: Spec{Path: "test/path", FileSpec: &filetypes.FileSpec{Format: "json"}}, Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true)}},
+		{Give: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}, TestWrite: boolPtr(false)}, Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}, TestWrite: boolPtr(false)}},
 	}
 	for _, tc := range cases {
 		got := tc.Give
@@ -48,4 +48,8 @@ func TestSpec_Validate(t *testing.T) {
 			require.NoError(t, err)
 		}
 	}
+}
+
+func boolPtr(b bool) *bool {
+	return &b
 }
