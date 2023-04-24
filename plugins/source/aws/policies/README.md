@@ -12,7 +12,9 @@ CloudQuery SQL Policies for AWS
 
 ## Installing
 
-Clone this repository locally:
+### Option 1: Downloading via Git
+
+This method is good for local testing if you have git installed. Clone this repository locally:
 
 ```bash
 git clone https://github.com/cloudquery/cloudquery.git cloudquery
@@ -30,6 +32,16 @@ Change directory into `plugins/source/aws/policies`:
 ```bash
 cd plugins/source/aws/policies
 ```
+
+### Option 2: Downloading via Releases
+
+This is an alternative method to get the correct policies for a given AWS source plugin version.
+
+1. Go to https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws&expanded=true
+2. Find the release version that matches the AWS version in your source config
+3. Click on "Assets" to expand the list
+4. Download the Source Code zip file and unzip it.
+5. Change directory into policies: `cd plugins/source/aws/policies`
 
 ## Running
 
