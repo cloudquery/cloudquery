@@ -8,11 +8,6 @@ import (
 )
 
 func Test_structType(t *testing.T) {
-	type testCase struct {
-		_type    *arrow.StructType
-		expected string
-	}
-
 	for _, tc := range []testCase{
 		{
 			_type:    arrow.StructOf(arrow.Field{Name: "f1", Type: new(arrow.BooleanType)}),
@@ -43,6 +38,6 @@ func Test_structType(t *testing.T) {
 			expected: "Tuple(`uuid_list` Array(Nullable(UUID)), `struct` Tuple(`bool_list` Array(Bool), `bool_list_nullable` Array(Nullable(Bool))))",
 		},
 	} {
-		ensureDefinition(t, tc._type, tc.expected)
+		ensureDefinition(t, tc)
 	}
 }

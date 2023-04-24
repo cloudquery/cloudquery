@@ -9,11 +9,6 @@ import (
 )
 
 func TestField(t *testing.T) {
-	type testCase struct {
-		_type    string
-		expected arrow.DataType
-	}
-
 	for _, tc := range []testCase{
 		{_type: "Bool", expected: new(arrow.BooleanType)},
 		{_type: "Int8", expected: new(arrow.Int8Type)},
@@ -31,16 +26,21 @@ func TestField(t *testing.T) {
 		{_type: "Date32", expected: new(arrow.Date32Type)},
 		{_type: "UUID", expected: new(types.UUIDType)},
 	} {
-		ensureField(t, tc._type, tc.expected)
+		ensureField(t, tc)
 	}
 }
 
-func ensureField(t *testing.T, _type string, expected arrow.DataType) {
-	t.Run(_type, func(t *testing.T) {
+type testCase struct {
+	_type    string
+	expected arrow.DataType
+}
+
+func ensureField(t *testing.T, tc testCase) {
+	t.Run(tc._type, func(t *testing.T) {
 		// simple
-		field, err := Field("field", _type)
+		field, err := Field("field", tc._type)
 		require.NoError(t, err)
-		require.Truef(t, arrow.TypeEqual(expected, field.Type), "expected type:\n%s\nactual:\n%s", expected.String(), field.Type.String())
+		require.Truef(t, arrow.TypeEqual(tc.expected, field.Type), "expected type:\n%s\nactual:\n%s", tc.expected.String(), field.Type.String())
 		if list, ok := field.Type.(*arrow.ListType); ok {
 			// Arrays are special, as we consider both Nullable(Array(...)) and Array(Nullable(...)) to be nullable
 			require.Equal(t, list.ElemField().Nullable || field.Nullable, field.Nullable)
@@ -49,9 +49,9 @@ func ensureField(t *testing.T, _type string, expected arrow.DataType) {
 		}
 
 		// nullable
-		field, err = Field("field", "Nullable("+_type+")")
+		field, err = Field("field", "Nullable("+tc._type+")")
 		require.NoError(t, err)
 		require.True(t, field.Nullable)
-		require.True(t, arrow.TypeEqual(expected, field.Type))
+		require.True(t, arrow.TypeEqual(tc.expected, field.Type))
 	})
 }

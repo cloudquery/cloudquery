@@ -8,11 +8,6 @@ import (
 )
 
 func Test_listType(t *testing.T) {
-	type testCase struct {
-		_type    listDataType
-		expected string
-	}
-
 	for _, tc := range []testCase{
 		{_type: arrow.ListOf(new(arrow.StringType)), expected: "Array(Nullable(String))"},
 		{_type: arrow.ListOfNonNullable(new(arrow.StringType)), expected: "Array(String)"},
@@ -26,6 +21,6 @@ func Test_listType(t *testing.T) {
 			},
 		), expected: "Array(Nullable(String))"},
 	} {
-		ensureDefinition(t, tc._type, tc.expected)
+		ensureDefinition(t, tc)
 	}
 }
