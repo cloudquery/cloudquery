@@ -11,8 +11,8 @@ import (
 )
 
 func Test_timeValue(t *testing.T) {
-	const N = 100
-	values := make([]time.Time, N)
+	const amount = 100
+	values := make([]time.Time, amount)
 
 	loc, err := time.LoadLocation("America/New_York")
 	require.NoError(t, err)
@@ -33,7 +33,7 @@ func Test_timeValue(t *testing.T) {
 	require.NoError(t, err)
 
 	elems := data.([]*time.Time)
-	require.Equal(t, N, len(elems))
+	require.Equal(t, amount, len(elems))
 	for i, elem := range elems {
 		require.NotNil(t, elem)
 		require.Exactly(t, values[i], *elem)

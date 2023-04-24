@@ -5,7 +5,7 @@ import (
 
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
-	_clickhouse "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/values"
 )
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, records []arrow.Record) error {
@@ -15,7 +15,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, recor
 	}
 
 	for _, record := range records {
-		if err := _clickhouse.BatchAddRecord(batch, record); err != nil {
+		if err := values.BatchAddRecord(batch, record); err != nil {
 			_ = batch.Abort()
 			return err
 		}

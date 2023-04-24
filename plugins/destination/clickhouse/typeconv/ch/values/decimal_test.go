@@ -13,8 +13,8 @@ import (
 )
 
 func Test_decimal128Value(t *testing.T) {
-	const N = 100
-	values := make([]float64, N)
+	const amount = 100
+	values := make([]float64, amount)
 	for i := range values {
 		values[i] = rand.Float64()*1000 + rand.Float64()
 	}
@@ -49,7 +49,7 @@ func Test_decimal128Value(t *testing.T) {
 			arr := builder.NewArray()
 			out := decimalValue[decimal128.Num](arr.(*array.Decimal128))
 
-			require.Equal(t, N, len(out))
+			require.Equal(t, amount, len(out))
 			for i, out := range out {
 				require.NotNil(t, out)
 
@@ -62,9 +62,9 @@ func Test_decimal128Value(t *testing.T) {
 }
 
 func Test_decimal256Value(t *testing.T) {
-	const N = 100
+	const amount = 100
 
-	values := make([]float64, N)
+	values := make([]float64, amount)
 	for i := range values {
 		values[i] = rand.Float64()*1000 + rand.Float64()
 	}
@@ -99,7 +99,7 @@ func Test_decimal256Value(t *testing.T) {
 			arr := builder.NewArray()
 			out := decimalValue[decimal256.Num](arr.(*array.Decimal256))
 
-			require.Equal(t, N, len(out))
+			require.Equal(t, amount, len(out))
 			for i, out := range out {
 				require.NotNil(t, out)
 

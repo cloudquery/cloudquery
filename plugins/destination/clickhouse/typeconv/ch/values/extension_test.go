@@ -11,9 +11,9 @@ import (
 )
 
 func Test_extensionUUID(t *testing.T) {
-	const N = 100
+	const amount = 100
 
-	values := make([]uuid.UUID, N)
+	values := make([]uuid.UUID, amount)
 	for i := range values {
 		values[i] = uuid.New()
 	}
@@ -26,7 +26,7 @@ func Test_extensionUUID(t *testing.T) {
 	data := extensionValue(builder.NewArray().(array.ExtensionArray))
 	uidArr := data.([]*uuid.UUID)
 
-	require.Equal(t, N, len(uidArr))
+	require.Equal(t, amount, len(uidArr))
 	for i, uid := range uidArr {
 		require.NotNil(t, uid)
 		require.Exactly(t, values[i], *uid)

@@ -11,9 +11,9 @@ import (
 )
 
 func TestFromArray(t *testing.T) {
-	const N = 100
+	const amount = 100
 
-	values := make([]float64, N)
+	values := make([]float64, amount)
 	for i := range values {
 		values[i] = rand.Float64()*(math.MaxFloat64-1) + rand.Float64()
 	}
@@ -27,7 +27,7 @@ func TestFromArray(t *testing.T) {
 	require.NoError(t, err)
 
 	elems := data.([]*float64)
-	require.Equal(t, N, len(elems))
+	require.Equal(t, amount, len(elems))
 	for i, elem := range elems {
 		require.NotNil(t, elem)
 		require.Exactly(t, values[i], *elem)
