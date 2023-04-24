@@ -32,6 +32,7 @@ type Client struct {
 	LanguageCode         string
 	Backend              backend.Backend
 	specificRegions      bool
+	Spec                 *Spec
 }
 
 type AwsLogger struct {
@@ -104,13 +105,14 @@ func (s *ServicesManager) InitServicesForPartitionAccountAndScope(partition, acc
 	s.wafScopeServices[partition][accountId] = &svcs
 }
 
-func NewAwsClient(logger zerolog.Logger, b backend.Backend) Client {
+func NewAwsClient(logger zerolog.Logger, b backend.Backend, spec *Spec) Client {
 	return Client{
 		Backend: b,
 		ServicesManager: ServicesManager{
 			services: ServicesPartitionAccountRegionMap{},
 		},
 		logger: logger,
+		Spec:   spec,
 	}
 }
 
@@ -199,31 +201,33 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 
 	awsPluginSpec.SetDefaults()
 
-	client := NewAwsClient(logger, opts.Backend)
+	client := NewAwsClient(logger, opts.Backend, &awsPluginSpec)
 
 	var adminAccountSts AssumeRoleAPIClient
 
-	if awsPluginSpec.Organization != nil {
+	if client.Spec.Organization != nil {
 		var err error
-		awsPluginSpec.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, &awsPluginSpec)
+		client.Spec.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, client.Spec)
 		if err != nil {
 			logger.Error().Err(err).Msg("error getting child accounts")
 			return nil, err
 		}
 	}
-	if len(awsPluginSpec.Accounts) == 0 {
-		awsPluginSpec.Accounts = append(awsPluginSpec.Accounts, Account{
-			ID: defaultVar,
-		})
+	if len(client.Spec.Accounts) == 0 {
+		client.Spec.Accounts = []Account{
+			{
+				ID: defaultVar,
+			},
+		}
 	}
 
 	initLock := sync.Mutex{}
 	errorGroup, gtx := errgroup.WithContext(ctx)
-	errorGroup.SetLimit(awsPluginSpec.InitializationConcurrency)
-	for _, account := range awsPluginSpec.Accounts {
+	errorGroup.SetLimit(client.Spec.InitializationConcurrency)
+	for _, account := range client.Spec.Accounts {
 		account := account
 		errorGroup.Go(func() error {
-			svcsDetail, err := client.setupAWSAccount(gtx, logger, &awsPluginSpec, adminAccountSts, account)
+			svcsDetail, err := client.setupAWSAccount(gtx, logger, client.Spec, adminAccountSts, account)
 			if err != nil {
 				return err
 			}
