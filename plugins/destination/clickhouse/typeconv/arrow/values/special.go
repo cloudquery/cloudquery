@@ -6,26 +6,46 @@ import (
 	"github.com/google/uuid"
 )
 
-func buildFloat16(builder primitiveBuilder[float16.Num], value *float32) {
-	if value == (*float32)(nil) {
+func buildFloat16(builder primitiveBuilder[float16.Num], value any) {
+	v, ok := unwrap[float32](value)
+	if !ok {
 		builder.AppendNull()
 		return
 	}
-	builder.Append(float16.New(*value))
+	builder.Append(float16.New(v))
 }
 
-func buildBinary(builder primitiveBuilder[[]byte], value *string) {
-	if value == (*string)(nil) {
+func buildBinary(builder primitiveBuilder[[]byte], value any) {
+	v, ok := unwrap[string](value)
+	if !ok {
 		builder.AppendNull()
 		return
 	}
-	builder.Append([]byte(*value))
+	builder.Append([]byte(v))
 }
 
-func buildUUID(builder *types.UUIDBuilder, value *uuid.UUID) {
-	if value == (*uuid.UUID)(nil) {
+func buildUUID(builder *types.UUIDBuilder, value any) {
+	v, ok := unwrap[uuid.UUID](value)
+	if !ok {
 		builder.AppendNull()
 		return
 	}
-	builder.Append(*value)
+	builder.Append(v)
+}
+
+func unwrap[A any](value any) (A, bool) {
+	var unwrapped A
+	switch value := value.(type) {
+	case **A:
+		if value != (**A)(nil) {
+			return unwrap[A](*value)
+		}
+	case *A:
+		switch {
+		case value == nil, value == (*A)(nil):
+		default:
+			return *value, true
+		}
+	}
+	return unwrapped, false
 }

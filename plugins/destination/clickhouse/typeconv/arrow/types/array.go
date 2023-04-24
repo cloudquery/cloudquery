@@ -12,12 +12,13 @@ func arrayType(name string, col *column.Array) (*arrow.Field, error) {
 	}
 
 	var _type arrow.DataType
-	if _, nullable := col.Base().(*column.Nullable); nullable {
+	_, nullable := col.Base().(*column.Nullable)
+	if nullable {
 		_type = arrow.ListOf(base.Type)
 	} else {
 		_type = arrow.ListOfNonNullable(base.Type)
 	}
 
-	// ClockHouse arrays are always non-nullable
-	return &arrow.Field{Name: name, Type: _type, Nullable: false}, nil
+	// we base Array nullability on its values
+	return &arrow.Field{Name: name, Type: _type, Nullable: nullable}, nil
 }

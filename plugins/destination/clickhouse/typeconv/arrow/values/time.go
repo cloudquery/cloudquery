@@ -8,37 +8,35 @@ import (
 	"github.com/apache/arrow/go/v12/arrow/array"
 )
 
-func buildDate32Values(builder primitiveBuilder[arrow.Date32], value *time.Time) {
-	switch {
-	case value == nil, value == (*time.Time)(nil):
+func buildDate32Values(builder primitiveBuilder[arrow.Date32], value any) {
+	v, ok := unwrap[time.Time](value)
+	if !ok {
 		builder.AppendNull()
-	default:
-		builder.Append(arrow.Date32FromTime(*value))
 	}
-}
-func buildDate64Values(builder primitiveBuilder[arrow.Date64], value *time.Time) {
-	switch {
-	case value == nil, value == (*time.Time)(nil):
-		builder.AppendNull()
-	default:
-		builder.Append(arrow.Date64FromTime(*value))
-	}
+	builder.Append(arrow.Date32FromTime(v))
 }
 
-func buildTimestampValues(builder *array.TimestampBuilder, value *time.Time) error {
-	switch {
-	case value == nil, value == (*time.Time)(nil):
+func buildDate64Values(builder primitiveBuilder[arrow.Date64], value any) {
+	v, ok := unwrap[time.Time](value)
+	if !ok {
 		builder.AppendNull()
-		return nil
-	default:
-		t, err := timeToTimestamp(*value, builder.Type().(*arrow.TimestampType))
-		if err != nil {
-			builder.AppendNull()
-			return err
-		}
-		builder.Append(t)
-		return nil
 	}
+	builder.Append(arrow.Date64FromTime(v))
+}
+
+func buildTimestampValues(builder *array.TimestampBuilder, value any) error {
+	v, ok := unwrap[time.Time](value)
+	if !ok {
+		builder.AppendNull()
+	}
+
+	t, err := timeToTimestamp(v, builder.Type().(*arrow.TimestampType))
+	if err != nil {
+		return err
+	}
+
+	builder.Append(t)
+	return nil
 }
 
 func timeToTimestamp(value time.Time, _type *arrow.TimestampType) (arrow.Timestamp, error) {
