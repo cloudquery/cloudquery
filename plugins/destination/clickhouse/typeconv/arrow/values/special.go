@@ -32,20 +32,3 @@ func buildUUID(builder *types.UUIDBuilder, value any) {
 	}
 	builder.Append(v)
 }
-
-func unwrap[A any](value any) (A, bool) {
-	var unwrapped A
-	switch value := value.(type) {
-	case **A:
-		if value != (**A)(nil) {
-			return unwrap[A](*value)
-		}
-	case *A:
-		switch {
-		case value == nil, value == (*A)(nil):
-		default:
-			return *value, true
-		}
-	}
-	return unwrapped, false
-}
