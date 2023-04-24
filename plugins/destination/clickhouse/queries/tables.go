@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v12/arrow"
-	_clickhouse "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/definitions"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"golang.org/x/exp/slices"
@@ -28,25 +28,27 @@ func sortKeys(sc *arrow.Schema) []string {
 }
 
 func CreateTable(sc *arrow.Schema, cluster string, engine *Engine) (string, error) {
-	definitions, err := _clickhouse.Definitions(sc.Fields()...)
-	if err != nil {
-		return "", err
+	builder := strings.Builder{}
+	builder.WriteString("CREATE TABLE ")
+	builder.WriteString(tableNamePart(schema.TableName(sc), cluster))
+	builder.WriteString(" (\n")
+	builder.WriteString("  ")
+	fields := sc.Fields()
+	for i, field := range fields {
+		builder.WriteString(definitions.FieldDefinition(field))
+		if i < len(fields)-1 {
+			builder.WriteString(",\n  ")
+		}
 	}
-	strBuilder := strings.Builder{}
-	strBuilder.WriteString("CREATE TABLE ")
-	strBuilder.WriteString(tableNamePart(schema.TableName(sc), cluster))
-	strBuilder.WriteString(" (\n")
-	strBuilder.WriteString("  ")
-	strBuilder.WriteString(strings.Join(definitions, ",\n  "))
-	strBuilder.WriteString("\n) ENGINE = ")
-	strBuilder.WriteString(engine.String())
+	builder.WriteString("\n) ENGINE = ")
+	builder.WriteString(engine.String())
 	if orderBy := sortKeys(sc); len(orderBy) > 0 {
-		strBuilder.WriteString(" ORDER BY (")
-		strBuilder.WriteString(strings.Join(util.Sanitized(orderBy...), ", "))
-		strBuilder.WriteString(")")
+		builder.WriteString(" ORDER BY (")
+		builder.WriteString(strings.Join(util.Sanitized(orderBy...), ", "))
+		builder.WriteString(")")
 	}
 
-	return strBuilder.String(), nil
+	return builder.String(), nil
 }
 
 func DropTable(sc *arrow.Schema, cluster string) string {
