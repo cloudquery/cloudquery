@@ -35,7 +35,7 @@ cd plugins/source/aws/policies
 
 ### Option 2: Downloading via Releases
 
-This is an alternative method to get the correct policies for a given AWS source plugin version.
+This is an alternative method to get the correct policies for a given AWS source plugin version, and is a better fit for automation.
 
 1. Go to https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws&expanded=true
 2. Find the release version that matches the AWS version in your source config
