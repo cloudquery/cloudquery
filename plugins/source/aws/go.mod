@@ -149,7 +149,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sso v1.12.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.8 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
-	github.com/cloudquery/plugin-sdk v1.24.0 // indirect
+	github.com/cloudquery/plugin-sdk/v2 v2.4.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect

@@ -1,7 +1,7 @@
 package queries
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func AddColumn(table string, cluster string, column *schema.Column) string {

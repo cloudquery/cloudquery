@@ -2,7 +2,7 @@ package client
 
 import (
 	"cloud.google.com/go/bigquery"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func (*Client) SchemaTypeToBigQuery(t schema.ValueType) (ft bigquery.FieldType, repeated bool) {

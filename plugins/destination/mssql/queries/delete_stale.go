@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 type deleteStaleQueryBuilder struct {
