@@ -18,12 +18,12 @@ func TestFromArray(t *testing.T) {
 		values[i] = rand.Float64()*(math.MaxFloat64-1) + rand.Float64()
 	}
 
-	bld := array.NewFloat64Builder(memory.DefaultAllocator)
+	builder := array.NewFloat64Builder(memory.DefaultAllocator)
 	for _, f := range values {
-		bld.Append(f)
+		builder.Append(f)
 	}
 
-	data, err := FromArray(bld.NewArray())
+	data, err := FromArray(builder.NewArray())
 	require.NoError(t, err)
 
 	elems := data.([]*float64)

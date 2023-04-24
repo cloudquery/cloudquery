@@ -17,7 +17,7 @@ func Test_timeValue(t *testing.T) {
 	loc, err := time.LoadLocation("America/New_York")
 	require.NoError(t, err)
 
-	bld := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Nanosecond, TimeZone: loc.String()})
+	builder := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Nanosecond, TimeZone: loc.String()})
 	for i := range values {
 		now := time.Now().In(loc)
 		values[i] = now
@@ -25,11 +25,11 @@ func Test_timeValue(t *testing.T) {
 		arrowTimestamp, ok, err := arrow.TimestampFromStringInLocation(now.Format(time.RFC3339Nano), arrow.Nanosecond, loc)
 		require.NoError(t, err)
 		require.True(t, ok) // check that zone formatted correctly
-		bld.Append(arrowTimestamp)
+		builder.Append(arrowTimestamp)
 	}
 
 	// we can use timestampValue here, but we want to check the returned data type from the topmost func, too
-	data, err := FromArray(bld.NewTimestampArray())
+	data, err := FromArray(builder.NewTimestampArray())
 	require.NoError(t, err)
 
 	elems := data.([]*time.Time)

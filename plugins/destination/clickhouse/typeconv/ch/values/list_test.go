@@ -25,16 +25,16 @@ func Test_listValue(t *testing.T) {
 		values[i] = row
 	}
 
-	bld := array.NewListBuilder(memory.DefaultAllocator, types.NewUUIDType())
-	uidBuilder := bld.ValueBuilder().(*types.UUIDBuilder)
+	builder := array.NewListBuilder(memory.DefaultAllocator, types.NewUUIDType())
+	uidBuilder := builder.ValueBuilder().(*types.UUIDBuilder)
 	for _, row := range values {
-		bld.Append(true)
+		builder.Append(true)
 		for _, uid := range row {
 			uidBuilder.Append(uid)
 		}
 	}
 
-	data, err := listValue(bld.NewListArray())
+	data, err := listValue(builder.NewListArray())
 	require.NoError(t, err)
 
 	uidSlices := data.([]*[]*uuid.UUID)
@@ -64,16 +64,16 @@ func Test_largeListValue(t *testing.T) {
 		values[i] = row
 	}
 
-	bld := array.NewLargeListBuilder(memory.DefaultAllocator, types.NewUUIDType())
-	uidBuilder := bld.ValueBuilder().(*types.UUIDBuilder)
+	builder := array.NewLargeListBuilder(memory.DefaultAllocator, types.NewUUIDType())
+	uidBuilder := builder.ValueBuilder().(*types.UUIDBuilder)
 	for _, row := range values {
-		bld.Append(true)
+		builder.Append(true)
 		for _, uid := range row {
 			uidBuilder.Append(uid)
 		}
 	}
 
-	data, err := listValue(bld.NewLargeListArray())
+	data, err := listValue(builder.NewLargeListArray())
 	require.NoError(t, err)
 
 	uidSlices := data.([]*[]*uuid.UUID)
@@ -103,16 +103,16 @@ func Test_fixedSizeListValue(t *testing.T) {
 		values[i] = row
 	}
 
-	bld := array.NewFixedSizeListBuilder(memory.DefaultAllocator, width, types.NewUUIDType())
-	uidBuilder := bld.ValueBuilder().(*types.UUIDBuilder)
+	builder := array.NewFixedSizeListBuilder(memory.DefaultAllocator, width, types.NewUUIDType())
+	uidBuilder := builder.ValueBuilder().(*types.UUIDBuilder)
 	for _, row := range values {
-		bld.Append(true)
+		builder.Append(true)
 		for _, uid := range row {
 			uidBuilder.Append(uid)
 		}
 	}
 
-	data, err := listValue(listWrapper{bld.NewListArray()})
+	data, err := listValue(listWrapper{builder.NewListArray()})
 	require.NoError(t, err)
 
 	uidSlices := data.([]*[]*uuid.UUID)

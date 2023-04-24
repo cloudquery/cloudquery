@@ -18,12 +18,12 @@ func Test_extensionUUID(t *testing.T) {
 		values[i] = uuid.New()
 	}
 
-	bld := types.NewUUIDBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewUUIDType()))
+	builder := types.NewUUIDBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewUUIDType()))
 	for _, uid := range values {
-		bld.Append(uid)
+		builder.Append(uid)
 	}
 
-	data := extensionValue(bld.NewArray().(array.ExtensionArray))
+	data := extensionValue(builder.NewArray().(array.ExtensionArray))
 	uidArr := data.([]*uuid.UUID)
 
 	require.Equal(t, N, len(uidArr))
