@@ -74,7 +74,7 @@ func containsList(sc *arrow.Schema) bool {
 	return false
 }
 
-func (c *Client) upsert(ctx context.Context, tmpTableName string, tableName string, sc *arrow.Schema) error {
+func (c *Client) upsert(tmpTableName string, tableName string, sc *arrow.Schema) error {
 	var sb strings.Builder
 	sb.WriteString("insert into " + tableName + " select * from " + tmpTableName + " on conflict (")
 	pkIndices := schema.PrimaryKeyIndices(sc)
@@ -102,7 +102,7 @@ func (c *Client) upsert(ctx context.Context, tmpTableName string, tableName stri
 	return nil
 }
 
-func (c *Client) delete_by_pk(ctx context.Context, tmpTableName string, tableName string, sc *arrow.Schema) error {
+func (c *Client) delete_by_pk(tmpTableName string, tableName string, sc *arrow.Schema) error {
 	var sb strings.Builder
 	sb.WriteString("delete from " + tableName + " using " + tmpTableName + " where ")
 	pkIndices := schema.PrimaryKeyIndices(sc)
@@ -121,7 +121,7 @@ func (c *Client) delete_by_pk(ctx context.Context, tmpTableName string, tableNam
 	return nil
 }
 
-func (c *Client) copy_from_file(ctx context.Context, tableName string, fileName string, sc *arrow.Schema) error {
+func (c *Client) copy_from_file(tableName string, fileName string, sc *arrow.Schema) error {
 	var sb strings.Builder
 	sb.WriteString("copy " + tableName + "(")
 	for i, col := range sc.Fields() {
@@ -155,10 +155,10 @@ func (c *Client) WriteTableBatch(ctx context.Context, sc *arrow.Schema, records 
 	if err := f.Close(); err != nil {
 		return err
 	}
-	
+
 	fmt.Println(f.Name())
 	if c.spec.WriteMode == specs.WriteModeAppend || len(schema.PrimaryKeyIndices(sc)) == 0 {
-		if err := c.copy_from_file(ctx, tableName, f.Name(), sc); err != nil {
+		if err := c.copy_from_file(tableName, f.Name(), sc); err != nil {
 			return err
 		}
 	} else {
@@ -166,7 +166,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, sc *arrow.Schema, records 
 		if err := c.createTableIfNotExist(tmpTableName, sc); err != nil {
 			return err
 		}
-		if err := c.copy_from_file(ctx, tmpTableName, f.Name(), sc); err != nil {
+		if err := c.copy_from_file(tmpTableName, f.Name(), sc); err != nil {
 			return err
 		}
 
@@ -175,14 +175,14 @@ func (c *Client) WriteTableBatch(ctx context.Context, sc *arrow.Schema, records 
 		// but this is unavoidable until support is added to duckdb itself.
 		// See https://github.com/duckdb/duckdb/blob/c5d9afb97bbf0be12216f3b89ae3131afbbc3156/src/storage/table/list_column_data.cpp#L243-L251
 		if containsList(sc) {
-			if err := c.delete_by_pk(ctx, tmpTableName, tableName, sc); err != nil {
+			if err := c.delete_by_pk(tmpTableName, tableName, sc); err != nil {
 				return err
 			}
 			if _, err = c.db.Exec("insert into " + tableName + " from " + tmpTableName); err != nil {
 				return err
 			}
 		} else {
-			if err := c.upsert(ctx, tmpTableName, tableName, sc); err != nil {
+			if err := c.upsert(tmpTableName, tableName, sc); err != nil {
 				return err
 			}
 		}

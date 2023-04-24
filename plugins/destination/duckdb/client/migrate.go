@@ -81,7 +81,7 @@ func (c *Client) normalizeColumns(tables schema.Schemas) schema.Schemas {
 			if !c.enabledPks() {
 				metadata[schema.MetadataPrimaryKey] = schema.MetadataFalse
 				metadata[schema.MetadataUnique] = schema.MetadataFalse
-			} else  {
+			} else {
 				if schema.IsPk(fields[i]) {
 					fields[i].Nullable = false
 				} else {
@@ -268,8 +268,12 @@ func (c *Client) isColumnUnique(tableName string, columName string) (bool, error
 	defer rows.Close()
 	for rows.Next() {
 		var n int
-		rows.Scan(&n)
-		return n == 1, nil
+		if err := rows.Scan(&n); err != nil {
+			return false, err
+		}
+		if n == 1 {
+			return true, nil
+		}
 	}
 	if err := rows.Err(); err != nil {
 		return false, err
