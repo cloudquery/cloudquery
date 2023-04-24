@@ -9,11 +9,6 @@ import (
 )
 
 func Test_timestampType(t *testing.T) {
-	type testCase struct {
-		_type    arrow.DataType
-		expected string
-	}
-
 	loc, err := time.LoadLocation("America/New_York")
 	require.NoError(t, err)
 	timeZone := loc.String()
@@ -48,6 +43,6 @@ func Test_timestampType(t *testing.T) {
 			expected: "DateTime64(9, 'America/New_York')",
 		},
 	} {
-		ensureDefinition(t, tc._type, tc.expected)
+		ensureDefinition(t, tc)
 	}
 }

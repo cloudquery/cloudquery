@@ -8,11 +8,6 @@ import (
 )
 
 func Test_structType(t *testing.T) {
-	type testCase struct {
-		_type    string
-		expected arrow.DataType
-	}
-
 	for _, tc := range []testCase{
 		{
 			_type:    "Tuple(`f1` Bool)",
@@ -61,6 +56,6 @@ func Test_structType(t *testing.T) {
 			),
 		},
 	} {
-		ensureField(t, tc._type, tc.expected)
+		ensureField(t, tc)
 	}
 }

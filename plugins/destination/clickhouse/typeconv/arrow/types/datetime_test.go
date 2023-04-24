@@ -9,27 +9,17 @@ import (
 )
 
 func Test_dateTimeType(t *testing.T) {
-	type testCase struct {
-		_type    string
-		expected arrow.DataType
-	}
-
 	tz, err := time.LoadLocation("America/New_York")
 	require.NoError(t, err)
 	for _, tc := range []testCase{
 		{_type: "DateTime", expected: &arrow.TimestampType{Unit: arrow.Second}},
 		{_type: "DateTime('America/New_York')", expected: &arrow.TimestampType{Unit: arrow.Second, TimeZone: tz.String()}},
 	} {
-		ensureField(t, tc._type, tc.expected)
+		ensureField(t, tc)
 	}
 }
 
 func Test_dateTime64Type(t *testing.T) {
-	type testCase struct {
-		_type    string
-		expected arrow.DataType
-	}
-
 	tz, err := time.LoadLocation("America/New_York")
 	require.NoError(t, err)
 	for _, tc := range []testCase{
@@ -45,6 +35,6 @@ func Test_dateTime64Type(t *testing.T) {
 		{_type: "DateTime64(9)", expected: &arrow.TimestampType{Unit: arrow.Nanosecond}},
 		{_type: "DateTime64(7, 'America/New_York')", expected: &arrow.TimestampType{Unit: arrow.Nanosecond, TimeZone: tz.String()}},
 	} {
-		ensureField(t, tc._type, tc.expected)
+		ensureField(t, tc)
 	}
 }
