@@ -4,9 +4,18 @@ import (
 	"time"
 
 	"github.com/apache/arrow/go/v12/arrow/array"
+	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
 )
 
 func buildValue(builder array.Builder, value any) error {
+	if value == nil {
+		// saves checks for untyped nil
+		builder.AppendNull()
+		return nil
+	}
+
 	switch builder := builder.(type) {
 	case *array.BooleanBuilder:
 		buildPrimitive[bool](builder, *value.(**bool))
@@ -50,11 +59,31 @@ func buildValue(builder array.Builder, value any) error {
 		buildDate64Values(builder, *value.(**time.Time))
 
 	case *array.TimestampBuilder:
+		return buildTimestampValues(builder, *value.(**time.Time))
+
+	case *array.Decimal128Builder:
+		buildDecimal128(builder, *value.(**decimal.Decimal))
+	case *array.Decimal256Builder:
+		buildDecimal256(builder, *value.(**decimal.Decimal))
+
+	case *types.UUIDBuilder:
+		buildUUID(builder, *value.(**uuid.UUID))
+	case *types.JSONBuilder, *types.InetBuilder, *types.MacBuilder:
+		return buildFromString(builder, *value.(**string))
+
+	case *array.StructBuilder:
+		return buildStruct(builder, *value.(**map[string]any))
 
 	case *array.MapBuilder:
 		// just before other list-like builders, as this one is special
+		return buildFromString(builder, *value.(**string))
+
 	case array.ListLikeBuilder:
 		return buildList(builder, value)
+
+	default:
+		return buildFromString(builder, *value.(**string))
 	}
+
 	return nil
 }

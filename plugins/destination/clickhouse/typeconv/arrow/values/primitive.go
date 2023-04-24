@@ -10,10 +10,9 @@ type primitiveBuilder[A any] interface {
 }
 
 func buildPrimitive[A any](builder primitiveBuilder[A], value *A) {
-	switch {
-	case value == nil, value == (*A)(nil):
+	if value == (*A)(nil) {
 		builder.AppendNull()
-	default:
-		builder.Append(*value)
+		return
 	}
+	builder.Append(*value)
 }

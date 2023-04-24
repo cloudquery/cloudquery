@@ -13,10 +13,7 @@ import (
 )
 
 func Test_decimal128Value(t *testing.T) {
-	const (
-		N     = 100
-		valid = 30
-	)
+	const N = 100
 	values := make([]float64, N)
 	for i := range values {
 		values[i] = rand.Float64()*1000 + rand.Float64()
@@ -56,25 +53,16 @@ func Test_decimal128Value(t *testing.T) {
 			for i, out := range out {
 				require.NotNil(t, out)
 
-				// trim to valid symbols
 				in := in[i]
-				inS, outS := []rune(in.ToString(_type.Scale)), []rune(out.StringFixed(_type.Scale))
-				require.Exactly(t, len(inS), len(outS))
-				if l := len(inS); l > valid {
-					inS, outS = inS[:valid], outS[:valid]
-				}
-
-				require.Exactly(t, string(inS), string(outS))
+				out := decimal128.FromBigInt(out.Coefficient())
+				require.Exactly(t, in.ToString(_type.Scale), out.ToString(_type.Scale))
 			}
 		})
 	}
 }
 
 func Test_decimal256Value(t *testing.T) {
-	const (
-		N     = 100
-		valid = 30
-	)
+	const N = 100
 
 	values := make([]float64, N)
 	for i := range values {
@@ -115,16 +103,9 @@ func Test_decimal256Value(t *testing.T) {
 			for i, out := range out {
 				require.NotNil(t, out)
 
-				// trim to valid symbols
 				in := in[i]
-				require.NotNil(t, in)
-				inS, outS := []rune(in.ToString(_type.Scale)), []rune(out.StringFixed(_type.Scale))
-				require.Exactly(t, len(inS), len(outS))
-				if l := len(inS); l > valid {
-					inS, outS = inS[:valid], outS[:valid]
-				}
-
-				require.Exactly(t, string(inS), string(outS))
+				out := decimal256.FromBigInt(out.Coefficient())
+				require.Exactly(t, in.ToString(_type.Scale), out.ToString(_type.Scale))
 			}
 		})
 	}
