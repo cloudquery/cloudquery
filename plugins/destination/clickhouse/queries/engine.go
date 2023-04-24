@@ -56,6 +56,7 @@ func (e *Engine) params() []string {
 
 	return res
 }
+
 func (e *Engine) Validate() error {
 	if !strings.HasSuffix(e.Name, MergeTree) {
 		return fmt.Errorf("only *MergeTree table engine family is supported at the moment, got %q", e.Name)
