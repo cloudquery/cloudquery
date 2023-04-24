@@ -1,4 +1,4 @@
-package definitions
+package arrow
 
 import (
 	"testing"
@@ -9,21 +9,22 @@ import (
 
 func Test_structType(t *testing.T) {
 	type testCase struct {
-		_type    *arrow.StructType
-		expected string
+		_type    string
+		expected arrow.DataType
 	}
 
 	for _, tc := range []testCase{
 		{
-			_type:    arrow.StructOf(arrow.Field{Name: "f1", Type: new(arrow.BooleanType)}),
-			expected: "Tuple(`f1` Bool)",
+			_type:    "Tuple(`f1` Bool)",
+			expected: arrow.StructOf(arrow.Field{Name: "f1", Type: new(arrow.BooleanType)}),
 		},
 		{
-			_type:    arrow.StructOf(arrow.Field{Name: "f1", Type: new(arrow.BooleanType), Nullable: true}),
-			expected: "Tuple(`f1` Nullable(Bool))",
+			_type:    "Tuple(`f1` Nullable(Bool))",
+			expected: arrow.StructOf(arrow.Field{Name: "f1", Type: new(arrow.BooleanType), Nullable: true}),
 		},
 		{
-			_type: arrow.StructOf(
+			_type: "Tuple(`bool_list` Array(Bool), `bool_list_nullable` Array(Nullable(Bool)))",
+			expected: arrow.StructOf(
 				arrow.Field{
 					Name: "bool_list",
 					Type: arrow.ListOfField(arrow.Field{Name: "bool_list", Type: new(arrow.BooleanType)}),
@@ -40,10 +41,10 @@ func Test_structType(t *testing.T) {
 					Nullable: true,
 				},
 			),
-			expected: "Tuple(`bool_list` Array(Bool), `bool_list_nullable` Array(Nullable(Bool)))",
 		},
 		{
-			_type: arrow.StructOf(
+			_type: "Tuple(`uuid_list` Array(Nullable(UUID)), `struct` Tuple(`bool_list` Array(Bool), `bool_list_nullable` Array(Nullable(Bool))))",
+			expected: arrow.StructOf(
 				arrow.Field{
 					Name: "uuid_list",
 					Type: arrow.ListOfField(
@@ -76,9 +77,8 @@ func Test_structType(t *testing.T) {
 					),
 				},
 			),
-			expected: "Tuple(`uuid_list` Array(Nullable(UUID)), `struct` Tuple(`bool_list` Array(Bool), `bool_list_nullable` Array(Nullable(Bool))))",
 		},
 	} {
-		ensureDefinition(t, tc._type, tc.expected)
+		ensureField(t, tc._type, tc.expected)
 	}
 }
