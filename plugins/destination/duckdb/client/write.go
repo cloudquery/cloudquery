@@ -155,7 +155,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, sc *arrow.Schema, records 
 	if err := f.Close(); err != nil {
 		return err
 	}
-
+	
+	fmt.Println(f.Name())
 	if c.spec.WriteMode == specs.WriteModeAppend || len(schema.PrimaryKeyIndices(sc)) == 0 {
 		if err := c.copy_from_file(ctx, tableName, f.Name(), sc); err != nil {
 			return err

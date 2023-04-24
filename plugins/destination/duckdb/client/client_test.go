@@ -28,7 +28,5 @@ func TestPlugin(t *testing.T) {
 		destination.PluginTestSuiteTests{
 			MigrateStrategyOverwrite: migrateStrategy,
 			MigrateStrategyAppend:    migrateStrategy,
-			SkipMigrateAppend:      true,
-			SkipMigrateAppendForce: true,
 		})
 }

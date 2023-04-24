@@ -45,9 +45,13 @@ func (c *Client) duckdbTables(tables schema.Schemas) (schema.Schemas, error) {
 			md := make(map[string]string)
 			if col.pk {
 				md[schema.MetadataPrimaryKey] = schema.MetadataTrue
+			} else {
+				md[schema.MetadataPrimaryKey] = schema.MetadataFalse
 			}
 			if col.unique {
 				md[schema.MetadataUnique] = schema.MetadataTrue
+			} else {
+				md[schema.MetadataUnique] = schema.MetadataFalse
 			}
 			fields[i] = arrow.Field{
 				Name:     col.name,
@@ -73,11 +77,21 @@ func (c *Client) normalizeColumns(tables schema.Schemas) schema.Schemas {
 			// In DuckDB, a PK column must be NOT NULL, so we need to make sure that the schema we're comparing to has the same
 			// constraint.
 			metadata := fields[i].Metadata.ToMap()
+
 			if !c.enabledPks() {
 				metadata[schema.MetadataPrimaryKey] = schema.MetadataFalse
-			} else if schema.IsPk(fields[i]) {
-				fields[i].Nullable = false
+				metadata[schema.MetadataUnique] = schema.MetadataFalse
+			} else  {
+				if schema.IsPk(fields[i]) {
+					fields[i].Nullable = false
+				} else {
+					metadata[schema.MetadataPrimaryKey] = schema.MetadataFalse
+				}
+				if !schema.IsUnique(fields[i]) {
+					metadata[schema.MetadataUnique] = schema.MetadataFalse
+				}
 			}
+
 			fields[i].Metadata = arrow.MetadataFrom(metadata)
 			// Since multiple schema types can map to the same duckdb type we need to normalize them to avoid false positives when detecting schema changes
 			fields[i].Type = c.duckdbTypeToSchema(c.SchemaTypeToDuckDB(fields[i].Type))
@@ -217,7 +231,7 @@ func (c *Client) createTableIfNotExist(tableName string, table *arrow.Schema) er
 		if schema.IsPk(col) {
 			pks = append(pks, col.Name)
 		}
-		if schema.IsUnique(col) {
+		if schema.IsUnique(col) && c.enabledPks() {
 			fieldDef += " UNIQUE"
 		}
 		if !col.Nullable {
@@ -239,7 +253,6 @@ func (c *Client) createTableIfNotExist(tableName string, table *arrow.Schema) er
 		sb.WriteString(")")
 	}
 	sb.WriteString(")")
-	fmt.Println(sb.String())
 	_, err := c.db.Exec(sb.String())
 	if err != nil {
 		return fmt.Errorf("failed to create table with '%s': %w", sb.String(), err)

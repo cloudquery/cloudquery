@@ -39,6 +39,8 @@ func (c *Client) SchemaTypeToDuckDB(t arrow.DataType) string {
 		return "blob"
 	case *types.UUIDType:
 		return "uuid"
+	case *types.JSONType:
+		return "json"
 	case *arrow.TimestampType:
 		return "timestamp"
 	case *arrow.Date64Type:
@@ -85,6 +87,8 @@ func (c *Client) duckdbTypeToSchema(t string) arrow.DataType {
 		return arrow.FixedWidthTypes.Timestamp_us
 	case "interval":
 		return arrow.FixedWidthTypes.DayTimeInterval
+	case "json":
+		return types.ExtensionTypes.JSON
 	case "uuid":
 		return types.ExtensionTypes.UUID
 	default:
