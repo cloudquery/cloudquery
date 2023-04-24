@@ -7,7 +7,7 @@ import (
 	"github.com/apache/arrow/go/v12/arrow/array"
 )
 
-func buildListValues(builder array.ListLikeBuilder, values any) error {
+func buildList(builder array.ListLikeBuilder, values any) error {
 	if values == nil {
 		return nil
 	}
