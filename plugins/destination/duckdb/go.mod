@@ -4,16 +4,12 @@ go 1.19
 
 require (
 	github.com/apache/arrow/go/v12 v12.0.0-20230420130843-f174ef349ae6
-	github.com/cloudquery/plugin-sdk/v2 v2.3.8
+	github.com/cloudquery/plugin-sdk/v2 v2.4.0
 	github.com/marcboeker/go-duckdb v1.2.2
 	github.com/rs/zerolog v1.29.0
 )
 
-// replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230420163130-e1c18d386820
-
-replace github.com/apache/arrow/go/v12 => ../../../../arrow/go
-
-replace github.com/cloudquery/plugin-sdk/v2 => ../../../../plugin-sdk
+replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230424203127-ca31eee92780
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
