@@ -37,7 +37,7 @@ func Test_decimal128Value(t *testing.T) {
 	} {
 		t.Run(_type.String(), func(t *testing.T) {
 			in := make([]*decimal128.Num, len(values))
-			bld := array.NewDecimal128Builder(memory.DefaultAllocator, _type)
+			builder := array.NewDecimal128Builder(memory.DefaultAllocator, _type)
 			for i, val := range values {
 				num, err := decimal128.FromFloat64(val, _type.Precision, _type.Scale)
 				require.NoError(t, err)
@@ -45,11 +45,11 @@ func Test_decimal128Value(t *testing.T) {
 				trimmed := num.ToFloat64(_type.Scale)
 				num, err = decimal128.FromFloat64(trimmed, _type.Precision, _type.Scale)
 				require.NoError(t, err)
-				bld.Append(num)
+				builder.Append(num)
 				in[i] = &num
 			}
 
-			arr := bld.NewArray()
+			arr := builder.NewArray()
 			out := decimalValue[decimal128.Num](arr.(*array.Decimal128))
 
 			require.Equal(t, N, len(out))
@@ -96,7 +96,7 @@ func Test_decimal256Value(t *testing.T) {
 	} {
 		t.Run(_type.String(), func(t *testing.T) {
 			in := make([]*decimal256.Num, len(values))
-			bld := array.NewDecimal256Builder(memory.DefaultAllocator, _type)
+			builder := array.NewDecimal256Builder(memory.DefaultAllocator, _type)
 			for i, val := range values {
 				num, err := decimal256.FromFloat64(val, _type.Precision, _type.Scale)
 				require.NoError(t, err)
@@ -104,11 +104,11 @@ func Test_decimal256Value(t *testing.T) {
 				trimmed := num.ToFloat64(_type.Scale)
 				num, err = decimal256.FromFloat64(trimmed, _type.Precision, _type.Scale)
 				require.NoError(t, err)
-				bld.Append(num)
+				builder.Append(num)
 				in[i] = &num
 			}
 
-			arr := bld.NewArray()
+			arr := builder.NewArray()
 			out := decimalValue[decimal256.Num](arr.(*array.Decimal256))
 
 			require.Equal(t, N, len(out))

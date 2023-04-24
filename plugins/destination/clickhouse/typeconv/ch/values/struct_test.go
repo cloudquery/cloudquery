@@ -15,19 +15,19 @@ func Test_structValue(t *testing.T) {
 		arrow.Field{Name: "non_nullable_bool", Type: new(arrow.BooleanType)},
 	)
 
-	bld := array.NewStructBuilder(memory.DefaultAllocator, structType)
-	nullableBld := bld.FieldBuilder(0).(*array.BooleanBuilder)
-	nonNullableBld := bld.FieldBuilder(1).(*array.BooleanBuilder)
+	builder := array.NewStructBuilder(memory.DefaultAllocator, structType)
+	nullableBld := builder.FieldBuilder(0).(*array.BooleanBuilder)
+	nonNullableBld := builder.FieldBuilder(1).(*array.BooleanBuilder)
 
-	bld.Append(true)
+	builder.Append(true)
 	nullableBld.Append(true)
 	nonNullableBld.Append(true)
 
-	bld.Append(true)
+	builder.Append(true)
 	nullableBld.AppendNull()
 	nonNullableBld.Append(true)
 
-	data, err := structValue(bld.NewStructArray())
+	data, err := structValue(builder.NewStructArray())
 	require.NoError(t, err)
 
 	elems := data.([]*map[string]any)
