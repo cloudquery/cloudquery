@@ -113,17 +113,26 @@ func (c *Client) testWriteAccess(ctx context.Context, cfg aws.Config) error {
 		},
 	}
 
-	output, err := iamClient.SimulatePrincipalPolicy(ctx, input)
-	if err != nil {
-		return err
+	anyAllowed := false
+	for !anyAllowed {
+		output, err := iamClient.SimulatePrincipalPolicy(ctx, input)
+		if err != nil {
+			return err
+		}
+
+		for _, o := range output.EvaluationResults {
+			if o.EvalDecision == types.PolicyEvaluationDecisionTypeAllowed {
+				anyAllowed = true
+			}
+		}
+
+		if output.IsTruncated {
+			input.Marker = output.Marker
+			continue
+		}
+		break
 	}
 
-	anyAllowed := false
-	for _, o := range output.EvaluationResults {
-		if o.EvalDecision == types.PolicyEvaluationDecisionTypeAllowed {
-			anyAllowed = true
-		}
-	}
 	if !anyAllowed {
 		return errors.New("Write access to S3 bucket is not allowed")
 	}
