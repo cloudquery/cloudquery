@@ -3,7 +3,7 @@ package queries
 import (
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/apache/arrow/go/v12/arrow"
-	_arrow "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/types"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
@@ -23,7 +23,7 @@ func ScanTableSchemas(rows driver.Rows) (schema.Schemas, error) {
 			return nil, err
 		}
 
-		field, err := _arrow.Field(name, typ)
+		field, err := types.Field(name, typ)
 		if err != nil {
 			return nil, err
 		}
