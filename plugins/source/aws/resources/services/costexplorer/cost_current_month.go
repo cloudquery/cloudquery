@@ -29,7 +29,7 @@ func fetchCost(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 	cl := meta.(*client.Client)
 
 	if !cl.Spec.SkipNonFreeAPIs {
-		cl.Logger.Info().Msg("skipping `awscost_costexplorer_cost_current_month` because `use_non_free_apis` is set to false")
+		cl.Logger().Info().Msg("skipping `awscost_costexplorer_cost_current_month` because `use_non_free_apis` is set to false")
 		return nil
 	}
 	svc := cl.Services().Costexplorer
