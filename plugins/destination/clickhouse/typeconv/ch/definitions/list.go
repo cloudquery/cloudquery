@@ -5,9 +5,11 @@ import (
 )
 
 type listDataType interface {
+	arrow.DataType
 	ElemField() arrow.Field
 }
 
-func listType(list arrow.DataType) string {
-	return "Array(" + FieldType(list.(listDataType).ElemField()) + ")" // adds Nullable
+// https://clickhouse.com/docs/en/sql-reference/data-types/array
+func listType(_type listDataType) string {
+	return "Array(" + FieldType(_type.ElemField()) + ")" // adds Nullable to the item, if required
 }
