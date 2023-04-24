@@ -18,7 +18,7 @@ Clone this repository locally:
 git clone https://github.com/cloudquery/cloudquery.git cloudquery
 ```
 
-Check out the tag matching the AWS Source plugin version you are using, so that the policy queries match the table schemas:
+Check out the tag matching the AWS Source plugin version you are using:
 
 ```bash
 cd cloudquery
