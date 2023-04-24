@@ -38,8 +38,8 @@ func fetchForecast(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		Granularity: types.GranularityDaily,
 		Metric:      types.MetricBlendedCost,
 		TimePeriod: &types.DateInterval{
-			Start: aws.String(string(time.Now().Format("2006-01-02"))),
-			End:   aws.String(string(endOfMonth(time.Now()).Format("2006-01-02"))),
+			Start: aws.String(time.Now().Format("2006-01-02")),
+			End:   aws.String(endOfMonth(time.Now()).Format("2006-01-02")),
 		},
 	}
 
