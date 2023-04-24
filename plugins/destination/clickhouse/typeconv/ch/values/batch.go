@@ -1,14 +1,13 @@
-package ch
+package values
 
 import (
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/values"
 )
 
 func BatchAddRecord(batch driver.Batch, record arrow.Record) error {
 	for i, col := range record.Columns() {
-		data, err := values.FromArray(col)
+		data, err := FromArray(col)
 		if err != nil {
 			return err
 		}

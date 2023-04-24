@@ -12,11 +12,11 @@ import (
 
 func Test_listValue(t *testing.T) {
 	const (
-		N     = 100
-		width = 5
+		amount = 100
+		width  = 5
 	)
 
-	values := make([][]uuid.UUID, N)
+	values := make([][]uuid.UUID, amount)
 	for i := range values {
 		row := make([]uuid.UUID, width)
 		for j := range row {
@@ -39,7 +39,7 @@ func Test_listValue(t *testing.T) {
 
 	uidSlices := data.([]*[]*uuid.UUID)
 
-	require.Equal(t, N, len(uidSlices))
+	require.Equal(t, amount, len(uidSlices))
 	for i, row := range uidSlices {
 		require.NotNil(t, row)
 		require.Equal(t, width, len(*row))
@@ -52,11 +52,11 @@ func Test_listValue(t *testing.T) {
 
 func Test_largeListValue(t *testing.T) {
 	const (
-		N     = 100
-		width = 5
+		amount = 100
+		width  = 5
 	)
 
-	values := make([][]uuid.UUID, N)
+	values := make([][]uuid.UUID, amount)
 	for i := range values {
 		row := make([]uuid.UUID, width)
 		for j := range row {
@@ -79,7 +79,7 @@ func Test_largeListValue(t *testing.T) {
 
 	uidSlices := data.([]*[]*uuid.UUID)
 
-	require.Equal(t, N, len(uidSlices))
+	require.Equal(t, amount, len(uidSlices))
 	for i, row := range uidSlices {
 		require.NotNil(t, row)
 		require.Equal(t, width, len(*row))
@@ -92,11 +92,11 @@ func Test_largeListValue(t *testing.T) {
 
 func Test_fixedSizeListValue(t *testing.T) {
 	const (
-		N     = 100
-		width = 5
+		amount = 100
+		width  = 5
 	)
 
-	values := make([][]uuid.UUID, N)
+	values := make([][]uuid.UUID, amount)
 	for i := range values {
 		row := make([]uuid.UUID, width)
 		for j := range row {
@@ -119,7 +119,7 @@ func Test_fixedSizeListValue(t *testing.T) {
 
 	uidSlices := data.([]*[]*uuid.UUID)
 
-	require.Equal(t, N, len(uidSlices))
+	require.Equal(t, amount, len(uidSlices))
 	for i, row := range uidSlices {
 		require.NotNil(t, row)
 		require.Equal(t, width, len(*row))
