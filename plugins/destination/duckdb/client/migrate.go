@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	sqlTableInfo = "PRAGMA table_info('%s');"
+	sqlTableInfo      = "PRAGMA table_info('%s');"
+	isColumnUniqueSQL = "select count(*) from duckdb_constraints where table_name = $1 and constraint_type = 'UNIQUE' and constraint_column_names=[$2]"
 )
 
 type columnInfo struct {
@@ -21,6 +22,7 @@ type columnInfo struct {
 	notNull      bool
 	defaultValue any
 	pk           bool
+	unique       bool
 }
 
 type tableInfo struct {
@@ -44,9 +46,12 @@ func (c *Client) duckdbTables(tables schema.Schemas) (schema.Schemas, error) {
 			if col.pk {
 				md[schema.MetadataPrimaryKey] = schema.MetadataTrue
 			}
+			if col.unique {
+				md[schema.MetadataUnique] = schema.MetadataTrue
+			}
 			fields[i] = arrow.Field{
-				Name: col.name,
-				Type: c.duckdbTypeToSchema(col.typ),
+				Name:     col.name,
+				Type:     c.duckdbTypeToSchema(col.typ),
 				Nullable: !col.notNull,
 				Metadata: arrow.MetadataFrom(md),
 			}
@@ -78,7 +83,7 @@ func (c *Client) normalizeColumns(tables schema.Schemas) schema.Schemas {
 			fields[i].Type = c.duckdbTypeToSchema(c.SchemaTypeToDuckDB(fields[i].Type))
 		}
 		md := table.Metadata()
-		
+
 		normalized = append(normalized, arrow.NewSchema(fields, &md))
 	}
 
@@ -143,7 +148,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {
 	if c.spec.MigrateMode != specs.MigrateModeForced {
 		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(normalizedTables, duckdbTables)
 		if len(nonAutoMigrableTables) > 0 {
-			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigrableTables, ","), changes)
+			return fmt.Errorf("tables %s with changes %s require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigrableTables, ","), changes)
 		}
 	}
 
@@ -157,12 +162,12 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {
 		duckdb := duckdbTables.SchemaByName(tableName)
 		if duckdb == nil {
 			c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(table); err != nil {
+			if err := c.createTableIfNotExist(tableName, table); err != nil {
 				return err
 			}
 			continue
 		}
-		
+
 		changes := schema.GetSchemaChanges(table, duckdb)
 		if c.canAutoMigrate(changes) {
 			c.logger.Info().Str("table", tableName).Msg("Table exists, auto-migrating")
@@ -186,7 +191,7 @@ func (c *Client) recreateTable(table *arrow.Schema) error {
 	if _, err := c.db.Exec(sql); err != nil {
 		return fmt.Errorf("failed to drop table %s: %w", tableName, err)
 	}
-	return c.createTableIfNotExist(table)
+	return c.createTableIfNotExist(tableName, table)
 }
 
 func (c *Client) addColumn(tableName string, columnName string, columnType string) error {
@@ -197,10 +202,8 @@ func (c *Client) addColumn(tableName string, columnName string, columnType strin
 	return nil
 }
 
-func (c *Client) createTableIfNotExist(table *arrow.Schema) error {
+func (c *Client) createTableIfNotExist(tableName string, table *arrow.Schema) error {
 	var sb strings.Builder
-	// TODO sanitize table name
-	tableName := schema.TableName(table)
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
 	sb.WriteString(`"` + tableName + `"`)
 	sb.WriteString(" (")
@@ -213,6 +216,9 @@ func (c *Client) createTableIfNotExist(table *arrow.Schema) error {
 		fieldDef := `"` + col.Name + `" ` + sqlType
 		if schema.IsPk(col) {
 			pks = append(pks, col.Name)
+		}
+		if schema.IsUnique(col) {
+			fieldDef += " UNIQUE"
 		}
 		if !col.Nullable {
 			fieldDef += " NOT NULL"
@@ -241,6 +247,24 @@ func (c *Client) createTableIfNotExist(table *arrow.Schema) error {
 	return nil
 }
 
+func (c *Client) isColumnUnique(tableName string, columName string) (bool, error) {
+	rows, err := c.db.Query(isColumnUniqueSQL, tableName, columName)
+	if err != nil {
+		return false, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var n int
+		rows.Scan(&n)
+		return n == 1, nil
+	}
+	if err := rows.Err(); err != nil {
+		return false, err
+	}
+
+	return false, nil
+}
+
 func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 	info := tableInfo{}
 	rows, err := c.db.Query(fmt.Sprintf(sqlTableInfo, tableName))
@@ -264,6 +288,10 @@ func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 			return nil, err
 		}
 		colInfo.typ = strings.ToLower(colInfo.typ)
+		colInfo.unique, err = c.isColumnUnique(tableName, colInfo.name)
+		if err != nil {
+			return nil, err
+		}
 		info.columns = append(info.columns, colInfo)
 	}
 	if err := rows.Err(); err != nil {

@@ -16,11 +16,11 @@ import (
 
 type Client struct {
 	destination.UnimplementedUnmanagedWriter
-	db      *sql.DB
+	db        *sql.DB
 	connector driver.Connector
-	logger  zerolog.Logger
-	spec    specs.Destination
-	metrics destination.Metrics
+	logger    zerolog.Logger
+	spec      specs.Destination
+	metrics   destination.Metrics
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {

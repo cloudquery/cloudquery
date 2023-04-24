@@ -50,7 +50,7 @@ func (c *Client) SchemaTypeToDuckDB(t arrow.DataType) string {
 	}
 }
 
-func (c*Client) duckdbTypeToSchema(t string) arrow.DataType {
+func (c *Client) duckdbTypeToSchema(t string) arrow.DataType {
 	if strings.HasSuffix(t, "[]") {
 		return arrow.ListOf(c.duckdbTypeToSchema(strings.TrimSuffix(t, "[]")))
 	}
