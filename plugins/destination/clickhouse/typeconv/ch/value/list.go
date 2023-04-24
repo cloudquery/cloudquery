@@ -30,8 +30,7 @@ func listValue(arr array.ListLike) (any, error) {
 	}
 
 	if _type == nil {
-		// all elements are nil, so just return nil (NB: not fully equivalent, but highly unlikely)
-		return nil, nil
+		return elems, nil
 	}
 
 	res := reflect.MakeSlice(reflect.SliceOf(reflect.PointerTo(_type)), len(elems), len(elems)) // we do []*(type) for nullable assignment
