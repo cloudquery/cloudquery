@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/storage v1.28.1
 	github.com/apache/arrow/go/v12 v12.0.0-20230417014917-9888ac36c142
 	github.com/cloudquery/filetypes/v2 v2.0.3
-	github.com/cloudquery/plugin-sdk/v2 v2.3.8
+	github.com/cloudquery/plugin-sdk/v2 v2.4.0
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
 )
