@@ -10,6 +10,10 @@ type listDataType interface {
 }
 
 // https://clickhouse.com/docs/en/sql-reference/data-types/array
-func listType(_type listDataType) string {
-	return "Array(" + FieldType(_type.ElemField()) + ")" // adds Nullable to the item, if required
+func listType(_type listDataType) (string, error) {
+	item, err := FieldType(_type.ElemField())
+	if err != nil {
+		return "", err
+	}
+	return "Array(" + item + ")", nil // adds Nullable to the item, if required
 }

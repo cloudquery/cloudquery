@@ -11,7 +11,18 @@ import (
 )
 
 func listValue(arr array.ListLike) (any, error) {
-	var err error
+	fieldType, err := types.FieldType(arrow.Field{Type: arr.DataType()})
+	if err != nil {
+		return nil, err
+	}
+	// Need to create slice of the proper type.
+	// We could infer in from elements, but sometimes array is empty
+	colType, err := column.Type(fieldType).Column("tmp", time.UTC)
+	if err != nil {
+		return nil, err
+	}
+	_type := colType.ScanType()
+
 	elems := make([]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
 		if arr.IsNull(i) || !arr.IsValid(i) {
@@ -24,14 +35,6 @@ func listValue(arr array.ListLike) (any, error) {
 			return nil, err
 		}
 	}
-
-	// Need to create slice of the proper type.
-	// We could infer in from elements, but sometimes array is empty
-	colType, err := column.Type(types.FieldType(arrow.Field{Type: arr.DataType()})).Column("tmp", time.UTC)
-	if err != nil {
-		return nil, err
-	}
-	_type := colType.ScanType()
 
 	res := reflect.MakeSlice(reflect.SliceOf(reflect.PointerTo(_type)), len(elems), len(elems)) // we do []*(type) for nullable assignment
 	for i, elem := range elems {

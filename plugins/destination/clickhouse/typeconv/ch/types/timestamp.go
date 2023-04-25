@@ -1,6 +1,7 @@
 package types
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -8,20 +9,18 @@ import (
 )
 
 // https://clickhouse.com/docs/en/sql-reference/data-types/datetime64
-func timestampType(_type *arrow.TimestampType) string {
+func timestampType(_type *arrow.TimestampType) (string, error) {
 	loc, err := _type.GetZone()
 	if err != nil {
-		// This will also result in the _type.GetToTimeFunc error.
-		// Just default to String
-		// TODO: consider panic/error
-		return "String"
+		return "", err
 	}
 	if loc.String() == time.UTC.String() {
+		// default is UTC, so we force it to nil here
 		loc = nil
 	}
 
 	var precision int
-	switch _type.TimeUnit() {
+	switch unit := _type.TimeUnit(); unit {
 	case arrow.Second:
 		precision = 0
 	case arrow.Millisecond:
@@ -31,15 +30,12 @@ func timestampType(_type *arrow.TimestampType) string {
 	case arrow.Nanosecond:
 		precision = 9
 	default:
-		// this will also result in the _type.GetToTimeFunc error.
-		// Just default to String
-		// TODO: consider panic/error
-		return "String"
+		return "", fmt.Errorf("unsupported Apache Arrow Timestamp time unit: %s", unit.String())
 	}
 
 	if loc != nil {
-		return "DateTime64(" + strconv.Itoa(precision) + ", '" + loc.String() + "')"
+		return "DateTime64(" + strconv.Itoa(precision) + ", '" + loc.String() + "')", nil
 	}
 
-	return "DateTime64(" + strconv.Itoa(precision) + ")"
+	return "DateTime64(" + strconv.Itoa(precision) + ")", nil
 }

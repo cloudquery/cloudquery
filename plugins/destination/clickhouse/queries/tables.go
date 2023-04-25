@@ -35,7 +35,11 @@ func CreateTable(sc *arrow.Schema, cluster string, engine *Engine) (string, erro
 	builder.WriteString("  ")
 	fields := sc.Fields()
 	for i, field := range fields {
-		builder.WriteString(types.FieldDefinition(field))
+		definition, err := types.FieldDefinition(field)
+		if err != nil {
+			return "", err
+		}
+		builder.WriteString(definition)
 		if i < len(fields)-1 {
 			builder.WriteString(",\n  ")
 		}

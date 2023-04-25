@@ -7,7 +7,10 @@ import (
 )
 
 func AddColumn(table string, cluster string, field arrow.Field) (string, error) {
-	definition := types.FieldDefinition(field)
+	definition, err := types.FieldDefinition(field)
+	if err != nil {
+		return "", err
+	}
 	return "ALTER TABLE " + tableNamePart(table, cluster) + " ADD COLUMN " + definition, nil
 }
 

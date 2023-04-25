@@ -5,17 +5,24 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 )
 
-func FieldType(field arrow.Field) string {
-	typ := dataType(field.Type)
+func FieldType(field arrow.Field) (string, error) {
+	_type, err := dataType(field.Type)
+	if err != nil {
+		return "", err
+	}
 
 	// We allow nullable values in arrays, but arrays cannot be nullable themselves
 	if field.Type.ID() == arrow.LIST || !field.Nullable {
-		return typ
+		return _type, nil
 	}
 
-	return "Nullable(" + typ + ")"
+	return "Nullable(" + _type + ")", nil
 }
 
-func FieldDefinition(field arrow.Field) string {
-	return util.SanitizeID(field.Name) + " " + FieldType(field)
+func FieldDefinition(field arrow.Field) (string, error) {
+	_type, err := FieldType(field)
+	if err != nil {
+		return "", err
+	}
+	return util.SanitizeID(field.Name) + " " + _type, nil
 }
