@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v2.3.0...plugins-source-gitlab-v2.3.1) (2023-04-25)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.4.0 ([#10278](https://github.com/cloudquery/cloudquery/issues/10278)) ([a0a713e](https://github.com/cloudquery/cloudquery/commit/a0a713e8490b970b9d8bfaa1b50e01f43ff51c36))
+
 ## [2.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v2.2.5...plugins-source-gitlab-v2.3.0) (2023-04-20)
 
 
