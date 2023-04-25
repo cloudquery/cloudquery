@@ -9,6 +9,9 @@ func unwrap[A any](value any) (A, bool) {
 	var ptr *A
 
 	switch v := value.(type) {
+	case A:
+		return v, true
+
 	case *A:
 		ptr = v
 
