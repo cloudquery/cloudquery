@@ -7,7 +7,8 @@ import (
 	"time"
 
 	"cloud.google.com/go/bigquery"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/api/googleapi"
 )
@@ -19,32 +20,33 @@ const (
 )
 
 // Migrate tables. It is the responsibility of the CLI of the client to lock before running migrations.
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+func (c *Client) Migrate(ctx context.Context, schemas schema.Schemas) error {
 	eg, gctx := errgroup.WithContext(ctx)
 	eg.SetLimit(concurrentMigrations)
-	for _, table := range tables.FlattenTables() {
-		table := table
+	for _, sc := range schemas {
+		sc := sc
 		eg.Go(func() error {
-			c.logger.Debug().Str("table", table.Name).Msg("Migrating table")
-			tableExists, err := c.doesTableExist(gctx, c.client, table.Name)
+			tableName := schema.TableName(sc)
+			c.logger.Debug().Str("table", tableName).Msg("Migrating table")
+			tableExists, err := c.doesTableExist(gctx, c.client, tableName)
 			if err != nil {
-				return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
+				return fmt.Errorf("failed to check if table %s exists: %w", tableName, err)
 			}
 			if tableExists {
-				c.logger.Debug().Str("table", table.Name).Msg("Table exists, auto-migrating")
-				if err := c.autoMigrateTable(gctx, c.client, table); err != nil {
+				c.logger.Debug().Str("table", tableName).Msg("Table exists, auto-migrating")
+				if err := c.autoMigrateTable(gctx, c.client, sc); err != nil {
 					return err
 				}
-				err = c.waitForSchemaToMatch(gctx, c.client, table)
+				err = c.waitForSchemaToMatch(gctx, c.client, sc)
 				if err != nil {
 					return err
 				}
 			} else {
-				c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
-				if err := c.createTable(gctx, c.client, table); err != nil {
+				c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
+				if err := c.createTable(gctx, c.client, sc); err != nil {
 					return err
 				}
-				err = c.waitForTableToExist(gctx, c.client, table)
+				err = c.waitForTableToExist(gctx, c.client, sc)
 				if err != nil {
 					return err
 				}
@@ -74,33 +76,35 @@ func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, ta
 
 // wait until we can confirm that table now exists to avoid issues if writes are done
 // immediately after the migration
-func (c *Client) waitForTableToExist(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
-	c.logger.Debug().Str("table", table.Name).Msg("Waiting for table to be created")
+func (c *Client) waitForTableToExist(ctx context.Context, client *bigquery.Client, sc *arrow.Schema) error {
+	tableName := schema.TableName(sc)
+	c.logger.Debug().Str("table", tableName).Msg("Waiting for table to be created")
 	for i := 0; i < maxTableChecks; i++ {
-		tableExists, err := c.doesTableExist(ctx, client, table.Name)
+		tableExists, err := c.doesTableExist(ctx, client, tableName)
 		if err != nil {
 			return err
 		}
 		if tableExists {
-			c.logger.Debug().Str("table", table.Name).Msg("Table created")
+			c.logger.Debug().Str("table", tableName).Msg("Table created")
 			return nil
 		}
-		c.logger.Debug().Str("table", table.Name).Int("i", i).Msg("Waiting for table to be created")
+		c.logger.Debug().Str("table", tableName).Int("i", i).Msg("Waiting for table to be created")
 		time.Sleep(checkTableFrequency)
 	}
-	return fmt.Errorf("failed to confirm table creation for %v within timeout period", table.Name)
+	return fmt.Errorf("failed to confirm table creation for %v within timeout period", tableName)
 }
 
 // wait until we can confirm that schema now matches, to avoid issues if writes are done
 // immediately after the migration
-func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
-	c.logger.Debug().Str("table", table.Name).Msg("Waiting for schemas to match")
-	wantSchema := c.bigQuerySchemaForTable(table)
+func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Client, sc *arrow.Schema) error {
+	tableName := schema.TableName(sc)
+	c.logger.Debug().Str("table", tableName).Msg("Waiting for schemas to match")
+	wantSchema := c.bigQuerySchemaForTable(sc)
 	for i := 0; i < maxTableChecks; i++ {
 		// require this check to pass 3 times in a row to mitigate getting different responses from different BQ servers
 		tries := 3
 		for j := 0; j < tries; j++ {
-			md, err := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Metadata(ctx)
+			md, err := client.Dataset(c.pluginSpec.DatasetID).Table(tableName).Metadata(ctx)
 			if err != nil {
 				return err
 			}
@@ -109,36 +113,38 @@ func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Clie
 				continue
 			}
 			if j == tries-1 {
-				c.logger.Debug().Str("table", table.Name).Msg("Schemas match")
+				c.logger.Debug().Str("table", tableName).Msg("Schemas match")
 				return nil
 			}
 		}
-		c.logger.Debug().Str("table", table.Name).Int("i", i).Msg("Waiting for schemas to match")
+		c.logger.Debug().Str("table", tableName).Int("i", i).Msg("Waiting for schemas to match")
 		time.Sleep(checkTableFrequency)
 	}
-	return fmt.Errorf("failed to confirm schema update for %v within timeout period", table.Name)
+	return fmt.Errorf("failed to confirm schema update for %v within timeout period", tableName)
 }
 
-func (c *Client) autoMigrateTable(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
-	bqTable := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name)
+func (c *Client) autoMigrateTable(ctx context.Context, client *bigquery.Client, sc *arrow.Schema) error {
+	tableName := schema.TableName(sc)
+	tableDescription := schema.TableDescription(sc)
+	bqTable := client.Dataset(c.pluginSpec.DatasetID).Table(tableName)
 	md, err := bqTable.Metadata(ctx)
 	if err != nil {
-		return fmt.Errorf("failed to get metadata for table %q with error: %w", table.Name, err)
+		return fmt.Errorf("failed to get metadata for table %q with error: %w", tableName, err)
 	}
 	haveSchema := md.Schema
-	wantSchema := c.bigQuerySchemaForTable(table)
+	wantSchema := c.bigQuerySchemaForTable(sc)
 	wantSchema, err = mergeSchemas(haveSchema, wantSchema)
 	if err != nil {
-		return fmt.Errorf("failed to migrate schema for table %q with error: %w", table.Name, err)
+		return fmt.Errorf("failed to migrate schema for table %q with error: %w", tableName, err)
 	}
 	tm := bigquery.TableMetadataToUpdate{
-		Name:        table.Name,
-		Description: table.Description,
+		Name:        tableName,
+		Description: tableDescription,
 		Schema:      wantSchema,
 	}
 	_, err = bqTable.Update(ctx, tm, "")
 	if err != nil {
-		return fmt.Errorf("failed to update schema for table %q with error: %w", table.Name, err)
+		return fmt.Errorf("failed to update schema for table %q with error: %w", tableName, err)
 	}
 	return nil
 }
@@ -194,16 +200,18 @@ func mergeSchemas(haveSchema, wantSchema bigquery.Schema) (bigquery.Schema, erro
 	return merged, nil
 }
 
-func (c *Client) createTable(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
-	bqSchema := c.bigQuerySchemaForTable(table)
+func (c *Client) createTable(ctx context.Context, client *bigquery.Client, sc *arrow.Schema) error {
+	bqSchema := c.bigQuerySchemaForTable(sc)
+	tableName := schema.TableName(sc)
+	tableDescription := schema.TableDescription(sc)
 	tm := bigquery.TableMetadata{
-		Name:             table.Name,
+		Name:             tableName,
 		Location:         "",
-		Description:      table.Description,
+		Description:      tableDescription,
 		Schema:           bqSchema,
 		TimePartitioning: c.timePartitioning(),
 	}
-	return client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Create(ctx, &tm)
+	return client.Dataset(c.pluginSpec.DatasetID).Table(tableName).Create(ctx, &tm)
 }
 
 func (c *Client) timePartitioning() *bigquery.TimePartitioning {
@@ -223,15 +231,14 @@ func (c *Client) timePartitioning() *bigquery.TimePartitioning {
 	}
 }
 
-func (c *Client) bigQuerySchemaForTable(table *schema.Table) bigquery.Schema {
+func (c *Client) bigQuerySchemaForTable(sc *arrow.Schema) bigquery.Schema {
 	s := bigquery.Schema{}
-	for _, col := range table.Columns {
-		columnType, repeated := c.SchemaTypeToBigQuery(col.Type)
+	for _, field := range sc.Fields() {
+		columnType, repeated := c.SchemaTypeToBigQueryType(field.Type)
 		s = append(s, &bigquery.FieldSchema{
-			Name:        col.Name,
-			Description: col.Description,
-			Repeated:    repeated,
-			Type:        columnType,
+			Name:     field.Name,
+			Repeated: repeated,
+			Type:     columnType,
 		})
 	}
 	return s

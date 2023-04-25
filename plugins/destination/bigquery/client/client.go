@@ -5,15 +5,14 @@ import (
 	"fmt"
 
 	"cloud.google.com/go/bigquery"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 	"google.golang.org/api/option"
 )
 
 type Client struct {
 	destination.UnimplementedUnmanagedWriter
-	destination.DefaultReverseTransformer
 	logger     zerolog.Logger
 	spec       specs.Destination
 	metrics    destination.Metrics
