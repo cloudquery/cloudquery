@@ -128,6 +128,7 @@
   - [aws_config_conformance_pack_rule_compliances](tables/aws_config_conformance_pack_rule_compliances)
 - [aws_config_delivery_channels](tables/aws_config_delivery_channels)
   - [aws_config_delivery_channel_statuses](tables/aws_config_delivery_channel_statuses)
+- [aws_costexplorer_cost_current_month](tables/aws_costexplorer_cost_current_month)
 - [aws_dax_clusters](tables/aws_dax_clusters)
 - [aws_db_proxies](tables/aws_db_proxies)
 - [aws_directconnect_connections](tables/aws_directconnect_connections)
@@ -589,5 +590,4 @@
 - [aws_xray_groups](tables/aws_xray_groups)
 - [aws_xray_resource_policies](tables/aws_xray_resource_policies)
 - [aws_xray_sampling_rules](tables/aws_xray_sampling_rules)
-- [awscost_costexplorer_cost_current_month](tables/awscost_costexplorer_cost_current_month)
 - [awscost_costexplorer_forecast_current_month](tables/awscost_costexplorer_forecast_current_month)

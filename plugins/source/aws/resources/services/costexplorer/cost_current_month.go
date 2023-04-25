@@ -13,7 +13,7 @@ import (
 )
 
 func CurrentMonthCost() *schema.Table {
-	tableName := "awscost_costexplorer_cost_current_month"
+	tableName := "aws_costexplorer_cost_current_month"
 	return &schema.Table{
 		Name:     tableName,
 		Resolver: fetchCost,
