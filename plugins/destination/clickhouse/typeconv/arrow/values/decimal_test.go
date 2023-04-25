@@ -1,7 +1,6 @@
 package values
 
 import (
-	"math"
 	"math/rand"
 	"testing"
 
@@ -12,7 +11,7 @@ import (
 )
 
 func Test_decimal128(t *testing.T) {
-	value := decimal.NewFromFloat(rand.Float64()*(math.MaxFloat64/2-1) + rand.Float64())
+	value := decimal.NewFromFloat((rand.Float64()-rand.Float64())*1000 + rand.Float64())
 	for _, _type := range []*arrow.Decimal128Type{
 		{Precision: 10, Scale: 0},
 		{Precision: 10, Scale: 3},
@@ -35,7 +34,7 @@ func Test_decimal128(t *testing.T) {
 }
 
 func Test_decimal256(t *testing.T) {
-	value := decimal.NewFromFloat(rand.Float64()*(math.MaxFloat64/2-1) + rand.Float64())
+	value := decimal.NewFromFloat((rand.Float64()-rand.Float64())*1000 + rand.Float64())
 	for _, _type := range []*arrow.Decimal256Type{
 		{Precision: 10, Scale: 0},
 		{Precision: 10, Scale: 3},

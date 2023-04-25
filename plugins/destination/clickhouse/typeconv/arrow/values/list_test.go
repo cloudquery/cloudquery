@@ -26,12 +26,15 @@ func genListTestCase[A any](t *testing.T, _type arrow.DataType, _new func() A, n
 		values[i], expected[i] = &val, val
 	}
 
-	data, err := json.Marshal(expected)
-	require.NoError(t, err)
-
 	return testCase{
 		_type:    _type,
 		value:    values,
-		expected: string(data),
+		expected: marshalList(t, expected),
 	}
+}
+
+func marshalList(t *testing.T, value any) json.RawMessage {
+	data, err := json.Marshal(value)
+	require.NoError(t, err)
+	return data
 }

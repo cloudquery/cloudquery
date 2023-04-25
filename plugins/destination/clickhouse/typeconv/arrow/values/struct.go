@@ -25,6 +25,7 @@ func appendStruct(builder *array.StructBuilder, value map[string]any) error {
 		remaining[field.Name] = struct{}{}
 	}
 
+	builder.Append(true)
 	for i, field := range fields {
 		if err := buildValue(builder.FieldBuilder(i), value[field.Name]); err != nil {
 			return err

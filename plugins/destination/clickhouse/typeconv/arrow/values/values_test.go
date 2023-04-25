@@ -90,6 +90,6 @@ func getValue0(arr arrow.Array) any {
 		return arr.Value(0)
 
 	default:
-		return arr.ValueStr(0)
+		return arr.GetOneForMarshal(0)
 	}
 }
