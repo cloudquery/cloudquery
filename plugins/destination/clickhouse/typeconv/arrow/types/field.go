@@ -59,7 +59,7 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 		return dateTime64Type(name, col)
 
 	case *column.Decimal:
-		return decimalType(name, col)
+		return decimalType(name, col), nil
 
 	case *column.Array:
 		return arrayType(name, col)
