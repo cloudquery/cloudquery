@@ -12,7 +12,7 @@ func timestampValues(arr *array.Timestamp) []any {
 	unit := arr.DataType().(*arrow.TimestampType).Unit
 	res := make([]any, arr.Len())
 	for i := range res {
-		if arr.IsValid(i) && !arr.IsNull(i) {
+		if arr.IsValid(i) {
 			res[i] = arr.Value(i).ToTime(unit).UTC()
 		}
 	}
@@ -26,7 +26,7 @@ func getValues(arr arrow.Array) []any {
 
 	res := make([]any, arr.Len())
 	for i := range res {
-		if arr.IsValid(i) && !arr.IsNull(i) {
+		if arr.IsValid(i) {
 			res[i] = arr.GetOneForMarshal(i)
 		}
 	}
