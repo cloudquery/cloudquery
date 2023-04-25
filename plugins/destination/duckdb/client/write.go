@@ -13,44 +13,6 @@ import (
 	"github.com/google/uuid"
 )
 
-// func (c *Client) upsert(table *schema.Table, data []any) error {
-// 	// At time of writing (March 2023), duckdb does not support updating list columns.
-// 	// As a workaround, we delete the row and insert it again. This makes it non-atomic, unfortunately,
-// 	// but this is unavoidable until support is added to duckdb itself.
-// 	// See https://github.com/duckdb/duckdb/blob/c5d9afb97bbf0be12216f3b89ae3131afbbc3156/src/storage/table/list_column_data.cpp#L243-L251
-// 	var sb strings.Builder
-// 	if len(table.PrimaryKeys()) > 0 {
-// 		sb.WriteString("delete from ")
-// 		sb.WriteString(`"` + table.Name + `"`)
-// 		sb.WriteString(" where ")
-// 		pks := table.PrimaryKeys()
-// 		pkData := make([]any, len(pks))
-// 		for i, k := range pks {
-// 			col := table.Columns.Get(k)
-// 			sb.WriteString(`"` + col.Name + `"`)
-// 			sb.WriteString(" = ")
-// 			sb.WriteString(fmt.Sprintf("$%d ", i+1))
-// 			if i < len(pks)-1 {
-// 				sb.WriteString("and ")
-// 			}
-// 			pkData[i] = data[table.Columns.Index(k)]
-// 		}
-// 		sql := sb.String()
-// 		if _, err := c.db.Exec(sql, pkData...); err != nil {
-// 			return fmt.Errorf("failed to execute '%s': %w", sql, err)
-// 		}
-// 		sb.Reset()
-// 	}
-// 	sb.WriteString("insert into ")
-// 	c.insertQuery(&sb, table, data)
-// 	expanded := expandData(table, data)
-// 	sql := sb.String()
-// 	if _, err := c.db.Exec(sql, expanded...); err != nil {
-// 		return fmt.Errorf("failed to execute '%s': %w", sql, err)
-// 	}
-// 	return nil
-// }
-
 func nonPkIndices(sc *arrow.Schema) []int {
 	var indices []int
 	for i, f := range sc.Fields() {
@@ -143,7 +105,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, sc *arrow.Schema, records 
 	if err != nil {
 		return err
 	}
-	// defer os.Remove(f.Name())
+	defer os.Remove(f.Name())
 
 	w := json.NewWriter(f, sc)
 	for _, r := range records {
@@ -156,7 +118,6 @@ func (c *Client) WriteTableBatch(ctx context.Context, sc *arrow.Schema, records 
 		return err
 	}
 
-	fmt.Println(f.Name())
 	if c.spec.WriteMode == specs.WriteModeAppend || len(schema.PrimaryKeyIndices(sc)) == 0 {
 		if err := c.copy_from_file(tableName, f.Name(), sc); err != nil {
 			return err

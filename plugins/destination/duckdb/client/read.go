@@ -18,6 +18,9 @@ func (c *Client) Read(ctx context.Context, sc *arrow.Schema, sourceName string, 
 	if err != nil {
 		return err
 	}
+
+	defer os.Remove(f.Name())
+
 	fName := f.Name()
 	if err := f.Close(); err != nil {
 		return err

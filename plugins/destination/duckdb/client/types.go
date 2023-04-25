@@ -58,11 +58,11 @@ func (c *Client) duckdbTypeToSchema(t string) arrow.DataType {
 	}
 	switch t {
 	case "tinyint":
-		return arrow.PrimitiveTypes.Uint8
+		return arrow.PrimitiveTypes.Int8
 	case "smallint":
-		return arrow.PrimitiveTypes.Uint16
+		return arrow.PrimitiveTypes.Int16
 	case "int", "int4", "integer":
-		return arrow.PrimitiveTypes.Uint32
+		return arrow.PrimitiveTypes.Int32
 	case "bigint", "int8", "long":
 		return arrow.PrimitiveTypes.Int64
 	case "utinyint":
