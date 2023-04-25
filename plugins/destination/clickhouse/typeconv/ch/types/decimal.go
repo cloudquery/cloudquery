@@ -9,26 +9,24 @@ import (
 )
 
 // https://clickhouse.com/docs/en/sql-reference/data-types/decimal
-func decimalType(_type arrow.DecimalType) string {
+func decimalType(_type arrow.DecimalType) (string, error) {
 	precision, scale := _type.GetPrecision(), _type.GetScale()
 	if scale > 76 {
-		// don't support this, default to String
-		return "String"
+		return "", fmt.Errorf("unsupported Apache Arrow decimal scale: %d", scale)
 	}
 
 	precision = max(precision, scale)
 
-	switch _type.ID() {
+	switch id := _type.ID(); id {
 	case arrow.DECIMAL128:
 		precision = ensureBetween(precision, 19, 38)
 	case arrow.DECIMAL256:
 		precision = ensureBetween(precision, 39, 76)
 	default:
-		// don't support this, default to String
-		return "String"
+		return "", fmt.Errorf("unsupported Apache Arrow decimal type: %s", id.String())
 	}
 
-	return "Decimal(" + strconv.FormatInt(int64(precision), 10) + "," + strconv.FormatInt(int64(scale), 10) + ")"
+	return "Decimal(" + strconv.FormatInt(int64(precision), 10) + "," + strconv.FormatInt(int64(scale), 10) + ")", nil
 }
 
 func ensureBetween[A constraints.Ordered](x, from, to A) A {

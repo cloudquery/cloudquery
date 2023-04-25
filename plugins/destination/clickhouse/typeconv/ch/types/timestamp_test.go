@@ -20,8 +20,6 @@ func Test_timestampType(t *testing.T) {
 		{_type: &arrow.Time64Type{Unit: 128}, expected: "String"},
 		{_type: &arrow.Time64Type{Unit: arrow.Microsecond}, expected: "String"},
 		{_type: &arrow.Time64Type{Unit: arrow.Nanosecond}, expected: "String"},
-		{_type: &arrow.TimestampType{Unit: 128}, expected: "String"},
-		{_type: &arrow.TimestampType{TimeZone: "NeverWhen"}, expected: "String"},
 		{_type: &arrow.TimestampType{Unit: arrow.Second}, expected: "DateTime64(0)"},
 		{
 			_type:    &arrow.TimestampType{Unit: arrow.Second, TimeZone: timeZone},

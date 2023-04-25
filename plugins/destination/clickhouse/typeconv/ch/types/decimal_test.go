@@ -8,7 +8,6 @@ import (
 
 func Test_decimalType(t *testing.T) {
 	for _, tc := range []testCase{
-		{_type: &arrow.Decimal128Type{Scale: 128}, expected: "String"},
 		{_type: &arrow.Decimal128Type{Scale: 12}, expected: "Decimal(19,12)"},
 		{_type: &arrow.Decimal256Type{Scale: 12}, expected: "Decimal(39,12)"},
 	} {

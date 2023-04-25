@@ -56,7 +56,8 @@ func ensureDefinition(t *testing.T, tc testCase) {
 			Name: replacer.Replace(tc._type.String()),
 			Type: tc._type,
 		}
-		fieldType := FieldType(field)
+		fieldType, err := FieldType(field)
+		require.NoError(t, err)
 		require.Equal(t, tc.expected, fieldType)
 
 		if field.Type.ID() == arrow.LIST {
@@ -66,7 +67,8 @@ func ensureDefinition(t *testing.T, tc testCase) {
 
 		// nullable
 		field.Nullable = true
-		fieldType = FieldType(field)
+		fieldType, err = FieldType(field)
+		require.NoError(t, err)
 		require.Equal(t, "Nullable("+tc.expected+")", fieldType)
 	})
 }

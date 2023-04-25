@@ -43,6 +43,10 @@ func CanonizedSchema(sc *arrow.Schema) (*arrow.Schema, error) {
 // Several different Apache Arrow types will produce the same canonical type & that'll be the type we'll use in the database.
 func CanonizedField(field arrow.Field) (*arrow.Field, error) {
 	// 1 - convert to the ClickHouse
+	_type, err := clickhouse.FieldType(field)
+	if err != nil {
+		return nil, err
+	}
 	// 2 - convert back to Apache Arrow
-	return _arrow.Field(field.Name, clickhouse.FieldType(field))
+	return _arrow.Field(field.Name, _type)
 }
