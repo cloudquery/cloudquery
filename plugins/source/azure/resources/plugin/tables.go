@@ -253,6 +253,7 @@ func tables() []*schema.Table {
 		network.Interfaces(),
 		network.LoadBalancers(),
 		network.NatGateways(),
+		network.PrivateLinkServices(),
 		network.Profiles(),
 		network.PublicIpAddresses(),
 		network.PublicIpPrefixes(),
