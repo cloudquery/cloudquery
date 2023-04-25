@@ -50,7 +50,7 @@ func ensureDefinition(t *testing.T, tc testCase) {
 		",", "_",
 	)
 
-	t.Run(tc.expected, func(t *testing.T) {
+	t.Run(tc._type.String(), func(t *testing.T) {
 		// non-nullable
 		field := arrow.Field{
 			Name: replacer.Replace(tc._type.String()),
