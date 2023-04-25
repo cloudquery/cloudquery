@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.2.0...plugins-source-azure-v7.3.0) (2023-04-25)
 
 
+### This Release has the Following Changes to Tables
+- Table `azure_network_private_link_services` was added
+
 ### Features
 
 * **azure-resources:** Add Network Private Link Services ([#10261](https://github.com/cloudquery/cloudquery/issues/10261)) ([c3a507c](https://github.com/cloudquery/cloudquery/commit/c3a507cb8573e27990a0db8055d7066023bbb428))
