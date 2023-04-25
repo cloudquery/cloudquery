@@ -3,6 +3,9 @@
 ## [5.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v5.0.1...plugins-source-github-v5.1.0) (2023-04-25)
 
 
+### This Release has the Following Changes to Tables
+- Table `github_repository_branches` was added
+
 ### Features
 
 * **github:** Add `github_repository_branches` table ([#10044](https://github.com/cloudquery/cloudquery/issues/10044)) ([c5eade6](https://github.com/cloudquery/cloudquery/commit/c5eade6105e9eeb30462b77f00121bf85db013d1))
