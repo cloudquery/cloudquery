@@ -12,7 +12,7 @@ type primitive[A any] interface {
 func primitiveValue[A any](arr primitive[A]) []*A {
 	res := make([]*A, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) && !arr.IsNull(i) {
+		if arr.IsValid(i) {
 			val := arr.Value(i)
 			res[i] = &val
 		}

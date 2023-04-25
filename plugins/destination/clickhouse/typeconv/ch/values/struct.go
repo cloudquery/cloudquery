@@ -25,7 +25,7 @@ func structValue(arr *array.Struct) (any, error) {
 
 	rows := make([]*map[string]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsNull(i) || !arr.IsValid(i) {
+		if arr.IsNull(i) {
 			continue
 		}
 

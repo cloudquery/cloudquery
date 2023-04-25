@@ -14,7 +14,7 @@ type date interface {
 func dateValue[A date](arr primitive[A]) []*time.Time {
 	res := make([]*time.Time, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) && !arr.IsNull(i) {
+		if arr.IsValid(i) {
 			val := arr.Value(i).ToTime()
 			res[i] = &val
 		}
@@ -30,7 +30,7 @@ func timestampValue(arr *array.Timestamp) ([]*time.Time, error) {
 
 	res := make([]*time.Time, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) && !arr.IsNull(i) {
+		if arr.IsValid(i) {
 			val := conv(arr.Value(i))
 			res[i] = &val
 		}

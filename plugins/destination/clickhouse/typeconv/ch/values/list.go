@@ -25,7 +25,7 @@ func listValue(arr array.ListLike) (any, error) {
 
 	elems := make([]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsNull(i) || !arr.IsValid(i) {
+		if arr.IsNull(i) {
 			continue
 		}
 

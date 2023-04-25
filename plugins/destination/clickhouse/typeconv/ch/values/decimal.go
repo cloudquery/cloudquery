@@ -17,7 +17,7 @@ func decimalValue[A decimalToBigInt](arr primitive[A]) []*decimal.Decimal {
 
 	res := make([]*decimal.Decimal, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) && !arr.IsNull(i) {
+		if arr.IsValid(i) {
 			val := decimal.NewFromBigInt(arr.Value(i).BigInt(), -scale)
 			res[i] = &val
 		}
