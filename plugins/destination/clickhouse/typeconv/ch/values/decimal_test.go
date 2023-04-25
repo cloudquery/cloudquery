@@ -16,7 +16,7 @@ func Test_decimal128Value(t *testing.T) {
 	const amount = 100
 	values := make([]float64, amount)
 	for i := range values {
-		values[i] = rand.Float64()*1000 + rand.Float64()
+		values[i] = (rand.Float64()-rand.Float64())*1000 + rand.Float64()
 	}
 
 	for _, _type := range []*arrow.Decimal128Type{
@@ -66,7 +66,7 @@ func Test_decimal256Value(t *testing.T) {
 
 	values := make([]float64, amount)
 	for i := range values {
-		values[i] = rand.Float64()*1000 + rand.Float64()
+		values[i] = (rand.Float64()-rand.Float64())*1000 + rand.Float64()
 	}
 
 	for _, _type := range []*arrow.Decimal256Type{
