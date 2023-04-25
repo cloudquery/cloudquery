@@ -57,7 +57,7 @@ func (c *Client) duckdbTypeToSchema(t string) arrow.DataType {
 		return arrow.ListOf(c.duckdbTypeToSchema(strings.TrimSuffix(t, "[]")))
 	}
 	switch t {
-	case "tinyint":
+	case "tinyint", "int1":
 		return arrow.PrimitiveTypes.Int8
 	case "smallint":
 		return arrow.PrimitiveTypes.Int16
