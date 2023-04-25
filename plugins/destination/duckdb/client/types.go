@@ -43,7 +43,7 @@ func (c *Client) SchemaTypeToDuckDB(t arrow.DataType) string {
 		return "json"
 	case *arrow.TimestampType:
 		return "timestamp"
-	case *arrow.Date64Type:
+	case *arrow.Date32Type:
 		return "date"
 	case *arrow.DayTimeIntervalType:
 		return "interval"
@@ -82,7 +82,7 @@ func (c *Client) duckdbTypeToSchema(t string) arrow.DataType {
 	case "blob", "bytea", "binary", "varbinary":
 		return arrow.BinaryTypes.Binary
 	case "date":
-		return arrow.FixedWidthTypes.Date64
+		return arrow.FixedWidthTypes.Date32
 	case "timestamp", "datetime", "timestamp with time zone", "timestamptz":
 		return arrow.FixedWidthTypes.Timestamp_us
 	case "interval":
