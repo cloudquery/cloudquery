@@ -29,7 +29,7 @@ func Test_timeValue(t *testing.T) {
 	}
 
 	// we can use timestampValue here, but we want to check the returned data type from the topmost func, too
-	data, err := FromArray(builder.NewTimestampArray())
+	data, err := FromArray(builder.NewArray())
 	require.NoError(t, err)
 
 	elems := data.([]*time.Time)
