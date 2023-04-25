@@ -5,6 +5,19 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.2.0...plugins-source-azure-v7.3.0) (2023-04-25)
+
+
+### Features
+
+* **azure-resources:** Add Network Private Link Services ([#10261](https://github.com/cloudquery/cloudquery/issues/10261)) ([c3a507c](https://github.com/cloudquery/cloudquery/commit/c3a507cb8573e27990a0db8055d7066023bbb428))
+
+
+### Bug Fixes
+
+* **azure-consumption:** Update Price Sheets next link on new response when paginating ([#10290](https://github.com/cloudquery/cloudquery/issues/10290)) ([4c91468](https://github.com/cloudquery/cloudquery/commit/4c914688551b4bf606110dc570c19c220fefbfb2))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.4.0 ([#10278](https://github.com/cloudquery/cloudquery/issues/10278)) ([a0a713e](https://github.com/cloudquery/cloudquery/commit/a0a713e8490b970b9d8bfaa1b50e01f43ff51c36))
+
 ## [7.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.1.1...plugins-source-azure-v7.2.0) (2023-04-23)
 
 
