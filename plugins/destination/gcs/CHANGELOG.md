@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v2.3.1...plugins-destination-gcs-v3.0.0) (2023-04-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes for CSV or JSON output formats, however the Parquet output changes for UUID columns, which now have dashes, and timestamps, which now uses the default Arrow time format (e.g. `2023-01-02 12:23:45`). If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose).
+
+### Features
+
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([c8c6d66](https://github.com/cloudquery/cloudquery/commit/c8c6d6614f8a7b3a632e0f5aa45199afdd5af7ab))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes/v2 to v2.0.3 ([#10230](https://github.com/cloudquery/cloudquery/issues/10230)) ([730fa51](https://github.com/cloudquery/cloudquery/commit/730fa51814f6800069c138daf074d49b7dc3958b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.45.0 ([#9863](https://github.com/cloudquery/cloudquery/issues/9863)) ([2799d62](https://github.com/cloudquery/cloudquery/commit/2799d62518283ac304beecda9478f8f2db43cdc5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.4.0 ([#10278](https://github.com/cloudquery/cloudquery/issues/10278)) ([a0a713e](https://github.com/cloudquery/cloudquery/commit/a0a713e8490b970b9d8bfaa1b50e01f43ff51c36))
+
 ## [2.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v2.3.0...plugins-destination-gcs-v2.3.1) (2023-04-04)
 
 
