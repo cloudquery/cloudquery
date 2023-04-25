@@ -298,6 +298,7 @@
   - [azure_storage_file_shares](tables/azure_storage_file_shares)
   - [azure_storage_queue_services](tables/azure_storage_queue_services)
   - [azure_storage_queues](tables/azure_storage_queues)
+    - [azure_storage_queue_acl](tables/azure_storage_queue_acl)
   - [azure_storage_tables](tables/azure_storage_tables)
 - [azure_storagecache_caches](tables/azure_storagecache_caches)
 - [azure_streamanalytics_streaming_jobs](tables/azure_streamanalytics_streaming_jobs)

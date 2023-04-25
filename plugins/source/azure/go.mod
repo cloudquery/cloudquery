@@ -106,6 +106,7 @@ require (
 )
 
 require (
+	github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue v0.1.0 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apache/arrow/go/v12 v12.0.0-20230401212133-adf33cc43010 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
