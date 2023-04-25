@@ -12,6 +12,6 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("duckdb", plugin.Version, client.New)
+	p := destination.NewPlugin("duckdb", plugin.Version, client.New, destination.WithManagedWriter())
 	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
 }
