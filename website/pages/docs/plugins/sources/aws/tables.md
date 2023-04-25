@@ -589,3 +589,5 @@
 - [aws_xray_groups](tables/aws_xray_groups)
 - [aws_xray_resource_policies](tables/aws_xray_resource_policies)
 - [aws_xray_sampling_rules](tables/aws_xray_sampling_rules)
+- [awscost_costexplorer_cost_current_month](tables/awscost_costexplorer_cost_current_month)
+- [awscost_costexplorer_forecast_current_month](tables/awscost_costexplorer_forecast_current_month)
