@@ -55,6 +55,7 @@ func fetchSubscriptionPriceSheets(ctx context.Context, meta schema.ClientMeta, p
 			break
 		}
 		allPricesSheets = append(allPricesSheets, paginatedResponse.PriceSheetResult.Properties.Pricesheets...)
+		nextLink = paginatedResponse.PriceSheetResult.Properties.NextLink
 	}
 
 	resp.PriceSheetResult.Properties.Pricesheets = allPricesSheets
