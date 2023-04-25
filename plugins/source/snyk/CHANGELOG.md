@@ -3,6 +3,10 @@
 ## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-snyk-v2.0.1...plugins-source-snyk-v2.1.0) (2023-04-25)
 
 
+### This Release has the Following Changes to Tables
+- Table `snyk_reporting_issues` was added
+- Table `snyk_reporting_latest_issues` was added
+
 ### Features
 
 * Add `snyk_reporting_issues` table ([#9762](https://github.com/cloudquery/cloudquery/issues/9762)) ([bf1bfb5](https://github.com/cloudquery/cloudquery/commit/bf1bfb5f28998ea29cd6aefd03fb5a7392833f4d))
