@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v1.2.2...plugins-destination-firehose-v2.0.0) (2023-04-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose).
+
+### Features
+
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([0587c86](https://github.com/cloudquery/cloudquery/commit/0587c864e117d3e2abebf1142e3cec7309083150))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.17.8 ([#9781](https://github.com/cloudquery/cloudquery/issues/9781)) ([69bb790](https://github.com/cloudquery/cloudquery/commit/69bb790afbeac9ff01a41e71c8f631fb60fe64d1))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.20 ([#9782](https://github.com/cloudquery/cloudquery/issues/9782)) ([1febd5b](https://github.com/cloudquery/cloudquery/commit/1febd5bbd944459a2fcbe380eb90385ecccfb079))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.21 ([#10127](https://github.com/cloudquery/cloudquery/issues/10127)) ([3bcde69](https://github.com/cloudquery/cloudquery/commit/3bcde697c5f927fa4eab52ea4293f1f7724812d1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.45.0 ([#9863](https://github.com/cloudquery/cloudquery/issues/9863)) ([2799d62](https://github.com/cloudquery/cloudquery/commit/2799d62518283ac304beecda9478f8f2db43cdc5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.4.0 ([#10278](https://github.com/cloudquery/cloudquery/issues/10278)) ([a0a713e](https://github.com/cloudquery/cloudquery/commit/a0a713e8490b970b9d8bfaa1b50e01f43ff51c36))
+
 ## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v1.2.1...plugins-destination-firehose-v1.2.2) (2023-04-04)
 
 
