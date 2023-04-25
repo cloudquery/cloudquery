@@ -8,7 +8,7 @@ import (
 func marshalValue[A any](arr arrow.Array) []*A {
 	res := make([]*A, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) && !arr.IsNull(i) {
+		if arr.IsValid(i) {
 			val := arr.GetOneForMarshal(i).(A)
 			res[i] = &val
 		}
@@ -19,7 +19,7 @@ func marshalValue[A any](arr arrow.Array) []*A {
 func valueStrData(arr arrow.Array) []*string {
 	res := make([]*string, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) && !arr.IsNull(i) {
+		if arr.IsValid(i) {
 			val := arr.ValueStr(i)
 			res[i] = &val
 		}
@@ -30,7 +30,7 @@ func valueStrData(arr arrow.Array) []*string {
 func float16Value(arr *array.Float16) []*float32 {
 	res := make([]*float32, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) && !arr.IsNull(i) {
+		if arr.IsValid(i) {
 			val := arr.Value(i).Float32()
 			res[i] = &val
 		}
@@ -41,7 +41,7 @@ func float16Value(arr *array.Float16) []*float32 {
 func byteArrValue(arr primitive[[]byte]) [][]byte {
 	res := make([][]byte, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) && !arr.IsNull(i) {
+		if arr.IsValid(i) {
 			res[i] = arr.Value(i)
 		}
 	}
