@@ -48,7 +48,7 @@ func (w *Writer) Write(record arrow.Record) error {
 					// I believe the real fix should be in how duckdb is handling timestamp as it seems like a bug
 					// so this is just a workaround.
 					// in anycase we do want a capability of custom marshaling where needed.
-					if !strings.Contains(strTimestamp, ".") {
+					if ind := strings.Index(strTimestamp, "."); ind == -1 {
 						tmp[w.schema.Field(j).Name] = strTimestamp + ".000000"
 					} else {
 						ind := strings.Index(strTimestamp, ".")
