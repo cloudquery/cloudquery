@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v1.1.5...plugins-destination-mongodb-v2.0.0) (2023-04-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose).
+
+### Features
+
+* **mongodb:** Create unique indexes for PKs ([#9851](https://github.com/cloudquery/cloudquery/issues/9851)) ([9e20642](https://github.com/cloudquery/cloudquery/commit/9e2064229af4031c7a796a884094294ef2f1a9fc))
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([9e74b76](https://github.com/cloudquery/cloudquery/commit/9e74b768bf86c0da82553f41f700891a90144812))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.45.0 ([#9863](https://github.com/cloudquery/cloudquery/issues/9863)) ([2799d62](https://github.com/cloudquery/cloudquery/commit/2799d62518283ac304beecda9478f8f2db43cdc5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.4.0 ([#10278](https://github.com/cloudquery/cloudquery/issues/10278)) ([a0a713e](https://github.com/cloudquery/cloudquery/commit/a0a713e8490b970b9d8bfaa1b50e01f43ff51c36))
+
 ## [1.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v1.1.4...plugins-destination-mongodb-v1.1.5) (2023-04-04)
 
 
