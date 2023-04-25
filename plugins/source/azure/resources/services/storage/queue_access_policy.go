@@ -2,7 +2,9 @@ package storage
 
 import (
 	"context"
+	"net/url"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
@@ -39,7 +41,8 @@ func fetchQueueACL(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		opts.ClientOptions = cl.Options.ClientOptions
 	}
 
-	svc, err := azqueue.NewQueueClient("https://"+*acc.Name+".queue.core.windows.net/"+*queue.Name+"?comp=acl", cl.Creds, &opts)
+	queueURL := runtime.JoinPaths("https://"+*acc.Name+".queue.core.windows.net", url.PathEscape(*queue.Name))
+	svc, err := azqueue.NewQueueClient(queueURL, cl.Creds, &opts)
 	if err != nil {
 		return err
 	}
