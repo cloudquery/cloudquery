@@ -1,0 +1,53 @@
+---
+title: Adopting Apache Arrow at CloudQuery
+tag: tutorial
+date: 2023/04/26
+description: >-
+  We will walk through some of the architecture and design decisions that led us to adopt
+  Apache Arrow as our in-memory type system.
+author: yevgenypats
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+This post is a collaboration with and cross-posted on the [Arrow blog](https://arrow.apache.org/blog/2023/04/26/adopting-apache-arrow-at-cloudquery/).
+
+[CloudQuery](https://github.com/cloudquery/cloudquery) is an open source high performance ELT framework written in Go. We [previously](https://www.cloudquery.io/blog/building-cloudquery) discussed some of the architecture and design decisions that we took to build a performant ELT framework. A type system is one of the key components of a performant and scalable ELT framework where sources and destinations are decoupled. In this blog we will go through why we decided to adopt Apache Arrow as our type system and replace our in-house implementation.
+
+# What is a Type System?
+
+Let’s quickly [recap](https://www.cloudquery.io/blog/building-cloudquery#type-system) what type system is and why it is needed in an ELT framework. At a high level ELT framework extracts data from a source and moves it to a destination with a specific schema.
+
+```text
+API ---> [Source Plugin]  ----->    [Destination Plugin]
+                          ----->    [Destination Plugin]
+                           gRPC
+```
+
+
+Sources and destinations are decoupled and communicate via gRPC. This is crucial because this way we can add new destinations and update old destinations without updating source plugins code(which otherwise would introduce an unmaintainable architecture).
+
+This is where the type system comes in. Source plugin extracts information from APIs in the most performant way, defines a schema and then transforms the result from the API (JSON or any other format) to a well-defined type system so the destination plugin will be able to easily create the schema for its database and transform the data to the destination type. So to recap, the source plugin sends mainly two things to a destination: 1) schema 2) data that fits the defined schema.
+
+# Why Arrow?
+
+Before Arrow, we used our own type system that supported more than 14 types. This served us well, but we started to hit limitations in various use-cases. For example, in database to database replication, we needed to support many more types, including nested types. Also, performance-wise, lots of the time spent in an ELT process is around converting data from one format to another, so we wanted to take a step back and see if we can avoid this famous XKCD (by building yet another format):
+
+<figure style="text-align: center;">
+  <img src="https://imgs.xkcd.com/comics/standards.png" width="100%" class="img-responsive" alt="Yet another standard XKCD">
+</figure>
+
+
+This is where Arrow comes in. Apache arrow defines a cross language columnar format for flat and hierarchical data, and brings the following advantages:
+
+1. Cross-language with extensive libraries for different languages - The [format](https://arrow.apache.org/docs/format/Columnar.html) is defined in such way that you can parse it in any language and already has extensive support in C/C++, C#, Go, Java, JavaScript, Julia, Matlab, Python, R, Ruby and Rust (at the time of writing). For CloudQuery this is important as it makes it much easier to develop source or destination plugins in different languages.
+2. Performance: Arrow adoption is rising especially in columnar based databases ([DuckDB](https://duckdb.org/2021/12/03/duck-arrow.html), [ClickHouse](https://clickhouse.com/docs/en/integrations/data-formats/arrow-avro-orc), [BigQuery](https://cloud.google.com/bigquery/docs/samples/bigquerystorage-arrow-quickstart)) and file formats ([Parquet](https://arrow.apache.org/docs/python/parquet.html)) which makes it easier to write CloudQuery destination or source plugins for databases that already support arrow as well as much more efficient as we remove the need for additional serialization and transformation step. Moreover, just the performance of sending arrow format from source plugin to destination is already more performant and memory efficient, given its “zero-copy” nature and not needing serialization/deserialization.
+3. Rich Data Types: Arrow supports more than [35 types](https://arrow.apache.org/docs/python/api/datatypes.html) including composite types (i.e. lists, structs and maps of all the available types) and ability to extend the type system with custom types.
+
+# Summary
+
+Adopting Apache Arrow as the CloudQuery in-memory type system enables us to gain better performance, data interoperability and developer experience. Some plugins that are going to gain an immediate boost of rich type systems are our db->db replication plugins such as [PostgreSQL CDC](https://www.cloudquery.io/docs/plugins/sources/postgresql/overview) source plugin (and all [database destinations](https://www.cloudquery.io/docs/plugins/destinations/overview)) that are going to get support for all available types including nested ones.
+
+We are excited about this step and joining the growing Arrow community. We already contributed more than [30](https://github.com/search?q=is%3Apr+author%3Ayevgenypats+author%3Ahermanschaaf+author%3Acandiduslynx+author%3Adisq+label%3A%22Component%3A+Go%22++is%3Amerged+&ref=simplesearch) upstream pull requests that were quickly reviewed by the Arrow maintainers, thank you!
