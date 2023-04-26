@@ -2,13 +2,14 @@ package s3
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func bucketGrants() *schema.Table {
@@ -64,4 +65,18 @@ func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	res <- aclOutput.Grants
 	return nil
+}
+
+func resolveBucketGranteeID(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	grantee := resource.Item.(types.Grant).Grantee
+	switch grantee.Type {
+	case types.TypeCanonicalUser:
+		return resource.Set(c.Name, *grantee.ID)
+	case types.TypeAmazonCustomerByEmail:
+		return resource.Set(c.Name, *grantee.EmailAddress)
+	case types.TypeGroup:
+		return resource.Set(c.Name, *grantee.URI)
+	default:
+		return fmt.Errorf("unsupported grantee type %q", grantee.Type)
+	}
 }

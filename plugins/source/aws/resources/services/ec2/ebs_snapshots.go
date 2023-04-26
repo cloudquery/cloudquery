@@ -8,8 +8,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
 func EbsSnapshots() *schema.Table {
@@ -32,15 +32,13 @@ func EbsSnapshots() *schema.Table {
 				},
 			},
 			{
-				Name:     "attribute",
-				Type:     schema.TypeJSON,
-				Resolver: resolveEbsSnapshotAttribute,
-			},
-			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: client.ResolveTags,
 			},
+		},
+		Relations: []*schema.Table{
+			ebsSnapshotAttributes(),
 		},
 	}
 }
@@ -60,19 +58,6 @@ func fetchEc2EbsSnapshots(ctx context.Context, meta schema.ClientMeta, parent *s
 		res <- page.Snapshots
 	}
 	return nil
-}
-
-func resolveEbsSnapshotAttribute(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Snapshot)
-	svc := meta.(*client.Client).Services().Ec2
-	output, err := svc.DescribeSnapshotAttribute(ctx, &ec2.DescribeSnapshotAttributeInput{
-		Attribute:  types.SnapshotAttributeNameCreateVolumePermission,
-		SnapshotId: r.SnapshotId,
-	})
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, output)
 }
 
 func resolveEbsSnapshotArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

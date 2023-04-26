@@ -8,9 +8,9 @@ import (
 	"strings"
 	"sync/atomic"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 )
@@ -54,42 +54,36 @@ func pgErrToStr(err *pgconn.PgError) string {
 	return sb.String()
 }
 
-func (c *Client) populateConstraintNames(ctx context.Context, tables schema.Tables) error {
+func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan arrow.Record) error {
+	var sql string
+	batch := &pgx.Batch{}
 	pgTables, err := c.listPgTables(ctx, tables)
 	if err != nil {
 		return err
 	}
-	for _, table := range tables.FlattenTables() {
-		pgTable := pgTables.Get(table.Name)
-		if pgTable == nil {
-			return fmt.Errorf("table %s not found in postgres. make sure to run migrate", table.Name)
-		}
-		table.PkConstraintName = pgTable.PkConstraintName
-	}
-	return nil
-}
-
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
-	var sql string
-	batch := &pgx.Batch{}
-	if err := c.populateConstraintNames(ctx, tables); err != nil {
+	tables = c.normalizeTables(tables, pgTables)
+	if err != nil {
 		return err
 	}
 	for r := range res {
-		table := tables.Get(r.TableName)
+		tableName := schema.TableName(r.Schema())
+		table := tables.SchemaByName(tableName)
 		if table == nil {
-			panic(fmt.Errorf("table %s not found", r.TableName))
+			panic(fmt.Errorf("table %s not found", tableName))
 		}
 		if c.spec.WriteMode == specs.WriteModeAppend {
 			sql = c.insert(table)
 		} else {
-			if len(table.PrimaryKeys()) > 0 {
+			if len(schema.PrimaryKeyIndices(table)) > 0 {
 				sql = c.upsert(table)
 			} else {
 				sql = c.insert(table)
 			}
 		}
-		batch.Queue(sql, r.Data...)
+		rows := transformValues(r)
+		for _, rowVals := range rows {
+			batch.Queue(sql, rowVals...)
+		}
 		batchSize := batch.Len()
 		if batchSize >= c.batchSize {
 			br := c.conn.SendBatch(ctx, batch)
@@ -123,12 +117,13 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *de
 	return nil
 }
 
-func (*Client) insert(table *schema.Table) string {
+func (*Client) insert(table *arrow.Schema) string {
 	var sb strings.Builder
+	tableName := schema.TableName(table)
 	sb.WriteString("insert into ")
-	sb.WriteString(pgx.Identifier{table.Name}.Sanitize())
+	sb.WriteString(pgx.Identifier{tableName}.Sanitize())
 	sb.WriteString(" (")
-	columns := table.Columns
+	columns := table.Fields()
 	columnsLen := len(columns)
 	for i, c := range columns {
 		sb.WriteString(pgx.Identifier{c.Name}.Sanitize())
@@ -149,16 +144,19 @@ func (*Client) insert(table *schema.Table) string {
 	return sb.String()
 }
 
-func (c *Client) upsert(table *schema.Table) string {
+func (c *Client) upsert(table *arrow.Schema) string {
 	var sb strings.Builder
 
 	sb.WriteString(c.insert(table))
-	columns := table.Columns
+	columns := table.Fields()
 	columnsLen := len(columns)
 
-	constraintName := table.PkConstraintName
+	constraintName, ok := table.Metadata().GetValue(schema.MetadataConstraintName)
+	if !ok {
+		panic(fmt.Errorf("constraint_name not found in table metadata"))
+	}
 	sb.WriteString(" on conflict on constraint ")
-	sb.WriteString(constraintName)
+	sb.WriteString(pgx.Identifier{constraintName}.Sanitize())
 	sb.WriteString(" do update set ")
 	for i, column := range columns {
 		sb.WriteString(pgx.Identifier{column.Name}.Sanitize())

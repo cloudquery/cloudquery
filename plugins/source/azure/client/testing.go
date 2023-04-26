@@ -9,20 +9,24 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
-	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/gorilla/mux"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 )
 
 const TestSubscription = "12345678-1234-1234-1234-123456789000"
+const LegacyAccountName = "9971ccb0-02bb-45e2-bd6a-9e340372dcba"
+const ModernAccountName = "7c05a543-80ff-571e-9f98-1063b3b53cf2:99ad03ad-2d1b-4889-a452-090ad407d25f_2019-05-31"
 
 var testResourceGroup = "test-resource-group"
 
@@ -73,6 +77,29 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	defer h.Close()
 	mockClient := NewMockHttpClient(h.Client(), h.URL)
 
+	var legacyAccount armbilling.Account
+	if err := faker.FakeObject(&legacyAccount); err != nil {
+		t.Fatal(err)
+	}
+	legacyAccount.ID = to.Ptr("/providers/Microsoft.Billing/billingAccounts/" + LegacyAccountName)
+	legacyAccount.Name = to.Ptr(LegacyAccountName)
+	legacyAccount.Properties.BillingProfiles = nil
+
+	var modernAccount armbilling.Account
+	if err := faker.FakeObject(&modernAccount); err != nil {
+		t.Fatal(err)
+	}
+	modernAccount.ID = to.Ptr("/providers/Microsoft.Billing/billingAccounts/" + ModernAccountName)
+	modernAccount.Name = to.Ptr(ModernAccountName)
+	modernAccount.Properties.BillingProfiles.Value[0].ID = to.Ptr("/providers/Microsoft.Billing/billingAccounts/account-id/billingProfiles/profile-id")
+	modernAccount.Properties.BillingProfiles.Value[0].Name = to.Ptr("profile-id")
+
+	var billingPeriod armbilling.Period
+	if err := faker.FakeObject(&billingPeriod); err != nil {
+		t.Fatal(err)
+	}
+	billingPeriod.ID = to.Ptr("/subscriptions/" + TestSubscription + "/providers/Microsoft.Billing/billingPeriods/202205-1")
+
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro}).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		err := createServices(router)
@@ -104,6 +131,10 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			subscriptions:        []string{TestSubscription},
 			ResourceGroups: map[string][]*armresources.ResourceGroup{
 				TestSubscription: {resourceGroup},
+			},
+			BillingAccounts: []*armbilling.Account{&legacyAccount, &modernAccount},
+			BillingPeriods: map[string][]*armbilling.Period{
+				TestSubscription: {&billingPeriod},
 			},
 		}
 

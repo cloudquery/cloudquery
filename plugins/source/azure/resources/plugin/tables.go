@@ -19,6 +19,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/compute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/confluent"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/connectedvmware"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/consumption"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/containerinstance"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/containerregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/containerservice"
@@ -91,7 +92,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/synapse"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsiot"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/workloads"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func tables() []*schema.Table {
@@ -165,6 +166,26 @@ func tables() []*schema.Table {
 		containerservice.Snapshots(),
 		cosmos.Locations(),
 		cosmos.RestorableDatabaseAccounts(),
+		consumption.BillingAccountBalances(),
+		consumption.BillingAccountBudgets(),
+		consumption.BillingAccountCharges(),
+		consumption.BillingAccountEvents(),
+		consumption.BillingAccountReservationRecommendations(),
+		consumption.BillingAccountLots(),
+		consumption.BillingAccountMarketplaces(),
+		consumption.BillingProfileReservationDetails(),
+		consumption.BillingProfileReservationRecommendations(),
+		consumption.BillingProfileReservationSummaries(),
+		consumption.BillingProfileReservationTransactions(),
+		consumption.BillingAccountLegacyUsageDetails(),
+		consumption.BillingAccountModernUsageDetails(),
+		consumption.BillingAccountTags(),
+		consumption.SubscriptionBudgets(),
+		consumption.SubscriptionMarketplaces(),
+		consumption.SubscriptionPriceSheets(),
+		consumption.SubscriptionReservationRecommendations(),
+		consumption.SubscriptionLegacyUsageDetails(),
+		consumption.SubscriptionTags(),
 		customerinsights.Hubs(),
 		dashboard.Grafana(),
 		databox.Jobs(),
@@ -232,6 +253,7 @@ func tables() []*schema.Table {
 		network.Interfaces(),
 		network.LoadBalancers(),
 		network.NatGateways(),
+		network.PrivateLinkServices(),
 		network.Profiles(),
 		network.PublicIpAddresses(),
 		network.PublicIpPrefixes(),

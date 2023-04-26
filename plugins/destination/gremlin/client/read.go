@@ -4,21 +4,23 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/apache/arrow/go/v12/arrow"
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
+func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
 	session, closer, err := c.newSession()
 	if err != nil {
 		return err
 	}
 	defer closer()
 
+	tableName := schema.TableName(table)
 	g := gremlingo.Traversal_().WithRemote(session).
 		V().
-		HasLabel(table.Name).
-		Has("_cq_source_name", sourceName).
+		HasLabel(tableName).
+		Has(schema.CqSourceNameColumn.Name, sourceName).
 		Group().By(gremlingo.T.Id).
 		By(AnonT.ValueMap())
 
@@ -32,21 +34,11 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		m := row.Data.(map[any]any)
 		for _, rowCols := range m {
 			rowData := rowCols.(map[any]any)
-
-			madeRow := make([]any, len(table.Columns))
-			for i, col := range table.Columns {
-				if rowData[col.Name] == nil {
-					continue
-				}
-
-				data := rowData[col.Name].([]any)
-				if l := len(data); l == 1 {
-					madeRow[i] = data[0]
-				} else if l > 1 {
-					return fmt.Errorf("expected 1 value for %v, got %v", col.Name, l)
-				}
+			rec, err := reverseTransformer(table, rowData)
+			if err != nil {
+				return err
 			}
-			res <- madeRow
+			res <- rec
 		}
 	}
 

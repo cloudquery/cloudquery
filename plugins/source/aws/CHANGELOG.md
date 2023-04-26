@@ -6,6 +6,65 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [17.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v16.3.0...plugins-source-aws-v17.0.0) (2023-04-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** Move EC2 EBS Snapshot `attributes` column to standalone table ([#10247](https://github.com/cloudquery/cloudquery/issues/10247))
+* **aws-resources:** Query issue on `aws_cloudwatchlogs_log_group_data_protection_policies` ([#10243](https://github.com/cloudquery/cloudquery/issues/10243))
+* **aws:** Fix Primary Key for `aws_directconnect_gateways` ([#10233](https://github.com/cloudquery/cloudquery/issues/10233))
+
+### Features
+
+* **aws-services:** Support newly added regions ([#10289](https://github.com/cloudquery/cloudquery/issues/10289)) ([dd6c034](https://github.com/cloudquery/cloudquery/commit/dd6c034fa99002fc4cde912d240c1f386d9171f0))
+* **aws:** Store Spec in Client ([#10286](https://github.com/cloudquery/cloudquery/issues/10286)) ([2561d5c](https://github.com/cloudquery/cloudquery/commit/2561d5c05159c19fe8f860a2f060d30b78c2f15b))
+
+
+### Bug Fixes
+
+* **aws-docs:** Policy docs should include tables used in views ([#10250](https://github.com/cloudquery/cloudquery/issues/10250)) ([08c4d91](https://github.com/cloudquery/cloudquery/commit/08c4d91b86e65a45c7f08d9c55bcbcfc92753d3a))
+* **aws-resources:** Query issue on `aws_cloudwatchlogs_log_group_data_protection_policies` ([#10243](https://github.com/cloudquery/cloudquery/issues/10243)) ([4e9bb39](https://github.com/cloudquery/cloudquery/commit/4e9bb39b2540e1878d88f43c4ac69154ae74b353)), closes [#10216](https://github.com/cloudquery/cloudquery/issues/10216)
+* **aws:** Fix Primary Key for `aws_directconnect_gateways` ([#10233](https://github.com/cloudquery/cloudquery/issues/10233)) ([fc9094f](https://github.com/cloudquery/cloudquery/commit/fc9094f57f2b2e67a040c68725f2c6271f3da2f9))
+* **aws:** Move EC2 EBS Snapshot `attributes` column to standalone table ([#10247](https://github.com/cloudquery/cloudquery/issues/10247)) ([bdb421b](https://github.com/cloudquery/cloudquery/commit/bdb421bd7a23254c9cacf1be13ea19bba52a9d23))
+* **aws:** Remove Resource Specific Parallelization For S3 to use only the SDK parallelization  ([#10255](https://github.com/cloudquery/cloudquery/issues/10255)) ([07c7edb](https://github.com/cloudquery/cloudquery/commit/07c7edb9eabcf7dfddf4db33e5e639746c9504d0))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.63 ([#10267](https://github.com/cloudquery/cloudquery/issues/10267)) ([7a8a4c7](https://github.com/cloudquery/cloudquery/commit/7a8a4c787bf2849b799014f51d32bec42942d16d))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/amp to v1.16.8 ([#10268](https://github.com/cloudquery/cloudquery/issues/10268)) ([d4ec528](https://github.com/cloudquery/cloudquery/commit/d4ec52819c876b2fd501e30aeaf24ff2c5f7a2f7))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/amplify to v1.13.8 ([#10269](https://github.com/cloudquery/cloudquery/issues/10269)) ([8d5d163](https://github.com/cloudquery/cloudquery/commit/8d5d163793725877545c525af03a52e06e7c6bd4))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/apigateway to v1.16.9 ([#10270](https://github.com/cloudquery/cloudquery/issues/10270)) ([dc8fd93](https://github.com/cloudquery/cloudquery/commit/dc8fd93d66ca1a7921f358dc7cd9606d2c2cae90))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/apigatewayv2 to v1.13.9 ([#10271](https://github.com/cloudquery/cloudquery/issues/10271)) ([e3e3f0a](https://github.com/cloudquery/cloudquery/commit/e3e3f0a759910a21b03b195651eb65039f7c2b0a))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/autoscalingplans to v1.13.8 ([#10272](https://github.com/cloudquery/cloudquery/issues/10272)) ([cd7bcee](https://github.com/cloudquery/cloudquery/commit/cd7bcee51920be5e19049c164f8fe6ed80b61413))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.8 ([#10213](https://github.com/cloudquery/cloudquery/issues/10213)) ([f358666](https://github.com/cloudquery/cloudquery/commit/f35866611cd206c37e6e9f9ad3329561e4cb32af))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.4.0 ([#10278](https://github.com/cloudquery/cloudquery/issues/10278)) ([a0a713e](https://github.com/cloudquery/cloudquery/commit/a0a713e8490b970b9d8bfaa1b50e01f43ff51c36))
+* **policies-cloudtrail:** Add region criteria to inner join ([#10246](https://github.com/cloudquery/cloudquery/issues/10246)) ([c9fd369](https://github.com/cloudquery/cloudquery/commit/c9fd369827010e048f9715400d4907d0436de73a))
+
+## [16.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v16.2.0...plugins-source-aws-v16.3.0) (2023-04-20)
+
+
+### Features
+
+* **aws-services:** Support newly added regions ([#10152](https://github.com/cloudquery/cloudquery/issues/10152)) ([d395a94](https://github.com/cloudquery/cloudquery/commit/d395a94344b2406247f28c79564d18470eb754a7))
+* **aws:** Add Support for Config Delivery Channels ([#10150](https://github.com/cloudquery/cloudquery/issues/10150)) ([361df3f](https://github.com/cloudquery/cloudquery/commit/361df3f03b005f2c2a8ccb3c4be86a5190788024))
+* **aws:** Parallelize Initialization of Accounts after discovery ([#10177](https://github.com/cloudquery/cloudquery/issues/10177)) ([3838e80](https://github.com/cloudquery/cloudquery/commit/3838e8094a3c247cfee80772945dce54678f38f2))
+* **aws:** Upgrade to `github.com/cloudquery/plugin-sdk/v2` ([#9938](https://github.com/cloudquery/cloudquery/issues/9938)) ([a3fb436](https://github.com/cloudquery/cloudquery/commit/a3fb4366d91be52418edbe526b640729d61467f7)), closes [#9937](https://github.com/cloudquery/cloudquery/issues/9937)
+
+
+### Bug Fixes
+
+* **aws:** Update EBS Snapshot Permissions Check Query ([#10149](https://github.com/cloudquery/cloudquery/issues/10149)) ([f65d9da](https://github.com/cloudquery/cloudquery/commit/f65d9da21cd57660c7ee8af76f720245400faf45)), closes [#10140](https://github.com/cloudquery/cloudquery/issues/10140)
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.21 ([#10127](https://github.com/cloudquery/cloudquery/issues/10127)) ([3bcde69](https://github.com/cloudquery/cloudquery/commit/3bcde697c5f927fa4eab52ea4293f1f7724812d1))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.62 ([#10129](https://github.com/cloudquery/cloudquery/issues/10129)) ([13f8670](https://github.com/cloudquery/cloudquery/commit/13f867006cd17c92bc1b18022ab3a210266258d8))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/accessanalyzer to v1.19.10 ([#10131](https://github.com/cloudquery/cloudquery/issues/10131)) ([eefbad5](https://github.com/cloudquery/cloudquery/commit/eefbad516aff7599ab67dedb03d41b0dbb94b88c))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/acm to v1.17.9 ([#10132](https://github.com/cloudquery/cloudquery/issues/10132)) ([7f6d235](https://github.com/cloudquery/cloudquery/commit/7f6d235266ed3daaa8d6aed8feb8502cf2ac6773))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.2.0 ([#10135](https://github.com/cloudquery/cloudquery/issues/10135)) ([cf33b89](https://github.com/cloudquery/cloudquery/commit/cf33b892ead0bb231e3956aa70967de552a21624))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.2.2 ([#10143](https://github.com/cloudquery/cloudquery/issues/10143)) ([8f887e0](https://github.com/cloudquery/cloudquery/commit/8f887e05de2096e8efd1e55863a8cf3c7620ccc3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.0 ([#10163](https://github.com/cloudquery/cloudquery/issues/10163)) ([9a7f214](https://github.com/cloudquery/cloudquery/commit/9a7f21460772200e7a588409ebc7eb19f97b195b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.1 ([#10175](https://github.com/cloudquery/cloudquery/issues/10175)) ([5b53423](https://github.com/cloudquery/cloudquery/commit/5b53423e72672f6c2bfb8ae00cfce1641410443e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.3 ([#10187](https://github.com/cloudquery/cloudquery/issues/10187)) ([b185248](https://github.com/cloudquery/cloudquery/commit/b1852480b6ec8b721d94c72d8435051352f26932))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.4 ([#10196](https://github.com/cloudquery/cloudquery/issues/10196)) ([c6d2f59](https://github.com/cloudquery/cloudquery/commit/c6d2f59c7d77177a351cb82ecdc381dec6aad30c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.5 ([#10200](https://github.com/cloudquery/cloudquery/issues/10200)) ([5a33693](https://github.com/cloudquery/cloudquery/commit/5a33693fe29f7068b03d80be1859d6e479c42c0d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.6 ([#10208](https://github.com/cloudquery/cloudquery/issues/10208)) ([91c80a7](https://github.com/cloudquery/cloudquery/commit/91c80a795b46480447cfaef67c4db721a31e3206))
+
 ## [16.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v16.1.0...plugins-source-aws-v16.2.0) (2023-04-12)
 
 

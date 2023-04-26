@@ -1,5 +1,75 @@
 # Changelog
 
+## [2.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v2.3.0...plugins-source-gitlab-v2.3.1) (2023-04-25)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.4.0 ([#10278](https://github.com/cloudquery/cloudquery/issues/10278)) ([a0a713e](https://github.com/cloudquery/cloudquery/commit/a0a713e8490b970b9d8bfaa1b50e01f43ff51c36))
+
+## [2.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v2.2.5...plugins-source-gitlab-v2.3.0) (2023-04-20)
+
+
+### This Release has the Following Changes to Tables
+- Table `gitlab_group_members`: column added with name `email` and type `String`
+- Table `gitlab_groups`: column added with name `ip_restriction_ranges` and type `String`
+- Table `gitlab_groups`: column order changed for `created_at`
+- Table `gitlab_project_members` was added
+- Table `gitlab_projects`: column added with name `can_create_merge_request_in` and type `Bool`
+- Table `gitlab_projects`: column added with name `ci_allow_fork_pipelines_to_run_in_parent_project` and type `Bool`
+- Table `gitlab_projects`: column added with name `ci_job_token_scope_enabled` and type `Bool`
+- Table `gitlab_projects`: column added with name `ci_opt_in_jwt` and type `Bool`
+- Table `gitlab_projects`: column added with name `environments_access_level` and type `String`
+- Table `gitlab_projects`: column added with name `feature_flags_access_level` and type `String`
+- Table `gitlab_projects`: column added with name `group_runners_enabled` and type `Bool`
+- Table `gitlab_projects`: column added with name `import_type` and type `String`
+- Table `gitlab_projects`: column added with name `import_url` and type `String`
+- Table `gitlab_projects`: column added with name `infrastructure_access_level` and type `String`
+- Table `gitlab_projects`: column added with name `issue_branch_template` and type `String`
+- Table `gitlab_projects`: column added with name `monitor_access_level` and type `String`
+- Table `gitlab_projects`: column added with name `mr_default_target_self` and type `Bool`
+- Table `gitlab_projects`: column added with name `releases_access_level` and type `String`
+- Table `gitlab_projects`: column added with name `requirements_enabled` and type `Bool`
+- Table `gitlab_projects`: column added with name `runner_token_expiration_interval` and type `Int`
+- Table `gitlab_projects`: column added with name `security_and_compliance_enabled` and type `Bool`
+- Table `gitlab_projects`: column order changed for `auto_cancel_pending_pipelines`
+- Table `gitlab_projects`: column order changed for `build_timeout`
+- Table `gitlab_projects`: column order changed for `ci_config_path`
+- Table `gitlab_projects`: column order changed for `ci_forward_deployment_enabled`
+- Table `gitlab_projects`: column order changed for `import_error`
+- Table `gitlab_projects`: column order changed for `import_status`
+- Table `gitlab_projects`: column order changed for `public_jobs`
+- Table `gitlab_projects_releases`: column added with name `_links` and type `JSON`
+- Table `gitlab_projects_releases`: column order changed for `assets`
+- Table `gitlab_settings`: column added with name `can_create_group` and type `Bool`
+- Table `gitlab_settings`: column order changed for `admin_notification_email`
+- Table `gitlab_settings`: column order changed for `allow_local_requests_from_hooks_and_services`
+- Table `gitlab_settings`: column order changed for `asset_proxy_whitelist`
+- Table `gitlab_settings`: column order changed for `throttle_unauthenticated_enabled`
+- Table `gitlab_settings`: column order changed for `throttle_unauthenticated_period_in_seconds`
+- Table `gitlab_settings`: column order changed for `throttle_unauthenticated_requests_per_period`
+- Table `gitlab_settings`: column order changed for `user_email_lookup_limit`
+- Table `gitlab_settings`: column order changed for `wiki_page_max_content_bytes`
+
+### Features
+
+* **gitlab:** Add `gitlab_project_members` table ([#10122](https://github.com/cloudquery/cloudquery/issues/10122)) ([2171e7d](https://github.com/cloudquery/cloudquery/commit/2171e7d320c5605a6fa8ed4036312afe5af1e01d)), closes [#10121](https://github.com/cloudquery/cloudquery/issues/10121)
+* **gitlab:** Upgrade to `github.com/cloudquery/plugin-sdk/v2` ([#10053](https://github.com/cloudquery/cloudquery/issues/10053)) ([11600bd](https://github.com/cloudquery/cloudquery/commit/11600bd2179ff33d9cecd9c0f4c67994b5843d51)), closes [#10027](https://github.com/cloudquery/cloudquery/issues/10027)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.2.0 ([#10135](https://github.com/cloudquery/cloudquery/issues/10135)) ([cf33b89](https://github.com/cloudquery/cloudquery/commit/cf33b892ead0bb231e3956aa70967de552a21624))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.2.2 ([#10143](https://github.com/cloudquery/cloudquery/issues/10143)) ([8f887e0](https://github.com/cloudquery/cloudquery/commit/8f887e05de2096e8efd1e55863a8cf3c7620ccc3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.0 ([#10163](https://github.com/cloudquery/cloudquery/issues/10163)) ([9a7f214](https://github.com/cloudquery/cloudquery/commit/9a7f21460772200e7a588409ebc7eb19f97b195b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.1 ([#10175](https://github.com/cloudquery/cloudquery/issues/10175)) ([5b53423](https://github.com/cloudquery/cloudquery/commit/5b53423e72672f6c2bfb8ae00cfce1641410443e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.3 ([#10187](https://github.com/cloudquery/cloudquery/issues/10187)) ([b185248](https://github.com/cloudquery/cloudquery/commit/b1852480b6ec8b721d94c72d8435051352f26932))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.4 ([#10196](https://github.com/cloudquery/cloudquery/issues/10196)) ([c6d2f59](https://github.com/cloudquery/cloudquery/commit/c6d2f59c7d77177a351cb82ecdc381dec6aad30c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.5 ([#10200](https://github.com/cloudquery/cloudquery/issues/10200)) ([5a33693](https://github.com/cloudquery/cloudquery/commit/5a33693fe29f7068b03d80be1859d6e479c42c0d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.6 ([#10208](https://github.com/cloudquery/cloudquery/issues/10208)) ([91c80a7](https://github.com/cloudquery/cloudquery/commit/91c80a795b46480447cfaef67c4db721a31e3206))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.8 ([#10213](https://github.com/cloudquery/cloudquery/issues/10213)) ([f358666](https://github.com/cloudquery/cloudquery/commit/f35866611cd206c37e6e9f9ad3329561e4cb32af))
+* **deps:** Update module github.com/xanzy/go-gitlab to v0.83.0 ([#10145](https://github.com/cloudquery/cloudquery/issues/10145)) ([6ad8927](https://github.com/cloudquery/cloudquery/commit/6ad8927f66df43a78353cf0a710cc8fd1cf5b2c9))
+
 ## [2.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v2.2.4...plugins-source-gitlab-v2.2.5) (2023-04-13)
 
 

@@ -1,7 +1,7 @@
 package users
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func UserNotificationRules() *schema.Table {
