@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/cloudquery/cloudquery/plugins/destination/duckdb/client"
 	"github.com/cloudquery/cloudquery/plugins/destination/duckdb/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/serve"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v2/serve"
 )
 
 const (
@@ -12,6 +12,6 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("duckdb", plugin.Version, client.New)
+	p := destination.NewPlugin("duckdb", plugin.Version, client.New, destination.WithManagedWriter())
 	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
 }
