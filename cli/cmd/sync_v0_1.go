@@ -20,7 +20,7 @@ func syncConnectionV0_1(ctx context.Context, cqDir string, sourceClient *source.
 	for i := range destinationsSpecs {
 		destinationNames[i] = destinationsSpecs[i].Name
 	}
-	syncTime := time.Now().UTC()
+	syncTime := getSyncTime()
 
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("sync_time", syncTime).Msg("Start sync")
 	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("sync_time", syncTime).Msg("End sync")

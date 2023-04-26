@@ -53,7 +53,7 @@ func syncConnectionV1(ctx context.Context, cqDir string, sourceSpec specs.Source
 		}
 	}()
 
-	syncTime := time.Now().UTC()
+	syncTime := getSyncTime()
 	destinationStrings := make([]string, len(destinationsSpecs))
 	for i := range destinationsSpecs {
 		destinationStrings[i] = destinationsSpecs[i].VersionString()

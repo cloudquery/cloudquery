@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 	"golang.org/x/exp/slices"
@@ -113,4 +114,8 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 
 	return nil
+}
+
+func getSyncTime() time.Time {
+	return time.Now().UTC().Truncate(time.Microsecond)
 }
