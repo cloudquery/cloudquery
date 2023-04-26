@@ -62,7 +62,7 @@ func TVPAddProc(schemaName string, sc *arrow.Schema) string {
 		Table:       sanitizeID(schemaName, schema.TableName(sc)),
 		PK:          GetPKColumns(sc),
 		Values:      GetValueColumns(sc),
-		ColumnNames: sanitized(getColumnNames(sc)...),
+		ColumnNames: sanitized(ColumnNames(sc)...),
 	}
 
 	return execTemplate("tvp_add_proc.sql.tpl", data)
@@ -77,19 +77,19 @@ func TVPAddType(schemaName string, sc *arrow.Schema) string {
 	return execTemplate("tvp_add_type.sql.tpl", data)
 }
 
-func TVPQuery(schemaName string, sc *arrow.Schema, data [][]any) (query string, params []any) {
+func TVPQuery(schemaName string, sc *arrow.Schema, records []arrow.Record) (query string, params []any) {
 	tf := tableTransformer(sc.Fields())
 
 	return "exec " + sanitizeID(schemaName, tvpProcName(sc)) + " @TVP;",
 		[]any{
 			sql.Named("TVP", mssql.TVP{
 				TypeName: sanitizeID(schemaName, tvpTableType(sc)),
-				Value:    tf(data),
+				Value:    tf(records),
 			}),
 		}
 }
 
-type transformer func([][]any) any
+type transformer func([]arrow.Record) any
 
 func tableTransformer(fields []arrow.Field) transformer {
 	// 1 prep the fields
@@ -105,9 +105,11 @@ func tableTransformer(fields []arrow.Field) transformer {
 	row := reflect.StructOf(fld)
 	rowSlice := reflect.SliceOf(row)
 
-	rowTransformer := func(rowData []any) reflect.Value {
+	rowTransformer := func(record arrow.Record) reflect.Value {
+		rows := reflect.MakeSlice(rowSlice, int(record.NumRows()), int(record.NumRows()))
 		v := reflect.New(row).Elem()
-		for i, elem := range rowData {
+		for i, column := range record.Columns() {
+			// some processing
 			val := reflect.ValueOf(elem)
 			switch {
 			case elem == nil:
@@ -119,9 +121,9 @@ func tableTransformer(fields []arrow.Field) transformer {
 		return v
 	}
 
-	return func(data [][]any) any {
-		rows := reflect.MakeSlice(rowSlice, len(data), len(data))
-		for i, elem := range data {
+	return func(records []arrow.Record) any {
+		rows := reflect.MakeSlice(rowSlice, len(records), len(records))
+		for i, elem := range records {
 			rows.Index(i).Set(rowTransformer(elem))
 		}
 		return rows.Interface()

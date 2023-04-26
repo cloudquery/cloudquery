@@ -39,7 +39,7 @@ func GetValueColumns(sc *arrow.Schema) []string {
 	return sanitized(slices.Clip(columns)...)
 }
 
-func getColumnNames(sc *arrow.Schema) []string {
+func ColumnNames(sc *arrow.Schema) []string {
 	columns := make([]string, len(sc.Fields()))
 	for i, field := range sc.Fields() {
 		columns[i] = field.Name

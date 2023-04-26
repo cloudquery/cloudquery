@@ -18,7 +18,7 @@ func Read(schemaName, sourceName string, sc *arrow.Schema) (query string, params
 	return execTemplate("read.sql.tpl",
 			&readQueryBuilder{
 				Table:            SanitizedTableName(schemaName, sc),
-				Columns:          sanitized(getColumnNames(sc)...),
+				Columns:          sanitized(ColumnNames(sc)...),
 				SourceNameColumn: sanitizeID(schema.CqSourceNameColumn.Name),
 				SyncTimeColumn:   sanitizeID(schema.CqSyncTimeColumn.Name),
 			},
