@@ -1,7 +1,7 @@
 package queries
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v12/arrow"
 )
 
 type (
@@ -12,19 +12,19 @@ type (
 	}
 )
 
-func CreateTable(schemaName string, table *schema.Table, pkEnabled bool) string {
+func CreateTable(schemaName string, sc *arrow.Schema, pkEnabled bool) string {
 	return execTemplate("create_table.sql.tpl", &createTableQueryBuilder{
-		Table:       SanitizedTableName(schemaName, table),
-		Definitions: GetDefinitions(table.Columns, pkEnabled),
+		Table:       SanitizedTableName(schemaName, sc),
+		Definitions: GetDefinitions(sc, pkEnabled),
 		PrimaryKey: &pkQueryBuilder{
-			Name:    pkConstraint(table),
-			Columns: GetPKColumns(table),
+			Name:    pkConstraint(sc),
+			Columns: GetPKColumns(sc),
 		},
 	})
 }
 
-func DropTable(schemaName string, table *schema.Table) string {
+func DropTable(schemaName string, sc *arrow.Schema) string {
 	return execTemplate("drop_table.sql.tpl", &createTableQueryBuilder{
-		Table: SanitizedTableName(schemaName, table),
+		Table: SanitizedTableName(schemaName, sc),
 	})
 }

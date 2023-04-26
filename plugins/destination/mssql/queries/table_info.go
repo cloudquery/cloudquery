@@ -3,6 +3,7 @@ package queries
 import (
 	"database/sql"
 
+	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
@@ -19,7 +20,7 @@ func GetTableSchema(schemaName string, table *schema.Table) (query string, param
 	return tableSchema, []any{sql.Named("tableName", table.Name), sql.Named("schemaName", schemaName)}
 }
 
-func GetTablePK(schemaName string, table *schema.Table) (query string, params []any) {
+func GetTablePK(schemaName string, sc *arrow.Schema) (query string, params []any) {
 	pks := `SELECT Col.COLUMN_NAME from INFORMATION_SCHEMA.TABLE_CONSTRAINTS Tab, INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE Col
 			WHERE Col.CONSTRAINT_NAME = Tab.CONSTRAINT_NAME
 			AND Col.TABLE_NAME = Tab.TABLE_NAME
@@ -27,5 +28,5 @@ func GetTablePK(schemaName string, table *schema.Table) (query string, params []
 			AND Col.TABLE_NAME = @tableName
 			AND Tab.Table_Schema = @schemaName;`
 
-	return pks, []any{sql.Named("tableName", table.Name), sql.Named("schemaName", schemaName)}
+	return pks, []any{sql.Named("tableName", schema.TableName(sc)), sql.Named("schemaName", schemaName)}
 }

@@ -3,11 +3,12 @@ package queries
 import (
 	"strings"
 
+	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
-func SanitizedTableName(schemaName string, table *schema.Table) string {
-	return sanitizeID(schemaName, table.Name)
+func SanitizedTableName(schemaName string, sc *arrow.Schema) string {
+	return sanitizeID(schemaName, schema.TableName(sc))
 }
 
 func sanitizeID(parts ...string) string {

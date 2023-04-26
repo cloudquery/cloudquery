@@ -23,7 +23,7 @@ func TestCreateTable(t *testing.T) {
 	)
 
 	query := CreateTable(schemaName,
-		&schema.Table{
+		schema.CQSchemaToArrow(&schema.Table{
 			Name: "table_name",
 			Columns: schema.ColumnList{
 				schema.CqIDColumn,
@@ -36,7 +36,7 @@ func TestCreateTable(t *testing.T) {
 					CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 				},
 			},
-		},
+		}),
 		true,
 	)
 

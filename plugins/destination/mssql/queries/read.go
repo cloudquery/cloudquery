@@ -3,6 +3,7 @@ package queries
 import (
 	"database/sql"
 
+	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
@@ -13,11 +14,11 @@ type readQueryBuilder struct {
 	SyncTimeColumn   string
 }
 
-func Read(schemaName, sourceName string, table *schema.Table) (query string, params []any) {
+func Read(schemaName, sourceName string, sc *arrow.Schema) (query string, params []any) {
 	return execTemplate("read.sql.tpl",
 			&readQueryBuilder{
-				Table:            SanitizedTableName(schemaName, table),
-				Columns:          sanitized(table.Columns.Names()...),
+				Table:            SanitizedTableName(schemaName, sc),
+				Columns:          sanitized(getColumnNames(sc)...),
 				SourceNameColumn: sanitizeID(schema.CqSourceNameColumn.Name),
 				SyncTimeColumn:   sanitizeID(schema.CqSyncTimeColumn.Name),
 			},

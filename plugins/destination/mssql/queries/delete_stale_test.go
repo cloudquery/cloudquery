@@ -19,7 +19,7 @@ func TestDeleteStale(t *testing.T) {
 
 	query, params := DeleteStale(
 		schemaName,
-		&schema.Table{
+		schema.CQSchemaToArrow(&schema.Table{
 			Name: "table_name",
 			Columns: schema.ColumnList{
 				schema.CqIDColumn,
@@ -28,7 +28,7 @@ func TestDeleteStale(t *testing.T) {
 				schema.CqSyncTimeColumn,
 				schema.Column{Name: "extra_col", Type: schema.TypeFloat},
 			},
-		},
+		}),
 		sourceName, now)
 
 	require.Equal(t, expected, query)

@@ -16,7 +16,7 @@ func TestAddPK(t *testing.T) {
   );`
 	)
 
-	query := AddPK(schemaName, &schema.Table{
+	query := AddPK(schemaName, schema.CQSchemaToArrow(&schema.Table{
 		Name: "table_name",
 		Columns: schema.ColumnList{
 			schema.CqIDColumn,
@@ -26,7 +26,7 @@ func TestAddPK(t *testing.T) {
 			schema.Column{Name: "pk", Type: schema.TypeUUID, CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true}},
 			schema.Column{Name: "extra_col", Type: schema.TypeFloat},
 		},
-	})
+	}))
 
 	require.Equal(t, expected, query)
 }
@@ -37,7 +37,7 @@ func TestDropPK(t *testing.T) {
 		expected   = `ALTER TABLE [cq].[table_name] DROP CONSTRAINT [table_name_cqpk];`
 	)
 
-	query := DropPK(schemaName, &schema.Table{Name: "table_name"})
+	query := DropPK(schemaName, schema.CQSchemaToArrow(&schema.Table{Name: "table_name"}))
 
 	require.Equal(t, expected, query)
 }

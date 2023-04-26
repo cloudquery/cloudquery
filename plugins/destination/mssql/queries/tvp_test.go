@@ -19,7 +19,7 @@ func TestTVPDropProc(t *testing.T) {
 DROP PROCEDURE [cq].[cq_proc_table_name];`
 	)
 
-	query, params := TVPDropProc(schemaName, &schema.Table{Name: "table_name"})
+	query, params := TVPDropProc(schemaName, schema.CQSchemaToArrow(&schema.Table{Name: "table_name"}))
 
 	require.Equal(t, expected, query)
 	require.Equal(t, 2, len(params))
@@ -46,7 +46,7 @@ func TestTVPDropType(t *testing.T) {
 DROP TYPE [cq].[cq_tbl_table_name];`
 	)
 
-	query, params := TVPDropType(schemaName, &schema.Table{Name: "table_name"})
+	query, params := TVPDropType(schemaName, schema.CQSchemaToArrow(&schema.Table{Name: "table_name"}))
 
 	require.Equal(t, expected, query)
 	require.Equal(t, 2, len(params))
@@ -77,7 +77,7 @@ func TestTVPAddType(t *testing.T) {
 );`
 	)
 
-	query := TVPAddType(schemaName, &schema.Table{
+	query := TVPAddType(schemaName, schema.CQSchemaToArrow(&schema.Table{
 		Name: "table_name",
 		Columns: schema.ColumnList{
 			schema.CqIDColumn,
@@ -103,7 +103,7 @@ func TestTVPAddType(t *testing.T) {
 				Type: schema.TypeByteArray,
 			},
 		},
-	})
+	}))
 
 	require.Equal(t, expected, query)
 }
@@ -162,7 +162,7 @@ INSERT [cq].[table_name] (
 END;`
 	)
 
-	query := TVPAddProc(schemaName, &schema.Table{
+	query := TVPAddProc(schemaName, schema.CQSchemaToArrow(&schema.Table{
 		Name: "table_name",
 		Columns: schema.ColumnList{
 			schema.CqIDColumn,
@@ -188,7 +188,7 @@ END;`
 				Type: schema.TypeByteArray,
 			},
 		},
-	})
+	}))
 
 	require.Equal(t, expected, query)
 }

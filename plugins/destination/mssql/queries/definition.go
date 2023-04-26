@@ -3,6 +3,7 @@ package queries
 import (
 	"strings"
 
+	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
@@ -46,15 +47,15 @@ func (d *Definition) Nullable() *Definition {
 	}
 }
 
-func GetDefinition(column *schema.Column, pkEnabled bool) *Definition {
+func GetDefinition(field arrow.Field, pkEnabled bool) *Definition {
 	def := &Definition{
-		Name:    column.Name,
-		typ:     SQLType(column.Type),
-		notNull: column.CreationOptions.NotNull,
-		unique:  column.CreationOptions.Unique,
+		Name:    field.Name,
+		typ:     SQLType(field.Type),
+		notNull: !field.Nullable,
+		unique:  schema.IsUnique(field),
 	}
 
-	if pkEnabled && column.CreationOptions.PrimaryKey {
+	if pkEnabled && schema.IsPk(field) {
 		def.notNull = true
 	}
 
@@ -73,11 +74,11 @@ func (defs Definitions) Get(name string) *Definition {
 }
 
 // GetDefinitions returns sanitized Definitions
-func GetDefinitions(columns schema.ColumnList, pkEnabled bool) Definitions {
-	definitions := make(Definitions, len(columns))
+func GetDefinitions(sc *arrow.Schema, pkEnabled bool) Definitions {
+	definitions := make(Definitions, len(sc.Fields()))
 
-	for i, col := range columns {
-		definitions[i] = GetDefinition(&col, pkEnabled).sanitized()
+	for i, field := range sc.Fields() {
+		definitions[i] = GetDefinition(field, pkEnabled).sanitized()
 	}
 
 	return definitions

@@ -1,91 +1,125 @@
 package queries
 
 import (
-	"fmt"
 	"reflect"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"golang.org/x/exp/maps"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/cloudquery/plugin-sdk/v2/types"
 )
 
-func SQLType(t schema.ValueType) string {
-	switch t {
-	case schema.TypeBool:
+func SQLType(_type arrow.DataType) string {
+	switch _type.(type) {
+	case *arrow.BooleanType:
 		return "bit"
-	case schema.TypeInt:
-		return "bigint"
-	case schema.TypeFloat:
-		return "float" // = float(53)
-	case schema.TypeUUID:
-		return "uniqueidentifier"
-	case schema.TypeByteArray:
-		return "varbinary(max)"
-	case schema.TypeTimestamp:
-		return "datetime2"
-	case schema.TypeString,
-		schema.TypeCIDR,
-		schema.TypeMacAddr,
-		schema.TypeInet:
+
+	case *arrow.Uint8Type:
+		return "tinyint" // uint8
+	case *arrow.Int8Type, *arrow.Uint16Type, *arrow.Int16Type:
+		return "smallint" // int16
+	case *arrow.Uint32Type, *arrow.Int32Type:
+		return "int" // int32
+	case *arrow.Uint64Type, *arrow.Int64Type:
+		return "bigint" // int64
+
+	case *arrow.Float32Type:
+		return "real"
+	case *arrow.Float64Type:
+		return "float" // == float(53)
+
+	case *arrow.LargeStringType:
+		return "nvarchar(max)" // we will also use it as the default type
+
+	case *arrow.StringType, *types.InetType, *types.MacType:
 		return "nvarchar(4000)" // feasible to see these as PK, so need to limit the value
-	case schema.TypeStringArray,
-		schema.TypeJSON,
-		schema.TypeUUIDArray,
-		schema.TypeCIDRArray,
-		schema.TypeMacAddrArray,
-		schema.TypeInetArray,
-		schema.TypeIntArray:
-		return "nvarchar(max)"
+
+	case arrow.BinaryDataType, *arrow.FixedSizeBinaryType:
+		return "varbinary(max)"
+
+	case *types.UUIDType:
+		return "uniqueidentifier"
+
+	case *arrow.TimestampType:
+		return "datetime2"
+
 	default:
-		panic("unknown type " + t.String())
+		return "nvarchar(max)"
 	}
 }
 
-func SchemaType(tableName string, columnName string, sqlType string) (schema.ValueType, error) {
-	sqlToSchema := map[string]schema.ValueType{
-		"bit":              schema.TypeBool,
-		"bigint":           schema.TypeInt,
-		"float":            schema.TypeFloat,
-		"uniqueidentifier": schema.TypeUUID,
-		"varbinary(max)":   schema.TypeByteArray,
-		"datetime2":        schema.TypeTimestamp,
-		"nvarchar(4000)":   schema.TypeString,
-		"nvarchar(max)":    schema.TypeStringArray,
-	}
+func SchemaType(sqlType string) arrow.DataType {
+	switch sqlType {
+	case "bit":
+		return new(arrow.BooleanType)
 
-	if v, ok := sqlToSchema[sqlType]; ok {
-		return v, nil
-	}
+	case "tinyint":
+		return new(arrow.Uint8Type)
+	case "smallint":
+		return new(arrow.Int16Type)
+	case "int":
+		return new(arrow.Int32Type)
+	case "bigint":
+		return new(arrow.Int64Type)
 
-	return schema.TypeInvalid, fmt.Errorf("got unknown MSSQL type %q of column %q for table %q while trying to convert it to CloudQuery internal schema type. Supported MSSQL types are %q", sqlType, columnName, tableName, maps.Keys(sqlToSchema))
+	case "real":
+		return new(arrow.Float32Type)
+	case "float":
+		return new(arrow.Float64Type)
+
+	case "uniqueidentifier":
+		return types.NewUUIDType()
+
+	case "datetime2":
+		return &arrow.TimestampType{Unit: arrow.Nanosecond} // the precision is 100ns in MSSQL
+	case "nvarchar(4000)":
+		return new(arrow.StringType)
+
+	case "varbinary(max)":
+		return new(arrow.LargeBinaryType)
+
+	case "nvarchar(max)":
+		return new(arrow.LargeStringType)
+	default:
+		return new(arrow.LargeStringType)
+	}
 }
 
 // columnGoType has to be in sync with SQLType
-func columnGoType(t schema.ValueType) reflect.Type {
-	switch t {
-	case schema.TypeBool:
+func columnGoType(_type arrow.DataType) reflect.Type {
+	switch _type.(type) {
+	case *arrow.BooleanType:
 		return reflect.TypeOf(true)
-	case schema.TypeInt:
+
+	case *arrow.Uint8Type:
+		return reflect.TypeOf(uint8(0))
+	case *arrow.Int8Type, *arrow.Uint16Type, *arrow.Int16Type:
+		return reflect.TypeOf(int16(0))
+	case *arrow.Uint32Type, *arrow.Int32Type:
+		return reflect.TypeOf(int32(0))
+	case *arrow.Uint64Type, *arrow.Int64Type:
 		return reflect.TypeOf(int64(0))
-	case schema.TypeFloat:
+
+	case *arrow.Float32Type:
+		return reflect.TypeOf(float32(0))
+	case *arrow.Float64Type:
 		return reflect.TypeOf(float64(0))
-	case schema.TypeUUID, schema.TypeByteArray:
-		return reflect.TypeOf([]byte{})
-	case schema.TypeTimestamp:
-		return reflect.TypeOf(time.Time{})
-	case schema.TypeString,
-		schema.TypeCIDR,
-		schema.TypeMacAddr,
-		schema.TypeInet,
-		schema.TypeStringArray,
-		schema.TypeJSON,
-		schema.TypeUUIDArray,
-		schema.TypeCIDRArray,
-		schema.TypeMacAddrArray,
-		schema.TypeInetArray,
-		schema.TypeIntArray:
+
+	case *arrow.LargeStringType:
 		return reflect.TypeOf("")
+
+	case *arrow.StringType, *types.InetType, *types.MacType:
+		return reflect.TypeOf("")
+
+	case arrow.BinaryDataType, *arrow.FixedSizeBinaryType:
+		return reflect.TypeOf([]byte{})
+
+	case *types.UUIDType:
+		return reflect.TypeOf([]byte{})
+
+	case *arrow.TimestampType:
+		return reflect.TypeOf(time.Time{})
+
 	default:
-		panic("unknown type " + t.String())
+		return reflect.TypeOf("")
 	}
 }
