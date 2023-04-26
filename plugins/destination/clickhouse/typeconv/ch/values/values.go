@@ -66,12 +66,10 @@ func FromArray(arr arrow.Array) (any, error) {
 	case *array.Struct:
 		return structValue(arr)
 
-	case *array.Map:
+	case *array.Map: // it also matches array.ListLike, so we check it before the array.ListLike case
 		// TODO: once we parse into proper map just use this
 		return valueStrData(arr), nil
 
-	case *array.FixedSizeList:
-		return listValue(listWrapper{arr})
 	case array.ListLike:
 		return listValue(arr)
 	}

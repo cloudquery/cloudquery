@@ -48,15 +48,3 @@ func listValue(arr array.ListLike) (any, error) {
 
 	return res.Interface(), nil
 }
-
-type listWrapper struct {
-	*array.FixedSizeList
-}
-
-var _ array.ListLike = listWrapper{}
-
-func (l listWrapper) ValueOffsets(i int) (start, end int64) {
-	n := int64(l.DataType().(*arrow.FixedSizeListType).Len())
-	off := int64(l.Offset())
-	return (off + int64(i)) * n, (off + int64(i+1)) * n
-}

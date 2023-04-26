@@ -12,7 +12,7 @@ require (
 )
 
 // TODO: remove once the changes are merged to upstream
-replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230416141001-e8315b3fff1c
+replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230425184555-43f156fcdec9
 
 require (
 	github.com/ClickHouse/ch-go v0.53.0 // indirect

@@ -114,7 +114,7 @@ func Test_fixedSizeListValue(t *testing.T) {
 		}
 	}
 
-	data, err := listValue(listWrapper{builder.NewListArray()})
+	data, err := listValue(builder.NewListArray())
 	require.NoError(t, err)
 
 	uidSlices := data.([]*[]*uuid.UUID)
