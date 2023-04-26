@@ -289,6 +289,7 @@
   - [azure_sql_server_security_alert_policies](../../../../../website/tables/azure/azure_sql_server_security_alert_policies.md)
   - [azure_sql_server_virtual_network_rules](../../../../../website/tables/azure/azure_sql_server_virtual_network_rules.md)
   - [azure_sql_server_vulnerability_assessments](../../../../../website/tables/azure/azure_sql_server_vulnerability_assessments.md)
+  - [azure_sql_server_advanced_threat_protection_settings](../../../../../website/tables/azure/azure_sql_server_advanced_threat_protection_settings.md)
 - [azure_sql_virtual_clusters](../../../../../website/tables/azure/azure_sql_virtual_clusters.md)
 - [azure_sqlvirtualmachine_groups](../../../../../website/tables/azure/azure_sqlvirtualmachine_groups.md)
 - [azure_sqlvirtualmachine_sql_virtual_machines](../../../../../website/tables/azure/azure_sqlvirtualmachine_sql_virtual_machines.md)
