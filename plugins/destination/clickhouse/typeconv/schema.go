@@ -5,7 +5,6 @@ import (
 	_arrow "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow/types"
 	clickhouse "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"golang.org/x/exp/slices"
 )
 
 func CanonizedSchemas(scs schema.Schemas) (schema.Schemas, error) {
@@ -22,9 +21,8 @@ func CanonizedSchemas(scs schema.Schemas) (schema.Schemas, error) {
 
 func CanonizedSchema(sc *arrow.Schema) (*arrow.Schema, error) {
 	fields := make([]arrow.Field, len(sc.Fields()))
-	pk := schema.PrimaryKeyIndices(sc)
 	for i, fld := range sc.Fields() {
-		if slices.Contains(pk, i) {
+		if schema.IsPk(fld) {
 			// we mark as non-nullable
 			fld.Nullable = false
 		}
