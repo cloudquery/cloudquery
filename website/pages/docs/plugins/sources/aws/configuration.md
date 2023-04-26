@@ -97,7 +97,7 @@ This is the (nested) spec used by the AWS source plugin.
 
   The region that should be used for signing the request to the endpoint
 
-- `include_paid_apis` (boolean) (default: false)
+- `use_paid_apis` (boolean) (default: false)
 
   When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` tables require this flag to be set to `true`.
 

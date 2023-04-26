@@ -18,7 +18,7 @@ func CurrentMonthCost() *schema.Table {
 		Name:     tableName,
 		Resolver: fetchCost,
 		Description: `https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetCostAndUsage.html
-To sync this table you must set the 'include_paid_apis' option to 'true' in the AWS provider configuration. `,
+To sync this table you must set the 'use_paid_apis' option to 'true' in the AWS provider configuration. `,
 		Transform: transformers.TransformWithStruct(&types.ResultByTime{}),
 		Multiplex: client.AccountMultiplex(tableName),
 		Columns: []schema.Column{
@@ -48,8 +48,8 @@ To sync this table you must set the 'include_paid_apis' option to 'true' in the 
 func fetchCost(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 
-	if !cl.Spec.IncludePaidAPIs {
-		cl.Logger().Info().Msg("skipping `awscost_costexplorer_cost_current_month` because `include_paid_apis` is set to false")
+	if !cl.Spec.UsePaidAPIs {
+		cl.Logger().Info().Msg("skipping `aws_costexplorer_cost_current_month` because `use_paid_apis` is set to false")
 		return nil
 	}
 	svc := cl.Services().Costexplorer
