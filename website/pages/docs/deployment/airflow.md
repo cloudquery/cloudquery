@@ -82,11 +82,11 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 from kubernetes.client import models as k8s
 
-# Change these to match your requirements. Change start_date to today's date
+# Change these to match your requirements. Change start_date to today's date, but keep it static
 default_args = {
-    'owner': '',
+    'owner': '', # TODO: Set to your name
     'depends_on_past': False,
-    'start_date': datetime(2023, 4, 26),
+    'start_date': datetime(2023, 4, 26), # TODO: Change to today's date
     'retries': 0,
 }
 
