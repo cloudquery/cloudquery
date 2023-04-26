@@ -50,11 +50,8 @@ func (w *Writer) Write(record arrow.Record) error {
 					// in anycase we do want a capability of custom marshaling where needed.
 					if ind := strings.Index(strTimestamp, "."); ind == -1 {
 						tmp[w.schema.Field(j).Name] = strTimestamp + ".000000"
-					} else {
-						ind := strings.Index(strTimestamp, ".")
-						if len(strTimestamp[ind+1:]) < 6 {
-							tmp[w.schema.Field(j).Name] = strTimestamp + "000000"[len(strTimestamp[ind+1:]):]
-						}
+					} else if len(strTimestamp[ind+1:]) < 6 {
+						tmp[w.schema.Field(j).Name] = strTimestamp + "000000"[len(strTimestamp[ind+1:]):]
 					}
 				}
 			default:
