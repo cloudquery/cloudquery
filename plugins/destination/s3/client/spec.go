@@ -10,11 +10,12 @@ import (
 
 type Spec struct {
 	*filetypes.FileSpec
-	NoRotate bool   `json:"no_rotate,omitempty"`
-	Bucket   string `json:"bucket,omitempty"`
-	Region   string `json:"region,omitempty"`
-	Path     string `json:"path,omitempty"`
-	Athena   bool   `json:"athena,omitempty"`
+	NoRotate  bool   `json:"no_rotate,omitempty"`
+	Bucket    string `json:"bucket,omitempty"`
+	Region    string `json:"region,omitempty"`
+	Path      string `json:"path,omitempty"`
+	Athena    bool   `json:"athena,omitempty"`
+	TestWrite *bool  `json:"test_write,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -25,6 +26,10 @@ func (s *Spec) SetDefaults() {
 		if !s.NoRotate {
 			s.Path += "." + PathVarUUID
 		}
+	}
+	if s.TestWrite == nil {
+		b := true
+		s.TestWrite = &b
 	}
 }
 
