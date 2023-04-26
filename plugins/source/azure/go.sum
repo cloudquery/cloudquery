@@ -197,6 +197,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy v0.6.0
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy v0.6.0/go.mod h1:4I3SgVMg1Zo5TpfQGtYgBs0srBEDznSa86uu3uMVTHI=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.0.0 h1:ECsQtyERDVz3NP3kvDOTLvbQhqWp/x9EsGKtb4ogUr8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.0.0/go.mod h1:s1tW/At+xHqjNFvWU4G0c0Qv33KOhvbGNj0RCTQDV8s=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions v1.1.1 h1:A+a54F7ygu4ANdV9hYsLMfiHFgjuwIUCG+6opLAvxJE=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions v1.1.1/go.mod h1:ThfyMjs6auYrWPnYJjI3H4H++oVPrz01pizpu8lfl3A=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas v0.5.0 h1:Ago3lJWlCMt1lIuxVaFWIl/AAGFtNECG8uZzEmTlWas=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas v0.5.0/go.mod h1:vnL/NzlNfo1wQD5OTFGXBmK+7c6AZ9sqP6R126eGMUo=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch v1.0.0 h1:21YCzWMNfJiVsnQYYhO+NEjl32kTnaN/izdHx4KMXwM=
@@ -215,8 +217,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecac
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache/v3 v3.0.0/go.mod h1:h8JOxgBLAzXxyBkq616ey3mxnSWz/e7Mi67R3Re85dQ=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics v1.0.0 h1:IDuSHsqMhi6PysfqSycxXBz7WOYRGSvw31IK/Zio8cA=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics v1.0.0/go.mod h1:44ZAL1LS24yrReci8LqmY3tY9sX0wf/wXadZNT8SQHY=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription v1.0.0 h1:vsovXlTyKHZXnqzQyt7QMVkwpJBDkHchQL53qXaGBRY=
-github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription v1.0.0/go.mod h1:UZy1vHcRdEymNP1d6fTrvYHpSdkXoUdowfrvffcQOOU=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription v1.1.0 h1:pYhaMoTHP/zYIJGDA1sWsfyTDjdglaoYjIFMOEcL+/U=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription v1.1.0/go.mod h1:iLq8GwpQhj09gpI4EdELwifR9kHrb/Q0LThq6iQq9yY=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport v1.0.0 h1:0BotkrxxvEC1SKhXuu8CK089uDzLLjLma/VGLq5TbQ0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport v1.0.0/go.mod h1:1cSbREmeSg3E0axaZjCa6PjG5LgxP+GNrsj+6x1CShk=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse v0.5.0 h1:CMHxfGGGbg9ua3uSBNRdhKa+fciYNavayBiG0I6LA34=
