@@ -55,7 +55,7 @@ func (c *Client) SchemaTypeToBigQueryType(dt arrow.DataType) (ft bigquery.FieldT
 
 func GetValueForBigQuery(arr arrow.Array, i int) any {
 	return arr.GetOneForMarshal(i) // maybe this works for now?
-	
+
 	//dt := arr.DataType()
 	//switch {
 	//case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Boolean):

@@ -63,23 +63,23 @@ func (*Client) appendValue(b array.Builder, val bigquery.Value) {
 	case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Boolean):
 		b.(*array.BooleanBuilder).Append(val.(bool))
 	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Int8):
-		b.(*array.Int8Builder).Append(val.(int8))
+		b.(*array.Int8Builder).Append(int8(val.(int64)))
 	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Int16):
-		b.(*array.Int16Builder).Append(val.(int16))
+		b.(*array.Int16Builder).Append(int16(val.(int64)))
 	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Int32):
-		b.(*array.Int32Builder).Append(val.(int32))
+		b.(*array.Int32Builder).Append(int32(val.(int64)))
 	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Int64):
 		b.(*array.Int64Builder).Append(val.(int64))
 	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint8):
-		b.(*array.Uint8Builder).Append(val.(uint8))
+		b.(*array.Uint8Builder).Append(uint8(val.(int64)))
 	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint16):
-		b.(*array.Uint16Builder).Append(val.(uint16))
+		b.(*array.Uint16Builder).Append(uint16(val.(int64)))
 	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint32):
-		b.(*array.Uint32Builder).Append(val.(uint32))
+		b.(*array.Uint32Builder).Append(uint32(val.(int64)))
 	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint64):
-		b.(*array.Uint64Builder).Append(val.(uint64))
+		b.(*array.Uint64Builder).Append(uint64(val.(int64)))
 	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Float32):
-		b.(*array.Float32Builder).Append(val.(float32))
+		b.(*array.Float32Builder).Append(float32(val.(float64)))
 	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Float64):
 		b.(*array.Float64Builder).Append(val.(float64))
 	case arrow.TypeEqual(dt, arrow.BinaryTypes.String):
@@ -99,34 +99,34 @@ func (*Client) appendValue(b array.Builder, val bigquery.Value) {
 	case arrow.TypeEqual(dt, arrow.BinaryTypes.LargeBinary):
 		b.(*array.BinaryBuilder).Append(val.([]byte))
 	case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Date32):
-		t := val.(*time.Time)
-		b.(*array.Date32Builder).Append(arrow.Date32FromTime(*t))
+		t := val.(time.Time)
+		b.(*array.Date32Builder).Append(arrow.Date32FromTime(t))
 	case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Date64):
-		t := val.(*time.Time)
-		b.(*array.Date64Builder).Append(arrow.Date64FromTime(*t))
+		t := val.(time.Time)
+		b.(*array.Date64Builder).Append(arrow.Date64FromTime(t))
 	case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Timestamp_s):
-		t := val.(*time.Time)
+		t := val.(time.Time)
 		arrowTimestamp, err := arrow.TimestampFromString(t.Format(time.RFC3339), arrow.Second)
 		if err != nil {
 			panic(err)
 		}
 		b.(*array.TimestampBuilder).Append(arrowTimestamp)
 	case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Timestamp_ms):
-		t := val.(*time.Time)
+		t := val.(time.Time)
 		arrowTimestamp, err := arrow.TimestampFromString(t.Format(time.RFC3339), arrow.Millisecond)
 		if err != nil {
 			panic(err)
 		}
 		b.(*array.TimestampBuilder).Append(arrowTimestamp)
 	case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Timestamp_us):
-		t := val.(*time.Time)
+		t := val.(time.Time)
 		arrowTimestamp, err := arrow.TimestampFromString(t.Format(time.RFC3339), arrow.Microsecond)
 		if err != nil {
 			panic(err)
 		}
 		b.(*array.TimestampBuilder).Append(arrowTimestamp)
 	case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Timestamp_ns):
-		t := val.(*time.Time)
+		t := val.(time.Time)
 		arrowTimestamp, err := arrow.TimestampFromString(t.Format(time.RFC3339), arrow.Nanosecond)
 		if err != nil {
 			panic(err)
@@ -159,7 +159,9 @@ func (*Client) appendValue(b array.Builder, val bigquery.Value) {
 	case arrow.TypeEqual(dt, types.ExtensionTypes.JSON):
 		b.(*types.JSONBuilder).AppendValueFromString(val.(string))
 	default:
-		panic(fmt.Sprintf("unsupported type for reading: %v", dt))
+		// TODO: continue here
+		// panic(fmt.Sprintf("unsupported type: %v", dt))
+		// b.(*array.StringBuilder).Append(val.(string))
 	}
 }
 
@@ -175,28 +177,28 @@ func (*Client) createResultsArray(sc *arrow.Schema) []bigquery.Value {
 			var r int8
 			results = append(results, &r)
 		case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Int16):
-			var r int16
+			var r int64
 			results = append(results, &r)
 		case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Int32):
-			var r int32
+			var r int64
 			results = append(results, &r)
 		case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Int64):
 			var r int64
 			results = append(results, &r)
 		case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint8):
-			var r uint8
+			var r int64
 			results = append(results, &r)
 		case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint16):
-			var r uint16
+			var r int64
 			results = append(results, &r)
 		case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint32):
-			var r uint32
+			var r int64
 			results = append(results, &r)
 		case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint64):
-			var r uint64
+			var r int64
 			results = append(results, &r)
 		case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Float32):
-			var r float32
+			var r float64
 			results = append(results, &r)
 		case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Float64):
 			var r float64
@@ -259,7 +261,9 @@ func (*Client) createResultsArray(sc *arrow.Schema) []bigquery.Value {
 			var r string
 			results = append(results, &r)
 		default:
-			panic(fmt.Sprintf("unsupported type for col %v: %v", col.Name, col.Type))
+			// use a string for unsupported types
+			var r string
+			results = append(results, &r)
 		}
 	}
 	return results
