@@ -14,6 +14,7 @@ func timestampType(_type *arrow.TimestampType) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	if loc.String() == time.UTC.String() {
 		// default is UTC, so we force it to nil here
 		loc = nil

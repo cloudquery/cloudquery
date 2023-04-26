@@ -7,72 +7,72 @@ import (
 )
 
 func dataType(_type arrow.DataType) (string, error) {
-	switch _type.ID() {
+	switch _type := _type.(type) {
 	// https://clickhouse.com/docs/en/sql-reference/data-types/boolean
-	case arrow.BOOL:
+	case *arrow.BooleanType:
 		return "Bool", nil
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/int-uint
-	case arrow.UINT8:
+	case *arrow.Uint8Type:
 		return "UInt8", nil
-	case arrow.UINT16:
+	case *arrow.Uint16Type:
 		return "UInt16", nil
-	case arrow.UINT32:
+	case *arrow.Uint32Type:
 		return "UInt32", nil
-	case arrow.UINT64:
+	case *arrow.Uint64Type:
 		return "UInt64", nil
-	case arrow.INT8:
+	case *arrow.Int8Type:
 		return "Int8", nil
-	case arrow.INT16:
+	case *arrow.Int16Type:
 		return "Int16", nil
-	case arrow.INT32:
+	case *arrow.Int32Type:
 		return "Int32", nil
-	case arrow.INT64:
+	case *arrow.Int64Type:
 		return "Int64", nil
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/float
-	case arrow.FLOAT16, arrow.FLOAT32:
+	case *arrow.Float16Type, *arrow.Float32Type:
 		return "Float32", nil
-	case arrow.FLOAT64:
+	case *arrow.Float64Type:
 		return "Float64", nil
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/string
-	case arrow.STRING, arrow.BINARY, arrow.LARGE_STRING, arrow.LARGE_BINARY:
+	case arrow.BinaryDataType:
 		return "String", nil
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/fixedstring
-	case arrow.FIXED_SIZE_BINARY:
-		return "FixedString(" + strconv.Itoa(_type.(*arrow.FixedSizeBinaryType).ByteWidth) + ")", nil
+	case *arrow.FixedSizeBinaryType:
+		return "FixedString(" + strconv.Itoa(_type.ByteWidth) + ")", nil
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/date32
-	case arrow.DATE32:
+	case *arrow.Date32Type:
 		return "Date32", nil
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/datetime64
-	case arrow.DATE64:
+	case *arrow.Date64Type:
 		return "DateTime64(3)", nil // 3 = milliseconds
-	case arrow.TIMESTAMP:
-		return timestampType(_type.(*arrow.TimestampType))
+	case *arrow.TimestampType:
+		return timestampType(_type)
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/decimal
-	case arrow.DECIMAL128, arrow.DECIMAL256:
-		return decimalType(_type.(arrow.DecimalType))
+	case arrow.DecimalType:
+		return decimalType(_type)
 
-	// https://clickhouse.com/docs/en/sql-reference/data-types/array
-	case arrow.LIST, arrow.LARGE_LIST, arrow.FIXED_SIZE_LIST:
-		return listType(_type.(listDataType))
-
-	// https://clickhouse.com/docs/en/sql-reference/data-types/tuple
-	case arrow.STRUCT:
-		return structType(_type.(*arrow.StructType))
-
-	// Only support CQ extensions for now
-	case arrow.EXTENSION:
-		return extensionType(_type.(arrow.ExtensionType)), nil
-
-	case arrow.MAP:
+	case *arrow.MapType:
 		// TODO: support https://clickhouse.com/docs/en/sql-reference/data-types/map
 		return "String", nil
+
+	// https://clickhouse.com/docs/en/sql-reference/data-types/array
+	case listDataType:
+		return listType(_type)
+
+	// https://clickhouse.com/docs/en/sql-reference/data-types/tuple
+	case *arrow.StructType:
+		return structType(_type)
+
+	// Only support CQ extensions for now
+	case arrow.ExtensionType:
+		return extensionType(_type), nil
 
 	// everything else that's not supported ATM
 	default:

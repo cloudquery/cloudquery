@@ -11,7 +11,7 @@ func FieldType(field arrow.Field) (string, error) {
 		return "", err
 	}
 
-	// We allow nullable values in arrays, but arrays cannot be nullable themselves
+	// We allow nullable values in arrays, but arrays shouldn't be nullable themselves in ClickHouse
 	if field.Type.ID() == arrow.LIST || !field.Nullable {
 		return _type, nil
 	}
@@ -24,5 +24,6 @@ func FieldDefinition(field arrow.Field) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return util.SanitizeID(field.Name) + " " + _type, nil
 }
