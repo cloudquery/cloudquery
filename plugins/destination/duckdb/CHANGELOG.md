@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v1.0.6...plugins-destination-duckdb-v2.0.0) (2023-04-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose).
+
+### Features
+
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([e38eae6](https://github.com/cloudquery/cloudquery/commit/e38eae6bffbdd34f5959ff3cd7124b789ed2dd26))
+
 ## [1.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v1.0.5...plugins-destination-duckdb-v1.0.6) (2023-04-25)
 
 
