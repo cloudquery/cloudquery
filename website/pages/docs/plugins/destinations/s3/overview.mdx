@@ -51,6 +51,10 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   When `athena` is set to `true`, the S3 plugin will sanitize keys in JSON columns to be compatible with the Hive Metastore / Athena. This allows tables to be created with a Glue Crawler and then queried via Athena, without changes to the table schema.
 
+- `test_write` (boolean) (optional, default `true`)
+
+  Ensure write access to the given bucket and path by writing a test object on each sync. If you are sure that the bucket and path are writable, you can set this to `false` to skip the test.
+
 - `format` (string) (required)
 
   Format of the output file. Supported values are `csv`, `json` and `parquet`.
