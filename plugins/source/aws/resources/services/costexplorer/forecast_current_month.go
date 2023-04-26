@@ -13,7 +13,7 @@ import (
 )
 
 func CurrentMonthForecast() *schema.Table {
-	tableName := "awscost_costexplorer_forecast_current_month"
+	tableName := "aws_costexplorer_forecast_current_month"
 	return &schema.Table{
 		Name: tableName,
 		Description: `https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetCostForecast.html
@@ -48,7 +48,7 @@ To sync this table you must set the 'include_paid_apis' option to 'true' in the 
 func fetchForecast(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	if !cl.Spec.IncludePaidAPIs {
-		cl.Logger().Info().Msg("skipping `awscost_costexplorer_forecast_current_month` because `include_paid_apis` is set to false")
+		cl.Logger().Info().Msg("skipping `aws_costexplorer_forecast_current_month` because `include_paid_apis` is set to false")
 		return nil
 	}
 

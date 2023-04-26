@@ -129,6 +129,7 @@
 - [aws_config_delivery_channels](../../../../../website/tables/aws/aws_config_delivery_channels.md)
   - [aws_config_delivery_channel_statuses](../../../../../website/tables/aws/aws_config_delivery_channel_statuses.md)
 - [aws_costexplorer_cost_current_month](../../../../../website/tables/aws/aws_costexplorer_cost_current_month.md)
+- [aws_costexplorer_forecast_current_month](../../../../../website/tables/aws/aws_costexplorer_forecast_current_month.md)
 - [aws_dax_clusters](../../../../../website/tables/aws/aws_dax_clusters.md)
 - [aws_db_proxies](../../../../../website/tables/aws/aws_db_proxies.md)
 - [aws_directconnect_connections](../../../../../website/tables/aws/aws_directconnect_connections.md)
@@ -590,4 +591,3 @@
 - [aws_xray_groups](../../../../../website/tables/aws/aws_xray_groups.md)
 - [aws_xray_resource_policies](../../../../../website/tables/aws/aws_xray_resource_policies.md)
 - [aws_xray_sampling_rules](../../../../../website/tables/aws/aws_xray_sampling_rules.md)
-- [awscost_costexplorer_forecast_current_month](../../../../../website/tables/aws/awscost_costexplorer_forecast_current_month.md)

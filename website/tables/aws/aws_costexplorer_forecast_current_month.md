@@ -1,6 +1,6 @@
-# Table: awscost_costexplorer_forecast_current_month
+# Table: aws_costexplorer_forecast_current_month
 
-This table shows data for Awscost Costexplorer Forecast Current Month.
+This table shows data for Costexplorer Forecast Current Month.
 
 https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetCostForecast.html
 To sync this table you must set the 'include_paid_apis' option to 'true' in the AWS provider configuration. 
