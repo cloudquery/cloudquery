@@ -1,7 +1,42 @@
 package client
 
 type Spec struct {
-	MaxRequestsPerSecond *int `yaml:"max_requests_per_second,omitempty" json:"max_requests_per_second,omitempty"`
+	MaxRequestsPerSecond *int          `yaml:"max_requests_per_second,omitempty" json:"max_requests_per_second,omitempty"`
+	Companies            CompaniesSpec `yaml:"companies,omitempty" json:"companies,omitempty"`
+	Contacts             ContactsSpec  `yaml:"contacts,omitempty" json:"contacts,omitempty"`
+	Deals                DealsSpec     `yaml:"deals,omitempty" json:"deals,omitempty"`
+	LineItems            LineItemsSpec `yaml:"line_items,omitempty" json:"line_items,omitempty"`
+	Products             ProductsSpec  `yaml:"products,omitempty" json:"products,omitempty"`
+	Quotes               QuotesSpec    `yaml:"quotes,omitempty" json:"quotes,omitempty"`
+	Tickets              TicketsSpec   `yaml:"tickets,omitempty" json:"tickets,omitempty"`
+}
+
+type CompaniesSpec struct {
+	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
+}
+
+type ContactsSpec struct {
+	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
+}
+
+type DealsSpec struct {
+	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
+}
+
+type LineItemsSpec struct {
+	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
+}
+
+type ProductsSpec struct {
+	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
+}
+
+type QuotesSpec struct {
+	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
+}
+
+type TicketsSpec struct {
+	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
 }
 
 func (spec *Spec) setDefaults() {
@@ -15,5 +50,23 @@ func (spec *Spec) setDefaults() {
 
 	if spec.MaxRequestsPerSecond == nil || *spec.MaxRequestsPerSecond == 0 {
 		spec.MaxRequestsPerSecond = &defaultRateLimitPerSecond
+	}
+
+	var defaultProperties []string
+	var propertiesSpec = [][]string{
+		spec.Companies.Properties,
+		spec.Contacts.Properties,
+		spec.Deals.Properties,
+		spec.Deals.Properties,
+		spec.LineItems.Properties,
+		spec.Products.Properties,
+		spec.Quotes.Properties,
+		spec.Tickets.Properties,
+	}
+
+	for _, propertiesSpecItem := range propertiesSpec {
+		if propertiesSpecItem == nil {
+			propertiesSpecItem = defaultProperties
+		}
 	}
 }

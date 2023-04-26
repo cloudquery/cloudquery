@@ -30,3 +30,46 @@ You can use the `max_requests_per_second` configuration option to change this va
 The following example sets up the HubSpot plugin, and connects it to a postgresql destination:
 
 <Configuration/>
+
+### HubSpot Spec
+
+This is the specs that can be used by the HubSpot source Plugin.
+
+- `max_requests_per_second` (int, optional. Default: 5)
+
+  Rate limit per second for requests done HubSpot API, this will depend on your HubSpot plan (https://developers.hubspot.com/docs/api/usage-details#rate-limits)
+
+- `companies`
+  - `properties` ([]string, optional. Default: "[]")
+
+    Object Properties to be retrieved from the object Companies on the HubSpot Source
+
+- `contacts`
+  - `properties` ([]string, optional. Default: "[]")
+
+    Object Properties to be retrieved from the object Contacts on the HubSpot Source
+
+- `deals`
+  - `properties` ([]string, optional. Default: "[]")
+
+    Object Properties to be retrieved from the object Deals on the HubSpot Source
+
+- `line_items`
+  - `properties` ([]string, optional. Default: "[]")
+
+    Object Properties to be retrieved from the object Line Items on the HubSpot Source
+
+- `products`
+  - `properties` ([]string, optional. Default: "[]")
+
+    Object Properties to be retrieved from the object Products on the HubSpot Source
+
+- `quotes`
+  - `properties` ([]string, optional. Default: "[]")
+
+    Object Properties to be retrieved from the object Quotes on the HubSpot Source
+
+- `tickets`
+  - `properties` ([]string, optional. Default: "[]")
+
+    Object Properties to be retrieved from the object Tickets on the HubSpot Source
