@@ -99,7 +99,7 @@ This is the (nested) spec used by the AWS source plugin.
 
 - `include_paid_apis` (boolean) (default: false)
 
-  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` tables requires this flag to be set to true.
+  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` tables require this flag to be set to `true`.
 
 
 ## account
