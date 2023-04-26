@@ -18,7 +18,9 @@ type testCase struct {
 }
 
 func ensureRecord(t *testing.T, tc testCase) {
+	t.Helper()
 	t.Run(tc._type.String(), func(t *testing.T) {
+		t.Helper()
 		sc := arrow.NewSchema([]arrow.Field{{Name: "field", Type: tc._type, Nullable: true}}, nil)
 		record, err := Record(sc, []any{tc.value})
 		require.NoError(t, err)
