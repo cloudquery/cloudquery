@@ -36,7 +36,9 @@ type testCase struct {
 }
 
 func ensureField(t *testing.T, tc testCase) {
+	t.Helper()
 	t.Run(tc._type, func(t *testing.T) {
+		t.Helper()
 		// simple
 		field, err := Field("field", tc._type)
 		require.NoError(t, err)
