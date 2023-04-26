@@ -51,22 +51,4 @@ func (spec *Spec) setDefaults() {
 	if spec.MaxRequestsPerSecond == nil || *spec.MaxRequestsPerSecond == 0 {
 		spec.MaxRequestsPerSecond = &defaultRateLimitPerSecond
 	}
-
-	var defaultProperties []string
-	var propertiesSpec = [][]string{
-		spec.Companies.Properties,
-		spec.Contacts.Properties,
-		spec.Deals.Properties,
-		spec.Deals.Properties,
-		spec.LineItems.Properties,
-		spec.Products.Properties,
-		spec.Quotes.Properties,
-		spec.Tickets.Properties,
-	}
-
-	for _, propertiesSpecItem := range propertiesSpec {
-		if propertiesSpecItem == nil {
-			propertiesSpecItem = defaultProperties
-		}
-	}
 }
