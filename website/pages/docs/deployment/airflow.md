@@ -64,7 +64,7 @@ helm upgrade --install airflow apache-airflow/airflow --namespace airflow --crea
   --set dags.gitSync.enabled=false
 ```
 
-You will then need to expose the Airflow webserver to access the Airflow UI at `http://localhost:8080`:
+You will then need to expose the Airflow web server to access the Airflow UI at `http://localhost:8080`:
 
 ```bash copy
 kubectl port-forward svc/airflow-webserver 8080:8080 --namespace airflow
