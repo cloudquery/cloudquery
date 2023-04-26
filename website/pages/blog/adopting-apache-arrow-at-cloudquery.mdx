@@ -35,10 +35,7 @@ This is where the type system comes in. Source plugin extracts information from 
 
 Before Arrow, we used our own type system that supported more than 14 types. This served us well, but we started to hit limitations in various use-cases. For example, in database to database replication, we needed to support many more types, including nested types. Also, performance-wise, lots of the time spent in an ELT process is around converting data from one format to another, so we wanted to take a step back and see if we can avoid this famous XKCD (by building yet another format):
 
-<figure style="text-align: center;">
-  <img src="https://imgs.xkcd.com/comics/standards.png" width="100%" class="img-responsive" alt="Yet another standard XKCD">
-</figure>
-
+![XKCD Formats](https://imgs.xkcd.com/comics/standards.png)
 
 This is where Arrow comes in. Apache arrow defines a cross language columnar format for flat and hierarchical data, and brings the following advantages:
 
