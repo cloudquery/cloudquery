@@ -12,17 +12,20 @@ func structType(_struct *arrow.StructType) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return "Tuple(" + strings.Join(defs, ", ") + ")", nil
 }
 
 func definitions(fields []arrow.Field) ([]string, error) {
 	res := make([]string, len(fields))
 	var err error
+
 	for i, field := range fields {
 		res[i], err = FieldDefinition(field)
 		if err != nil {
 			return nil, err
 		}
 	}
+
 	return res, nil
 }

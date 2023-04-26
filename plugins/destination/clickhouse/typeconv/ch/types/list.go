@@ -15,5 +15,6 @@ func listType(_type listDataType) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return "Array(" + item + ")", nil // adds Nullable to the item, if required
 }
