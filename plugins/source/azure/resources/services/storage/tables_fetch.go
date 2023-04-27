@@ -29,3 +29,25 @@ func fetchTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	}
 	return nil
 }
+
+func getTable(ctx context.Context, meta schema.ClientMeta, res *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc, err := armstorage.NewTableClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	if err != nil {
+		return err
+	}
+	item := res.Parent.Item.(*armstorage.Account)
+	group, err := client.ParseResourceGroup(*item.ID)
+	if err != nil {
+		return err
+	}
+
+	t := res.Item.(*armstorage.Table)
+
+	v, err := svc.Get(ctx, group, *item.Name, *t.Name, nil)
+	if err != nil {
+		return err
+	}
+	res.Item = v.Table
+	return nil
+}

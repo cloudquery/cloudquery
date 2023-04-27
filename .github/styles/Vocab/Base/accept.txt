@@ -117,6 +117,7 @@ meilisearch
 Metabase
 Metastore
 Mixpanel
+Minikube
 Monorepo
 NACL
 NACLs
