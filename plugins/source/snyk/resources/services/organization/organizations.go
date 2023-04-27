@@ -16,6 +16,10 @@ func Organizations() *schema.Table {
 		Resolver:    fetchOrganizations,
 		Multiplex:   client.SingleOrganization,
 		Transform:   transformers.TransformWithStruct(&snyk.Organization{}, transformers.WithPrimaryKeys("ID")),
+		Relations: []*schema.Table{
+			organizationMembers(),
+			pendingUserProvisions(),
+		},
 	}
 }
 
