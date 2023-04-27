@@ -30,6 +30,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go-v2/service/computeoptimizer"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
+	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
@@ -141,6 +142,7 @@ func initServices(region string, c aws.Config) Services {
 		Cognitoidentityprovider:   cognitoidentityprovider.NewFromConfig(awsCfg),
 		Computeoptimizer:          computeoptimizer.NewFromConfig(awsCfg),
 		Configservice:             configservice.NewFromConfig(awsCfg),
+		Costexplorer:              costexplorer.NewFromConfig(awsCfg),
 		Databasemigrationservice:  databasemigrationservice.NewFromConfig(awsCfg),
 		Dax:                       dax.NewFromConfig(awsCfg),
 		Directconnect:             directconnect.NewFromConfig(awsCfg),
@@ -186,8 +188,8 @@ func initServices(region string, c aws.Config) Services {
 		Ram:                       ram.NewFromConfig(awsCfg),
 		Rds:                       rds.NewFromConfig(awsCfg),
 		Redshift:                  redshift.NewFromConfig(awsCfg),
-		Resourcegroups:            resourcegroups.NewFromConfig(awsCfg),
 		Resiliencehub:             resiliencehub.NewFromConfig(awsCfg),
+		Resourcegroups:            resourcegroups.NewFromConfig(awsCfg),
 		Route53:                   route53.NewFromConfig(awsCfg),
 		Route53domains:            route53domains.NewFromConfig(awsCfg),
 		S3:                        s3.NewFromConfig(awsCfg),
@@ -207,8 +209,8 @@ func initServices(region string, c aws.Config) Services {
 		Sns:                       sns.NewFromConfig(awsCfg),
 		Sqs:                       sqs.NewFromConfig(awsCfg),
 		Ssm:                       ssm.NewFromConfig(awsCfg),
-		Support:                   support.NewFromConfig(awsCfg),
 		Ssoadmin:                  ssoadmin.NewFromConfig(awsCfg),
+		Support:                   support.NewFromConfig(awsCfg),
 		Timestreamwrite:           timestreamwrite.NewFromConfig(awsCfg),
 		Transfer:                  transfer.NewFromConfig(awsCfg),
 		Waf:                       waf.NewFromConfig(awsCfg),
@@ -249,6 +251,7 @@ type Services struct {
 	Cognitoidentityprovider   services.CognitoidentityproviderClient
 	Computeoptimizer          services.ComputeoptimizerClient
 	Configservice             services.ConfigserviceClient
+	Costexplorer              services.CostexplorerClient
 	Databasemigrationservice  services.DatabasemigrationserviceClient
 	Dax                       services.DaxClient
 	Directconnect             services.DirectconnectClient

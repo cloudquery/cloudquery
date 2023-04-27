@@ -10,5 +10,6 @@ Apart from these options, we have also written some guides to help you get start
 
  - [Airflow](/docs/deployment/airflow)
  - [Amazon ECS](/docs/deployment/ecs)
+ - [Docker](/docs/deployment/docker)
  - [GitHub Actions](/docs/deployment/github-actions)
  - [Kestra](/docs/deployment/kestra)
