@@ -22,4 +22,4 @@ This table depends on [snyk_organizations](snyk_organizations).
 |email (PK)|String|
 |role|String|
 |role_public_id|String|
-|created (PK)|String|
+|created (PK)|Timestamp|
