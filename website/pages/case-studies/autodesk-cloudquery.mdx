@@ -1,0 +1,24 @@
+---
+title: "AutoDesk Asset Inventory"
+date: 2022/06/07
+description: >-
+  AutoDesk PoC Deployment
+author: andrewthetechie
+---
+
+import { CaseStudyHeader } from "../../components/CaseStudyHeader"
+
+<CaseStudyHeader/>
+
+[GitHub Quote](https://github.com/cloudquery/cloudquery/issues/856#issuecomment-1147929953)
+
+
+> My Cloudquery deployment is currently at proof of concept stage, with a plan to move it to production in the next ~90 days. We are scanning 5 AWS accounts and one Datadog account currently with plans to add more. It is replacing a series of custom developed APIs that were doing fetching from the AWS API + storing resources in Redis.
+>
+> The proof of concept is deployed using Aurora Serverless v1 Postgres for the databases and fetches in our k8s cluster but we are not using the helm chart. Instead, we use our own internal deployment tools and docker image, but that is just for "compliance" reasons rather than features missing from the helm chart. For production, we'll be using Aurora Serverless V2 and EKS with Fargate for fetching. One feature we've added around Cloudquery in our images is emitting metrics and events to Datadog for our own monitoring - maybe this could be exported via Prometheus metrics in the future?
+>
+> One potentially interesting part of my deployment is that I am using Postgrest to supply a RESTful api on top of our Cloudquery database. Its able to offer a swagger.json file that I can use to automatically generate clients. I also experimented with a Graphql interface, but my users preferred the RESTful implementation.
+>
+> My primary users are my fellow Infrastructure Engineers and our Security and Compliance teams. We are planning to build APIs on top of Cloudquery to provide information to our platform users in the future. I want to get my Security teams using cloudquery policies in conjunction with their existing tooling to help with Compliance scans.
+
+
