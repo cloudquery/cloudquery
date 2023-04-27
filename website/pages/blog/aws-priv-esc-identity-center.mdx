@@ -1,0 +1,262 @@
+---
+title: Privilege Escalation with AWS Identity Center
+tag: security
+date: 2023/04/28
+description: >-
+  Privilege Escalation with AWS Identity Center
+author: jsonkao
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+## Overview
+
+AWS Identity Store ([formerly known as AWS SSO](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html#renamed)) is one method of providing and managing access to AWS accounts within an Organization, resources in AWS accounts, and applications hosted in AWS.  As with other methods of access to AWS accounts including IAM Roles and Users, there is the potential for misconfiguration and paths to privilege escalation and other security issues within AWS environments.
+
+In this blog, we will cover methods for privilege escalation with AWS Identity Store, access disruption, and other events that could indicate security issues within an AWS environment.  We’ll cover our research and observations on AWS Identity Center from our deep dive and experimentation with AWS Identity Center, with a specific focus on AWS Identity Center and attack vectors introduced by the usage of AWS Identity Center.  There are existing methods of privilege escalation that have been covered and researched by the security community such as `iam:PassRole` , `sts:AssumeRole` , and `iam:SetDefaultPolicyVersion`.
+
+![Identity Center Example Architecture](/images/blog/aws-priv-esc-identity-center/IdentityCenter.png)
+
+We will also cover how to find these events with CloudQuery’s new support for AWS CloudTrail Events, which allows for syncing CloudTrail events into a central destination such as Postgres, Snowflake, or other data destinations of your choice.  Stay tuned for future updates and improvements on CloudQuery as we continue to iterate on CloudTrail Events support and other related features.
+
+## Introduction to AWS Identity Center
+
+AWS Identity Center [has requirements for](https://docs.aws.amazon.com/singlesignon/latest/userguide/get-started-prereqs-considerations.html) use including using AWS Organizations for managing AWS Accounts.
+
+Identity Center must be run from either the Organizational management account or a delegated administrator account.  For more information about delegated administrator accounts, see [our blog post and research on delegated administrator](https://www.cloudquery.io/blog/guide-aws-org-delegation).
+
+Since usage of AWS Identity Center requires usage of AWS Organizations and can only be managed from either the organizational management account or delegated administrator account, privilege escalation with AWS Identity Center requires access to whichever account is used for management of AWS Identity Center: either the organizational management account or the delegated administrator account used for AWS Identity Center.
+
+Note: it is still possible to escalate privilege in member accounts without AWS Identity Center using direct modification of the IAM Roles and Policies tied to AWS Identity Center such as `iam:AttachRolePolicy`.
+
+An example Role Trust Policy for an Identity Center created IAM Role `arn:aws:iam::123412341234:role/aws-reserved/sso.amazonaws.com/eu-central-1/AWSReservedSSO_AWSReadOnlyAccess_1111111111111111` in a target account looks as follows.  
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Federated": "arn:aws:iam::123412341234:saml-provider/AWSSSO_1111111111111111_DO_NOT_DELETE"
+            },
+            "Action": [
+                "sts:AssumeRoleWithSAML",
+                "sts:TagSession"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "SAML:aud": "https://signin.aws.amazon.com/saml"
+                }
+            }
+        }
+    ]
+}
+```
+
+### Dual Authorization
+
+For IAM Identity Center, certain APIs support [dual authorization](https://docs.aws.amazon.com/singlesignon/latest/userguide/security-authorization.html).  AWS released newer API operations after October 15th, 2020.  For any IAM Identity Center instances created before October 15th, 2020, both API actions can be used.  Instances created after October 15th, 2020 use the [newer API actions](https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_Operations.html).  
+
+For example, to add an inline policy, both `PutPermissionPolicy` and `PutInlinePolicyToPermissionSet` could work.
+
+![Dual Authorization Table Provided by AWS](/images/blog/aws-priv-esc-identity-center/dualauth.png)
+
+Dual Authorization Table Provided by AWS
+
+## Privilege Escalation with AWS Identity Center (SSO)
+
+Identity Center has multiple service prefixes including:
+
+- `sso` service prefix for Identity Center actions.
+- `identity-store` service prefix for Identity Store actions.
+- `sso-directory` service prefix for IAM Identity Center Directory actions.
+- `identitystore-auth` service prefix for Identity Store Auth actions.
+- `identity-sync` service prefix for Identity Sync actions.
+
+In this research, we focused on `sso` and `identity-store` actions.  Note: these will look different in CLI as `sso-admin` and `sso` are both service prefixes.
+
+### 1. Permission Set Modification
+    
+    Action: `sso:ProvisionPermissionSet`
+    
+    In Identity Center, [a Permission Set](https://docs.aws.amazon.com/singlesignon/latest/userguide/permissionsetsconcept.html) is used to assign access to an Identity Center user or Identity Center group in one or more AWS Accounts.  These are not the same users and groups in AWS IAM (IAM Users and Groups).  When a permission set is assigned, Identity Center creates Identity Center IAM Roles in each account where the permission set corresponds to the role permissions in the corresponding AWS account.  
+    
+    Permission Sets are not provisioned by default when they are created (`sso:CreatePermissionSet`).  For the permissions to go into effect, `sso:ProvisionPermissionSet` must be called.  The same is required with adding permissions which is covered in the section below.  
+    
+    However, `sso:CreateAccountAssignment` as part of the Scope Change via Account Assignment section covered below will automatically provision permission sets as part of creating an account assignment.
+    
+### 2. Adding Permissions
+    
+    There are multiple different ways of adding permissions.  Similar to attaching policies to IAM Roles and Users, the following are different methods of adding and removing policies to a permission set.
+    
+    - Attaching an AWS Managed Policy
+        
+        Action: `sso:AttachManagedPolicyToPermissionSet`
+        
+        This action attaches an AWS managed policy to the Permission Set such as `AdministratorAccess`.  An AWS managed policy is a standalone IAM policy that is created and managed by AWS.  It is possible to grant more privileges via an attached managed policy.
+        
+    - Attaching a Customer Managed Policy
+        
+        Action: `sso:AttachCustomerManagedPolicyReferenceToPermissionSet`
+        
+        This action attaches a customer managed policy to the Permission Set.  A customer managed policy is an IAM policy created and managed by the customer (you).  It is possible to grant more privileges via an attached managed policy.
+        
+    - Adding an Inline Policy
+        
+        Action: `sso:PutInlinePolicyToPermissionSet`
+        
+        This action ties an inline policy to the permission set.  Inline policies are not standalone policies but rather are policies created for a single identity.  In this case, they’re created for Permission Sets.  It is possible to grant more privileges via an inline policy.
+        
+    - Detaching an AWS Managed Policy
+        
+        Action: `sso:DetachManagedPolicyFromPermissionSet`
+        
+        This action removes the association between an AWS managed policy from the specified permission set.  It is possible to grant more privileges via detaching a managed policy (deny policy).
+        
+    - Detaching a Customer Managed Policy
+        
+        Permission: `sso:DetachCustomerManagedPolicyReferenceFromPermissionSet`
+        
+        This action removes the association between a Customer managed policy from the specified permission set.  It is possible to grant more privileges via detaching a managed policy (deny policy).
+        
+    - Deleting an Inline Policy
+        
+        Permission: `sso:DeleteInlinePolicyFromPermissionSet`
+        
+        This action removes the permissions from an inline policy from the permission set.  It is possible to grant more privileges via detaching an inline policy (deny policy).
+        
+    - Deleting a Permission Boundary
+        
+        Permission: `sso:DeletePermissionBoundaryFromPermissionSet`
+        
+        This action removes the Permission Boundary from the permission set.  It is possible to grant more privileges by removing the restrictions on the Permission Set given from the Permission Boundary.
+        
+
+#### Observations
+
+- Attaching a Customer Managed Policy is a different permission than attaching an AWS Managed Policy.  This is different than the standard IAM permission for attach managed policies.  For example, `iam:AttachRolePolicy` attaches a managed policy (either customer managed or AWS managed) to an IAM Role.
+- Attaching and Detaching an AWS Managed Policy is `AttachManagedPolicyToPermissionSet` and `DetachManagedPolicyFromPermissionSet` without a clarifying `AWS`.  This is different than attaching a customer managed policy with the customer specifier in `AttachCustomerManagedPolicyToPermissionSet`.
+- Permission modifications to existing Permission Sets do not go into effect without a `sso:ProvisionPermissionSet` call.  For example, applying a new policy to a permission set and having the permissions go live requires 2 steps:
+    1. `sso:AttachManagedPolicyToPermissionSet` (Example usage of AWS Managed Policy)
+    2. `sso:ProvisionPermissionSet`
+
+### 3. Scope Change via Account Assignment
+    
+    Action: `sso:CreateAccountAssignment`
+    
+    This call assigns access to a principal for a specified AWS account using a specified permission set.  Thus, extra access scope may be granted to a principal.  For example, a user may be granted access to highly sensitive Production AWS Accounts.
+    
+    Additionally, as part of the `sso:CreateAccountAssignment` call, the permission set will be automatically provisioned as part of creating an account assignment.
+    
+    ([https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_CreateAccountAssignment.html](https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_CreateAccountAssignment.html)) 
+    
+### 4. Membership Modification (User to Group Association)
+    
+    Action: `identitystore:CreateGroupMembership`
+    
+    Action: `sso-directory:AddMemberToGroup`
+    
+    These actions creates a relationship between a member and a group since those are different IAM entities that can be assigned as part of an account assignment.  If a group has account assignments, adding a user to the group will grant that user access to the assignments given to the group (inheritance).
+    
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "sso-directory:AddMemberToGroup",
+                "identitystore:CreateGroupMembership"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+## Permission Modification and Access Disruption
+
+Security of an AWS environment can also be disrupted with loss of access or improper loss of privileges.  Along with earlier Privilege Escalation actions, the following actions can be used to revoke and remove access and privilege.
+
+- `sso:DeletePermissionSet`
+- `sso:PutPermissionsBoundaryToPermissionSet`
+- `sso:DeleteAccountAssignment`
+
+Examples of permission modification and access disruption include:
+
+- Attaching a Managed Policy with Deny Statements that override allowed permissions already allowed by other IAM Policies.
+- Associating a Permission Boundary with an effective boundary that limits the allowed permissions from IAM policies.
+- Removing access to an account by deleting an account assignment.
+- Disrupting access by deleting a permission set.
+
+## Security Detection: Identifying Identity Center Actions in CloudTrail Logs and How CloudQuery can help
+
+AWS CloudTrail offers 90 days of logging to identify API calls made in AWS accounts.  While it’s possible to search directly in CloudTrail for the last 90 days of activity, we’ll show how to identify Identity Center Actions in CloudTrail logs synced with CloudQuery.
+
+We recently added support for [CloudTrail Events](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_cloudtrail_events) and [Incremental Tables](https://www.cloudquery.io/docs/advanced-topics/managing-incremental-tables) with CloudQuery as we saw useful use cases for syncing CloudTrail events to the destination of your choice. 
+
+### CloudQuery Setup and Configuration
+
+To get setup, I have CloudQuery configured to sync from AWS to PostgreSQL.
+
+For more detailed instructions on how to configure CloudQuery to sync from AWS to PostgreSQL, please follow our guide [here](https://www.cloudquery.io/integrations/aws/postgresql).
+
+An example configuration file for AWS as a source is as follows:
+
+```bash
+kind: source
+spec:
+  name: "aws"
+  path: "cloudquery/aws"
+  version: "v15.3.0" 
+  destinations: ["postgresql"]
+  tables: ["aws_cloudtrail_events"]
+  spec:
+    accounts:
+      - id: '123412341234'
+        local_profile: 'cloudquery-view'
+```
+
+Once the configuration files are set, we can run the command `cloudquery sync aws.yml postgres.yml`.  Keep in mind that this sync could take some time given the amount of data in CloudTrail Events.  The account we sync is the delegated administrator account for AWS Identity Center in our example organization.
+
+### Exploring CloudTrail Events
+
+Now that CloudQuery is set and CloudTrail events are synced, we can run queries on our event logs.  
+
+Let’s look for scope change via account assignment or any permission set provisioning with the following query.
+
+```sql
+SELECT * from aws_cloudtrail_events
+WHERE 	(event_name = 'CreateAccountAssignment' 
+	OR event_name = 'ProvisionPermissionSet')
+	AND cloud_trail_event -> 'errorCode' IS NULL
+ORDER by event_time;
+```
+
+We can also look for membership modification with the below query:
+
+```sql
+SELECT * from aws_cloudtrail_events
+WHERE event_name = 'AddMemberToGroup' AND
+			cloud_trail_event -> 'errorCode' IS NULL
+ORDER by event_time;
+```
+
+With AWS data synced to our data destination, we can now write advanced queries and enrich tables with information from other tables such as IAM information, resource information, or other relevant information.
+
+## Conclusion
+
+AWS Identity Center can be instrumental in managing access to multiple AWS accounts within an AWS Organization.  With AWS Identity Center, there are multiple methods of privilege escalation and access disruption.  We’ve now covered the complexity around AWS Identity Center, various observations, and the different models of privilege escalation.  
+
+Stay tuned for more updates in CloudQuery including our coverage of CloudTrail Events as we continue working on our product and solving for customer use cases.
+
+## References and Useful Links
+
+[CloudQuery: AWS Plugin](https://www.cloudquery.io/docs/plugins/sources/aws/overview)
+
+[CloudQuery: CloudTrail Events]
