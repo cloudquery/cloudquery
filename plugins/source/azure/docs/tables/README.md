@@ -247,6 +247,7 @@
 - [azure_security_allowed_connections](../../../../../website/tables/azure/azure_security_allowed_connections.md)
 - [azure_security_applications](../../../../../website/tables/azure/azure_security_applications.md)
 - [azure_security_assessments](../../../../../website/tables/azure/azure_security_assessments.md)
+  - [azure_security_sub_assessments](../../../../../website/tables/azure/azure_security_sub_assessments.md)
 - [azure_security_assessments_metadata](../../../../../website/tables/azure/azure_security_assessments_metadata.md)
 - [azure_security_auto_provisioning_settings](../../../../../website/tables/azure/azure_security_auto_provisioning_settings.md)
 - [azure_security_automations](../../../../../website/tables/azure/azure_security_automations.md)

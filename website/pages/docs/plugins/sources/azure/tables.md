@@ -247,6 +247,7 @@
 - [azure_security_allowed_connections](tables/azure_security_allowed_connections)
 - [azure_security_applications](tables/azure_security_applications)
 - [azure_security_assessments](tables/azure_security_assessments)
+  - [azure_security_sub_assessments](tables/azure_security_sub_assessments)
 - [azure_security_assessments_metadata](tables/azure_security_assessments_metadata)
 - [azure_security_auto_provisioning_settings](tables/azure_security_auto_provisioning_settings)
 - [azure_security_automations](tables/azure_security_automations)
