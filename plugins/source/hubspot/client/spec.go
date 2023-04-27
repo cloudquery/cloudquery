@@ -1,14 +1,8 @@
 package client
 
 type Spec struct {
-	MaxRequestsPerSecond *int         `yaml:"max_requests_per_second,omitempty" json:"max_requests_per_second,omitempty"`
-	Companies            TableOptions `yaml:"companies,omitempty" json:"companies,omitempty"`
-	Contacts             TableOptions `yaml:"contacts,omitempty" json:"contacts,omitempty"`
-	Deals                TableOptions `yaml:"deals,omitempty" json:"deals,omitempty"`
-	LineItems            TableOptions `yaml:"line_items,omitempty" json:"line_items,omitempty"`
-	Products             TableOptions `yaml:"products,omitempty" json:"products,omitempty"`
-	Quotes               TableOptions `yaml:"quotes,omitempty" json:"quotes,omitempty"`
-	Tickets              TableOptions `yaml:"tickets,omitempty" json:"tickets,omitempty"`
+	MaxRequestsPerSecond *int                     `yaml:"max_requests_per_second,omitempty" json:"max_requests_per_second,omitempty"`
+	TableOptions         map[string]*TableOptions `yaml:"table_options,omitempty" json:"table_options,omitempty"`
 }
 
 type TableOptions struct {

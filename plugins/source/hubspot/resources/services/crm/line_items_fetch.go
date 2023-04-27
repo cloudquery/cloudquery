@@ -19,9 +19,15 @@ func fetchLineItems(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			return nil
 		}
 
+		var properties []string
+		options, exists := cqClient.Spec.TableOptions["hubspot_crm_line_items"]
+		if exists {
+			properties = options.Properties
+		}
+
 		req := hubspotClient.BasicApi.
 			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
-			Properties(cqClient.Spec.LineItems.Properties).
+			Properties(properties).
 			Limit(client.DefaultPageSize)
 
 		if len(after) > 0 {

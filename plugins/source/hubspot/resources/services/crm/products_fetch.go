@@ -19,9 +19,15 @@ func fetchProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 			return nil
 		}
 
+		var properties []string
+		options, exists := cqClient.Spec.TableOptions["hubspot_crm_products"]
+		if exists {
+			properties = options.Properties
+		}
+
 		req := hubspotClient.BasicApi.
 			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
-			Properties(cqClient.Spec.Products.Properties).
+			Properties(properties).
 			Limit(client.DefaultPageSize)
 
 		if len(after) > 0 {
