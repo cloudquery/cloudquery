@@ -1,10 +1,10 @@
 ---
-title: Orchestrating CloudQuery Syncs with Airflow
+title: Orchestrating CloudQuery Syncs with Airflow and Kubernetes
 tag: tutorial
 date: 2023/04/26
 ---
 
-# Orchestrating CloudQuery Syncs with Apache Airflow
+# Orchestrating CloudQuery Syncs with Apache Airflow and Kubernetes
 
 Apache Airflow is a popular open source workflow management tool. It can be used to schedule CloudQuery syncs, optionally retry them and send notifications when syncs fail. In this guide, we will show you how to get started with Airflow and CloudQuery. We will use the [KubernetesOperator](https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/operators.html), which allows us to run tasks in Kubernetes pods. 
 
