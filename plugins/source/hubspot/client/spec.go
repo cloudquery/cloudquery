@@ -1,41 +1,17 @@
 package client
 
 type Spec struct {
-	MaxRequestsPerSecond *int          `yaml:"max_requests_per_second,omitempty" json:"max_requests_per_second,omitempty"`
-	Companies            CompaniesSpec `yaml:"companies,omitempty" json:"companies,omitempty"`
-	Contacts             ContactsSpec  `yaml:"contacts,omitempty" json:"contacts,omitempty"`
-	Deals                DealsSpec     `yaml:"deals,omitempty" json:"deals,omitempty"`
-	LineItems            LineItemsSpec `yaml:"line_items,omitempty" json:"line_items,omitempty"`
-	Products             ProductsSpec  `yaml:"products,omitempty" json:"products,omitempty"`
-	Quotes               QuotesSpec    `yaml:"quotes,omitempty" json:"quotes,omitempty"`
-	Tickets              TicketsSpec   `yaml:"tickets,omitempty" json:"tickets,omitempty"`
+	MaxRequestsPerSecond *int         `yaml:"max_requests_per_second,omitempty" json:"max_requests_per_second,omitempty"`
+	Companies            TableOptions `yaml:"companies,omitempty" json:"companies,omitempty"`
+	Contacts             TableOptions `yaml:"contacts,omitempty" json:"contacts,omitempty"`
+	Deals                TableOptions `yaml:"deals,omitempty" json:"deals,omitempty"`
+	LineItems            TableOptions `yaml:"line_items,omitempty" json:"line_items,omitempty"`
+	Products             TableOptions `yaml:"products,omitempty" json:"products,omitempty"`
+	Quotes               TableOptions `yaml:"quotes,omitempty" json:"quotes,omitempty"`
+	Tickets              TableOptions `yaml:"tickets,omitempty" json:"tickets,omitempty"`
 }
 
-type CompaniesSpec struct {
-	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
-}
-
-type ContactsSpec struct {
-	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
-}
-
-type DealsSpec struct {
-	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
-}
-
-type LineItemsSpec struct {
-	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
-}
-
-type ProductsSpec struct {
-	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
-}
-
-type QuotesSpec struct {
-	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
-}
-
-type TicketsSpec struct {
+type TableOptions struct {
 	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
 }
 
