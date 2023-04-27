@@ -241,6 +241,10 @@
     {
       "source": "/docs/plugins/destinations/csv/overview",
       "destination": "/docs/plugins/destinations/file/overview"
+    },
+    {
+      "source": "/docs/advanced-topics/docker",
+      "destination": "/docs/deployment/docker"
     }
   ]
 }
