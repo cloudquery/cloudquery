@@ -8,6 +8,7 @@ Apart from these options, we have also written some guides to help you get start
 
 ## Tutorials
 
+ - [Airflow](/docs/deployment/airflow)
  - [Amazon ECS](/docs/deployment/ecs)
  - [Docker](/docs/deployment/docker)
  - [GitHub Actions](/docs/deployment/github-actions)
