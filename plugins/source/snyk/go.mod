@@ -35,8 +35,10 @@ require (
 replace (
 	// TODO: remove once the changes are merged to upstream
 	github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230411134648-a5b71cd453c8
-	github.com/pavel-snyk/snyk-sdk-go => github.com/cloudquery/snyk-sdk-go v0.4.0
+	// github.com/pavel-snyk/snyk-sdk-go => github.com/cloudquery/snyk-sdk-go v0.4.0
 )
+
+replace github.com/pavel-snyk/snyk-sdk-go => ../../../../snyk-sdk-go
 
 require (
 	github.com/cloudquery/plugin-sdk/v2 v2.4.0
