@@ -1,5 +1,6 @@
 {
   "overview": "Overview",
+  "docker": "Docker",
   "ecs": "Amazon ECS",
   "github-actions": "GitHub Actions",
   "kestra": "Kestra"
