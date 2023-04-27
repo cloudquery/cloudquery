@@ -1,5 +1,5 @@
 ---
-title: 'AWS Identity Center (Fformerly SSO): A Guide to Privilege Escalation and Identity and Access Management of AWS Identity Center'
+title: 'AWS Identity Center (formerly known as AWS SSO): A Guide to Privilege Escalation and Identity and Access Management of AWS Identity Center'
 tag: security
 date: 2023/04/28
 description: >-
@@ -13,7 +13,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 ## Overview
 
-AWS Identity Center ([formerly known as AWS SSO](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html#renamed)) is one method of providing and managing access to AWS accounts within an Organization, resources in AWS accounts, and applications hosted in AWS.  As with other methods of access to AWS accounts including IAM Roles and Users, there is the potential for misconfiguration and paths to privilege escalation and other security issues within AWS environments.
+AWS Identity Center ([formerly known as AWS SSO](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html#renamed)) is one method of providing and managing cloud access to Amazon Web Services accounts within an Organization, resources in AWS accounts, and applications hosted in AWS.  As with other methods of access to AWS accounts including IAM Roles and Users, there is the potential for misconfiguration and paths to privilege escalation and other security issues within AWS environments.
 
 In this blog, we will cover methods for privilege escalation with AWS Identity Center, access disruption, and other events that could indicate security issues within an AWS environment.  We’ll cover our research and observations on AWS Identity Center from our deep dive and experimentation with AWS Identity Center, with a specific focus on AWS Identity Center and attack vectors introduced by the usage of AWS Identity Center.  There are existing methods of privilege escalation that have been covered and researched by the security community such as `iam:PassRole` , `sts:AssumeRole` , and `iam:SetDefaultPolicyVersion`.
 
