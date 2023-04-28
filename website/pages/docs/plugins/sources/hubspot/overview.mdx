@@ -39,18 +39,12 @@ This is the specs that can be used by the HubSpot source Plugin.
 
   Rate limit per second for requests done HubSpot API, this will depend on your HubSpot plan (https://developers.hubspot.com/docs/api/usage-details#rate-limits)
 
-- `table_options` ([map[string][TableOptions]](#table-options) spec, optional. Default: `empty`)
+- `table_options` (map[string][TableOptions](#table-options) spec, optional. Default: `empty`)
 
-  Table Options for HubSpot entities that will be in sync.
+  Table Options for HubSpot entities that will be synced.
 
 ### Table Options
 
-- `table_name` ([TableOptionsSpec](#table-options-spec) spec, optional. Default: `empty`)
-
-  Table name to define the options when collecting data from the entity on HubSpot.
-
-### Table Options Spec
-
-- `properties` (`[]string`, optional. Default: `[]`)
+- `properties` (`[]string`, optional. Default: empty)
 
   Additional properties to be retrieved from HubSpot when syncing the table entity
