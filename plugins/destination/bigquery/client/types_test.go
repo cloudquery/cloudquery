@@ -3,29 +3,30 @@ package client
 import (
 	"testing"
 
+	"cloud.google.com/go/bigquery"
 	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/testdata"
+	"github.com/cloudquery/plugin-sdk/v2/types"
 )
 
-func TestGetValueForBigQuery(t *testing.T) {
-	for arrowType := range TypeMapping {
-		f := arrow.Field{
-			Name:     arrowType.Name(),
-			Type:     arrowType,
-			Nullable: true,
+func TestSchemaTypeToBigQueryType(t *testing.T) {
+	cases := []struct {
+		dataType     arrow.DataType
+		want         bigquery.FieldType
+		wantRepeated bool
+	}{
+		{dataType: arrow.FixedWidthTypes.Boolean, want: bigquery.BooleanFieldType, wantRepeated: false},
+		{dataType: types.ExtensionTypes.JSON, want: bigquery.JSONFieldType, wantRepeated: false},
+		{dataType: arrow.ListOf(arrow.BinaryTypes.String), want: bigquery.StringFieldType, wantRepeated: true},
+		{dataType: arrow.ListOf(types.ExtensionTypes.JSON), want: bigquery.JSONFieldType, wantRepeated: true},
+	}
+	cl := &Client{}
+	for _, c := range cases {
+		got, gotRepeated := cl.SchemaTypeToBigQueryType(c.dataType)
+		if got != c.want {
+			t.Errorf("SchemaTypeToBigQueryType(%v) got %v, want %v", c.dataType, got, c.want)
 		}
-		sc := arrow.NewSchema([]arrow.Field{f}, nil)
-		opts := testdata.GenTestDataOptions{
-			MaxRows: 1,
-		}
-		records := testdata.GenTestData(sc, opts)
-		for _, r := range records {
-			for i := 0; i < int(r.NumCols()); i++ {
-				v := GetValueForBigQuery(r.Column(i), 0)
-				if v == nil {
-					t.Errorf("GetValueForBigQuery(%s) = nil", arrowType.Name())
-				}
-			}
+		if gotRepeated != c.wantRepeated {
+			t.Errorf("SchemaTypeToBigQueryType(%v) got repeated=%v, want %v", c.dataType, gotRepeated, c.wantRepeated)
 		}
 	}
 }

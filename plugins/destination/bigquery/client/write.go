@@ -40,7 +40,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, arrowSchema *arrow.Schema,
 					// save some bandwidth by not sending nil values
 					continue
 				}
-				saver.cols[arrowSchema.Field(i).Name] = GetValueForBigQuery(col, r)
+				saver.cols[arrowSchema.Field(i).Name] = col.GetOneForMarshal(r)
 			}
 			batch = append(batch, saver)
 		}

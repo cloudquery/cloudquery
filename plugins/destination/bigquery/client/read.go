@@ -12,6 +12,7 @@ import (
 	"github.com/apache/arrow/go/v12/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/goccy/go-json"
 	"google.golang.org/api/iterator"
 )
 
@@ -50,124 +51,14 @@ func (c *Client) Read(ctx context.Context, arrowSchema *arrow.Schema, sourceName
 		}
 		rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
 		for i := range values {
-			c.appendValue(rb.Field(i), values[i])
+			b, _ := json.Marshal(values[i])
+			r := strings.NewReader(string(b))
+			d := json.NewDecoder(r)
+			rb.Field(i).UnmarshalOne(d)
 		}
 		res <- rb.NewRecord()
 	}
 	return nil
-}
-
-func (*Client) appendValue(b array.Builder, val bigquery.Value) {
-	dt := b.Type()
-	switch {
-	case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Boolean):
-		b.(*array.BooleanBuilder).Append(val.(bool))
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Int8):
-		b.(*array.Int8Builder).Append(int8(val.(int64)))
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Int16):
-		b.(*array.Int16Builder).Append(int16(val.(int64)))
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Int32):
-		b.(*array.Int32Builder).Append(int32(val.(int64)))
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Int64):
-		b.(*array.Int64Builder).Append(val.(int64))
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint8):
-		b.(*array.Uint8Builder).Append(uint8(val.(int64)))
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint16):
-		b.(*array.Uint16Builder).Append(uint16(val.(int64)))
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint32):
-		b.(*array.Uint32Builder).Append(uint32(val.(int64)))
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint64):
-		b.(*array.Uint64Builder).Append(uint64(val.(int64)))
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Float32):
-		b.(*array.Float32Builder).Append(float32(val.(float64)))
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Float64):
-		b.(*array.Float64Builder).Append(val.(float64))
-	case arrow.TypeEqual(dt, arrow.BinaryTypes.String):
-		b.(*array.StringBuilder).Append(val.(string))
-	case arrow.TypeEqual(dt, arrow.ListOf(arrow.BinaryTypes.String)):
-		b.(*array.ListBuilder).Append(true)
-		vb := b.(*array.ListBuilder).ValueBuilder().(*array.StringBuilder)
-		s := make([]string, 0, len(val.([]bigquery.Value)))
-		for _, v := range val.([]bigquery.Value) {
-			s = append(s, v.(string))
-		}
-		vb.AppendValues(s, nil)
-	case arrow.TypeEqual(dt, arrow.BinaryTypes.LargeString):
-		b.(*array.LargeStringBuilder).Append(val.(string))
-	case arrow.TypeEqual(dt, arrow.ListOf(arrow.BinaryTypes.LargeString)):
-		b.(*array.ListBuilder).Append(true)
-		vb := b.(*array.ListBuilder).ValueBuilder().(*array.LargeStringBuilder)
-		vb.AppendValues(val.([]string), nil)
-	case arrow.TypeEqual(dt, arrow.BinaryTypes.Binary):
-		b.(*array.BinaryBuilder).Append(val.([]byte))
-	case arrow.TypeEqual(dt, arrow.BinaryTypes.LargeBinary):
-		b.(*array.BinaryBuilder).Append(val.([]byte))
-	case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Date32):
-		t := val.(time.Time)
-		b.(*array.Date32Builder).Append(arrow.Date32FromTime(t))
-	case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Date64):
-		t := val.(time.Time)
-		b.(*array.Date64Builder).Append(arrow.Date64FromTime(t))
-	case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Timestamp_s):
-		t := val.(time.Time)
-		arrowTimestamp, err := arrow.TimestampFromString(t.Format(time.RFC3339), arrow.Second)
-		if err != nil {
-			panic(err)
-		}
-		b.(*array.TimestampBuilder).Append(arrowTimestamp)
-	case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Timestamp_ms):
-		t := val.(time.Time)
-		arrowTimestamp, err := arrow.TimestampFromString(t.Format(time.RFC3339), arrow.Millisecond)
-		if err != nil {
-			panic(err)
-		}
-		b.(*array.TimestampBuilder).Append(arrowTimestamp)
-	case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Timestamp_us):
-		t := val.(time.Time)
-		arrowTimestamp, err := arrow.TimestampFromString(t.Format(time.RFC3339), arrow.Microsecond)
-		if err != nil {
-			panic(err)
-		}
-		b.(*array.TimestampBuilder).Append(arrowTimestamp)
-	case arrow.TypeEqual(dt, arrow.FixedWidthTypes.Timestamp_ns):
-		t := val.(time.Time)
-		arrowTimestamp, err := arrow.TimestampFromString(t.Format(time.RFC3339), arrow.Nanosecond)
-		if err != nil {
-			panic(err)
-		}
-		b.(*array.TimestampBuilder).Append(arrowTimestamp)
-	case arrow.TypeEqual(dt, types.ExtensionTypes.Inet):
-		b.(*types.InetBuilder).AppendValueFromString(val.(string))
-	case arrow.TypeEqual(dt, arrow.ListOf(types.ExtensionTypes.Inet)):
-		b.(*array.ListBuilder).Append(true)
-		vb := b.(*array.ListBuilder).ValueBuilder().(*types.InetBuilder)
-		for _, s := range val.([]bigquery.Value) {
-			vb.AppendValueFromString(s.(string))
-		}
-	case arrow.TypeEqual(dt, types.ExtensionTypes.Mac):
-		b.(*types.MacBuilder).AppendValueFromString(val.(string))
-	case arrow.TypeEqual(dt, arrow.ListOf(types.ExtensionTypes.Mac)):
-		b.(*array.ListBuilder).Append(true)
-		vb := b.(*array.ListBuilder).ValueBuilder().(*types.MacBuilder)
-		for _, s := range val.([]bigquery.Value) {
-			vb.AppendValueFromString(s.(string))
-		}
-	case arrow.TypeEqual(dt, types.ExtensionTypes.UUID):
-		b.(*types.UUIDBuilder).AppendValueFromString(val.(string))
-	case arrow.TypeEqual(dt, arrow.ListOf(types.ExtensionTypes.UUID)):
-		b.(*array.ListBuilder).Append(true)
-		vb := b.(*array.ListBuilder).ValueBuilder().(*types.UUIDBuilder)
-		for _, s := range val.([]bigquery.Value) {
-			vb.AppendValueFromString(s.(string))
-		}
-	case arrow.TypeEqual(dt, types.ExtensionTypes.JSON):
-		b.(*types.JSONBuilder).AppendValueFromString(val.(string))
-	default:
-		panic(fmt.Sprintf("unsupported type: %v", dt))
-		// TODO: continue here
-		// panic(fmt.Sprintf("unsupported type: %v", dt))
-		// b.(*array.StringBuilder).Append(val.(string))
-	}
 }
 
 func (*Client) createResultsArray(sc *arrow.Schema) []bigquery.Value {
