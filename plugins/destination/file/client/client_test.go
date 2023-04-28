@@ -82,8 +82,10 @@ func testSpecs(t *testing.T) []testSpec {
 		s := s
 		s.NoRotate = true
 		for i := range formats {
-			s.FileSpec = &formats[i]
-			ret = append(ret, s)
+			s2 := s
+			s2.TestName += ":" + string(formats[i].Format)
+			s2.FileSpec = &formats[i]
+			ret = append(ret, s2)
 		}
 	}
 
@@ -93,7 +95,7 @@ func testSpecs(t *testing.T) []testSpec {
 func TestPlugin(t *testing.T) {
 	for _, ts := range testSpecs(t) {
 		ts := ts
-		t.Run(ts.TestName+":"+string(ts.FileSpec.Format), func(t *testing.T) {
+		t.Run(ts.TestName, func(t *testing.T) {
 			testPlugin(t, &ts.Spec)
 
 			dirOrPath := ts.Spec.Directory
