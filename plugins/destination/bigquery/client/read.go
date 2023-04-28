@@ -87,7 +87,11 @@ func (*Client) appendValue(b array.Builder, val bigquery.Value) {
 	case arrow.TypeEqual(dt, arrow.ListOf(arrow.BinaryTypes.String)):
 		b.(*array.ListBuilder).Append(true)
 		vb := b.(*array.ListBuilder).ValueBuilder().(*array.StringBuilder)
-		vb.AppendValues(val.([]string), nil)
+		s := make([]string, 0, len(val.([]bigquery.Value)))
+		for _, v := range val.([]bigquery.Value) {
+			s = append(s, v.(string))
+		}
+		vb.AppendValues(s, nil)
 	case arrow.TypeEqual(dt, arrow.BinaryTypes.LargeString):
 		b.(*array.LargeStringBuilder).Append(val.(string))
 	case arrow.TypeEqual(dt, arrow.ListOf(arrow.BinaryTypes.LargeString)):
@@ -137,28 +141,29 @@ func (*Client) appendValue(b array.Builder, val bigquery.Value) {
 	case arrow.TypeEqual(dt, arrow.ListOf(types.ExtensionTypes.Inet)):
 		b.(*array.ListBuilder).Append(true)
 		vb := b.(*array.ListBuilder).ValueBuilder().(*types.InetBuilder)
-		for _, s := range val.([]string) {
-			vb.AppendValueFromString(s)
+		for _, s := range val.([]bigquery.Value) {
+			vb.AppendValueFromString(s.(string))
 		}
 	case arrow.TypeEqual(dt, types.ExtensionTypes.Mac):
 		b.(*types.MacBuilder).AppendValueFromString(val.(string))
 	case arrow.TypeEqual(dt, arrow.ListOf(types.ExtensionTypes.Mac)):
 		b.(*array.ListBuilder).Append(true)
 		vb := b.(*array.ListBuilder).ValueBuilder().(*types.MacBuilder)
-		for _, s := range val.([]string) {
-			vb.AppendValueFromString(s)
+		for _, s := range val.([]bigquery.Value) {
+			vb.AppendValueFromString(s.(string))
 		}
 	case arrow.TypeEqual(dt, types.ExtensionTypes.UUID):
 		b.(*types.UUIDBuilder).AppendValueFromString(val.(string))
 	case arrow.TypeEqual(dt, arrow.ListOf(types.ExtensionTypes.UUID)):
 		b.(*array.ListBuilder).Append(true)
 		vb := b.(*array.ListBuilder).ValueBuilder().(*types.UUIDBuilder)
-		for _, s := range val.([]string) {
-			vb.AppendValueFromString(s)
+		for _, s := range val.([]bigquery.Value) {
+			vb.AppendValueFromString(s.(string))
 		}
 	case arrow.TypeEqual(dt, types.ExtensionTypes.JSON):
 		b.(*types.JSONBuilder).AppendValueFromString(val.(string))
 	default:
+		panic(fmt.Sprintf("unsupported type: %v", dt))
 		// TODO: continue here
 		// panic(fmt.Sprintf("unsupported type: %v", dt))
 		// b.(*array.StringBuilder).Append(val.(string))
