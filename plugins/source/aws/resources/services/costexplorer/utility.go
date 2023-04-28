@@ -7,5 +7,5 @@ func beginningOfMonth(date time.Time) time.Time {
 }
 
 func endOfMonth(date time.Time) time.Time {
-	return date.AddDate(0, 1, -date.Day())
+	return date.AddDate(0, 1, -date.Day()+1)
 }
