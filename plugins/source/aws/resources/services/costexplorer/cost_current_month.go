@@ -65,7 +65,7 @@ func fetchCost(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 		},
 		TimePeriod: &types.DateInterval{
 			Start: aws.String(beginningOfMonth(time.Now()).Format("2006-01-02")),
-			End:   aws.String(time.Now().Format("2006-01-02")),
+			End:   aws.String(time.Now().AddDate(0, 0, 1).Format("2006-01-02")),
 		},
 	}
 	for {
