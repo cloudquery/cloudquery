@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/oracledb
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk/v2 v2.5.0
+	github.com/cloudquery/plugin-sdk/v2 v2.5.1
 	github.com/rs/zerolog v1.29.0
 	github.com/sijms/go-ora/v2 v2.6.16
 	github.com/stretchr/testify v1.8.2
