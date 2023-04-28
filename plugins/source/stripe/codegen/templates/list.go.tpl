@@ -7,8 +7,8 @@ import (
 	"strconv"
 {{end}}
 
-	"github.com/cloudquery/plugin-sdk/schema"
-  "github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/stripe/stripe-go/v74"
 )
