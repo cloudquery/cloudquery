@@ -3,7 +3,8 @@ module github.com/cloudquery/cloudquery/plugins/destination/mssql
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk/v2 v2.4.0
+	github.com/apache/arrow/go/v12 v12.0.0-20230401212133-adf33cc43010
+	github.com/cloudquery/plugin-sdk/v2 v2.5.1
 	github.com/microsoft/go-mssqldb v0.19.0
 	github.com/rs/zerolog v1.29.0
 	github.com/stretchr/testify v1.8.2
@@ -19,7 +20,6 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.2.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v0.9.0 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/apache/arrow/go/v12 v12.0.0-20230401212133-adf33cc43010 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
