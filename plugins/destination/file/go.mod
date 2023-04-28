@@ -5,7 +5,9 @@ go 1.19
 require (
 	github.com/apache/arrow/go/v12 v12.0.0-20230417014917-9888ac36c142
 	github.com/cloudquery/filetypes/v2 v2.0.3
-	github.com/cloudquery/plugin-sdk/v2 v2.4.0
+	github.com/cloudquery/plugin-sdk/v2 v2.5.0
+	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/google/flatbuffers v2.0.8+incompatible // indirect
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
 	github.com/stretchr/testify v1.8.2
@@ -54,4 +56,11 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230419074556-00ceafa3b033
+require (
+	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/pierrec/lz4/v4 v4.1.17 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/testify v1.8.2 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
+)
