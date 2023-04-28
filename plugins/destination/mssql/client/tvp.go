@@ -10,8 +10,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
+func (c *Client) useTVP(sc *arrow.Schema) bool {
+	return c.pkEnabled() && len(schema.PrimaryKeyIndices(sc)) > 0
+}
+
 func (c *Client) ensureTVP(ctx context.Context, sc *arrow.Schema) (err error) {
-	if !c.pkEnabled() {
+	if !c.useTVP(sc) {
 		return nil
 	}
 
