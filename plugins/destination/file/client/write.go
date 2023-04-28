@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -19,7 +19,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, arrowSchema *arrow.Schema,
 	timeNow := time.Now().UTC()
 	p := replacePathVariables(c.pluginSpec.Path, tableName, c.pluginSpec.Format, uuid.NewString(), timeNow)
 
-	if err := os.MkdirAll(path.Dir(p), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
 		return fmt.Errorf("failed to create directory: %w", err)
 	}
 
@@ -41,5 +41,5 @@ func replacePathVariables(specPath, table string, format filetypes.FormatType, f
 	name = strings.ReplaceAll(name, DayVar, t.Format("02"))
 	name = strings.ReplaceAll(name, HourVar, t.Format("15"))
 	name = strings.ReplaceAll(name, MinuteVar, t.Format("04"))
-	return path.Clean(name)
+	return filepath.Clean(name)
 }

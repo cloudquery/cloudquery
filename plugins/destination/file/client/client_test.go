@@ -3,7 +3,6 @@ package client
 import (
 	"fmt"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -57,19 +56,19 @@ func testSpecsWithoutFormat(t *testing.T) []testSpec {
 		{
 			TestName: "DirectoryWithTable",
 			Spec: Spec{
-				Directory: path.Join(t.TempDir(), "{{TABLE}}/data.{{FORMAT}}"),
+				Directory: filepath.Join(t.TempDir(), "{{TABLE}}", "data.{{FORMAT}}"),
 			},
 		},
 		{
 			TestName: "Path",
 			Spec: Spec{
-				Path: path.Join(t.TempDir(), "{{TABLE}}.{{FORMAT}}"),
+				Path: filepath.Join(t.TempDir(), "{{TABLE}}.{{FORMAT}}"),
 			},
 		},
 		{
 			TestName: "PathWithTable",
 			Spec: Spec{
-				Path: path.Join(t.TempDir(), "{{TABLE}}/data.{{FORMAT}}"),
+				Path: filepath.Join(t.TempDir(), "{{TABLE}}", "data.{{FORMAT}}"),
 			},
 		},
 	}
