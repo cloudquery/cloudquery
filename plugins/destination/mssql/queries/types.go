@@ -1,11 +1,13 @@
 package queries
 
 import (
+	"fmt"
 	"reflect"
 	"time"
 
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/types"
+	"golang.org/x/exp/maps"
 )
 
 func SQLType(_type arrow.DataType) string {
@@ -47,41 +49,26 @@ func SQLType(_type arrow.DataType) string {
 	}
 }
 
-func SchemaType(sqlType string) arrow.DataType {
-	switch sqlType {
-	case "bit":
-		return new(arrow.BooleanType)
-
-	case "tinyint":
-		return new(arrow.Uint8Type)
-	case "smallint":
-		return new(arrow.Int16Type)
-	case "int":
-		return new(arrow.Int32Type)
-	case "bigint":
-		return new(arrow.Int64Type)
-
-	case "real":
-		return new(arrow.Float32Type)
-	case "float":
-		return new(arrow.Float64Type)
-
-	case "uniqueidentifier":
-		return types.NewUUIDType()
-
-	case "datetime2":
-		return &arrow.TimestampType{Unit: arrow.Nanosecond} // the precision is 100ns in MSSQL
-	case "nvarchar(4000)":
-		return new(arrow.StringType)
-
-	case "varbinary(max)":
-		return new(arrow.LargeBinaryType)
-
-	case "nvarchar(max)":
-		return new(arrow.LargeStringType)
-	default:
-		return new(arrow.LargeStringType)
+func SchemaType(tableName, columnName, sqlType string) (arrow.DataType, error) {
+	sqlToSchema := map[string]arrow.DataType{
+		"bit":              new(arrow.BooleanType),
+		"tinyint":          new(arrow.Uint8Type),
+		"smallint":         new(arrow.Int16Type),
+		"int":              new(arrow.Int32Type),
+		"bigint":           new(arrow.Int64Type),
+		"real":             new(arrow.Float32Type),
+		"float":            new(arrow.Float64Type),
+		"uniqueidentifier": types.NewUUIDType(),
+		"varbinary(max)":   new(arrow.LargeBinaryType),
+		"datetime2":        &arrow.TimestampType{Unit: arrow.Nanosecond}, // the precision is 100ns in MSSQL
+		"nvarchar(4000)":   new(arrow.StringType),
+		"nvarchar(max)":    new(arrow.LargeStringType),
 	}
+
+	if v, ok := sqlToSchema[sqlType]; ok {
+		return v, nil
+	}
+	return nil, fmt.Errorf("got unknown MSSQL type %q of column %q for table %q while trying to convert it to Apache Arrow type. Supported MSSQL types are %q", sqlType, columnName, tableName, maps.Keys(sqlToSchema))
 }
 
 // columnGoType has to be in sync with SQLType
