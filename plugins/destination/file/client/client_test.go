@@ -1,13 +1,18 @@
 package client
 
 import (
+	"fmt"
+	"os"
 	"path"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/cloudquery/filetypes/v2"
 	"github.com/cloudquery/filetypes/v2/csv"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/stretchr/testify/assert"
 )
 
 var migrateStrategy = destination.MigrateStrategy{
@@ -18,82 +23,102 @@ var migrateStrategy = destination.MigrateStrategy{
 	ChangeColumn:        specs.MigrateModeForced,
 }
 
-func TestPluginCSV(t *testing.T) {
-	t.Run("Directory", func(t *testing.T) {
-		spec := &Spec{
-			Directory: t.TempDir(),
-			FileSpec: &filetypes.FileSpec{
-				Format: filetypes.FormatTypeCSV,
-				FormatSpec: csv.Spec{
-					SkipHeader: true,
-					Delimiter:  ",",
-				},
+func testFormats() []filetypes.FileSpec {
+	return []filetypes.FileSpec{
+		{
+			Format: filetypes.FormatTypeCSV,
+			FormatSpec: csv.Spec{
+				SkipHeader: true,
+				Delimiter:  ",",
 			},
-			NoRotate: true,
-		}
-		testPlugin(t, spec)
-	})
-
-	t.Run("Path", func(t *testing.T) {
-		spec := &Spec{
-			Path: path.Join(t.TempDir(), "{{TABLE}}.{{FORMAT}}"),
-			FileSpec: &filetypes.FileSpec{
-				Format: filetypes.FormatTypeCSV,
-				FormatSpec: csv.Spec{
-					SkipHeader: true,
-					Delimiter:  ",",
-				},
-			},
-			NoRotate: true,
-		}
-		testPlugin(t, spec)
-	})
+		},
+		{
+			Format: filetypes.FormatTypeJSON,
+		},
+		{
+			Format: filetypes.FormatTypeParquet,
+		},
+	}
 }
 
-func TestPluginJSON(t *testing.T) {
-	t.Run("Directory", func(t *testing.T) {
-		spec := &Spec{
-			Directory: t.TempDir(),
-			FileSpec: &filetypes.FileSpec{
-				Format: filetypes.FormatTypeJSON,
-			},
-			NoRotate: true,
-		}
-		testPlugin(t, spec)
-	})
-	t.Run("Path", func(t *testing.T) {
-		spec := &Spec{
-			Path: path.Join(t.TempDir(), "{{TABLE}}.{{FORMAT}}"),
-			FileSpec: &filetypes.FileSpec{
-				Format: filetypes.FormatTypeJSON,
-			},
-			NoRotate: true,
-		}
-		testPlugin(t, spec)
-	})
+type testSpec struct {
+	Spec
+	TestName string
 }
 
-func TestPluginParquet(t *testing.T) {
-	t.Run("Directory", func(t *testing.T) {
-		spec := &Spec{
-			Directory: t.TempDir(),
-			FileSpec: &filetypes.FileSpec{
-				Format: filetypes.FormatTypeParquet,
+func testSpecsWithoutFormat(t *testing.T) []testSpec {
+	return []testSpec{
+		{
+			TestName: "Directory",
+			Spec: Spec{
+				Directory: t.TempDir(),
 			},
-			NoRotate: true,
-		}
-		testPlugin(t, spec)
-	})
-	t.Run("Path", func(t *testing.T) {
-		spec := &Spec{
-			Path: path.Join(t.TempDir(), "{{TABLE}}.{{FORMAT}}"),
-			FileSpec: &filetypes.FileSpec{
-				Format: filetypes.FormatTypeParquet,
+		},
+		{
+			TestName: "DirectoryWithTable",
+			Spec: Spec{
+				Directory: path.Join(t.TempDir(), "{{TABLE}}/data.{{FORMAT}}"),
 			},
-			NoRotate: true,
+		},
+		{
+			TestName: "Path",
+			Spec: Spec{
+				Path: path.Join(t.TempDir(), "{{TABLE}}.{{FORMAT}}"),
+			},
+		},
+		{
+			TestName: "PathWithTable",
+			Spec: Spec{
+				Path: path.Join(t.TempDir(), "{{TABLE}}/data.{{FORMAT}}"),
+			},
+		},
+	}
+}
+
+func testSpecs(t *testing.T) []testSpec {
+	var ret []testSpec
+	formats := testFormats()
+	for _, s := range testSpecsWithoutFormat(t) {
+		s := s
+		s.NoRotate = true
+		for i := range formats {
+			s.FileSpec = &formats[i]
+			ret = append(ret, s)
 		}
-		testPlugin(t, spec)
-	})
+	}
+
+	return ret
+}
+
+func TestPlugin(t *testing.T) {
+	for _, ts := range testSpecs(t) {
+		ts := ts
+		t.Run(ts.TestName+":"+string(ts.FileSpec.Format), func(t *testing.T) {
+			testPlugin(t, &ts.Spec)
+
+			dirOrPath := ts.Spec.Directory
+			if dirOrPath == "" {
+				dirOrPath = ts.Spec.Path
+			}
+			baseDir := strings.Split(dirOrPath, "/{")[0]
+
+			fi, err := os.Stat(baseDir)
+			assert.NoError(t, err)
+			assert.Truef(t, fi.IsDir(), "basedir %s is not a directory", baseDir)
+			assert.NoError(t, filepath.WalkDir(baseDir, func(path string, d os.DirEntry, err error) error {
+				assert.NoError(t, err)
+				if err != nil {
+					return err
+				}
+				t.Log("walking path", path)
+				assert.NotContainsf(t, path, "{", "path %s still contains template", path)
+				if t.Failed() {
+					return fmt.Errorf("test failed")
+				}
+				return nil
+			}))
+		})
+	}
 }
 
 func testPlugin(t *testing.T, spec *Spec) {
