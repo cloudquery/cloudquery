@@ -12,6 +12,7 @@
 - [stripe_billing_portal_configurations](tables/stripe_billing_portal_configurations)
 - [stripe_charges](tables/stripe_charges) (Incremental)
 - [stripe_checkout_sessions](tables/stripe_checkout_sessions)
+  - [stripe_checkout_session_line_items](tables/stripe_checkout_session_line_items)
 - [stripe_country_specs](tables/stripe_country_specs)
 - [stripe_coupons](tables/stripe_coupons) (Incremental)
 - [stripe_credit_notes](tables/stripe_credit_notes)

@@ -50,9 +50,19 @@ var AllResources = []*Resource{
 		StateParamName: createdStateParam,
 	},
 	{
-		DataStruct:  &stripe.CheckoutSession{},
-		Service:     "checkout",
-		Description: "https://stripe.com/docs/api/checkout/sessions",
+		DataStruct:    &stripe.CheckoutSession{},
+		Service:       "checkout",
+		Description:   "https://stripe.com/docs/api/checkout/sessions",
+		ExtraChildren: []string{"CheckoutSessionLineItems()"},
+		/*
+			Children: []*Resource{
+				{
+					DataStruct:  &stripe.LineItem{},
+					ListParams:  `Session: stripe.String(p.ID),`,
+					Description: "https://stripe.com/docs/api/checkout/sessions/line_items",
+				},
+			},
+		*/
 	},
 	{
 		DataStruct: &stripe.CountrySpec{},

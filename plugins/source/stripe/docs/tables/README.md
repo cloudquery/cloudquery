@@ -12,6 +12,7 @@
 - [stripe_billing_portal_configurations](../../../../../website/tables/stripe/stripe_billing_portal_configurations.md)
 - [stripe_charges](../../../../../website/tables/stripe/stripe_charges.md) (Incremental)
 - [stripe_checkout_sessions](../../../../../website/tables/stripe/stripe_checkout_sessions.md)
+  - [stripe_checkout_session_line_items](../../../../../website/tables/stripe/stripe_checkout_session_line_items.md)
 - [stripe_country_specs](../../../../../website/tables/stripe/stripe_country_specs.md)
 - [stripe_coupons](../../../../../website/tables/stripe/stripe_coupons.md) (Incremental)
 - [stripe_credit_notes](../../../../../website/tables/stripe/stripe_credit_notes.md)

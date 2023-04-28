@@ -6,6 +6,11 @@ https://stripe.com/docs/api/checkout/sessions
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on stripe_checkout_sessions:
+  - [stripe_checkout_session_line_items](stripe_checkout_session_line_items)
+
 ## Columns
 
 | Name          | Type          |

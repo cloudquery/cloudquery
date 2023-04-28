@@ -26,6 +26,10 @@ func CheckoutSessions() *schema.Table {
 				},
 			},
 		},
+
+		Relations: []*schema.Table{
+			CheckoutSessionLineItems(),
+		},
 	}
 }
 
