@@ -22,12 +22,13 @@ function Authors({ data }: { data: PostMeta }) {
     return null;
   }
 
-  const author = AuthorByName(authorName);
+  const authorNames = authorName.split(",").map((name) => name.trim());
+  const authors = authorNames.map((name) => AuthorByName(name));
 
   return (
     <div className="w-full border-b border-gray-400 authors border-opacity-20">
       <div className="flex flex-wrap justify-center py-8 mx-auto gap-7">
-        <Avatar {...author} />
+        {authors.map((author) => (<Avatar key={author.name} {...author} />))}
       </div>
     </div>
   );

@@ -13,6 +13,11 @@ export function CaseStudiesIndex({ more = "Read the case study" }) {
   return getPagesUnderRoute("/case-studies")
     .slice()
     .map((page) => {
+      // small hack to change it in the first case study
+      let moreDescription = "Read the case study";
+      if (page.route === "/case-studies/add-your-case-study") {
+        moreDescription = "Add your case study";
+      }
       return (
         <div key={page.route} className="mb-10">
           <Link
@@ -25,7 +30,7 @@ export function CaseStudiesIndex({ more = "Read the case study" }) {
           <p className="opacity-80" style={{ marginTop: ".5rem" }}>
             {page.meta?.description}{" "}
             <span className="inline-block">
-              <Link href={page.route}>{more + " →"}</Link>
+              <Link href={page.route}>{moreDescription + " →"}</Link>
             </span>
           </p>
         </div>
