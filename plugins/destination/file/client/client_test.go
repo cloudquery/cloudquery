@@ -47,12 +47,12 @@ type testSpec struct {
 
 func testSpecsWithoutFormat(t *testing.T) []testSpec {
 	var (
-		specs []testSpec
-		bd    string // temp variable to hold tempdir/basedir dir for each test case
+		ret []testSpec
+		bd  string // temp variable to hold tempdir/basedir dir for each test case
 	)
 
 	bd = t.TempDir()
-	specs = append(specs, testSpec{
+	ret = append(ret, testSpec{
 		testName: "Directory",
 		baseDir:  bd,
 		Spec: Spec{
@@ -61,7 +61,7 @@ func testSpecsWithoutFormat(t *testing.T) []testSpec {
 	})
 
 	bd = t.TempDir()
-	specs = append(specs, testSpec{
+	ret = append(ret, testSpec{
 		testName: "DirectoryWithTable",
 		baseDir:  bd,
 		Spec: Spec{
@@ -70,7 +70,7 @@ func testSpecsWithoutFormat(t *testing.T) []testSpec {
 	})
 
 	bd = t.TempDir()
-	specs = append(specs, testSpec{
+	ret = append(ret, testSpec{
 		testName: "Path",
 		baseDir:  bd,
 		Spec: Spec{
@@ -79,7 +79,7 @@ func testSpecsWithoutFormat(t *testing.T) []testSpec {
 	})
 
 	bd = t.TempDir()
-	specs = append(specs, testSpec{
+	ret = append(ret, testSpec{
 		testName: "PathWithTable",
 		baseDir:  bd,
 		Spec: Spec{
@@ -87,7 +87,7 @@ func testSpecsWithoutFormat(t *testing.T) []testSpec {
 		},
 	})
 
-	return specs
+	return ret
 }
 
 func testSpecs(t *testing.T) []testSpec {
