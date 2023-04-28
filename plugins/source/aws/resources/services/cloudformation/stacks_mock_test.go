@@ -3,6 +3,7 @@ package cloudformation
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -37,6 +38,21 @@ func buildStacks(t *testing.T, ctrl *gomock.Controller) client.Services {
 		gomock.Any(),
 	).Return(
 		&cloudformation.ListStackResourcesOutput{StackResourceSummaries: []types.StackResourceSummary{resource}},
+		nil,
+	)
+
+	var summary cloudformation.GetTemplateSummaryOutput
+	if err := faker.FakeObject(&summary); err != nil {
+		t.Fatal(err)
+	}
+	summary.Metadata = aws.String(`{ "some": "metadata" }`) // Required as faker doesn't handle this.
+
+	mock.EXPECT().GetTemplateSummary(
+		gomock.Any(),
+		&cloudformation.GetTemplateSummaryInput{StackName: stack.StackName},
+		gomock.Any(),
+	).Return(
+		&summary,
 		nil,
 	)
 
