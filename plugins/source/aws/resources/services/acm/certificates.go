@@ -60,7 +60,7 @@ func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schem
 	cl := meta.(*client.Client)
 	svc := cl.Services().Acm
 	input := acm.DescribeCertificateInput{CertificateArn: resource.Item.(types.CertificateSummary).CertificateArn}
-	output, err := svc.DescribeCertificate(ctx, &input, func(o *acm.Options) { o.Region = cl.Region })
+	output, err := svc.DescribeCertificate(ctx, &input)
 	if err != nil {
 		return err
 	}

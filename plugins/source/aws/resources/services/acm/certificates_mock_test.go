@@ -36,7 +36,6 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 	mock.EXPECT().DescribeCertificate(
 		gomock.Any(),
 		&acm.DescribeCertificateInput{CertificateArn: cs.CertificateArn},
-		gomock.Any(),
 	).Return(
 		&acm.DescribeCertificateOutput{Certificate: &cert},
 		nil,
