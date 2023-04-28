@@ -3,6 +3,7 @@ package values
 import (
 	"github.com/apache/arrow/go/v12/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/google/uuid"
 )
 
 func buildValue(builder array.Builder, value any) error {
@@ -63,7 +64,8 @@ func buildValue(builder array.Builder, value any) error {
 		buildDecimal256(builder, value)
 
 	case *types.UUIDBuilder:
-		buildUUID(builder, value)
+		buildPrimitive[uuid.UUID](builder, value)
+
 	case *types.JSONBuilder, *types.InetBuilder, *types.MacBuilder:
 		return buildFromString(builder, value)
 
