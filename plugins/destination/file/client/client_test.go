@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 
 	"github.com/cloudquery/filetypes/v2"
@@ -42,36 +41,53 @@ func testFormats() []filetypes.FileSpec {
 
 type testSpec struct {
 	Spec
-	TestName string
+	testName string
+	baseDir  string
 }
 
 func testSpecsWithoutFormat(t *testing.T) []testSpec {
-	return []testSpec{
-		{
-			TestName: "Directory",
-			Spec: Spec{
-				Directory: t.TempDir(),
-			},
+	var (
+		specs []testSpec
+		bd    string // temp variable to hold tempdir/basedir dir for each test case
+	)
+
+	bd = t.TempDir()
+	specs = append(specs, testSpec{
+		testName: "Directory",
+		baseDir:  bd,
+		Spec: Spec{
+			Directory: bd,
 		},
-		{
-			TestName: "DirectoryWithTable",
-			Spec: Spec{
-				Directory: filepath.Join(t.TempDir(), "{{TABLE}}", "data.{{FORMAT}}"),
-			},
+	})
+
+	bd = t.TempDir()
+	specs = append(specs, testSpec{
+		testName: "DirectoryWithTable",
+		baseDir:  bd,
+		Spec: Spec{
+			Directory: filepath.Join(bd, "{{TABLE}}", "data.{{FORMAT}}"),
 		},
-		{
-			TestName: "Path",
-			Spec: Spec{
-				Path: filepath.Join(t.TempDir(), "{{TABLE}}.{{FORMAT}}"),
-			},
+	})
+
+	bd = t.TempDir()
+	specs = append(specs, testSpec{
+		testName: "Path",
+		baseDir:  bd,
+		Spec: Spec{
+			Path: filepath.Join(bd, "{{TABLE}}.{{FORMAT}}"),
 		},
-		{
-			TestName: "PathWithTable",
-			Spec: Spec{
-				Path: filepath.Join(t.TempDir(), "{{TABLE}}", "data.{{FORMAT}}"),
-			},
+	})
+
+	bd = t.TempDir()
+	specs = append(specs, testSpec{
+		testName: "PathWithTable",
+		baseDir:  bd,
+		Spec: Spec{
+			Path: filepath.Join(bd, "{{TABLE}}", "data.{{FORMAT}}"),
 		},
-	}
+	})
+
+	return specs
 }
 
 func testSpecs(t *testing.T) []testSpec {
@@ -82,7 +98,7 @@ func testSpecs(t *testing.T) []testSpec {
 		s.NoRotate = true
 		for i := range formats {
 			s2 := s
-			s2.TestName += ":" + string(formats[i].Format)
+			s2.testName += ":" + string(formats[i].Format)
 			s2.FileSpec = &formats[i]
 			ret = append(ret, s2)
 		}
@@ -94,30 +110,31 @@ func testSpecs(t *testing.T) []testSpec {
 func TestPlugin(t *testing.T) {
 	for _, ts := range testSpecs(t) {
 		ts := ts
-		t.Run(ts.TestName, func(t *testing.T) {
+		t.Run(ts.testName, func(t *testing.T) {
 			testPlugin(t, &ts.Spec)
 
-			dirOrPath := ts.Spec.Directory
-			if dirOrPath == "" {
-				dirOrPath = ts.Spec.Path
-			}
-			baseDir := strings.Split(dirOrPath, "/{")[0]
-
-			fi, err := os.Stat(baseDir)
+			fi, err := os.Stat(ts.baseDir)
 			assert.NoError(t, err)
-			assert.Truef(t, fi.IsDir(), "basedir %s is not a directory", baseDir)
-			assert.NoError(t, filepath.WalkDir(baseDir, func(path string, d os.DirEntry, err error) error {
+			assert.Truef(t, fi.IsDir(), "basedir %s is not a directory", ts.baseDir)
+
+			fileCount := 0
+			assert.NoError(t, filepath.WalkDir(ts.baseDir, func(path string, d os.DirEntry, err error) error {
 				assert.NoError(t, err)
 				if err != nil {
 					return err
 				}
 				t.Log("walking path", path)
+				if !d.IsDir() {
+					fileCount++
+				}
 				assert.NotContainsf(t, path, "{", "path %s still contains template", path)
 				if t.Failed() {
 					return fmt.Errorf("test failed")
 				}
 				return nil
 			}))
+
+			assert.NotZero(t, fileCount, "no files written to %s", ts.baseDir)
 		})
 	}
 }
