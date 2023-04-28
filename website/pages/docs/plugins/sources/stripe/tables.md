@@ -31,6 +31,7 @@
 - [stripe_issuing_transactions](tables/stripe_issuing_transactions) (Incremental)
 - [stripe_payment_intents](tables/stripe_payment_intents) (Incremental)
 - [stripe_payment_links](tables/stripe_payment_links)
+  - [stripe_payment_link_line_items](tables/stripe_payment_link_line_items)
 - [stripe_payment_methods](tables/stripe_payment_methods)
 - [stripe_payouts](tables/stripe_payouts) (Incremental)
 - [stripe_plans](tables/stripe_plans) (Incremental)

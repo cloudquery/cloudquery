@@ -31,6 +31,7 @@
 - [stripe_issuing_transactions](../../../../../website/tables/stripe/stripe_issuing_transactions.md) (Incremental)
 - [stripe_payment_intents](../../../../../website/tables/stripe/stripe_payment_intents.md) (Incremental)
 - [stripe_payment_links](../../../../../website/tables/stripe/stripe_payment_links.md)
+  - [stripe_payment_link_line_items](../../../../../website/tables/stripe/stripe_payment_link_line_items.md)
 - [stripe_payment_methods](../../../../../website/tables/stripe/stripe_payment_methods.md)
 - [stripe_payouts](../../../../../website/tables/stripe/stripe_payouts.md) (Incremental)
 - [stripe_plans](../../../../../website/tables/stripe/stripe_plans.md) (Incremental)

@@ -6,6 +6,11 @@ https://stripe.com/docs/api/payment_links
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on stripe_payment_links:
+  - [stripe_payment_link_line_items](stripe_payment_link_line_items)
+
 ## Columns
 
 | Name          | Type          |
