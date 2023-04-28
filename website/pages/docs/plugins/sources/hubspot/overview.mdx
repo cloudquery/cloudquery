@@ -39,38 +39,18 @@ This is the specs that can be used by the HubSpot source Plugin.
 
   Rate limit per second for requests done HubSpot API, this will depend on your HubSpot plan (https://developers.hubspot.com/docs/api/usage-details#rate-limits)
 
-- `table_options`
-  - `hubspot_crm_companies``
-    - `properties` ([]string, optional. Default: "[]")
+- `table_options` ([map[string][TableOptions]](#table-options) spec, optional. Default: `empty`)
 
-        Properties to be retrieved from the object Companies on the HubSpot Source
+  Table Options for HubSpot entities that will be in sync.
 
-  - `hubspot_crm_contacts``
-    - `properties` ([]string, optional. Default: "[]")
+### Table Options
 
-        Properties to be retrieved from the object Contacts on the HubSpot Source
+- `table_name` ([TableOptionsSpec](#table-options-spec) spec, optional. Default: `empty`)
 
-  - `hubspot_crm_deals``
-    - `properties` ([]string, optional. Default: "[]")
+  Table name to define the options when collecting data from the entity on HubSpot.
 
-        Properties to be retrieved from the object Deals on the HubSpot Source
+### Table Options Spec
 
-  - `hubspot_crm_line_items``
-    - `properties` ([]string, optional. Default: "[]")
+- `properties` (`[]string`, optional. Default: `[]`)
 
-        Properties to be retrieved from the object Line Items on the HubSpot Source
-
-  - `hubspot_crm_products``
-    - `properties` ([]string, optional. Default: "[]")
-
-        Properties to be retrieved from the object Products on the HubSpot Source
-
-  - `hubspot_crm_quotes``
-    - `properties` ([]string, optional. Default: "[]")
-
-        Properties to be retrieved from the object Quotes on the HubSpot Source
-
-  - `hubspot_crm_tickets``
-    - `properties` ([]string, optional. Default: "[]")
-
-        Properties to be retrieved from the object Tickets on the HubSpot Source
+  Additional properties to be retrieved from HubSpot when syncing the table entity
