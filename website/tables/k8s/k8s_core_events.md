@@ -37,5 +37,5 @@ The primary key for this table is **uid**.
 |series|JSON|
 |action|String|
 |related|JSON|
-|reporting_controller|String|
+|reporting_component|String|
 |reporting_instance|String|
