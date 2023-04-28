@@ -16,10 +16,7 @@ func CreateTable(schemaName string, sc *arrow.Schema, pkEnabled bool) string {
 	return execTemplate("create_table.sql.tpl", &createTableQueryBuilder{
 		Table:       SanitizedTableName(schemaName, sc),
 		Definitions: GetDefinitions(sc, pkEnabled),
-		PrimaryKey: &pkQueryBuilder{
-			Name:    pkConstraint(sc),
-			Columns: GetPKColumns(sc),
-		},
+		PrimaryKey:  getPKQueryBuilder(schemaName, sc),
 	})
 }
 

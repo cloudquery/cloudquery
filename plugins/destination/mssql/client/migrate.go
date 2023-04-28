@@ -57,6 +57,10 @@ func (c *Client) Migrate(ctx context.Context, scs schema.Schemas) error {
 func (c *Client) autoMigrateTable(ctx context.Context, have, want *arrow.Schema) error {
 	tableName := schema.TableName(want)
 	changes := schema.GetSchemaChanges(want, have)
+	if len(changes) == 0 {
+		c.logger.Info().Str("table", tableName).Msg("Table schema is up-to-date, skip")
+		return nil
+	}
 
 	if unsafe := unsafeChanges(changes); len(unsafe) > 0 {
 		// we can get here only with migrate_mode: forced

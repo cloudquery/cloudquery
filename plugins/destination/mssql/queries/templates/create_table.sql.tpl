@@ -3,6 +3,6 @@ CREATE TABLE {{.Table}} (
 {{- with .PrimaryKey}}
   CONSTRAINT {{.Name}} PRIMARY KEY (
 {{template "col_names.sql.tpl" .Columns}}
-{{- end}}
   )
+{{- end}}
 );

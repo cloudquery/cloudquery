@@ -1,4 +1,4 @@
-# Contribution Guide to CloudQuery Microsoft SQL Destination Plugin
+# Contribution Guide to CloudQuery Microsoft SQL Server Destination Plugin
 
 ## Running in Debug mode
 
