@@ -19,15 +19,9 @@ func fetchQuotes(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 			return nil
 		}
 
-		var properties []string
-		options, exists := cqClient.Spec.TableOptions["hubspot_crm_quotes"]
-		if exists {
-			properties = options.Properties
-		}
-
 		req := hubspotClient.BasicApi.
 			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
-			Properties(properties).
+			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_quotes").GetProperties()).
 			Limit(client.DefaultPageSize)
 
 		if len(after) > 0 {

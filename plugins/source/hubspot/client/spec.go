@@ -1,9 +1,11 @@
 package client
 
 type Spec struct {
-	MaxRequestsPerSecond *int                     `yaml:"max_requests_per_second,omitempty" json:"max_requests_per_second,omitempty"`
-	TableOptions         map[string]*TableOptions `yaml:"table_options,omitempty" json:"table_options,omitempty"`
+	MaxRequestsPerSecond *int           `yaml:"max_requests_per_second,omitempty" json:"max_requests_per_second,omitempty"`
+	TableOptions         TablesSettings `yaml:"table_options,omitempty" json:"table_options,omitempty"`
 }
+
+type TablesSettings map[string]*TableOptions
 
 type TableOptions struct {
 	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
@@ -21,4 +23,15 @@ func (spec *Spec) setDefaults() {
 	if spec.MaxRequestsPerSecond == nil || *spec.MaxRequestsPerSecond == 0 {
 		spec.MaxRequestsPerSecond = &defaultRateLimitPerSecond
 	}
+}
+
+func (ts TablesSettings) ForTable(name string) *TableOptions {
+	return ts[name]
+}
+
+func (to *TableOptions) GetProperties() []string {
+	if to == nil {
+		return nil
+	}
+	return to.Properties
 }
