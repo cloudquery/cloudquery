@@ -151,7 +151,7 @@ func (c *Client) normalizeTable(table *arrow.Schema, pgTable *arrow.Schema) *arr
 	fields := make([]arrow.Field, len(table.Fields()))
 	for i, f := range table.Fields() {
 		metadata := make(map[string]string, 0)
-		if !schema.IsPk(f) {
+		if !schema.IsPk(f) || !c.enabledPks() {
 			metadata[schema.MetadataPrimaryKey] = schema.MetadataFalse
 		}
 		if c.enabledPks() && schema.IsPk(f) {
