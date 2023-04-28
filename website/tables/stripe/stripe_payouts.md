@@ -32,6 +32,7 @@ It supports incremental syncs based on the **created** column.
 |method|String|
 |object|String|
 |original_payout|JSON|
+|reconciliation_status|String|
 |reversed_by|JSON|
 |source_type|String|
 |statement_descriptor|String|

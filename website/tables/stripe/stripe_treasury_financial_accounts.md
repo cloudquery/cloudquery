@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Treasury Financial Accounts.
 
-https://stripe.com/docs/api/treasury_financial_accounts
+https://stripe.com/docs/api/treasury/financial_accounts
 
 The primary key for this table is **id**.
 It supports incremental syncs based on the **created** column.

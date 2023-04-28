@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Issuing Disputes.
 
-https://stripe.com/docs/api/issuing_disputes
+https://stripe.com/docs/api/issuing/disputes
 
 The primary key for this table is **id**.
 It supports incremental syncs based on the **created** column.

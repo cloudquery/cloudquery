@@ -14,7 +14,7 @@ import (
 func IssuingDisputes() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_issuing_disputes",
-		Description: `https://stripe.com/docs/api/issuing_disputes`,
+		Description: `https://stripe.com/docs/api/issuing/disputes`,
 		Transform:   client.TransformWithStruct(&stripe.IssuingDispute{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchIssuingDisputes,
 

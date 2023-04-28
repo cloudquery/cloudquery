@@ -25,7 +25,9 @@ The primary key for this table is **id**.
 |consent_collection|JSON|
 |currency|String|
 |customer_creation|String|
+|custom_fields|JSON|
 |custom_text|JSON|
+|invoice_creation|JSON|
 |line_items|JSON|
 |livemode|Bool|
 |metadata|JSON|

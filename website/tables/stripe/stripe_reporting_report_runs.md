@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Reporting Report Runs.
 
-https://stripe.com/docs/api/reporting_report_runs
+https://stripe.com/docs/api/reporting/report_run
 
 The primary key for this table is **id**.
 It supports incremental syncs based on the **created** column.

@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Checkout Sessions.
 
-https://stripe.com/docs/api/checkout_sessions
+https://stripe.com/docs/api/checkout/sessions
 
 The primary key for this table is **id**.
 
@@ -27,10 +27,12 @@ The primary key for this table is **id**.
 |consent_collection|JSON|
 |created|Timestamp|
 |currency|String|
+|currency_conversion|JSON|
 |customer|JSON|
 |customer_creation|String|
 |customer_details|JSON|
 |customer_email|String|
+|custom_fields|JSON|
 |custom_text|JSON|
 |expires_at|Int|
 |invoice|JSON|

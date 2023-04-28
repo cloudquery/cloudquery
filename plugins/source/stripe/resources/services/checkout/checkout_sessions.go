@@ -12,7 +12,7 @@ import (
 func CheckoutSessions() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_checkout_sessions",
-		Description: `https://stripe.com/docs/api/checkout_sessions`,
+		Description: `https://stripe.com/docs/api/checkout/sessions`,
 		Transform:   client.TransformWithStruct(&stripe.CheckoutSession{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchCheckoutSessions,
 

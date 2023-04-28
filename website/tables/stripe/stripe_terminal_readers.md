@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Terminal Readers.
 
-https://stripe.com/docs/api/terminal_readers
+https://stripe.com/docs/api/terminal/readers
 
 The primary key for this table is **id**.
 
