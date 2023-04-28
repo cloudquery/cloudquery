@@ -79,10 +79,10 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 			if err != nil {
 				return err
 			}
-			b.Append(*ipnet)
+			b.Append(ipnet)
 			return nil
 		}
-		b.Append(val.(net.IPNet))
+		b.Append(val.(*net.IPNet))
 	case *types.MacBuilder:
 		if c.pgType == pgTypePostgreSQL {
 			b.Append(val.(net.HardwareAddr))
