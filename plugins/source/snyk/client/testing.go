@@ -38,9 +38,14 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 		}
 
 		c := &Client{
-			Client:        snykClient,
-			logger:        logger,
-			organizations: []string{"test-org"},
+			Client: snykClient,
+			logger: logger,
+			Organizations: []snyk.Organization{
+				{ID: "test-org-id", Name: "test-org-name", Group: &snyk.Group{
+					ID:   "test-group-id",
+					Name: "test-group-name",
+				}},
+			},
 		}
 		return c, nil
 	}
