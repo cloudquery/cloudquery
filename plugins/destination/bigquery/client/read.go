@@ -54,7 +54,10 @@ func (c *Client) Read(ctx context.Context, arrowSchema *arrow.Schema, sourceName
 			b, _ := json.Marshal(values[i])
 			r := strings.NewReader(string(b))
 			d := json.NewDecoder(r)
-			rb.Field(i).UnmarshalOne(d)
+			err = rb.Field(i).UnmarshalOne(d)
+			if err != nil {
+				return fmt.Errorf("failed to unmarshal value: %w", err)
+			}
 		}
 		res <- rb.NewRecord()
 	}
