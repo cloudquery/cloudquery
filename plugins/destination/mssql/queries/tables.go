@@ -13,11 +13,21 @@ type (
 )
 
 func CreateTable(schemaName string, sc *arrow.Schema, pkEnabled bool) string {
-	return execTemplate("create_table.sql.tpl", &createTableQueryBuilder{
+	builder := &createTableQueryBuilder{
 		Table:       SanitizedTableName(schemaName, sc),
 		Definitions: GetDefinitions(sc, pkEnabled),
-		PrimaryKey:  getPKQueryBuilder(schemaName, sc),
-	})
+		PrimaryKey: &pkQueryBuilder{
+			Table:   SanitizedTableName(schemaName, sc),
+			Name:    pkConstraint(sc),
+			Columns: GetPKColumns(sc),
+		},
+	}
+
+	if len(builder.PrimaryKey.Columns) == 0 {
+		builder.PrimaryKey = nil
+	}
+
+	return execTemplate("create_table.sql.tpl", builder)
 }
 
 func DropTable(schemaName string, sc *arrow.Schema) string {
