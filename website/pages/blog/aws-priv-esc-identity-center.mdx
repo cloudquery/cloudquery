@@ -1,5 +1,5 @@
 ---
-title: 'AWS Identity Center (formerly known as AWS SSO): A Guide to Privilege Escalation and Identity and Access Management of AWS Identity Center'
+title: 'AWS Identity Center (formerly known as AWS SSO): A Guide to Privilege Escalation and Identity and Access Management'
 tag: security
 date: 2023/05/01
 description: >-
@@ -69,6 +69,8 @@ For example, to add an inline policy, both `PutPermissionPolicy` and `PutInlineP
 Dual Authorization Table Provided by AWS
 
 ## Privilege Escalation with AWS Identity Center (SSO)
+
+To modify and change access and permissions in AWS Identity Center, there are multiple methods including modifying permission sets by adding or removing IAM policies and linking permission sets to AWS accounts within the organization with account assignments.  These methods of modifying and changing access and permissions can be used to escalate privilege within an AWS Organization and the accounts within the organization.  In some cases, malicious or unintentional actors can either escalate their own permissions and access or change someone else's permissions and access that can lead to security vulnerabilities and misconfigurations with access via AWS Identity Center.
 
 Identity Center has multiple service prefixes including:
 
