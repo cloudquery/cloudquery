@@ -46,7 +46,9 @@ func fetchEc2Hosts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	input := ec2.DescribeHostsInput{}
 	paginator := ec2.NewDescribeHostsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
