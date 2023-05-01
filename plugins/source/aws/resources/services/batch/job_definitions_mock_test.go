@@ -22,7 +22,7 @@ func buildBatchJobDefinitionsMock(t *testing.T, ctrl *gomock.Controller) client.
 		t.Fatal(err)
 	}
 
-	m.EXPECT().DescribeJobDefinitions(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().DescribeJobDefinitions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&batch.DescribeJobDefinitionsOutput{
 			JobDefinitions: []types.JobDefinition{a},
 		}, nil)
