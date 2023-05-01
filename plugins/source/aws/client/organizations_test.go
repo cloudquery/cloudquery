@@ -212,7 +212,7 @@ func Test_loadAccounts(t *testing.T) {
 	api := setupTestAccounts(t)
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			resp, err := loadAccounts(ctx, tc.spec, api)
+			resp, err := loadAccounts(ctx, tc.spec, api, "us-east-1")
 			sort.Slice(tc.want, func(i, j int) bool {
 				return tc.want[i] < tc.want[j]
 			})
