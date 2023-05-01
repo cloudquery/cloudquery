@@ -38,7 +38,9 @@ func fetchQuicksightGroups(ctx context.Context, meta schema.ClientMeta, parent *
 	var ae smithy.APIError
 
 	for {
-		out, err := svc.ListGroups(ctx, &input)
+		out, err := svc.ListGroups(ctx, &input, func(options *quicksight.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if errors.As(err, &ae) && ae.ErrorCode() == "UnsupportedUserEditionException" {
 				return nil
