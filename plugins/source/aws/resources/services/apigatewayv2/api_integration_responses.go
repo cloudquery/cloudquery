@@ -57,7 +57,9 @@ func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.C
 	svc := c.Services().Apigatewayv2
 	// No paginator available
 	for {
-		response, err := svc.GetIntegrationResponses(ctx, &config)
+		response, err := svc.GetIntegrationResponses(ctx, &config, func(options *apigatewayv2.Options) {
+			options.Region = c.Region
+		})
 
 		if err != nil {
 			return err
