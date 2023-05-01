@@ -59,7 +59,9 @@ func fetchApigatewayRestApiResourceMethodIntegration(ctx context.Context, meta s
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
 	config := apigateway.GetIntegrationInput{RestApiId: api.Id, ResourceId: resource.Id, HttpMethod: method.HttpMethod}
-	resp, err := svc.GetIntegration(ctx, &config)
+	resp, err := svc.GetIntegration(ctx, &config, func(options *apigateway.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
