@@ -114,7 +114,7 @@ func getPgTypesToData() []pgTypeToValue {
 func createTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string) error {
 	var sb strings.Builder
 	sb.WriteString("CREATE TABLE ")
-	sb.WriteString(tableName)
+	sb.WriteString(pgx.Identifier{tableName}.Sanitize())
 	sb.WriteString(" (")
 	columns := getPgTypesToData()
 	for i, col := range columns {
@@ -137,7 +137,7 @@ func createTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string) 
 
 func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, columns []pgTypeToValue) error {
 	var query = ""
-	query += "INSERT INTO " + tableName + " ("
+	query += "INSERT INTO " + pgx.Identifier{tableName}.Sanitize() + " ("
 	for _, col := range columns {
 		if col.value == nil {
 			continue
@@ -329,7 +329,7 @@ func TestPluginCDC(t *testing.T) {
 		Path:         "cloudquery/postgresql",
 		Version:      "vdevelopment",
 		Destinations: []string{"test"},
-		Tables:       []string{"test_pg_source"},
+		Tables:       []string{"user"},
 		Spec: &client.Spec{
 			ConnectionString: getTestConnectionString() + "&replication=database",
 			PgxLogLevel:      client.LogLevelTrace,
@@ -340,17 +340,17 @@ func TestPluginCDC(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer conn.Close()
-	if _, err := conn.Exec(ctx, "DROP TABLE IF EXISTS test_pg_source"); err != nil {
+	if _, err := conn.Exec(ctx, "DROP TABLE IF EXISTS \"user\""); err != nil {
 		t.Fatal(err)
 	}
 	var pgErr *pgconn.PgError
-	if _, err := conn.Exec(ctx, "SELECT pg_drop_replication_slot('test_pg_source')"); err != nil {
+	if _, err := conn.Exec(ctx, "SELECT pg_drop_replication_slot('\"user\"')"); err != nil {
 		if !(errors.As(err, &pgErr) && pgErr.Code == "42704") {
 			t.Fatal(err)
 		}
 	}
 
-	testTable := "test_pg_source"
+	testTable := "user"
 
 	if err := createTestTable(ctx, conn, testTable); err != nil {
 		t.Fatal(err)
