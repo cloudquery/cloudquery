@@ -17,6 +17,7 @@ func ThirtyDayCost() *schema.Table {
 	return &schema.Table{
 		Name:     tableName,
 		Resolver: fetchCost,
+		Title:    "AWS Cost Explorer costs for the last 30 days",
 		Description: `https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetCostAndUsage.html
 To sync this table you must set the 'use_paid_apis' option to 'true' in the AWS provider configuration. `,
 		Transform: transformers.TransformWithStruct(&types.ResultByTime{}),

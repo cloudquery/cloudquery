@@ -19,6 +19,7 @@ func ThirtyDayCostForecast() *schema.Table {
 		Description: `https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetCostForecast.html
 To sync this table you must set the 'use_paid_apis' option to 'true' in the AWS provider configuration. `,
 		Resolver:  fetchForecast,
+		Title:     "AWS Cost Explorer cost forecast for the next 30 days",
 		Transform: transformers.TransformWithStruct(&types.ForecastResult{}),
 		Multiplex: client.AccountMultiplex(tableName),
 		Columns: []schema.Column{
