@@ -42,14 +42,17 @@ func configurationSetEventDestinations() *schema.Table {
 }
 
 func fetchSesConfigurationSetEventDestinations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sesv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sesv2
 
 	s := parent.Item.(*sesv2.GetConfigurationSetOutput)
 
 	output, err := svc.GetConfigurationSetEventDestinations(ctx,
 		&sesv2.GetConfigurationSetEventDestinationsInput{
 			ConfigurationSetName: s.ConfigurationSetName,
+		},
+		func(o *sesv2.Options) {
+			o.Region = cl.Region
 		},
 	)
 	if err != nil {
