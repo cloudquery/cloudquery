@@ -16,7 +16,8 @@ var AllResources = []*Resource{
 		},
 	},
 	{
-		DataStruct: &stripe.ApplePayDomain{},
+		DataStruct:  &stripe.ApplePayDomain{},
+		Description: "https://stripe.com/docs/api",
 	},
 	{
 		DataStruct:     &stripe.ApplicationFee{},
@@ -39,8 +40,9 @@ var AllResources = []*Resource{
 		StateParamName: createdStateParam,
 	},
 	{
-		DataStruct: &stripe.BillingPortalConfiguration{},
-		Service:    "billing_portal",
+		DataStruct:  &stripe.BillingPortalConfiguration{},
+		Service:     "billing_portal",
+		Description: "https://stripe.com/docs/api/customer_portal/configuration",
 	},
 	{
 		DataStruct:     &stripe.Charge{},
@@ -48,8 +50,10 @@ var AllResources = []*Resource{
 		StateParamName: createdStateParam,
 	},
 	{
-		DataStruct: &stripe.CheckoutSession{},
-		Service:    "checkout",
+		DataStruct:    &stripe.CheckoutSession{},
+		Service:       "checkout",
+		Description:   "https://stripe.com/docs/api/checkout/sessions",
+		ExtraChildren: []string{"CheckoutSessionLineItems()"},
 	},
 	{
 		DataStruct: &stripe.CountrySpec{},
@@ -86,6 +90,7 @@ var AllResources = []*Resource{
 		DataStruct:     &stripe.IdentityVerificationReport{},
 		Service:        "identity",
 		StateParamName: createdStateParam,
+		Description:    "https://stripe.com/docs/api/identity/verification_reports",
 	},
 	{
 		DataStruct:     &stripe.Invoice{},
@@ -102,26 +107,31 @@ var AllResources = []*Resource{
 		DataStruct:     &stripe.IssuingAuthorization{},
 		Service:        "issuing",
 		StateParamName: createdStateParam,
+		Description:    "https://stripe.com/docs/api/issuing/authorizations",
 	},
 	{
 		DataStruct:     &stripe.IssuingCardholder{},
 		Service:        "issuing",
 		StateParamName: createdStateParam,
+		Description:    "https://stripe.com/docs/api/issuing/cardholders",
 	},
 	{
 		DataStruct:     &stripe.IssuingCard{},
 		Service:        "issuing",
 		StateParamName: createdStateParam,
+		Description:    "https://stripe.com/docs/api/issuing/cards",
 	},
 	{
 		DataStruct:     &stripe.IssuingDispute{},
 		Service:        "issuing",
 		StateParamName: createdStateParam,
+		Description:    "https://stripe.com/docs/api/issuing/disputes",
 	},
 	{
 		DataStruct:     &stripe.IssuingTransaction{},
 		Service:        "issuing",
 		StateParamName: createdStateParam,
+		Description:    "https://stripe.com/docs/api/issuing/transactions",
 	},
 	{
 		DataStruct:     &stripe.PaymentIntent{},
@@ -130,8 +140,9 @@ var AllResources = []*Resource{
 		StateParamName: createdStateParam,
 	},
 	{
-		DataStruct: &stripe.PaymentLink{},
-		Service:    "payment",
+		DataStruct:    &stripe.PaymentLink{},
+		Service:       "payment",
+		ExtraChildren: []string{"PaymentLinkLineItems()"},
 	},
 	{
 		DataStruct: &stripe.PaymentMethod{},
@@ -163,8 +174,9 @@ var AllResources = []*Resource{
 		DataStruct: &stripe.Quote{},
 	},
 	{
-		DataStruct: &stripe.RadarEarlyFraudWarning{},
-		Service:    "radar",
+		DataStruct:  &stripe.RadarEarlyFraudWarning{},
+		Service:     "radar",
+		Description: "https://stripe.com/docs/api/radar/early_fraud_warnings",
 	},
 	{
 		DataStruct:     &stripe.Refund{},
@@ -174,22 +186,26 @@ var AllResources = []*Resource{
 		DataStruct:     &stripe.ReportingReportRun{},
 		Service:        "reporting",
 		StateParamName: createdStateParam,
+		Description:    "https://stripe.com/docs/api/reporting/report_run",
 	},
 	{
-		DataStruct: &stripe.ReportingReportType{},
-		Service:    "reporting",
+		DataStruct:  &stripe.ReportingReportType{},
+		Service:     "reporting",
+		Description: "https://stripe.com/docs/api/reporting/report_type",
 	},
 	{
 		DataStruct:     &stripe.Review{},
 		StateParamName: createdStateParam,
+		Description:    "https://stripe.com/docs/api/radar/reviews",
 	},
 	{
 		DataStruct:     &stripe.ShippingRate{},
 		StateParamName: createdStateParam,
 	},
 	{
-		DataStruct: &stripe.SigmaScheduledQueryRun{},
-		Service:    "sigma",
+		DataStruct:  &stripe.SigmaScheduledQueryRun{},
+		Service:     "sigma",
+		Description: "https://stripe.com/docs/api/sigma/scheduled_queries",
 	},
 	{
 		DataStruct:     &stripe.Subscription{},
@@ -212,16 +228,19 @@ var AllResources = []*Resource{
 		StateParamName: createdStateParam,
 	},
 	{
-		DataStruct: &stripe.TerminalConfiguration{},
-		Service:    "terminal",
+		DataStruct:  &stripe.TerminalConfiguration{},
+		Service:     "terminal",
+		Description: "https://stripe.com/docs/api/terminal/configuration",
 	},
 	{
-		DataStruct: &stripe.TerminalLocation{},
-		Service:    "terminal",
+		DataStruct:  &stripe.TerminalLocation{},
+		Service:     "terminal",
+		Description: "https://stripe.com/docs/api/terminal/locations",
 	},
 	{
-		DataStruct: &stripe.TerminalReader{},
-		Service:    "terminal",
+		DataStruct:  &stripe.TerminalReader{},
+		Service:     "terminal",
+		Description: "https://stripe.com/docs/api/terminal/readers",
 	},
 	{
 		DataStruct:     &stripe.Topup{},
@@ -236,44 +255,54 @@ var AllResources = []*Resource{
 		DataStruct:     &stripe.TreasuryFinancialAccount{},
 		Service:        "treasury",
 		StateParamName: createdStateParam,
+		Description:    "https://stripe.com/docs/api/treasury/financial_accounts",
 		Children: []*Resource{
 			{
-				DataStruct: &stripe.TreasuryCreditReversal{},
-				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+				DataStruct:  &stripe.TreasuryCreditReversal{},
+				ListParams:  `FinancialAccount: stripe.String(p.ID),`,
+				Description: "https://stripe.com/docs/api/treasury/credit_reversals",
 			},
 			{
-				DataStruct: &stripe.TreasuryDebitReversal{},
-				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+				DataStruct:  &stripe.TreasuryDebitReversal{},
+				ListParams:  `FinancialAccount: stripe.String(p.ID),`,
+				Description: "https://stripe.com/docs/api/treasury/debit_reversals",
 			},
 			{
-				DataStruct: &stripe.TreasuryInboundTransfer{},
-				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+				DataStruct:  &stripe.TreasuryInboundTransfer{},
+				ListParams:  `FinancialAccount: stripe.String(p.ID),`,
+				Description: "https://stripe.com/docs/api/treasury/inbound_transfers",
 			},
 			{
-				DataStruct: &stripe.TreasuryOutboundPayment{},
-				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+				DataStruct:  &stripe.TreasuryOutboundPayment{},
+				ListParams:  `FinancialAccount: stripe.String(p.ID),`,
+				Description: "https://stripe.com/docs/api/treasury/outbound_payments",
 			},
 			{
-				DataStruct: &stripe.TreasuryOutboundTransfer{},
-				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+				DataStruct:  &stripe.TreasuryOutboundTransfer{},
+				ListParams:  `FinancialAccount: stripe.String(p.ID),`,
+				Description: "https://stripe.com/docs/api/treasury/outbound_transfers",
 			},
 			{
-				DataStruct: &stripe.TreasuryReceivedCredit{},
-				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+				DataStruct:  &stripe.TreasuryReceivedCredit{},
+				ListParams:  `FinancialAccount: stripe.String(p.ID),`,
+				Description: "https://stripe.com/docs/api/treasury/received_credits",
 			},
 			{
-				DataStruct: &stripe.TreasuryReceivedDebit{},
-				ListParams: `FinancialAccount: stripe.String(p.ID),`,
+				DataStruct:  &stripe.TreasuryReceivedDebit{},
+				ListParams:  `FinancialAccount: stripe.String(p.ID),`,
+				Description: "https://stripe.com/docs/api/treasury/received_debits",
 			},
 			{
 				DataStruct:     &stripe.TreasuryTransactionEntry{},
 				ListParams:     `FinancialAccount: stripe.String(p.ID),`,
 				StateParamName: createdStateParam,
+				Description:    "https://stripe.com/docs/api/treasury/transaction_entries",
 			},
 			{
 				DataStruct:     &stripe.TreasuryTransaction{},
 				ListParams:     `FinancialAccount: stripe.String(p.ID),`,
 				StateParamName: createdStateParam,
+				Description:    "https://stripe.com/docs/api/treasury/transactions",
 			},
 		},
 	},

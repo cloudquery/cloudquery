@@ -12,7 +12,7 @@ import (
 func ApplePayDomains() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_apple_pay_domains",
-		Description: `https://stripe.com/docs/api/apple_pay_domains`,
+		Description: `https://stripe.com/docs/api`,
 		Transform:   client.TransformWithStruct(&stripe.ApplePayDomain{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchApplePayDomains,
 

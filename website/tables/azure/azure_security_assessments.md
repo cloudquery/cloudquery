@@ -6,6 +6,11 @@ https://learn.microsoft.com/en-us/rest/api/defenderforcloud/assessments/list?tab
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on azure_security_assessments:
+  - [azure_security_sub_assessments](azure_security_sub_assessments)
+
 ## Columns
 
 | Name          | Type          |

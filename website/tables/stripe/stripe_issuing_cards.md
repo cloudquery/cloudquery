@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Issuing Cards.
 
-https://stripe.com/docs/api/issuing_cards
+https://stripe.com/docs/api/issuing/cards
 
 The primary key for this table is **id**.
 It supports incremental syncs based on the **created** column.
