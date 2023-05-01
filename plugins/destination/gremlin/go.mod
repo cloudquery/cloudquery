@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/gremlin
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v12 v12.0.0-20230418102323-1deb740e02fa
+	github.com/apache/arrow/go/v12 v12.0.0-20230430004532-0ea1a103dfc2
 	github.com/apache/tinkerpop/gremlin-go/v3 v3.6.3-0.20230429031244-ca452a5ec121
 	github.com/aws/aws-sdk-go-v2 v1.17.8
 	github.com/aws/aws-sdk-go-v2/config v1.18.21
