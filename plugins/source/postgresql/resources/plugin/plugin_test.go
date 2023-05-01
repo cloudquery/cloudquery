@@ -329,7 +329,8 @@ func TestPluginCDC(t *testing.T) {
 		Path:         "cloudquery/postgresql",
 		Version:      "vdevelopment",
 		Destinations: []string{"test"},
-		Tables:       []string{"user"},
+		// use a reserved keyword as table name to validate escaping
+		Tables: []string{"user"},
 		Spec: &client.Spec{
 			ConnectionString: getTestConnectionString() + "&replication=database",
 			PgxLogLevel:      client.LogLevelTrace,
