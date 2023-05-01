@@ -43,13 +43,16 @@ func clusterServices() *schema.Table {
 
 func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cluster := parent.Item.(types.Cluster)
-	svc := meta.(*client.Client).Services().Ecs
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecs
 	config := ecs.ListServicesInput{
 		Cluster: cluster.ClusterArn,
 	}
 	paginator := ecs.NewListServicesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ecs.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -61,7 +64,9 @@ func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent
 			Services: page.ServiceArns,
 			Include:  []types.ServiceField{types.ServiceFieldTags},
 		}
-		describeServicesOutput, err := svc.DescribeServices(ctx, &describeServicesInput)
+		describeServicesOutput, err := svc.DescribeServices(ctx, &describeServicesInput, func(options *ecs.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
