@@ -13,7 +13,7 @@ import (
 )
 
 func ThirtyDayCost() *schema.Table {
-	tableName := "aws_costexplorer_cost_thirty_days"
+	tableName := "aws_costexplorer_cost_30d"
 	return &schema.Table{
 		Name:     tableName,
 		Resolver: fetchCost,

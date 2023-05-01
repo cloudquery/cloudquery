@@ -13,7 +13,7 @@ import (
 )
 
 func ThirtyDayCostForecast() *schema.Table {
-	tableName := "aws_costexplorer_cost_forecast_thirty_days"
+	tableName := "aws_costexplorer_cost_forecast_30d"
 	return &schema.Table{
 		Name: tableName,
 		Description: `https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetCostForecast.html
