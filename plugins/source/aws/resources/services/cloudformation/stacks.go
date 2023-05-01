@@ -53,7 +53,9 @@ func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *s
 	svc := c.Services().Cloudformation
 	paginator := cloudformation.NewDescribeStacksPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cloudformation.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -66,10 +68,13 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 	config := cloudformation.ListStackResourcesInput{
 		StackName: stack.StackName,
 	}
-	svc := meta.(*client.Client).Services().Cloudformation
+	c := meta.(*client.Client)
+	svc := c.Services().Cloudformation
 	paginator := cloudformation.NewListStackResourcesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cloudformation.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
