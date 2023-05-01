@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/meilisearch
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v12 v12.0.0-20230412012105-4f45630f6f9d
+	github.com/apache/arrow/go/v12 v12.0.0-20230430004532-0ea1a103dfc2
 	github.com/cloudquery/plugin-sdk/v2 v2.5.1
 	github.com/google/uuid v1.3.0
 	github.com/meilisearch/meilisearch-go v0.24.0
