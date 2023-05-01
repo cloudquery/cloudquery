@@ -14,7 +14,7 @@ import (
 func TreasuryFinancialAccounts() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_treasury_financial_accounts",
-		Description: `https://stripe.com/docs/api/treasury_financial_accounts`,
+		Description: `https://stripe.com/docs/api/treasury/financial_accounts`,
 		Transform:   client.TransformWithStruct(&stripe.TreasuryFinancialAccount{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchTreasuryFinancialAccounts,
 

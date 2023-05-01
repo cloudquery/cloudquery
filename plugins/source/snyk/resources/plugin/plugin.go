@@ -3,6 +3,7 @@ package plugin
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/client"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/services/dependency"
+	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/services/group"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/services/integration"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/services/organization"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/services/project"
@@ -20,6 +21,7 @@ func Snyk() *source.Plugin {
 		[]*schema.Table{
 			dependency.Dependencies(),
 			integration.Integrations(),
+			group.Groups(),
 			organization.Organizations(),
 			project.Projects(),
 			reporting.Issues(),

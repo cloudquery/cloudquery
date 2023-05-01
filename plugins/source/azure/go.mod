@@ -108,7 +108,7 @@ require (
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue v0.1.0 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/apache/arrow/go/v12 v12.0.0-20230401212133-adf33cc43010 // indirect
+	github.com/apache/arrow/go/v12 v12.0.0-20230430004532-0ea1a103dfc2 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/goccy/go-json v0.9.11 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
@@ -130,7 +130,7 @@ replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.2.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v0.9.0 // indirect
-	github.com/cloudquery/plugin-sdk/v2 v2.4.0
+	github.com/cloudquery/plugin-sdk/v2 v2.5.1
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect

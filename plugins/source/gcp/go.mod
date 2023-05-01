@@ -43,7 +43,7 @@ require (
 	cloud.google.com/go/vpcaccess v1.6.0
 	cloud.google.com/go/websecurityscanner v1.5.0
 	cloud.google.com/go/workflows v1.10.0
-	github.com/cloudquery/plugin-sdk/v2 v2.4.0
+	github.com/cloudquery/plugin-sdk/v2 v2.5.1
 	github.com/golang/mock v1.6.0
 	github.com/googleapis/gax-go/v2 v2.7.1
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3
@@ -70,12 +70,12 @@ require (
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/vision v1.2.0 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/apache/arrow/go/v12 v12.0.0-20230401212133-adf33cc43010 // indirect
+	github.com/apache/arrow/go/v12 v12.0.0-20230430004532-0ea1a103dfc2 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cncf/udpa/go v0.0.0-20220112060539-c52dc94e7fbe // indirect
-	github.com/cncf/xds/go v0.0.0-20230310173818-32f1caf87195 // indirect
+	github.com/cncf/xds/go v0.0.0-20230428030218-4003588d1b74 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/envoyproxy/go-control-plane v0.10.3 // indirect
 	github.com/envoyproxy/protoc-gen-validate v0.9.1 // indirect
