@@ -37,6 +37,16 @@ func (m *MockTimestreamwriteClient) EXPECT() *MockTimestreamwriteClientMockRecor
 
 // DescribeDatabase mocks base method.
 func (m *MockTimestreamwriteClient) DescribeDatabase(arg0 context.Context, arg1 *timestreamwrite.DescribeDatabaseInput, arg2 ...func(*timestreamwrite.Options)) (*timestreamwrite.DescribeDatabaseOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &timestreamwrite.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDatabase")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockTimestreamwriteClientMockRecorder) DescribeDatabase(arg0, arg1 int
 
 // DescribeEndpoints mocks base method.
 func (m *MockTimestreamwriteClient) DescribeEndpoints(arg0 context.Context, arg1 *timestreamwrite.DescribeEndpointsInput, arg2 ...func(*timestreamwrite.Options)) (*timestreamwrite.DescribeEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &timestreamwrite.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockTimestreamwriteClientMockRecorder) DescribeEndpoints(arg0, arg1 in
 
 // DescribeTable mocks base method.
 func (m *MockTimestreamwriteClient) DescribeTable(arg0 context.Context, arg1 *timestreamwrite.DescribeTableInput, arg2 ...func(*timestreamwrite.Options)) (*timestreamwrite.DescribeTableOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &timestreamwrite.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTable")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockTimestreamwriteClientMockRecorder) DescribeTable(arg0, arg1 interf
 
 // ListDatabases mocks base method.
 func (m *MockTimestreamwriteClient) ListDatabases(arg0 context.Context, arg1 *timestreamwrite.ListDatabasesInput, arg2 ...func(*timestreamwrite.Options)) (*timestreamwrite.ListDatabasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &timestreamwrite.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDatabases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockTimestreamwriteClientMockRecorder) ListDatabases(arg0, arg1 interf
 
 // ListTables mocks base method.
 func (m *MockTimestreamwriteClient) ListTables(arg0 context.Context, arg1 *timestreamwrite.ListTablesInput, arg2 ...func(*timestreamwrite.Options)) (*timestreamwrite.ListTablesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &timestreamwrite.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTables")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockTimestreamwriteClientMockRecorder) ListTables(arg0, arg1 interface
 
 // ListTagsForResource mocks base method.
 func (m *MockTimestreamwriteClient) ListTagsForResource(arg0 context.Context, arg1 *timestreamwrite.ListTagsForResourceInput, arg2 ...func(*timestreamwrite.Options)) (*timestreamwrite.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &timestreamwrite.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
