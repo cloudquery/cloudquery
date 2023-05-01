@@ -29,5 +29,5 @@ func createQueues(router *mux.Router) error {
 			return
 		}
 	})
-	return nil
+	return createQueueAccessPolicy(router)
 }

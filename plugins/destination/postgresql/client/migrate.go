@@ -339,7 +339,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *arrow.Schema)
 			sb.WriteString(",")
 		}
 		if c.enabledPks() && schema.IsPk(col) {
-			primaryKeys = append(primaryKeys, col.Name)
+			primaryKeys = append(primaryKeys, pgx.Identifier{col.Name}.Sanitize())
 		}
 	}
 
