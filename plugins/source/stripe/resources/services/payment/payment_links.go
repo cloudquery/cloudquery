@@ -26,6 +26,10 @@ func PaymentLinks() *schema.Table {
 				},
 			},
 		},
+
+		Relations: []*schema.Table{
+			PaymentLinkLineItems(),
+		},
 	}
 }
 

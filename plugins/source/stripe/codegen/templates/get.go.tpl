@@ -32,10 +32,13 @@ func {{.TableName | ToPascal}}() *schema.Table {
 				 },
 			},
 {{end}}
-{{if .Children}}
+{{if or .Children .ExtraChildren}}
 	Relations: []*schema.Table{
 	{{- range .Children}}
 		{{.TableName | ToPascal}}(),
+	{{- end}}
+	{{- range .ExtraChildren}}
+		{{.}},
 	{{- end}}
 	},
 {{end}}
