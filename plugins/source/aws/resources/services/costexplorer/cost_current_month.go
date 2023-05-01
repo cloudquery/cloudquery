@@ -53,6 +53,9 @@ func fetchCost(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 		return nil
 	}
 	svc := cl.Services().Costexplorer
+	// Only use a single `time.Now()` call to ensure that the start and end dates are the same.
+	now := time.Now()
+
 	input := costexplorer.GetCostAndUsageInput{
 		Granularity: types.GranularityDaily,
 		Metrics: []string{
@@ -64,8 +67,8 @@ func fetchCost(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 			"UnblendedCost",
 		},
 		TimePeriod: &types.DateInterval{
-			Start: aws.String(beginningOfMonth(time.Now()).Format("2006-01-02")),
-			End:   aws.String(time.Now().AddDate(0, 0, 1).Format("2006-01-02")),
+			Start: aws.String(beginningOfMonth(now).Format("2006-01-02")),
+			End:   aws.String(now.AddDate(0, 0, 1).Format("2006-01-02")),
 		},
 	}
 	for {
