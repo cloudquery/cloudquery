@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.3.0...plugins-source-azure-v7.4.0) (2023-05-01)
 
 
+### This Release has the Following Changes to Tables
+- Table `azure_security_sub_assessments` was added
+- Table `azure_storage_queue_acl` was added
+
 ### Features
 
 * **azure-resources:** Add `azure_security_sub_assessments` ([#10378](https://github.com/cloudquery/cloudquery/issues/10378)) ([68ec55b](https://github.com/cloudquery/cloudquery/commit/68ec55b8ddffbd8ed5c88cd8aeacf946bd3d1d56))
