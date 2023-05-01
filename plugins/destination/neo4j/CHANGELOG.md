@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v2.0.1...plugins-destination-neo4j-v2.0.2) (2023-04-27)
+
+
+### Bug Fixes
+
+* **neo4j:** Truncate Sync Timestamp to Microsecond Precision  ([#10354](https://github.com/cloudquery/cloudquery/issues/10354)) ([9c17db9](https://github.com/cloudquery/cloudquery/commit/9c17db9bcfe8555c894ed3b05ee6f089f0f57bdc))
+
 ## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v2.0.0...plugins-destination-neo4j-v2.0.1) (2023-04-25)
 
 

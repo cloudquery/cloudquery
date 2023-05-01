@@ -12,7 +12,7 @@ import (
 func RadarEarlyFraudWarnings() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_radar_early_fraud_warnings",
-		Description: `https://stripe.com/docs/api/radar_early_fraud_warnings`,
+		Description: `https://stripe.com/docs/api/radar/early_fraud_warnings`,
 		Transform:   client.TransformWithStruct(&stripe.RadarEarlyFraudWarning{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchRadarEarlyFraudWarnings,
 

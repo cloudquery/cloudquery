@@ -16,6 +16,7 @@ The primary key for this table is **id**.
 |_cq_parent_id|UUID|
 |id (PK)|String|
 |amount|Int|
+|amount_shipping|Int|
 |created|Timestamp|
 |currency|String|
 |customer|JSON|
@@ -33,6 +34,7 @@ The primary key for this table is **id**.
 |pdf|String|
 |reason|String|
 |refund|JSON|
+|shipping_cost|JSON|
 |status|String|
 |subtotal|Int|
 |subtotal_excluding_tax|Int|

@@ -115,7 +115,7 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-sdk/v2 v2.4.0
+	github.com/cloudquery/plugin-sdk/v2 v2.5.1
 	github.com/gocarina/gocsv v0.0.0-20230325173030-9a18a846a479
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
@@ -134,7 +134,7 @@ replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/apache/arrow/go/v12 v12.0.0-20230413083222-6432a2382e87 // indirect
+	github.com/apache/arrow/go/v12 v12.0.0-20230430004532-0ea1a103dfc2 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.2 // indirect

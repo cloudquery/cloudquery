@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/awspricing
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk/v2 v2.4.0
+	github.com/cloudquery/plugin-sdk/v2 v2.5.1
 	github.com/rs/zerolog v1.29.0
 )
 
@@ -12,8 +12,9 @@ replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/apache/arrow/go/v12 v12.0.0-20230413083222-6432a2382e87 // indirect
+	github.com/apache/arrow/go/v12 v12.0.0-20230430004532-0ea1a103dfc2 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/goccy/go-json v0.9.11 // indirect
@@ -31,9 +32,11 @@ require (
 	github.com/mattn/go-isatty v0.0.18 // indirect
 	github.com/minio/asm2plan9s v0.0.0-20200509001527-cdd76441f9d8 // indirect
 	github.com/minio/c2goasm v0.0.0-20190812172519-36a3d3bbc4f3 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/stretchr/testify v1.8.2 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29 // indirect
@@ -48,4 +51,5 @@ require (
 	google.golang.org/grpc v1.54.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

@@ -1,0 +1,8 @@
+{
+  "*": {
+    "theme": {
+      "sidebar": false,
+      "typesetting": "article"
+    }
+  }
+}

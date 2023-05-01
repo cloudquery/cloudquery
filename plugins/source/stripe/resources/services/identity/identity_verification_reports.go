@@ -14,7 +14,7 @@ import (
 func IdentityVerificationReports() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_identity_verification_reports",
-		Description: `https://stripe.com/docs/api/identity_verification_reports`,
+		Description: `https://stripe.com/docs/api/identity/verification_reports`,
 		Transform:   client.TransformWithStruct(&stripe.IdentityVerificationReport{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchIdentityVerificationReports,
 
