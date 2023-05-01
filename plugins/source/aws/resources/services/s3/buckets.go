@@ -77,7 +77,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	mgr := cl.Services().S3manager
 
 	output, err := mgr.GetBucketRegion(ctx, *resource.Name, func(o *s3.Options) {
-		o.Region = cl.Region
+		o.Region = listBucketRegion(cl)
 	})
 	if err != nil {
 		if isBucketNotFoundError(cl, err) {
