@@ -3,13 +3,13 @@ module github.com/cloudquery/cloudquery/plugins/source/github
 go 1.19
 
 require (
-	github.com/beatlabs/github-auth v0.0.0-20220721134423-2b8d98e205d1
+	github.com/beatlabs/github-auth v0.0.0-20230414144152-f39a1f09f680
 	github.com/cloudquery/plugin-sdk/v2 v2.5.1
 	github.com/gofri/go-github-ratelimit v1.0.2
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v49 v49.0.0
 	github.com/rs/zerolog v1.29.0
-	golang.org/x/oauth2 v0.4.0
+	golang.org/x/oauth2 v0.7.0
 )
 
 // TODO: remove once the changes are merged to upstream
