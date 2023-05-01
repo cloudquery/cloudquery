@@ -3,6 +3,23 @@
 ## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-stripe-v1.2.0...plugins-source-stripe-v1.3.0) (2023-05-01)
 
 
+### This Release has the Following Changes to Tables
+- Table `stripe_checkout_session_line_items` was added
+- Table `stripe_checkout_sessions`: column added with name `currency_conversion` and type `JSON`
+- Table `stripe_checkout_sessions`: column added with name `custom_fields` and type `JSON`
+- Table `stripe_credit_notes`: column added with name `amount_shipping` and type `Int`
+- Table `stripe_credit_notes`: column added with name `shipping_cost` and type `JSON`
+- Table `stripe_invoices`: column added with name `amount_shipping` and type `Int`
+- Table `stripe_invoices`: column added with name `shipping_cost` and type `JSON`
+- Table `stripe_invoices`: column added with name `shipping_details` and type `JSON`
+- Table `stripe_payment_link_line_items` was added
+- Table `stripe_payment_links`: column added with name `custom_fields` and type `JSON`
+- Table `stripe_payment_links`: column added with name `invoice_creation` and type `JSON`
+- Table `stripe_payment_methods`: column added with name `cashapp` and type `JSON`
+- Table `stripe_payouts`: column added with name `reconciliation_status` and type `String`
+- Table `stripe_subscriptions`: column added with name `cancellation_details` and type `JSON`
+- Table `stripe_subscriptions`: column added with name `trial_settings` and type `JSON`
+
 ### Features
 
 * **stripe:** Upgrade to v74.16.0, add lineitem tables ([#10454](https://github.com/cloudquery/cloudquery/issues/10454)) ([0cf7cd2](https://github.com/cloudquery/cloudquery/commit/0cf7cd2ef1ca6cedfd583e90f5a52b667720baa2)), closes [#10392](https://github.com/cloudquery/cloudquery/issues/10392)
