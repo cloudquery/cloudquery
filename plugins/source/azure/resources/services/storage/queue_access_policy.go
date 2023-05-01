@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"net/url"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
@@ -23,7 +24,7 @@ func queueAccessPolicy() *schema.Table {
 			schema.Column{
 				Name:            "queue_id",
 				Type:            schema.TypeString,
-				Resolver:        schema.ParentColumnResolver("ID"),
+				Resolver:        schema.ParentColumnResolver("id"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
@@ -41,7 +42,8 @@ func fetchQueueACL(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		opts.ClientOptions = cl.Options.ClientOptions
 	}
 
-	queueURL := runtime.JoinPaths("https://"+*acc.Name+".queue.core.windows.net", url.PathEscape(*queue.Name))
+	nm := strings.ReplaceAll(*acc.Name, " ", "_") // This is for the tests, real data will not have spaces
+	queueURL := runtime.JoinPaths("https://"+nm+".queue.core.windows.net", url.PathEscape(*queue.Name))
 	svc, err := azqueue.NewQueueClient(queueURL, cl.Creds, &opts)
 	if err != nil {
 		return err
