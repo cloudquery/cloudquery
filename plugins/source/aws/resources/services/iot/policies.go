@@ -64,6 +64,8 @@ func getPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 
 	output, err := svc.GetPolicy(ctx, &iot.GetPolicyInput{
 		PolicyName: resource.Item.(types.Policy).PolicyName,
+	}, func(options *iot.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
