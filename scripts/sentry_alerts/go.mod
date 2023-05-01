@@ -2,4 +2,4 @@ module cloudquery/sentryalerts
 
 go 1.19
 
-require github.com/atlassian/go-sentry-api v0.0.0-20230117184421-b99a46e78fc6
+require github.com/atlassian/go-sentry-api v0.0.0-20230425171514-3bb2fb7a76d0
