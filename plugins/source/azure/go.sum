@@ -224,6 +224,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot v
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot v1.0.0/go.mod h1:kdl0zSso4qqJdaxAr31cwQXwBZLd+zUT5O3EQbC3Jc8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads v0.2.0 h1:t6Ef1sDPDa/hPY6HWuATAYD7OEX4e3tz0sh32ecN+g8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads v0.2.0/go.mod h1:zUdgDi+dBwp7+g8LdXMrPMg5pV0irXxuVvPCZtawpaE=
+github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue v0.1.0 h1:TOtQFiO403wClfrZId/EKvlKOfUhL0mWgvWgZ0FNn8I=
+github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue v0.1.0/go.mod h1:U0IH4deB/maBcagR9SiNeIfgZ1BY/zYCq8SOiQ4vfRc=
 github.com/AzureAD/microsoft-authentication-library-for-go v0.9.0 h1:UE9n9rkJF62ArLb1F3DEjRt8O3jLwMWdSoypKV4f3MU=
 github.com/AzureAD/microsoft-authentication-library-for-go v0.9.0/go.mod h1:kgDmCTgBzIEPFElEF+FK0SdjAor06dRq2Go927dnQ6o=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=

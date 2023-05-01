@@ -16,6 +16,9 @@ func queues() *schema.Table {
 		Description: "https://learn.microsoft.com/en-us/rest/api/storagerp/queue/list?tabs=HTTP#listqueue",
 		Transform:   transformers.TransformWithStruct(&armstorage.ListQueue{}, transformers.WithPrimaryKeys("ID")),
 		Columns:     schema.ColumnList{client.SubscriptionID},
+		Relations: schema.Tables{
+			queueAccessPolicy(),
+		},
 	}
 }
 
