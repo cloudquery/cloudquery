@@ -37,6 +37,7 @@ func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Service
 	m.EXPECT().ListSubscriptions(
 		gomock.Any(),
 		&sns.ListSubscriptionsInput{},
+		gomock.Any(),
 	).Return(
 		&sns.ListSubscriptionsOutput{
 			Subscriptions: []types.Subscription{sub, emptySub},
@@ -45,6 +46,7 @@ func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Service
 	m.EXPECT().GetSubscriptionAttributes(
 		gomock.Any(),
 		&sns.GetSubscriptionAttributesInput{SubscriptionArn: sub.SubscriptionArn},
+		gomock.Any(),
 	).Return(
 		&sns.GetSubscriptionAttributesOutput{Attributes: map[string]string{
 			"ConfirmationWasAuthenticated": "true",
