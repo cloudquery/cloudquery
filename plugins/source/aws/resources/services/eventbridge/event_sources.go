@@ -40,7 +40,9 @@ func fetchEventSources(ctx context.Context, meta schema.ClientMeta, parent *sche
 	svc := c.Services().Eventbridge
 	// No paginator available
 	for {
-		response, err := svc.ListEventSources(ctx, &input)
+		response, err := svc.ListEventSources(ctx, &input, func(options *eventbridge.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

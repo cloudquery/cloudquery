@@ -20,6 +20,7 @@ func buildSecurityConfigurationsMock(t *testing.T, ctrl *gomock.Controller) clie
 	m.EXPECT().GetSecurityConfigurations(
 		gomock.Any(),
 		gomock.Any(),
+		gomock.Any(),
 	).Return(&s, nil)
 
 	return client.Services{

@@ -21,6 +21,7 @@ func buildDataRepoTasksMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 	m.EXPECT().DescribeDataRepositoryTasks(
 		gomock.Any(),
 		&fsx.DescribeDataRepositoryTasksInput{MaxResults: aws.Int32(1000)},
+		gomock.Any(),
 	).Return(
 		&fsx.DescribeDataRepositoryTasksOutput{DataRepositoryTasks: []types.DataRepositoryTask{task}},
 		nil,

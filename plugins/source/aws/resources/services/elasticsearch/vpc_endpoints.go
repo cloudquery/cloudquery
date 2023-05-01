@@ -35,13 +35,16 @@ func VpcEndpoints() *schema.Table {
 }
 
 func fetchElasticsearchVpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Elasticsearchservice
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticsearchservice
 	// get the IDs first
 	listInput := new(elasticsearchservice.ListVpcEndpointsInput)
 	var vpcEndpointIDs []string
 	// No paginator available
 	for {
-		out, err := svc.ListVpcEndpoints(ctx, listInput)
+		out, err := svc.ListVpcEndpoints(ctx, listInput, func(options *elasticsearchservice.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -69,6 +72,9 @@ func fetchElasticsearchVpcEndpoints(ctx context.Context, meta schema.ClientMeta,
 
 		out, err := svc.DescribeVpcEndpoints(ctx,
 			&elasticsearchservice.DescribeVpcEndpointsInput{VpcEndpointIds: part},
+			func(options *elasticsearchservice.Options) {
+				options.Region = cl.Region
+			},
 		)
 		if err != nil {
 			return err
