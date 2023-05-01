@@ -58,6 +58,6 @@ func mockCheckSummaries(check types.TrustedAdvisorCheckDescription, m *mocks.Moc
 	}
 
 	input := support.DescribeTrustedAdvisorCheckSummariesInput{CheckIds: []string{aws.ToString(check.Id)}}
-	m.EXPECT().DescribeTrustedAdvisorCheckSummaries(gomock.Any(), &input).Return(&support.DescribeTrustedAdvisorCheckSummariesOutput{Summaries: summaries}, nil)
+	m.EXPECT().DescribeTrustedAdvisorCheckSummaries(gomock.Any(), &input, gomock.Any()).Return(&support.DescribeTrustedAdvisorCheckSummariesOutput{Summaries: summaries}, nil)
 	return nil
 }

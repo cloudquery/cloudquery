@@ -43,7 +43,9 @@ func fetchDocdbEventCategories(ctx context.Context, meta schema.ClientMeta, _ *s
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"docdb"}}},
 	}
 
-	response, err := svc.DescribeEventCategories(ctx, input)
+	response, err := svc.DescribeEventCategories(ctx, input, func(options *docdb.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		if c.IsNotFoundError(err) {
 			return nil

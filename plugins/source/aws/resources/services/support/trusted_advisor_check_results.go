@@ -57,6 +57,6 @@ func mockCheckResults(check types.TrustedAdvisorCheckDescription, m *mocks.MockS
 	}
 
 	input := support.DescribeTrustedAdvisorCheckResultInput{CheckId: check.Id}
-	m.EXPECT().DescribeTrustedAdvisorCheckResult(gomock.Any(), &input).Return(&support.DescribeTrustedAdvisorCheckResultOutput{Result: &result}, nil)
+	m.EXPECT().DescribeTrustedAdvisorCheckResult(gomock.Any(), &input, gomock.Any()).Return(&support.DescribeTrustedAdvisorCheckResultOutput{Result: &result}, nil)
 	return nil
 }

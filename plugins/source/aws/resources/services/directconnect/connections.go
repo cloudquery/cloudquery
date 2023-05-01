@@ -50,7 +50,9 @@ func fetchDirectconnectConnections(ctx context.Context, meta schema.ClientMeta, 
 	var config directconnect.DescribeConnectionsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Directconnect
-	output, err := svc.DescribeConnections(ctx, &config)
+	output, err := svc.DescribeConnections(ctx, &config, func(options *directconnect.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
