@@ -51,14 +51,15 @@ func fetchForecast(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		cl.Logger().Info().Msg("skipping `aws_costexplorer_forecast_current_month` because `use_paid_apis` is set to false")
 		return nil
 	}
-
+	now := time.Now()
 	svc := cl.Services().Costexplorer
+
 	input := costexplorer.GetCostForecastInput{
 		Granularity: types.GranularityDaily,
 		Metric:      types.MetricBlendedCost,
 		TimePeriod: &types.DateInterval{
-			Start: aws.String(time.Now().Format("2006-01-02")),
-			End:   aws.String(endOfMonth(time.Now()).Format("2006-01-02")),
+			Start: aws.String(now.Format("2006-01-02")),
+			End:   aws.String(forecastEndOfMonth(now).Format("2006-01-02")),
 		},
 	}
 
@@ -67,6 +68,5 @@ func fetchForecast(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		return err
 	}
 	res <- resp.ForecastResultsByTime
-
 	return nil
 }
