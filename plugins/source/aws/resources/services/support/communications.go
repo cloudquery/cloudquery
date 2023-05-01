@@ -54,6 +54,6 @@ func mockCommunications(parent types.CaseDetails, m *mocks.MockSupportClient) er
 	}
 
 	input := support.DescribeCommunicationsInput{MaxResults: aws.Int32(100), CaseId: parent.CaseId}
-	m.EXPECT().DescribeCommunications(gomock.Any(), &input).Return(&support.DescribeCommunicationsOutput{Communications: communications}, nil)
+	m.EXPECT().DescribeCommunications(gomock.Any(), &input, gomock.Any()).Return(&support.DescribeCommunicationsOutput{Communications: communications}, nil)
 	return nil
 }

@@ -65,11 +65,13 @@ func fetchSesConfigurationSets(ctx context.Context, meta schema.ClientMeta, pare
 }
 
 func getConfigurationSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sesv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sesv2
 	csName := resource.Item.(string)
 
-	getOutput, err := svc.GetConfigurationSet(ctx, &sesv2.GetConfigurationSetInput{ConfigurationSetName: &csName})
+	getOutput, err := svc.GetConfigurationSet(ctx, &sesv2.GetConfigurationSetInput{ConfigurationSetName: &csName}, func(o *sesv2.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
