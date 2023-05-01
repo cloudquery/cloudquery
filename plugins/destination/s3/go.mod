@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/s3
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v12 v12.0.0-20230417014917-9888ac36c142
+	github.com/apache/arrow/go/v12 v12.0.0-20230430004532-0ea1a103dfc2
 	github.com/aws/aws-sdk-go-v2 v1.17.8
 	github.com/aws/aws-sdk-go-v2/config v1.18.21
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.63
