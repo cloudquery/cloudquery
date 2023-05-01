@@ -40,11 +40,13 @@ func Apps() *schema.Table {
 	}
 }
 func fetchSagemakerApps(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sagemaker
 	paginator := sagemaker.NewListAppsPaginator(svc, &sagemaker.ListAppsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sagemaker.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -54,8 +56,8 @@ func fetchSagemakerApps(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 }
 
 func getApp(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sagemaker
 	n := resource.Item.(types.AppDetails)
 	input := &sagemaker.DescribeAppInput{
 		AppName:  n.AppName,
@@ -70,7 +72,9 @@ func getApp(ctx context.Context, meta schema.ClientMeta, resource *schema.Resour
 		input.SpaceName = n.SpaceName
 	}
 
-	response, err := svc.DescribeApp(ctx, input)
+	response, err := svc.DescribeApp(ctx, input, func(o *sagemaker.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -81,11 +85,13 @@ func getApp(ctx context.Context, meta schema.ClientMeta, resource *schema.Resour
 
 func resolveSagemakerAppTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	r := resource.Item.(*sagemaker.DescribeAppOutput)
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sagemaker
 
 	response, err := svc.ListTags(ctx, &sagemaker.ListTagsInput{
 		ResourceArn: r.AppArn,
+	}, func(o *sagemaker.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err

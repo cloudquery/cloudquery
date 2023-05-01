@@ -42,14 +42,16 @@ This is useful when multi region and account aggregation is enabled.`,
 }
 
 func fetchFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Securityhub
+	cl := meta.(*client.Client)
+	svc := cl.Services().Securityhub
 	config := securityhub.GetFindingsInput{
 		MaxResults: 100,
 	}
 	p := securityhub.NewGetFindingsPaginator(svc, &config)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(o *securityhub.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
