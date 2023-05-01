@@ -1,6 +1,6 @@
-# Table: aws_costexplorer_cost_current_month
+# Table: aws_costexplorer_cost_thirty_days
 
-This table shows data for AWS Cost Explorer Cost Current Month.
+This table shows data for AWS Cost Explorer Cost Thirty Days.
 
 https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetCostAndUsage.html
 To sync this table you must set the 'use_paid_apis' option to 'true' in the AWS provider configuration. 

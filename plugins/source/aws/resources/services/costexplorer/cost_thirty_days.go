@@ -12,8 +12,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
-func CurrentMonthCost() *schema.Table {
-	tableName := "aws_costexplorer_cost_current_month"
+func ThirtyDayCost() *schema.Table {
+	tableName := "aws_costexplorer_cost_thirty_days"
 	return &schema.Table{
 		Name:     tableName,
 		Resolver: fetchCost,
@@ -67,7 +67,7 @@ func fetchCost(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 			"UnblendedCost",
 		},
 		TimePeriod: &types.DateInterval{
-			Start: aws.String(beginningOfMonth(now).Format("2006-01-02")),
+			Start: aws.String(now.AddDate(0, 0, -30).Format("2006-01-02")),
 			End:   aws.String(now.AddDate(0, 0, 1).Format("2006-01-02")),
 		},
 	}

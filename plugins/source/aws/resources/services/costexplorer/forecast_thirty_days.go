@@ -12,8 +12,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
-func CurrentMonthForecast() *schema.Table {
-	tableName := "aws_costexplorer_forecast_current_month"
+func ThirtyDayCostForecast() *schema.Table {
+	tableName := "aws_costexplorer_cost_forecast_thirty_days"
 	return &schema.Table{
 		Name: tableName,
 		Description: `https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetCostForecast.html
@@ -59,7 +59,7 @@ func fetchForecast(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		Metric:      types.MetricBlendedCost,
 		TimePeriod: &types.DateInterval{
 			Start: aws.String(now.Format("2006-01-02")),
-			End:   aws.String(forecastEndOfMonth(now).Format("2006-01-02")),
+			End:   aws.String(now.AddDate(0, 0, 30).Format("2006-01-02")),
 		},
 	}
 
