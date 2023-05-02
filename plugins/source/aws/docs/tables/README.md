@@ -122,6 +122,7 @@
 - [aws_computeoptimizer_enrollment_statuses](../../../../../website/tables/aws/aws_computeoptimizer_enrollment_statuses.md)
 - [aws_computeoptimizer_lambda_function_recommendations](../../../../../website/tables/aws/aws_computeoptimizer_lambda_function_recommendations.md)
 - [aws_config_config_rules](../../../../../website/tables/aws/aws_config_config_rules.md)
+  - [aws_config_config_rule_compliance_details](../../../../../website/tables/aws/aws_config_config_rule_compliance_details.md)
   - [aws_config_config_rule_compliances](../../../../../website/tables/aws/aws_config_config_rule_compliances.md)
   - [aws_config_remediation_configurations](../../../../../website/tables/aws/aws_config_remediation_configurations.md)
 - [aws_config_configuration_aggregators](../../../../../website/tables/aws/aws_config_configuration_aggregators.md)
