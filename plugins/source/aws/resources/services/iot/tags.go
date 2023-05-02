@@ -9,14 +9,17 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
-func resolveIotTags(ctx context.Context, svc services.IotClient, resource *schema.Resource, c schema.Column, resourceArn *string) error {
+func resolveIotTags(ctx context.Context, meta schema.ClientMeta, svc services.IotClient, resource *schema.Resource, c schema.Column, resourceArn *string) error {
+	cl := meta.(*client.Client)
 	input := iot.ListTagsForResourceInput{
 		ResourceArn: resourceArn,
 	}
 	tags := make(map[string]string)
 	paginator := iot.NewListTagsForResourcePaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

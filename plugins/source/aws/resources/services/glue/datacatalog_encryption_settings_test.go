@@ -19,6 +19,7 @@ func buildDatacatalogEncryptionSettingsMock(t *testing.T, ctrl *gomock.Controlle
 	m.EXPECT().GetDataCatalogEncryptionSettings(
 		gomock.Any(),
 		gomock.Any(),
+		gomock.Any(),
 	).Return(&s, nil)
 
 	return client.Services{

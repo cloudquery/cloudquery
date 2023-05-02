@@ -50,7 +50,9 @@ func fetchBatchJobQueues(ctx context.Context, meta schema.ClientMeta, parent *sc
 	svc := c.Services().Batch
 	p := batch.NewDescribeJobQueuesPaginator(svc, &config)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *batch.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -67,7 +69,9 @@ func resolveBatchJobQueueTags(ctx context.Context, meta schema.ClientMeta, resou
 	input := batch.ListTagsForResourceInput{
 		ResourceArn: summary.JobQueueArn,
 	}
-	output, err := svc.ListTagsForResource(ctx, &input)
+	output, err := svc.ListTagsForResource(ctx, &input, func(options *batch.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
