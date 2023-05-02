@@ -44,7 +44,9 @@ func fetchKafkaClusters(ctx context.Context, meta schema.ClientMeta, parent *sch
 	svc := c.Services().Kafka
 	paginator := kafka.NewListClustersV2Paginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *kafka.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,7 +59,9 @@ func getCluster(ctx context.Context, meta schema.ClientMeta, resource *schema.Re
 	cl := meta.(*client.Client)
 	svc := cl.Services().Kafka
 	var input kafka.DescribeClusterV2Input = describeClustersInput(resource)
-	output, err := svc.DescribeClusterV2(ctx, &input)
+	output, err := svc.DescribeClusterV2(ctx, &input, func(options *kafka.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

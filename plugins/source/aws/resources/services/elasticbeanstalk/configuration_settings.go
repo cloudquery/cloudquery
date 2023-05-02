@@ -43,7 +43,9 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 		ApplicationName: p.ApplicationName,
 		EnvironmentName: p.EnvironmentName,
 	}
-	output, err := svc.DescribeConfigurationSettings(ctx, &configOptionsIn)
+	output, err := svc.DescribeConfigurationSettings(ctx, &configOptionsIn, func(options *elasticbeanstalk.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		// It takes a few minutes for an environment to be terminated
 		// This ensures we don't error while trying to fetch related resources for a terminated environment

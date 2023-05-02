@@ -19,7 +19,7 @@ func buildElastictranscoderPresetsMock(t *testing.T, ctrl *gomock.Controller) cl
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListPresets(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListPresets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elastictranscoder.ListPresetsOutput{Presets: []types.Preset{object}},
 		nil,
 	)

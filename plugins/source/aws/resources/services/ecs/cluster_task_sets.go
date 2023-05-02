@@ -41,14 +41,17 @@ func fetchEcsClusterTaskSets(ctx context.Context, meta schema.ClientMeta, resour
 	cluster := resource.Parent.Item.(types.Cluster)
 	service := resource.Item.(types.Service)
 
-	svc := meta.(*client.Client).Services().Ecs
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecs
 	config := ecs.DescribeTaskSetsInput{
 		Cluster: cluster.ClusterArn,
 		Service: service.ServiceArn,
 		Include: []types.TaskSetField{types.TaskSetFieldTags},
 	}
 
-	taskSets, err := svc.DescribeTaskSets(ctx, &config)
+	taskSets, err := svc.DescribeTaskSets(ctx, &config, func(options *ecs.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

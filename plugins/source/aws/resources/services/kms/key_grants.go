@@ -53,7 +53,9 @@ func fetchKmsKeyGrants(ctx context.Context, meta schema.ClientMeta, parent *sche
 	svc := c.Services().Kms
 	p := kms.NewListGrantsPaginator(svc, &config)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *kms.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

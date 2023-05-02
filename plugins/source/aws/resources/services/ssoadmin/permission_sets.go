@@ -34,7 +34,8 @@ func permissionSets() *schema.Table {
 }
 
 func getSsoadminPermissionSetInlinePolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	svc := meta.(*client.Client).Services().Ssoadmin
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ssoadmin
 	permissionSetARN := resource.Item.(*types.PermissionSet).PermissionSetArn
 	instanceARN := resource.Parent.Item.(types.InstanceMetadata).InstanceArn
 	config := ssoadmin.GetInlinePolicyForPermissionSetInput{
@@ -42,7 +43,9 @@ func getSsoadminPermissionSetInlinePolicy(ctx context.Context, meta schema.Clien
 		PermissionSetArn: permissionSetARN,
 	}
 
-	response, err := svc.GetInlinePolicyForPermissionSet(ctx, &config)
+	response, err := svc.GetInlinePolicyForPermissionSet(ctx, &config, func(o *ssoadmin.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -51,7 +54,8 @@ func getSsoadminPermissionSetInlinePolicy(ctx context.Context, meta schema.Clien
 }
 
 func getSsoadminPermissionSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Ssoadmin
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ssoadmin
 	permission_set_arn := resource.Item.(string)
 	instance_arn := resource.Parent.Item.(types.InstanceMetadata).InstanceArn
 	config := ssoadmin.DescribePermissionSetInput{
@@ -59,7 +63,9 @@ func getSsoadminPermissionSet(ctx context.Context, meta schema.ClientMeta, resou
 		PermissionSetArn: &permission_set_arn,
 	}
 
-	response, err := svc.DescribePermissionSet(ctx, &config)
+	response, err := svc.DescribePermissionSet(ctx, &config, func(o *ssoadmin.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -76,7 +82,9 @@ func fetchSsoadminPermissionSets(ctx context.Context, meta schema.ClientMeta, pa
 	}
 	paginator := ssoadmin.NewListPermissionSetsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *ssoadmin.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

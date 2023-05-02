@@ -48,15 +48,17 @@ func WebAcls() *schema.Table {
 }
 
 func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	service := c.Services().Wafv2
+	cl := meta.(*client.Client)
+	service := cl.Services().Wafv2
 
 	config := wafv2.ListWebACLsInput{
-		Scope: c.WAFScope,
+		Scope: cl.WAFScope,
 		Limit: aws.Int32(100),
 	}
 	for {
-		output, err := service.ListWebACLs(ctx, &config)
+		output, err := service.ListWebACLs(ctx, &config, func(o *wafv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -72,13 +74,13 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 
 func getWebAcl(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Wafv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Wafv2
 	webAcl := resource.Item.(types.WebACLSummary)
 
-	webAclConfig := wafv2.GetWebACLInput{Id: webAcl.Id, Name: webAcl.Name, Scope: c.WAFScope}
-	webAclOutput, err := svc.GetWebACL(ctx, &webAclConfig, func(options *wafv2.Options) {
-		options.Region = c.Region
+	webAclConfig := wafv2.GetWebACLInput{Id: webAcl.Id, Name: webAcl.Name, Scope: cl.WAFScope}
+	webAclOutput, err := svc.GetWebACL(ctx, &webAclConfig, func(o *wafv2.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -88,14 +90,14 @@ func getWebAcl(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 		ResourceArn: webAclOutput.WebACL.ARN,
 	}
 
-	loggingConfigurationOutput, err := svc.GetLoggingConfiguration(ctx, &cfg, func(options *wafv2.Options) {
-		options.Region = c.Region
+	loggingConfigurationOutput, err := svc.GetLoggingConfiguration(ctx, &cfg, func(o *wafv2.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		if client.IsAWSError(err, "WAFNonexistentItemException") {
-			c.Logger().Debug().Err(err).Msg("Logging configuration not found for")
+			cl.Logger().Debug().Err(err).Msg("Logging configuration not found for")
 		} else {
-			c.Logger().Error().Err(err).Msg("GetLoggingConfiguration failed with error")
+			cl.Logger().Error().Err(err).Msg("GetLoggingConfiguration failed with error")
 		}
 	}
 
@@ -125,8 +127,8 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 			MaxItems: aws.Int32(100),
 		}
 		for {
-			output, err := cloudfrontService.ListDistributionsByWebACLId(ctx, params, func(options *cloudfront.Options) {
-				options.Region = cl.Region
+			output, err := cloudfrontService.ListDistributionsByWebACLId(ctx, params, func(o *cloudfront.Options) {
+				o.Region = cl.Region
 			})
 			if err != nil {
 				return err
@@ -140,7 +142,9 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 			params.Marker = output.DistributionList.NextMarker
 		}
 	} else {
-		output, err := service.ListResourcesForWebACL(ctx, &wafv2.ListResourcesForWebACLInput{WebACLArn: webACL.ARN})
+		output, err := service.ListResourcesForWebACL(ctx, &wafv2.ListResourcesForWebACLInput{WebACLArn: webACL.ARN}, func(o *wafv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -158,7 +162,9 @@ func resolveWebACLTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 	outputTags := make(map[string]*string)
 	tagsConfig := wafv2.ListTagsForResourceInput{ResourceARN: webACL.ARN}
 	for {
-		tags, err := service.ListTagsForResource(ctx, &tagsConfig)
+		tags, err := service.ListTagsForResource(ctx, &tagsConfig, func(o *wafv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
