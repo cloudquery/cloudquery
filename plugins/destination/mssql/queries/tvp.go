@@ -2,8 +2,10 @@ package queries
 
 import (
 	"database/sql"
+	"reflect"
 
 	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v12/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	mssql "github.com/microsoft/go-mssqldb"
 )
@@ -76,12 +78,62 @@ func TVPAddType(schemaName string, sc *arrow.Schema) string {
 	return execTemplate("tvp_add_type.sql.tpl", data)
 }
 
-func TVPQuery(schemaName string, sc *arrow.Schema, records []arrow.Record) (query string, params []any) {
+func TVPQuery(schemaName string, sc *arrow.Schema, records []arrow.Record) (query string, params []any, err error) {
+	reader, err := array.NewRecordReader(sc, records)
+	if err != nil {
+		return "", nil, err
+	}
+
+	rows, err := GetRows(reader)
+	if err != nil {
+		return "", nil, err
+	}
+
 	return "exec " + sanitizeID(schemaName, tvpProcName(sc)) + " @TVP;",
 		[]any{
 			sql.Named("TVP", mssql.TVP{
 				TypeName: sanitizeID(schemaName, tvpTableType(sc)),
-				Value:    nil, //tf(records),
+				Value:    tableTransformer(sc)(rows),
 			}),
+		},
+		nil
+}
+
+type transformer func([][]any) any
+
+func tableTransformer(sc *arrow.Schema) transformer {
+	// 1 prep the fields
+	fld := make([]reflect.StructField, len(sc.Fields()))
+	for i, field := range sc.Fields() {
+		fld[i] = reflect.StructField{
+			Name: "Fld_" + field.Name,
+			Type: columnGoType(field.Type),
 		}
+	}
+
+	// 2 prep transformer for each field
+	row := reflect.StructOf(fld)
+	rowSlice := reflect.SliceOf(row)
+
+	rowTransformer := func(rowData []any) reflect.Value {
+		v := reflect.New(row).Elem()
+		for i, elem := range rowData {
+			val := reflect.ValueOf(elem)
+			switch {
+			case elem == nil:
+			case val.IsZero():
+			default:
+				v.Field(i).Set(val)
+			}
+		}
+		return v
+	}
+
+	return func(data [][]any) any {
+		rows := reflect.MakeSlice(rowSlice, len(data), len(data))
+		for i, elem := range data {
+			rows.Index(i).Set(rowTransformer(elem))
+		}
+		return rows.Interface()
+	}
 }

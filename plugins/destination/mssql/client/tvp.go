@@ -47,7 +47,11 @@ func (c *Client) ensureTVP(ctx context.Context, sc *arrow.Schema) (err error) {
 }
 
 func (c *Client) insertTVP(ctx context.Context, sc *arrow.Schema, records []arrow.Record) error {
-	query, params := queries.TVPQuery(c.schemaName, sc, records)
+	query, params, err := queries.TVPQuery(c.schemaName, sc, records)
+	if err != nil {
+		return err
+	}
+
 	return c.doInTx(ctx, func(tx *sql.Tx) error {
 		_, err := tx.ExecContext(ctx, query, params...)
 		return err
