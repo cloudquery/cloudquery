@@ -81,19 +81,9 @@ func buildValue(builder array.Builder, elem any) error {
 		builder.Append(uuid.UUID(val))
 
 	case array.ListLikeBuilder:
-		value := elem.(string)
-		if len(value) == 0 {
-			builder.AppendNull()
-			return nil
-		}
-		return builder.UnmarshalJSON([]byte(value))
+		return builder.UnmarshalJSON([]byte(elem.(string)))
 
 	default:
-		value := elem.(string)
-		if len(value) == 0 {
-			builder.AppendNull()
-			return nil
-		}
 		return builder.AppendValueFromString(elem.(string))
 	}
 	return nil
