@@ -35,7 +35,9 @@ func fetchQuicksightUsers(ctx context.Context, meta schema.ClientMeta, parent *s
 	var ae smithy.APIError
 	// No paginator available
 	for {
-		out, err := svc.ListUsers(ctx, &input)
+		out, err := svc.ListUsers(ctx, &input, func(options *quicksight.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if errors.As(err, &ae) && ae.ErrorCode() == "UnsupportedUserEditionException" {
 				return nil

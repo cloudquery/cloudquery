@@ -40,7 +40,9 @@ func fetchEc2EbsVolumeStatuses(ctx context.Context, meta schema.ClientMeta, _ *s
 	config := ec2.DescribeVolumeStatusInput{MaxResults: aws.Int32(1000)}
 	paginator := ec2.NewDescribeVolumeStatusPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

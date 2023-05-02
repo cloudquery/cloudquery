@@ -41,7 +41,9 @@ func fetchCloudwatchlogsSubscriptionFilters(ctx context.Context, meta schema.Cli
 	svc := c.Services().Cloudwatchlogs
 	paginator := cloudwatchlogs.NewDescribeSubscriptionFiltersPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cloudwatchlogs.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

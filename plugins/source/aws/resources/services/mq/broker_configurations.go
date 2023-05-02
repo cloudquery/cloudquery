@@ -61,7 +61,9 @@ func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 		dupes[*cfg.Id] = struct{}{}
 
 		input := mq.DescribeConfigurationInput{ConfigurationId: cfg.Id}
-		output, err := svc.DescribeConfiguration(ctx, &input)
+		output, err := svc.DescribeConfiguration(ctx, &input, func(options *mq.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

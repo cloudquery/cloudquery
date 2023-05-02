@@ -72,7 +72,9 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 		var configurations []types.NotificationConfiguration
 		paginator := autoscaling.NewDescribeNotificationConfigurationsPaginator(svc, &input)
 		for paginator.HasMorePages() {
-			page, err := paginator.NextPage(ctx)
+			page, err := paginator.NextPage(ctx, func(options *autoscaling.Options) {
+				options.Region = c.Region
+			})
 			if err != nil {
 				return err
 			}
@@ -91,7 +93,9 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 	config := autoscaling.DescribeAutoScalingGroupsInput{}
 	paginator := autoscaling.NewDescribeAutoScalingGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *autoscaling.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -120,7 +124,9 @@ func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.Clien
 	j := map[string]any{}
 	// No paginator available
 	for {
-		output, err := svc.DescribeLoadBalancers(ctx, &config)
+		output, err := svc.DescribeLoadBalancers(ctx, &config, func(options *autoscaling.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if isAutoScalingGroupNotExistsError(err) {
 				return nil
@@ -146,7 +152,9 @@ func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta s
 	j := map[string]any{}
 	// No paginator available
 	for {
-		output, err := svc.DescribeLoadBalancerTargetGroups(ctx, &config)
+		output, err := svc.DescribeLoadBalancerTargetGroups(ctx, &config, func(options *autoscaling.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if isAutoScalingGroupNotExistsError(err) {
 				return nil

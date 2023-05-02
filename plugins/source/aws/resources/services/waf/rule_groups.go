@@ -46,17 +46,19 @@ func RuleGroups() *schema.Table {
 }
 
 func fetchWafRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	service := c.Services().Waf
+	cl := meta.(*client.Client)
+	service := cl.Services().Waf
 	config := waf.ListRuleGroupsInput{}
 	for {
-		output, err := service.ListRuleGroups(ctx, &config)
+		output, err := service.ListRuleGroups(ctx, &config, func(o *waf.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
 		for _, rG := range output.RuleGroups {
-			ruleGroup, err := service.GetRuleGroup(ctx, &waf.GetRuleGroupInput{RuleGroupId: rG.RuleGroupId}, func(options *waf.Options) {
-				options.Region = c.Region
+			ruleGroup, err := service.GetRuleGroup(ctx, &waf.GetRuleGroupInput{RuleGroupId: rG.RuleGroupId}, func(o *waf.Options) {
+				o.Region = cl.Region
 			})
 			if err != nil {
 				return err
@@ -86,12 +88,14 @@ func resolveWafRuleGroupRuleIds(ctx context.Context, meta schema.ClientMeta, res
 	ruleGroup := resource.Item.(*types.RuleGroup)
 
 	// Resolves rule group rules
-	awsClient := meta.(*client.Client)
-	service := awsClient.Services().Waf
+	cl := meta.(*client.Client)
+	service := cl.Services().Waf
 	listActivatedRulesConfig := waf.ListActivatedRulesInRuleGroupInput{RuleGroupId: ruleGroup.RuleGroupId}
 	var ruleIDs []string
 	for {
-		rules, err := service.ListActivatedRulesInRuleGroup(ctx, &listActivatedRulesConfig)
+		rules, err := service.ListActivatedRulesInRuleGroup(ctx, &listActivatedRulesConfig, func(o *waf.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -125,7 +129,9 @@ func resolveWafRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resour
 	var outputTags []types.Tag
 	tagsConfig := waf.ListTagsForResourceInput{ResourceARN: aws.String(arnStr)}
 	for {
-		tags, err := service.ListTagsForResource(ctx, &tagsConfig)
+		tags, err := service.ListTagsForResource(ctx, &tagsConfig, func(o *waf.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

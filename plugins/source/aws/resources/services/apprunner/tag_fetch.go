@@ -16,7 +16,9 @@ func resolveApprunnerTags(path string) schema.ColumnResolver {
 		svc := cl.Services().Apprunner
 		params := apprunner.ListTagsForResourceInput{ResourceArn: arn}
 
-		output, err := svc.ListTagsForResource(ctx, &params)
+		output, err := svc.ListTagsForResource(ctx, &params, func(options *apprunner.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil

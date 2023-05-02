@@ -41,17 +41,19 @@ func Rules() *schema.Table {
 }
 
 func fetchWafRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	service := c.Services().Waf
+	cl := meta.(*client.Client)
+	service := cl.Services().Waf
 	config := waf.ListRulesInput{}
 	for {
-		output, err := service.ListRules(ctx, &config)
+		output, err := service.ListRules(ctx, &config, func(o *waf.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
 		for _, ruleSum := range output.Rules {
-			rule, err := service.GetRule(ctx, &waf.GetRuleInput{RuleId: ruleSum.RuleId}, func(options *waf.Options) {
-				options.Region = c.Region
+			rule, err := service.GetRule(ctx, &waf.GetRuleInput{RuleId: ruleSum.RuleId}, func(o *waf.Options) {
+				o.Region = cl.Region
 			})
 			if err != nil {
 				return err
@@ -98,7 +100,9 @@ func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	outputTags := make(map[string]*string)
 	tagsConfig := waf.ListTagsForResourceInput{ResourceARN: aws.String(arnStr)}
 	for {
-		tags, err := service.ListTagsForResource(ctx, &tagsConfig)
+		tags, err := service.ListTagsForResource(ctx, &tagsConfig, func(o *waf.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
