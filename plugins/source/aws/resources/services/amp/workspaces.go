@@ -49,11 +49,14 @@ func Workspaces() *schema.Table {
 }
 
 func fetchAmpWorkspaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
 	svc := meta.(*client.Client).Services().Amp
 
 	p := amp.NewListWorkspacesPaginator(svc, &amp.ListWorkspacesInput{MaxResults: aws.Int32(int32(1000))})
 	for p.HasMorePages() {
-		out, err := p.NextPage(ctx)
+		out, err := p.NextPage(ctx, func(options *amp.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -65,10 +68,14 @@ func fetchAmpWorkspaces(ctx context.Context, meta schema.ClientMeta, parent *sch
 }
 
 func describeWorkspace(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
 	svc := meta.(*client.Client).Services().Amp
 
 	out, err := svc.DescribeWorkspace(ctx,
 		&amp.DescribeWorkspaceInput{WorkspaceId: resource.Item.(types.WorkspaceSummary).WorkspaceId},
+		func(options *amp.Options) {
+			options.Region = c.Region
+		},
 	)
 	if err != nil {
 		return err
@@ -79,28 +86,36 @@ func describeWorkspace(ctx context.Context, meta schema.ClientMeta, resource *sc
 	return nil
 }
 
-func describeAlertManagerDefinition(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func describeAlertManagerDefinition(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
+	c := meta.(*client.Client)
 	svc := meta.(*client.Client).Services().Amp
 
 	out, err := svc.DescribeAlertManagerDefinition(ctx,
 		&amp.DescribeAlertManagerDefinitionInput{WorkspaceId: resource.Item.(*types.WorkspaceDescription).WorkspaceId},
+		func(options *amp.Options) {
+			options.Region = c.Region
+		},
 	)
 	if err != nil {
 		return err
 	}
 
-	return resource.Set(c.Name, out.AlertManagerDefinition)
+	return resource.Set(col.Name, out.AlertManagerDefinition)
 }
 
-func describeLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func describeLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
+	c := meta.(*client.Client)
 	svc := meta.(*client.Client).Services().Amp
 
 	out, err := svc.DescribeLoggingConfiguration(ctx,
 		&amp.DescribeLoggingConfigurationInput{WorkspaceId: resource.Item.(*types.WorkspaceDescription).WorkspaceId},
+		func(options *amp.Options) {
+			options.Region = c.Region
+		},
 	)
 	if err != nil {
 		return err
 	}
 
-	return resource.Set(c.Name, out.LoggingConfiguration)
+	return resource.Set(col.Name, out.LoggingConfiguration)
 }

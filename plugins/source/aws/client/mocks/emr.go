@@ -37,6 +37,16 @@ func (m *MockEmrClient) EXPECT() *MockEmrClientMockRecorder {
 
 // DescribeCluster mocks base method.
 func (m *MockEmrClient) DescribeCluster(arg0 context.Context, arg1 *emr.DescribeClusterInput, arg2 ...func(*emr.Options)) (*emr.DescribeClusterOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCluster")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockEmrClientMockRecorder) DescribeCluster(arg0, arg1 interface{}, arg
 
 // DescribeJobFlows mocks base method.
 func (m *MockEmrClient) DescribeJobFlows(arg0 context.Context, arg1 *emr.DescribeJobFlowsInput, arg2 ...func(*emr.Options)) (*emr.DescribeJobFlowsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeJobFlows")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockEmrClientMockRecorder) DescribeJobFlows(arg0, arg1 interface{}, ar
 
 // DescribeNotebookExecution mocks base method.
 func (m *MockEmrClient) DescribeNotebookExecution(arg0 context.Context, arg1 *emr.DescribeNotebookExecutionInput, arg2 ...func(*emr.Options)) (*emr.DescribeNotebookExecutionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeNotebookExecution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockEmrClientMockRecorder) DescribeNotebookExecution(arg0, arg1 interf
 
 // DescribeReleaseLabel mocks base method.
 func (m *MockEmrClient) DescribeReleaseLabel(arg0 context.Context, arg1 *emr.DescribeReleaseLabelInput, arg2 ...func(*emr.Options)) (*emr.DescribeReleaseLabelOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReleaseLabel")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockEmrClientMockRecorder) DescribeReleaseLabel(arg0, arg1 interface{}
 
 // DescribeSecurityConfiguration mocks base method.
 func (m *MockEmrClient) DescribeSecurityConfiguration(arg0 context.Context, arg1 *emr.DescribeSecurityConfigurationInput, arg2 ...func(*emr.Options)) (*emr.DescribeSecurityConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSecurityConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockEmrClientMockRecorder) DescribeSecurityConfiguration(arg0, arg1 in
 
 // DescribeStep mocks base method.
 func (m *MockEmrClient) DescribeStep(arg0 context.Context, arg1 *emr.DescribeStepInput, arg2 ...func(*emr.Options)) (*emr.DescribeStepOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStep")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockEmrClientMockRecorder) DescribeStep(arg0, arg1 interface{}, arg2 .
 
 // DescribeStudio mocks base method.
 func (m *MockEmrClient) DescribeStudio(arg0 context.Context, arg1 *emr.DescribeStudioInput, arg2 ...func(*emr.Options)) (*emr.DescribeStudioOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStudio")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockEmrClientMockRecorder) DescribeStudio(arg0, arg1 interface{}, arg2
 
 // GetAutoTerminationPolicy mocks base method.
 func (m *MockEmrClient) GetAutoTerminationPolicy(arg0 context.Context, arg1 *emr.GetAutoTerminationPolicyInput, arg2 ...func(*emr.Options)) (*emr.GetAutoTerminationPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAutoTerminationPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockEmrClientMockRecorder) GetAutoTerminationPolicy(arg0, arg1 interfa
 
 // GetBlockPublicAccessConfiguration mocks base method.
 func (m *MockEmrClient) GetBlockPublicAccessConfiguration(arg0 context.Context, arg1 *emr.GetBlockPublicAccessConfigurationInput, arg2 ...func(*emr.Options)) (*emr.GetBlockPublicAccessConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBlockPublicAccessConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockEmrClientMockRecorder) GetBlockPublicAccessConfiguration(arg0, arg
 
 // GetClusterSessionCredentials mocks base method.
 func (m *MockEmrClient) GetClusterSessionCredentials(arg0 context.Context, arg1 *emr.GetClusterSessionCredentialsInput, arg2 ...func(*emr.Options)) (*emr.GetClusterSessionCredentialsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetClusterSessionCredentials")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockEmrClientMockRecorder) GetClusterSessionCredentials(arg0, arg1 int
 
 // GetManagedScalingPolicy mocks base method.
 func (m *MockEmrClient) GetManagedScalingPolicy(arg0 context.Context, arg1 *emr.GetManagedScalingPolicyInput, arg2 ...func(*emr.Options)) (*emr.GetManagedScalingPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetManagedScalingPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockEmrClientMockRecorder) GetManagedScalingPolicy(arg0, arg1 interfac
 
 // GetStudioSessionMapping mocks base method.
 func (m *MockEmrClient) GetStudioSessionMapping(arg0 context.Context, arg1 *emr.GetStudioSessionMappingInput, arg2 ...func(*emr.Options)) (*emr.GetStudioSessionMappingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetStudioSessionMapping")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockEmrClientMockRecorder) GetStudioSessionMapping(arg0, arg1 interfac
 
 // ListBootstrapActions mocks base method.
 func (m *MockEmrClient) ListBootstrapActions(arg0 context.Context, arg1 *emr.ListBootstrapActionsInput, arg2 ...func(*emr.Options)) (*emr.ListBootstrapActionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBootstrapActions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockEmrClientMockRecorder) ListBootstrapActions(arg0, arg1 interface{}
 
 // ListClusters mocks base method.
 func (m *MockEmrClient) ListClusters(arg0 context.Context, arg1 *emr.ListClustersInput, arg2 ...func(*emr.Options)) (*emr.ListClustersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListClusters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockEmrClientMockRecorder) ListClusters(arg0, arg1 interface{}, arg2 .
 
 // ListInstanceFleets mocks base method.
 func (m *MockEmrClient) ListInstanceFleets(arg0 context.Context, arg1 *emr.ListInstanceFleetsInput, arg2 ...func(*emr.Options)) (*emr.ListInstanceFleetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInstanceFleets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockEmrClientMockRecorder) ListInstanceFleets(arg0, arg1 interface{}, 
 
 // ListInstanceGroups mocks base method.
 func (m *MockEmrClient) ListInstanceGroups(arg0 context.Context, arg1 *emr.ListInstanceGroupsInput, arg2 ...func(*emr.Options)) (*emr.ListInstanceGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInstanceGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockEmrClientMockRecorder) ListInstanceGroups(arg0, arg1 interface{}, 
 
 // ListInstances mocks base method.
 func (m *MockEmrClient) ListInstances(arg0 context.Context, arg1 *emr.ListInstancesInput, arg2 ...func(*emr.Options)) (*emr.ListInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockEmrClientMockRecorder) ListInstances(arg0, arg1 interface{}, arg2 
 
 // ListNotebookExecutions mocks base method.
 func (m *MockEmrClient) ListNotebookExecutions(arg0 context.Context, arg1 *emr.ListNotebookExecutionsInput, arg2 ...func(*emr.Options)) (*emr.ListNotebookExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListNotebookExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockEmrClientMockRecorder) ListNotebookExecutions(arg0, arg1 interface
 
 // ListReleaseLabels mocks base method.
 func (m *MockEmrClient) ListReleaseLabels(arg0 context.Context, arg1 *emr.ListReleaseLabelsInput, arg2 ...func(*emr.Options)) (*emr.ListReleaseLabelsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListReleaseLabels")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockEmrClientMockRecorder) ListReleaseLabels(arg0, arg1 interface{}, a
 
 // ListSecurityConfigurations mocks base method.
 func (m *MockEmrClient) ListSecurityConfigurations(arg0 context.Context, arg1 *emr.ListSecurityConfigurationsInput, arg2 ...func(*emr.Options)) (*emr.ListSecurityConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSecurityConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockEmrClientMockRecorder) ListSecurityConfigurations(arg0, arg1 inter
 
 // ListSteps mocks base method.
 func (m *MockEmrClient) ListSteps(arg0 context.Context, arg1 *emr.ListStepsInput, arg2 ...func(*emr.Options)) (*emr.ListStepsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSteps")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockEmrClientMockRecorder) ListSteps(arg0, arg1 interface{}, arg2 ...i
 
 // ListStudioSessionMappings mocks base method.
 func (m *MockEmrClient) ListStudioSessionMappings(arg0 context.Context, arg1 *emr.ListStudioSessionMappingsInput, arg2 ...func(*emr.Options)) (*emr.ListStudioSessionMappingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStudioSessionMappings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockEmrClientMockRecorder) ListStudioSessionMappings(arg0, arg1 interf
 
 // ListStudios mocks base method.
 func (m *MockEmrClient) ListStudios(arg0 context.Context, arg1 *emr.ListStudiosInput, arg2 ...func(*emr.Options)) (*emr.ListStudiosOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &emr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStudios")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

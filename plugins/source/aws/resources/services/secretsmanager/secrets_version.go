@@ -36,14 +36,16 @@ func secretVersions() *schema.Table {
 
 func fetchSecretsmanagerSecretsVersions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- any) error {
 	secret := resource.Item.(*secretsmanager.DescribeSecretOutput)
-	c := meta.(*client.Client)
-	svc := c.Services().Secretsmanager
+	cl := meta.(*client.Client)
+	svc := cl.Services().Secretsmanager
 	paginator := secretsmanager.NewListSecretVersionIdsPaginator(svc, &secretsmanager.ListSecretVersionIdsInput{
 		SecretId:          secret.ARN,
 		IncludeDeprecated: aws.Bool(true),
 	})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *secretsmanager.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

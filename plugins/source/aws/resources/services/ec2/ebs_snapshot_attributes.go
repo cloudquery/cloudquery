@@ -40,10 +40,12 @@ func fetchEbsSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, par
 	if aws.ToString(r.OwnerId) != cl.AccountID {
 		return nil
 	}
-	svc := meta.(*client.Client).Services().Ec2
+	svc := cl.Services().Ec2
 	permissions, err := svc.DescribeSnapshotAttribute(ctx, &ec2.DescribeSnapshotAttributeInput{
 		Attribute:  types.SnapshotAttributeNameCreateVolumePermission,
 		SnapshotId: r.SnapshotId,
+	}, func(options *ec2.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -51,6 +53,8 @@ func fetchEbsSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, par
 	productCodes, err := svc.DescribeSnapshotAttribute(ctx, &ec2.DescribeSnapshotAttributeInput{
 		Attribute:  types.SnapshotAttributeNameProductCodes,
 		SnapshotId: r.SnapshotId,
+	}, func(options *ec2.Options) {
+		options.Region = cl.Region
 	})
 
 	if err != nil {

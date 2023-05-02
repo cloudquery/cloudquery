@@ -40,7 +40,9 @@ func fetchFargateProfiles(ctx context.Context, meta schema.ClientMeta, parent *s
 	svc := c.Services().Eks
 	paginator := eks.NewListFargateProfilesPaginator(svc, &eks.ListFargateProfilesInput{ClusterName: cluster.Name})
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *eks.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,7 +59,10 @@ func getFargateProfile(ctx context.Context, meta schema.ClientMeta, resource *sc
 	output, err := svc.DescribeFargateProfile(
 		ctx, &eks.DescribeFargateProfileInput{
 			ClusterName:        cluster.Name,
-			FargateProfileName: &name})
+			FargateProfileName: &name},
+		func(options *eks.Options) {
+			options.Region = c.Region
+		})
 	if err != nil {
 		return err
 	}

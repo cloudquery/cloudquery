@@ -48,12 +48,14 @@ func RuleGroups() *schema.Table {
 }
 
 func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Wafv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Wafv2
 
-	config := wafv2.ListRuleGroupsInput{Scope: c.WAFScope}
+	config := wafv2.ListRuleGroupsInput{Scope: cl.WAFScope}
 	for {
-		output, err := svc.ListRuleGroups(ctx, &config)
+		output, err := svc.ListRuleGroups(ctx, &config, func(o *wafv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -69,15 +71,17 @@ func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func getRuleGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Wafv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Wafv2
 	ruleGroupOutput := resource.Item.(types.RuleGroupSummary)
 
 	// Get RuleGroup object
 	ruleGroup, err := svc.GetRuleGroup(ctx, &wafv2.GetRuleGroupInput{
 		Name:  ruleGroupOutput.Name,
 		Id:    ruleGroupOutput.Id,
-		Scope: c.WAFScope,
+		Scope: cl.WAFScope,
+	}, func(o *wafv2.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -97,7 +101,9 @@ func resolveRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resource 
 	outputTags := make(map[string]*string)
 	tagsConfig := wafv2.ListTagsForResourceInput{ResourceARN: ruleGroup.ARN}
 	for {
-		tags, err := service.ListTagsForResource(ctx, &tagsConfig)
+		tags, err := service.ListTagsForResource(ctx, &tagsConfig, func(o *wafv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -118,8 +124,8 @@ func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, re
 	service := cl.Services().Wafv2
 
 	// Resolve rule group policy
-	policy, err := service.GetPermissionPolicy(ctx, &wafv2.GetPermissionPolicyInput{ResourceArn: ruleGroup.ARN}, func(options *wafv2.Options) {
-		options.Region = cl.Region
+	policy, err := service.GetPermissionPolicy(ctx, &wafv2.GetPermissionPolicyInput{ResourceArn: ruleGroup.ARN}, func(o *wafv2.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		// we may get WAFNonexistentItemException error until SetPermissionPolicy is called on a rule group
