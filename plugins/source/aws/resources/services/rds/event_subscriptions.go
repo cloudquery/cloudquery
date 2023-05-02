@@ -44,7 +44,9 @@ func fetchRdsEventSubscriptions(ctx context.Context, meta schema.ClientMeta, par
 	var input rds.DescribeEventSubscriptionsInput
 	paginator := rds.NewDescribeEventSubscriptionsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,7 +59,9 @@ func resolveRDSEventSubscriptionTags(ctx context.Context, meta schema.ClientMeta
 	s := resource.Item.(types.EventSubscription)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Rds
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: s.EventSubscriptionArn})
+	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: s.EventSubscriptionArn}, func(options *rds.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

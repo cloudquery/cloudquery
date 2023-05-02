@@ -20,6 +20,7 @@ func buildParameters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock.EXPECT().DescribeParameters(
 		gomock.Any(),
 		&ssm.DescribeParametersInput{},
+		gomock.Any(),
 	).Return(
 		&ssm.DescribeParametersOutput{Parameters: []types.ParameterMetadata{pm}},
 		nil,

@@ -47,7 +47,9 @@ func fetchRdsDbSecurityGroups(ctx context.Context, meta schema.ClientMeta, paren
 	var input rds.DescribeDBSecurityGroupsInput
 	paginator := rds.NewDescribeDBSecurityGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -60,7 +62,9 @@ func resolveRdsDbSecurityGroupTags(ctx context.Context, meta schema.ClientMeta, 
 	g := resource.Item.(types.DBSecurityGroup)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Rds
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBSecurityGroupArn})
+	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBSecurityGroupArn}, func(options *rds.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

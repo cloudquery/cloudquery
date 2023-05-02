@@ -47,7 +47,9 @@ func fetchApigatewayRestApiStages(ctx context.Context, meta schema.ClientMeta, p
 	svc := c.Services().Apigateway
 	config := apigateway.GetStagesInput{RestApiId: r.Id}
 
-	response, err := svc.GetStages(ctx, &config)
+	response, err := svc.GetStages(ctx, &config, func(options *apigateway.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		if c.IsNotFoundError(err) {
 			return nil

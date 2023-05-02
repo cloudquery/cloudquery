@@ -44,7 +44,9 @@ func fetchRdsReservedInstances(ctx context.Context, meta schema.ClientMeta, pare
 	svc := c.Services().Rds
 	paginator := rds.NewDescribeReservedDBInstancesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *rds.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -54,8 +56,11 @@ func fetchRdsReservedInstances(ctx context.Context, meta schema.ClientMeta, pare
 }
 
 func resolveRdsRITags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	svc := meta.(*client.Client).Services().Rds
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: resource.Item.(types.ReservedDBInstance).ReservedDBInstanceArn})
+	cl := meta.(*client.Client)
+	svc := cl.Services().Rds
+	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: resource.Item.(types.ReservedDBInstance).ReservedDBInstanceArn}, func(options *rds.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
