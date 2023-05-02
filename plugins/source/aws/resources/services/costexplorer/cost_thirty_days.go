@@ -73,7 +73,9 @@ func fetchCost(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 		},
 	}
 	for {
-		resp, err := svc.GetCostAndUsage(ctx, &input)
+		resp, err := svc.GetCostAndUsage(ctx, &input, func(options *costexplorer.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

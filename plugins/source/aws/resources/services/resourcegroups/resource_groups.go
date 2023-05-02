@@ -45,7 +45,9 @@ func fetchResourcegroupsResourceGroups(ctx context.Context, meta schema.ClientMe
 	svc := c.Services().Resourcegroups
 	paginator := resourcegroups.NewListGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *resourcegroups.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -60,6 +62,8 @@ func getResourceGroup(ctx context.Context, meta schema.ClientMeta, resource *sch
 	svc := c.Services().Resourcegroups
 	groupResponse, err := svc.GetGroup(ctx, &resourcegroups.GetGroupInput{
 		Group: group.GroupArn,
+	}, func(options *resourcegroups.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err
@@ -68,7 +72,9 @@ func getResourceGroup(ctx context.Context, meta schema.ClientMeta, resource *sch
 	input := resourcegroups.GetGroupQueryInput{
 		Group: groupResponse.Group.GroupArn,
 	}
-	output, err := svc.GetGroupQuery(ctx, &input)
+	output, err := svc.GetGroupQuery(ctx, &input, func(options *resourcegroups.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -86,7 +92,9 @@ func resolveResourcegroupsResourceGroupTags(ctx context.Context, meta schema.Cli
 	input := resourcegroups.GetTagsInput{
 		Arn: group.GroupArn,
 	}
-	output, err := svc.GetTags(ctx, &input)
+	output, err := svc.GetTags(ctx, &input, func(options *resourcegroups.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

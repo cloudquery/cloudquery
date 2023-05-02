@@ -45,7 +45,9 @@ func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta,
 	r := parent.Item.(models.ELBv1LoadBalancerWrapper)
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticloadbalancing
-	response, err := svc.DescribeLoadBalancerPolicies(ctx, &elbv1.DescribeLoadBalancerPoliciesInput{LoadBalancerName: r.LoadBalancerName})
+	response, err := svc.DescribeLoadBalancerPolicies(ctx, &elbv1.DescribeLoadBalancerPoliciesInput{LoadBalancerName: r.LoadBalancerName}, func(options *elbv1.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

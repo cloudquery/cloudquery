@@ -35,7 +35,9 @@ func fetchDeliveryChannelStatuses(ctx context.Context, meta schema.ClientMeta, p
 		DeliveryChannelNames: []string{aws.ToString(ruleDetail.Name)},
 	}
 
-	response, err := svc.DescribeDeliveryChannelStatus(ctx, input)
+	response, err := svc.DescribeDeliveryChannelStatus(ctx, input, func(options *configservice.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

@@ -43,7 +43,9 @@ func fetchAppstreamApplications(ctx context.Context, meta schema.ClientMeta, par
 	svc := c.Services().Appstream
 	// No paginator available
 	for {
-		response, err := svc.DescribeApplications(ctx, &input)
+		response, err := svc.DescribeApplications(ctx, &input, func(options *appstream.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

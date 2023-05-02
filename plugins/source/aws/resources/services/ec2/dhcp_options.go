@@ -35,7 +35,9 @@ func fetchEC2DHCPOptions(ctx context.Context, meta schema.ClientMeta, parent *sc
 	svc := c.Services().Ec2
 	pag := ec2.NewDescribeDhcpOptionsPaginator(svc, &ec2.DescribeDhcpOptionsInput{})
 	for pag.HasMorePages() {
-		page, err := pag.NextPage(ctx)
+		page, err := pag.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

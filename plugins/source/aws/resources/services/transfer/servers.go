@@ -41,12 +41,14 @@ func Servers() *schema.Table {
 	}
 }
 func fetchTransferServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Transfer
+	cl := meta.(*client.Client)
+	svc := cl.Services().Transfer
 	input := transfer.ListServersInput{MaxResults: aws.Int32(1000)}
 	paginator := transfer.NewListServersPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *transfer.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -56,11 +58,13 @@ func fetchTransferServers(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func getServer(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Transfer
+	cl := meta.(*client.Client)
+	svc := cl.Services().Transfer
 	server := resource.Item.(types.ListedServer)
 
-	desc, err := svc.DescribeServer(ctx, &transfer.DescribeServerInput{ServerId: server.ServerId})
+	desc, err := svc.DescribeServer(ctx, &transfer.DescribeServerInput{ServerId: server.ServerId}, func(o *transfer.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -76,7 +80,9 @@ func resolveServersTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	var tags []types.Tag
 	paginator := transfer.NewListTagsForResourcePaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *transfer.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				continue

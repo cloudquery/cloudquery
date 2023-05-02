@@ -58,12 +58,14 @@ func Queues() *schema.Table {
 }
 
 func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sqs
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sqs
 	var params sqs.ListQueuesInput
 	paginator := sqs.NewListQueuesPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sqs.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -73,15 +75,17 @@ func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 }
 
 func getQueue(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sqs
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sqs
 	qURL := resource.Item.(string)
 
 	input := sqs.GetQueueAttributesInput{
 		QueueUrl:       aws.String(qURL),
 		AttributeNames: []types.QueueAttributeName{types.QueueAttributeNameAll},
 	}
-	out, err := svc.GetQueueAttributes(ctx, &input)
+	out, err := svc.GetQueueAttributes(ctx, &input, func(o *sqs.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -103,7 +107,9 @@ func resolveSqsQueueTags(ctx context.Context, meta schema.ClientMeta, resource *
 	cl := meta.(*client.Client)
 	svc := cl.Services().Sqs
 	q := resource.Item.(*models.Queue)
-	result, err := svc.ListQueueTags(ctx, &sqs.ListQueueTagsInput{QueueUrl: &q.URL})
+	result, err := svc.ListQueueTags(ctx, &sqs.ListQueueTagsInput{QueueUrl: &q.URL}, func(o *sqs.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

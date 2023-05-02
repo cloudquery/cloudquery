@@ -35,7 +35,9 @@ func fetchPlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	config := autoscalingplans.DescribeScalingPlansInput{}
 	// No paginator available
 	for {
-		output, err := svc.DescribeScalingPlans(ctx, &config)
+		output, err := svc.DescribeScalingPlans(ctx, &config, func(options *autoscalingplans.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

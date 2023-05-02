@@ -34,15 +34,17 @@ func ComplianceSummaryItems() *schema.Table {
 }
 
 func fetchSsmComplianceSummaryItems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ssm
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ssm
 
 	params := ssm.ListComplianceSummariesInput{
 		MaxResults: aws.Int32(50),
 	}
 	paginator := ssm.NewListComplianceSummariesPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *ssm.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
