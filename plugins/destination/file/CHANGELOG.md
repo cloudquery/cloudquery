@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v3.0.1...plugins-destination-file-v3.0.2) (2023-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v12 digest to 0ea1a10 ([#10461](https://github.com/cloudquery/cloudquery/issues/10461)) ([022709f](https://github.com/cloudquery/cloudquery/commit/022709f710cc6d95aee60260d6f58991698bbf42))
+
 ## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v3.0.0...plugins-destination-file-v3.0.1) (2023-04-28)
 
 
