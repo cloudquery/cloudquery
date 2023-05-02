@@ -35,7 +35,9 @@ func fetchEbsVolumeRecommendations(ctx context.Context, meta schema.ClientMeta, 
 	}
 	// No paginator available
 	for {
-		response, err := svc.GetEBSVolumeRecommendations(ctx, &input)
+		response, err := svc.GetEBSVolumeRecommendations(ctx, &input, func(options *computeoptimizer.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

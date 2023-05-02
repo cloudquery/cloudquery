@@ -37,6 +37,16 @@ func (m *MockAthenaClient) EXPECT() *MockAthenaClientMockRecorder {
 
 // BatchGetNamedQuery mocks base method.
 func (m *MockAthenaClient) BatchGetNamedQuery(arg0 context.Context, arg1 *athena.BatchGetNamedQueryInput, arg2 ...func(*athena.Options)) (*athena.BatchGetNamedQueryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetNamedQuery")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockAthenaClientMockRecorder) BatchGetNamedQuery(arg0, arg1 interface{
 
 // BatchGetPreparedStatement mocks base method.
 func (m *MockAthenaClient) BatchGetPreparedStatement(arg0 context.Context, arg1 *athena.BatchGetPreparedStatementInput, arg2 ...func(*athena.Options)) (*athena.BatchGetPreparedStatementOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetPreparedStatement")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockAthenaClientMockRecorder) BatchGetPreparedStatement(arg0, arg1 int
 
 // BatchGetQueryExecution mocks base method.
 func (m *MockAthenaClient) BatchGetQueryExecution(arg0 context.Context, arg1 *athena.BatchGetQueryExecutionInput, arg2 ...func(*athena.Options)) (*athena.BatchGetQueryExecutionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetQueryExecution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockAthenaClientMockRecorder) BatchGetQueryExecution(arg0, arg1 interf
 
 // GetCalculationExecution mocks base method.
 func (m *MockAthenaClient) GetCalculationExecution(arg0 context.Context, arg1 *athena.GetCalculationExecutionInput, arg2 ...func(*athena.Options)) (*athena.GetCalculationExecutionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCalculationExecution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockAthenaClientMockRecorder) GetCalculationExecution(arg0, arg1 inter
 
 // GetCalculationExecutionCode mocks base method.
 func (m *MockAthenaClient) GetCalculationExecutionCode(arg0 context.Context, arg1 *athena.GetCalculationExecutionCodeInput, arg2 ...func(*athena.Options)) (*athena.GetCalculationExecutionCodeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCalculationExecutionCode")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockAthenaClientMockRecorder) GetCalculationExecutionCode(arg0, arg1 i
 
 // GetCalculationExecutionStatus mocks base method.
 func (m *MockAthenaClient) GetCalculationExecutionStatus(arg0 context.Context, arg1 *athena.GetCalculationExecutionStatusInput, arg2 ...func(*athena.Options)) (*athena.GetCalculationExecutionStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCalculationExecutionStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockAthenaClientMockRecorder) GetCalculationExecutionStatus(arg0, arg1
 
 // GetDataCatalog mocks base method.
 func (m *MockAthenaClient) GetDataCatalog(arg0 context.Context, arg1 *athena.GetDataCatalogInput, arg2 ...func(*athena.Options)) (*athena.GetDataCatalogOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDataCatalog")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockAthenaClientMockRecorder) GetDataCatalog(arg0, arg1 interface{}, a
 
 // GetDatabase mocks base method.
 func (m *MockAthenaClient) GetDatabase(arg0 context.Context, arg1 *athena.GetDatabaseInput, arg2 ...func(*athena.Options)) (*athena.GetDatabaseOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDatabase")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockAthenaClientMockRecorder) GetDatabase(arg0, arg1 interface{}, arg2
 
 // GetNamedQuery mocks base method.
 func (m *MockAthenaClient) GetNamedQuery(arg0 context.Context, arg1 *athena.GetNamedQueryInput, arg2 ...func(*athena.Options)) (*athena.GetNamedQueryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetNamedQuery")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockAthenaClientMockRecorder) GetNamedQuery(arg0, arg1 interface{}, ar
 
 // GetNotebookMetadata mocks base method.
 func (m *MockAthenaClient) GetNotebookMetadata(arg0 context.Context, arg1 *athena.GetNotebookMetadataInput, arg2 ...func(*athena.Options)) (*athena.GetNotebookMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetNotebookMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockAthenaClientMockRecorder) GetNotebookMetadata(arg0, arg1 interface
 
 // GetPreparedStatement mocks base method.
 func (m *MockAthenaClient) GetPreparedStatement(arg0 context.Context, arg1 *athena.GetPreparedStatementInput, arg2 ...func(*athena.Options)) (*athena.GetPreparedStatementOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPreparedStatement")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockAthenaClientMockRecorder) GetPreparedStatement(arg0, arg1 interfac
 
 // GetQueryExecution mocks base method.
 func (m *MockAthenaClient) GetQueryExecution(arg0 context.Context, arg1 *athena.GetQueryExecutionInput, arg2 ...func(*athena.Options)) (*athena.GetQueryExecutionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetQueryExecution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockAthenaClientMockRecorder) GetQueryExecution(arg0, arg1 interface{}
 
 // GetQueryResults mocks base method.
 func (m *MockAthenaClient) GetQueryResults(arg0 context.Context, arg1 *athena.GetQueryResultsInput, arg2 ...func(*athena.Options)) (*athena.GetQueryResultsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetQueryResults")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockAthenaClientMockRecorder) GetQueryResults(arg0, arg1 interface{}, 
 
 // GetQueryRuntimeStatistics mocks base method.
 func (m *MockAthenaClient) GetQueryRuntimeStatistics(arg0 context.Context, arg1 *athena.GetQueryRuntimeStatisticsInput, arg2 ...func(*athena.Options)) (*athena.GetQueryRuntimeStatisticsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetQueryRuntimeStatistics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockAthenaClientMockRecorder) GetQueryRuntimeStatistics(arg0, arg1 int
 
 // GetSession mocks base method.
 func (m *MockAthenaClient) GetSession(arg0 context.Context, arg1 *athena.GetSessionInput, arg2 ...func(*athena.Options)) (*athena.GetSessionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSession")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockAthenaClientMockRecorder) GetSession(arg0, arg1 interface{}, arg2 
 
 // GetSessionStatus mocks base method.
 func (m *MockAthenaClient) GetSessionStatus(arg0 context.Context, arg1 *athena.GetSessionStatusInput, arg2 ...func(*athena.Options)) (*athena.GetSessionStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSessionStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockAthenaClientMockRecorder) GetSessionStatus(arg0, arg1 interface{},
 
 // GetTableMetadata mocks base method.
 func (m *MockAthenaClient) GetTableMetadata(arg0 context.Context, arg1 *athena.GetTableMetadataInput, arg2 ...func(*athena.Options)) (*athena.GetTableMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTableMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockAthenaClientMockRecorder) GetTableMetadata(arg0, arg1 interface{},
 
 // GetWorkGroup mocks base method.
 func (m *MockAthenaClient) GetWorkGroup(arg0 context.Context, arg1 *athena.GetWorkGroupInput, arg2 ...func(*athena.Options)) (*athena.GetWorkGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetWorkGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockAthenaClientMockRecorder) GetWorkGroup(arg0, arg1 interface{}, arg
 
 // ListApplicationDPUSizes mocks base method.
 func (m *MockAthenaClient) ListApplicationDPUSizes(arg0 context.Context, arg1 *athena.ListApplicationDPUSizesInput, arg2 ...func(*athena.Options)) (*athena.ListApplicationDPUSizesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListApplicationDPUSizes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockAthenaClientMockRecorder) ListApplicationDPUSizes(arg0, arg1 inter
 
 // ListCalculationExecutions mocks base method.
 func (m *MockAthenaClient) ListCalculationExecutions(arg0 context.Context, arg1 *athena.ListCalculationExecutionsInput, arg2 ...func(*athena.Options)) (*athena.ListCalculationExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCalculationExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockAthenaClientMockRecorder) ListCalculationExecutions(arg0, arg1 int
 
 // ListDataCatalogs mocks base method.
 func (m *MockAthenaClient) ListDataCatalogs(arg0 context.Context, arg1 *athena.ListDataCatalogsInput, arg2 ...func(*athena.Options)) (*athena.ListDataCatalogsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDataCatalogs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockAthenaClientMockRecorder) ListDataCatalogs(arg0, arg1 interface{},
 
 // ListDatabases mocks base method.
 func (m *MockAthenaClient) ListDatabases(arg0 context.Context, arg1 *athena.ListDatabasesInput, arg2 ...func(*athena.Options)) (*athena.ListDatabasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDatabases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockAthenaClientMockRecorder) ListDatabases(arg0, arg1 interface{}, ar
 
 // ListEngineVersions mocks base method.
 func (m *MockAthenaClient) ListEngineVersions(arg0 context.Context, arg1 *athena.ListEngineVersionsInput, arg2 ...func(*athena.Options)) (*athena.ListEngineVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEngineVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockAthenaClientMockRecorder) ListEngineVersions(arg0, arg1 interface{
 
 // ListExecutors mocks base method.
 func (m *MockAthenaClient) ListExecutors(arg0 context.Context, arg1 *athena.ListExecutorsInput, arg2 ...func(*athena.Options)) (*athena.ListExecutorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListExecutors")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockAthenaClientMockRecorder) ListExecutors(arg0, arg1 interface{}, ar
 
 // ListNamedQueries mocks base method.
 func (m *MockAthenaClient) ListNamedQueries(arg0 context.Context, arg1 *athena.ListNamedQueriesInput, arg2 ...func(*athena.Options)) (*athena.ListNamedQueriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListNamedQueries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockAthenaClientMockRecorder) ListNamedQueries(arg0, arg1 interface{},
 
 // ListNotebookMetadata mocks base method.
 func (m *MockAthenaClient) ListNotebookMetadata(arg0 context.Context, arg1 *athena.ListNotebookMetadataInput, arg2 ...func(*athena.Options)) (*athena.ListNotebookMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListNotebookMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockAthenaClientMockRecorder) ListNotebookMetadata(arg0, arg1 interfac
 
 // ListNotebookSessions mocks base method.
 func (m *MockAthenaClient) ListNotebookSessions(arg0 context.Context, arg1 *athena.ListNotebookSessionsInput, arg2 ...func(*athena.Options)) (*athena.ListNotebookSessionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListNotebookSessions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockAthenaClientMockRecorder) ListNotebookSessions(arg0, arg1 interfac
 
 // ListPreparedStatements mocks base method.
 func (m *MockAthenaClient) ListPreparedStatements(arg0 context.Context, arg1 *athena.ListPreparedStatementsInput, arg2 ...func(*athena.Options)) (*athena.ListPreparedStatementsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPreparedStatements")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockAthenaClientMockRecorder) ListPreparedStatements(arg0, arg1 interf
 
 // ListQueryExecutions mocks base method.
 func (m *MockAthenaClient) ListQueryExecutions(arg0 context.Context, arg1 *athena.ListQueryExecutionsInput, arg2 ...func(*athena.Options)) (*athena.ListQueryExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListQueryExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockAthenaClientMockRecorder) ListQueryExecutions(arg0, arg1 interface
 
 // ListSessions mocks base method.
 func (m *MockAthenaClient) ListSessions(arg0 context.Context, arg1 *athena.ListSessionsInput, arg2 ...func(*athena.Options)) (*athena.ListSessionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSessions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockAthenaClientMockRecorder) ListSessions(arg0, arg1 interface{}, arg
 
 // ListTableMetadata mocks base method.
 func (m *MockAthenaClient) ListTableMetadata(arg0 context.Context, arg1 *athena.ListTableMetadataInput, arg2 ...func(*athena.Options)) (*athena.ListTableMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTableMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockAthenaClientMockRecorder) ListTableMetadata(arg0, arg1 interface{}
 
 // ListTagsForResource mocks base method.
 func (m *MockAthenaClient) ListTagsForResource(arg0 context.Context, arg1 *athena.ListTagsForResourceInput, arg2 ...func(*athena.Options)) (*athena.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockAthenaClientMockRecorder) ListTagsForResource(arg0, arg1 interface
 
 // ListWorkGroups mocks base method.
 func (m *MockAthenaClient) ListWorkGroups(arg0 context.Context, arg1 *athena.ListWorkGroupsInput, arg2 ...func(*athena.Options)) (*athena.ListWorkGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListWorkGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

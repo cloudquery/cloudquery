@@ -37,6 +37,16 @@ func (m *MockAccountClient) EXPECT() *MockAccountClientMockRecorder {
 
 // GetAlternateContact mocks base method.
 func (m *MockAccountClient) GetAlternateContact(arg0 context.Context, arg1 *account.GetAlternateContactInput, arg2 ...func(*account.Options)) (*account.GetAlternateContactOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &account.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAlternateContact")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockAccountClientMockRecorder) GetAlternateContact(arg0, arg1 interfac
 
 // GetContactInformation mocks base method.
 func (m *MockAccountClient) GetContactInformation(arg0 context.Context, arg1 *account.GetContactInformationInput, arg2 ...func(*account.Options)) (*account.GetContactInformationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &account.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContactInformation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

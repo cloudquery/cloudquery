@@ -48,7 +48,9 @@ func fetchIotTopicRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	paginator := iot.NewListTopicRulesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -63,6 +65,8 @@ func getTopicRule(ctx context.Context, meta schema.ClientMeta, resource *schema.
 
 	output, err := svc.GetTopicRule(ctx, &iot.GetTopicRuleInput{
 		RuleName: resource.Item.(types.TopicRuleListItem).RuleName,
+	}, func(options *iot.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -73,6 +77,7 @@ func getTopicRule(ctx context.Context, meta schema.ClientMeta, resource *schema.
 
 func resolveIotTopicRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.GetTopicRuleOutput)
-	svc := meta.(*client.Client).Services().Iot
-	return resolveIotTags(ctx, svc, resource, c, i.RuleArn)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+	return resolveIotTags(ctx, meta, svc, resource, c, i.RuleArn)
 }

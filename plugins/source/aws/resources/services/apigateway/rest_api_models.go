@@ -52,7 +52,9 @@ func fetchApigatewayRestApiModels(ctx context.Context, meta schema.ClientMeta, p
 	svc := c.Services().Apigateway
 	config := apigateway.GetModelsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	for p := apigateway.NewGetModelsPaginator(svc, &config); p.HasMorePages(); {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *apigateway.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil
@@ -91,7 +93,9 @@ func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema
 		ModelName: r.Name,
 	}
 
-	response, err := svc.GetModelTemplate(ctx, &config)
+	response, err := svc.GetModelTemplate(ctx, &config, func(options *apigateway.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		if client.IsAWSError(err, "BadRequestException") {
 			// This is an application level error and the user has nothing to do with that.

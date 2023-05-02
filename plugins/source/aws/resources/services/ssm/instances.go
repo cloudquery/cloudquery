@@ -42,10 +42,13 @@ func Instances() *schema.Table {
 }
 
 func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Ssm
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ssm
 	paginator := ssm.NewDescribeInstanceInformationPaginator(svc, &ssm.DescribeInstanceInformationInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *ssm.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
