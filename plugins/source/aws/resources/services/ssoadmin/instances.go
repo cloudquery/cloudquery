@@ -26,11 +26,14 @@ func Instances() *schema.Table {
 }
 
 func fetchSsoadminInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Ssoadmin
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ssoadmin
 	config := ssoadmin.ListInstancesInput{}
 	paginator := ssoadmin.NewListInstancesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *ssoadmin.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

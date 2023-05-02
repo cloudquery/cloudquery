@@ -33,13 +33,16 @@ func tables() *schema.Table {
 }
 
 func fetchTimestreamTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 	input := &timestreamwrite.ListTablesInput{
 		DatabaseName: parent.Item.(types.Database).DatabaseName,
 		MaxResults:   aws.Int32(20),
 	}
-	paginator := timestreamwrite.NewListTablesPaginator(meta.(*client.Client).Services().Timestreamwrite, input)
+	paginator := timestreamwrite.NewListTablesPaginator(cl.Services().Timestreamwrite, input)
 	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
+		response, err := paginator.NextPage(ctx, func(o *timestreamwrite.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

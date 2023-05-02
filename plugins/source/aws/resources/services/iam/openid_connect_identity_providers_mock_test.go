@@ -18,7 +18,7 @@ func buildIamOpenIDConnectProviders(t *testing.T, ctrl *gomock.Controller) clien
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListOpenIDConnectProviders(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListOpenIDConnectProviders(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListOpenIDConnectProvidersOutput{
 			OpenIDConnectProviderList: []iamTypes.OpenIDConnectProviderListEntry{l},
 		}, nil)
@@ -28,7 +28,7 @@ func buildIamOpenIDConnectProviders(t *testing.T, ctrl *gomock.Controller) clien
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().GetOpenIDConnectProvider(gomock.Any(), gomock.Any()).Return(&p, nil)
+	m.EXPECT().GetOpenIDConnectProvider(gomock.Any(), gomock.Any(), gomock.Any()).Return(&p, nil)
 
 	return client.Services{
 		Iam: m,

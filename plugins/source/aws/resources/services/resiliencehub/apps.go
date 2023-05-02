@@ -29,7 +29,9 @@ func fetchApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 	svc := c.Services().Resiliencehub
 	p := resiliencehub.NewListAppsPaginator(svc, &resiliencehub.ListAppsInput{})
 	for p.HasMorePages() {
-		out, err := p.NextPage(ctx)
+		out, err := p.NextPage(ctx, func(options *resiliencehub.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -40,9 +42,13 @@ func fetchApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 }
 
 func describeApp(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Resiliencehub
+	cl := meta.(*client.Client)
+	svc := cl.Services().Resiliencehub
 	out, err := svc.DescribeApp(ctx,
 		&resiliencehub.DescribeAppInput{AppArn: resource.Item.(types.AppSummary).AppArn},
+		func(options *resiliencehub.Options) {
+			options.Region = cl.Region
+		},
 	)
 	if err != nil {
 		return err

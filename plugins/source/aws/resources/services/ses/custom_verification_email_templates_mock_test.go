@@ -25,13 +25,13 @@ func buildCustomVerificationEmailTemplates(t *testing.T, ctrl *gomock.Controller
 	}
 	metadata.TemplateName = get.TemplateName
 
-	sesClient.EXPECT().ListCustomVerificationEmailTemplates(gomock.Any(), gomock.Any()).Return(
+	sesClient.EXPECT().ListCustomVerificationEmailTemplates(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&sesv2.ListCustomVerificationEmailTemplatesOutput{
 			CustomVerificationEmailTemplates: []types.CustomVerificationEmailTemplateMetadata{metadata},
 		},
 		nil,
 	)
-	sesClient.EXPECT().GetCustomVerificationEmailTemplate(gomock.Any(), gomock.Any()).Return(
+	sesClient.EXPECT().GetCustomVerificationEmailTemplate(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		get,
 		nil,
 	)

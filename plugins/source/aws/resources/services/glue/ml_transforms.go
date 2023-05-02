@@ -53,7 +53,9 @@ func fetchGlueMlTransforms(ctx context.Context, meta schema.ClientMeta, parent *
 	svc := cl.Services().Glue
 	paginator := glue.NewGetMLTransformsPaginator(svc, &glue.GetMLTransformsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -72,6 +74,8 @@ func resolveGlueMlTransformTags(ctx context.Context, meta schema.ClientMeta, res
 	r := resource.Item.(types.MLTransform)
 	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
 		ResourceArn: aws.String(mlTransformARN(cl, &r)),
+	}, func(options *glue.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {

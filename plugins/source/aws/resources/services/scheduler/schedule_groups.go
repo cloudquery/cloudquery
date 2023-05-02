@@ -44,11 +44,13 @@ func fetchSchedulerScheduleGroups(ctx context.Context, meta schema.ClientMeta, p
 	config := scheduler.ListScheduleGroupsInput{
 		MaxResults: aws.Int32(100),
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Scheduler
+	cl := meta.(*client.Client)
+	svc := cl.Services().Scheduler
 	paginator := scheduler.NewListScheduleGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *scheduler.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
