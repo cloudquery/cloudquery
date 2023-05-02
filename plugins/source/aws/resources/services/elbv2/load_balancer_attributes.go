@@ -34,7 +34,9 @@ func fetchLoadBalancerAttributes(ctx context.Context, meta schema.ClientMeta, pa
 	lb := parent.Item.(types.LoadBalancer)
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticloadbalancingv2
-	result, err := svc.DescribeLoadBalancerAttributes(ctx, &elbv2.DescribeLoadBalancerAttributesInput{LoadBalancerArn: lb.LoadBalancerArn})
+	result, err := svc.DescribeLoadBalancerAttributes(ctx, &elbv2.DescribeLoadBalancerAttributesInput{LoadBalancerArn: lb.LoadBalancerArn}, func(options *elbv2.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

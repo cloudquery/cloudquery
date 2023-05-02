@@ -25,7 +25,7 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 		g.PolicyVersionList[i].Document = &document
 	}
 
-	m.EXPECT().GetAccountAuthorizationDetails(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().GetAccountAuthorizationDetails(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.GetAccountAuthorizationDetailsOutput{
 			Policies: []iamTypes.ManagedPolicyDetail{g},
 		}, nil)

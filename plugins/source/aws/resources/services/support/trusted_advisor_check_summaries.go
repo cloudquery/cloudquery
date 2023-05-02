@@ -29,16 +29,18 @@ func trustedAdvisorCheckSummaries() *schema.Table {
 }
 
 func fetchTrustedAdvisorCheckSummaries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	// No need to get the summary for each language, as those are the same have the same check id
-	if c.LanguageCode != "en" {
+	if cl.LanguageCode != "en" {
 		return nil
 	}
-	svc := c.Services().Support
+	svc := cl.Services().Support
 	check := parent.Item.(types.TrustedAdvisorCheckDescription)
 	input := support.DescribeTrustedAdvisorCheckSummariesInput{CheckIds: []string{aws.ToString(check.Id)}}
 
-	response, err := svc.DescribeTrustedAdvisorCheckSummaries(ctx, &input)
+	response, err := svc.DescribeTrustedAdvisorCheckSummaries(ctx, &input, func(o *support.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -56,6 +58,6 @@ func mockCheckSummaries(check types.TrustedAdvisorCheckDescription, m *mocks.Moc
 	}
 
 	input := support.DescribeTrustedAdvisorCheckSummariesInput{CheckIds: []string{aws.ToString(check.Id)}}
-	m.EXPECT().DescribeTrustedAdvisorCheckSummaries(gomock.Any(), &input).Return(&support.DescribeTrustedAdvisorCheckSummariesOutput{Summaries: summaries}, nil)
+	m.EXPECT().DescribeTrustedAdvisorCheckSummaries(gomock.Any(), &input, gomock.Any()).Return(&support.DescribeTrustedAdvisorCheckSummariesOutput{Summaries: summaries}, nil)
 	return nil
 }

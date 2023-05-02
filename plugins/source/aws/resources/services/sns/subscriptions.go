@@ -58,12 +58,14 @@ func Subscriptions() *schema.Table {
 }
 
 func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sns
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sns
 	config := sns.ListSubscriptionsInput{}
 	paginator := sns.NewListSubscriptionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sns.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -73,8 +75,8 @@ func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *
 }
 
 func getSnsSubscription(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sns
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sns
 	item := resource.Item.(types.Subscription)
 	s := models.Subscription{
 		SubscriptionArn: item.SubscriptionArn,
@@ -89,7 +91,12 @@ func getSnsSubscription(ctx context.Context, meta schema.ClientMeta, resource *s
 		return nil
 	}
 
-	attrs, err := svc.GetSubscriptionAttributes(ctx, &sns.GetSubscriptionAttributesInput{SubscriptionArn: item.SubscriptionArn})
+	attrs, err := svc.GetSubscriptionAttributes(ctx,
+		&sns.GetSubscriptionAttributesInput{SubscriptionArn: item.SubscriptionArn},
+		func(o *sns.Options) {
+			o.Region = cl.Region
+		},
+	)
 	if err != nil {
 		return err
 	}

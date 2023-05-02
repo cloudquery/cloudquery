@@ -37,6 +37,16 @@ func (m *MockSesv2Client) EXPECT() *MockSesv2ClientMockRecorder {
 
 // BatchGetMetricData mocks base method.
 func (m *MockSesv2Client) BatchGetMetricData(arg0 context.Context, arg1 *sesv2.BatchGetMetricDataInput, arg2 ...func(*sesv2.Options)) (*sesv2.BatchGetMetricDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetMetricData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockSesv2ClientMockRecorder) BatchGetMetricData(arg0, arg1 interface{}
 
 // GetAccount mocks base method.
 func (m *MockSesv2Client) GetAccount(arg0 context.Context, arg1 *sesv2.GetAccountInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetAccountOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccount")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockSesv2ClientMockRecorder) GetAccount(arg0, arg1 interface{}, arg2 .
 
 // GetBlacklistReports mocks base method.
 func (m *MockSesv2Client) GetBlacklistReports(arg0 context.Context, arg1 *sesv2.GetBlacklistReportsInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetBlacklistReportsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBlacklistReports")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockSesv2ClientMockRecorder) GetBlacklistReports(arg0, arg1 interface{
 
 // GetConfigurationSet mocks base method.
 func (m *MockSesv2Client) GetConfigurationSet(arg0 context.Context, arg1 *sesv2.GetConfigurationSetInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetConfigurationSetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetConfigurationSet")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockSesv2ClientMockRecorder) GetConfigurationSet(arg0, arg1 interface{
 
 // GetConfigurationSetEventDestinations mocks base method.
 func (m *MockSesv2Client) GetConfigurationSetEventDestinations(arg0 context.Context, arg1 *sesv2.GetConfigurationSetEventDestinationsInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetConfigurationSetEventDestinationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetConfigurationSetEventDestinations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockSesv2ClientMockRecorder) GetConfigurationSetEventDestinations(arg0
 
 // GetContact mocks base method.
 func (m *MockSesv2Client) GetContact(arg0 context.Context, arg1 *sesv2.GetContactInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetContactOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContact")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockSesv2ClientMockRecorder) GetContact(arg0, arg1 interface{}, arg2 .
 
 // GetContactList mocks base method.
 func (m *MockSesv2Client) GetContactList(arg0 context.Context, arg1 *sesv2.GetContactListInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetContactListOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContactList")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockSesv2ClientMockRecorder) GetContactList(arg0, arg1 interface{}, ar
 
 // GetCustomVerificationEmailTemplate mocks base method.
 func (m *MockSesv2Client) GetCustomVerificationEmailTemplate(arg0 context.Context, arg1 *sesv2.GetCustomVerificationEmailTemplateInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetCustomVerificationEmailTemplateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCustomVerificationEmailTemplate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockSesv2ClientMockRecorder) GetCustomVerificationEmailTemplate(arg0, 
 
 // GetDedicatedIp mocks base method.
 func (m *MockSesv2Client) GetDedicatedIp(arg0 context.Context, arg1 *sesv2.GetDedicatedIpInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetDedicatedIpOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDedicatedIp")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockSesv2ClientMockRecorder) GetDedicatedIp(arg0, arg1 interface{}, ar
 
 // GetDedicatedIpPool mocks base method.
 func (m *MockSesv2Client) GetDedicatedIpPool(arg0 context.Context, arg1 *sesv2.GetDedicatedIpPoolInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetDedicatedIpPoolOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDedicatedIpPool")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockSesv2ClientMockRecorder) GetDedicatedIpPool(arg0, arg1 interface{}
 
 // GetDedicatedIps mocks base method.
 func (m *MockSesv2Client) GetDedicatedIps(arg0 context.Context, arg1 *sesv2.GetDedicatedIpsInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetDedicatedIpsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDedicatedIps")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockSesv2ClientMockRecorder) GetDedicatedIps(arg0, arg1 interface{}, a
 
 // GetDeliverabilityDashboardOptions mocks base method.
 func (m *MockSesv2Client) GetDeliverabilityDashboardOptions(arg0 context.Context, arg1 *sesv2.GetDeliverabilityDashboardOptionsInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetDeliverabilityDashboardOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDeliverabilityDashboardOptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockSesv2ClientMockRecorder) GetDeliverabilityDashboardOptions(arg0, a
 
 // GetDeliverabilityTestReport mocks base method.
 func (m *MockSesv2Client) GetDeliverabilityTestReport(arg0 context.Context, arg1 *sesv2.GetDeliverabilityTestReportInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetDeliverabilityTestReportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDeliverabilityTestReport")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockSesv2ClientMockRecorder) GetDeliverabilityTestReport(arg0, arg1 in
 
 // GetDomainDeliverabilityCampaign mocks base method.
 func (m *MockSesv2Client) GetDomainDeliverabilityCampaign(arg0 context.Context, arg1 *sesv2.GetDomainDeliverabilityCampaignInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetDomainDeliverabilityCampaignOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDomainDeliverabilityCampaign")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockSesv2ClientMockRecorder) GetDomainDeliverabilityCampaign(arg0, arg
 
 // GetDomainStatisticsReport mocks base method.
 func (m *MockSesv2Client) GetDomainStatisticsReport(arg0 context.Context, arg1 *sesv2.GetDomainStatisticsReportInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetDomainStatisticsReportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDomainStatisticsReport")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockSesv2ClientMockRecorder) GetDomainStatisticsReport(arg0, arg1 inte
 
 // GetEmailIdentity mocks base method.
 func (m *MockSesv2Client) GetEmailIdentity(arg0 context.Context, arg1 *sesv2.GetEmailIdentityInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetEmailIdentityOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEmailIdentity")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockSesv2ClientMockRecorder) GetEmailIdentity(arg0, arg1 interface{}, 
 
 // GetEmailIdentityPolicies mocks base method.
 func (m *MockSesv2Client) GetEmailIdentityPolicies(arg0 context.Context, arg1 *sesv2.GetEmailIdentityPoliciesInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetEmailIdentityPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEmailIdentityPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockSesv2ClientMockRecorder) GetEmailIdentityPolicies(arg0, arg1 inter
 
 // GetEmailTemplate mocks base method.
 func (m *MockSesv2Client) GetEmailTemplate(arg0 context.Context, arg1 *sesv2.GetEmailTemplateInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetEmailTemplateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEmailTemplate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockSesv2ClientMockRecorder) GetEmailTemplate(arg0, arg1 interface{}, 
 
 // GetImportJob mocks base method.
 func (m *MockSesv2Client) GetImportJob(arg0 context.Context, arg1 *sesv2.GetImportJobInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetImportJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetImportJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockSesv2ClientMockRecorder) GetImportJob(arg0, arg1 interface{}, arg2
 
 // GetSuppressedDestination mocks base method.
 func (m *MockSesv2Client) GetSuppressedDestination(arg0 context.Context, arg1 *sesv2.GetSuppressedDestinationInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetSuppressedDestinationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSuppressedDestination")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockSesv2ClientMockRecorder) GetSuppressedDestination(arg0, arg1 inter
 
 // ListConfigurationSets mocks base method.
 func (m *MockSesv2Client) ListConfigurationSets(arg0 context.Context, arg1 *sesv2.ListConfigurationSetsInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListConfigurationSetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListConfigurationSets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockSesv2ClientMockRecorder) ListConfigurationSets(arg0, arg1 interfac
 
 // ListContactLists mocks base method.
 func (m *MockSesv2Client) ListContactLists(arg0 context.Context, arg1 *sesv2.ListContactListsInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListContactListsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListContactLists")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockSesv2ClientMockRecorder) ListContactLists(arg0, arg1 interface{}, 
 
 // ListContacts mocks base method.
 func (m *MockSesv2Client) ListContacts(arg0 context.Context, arg1 *sesv2.ListContactsInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListContactsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListContacts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockSesv2ClientMockRecorder) ListContacts(arg0, arg1 interface{}, arg2
 
 // ListCustomVerificationEmailTemplates mocks base method.
 func (m *MockSesv2Client) ListCustomVerificationEmailTemplates(arg0 context.Context, arg1 *sesv2.ListCustomVerificationEmailTemplatesInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListCustomVerificationEmailTemplatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCustomVerificationEmailTemplates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockSesv2ClientMockRecorder) ListCustomVerificationEmailTemplates(arg0
 
 // ListDedicatedIpPools mocks base method.
 func (m *MockSesv2Client) ListDedicatedIpPools(arg0 context.Context, arg1 *sesv2.ListDedicatedIpPoolsInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListDedicatedIpPoolsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDedicatedIpPools")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockSesv2ClientMockRecorder) ListDedicatedIpPools(arg0, arg1 interface
 
 // ListDeliverabilityTestReports mocks base method.
 func (m *MockSesv2Client) ListDeliverabilityTestReports(arg0 context.Context, arg1 *sesv2.ListDeliverabilityTestReportsInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListDeliverabilityTestReportsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDeliverabilityTestReports")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockSesv2ClientMockRecorder) ListDeliverabilityTestReports(arg0, arg1 
 
 // ListDomainDeliverabilityCampaigns mocks base method.
 func (m *MockSesv2Client) ListDomainDeliverabilityCampaigns(arg0 context.Context, arg1 *sesv2.ListDomainDeliverabilityCampaignsInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListDomainDeliverabilityCampaignsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDomainDeliverabilityCampaigns")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockSesv2ClientMockRecorder) ListDomainDeliverabilityCampaigns(arg0, a
 
 // ListEmailIdentities mocks base method.
 func (m *MockSesv2Client) ListEmailIdentities(arg0 context.Context, arg1 *sesv2.ListEmailIdentitiesInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListEmailIdentitiesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEmailIdentities")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockSesv2ClientMockRecorder) ListEmailIdentities(arg0, arg1 interface{
 
 // ListEmailTemplates mocks base method.
 func (m *MockSesv2Client) ListEmailTemplates(arg0 context.Context, arg1 *sesv2.ListEmailTemplatesInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListEmailTemplatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEmailTemplates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockSesv2ClientMockRecorder) ListEmailTemplates(arg0, arg1 interface{}
 
 // ListImportJobs mocks base method.
 func (m *MockSesv2Client) ListImportJobs(arg0 context.Context, arg1 *sesv2.ListImportJobsInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListImportJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListImportJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockSesv2ClientMockRecorder) ListImportJobs(arg0, arg1 interface{}, ar
 
 // ListRecommendations mocks base method.
 func (m *MockSesv2Client) ListRecommendations(arg0 context.Context, arg1 *sesv2.ListRecommendationsInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListRecommendationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRecommendations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockSesv2ClientMockRecorder) ListRecommendations(arg0, arg1 interface{
 
 // ListSuppressedDestinations mocks base method.
 func (m *MockSesv2Client) ListSuppressedDestinations(arg0 context.Context, arg1 *sesv2.ListSuppressedDestinationsInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListSuppressedDestinationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSuppressedDestinations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockSesv2ClientMockRecorder) ListSuppressedDestinations(arg0, arg1 int
 
 // ListTagsForResource mocks base method.
 func (m *MockSesv2Client) ListTagsForResource(arg0 context.Context, arg1 *sesv2.ListTagsForResourceInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -59,7 +59,9 @@ func fetchClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	svc := c.Services().Redshift
 	paginator := redshift.NewDescribeClustersPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *redshift.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -76,7 +78,9 @@ func resolveRedshiftClusterLoggingStatus(ctx context.Context, meta schema.Client
 	cfg := redshift.DescribeLoggingStatusInput{
 		ClusterIdentifier: r.ClusterIdentifier,
 	}
-	response, err := svc.DescribeLoggingStatus(ctx, &cfg)
+	response, err := svc.DescribeLoggingStatus(ctx, &cfg, func(options *redshift.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

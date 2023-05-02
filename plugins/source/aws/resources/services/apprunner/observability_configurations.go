@@ -41,10 +41,13 @@ func ObservabilityConfigurations() *schema.Table {
 
 func fetchApprunnerObservabilityConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apprunner.ListObservabilityConfigurationsInput
-	svc := meta.(*client.Client).Services().Apprunner
+	c := meta.(*client.Client)
+	svc := c.Services().Apprunner
 	paginator := apprunner.NewListObservabilityConfigurationsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *apprunner.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -58,7 +61,9 @@ func getObservabilityConfiguration(ctx context.Context, meta schema.ClientMeta, 
 	svc := c.Services().Apprunner
 	service := resource.Item.(types.ObservabilityConfigurationSummary)
 
-	describeTaskDefinitionOutput, err := svc.DescribeObservabilityConfiguration(ctx, &apprunner.DescribeObservabilityConfigurationInput{ObservabilityConfigurationArn: service.ObservabilityConfigurationArn})
+	describeTaskDefinitionOutput, err := svc.DescribeObservabilityConfiguration(ctx, &apprunner.DescribeObservabilityConfigurationInput{ObservabilityConfigurationArn: service.ObservabilityConfigurationArn}, func(options *apprunner.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
