@@ -51,12 +51,14 @@ func isRegionSupported(region string) bool {
 }
 
 func fetchSesActiveReceiptRuleSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ses
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ses
 
-	set, err := svc.DescribeActiveReceiptRuleSet(ctx, nil)
+	set, err := svc.DescribeActiveReceiptRuleSet(ctx, nil, func(o *ses.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
-		if !isRegionSupported(c.Region) && client.IgnoreWithInvalidAction(err) {
+		if !isRegionSupported(cl.Region) && client.IgnoreWithInvalidAction(err) {
 			return nil
 		}
 		return err

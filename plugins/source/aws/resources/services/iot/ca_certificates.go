@@ -49,7 +49,9 @@ func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent 
 	svc := c.Services().Iot
 	paginator := iot.NewListCACertificatesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -64,6 +66,8 @@ func getCaCertificate(ctx context.Context, meta schema.ClientMeta, resource *sch
 
 	output, err := svc.DescribeCACertificate(ctx, &iot.DescribeCACertificateInput{
 		CertificateId: resource.Item.(types.CACertificate).CertificateId,
+	}, func(options *iot.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -83,7 +87,9 @@ func ResolveIotCaCertificateCertificates(ctx context.Context, meta schema.Client
 	var certs []string
 	paginator := iot.NewListCertificatesByCAPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

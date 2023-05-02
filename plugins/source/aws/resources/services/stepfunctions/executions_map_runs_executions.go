@@ -44,14 +44,17 @@ func mapRunExecutions() *schema.Table {
 }
 
 func fetchStepfunctionsMapRunExecutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Sfn
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sfn
 	config := sfn.ListExecutionsInput{
 		MaxResults: 1000,
 		MapRunArn:  parent.Item.(*sfn.DescribeMapRunOutput).MapRunArn,
 	}
 	paginator := sfn.NewListExecutionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *sfn.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

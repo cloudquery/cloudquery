@@ -46,8 +46,8 @@ func Buckets() *schema.Table {
 func listS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().S3
-	response, err := svc.ListBuckets(ctx, nil, func(options *s3.Options) {
-		options.Region = listBucketRegion(cl)
+	response, err := svc.ListBuckets(ctx, nil, func(o *s3.Options) {
+		o.Region = listBucketRegion(cl)
 	})
 	if err != nil {
 		return err
@@ -73,12 +73,14 @@ func listBucketRegion(cl *client.Client) string {
 func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
 	bucket := r.Item.(types.Bucket)
 	resource := &models.WrappedBucket{Name: bucket.Name, CreationDate: bucket.CreationDate}
-	c := meta.(*client.Client)
-	mgr := c.Services().S3manager
+	cl := meta.(*client.Client)
+	mgr := cl.Services().S3manager
 
-	output, err := mgr.GetBucketRegion(ctx, *resource.Name)
+	output, err := mgr.GetBucketRegion(ctx, *resource.Name, func(o *s3.Options) {
+		o.Region = listBucketRegion(cl)
+	})
 	if err != nil {
-		if isBucketNotFoundError(c, err) {
+		if isBucketNotFoundError(cl, err) {
 			return nil
 		}
 		return err
@@ -101,7 +103,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	for _, resolver := range resolvers {
 		if err := resolver(ctx, meta, resource); err != nil {
 			r.Item = resource
-			if isBucketNotFoundError(c, err) {
+			if isBucketNotFoundError(cl, err) {
 				return nil
 			}
 			return err
@@ -112,9 +114,10 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 }
 
 func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
-	svc := meta.(*client.Client).Services().S3
-	loggingOutput, err := svc.GetBucketLogging(ctx, &s3.GetBucketLoggingInput{Bucket: resource.Name}, func(options *s3.Options) {
-		options.Region = resource.Region
+	cl := meta.(*client.Client)
+	svc := cl.Services().S3
+	loggingOutput, err := svc.GetBucketLogging(ctx, &s3.GetBucketLoggingInput{Bucket: resource.Name}, func(o *s3.Options) {
+		o.Region = resource.Region
 	})
 	if err != nil {
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
@@ -131,10 +134,10 @@ func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource 
 }
 
 func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
-	c := meta.(*client.Client)
-	svc := c.Services().S3
-	policyOutput, err := svc.GetBucketPolicy(ctx, &s3.GetBucketPolicyInput{Bucket: resource.Name}, func(options *s3.Options) {
-		options.Region = resource.Region
+	cl := meta.(*client.Client)
+	svc := cl.Services().S3
+	policyOutput, err := svc.GetBucketPolicy(ctx, &s3.GetBucketPolicyInput{Bucket: resource.Name}, func(o *s3.Options) {
+		o.Region = resource.Region
 	})
 	// check if we got an error but its access denied we can continue
 	if err != nil {
@@ -160,10 +163,10 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 }
 
 func resolveBucketVersioning(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
-	c := meta.(*client.Client)
-	svc := c.Services().S3
-	versioningOutput, err := svc.GetBucketVersioning(ctx, &s3.GetBucketVersioningInput{Bucket: resource.Name}, func(options *s3.Options) {
-		options.Region = resource.Region
+	cl := meta.(*client.Client)
+	svc := cl.Services().S3
+	versioningOutput, err := svc.GetBucketVersioning(ctx, &s3.GetBucketVersioningInput{Bucket: resource.Name}, func(o *s3.Options) {
+		o.Region = resource.Region
 	})
 	if err != nil {
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
@@ -177,14 +180,14 @@ func resolveBucketVersioning(ctx context.Context, meta schema.ClientMeta, resour
 }
 
 func resolveBucketPublicAccessBlock(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
-	c := meta.(*client.Client)
-	svc := c.Services().S3
-	publicAccessOutput, err := svc.GetPublicAccessBlock(ctx, &s3.GetPublicAccessBlockInput{Bucket: resource.Name}, func(options *s3.Options) {
-		options.Region = resource.Region
+	cl := meta.(*client.Client)
+	svc := cl.Services().S3
+	publicAccessOutput, err := svc.GetPublicAccessBlock(ctx, &s3.GetPublicAccessBlockInput{Bucket: resource.Name}, func(o *s3.Options) {
+		o.Region = resource.Region
 	})
 	if err != nil {
 		// If we received any error other than NoSuchPublicAccessBlockConfiguration, we return and error
-		if isBucketNotFoundError(c, err) {
+		if isBucketNotFoundError(cl, err) {
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
@@ -200,10 +203,10 @@ func resolveBucketPublicAccessBlock(ctx context.Context, meta schema.ClientMeta,
 }
 
 func resolveBucketReplication(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
-	c := meta.(*client.Client)
-	svc := c.Services().S3
-	replicationOutput, err := svc.GetBucketReplication(ctx, &s3.GetBucketReplicationInput{Bucket: resource.Name}, func(options *s3.Options) {
-		options.Region = resource.Region
+	cl := meta.(*client.Client)
+	svc := cl.Services().S3
+	replicationOutput, err := svc.GetBucketReplication(ctx, &s3.GetBucketReplicationInput{Bucket: resource.Name}, func(o *s3.Options) {
+		o.Region = resource.Region
 	})
 
 	if err != nil {
@@ -225,10 +228,10 @@ func resolveBucketReplication(ctx context.Context, meta schema.ClientMeta, resou
 }
 
 func resolveBucketTagging(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
-	c := meta.(*client.Client)
-	svc := c.Services().S3
-	taggingOutput, err := svc.GetBucketTagging(ctx, &s3.GetBucketTaggingInput{Bucket: resource.Name}, func(options *s3.Options) {
-		options.Region = resource.Region
+	cl := meta.(*client.Client)
+	svc := cl.Services().S3
+	taggingOutput, err := svc.GetBucketTagging(ctx, &s3.GetBucketTaggingInput{Bucket: resource.Name}, func(o *s3.Options) {
+		o.Region = resource.Region
 	})
 	if err != nil {
 		// If buckets tags are not set it will return an error instead of empty result
@@ -252,11 +255,11 @@ func resolveBucketTagging(ctx context.Context, meta schema.ClientMeta, resource 
 }
 
 func resolveBucketOwnershipControls(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
-	c := meta.(*client.Client)
-	svc := c.Services().S3
+	cl := meta.(*client.Client)
+	svc := cl.Services().S3
 
-	getBucketOwnershipControlOutput, err := svc.GetBucketOwnershipControls(ctx, &s3.GetBucketOwnershipControlsInput{Bucket: resource.Name}, func(options *s3.Options) {
-		options.Region = resource.Region
+	getBucketOwnershipControlOutput, err := svc.GetBucketOwnershipControls(ctx, &s3.GetBucketOwnershipControlsInput{Bucket: resource.Name}, func(o *s3.Options) {
+		o.Region = resource.Region
 	})
 
 	if err != nil {

@@ -39,7 +39,9 @@ func fetchKmsAliases(ctx context.Context, meta schema.ClientMeta, parent *schema
 	svc := c.Services().Kms
 	paginator := kms.NewListAliasesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *kms.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

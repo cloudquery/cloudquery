@@ -37,6 +37,16 @@ func (m *MockResourcegroupsClient) EXPECT() *MockResourcegroupsClientMockRecorde
 
 // GetAccountSettings mocks base method.
 func (m *MockResourcegroupsClient) GetAccountSettings(arg0 context.Context, arg1 *resourcegroups.GetAccountSettingsInput, arg2 ...func(*resourcegroups.Options)) (*resourcegroups.GetAccountSettingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resourcegroups.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccountSettings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockResourcegroupsClientMockRecorder) GetAccountSettings(arg0, arg1 in
 
 // GetGroup mocks base method.
 func (m *MockResourcegroupsClient) GetGroup(arg0 context.Context, arg1 *resourcegroups.GetGroupInput, arg2 ...func(*resourcegroups.Options)) (*resourcegroups.GetGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resourcegroups.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockResourcegroupsClientMockRecorder) GetGroup(arg0, arg1 interface{},
 
 // GetGroupConfiguration mocks base method.
 func (m *MockResourcegroupsClient) GetGroupConfiguration(arg0 context.Context, arg1 *resourcegroups.GetGroupConfigurationInput, arg2 ...func(*resourcegroups.Options)) (*resourcegroups.GetGroupConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resourcegroups.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetGroupConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockResourcegroupsClientMockRecorder) GetGroupConfiguration(arg0, arg1
 
 // GetGroupQuery mocks base method.
 func (m *MockResourcegroupsClient) GetGroupQuery(arg0 context.Context, arg1 *resourcegroups.GetGroupQueryInput, arg2 ...func(*resourcegroups.Options)) (*resourcegroups.GetGroupQueryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resourcegroups.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetGroupQuery")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockResourcegroupsClientMockRecorder) GetGroupQuery(arg0, arg1 interfa
 
 // GetTags mocks base method.
 func (m *MockResourcegroupsClient) GetTags(arg0 context.Context, arg1 *resourcegroups.GetTagsInput, arg2 ...func(*resourcegroups.Options)) (*resourcegroups.GetTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resourcegroups.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockResourcegroupsClientMockRecorder) GetTags(arg0, arg1 interface{}, 
 
 // ListGroupResources mocks base method.
 func (m *MockResourcegroupsClient) ListGroupResources(arg0 context.Context, arg1 *resourcegroups.ListGroupResourcesInput, arg2 ...func(*resourcegroups.Options)) (*resourcegroups.ListGroupResourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resourcegroups.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListGroupResources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockResourcegroupsClientMockRecorder) ListGroupResources(arg0, arg1 in
 
 // ListGroups mocks base method.
 func (m *MockResourcegroupsClient) ListGroups(arg0 context.Context, arg1 *resourcegroups.ListGroupsInput, arg2 ...func(*resourcegroups.Options)) (*resourcegroups.ListGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resourcegroups.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockResourcegroupsClientMockRecorder) ListGroups(arg0, arg1 interface{
 
 // SearchResources mocks base method.
 func (m *MockResourcegroupsClient) SearchResources(arg0 context.Context, arg1 *resourcegroups.SearchResourcesInput, arg2 ...func(*resourcegroups.Options)) (*resourcegroups.SearchResourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resourcegroups.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchResources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

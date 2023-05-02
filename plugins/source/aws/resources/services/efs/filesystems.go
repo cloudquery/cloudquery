@@ -49,7 +49,9 @@ func fetchEfsFilesystems(ctx context.Context, meta schema.ClientMeta, parent *sc
 	svc := c.Services().Efs
 	paginator := efs.NewDescribeFileSystemsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *efs.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -65,7 +67,9 @@ func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 	}
 	cl := meta.(*client.Client)
 	svc := cl.Services().Efs
-	response, err := svc.DescribeBackupPolicy(ctx, &config)
+	response, err := svc.DescribeBackupPolicy(ctx, &config, func(options *efs.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {
 			return resource.Set(c.Name, types.StatusDisabled)
