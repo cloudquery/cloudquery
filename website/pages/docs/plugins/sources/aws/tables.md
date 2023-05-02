@@ -426,6 +426,8 @@
 - [aws_neptune_global_clusters](tables/aws_neptune_global_clusters)
 - [aws_neptune_instances](tables/aws_neptune_instances)
 - [aws_neptune_subnet_groups](tables/aws_neptune_subnet_groups)
+- [aws_networkfirewall_firewall_policies](tables/aws_networkfirewall_firewall_policies)
+- [aws_networkfirewall_rule_groups](tables/aws_networkfirewall_rule_groups)
 - [aws_organization_resource_policies](tables/aws_organization_resource_policies)
 - [aws_organizations](tables/aws_organizations)
 - [aws_organizations_accounts](tables/aws_organizations_accounts)
