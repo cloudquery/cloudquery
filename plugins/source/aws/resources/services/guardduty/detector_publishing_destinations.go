@@ -40,7 +40,9 @@ func fetchGuarddutyDetectorPublishingDestinations(ctx context.Context, meta sche
 	config := &guardduty.ListPublishingDestinationsInput{DetectorId: aws.String(detector.Id)}
 	paginator := guardduty.NewListPublishingDestinationsPaginator(svc, config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *guardduty.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

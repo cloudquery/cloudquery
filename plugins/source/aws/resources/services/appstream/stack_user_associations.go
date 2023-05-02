@@ -59,7 +59,9 @@ func fetchAppstreamStackUserAssociations(ctx context.Context, meta schema.Client
 	svc := c.Services().Appstream
 	// No paginator available
 	for {
-		response, err := svc.DescribeUserStackAssociations(ctx, &input)
+		response, err := svc.DescribeUserStackAssociations(ctx, &input, func(options *appstream.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

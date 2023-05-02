@@ -39,9 +39,12 @@ func Variables() *schema.Table {
 }
 
 func fetchFrauddetectorVariables(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
 	paginator := frauddetector.NewGetVariablesPaginator(meta.(*client.Client).Services().Frauddetector, nil)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *frauddetector.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

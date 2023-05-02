@@ -33,13 +33,16 @@ func roleAttachedPolicies() *schema.Table {
 
 func fetchIamRoleAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*types.Role)
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	config := iam.ListAttachedRolePoliciesInput{
 		RoleName: p.RoleName,
 	}
 	paginator := iam.NewListAttachedRolePoliciesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *iam.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

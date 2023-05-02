@@ -34,13 +34,16 @@ func Activities() *schema.Table {
 }
 
 func fetchStepfunctionsActivities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Sfn
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sfn
 	config := sfn.ListActivitiesInput{
 		MaxResults: 1000,
 	}
 	paginator := sfn.NewListActivitiesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *sfn.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

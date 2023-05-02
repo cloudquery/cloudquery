@@ -59,7 +59,9 @@ func fetchIotThingGroups(ctx context.Context, meta schema.ClientMeta, parent *sc
 	svc := c.Services().Iot
 	paginator := iot.NewListThingGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -74,6 +76,8 @@ func getThingGroup(ctx context.Context, meta schema.ClientMeta, resource *schema
 
 	output, err := svc.DescribeThingGroup(ctx, &iot.DescribeThingGroupInput{
 		ThingGroupName: resource.Item.(types.GroupNameAndArn).GroupName,
+	}, func(options *iot.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -94,7 +98,9 @@ func ResolveIotThingGroupThingsInGroup(ctx context.Context, meta schema.ClientMe
 	var things []string
 	paginator := iot.NewListThingsInThingGroupPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -115,7 +121,9 @@ func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, r
 	var policies []string
 	paginator := iot.NewListAttachedPoliciesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -127,6 +135,7 @@ func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, r
 }
 func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
-	svc := meta.(*client.Client).Services().Iot
-	return resolveIotTags(ctx, svc, resource, c, i.ThingGroupArn)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+	return resolveIotTags(ctx, meta, svc, resource, c, i.ThingGroupArn)
 }
