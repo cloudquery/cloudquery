@@ -37,6 +37,16 @@ func (m *MockCostexplorerClient) EXPECT() *MockCostexplorerClientMockRecorder {
 
 // DescribeCostCategoryDefinition mocks base method.
 func (m *MockCostexplorerClient) DescribeCostCategoryDefinition(arg0 context.Context, arg1 *costexplorer.DescribeCostCategoryDefinitionInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.DescribeCostCategoryDefinitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCostCategoryDefinition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockCostexplorerClientMockRecorder) DescribeCostCategoryDefinition(arg
 
 // GetAnomalies mocks base method.
 func (m *MockCostexplorerClient) GetAnomalies(arg0 context.Context, arg1 *costexplorer.GetAnomaliesInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetAnomaliesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAnomalies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetAnomalies(arg0, arg1 interface{
 
 // GetAnomalyMonitors mocks base method.
 func (m *MockCostexplorerClient) GetAnomalyMonitors(arg0 context.Context, arg1 *costexplorer.GetAnomalyMonitorsInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetAnomalyMonitorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAnomalyMonitors")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetAnomalyMonitors(arg0, arg1 inte
 
 // GetAnomalySubscriptions mocks base method.
 func (m *MockCostexplorerClient) GetAnomalySubscriptions(arg0 context.Context, arg1 *costexplorer.GetAnomalySubscriptionsInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetAnomalySubscriptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAnomalySubscriptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetAnomalySubscriptions(arg0, arg1
 
 // GetCostAndUsage mocks base method.
 func (m *MockCostexplorerClient) GetCostAndUsage(arg0 context.Context, arg1 *costexplorer.GetCostAndUsageInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetCostAndUsageOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCostAndUsage")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetCostAndUsage(arg0, arg1 interfa
 
 // GetCostAndUsageWithResources mocks base method.
 func (m *MockCostexplorerClient) GetCostAndUsageWithResources(arg0 context.Context, arg1 *costexplorer.GetCostAndUsageWithResourcesInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetCostAndUsageWithResourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCostAndUsageWithResources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetCostAndUsageWithResources(arg0,
 
 // GetCostCategories mocks base method.
 func (m *MockCostexplorerClient) GetCostCategories(arg0 context.Context, arg1 *costexplorer.GetCostCategoriesInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetCostCategoriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCostCategories")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetCostCategories(arg0, arg1 inter
 
 // GetCostForecast mocks base method.
 func (m *MockCostexplorerClient) GetCostForecast(arg0 context.Context, arg1 *costexplorer.GetCostForecastInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetCostForecastOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCostForecast")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetCostForecast(arg0, arg1 interfa
 
 // GetDimensionValues mocks base method.
 func (m *MockCostexplorerClient) GetDimensionValues(arg0 context.Context, arg1 *costexplorer.GetDimensionValuesInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetDimensionValuesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDimensionValues")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetDimensionValues(arg0, arg1 inte
 
 // GetReservationCoverage mocks base method.
 func (m *MockCostexplorerClient) GetReservationCoverage(arg0 context.Context, arg1 *costexplorer.GetReservationCoverageInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetReservationCoverageOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetReservationCoverage")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetReservationCoverage(arg0, arg1 
 
 // GetReservationPurchaseRecommendation mocks base method.
 func (m *MockCostexplorerClient) GetReservationPurchaseRecommendation(arg0 context.Context, arg1 *costexplorer.GetReservationPurchaseRecommendationInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetReservationPurchaseRecommendationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetReservationPurchaseRecommendation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetReservationPurchaseRecommendati
 
 // GetReservationUtilization mocks base method.
 func (m *MockCostexplorerClient) GetReservationUtilization(arg0 context.Context, arg1 *costexplorer.GetReservationUtilizationInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetReservationUtilizationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetReservationUtilization")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetReservationUtilization(arg0, ar
 
 // GetRightsizingRecommendation mocks base method.
 func (m *MockCostexplorerClient) GetRightsizingRecommendation(arg0 context.Context, arg1 *costexplorer.GetRightsizingRecommendationInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetRightsizingRecommendationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRightsizingRecommendation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetRightsizingRecommendation(arg0,
 
 // GetSavingsPlansCoverage mocks base method.
 func (m *MockCostexplorerClient) GetSavingsPlansCoverage(arg0 context.Context, arg1 *costexplorer.GetSavingsPlansCoverageInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetSavingsPlansCoverageOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSavingsPlansCoverage")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetSavingsPlansCoverage(arg0, arg1
 
 // GetSavingsPlansPurchaseRecommendation mocks base method.
 func (m *MockCostexplorerClient) GetSavingsPlansPurchaseRecommendation(arg0 context.Context, arg1 *costexplorer.GetSavingsPlansPurchaseRecommendationInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetSavingsPlansPurchaseRecommendationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSavingsPlansPurchaseRecommendation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetSavingsPlansPurchaseRecommendat
 
 // GetSavingsPlansUtilization mocks base method.
 func (m *MockCostexplorerClient) GetSavingsPlansUtilization(arg0 context.Context, arg1 *costexplorer.GetSavingsPlansUtilizationInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetSavingsPlansUtilizationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSavingsPlansUtilization")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetSavingsPlansUtilization(arg0, a
 
 // GetSavingsPlansUtilizationDetails mocks base method.
 func (m *MockCostexplorerClient) GetSavingsPlansUtilizationDetails(arg0 context.Context, arg1 *costexplorer.GetSavingsPlansUtilizationDetailsInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetSavingsPlansUtilizationDetailsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSavingsPlansUtilizationDetails")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetSavingsPlansUtilizationDetails(
 
 // GetTags mocks base method.
 func (m *MockCostexplorerClient) GetTags(arg0 context.Context, arg1 *costexplorer.GetTagsInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetTags(arg0, arg1 interface{}, ar
 
 // GetUsageForecast mocks base method.
 func (m *MockCostexplorerClient) GetUsageForecast(arg0 context.Context, arg1 *costexplorer.GetUsageForecastInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetUsageForecastOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUsageForecast")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockCostexplorerClientMockRecorder) GetUsageForecast(arg0, arg1 interf
 
 // ListCostAllocationTags mocks base method.
 func (m *MockCostexplorerClient) ListCostAllocationTags(arg0 context.Context, arg1 *costexplorer.ListCostAllocationTagsInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.ListCostAllocationTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCostAllocationTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockCostexplorerClientMockRecorder) ListCostAllocationTags(arg0, arg1 
 
 // ListCostCategoryDefinitions mocks base method.
 func (m *MockCostexplorerClient) ListCostCategoryDefinitions(arg0 context.Context, arg1 *costexplorer.ListCostCategoryDefinitionsInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.ListCostCategoryDefinitionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCostCategoryDefinitions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockCostexplorerClientMockRecorder) ListCostCategoryDefinitions(arg0, 
 
 // ListSavingsPlansPurchaseRecommendationGeneration mocks base method.
 func (m *MockCostexplorerClient) ListSavingsPlansPurchaseRecommendationGeneration(arg0 context.Context, arg1 *costexplorer.ListSavingsPlansPurchaseRecommendationGenerationInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.ListSavingsPlansPurchaseRecommendationGenerationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSavingsPlansPurchaseRecommendationGeneration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockCostexplorerClientMockRecorder) ListSavingsPlansPurchaseRecommenda
 
 // ListTagsForResource mocks base method.
 func (m *MockCostexplorerClient) ListTagsForResource(arg0 context.Context, arg1 *costexplorer.ListTagsForResourceInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

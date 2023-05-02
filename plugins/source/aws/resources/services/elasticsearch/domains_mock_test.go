@@ -18,7 +18,7 @@ func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Ser
 	if err := faker.FakeObject(&info); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListDomainNames(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListDomainNames(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.ListDomainNamesOutput{
 			DomainNames: []types.DomainInfo{info},
 		},
@@ -29,7 +29,7 @@ func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Ser
 	if err := faker.FakeObject(&ds); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().DescribeElasticsearchDomain(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().DescribeElasticsearchDomain(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.DescribeElasticsearchDomainOutput{
 			DomainStatus: &ds,
 		},
@@ -40,7 +40,7 @@ func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Ser
 	if err := faker.FakeObject(&principal); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListVpcEndpointAccess(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListVpcEndpointAccess(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.ListVpcEndpointAccessOutput{
 			AuthorizedPrincipalList: []types.AuthorizedPrincipal{principal},
 		},
@@ -51,7 +51,7 @@ func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Ser
 	if err := faker.FakeObject(&tags); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListTags(gomock.Any(), gomock.Any()).Return(&tags, nil)
+	m.EXPECT().ListTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
 
 	return client.Services{Elasticsearchservice: m}
 }

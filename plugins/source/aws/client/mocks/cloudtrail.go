@@ -37,6 +37,16 @@ func (m *MockCloudtrailClient) EXPECT() *MockCloudtrailClientMockRecorder {
 
 // DescribeQuery mocks base method.
 func (m *MockCloudtrailClient) DescribeQuery(arg0 context.Context, arg1 *cloudtrail.DescribeQueryInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.DescribeQueryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeQuery")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockCloudtrailClientMockRecorder) DescribeQuery(arg0, arg1 interface{}
 
 // DescribeTrails mocks base method.
 func (m *MockCloudtrailClient) DescribeTrails(arg0 context.Context, arg1 *cloudtrail.DescribeTrailsInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.DescribeTrailsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrails")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockCloudtrailClientMockRecorder) DescribeTrails(arg0, arg1 interface{
 
 // GetChannel mocks base method.
 func (m *MockCloudtrailClient) GetChannel(arg0 context.Context, arg1 *cloudtrail.GetChannelInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.GetChannelOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetChannel")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockCloudtrailClientMockRecorder) GetChannel(arg0, arg1 interface{}, a
 
 // GetEventDataStore mocks base method.
 func (m *MockCloudtrailClient) GetEventDataStore(arg0 context.Context, arg1 *cloudtrail.GetEventDataStoreInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.GetEventDataStoreOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEventDataStore")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockCloudtrailClientMockRecorder) GetEventDataStore(arg0, arg1 interfa
 
 // GetEventSelectors mocks base method.
 func (m *MockCloudtrailClient) GetEventSelectors(arg0 context.Context, arg1 *cloudtrail.GetEventSelectorsInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.GetEventSelectorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEventSelectors")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockCloudtrailClientMockRecorder) GetEventSelectors(arg0, arg1 interfa
 
 // GetImport mocks base method.
 func (m *MockCloudtrailClient) GetImport(arg0 context.Context, arg1 *cloudtrail.GetImportInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.GetImportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetImport")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockCloudtrailClientMockRecorder) GetImport(arg0, arg1 interface{}, ar
 
 // GetInsightSelectors mocks base method.
 func (m *MockCloudtrailClient) GetInsightSelectors(arg0 context.Context, arg1 *cloudtrail.GetInsightSelectorsInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.GetInsightSelectorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInsightSelectors")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockCloudtrailClientMockRecorder) GetInsightSelectors(arg0, arg1 inter
 
 // GetQueryResults mocks base method.
 func (m *MockCloudtrailClient) GetQueryResults(arg0 context.Context, arg1 *cloudtrail.GetQueryResultsInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.GetQueryResultsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetQueryResults")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockCloudtrailClientMockRecorder) GetQueryResults(arg0, arg1 interface
 
 // GetTrail mocks base method.
 func (m *MockCloudtrailClient) GetTrail(arg0 context.Context, arg1 *cloudtrail.GetTrailInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.GetTrailOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTrail")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockCloudtrailClientMockRecorder) GetTrail(arg0, arg1 interface{}, arg
 
 // GetTrailStatus mocks base method.
 func (m *MockCloudtrailClient) GetTrailStatus(arg0 context.Context, arg1 *cloudtrail.GetTrailStatusInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.GetTrailStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTrailStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockCloudtrailClientMockRecorder) GetTrailStatus(arg0, arg1 interface{
 
 // ListChannels mocks base method.
 func (m *MockCloudtrailClient) ListChannels(arg0 context.Context, arg1 *cloudtrail.ListChannelsInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.ListChannelsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListChannels")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockCloudtrailClientMockRecorder) ListChannels(arg0, arg1 interface{},
 
 // ListEventDataStores mocks base method.
 func (m *MockCloudtrailClient) ListEventDataStores(arg0 context.Context, arg1 *cloudtrail.ListEventDataStoresInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.ListEventDataStoresOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEventDataStores")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockCloudtrailClientMockRecorder) ListEventDataStores(arg0, arg1 inter
 
 // ListImportFailures mocks base method.
 func (m *MockCloudtrailClient) ListImportFailures(arg0 context.Context, arg1 *cloudtrail.ListImportFailuresInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.ListImportFailuresOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListImportFailures")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockCloudtrailClientMockRecorder) ListImportFailures(arg0, arg1 interf
 
 // ListImports mocks base method.
 func (m *MockCloudtrailClient) ListImports(arg0 context.Context, arg1 *cloudtrail.ListImportsInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.ListImportsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListImports")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockCloudtrailClientMockRecorder) ListImports(arg0, arg1 interface{}, 
 
 // ListPublicKeys mocks base method.
 func (m *MockCloudtrailClient) ListPublicKeys(arg0 context.Context, arg1 *cloudtrail.ListPublicKeysInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.ListPublicKeysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPublicKeys")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockCloudtrailClientMockRecorder) ListPublicKeys(arg0, arg1 interface{
 
 // ListQueries mocks base method.
 func (m *MockCloudtrailClient) ListQueries(arg0 context.Context, arg1 *cloudtrail.ListQueriesInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.ListQueriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListQueries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockCloudtrailClientMockRecorder) ListQueries(arg0, arg1 interface{}, 
 
 // ListTags mocks base method.
 func (m *MockCloudtrailClient) ListTags(arg0 context.Context, arg1 *cloudtrail.ListTagsInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.ListTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockCloudtrailClientMockRecorder) ListTags(arg0, arg1 interface{}, arg
 
 // ListTrails mocks base method.
 func (m *MockCloudtrailClient) ListTrails(arg0 context.Context, arg1 *cloudtrail.ListTrailsInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.ListTrailsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTrails")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockCloudtrailClientMockRecorder) ListTrails(arg0, arg1 interface{}, a
 
 // LookupEvents mocks base method.
 func (m *MockCloudtrailClient) LookupEvents(arg0 context.Context, arg1 *cloudtrail.LookupEventsInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.LookupEventsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to LookupEvents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

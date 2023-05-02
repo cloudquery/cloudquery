@@ -26,13 +26,16 @@ func fetchIdentitystoreUsers(ctx context.Context, meta schema.ClientMeta, parent
 	if err != nil {
 		return err
 	}
-	svc := meta.(*client.Client).Services().Identitystore
+	cl := meta.(*client.Client)
+	svc := cl.Services().Identitystore
 	config := identitystore.ListUsersInput{
 		IdentityStoreId: instance.IdentityStoreId,
 	}
 	paginator := identitystore.NewListUsersPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *identitystore.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -37,6 +37,16 @@ func (m *MockAccessanalyzerClient) EXPECT() *MockAccessanalyzerClientMockRecorde
 
 // GetAccessPreview mocks base method.
 func (m *MockAccessanalyzerClient) GetAccessPreview(arg0 context.Context, arg1 *accessanalyzer.GetAccessPreviewInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.GetAccessPreviewOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccessPreview")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockAccessanalyzerClientMockRecorder) GetAccessPreview(arg0, arg1 inte
 
 // GetAnalyzedResource mocks base method.
 func (m *MockAccessanalyzerClient) GetAnalyzedResource(arg0 context.Context, arg1 *accessanalyzer.GetAnalyzedResourceInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.GetAnalyzedResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAnalyzedResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockAccessanalyzerClientMockRecorder) GetAnalyzedResource(arg0, arg1 i
 
 // GetAnalyzer mocks base method.
 func (m *MockAccessanalyzerClient) GetAnalyzer(arg0 context.Context, arg1 *accessanalyzer.GetAnalyzerInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.GetAnalyzerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAnalyzer")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockAccessanalyzerClientMockRecorder) GetAnalyzer(arg0, arg1 interface
 
 // GetArchiveRule mocks base method.
 func (m *MockAccessanalyzerClient) GetArchiveRule(arg0 context.Context, arg1 *accessanalyzer.GetArchiveRuleInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.GetArchiveRuleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetArchiveRule")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockAccessanalyzerClientMockRecorder) GetArchiveRule(arg0, arg1 interf
 
 // GetFinding mocks base method.
 func (m *MockAccessanalyzerClient) GetFinding(arg0 context.Context, arg1 *accessanalyzer.GetFindingInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.GetFindingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFinding")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockAccessanalyzerClientMockRecorder) GetFinding(arg0, arg1 interface{
 
 // GetGeneratedPolicy mocks base method.
 func (m *MockAccessanalyzerClient) GetGeneratedPolicy(arg0 context.Context, arg1 *accessanalyzer.GetGeneratedPolicyInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.GetGeneratedPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetGeneratedPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockAccessanalyzerClientMockRecorder) GetGeneratedPolicy(arg0, arg1 in
 
 // ListAccessPreviewFindings mocks base method.
 func (m *MockAccessanalyzerClient) ListAccessPreviewFindings(arg0 context.Context, arg1 *accessanalyzer.ListAccessPreviewFindingsInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.ListAccessPreviewFindingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAccessPreviewFindings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockAccessanalyzerClientMockRecorder) ListAccessPreviewFindings(arg0, 
 
 // ListAccessPreviews mocks base method.
 func (m *MockAccessanalyzerClient) ListAccessPreviews(arg0 context.Context, arg1 *accessanalyzer.ListAccessPreviewsInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.ListAccessPreviewsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAccessPreviews")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockAccessanalyzerClientMockRecorder) ListAccessPreviews(arg0, arg1 in
 
 // ListAnalyzedResources mocks base method.
 func (m *MockAccessanalyzerClient) ListAnalyzedResources(arg0 context.Context, arg1 *accessanalyzer.ListAnalyzedResourcesInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.ListAnalyzedResourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAnalyzedResources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockAccessanalyzerClientMockRecorder) ListAnalyzedResources(arg0, arg1
 
 // ListAnalyzers mocks base method.
 func (m *MockAccessanalyzerClient) ListAnalyzers(arg0 context.Context, arg1 *accessanalyzer.ListAnalyzersInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.ListAnalyzersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAnalyzers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockAccessanalyzerClientMockRecorder) ListAnalyzers(arg0, arg1 interfa
 
 // ListArchiveRules mocks base method.
 func (m *MockAccessanalyzerClient) ListArchiveRules(arg0 context.Context, arg1 *accessanalyzer.ListArchiveRulesInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.ListArchiveRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListArchiveRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockAccessanalyzerClientMockRecorder) ListArchiveRules(arg0, arg1 inte
 
 // ListFindings mocks base method.
 func (m *MockAccessanalyzerClient) ListFindings(arg0 context.Context, arg1 *accessanalyzer.ListFindingsInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.ListFindingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFindings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockAccessanalyzerClientMockRecorder) ListFindings(arg0, arg1 interfac
 
 // ListPolicyGenerations mocks base method.
 func (m *MockAccessanalyzerClient) ListPolicyGenerations(arg0 context.Context, arg1 *accessanalyzer.ListPolicyGenerationsInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.ListPolicyGenerationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPolicyGenerations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockAccessanalyzerClientMockRecorder) ListPolicyGenerations(arg0, arg1
 
 // ListTagsForResource mocks base method.
 func (m *MockAccessanalyzerClient) ListTagsForResource(arg0 context.Context, arg1 *accessanalyzer.ListTagsForResourceInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

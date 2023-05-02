@@ -41,12 +41,14 @@ func Identities() *schema.Table {
 }
 
 func fetchSesIdentities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sesv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sesv2
 
 	p := sesv2.NewListEmailIdentitiesPaginator(svc, nil)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(o *sesv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,11 +59,16 @@ func fetchSesIdentities(ctx context.Context, meta schema.ClientMeta, parent *sch
 }
 
 func getIdentity(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sesv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sesv2
 	ei := resource.Item.(types.IdentityInfo)
 
-	getOutput, err := svc.GetEmailIdentity(ctx, &sesv2.GetEmailIdentityInput{EmailIdentity: ei.IdentityName})
+	getOutput, err := svc.GetEmailIdentity(ctx,
+		&sesv2.GetEmailIdentityInput{EmailIdentity: ei.IdentityName},
+		func(o *sesv2.Options) {
+			o.Region = cl.Region
+		},
+	)
 	if err != nil {
 		return err
 	}

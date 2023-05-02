@@ -40,10 +40,13 @@ func Connections() *schema.Table {
 
 func fetchApprunnerConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apprunner.ListConnectionsInput
+	c := meta.(*client.Client)
 	svc := meta.(*client.Client).Services().Apprunner
 	paginator := apprunner.NewListConnectionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *apprunner.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

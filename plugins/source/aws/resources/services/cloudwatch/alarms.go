@@ -49,7 +49,9 @@ func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, parent *
 	svc := c.Services().Cloudwatch
 	paginator := cloudwatch.NewDescribeAlarmsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cloudwatch.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -74,7 +76,9 @@ func resolveCloudwatchAlarmTags(ctx context.Context, meta schema.ClientMeta, res
 	input := cloudwatch.ListTagsForResourceInput{
 		ResourceARN: alarm.AlarmArn,
 	}
-	output, err := svc.ListTagsForResource(ctx, &input)
+	output, err := svc.ListTagsForResource(ctx, &input, func(options *cloudwatch.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

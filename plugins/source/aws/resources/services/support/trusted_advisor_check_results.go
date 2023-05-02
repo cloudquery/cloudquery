@@ -28,16 +28,18 @@ func trustedAdvisorCheckResults() *schema.Table {
 }
 
 func fetchTrustedAdvisorCheckResults(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	// No need to get the result for each language, as those are the same have the same check id
-	if c.LanguageCode != "en" {
+	if cl.LanguageCode != "en" {
 		return nil
 	}
-	svc := c.Services().Support
+	svc := cl.Services().Support
 	check := parent.Item.(types.TrustedAdvisorCheckDescription)
 	input := support.DescribeTrustedAdvisorCheckResultInput{CheckId: check.Id}
 
-	response, err := svc.DescribeTrustedAdvisorCheckResult(ctx, &input)
+	response, err := svc.DescribeTrustedAdvisorCheckResult(ctx, &input, func(o *support.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -55,6 +57,6 @@ func mockCheckResults(check types.TrustedAdvisorCheckDescription, m *mocks.MockS
 	}
 
 	input := support.DescribeTrustedAdvisorCheckResultInput{CheckId: check.Id}
-	m.EXPECT().DescribeTrustedAdvisorCheckResult(gomock.Any(), &input).Return(&support.DescribeTrustedAdvisorCheckResultOutput{Result: &result}, nil)
+	m.EXPECT().DescribeTrustedAdvisorCheckResult(gomock.Any(), &input, gomock.Any()).Return(&support.DescribeTrustedAdvisorCheckResultOutput{Result: &result}, nil)
 	return nil
 }
