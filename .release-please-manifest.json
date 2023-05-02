@@ -7,7 +7,7 @@
   "plugins/source/azure+FILLER": "0.0.0",
   "plugins/source/cloudflare": "3.3.0",
   "plugins/source/cloudflare+FILLER": "0.0.0",
-  "plugins/source/digitalocean": "4.3.0",
+  "plugins/source/digitalocean": "4.3.1",
   "plugins/source/digitalocean+FILLER": "0.0.0",
   "plugins/source/gcp": "8.5.0",
   "plugins/source/gcp+FILLER": "0.0.0",
