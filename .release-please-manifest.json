@@ -105,7 +105,7 @@
   "plugins/destination/firehose+FILLER": "0.0.0",
   "plugins/source/awspricing": "1.2.0",
   "plugins/source/awspricing+FILLER": "0.0.0",
-  "plugins/destination/duckdb": "2.0.0",
+  "plugins/destination/duckdb": "2.0.1",
   "plugins/destination/duckdb+FILLER": "0.0.0",
   "plugins/source/facebookmarketing": "1.1.0",
   "plugins/source/facebookmarketing+FILLER": "0.0.0",
