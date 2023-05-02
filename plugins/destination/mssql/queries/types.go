@@ -2,6 +2,8 @@ package queries
 
 import (
 	"fmt"
+	"reflect"
+	"time"
 
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/types"
@@ -67,4 +69,41 @@ func SchemaType(tableName, columnName, sqlType string) (arrow.DataType, error) {
 		return v, nil
 	}
 	return nil, fmt.Errorf("got unknown MSSQL type %q of column %q for table %q while trying to convert it to Apache Arrow type. Supported MSSQL types are %q", sqlType, columnName, tableName, maps.Keys(sqlToSchema))
+}
+
+// columnGoType has to be in sync with SQLType
+func columnGoType(_type arrow.DataType) reflect.Type {
+	switch _type.(type) {
+	case *arrow.BooleanType:
+		return reflect.TypeOf(true)
+
+	case *arrow.Uint8Type:
+		return reflect.TypeOf(uint8(0))
+	case *arrow.Int8Type, *arrow.Uint16Type, *arrow.Int16Type:
+		return reflect.TypeOf(int16(0))
+	case *arrow.Uint32Type, *arrow.Int32Type:
+		return reflect.TypeOf(int32(0))
+	case *arrow.Uint64Type, *arrow.Int64Type:
+		return reflect.TypeOf(int64(0))
+
+	case *arrow.Float32Type:
+		return reflect.TypeOf(float32(0))
+	case *arrow.Float64Type:
+		return reflect.TypeOf(float64(0))
+
+	case *arrow.LargeStringType, *arrow.StringType, *types.InetType, *types.MacType:
+		return reflect.TypeOf("")
+
+	case arrow.BinaryDataType, *arrow.FixedSizeBinaryType:
+		return reflect.TypeOf([]byte{})
+
+	case *types.UUIDType:
+		return reflect.TypeOf([]byte{})
+
+	case *arrow.TimestampType:
+		return reflect.TypeOf(time.Time{})
+
+	default:
+		return reflect.TypeOf("")
+	}
 }

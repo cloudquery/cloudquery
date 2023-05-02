@@ -25,7 +25,7 @@ func (c *Client) Read(ctx context.Context, sc *arrow.Schema, sourceName string, 
 				return err
 			}
 
-			record, err := reverseTransform(sc, resource)
+			record, err := queries.Record(sc, resource)
 			if err != nil {
 				return err
 			}
