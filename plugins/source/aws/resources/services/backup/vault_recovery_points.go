@@ -53,7 +53,9 @@ func fetchBackupVaultRecoveryPoints(ctx context.Context, meta schema.ClientMeta,
 	params := backup.ListRecoveryPointsByBackupVaultInput{BackupVaultName: vault.BackupVaultName, MaxResults: aws.Int32(100)}
 	paginator := backup.NewListRecoveryPointsByBackupVaultPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *backup.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -91,7 +93,9 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 	tags := make(map[string]string)
 	paginator := backup.NewListTagsPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *backup.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if client.IsAWSError(err, "ERROR_2603") {
 				// ignoring "ERROR_2603: Cannot find recovery point."

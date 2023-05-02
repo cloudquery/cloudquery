@@ -36,12 +36,14 @@ func Templates() *schema.Table {
 }
 
 func fetchSesTemplates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sesv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sesv2
 
 	p := sesv2.NewListEmailTemplatesPaginator(svc, nil)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(o *sesv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -52,11 +54,16 @@ func fetchSesTemplates(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 
 func getTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sesv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sesv2
 	templateMeta := resource.Item.(types.EmailTemplateMetadata)
 
-	getOutput, err := svc.GetEmailTemplate(ctx, &sesv2.GetEmailTemplateInput{TemplateName: templateMeta.TemplateName})
+	getOutput, err := svc.GetEmailTemplate(ctx,
+		&sesv2.GetEmailTemplateInput{TemplateName: templateMeta.TemplateName},
+		func(o *sesv2.Options) {
+			o.Region = cl.Region
+		},
+	)
 	if err != nil {
 		return err
 	}

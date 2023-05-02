@@ -42,10 +42,12 @@ func Clusters() *schema.Table {
 func fetchElasticacheClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input elasticache.DescribeCacheClustersInput
 	input.ShowCacheNodeInfo = aws.Bool(true)
-
+	cl := meta.(*client.Client)
 	paginator := elasticache.NewDescribeCacheClustersPaginator(meta.(*client.Client).Services().Elasticache, &input)
 	for paginator.HasMorePages() {
-		v, err := paginator.NextPage(ctx)
+		v, err := paginator.NextPage(ctx, func(options *elasticache.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,9 +59,12 @@ func fetchElasticacheClusters(ctx context.Context, meta schema.ClientMeta, paren
 func resolveClusterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cluster := resource.Item.(types.CacheCluster)
 
-	svc := meta.(*client.Client).Services().Elasticache
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticache
 	response, err := svc.ListTagsForResource(ctx, &elasticache.ListTagsForResourceInput{
 		ResourceName: cluster.ARN,
+	}, func(options *elasticache.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

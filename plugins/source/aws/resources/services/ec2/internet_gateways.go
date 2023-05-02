@@ -45,7 +45,9 @@ func fetchEc2InternetGateways(ctx context.Context, meta schema.ClientMeta, paren
 	svc := c.Services().Ec2
 	paginator := ec2.NewDescribeInternetGatewaysPaginator(svc, &ec2.DescribeInternetGatewaysInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

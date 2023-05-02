@@ -46,8 +46,11 @@ func Domains() *schema.Table {
 }
 
 func fetchElasticsearchDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Elasticsearchservice
-	out, err := svc.ListDomainNames(ctx, nil)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticsearchservice
+	out, err := svc.ListDomainNames(ctx, nil, func(options *elasticsearchservice.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -58,11 +61,15 @@ func fetchElasticsearchDomains(ctx context.Context, meta schema.ClientMeta, pare
 }
 
 func getDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Elasticsearchservice
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticsearchservice
 
 	out, err := svc.DescribeElasticsearchDomain(ctx,
 		&elasticsearchservice.DescribeElasticsearchDomainInput{
 			DomainName: resource.Item.(types.DomainInfo).DomainName,
+		},
+		func(options *elasticsearchservice.Options) {
+			options.Region = cl.Region
 		},
 	)
 	if err != nil {
@@ -75,11 +82,15 @@ func getDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 }
 
 func resolveDomainTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	svc := meta.(*client.Client).Services().Elasticsearchservice
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticsearchservice
 
 	tagsOutput, err := svc.ListTags(ctx,
 		&elasticsearchservice.ListTagsInput{
 			ARN: resource.Item.(*types.ElasticsearchDomainStatus).ARN,
+		},
+		func(options *elasticsearchservice.Options) {
+			options.Region = cl.Region
 		},
 	)
 	if err != nil {
@@ -90,7 +101,8 @@ func resolveDomainTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 }
 
 func resolveAuthorizedPrincipals(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	svc := meta.(*client.Client).Services().Elasticsearchservice
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticsearchservice
 
 	input := &elasticsearchservice.ListVpcEndpointAccessInput{
 		DomainName: resource.Item.(*types.ElasticsearchDomainStatus).DomainName,
@@ -99,7 +111,9 @@ func resolveAuthorizedPrincipals(ctx context.Context, meta schema.ClientMeta, re
 	var principals []types.AuthorizedPrincipal
 	// No paginator available
 	for {
-		out, err := svc.ListVpcEndpointAccess(ctx, input)
+		out, err := svc.ListVpcEndpointAccess(ctx, input, func(options *elasticsearchservice.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

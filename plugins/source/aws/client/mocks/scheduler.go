@@ -37,6 +37,16 @@ func (m *MockSchedulerClient) EXPECT() *MockSchedulerClientMockRecorder {
 
 // GetSchedule mocks base method.
 func (m *MockSchedulerClient) GetSchedule(arg0 context.Context, arg1 *scheduler.GetScheduleInput, arg2 ...func(*scheduler.Options)) (*scheduler.GetScheduleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &scheduler.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSchedule")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockSchedulerClientMockRecorder) GetSchedule(arg0, arg1 interface{}, a
 
 // GetScheduleGroup mocks base method.
 func (m *MockSchedulerClient) GetScheduleGroup(arg0 context.Context, arg1 *scheduler.GetScheduleGroupInput, arg2 ...func(*scheduler.Options)) (*scheduler.GetScheduleGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &scheduler.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetScheduleGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockSchedulerClientMockRecorder) GetScheduleGroup(arg0, arg1 interface
 
 // ListScheduleGroups mocks base method.
 func (m *MockSchedulerClient) ListScheduleGroups(arg0 context.Context, arg1 *scheduler.ListScheduleGroupsInput, arg2 ...func(*scheduler.Options)) (*scheduler.ListScheduleGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &scheduler.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListScheduleGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockSchedulerClientMockRecorder) ListScheduleGroups(arg0, arg1 interfa
 
 // ListSchedules mocks base method.
 func (m *MockSchedulerClient) ListSchedules(arg0 context.Context, arg1 *scheduler.ListSchedulesInput, arg2 ...func(*scheduler.Options)) (*scheduler.ListSchedulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &scheduler.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSchedules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockSchedulerClientMockRecorder) ListSchedules(arg0, arg1 interface{},
 
 // ListTagsForResource mocks base method.
 func (m *MockSchedulerClient) ListTagsForResource(arg0 context.Context, arg1 *scheduler.ListTagsForResourceInput, arg2 ...func(*scheduler.Options)) (*scheduler.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &scheduler.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

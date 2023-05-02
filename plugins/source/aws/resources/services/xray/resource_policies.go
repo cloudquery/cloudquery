@@ -42,9 +42,12 @@ func ResourcePolicies() *schema.Table {
 }
 
 func fetchXrayResourcePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	paginator := xray.NewListResourcePoliciesPaginator(meta.(*client.Client).Services().Xray, nil)
+	cl := meta.(*client.Client)
+	paginator := xray.NewListResourcePoliciesPaginator(cl.Services().Xray, nil)
 	for paginator.HasMorePages() {
-		v, err := paginator.NextPage(ctx)
+		v, err := paginator.NextPage(ctx, func(o *xray.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

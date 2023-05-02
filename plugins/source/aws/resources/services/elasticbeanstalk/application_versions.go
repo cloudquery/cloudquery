@@ -40,7 +40,9 @@ func fetchElasticbeanstalkApplicationVersions(ctx context.Context, meta schema.C
 	svc := c.Services().Elasticbeanstalk
 	// No paginator available
 	for {
-		output, err := svc.DescribeApplicationVersions(ctx, &config)
+		output, err := svc.DescribeApplicationVersions(ctx, &config, func(options *elasticbeanstalk.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

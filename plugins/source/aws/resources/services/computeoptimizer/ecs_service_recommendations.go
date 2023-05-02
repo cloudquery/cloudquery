@@ -35,7 +35,9 @@ func fetchEcsServiceRecommendations(ctx context.Context, meta schema.ClientMeta,
 	}
 	// No paginator available
 	for {
-		response, err := svc.GetECSServiceRecommendations(ctx, &input)
+		response, err := svc.GetECSServiceRecommendations(ctx, &input, func(options *computeoptimizer.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
