@@ -42,7 +42,9 @@ func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema
 		MaxResults: aws.Int32(250),
 	})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,6 +59,8 @@ func getStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 
 	output, err := svc.DescribeStream(ctx, &iot.DescribeStreamInput{
 		StreamId: resource.Item.(types.StreamSummary).StreamId,
+	}, func(options *iot.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

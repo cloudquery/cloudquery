@@ -45,7 +45,9 @@ func fetchFsxDataRepositoryTasks(ctx context.Context, meta schema.ClientMeta, pa
 	input := fsx.DescribeDataRepositoryTasksInput{MaxResults: aws.Int32(1000)}
 	paginator := fsx.NewDescribeDataRepositoryTasksPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		result, err := paginator.NextPage(ctx)
+		result, err := paginator.NextPage(ctx, func(options *fsx.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

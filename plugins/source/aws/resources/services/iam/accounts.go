@@ -25,9 +25,12 @@ func Accounts() *schema.Table {
 }
 
 func fetchIamAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 
-	summary, err := svc.GetAccountSummary(ctx, &iam.GetAccountSummaryInput{})
+	summary, err := svc.GetAccountSummary(ctx, &iam.GetAccountSummaryInput{}, func(options *iam.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -41,7 +44,9 @@ func fetchIamAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 	}
 	paginator := iam.NewListAccountAliasesPaginator(svc, &iam.ListAccountAliasesInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iam.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

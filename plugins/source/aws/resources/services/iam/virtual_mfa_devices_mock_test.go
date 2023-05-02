@@ -19,7 +19,7 @@ func buildIamVirtualMfaDevices(t *testing.T, ctrl *gomock.Controller) client.Ser
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListVirtualMFADevices(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListVirtualMFADevices(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListVirtualMFADevicesOutput{
 			VirtualMFADevices: []iamTypes.VirtualMFADevice{g},
 		}, nil)

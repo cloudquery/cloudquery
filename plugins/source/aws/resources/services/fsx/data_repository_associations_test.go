@@ -21,6 +21,7 @@ func buildDataRepoAssociationsMock(t *testing.T, ctrl *gomock.Controller) client
 	m.EXPECT().DescribeDataRepositoryAssociations(
 		gomock.Any(),
 		&fsx.DescribeDataRepositoryAssociationsInput{MaxResults: aws.Int32(25)},
+		gomock.Any(),
 	).Return(
 		&fsx.DescribeDataRepositoryAssociationsOutput{Associations: []types.DataRepositoryAssociation{a}},
 		nil,
