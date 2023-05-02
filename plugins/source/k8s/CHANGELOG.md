@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v3.5.0...plugins-source-k8s-v3.5.1) (2023-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v12 digest to 0ea1a10 ([#10461](https://github.com/cloudquery/cloudquery/issues/10461)) ([022709f](https://github.com/cloudquery/cloudquery/commit/022709f710cc6d95aee60260d6f58991698bbf42))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.1 ([#10448](https://github.com/cloudquery/cloudquery/issues/10448)) ([cc85b93](https://github.com/cloudquery/cloudquery/commit/cc85b939fe945939caf72f8c08095e1e744b9ee8))
+
 ## [3.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v3.4.1...plugins-source-k8s-v3.5.0) (2023-04-25)
 
 
