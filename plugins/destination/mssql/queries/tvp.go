@@ -107,7 +107,7 @@ func tableTransformer(sc *arrow.Schema) transformer {
 	for i, field := range sc.Fields() {
 		fld[i] = reflect.StructField{
 			Name: "Fld_" + field.Name,
-			Type: columnGoType(field.Type),
+			Type: reflect.PointerTo(columnGoType(field.Type)), // to account for nullability
 		}
 	}
 
@@ -120,8 +120,7 @@ func tableTransformer(sc *arrow.Schema) transformer {
 		for i, elem := range rowData {
 			val := reflect.ValueOf(elem)
 			switch {
-			case elem == nil:
-			case val.IsZero():
+			case elem == nil, val.IsNil():
 			default:
 				v.Field(i).Set(val)
 			}

@@ -51,62 +51,64 @@ func getColValue(arr arrow.Array, idx int) (any, error) {
 
 	switch arr := arr.(type) {
 	case *array.Boolean:
-		return arr.Value(idx), nil
+		return ptr(arr.Value(idx)), nil
 
 	case *array.Uint8:
-		return arr.Value(idx), nil
+		return ptr(arr.Value(idx)), nil
 	case *array.Uint16:
-		return int16(arr.Value(idx)), nil // as we map those to the signed types for now
+		return ptr(int16(arr.Value(idx))), nil // as we map those to the signed types for now
 	case *array.Uint32:
-		return int32(arr.Value(idx)), nil // as we map those to the signed types for now
+		return ptr(int32(arr.Value(idx))), nil // as we map those to the signed types for now
 	case *array.Uint64:
-		return int64(arr.Value(idx)), nil // as we map those to the signed types for now
+		return ptr(int64(arr.Value(idx))), nil // as we map those to the signed types for now
 
 	case *array.Int8:
-		return arr.Value(idx), nil
+		return ptr(arr.Value(idx)), nil
 	case *array.Int16:
-		return arr.Value(idx), nil
+		return ptr(arr.Value(idx)), nil
 	case *array.Int32:
-		return arr.Value(idx), nil
+		return ptr(arr.Value(idx)), nil
 	case *array.Int64:
-		return arr.Value(idx), nil
+		return ptr(arr.Value(idx)), nil
 
 	case *array.Float32:
-		return arr.Value(idx), nil
+		return ptr(arr.Value(idx)), nil
 	case *array.Float64:
-		return arr.Value(idx), nil
+		return ptr(arr.Value(idx)), nil
 
 	case *array.LargeString:
-		return arr.Value(idx), nil
+		return ptr(arr.Value(idx)), nil
 	case *array.String:
-		return arr.Value(idx), nil
+		return ptr(arr.Value(idx)), nil
 
 	case *array.Binary:
-		return arr.Value(idx), nil
+		return ptr(arr.Value(idx)), nil
 	case *array.LargeBinary:
-		return arr.Value(idx), nil
+		return ptr(arr.Value(idx)), nil
 	case *array.FixedSizeBinary:
-		return arr.Value(idx), nil
+		return ptr(arr.Value(idx)), nil
 
 	case *array.Timestamp:
 		toTime, err := arr.DataType().(*arrow.TimestampType).GetToTimeFunc()
 		if err != nil {
 			return nil, err
 		}
-		return toTime(arr.Value(idx)), nil
+		return ptr(toTime(arr.Value(idx))), nil
 
 	case *types.UUIDArray:
 		val, _ := mssql.UniqueIdentifier(arr.Value(idx)).Value()
-		return val, nil
+		return ptr(val.([]byte)), nil
 
 	case array.ListLike:
 		data, err := arr.MarshalJSON()
 		if err != nil {
 			return nil, err
 		}
-		return string(data), nil
+		return ptr(string(data)), nil
 
 	default:
-		return arr.ValueStr(idx), nil
+		return ptr(arr.ValueStr(idx)), nil
 	}
 }
+
+func ptr[A any](a A) *A { return &a }
