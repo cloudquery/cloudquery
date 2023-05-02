@@ -37,7 +37,9 @@ func fetchAutoscalingGroupLifecycleHooks(ctx context.Context, meta schema.Client
 	svc := cl.Services().Autoscaling
 	config := autoscaling.DescribeLifecycleHooksInput{AutoScalingGroupName: p.AutoScalingGroupName}
 
-	output, err := svc.DescribeLifecycleHooks(ctx, &config)
+	output, err := svc.DescribeLifecycleHooks(ctx, &config, func(options *autoscaling.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		if isAutoScalingGroupNotExistsError(err) {
 			return nil

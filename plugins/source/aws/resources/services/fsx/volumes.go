@@ -50,7 +50,9 @@ func fetchFsxVolumes(ctx context.Context, meta schema.ClientMeta, parent *schema
 	input := fsx.DescribeVolumesInput{MaxResults: aws.Int32(1000)}
 	paginator := fsx.NewDescribeVolumesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		result, err := paginator.NextPage(ctx)
+		result, err := paginator.NextPage(ctx, func(options *fsx.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

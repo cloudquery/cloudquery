@@ -29,7 +29,9 @@ func fetchOrganizationsDelegatedAdmins(ctx context.Context, meta schema.ClientMe
 	var input organizations.ListDelegatedAdministratorsInput
 	paginator := organizations.NewListDelegatedAdministratorsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

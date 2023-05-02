@@ -48,7 +48,9 @@ func fetchRdsDbParameterGroups(ctx context.Context, meta schema.ClientMeta, pare
 	var input rds.DescribeDBParameterGroupsInput
 	paginator := rds.NewDescribeDBParameterGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -64,7 +66,9 @@ func fetchRdsDbParameterGroupDbParameters(ctx context.Context, meta schema.Clien
 	input := rds.DescribeDBParametersInput{DBParameterGroupName: g.DBParameterGroupName}
 	paginator := rds.NewDescribeDBParametersPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if client.IsAWSError(err, "DBParameterGroupNotFound") {
 				cl.Logger().Warn().Err(err).Msg("received DBParameterGroupNotFound on DescribeDBParameters")
@@ -79,8 +83,11 @@ func fetchRdsDbParameterGroupDbParameters(ctx context.Context, meta schema.Clien
 
 func resolveRdsDbParameterGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	g := resource.Item.(types.DBParameterGroup)
-	svc := meta.(*client.Client).Services().Rds
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBParameterGroupArn})
+	cl := meta.(*client.Client)
+	svc := cl.Services().Rds
+	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBParameterGroupArn}, func(options *rds.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

@@ -43,7 +43,9 @@ func fetchDirectconnectGatewayAssociations(ctx context.Context, meta schema.Clie
 	config := directconnect.DescribeDirectConnectGatewayAssociationsInput{DirectConnectGatewayId: gateway.DirectConnectGatewayId}
 	// No paginator available
 	for {
-		output, err := svc.DescribeDirectConnectGatewayAssociations(ctx, &config)
+		output, err := svc.DescribeDirectConnectGatewayAssociations(ctx, &config, func(options *directconnect.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

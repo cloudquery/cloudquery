@@ -96,7 +96,9 @@ func fetchRdsClusterParameters(ctx context.Context, meta schema.ClientMeta, pare
 		DBParameterGroupFamily: parentEngineVersion.DBParameterGroupFamily,
 	}
 
-	output, err := svc.DescribeEngineDefaultClusterParameters(ctx, input)
+	output, err := svc.DescribeEngineDefaultClusterParameters(ctx, input, func(options *rds.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
