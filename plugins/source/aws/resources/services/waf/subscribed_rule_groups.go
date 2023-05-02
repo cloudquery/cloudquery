@@ -43,11 +43,13 @@ func SubscribedRuleGroups() *schema.Table {
 }
 
 func fetchWafSubscribedRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	service := c.Services().Waf
+	cl := meta.(*client.Client)
+	service := cl.Services().Waf
 	config := waf.ListSubscribedRuleGroupsInput{}
 	for {
-		output, err := service.ListSubscribedRuleGroups(ctx, &config)
+		output, err := service.ListSubscribedRuleGroups(ctx, &config, func(o *waf.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

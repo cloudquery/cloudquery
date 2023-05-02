@@ -40,7 +40,9 @@ func fetchMwaaEnvironments(ctx context.Context, meta schema.ClientMeta, parent *
 	svc := c.Services().Mwaa
 	p := mwaa.NewListEnvironmentsPaginator(svc, &config)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *mwaa.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -50,10 +52,13 @@ func fetchMwaaEnvironments(ctx context.Context, meta schema.ClientMeta, parent *
 }
 
 func getEnvironment(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Mwaa
+	cl := meta.(*client.Client)
+	svc := cl.Services().Mwaa
 	name := resource.Item.(string)
 
-	output, err := svc.GetEnvironment(ctx, &mwaa.GetEnvironmentInput{Name: &name})
+	output, err := svc.GetEnvironment(ctx, &mwaa.GetEnvironmentInput{Name: &name}, func(options *mwaa.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

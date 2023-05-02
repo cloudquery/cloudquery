@@ -37,13 +37,16 @@ func repositoryImages() *schema.Table {
 	}
 }
 func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 	config := ecr.DescribeImagesInput{
 		RepositoryName: parent.Item.(types.Repository).RepositoryName,
 		MaxResults:     aws.Int32(1000),
 	}
 	paginator := ecr.NewDescribeImagesPaginator(meta.(*client.Client).Services().Ecr, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *ecr.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

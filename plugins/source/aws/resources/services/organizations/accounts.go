@@ -44,7 +44,9 @@ func fetchOrganizationsAccounts(ctx context.Context, meta schema.ClientMeta, _ *
 	var input organizations.ListAccountsInput
 	paginator := organizations.NewListAccountsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -61,7 +63,9 @@ func resolveAccountTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	}
 	paginator := organizations.NewListTagsForResourcePaginator(cl.Services().Organizations, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

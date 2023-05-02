@@ -24,6 +24,7 @@ func buildVolumesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().DescribeVolumes(
 		gomock.Any(),
 		&fsx.DescribeVolumesInput{MaxResults: aws.Int32(1000)},
+		gomock.Any(),
 	).Return(
 		&fsx.DescribeVolumesOutput{Volumes: []types.Volume{v}},
 		nil,

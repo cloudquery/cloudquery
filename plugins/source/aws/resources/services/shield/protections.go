@@ -38,14 +38,16 @@ func Protections() *schema.Table {
 }
 
 func fetchShieldProtections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Shield
+	cl := meta.(*client.Client)
+	svc := cl.Services().Shield
 	config := shield.ListProtectionsInput{}
 	paginator := shield.NewListProtectionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *shield.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
-			if c.IsNotFoundError(err) {
+			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err
@@ -57,15 +59,15 @@ func fetchShieldProtections(ctx context.Context, meta schema.ClientMeta, parent 
 
 func resolveShieldProtectionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Protection)
-	cli := meta.(*client.Client)
-	svc := cli.Services().Shield
+	cl := meta.(*client.Client)
+	svc := cl.Services().Shield
 	config := shield.ListTagsForResourceInput{ResourceARN: r.ProtectionArn}
 
 	output, err := svc.ListTagsForResource(ctx, &config, func(o *shield.Options) {
-		o.Region = cli.Region
+		o.Region = cl.Region
 	})
 	if err != nil {
-		if cli.IsNotFoundError(err) {
+		if cl.IsNotFoundError(err) {
 			return nil
 		}
 		return err

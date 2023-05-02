@@ -37,6 +37,16 @@ func (m *MockTransferClient) EXPECT() *MockTransferClientMockRecorder {
 
 // DescribeAccess mocks base method.
 func (m *MockTransferClient) DescribeAccess(arg0 context.Context, arg1 *transfer.DescribeAccessInput, arg2 ...func(*transfer.Options)) (*transfer.DescribeAccessOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccess")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockTransferClientMockRecorder) DescribeAccess(arg0, arg1 interface{},
 
 // DescribeAgreement mocks base method.
 func (m *MockTransferClient) DescribeAgreement(arg0 context.Context, arg1 *transfer.DescribeAgreementInput, arg2 ...func(*transfer.Options)) (*transfer.DescribeAgreementOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAgreement")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockTransferClientMockRecorder) DescribeAgreement(arg0, arg1 interface
 
 // DescribeCertificate mocks base method.
 func (m *MockTransferClient) DescribeCertificate(arg0 context.Context, arg1 *transfer.DescribeCertificateInput, arg2 ...func(*transfer.Options)) (*transfer.DescribeCertificateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCertificate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockTransferClientMockRecorder) DescribeCertificate(arg0, arg1 interfa
 
 // DescribeConnector mocks base method.
 func (m *MockTransferClient) DescribeConnector(arg0 context.Context, arg1 *transfer.DescribeConnectorInput, arg2 ...func(*transfer.Options)) (*transfer.DescribeConnectorOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConnector")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockTransferClientMockRecorder) DescribeConnector(arg0, arg1 interface
 
 // DescribeExecution mocks base method.
 func (m *MockTransferClient) DescribeExecution(arg0 context.Context, arg1 *transfer.DescribeExecutionInput, arg2 ...func(*transfer.Options)) (*transfer.DescribeExecutionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeExecution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockTransferClientMockRecorder) DescribeExecution(arg0, arg1 interface
 
 // DescribeHostKey mocks base method.
 func (m *MockTransferClient) DescribeHostKey(arg0 context.Context, arg1 *transfer.DescribeHostKeyInput, arg2 ...func(*transfer.Options)) (*transfer.DescribeHostKeyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeHostKey")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockTransferClientMockRecorder) DescribeHostKey(arg0, arg1 interface{}
 
 // DescribeProfile mocks base method.
 func (m *MockTransferClient) DescribeProfile(arg0 context.Context, arg1 *transfer.DescribeProfileInput, arg2 ...func(*transfer.Options)) (*transfer.DescribeProfileOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProfile")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockTransferClientMockRecorder) DescribeProfile(arg0, arg1 interface{}
 
 // DescribeSecurityPolicy mocks base method.
 func (m *MockTransferClient) DescribeSecurityPolicy(arg0 context.Context, arg1 *transfer.DescribeSecurityPolicyInput, arg2 ...func(*transfer.Options)) (*transfer.DescribeSecurityPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSecurityPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockTransferClientMockRecorder) DescribeSecurityPolicy(arg0, arg1 inte
 
 // DescribeServer mocks base method.
 func (m *MockTransferClient) DescribeServer(arg0 context.Context, arg1 *transfer.DescribeServerInput, arg2 ...func(*transfer.Options)) (*transfer.DescribeServerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeServer")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockTransferClientMockRecorder) DescribeServer(arg0, arg1 interface{},
 
 // DescribeUser mocks base method.
 func (m *MockTransferClient) DescribeUser(arg0 context.Context, arg1 *transfer.DescribeUserInput, arg2 ...func(*transfer.Options)) (*transfer.DescribeUserOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUser")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockTransferClientMockRecorder) DescribeUser(arg0, arg1 interface{}, a
 
 // DescribeWorkflow mocks base method.
 func (m *MockTransferClient) DescribeWorkflow(arg0 context.Context, arg1 *transfer.DescribeWorkflowInput, arg2 ...func(*transfer.Options)) (*transfer.DescribeWorkflowOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeWorkflow")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockTransferClientMockRecorder) DescribeWorkflow(arg0, arg1 interface{
 
 // ListAccesses mocks base method.
 func (m *MockTransferClient) ListAccesses(arg0 context.Context, arg1 *transfer.ListAccessesInput, arg2 ...func(*transfer.Options)) (*transfer.ListAccessesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAccesses")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockTransferClientMockRecorder) ListAccesses(arg0, arg1 interface{}, a
 
 // ListAgreements mocks base method.
 func (m *MockTransferClient) ListAgreements(arg0 context.Context, arg1 *transfer.ListAgreementsInput, arg2 ...func(*transfer.Options)) (*transfer.ListAgreementsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAgreements")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockTransferClientMockRecorder) ListAgreements(arg0, arg1 interface{},
 
 // ListCertificates mocks base method.
 func (m *MockTransferClient) ListCertificates(arg0 context.Context, arg1 *transfer.ListCertificatesInput, arg2 ...func(*transfer.Options)) (*transfer.ListCertificatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCertificates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockTransferClientMockRecorder) ListCertificates(arg0, arg1 interface{
 
 // ListConnectors mocks base method.
 func (m *MockTransferClient) ListConnectors(arg0 context.Context, arg1 *transfer.ListConnectorsInput, arg2 ...func(*transfer.Options)) (*transfer.ListConnectorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListConnectors")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockTransferClientMockRecorder) ListConnectors(arg0, arg1 interface{},
 
 // ListExecutions mocks base method.
 func (m *MockTransferClient) ListExecutions(arg0 context.Context, arg1 *transfer.ListExecutionsInput, arg2 ...func(*transfer.Options)) (*transfer.ListExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockTransferClientMockRecorder) ListExecutions(arg0, arg1 interface{},
 
 // ListHostKeys mocks base method.
 func (m *MockTransferClient) ListHostKeys(arg0 context.Context, arg1 *transfer.ListHostKeysInput, arg2 ...func(*transfer.Options)) (*transfer.ListHostKeysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListHostKeys")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockTransferClientMockRecorder) ListHostKeys(arg0, arg1 interface{}, a
 
 // ListProfiles mocks base method.
 func (m *MockTransferClient) ListProfiles(arg0 context.Context, arg1 *transfer.ListProfilesInput, arg2 ...func(*transfer.Options)) (*transfer.ListProfilesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProfiles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockTransferClientMockRecorder) ListProfiles(arg0, arg1 interface{}, a
 
 // ListSecurityPolicies mocks base method.
 func (m *MockTransferClient) ListSecurityPolicies(arg0 context.Context, arg1 *transfer.ListSecurityPoliciesInput, arg2 ...func(*transfer.Options)) (*transfer.ListSecurityPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSecurityPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockTransferClientMockRecorder) ListSecurityPolicies(arg0, arg1 interf
 
 // ListServers mocks base method.
 func (m *MockTransferClient) ListServers(arg0 context.Context, arg1 *transfer.ListServersInput, arg2 ...func(*transfer.Options)) (*transfer.ListServersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListServers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockTransferClientMockRecorder) ListServers(arg0, arg1 interface{}, ar
 
 // ListTagsForResource mocks base method.
 func (m *MockTransferClient) ListTagsForResource(arg0 context.Context, arg1 *transfer.ListTagsForResourceInput, arg2 ...func(*transfer.Options)) (*transfer.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockTransferClientMockRecorder) ListTagsForResource(arg0, arg1 interfa
 
 // ListUsers mocks base method.
 func (m *MockTransferClient) ListUsers(arg0 context.Context, arg1 *transfer.ListUsersInput, arg2 ...func(*transfer.Options)) (*transfer.ListUsersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUsers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockTransferClientMockRecorder) ListUsers(arg0, arg1 interface{}, arg2
 
 // ListWorkflows mocks base method.
 func (m *MockTransferClient) ListWorkflows(arg0 context.Context, arg1 *transfer.ListWorkflowsInput, arg2 ...func(*transfer.Options)) (*transfer.ListWorkflowsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &transfer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListWorkflows")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
