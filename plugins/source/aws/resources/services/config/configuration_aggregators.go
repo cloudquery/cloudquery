@@ -10,40 +10,36 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
-func ConfigRules() *schema.Table {
-	tableName := "aws_config_config_rules"
+func ConfigurationAggregators() *schema.Table {
+	tableName := "aws_config_configuration_aggregators"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConfigRules.html`,
-		Resolver:    fetchConfigConfigRules,
+		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConfigurationAggregators.html`,
+		Resolver:    fetchConfigurationAggregators,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
-		Transform:   transformers.TransformWithStruct(&types.ConfigRule{}),
+		Transform:   transformers.TransformWithStruct(&types.ConfigurationAggregator{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ConfigRuleArn"),
+				Resolver: schema.PathResolver("ConfigurationAggregatorArn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
 			},
 		},
-
-		Relations: []*schema.Table{
-			configRuleCompliances(),
-			remediationConfigurations(),
-		},
+		Relations: []*schema.Table{},
 	}
 }
 
-func fetchConfigConfigRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchConfigurationAggregators(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Configservice
 
-	input := &configservice.DescribeConfigRulesInput{}
-	p := configservice.NewDescribeConfigRulesPaginator(svc, input)
+	input := &configservice.DescribeConfigurationAggregatorsInput{}
+	p := configservice.NewDescribeConfigurationAggregatorsPaginator(svc, input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *configservice.Options) {
 			options.Region = c.Region
@@ -51,7 +47,7 @@ func fetchConfigConfigRules(ctx context.Context, meta schema.ClientMeta, parent 
 		if err != nil {
 			return err
 		}
-		res <- response.ConfigRules
+		res <- response.ConfigurationAggregators
 	}
 	return nil
 }
