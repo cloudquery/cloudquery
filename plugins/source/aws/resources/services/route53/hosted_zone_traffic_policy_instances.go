@@ -45,10 +45,13 @@ func hostedZoneTrafficPolicyInstances() *schema.Table {
 func fetchRoute53HostedZoneTrafficPolicyInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.Route53HostedZoneWrapper)
 	config := route53.ListTrafficPolicyInstancesByHostedZoneInput{HostedZoneId: r.Id}
-	svc := meta.(*client.Client).Services().Route53
+	cl := meta.(*client.Client)
+	svc := cl.Services().Route53
 	// No paginator available
 	for {
-		response, err := svc.ListTrafficPolicyInstancesByHostedZone(ctx, &config)
+		response, err := svc.ListTrafficPolicyInstancesByHostedZone(ctx, &config, func(options *route53.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

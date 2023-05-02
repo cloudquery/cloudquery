@@ -34,12 +34,14 @@ func Workspaces() *schema.Table {
 }
 
 func fetchWorkspacesWorkspaces(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Workspaces
+	cl := meta.(*client.Client)
+	svc := cl.Services().Workspaces
 	input := workspaces.DescribeWorkspacesInput{}
 	paginator := workspaces.NewDescribeWorkspacesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *workspaces.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

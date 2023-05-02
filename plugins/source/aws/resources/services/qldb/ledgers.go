@@ -50,7 +50,9 @@ func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 	config := qldb.ListLedgersInput{}
 	paginator := qldb.NewListLedgersPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *qldb.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -64,7 +66,9 @@ func getLedger(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 	svc := c.Services().Qldb
 	l := resource.Item.(types.LedgerSummary)
 
-	response, err := svc.DescribeLedger(ctx, &qldb.DescribeLedgerInput{Name: l.Name})
+	response, err := svc.DescribeLedger(ctx, &qldb.DescribeLedgerInput{Name: l.Name}, func(options *qldb.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -79,6 +83,8 @@ func resolveQldbLedgerTags(ctx context.Context, meta schema.ClientMeta, resource
 	svc := cl.Services().Qldb
 	response, err := svc.ListTagsForResource(ctx, &qldb.ListTagsForResourceInput{
 		ResourceArn: ledger.Arn,
+	}, func(options *qldb.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

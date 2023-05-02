@@ -54,7 +54,9 @@ func fetchDocdbClusters(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 
 	p := docdb.NewDescribeDBClustersPaginator(svc, &input)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *docdb.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

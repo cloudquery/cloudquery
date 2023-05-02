@@ -45,12 +45,16 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 		for _, lb := range loadBalancers {
 			tagsCfg.LoadBalancerNames = append(tagsCfg.LoadBalancerNames, *lb.LoadBalancerName)
 		}
-		tagsResponse, err := svc.DescribeTags(ctx, tagsCfg)
+		tagsResponse, err := svc.DescribeTags(ctx, tagsCfg, func(options *elbv1.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
 		for _, lb := range loadBalancers {
-			loadBalancerAttributes, err := svc.DescribeLoadBalancerAttributes(ctx, &elbv1.DescribeLoadBalancerAttributesInput{LoadBalancerName: lb.LoadBalancerName})
+			loadBalancerAttributes, err := svc.DescribeLoadBalancerAttributes(ctx, &elbv1.DescribeLoadBalancerAttributesInput{LoadBalancerName: lb.LoadBalancerName}, func(options *elbv1.Options) {
+				options.Region = c.Region
+			})
 			if err != nil {
 				if c.IsNotFoundError(err) {
 					continue
@@ -70,7 +74,9 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	paginator := elbv1.NewDescribeLoadBalancersPaginator(svc, &elbv1.DescribeLoadBalancersInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *elbv1.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

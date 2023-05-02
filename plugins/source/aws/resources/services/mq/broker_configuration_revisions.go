@@ -51,7 +51,9 @@ func fetchMqBrokerConfigurationRevisions(ctx context.Context, meta schema.Client
 	input := mq.ListConfigurationRevisionsInput{ConfigurationId: cfg.Id}
 	// No paginator available
 	for {
-		output, err := svc.ListConfigurationRevisions(ctx, &input)
+		output, err := svc.ListConfigurationRevisions(ctx, &input, func(options *mq.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -72,7 +74,9 @@ func getMqBrokerConfigurationRevision(ctx context.Context, meta schema.ClientMet
 	cfg := resource.Parent.Item.(mq.DescribeConfigurationOutput)
 
 	revId := strconv.Itoa(int(rev.Revision))
-	output, err := svc.DescribeConfigurationRevision(ctx, &mq.DescribeConfigurationRevisionInput{ConfigurationId: cfg.Id, ConfigurationRevision: &revId})
+	output, err := svc.DescribeConfigurationRevision(ctx, &mq.DescribeConfigurationRevisionInput{ConfigurationId: cfg.Id, ConfigurationRevision: &revId}, func(options *mq.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
