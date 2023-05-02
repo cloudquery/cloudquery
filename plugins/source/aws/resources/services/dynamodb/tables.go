@@ -56,7 +56,9 @@ func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *sc
 	config := dynamodb.ListTablesInput{}
 	// No paginator available
 	for {
-		output, err := svc.ListTables(ctx, &config)
+		output, err := svc.ListTables(ctx, &config, func(options *dynamodb.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -77,7 +79,9 @@ func getTable(ctx context.Context, meta schema.ClientMeta, resource *schema.Reso
 
 	tableName := resource.Item.(string)
 
-	response, err := svc.DescribeTable(ctx, &dynamodb.DescribeTableInput{TableName: &tableName})
+	response, err := svc.DescribeTable(ctx, &dynamodb.DescribeTableInput{TableName: &tableName}, func(options *dynamodb.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -97,7 +101,9 @@ func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resou
 	}
 	// No paginator available
 	for {
-		res, err := svc.ListTagsOfResource(ctx, input)
+		res, err := svc.ListTagsOfResource(ctx, input, func(options *dynamodb.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil
@@ -126,6 +132,8 @@ func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.Clie
 
 	output, err := svc.DescribeTableReplicaAutoScaling(ctx, &dynamodb.DescribeTableReplicaAutoScalingInput{
 		TableName: par.TableName,
+	}, func(options *dynamodb.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		if c.IsNotFoundError(err) {
@@ -147,6 +155,8 @@ func fetchDynamodbTableContinuousBackups(ctx context.Context, meta schema.Client
 
 	output, err := svc.DescribeContinuousBackups(ctx, &dynamodb.DescribeContinuousBackupsInput{
 		TableName: par.TableName,
+	}, func(options *dynamodb.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		if c.IsNotFoundError(err) {

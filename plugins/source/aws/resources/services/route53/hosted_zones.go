@@ -59,12 +59,16 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 			hostedZones[i].Id = &parsedId
 			tagsCfg.ResourceIds = append(tagsCfg.ResourceIds, parsedId)
 		}
-		tagsResponse, err := svc.ListTagsForResources(ctx, tagsCfg)
+		tagsResponse, err := svc.ListTagsForResources(ctx, tagsCfg, func(options *route53.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
 		for _, h := range hostedZones {
-			gotHostedZone, err := svc.GetHostedZone(ctx, &route53.GetHostedZoneInput{Id: h.Id})
+			gotHostedZone, err := svc.GetHostedZone(ctx, &route53.GetHostedZoneInput{Id: h.Id}, func(options *route53.Options) {
+				options.Region = c.Region
+			})
 			if err != nil {
 				return err
 			}
@@ -83,7 +87,9 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	paginator := route53.NewListHostedZonesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *route53.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -37,6 +37,16 @@ func (m *MockApprunnerClient) EXPECT() *MockApprunnerClientMockRecorder {
 
 // DescribeAutoScalingConfiguration mocks base method.
 func (m *MockApprunnerClient) DescribeAutoScalingConfiguration(arg0 context.Context, arg1 *apprunner.DescribeAutoScalingConfigurationInput, arg2 ...func(*apprunner.Options)) (*apprunner.DescribeAutoScalingConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAutoScalingConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockApprunnerClientMockRecorder) DescribeAutoScalingConfiguration(arg0
 
 // DescribeCustomDomains mocks base method.
 func (m *MockApprunnerClient) DescribeCustomDomains(arg0 context.Context, arg1 *apprunner.DescribeCustomDomainsInput, arg2 ...func(*apprunner.Options)) (*apprunner.DescribeCustomDomainsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCustomDomains")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockApprunnerClientMockRecorder) DescribeCustomDomains(arg0, arg1 inte
 
 // DescribeObservabilityConfiguration mocks base method.
 func (m *MockApprunnerClient) DescribeObservabilityConfiguration(arg0 context.Context, arg1 *apprunner.DescribeObservabilityConfigurationInput, arg2 ...func(*apprunner.Options)) (*apprunner.DescribeObservabilityConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeObservabilityConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockApprunnerClientMockRecorder) DescribeObservabilityConfiguration(ar
 
 // DescribeService mocks base method.
 func (m *MockApprunnerClient) DescribeService(arg0 context.Context, arg1 *apprunner.DescribeServiceInput, arg2 ...func(*apprunner.Options)) (*apprunner.DescribeServiceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeService")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockApprunnerClientMockRecorder) DescribeService(arg0, arg1 interface{
 
 // DescribeVpcConnector mocks base method.
 func (m *MockApprunnerClient) DescribeVpcConnector(arg0 context.Context, arg1 *apprunner.DescribeVpcConnectorInput, arg2 ...func(*apprunner.Options)) (*apprunner.DescribeVpcConnectorOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpcConnector")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockApprunnerClientMockRecorder) DescribeVpcConnector(arg0, arg1 inter
 
 // DescribeVpcIngressConnection mocks base method.
 func (m *MockApprunnerClient) DescribeVpcIngressConnection(arg0 context.Context, arg1 *apprunner.DescribeVpcIngressConnectionInput, arg2 ...func(*apprunner.Options)) (*apprunner.DescribeVpcIngressConnectionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpcIngressConnection")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockApprunnerClientMockRecorder) DescribeVpcIngressConnection(arg0, ar
 
 // ListAutoScalingConfigurations mocks base method.
 func (m *MockApprunnerClient) ListAutoScalingConfigurations(arg0 context.Context, arg1 *apprunner.ListAutoScalingConfigurationsInput, arg2 ...func(*apprunner.Options)) (*apprunner.ListAutoScalingConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAutoScalingConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockApprunnerClientMockRecorder) ListAutoScalingConfigurations(arg0, a
 
 // ListConnections mocks base method.
 func (m *MockApprunnerClient) ListConnections(arg0 context.Context, arg1 *apprunner.ListConnectionsInput, arg2 ...func(*apprunner.Options)) (*apprunner.ListConnectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListConnections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockApprunnerClientMockRecorder) ListConnections(arg0, arg1 interface{
 
 // ListObservabilityConfigurations mocks base method.
 func (m *MockApprunnerClient) ListObservabilityConfigurations(arg0 context.Context, arg1 *apprunner.ListObservabilityConfigurationsInput, arg2 ...func(*apprunner.Options)) (*apprunner.ListObservabilityConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListObservabilityConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockApprunnerClientMockRecorder) ListObservabilityConfigurations(arg0,
 
 // ListOperations mocks base method.
 func (m *MockApprunnerClient) ListOperations(arg0 context.Context, arg1 *apprunner.ListOperationsInput, arg2 ...func(*apprunner.Options)) (*apprunner.ListOperationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOperations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockApprunnerClientMockRecorder) ListOperations(arg0, arg1 interface{}
 
 // ListServices mocks base method.
 func (m *MockApprunnerClient) ListServices(arg0 context.Context, arg1 *apprunner.ListServicesInput, arg2 ...func(*apprunner.Options)) (*apprunner.ListServicesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListServices")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockApprunnerClientMockRecorder) ListServices(arg0, arg1 interface{}, 
 
 // ListTagsForResource mocks base method.
 func (m *MockApprunnerClient) ListTagsForResource(arg0 context.Context, arg1 *apprunner.ListTagsForResourceInput, arg2 ...func(*apprunner.Options)) (*apprunner.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockApprunnerClientMockRecorder) ListTagsForResource(arg0, arg1 interf
 
 // ListVpcConnectors mocks base method.
 func (m *MockApprunnerClient) ListVpcConnectors(arg0 context.Context, arg1 *apprunner.ListVpcConnectorsInput, arg2 ...func(*apprunner.Options)) (*apprunner.ListVpcConnectorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListVpcConnectors")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockApprunnerClientMockRecorder) ListVpcConnectors(arg0, arg1 interfac
 
 // ListVpcIngressConnections mocks base method.
 func (m *MockApprunnerClient) ListVpcIngressConnections(arg0 context.Context, arg1 *apprunner.ListVpcIngressConnectionsInput, arg2 ...func(*apprunner.Options)) (*apprunner.ListVpcIngressConnectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListVpcIngressConnections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -45,6 +45,8 @@ func fetchGlacierVaultLockPolicies(ctx context.Context, meta schema.ClientMeta, 
 
 	response, err := svc.GetVaultLock(ctx, &glacier.GetVaultLockInput{
 		VaultName: p.VaultName,
+	}, func(options *glacier.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err

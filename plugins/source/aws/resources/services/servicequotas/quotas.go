@@ -33,7 +33,8 @@ func quotas() *schema.Table {
 }
 
 func fetchServicequotasQuotas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Servicequotas
+	cl := meta.(*client.Client)
+	svc := cl.Services().Servicequotas
 	service := parent.Item.(types.ServiceInfo)
 	config := servicequotas.ListServiceQuotasInput{
 		ServiceCode: service.ServiceCode,
@@ -41,7 +42,9 @@ func fetchServicequotasQuotas(ctx context.Context, meta schema.ClientMeta, paren
 	}
 	quotasPaginator := servicequotas.NewListServiceQuotasPaginator(svc, &config)
 	for quotasPaginator.HasMorePages() {
-		output, err := quotasPaginator.NextPage(ctx)
+		output, err := quotasPaginator.NextPage(ctx, func(o *servicequotas.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

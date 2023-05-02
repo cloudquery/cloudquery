@@ -19,7 +19,7 @@ func buildApps(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListApps(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListApps(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&amplify.ListAppsOutput{
 			Apps: []types.App{app},
 		},

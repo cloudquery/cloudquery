@@ -45,7 +45,9 @@ func fetchMqBrokers(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	svc := c.Services().Mq
 	paginator := mq.NewListBrokersPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *mq.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -59,7 +61,9 @@ func getMqBroker(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	svc := c.Services().Mq
 	bs := resource.Item.(types.BrokerSummary)
 
-	output, err := svc.DescribeBroker(ctx, &mq.DescribeBrokerInput{BrokerId: bs.BrokerId})
+	output, err := svc.DescribeBroker(ctx, &mq.DescribeBrokerInput{BrokerId: bs.BrokerId}, func(options *mq.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

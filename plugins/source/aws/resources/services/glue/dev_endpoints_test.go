@@ -20,9 +20,11 @@ func buildDevEndpointsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	m.EXPECT().GetDevEndpoints(
 		gomock.Any(),
 		&glue.GetDevEndpointsInput{},
+		gomock.Any(),
 	).Return(&devEndpoint, nil)
 
 	m.EXPECT().GetTags(
+		gomock.Any(),
 		gomock.Any(),
 		gomock.Any(),
 	).Return(

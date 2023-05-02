@@ -57,7 +57,9 @@ func fetchCloudformationStackSetOperationResults(ctx context.Context, meta schem
 	svc := c.Services().Cloudformation
 	paginator := cloudformation.NewListStackSetOperationResultsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cloudformation.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

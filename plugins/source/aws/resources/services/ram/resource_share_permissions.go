@@ -39,13 +39,16 @@ func resourceSharePermissions() *schema.Table {
 }
 
 func fetchRamResourceSharePermissions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
 	input := &ram.ListResourceSharePermissionsInput{
 		MaxResults:       aws.Int32(500),
 		ResourceShareArn: resource.Item.(types.ResourceShare).ResourceShareArn,
 	}
 	paginator := ram.NewListResourceSharePermissionsPaginator(meta.(*client.Client).Services().Ram, input)
 	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
+		response, err := paginator.NextPage(ctx, func(options *ram.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -55,6 +58,7 @@ func fetchRamResourceSharePermissions(ctx context.Context, meta schema.ClientMet
 }
 
 func resolveResourceSharePermissionDetailPermission(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
 	permission := resource.Item.(types.ResourceSharePermissionSummary)
 	version, err := strconv.ParseInt(aws.ToString(permission.Version), 10, 32)
 	if err != nil {
@@ -64,7 +68,9 @@ func resolveResourceSharePermissionDetailPermission(ctx context.Context, meta sc
 		PermissionArn:     permission.Arn,
 		PermissionVersion: aws.Int32(int32(version)),
 	}
-	response, err := meta.(*client.Client).Services().Ram.GetPermission(ctx, input)
+	response, err := meta.(*client.Client).Services().Ram.GetPermission(ctx, input, func(options *ram.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

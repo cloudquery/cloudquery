@@ -25,7 +25,7 @@ func buildBatchJobQueuesMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		t.Fatal(err)
 	}
 
-	m.EXPECT().DescribeJobQueues(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().DescribeJobQueues(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&batch.DescribeJobQueuesOutput{
 			JobQueues: []types.JobQueueDetail{a},
 		}, nil)

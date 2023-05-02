@@ -45,7 +45,9 @@ func fetchFirehoseDeliveryStreams(ctx context.Context, meta schema.ClientMeta, p
 	svc := c.Services().Firehose
 	input := firehose.ListDeliveryStreamsInput{}
 	for {
-		response, err := svc.ListDeliveryStreams(ctx, &input)
+		response, err := svc.ListDeliveryStreams(ctx, &input, func(options *firehose.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -64,6 +66,8 @@ func getDeliveryStream(ctx context.Context, meta schema.ClientMeta, resource *sc
 	svc := c.Services().Firehose
 	streamSummary, err := svc.DescribeDeliveryStream(ctx, &firehose.DescribeDeliveryStreamInput{
 		DeliveryStreamName: aws.String(streamName),
+	}, func(options *firehose.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err
@@ -81,7 +85,9 @@ func resolveFirehoseDeliveryStreamTags(ctx context.Context, meta schema.ClientMe
 	}
 	var tags []types.Tag
 	for {
-		output, err := svc.ListTagsForDeliveryStream(ctx, &input)
+		output, err := svc.ListTagsForDeliveryStream(ctx, &input, func(options *firehose.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
