@@ -38,8 +38,7 @@ func fetchConfigurationAggregators(ctx context.Context, meta schema.ClientMeta, 
 	c := meta.(*client.Client)
 	svc := c.Services().Configservice
 
-	input := &configservice.DescribeConfigurationAggregatorsInput{}
-	p := configservice.NewDescribeConfigurationAggregatorsPaginator(svc, input)
+	p := configservice.NewDescribeConfigurationAggregatorsPaginator(svc, nil)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *configservice.Options) {
 			options.Region = c.Region

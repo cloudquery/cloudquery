@@ -31,8 +31,7 @@ func fetchRetentionConfigurations(ctx context.Context, meta schema.ClientMeta, p
 	c := meta.(*client.Client)
 	svc := c.Services().Configservice
 
-	input := &configservice.DescribeRetentionConfigurationsInput{}
-	p := configservice.NewDescribeRetentionConfigurationsPaginator(svc, input)
+	p := configservice.NewDescribeRetentionConfigurationsPaginator(svc, nil)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *configservice.Options) {
 			options.Region = c.Region
