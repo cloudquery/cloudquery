@@ -91,10 +91,7 @@ func columnGoType(_type arrow.DataType) reflect.Type {
 	case *arrow.Float64Type:
 		return reflect.TypeOf(float64(0))
 
-	case *arrow.LargeStringType:
-		return reflect.TypeOf("")
-
-	case *arrow.StringType, *types.InetType, *types.MacType:
+	case *arrow.LargeStringType, *arrow.StringType, *types.InetType, *types.MacType:
 		return reflect.TypeOf("")
 
 	case arrow.BinaryDataType, *arrow.FixedSizeBinaryType:
