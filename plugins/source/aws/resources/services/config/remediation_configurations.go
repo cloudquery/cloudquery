@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
-func RemediationConfigurations() *schema.Table {
+func remediationConfigurations() *schema.Table {
 	tableName := "aws_config_remediation_configurations"
 	return &schema.Table{
 		Name:        tableName,
@@ -31,7 +31,10 @@ func fetchRemediationConfigurations(ctx context.Context, meta schema.ClientMeta,
 	c := meta.(*client.Client)
 	svc := c.Services().Configservice
 
-	input := &configservice.DescribeRemediationConfigurationsInput{}
+	configRule := parent.Item.(types.ConfigRule).ConfigRuleName
+	input := &configservice.DescribeRemediationConfigurationsInput{
+		ConfigRuleNames: []string{*configRule},
+	}
 
 	// no pagination for this one
 	output, err := svc.DescribeRemediationConfigurations(ctx, input, func(options *configservice.Options) {

@@ -11,8 +11,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildRemediationConfigurations(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockConfigserviceClient(ctrl)
+func buildRemediationConfigurations(t *testing.T, m *mocks.MockConfigserviceClient) client.Services {
 	l := types.RemediationConfiguration{}
 	if err := faker.FakeObject(&l); err != nil {
 		t.Fatal(err)
@@ -24,8 +23,4 @@ func buildRemediationConfigurations(t *testing.T, ctrl *gomock.Controller) clien
 	return client.Services{
 		Configservice: m,
 	}
-}
-
-func TestRemediationConfigurations(t *testing.T) {
-	client.AwsMockTestHelper(t, RemediationConfigurations(), buildRemediationConfigurations, client.TestOptions{})
 }

@@ -180,7 +180,6 @@ func tables() []*schema.Table {
 		config.ConfigurationRecorders(),
 		config.ConformancePacks(),
 		config.DeliveryChannels(),
-		config.RemediationConfigurations(),
 		config.RetentionConfigurations(),
 		costexplorer.ThirtyDayCost(),
 		costexplorer.ThirtyDayCostForecast(),
