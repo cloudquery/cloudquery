@@ -37,6 +37,16 @@ func (m *MockMwaaClient) EXPECT() *MockMwaaClientMockRecorder {
 
 // GetEnvironment mocks base method.
 func (m *MockMwaaClient) GetEnvironment(arg0 context.Context, arg1 *mwaa.GetEnvironmentInput, arg2 ...func(*mwaa.Options)) (*mwaa.GetEnvironmentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &mwaa.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEnvironment")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockMwaaClientMockRecorder) GetEnvironment(arg0, arg1 interface{}, arg
 
 // ListEnvironments mocks base method.
 func (m *MockMwaaClient) ListEnvironments(arg0 context.Context, arg1 *mwaa.ListEnvironmentsInput, arg2 ...func(*mwaa.Options)) (*mwaa.ListEnvironmentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &mwaa.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEnvironments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockMwaaClientMockRecorder) ListEnvironments(arg0, arg1 interface{}, a
 
 // ListTagsForResource mocks base method.
 func (m *MockMwaaClient) ListTagsForResource(arg0 context.Context, arg1 *mwaa.ListTagsForResourceInput, arg2 ...func(*mwaa.Options)) (*mwaa.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &mwaa.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

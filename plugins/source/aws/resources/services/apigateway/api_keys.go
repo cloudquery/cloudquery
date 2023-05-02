@@ -45,7 +45,9 @@ func fetchApigatewayApiKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	svc := c.Services().Apigateway
 	p := apigateway.NewGetApiKeysPaginator(svc, &config)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *apigateway.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

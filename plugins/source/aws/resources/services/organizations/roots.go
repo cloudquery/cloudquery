@@ -40,7 +40,9 @@ func fetchOrganizationsRoots(ctx context.Context, meta schema.ClientMeta, _ *sch
 	var input organizations.ListRootsInput
 	paginator := organizations.NewListRootsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -58,7 +60,9 @@ func resolveRootTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	}
 	paginator := organizations.NewListTagsForResourcePaginator(cl.Services().Organizations, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

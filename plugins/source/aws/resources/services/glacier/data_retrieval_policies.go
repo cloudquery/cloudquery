@@ -29,7 +29,9 @@ func fetchGlacierDataRetrievalPolicies(ctx context.Context, meta schema.ClientMe
 	c := meta.(*client.Client)
 	svc := c.Services().Glacier
 
-	response, err := svc.GetDataRetrievalPolicy(ctx, &glacier.GetDataRetrievalPolicyInput{})
+	response, err := svc.GetDataRetrievalPolicy(ctx, &glacier.GetDataRetrievalPolicyInput{}, func(options *glacier.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

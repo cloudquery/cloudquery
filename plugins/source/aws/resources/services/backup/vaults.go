@@ -61,7 +61,9 @@ func fetchBackupVaults(ctx context.Context, meta schema.ClientMeta, parent *sche
 	params := backup.ListBackupVaultsInput{MaxResults: aws.Int32(1000)} // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupVaults.html
 	paginator := backup.NewListBackupVaultsPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *backup.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -78,7 +80,9 @@ func resolveVaultTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 	tags := make(map[string]string)
 	paginator := backup.NewListTagsPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *backup.Options) {
+			options.Region = cl.Region
+		})
 
 		if err != nil {
 			return err

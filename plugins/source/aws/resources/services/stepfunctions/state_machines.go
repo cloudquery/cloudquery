@@ -43,11 +43,14 @@ func StateMachines() *schema.Table {
 }
 
 func fetchStepfunctionsStateMachines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Sfn
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sfn
 	config := sfn.ListStateMachinesInput{}
 	paginator := sfn.NewListStateMachinesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *sfn.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,11 +60,16 @@ func fetchStepfunctionsStateMachines(ctx context.Context, meta schema.ClientMeta
 }
 
 func getStepFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sfn
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sfn
 	sm := resource.Item.(types.StateMachineListItem)
 
-	stateMachineDetails, err := svc.DescribeStateMachine(ctx, &sfn.DescribeStateMachineInput{StateMachineArn: sm.StateMachineArn})
+	stateMachineDetails, err := svc.DescribeStateMachine(ctx,
+		&sfn.DescribeStateMachineInput{StateMachineArn: sm.StateMachineArn},
+		func(o *sfn.Options) {
+			o.Region = cl.Region
+		},
+	)
 	if err != nil {
 		return err
 	}
@@ -77,7 +85,9 @@ func resolveStepFunctionTags(ctx context.Context, meta schema.ClientMeta, resour
 	tagParams := sfn.ListTagsForResourceInput{
 		ResourceArn: sm.StateMachineArn,
 	}
-	tags, err := svc.ListTagsForResource(ctx, &tagParams)
+	tags, err := svc.ListTagsForResource(ctx, &tagParams, func(o *sfn.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

@@ -26,6 +26,7 @@ func buildFilesystemsMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	m.EXPECT().DescribeFileSystems(
 		gomock.Any(),
 		&fsx.DescribeFileSystemsInput{MaxResults: aws.Int32(1000)},
+		gomock.Any(),
 	).Return(
 		&fsx.DescribeFileSystemsOutput{FileSystems: []types.FileSystem{f}},
 		nil,
