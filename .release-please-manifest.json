@@ -33,7 +33,7 @@
   "plugins/destination/snowflake+FILLER": "0.0.0",
   "plugins/source/gandi": "1.3.0",
   "plugins/source/gandi+FILLER": "0.0.0",
-  "plugins/source/datadog": "1.3.0",
+  "plugins/source/datadog": "1.3.1",
   "plugins/source/datadog+FILLER": "0.0.0",
   "plugins/destination/bigquery": "2.2.6",
   "plugins/destination/bigquery+FILLER": "0.0.0",
