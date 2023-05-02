@@ -31,7 +31,9 @@ func fetchRoute53Operations(ctx context.Context, meta schema.ClientMeta, parent 
 	var input route53domains.ListOperationsInput
 	paginator := route53domains.NewListOperationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *route53domains.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -44,7 +46,9 @@ func getOperation(ctx context.Context, meta schema.ClientMeta, resource *schema.
 	svc := c.Services().Route53domains
 	v := resource.Item.(types.OperationSummary)
 
-	d, err := svc.GetOperationDetail(ctx, &route53domains.GetOperationDetailInput{OperationId: v.OperationId})
+	d, err := svc.GetOperationDetail(ctx, &route53domains.GetOperationDetailInput{OperationId: v.OperationId}, func(options *route53domains.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

@@ -21,7 +21,7 @@ func buildServices(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 
 	for _, languageCode := range servicesSupportedLanguageCodes {
-		m.EXPECT().DescribeServices(gomock.Any(), &support.DescribeServicesInput{Language: aws.String(languageCode)}).Return(&support.DescribeServicesOutput{Services: services}, nil)
+		m.EXPECT().DescribeServices(gomock.Any(), &support.DescribeServicesInput{Language: aws.String(languageCode)}, gomock.Any()).Return(&support.DescribeServicesOutput{Services: services}, nil)
 	}
 
 	return client.Services{

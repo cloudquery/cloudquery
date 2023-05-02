@@ -27,7 +27,9 @@ func fetchRecommendationTemplates(ctx context.Context, meta schema.ClientMeta, p
 	svc := c.Services().Resiliencehub
 	p := resiliencehub.NewListRecommendationTemplatesPaginator(svc, &resiliencehub.ListRecommendationTemplatesInput{AssessmentArn: parent.Item.(*types.AppAssessment).AppArn})
 	for p.HasMorePages() {
-		out, err := p.NextPage(ctx)
+		out, err := p.NextPage(ctx, func(options *resiliencehub.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -46,7 +46,9 @@ func fetchKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *sc
 	input := kinesis.ListStreamsInput{}
 	paginator := kinesis.NewListStreamsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *kinesis.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -61,6 +63,8 @@ func getStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 	svc := c.Services().Kinesis
 	streamSummary, err := svc.DescribeStreamSummary(ctx, &kinesis.DescribeStreamSummaryInput{
 		StreamName: aws.String(streamName),
+	}, func(options *kinesis.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err
@@ -78,7 +82,9 @@ func resolveKinesisStreamTags(ctx context.Context, meta schema.ClientMeta, resou
 	}
 	var tags []types.Tag
 	for {
-		output, err := svc.ListTagsForStream(ctx, &input)
+		output, err := svc.ListTagsForStream(ctx, &input, func(options *kinesis.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

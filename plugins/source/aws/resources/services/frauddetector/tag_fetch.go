@@ -20,7 +20,9 @@ func resolveResourceTags(ctx context.Context, meta schema.ClientMeta, resource *
 	)
 	tags := make(map[string]string)
 	for paginator.HasMorePages() {
-		data, err := paginator.NextPage(ctx)
+		data, err := paginator.NextPage(ctx, func(options *frauddetector.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

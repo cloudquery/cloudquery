@@ -38,7 +38,9 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 	input := athena.ListPreparedStatementsInput{WorkGroup: wg.Name}
 	paginator := athena.NewListPreparedStatementsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *athena.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -56,6 +58,8 @@ func getWorkGroupPreparedStatement(ctx context.Context, meta schema.ClientMeta, 
 	dc, err := svc.GetPreparedStatement(ctx, &athena.GetPreparedStatementInput{
 		WorkGroup:     wg.Name,
 		StatementName: d.StatementName,
+	}, func(options *athena.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err
