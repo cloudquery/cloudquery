@@ -10,6 +10,7 @@ The primary key for this table is **arn**.
 
 The following tables depend on aws_config_config_rules:
   - [aws_config_config_rule_compliances](aws_config_config_rule_compliances)
+  - [aws_config_remediation_configurations](aws_config_remediation_configurations)
 
 ## Columns
 
