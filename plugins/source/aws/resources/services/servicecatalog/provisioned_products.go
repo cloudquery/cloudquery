@@ -38,13 +38,15 @@ func ProvisionedProducts() *schema.Table {
 }
 
 func fetchServicecatalogProvisionedProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Servicecatalog
+	cl := meta.(*client.Client)
+	svc := cl.Services().Servicecatalog
 
 	listInput := new(servicecatalog.SearchProvisionedProductsInput)
 	paginator := servicecatalog.NewSearchProvisionedProductsPaginator(svc, listInput)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *servicecatalog.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

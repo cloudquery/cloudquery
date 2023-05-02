@@ -35,7 +35,9 @@ func fetchEC2SpotInstanceRequests(ctx context.Context, meta schema.ClientMeta, p
 	svc := c.Services().Ec2
 	pag := ec2.NewDescribeSpotInstanceRequestsPaginator(svc, &ec2.DescribeSpotInstanceRequestsInput{})
 	for pag.HasMorePages() {
-		resp, err := pag.NextPage(ctx)
+		resp, err := pag.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

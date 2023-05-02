@@ -46,7 +46,9 @@ func fetchGlueCrawlers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	svc := c.Services().Glue
 	paginator := glue.NewGetCrawlersPaginator(svc, &glue.GetCrawlersInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -65,7 +67,9 @@ func resolveGlueCrawlerTags(ctx context.Context, meta schema.ClientMeta, resourc
 		ResourceArn: aws.String(crawlerARN(cl, aws.ToString(resource.Item.(types.Crawler).Name))),
 	}
 
-	response, err := svc.GetTags(ctx, &input)
+	response, err := svc.GetTags(ctx, &input, func(options *glue.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

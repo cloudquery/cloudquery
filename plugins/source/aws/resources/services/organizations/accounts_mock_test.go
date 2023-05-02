@@ -19,7 +19,7 @@ func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Se
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListAccounts(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListAccounts(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListAccountsOutput{
 			Accounts: []organizationsTypes.Account{g},
 		}, nil)
@@ -40,7 +40,7 @@ func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Se
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListDelegatedServicesForAccount(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListDelegatedServicesForAccount(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListDelegatedServicesForAccountOutput{
 			DelegatedServices: []organizationsTypes.DelegatedService{ds},
 		}, nil)

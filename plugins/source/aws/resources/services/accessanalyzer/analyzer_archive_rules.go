@@ -37,7 +37,9 @@ func fetchAccessanalyzerAnalyzerArchiveRules(ctx context.Context, meta schema.Cl
 	}
 	paginator := accessanalyzer.NewListArchiveRulesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

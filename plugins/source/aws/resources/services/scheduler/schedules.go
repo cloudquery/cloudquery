@@ -46,11 +46,13 @@ func fetchSchedulerSchedules(ctx context.Context, meta schema.ClientMeta, parent
 	config := scheduler.ListSchedulesInput{
 		MaxResults: aws.Int32(100),
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Scheduler
+	cl := meta.(*client.Client)
+	svc := cl.Services().Scheduler
 	paginator := scheduler.NewListSchedulesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *scheduler.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -60,13 +62,15 @@ func fetchSchedulerSchedules(ctx context.Context, meta schema.ClientMeta, parent
 }
 
 func getSchedule(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Scheduler
+	cl := meta.(*client.Client)
+	svc := cl.Services().Scheduler
 	scheduleSummary := resource.Item.(types.ScheduleSummary)
 
 	describeTaskDefinitionOutput, err := svc.GetSchedule(ctx, &scheduler.GetScheduleInput{
 		Name:      scheduleSummary.Name,
 		GroupName: scheduleSummary.GroupName,
+	}, func(o *scheduler.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -83,7 +87,9 @@ func resolveSchedulerScheduleTags() schema.ColumnResolver {
 		svc := cl.Services().Scheduler
 		params := scheduler.ListTagsForResourceInput{ResourceArn: arnStr}
 
-		output, err := svc.ListTagsForResource(ctx, &params)
+		output, err := svc.ListTagsForResource(ctx, &params, func(o *scheduler.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil

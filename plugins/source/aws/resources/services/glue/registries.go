@@ -50,7 +50,9 @@ func fetchGlueRegistries(ctx context.Context, meta schema.ClientMeta, parent *sc
 		MaxResults: aws.Int32(100),
 	})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -65,6 +67,8 @@ func resolveGlueRegistryTags(ctx context.Context, meta schema.ClientMeta, resour
 	r := resource.Item.(types.RegistryListItem)
 	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
 		ResourceArn: r.RegistryArn,
+	}, func(options *glue.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {

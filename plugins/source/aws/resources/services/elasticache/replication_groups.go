@@ -39,9 +39,12 @@ func ReplicationGroups() *schema.Table {
 }
 
 func fetchElasticacheReplicationGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
 	paginator := elasticache.NewDescribeReplicationGroupsPaginator(meta.(*client.Client).Services().Elasticache, nil)
 	for paginator.HasMorePages() {
-		v, err := paginator.NextPage(ctx)
+		v, err := paginator.NextPage(ctx, func(options *elasticache.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -51,8 +54,11 @@ func fetchElasticacheReplicationGroups(ctx context.Context, meta schema.ClientMe
 }
 
 func resolveElasticacheReplicationGroupTags(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-	svc := meta.(*client.Client).Services().Elasticache
-	tags, err := svc.ListTagsForResource(ctx, &elasticache.ListTagsForResourceInput{ResourceName: r.Item.(types.ReplicationGroup).ARN})
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticache
+	tags, err := svc.ListTagsForResource(ctx, &elasticache.ListTagsForResourceInput{ResourceName: r.Item.(types.ReplicationGroup).ARN}, func(options *elasticache.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

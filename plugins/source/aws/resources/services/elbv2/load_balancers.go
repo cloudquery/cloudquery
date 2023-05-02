@@ -57,7 +57,9 @@ func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *sch
 	svc := c.Services().Elasticloadbalancingv2
 	paginator := elbv2.NewDescribeLoadBalancersPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *elbv2.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -71,9 +73,12 @@ func resolveLoadBalancerWebACLArn(ctx context.Context, meta schema.ClientMeta, r
 	if p.Type != types.LoadBalancerTypeEnumApplication {
 		return nil
 	}
-	cl := meta.(*client.Client).Services().Wafv2
+	cl := meta.(*client.Client)
+	wafClient := cl.Services().Wafv2
 	input := wafv2.GetWebACLForResourceInput{ResourceArn: p.LoadBalancerArn}
-	response, err := cl.GetWebACLForResource(ctx, &input, func(options *wafv2.Options) {})
+	response, err := wafClient.GetWebACLForResource(ctx, &input, func(options *wafv2.Options) {}, func(options *wafv2.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		var exc *wafv2types.WAFNonexistentItemException
 		if errors.As(err, &exc) {
