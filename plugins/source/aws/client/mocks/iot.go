@@ -37,6 +37,16 @@ func (m *MockIotClient) EXPECT() *MockIotClientMockRecorder {
 
 // DescribeAccountAuditConfiguration mocks base method.
 func (m *MockIotClient) DescribeAccountAuditConfiguration(arg0 context.Context, arg1 *iot.DescribeAccountAuditConfigurationInput, arg2 ...func(*iot.Options)) (*iot.DescribeAccountAuditConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccountAuditConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockIotClientMockRecorder) DescribeAccountAuditConfiguration(arg0, arg
 
 // DescribeAuditFinding mocks base method.
 func (m *MockIotClient) DescribeAuditFinding(arg0 context.Context, arg1 *iot.DescribeAuditFindingInput, arg2 ...func(*iot.Options)) (*iot.DescribeAuditFindingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAuditFinding")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockIotClientMockRecorder) DescribeAuditFinding(arg0, arg1 interface{}
 
 // DescribeAuditMitigationActionsTask mocks base method.
 func (m *MockIotClient) DescribeAuditMitigationActionsTask(arg0 context.Context, arg1 *iot.DescribeAuditMitigationActionsTaskInput, arg2 ...func(*iot.Options)) (*iot.DescribeAuditMitigationActionsTaskOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAuditMitigationActionsTask")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockIotClientMockRecorder) DescribeAuditMitigationActionsTask(arg0, ar
 
 // DescribeAuditSuppression mocks base method.
 func (m *MockIotClient) DescribeAuditSuppression(arg0 context.Context, arg1 *iot.DescribeAuditSuppressionInput, arg2 ...func(*iot.Options)) (*iot.DescribeAuditSuppressionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAuditSuppression")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockIotClientMockRecorder) DescribeAuditSuppression(arg0, arg1 interfa
 
 // DescribeAuditTask mocks base method.
 func (m *MockIotClient) DescribeAuditTask(arg0 context.Context, arg1 *iot.DescribeAuditTaskInput, arg2 ...func(*iot.Options)) (*iot.DescribeAuditTaskOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAuditTask")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockIotClientMockRecorder) DescribeAuditTask(arg0, arg1 interface{}, a
 
 // DescribeAuthorizer mocks base method.
 func (m *MockIotClient) DescribeAuthorizer(arg0 context.Context, arg1 *iot.DescribeAuthorizerInput, arg2 ...func(*iot.Options)) (*iot.DescribeAuthorizerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAuthorizer")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockIotClientMockRecorder) DescribeAuthorizer(arg0, arg1 interface{}, 
 
 // DescribeBillingGroup mocks base method.
 func (m *MockIotClient) DescribeBillingGroup(arg0 context.Context, arg1 *iot.DescribeBillingGroupInput, arg2 ...func(*iot.Options)) (*iot.DescribeBillingGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeBillingGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockIotClientMockRecorder) DescribeBillingGroup(arg0, arg1 interface{}
 
 // DescribeCACertificate mocks base method.
 func (m *MockIotClient) DescribeCACertificate(arg0 context.Context, arg1 *iot.DescribeCACertificateInput, arg2 ...func(*iot.Options)) (*iot.DescribeCACertificateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCACertificate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockIotClientMockRecorder) DescribeCACertificate(arg0, arg1 interface{
 
 // DescribeCertificate mocks base method.
 func (m *MockIotClient) DescribeCertificate(arg0 context.Context, arg1 *iot.DescribeCertificateInput, arg2 ...func(*iot.Options)) (*iot.DescribeCertificateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCertificate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockIotClientMockRecorder) DescribeCertificate(arg0, arg1 interface{},
 
 // DescribeCustomMetric mocks base method.
 func (m *MockIotClient) DescribeCustomMetric(arg0 context.Context, arg1 *iot.DescribeCustomMetricInput, arg2 ...func(*iot.Options)) (*iot.DescribeCustomMetricOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCustomMetric")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockIotClientMockRecorder) DescribeCustomMetric(arg0, arg1 interface{}
 
 // DescribeDefaultAuthorizer mocks base method.
 func (m *MockIotClient) DescribeDefaultAuthorizer(arg0 context.Context, arg1 *iot.DescribeDefaultAuthorizerInput, arg2 ...func(*iot.Options)) (*iot.DescribeDefaultAuthorizerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDefaultAuthorizer")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockIotClientMockRecorder) DescribeDefaultAuthorizer(arg0, arg1 interf
 
 // DescribeDetectMitigationActionsTask mocks base method.
 func (m *MockIotClient) DescribeDetectMitigationActionsTask(arg0 context.Context, arg1 *iot.DescribeDetectMitigationActionsTaskInput, arg2 ...func(*iot.Options)) (*iot.DescribeDetectMitigationActionsTaskOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDetectMitigationActionsTask")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockIotClientMockRecorder) DescribeDetectMitigationActionsTask(arg0, a
 
 // DescribeDimension mocks base method.
 func (m *MockIotClient) DescribeDimension(arg0 context.Context, arg1 *iot.DescribeDimensionInput, arg2 ...func(*iot.Options)) (*iot.DescribeDimensionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDimension")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockIotClientMockRecorder) DescribeDimension(arg0, arg1 interface{}, a
 
 // DescribeDomainConfiguration mocks base method.
 func (m *MockIotClient) DescribeDomainConfiguration(arg0 context.Context, arg1 *iot.DescribeDomainConfigurationInput, arg2 ...func(*iot.Options)) (*iot.DescribeDomainConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDomainConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockIotClientMockRecorder) DescribeDomainConfiguration(arg0, arg1 inte
 
 // DescribeEndpoint mocks base method.
 func (m *MockIotClient) DescribeEndpoint(arg0 context.Context, arg1 *iot.DescribeEndpointInput, arg2 ...func(*iot.Options)) (*iot.DescribeEndpointOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEndpoint")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockIotClientMockRecorder) DescribeEndpoint(arg0, arg1 interface{}, ar
 
 // DescribeEventConfigurations mocks base method.
 func (m *MockIotClient) DescribeEventConfigurations(arg0 context.Context, arg1 *iot.DescribeEventConfigurationsInput, arg2 ...func(*iot.Options)) (*iot.DescribeEventConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEventConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockIotClientMockRecorder) DescribeEventConfigurations(arg0, arg1 inte
 
 // DescribeFleetMetric mocks base method.
 func (m *MockIotClient) DescribeFleetMetric(arg0 context.Context, arg1 *iot.DescribeFleetMetricInput, arg2 ...func(*iot.Options)) (*iot.DescribeFleetMetricOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFleetMetric")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockIotClientMockRecorder) DescribeFleetMetric(arg0, arg1 interface{},
 
 // DescribeIndex mocks base method.
 func (m *MockIotClient) DescribeIndex(arg0 context.Context, arg1 *iot.DescribeIndexInput, arg2 ...func(*iot.Options)) (*iot.DescribeIndexOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIndex")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockIotClientMockRecorder) DescribeIndex(arg0, arg1 interface{}, arg2 
 
 // DescribeJob mocks base method.
 func (m *MockIotClient) DescribeJob(arg0 context.Context, arg1 *iot.DescribeJobInput, arg2 ...func(*iot.Options)) (*iot.DescribeJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockIotClientMockRecorder) DescribeJob(arg0, arg1 interface{}, arg2 ..
 
 // DescribeJobExecution mocks base method.
 func (m *MockIotClient) DescribeJobExecution(arg0 context.Context, arg1 *iot.DescribeJobExecutionInput, arg2 ...func(*iot.Options)) (*iot.DescribeJobExecutionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeJobExecution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockIotClientMockRecorder) DescribeJobExecution(arg0, arg1 interface{}
 
 // DescribeJobTemplate mocks base method.
 func (m *MockIotClient) DescribeJobTemplate(arg0 context.Context, arg1 *iot.DescribeJobTemplateInput, arg2 ...func(*iot.Options)) (*iot.DescribeJobTemplateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeJobTemplate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockIotClientMockRecorder) DescribeJobTemplate(arg0, arg1 interface{},
 
 // DescribeManagedJobTemplate mocks base method.
 func (m *MockIotClient) DescribeManagedJobTemplate(arg0 context.Context, arg1 *iot.DescribeManagedJobTemplateInput, arg2 ...func(*iot.Options)) (*iot.DescribeManagedJobTemplateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeManagedJobTemplate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockIotClientMockRecorder) DescribeManagedJobTemplate(arg0, arg1 inter
 
 // DescribeMitigationAction mocks base method.
 func (m *MockIotClient) DescribeMitigationAction(arg0 context.Context, arg1 *iot.DescribeMitigationActionInput, arg2 ...func(*iot.Options)) (*iot.DescribeMitigationActionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMitigationAction")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockIotClientMockRecorder) DescribeMitigationAction(arg0, arg1 interfa
 
 // DescribeProvisioningTemplate mocks base method.
 func (m *MockIotClient) DescribeProvisioningTemplate(arg0 context.Context, arg1 *iot.DescribeProvisioningTemplateInput, arg2 ...func(*iot.Options)) (*iot.DescribeProvisioningTemplateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProvisioningTemplate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockIotClientMockRecorder) DescribeProvisioningTemplate(arg0, arg1 int
 
 // DescribeProvisioningTemplateVersion mocks base method.
 func (m *MockIotClient) DescribeProvisioningTemplateVersion(arg0 context.Context, arg1 *iot.DescribeProvisioningTemplateVersionInput, arg2 ...func(*iot.Options)) (*iot.DescribeProvisioningTemplateVersionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProvisioningTemplateVersion")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockIotClientMockRecorder) DescribeProvisioningTemplateVersion(arg0, a
 
 // DescribeRoleAlias mocks base method.
 func (m *MockIotClient) DescribeRoleAlias(arg0 context.Context, arg1 *iot.DescribeRoleAliasInput, arg2 ...func(*iot.Options)) (*iot.DescribeRoleAliasOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRoleAlias")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockIotClientMockRecorder) DescribeRoleAlias(arg0, arg1 interface{}, a
 
 // DescribeScheduledAudit mocks base method.
 func (m *MockIotClient) DescribeScheduledAudit(arg0 context.Context, arg1 *iot.DescribeScheduledAuditInput, arg2 ...func(*iot.Options)) (*iot.DescribeScheduledAuditOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScheduledAudit")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockIotClientMockRecorder) DescribeScheduledAudit(arg0, arg1 interface
 
 // DescribeSecurityProfile mocks base method.
 func (m *MockIotClient) DescribeSecurityProfile(arg0 context.Context, arg1 *iot.DescribeSecurityProfileInput, arg2 ...func(*iot.Options)) (*iot.DescribeSecurityProfileOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSecurityProfile")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockIotClientMockRecorder) DescribeSecurityProfile(arg0, arg1 interfac
 
 // DescribeStream mocks base method.
 func (m *MockIotClient) DescribeStream(arg0 context.Context, arg1 *iot.DescribeStreamInput, arg2 ...func(*iot.Options)) (*iot.DescribeStreamOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStream")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockIotClientMockRecorder) DescribeStream(arg0, arg1 interface{}, arg2
 
 // DescribeThing mocks base method.
 func (m *MockIotClient) DescribeThing(arg0 context.Context, arg1 *iot.DescribeThingInput, arg2 ...func(*iot.Options)) (*iot.DescribeThingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeThing")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockIotClientMockRecorder) DescribeThing(arg0, arg1 interface{}, arg2 
 
 // DescribeThingGroup mocks base method.
 func (m *MockIotClient) DescribeThingGroup(arg0 context.Context, arg1 *iot.DescribeThingGroupInput, arg2 ...func(*iot.Options)) (*iot.DescribeThingGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeThingGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockIotClientMockRecorder) DescribeThingGroup(arg0, arg1 interface{}, 
 
 // DescribeThingRegistrationTask mocks base method.
 func (m *MockIotClient) DescribeThingRegistrationTask(arg0 context.Context, arg1 *iot.DescribeThingRegistrationTaskInput, arg2 ...func(*iot.Options)) (*iot.DescribeThingRegistrationTaskOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeThingRegistrationTask")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockIotClientMockRecorder) DescribeThingRegistrationTask(arg0, arg1 in
 
 // DescribeThingType mocks base method.
 func (m *MockIotClient) DescribeThingType(arg0 context.Context, arg1 *iot.DescribeThingTypeInput, arg2 ...func(*iot.Options)) (*iot.DescribeThingTypeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeThingType")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockIotClientMockRecorder) DescribeThingType(arg0, arg1 interface{}, a
 
 // GetBehaviorModelTrainingSummaries mocks base method.
 func (m *MockIotClient) GetBehaviorModelTrainingSummaries(arg0 context.Context, arg1 *iot.GetBehaviorModelTrainingSummariesInput, arg2 ...func(*iot.Options)) (*iot.GetBehaviorModelTrainingSummariesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBehaviorModelTrainingSummaries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1057,16 @@ func (mr *MockIotClientMockRecorder) GetBehaviorModelTrainingSummaries(arg0, arg
 
 // GetBucketsAggregation mocks base method.
 func (m *MockIotClient) GetBucketsAggregation(arg0 context.Context, arg1 *iot.GetBucketsAggregationInput, arg2 ...func(*iot.Options)) (*iot.GetBucketsAggregationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketsAggregation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1087,16 @@ func (mr *MockIotClientMockRecorder) GetBucketsAggregation(arg0, arg1 interface{
 
 // GetCardinality mocks base method.
 func (m *MockIotClient) GetCardinality(arg0 context.Context, arg1 *iot.GetCardinalityInput, arg2 ...func(*iot.Options)) (*iot.GetCardinalityOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCardinality")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1117,16 @@ func (mr *MockIotClientMockRecorder) GetCardinality(arg0, arg1 interface{}, arg2
 
 // GetEffectivePolicies mocks base method.
 func (m *MockIotClient) GetEffectivePolicies(arg0 context.Context, arg1 *iot.GetEffectivePoliciesInput, arg2 ...func(*iot.Options)) (*iot.GetEffectivePoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEffectivePolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -777,6 +1147,16 @@ func (mr *MockIotClientMockRecorder) GetEffectivePolicies(arg0, arg1 interface{}
 
 // GetIndexingConfiguration mocks base method.
 func (m *MockIotClient) GetIndexingConfiguration(arg0 context.Context, arg1 *iot.GetIndexingConfigurationInput, arg2 ...func(*iot.Options)) (*iot.GetIndexingConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetIndexingConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -797,6 +1177,16 @@ func (mr *MockIotClientMockRecorder) GetIndexingConfiguration(arg0, arg1 interfa
 
 // GetJobDocument mocks base method.
 func (m *MockIotClient) GetJobDocument(arg0 context.Context, arg1 *iot.GetJobDocumentInput, arg2 ...func(*iot.Options)) (*iot.GetJobDocumentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetJobDocument")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -817,6 +1207,16 @@ func (mr *MockIotClientMockRecorder) GetJobDocument(arg0, arg1 interface{}, arg2
 
 // GetLoggingOptions mocks base method.
 func (m *MockIotClient) GetLoggingOptions(arg0 context.Context, arg1 *iot.GetLoggingOptionsInput, arg2 ...func(*iot.Options)) (*iot.GetLoggingOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLoggingOptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -837,6 +1237,16 @@ func (mr *MockIotClientMockRecorder) GetLoggingOptions(arg0, arg1 interface{}, a
 
 // GetOTAUpdate mocks base method.
 func (m *MockIotClient) GetOTAUpdate(arg0 context.Context, arg1 *iot.GetOTAUpdateInput, arg2 ...func(*iot.Options)) (*iot.GetOTAUpdateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOTAUpdate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -857,6 +1267,16 @@ func (mr *MockIotClientMockRecorder) GetOTAUpdate(arg0, arg1 interface{}, arg2 .
 
 // GetPercentiles mocks base method.
 func (m *MockIotClient) GetPercentiles(arg0 context.Context, arg1 *iot.GetPercentilesInput, arg2 ...func(*iot.Options)) (*iot.GetPercentilesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPercentiles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -877,6 +1297,16 @@ func (mr *MockIotClientMockRecorder) GetPercentiles(arg0, arg1 interface{}, arg2
 
 // GetPolicy mocks base method.
 func (m *MockIotClient) GetPolicy(arg0 context.Context, arg1 *iot.GetPolicyInput, arg2 ...func(*iot.Options)) (*iot.GetPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -897,6 +1327,16 @@ func (mr *MockIotClientMockRecorder) GetPolicy(arg0, arg1 interface{}, arg2 ...i
 
 // GetPolicyVersion mocks base method.
 func (m *MockIotClient) GetPolicyVersion(arg0 context.Context, arg1 *iot.GetPolicyVersionInput, arg2 ...func(*iot.Options)) (*iot.GetPolicyVersionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPolicyVersion")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -917,6 +1357,16 @@ func (mr *MockIotClientMockRecorder) GetPolicyVersion(arg0, arg1 interface{}, ar
 
 // GetRegistrationCode mocks base method.
 func (m *MockIotClient) GetRegistrationCode(arg0 context.Context, arg1 *iot.GetRegistrationCodeInput, arg2 ...func(*iot.Options)) (*iot.GetRegistrationCodeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRegistrationCode")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -937,6 +1387,16 @@ func (mr *MockIotClientMockRecorder) GetRegistrationCode(arg0, arg1 interface{},
 
 // GetStatistics mocks base method.
 func (m *MockIotClient) GetStatistics(arg0 context.Context, arg1 *iot.GetStatisticsInput, arg2 ...func(*iot.Options)) (*iot.GetStatisticsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetStatistics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -957,6 +1417,16 @@ func (mr *MockIotClientMockRecorder) GetStatistics(arg0, arg1 interface{}, arg2 
 
 // GetTopicRule mocks base method.
 func (m *MockIotClient) GetTopicRule(arg0 context.Context, arg1 *iot.GetTopicRuleInput, arg2 ...func(*iot.Options)) (*iot.GetTopicRuleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTopicRule")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -977,6 +1447,16 @@ func (mr *MockIotClientMockRecorder) GetTopicRule(arg0, arg1 interface{}, arg2 .
 
 // GetTopicRuleDestination mocks base method.
 func (m *MockIotClient) GetTopicRuleDestination(arg0 context.Context, arg1 *iot.GetTopicRuleDestinationInput, arg2 ...func(*iot.Options)) (*iot.GetTopicRuleDestinationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTopicRuleDestination")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -997,6 +1477,16 @@ func (mr *MockIotClientMockRecorder) GetTopicRuleDestination(arg0, arg1 interfac
 
 // GetV2LoggingOptions mocks base method.
 func (m *MockIotClient) GetV2LoggingOptions(arg0 context.Context, arg1 *iot.GetV2LoggingOptionsInput, arg2 ...func(*iot.Options)) (*iot.GetV2LoggingOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetV2LoggingOptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1017,6 +1507,16 @@ func (mr *MockIotClientMockRecorder) GetV2LoggingOptions(arg0, arg1 interface{},
 
 // ListActiveViolations mocks base method.
 func (m *MockIotClient) ListActiveViolations(arg0 context.Context, arg1 *iot.ListActiveViolationsInput, arg2 ...func(*iot.Options)) (*iot.ListActiveViolationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListActiveViolations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1037,6 +1537,16 @@ func (mr *MockIotClientMockRecorder) ListActiveViolations(arg0, arg1 interface{}
 
 // ListAttachedPolicies mocks base method.
 func (m *MockIotClient) ListAttachedPolicies(arg0 context.Context, arg1 *iot.ListAttachedPoliciesInput, arg2 ...func(*iot.Options)) (*iot.ListAttachedPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAttachedPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1057,6 +1567,16 @@ func (mr *MockIotClientMockRecorder) ListAttachedPolicies(arg0, arg1 interface{}
 
 // ListAuditFindings mocks base method.
 func (m *MockIotClient) ListAuditFindings(arg0 context.Context, arg1 *iot.ListAuditFindingsInput, arg2 ...func(*iot.Options)) (*iot.ListAuditFindingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAuditFindings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1077,6 +1597,16 @@ func (mr *MockIotClientMockRecorder) ListAuditFindings(arg0, arg1 interface{}, a
 
 // ListAuditMitigationActionsExecutions mocks base method.
 func (m *MockIotClient) ListAuditMitigationActionsExecutions(arg0 context.Context, arg1 *iot.ListAuditMitigationActionsExecutionsInput, arg2 ...func(*iot.Options)) (*iot.ListAuditMitigationActionsExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAuditMitigationActionsExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1097,6 +1627,16 @@ func (mr *MockIotClientMockRecorder) ListAuditMitigationActionsExecutions(arg0, 
 
 // ListAuditMitigationActionsTasks mocks base method.
 func (m *MockIotClient) ListAuditMitigationActionsTasks(arg0 context.Context, arg1 *iot.ListAuditMitigationActionsTasksInput, arg2 ...func(*iot.Options)) (*iot.ListAuditMitigationActionsTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAuditMitigationActionsTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1117,6 +1657,16 @@ func (mr *MockIotClientMockRecorder) ListAuditMitigationActionsTasks(arg0, arg1 
 
 // ListAuditSuppressions mocks base method.
 func (m *MockIotClient) ListAuditSuppressions(arg0 context.Context, arg1 *iot.ListAuditSuppressionsInput, arg2 ...func(*iot.Options)) (*iot.ListAuditSuppressionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAuditSuppressions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1137,6 +1687,16 @@ func (mr *MockIotClientMockRecorder) ListAuditSuppressions(arg0, arg1 interface{
 
 // ListAuditTasks mocks base method.
 func (m *MockIotClient) ListAuditTasks(arg0 context.Context, arg1 *iot.ListAuditTasksInput, arg2 ...func(*iot.Options)) (*iot.ListAuditTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAuditTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1157,6 +1717,16 @@ func (mr *MockIotClientMockRecorder) ListAuditTasks(arg0, arg1 interface{}, arg2
 
 // ListAuthorizers mocks base method.
 func (m *MockIotClient) ListAuthorizers(arg0 context.Context, arg1 *iot.ListAuthorizersInput, arg2 ...func(*iot.Options)) (*iot.ListAuthorizersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAuthorizers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1177,6 +1747,16 @@ func (mr *MockIotClientMockRecorder) ListAuthorizers(arg0, arg1 interface{}, arg
 
 // ListBillingGroups mocks base method.
 func (m *MockIotClient) ListBillingGroups(arg0 context.Context, arg1 *iot.ListBillingGroupsInput, arg2 ...func(*iot.Options)) (*iot.ListBillingGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBillingGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1197,6 +1777,16 @@ func (mr *MockIotClientMockRecorder) ListBillingGroups(arg0, arg1 interface{}, a
 
 // ListCACertificates mocks base method.
 func (m *MockIotClient) ListCACertificates(arg0 context.Context, arg1 *iot.ListCACertificatesInput, arg2 ...func(*iot.Options)) (*iot.ListCACertificatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCACertificates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1217,6 +1807,16 @@ func (mr *MockIotClientMockRecorder) ListCACertificates(arg0, arg1 interface{}, 
 
 // ListCertificates mocks base method.
 func (m *MockIotClient) ListCertificates(arg0 context.Context, arg1 *iot.ListCertificatesInput, arg2 ...func(*iot.Options)) (*iot.ListCertificatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCertificates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1237,6 +1837,16 @@ func (mr *MockIotClientMockRecorder) ListCertificates(arg0, arg1 interface{}, ar
 
 // ListCertificatesByCA mocks base method.
 func (m *MockIotClient) ListCertificatesByCA(arg0 context.Context, arg1 *iot.ListCertificatesByCAInput, arg2 ...func(*iot.Options)) (*iot.ListCertificatesByCAOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCertificatesByCA")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1257,6 +1867,16 @@ func (mr *MockIotClientMockRecorder) ListCertificatesByCA(arg0, arg1 interface{}
 
 // ListCustomMetrics mocks base method.
 func (m *MockIotClient) ListCustomMetrics(arg0 context.Context, arg1 *iot.ListCustomMetricsInput, arg2 ...func(*iot.Options)) (*iot.ListCustomMetricsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCustomMetrics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1277,6 +1897,16 @@ func (mr *MockIotClientMockRecorder) ListCustomMetrics(arg0, arg1 interface{}, a
 
 // ListDetectMitigationActionsExecutions mocks base method.
 func (m *MockIotClient) ListDetectMitigationActionsExecutions(arg0 context.Context, arg1 *iot.ListDetectMitigationActionsExecutionsInput, arg2 ...func(*iot.Options)) (*iot.ListDetectMitigationActionsExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDetectMitigationActionsExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1297,6 +1927,16 @@ func (mr *MockIotClientMockRecorder) ListDetectMitigationActionsExecutions(arg0,
 
 // ListDetectMitigationActionsTasks mocks base method.
 func (m *MockIotClient) ListDetectMitigationActionsTasks(arg0 context.Context, arg1 *iot.ListDetectMitigationActionsTasksInput, arg2 ...func(*iot.Options)) (*iot.ListDetectMitigationActionsTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDetectMitigationActionsTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1317,6 +1957,16 @@ func (mr *MockIotClientMockRecorder) ListDetectMitigationActionsTasks(arg0, arg1
 
 // ListDimensions mocks base method.
 func (m *MockIotClient) ListDimensions(arg0 context.Context, arg1 *iot.ListDimensionsInput, arg2 ...func(*iot.Options)) (*iot.ListDimensionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDimensions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1337,6 +1987,16 @@ func (mr *MockIotClientMockRecorder) ListDimensions(arg0, arg1 interface{}, arg2
 
 // ListDomainConfigurations mocks base method.
 func (m *MockIotClient) ListDomainConfigurations(arg0 context.Context, arg1 *iot.ListDomainConfigurationsInput, arg2 ...func(*iot.Options)) (*iot.ListDomainConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDomainConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1357,6 +2017,16 @@ func (mr *MockIotClientMockRecorder) ListDomainConfigurations(arg0, arg1 interfa
 
 // ListFleetMetrics mocks base method.
 func (m *MockIotClient) ListFleetMetrics(arg0 context.Context, arg1 *iot.ListFleetMetricsInput, arg2 ...func(*iot.Options)) (*iot.ListFleetMetricsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFleetMetrics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1377,6 +2047,16 @@ func (mr *MockIotClientMockRecorder) ListFleetMetrics(arg0, arg1 interface{}, ar
 
 // ListIndices mocks base method.
 func (m *MockIotClient) ListIndices(arg0 context.Context, arg1 *iot.ListIndicesInput, arg2 ...func(*iot.Options)) (*iot.ListIndicesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListIndices")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1397,6 +2077,16 @@ func (mr *MockIotClientMockRecorder) ListIndices(arg0, arg1 interface{}, arg2 ..
 
 // ListJobExecutionsForJob mocks base method.
 func (m *MockIotClient) ListJobExecutionsForJob(arg0 context.Context, arg1 *iot.ListJobExecutionsForJobInput, arg2 ...func(*iot.Options)) (*iot.ListJobExecutionsForJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListJobExecutionsForJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1417,6 +2107,16 @@ func (mr *MockIotClientMockRecorder) ListJobExecutionsForJob(arg0, arg1 interfac
 
 // ListJobExecutionsForThing mocks base method.
 func (m *MockIotClient) ListJobExecutionsForThing(arg0 context.Context, arg1 *iot.ListJobExecutionsForThingInput, arg2 ...func(*iot.Options)) (*iot.ListJobExecutionsForThingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListJobExecutionsForThing")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1437,6 +2137,16 @@ func (mr *MockIotClientMockRecorder) ListJobExecutionsForThing(arg0, arg1 interf
 
 // ListJobTemplates mocks base method.
 func (m *MockIotClient) ListJobTemplates(arg0 context.Context, arg1 *iot.ListJobTemplatesInput, arg2 ...func(*iot.Options)) (*iot.ListJobTemplatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListJobTemplates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1457,6 +2167,16 @@ func (mr *MockIotClientMockRecorder) ListJobTemplates(arg0, arg1 interface{}, ar
 
 // ListJobs mocks base method.
 func (m *MockIotClient) ListJobs(arg0 context.Context, arg1 *iot.ListJobsInput, arg2 ...func(*iot.Options)) (*iot.ListJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1477,6 +2197,16 @@ func (mr *MockIotClientMockRecorder) ListJobs(arg0, arg1 interface{}, arg2 ...in
 
 // ListManagedJobTemplates mocks base method.
 func (m *MockIotClient) ListManagedJobTemplates(arg0 context.Context, arg1 *iot.ListManagedJobTemplatesInput, arg2 ...func(*iot.Options)) (*iot.ListManagedJobTemplatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListManagedJobTemplates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1497,6 +2227,16 @@ func (mr *MockIotClientMockRecorder) ListManagedJobTemplates(arg0, arg1 interfac
 
 // ListMetricValues mocks base method.
 func (m *MockIotClient) ListMetricValues(arg0 context.Context, arg1 *iot.ListMetricValuesInput, arg2 ...func(*iot.Options)) (*iot.ListMetricValuesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMetricValues")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1517,6 +2257,16 @@ func (mr *MockIotClientMockRecorder) ListMetricValues(arg0, arg1 interface{}, ar
 
 // ListMitigationActions mocks base method.
 func (m *MockIotClient) ListMitigationActions(arg0 context.Context, arg1 *iot.ListMitigationActionsInput, arg2 ...func(*iot.Options)) (*iot.ListMitigationActionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMitigationActions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1537,6 +2287,16 @@ func (mr *MockIotClientMockRecorder) ListMitigationActions(arg0, arg1 interface{
 
 // ListOTAUpdates mocks base method.
 func (m *MockIotClient) ListOTAUpdates(arg0 context.Context, arg1 *iot.ListOTAUpdatesInput, arg2 ...func(*iot.Options)) (*iot.ListOTAUpdatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOTAUpdates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1557,6 +2317,16 @@ func (mr *MockIotClientMockRecorder) ListOTAUpdates(arg0, arg1 interface{}, arg2
 
 // ListOutgoingCertificates mocks base method.
 func (m *MockIotClient) ListOutgoingCertificates(arg0 context.Context, arg1 *iot.ListOutgoingCertificatesInput, arg2 ...func(*iot.Options)) (*iot.ListOutgoingCertificatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOutgoingCertificates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1577,6 +2347,16 @@ func (mr *MockIotClientMockRecorder) ListOutgoingCertificates(arg0, arg1 interfa
 
 // ListPolicies mocks base method.
 func (m *MockIotClient) ListPolicies(arg0 context.Context, arg1 *iot.ListPoliciesInput, arg2 ...func(*iot.Options)) (*iot.ListPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1597,6 +2377,16 @@ func (mr *MockIotClientMockRecorder) ListPolicies(arg0, arg1 interface{}, arg2 .
 
 // ListPolicyPrincipals mocks base method.
 func (m *MockIotClient) ListPolicyPrincipals(arg0 context.Context, arg1 *iot.ListPolicyPrincipalsInput, arg2 ...func(*iot.Options)) (*iot.ListPolicyPrincipalsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPolicyPrincipals")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1617,6 +2407,16 @@ func (mr *MockIotClientMockRecorder) ListPolicyPrincipals(arg0, arg1 interface{}
 
 // ListPolicyVersions mocks base method.
 func (m *MockIotClient) ListPolicyVersions(arg0 context.Context, arg1 *iot.ListPolicyVersionsInput, arg2 ...func(*iot.Options)) (*iot.ListPolicyVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPolicyVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1637,6 +2437,16 @@ func (mr *MockIotClientMockRecorder) ListPolicyVersions(arg0, arg1 interface{}, 
 
 // ListPrincipalPolicies mocks base method.
 func (m *MockIotClient) ListPrincipalPolicies(arg0 context.Context, arg1 *iot.ListPrincipalPoliciesInput, arg2 ...func(*iot.Options)) (*iot.ListPrincipalPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPrincipalPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1657,6 +2467,16 @@ func (mr *MockIotClientMockRecorder) ListPrincipalPolicies(arg0, arg1 interface{
 
 // ListPrincipalThings mocks base method.
 func (m *MockIotClient) ListPrincipalThings(arg0 context.Context, arg1 *iot.ListPrincipalThingsInput, arg2 ...func(*iot.Options)) (*iot.ListPrincipalThingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPrincipalThings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1677,6 +2497,16 @@ func (mr *MockIotClientMockRecorder) ListPrincipalThings(arg0, arg1 interface{},
 
 // ListProvisioningTemplateVersions mocks base method.
 func (m *MockIotClient) ListProvisioningTemplateVersions(arg0 context.Context, arg1 *iot.ListProvisioningTemplateVersionsInput, arg2 ...func(*iot.Options)) (*iot.ListProvisioningTemplateVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProvisioningTemplateVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1697,6 +2527,16 @@ func (mr *MockIotClientMockRecorder) ListProvisioningTemplateVersions(arg0, arg1
 
 // ListProvisioningTemplates mocks base method.
 func (m *MockIotClient) ListProvisioningTemplates(arg0 context.Context, arg1 *iot.ListProvisioningTemplatesInput, arg2 ...func(*iot.Options)) (*iot.ListProvisioningTemplatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProvisioningTemplates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1717,6 +2557,16 @@ func (mr *MockIotClientMockRecorder) ListProvisioningTemplates(arg0, arg1 interf
 
 // ListRelatedResourcesForAuditFinding mocks base method.
 func (m *MockIotClient) ListRelatedResourcesForAuditFinding(arg0 context.Context, arg1 *iot.ListRelatedResourcesForAuditFindingInput, arg2 ...func(*iot.Options)) (*iot.ListRelatedResourcesForAuditFindingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRelatedResourcesForAuditFinding")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1737,6 +2587,16 @@ func (mr *MockIotClientMockRecorder) ListRelatedResourcesForAuditFinding(arg0, a
 
 // ListRoleAliases mocks base method.
 func (m *MockIotClient) ListRoleAliases(arg0 context.Context, arg1 *iot.ListRoleAliasesInput, arg2 ...func(*iot.Options)) (*iot.ListRoleAliasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRoleAliases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1757,6 +2617,16 @@ func (mr *MockIotClientMockRecorder) ListRoleAliases(arg0, arg1 interface{}, arg
 
 // ListScheduledAudits mocks base method.
 func (m *MockIotClient) ListScheduledAudits(arg0 context.Context, arg1 *iot.ListScheduledAuditsInput, arg2 ...func(*iot.Options)) (*iot.ListScheduledAuditsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListScheduledAudits")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1777,6 +2647,16 @@ func (mr *MockIotClientMockRecorder) ListScheduledAudits(arg0, arg1 interface{},
 
 // ListSecurityProfiles mocks base method.
 func (m *MockIotClient) ListSecurityProfiles(arg0 context.Context, arg1 *iot.ListSecurityProfilesInput, arg2 ...func(*iot.Options)) (*iot.ListSecurityProfilesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSecurityProfiles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1797,6 +2677,16 @@ func (mr *MockIotClientMockRecorder) ListSecurityProfiles(arg0, arg1 interface{}
 
 // ListSecurityProfilesForTarget mocks base method.
 func (m *MockIotClient) ListSecurityProfilesForTarget(arg0 context.Context, arg1 *iot.ListSecurityProfilesForTargetInput, arg2 ...func(*iot.Options)) (*iot.ListSecurityProfilesForTargetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSecurityProfilesForTarget")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1817,6 +2707,16 @@ func (mr *MockIotClientMockRecorder) ListSecurityProfilesForTarget(arg0, arg1 in
 
 // ListStreams mocks base method.
 func (m *MockIotClient) ListStreams(arg0 context.Context, arg1 *iot.ListStreamsInput, arg2 ...func(*iot.Options)) (*iot.ListStreamsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStreams")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1837,6 +2737,16 @@ func (mr *MockIotClientMockRecorder) ListStreams(arg0, arg1 interface{}, arg2 ..
 
 // ListTagsForResource mocks base method.
 func (m *MockIotClient) ListTagsForResource(arg0 context.Context, arg1 *iot.ListTagsForResourceInput, arg2 ...func(*iot.Options)) (*iot.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1857,6 +2767,16 @@ func (mr *MockIotClientMockRecorder) ListTagsForResource(arg0, arg1 interface{},
 
 // ListTargetsForPolicy mocks base method.
 func (m *MockIotClient) ListTargetsForPolicy(arg0 context.Context, arg1 *iot.ListTargetsForPolicyInput, arg2 ...func(*iot.Options)) (*iot.ListTargetsForPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTargetsForPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1877,6 +2797,16 @@ func (mr *MockIotClientMockRecorder) ListTargetsForPolicy(arg0, arg1 interface{}
 
 // ListTargetsForSecurityProfile mocks base method.
 func (m *MockIotClient) ListTargetsForSecurityProfile(arg0 context.Context, arg1 *iot.ListTargetsForSecurityProfileInput, arg2 ...func(*iot.Options)) (*iot.ListTargetsForSecurityProfileOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTargetsForSecurityProfile")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1897,6 +2827,16 @@ func (mr *MockIotClientMockRecorder) ListTargetsForSecurityProfile(arg0, arg1 in
 
 // ListThingGroups mocks base method.
 func (m *MockIotClient) ListThingGroups(arg0 context.Context, arg1 *iot.ListThingGroupsInput, arg2 ...func(*iot.Options)) (*iot.ListThingGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListThingGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1917,6 +2857,16 @@ func (mr *MockIotClientMockRecorder) ListThingGroups(arg0, arg1 interface{}, arg
 
 // ListThingGroupsForThing mocks base method.
 func (m *MockIotClient) ListThingGroupsForThing(arg0 context.Context, arg1 *iot.ListThingGroupsForThingInput, arg2 ...func(*iot.Options)) (*iot.ListThingGroupsForThingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListThingGroupsForThing")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1937,6 +2887,16 @@ func (mr *MockIotClientMockRecorder) ListThingGroupsForThing(arg0, arg1 interfac
 
 // ListThingPrincipals mocks base method.
 func (m *MockIotClient) ListThingPrincipals(arg0 context.Context, arg1 *iot.ListThingPrincipalsInput, arg2 ...func(*iot.Options)) (*iot.ListThingPrincipalsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListThingPrincipals")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1957,6 +2917,16 @@ func (mr *MockIotClientMockRecorder) ListThingPrincipals(arg0, arg1 interface{},
 
 // ListThingRegistrationTaskReports mocks base method.
 func (m *MockIotClient) ListThingRegistrationTaskReports(arg0 context.Context, arg1 *iot.ListThingRegistrationTaskReportsInput, arg2 ...func(*iot.Options)) (*iot.ListThingRegistrationTaskReportsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListThingRegistrationTaskReports")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1977,6 +2947,16 @@ func (mr *MockIotClientMockRecorder) ListThingRegistrationTaskReports(arg0, arg1
 
 // ListThingRegistrationTasks mocks base method.
 func (m *MockIotClient) ListThingRegistrationTasks(arg0 context.Context, arg1 *iot.ListThingRegistrationTasksInput, arg2 ...func(*iot.Options)) (*iot.ListThingRegistrationTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListThingRegistrationTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1997,6 +2977,16 @@ func (mr *MockIotClientMockRecorder) ListThingRegistrationTasks(arg0, arg1 inter
 
 // ListThingTypes mocks base method.
 func (m *MockIotClient) ListThingTypes(arg0 context.Context, arg1 *iot.ListThingTypesInput, arg2 ...func(*iot.Options)) (*iot.ListThingTypesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListThingTypes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2017,6 +3007,16 @@ func (mr *MockIotClientMockRecorder) ListThingTypes(arg0, arg1 interface{}, arg2
 
 // ListThings mocks base method.
 func (m *MockIotClient) ListThings(arg0 context.Context, arg1 *iot.ListThingsInput, arg2 ...func(*iot.Options)) (*iot.ListThingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListThings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2037,6 +3037,16 @@ func (mr *MockIotClientMockRecorder) ListThings(arg0, arg1 interface{}, arg2 ...
 
 // ListThingsInBillingGroup mocks base method.
 func (m *MockIotClient) ListThingsInBillingGroup(arg0 context.Context, arg1 *iot.ListThingsInBillingGroupInput, arg2 ...func(*iot.Options)) (*iot.ListThingsInBillingGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListThingsInBillingGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2057,6 +3067,16 @@ func (mr *MockIotClientMockRecorder) ListThingsInBillingGroup(arg0, arg1 interfa
 
 // ListThingsInThingGroup mocks base method.
 func (m *MockIotClient) ListThingsInThingGroup(arg0 context.Context, arg1 *iot.ListThingsInThingGroupInput, arg2 ...func(*iot.Options)) (*iot.ListThingsInThingGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListThingsInThingGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2077,6 +3097,16 @@ func (mr *MockIotClientMockRecorder) ListThingsInThingGroup(arg0, arg1 interface
 
 // ListTopicRuleDestinations mocks base method.
 func (m *MockIotClient) ListTopicRuleDestinations(arg0 context.Context, arg1 *iot.ListTopicRuleDestinationsInput, arg2 ...func(*iot.Options)) (*iot.ListTopicRuleDestinationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTopicRuleDestinations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2097,6 +3127,16 @@ func (mr *MockIotClientMockRecorder) ListTopicRuleDestinations(arg0, arg1 interf
 
 // ListTopicRules mocks base method.
 func (m *MockIotClient) ListTopicRules(arg0 context.Context, arg1 *iot.ListTopicRulesInput, arg2 ...func(*iot.Options)) (*iot.ListTopicRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTopicRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2117,6 +3157,16 @@ func (mr *MockIotClientMockRecorder) ListTopicRules(arg0, arg1 interface{}, arg2
 
 // ListV2LoggingLevels mocks base method.
 func (m *MockIotClient) ListV2LoggingLevels(arg0 context.Context, arg1 *iot.ListV2LoggingLevelsInput, arg2 ...func(*iot.Options)) (*iot.ListV2LoggingLevelsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListV2LoggingLevels")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2137,6 +3187,16 @@ func (mr *MockIotClientMockRecorder) ListV2LoggingLevels(arg0, arg1 interface{},
 
 // ListViolationEvents mocks base method.
 func (m *MockIotClient) ListViolationEvents(arg0 context.Context, arg1 *iot.ListViolationEventsInput, arg2 ...func(*iot.Options)) (*iot.ListViolationEventsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListViolationEvents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2157,6 +3217,16 @@ func (mr *MockIotClientMockRecorder) ListViolationEvents(arg0, arg1 interface{},
 
 // SearchIndex mocks base method.
 func (m *MockIotClient) SearchIndex(arg0 context.Context, arg1 *iot.SearchIndexInput, arg2 ...func(*iot.Options)) (*iot.SearchIndexOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchIndex")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

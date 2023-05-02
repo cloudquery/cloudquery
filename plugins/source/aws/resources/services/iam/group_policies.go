@@ -48,7 +48,9 @@ func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	paginator := iam.NewListGroupPoliciesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iam.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil
@@ -67,7 +69,9 @@ func getGroupPolicy(ctx context.Context, meta schema.ClientMeta, resource *schem
 	p := resource.Item.(string)
 	group := resource.Parent.Item.(types.Group)
 
-	policyResult, err := svc.GetGroupPolicy(ctx, &iam.GetGroupPolicyInput{PolicyName: &p, GroupName: group.GroupName})
+	policyResult, err := svc.GetGroupPolicy(ctx, &iam.GetGroupPolicyInput{PolicyName: &p, GroupName: group.GroupName}, func(options *iam.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

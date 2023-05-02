@@ -38,7 +38,9 @@ func fetchMqBrokerUsers(ctx context.Context, meta schema.ClientMeta, parent *sch
 			BrokerId: broker.BrokerId,
 			Username: us.Username,
 		}
-		output, err := svc.DescribeUser(ctx, &input)
+		output, err := svc.DescribeUser(ctx, &input, func(options *mq.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

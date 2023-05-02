@@ -45,10 +45,13 @@ func Services() *schema.Table {
 
 func fetchApprunnerServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apprunner.ListServicesInput
-	svc := meta.(*client.Client).Services().Apprunner
+	c := meta.(*client.Client)
+	svc := c.Services().Apprunner
 	paginator := apprunner.NewListServicesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *apprunner.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -62,7 +65,9 @@ func getService(ctx context.Context, meta schema.ClientMeta, resource *schema.Re
 	svc := c.Services().Apprunner
 	service := resource.Item.(types.ServiceSummary)
 
-	describeTaskDefinitionOutput, err := svc.DescribeService(ctx, &apprunner.DescribeServiceInput{ServiceArn: service.ServiceArn})
+	describeTaskDefinitionOutput, err := svc.DescribeService(ctx, &apprunner.DescribeServiceInput{ServiceArn: service.ServiceArn}, func(options *apprunner.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

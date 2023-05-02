@@ -36,8 +36,8 @@ func Attacks() *schema.Table {
 }
 
 func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Shield
+	cl := meta.(*client.Client)
+	svc := cl.Services().Shield
 	end := time.Now()
 	start := end.Add(-time.Hour * 24)
 	config := shield.ListAttacksInput{
@@ -46,7 +46,9 @@ func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	pagintor := shield.NewListAttacksPaginator(svc, &config)
 	for pagintor.HasMorePages() {
-		page, err := pagintor.NextPage(ctx)
+		page, err := pagintor.NextPage(ctx, func(o *shield.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -56,11 +58,13 @@ func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *sch
 }
 
 func getAttack(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Shield
+	cl := meta.(*client.Client)
+	svc := cl.Services().Shield
 	a := resource.Item.(types.AttackSummary)
 
-	attack, err := svc.DescribeAttack(ctx, &shield.DescribeAttackInput{AttackId: a.AttackId})
+	attack, err := svc.DescribeAttack(ctx, &shield.DescribeAttackInput{AttackId: a.AttackId}, func(o *shield.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

@@ -48,7 +48,9 @@ func fetchRdsClusterParameterGroups(ctx context.Context, meta schema.ClientMeta,
 	var input rds.DescribeDBClusterParameterGroupsInput
 	paginator := rds.NewDescribeDBClusterParameterGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -64,7 +66,9 @@ func fetchRdsClusterParameterGroupParameters(ctx context.Context, meta schema.Cl
 	input := rds.DescribeDBClusterParametersInput{DBClusterParameterGroupName: g.DBClusterParameterGroupName}
 	paginator := rds.NewDescribeDBClusterParametersPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -77,7 +81,9 @@ func resolveRdsClusterParameterGroupTags(ctx context.Context, meta schema.Client
 	g := resource.Item.(types.DBClusterParameterGroup)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Rds
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBClusterParameterGroupArn})
+	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBClusterParameterGroupArn}, func(options *rds.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

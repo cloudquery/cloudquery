@@ -40,7 +40,9 @@ func fetchBackupPlanSelections(ctx context.Context, meta schema.ClientMeta, pare
 	}
 	paginator := backup.NewListBackupSelectionsPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *backup.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

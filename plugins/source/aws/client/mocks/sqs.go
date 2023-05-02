@@ -37,6 +37,16 @@ func (m *MockSqsClient) EXPECT() *MockSqsClientMockRecorder {
 
 // GetQueueAttributes mocks base method.
 func (m *MockSqsClient) GetQueueAttributes(arg0 context.Context, arg1 *sqs.GetQueueAttributesInput, arg2 ...func(*sqs.Options)) (*sqs.GetQueueAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sqs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetQueueAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockSqsClientMockRecorder) GetQueueAttributes(arg0, arg1 interface{}, 
 
 // GetQueueUrl mocks base method.
 func (m *MockSqsClient) GetQueueUrl(arg0 context.Context, arg1 *sqs.GetQueueUrlInput, arg2 ...func(*sqs.Options)) (*sqs.GetQueueUrlOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sqs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetQueueUrl")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockSqsClientMockRecorder) GetQueueUrl(arg0, arg1 interface{}, arg2 ..
 
 // ListDeadLetterSourceQueues mocks base method.
 func (m *MockSqsClient) ListDeadLetterSourceQueues(arg0 context.Context, arg1 *sqs.ListDeadLetterSourceQueuesInput, arg2 ...func(*sqs.Options)) (*sqs.ListDeadLetterSourceQueuesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sqs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDeadLetterSourceQueues")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockSqsClientMockRecorder) ListDeadLetterSourceQueues(arg0, arg1 inter
 
 // ListQueueTags mocks base method.
 func (m *MockSqsClient) ListQueueTags(arg0 context.Context, arg1 *sqs.ListQueueTagsInput, arg2 ...func(*sqs.Options)) (*sqs.ListQueueTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sqs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListQueueTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockSqsClientMockRecorder) ListQueueTags(arg0, arg1 interface{}, arg2 
 
 // ListQueues mocks base method.
 func (m *MockSqsClient) ListQueues(arg0 context.Context, arg1 *sqs.ListQueuesInput, arg2 ...func(*sqs.Options)) (*sqs.ListQueuesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sqs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListQueues")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

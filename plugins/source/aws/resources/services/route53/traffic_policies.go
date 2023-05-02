@@ -43,7 +43,9 @@ func fetchRoute53TrafficPolicies(ctx context.Context, meta schema.ClientMeta, pa
 	svc := c.Services().Route53
 
 	for {
-		response, err := svc.ListTrafficPolicies(ctx, &config)
+		response, err := svc.ListTrafficPolicies(ctx, &config, func(options *route53.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -59,10 +61,13 @@ func fetchRoute53TrafficPolicies(ctx context.Context, meta schema.ClientMeta, pa
 func fetchRoute53TrafficPolicyVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.TrafficPolicySummary)
 	config := route53.ListTrafficPolicyVersionsInput{Id: r.Id}
-	svc := meta.(*client.Client).Services().Route53
+	cl := meta.(*client.Client)
+	svc := cl.Services().Route53
 	// no paginator available
 	for {
-		response, err := svc.ListTrafficPolicyVersions(ctx, &config)
+		response, err := svc.ListTrafficPolicyVersions(ctx, &config, func(options *route53.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

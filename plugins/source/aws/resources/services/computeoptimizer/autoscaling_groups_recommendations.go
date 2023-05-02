@@ -35,7 +35,9 @@ func fetchAutoscalingGroupsRecommendations(ctx context.Context, meta schema.Clie
 	}
 	// No paginator available
 	for {
-		response, err := svc.GetAutoScalingGroupRecommendations(ctx, &input)
+		response, err := svc.GetAutoScalingGroupRecommendations(ctx, &input, func(options *computeoptimizer.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

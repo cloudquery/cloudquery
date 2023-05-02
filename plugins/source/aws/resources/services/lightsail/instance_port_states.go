@@ -35,7 +35,9 @@ func fetchLightsailInstancePortStates(ctx context.Context, meta schema.ClientMet
 	cli := meta.(*client.Client)
 	svc := cli.Services().Lightsail
 	input := lightsail.GetInstancePortStatesInput{InstanceName: r.Name}
-	output, err := svc.GetInstancePortStates(ctx, &input)
+	output, err := svc.GetInstancePortStates(ctx, &input, func(options *lightsail.Options) {
+		options.Region = cli.Region
+	})
 	if err != nil {
 		return err
 	}
