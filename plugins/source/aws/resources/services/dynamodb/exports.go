@@ -40,7 +40,9 @@ func listExports(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 	paginator := dynamodb.NewListExportsPaginator(svc, &dynamodb.ListExportsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *dynamodb.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -51,11 +53,14 @@ func listExports(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 }
 
 func getExport(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Dynamodb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Dynamodb
 
 	exportSummary := resource.Item.(types.ExportSummary)
 
-	response, err := svc.DescribeExport(ctx, &dynamodb.DescribeExportInput{ExportArn: exportSummary.ExportArn})
+	response, err := svc.DescribeExport(ctx, &dynamodb.DescribeExportInput{ExportArn: exportSummary.ExportArn}, func(options *dynamodb.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

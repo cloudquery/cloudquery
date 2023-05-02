@@ -18,7 +18,7 @@ func buildOrganizationalUnits(t *testing.T, ctrl *gomock.Controller) client.Serv
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListRoots(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListRoots(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListRootsOutput{
 			Roots: []types.Root{g},
 		}, nil)
@@ -28,7 +28,7 @@ func buildOrganizationalUnits(t *testing.T, ctrl *gomock.Controller) client.Serv
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListChildren(gomock.Any(), gomock.Any()).MinTimes(1).Return(
+	m.EXPECT().ListChildren(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(
 		&organizations.ListChildrenOutput{
 			Children: []types.Child{c},
 		}, nil)
@@ -37,7 +37,7 @@ func buildOrganizationalUnits(t *testing.T, ctrl *gomock.Controller) client.Serv
 	if err := faker.FakeObject(&ou); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().DescribeOrganizationalUnit(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().DescribeOrganizationalUnit(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.DescribeOrganizationalUnitOutput{
 			OrganizationalUnit: &ou,
 		}, nil)

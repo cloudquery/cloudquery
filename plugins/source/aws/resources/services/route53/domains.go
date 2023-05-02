@@ -49,7 +49,9 @@ func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *sc
 	var input route53domains.ListDomainsInput
 	paginator := route53domains.NewListDomainsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *route53domains.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -62,7 +64,9 @@ func getDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 	svc := c.Services().Route53domains
 	v := resource.Item.(types.DomainSummary)
 
-	d, err := svc.GetDomainDetail(ctx, &route53domains.GetDomainDetailInput{DomainName: v.DomainName})
+	d, err := svc.GetDomainDetail(ctx, &route53domains.GetDomainDetailInput{DomainName: v.DomainName}, func(options *route53domains.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -76,7 +80,9 @@ func resolveRoute53DomainTags(ctx context.Context, meta schema.ClientMeta, resou
 	c := meta.(*client.Client)
 	svc := c.Services().Route53domains
 	d := resource.Item.(*route53domains.GetDomainDetailOutput)
-	out, err := svc.ListTagsForDomain(ctx, &route53domains.ListTagsForDomainInput{DomainName: d.DomainName})
+	out, err := svc.ListTagsForDomain(ctx, &route53domains.ListTagsForDomainInput{DomainName: d.DomainName}, func(options *route53domains.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

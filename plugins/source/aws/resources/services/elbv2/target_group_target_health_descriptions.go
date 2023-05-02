@@ -36,6 +36,8 @@ func fetchTargetGroupTargetHealthDescriptions(ctx context.Context, meta schema.C
 	tg := parent.Item.(types.TargetGroup)
 	response, err := svc.DescribeTargetHealth(ctx, &elbv2.DescribeTargetHealthInput{
 		TargetGroupArn: tg.TargetGroupArn,
+	}, func(options *elbv2.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {

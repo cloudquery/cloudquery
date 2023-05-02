@@ -60,7 +60,9 @@ func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMe
 	svc := c.Services().Elasticbeanstalk
 	// No paginator available
 	for {
-		response, err := svc.DescribeEnvironments(ctx, &config)
+		response, err := svc.DescribeEnvironments(ctx, &config, func(options *elasticbeanstalk.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -89,7 +91,9 @@ func resolveElasticbeanstalkEnvironmentTags(ctx context.Context, meta schema.Cli
 	svc := cl.Services().Elasticbeanstalk
 	tagsOutput, err := svc.ListTagsForResource(ctx, &elasticbeanstalk.ListTagsForResourceInput{
 		ResourceArn: p.EnvironmentArn,
-	}, func(o *elasticbeanstalk.Options) {})
+	}, func(o *elasticbeanstalk.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		// It takes a few minutes for an environment to be terminated
 		// This ensures we don't error while trying to fetch related resources for a terminated environment

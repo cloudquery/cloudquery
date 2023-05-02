@@ -46,7 +46,9 @@ func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, par
 	config := codepipeline.ListPipelinesInput{}
 	paginator := codepipeline.NewListPipelinesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *codepipeline.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -59,7 +61,9 @@ func getPipeline(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	c := meta.(*client.Client)
 	svc := c.Services().Codepipeline
 	item := resource.Item.(types.PipelineSummary)
-	response, err := svc.GetPipeline(ctx, &codepipeline.GetPipelineInput{Name: item.Name})
+	response, err := svc.GetPipeline(ctx, &codepipeline.GetPipelineInput{Name: item.Name}, func(options *codepipeline.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -77,7 +81,9 @@ func resolvePipelineTags(ctx context.Context, meta schema.ClientMeta, resource *
 	})
 	var tags []types.Tag
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *codepipeline.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

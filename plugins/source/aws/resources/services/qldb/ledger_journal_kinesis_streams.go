@@ -33,14 +33,17 @@ func ledgerJournalKinesisStreams() *schema.Table {
 
 func fetchQldbLedgerJournalKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	ledger := parent.Item.(*qldb.DescribeLedgerOutput)
-	svc := meta.(*client.Client).Services().Qldb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Qldb
 	config := &qldb.ListJournalKinesisStreamsForLedgerInput{
 		LedgerName: ledger.Name,
 		MaxResults: aws.Int32(100),
 	}
 	paginator := qldb.NewListJournalKinesisStreamsForLedgerPaginator(svc, config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *qldb.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
