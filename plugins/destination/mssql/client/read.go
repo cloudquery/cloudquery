@@ -20,8 +20,8 @@ func (c *Client) Read(ctx context.Context, sc *arrow.Schema, sourceName string, 
 
 		return processRows(rows, func(row *sql.Rows) error {
 			// We consider only the current schema from table
-			resource := rowArr(l)
-			if err := row.Scan(resource...); err != nil {
+			resource := make([]any, l)
+			if err := row.Scan(wrap(resource)...); err != nil {
 				return err
 			}
 
@@ -36,10 +36,10 @@ func (c *Client) Read(ctx context.Context, sc *arrow.Schema, sourceName string, 
 	})
 }
 
-func rowArr(l int) []any {
-	res := make([]any, l)
+func wrap(arr []any) []any {
+	res := make([]any, len(arr))
 	for i := range res {
-		res[i] = new(any)
+		res[i] = &arr[i]
 	}
 	return res
 }

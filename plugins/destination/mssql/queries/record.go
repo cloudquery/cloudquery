@@ -16,7 +16,7 @@ func Record(sc *arrow.Schema, data []any) (arrow.Record, error) {
 	builder := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 
 	for i, elem := range data {
-		if err := buildValue(builder.Field(i), *elem.(*any)); err != nil {
+		if err := buildValue(builder.Field(i), elem); err != nil {
 			return nil, err
 		}
 	}
@@ -29,6 +29,7 @@ func buildValue(builder array.Builder, elem any) error {
 		builder.AppendNull()
 		return nil
 	}
+
 	switch builder := builder.(type) {
 	case *array.BooleanBuilder:
 		builder.Append(elem.(bool))
@@ -79,7 +80,20 @@ func buildValue(builder array.Builder, elem any) error {
 		}
 		builder.Append(uuid.UUID(val))
 
+	case array.ListLikeBuilder:
+		value := elem.(string)
+		if len(value) == 0 {
+			builder.AppendNull()
+			return nil
+		}
+		return builder.UnmarshalJSON([]byte(value))
+
 	default:
+		value := elem.(string)
+		if len(value) == 0 {
+			builder.AppendNull()
+			return nil
+		}
 		return builder.AppendValueFromString(elem.(string))
 	}
 	return nil

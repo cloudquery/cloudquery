@@ -99,6 +99,13 @@ func getColValue(arr arrow.Array, idx int) (any, error) {
 		val, _ := mssql.UniqueIdentifier(arr.Value(idx)).Value()
 		return val, nil
 
+	case array.ListLike:
+		data, err := arr.MarshalJSON()
+		if err != nil {
+			return nil, err
+		}
+		return string(data), nil
+
 	default:
 		return arr.ValueStr(idx), nil
 	}
