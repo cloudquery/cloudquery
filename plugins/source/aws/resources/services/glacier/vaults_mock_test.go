@@ -18,25 +18,25 @@ func buildVaultsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	v := glacier.ListVaultsOutput{}
 	require.NoError(t, faker.FakeObject(&v))
 	v.Marker = nil
-	m.EXPECT().ListVaults(gomock.Any(), gomock.Any()).Return(&v, nil)
+	m.EXPECT().ListVaults(gomock.Any(), gomock.Any(), gomock.Any()).Return(&v, nil)
 
 	ap := glacier.GetVaultAccessPolicyOutput{}
 	require.NoError(t, faker.FakeObject(&ap))
 	ap.Policy.Policy = aws.String(`{"some":"policy"}`)
-	m.EXPECT().GetVaultAccessPolicy(gomock.Any(), gomock.Any()).Return(&ap, nil)
+	m.EXPECT().GetVaultAccessPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&ap, nil)
 
 	lp := glacier.GetVaultLockOutput{}
 	require.NoError(t, faker.FakeObject(&lp))
 	lp.Policy = aws.String(`{"some":"policy"}`)
-	m.EXPECT().GetVaultLock(gomock.Any(), gomock.Any()).Return(&lp, nil)
+	m.EXPECT().GetVaultLock(gomock.Any(), gomock.Any(), gomock.Any()).Return(&lp, nil)
 
 	vn := glacier.GetVaultNotificationsOutput{}
 	require.NoError(t, faker.FakeObject(&vn))
-	m.EXPECT().GetVaultNotifications(gomock.Any(), gomock.Any()).Return(&vn, nil)
+	m.EXPECT().GetVaultNotifications(gomock.Any(), gomock.Any(), gomock.Any()).Return(&vn, nil)
 
 	tags := glacier.ListTagsForVaultOutput{}
 	require.NoError(t, faker.FakeObject(&tags))
-	m.EXPECT().ListTagsForVault(gomock.Any(), gomock.Any()).Return(&tags, nil)
+	m.EXPECT().ListTagsForVault(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
 
 	return client.Services{
 		Glacier: m,

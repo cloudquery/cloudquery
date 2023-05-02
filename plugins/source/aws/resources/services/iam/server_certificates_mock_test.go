@@ -19,7 +19,7 @@ func buildIamServerCerts(t *testing.T, ctrl *gomock.Controller) client.Services 
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListServerCertificates(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListServerCertificates(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListServerCertificatesOutput{
 			ServerCertificateMetadataList: []iamTypes.ServerCertificateMetadata{u},
 		}, nil)

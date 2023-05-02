@@ -34,14 +34,16 @@ func AccessPoints() *schema.Table {
 }
 
 func fetchAccessPoints(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
+	svc := cl.Services().S3control
 
-	svc := c.Services().S3control
 	paginator := s3control.NewListAccessPointsPaginator(svc, &s3control.ListAccessPointsInput{
-		AccountId: aws.String(c.AccountID),
+		AccountId: aws.String(cl.AccountID),
 	})
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *s3control.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

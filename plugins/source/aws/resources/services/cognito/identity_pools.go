@@ -53,7 +53,9 @@ func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, pare
 	}
 	paginator := cognitoidentity.NewListIdentityPoolsPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cognitoidentity.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -67,7 +69,9 @@ func getIdentityPool(ctx context.Context, meta schema.ClientMeta, resource *sche
 	svc := c.Services().Cognitoidentity
 	item := resource.Item.(types.IdentityPoolShortDescription)
 
-	ipo, err := svc.DescribeIdentityPool(ctx, &cognitoidentity.DescribeIdentityPoolInput{IdentityPoolId: item.IdentityPoolId})
+	ipo, err := svc.DescribeIdentityPool(ctx, &cognitoidentity.DescribeIdentityPoolInput{IdentityPoolId: item.IdentityPoolId}, func(options *cognitoidentity.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

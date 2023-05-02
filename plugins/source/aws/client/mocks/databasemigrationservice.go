@@ -37,6 +37,16 @@ func (m *MockDatabasemigrationserviceClient) EXPECT() *MockDatabasemigrationserv
 
 // DescribeAccountAttributes mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeAccountAttributes(arg0 context.Context, arg1 *databasemigrationservice.DescribeAccountAttributesInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeAccountAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccountAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeAccountAttribu
 
 // DescribeApplicableIndividualAssessments mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeApplicableIndividualAssessments(arg0 context.Context, arg1 *databasemigrationservice.DescribeApplicableIndividualAssessmentsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeApplicableIndividualAssessmentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeApplicableIndividualAssessments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeApplicableIndi
 
 // DescribeCertificates mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeCertificates(arg0 context.Context, arg1 *databasemigrationservice.DescribeCertificatesInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeCertificatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCertificates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeCertificates(a
 
 // DescribeConnections mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeConnections(arg0 context.Context, arg1 *databasemigrationservice.DescribeConnectionsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeConnectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConnections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeConnections(ar
 
 // DescribeEndpointSettings mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeEndpointSettings(arg0 context.Context, arg1 *databasemigrationservice.DescribeEndpointSettingsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeEndpointSettingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEndpointSettings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeEndpointSettin
 
 // DescribeEndpointTypes mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeEndpointTypes(arg0 context.Context, arg1 *databasemigrationservice.DescribeEndpointTypesInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeEndpointTypesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEndpointTypes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeEndpointTypes(
 
 // DescribeEndpoints mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeEndpoints(arg0 context.Context, arg1 *databasemigrationservice.DescribeEndpointsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeEndpoints(arg0
 
 // DescribeEventCategories mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeEventCategories(arg0 context.Context, arg1 *databasemigrationservice.DescribeEventCategoriesInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeEventCategoriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEventCategories")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeEventCategorie
 
 // DescribeEventSubscriptions mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeEventSubscriptions(arg0 context.Context, arg1 *databasemigrationservice.DescribeEventSubscriptionsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeEventSubscriptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEventSubscriptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeEventSubscript
 
 // DescribeEvents mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeEvents(arg0 context.Context, arg1 *databasemigrationservice.DescribeEventsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeEventsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEvents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeEvents(arg0, a
 
 // DescribeFleetAdvisorCollectors mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeFleetAdvisorCollectors(arg0 context.Context, arg1 *databasemigrationservice.DescribeFleetAdvisorCollectorsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeFleetAdvisorCollectorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFleetAdvisorCollectors")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeFleetAdvisorCo
 
 // DescribeFleetAdvisorDatabases mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeFleetAdvisorDatabases(arg0 context.Context, arg1 *databasemigrationservice.DescribeFleetAdvisorDatabasesInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeFleetAdvisorDatabasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFleetAdvisorDatabases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeFleetAdvisorDa
 
 // DescribeFleetAdvisorLsaAnalysis mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeFleetAdvisorLsaAnalysis(arg0 context.Context, arg1 *databasemigrationservice.DescribeFleetAdvisorLsaAnalysisInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeFleetAdvisorLsaAnalysisOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFleetAdvisorLsaAnalysis")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeFleetAdvisorLs
 
 // DescribeFleetAdvisorSchemaObjectSummary mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeFleetAdvisorSchemaObjectSummary(arg0 context.Context, arg1 *databasemigrationservice.DescribeFleetAdvisorSchemaObjectSummaryInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeFleetAdvisorSchemaObjectSummaryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFleetAdvisorSchemaObjectSummary")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeFleetAdvisorSc
 
 // DescribeFleetAdvisorSchemas mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeFleetAdvisorSchemas(arg0 context.Context, arg1 *databasemigrationservice.DescribeFleetAdvisorSchemasInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeFleetAdvisorSchemasOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFleetAdvisorSchemas")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeFleetAdvisorSc
 
 // DescribeOrderableReplicationInstances mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeOrderableReplicationInstances(arg0 context.Context, arg1 *databasemigrationservice.DescribeOrderableReplicationInstancesInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeOrderableReplicationInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOrderableReplicationInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeOrderableRepli
 
 // DescribePendingMaintenanceActions mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribePendingMaintenanceActions(arg0 context.Context, arg1 *databasemigrationservice.DescribePendingMaintenanceActionsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribePendingMaintenanceActionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePendingMaintenanceActions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribePendingMainten
 
 // DescribeRefreshSchemasStatus mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeRefreshSchemasStatus(arg0 context.Context, arg1 *databasemigrationservice.DescribeRefreshSchemasStatusInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeRefreshSchemasStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRefreshSchemasStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeRefreshSchemas
 
 // DescribeReplicationInstanceTaskLogs mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeReplicationInstanceTaskLogs(arg0 context.Context, arg1 *databasemigrationservice.DescribeReplicationInstanceTaskLogsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeReplicationInstanceTaskLogsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReplicationInstanceTaskLogs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeReplicationIns
 
 // DescribeReplicationInstances mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeReplicationInstances(arg0 context.Context, arg1 *databasemigrationservice.DescribeReplicationInstancesInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeReplicationInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReplicationInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeReplicationIns
 
 // DescribeReplicationSubnetGroups mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeReplicationSubnetGroups(arg0 context.Context, arg1 *databasemigrationservice.DescribeReplicationSubnetGroupsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeReplicationSubnetGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReplicationSubnetGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeReplicationSub
 
 // DescribeReplicationTaskAssessmentResults mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeReplicationTaskAssessmentResults(arg0 context.Context, arg1 *databasemigrationservice.DescribeReplicationTaskAssessmentResultsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeReplicationTaskAssessmentResultsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReplicationTaskAssessmentResults")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeReplicationTas
 
 // DescribeReplicationTaskAssessmentRuns mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeReplicationTaskAssessmentRuns(arg0 context.Context, arg1 *databasemigrationservice.DescribeReplicationTaskAssessmentRunsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeReplicationTaskAssessmentRunsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReplicationTaskAssessmentRuns")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeReplicationTas
 
 // DescribeReplicationTaskIndividualAssessments mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeReplicationTaskIndividualAssessments(arg0 context.Context, arg1 *databasemigrationservice.DescribeReplicationTaskIndividualAssessmentsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeReplicationTaskIndividualAssessmentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReplicationTaskIndividualAssessments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeReplicationTas
 
 // DescribeReplicationTasks mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeReplicationTasks(arg0 context.Context, arg1 *databasemigrationservice.DescribeReplicationTasksInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeReplicationTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReplicationTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeReplicationTas
 
 // DescribeSchemas mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeSchemas(arg0 context.Context, arg1 *databasemigrationservice.DescribeSchemasInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeSchemasOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSchemas")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeSchemas(arg0, 
 
 // DescribeTableStatistics mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeTableStatistics(arg0 context.Context, arg1 *databasemigrationservice.DescribeTableStatisticsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeTableStatisticsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTableStatistics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeTableStatistic
 
 // ListTagsForResource mocks base method.
 func (m *MockDatabasemigrationserviceClient) ListTagsForResource(arg0 context.Context, arg1 *databasemigrationservice.ListTagsForResourceInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

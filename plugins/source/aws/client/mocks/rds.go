@@ -37,6 +37,16 @@ func (m *MockRdsClient) EXPECT() *MockRdsClientMockRecorder {
 
 // DescribeAccountAttributes mocks base method.
 func (m *MockRdsClient) DescribeAccountAttributes(arg0 context.Context, arg1 *rds.DescribeAccountAttributesInput, arg2 ...func(*rds.Options)) (*rds.DescribeAccountAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccountAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockRdsClientMockRecorder) DescribeAccountAttributes(arg0, arg1 interf
 
 // DescribeBlueGreenDeployments mocks base method.
 func (m *MockRdsClient) DescribeBlueGreenDeployments(arg0 context.Context, arg1 *rds.DescribeBlueGreenDeploymentsInput, arg2 ...func(*rds.Options)) (*rds.DescribeBlueGreenDeploymentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeBlueGreenDeployments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockRdsClientMockRecorder) DescribeBlueGreenDeployments(arg0, arg1 int
 
 // DescribeCertificates mocks base method.
 func (m *MockRdsClient) DescribeCertificates(arg0 context.Context, arg1 *rds.DescribeCertificatesInput, arg2 ...func(*rds.Options)) (*rds.DescribeCertificatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCertificates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockRdsClientMockRecorder) DescribeCertificates(arg0, arg1 interface{}
 
 // DescribeDBClusterBacktracks mocks base method.
 func (m *MockRdsClient) DescribeDBClusterBacktracks(arg0 context.Context, arg1 *rds.DescribeDBClusterBacktracksInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBClusterBacktracksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterBacktracks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBClusterBacktracks(arg0, arg1 inte
 
 // DescribeDBClusterEndpoints mocks base method.
 func (m *MockRdsClient) DescribeDBClusterEndpoints(arg0 context.Context, arg1 *rds.DescribeDBClusterEndpointsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBClusterEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBClusterEndpoints(arg0, arg1 inter
 
 // DescribeDBClusterParameterGroups mocks base method.
 func (m *MockRdsClient) DescribeDBClusterParameterGroups(arg0 context.Context, arg1 *rds.DescribeDBClusterParameterGroupsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBClusterParameterGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterParameterGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBClusterParameterGroups(arg0, arg1
 
 // DescribeDBClusterParameters mocks base method.
 func (m *MockRdsClient) DescribeDBClusterParameters(arg0 context.Context, arg1 *rds.DescribeDBClusterParametersInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBClusterParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBClusterParameters(arg0, arg1 inte
 
 // DescribeDBClusterSnapshotAttributes mocks base method.
 func (m *MockRdsClient) DescribeDBClusterSnapshotAttributes(arg0 context.Context, arg1 *rds.DescribeDBClusterSnapshotAttributesInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBClusterSnapshotAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterSnapshotAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBClusterSnapshotAttributes(arg0, a
 
 // DescribeDBClusterSnapshots mocks base method.
 func (m *MockRdsClient) DescribeDBClusterSnapshots(arg0 context.Context, arg1 *rds.DescribeDBClusterSnapshotsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBClusterSnapshotsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterSnapshots")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBClusterSnapshots(arg0, arg1 inter
 
 // DescribeDBClusters mocks base method.
 func (m *MockRdsClient) DescribeDBClusters(arg0 context.Context, arg1 *rds.DescribeDBClustersInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBClustersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBClusters(arg0, arg1 interface{}, 
 
 // DescribeDBEngineVersions mocks base method.
 func (m *MockRdsClient) DescribeDBEngineVersions(arg0 context.Context, arg1 *rds.DescribeDBEngineVersionsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBEngineVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBEngineVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBEngineVersions(arg0, arg1 interfa
 
 // DescribeDBInstanceAutomatedBackups mocks base method.
 func (m *MockRdsClient) DescribeDBInstanceAutomatedBackups(arg0 context.Context, arg1 *rds.DescribeDBInstanceAutomatedBackupsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBInstanceAutomatedBackupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBInstanceAutomatedBackups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBInstanceAutomatedBackups(arg0, ar
 
 // DescribeDBInstances mocks base method.
 func (m *MockRdsClient) DescribeDBInstances(arg0 context.Context, arg1 *rds.DescribeDBInstancesInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBInstances(arg0, arg1 interface{},
 
 // DescribeDBLogFiles mocks base method.
 func (m *MockRdsClient) DescribeDBLogFiles(arg0 context.Context, arg1 *rds.DescribeDBLogFilesInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBLogFilesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBLogFiles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBLogFiles(arg0, arg1 interface{}, 
 
 // DescribeDBParameterGroups mocks base method.
 func (m *MockRdsClient) DescribeDBParameterGroups(arg0 context.Context, arg1 *rds.DescribeDBParameterGroupsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBParameterGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBParameterGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBParameterGroups(arg0, arg1 interf
 
 // DescribeDBParameters mocks base method.
 func (m *MockRdsClient) DescribeDBParameters(arg0 context.Context, arg1 *rds.DescribeDBParametersInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBParameters(arg0, arg1 interface{}
 
 // DescribeDBProxies mocks base method.
 func (m *MockRdsClient) DescribeDBProxies(arg0 context.Context, arg1 *rds.DescribeDBProxiesInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBProxiesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBProxies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBProxies(arg0, arg1 interface{}, a
 
 // DescribeDBProxyEndpoints mocks base method.
 func (m *MockRdsClient) DescribeDBProxyEndpoints(arg0 context.Context, arg1 *rds.DescribeDBProxyEndpointsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBProxyEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBProxyEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBProxyEndpoints(arg0, arg1 interfa
 
 // DescribeDBProxyTargetGroups mocks base method.
 func (m *MockRdsClient) DescribeDBProxyTargetGroups(arg0 context.Context, arg1 *rds.DescribeDBProxyTargetGroupsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBProxyTargetGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBProxyTargetGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBProxyTargetGroups(arg0, arg1 inte
 
 // DescribeDBProxyTargets mocks base method.
 func (m *MockRdsClient) DescribeDBProxyTargets(arg0 context.Context, arg1 *rds.DescribeDBProxyTargetsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBProxyTargetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBProxyTargets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBProxyTargets(arg0, arg1 interface
 
 // DescribeDBSecurityGroups mocks base method.
 func (m *MockRdsClient) DescribeDBSecurityGroups(arg0 context.Context, arg1 *rds.DescribeDBSecurityGroupsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBSecurityGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBSecurityGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBSecurityGroups(arg0, arg1 interfa
 
 // DescribeDBSnapshotAttributes mocks base method.
 func (m *MockRdsClient) DescribeDBSnapshotAttributes(arg0 context.Context, arg1 *rds.DescribeDBSnapshotAttributesInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBSnapshotAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBSnapshotAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBSnapshotAttributes(arg0, arg1 int
 
 // DescribeDBSnapshots mocks base method.
 func (m *MockRdsClient) DescribeDBSnapshots(arg0 context.Context, arg1 *rds.DescribeDBSnapshotsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBSnapshotsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBSnapshots")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBSnapshots(arg0, arg1 interface{},
 
 // DescribeDBSubnetGroups mocks base method.
 func (m *MockRdsClient) DescribeDBSubnetGroups(arg0 context.Context, arg1 *rds.DescribeDBSubnetGroupsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBSubnetGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBSubnetGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockRdsClientMockRecorder) DescribeDBSubnetGroups(arg0, arg1 interface
 
 // DescribeEngineDefaultClusterParameters mocks base method.
 func (m *MockRdsClient) DescribeEngineDefaultClusterParameters(arg0 context.Context, arg1 *rds.DescribeEngineDefaultClusterParametersInput, arg2 ...func(*rds.Options)) (*rds.DescribeEngineDefaultClusterParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEngineDefaultClusterParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockRdsClientMockRecorder) DescribeEngineDefaultClusterParameters(arg0
 
 // DescribeEngineDefaultParameters mocks base method.
 func (m *MockRdsClient) DescribeEngineDefaultParameters(arg0 context.Context, arg1 *rds.DescribeEngineDefaultParametersInput, arg2 ...func(*rds.Options)) (*rds.DescribeEngineDefaultParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEngineDefaultParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockRdsClientMockRecorder) DescribeEngineDefaultParameters(arg0, arg1 
 
 // DescribeEventCategories mocks base method.
 func (m *MockRdsClient) DescribeEventCategories(arg0 context.Context, arg1 *rds.DescribeEventCategoriesInput, arg2 ...func(*rds.Options)) (*rds.DescribeEventCategoriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEventCategories")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockRdsClientMockRecorder) DescribeEventCategories(arg0, arg1 interfac
 
 // DescribeEventSubscriptions mocks base method.
 func (m *MockRdsClient) DescribeEventSubscriptions(arg0 context.Context, arg1 *rds.DescribeEventSubscriptionsInput, arg2 ...func(*rds.Options)) (*rds.DescribeEventSubscriptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEventSubscriptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockRdsClientMockRecorder) DescribeEventSubscriptions(arg0, arg1 inter
 
 // DescribeEvents mocks base method.
 func (m *MockRdsClient) DescribeEvents(arg0 context.Context, arg1 *rds.DescribeEventsInput, arg2 ...func(*rds.Options)) (*rds.DescribeEventsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEvents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockRdsClientMockRecorder) DescribeEvents(arg0, arg1 interface{}, arg2
 
 // DescribeExportTasks mocks base method.
 func (m *MockRdsClient) DescribeExportTasks(arg0 context.Context, arg1 *rds.DescribeExportTasksInput, arg2 ...func(*rds.Options)) (*rds.DescribeExportTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeExportTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockRdsClientMockRecorder) DescribeExportTasks(arg0, arg1 interface{},
 
 // DescribeGlobalClusters mocks base method.
 func (m *MockRdsClient) DescribeGlobalClusters(arg0 context.Context, arg1 *rds.DescribeGlobalClustersInput, arg2 ...func(*rds.Options)) (*rds.DescribeGlobalClustersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeGlobalClusters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockRdsClientMockRecorder) DescribeGlobalClusters(arg0, arg1 interface
 
 // DescribeOptionGroupOptions mocks base method.
 func (m *MockRdsClient) DescribeOptionGroupOptions(arg0 context.Context, arg1 *rds.DescribeOptionGroupOptionsInput, arg2 ...func(*rds.Options)) (*rds.DescribeOptionGroupOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOptionGroupOptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockRdsClientMockRecorder) DescribeOptionGroupOptions(arg0, arg1 inter
 
 // DescribeOptionGroups mocks base method.
 func (m *MockRdsClient) DescribeOptionGroups(arg0 context.Context, arg1 *rds.DescribeOptionGroupsInput, arg2 ...func(*rds.Options)) (*rds.DescribeOptionGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOptionGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockRdsClientMockRecorder) DescribeOptionGroups(arg0, arg1 interface{}
 
 // DescribeOrderableDBInstanceOptions mocks base method.
 func (m *MockRdsClient) DescribeOrderableDBInstanceOptions(arg0 context.Context, arg1 *rds.DescribeOrderableDBInstanceOptionsInput, arg2 ...func(*rds.Options)) (*rds.DescribeOrderableDBInstanceOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOrderableDBInstanceOptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1057,16 @@ func (mr *MockRdsClientMockRecorder) DescribeOrderableDBInstanceOptions(arg0, ar
 
 // DescribePendingMaintenanceActions mocks base method.
 func (m *MockRdsClient) DescribePendingMaintenanceActions(arg0 context.Context, arg1 *rds.DescribePendingMaintenanceActionsInput, arg2 ...func(*rds.Options)) (*rds.DescribePendingMaintenanceActionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePendingMaintenanceActions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1087,16 @@ func (mr *MockRdsClientMockRecorder) DescribePendingMaintenanceActions(arg0, arg
 
 // DescribeReservedDBInstances mocks base method.
 func (m *MockRdsClient) DescribeReservedDBInstances(arg0 context.Context, arg1 *rds.DescribeReservedDBInstancesInput, arg2 ...func(*rds.Options)) (*rds.DescribeReservedDBInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReservedDBInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1117,16 @@ func (mr *MockRdsClientMockRecorder) DescribeReservedDBInstances(arg0, arg1 inte
 
 // DescribeReservedDBInstancesOfferings mocks base method.
 func (m *MockRdsClient) DescribeReservedDBInstancesOfferings(arg0 context.Context, arg1 *rds.DescribeReservedDBInstancesOfferingsInput, arg2 ...func(*rds.Options)) (*rds.DescribeReservedDBInstancesOfferingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReservedDBInstancesOfferings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -777,6 +1147,16 @@ func (mr *MockRdsClientMockRecorder) DescribeReservedDBInstancesOfferings(arg0, 
 
 // DescribeSourceRegions mocks base method.
 func (m *MockRdsClient) DescribeSourceRegions(arg0 context.Context, arg1 *rds.DescribeSourceRegionsInput, arg2 ...func(*rds.Options)) (*rds.DescribeSourceRegionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSourceRegions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -797,6 +1177,16 @@ func (mr *MockRdsClientMockRecorder) DescribeSourceRegions(arg0, arg1 interface{
 
 // DescribeValidDBInstanceModifications mocks base method.
 func (m *MockRdsClient) DescribeValidDBInstanceModifications(arg0 context.Context, arg1 *rds.DescribeValidDBInstanceModificationsInput, arg2 ...func(*rds.Options)) (*rds.DescribeValidDBInstanceModificationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeValidDBInstanceModifications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -817,6 +1207,16 @@ func (mr *MockRdsClientMockRecorder) DescribeValidDBInstanceModifications(arg0, 
 
 // ListTagsForResource mocks base method.
 func (m *MockRdsClient) ListTagsForResource(arg0 context.Context, arg1 *rds.ListTagsForResourceInput, arg2 ...func(*rds.Options)) (*rds.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -32,10 +32,13 @@ func hostedZoneResourceRecordSets() *schema.Table {
 
 func fetchRoute53HostedZoneResourceRecordSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.Route53HostedZoneWrapper)
-	svc := meta.(*client.Client).Services().Route53
+	cl := meta.(*client.Client)
+	svc := cl.Services().Route53
 	config := route53.ListResourceRecordSetsInput{HostedZoneId: r.Id}
 	for {
-		response, err := svc.ListResourceRecordSets(ctx, &config, func(options *route53.Options) {})
+		response, err := svc.ListResourceRecordSets(ctx, &config, func(options *route53.Options) {}, func(options *route53.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
