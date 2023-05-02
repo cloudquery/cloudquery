@@ -47,7 +47,9 @@ func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	paginator := cognitoidentityprovider.NewListUserPoolsPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cognitoidentityprovider.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -61,7 +63,9 @@ func getUserPool(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	svc := c.Services().Cognitoidentityprovider
 	item := resource.Item.(types.UserPoolDescriptionType)
 
-	upo, err := svc.DescribeUserPool(ctx, &cognitoidentityprovider.DescribeUserPoolInput{UserPoolId: item.Id})
+	upo, err := svc.DescribeUserPool(ctx, &cognitoidentityprovider.DescribeUserPoolInput{UserPoolId: item.Id}, func(options *cognitoidentityprovider.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

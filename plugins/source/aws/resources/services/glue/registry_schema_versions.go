@@ -49,7 +49,9 @@ func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta
 	}
 	paginator := glue.NewListSchemaVersionsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		result, err := paginator.NextPage(ctx)
+		result, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -65,6 +67,8 @@ func getRegistrySchemaVersion(ctx context.Context, meta schema.ClientMeta, resou
 
 	s, err := svc.GetSchemaVersion(ctx, &glue.GetSchemaVersionInput{
 		SchemaVersionId: item.SchemaVersionId,
+	}, func(options *glue.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -84,7 +88,9 @@ func resolveGlueRegistrySchemaVersionMetadata(ctx context.Context, meta schema.C
 	metadata := make(map[string]types.MetadataInfo)
 	// No paginator available
 	for {
-		result, err := svc.QuerySchemaVersionMetadata(ctx, input)
+		result, err := svc.QuerySchemaVersionMetadata(ctx, input, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil

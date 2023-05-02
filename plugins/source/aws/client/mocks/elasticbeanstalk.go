@@ -37,6 +37,16 @@ func (m *MockElasticbeanstalkClient) EXPECT() *MockElasticbeanstalkClientMockRec
 
 // DescribeAccountAttributes mocks base method.
 func (m *MockElasticbeanstalkClient) DescribeAccountAttributes(arg0 context.Context, arg1 *elasticbeanstalk.DescribeAccountAttributesInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeAccountAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccountAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) DescribeAccountAttributes(arg0
 
 // DescribeApplicationVersions mocks base method.
 func (m *MockElasticbeanstalkClient) DescribeApplicationVersions(arg0 context.Context, arg1 *elasticbeanstalk.DescribeApplicationVersionsInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeApplicationVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeApplicationVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) DescribeApplicationVersions(ar
 
 // DescribeApplications mocks base method.
 func (m *MockElasticbeanstalkClient) DescribeApplications(arg0 context.Context, arg1 *elasticbeanstalk.DescribeApplicationsInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeApplicationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeApplications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) DescribeApplications(arg0, arg
 
 // DescribeConfigurationOptions mocks base method.
 func (m *MockElasticbeanstalkClient) DescribeConfigurationOptions(arg0 context.Context, arg1 *elasticbeanstalk.DescribeConfigurationOptionsInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeConfigurationOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConfigurationOptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) DescribeConfigurationOptions(a
 
 // DescribeConfigurationSettings mocks base method.
 func (m *MockElasticbeanstalkClient) DescribeConfigurationSettings(arg0 context.Context, arg1 *elasticbeanstalk.DescribeConfigurationSettingsInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeConfigurationSettingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConfigurationSettings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) DescribeConfigurationSettings(
 
 // DescribeEnvironmentHealth mocks base method.
 func (m *MockElasticbeanstalkClient) DescribeEnvironmentHealth(arg0 context.Context, arg1 *elasticbeanstalk.DescribeEnvironmentHealthInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeEnvironmentHealthOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEnvironmentHealth")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) DescribeEnvironmentHealth(arg0
 
 // DescribeEnvironmentManagedActionHistory mocks base method.
 func (m *MockElasticbeanstalkClient) DescribeEnvironmentManagedActionHistory(arg0 context.Context, arg1 *elasticbeanstalk.DescribeEnvironmentManagedActionHistoryInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeEnvironmentManagedActionHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEnvironmentManagedActionHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) DescribeEnvironmentManagedActi
 
 // DescribeEnvironmentManagedActions mocks base method.
 func (m *MockElasticbeanstalkClient) DescribeEnvironmentManagedActions(arg0 context.Context, arg1 *elasticbeanstalk.DescribeEnvironmentManagedActionsInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeEnvironmentManagedActionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEnvironmentManagedActions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) DescribeEnvironmentManagedActi
 
 // DescribeEnvironmentResources mocks base method.
 func (m *MockElasticbeanstalkClient) DescribeEnvironmentResources(arg0 context.Context, arg1 *elasticbeanstalk.DescribeEnvironmentResourcesInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeEnvironmentResourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEnvironmentResources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) DescribeEnvironmentResources(a
 
 // DescribeEnvironments mocks base method.
 func (m *MockElasticbeanstalkClient) DescribeEnvironments(arg0 context.Context, arg1 *elasticbeanstalk.DescribeEnvironmentsInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeEnvironmentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEnvironments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) DescribeEnvironments(arg0, arg
 
 // DescribeEvents mocks base method.
 func (m *MockElasticbeanstalkClient) DescribeEvents(arg0 context.Context, arg1 *elasticbeanstalk.DescribeEventsInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeEventsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEvents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) DescribeEvents(arg0, arg1 inte
 
 // DescribeInstancesHealth mocks base method.
 func (m *MockElasticbeanstalkClient) DescribeInstancesHealth(arg0 context.Context, arg1 *elasticbeanstalk.DescribeInstancesHealthInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribeInstancesHealthOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstancesHealth")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) DescribeInstancesHealth(arg0, 
 
 // DescribePlatformVersion mocks base method.
 func (m *MockElasticbeanstalkClient) DescribePlatformVersion(arg0 context.Context, arg1 *elasticbeanstalk.DescribePlatformVersionInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.DescribePlatformVersionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePlatformVersion")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) DescribePlatformVersion(arg0, 
 
 // ListAvailableSolutionStacks mocks base method.
 func (m *MockElasticbeanstalkClient) ListAvailableSolutionStacks(arg0 context.Context, arg1 *elasticbeanstalk.ListAvailableSolutionStacksInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.ListAvailableSolutionStacksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAvailableSolutionStacks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) ListAvailableSolutionStacks(ar
 
 // ListPlatformBranches mocks base method.
 func (m *MockElasticbeanstalkClient) ListPlatformBranches(arg0 context.Context, arg1 *elasticbeanstalk.ListPlatformBranchesInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.ListPlatformBranchesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPlatformBranches")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) ListPlatformBranches(arg0, arg
 
 // ListPlatformVersions mocks base method.
 func (m *MockElasticbeanstalkClient) ListPlatformVersions(arg0 context.Context, arg1 *elasticbeanstalk.ListPlatformVersionsInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.ListPlatformVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPlatformVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockElasticbeanstalkClientMockRecorder) ListPlatformVersions(arg0, arg
 
 // ListTagsForResource mocks base method.
 func (m *MockElasticbeanstalkClient) ListTagsForResource(arg0 context.Context, arg1 *elasticbeanstalk.ListTagsForResourceInput, arg2 ...func(*elasticbeanstalk.Options)) (*elasticbeanstalk.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticbeanstalk.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

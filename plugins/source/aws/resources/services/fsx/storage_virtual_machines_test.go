@@ -21,6 +21,7 @@ func buildStorageVmsMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	m.EXPECT().DescribeStorageVirtualMachines(
 		gomock.Any(),
 		&fsx.DescribeStorageVirtualMachinesInput{MaxResults: aws.Int32(1000)},
+		gomock.Any(),
 	).Return(
 		&fsx.DescribeStorageVirtualMachinesOutput{StorageVirtualMachines: []types.StorageVirtualMachine{vm}},
 		nil,

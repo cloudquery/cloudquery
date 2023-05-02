@@ -46,7 +46,9 @@ func fetchCloudhsmv2Clusters(ctx context.Context, meta schema.ClientMeta, parent
 	var input cloudhsmv2.DescribeClustersInput
 	paginator := cloudhsmv2.NewDescribeClustersPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *cloudhsmv2.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

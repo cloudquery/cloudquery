@@ -40,10 +40,13 @@ func VpcConnectors() *schema.Table {
 
 func fetchApprunnerVpcConnectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apprunner.ListVpcConnectorsInput
-	svc := meta.(*client.Client).Services().Apprunner
+	c := meta.(*client.Client)
+	svc := c.Services().Apprunner
 	paginator := apprunner.NewListVpcConnectorsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *apprunner.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

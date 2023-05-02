@@ -15,6 +15,8 @@ func resolveDocDBTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 
 	response, err := svc.ListTagsForResource(ctx, &docdb.ListTagsForResourceInput{
 		ResourceName: aws.String(name),
+	}, func(options *docdb.Options) {
+		options.Region = cli.Region
 	})
 	if err != nil {
 		if cli.IsNotFoundError(err) {
