@@ -36,7 +36,9 @@ func fetchConfigConfigRuleCompliances(ctx context.Context, meta schema.ClientMet
 	}
 	p := configservice.NewDescribeComplianceByConfigRulePaginator(svc, input)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *configservice.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -43,7 +43,8 @@ func executions() *schema.Table {
 }
 
 func fetchStepfunctionsExecutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Sfn
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sfn
 	sfnOutput := parent.Item.(*sfn.DescribeStateMachineOutput)
 	config := sfn.ListExecutionsInput{
 		MaxResults:      1000,
@@ -51,7 +52,9 @@ func fetchStepfunctionsExecutions(ctx context.Context, meta schema.ClientMeta, p
 	}
 	paginator := sfn.NewListExecutionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *sfn.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -62,10 +65,14 @@ func fetchStepfunctionsExecutions(ctx context.Context, meta schema.ClientMeta, p
 
 func getExecution(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	execution := resource.Item.(types.ExecutionListItem)
-	svc := meta.(*client.Client).Services().Sfn
+
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sfn
 
 	executionResult, err := svc.DescribeExecution(ctx, &sfn.DescribeExecutionInput{
 		ExecutionArn: execution.ExecutionArn,
+	}, func(o *sfn.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err

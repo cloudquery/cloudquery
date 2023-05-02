@@ -40,7 +40,9 @@ func fetchAppstreamDirectoryConfigs(ctx context.Context, meta schema.ClientMeta,
 	svc := c.Services().Appstream
 	// No paginator available
 	for {
-		response, err := svc.DescribeDirectoryConfigs(ctx, &input)
+		response, err := svc.DescribeDirectoryConfigs(ctx, &input, func(options *appstream.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

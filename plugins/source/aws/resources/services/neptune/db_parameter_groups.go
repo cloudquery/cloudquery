@@ -51,7 +51,9 @@ func fetchNeptuneDbParameterGroups(ctx context.Context, meta schema.ClientMeta, 
 	}
 	paginator := neptune.NewDescribeDBParameterGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *neptune.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -67,7 +69,9 @@ func fetchNeptuneDbParameterGroupDbParameters(ctx context.Context, meta schema.C
 	input := neptune.DescribeDBParametersInput{DBParameterGroupName: g.DBParameterGroupName}
 	paginator := neptune.NewDescribeDBParametersPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *neptune.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if client.IsAWSError(err, "DBParameterGroupNotFound") {
 				cl.Logger().Warn().Err(err).Msg("received DBParameterGroupNotFound on DescribeDBParameters")
@@ -84,7 +88,9 @@ func resolveNeptuneDbParameterGroupTags(ctx context.Context, meta schema.ClientM
 	g := resource.Item.(types.DBParameterGroup)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Neptune
-	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: g.DBParameterGroupArn})
+	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: g.DBParameterGroupArn}, func(options *neptune.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

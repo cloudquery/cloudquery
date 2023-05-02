@@ -37,13 +37,16 @@ func clusterContainerInstances() *schema.Table {
 
 func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cluster := parent.Item.(types.Cluster)
-	svc := meta.(*client.Client).Services().Ecs
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecs
 	config := ecs.ListContainerInstancesInput{
 		Cluster: cluster.ClusterArn,
 	}
 	paginator := ecs.NewListContainerInstancesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ecs.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -55,7 +58,9 @@ func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMe
 			ContainerInstances: page.ContainerInstanceArns,
 			Include:            []types.ContainerInstanceField{types.ContainerInstanceFieldTags},
 		}
-		describeContainerInstances, err := svc.DescribeContainerInstances(ctx, &describeServicesInput)
+		describeContainerInstances, err := svc.DescribeContainerInstances(ctx, &describeServicesInput, func(options *ecs.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

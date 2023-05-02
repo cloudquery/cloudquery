@@ -28,7 +28,9 @@ func fetchAccountContacts(ctx context.Context, meta schema.ClientMeta, parent *s
 	cl := meta.(*client.Client)
 	svc := cl.Services().Account
 	var input account.GetContactInformationInput
-	output, err := svc.GetContactInformation(ctx, &input)
+	output, err := svc.GetContactInformation(ctx, &input, func(options *account.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

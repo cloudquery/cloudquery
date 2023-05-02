@@ -48,7 +48,9 @@ func fetchEventBuses(ctx context.Context, meta schema.ClientMeta, parent *schema
 	svc := c.Services().Eventbridge
 	// No paginator available
 	for {
-		response, err := svc.ListEventBuses(ctx, &input)
+		response, err := svc.ListEventBuses(ctx, &input, func(options *eventbridge.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -72,7 +74,9 @@ func resolveTags(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	input := eventbridge.ListTagsForResourceInput{
 		ResourceARN: &resourceArn,
 	}
-	output, err := svc.ListTagsForResource(ctx, &input)
+	output, err := svc.ListTagsForResource(ctx, &input, func(options *eventbridge.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

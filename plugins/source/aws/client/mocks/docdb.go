@@ -37,6 +37,16 @@ func (m *MockDocdbClient) EXPECT() *MockDocdbClientMockRecorder {
 
 // DescribeCertificates mocks base method.
 func (m *MockDocdbClient) DescribeCertificates(arg0 context.Context, arg1 *docdb.DescribeCertificatesInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeCertificatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCertificates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeCertificates(arg0, arg1 interface
 
 // DescribeDBClusterParameterGroups mocks base method.
 func (m *MockDocdbClient) DescribeDBClusterParameterGroups(arg0 context.Context, arg1 *docdb.DescribeDBClusterParameterGroupsInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeDBClusterParameterGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterParameterGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeDBClusterParameterGroups(arg0, ar
 
 // DescribeDBClusterParameters mocks base method.
 func (m *MockDocdbClient) DescribeDBClusterParameters(arg0 context.Context, arg1 *docdb.DescribeDBClusterParametersInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeDBClusterParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeDBClusterParameters(arg0, arg1 in
 
 // DescribeDBClusterSnapshotAttributes mocks base method.
 func (m *MockDocdbClient) DescribeDBClusterSnapshotAttributes(arg0 context.Context, arg1 *docdb.DescribeDBClusterSnapshotAttributesInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeDBClusterSnapshotAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterSnapshotAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeDBClusterSnapshotAttributes(arg0,
 
 // DescribeDBClusterSnapshots mocks base method.
 func (m *MockDocdbClient) DescribeDBClusterSnapshots(arg0 context.Context, arg1 *docdb.DescribeDBClusterSnapshotsInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeDBClusterSnapshotsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterSnapshots")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeDBClusterSnapshots(arg0, arg1 int
 
 // DescribeDBClusters mocks base method.
 func (m *MockDocdbClient) DescribeDBClusters(arg0 context.Context, arg1 *docdb.DescribeDBClustersInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeDBClustersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeDBClusters(arg0, arg1 interface{}
 
 // DescribeDBEngineVersions mocks base method.
 func (m *MockDocdbClient) DescribeDBEngineVersions(arg0 context.Context, arg1 *docdb.DescribeDBEngineVersionsInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeDBEngineVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBEngineVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeDBEngineVersions(arg0, arg1 inter
 
 // DescribeDBInstances mocks base method.
 func (m *MockDocdbClient) DescribeDBInstances(arg0 context.Context, arg1 *docdb.DescribeDBInstancesInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeDBInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeDBInstances(arg0, arg1 interface{
 
 // DescribeDBSubnetGroups mocks base method.
 func (m *MockDocdbClient) DescribeDBSubnetGroups(arg0 context.Context, arg1 *docdb.DescribeDBSubnetGroupsInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeDBSubnetGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBSubnetGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeDBSubnetGroups(arg0, arg1 interfa
 
 // DescribeEngineDefaultClusterParameters mocks base method.
 func (m *MockDocdbClient) DescribeEngineDefaultClusterParameters(arg0 context.Context, arg1 *docdb.DescribeEngineDefaultClusterParametersInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeEngineDefaultClusterParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEngineDefaultClusterParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeEngineDefaultClusterParameters(ar
 
 // DescribeEventCategories mocks base method.
 func (m *MockDocdbClient) DescribeEventCategories(arg0 context.Context, arg1 *docdb.DescribeEventCategoriesInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeEventCategoriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEventCategories")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeEventCategories(arg0, arg1 interf
 
 // DescribeEventSubscriptions mocks base method.
 func (m *MockDocdbClient) DescribeEventSubscriptions(arg0 context.Context, arg1 *docdb.DescribeEventSubscriptionsInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeEventSubscriptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEventSubscriptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeEventSubscriptions(arg0, arg1 int
 
 // DescribeEvents mocks base method.
 func (m *MockDocdbClient) DescribeEvents(arg0 context.Context, arg1 *docdb.DescribeEventsInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeEventsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEvents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeEvents(arg0, arg1 interface{}, ar
 
 // DescribeGlobalClusters mocks base method.
 func (m *MockDocdbClient) DescribeGlobalClusters(arg0 context.Context, arg1 *docdb.DescribeGlobalClustersInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeGlobalClustersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeGlobalClusters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeGlobalClusters(arg0, arg1 interfa
 
 // DescribeOrderableDBInstanceOptions mocks base method.
 func (m *MockDocdbClient) DescribeOrderableDBInstanceOptions(arg0 context.Context, arg1 *docdb.DescribeOrderableDBInstanceOptionsInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeOrderableDBInstanceOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOrderableDBInstanceOptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockDocdbClientMockRecorder) DescribeOrderableDBInstanceOptions(arg0, 
 
 // DescribePendingMaintenanceActions mocks base method.
 func (m *MockDocdbClient) DescribePendingMaintenanceActions(arg0 context.Context, arg1 *docdb.DescribePendingMaintenanceActionsInput, arg2 ...func(*docdb.Options)) (*docdb.DescribePendingMaintenanceActionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePendingMaintenanceActions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockDocdbClientMockRecorder) DescribePendingMaintenanceActions(arg0, a
 
 // ListTagsForResource mocks base method.
 func (m *MockDocdbClient) ListTagsForResource(arg0 context.Context, arg1 *docdb.ListTagsForResourceInput, arg2 ...func(*docdb.Options)) (*docdb.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &docdb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

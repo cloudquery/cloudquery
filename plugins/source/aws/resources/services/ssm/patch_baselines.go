@@ -34,12 +34,14 @@ func PatchBaselines() *schema.Table {
 }
 
 func fetchSsmPatchBaselines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ssm
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ssm
 
 	paginator := ssm.NewDescribePatchBaselinesPaginator(svc, nil)
 	for paginator.HasMorePages() {
-		v, err := paginator.NextPage(ctx)
+		v, err := paginator.NextPage(ctx, func(o *ssm.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

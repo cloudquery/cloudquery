@@ -18,7 +18,7 @@ func buildElasticSearchPackages(t *testing.T, ctrl *gomock.Controller) client.Se
 	if err := faker.FakeObject(&pkg); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().DescribePackages(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().DescribePackages(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.DescribePackagesOutput{
 			PackageDetailsList: []types.PackageDetails{pkg},
 		},
