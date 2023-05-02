@@ -37,6 +37,16 @@ func (m *MockInspectorClient) EXPECT() *MockInspectorClientMockRecorder {
 
 // DescribeAssessmentRuns mocks base method.
 func (m *MockInspectorClient) DescribeAssessmentRuns(arg0 context.Context, arg1 *inspector.DescribeAssessmentRunsInput, arg2 ...func(*inspector.Options)) (*inspector.DescribeAssessmentRunsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAssessmentRuns")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockInspectorClientMockRecorder) DescribeAssessmentRuns(arg0, arg1 int
 
 // DescribeAssessmentTargets mocks base method.
 func (m *MockInspectorClient) DescribeAssessmentTargets(arg0 context.Context, arg1 *inspector.DescribeAssessmentTargetsInput, arg2 ...func(*inspector.Options)) (*inspector.DescribeAssessmentTargetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAssessmentTargets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockInspectorClientMockRecorder) DescribeAssessmentTargets(arg0, arg1 
 
 // DescribeAssessmentTemplates mocks base method.
 func (m *MockInspectorClient) DescribeAssessmentTemplates(arg0 context.Context, arg1 *inspector.DescribeAssessmentTemplatesInput, arg2 ...func(*inspector.Options)) (*inspector.DescribeAssessmentTemplatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAssessmentTemplates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockInspectorClientMockRecorder) DescribeAssessmentTemplates(arg0, arg
 
 // DescribeCrossAccountAccessRole mocks base method.
 func (m *MockInspectorClient) DescribeCrossAccountAccessRole(arg0 context.Context, arg1 *inspector.DescribeCrossAccountAccessRoleInput, arg2 ...func(*inspector.Options)) (*inspector.DescribeCrossAccountAccessRoleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCrossAccountAccessRole")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockInspectorClientMockRecorder) DescribeCrossAccountAccessRole(arg0, 
 
 // DescribeExclusions mocks base method.
 func (m *MockInspectorClient) DescribeExclusions(arg0 context.Context, arg1 *inspector.DescribeExclusionsInput, arg2 ...func(*inspector.Options)) (*inspector.DescribeExclusionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeExclusions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockInspectorClientMockRecorder) DescribeExclusions(arg0, arg1 interfa
 
 // DescribeFindings mocks base method.
 func (m *MockInspectorClient) DescribeFindings(arg0 context.Context, arg1 *inspector.DescribeFindingsInput, arg2 ...func(*inspector.Options)) (*inspector.DescribeFindingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFindings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockInspectorClientMockRecorder) DescribeFindings(arg0, arg1 interface
 
 // DescribeResourceGroups mocks base method.
 func (m *MockInspectorClient) DescribeResourceGroups(arg0 context.Context, arg1 *inspector.DescribeResourceGroupsInput, arg2 ...func(*inspector.Options)) (*inspector.DescribeResourceGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeResourceGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockInspectorClientMockRecorder) DescribeResourceGroups(arg0, arg1 int
 
 // DescribeRulesPackages mocks base method.
 func (m *MockInspectorClient) DescribeRulesPackages(arg0 context.Context, arg1 *inspector.DescribeRulesPackagesInput, arg2 ...func(*inspector.Options)) (*inspector.DescribeRulesPackagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRulesPackages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockInspectorClientMockRecorder) DescribeRulesPackages(arg0, arg1 inte
 
 // GetAssessmentReport mocks base method.
 func (m *MockInspectorClient) GetAssessmentReport(arg0 context.Context, arg1 *inspector.GetAssessmentReportInput, arg2 ...func(*inspector.Options)) (*inspector.GetAssessmentReportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAssessmentReport")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockInspectorClientMockRecorder) GetAssessmentReport(arg0, arg1 interf
 
 // GetExclusionsPreview mocks base method.
 func (m *MockInspectorClient) GetExclusionsPreview(arg0 context.Context, arg1 *inspector.GetExclusionsPreviewInput, arg2 ...func(*inspector.Options)) (*inspector.GetExclusionsPreviewOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetExclusionsPreview")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockInspectorClientMockRecorder) GetExclusionsPreview(arg0, arg1 inter
 
 // GetTelemetryMetadata mocks base method.
 func (m *MockInspectorClient) GetTelemetryMetadata(arg0 context.Context, arg1 *inspector.GetTelemetryMetadataInput, arg2 ...func(*inspector.Options)) (*inspector.GetTelemetryMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTelemetryMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockInspectorClientMockRecorder) GetTelemetryMetadata(arg0, arg1 inter
 
 // ListAssessmentRunAgents mocks base method.
 func (m *MockInspectorClient) ListAssessmentRunAgents(arg0 context.Context, arg1 *inspector.ListAssessmentRunAgentsInput, arg2 ...func(*inspector.Options)) (*inspector.ListAssessmentRunAgentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAssessmentRunAgents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockInspectorClientMockRecorder) ListAssessmentRunAgents(arg0, arg1 in
 
 // ListAssessmentRuns mocks base method.
 func (m *MockInspectorClient) ListAssessmentRuns(arg0 context.Context, arg1 *inspector.ListAssessmentRunsInput, arg2 ...func(*inspector.Options)) (*inspector.ListAssessmentRunsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAssessmentRuns")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockInspectorClientMockRecorder) ListAssessmentRuns(arg0, arg1 interfa
 
 // ListAssessmentTargets mocks base method.
 func (m *MockInspectorClient) ListAssessmentTargets(arg0 context.Context, arg1 *inspector.ListAssessmentTargetsInput, arg2 ...func(*inspector.Options)) (*inspector.ListAssessmentTargetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAssessmentTargets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockInspectorClientMockRecorder) ListAssessmentTargets(arg0, arg1 inte
 
 // ListAssessmentTemplates mocks base method.
 func (m *MockInspectorClient) ListAssessmentTemplates(arg0 context.Context, arg1 *inspector.ListAssessmentTemplatesInput, arg2 ...func(*inspector.Options)) (*inspector.ListAssessmentTemplatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAssessmentTemplates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockInspectorClientMockRecorder) ListAssessmentTemplates(arg0, arg1 in
 
 // ListEventSubscriptions mocks base method.
 func (m *MockInspectorClient) ListEventSubscriptions(arg0 context.Context, arg1 *inspector.ListEventSubscriptionsInput, arg2 ...func(*inspector.Options)) (*inspector.ListEventSubscriptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEventSubscriptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockInspectorClientMockRecorder) ListEventSubscriptions(arg0, arg1 int
 
 // ListExclusions mocks base method.
 func (m *MockInspectorClient) ListExclusions(arg0 context.Context, arg1 *inspector.ListExclusionsInput, arg2 ...func(*inspector.Options)) (*inspector.ListExclusionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListExclusions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockInspectorClientMockRecorder) ListExclusions(arg0, arg1 interface{}
 
 // ListFindings mocks base method.
 func (m *MockInspectorClient) ListFindings(arg0 context.Context, arg1 *inspector.ListFindingsInput, arg2 ...func(*inspector.Options)) (*inspector.ListFindingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFindings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockInspectorClientMockRecorder) ListFindings(arg0, arg1 interface{}, 
 
 // ListRulesPackages mocks base method.
 func (m *MockInspectorClient) ListRulesPackages(arg0 context.Context, arg1 *inspector.ListRulesPackagesInput, arg2 ...func(*inspector.Options)) (*inspector.ListRulesPackagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRulesPackages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockInspectorClientMockRecorder) ListRulesPackages(arg0, arg1 interfac
 
 // ListTagsForResource mocks base method.
 func (m *MockInspectorClient) ListTagsForResource(arg0 context.Context, arg1 *inspector.ListTagsForResourceInput, arg2 ...func(*inspector.Options)) (*inspector.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

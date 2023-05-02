@@ -60,7 +60,9 @@ func fetchBatchJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		svc := c.Services().Batch
 		p := batch.NewListJobsPaginator(svc, &config)
 		for p.HasMorePages() {
-			response, err := p.NextPage(ctx)
+			response, err := p.NextPage(ctx, func(options *batch.Options) {
+				options.Region = c.Region
+			})
 			if err != nil {
 				return err
 			}
@@ -75,6 +77,8 @@ func fetchBatchJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			}
 			details, err := svc.DescribeJobs(ctx, &batch.DescribeJobsInput{
 				Jobs: ids,
+			}, func(options *batch.Options) {
+				options.Region = c.Region
 			})
 			if err != nil {
 				return err
@@ -94,7 +98,9 @@ func resolveBatchJobTags(ctx context.Context, meta schema.ClientMeta, resource *
 	input := batch.ListTagsForResourceInput{
 		ResourceArn: summary.JobArn,
 	}
-	output, err := svc.ListTagsForResource(ctx, &input)
+	output, err := svc.ListTagsForResource(ctx, &input, func(options *batch.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

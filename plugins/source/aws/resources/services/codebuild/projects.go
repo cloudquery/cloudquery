@@ -44,14 +44,18 @@ func fetchCodebuildProjects(ctx context.Context, meta schema.ClientMeta, parent 
 	config := codebuild.ListProjectsInput{}
 	paginator := codebuild.NewListProjectsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *codebuild.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
 		if len(page.Projects) == 0 {
 			continue
 		}
-		projectsOutput, err := svc.BatchGetProjects(ctx, &codebuild.BatchGetProjectsInput{Names: page.Projects})
+		projectsOutput, err := svc.BatchGetProjects(ctx, &codebuild.BatchGetProjectsInput{Names: page.Projects}, func(options *codebuild.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

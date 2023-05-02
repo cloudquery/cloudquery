@@ -58,11 +58,14 @@ func userAccessKeys() *schema.Table {
 func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListAccessKeysInput
 	p := parent.Item.(*types.User)
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	config.UserName = p.UserName
 	paginator := iam.NewListAccessKeysPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iam.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -87,8 +90,11 @@ func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, r
 	if r.AccessKeyId == nil {
 		return nil
 	}
-	svc := meta.(*client.Client).Services().Iam
-	output, err := svc.GetAccessKeyLastUsed(ctx, &iam.GetAccessKeyLastUsedInput{AccessKeyId: r.AccessKeyId})
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
+	output, err := svc.GetAccessKeyLastUsed(ctx, &iam.GetAccessKeyLastUsedInput{AccessKeyId: r.AccessKeyId}, func(options *iam.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

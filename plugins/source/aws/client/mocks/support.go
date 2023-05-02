@@ -37,6 +37,16 @@ func (m *MockSupportClient) EXPECT() *MockSupportClientMockRecorder {
 
 // DescribeAttachment mocks base method.
 func (m *MockSupportClient) DescribeAttachment(arg0 context.Context, arg1 *support.DescribeAttachmentInput, arg2 ...func(*support.Options)) (*support.DescribeAttachmentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &support.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAttachment")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockSupportClientMockRecorder) DescribeAttachment(arg0, arg1 interface
 
 // DescribeCases mocks base method.
 func (m *MockSupportClient) DescribeCases(arg0 context.Context, arg1 *support.DescribeCasesInput, arg2 ...func(*support.Options)) (*support.DescribeCasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &support.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockSupportClientMockRecorder) DescribeCases(arg0, arg1 interface{}, a
 
 // DescribeCommunications mocks base method.
 func (m *MockSupportClient) DescribeCommunications(arg0 context.Context, arg1 *support.DescribeCommunicationsInput, arg2 ...func(*support.Options)) (*support.DescribeCommunicationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &support.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCommunications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockSupportClientMockRecorder) DescribeCommunications(arg0, arg1 inter
 
 // DescribeServices mocks base method.
 func (m *MockSupportClient) DescribeServices(arg0 context.Context, arg1 *support.DescribeServicesInput, arg2 ...func(*support.Options)) (*support.DescribeServicesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &support.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeServices")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockSupportClientMockRecorder) DescribeServices(arg0, arg1 interface{}
 
 // DescribeSeverityLevels mocks base method.
 func (m *MockSupportClient) DescribeSeverityLevels(arg0 context.Context, arg1 *support.DescribeSeverityLevelsInput, arg2 ...func(*support.Options)) (*support.DescribeSeverityLevelsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &support.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSeverityLevels")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockSupportClientMockRecorder) DescribeSeverityLevels(arg0, arg1 inter
 
 // DescribeTrustedAdvisorCheckRefreshStatuses mocks base method.
 func (m *MockSupportClient) DescribeTrustedAdvisorCheckRefreshStatuses(arg0 context.Context, arg1 *support.DescribeTrustedAdvisorCheckRefreshStatusesInput, arg2 ...func(*support.Options)) (*support.DescribeTrustedAdvisorCheckRefreshStatusesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &support.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrustedAdvisorCheckRefreshStatuses")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockSupportClientMockRecorder) DescribeTrustedAdvisorCheckRefreshStatu
 
 // DescribeTrustedAdvisorCheckResult mocks base method.
 func (m *MockSupportClient) DescribeTrustedAdvisorCheckResult(arg0 context.Context, arg1 *support.DescribeTrustedAdvisorCheckResultInput, arg2 ...func(*support.Options)) (*support.DescribeTrustedAdvisorCheckResultOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &support.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrustedAdvisorCheckResult")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockSupportClientMockRecorder) DescribeTrustedAdvisorCheckResult(arg0,
 
 // DescribeTrustedAdvisorCheckSummaries mocks base method.
 func (m *MockSupportClient) DescribeTrustedAdvisorCheckSummaries(arg0 context.Context, arg1 *support.DescribeTrustedAdvisorCheckSummariesInput, arg2 ...func(*support.Options)) (*support.DescribeTrustedAdvisorCheckSummariesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &support.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrustedAdvisorCheckSummaries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockSupportClientMockRecorder) DescribeTrustedAdvisorCheckSummaries(ar
 
 // DescribeTrustedAdvisorChecks mocks base method.
 func (m *MockSupportClient) DescribeTrustedAdvisorChecks(arg0 context.Context, arg1 *support.DescribeTrustedAdvisorChecksInput, arg2 ...func(*support.Options)) (*support.DescribeTrustedAdvisorChecksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &support.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrustedAdvisorChecks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
