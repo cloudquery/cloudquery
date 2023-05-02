@@ -115,7 +115,7 @@
   "plugins/source/mysql+FILLER": "0.0.0",
   "plugins/destination/gremlin": "2.0.0",
   "plugins/destination/gremlin+FILLER": "0.0.0",
-  "plugins/source/googleads": "1.1.0",
+  "plugins/source/googleads": "1.1.1",
   "plugins/source/googleads+FILLER": "0.0.0",
   "plugins/destination/meilisearch": "2.0.0",
   "plugins/destination/meilisearch+FILLER": "1.0.0",
