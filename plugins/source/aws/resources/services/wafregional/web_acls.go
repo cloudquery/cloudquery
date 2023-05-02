@@ -85,7 +85,9 @@ func resolveWafregionalWebACLTags(ctx context.Context, meta schema.ClientMeta, r
 	params := wafregional.ListTagsForResourceInput{ResourceARN: resource.Item.(types.WebACL).WebACLArn}
 	tags := make(map[string]string)
 	for {
-		result, err := svc.ListTagsForResource(ctx, &params)
+		result, err := svc.ListTagsForResource(ctx, &params, func(o *wafregional.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -101,9 +103,12 @@ func resolveWafregionalWebACLTags(ctx context.Context, meta schema.ClientMeta, r
 }
 
 func resolveWafregionalWebACLResourcesForWebACL(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service := meta.(*client.Client).Services().Wafregional
+	cl := meta.(*client.Client)
+	service := cl.Services().Wafregional
 	output, err := service.ListResourcesForWebACL(ctx, &wafregional.ListResourcesForWebACLInput{
 		WebACLId: resource.Item.(types.WebACL).WebACLId,
+	}, func(o *wafregional.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err

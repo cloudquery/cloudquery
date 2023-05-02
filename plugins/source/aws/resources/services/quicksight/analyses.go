@@ -36,7 +36,9 @@ func fetchQuicksightAnalyses(ctx context.Context, meta schema.ClientMeta, parent
 
 	paginator := quicksight.NewListAnalysesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		result, err := paginator.NextPage(ctx)
+		result, err := paginator.NextPage(ctx, func(options *quicksight.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if errors.As(err, &ae) && ae.ErrorCode() == "UnsupportedUserEditionException" {
 				return nil
@@ -56,6 +58,8 @@ func getAnalysis(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	out, err := svc.DescribeAnalysis(ctx, &quicksight.DescribeAnalysisInput{
 		AwsAccountId: aws.String(cl.AccountID),
 		AnalysisId:   item.AnalysisId,
+	}, func(options *quicksight.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

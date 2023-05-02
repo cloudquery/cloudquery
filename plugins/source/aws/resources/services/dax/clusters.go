@@ -45,7 +45,9 @@ func fetchDaxClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	config := dax.DescribeClustersInput{}
 	// No paginator available
 	for {
-		output, err := svc.DescribeClusters(ctx, &config)
+		output, err := svc.DescribeClusters(ctx, &config, func(options *dax.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -71,7 +73,9 @@ func resolveClusterTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	var tags []types.Tag
 	// No paginator available
 	for {
-		response, err := svc.ListTags(ctx, input)
+		response, err := svc.ListTags(ctx, input, func(options *dax.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

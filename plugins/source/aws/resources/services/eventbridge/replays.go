@@ -41,7 +41,9 @@ func fetchReplays(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	svc := c.Services().Eventbridge
 	// No paginator available
 	for {
-		response, err := svc.ListReplays(ctx, &input)
+		response, err := svc.ListReplays(ctx, &input, func(options *eventbridge.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -62,6 +64,8 @@ func getReplay(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 
 	out, err := svc.DescribeReplay(ctx, &eventbridge.DescribeReplayInput{
 		ReplayName: replay.ReplayName,
+	}, func(options *eventbridge.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err

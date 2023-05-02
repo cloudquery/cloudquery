@@ -44,7 +44,9 @@ func fetchEc2KeyPairs(ctx context.Context, meta schema.ClientMeta, parent *schem
 	var config ec2.DescribeKeyPairsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Ec2
-	output, err := svc.DescribeKeyPairs(ctx, &config)
+	output, err := svc.DescribeKeyPairs(ctx, &config, func(options *ec2.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

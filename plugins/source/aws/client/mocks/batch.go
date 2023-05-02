@@ -37,6 +37,16 @@ func (m *MockBatchClient) EXPECT() *MockBatchClientMockRecorder {
 
 // DescribeComputeEnvironments mocks base method.
 func (m *MockBatchClient) DescribeComputeEnvironments(arg0 context.Context, arg1 *batch.DescribeComputeEnvironmentsInput, arg2 ...func(*batch.Options)) (*batch.DescribeComputeEnvironmentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &batch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeComputeEnvironments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockBatchClientMockRecorder) DescribeComputeEnvironments(arg0, arg1 in
 
 // DescribeJobDefinitions mocks base method.
 func (m *MockBatchClient) DescribeJobDefinitions(arg0 context.Context, arg1 *batch.DescribeJobDefinitionsInput, arg2 ...func(*batch.Options)) (*batch.DescribeJobDefinitionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &batch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeJobDefinitions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockBatchClientMockRecorder) DescribeJobDefinitions(arg0, arg1 interfa
 
 // DescribeJobQueues mocks base method.
 func (m *MockBatchClient) DescribeJobQueues(arg0 context.Context, arg1 *batch.DescribeJobQueuesInput, arg2 ...func(*batch.Options)) (*batch.DescribeJobQueuesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &batch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeJobQueues")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockBatchClientMockRecorder) DescribeJobQueues(arg0, arg1 interface{},
 
 // DescribeJobs mocks base method.
 func (m *MockBatchClient) DescribeJobs(arg0 context.Context, arg1 *batch.DescribeJobsInput, arg2 ...func(*batch.Options)) (*batch.DescribeJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &batch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockBatchClientMockRecorder) DescribeJobs(arg0, arg1 interface{}, arg2
 
 // DescribeSchedulingPolicies mocks base method.
 func (m *MockBatchClient) DescribeSchedulingPolicies(arg0 context.Context, arg1 *batch.DescribeSchedulingPoliciesInput, arg2 ...func(*batch.Options)) (*batch.DescribeSchedulingPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &batch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSchedulingPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockBatchClientMockRecorder) DescribeSchedulingPolicies(arg0, arg1 int
 
 // ListJobs mocks base method.
 func (m *MockBatchClient) ListJobs(arg0 context.Context, arg1 *batch.ListJobsInput, arg2 ...func(*batch.Options)) (*batch.ListJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &batch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockBatchClientMockRecorder) ListJobs(arg0, arg1 interface{}, arg2 ...
 
 // ListSchedulingPolicies mocks base method.
 func (m *MockBatchClient) ListSchedulingPolicies(arg0 context.Context, arg1 *batch.ListSchedulingPoliciesInput, arg2 ...func(*batch.Options)) (*batch.ListSchedulingPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &batch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSchedulingPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockBatchClientMockRecorder) ListSchedulingPolicies(arg0, arg1 interfa
 
 // ListTagsForResource mocks base method.
 func (m *MockBatchClient) ListTagsForResource(arg0 context.Context, arg1 *batch.ListTagsForResourceInput, arg2 ...func(*batch.Options)) (*batch.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &batch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

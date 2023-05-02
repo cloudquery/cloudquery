@@ -47,7 +47,9 @@ func fetchApigatewayRestApiDeployments(ctx context.Context, meta schema.ClientMe
 	svc := c.Services().Apigateway
 	config := apigateway.GetDeploymentsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	for p := apigateway.NewGetDeploymentsPaginator(svc, &config); p.HasMorePages(); {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *apigateway.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil

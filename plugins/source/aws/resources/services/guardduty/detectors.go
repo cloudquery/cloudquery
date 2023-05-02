@@ -57,7 +57,9 @@ func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent
 	config := &guardduty.ListDetectorsInput{}
 	paginator := guardduty.NewListDetectorsPaginator(svc, config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *guardduty.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -71,7 +73,9 @@ func getDetector(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	svc := c.Services().Guardduty
 	dId := resource.Item.(string)
 
-	d, err := svc.GetDetector(ctx, &guardduty.GetDetectorInput{DetectorId: &dId})
+	d, err := svc.GetDetector(ctx, &guardduty.GetDetectorInput{DetectorId: &dId}, func(options *guardduty.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

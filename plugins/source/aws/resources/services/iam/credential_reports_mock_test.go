@@ -23,7 +23,7 @@ user-readonly,arn:aws:iam::123456789012:user/user-readonly,2022-08-31T11:10:33+0
 
 func buildCredentialReports(_ *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
-	m.EXPECT().GetCredentialReport(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().GetCredentialReport(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.GetCredentialReportOutput{
 			Content: []byte(exampleReport),
 		}, nil)
@@ -35,7 +35,7 @@ func buildCredentialReports(_ *testing.T, ctrl *gomock.Controller) client.Servic
 
 func buildCredentialReportsWithNilValues(ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
-	m.EXPECT().GetCredentialReport(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().GetCredentialReport(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.GetCredentialReportOutput{
 			Content: []byte(exampleReportWithNilValues),
 		}, nil)
