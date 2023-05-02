@@ -37,6 +37,16 @@ func (m *MockCodebuildClient) EXPECT() *MockCodebuildClientMockRecorder {
 
 // BatchGetBuildBatches mocks base method.
 func (m *MockCodebuildClient) BatchGetBuildBatches(arg0 context.Context, arg1 *codebuild.BatchGetBuildBatchesInput, arg2 ...func(*codebuild.Options)) (*codebuild.BatchGetBuildBatchesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetBuildBatches")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockCodebuildClientMockRecorder) BatchGetBuildBatches(arg0, arg1 inter
 
 // BatchGetBuilds mocks base method.
 func (m *MockCodebuildClient) BatchGetBuilds(arg0 context.Context, arg1 *codebuild.BatchGetBuildsInput, arg2 ...func(*codebuild.Options)) (*codebuild.BatchGetBuildsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetBuilds")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockCodebuildClientMockRecorder) BatchGetBuilds(arg0, arg1 interface{}
 
 // BatchGetProjects mocks base method.
 func (m *MockCodebuildClient) BatchGetProjects(arg0 context.Context, arg1 *codebuild.BatchGetProjectsInput, arg2 ...func(*codebuild.Options)) (*codebuild.BatchGetProjectsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetProjects")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockCodebuildClientMockRecorder) BatchGetProjects(arg0, arg1 interface
 
 // BatchGetReportGroups mocks base method.
 func (m *MockCodebuildClient) BatchGetReportGroups(arg0 context.Context, arg1 *codebuild.BatchGetReportGroupsInput, arg2 ...func(*codebuild.Options)) (*codebuild.BatchGetReportGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetReportGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockCodebuildClientMockRecorder) BatchGetReportGroups(arg0, arg1 inter
 
 // BatchGetReports mocks base method.
 func (m *MockCodebuildClient) BatchGetReports(arg0 context.Context, arg1 *codebuild.BatchGetReportsInput, arg2 ...func(*codebuild.Options)) (*codebuild.BatchGetReportsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetReports")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockCodebuildClientMockRecorder) BatchGetReports(arg0, arg1 interface{
 
 // DescribeCodeCoverages mocks base method.
 func (m *MockCodebuildClient) DescribeCodeCoverages(arg0 context.Context, arg1 *codebuild.DescribeCodeCoveragesInput, arg2 ...func(*codebuild.Options)) (*codebuild.DescribeCodeCoveragesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCodeCoverages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockCodebuildClientMockRecorder) DescribeCodeCoverages(arg0, arg1 inte
 
 // DescribeTestCases mocks base method.
 func (m *MockCodebuildClient) DescribeTestCases(arg0 context.Context, arg1 *codebuild.DescribeTestCasesInput, arg2 ...func(*codebuild.Options)) (*codebuild.DescribeTestCasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTestCases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockCodebuildClientMockRecorder) DescribeTestCases(arg0, arg1 interfac
 
 // GetReportGroupTrend mocks base method.
 func (m *MockCodebuildClient) GetReportGroupTrend(arg0 context.Context, arg1 *codebuild.GetReportGroupTrendInput, arg2 ...func(*codebuild.Options)) (*codebuild.GetReportGroupTrendOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetReportGroupTrend")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockCodebuildClientMockRecorder) GetReportGroupTrend(arg0, arg1 interf
 
 // GetResourcePolicy mocks base method.
 func (m *MockCodebuildClient) GetResourcePolicy(arg0 context.Context, arg1 *codebuild.GetResourcePolicyInput, arg2 ...func(*codebuild.Options)) (*codebuild.GetResourcePolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetResourcePolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockCodebuildClientMockRecorder) GetResourcePolicy(arg0, arg1 interfac
 
 // ListBuildBatches mocks base method.
 func (m *MockCodebuildClient) ListBuildBatches(arg0 context.Context, arg1 *codebuild.ListBuildBatchesInput, arg2 ...func(*codebuild.Options)) (*codebuild.ListBuildBatchesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBuildBatches")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockCodebuildClientMockRecorder) ListBuildBatches(arg0, arg1 interface
 
 // ListBuildBatchesForProject mocks base method.
 func (m *MockCodebuildClient) ListBuildBatchesForProject(arg0 context.Context, arg1 *codebuild.ListBuildBatchesForProjectInput, arg2 ...func(*codebuild.Options)) (*codebuild.ListBuildBatchesForProjectOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBuildBatchesForProject")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockCodebuildClientMockRecorder) ListBuildBatchesForProject(arg0, arg1
 
 // ListBuilds mocks base method.
 func (m *MockCodebuildClient) ListBuilds(arg0 context.Context, arg1 *codebuild.ListBuildsInput, arg2 ...func(*codebuild.Options)) (*codebuild.ListBuildsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBuilds")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockCodebuildClientMockRecorder) ListBuilds(arg0, arg1 interface{}, ar
 
 // ListBuildsForProject mocks base method.
 func (m *MockCodebuildClient) ListBuildsForProject(arg0 context.Context, arg1 *codebuild.ListBuildsForProjectInput, arg2 ...func(*codebuild.Options)) (*codebuild.ListBuildsForProjectOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBuildsForProject")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockCodebuildClientMockRecorder) ListBuildsForProject(arg0, arg1 inter
 
 // ListCuratedEnvironmentImages mocks base method.
 func (m *MockCodebuildClient) ListCuratedEnvironmentImages(arg0 context.Context, arg1 *codebuild.ListCuratedEnvironmentImagesInput, arg2 ...func(*codebuild.Options)) (*codebuild.ListCuratedEnvironmentImagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCuratedEnvironmentImages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockCodebuildClientMockRecorder) ListCuratedEnvironmentImages(arg0, ar
 
 // ListProjects mocks base method.
 func (m *MockCodebuildClient) ListProjects(arg0 context.Context, arg1 *codebuild.ListProjectsInput, arg2 ...func(*codebuild.Options)) (*codebuild.ListProjectsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProjects")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockCodebuildClientMockRecorder) ListProjects(arg0, arg1 interface{}, 
 
 // ListReportGroups mocks base method.
 func (m *MockCodebuildClient) ListReportGroups(arg0 context.Context, arg1 *codebuild.ListReportGroupsInput, arg2 ...func(*codebuild.Options)) (*codebuild.ListReportGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListReportGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockCodebuildClientMockRecorder) ListReportGroups(arg0, arg1 interface
 
 // ListReports mocks base method.
 func (m *MockCodebuildClient) ListReports(arg0 context.Context, arg1 *codebuild.ListReportsInput, arg2 ...func(*codebuild.Options)) (*codebuild.ListReportsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListReports")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockCodebuildClientMockRecorder) ListReports(arg0, arg1 interface{}, a
 
 // ListReportsForReportGroup mocks base method.
 func (m *MockCodebuildClient) ListReportsForReportGroup(arg0 context.Context, arg1 *codebuild.ListReportsForReportGroupInput, arg2 ...func(*codebuild.Options)) (*codebuild.ListReportsForReportGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListReportsForReportGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockCodebuildClientMockRecorder) ListReportsForReportGroup(arg0, arg1 
 
 // ListSharedProjects mocks base method.
 func (m *MockCodebuildClient) ListSharedProjects(arg0 context.Context, arg1 *codebuild.ListSharedProjectsInput, arg2 ...func(*codebuild.Options)) (*codebuild.ListSharedProjectsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSharedProjects")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockCodebuildClientMockRecorder) ListSharedProjects(arg0, arg1 interfa
 
 // ListSharedReportGroups mocks base method.
 func (m *MockCodebuildClient) ListSharedReportGroups(arg0 context.Context, arg1 *codebuild.ListSharedReportGroupsInput, arg2 ...func(*codebuild.Options)) (*codebuild.ListSharedReportGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSharedReportGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockCodebuildClientMockRecorder) ListSharedReportGroups(arg0, arg1 int
 
 // ListSourceCredentials mocks base method.
 func (m *MockCodebuildClient) ListSourceCredentials(arg0 context.Context, arg1 *codebuild.ListSourceCredentialsInput, arg2 ...func(*codebuild.Options)) (*codebuild.ListSourceCredentialsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codebuild.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSourceCredentials")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

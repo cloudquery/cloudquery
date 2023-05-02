@@ -39,13 +39,15 @@ func Products() *schema.Table {
 }
 
 func fetchServicecatalogProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Servicecatalog
+	cl := meta.(*client.Client)
+	svc := cl.Services().Servicecatalog
 
 	listInput := new(servicecatalog.SearchProductsAsAdminInput)
 	paginator := servicecatalog.NewSearchProductsAsAdminPaginator(svc, listInput)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *servicecatalog.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -62,6 +64,8 @@ func resolveProductTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	svc := cl.Services().Servicecatalogappregistry
 	response, err := svc.ListTagsForResource(ctx, &servicecatalogappregistry.ListTagsForResourceInput{
 		ResourceArn: p.ProductARN,
+	}, func(o *servicecatalogappregistry.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {

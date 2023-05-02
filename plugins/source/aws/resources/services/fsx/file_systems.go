@@ -45,7 +45,9 @@ func fetchFsxFileSystems(ctx context.Context, meta schema.ClientMeta, parent *sc
 	input := fsx.DescribeFileSystemsInput{MaxResults: aws.Int32(1000)}
 	paginator := fsx.NewDescribeFileSystemsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		result, err := paginator.NextPage(ctx)
+		result, err := paginator.NextPage(ctx, func(options *fsx.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

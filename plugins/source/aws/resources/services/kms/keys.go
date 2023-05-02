@@ -61,7 +61,9 @@ func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	config := kms.ListKeysInput{Limit: aws.Int32(1000)}
 	p := kms.NewListKeysPaginator(svc, &config)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *kms.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -75,7 +77,9 @@ func getKey(ctx context.Context, meta schema.ClientMeta, resource *schema.Resour
 	svc := c.Services().Kms
 	item := resource.Item.(types.KeyListEntry)
 
-	d, err := svc.DescribeKey(ctx, &kms.DescribeKeyInput{KeyId: item.KeyId})
+	d, err := svc.DescribeKey(ctx, &kms.DescribeKeyInput{KeyId: item.KeyId}, func(options *kms.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -96,12 +100,15 @@ func resolveKeysTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	if key.Origin == "EXTERNAL" || key.KeyManager == "AWS" {
 		return nil
 	}
-	svc := meta.(*client.Client).Services().Kms
+	cl := meta.(*client.Client)
+	svc := cl.Services().Kms
 	params := kms.ListResourceTagsInput{KeyId: key.KeyId}
 	paginator := kms.NewListResourceTagsPaginator(svc, &params)
 	tags := make(map[string]string)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *kms.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -118,8 +125,11 @@ func resolveKeysRotationEnabled(ctx context.Context, meta schema.ClientMeta, res
 	if key.Origin == "EXTERNAL" || key.KeyManager == "AWS" {
 		return nil
 	}
-	svc := meta.(*client.Client).Services().Kms
-	result, err := svc.GetKeyRotationStatus(ctx, &kms.GetKeyRotationStatusInput{KeyId: key.KeyId})
+	cl := meta.(*client.Client)
+	svc := cl.Services().Kms
+	result, err := svc.GetKeyRotationStatus(ctx, &kms.GetKeyRotationStatusInput{KeyId: key.KeyId}, func(options *kms.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

@@ -29,14 +29,14 @@ func bucketCorsRules() *schema.Table {
 }
 func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.WrappedBucket)
-	c := meta.(*client.Client)
-	svc := c.Services().S3
+	cl := meta.(*client.Client)
+	svc := cl.Services().S3
 	region := parent.Get("region").(*schema.Text)
 	if region == nil {
 		return nil
 	}
-	corsOutput, err := svc.GetBucketCors(ctx, &s3.GetBucketCorsInput{Bucket: r.Name}, func(options *s3.Options) {
-		options.Region = region.Str
+	corsOutput, err := svc.GetBucketCors(ctx, &s3.GetBucketCorsInput{Bucket: r.Name}, func(o *s3.Options) {
+		o.Region = region.Str
 	})
 	if err != nil {
 		if client.IsAWSError(err, "NoSuchCORSConfiguration", "NoSuchBucket") {

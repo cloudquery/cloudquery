@@ -55,7 +55,9 @@ func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	svc := c.Services().Iam
 	p := iam.NewListUsersPaginator(svc, &config)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *iam.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -66,9 +68,12 @@ func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 
 func getUser(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	listUser := resource.Item.(types.User)
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	userDetail, err := svc.GetUser(ctx, &iam.GetUserInput{
 		UserName: aws.String(*listUser.UserName),
+	}, func(options *iam.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

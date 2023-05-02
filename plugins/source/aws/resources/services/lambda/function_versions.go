@@ -36,13 +36,16 @@ func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, pa
 		return nil
 	}
 
-	svc := meta.(*client.Client).Services().Lambda
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lambda
 	config := lambda.ListVersionsByFunctionInput{
 		FunctionName: p.Configuration.FunctionName,
 	}
 	paginator := lambda.NewListVersionsByFunctionPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *lambda.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if meta.(*client.Client).IsNotFoundError(err) {
 				return nil

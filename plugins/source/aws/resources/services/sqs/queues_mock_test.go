@@ -17,6 +17,7 @@ func buildSQSQueues(t *testing.T, ctrl *gomock.Controller) client.Services {
 	sqsMock.EXPECT().ListQueues(
 		gomock.Any(),
 		&sqs.ListQueuesInput{},
+		gomock.Any(),
 	).Return(
 		&sqs.ListQueuesOutput{QueueUrls: []string{queueURL}},
 		nil,
@@ -25,6 +26,7 @@ func buildSQSQueues(t *testing.T, ctrl *gomock.Controller) client.Services {
 	sqsMock.EXPECT().GetQueueAttributes(
 		gomock.Any(),
 		&sqs.GetQueueAttributesInput{QueueUrl: &queueURL, AttributeNames: []types.QueueAttributeName{types.QueueAttributeNameAll}},
+		gomock.Any(),
 	).Return(
 		&sqs.GetQueueAttributesOutput{
 			Attributes: map[string]string{
@@ -59,6 +61,7 @@ func buildSQSQueues(t *testing.T, ctrl *gomock.Controller) client.Services {
 	sqsMock.EXPECT().ListQueueTags(
 		gomock.Any(),
 		&sqs.ListQueueTagsInput{QueueUrl: &queueURL},
+		gomock.Any(),
 	).Return(
 		&sqs.ListQueueTagsOutput{Tags: map[string]string{"tag": "value"}},
 		nil,

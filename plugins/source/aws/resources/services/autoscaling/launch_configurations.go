@@ -34,10 +34,13 @@ func LaunchConfigurations() *schema.Table {
 }
 
 func fetchAutoscalingLaunchConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Autoscaling
+	cl := meta.(*client.Client)
+	svc := cl.Services().Autoscaling
 	paginator := autoscaling.NewDescribeLaunchConfigurationsPaginator(svc, &autoscaling.DescribeLaunchConfigurationsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *autoscaling.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

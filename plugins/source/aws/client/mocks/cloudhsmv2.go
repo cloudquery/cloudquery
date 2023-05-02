@@ -37,6 +37,16 @@ func (m *MockCloudhsmv2Client) EXPECT() *MockCloudhsmv2ClientMockRecorder {
 
 // DescribeBackups mocks base method.
 func (m *MockCloudhsmv2Client) DescribeBackups(arg0 context.Context, arg1 *cloudhsmv2.DescribeBackupsInput, arg2 ...func(*cloudhsmv2.Options)) (*cloudhsmv2.DescribeBackupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudhsmv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeBackups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockCloudhsmv2ClientMockRecorder) DescribeBackups(arg0, arg1 interface
 
 // DescribeClusters mocks base method.
 func (m *MockCloudhsmv2Client) DescribeClusters(arg0 context.Context, arg1 *cloudhsmv2.DescribeClustersInput, arg2 ...func(*cloudhsmv2.Options)) (*cloudhsmv2.DescribeClustersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudhsmv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClusters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockCloudhsmv2ClientMockRecorder) DescribeClusters(arg0, arg1 interfac
 
 // ListTags mocks base method.
 func (m *MockCloudhsmv2Client) ListTags(arg0 context.Context, arg1 *cloudhsmv2.ListTagsInput, arg2 ...func(*cloudhsmv2.Options)) (*cloudhsmv2.ListTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudhsmv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
