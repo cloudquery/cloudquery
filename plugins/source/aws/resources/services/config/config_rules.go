@@ -33,8 +33,8 @@ func ConfigRules() *schema.Table {
 
 		Relations: []*schema.Table{
 			configRuleCompliances(),
-			remediationConfigurations(),
 			configRuleComplianceDetails(),
+			remediationConfigurations(),
 		},
 	}
 }
