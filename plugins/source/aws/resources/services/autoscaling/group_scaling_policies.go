@@ -45,7 +45,9 @@ func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.Clien
 	svc := cl.Services().Autoscaling
 	paginator := autoscaling.NewDescribePoliciesPaginator(svc, &autoscaling.DescribePoliciesInput{AutoScalingGroupName: p.AutoScalingGroupName})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *autoscaling.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if isAutoScalingGroupNotExistsError(err) {
 				return nil

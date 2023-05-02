@@ -46,7 +46,9 @@ func fetchEventBusRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 	svc := c.Services().Eventbridge
 	// No paginator available
 	for {
-		response, err := svc.ListRules(ctx, &input)
+		response, err := svc.ListRules(ctx, &input, func(options *eventbridge.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

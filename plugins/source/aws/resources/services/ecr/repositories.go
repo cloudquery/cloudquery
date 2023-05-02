@@ -48,12 +48,15 @@ func Repositories() *schema.Table {
 	}
 }
 func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Ecr
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecr
 	paginator := ecr.NewDescribeRepositoriesPaginator(svc, &ecr.DescribeRepositoriesInput{
 		MaxResults: aws.Int32(1000),
 	})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ecr.Options) {
+			options.Region = cl.Region
+		})
 
 		if err != nil {
 			return err
@@ -66,6 +69,8 @@ func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *s
 func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	output, err := meta.(*client.Client).Services().Ecr.ListTagsForResource(ctx, &ecr.ListTagsForResourceInput{
 		ResourceArn: resource.Item.(types.Repository).RepositoryArn,
+	}, func(options *ecr.Options) {
+		options.Region = meta.(*client.Client).Region
 	})
 	if err != nil {
 		return err
@@ -74,11 +79,14 @@ func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource
 }
 
 func resolveRepositoryPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	svc := meta.(*client.Client).Services().Ecr
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecr
 	repo := resource.Item.(types.Repository)
 	output, err := svc.GetRepositoryPolicy(ctx, &ecr.GetRepositoryPolicyInput{
 		RepositoryName: repo.RepositoryName,
 		RegistryId:     repo.RegistryId,
+	}, func(options *ecr.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		if client.IsAWSError(err, "RepositoryPolicyNotFoundException") {

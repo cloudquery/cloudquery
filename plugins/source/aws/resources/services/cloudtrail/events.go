@@ -66,7 +66,9 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 	// var err error
 	paginator := cloudtrail.NewLookupEventsPaginator(svc, le)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cloudtrail.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

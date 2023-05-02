@@ -39,7 +39,9 @@ func fetchOptionGroups(ctx context.Context, meta schema.ClientMeta, parent *sche
 	config := rds.DescribeOptionGroupsInput{}
 	p := rds.NewDescribeOptionGroupsPaginator(svc, &config)
 	for p.HasMorePages() {
-		page, err := p.NextPage(ctx)
+		page, err := p.NextPage(ctx, func(options *rds.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
