@@ -19,7 +19,7 @@ func buildResourcePolicy(t *testing.T, ctrl *gomock.Controller) client.Services 
 		t.Fatal(err)
 	}
 
-	m.EXPECT().DescribeResourcePolicy(gomock.Any(), gomock.Any()).Return(&o, nil)
+	m.EXPECT().DescribeResourcePolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&o, nil)
 
 	return client.Services{
 		Organizations: m,

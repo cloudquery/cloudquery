@@ -28,7 +28,9 @@ func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, paren
 	var config iam.GetAccountPasswordPolicyInput
 	c := meta.(*client.Client)
 	svc := c.Services().Iam
-	response, err := svc.GetAccountPasswordPolicy(ctx, &config)
+	response, err := svc.GetAccountPasswordPolicy(ctx, &config, func(options *iam.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		if c.IsNotFoundError(err) {
 			res <- models.PasswordPolicyWrapper{PolicyExists: false}

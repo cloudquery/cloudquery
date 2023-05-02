@@ -38,7 +38,9 @@ func fetchOrganizationsPolicies(ctx context.Context, meta schema.ClientMeta, _ *
 		})
 
 		for paginator.HasMorePages() {
-			page, err := paginator.NextPage(ctx)
+			page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
+				options.Region = c.Region
+			})
 			if err != nil {
 				return err
 			}

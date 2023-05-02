@@ -54,7 +54,9 @@ func fetchIotBillingGroups(ctx context.Context, meta schema.ClientMeta, parent *
 	svc := c.Services().Iot
 	paginator := iot.NewListBillingGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -69,6 +71,8 @@ func getBillingGroup(ctx context.Context, meta schema.ClientMeta, resource *sche
 
 	output, err := svc.DescribeBillingGroup(ctx, &iot.DescribeBillingGroupInput{
 		BillingGroupName: resource.Item.(types.GroupNameAndArn).GroupName,
+	}, func(options *iot.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -89,7 +93,9 @@ func resolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.Client
 	var things []string
 	paginator := iot.NewListThingsInBillingGroupPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -99,6 +105,7 @@ func resolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.Client
 }
 func resolveIotBillingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeBillingGroupOutput)
-	svc := meta.(*client.Client).Services().Iot
-	return resolveIotTags(ctx, svc, resource, c, i.BillingGroupArn)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+	return resolveIotTags(ctx, meta, svc, resource, c, i.BillingGroupArn)
 }

@@ -53,7 +53,9 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 	}
 	paginator := lambda.NewListAliasesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *lambda.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -77,6 +79,8 @@ func getFunctionAliasURLConfig(ctx context.Context, meta schema.ClientMeta, reso
 	urlConfig, err := svc.GetFunctionUrlConfig(ctx, &lambda.GetFunctionUrlConfigInput{
 		FunctionName: p.Configuration.FunctionName,
 		Qualifier:    alias.Name,
+	}, func(options *lambda.Options) {
+		options.Region = c.Region
 	})
 	if err != nil && !c.IsNotFoundError(err) {
 		return err

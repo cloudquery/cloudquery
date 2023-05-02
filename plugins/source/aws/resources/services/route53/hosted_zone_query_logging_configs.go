@@ -43,11 +43,14 @@ func hostedZoneQueryLoggingConfigs() *schema.Table {
 
 func fetchRoute53HostedZoneQueryLoggingConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.Route53HostedZoneWrapper)
-	svc := meta.(*client.Client).Services().Route53
+	cl := meta.(*client.Client)
+	svc := cl.Services().Route53
 	config := route53.ListQueryLoggingConfigsInput{HostedZoneId: r.Id}
 	paginator := route53.NewListQueryLoggingConfigsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *route53.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

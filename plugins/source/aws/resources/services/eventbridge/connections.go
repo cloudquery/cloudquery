@@ -40,7 +40,9 @@ func fetchConnections(ctx context.Context, meta schema.ClientMeta, parent *schem
 	svc := c.Services().Eventbridge
 	// No paginator available
 	for {
-		response, err := svc.ListConnections(ctx, &input)
+		response, err := svc.ListConnections(ctx, &input, func(options *eventbridge.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

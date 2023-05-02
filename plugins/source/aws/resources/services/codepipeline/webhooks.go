@@ -43,7 +43,9 @@ func fetchCodepipelineWebhooks(ctx context.Context, meta schema.ClientMeta, pare
 	svc := c.Services().Codepipeline
 	paginator := codepipeline.NewListWebhooksPaginator(svc, &codepipeline.ListWebhooksInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *codepipeline.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

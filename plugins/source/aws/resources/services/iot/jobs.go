@@ -48,7 +48,9 @@ func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	}
 	paginator := iot.NewListJobsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -63,6 +65,8 @@ func getJobs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 
 	output, err := svc.DescribeJob(ctx, &iot.DescribeJobInput{
 		JobId: resource.Item.(types.JobSummary).JobId,
+	}, func(options *iot.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -73,6 +77,7 @@ func getJobs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 
 func ResolveIotJobTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*types.Job)
-	svc := meta.(*client.Client).Services().Iot
-	return resolveIotTags(ctx, svc, resource, c, i.JobArn)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+	return resolveIotTags(ctx, meta, svc, resource, c, i.JobArn)
 }

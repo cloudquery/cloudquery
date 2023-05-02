@@ -26,10 +26,12 @@ func EncryptionConfigs() *schema.Table {
 }
 
 func fetchXrayEncryptionConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Xray
+	cl := meta.(*client.Client)
+	svc := cl.Services().Xray
 	input := xray.GetEncryptionConfigInput{}
-	output, err := svc.GetEncryptionConfig(ctx, &input)
+	output, err := svc.GetEncryptionConfig(ctx, &input, func(o *xray.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
