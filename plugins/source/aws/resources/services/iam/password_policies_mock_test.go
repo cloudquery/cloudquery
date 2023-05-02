@@ -19,7 +19,7 @@ func buildIamPasswordPolicies(t *testing.T, ctrl *gomock.Controller) client.Serv
 		t.Fatal(err)
 	}
 
-	m.EXPECT().GetAccountPasswordPolicy(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().GetAccountPasswordPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.GetAccountPasswordPolicyOutput{
 			PasswordPolicy: &g,
 		}, nil)

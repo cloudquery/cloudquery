@@ -37,6 +37,16 @@ func (m *MockCloudwatchClient) EXPECT() *MockCloudwatchClientMockRecorder {
 
 // DescribeAlarmHistory mocks base method.
 func (m *MockCloudwatchClient) DescribeAlarmHistory(arg0 context.Context, arg1 *cloudwatch.DescribeAlarmHistoryInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.DescribeAlarmHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAlarmHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockCloudwatchClientMockRecorder) DescribeAlarmHistory(arg0, arg1 inte
 
 // DescribeAlarms mocks base method.
 func (m *MockCloudwatchClient) DescribeAlarms(arg0 context.Context, arg1 *cloudwatch.DescribeAlarmsInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.DescribeAlarmsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAlarms")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockCloudwatchClientMockRecorder) DescribeAlarms(arg0, arg1 interface{
 
 // DescribeAlarmsForMetric mocks base method.
 func (m *MockCloudwatchClient) DescribeAlarmsForMetric(arg0 context.Context, arg1 *cloudwatch.DescribeAlarmsForMetricInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.DescribeAlarmsForMetricOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAlarmsForMetric")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockCloudwatchClientMockRecorder) DescribeAlarmsForMetric(arg0, arg1 i
 
 // DescribeAnomalyDetectors mocks base method.
 func (m *MockCloudwatchClient) DescribeAnomalyDetectors(arg0 context.Context, arg1 *cloudwatch.DescribeAnomalyDetectorsInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.DescribeAnomalyDetectorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAnomalyDetectors")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockCloudwatchClientMockRecorder) DescribeAnomalyDetectors(arg0, arg1 
 
 // DescribeInsightRules mocks base method.
 func (m *MockCloudwatchClient) DescribeInsightRules(arg0 context.Context, arg1 *cloudwatch.DescribeInsightRulesInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.DescribeInsightRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInsightRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockCloudwatchClientMockRecorder) DescribeInsightRules(arg0, arg1 inte
 
 // GetDashboard mocks base method.
 func (m *MockCloudwatchClient) GetDashboard(arg0 context.Context, arg1 *cloudwatch.GetDashboardInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.GetDashboardOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDashboard")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockCloudwatchClientMockRecorder) GetDashboard(arg0, arg1 interface{},
 
 // GetInsightRuleReport mocks base method.
 func (m *MockCloudwatchClient) GetInsightRuleReport(arg0 context.Context, arg1 *cloudwatch.GetInsightRuleReportInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.GetInsightRuleReportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInsightRuleReport")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockCloudwatchClientMockRecorder) GetInsightRuleReport(arg0, arg1 inte
 
 // GetMetricData mocks base method.
 func (m *MockCloudwatchClient) GetMetricData(arg0 context.Context, arg1 *cloudwatch.GetMetricDataInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.GetMetricDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMetricData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockCloudwatchClientMockRecorder) GetMetricData(arg0, arg1 interface{}
 
 // GetMetricStatistics mocks base method.
 func (m *MockCloudwatchClient) GetMetricStatistics(arg0 context.Context, arg1 *cloudwatch.GetMetricStatisticsInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.GetMetricStatisticsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMetricStatistics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockCloudwatchClientMockRecorder) GetMetricStatistics(arg0, arg1 inter
 
 // GetMetricStream mocks base method.
 func (m *MockCloudwatchClient) GetMetricStream(arg0 context.Context, arg1 *cloudwatch.GetMetricStreamInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.GetMetricStreamOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMetricStream")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockCloudwatchClientMockRecorder) GetMetricStream(arg0, arg1 interface
 
 // GetMetricWidgetImage mocks base method.
 func (m *MockCloudwatchClient) GetMetricWidgetImage(arg0 context.Context, arg1 *cloudwatch.GetMetricWidgetImageInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.GetMetricWidgetImageOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMetricWidgetImage")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockCloudwatchClientMockRecorder) GetMetricWidgetImage(arg0, arg1 inte
 
 // ListDashboards mocks base method.
 func (m *MockCloudwatchClient) ListDashboards(arg0 context.Context, arg1 *cloudwatch.ListDashboardsInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.ListDashboardsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDashboards")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockCloudwatchClientMockRecorder) ListDashboards(arg0, arg1 interface{
 
 // ListManagedInsightRules mocks base method.
 func (m *MockCloudwatchClient) ListManagedInsightRules(arg0 context.Context, arg1 *cloudwatch.ListManagedInsightRulesInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.ListManagedInsightRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListManagedInsightRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockCloudwatchClientMockRecorder) ListManagedInsightRules(arg0, arg1 i
 
 // ListMetricStreams mocks base method.
 func (m *MockCloudwatchClient) ListMetricStreams(arg0 context.Context, arg1 *cloudwatch.ListMetricStreamsInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.ListMetricStreamsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMetricStreams")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockCloudwatchClientMockRecorder) ListMetricStreams(arg0, arg1 interfa
 
 // ListMetrics mocks base method.
 func (m *MockCloudwatchClient) ListMetrics(arg0 context.Context, arg1 *cloudwatch.ListMetricsInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.ListMetricsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMetrics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockCloudwatchClientMockRecorder) ListMetrics(arg0, arg1 interface{}, 
 
 // ListTagsForResource mocks base method.
 func (m *MockCloudwatchClient) ListTagsForResource(arg0 context.Context, arg1 *cloudwatch.ListTagsForResourceInput, arg2 ...func(*cloudwatch.Options)) (*cloudwatch.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatch.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -44,7 +44,9 @@ func fetchQuicksightGroupMembers(ctx context.Context, meta schema.ClientMeta, pa
 	}
 	// No paginator available
 	for {
-		out, err := svc.ListGroupMemberships(ctx, &input)
+		out, err := svc.ListGroupMemberships(ctx, &input, func(options *quicksight.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

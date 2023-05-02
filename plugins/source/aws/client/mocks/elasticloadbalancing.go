@@ -37,6 +37,16 @@ func (m *MockElasticloadbalancingClient) EXPECT() *MockElasticloadbalancingClien
 
 // DescribeAccountLimits mocks base method.
 func (m *MockElasticloadbalancingClient) DescribeAccountLimits(arg0 context.Context, arg1 *elasticloadbalancing.DescribeAccountLimitsInput, arg2 ...func(*elasticloadbalancing.Options)) (*elasticloadbalancing.DescribeAccountLimitsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticloadbalancing.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccountLimits")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockElasticloadbalancingClientMockRecorder) DescribeAccountLimits(arg0
 
 // DescribeInstanceHealth mocks base method.
 func (m *MockElasticloadbalancingClient) DescribeInstanceHealth(arg0 context.Context, arg1 *elasticloadbalancing.DescribeInstanceHealthInput, arg2 ...func(*elasticloadbalancing.Options)) (*elasticloadbalancing.DescribeInstanceHealthOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticloadbalancing.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstanceHealth")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockElasticloadbalancingClientMockRecorder) DescribeInstanceHealth(arg
 
 // DescribeLoadBalancerAttributes mocks base method.
 func (m *MockElasticloadbalancingClient) DescribeLoadBalancerAttributes(arg0 context.Context, arg1 *elasticloadbalancing.DescribeLoadBalancerAttributesInput, arg2 ...func(*elasticloadbalancing.Options)) (*elasticloadbalancing.DescribeLoadBalancerAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticloadbalancing.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLoadBalancerAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockElasticloadbalancingClientMockRecorder) DescribeLoadBalancerAttrib
 
 // DescribeLoadBalancerPolicies mocks base method.
 func (m *MockElasticloadbalancingClient) DescribeLoadBalancerPolicies(arg0 context.Context, arg1 *elasticloadbalancing.DescribeLoadBalancerPoliciesInput, arg2 ...func(*elasticloadbalancing.Options)) (*elasticloadbalancing.DescribeLoadBalancerPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticloadbalancing.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLoadBalancerPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockElasticloadbalancingClientMockRecorder) DescribeLoadBalancerPolici
 
 // DescribeLoadBalancerPolicyTypes mocks base method.
 func (m *MockElasticloadbalancingClient) DescribeLoadBalancerPolicyTypes(arg0 context.Context, arg1 *elasticloadbalancing.DescribeLoadBalancerPolicyTypesInput, arg2 ...func(*elasticloadbalancing.Options)) (*elasticloadbalancing.DescribeLoadBalancerPolicyTypesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticloadbalancing.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLoadBalancerPolicyTypes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockElasticloadbalancingClientMockRecorder) DescribeLoadBalancerPolicy
 
 // DescribeLoadBalancers mocks base method.
 func (m *MockElasticloadbalancingClient) DescribeLoadBalancers(arg0 context.Context, arg1 *elasticloadbalancing.DescribeLoadBalancersInput, arg2 ...func(*elasticloadbalancing.Options)) (*elasticloadbalancing.DescribeLoadBalancersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticloadbalancing.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLoadBalancers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockElasticloadbalancingClientMockRecorder) DescribeLoadBalancers(arg0
 
 // DescribeTags mocks base method.
 func (m *MockElasticloadbalancingClient) DescribeTags(arg0 context.Context, arg1 *elasticloadbalancing.DescribeTagsInput, arg2 ...func(*elasticloadbalancing.Options)) (*elasticloadbalancing.DescribeTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticloadbalancing.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

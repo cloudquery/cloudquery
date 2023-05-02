@@ -43,7 +43,9 @@ func fetchEcrpublicRepositoryImages(ctx context.Context, meta schema.ClientMeta,
 	svc := c.Services().Ecrpublic
 	paginator := ecrpublic.NewDescribeImagesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ecrpublic.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

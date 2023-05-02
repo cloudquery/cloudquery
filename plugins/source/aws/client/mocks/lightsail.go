@@ -37,6 +37,16 @@ func (m *MockLightsailClient) EXPECT() *MockLightsailClientMockRecorder {
 
 // GetActiveNames mocks base method.
 func (m *MockLightsailClient) GetActiveNames(arg0 context.Context, arg1 *lightsail.GetActiveNamesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetActiveNamesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetActiveNames")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockLightsailClientMockRecorder) GetActiveNames(arg0, arg1 interface{}
 
 // GetAlarms mocks base method.
 func (m *MockLightsailClient) GetAlarms(arg0 context.Context, arg1 *lightsail.GetAlarmsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetAlarmsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAlarms")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockLightsailClientMockRecorder) GetAlarms(arg0, arg1 interface{}, arg
 
 // GetAutoSnapshots mocks base method.
 func (m *MockLightsailClient) GetAutoSnapshots(arg0 context.Context, arg1 *lightsail.GetAutoSnapshotsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetAutoSnapshotsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAutoSnapshots")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockLightsailClientMockRecorder) GetAutoSnapshots(arg0, arg1 interface
 
 // GetBlueprints mocks base method.
 func (m *MockLightsailClient) GetBlueprints(arg0 context.Context, arg1 *lightsail.GetBlueprintsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetBlueprintsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBlueprints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockLightsailClientMockRecorder) GetBlueprints(arg0, arg1 interface{},
 
 // GetBucketAccessKeys mocks base method.
 func (m *MockLightsailClient) GetBucketAccessKeys(arg0 context.Context, arg1 *lightsail.GetBucketAccessKeysInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetBucketAccessKeysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketAccessKeys")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockLightsailClientMockRecorder) GetBucketAccessKeys(arg0, arg1 interf
 
 // GetBucketBundles mocks base method.
 func (m *MockLightsailClient) GetBucketBundles(arg0 context.Context, arg1 *lightsail.GetBucketBundlesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetBucketBundlesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketBundles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockLightsailClientMockRecorder) GetBucketBundles(arg0, arg1 interface
 
 // GetBucketMetricData mocks base method.
 func (m *MockLightsailClient) GetBucketMetricData(arg0 context.Context, arg1 *lightsail.GetBucketMetricDataInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetBucketMetricDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketMetricData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockLightsailClientMockRecorder) GetBucketMetricData(arg0, arg1 interf
 
 // GetBuckets mocks base method.
 func (m *MockLightsailClient) GetBuckets(arg0 context.Context, arg1 *lightsail.GetBucketsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetBucketsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBuckets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockLightsailClientMockRecorder) GetBuckets(arg0, arg1 interface{}, ar
 
 // GetBundles mocks base method.
 func (m *MockLightsailClient) GetBundles(arg0 context.Context, arg1 *lightsail.GetBundlesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetBundlesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBundles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockLightsailClientMockRecorder) GetBundles(arg0, arg1 interface{}, ar
 
 // GetCertificates mocks base method.
 func (m *MockLightsailClient) GetCertificates(arg0 context.Context, arg1 *lightsail.GetCertificatesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetCertificatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCertificates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockLightsailClientMockRecorder) GetCertificates(arg0, arg1 interface{
 
 // GetCloudFormationStackRecords mocks base method.
 func (m *MockLightsailClient) GetCloudFormationStackRecords(arg0 context.Context, arg1 *lightsail.GetCloudFormationStackRecordsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetCloudFormationStackRecordsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCloudFormationStackRecords")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockLightsailClientMockRecorder) GetCloudFormationStackRecords(arg0, a
 
 // GetContactMethods mocks base method.
 func (m *MockLightsailClient) GetContactMethods(arg0 context.Context, arg1 *lightsail.GetContactMethodsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetContactMethodsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContactMethods")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockLightsailClientMockRecorder) GetContactMethods(arg0, arg1 interfac
 
 // GetContainerAPIMetadata mocks base method.
 func (m *MockLightsailClient) GetContainerAPIMetadata(arg0 context.Context, arg1 *lightsail.GetContainerAPIMetadataInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetContainerAPIMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContainerAPIMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockLightsailClientMockRecorder) GetContainerAPIMetadata(arg0, arg1 in
 
 // GetContainerImages mocks base method.
 func (m *MockLightsailClient) GetContainerImages(arg0 context.Context, arg1 *lightsail.GetContainerImagesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetContainerImagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContainerImages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockLightsailClientMockRecorder) GetContainerImages(arg0, arg1 interfa
 
 // GetContainerLog mocks base method.
 func (m *MockLightsailClient) GetContainerLog(arg0 context.Context, arg1 *lightsail.GetContainerLogInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetContainerLogOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContainerLog")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockLightsailClientMockRecorder) GetContainerLog(arg0, arg1 interface{
 
 // GetContainerServiceDeployments mocks base method.
 func (m *MockLightsailClient) GetContainerServiceDeployments(arg0 context.Context, arg1 *lightsail.GetContainerServiceDeploymentsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetContainerServiceDeploymentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContainerServiceDeployments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockLightsailClientMockRecorder) GetContainerServiceDeployments(arg0, 
 
 // GetContainerServiceMetricData mocks base method.
 func (m *MockLightsailClient) GetContainerServiceMetricData(arg0 context.Context, arg1 *lightsail.GetContainerServiceMetricDataInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetContainerServiceMetricDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContainerServiceMetricData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockLightsailClientMockRecorder) GetContainerServiceMetricData(arg0, a
 
 // GetContainerServicePowers mocks base method.
 func (m *MockLightsailClient) GetContainerServicePowers(arg0 context.Context, arg1 *lightsail.GetContainerServicePowersInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetContainerServicePowersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContainerServicePowers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockLightsailClientMockRecorder) GetContainerServicePowers(arg0, arg1 
 
 // GetContainerServices mocks base method.
 func (m *MockLightsailClient) GetContainerServices(arg0 context.Context, arg1 *lightsail.GetContainerServicesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetContainerServicesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContainerServices")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockLightsailClientMockRecorder) GetContainerServices(arg0, arg1 inter
 
 // GetDisk mocks base method.
 func (m *MockLightsailClient) GetDisk(arg0 context.Context, arg1 *lightsail.GetDiskInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetDiskOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDisk")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockLightsailClientMockRecorder) GetDisk(arg0, arg1 interface{}, arg2 
 
 // GetDiskSnapshot mocks base method.
 func (m *MockLightsailClient) GetDiskSnapshot(arg0 context.Context, arg1 *lightsail.GetDiskSnapshotInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetDiskSnapshotOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDiskSnapshot")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockLightsailClientMockRecorder) GetDiskSnapshot(arg0, arg1 interface{
 
 // GetDiskSnapshots mocks base method.
 func (m *MockLightsailClient) GetDiskSnapshots(arg0 context.Context, arg1 *lightsail.GetDiskSnapshotsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetDiskSnapshotsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDiskSnapshots")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockLightsailClientMockRecorder) GetDiskSnapshots(arg0, arg1 interface
 
 // GetDisks mocks base method.
 func (m *MockLightsailClient) GetDisks(arg0 context.Context, arg1 *lightsail.GetDisksInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetDisksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDisks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockLightsailClientMockRecorder) GetDisks(arg0, arg1 interface{}, arg2
 
 // GetDistributionBundles mocks base method.
 func (m *MockLightsailClient) GetDistributionBundles(arg0 context.Context, arg1 *lightsail.GetDistributionBundlesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetDistributionBundlesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDistributionBundles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockLightsailClientMockRecorder) GetDistributionBundles(arg0, arg1 int
 
 // GetDistributionLatestCacheReset mocks base method.
 func (m *MockLightsailClient) GetDistributionLatestCacheReset(arg0 context.Context, arg1 *lightsail.GetDistributionLatestCacheResetInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetDistributionLatestCacheResetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDistributionLatestCacheReset")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockLightsailClientMockRecorder) GetDistributionLatestCacheReset(arg0,
 
 // GetDistributionMetricData mocks base method.
 func (m *MockLightsailClient) GetDistributionMetricData(arg0 context.Context, arg1 *lightsail.GetDistributionMetricDataInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetDistributionMetricDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDistributionMetricData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockLightsailClientMockRecorder) GetDistributionMetricData(arg0, arg1 
 
 // GetDistributions mocks base method.
 func (m *MockLightsailClient) GetDistributions(arg0 context.Context, arg1 *lightsail.GetDistributionsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetDistributionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDistributions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockLightsailClientMockRecorder) GetDistributions(arg0, arg1 interface
 
 // GetDomain mocks base method.
 func (m *MockLightsailClient) GetDomain(arg0 context.Context, arg1 *lightsail.GetDomainInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetDomainOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDomain")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockLightsailClientMockRecorder) GetDomain(arg0, arg1 interface{}, arg
 
 // GetDomains mocks base method.
 func (m *MockLightsailClient) GetDomains(arg0 context.Context, arg1 *lightsail.GetDomainsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetDomainsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDomains")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockLightsailClientMockRecorder) GetDomains(arg0, arg1 interface{}, ar
 
 // GetExportSnapshotRecords mocks base method.
 func (m *MockLightsailClient) GetExportSnapshotRecords(arg0 context.Context, arg1 *lightsail.GetExportSnapshotRecordsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetExportSnapshotRecordsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetExportSnapshotRecords")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockLightsailClientMockRecorder) GetExportSnapshotRecords(arg0, arg1 i
 
 // GetInstance mocks base method.
 func (m *MockLightsailClient) GetInstance(arg0 context.Context, arg1 *lightsail.GetInstanceInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetInstanceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInstance")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockLightsailClientMockRecorder) GetInstance(arg0, arg1 interface{}, a
 
 // GetInstanceAccessDetails mocks base method.
 func (m *MockLightsailClient) GetInstanceAccessDetails(arg0 context.Context, arg1 *lightsail.GetInstanceAccessDetailsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetInstanceAccessDetailsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInstanceAccessDetails")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockLightsailClientMockRecorder) GetInstanceAccessDetails(arg0, arg1 i
 
 // GetInstanceMetricData mocks base method.
 func (m *MockLightsailClient) GetInstanceMetricData(arg0 context.Context, arg1 *lightsail.GetInstanceMetricDataInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetInstanceMetricDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInstanceMetricData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockLightsailClientMockRecorder) GetInstanceMetricData(arg0, arg1 inte
 
 // GetInstancePortStates mocks base method.
 func (m *MockLightsailClient) GetInstancePortStates(arg0 context.Context, arg1 *lightsail.GetInstancePortStatesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetInstancePortStatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInstancePortStates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1057,16 @@ func (mr *MockLightsailClientMockRecorder) GetInstancePortStates(arg0, arg1 inte
 
 // GetInstanceSnapshot mocks base method.
 func (m *MockLightsailClient) GetInstanceSnapshot(arg0 context.Context, arg1 *lightsail.GetInstanceSnapshotInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetInstanceSnapshotOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInstanceSnapshot")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1087,16 @@ func (mr *MockLightsailClientMockRecorder) GetInstanceSnapshot(arg0, arg1 interf
 
 // GetInstanceSnapshots mocks base method.
 func (m *MockLightsailClient) GetInstanceSnapshots(arg0 context.Context, arg1 *lightsail.GetInstanceSnapshotsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetInstanceSnapshotsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInstanceSnapshots")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1117,16 @@ func (mr *MockLightsailClientMockRecorder) GetInstanceSnapshots(arg0, arg1 inter
 
 // GetInstanceState mocks base method.
 func (m *MockLightsailClient) GetInstanceState(arg0 context.Context, arg1 *lightsail.GetInstanceStateInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetInstanceStateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInstanceState")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -777,6 +1147,16 @@ func (mr *MockLightsailClientMockRecorder) GetInstanceState(arg0, arg1 interface
 
 // GetInstances mocks base method.
 func (m *MockLightsailClient) GetInstances(arg0 context.Context, arg1 *lightsail.GetInstancesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -797,6 +1177,16 @@ func (mr *MockLightsailClientMockRecorder) GetInstances(arg0, arg1 interface{}, 
 
 // GetKeyPair mocks base method.
 func (m *MockLightsailClient) GetKeyPair(arg0 context.Context, arg1 *lightsail.GetKeyPairInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetKeyPairOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetKeyPair")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -817,6 +1207,16 @@ func (mr *MockLightsailClientMockRecorder) GetKeyPair(arg0, arg1 interface{}, ar
 
 // GetKeyPairs mocks base method.
 func (m *MockLightsailClient) GetKeyPairs(arg0 context.Context, arg1 *lightsail.GetKeyPairsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetKeyPairsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetKeyPairs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -837,6 +1237,16 @@ func (mr *MockLightsailClientMockRecorder) GetKeyPairs(arg0, arg1 interface{}, a
 
 // GetLoadBalancer mocks base method.
 func (m *MockLightsailClient) GetLoadBalancer(arg0 context.Context, arg1 *lightsail.GetLoadBalancerInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetLoadBalancerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLoadBalancer")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -857,6 +1267,16 @@ func (mr *MockLightsailClientMockRecorder) GetLoadBalancer(arg0, arg1 interface{
 
 // GetLoadBalancerMetricData mocks base method.
 func (m *MockLightsailClient) GetLoadBalancerMetricData(arg0 context.Context, arg1 *lightsail.GetLoadBalancerMetricDataInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetLoadBalancerMetricDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLoadBalancerMetricData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -877,6 +1297,16 @@ func (mr *MockLightsailClientMockRecorder) GetLoadBalancerMetricData(arg0, arg1 
 
 // GetLoadBalancerTlsCertificates mocks base method.
 func (m *MockLightsailClient) GetLoadBalancerTlsCertificates(arg0 context.Context, arg1 *lightsail.GetLoadBalancerTlsCertificatesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetLoadBalancerTlsCertificatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLoadBalancerTlsCertificates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -897,6 +1327,16 @@ func (mr *MockLightsailClientMockRecorder) GetLoadBalancerTlsCertificates(arg0, 
 
 // GetLoadBalancerTlsPolicies mocks base method.
 func (m *MockLightsailClient) GetLoadBalancerTlsPolicies(arg0 context.Context, arg1 *lightsail.GetLoadBalancerTlsPoliciesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetLoadBalancerTlsPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLoadBalancerTlsPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -917,6 +1357,16 @@ func (mr *MockLightsailClientMockRecorder) GetLoadBalancerTlsPolicies(arg0, arg1
 
 // GetLoadBalancers mocks base method.
 func (m *MockLightsailClient) GetLoadBalancers(arg0 context.Context, arg1 *lightsail.GetLoadBalancersInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetLoadBalancersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLoadBalancers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -937,6 +1387,16 @@ func (mr *MockLightsailClientMockRecorder) GetLoadBalancers(arg0, arg1 interface
 
 // GetOperation mocks base method.
 func (m *MockLightsailClient) GetOperation(arg0 context.Context, arg1 *lightsail.GetOperationInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetOperationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOperation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -957,6 +1417,16 @@ func (mr *MockLightsailClientMockRecorder) GetOperation(arg0, arg1 interface{}, 
 
 // GetOperations mocks base method.
 func (m *MockLightsailClient) GetOperations(arg0 context.Context, arg1 *lightsail.GetOperationsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetOperationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOperations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -977,6 +1447,16 @@ func (mr *MockLightsailClientMockRecorder) GetOperations(arg0, arg1 interface{},
 
 // GetOperationsForResource mocks base method.
 func (m *MockLightsailClient) GetOperationsForResource(arg0 context.Context, arg1 *lightsail.GetOperationsForResourceInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetOperationsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOperationsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -997,6 +1477,16 @@ func (mr *MockLightsailClientMockRecorder) GetOperationsForResource(arg0, arg1 i
 
 // GetRegions mocks base method.
 func (m *MockLightsailClient) GetRegions(arg0 context.Context, arg1 *lightsail.GetRegionsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetRegionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRegions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1017,6 +1507,16 @@ func (mr *MockLightsailClientMockRecorder) GetRegions(arg0, arg1 interface{}, ar
 
 // GetRelationalDatabase mocks base method.
 func (m *MockLightsailClient) GetRelationalDatabase(arg0 context.Context, arg1 *lightsail.GetRelationalDatabaseInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRelationalDatabase")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1037,6 +1537,16 @@ func (mr *MockLightsailClientMockRecorder) GetRelationalDatabase(arg0, arg1 inte
 
 // GetRelationalDatabaseBlueprints mocks base method.
 func (m *MockLightsailClient) GetRelationalDatabaseBlueprints(arg0 context.Context, arg1 *lightsail.GetRelationalDatabaseBlueprintsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseBlueprintsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRelationalDatabaseBlueprints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1057,6 +1567,16 @@ func (mr *MockLightsailClientMockRecorder) GetRelationalDatabaseBlueprints(arg0,
 
 // GetRelationalDatabaseBundles mocks base method.
 func (m *MockLightsailClient) GetRelationalDatabaseBundles(arg0 context.Context, arg1 *lightsail.GetRelationalDatabaseBundlesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseBundlesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRelationalDatabaseBundles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1077,6 +1597,16 @@ func (mr *MockLightsailClientMockRecorder) GetRelationalDatabaseBundles(arg0, ar
 
 // GetRelationalDatabaseEvents mocks base method.
 func (m *MockLightsailClient) GetRelationalDatabaseEvents(arg0 context.Context, arg1 *lightsail.GetRelationalDatabaseEventsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseEventsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRelationalDatabaseEvents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1097,6 +1627,16 @@ func (mr *MockLightsailClientMockRecorder) GetRelationalDatabaseEvents(arg0, arg
 
 // GetRelationalDatabaseLogEvents mocks base method.
 func (m *MockLightsailClient) GetRelationalDatabaseLogEvents(arg0 context.Context, arg1 *lightsail.GetRelationalDatabaseLogEventsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseLogEventsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRelationalDatabaseLogEvents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1117,6 +1657,16 @@ func (mr *MockLightsailClientMockRecorder) GetRelationalDatabaseLogEvents(arg0, 
 
 // GetRelationalDatabaseLogStreams mocks base method.
 func (m *MockLightsailClient) GetRelationalDatabaseLogStreams(arg0 context.Context, arg1 *lightsail.GetRelationalDatabaseLogStreamsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseLogStreamsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRelationalDatabaseLogStreams")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1137,6 +1687,16 @@ func (mr *MockLightsailClientMockRecorder) GetRelationalDatabaseLogStreams(arg0,
 
 // GetRelationalDatabaseMasterUserPassword mocks base method.
 func (m *MockLightsailClient) GetRelationalDatabaseMasterUserPassword(arg0 context.Context, arg1 *lightsail.GetRelationalDatabaseMasterUserPasswordInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseMasterUserPasswordOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRelationalDatabaseMasterUserPassword")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1157,6 +1717,16 @@ func (mr *MockLightsailClientMockRecorder) GetRelationalDatabaseMasterUserPasswo
 
 // GetRelationalDatabaseMetricData mocks base method.
 func (m *MockLightsailClient) GetRelationalDatabaseMetricData(arg0 context.Context, arg1 *lightsail.GetRelationalDatabaseMetricDataInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseMetricDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRelationalDatabaseMetricData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1177,6 +1747,16 @@ func (mr *MockLightsailClientMockRecorder) GetRelationalDatabaseMetricData(arg0,
 
 // GetRelationalDatabaseParameters mocks base method.
 func (m *MockLightsailClient) GetRelationalDatabaseParameters(arg0 context.Context, arg1 *lightsail.GetRelationalDatabaseParametersInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRelationalDatabaseParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1197,6 +1777,16 @@ func (mr *MockLightsailClientMockRecorder) GetRelationalDatabaseParameters(arg0,
 
 // GetRelationalDatabaseSnapshot mocks base method.
 func (m *MockLightsailClient) GetRelationalDatabaseSnapshot(arg0 context.Context, arg1 *lightsail.GetRelationalDatabaseSnapshotInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseSnapshotOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRelationalDatabaseSnapshot")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1217,6 +1807,16 @@ func (mr *MockLightsailClientMockRecorder) GetRelationalDatabaseSnapshot(arg0, a
 
 // GetRelationalDatabaseSnapshots mocks base method.
 func (m *MockLightsailClient) GetRelationalDatabaseSnapshots(arg0 context.Context, arg1 *lightsail.GetRelationalDatabaseSnapshotsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseSnapshotsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRelationalDatabaseSnapshots")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1237,6 +1837,16 @@ func (mr *MockLightsailClientMockRecorder) GetRelationalDatabaseSnapshots(arg0, 
 
 // GetRelationalDatabases mocks base method.
 func (m *MockLightsailClient) GetRelationalDatabases(arg0 context.Context, arg1 *lightsail.GetRelationalDatabasesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRelationalDatabases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1257,6 +1867,16 @@ func (mr *MockLightsailClientMockRecorder) GetRelationalDatabases(arg0, arg1 int
 
 // GetStaticIp mocks base method.
 func (m *MockLightsailClient) GetStaticIp(arg0 context.Context, arg1 *lightsail.GetStaticIpInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetStaticIpOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetStaticIp")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1277,6 +1897,16 @@ func (mr *MockLightsailClientMockRecorder) GetStaticIp(arg0, arg1 interface{}, a
 
 // GetStaticIps mocks base method.
 func (m *MockLightsailClient) GetStaticIps(arg0 context.Context, arg1 *lightsail.GetStaticIpsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetStaticIpsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetStaticIps")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

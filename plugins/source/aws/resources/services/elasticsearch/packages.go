@@ -34,11 +34,14 @@ func Packages() *schema.Table {
 }
 
 func fetchElasticsearchPackages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Elasticsearchservice
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticsearchservice
 
 	p := elasticsearchservice.NewDescribePackagesPaginator(svc, nil)
 	for p.HasMorePages() {
-		out, err := p.NextPage(ctx)
+		out, err := p.NextPage(ctx, func(options *elasticsearchservice.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

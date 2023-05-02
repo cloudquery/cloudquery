@@ -48,7 +48,9 @@ func fetchIotThings(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	svc := c.Services().Iot
 	paginator := iot.NewListThingsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -67,7 +69,9 @@ func ResolveIotThingPrincipals(ctx context.Context, meta schema.ClientMeta, reso
 	var principals []string
 	paginator := iot.NewListThingPrincipalsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 
 		if err != nil {
 			return err

@@ -37,6 +37,16 @@ func (m *MockGlueClient) EXPECT() *MockGlueClientMockRecorder {
 
 // BatchGetBlueprints mocks base method.
 func (m *MockGlueClient) BatchGetBlueprints(arg0 context.Context, arg1 *glue.BatchGetBlueprintsInput, arg2 ...func(*glue.Options)) (*glue.BatchGetBlueprintsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetBlueprints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockGlueClientMockRecorder) BatchGetBlueprints(arg0, arg1 interface{},
 
 // BatchGetCrawlers mocks base method.
 func (m *MockGlueClient) BatchGetCrawlers(arg0 context.Context, arg1 *glue.BatchGetCrawlersInput, arg2 ...func(*glue.Options)) (*glue.BatchGetCrawlersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetCrawlers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockGlueClientMockRecorder) BatchGetCrawlers(arg0, arg1 interface{}, a
 
 // BatchGetCustomEntityTypes mocks base method.
 func (m *MockGlueClient) BatchGetCustomEntityTypes(arg0 context.Context, arg1 *glue.BatchGetCustomEntityTypesInput, arg2 ...func(*glue.Options)) (*glue.BatchGetCustomEntityTypesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetCustomEntityTypes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockGlueClientMockRecorder) BatchGetCustomEntityTypes(arg0, arg1 inter
 
 // BatchGetDataQualityResult mocks base method.
 func (m *MockGlueClient) BatchGetDataQualityResult(arg0 context.Context, arg1 *glue.BatchGetDataQualityResultInput, arg2 ...func(*glue.Options)) (*glue.BatchGetDataQualityResultOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetDataQualityResult")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockGlueClientMockRecorder) BatchGetDataQualityResult(arg0, arg1 inter
 
 // BatchGetDevEndpoints mocks base method.
 func (m *MockGlueClient) BatchGetDevEndpoints(arg0 context.Context, arg1 *glue.BatchGetDevEndpointsInput, arg2 ...func(*glue.Options)) (*glue.BatchGetDevEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetDevEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockGlueClientMockRecorder) BatchGetDevEndpoints(arg0, arg1 interface{
 
 // BatchGetJobs mocks base method.
 func (m *MockGlueClient) BatchGetJobs(arg0 context.Context, arg1 *glue.BatchGetJobsInput, arg2 ...func(*glue.Options)) (*glue.BatchGetJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockGlueClientMockRecorder) BatchGetJobs(arg0, arg1 interface{}, arg2 
 
 // BatchGetPartition mocks base method.
 func (m *MockGlueClient) BatchGetPartition(arg0 context.Context, arg1 *glue.BatchGetPartitionInput, arg2 ...func(*glue.Options)) (*glue.BatchGetPartitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetPartition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockGlueClientMockRecorder) BatchGetPartition(arg0, arg1 interface{}, 
 
 // BatchGetTriggers mocks base method.
 func (m *MockGlueClient) BatchGetTriggers(arg0 context.Context, arg1 *glue.BatchGetTriggersInput, arg2 ...func(*glue.Options)) (*glue.BatchGetTriggersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetTriggers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockGlueClientMockRecorder) BatchGetTriggers(arg0, arg1 interface{}, a
 
 // BatchGetWorkflows mocks base method.
 func (m *MockGlueClient) BatchGetWorkflows(arg0 context.Context, arg1 *glue.BatchGetWorkflowsInput, arg2 ...func(*glue.Options)) (*glue.BatchGetWorkflowsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetWorkflows")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockGlueClientMockRecorder) BatchGetWorkflows(arg0, arg1 interface{}, 
 
 // GetBlueprint mocks base method.
 func (m *MockGlueClient) GetBlueprint(arg0 context.Context, arg1 *glue.GetBlueprintInput, arg2 ...func(*glue.Options)) (*glue.GetBlueprintOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBlueprint")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockGlueClientMockRecorder) GetBlueprint(arg0, arg1 interface{}, arg2 
 
 // GetBlueprintRun mocks base method.
 func (m *MockGlueClient) GetBlueprintRun(arg0 context.Context, arg1 *glue.GetBlueprintRunInput, arg2 ...func(*glue.Options)) (*glue.GetBlueprintRunOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBlueprintRun")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockGlueClientMockRecorder) GetBlueprintRun(arg0, arg1 interface{}, ar
 
 // GetBlueprintRuns mocks base method.
 func (m *MockGlueClient) GetBlueprintRuns(arg0 context.Context, arg1 *glue.GetBlueprintRunsInput, arg2 ...func(*glue.Options)) (*glue.GetBlueprintRunsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBlueprintRuns")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockGlueClientMockRecorder) GetBlueprintRuns(arg0, arg1 interface{}, a
 
 // GetCatalogImportStatus mocks base method.
 func (m *MockGlueClient) GetCatalogImportStatus(arg0 context.Context, arg1 *glue.GetCatalogImportStatusInput, arg2 ...func(*glue.Options)) (*glue.GetCatalogImportStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCatalogImportStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockGlueClientMockRecorder) GetCatalogImportStatus(arg0, arg1 interfac
 
 // GetClassifier mocks base method.
 func (m *MockGlueClient) GetClassifier(arg0 context.Context, arg1 *glue.GetClassifierInput, arg2 ...func(*glue.Options)) (*glue.GetClassifierOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetClassifier")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockGlueClientMockRecorder) GetClassifier(arg0, arg1 interface{}, arg2
 
 // GetClassifiers mocks base method.
 func (m *MockGlueClient) GetClassifiers(arg0 context.Context, arg1 *glue.GetClassifiersInput, arg2 ...func(*glue.Options)) (*glue.GetClassifiersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetClassifiers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockGlueClientMockRecorder) GetClassifiers(arg0, arg1 interface{}, arg
 
 // GetColumnStatisticsForPartition mocks base method.
 func (m *MockGlueClient) GetColumnStatisticsForPartition(arg0 context.Context, arg1 *glue.GetColumnStatisticsForPartitionInput, arg2 ...func(*glue.Options)) (*glue.GetColumnStatisticsForPartitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetColumnStatisticsForPartition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockGlueClientMockRecorder) GetColumnStatisticsForPartition(arg0, arg1
 
 // GetColumnStatisticsForTable mocks base method.
 func (m *MockGlueClient) GetColumnStatisticsForTable(arg0 context.Context, arg1 *glue.GetColumnStatisticsForTableInput, arg2 ...func(*glue.Options)) (*glue.GetColumnStatisticsForTableOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetColumnStatisticsForTable")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockGlueClientMockRecorder) GetColumnStatisticsForTable(arg0, arg1 int
 
 // GetConnection mocks base method.
 func (m *MockGlueClient) GetConnection(arg0 context.Context, arg1 *glue.GetConnectionInput, arg2 ...func(*glue.Options)) (*glue.GetConnectionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetConnection")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockGlueClientMockRecorder) GetConnection(arg0, arg1 interface{}, arg2
 
 // GetConnections mocks base method.
 func (m *MockGlueClient) GetConnections(arg0 context.Context, arg1 *glue.GetConnectionsInput, arg2 ...func(*glue.Options)) (*glue.GetConnectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetConnections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockGlueClientMockRecorder) GetConnections(arg0, arg1 interface{}, arg
 
 // GetCrawler mocks base method.
 func (m *MockGlueClient) GetCrawler(arg0 context.Context, arg1 *glue.GetCrawlerInput, arg2 ...func(*glue.Options)) (*glue.GetCrawlerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCrawler")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockGlueClientMockRecorder) GetCrawler(arg0, arg1 interface{}, arg2 ..
 
 // GetCrawlerMetrics mocks base method.
 func (m *MockGlueClient) GetCrawlerMetrics(arg0 context.Context, arg1 *glue.GetCrawlerMetricsInput, arg2 ...func(*glue.Options)) (*glue.GetCrawlerMetricsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCrawlerMetrics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockGlueClientMockRecorder) GetCrawlerMetrics(arg0, arg1 interface{}, 
 
 // GetCrawlers mocks base method.
 func (m *MockGlueClient) GetCrawlers(arg0 context.Context, arg1 *glue.GetCrawlersInput, arg2 ...func(*glue.Options)) (*glue.GetCrawlersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCrawlers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockGlueClientMockRecorder) GetCrawlers(arg0, arg1 interface{}, arg2 .
 
 // GetCustomEntityType mocks base method.
 func (m *MockGlueClient) GetCustomEntityType(arg0 context.Context, arg1 *glue.GetCustomEntityTypeInput, arg2 ...func(*glue.Options)) (*glue.GetCustomEntityTypeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCustomEntityType")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockGlueClientMockRecorder) GetCustomEntityType(arg0, arg1 interface{}
 
 // GetDataCatalogEncryptionSettings mocks base method.
 func (m *MockGlueClient) GetDataCatalogEncryptionSettings(arg0 context.Context, arg1 *glue.GetDataCatalogEncryptionSettingsInput, arg2 ...func(*glue.Options)) (*glue.GetDataCatalogEncryptionSettingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDataCatalogEncryptionSettings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockGlueClientMockRecorder) GetDataCatalogEncryptionSettings(arg0, arg
 
 // GetDataQualityResult mocks base method.
 func (m *MockGlueClient) GetDataQualityResult(arg0 context.Context, arg1 *glue.GetDataQualityResultInput, arg2 ...func(*glue.Options)) (*glue.GetDataQualityResultOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDataQualityResult")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockGlueClientMockRecorder) GetDataQualityResult(arg0, arg1 interface{
 
 // GetDataQualityRuleRecommendationRun mocks base method.
 func (m *MockGlueClient) GetDataQualityRuleRecommendationRun(arg0 context.Context, arg1 *glue.GetDataQualityRuleRecommendationRunInput, arg2 ...func(*glue.Options)) (*glue.GetDataQualityRuleRecommendationRunOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDataQualityRuleRecommendationRun")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockGlueClientMockRecorder) GetDataQualityRuleRecommendationRun(arg0, 
 
 // GetDataQualityRuleset mocks base method.
 func (m *MockGlueClient) GetDataQualityRuleset(arg0 context.Context, arg1 *glue.GetDataQualityRulesetInput, arg2 ...func(*glue.Options)) (*glue.GetDataQualityRulesetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDataQualityRuleset")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockGlueClientMockRecorder) GetDataQualityRuleset(arg0, arg1 interface
 
 // GetDataQualityRulesetEvaluationRun mocks base method.
 func (m *MockGlueClient) GetDataQualityRulesetEvaluationRun(arg0 context.Context, arg1 *glue.GetDataQualityRulesetEvaluationRunInput, arg2 ...func(*glue.Options)) (*glue.GetDataQualityRulesetEvaluationRunOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDataQualityRulesetEvaluationRun")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockGlueClientMockRecorder) GetDataQualityRulesetEvaluationRun(arg0, a
 
 // GetDatabase mocks base method.
 func (m *MockGlueClient) GetDatabase(arg0 context.Context, arg1 *glue.GetDatabaseInput, arg2 ...func(*glue.Options)) (*glue.GetDatabaseOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDatabase")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockGlueClientMockRecorder) GetDatabase(arg0, arg1 interface{}, arg2 .
 
 // GetDatabases mocks base method.
 func (m *MockGlueClient) GetDatabases(arg0 context.Context, arg1 *glue.GetDatabasesInput, arg2 ...func(*glue.Options)) (*glue.GetDatabasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDatabases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockGlueClientMockRecorder) GetDatabases(arg0, arg1 interface{}, arg2 
 
 // GetDataflowGraph mocks base method.
 func (m *MockGlueClient) GetDataflowGraph(arg0 context.Context, arg1 *glue.GetDataflowGraphInput, arg2 ...func(*glue.Options)) (*glue.GetDataflowGraphOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDataflowGraph")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockGlueClientMockRecorder) GetDataflowGraph(arg0, arg1 interface{}, a
 
 // GetDevEndpoint mocks base method.
 func (m *MockGlueClient) GetDevEndpoint(arg0 context.Context, arg1 *glue.GetDevEndpointInput, arg2 ...func(*glue.Options)) (*glue.GetDevEndpointOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDevEndpoint")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockGlueClientMockRecorder) GetDevEndpoint(arg0, arg1 interface{}, arg
 
 // GetDevEndpoints mocks base method.
 func (m *MockGlueClient) GetDevEndpoints(arg0 context.Context, arg1 *glue.GetDevEndpointsInput, arg2 ...func(*glue.Options)) (*glue.GetDevEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDevEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockGlueClientMockRecorder) GetDevEndpoints(arg0, arg1 interface{}, ar
 
 // GetJob mocks base method.
 func (m *MockGlueClient) GetJob(arg0 context.Context, arg1 *glue.GetJobInput, arg2 ...func(*glue.Options)) (*glue.GetJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1057,16 @@ func (mr *MockGlueClientMockRecorder) GetJob(arg0, arg1 interface{}, arg2 ...int
 
 // GetJobBookmark mocks base method.
 func (m *MockGlueClient) GetJobBookmark(arg0 context.Context, arg1 *glue.GetJobBookmarkInput, arg2 ...func(*glue.Options)) (*glue.GetJobBookmarkOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetJobBookmark")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1087,16 @@ func (mr *MockGlueClientMockRecorder) GetJobBookmark(arg0, arg1 interface{}, arg
 
 // GetJobRun mocks base method.
 func (m *MockGlueClient) GetJobRun(arg0 context.Context, arg1 *glue.GetJobRunInput, arg2 ...func(*glue.Options)) (*glue.GetJobRunOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetJobRun")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1117,16 @@ func (mr *MockGlueClientMockRecorder) GetJobRun(arg0, arg1 interface{}, arg2 ...
 
 // GetJobRuns mocks base method.
 func (m *MockGlueClient) GetJobRuns(arg0 context.Context, arg1 *glue.GetJobRunsInput, arg2 ...func(*glue.Options)) (*glue.GetJobRunsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetJobRuns")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -777,6 +1147,16 @@ func (mr *MockGlueClientMockRecorder) GetJobRuns(arg0, arg1 interface{}, arg2 ..
 
 // GetJobs mocks base method.
 func (m *MockGlueClient) GetJobs(arg0 context.Context, arg1 *glue.GetJobsInput, arg2 ...func(*glue.Options)) (*glue.GetJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -797,6 +1177,16 @@ func (mr *MockGlueClientMockRecorder) GetJobs(arg0, arg1 interface{}, arg2 ...in
 
 // GetMLTaskRun mocks base method.
 func (m *MockGlueClient) GetMLTaskRun(arg0 context.Context, arg1 *glue.GetMLTaskRunInput, arg2 ...func(*glue.Options)) (*glue.GetMLTaskRunOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMLTaskRun")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -817,6 +1207,16 @@ func (mr *MockGlueClientMockRecorder) GetMLTaskRun(arg0, arg1 interface{}, arg2 
 
 // GetMLTaskRuns mocks base method.
 func (m *MockGlueClient) GetMLTaskRuns(arg0 context.Context, arg1 *glue.GetMLTaskRunsInput, arg2 ...func(*glue.Options)) (*glue.GetMLTaskRunsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMLTaskRuns")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -837,6 +1237,16 @@ func (mr *MockGlueClientMockRecorder) GetMLTaskRuns(arg0, arg1 interface{}, arg2
 
 // GetMLTransform mocks base method.
 func (m *MockGlueClient) GetMLTransform(arg0 context.Context, arg1 *glue.GetMLTransformInput, arg2 ...func(*glue.Options)) (*glue.GetMLTransformOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMLTransform")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -857,6 +1267,16 @@ func (mr *MockGlueClientMockRecorder) GetMLTransform(arg0, arg1 interface{}, arg
 
 // GetMLTransforms mocks base method.
 func (m *MockGlueClient) GetMLTransforms(arg0 context.Context, arg1 *glue.GetMLTransformsInput, arg2 ...func(*glue.Options)) (*glue.GetMLTransformsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMLTransforms")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -877,6 +1297,16 @@ func (mr *MockGlueClientMockRecorder) GetMLTransforms(arg0, arg1 interface{}, ar
 
 // GetMapping mocks base method.
 func (m *MockGlueClient) GetMapping(arg0 context.Context, arg1 *glue.GetMappingInput, arg2 ...func(*glue.Options)) (*glue.GetMappingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMapping")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -897,6 +1327,16 @@ func (mr *MockGlueClientMockRecorder) GetMapping(arg0, arg1 interface{}, arg2 ..
 
 // GetPartition mocks base method.
 func (m *MockGlueClient) GetPartition(arg0 context.Context, arg1 *glue.GetPartitionInput, arg2 ...func(*glue.Options)) (*glue.GetPartitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPartition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -917,6 +1357,16 @@ func (mr *MockGlueClientMockRecorder) GetPartition(arg0, arg1 interface{}, arg2 
 
 // GetPartitionIndexes mocks base method.
 func (m *MockGlueClient) GetPartitionIndexes(arg0 context.Context, arg1 *glue.GetPartitionIndexesInput, arg2 ...func(*glue.Options)) (*glue.GetPartitionIndexesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPartitionIndexes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -937,6 +1387,16 @@ func (mr *MockGlueClientMockRecorder) GetPartitionIndexes(arg0, arg1 interface{}
 
 // GetPartitions mocks base method.
 func (m *MockGlueClient) GetPartitions(arg0 context.Context, arg1 *glue.GetPartitionsInput, arg2 ...func(*glue.Options)) (*glue.GetPartitionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPartitions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -957,6 +1417,16 @@ func (mr *MockGlueClientMockRecorder) GetPartitions(arg0, arg1 interface{}, arg2
 
 // GetPlan mocks base method.
 func (m *MockGlueClient) GetPlan(arg0 context.Context, arg1 *glue.GetPlanInput, arg2 ...func(*glue.Options)) (*glue.GetPlanOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPlan")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -977,6 +1447,16 @@ func (mr *MockGlueClientMockRecorder) GetPlan(arg0, arg1 interface{}, arg2 ...in
 
 // GetRegistry mocks base method.
 func (m *MockGlueClient) GetRegistry(arg0 context.Context, arg1 *glue.GetRegistryInput, arg2 ...func(*glue.Options)) (*glue.GetRegistryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRegistry")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -997,6 +1477,16 @@ func (mr *MockGlueClientMockRecorder) GetRegistry(arg0, arg1 interface{}, arg2 .
 
 // GetResourcePolicies mocks base method.
 func (m *MockGlueClient) GetResourcePolicies(arg0 context.Context, arg1 *glue.GetResourcePoliciesInput, arg2 ...func(*glue.Options)) (*glue.GetResourcePoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetResourcePolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1017,6 +1507,16 @@ func (mr *MockGlueClientMockRecorder) GetResourcePolicies(arg0, arg1 interface{}
 
 // GetResourcePolicy mocks base method.
 func (m *MockGlueClient) GetResourcePolicy(arg0 context.Context, arg1 *glue.GetResourcePolicyInput, arg2 ...func(*glue.Options)) (*glue.GetResourcePolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetResourcePolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1037,6 +1537,16 @@ func (mr *MockGlueClientMockRecorder) GetResourcePolicy(arg0, arg1 interface{}, 
 
 // GetSchema mocks base method.
 func (m *MockGlueClient) GetSchema(arg0 context.Context, arg1 *glue.GetSchemaInput, arg2 ...func(*glue.Options)) (*glue.GetSchemaOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSchema")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1057,6 +1567,16 @@ func (mr *MockGlueClientMockRecorder) GetSchema(arg0, arg1 interface{}, arg2 ...
 
 // GetSchemaByDefinition mocks base method.
 func (m *MockGlueClient) GetSchemaByDefinition(arg0 context.Context, arg1 *glue.GetSchemaByDefinitionInput, arg2 ...func(*glue.Options)) (*glue.GetSchemaByDefinitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSchemaByDefinition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1077,6 +1597,16 @@ func (mr *MockGlueClientMockRecorder) GetSchemaByDefinition(arg0, arg1 interface
 
 // GetSchemaVersion mocks base method.
 func (m *MockGlueClient) GetSchemaVersion(arg0 context.Context, arg1 *glue.GetSchemaVersionInput, arg2 ...func(*glue.Options)) (*glue.GetSchemaVersionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSchemaVersion")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1097,6 +1627,16 @@ func (mr *MockGlueClientMockRecorder) GetSchemaVersion(arg0, arg1 interface{}, a
 
 // GetSchemaVersionsDiff mocks base method.
 func (m *MockGlueClient) GetSchemaVersionsDiff(arg0 context.Context, arg1 *glue.GetSchemaVersionsDiffInput, arg2 ...func(*glue.Options)) (*glue.GetSchemaVersionsDiffOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSchemaVersionsDiff")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1117,6 +1657,16 @@ func (mr *MockGlueClientMockRecorder) GetSchemaVersionsDiff(arg0, arg1 interface
 
 // GetSecurityConfiguration mocks base method.
 func (m *MockGlueClient) GetSecurityConfiguration(arg0 context.Context, arg1 *glue.GetSecurityConfigurationInput, arg2 ...func(*glue.Options)) (*glue.GetSecurityConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSecurityConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1137,6 +1687,16 @@ func (mr *MockGlueClientMockRecorder) GetSecurityConfiguration(arg0, arg1 interf
 
 // GetSecurityConfigurations mocks base method.
 func (m *MockGlueClient) GetSecurityConfigurations(arg0 context.Context, arg1 *glue.GetSecurityConfigurationsInput, arg2 ...func(*glue.Options)) (*glue.GetSecurityConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSecurityConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1157,6 +1717,16 @@ func (mr *MockGlueClientMockRecorder) GetSecurityConfigurations(arg0, arg1 inter
 
 // GetSession mocks base method.
 func (m *MockGlueClient) GetSession(arg0 context.Context, arg1 *glue.GetSessionInput, arg2 ...func(*glue.Options)) (*glue.GetSessionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSession")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1177,6 +1747,16 @@ func (mr *MockGlueClientMockRecorder) GetSession(arg0, arg1 interface{}, arg2 ..
 
 // GetStatement mocks base method.
 func (m *MockGlueClient) GetStatement(arg0 context.Context, arg1 *glue.GetStatementInput, arg2 ...func(*glue.Options)) (*glue.GetStatementOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetStatement")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1197,6 +1777,16 @@ func (mr *MockGlueClientMockRecorder) GetStatement(arg0, arg1 interface{}, arg2 
 
 // GetTable mocks base method.
 func (m *MockGlueClient) GetTable(arg0 context.Context, arg1 *glue.GetTableInput, arg2 ...func(*glue.Options)) (*glue.GetTableOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTable")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1217,6 +1807,16 @@ func (mr *MockGlueClientMockRecorder) GetTable(arg0, arg1 interface{}, arg2 ...i
 
 // GetTableVersion mocks base method.
 func (m *MockGlueClient) GetTableVersion(arg0 context.Context, arg1 *glue.GetTableVersionInput, arg2 ...func(*glue.Options)) (*glue.GetTableVersionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTableVersion")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1237,6 +1837,16 @@ func (mr *MockGlueClientMockRecorder) GetTableVersion(arg0, arg1 interface{}, ar
 
 // GetTableVersions mocks base method.
 func (m *MockGlueClient) GetTableVersions(arg0 context.Context, arg1 *glue.GetTableVersionsInput, arg2 ...func(*glue.Options)) (*glue.GetTableVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTableVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1257,6 +1867,16 @@ func (mr *MockGlueClientMockRecorder) GetTableVersions(arg0, arg1 interface{}, a
 
 // GetTables mocks base method.
 func (m *MockGlueClient) GetTables(arg0 context.Context, arg1 *glue.GetTablesInput, arg2 ...func(*glue.Options)) (*glue.GetTablesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTables")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1277,6 +1897,16 @@ func (mr *MockGlueClientMockRecorder) GetTables(arg0, arg1 interface{}, arg2 ...
 
 // GetTags mocks base method.
 func (m *MockGlueClient) GetTags(arg0 context.Context, arg1 *glue.GetTagsInput, arg2 ...func(*glue.Options)) (*glue.GetTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1297,6 +1927,16 @@ func (mr *MockGlueClientMockRecorder) GetTags(arg0, arg1 interface{}, arg2 ...in
 
 // GetTrigger mocks base method.
 func (m *MockGlueClient) GetTrigger(arg0 context.Context, arg1 *glue.GetTriggerInput, arg2 ...func(*glue.Options)) (*glue.GetTriggerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTrigger")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1317,6 +1957,16 @@ func (mr *MockGlueClientMockRecorder) GetTrigger(arg0, arg1 interface{}, arg2 ..
 
 // GetTriggers mocks base method.
 func (m *MockGlueClient) GetTriggers(arg0 context.Context, arg1 *glue.GetTriggersInput, arg2 ...func(*glue.Options)) (*glue.GetTriggersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTriggers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1337,6 +1987,16 @@ func (mr *MockGlueClientMockRecorder) GetTriggers(arg0, arg1 interface{}, arg2 .
 
 // GetUnfilteredPartitionMetadata mocks base method.
 func (m *MockGlueClient) GetUnfilteredPartitionMetadata(arg0 context.Context, arg1 *glue.GetUnfilteredPartitionMetadataInput, arg2 ...func(*glue.Options)) (*glue.GetUnfilteredPartitionMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUnfilteredPartitionMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1357,6 +2017,16 @@ func (mr *MockGlueClientMockRecorder) GetUnfilteredPartitionMetadata(arg0, arg1 
 
 // GetUnfilteredPartitionsMetadata mocks base method.
 func (m *MockGlueClient) GetUnfilteredPartitionsMetadata(arg0 context.Context, arg1 *glue.GetUnfilteredPartitionsMetadataInput, arg2 ...func(*glue.Options)) (*glue.GetUnfilteredPartitionsMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUnfilteredPartitionsMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1377,6 +2047,16 @@ func (mr *MockGlueClientMockRecorder) GetUnfilteredPartitionsMetadata(arg0, arg1
 
 // GetUnfilteredTableMetadata mocks base method.
 func (m *MockGlueClient) GetUnfilteredTableMetadata(arg0 context.Context, arg1 *glue.GetUnfilteredTableMetadataInput, arg2 ...func(*glue.Options)) (*glue.GetUnfilteredTableMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUnfilteredTableMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1397,6 +2077,16 @@ func (mr *MockGlueClientMockRecorder) GetUnfilteredTableMetadata(arg0, arg1 inte
 
 // GetUserDefinedFunction mocks base method.
 func (m *MockGlueClient) GetUserDefinedFunction(arg0 context.Context, arg1 *glue.GetUserDefinedFunctionInput, arg2 ...func(*glue.Options)) (*glue.GetUserDefinedFunctionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUserDefinedFunction")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1417,6 +2107,16 @@ func (mr *MockGlueClientMockRecorder) GetUserDefinedFunction(arg0, arg1 interfac
 
 // GetUserDefinedFunctions mocks base method.
 func (m *MockGlueClient) GetUserDefinedFunctions(arg0 context.Context, arg1 *glue.GetUserDefinedFunctionsInput, arg2 ...func(*glue.Options)) (*glue.GetUserDefinedFunctionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUserDefinedFunctions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1437,6 +2137,16 @@ func (mr *MockGlueClientMockRecorder) GetUserDefinedFunctions(arg0, arg1 interfa
 
 // GetWorkflow mocks base method.
 func (m *MockGlueClient) GetWorkflow(arg0 context.Context, arg1 *glue.GetWorkflowInput, arg2 ...func(*glue.Options)) (*glue.GetWorkflowOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetWorkflow")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1457,6 +2167,16 @@ func (mr *MockGlueClientMockRecorder) GetWorkflow(arg0, arg1 interface{}, arg2 .
 
 // GetWorkflowRun mocks base method.
 func (m *MockGlueClient) GetWorkflowRun(arg0 context.Context, arg1 *glue.GetWorkflowRunInput, arg2 ...func(*glue.Options)) (*glue.GetWorkflowRunOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetWorkflowRun")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1477,6 +2197,16 @@ func (mr *MockGlueClientMockRecorder) GetWorkflowRun(arg0, arg1 interface{}, arg
 
 // GetWorkflowRunProperties mocks base method.
 func (m *MockGlueClient) GetWorkflowRunProperties(arg0 context.Context, arg1 *glue.GetWorkflowRunPropertiesInput, arg2 ...func(*glue.Options)) (*glue.GetWorkflowRunPropertiesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetWorkflowRunProperties")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1497,6 +2227,16 @@ func (mr *MockGlueClientMockRecorder) GetWorkflowRunProperties(arg0, arg1 interf
 
 // GetWorkflowRuns mocks base method.
 func (m *MockGlueClient) GetWorkflowRuns(arg0 context.Context, arg1 *glue.GetWorkflowRunsInput, arg2 ...func(*glue.Options)) (*glue.GetWorkflowRunsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetWorkflowRuns")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1517,6 +2257,16 @@ func (mr *MockGlueClientMockRecorder) GetWorkflowRuns(arg0, arg1 interface{}, ar
 
 // ListBlueprints mocks base method.
 func (m *MockGlueClient) ListBlueprints(arg0 context.Context, arg1 *glue.ListBlueprintsInput, arg2 ...func(*glue.Options)) (*glue.ListBlueprintsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBlueprints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1537,6 +2287,16 @@ func (mr *MockGlueClientMockRecorder) ListBlueprints(arg0, arg1 interface{}, arg
 
 // ListCrawlers mocks base method.
 func (m *MockGlueClient) ListCrawlers(arg0 context.Context, arg1 *glue.ListCrawlersInput, arg2 ...func(*glue.Options)) (*glue.ListCrawlersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCrawlers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1557,6 +2317,16 @@ func (mr *MockGlueClientMockRecorder) ListCrawlers(arg0, arg1 interface{}, arg2 
 
 // ListCrawls mocks base method.
 func (m *MockGlueClient) ListCrawls(arg0 context.Context, arg1 *glue.ListCrawlsInput, arg2 ...func(*glue.Options)) (*glue.ListCrawlsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCrawls")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1577,6 +2347,16 @@ func (mr *MockGlueClientMockRecorder) ListCrawls(arg0, arg1 interface{}, arg2 ..
 
 // ListCustomEntityTypes mocks base method.
 func (m *MockGlueClient) ListCustomEntityTypes(arg0 context.Context, arg1 *glue.ListCustomEntityTypesInput, arg2 ...func(*glue.Options)) (*glue.ListCustomEntityTypesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCustomEntityTypes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1597,6 +2377,16 @@ func (mr *MockGlueClientMockRecorder) ListCustomEntityTypes(arg0, arg1 interface
 
 // ListDataQualityResults mocks base method.
 func (m *MockGlueClient) ListDataQualityResults(arg0 context.Context, arg1 *glue.ListDataQualityResultsInput, arg2 ...func(*glue.Options)) (*glue.ListDataQualityResultsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDataQualityResults")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1617,6 +2407,16 @@ func (mr *MockGlueClientMockRecorder) ListDataQualityResults(arg0, arg1 interfac
 
 // ListDataQualityRuleRecommendationRuns mocks base method.
 func (m *MockGlueClient) ListDataQualityRuleRecommendationRuns(arg0 context.Context, arg1 *glue.ListDataQualityRuleRecommendationRunsInput, arg2 ...func(*glue.Options)) (*glue.ListDataQualityRuleRecommendationRunsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDataQualityRuleRecommendationRuns")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1637,6 +2437,16 @@ func (mr *MockGlueClientMockRecorder) ListDataQualityRuleRecommendationRuns(arg0
 
 // ListDataQualityRulesetEvaluationRuns mocks base method.
 func (m *MockGlueClient) ListDataQualityRulesetEvaluationRuns(arg0 context.Context, arg1 *glue.ListDataQualityRulesetEvaluationRunsInput, arg2 ...func(*glue.Options)) (*glue.ListDataQualityRulesetEvaluationRunsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDataQualityRulesetEvaluationRuns")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1657,6 +2467,16 @@ func (mr *MockGlueClientMockRecorder) ListDataQualityRulesetEvaluationRuns(arg0,
 
 // ListDataQualityRulesets mocks base method.
 func (m *MockGlueClient) ListDataQualityRulesets(arg0 context.Context, arg1 *glue.ListDataQualityRulesetsInput, arg2 ...func(*glue.Options)) (*glue.ListDataQualityRulesetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDataQualityRulesets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1677,6 +2497,16 @@ func (mr *MockGlueClientMockRecorder) ListDataQualityRulesets(arg0, arg1 interfa
 
 // ListDevEndpoints mocks base method.
 func (m *MockGlueClient) ListDevEndpoints(arg0 context.Context, arg1 *glue.ListDevEndpointsInput, arg2 ...func(*glue.Options)) (*glue.ListDevEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDevEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1697,6 +2527,16 @@ func (mr *MockGlueClientMockRecorder) ListDevEndpoints(arg0, arg1 interface{}, a
 
 // ListJobs mocks base method.
 func (m *MockGlueClient) ListJobs(arg0 context.Context, arg1 *glue.ListJobsInput, arg2 ...func(*glue.Options)) (*glue.ListJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1717,6 +2557,16 @@ func (mr *MockGlueClientMockRecorder) ListJobs(arg0, arg1 interface{}, arg2 ...i
 
 // ListMLTransforms mocks base method.
 func (m *MockGlueClient) ListMLTransforms(arg0 context.Context, arg1 *glue.ListMLTransformsInput, arg2 ...func(*glue.Options)) (*glue.ListMLTransformsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMLTransforms")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1737,6 +2587,16 @@ func (mr *MockGlueClientMockRecorder) ListMLTransforms(arg0, arg1 interface{}, a
 
 // ListRegistries mocks base method.
 func (m *MockGlueClient) ListRegistries(arg0 context.Context, arg1 *glue.ListRegistriesInput, arg2 ...func(*glue.Options)) (*glue.ListRegistriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRegistries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1757,6 +2617,16 @@ func (mr *MockGlueClientMockRecorder) ListRegistries(arg0, arg1 interface{}, arg
 
 // ListSchemaVersions mocks base method.
 func (m *MockGlueClient) ListSchemaVersions(arg0 context.Context, arg1 *glue.ListSchemaVersionsInput, arg2 ...func(*glue.Options)) (*glue.ListSchemaVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSchemaVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1777,6 +2647,16 @@ func (mr *MockGlueClientMockRecorder) ListSchemaVersions(arg0, arg1 interface{},
 
 // ListSchemas mocks base method.
 func (m *MockGlueClient) ListSchemas(arg0 context.Context, arg1 *glue.ListSchemasInput, arg2 ...func(*glue.Options)) (*glue.ListSchemasOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSchemas")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1797,6 +2677,16 @@ func (mr *MockGlueClientMockRecorder) ListSchemas(arg0, arg1 interface{}, arg2 .
 
 // ListSessions mocks base method.
 func (m *MockGlueClient) ListSessions(arg0 context.Context, arg1 *glue.ListSessionsInput, arg2 ...func(*glue.Options)) (*glue.ListSessionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSessions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1817,6 +2707,16 @@ func (mr *MockGlueClientMockRecorder) ListSessions(arg0, arg1 interface{}, arg2 
 
 // ListStatements mocks base method.
 func (m *MockGlueClient) ListStatements(arg0 context.Context, arg1 *glue.ListStatementsInput, arg2 ...func(*glue.Options)) (*glue.ListStatementsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStatements")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1837,6 +2737,16 @@ func (mr *MockGlueClientMockRecorder) ListStatements(arg0, arg1 interface{}, arg
 
 // ListTriggers mocks base method.
 func (m *MockGlueClient) ListTriggers(arg0 context.Context, arg1 *glue.ListTriggersInput, arg2 ...func(*glue.Options)) (*glue.ListTriggersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTriggers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1857,6 +2767,16 @@ func (mr *MockGlueClientMockRecorder) ListTriggers(arg0, arg1 interface{}, arg2 
 
 // ListWorkflows mocks base method.
 func (m *MockGlueClient) ListWorkflows(arg0 context.Context, arg1 *glue.ListWorkflowsInput, arg2 ...func(*glue.Options)) (*glue.ListWorkflowsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListWorkflows")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1877,6 +2797,16 @@ func (mr *MockGlueClientMockRecorder) ListWorkflows(arg0, arg1 interface{}, arg2
 
 // QuerySchemaVersionMetadata mocks base method.
 func (m *MockGlueClient) QuerySchemaVersionMetadata(arg0 context.Context, arg1 *glue.QuerySchemaVersionMetadataInput, arg2 ...func(*glue.Options)) (*glue.QuerySchemaVersionMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to QuerySchemaVersionMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1897,6 +2827,16 @@ func (mr *MockGlueClientMockRecorder) QuerySchemaVersionMetadata(arg0, arg1 inte
 
 // SearchTables mocks base method.
 func (m *MockGlueClient) SearchTables(arg0 context.Context, arg1 *glue.SearchTablesInput, arg2 ...func(*glue.Options)) (*glue.SearchTablesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchTables")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

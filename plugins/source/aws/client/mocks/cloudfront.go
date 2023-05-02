@@ -37,6 +37,16 @@ func (m *MockCloudfrontClient) EXPECT() *MockCloudfrontClientMockRecorder {
 
 // DescribeFunction mocks base method.
 func (m *MockCloudfrontClient) DescribeFunction(arg0 context.Context, arg1 *cloudfront.DescribeFunctionInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.DescribeFunctionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFunction")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockCloudfrontClientMockRecorder) DescribeFunction(arg0, arg1 interfac
 
 // GetCachePolicy mocks base method.
 func (m *MockCloudfrontClient) GetCachePolicy(arg0 context.Context, arg1 *cloudfront.GetCachePolicyInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetCachePolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCachePolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetCachePolicy(arg0, arg1 interface{
 
 // GetCachePolicyConfig mocks base method.
 func (m *MockCloudfrontClient) GetCachePolicyConfig(arg0 context.Context, arg1 *cloudfront.GetCachePolicyConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetCachePolicyConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCachePolicyConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetCachePolicyConfig(arg0, arg1 inte
 
 // GetCloudFrontOriginAccessIdentity mocks base method.
 func (m *MockCloudfrontClient) GetCloudFrontOriginAccessIdentity(arg0 context.Context, arg1 *cloudfront.GetCloudFrontOriginAccessIdentityInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetCloudFrontOriginAccessIdentityOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCloudFrontOriginAccessIdentity")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetCloudFrontOriginAccessIdentity(ar
 
 // GetCloudFrontOriginAccessIdentityConfig mocks base method.
 func (m *MockCloudfrontClient) GetCloudFrontOriginAccessIdentityConfig(arg0 context.Context, arg1 *cloudfront.GetCloudFrontOriginAccessIdentityConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetCloudFrontOriginAccessIdentityConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCloudFrontOriginAccessIdentityConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetCloudFrontOriginAccessIdentityCon
 
 // GetContinuousDeploymentPolicy mocks base method.
 func (m *MockCloudfrontClient) GetContinuousDeploymentPolicy(arg0 context.Context, arg1 *cloudfront.GetContinuousDeploymentPolicyInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetContinuousDeploymentPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContinuousDeploymentPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetContinuousDeploymentPolicy(arg0, 
 
 // GetContinuousDeploymentPolicyConfig mocks base method.
 func (m *MockCloudfrontClient) GetContinuousDeploymentPolicyConfig(arg0 context.Context, arg1 *cloudfront.GetContinuousDeploymentPolicyConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetContinuousDeploymentPolicyConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContinuousDeploymentPolicyConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetContinuousDeploymentPolicyConfig(
 
 // GetDistribution mocks base method.
 func (m *MockCloudfrontClient) GetDistribution(arg0 context.Context, arg1 *cloudfront.GetDistributionInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetDistributionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDistribution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetDistribution(arg0, arg1 interface
 
 // GetDistributionConfig mocks base method.
 func (m *MockCloudfrontClient) GetDistributionConfig(arg0 context.Context, arg1 *cloudfront.GetDistributionConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetDistributionConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDistributionConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetDistributionConfig(arg0, arg1 int
 
 // GetFieldLevelEncryption mocks base method.
 func (m *MockCloudfrontClient) GetFieldLevelEncryption(arg0 context.Context, arg1 *cloudfront.GetFieldLevelEncryptionInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetFieldLevelEncryptionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFieldLevelEncryption")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetFieldLevelEncryption(arg0, arg1 i
 
 // GetFieldLevelEncryptionConfig mocks base method.
 func (m *MockCloudfrontClient) GetFieldLevelEncryptionConfig(arg0 context.Context, arg1 *cloudfront.GetFieldLevelEncryptionConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetFieldLevelEncryptionConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFieldLevelEncryptionConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetFieldLevelEncryptionConfig(arg0, 
 
 // GetFieldLevelEncryptionProfile mocks base method.
 func (m *MockCloudfrontClient) GetFieldLevelEncryptionProfile(arg0 context.Context, arg1 *cloudfront.GetFieldLevelEncryptionProfileInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetFieldLevelEncryptionProfileOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFieldLevelEncryptionProfile")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetFieldLevelEncryptionProfile(arg0,
 
 // GetFieldLevelEncryptionProfileConfig mocks base method.
 func (m *MockCloudfrontClient) GetFieldLevelEncryptionProfileConfig(arg0 context.Context, arg1 *cloudfront.GetFieldLevelEncryptionProfileConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetFieldLevelEncryptionProfileConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFieldLevelEncryptionProfileConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetFieldLevelEncryptionProfileConfig
 
 // GetFunction mocks base method.
 func (m *MockCloudfrontClient) GetFunction(arg0 context.Context, arg1 *cloudfront.GetFunctionInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetFunctionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFunction")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetFunction(arg0, arg1 interface{}, 
 
 // GetInvalidation mocks base method.
 func (m *MockCloudfrontClient) GetInvalidation(arg0 context.Context, arg1 *cloudfront.GetInvalidationInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetInvalidationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInvalidation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetInvalidation(arg0, arg1 interface
 
 // GetKeyGroup mocks base method.
 func (m *MockCloudfrontClient) GetKeyGroup(arg0 context.Context, arg1 *cloudfront.GetKeyGroupInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetKeyGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetKeyGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetKeyGroup(arg0, arg1 interface{}, 
 
 // GetKeyGroupConfig mocks base method.
 func (m *MockCloudfrontClient) GetKeyGroupConfig(arg0 context.Context, arg1 *cloudfront.GetKeyGroupConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetKeyGroupConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetKeyGroupConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetKeyGroupConfig(arg0, arg1 interfa
 
 // GetMonitoringSubscription mocks base method.
 func (m *MockCloudfrontClient) GetMonitoringSubscription(arg0 context.Context, arg1 *cloudfront.GetMonitoringSubscriptionInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetMonitoringSubscriptionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMonitoringSubscription")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetMonitoringSubscription(arg0, arg1
 
 // GetOriginAccessControl mocks base method.
 func (m *MockCloudfrontClient) GetOriginAccessControl(arg0 context.Context, arg1 *cloudfront.GetOriginAccessControlInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetOriginAccessControlOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOriginAccessControl")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetOriginAccessControl(arg0, arg1 in
 
 // GetOriginAccessControlConfig mocks base method.
 func (m *MockCloudfrontClient) GetOriginAccessControlConfig(arg0 context.Context, arg1 *cloudfront.GetOriginAccessControlConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetOriginAccessControlConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOriginAccessControlConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetOriginAccessControlConfig(arg0, a
 
 // GetOriginRequestPolicy mocks base method.
 func (m *MockCloudfrontClient) GetOriginRequestPolicy(arg0 context.Context, arg1 *cloudfront.GetOriginRequestPolicyInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetOriginRequestPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOriginRequestPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetOriginRequestPolicy(arg0, arg1 in
 
 // GetOriginRequestPolicyConfig mocks base method.
 func (m *MockCloudfrontClient) GetOriginRequestPolicyConfig(arg0 context.Context, arg1 *cloudfront.GetOriginRequestPolicyConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetOriginRequestPolicyConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOriginRequestPolicyConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetOriginRequestPolicyConfig(arg0, a
 
 // GetPublicKey mocks base method.
 func (m *MockCloudfrontClient) GetPublicKey(arg0 context.Context, arg1 *cloudfront.GetPublicKeyInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetPublicKeyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPublicKey")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetPublicKey(arg0, arg1 interface{},
 
 // GetPublicKeyConfig mocks base method.
 func (m *MockCloudfrontClient) GetPublicKeyConfig(arg0 context.Context, arg1 *cloudfront.GetPublicKeyConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetPublicKeyConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPublicKeyConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetPublicKeyConfig(arg0, arg1 interf
 
 // GetRealtimeLogConfig mocks base method.
 func (m *MockCloudfrontClient) GetRealtimeLogConfig(arg0 context.Context, arg1 *cloudfront.GetRealtimeLogConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetRealtimeLogConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRealtimeLogConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetRealtimeLogConfig(arg0, arg1 inte
 
 // GetResponseHeadersPolicy mocks base method.
 func (m *MockCloudfrontClient) GetResponseHeadersPolicy(arg0 context.Context, arg1 *cloudfront.GetResponseHeadersPolicyInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetResponseHeadersPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetResponseHeadersPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetResponseHeadersPolicy(arg0, arg1 
 
 // GetResponseHeadersPolicyConfig mocks base method.
 func (m *MockCloudfrontClient) GetResponseHeadersPolicyConfig(arg0 context.Context, arg1 *cloudfront.GetResponseHeadersPolicyConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetResponseHeadersPolicyConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetResponseHeadersPolicyConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetResponseHeadersPolicyConfig(arg0,
 
 // GetStreamingDistribution mocks base method.
 func (m *MockCloudfrontClient) GetStreamingDistribution(arg0 context.Context, arg1 *cloudfront.GetStreamingDistributionInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetStreamingDistributionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetStreamingDistribution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetStreamingDistribution(arg0, arg1 
 
 // GetStreamingDistributionConfig mocks base method.
 func (m *MockCloudfrontClient) GetStreamingDistributionConfig(arg0 context.Context, arg1 *cloudfront.GetStreamingDistributionConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetStreamingDistributionConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetStreamingDistributionConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockCloudfrontClientMockRecorder) GetStreamingDistributionConfig(arg0,
 
 // ListCachePolicies mocks base method.
 func (m *MockCloudfrontClient) ListCachePolicies(arg0 context.Context, arg1 *cloudfront.ListCachePoliciesInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListCachePoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCachePolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListCachePolicies(arg0, arg1 interfa
 
 // ListCloudFrontOriginAccessIdentities mocks base method.
 func (m *MockCloudfrontClient) ListCloudFrontOriginAccessIdentities(arg0 context.Context, arg1 *cloudfront.ListCloudFrontOriginAccessIdentitiesInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListCloudFrontOriginAccessIdentitiesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCloudFrontOriginAccessIdentities")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListCloudFrontOriginAccessIdentities
 
 // ListConflictingAliases mocks base method.
 func (m *MockCloudfrontClient) ListConflictingAliases(arg0 context.Context, arg1 *cloudfront.ListConflictingAliasesInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListConflictingAliasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListConflictingAliases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListConflictingAliases(arg0, arg1 in
 
 // ListContinuousDeploymentPolicies mocks base method.
 func (m *MockCloudfrontClient) ListContinuousDeploymentPolicies(arg0 context.Context, arg1 *cloudfront.ListContinuousDeploymentPoliciesInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListContinuousDeploymentPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListContinuousDeploymentPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListContinuousDeploymentPolicies(arg
 
 // ListDistributions mocks base method.
 func (m *MockCloudfrontClient) ListDistributions(arg0 context.Context, arg1 *cloudfront.ListDistributionsInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListDistributionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDistributions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1057,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListDistributions(arg0, arg1 interfa
 
 // ListDistributionsByCachePolicyId mocks base method.
 func (m *MockCloudfrontClient) ListDistributionsByCachePolicyId(arg0 context.Context, arg1 *cloudfront.ListDistributionsByCachePolicyIdInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListDistributionsByCachePolicyIdOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDistributionsByCachePolicyId")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1087,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListDistributionsByCachePolicyId(arg
 
 // ListDistributionsByKeyGroup mocks base method.
 func (m *MockCloudfrontClient) ListDistributionsByKeyGroup(arg0 context.Context, arg1 *cloudfront.ListDistributionsByKeyGroupInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListDistributionsByKeyGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDistributionsByKeyGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1117,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListDistributionsByKeyGroup(arg0, ar
 
 // ListDistributionsByOriginRequestPolicyId mocks base method.
 func (m *MockCloudfrontClient) ListDistributionsByOriginRequestPolicyId(arg0 context.Context, arg1 *cloudfront.ListDistributionsByOriginRequestPolicyIdInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListDistributionsByOriginRequestPolicyIdOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDistributionsByOriginRequestPolicyId")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -777,6 +1147,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListDistributionsByOriginRequestPoli
 
 // ListDistributionsByRealtimeLogConfig mocks base method.
 func (m *MockCloudfrontClient) ListDistributionsByRealtimeLogConfig(arg0 context.Context, arg1 *cloudfront.ListDistributionsByRealtimeLogConfigInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListDistributionsByRealtimeLogConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDistributionsByRealtimeLogConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -797,6 +1177,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListDistributionsByRealtimeLogConfig
 
 // ListDistributionsByResponseHeadersPolicyId mocks base method.
 func (m *MockCloudfrontClient) ListDistributionsByResponseHeadersPolicyId(arg0 context.Context, arg1 *cloudfront.ListDistributionsByResponseHeadersPolicyIdInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListDistributionsByResponseHeadersPolicyIdOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDistributionsByResponseHeadersPolicyId")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -817,6 +1207,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListDistributionsByResponseHeadersPo
 
 // ListDistributionsByWebACLId mocks base method.
 func (m *MockCloudfrontClient) ListDistributionsByWebACLId(arg0 context.Context, arg1 *cloudfront.ListDistributionsByWebACLIdInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListDistributionsByWebACLIdOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDistributionsByWebACLId")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -837,6 +1237,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListDistributionsByWebACLId(arg0, ar
 
 // ListFieldLevelEncryptionConfigs mocks base method.
 func (m *MockCloudfrontClient) ListFieldLevelEncryptionConfigs(arg0 context.Context, arg1 *cloudfront.ListFieldLevelEncryptionConfigsInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListFieldLevelEncryptionConfigsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFieldLevelEncryptionConfigs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -857,6 +1267,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListFieldLevelEncryptionConfigs(arg0
 
 // ListFieldLevelEncryptionProfiles mocks base method.
 func (m *MockCloudfrontClient) ListFieldLevelEncryptionProfiles(arg0 context.Context, arg1 *cloudfront.ListFieldLevelEncryptionProfilesInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListFieldLevelEncryptionProfilesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFieldLevelEncryptionProfiles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -877,6 +1297,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListFieldLevelEncryptionProfiles(arg
 
 // ListFunctions mocks base method.
 func (m *MockCloudfrontClient) ListFunctions(arg0 context.Context, arg1 *cloudfront.ListFunctionsInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListFunctionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFunctions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -897,6 +1327,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListFunctions(arg0, arg1 interface{}
 
 // ListInvalidations mocks base method.
 func (m *MockCloudfrontClient) ListInvalidations(arg0 context.Context, arg1 *cloudfront.ListInvalidationsInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListInvalidationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInvalidations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -917,6 +1357,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListInvalidations(arg0, arg1 interfa
 
 // ListKeyGroups mocks base method.
 func (m *MockCloudfrontClient) ListKeyGroups(arg0 context.Context, arg1 *cloudfront.ListKeyGroupsInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListKeyGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListKeyGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -937,6 +1387,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListKeyGroups(arg0, arg1 interface{}
 
 // ListOriginAccessControls mocks base method.
 func (m *MockCloudfrontClient) ListOriginAccessControls(arg0 context.Context, arg1 *cloudfront.ListOriginAccessControlsInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListOriginAccessControlsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOriginAccessControls")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -957,6 +1417,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListOriginAccessControls(arg0, arg1 
 
 // ListOriginRequestPolicies mocks base method.
 func (m *MockCloudfrontClient) ListOriginRequestPolicies(arg0 context.Context, arg1 *cloudfront.ListOriginRequestPoliciesInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListOriginRequestPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOriginRequestPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -977,6 +1447,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListOriginRequestPolicies(arg0, arg1
 
 // ListPublicKeys mocks base method.
 func (m *MockCloudfrontClient) ListPublicKeys(arg0 context.Context, arg1 *cloudfront.ListPublicKeysInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListPublicKeysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPublicKeys")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -997,6 +1477,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListPublicKeys(arg0, arg1 interface{
 
 // ListRealtimeLogConfigs mocks base method.
 func (m *MockCloudfrontClient) ListRealtimeLogConfigs(arg0 context.Context, arg1 *cloudfront.ListRealtimeLogConfigsInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListRealtimeLogConfigsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRealtimeLogConfigs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1017,6 +1507,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListRealtimeLogConfigs(arg0, arg1 in
 
 // ListResponseHeadersPolicies mocks base method.
 func (m *MockCloudfrontClient) ListResponseHeadersPolicies(arg0 context.Context, arg1 *cloudfront.ListResponseHeadersPoliciesInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListResponseHeadersPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListResponseHeadersPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1037,6 +1537,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListResponseHeadersPolicies(arg0, ar
 
 // ListStreamingDistributions mocks base method.
 func (m *MockCloudfrontClient) ListStreamingDistributions(arg0 context.Context, arg1 *cloudfront.ListStreamingDistributionsInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListStreamingDistributionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStreamingDistributions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1057,6 +1567,16 @@ func (mr *MockCloudfrontClientMockRecorder) ListStreamingDistributions(arg0, arg
 
 // ListTagsForResource mocks base method.
 func (m *MockCloudfrontClient) ListTagsForResource(arg0 context.Context, arg1 *cloudfront.ListTagsForResourceInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
