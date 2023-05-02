@@ -39,9 +39,12 @@ func Groups() *schema.Table {
 }
 
 func fetchXrayGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	paginator := xray.NewGetGroupsPaginator(meta.(*client.Client).Services().Xray, nil)
+	cl := meta.(*client.Client)
+	paginator := xray.NewGetGroupsPaginator(cl.Services().Xray, nil)
 	for paginator.HasMorePages() {
-		v, err := paginator.NextPage(ctx)
+		v, err := paginator.NextPage(ctx, func(o *xray.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -55,7 +58,9 @@ func resolveXrayGroupTags(ctx context.Context, meta schema.ClientMeta, resource 
 	svc := cl.Services().Xray
 	params := xray.ListTagsForResourceInput{ResourceARN: group.GroupARN}
 
-	output, err := svc.ListTagsForResource(ctx, &params)
+	output, err := svc.ListTagsForResource(ctx, &params, func(o *xray.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {
 			return nil

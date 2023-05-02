@@ -37,6 +37,16 @@ func (m *MockServicecatalogClient) EXPECT() *MockServicecatalogClientMockRecorde
 
 // DescribeConstraint mocks base method.
 func (m *MockServicecatalogClient) DescribeConstraint(arg0 context.Context, arg1 *servicecatalog.DescribeConstraintInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribeConstraintOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConstraint")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribeConstraint(arg0, arg1 in
 
 // DescribeCopyProductStatus mocks base method.
 func (m *MockServicecatalogClient) DescribeCopyProductStatus(arg0 context.Context, arg1 *servicecatalog.DescribeCopyProductStatusInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribeCopyProductStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCopyProductStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribeCopyProductStatus(arg0, 
 
 // DescribePortfolio mocks base method.
 func (m *MockServicecatalogClient) DescribePortfolio(arg0 context.Context, arg1 *servicecatalog.DescribePortfolioInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribePortfolioOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePortfolio")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribePortfolio(arg0, arg1 int
 
 // DescribePortfolioShareStatus mocks base method.
 func (m *MockServicecatalogClient) DescribePortfolioShareStatus(arg0 context.Context, arg1 *servicecatalog.DescribePortfolioShareStatusInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribePortfolioShareStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePortfolioShareStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribePortfolioShareStatus(arg
 
 // DescribePortfolioShares mocks base method.
 func (m *MockServicecatalogClient) DescribePortfolioShares(arg0 context.Context, arg1 *servicecatalog.DescribePortfolioSharesInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribePortfolioSharesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePortfolioShares")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribePortfolioShares(arg0, ar
 
 // DescribeProduct mocks base method.
 func (m *MockServicecatalogClient) DescribeProduct(arg0 context.Context, arg1 *servicecatalog.DescribeProductInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribeProductOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProduct")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribeProduct(arg0, arg1 inter
 
 // DescribeProductAsAdmin mocks base method.
 func (m *MockServicecatalogClient) DescribeProductAsAdmin(arg0 context.Context, arg1 *servicecatalog.DescribeProductAsAdminInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribeProductAsAdminOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProductAsAdmin")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribeProductAsAdmin(arg0, arg
 
 // DescribeProductView mocks base method.
 func (m *MockServicecatalogClient) DescribeProductView(arg0 context.Context, arg1 *servicecatalog.DescribeProductViewInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribeProductViewOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProductView")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribeProductView(arg0, arg1 i
 
 // DescribeProvisionedProduct mocks base method.
 func (m *MockServicecatalogClient) DescribeProvisionedProduct(arg0 context.Context, arg1 *servicecatalog.DescribeProvisionedProductInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribeProvisionedProductOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProvisionedProduct")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribeProvisionedProduct(arg0,
 
 // DescribeProvisionedProductPlan mocks base method.
 func (m *MockServicecatalogClient) DescribeProvisionedProductPlan(arg0 context.Context, arg1 *servicecatalog.DescribeProvisionedProductPlanInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribeProvisionedProductPlanOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProvisionedProductPlan")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribeProvisionedProductPlan(a
 
 // DescribeProvisioningArtifact mocks base method.
 func (m *MockServicecatalogClient) DescribeProvisioningArtifact(arg0 context.Context, arg1 *servicecatalog.DescribeProvisioningArtifactInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribeProvisioningArtifactOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProvisioningArtifact")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribeProvisioningArtifact(arg
 
 // DescribeProvisioningParameters mocks base method.
 func (m *MockServicecatalogClient) DescribeProvisioningParameters(arg0 context.Context, arg1 *servicecatalog.DescribeProvisioningParametersInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribeProvisioningParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProvisioningParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribeProvisioningParameters(a
 
 // DescribeRecord mocks base method.
 func (m *MockServicecatalogClient) DescribeRecord(arg0 context.Context, arg1 *servicecatalog.DescribeRecordInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribeRecordOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRecord")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribeRecord(arg0, arg1 interf
 
 // DescribeServiceAction mocks base method.
 func (m *MockServicecatalogClient) DescribeServiceAction(arg0 context.Context, arg1 *servicecatalog.DescribeServiceActionInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribeServiceActionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeServiceAction")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribeServiceAction(arg0, arg1
 
 // DescribeServiceActionExecutionParameters mocks base method.
 func (m *MockServicecatalogClient) DescribeServiceActionExecutionParameters(arg0 context.Context, arg1 *servicecatalog.DescribeServiceActionExecutionParametersInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribeServiceActionExecutionParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeServiceActionExecutionParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribeServiceActionExecutionPa
 
 // DescribeTagOption mocks base method.
 func (m *MockServicecatalogClient) DescribeTagOption(arg0 context.Context, arg1 *servicecatalog.DescribeTagOptionInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.DescribeTagOptionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTagOption")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockServicecatalogClientMockRecorder) DescribeTagOption(arg0, arg1 int
 
 // GetAWSOrganizationsAccessStatus mocks base method.
 func (m *MockServicecatalogClient) GetAWSOrganizationsAccessStatus(arg0 context.Context, arg1 *servicecatalog.GetAWSOrganizationsAccessStatusInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.GetAWSOrganizationsAccessStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAWSOrganizationsAccessStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockServicecatalogClientMockRecorder) GetAWSOrganizationsAccessStatus(
 
 // GetProvisionedProductOutputs mocks base method.
 func (m *MockServicecatalogClient) GetProvisionedProductOutputs(arg0 context.Context, arg1 *servicecatalog.GetProvisionedProductOutputsInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.GetProvisionedProductOutputsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetProvisionedProductOutputs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockServicecatalogClientMockRecorder) GetProvisionedProductOutputs(arg
 
 // ListAcceptedPortfolioShares mocks base method.
 func (m *MockServicecatalogClient) ListAcceptedPortfolioShares(arg0 context.Context, arg1 *servicecatalog.ListAcceptedPortfolioSharesInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListAcceptedPortfolioSharesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAcceptedPortfolioShares")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListAcceptedPortfolioShares(arg0
 
 // ListBudgetsForResource mocks base method.
 func (m *MockServicecatalogClient) ListBudgetsForResource(arg0 context.Context, arg1 *servicecatalog.ListBudgetsForResourceInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListBudgetsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBudgetsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListBudgetsForResource(arg0, arg
 
 // ListConstraintsForPortfolio mocks base method.
 func (m *MockServicecatalogClient) ListConstraintsForPortfolio(arg0 context.Context, arg1 *servicecatalog.ListConstraintsForPortfolioInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListConstraintsForPortfolioOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListConstraintsForPortfolio")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListConstraintsForPortfolio(arg0
 
 // ListLaunchPaths mocks base method.
 func (m *MockServicecatalogClient) ListLaunchPaths(arg0 context.Context, arg1 *servicecatalog.ListLaunchPathsInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListLaunchPathsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListLaunchPaths")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListLaunchPaths(arg0, arg1 inter
 
 // ListOrganizationPortfolioAccess mocks base method.
 func (m *MockServicecatalogClient) ListOrganizationPortfolioAccess(arg0 context.Context, arg1 *servicecatalog.ListOrganizationPortfolioAccessInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListOrganizationPortfolioAccessOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOrganizationPortfolioAccess")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListOrganizationPortfolioAccess(
 
 // ListPortfolioAccess mocks base method.
 func (m *MockServicecatalogClient) ListPortfolioAccess(arg0 context.Context, arg1 *servicecatalog.ListPortfolioAccessInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListPortfolioAccessOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPortfolioAccess")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListPortfolioAccess(arg0, arg1 i
 
 // ListPortfolios mocks base method.
 func (m *MockServicecatalogClient) ListPortfolios(arg0 context.Context, arg1 *servicecatalog.ListPortfoliosInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListPortfoliosOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPortfolios")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListPortfolios(arg0, arg1 interf
 
 // ListPortfoliosForProduct mocks base method.
 func (m *MockServicecatalogClient) ListPortfoliosForProduct(arg0 context.Context, arg1 *servicecatalog.ListPortfoliosForProductInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListPortfoliosForProductOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPortfoliosForProduct")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListPortfoliosForProduct(arg0, a
 
 // ListPrincipalsForPortfolio mocks base method.
 func (m *MockServicecatalogClient) ListPrincipalsForPortfolio(arg0 context.Context, arg1 *servicecatalog.ListPrincipalsForPortfolioInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListPrincipalsForPortfolioOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPrincipalsForPortfolio")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListPrincipalsForPortfolio(arg0,
 
 // ListProvisionedProductPlans mocks base method.
 func (m *MockServicecatalogClient) ListProvisionedProductPlans(arg0 context.Context, arg1 *servicecatalog.ListProvisionedProductPlansInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListProvisionedProductPlansOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProvisionedProductPlans")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListProvisionedProductPlans(arg0
 
 // ListProvisioningArtifacts mocks base method.
 func (m *MockServicecatalogClient) ListProvisioningArtifacts(arg0 context.Context, arg1 *servicecatalog.ListProvisioningArtifactsInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListProvisioningArtifactsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProvisioningArtifacts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListProvisioningArtifacts(arg0, 
 
 // ListProvisioningArtifactsForServiceAction mocks base method.
 func (m *MockServicecatalogClient) ListProvisioningArtifactsForServiceAction(arg0 context.Context, arg1 *servicecatalog.ListProvisioningArtifactsForServiceActionInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListProvisioningArtifactsForServiceActionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProvisioningArtifactsForServiceAction")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListProvisioningArtifactsForServ
 
 // ListRecordHistory mocks base method.
 func (m *MockServicecatalogClient) ListRecordHistory(arg0 context.Context, arg1 *servicecatalog.ListRecordHistoryInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListRecordHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRecordHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListRecordHistory(arg0, arg1 int
 
 // ListResourcesForTagOption mocks base method.
 func (m *MockServicecatalogClient) ListResourcesForTagOption(arg0 context.Context, arg1 *servicecatalog.ListResourcesForTagOptionInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListResourcesForTagOptionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListResourcesForTagOption")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListResourcesForTagOption(arg0, 
 
 // ListServiceActions mocks base method.
 func (m *MockServicecatalogClient) ListServiceActions(arg0 context.Context, arg1 *servicecatalog.ListServiceActionsInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListServiceActionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListServiceActions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListServiceActions(arg0, arg1 in
 
 // ListServiceActionsForProvisioningArtifact mocks base method.
 func (m *MockServicecatalogClient) ListServiceActionsForProvisioningArtifact(arg0 context.Context, arg1 *servicecatalog.ListServiceActionsForProvisioningArtifactInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListServiceActionsForProvisioningArtifactOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListServiceActionsForProvisioningArtifact")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1057,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListServiceActionsForProvisionin
 
 // ListStackInstancesForProvisionedProduct mocks base method.
 func (m *MockServicecatalogClient) ListStackInstancesForProvisionedProduct(arg0 context.Context, arg1 *servicecatalog.ListStackInstancesForProvisionedProductInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListStackInstancesForProvisionedProductOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStackInstancesForProvisionedProduct")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1087,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListStackInstancesForProvisioned
 
 // ListTagOptions mocks base method.
 func (m *MockServicecatalogClient) ListTagOptions(arg0 context.Context, arg1 *servicecatalog.ListTagOptionsInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.ListTagOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagOptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1117,16 @@ func (mr *MockServicecatalogClientMockRecorder) ListTagOptions(arg0, arg1 interf
 
 // SearchProducts mocks base method.
 func (m *MockServicecatalogClient) SearchProducts(arg0 context.Context, arg1 *servicecatalog.SearchProductsInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.SearchProductsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchProducts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -777,6 +1147,16 @@ func (mr *MockServicecatalogClientMockRecorder) SearchProducts(arg0, arg1 interf
 
 // SearchProductsAsAdmin mocks base method.
 func (m *MockServicecatalogClient) SearchProductsAsAdmin(arg0 context.Context, arg1 *servicecatalog.SearchProductsAsAdminInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.SearchProductsAsAdminOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchProductsAsAdmin")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -797,6 +1177,16 @@ func (mr *MockServicecatalogClientMockRecorder) SearchProductsAsAdmin(arg0, arg1
 
 // SearchProvisionedProducts mocks base method.
 func (m *MockServicecatalogClient) SearchProvisionedProducts(arg0 context.Context, arg1 *servicecatalog.SearchProvisionedProductsInput, arg2 ...func(*servicecatalog.Options)) (*servicecatalog.SearchProvisionedProductsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalog.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchProvisionedProducts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

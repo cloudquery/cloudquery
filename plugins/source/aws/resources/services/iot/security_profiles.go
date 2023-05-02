@@ -53,7 +53,9 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 	}
 	paginator := iot.NewListSecurityProfilesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -68,6 +70,8 @@ func getSecurityProfile(ctx context.Context, meta schema.ClientMeta, resource *s
 
 	output, err := svc.DescribeSecurityProfile(ctx, &iot.DescribeSecurityProfileInput{
 		SecurityProfileName: resource.Item.(types.SecurityProfileIdentifier).Name,
+	}, func(options *iot.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -88,7 +92,9 @@ func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMet
 	var targets []string
 	paginator := iot.NewListTargetsForSecurityProfilePaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -101,6 +107,7 @@ func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMet
 }
 func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
-	svc := meta.(*client.Client).Services().Iot
-	return resolveIotTags(ctx, svc, resource, c, i.SecurityProfileArn)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+	return resolveIotTags(ctx, meta, svc, resource, c, i.SecurityProfileArn)
 }

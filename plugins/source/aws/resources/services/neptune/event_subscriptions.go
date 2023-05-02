@@ -47,7 +47,9 @@ func fetchNeptuneEventSubscriptions(ctx context.Context, meta schema.ClientMeta,
 	}
 	paginator := neptune.NewDescribeEventSubscriptionsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *neptune.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -60,7 +62,9 @@ func resolveNeptuneEventSubscriptionTags(ctx context.Context, meta schema.Client
 	s := resource.Item.(types.EventSubscription)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Neptune
-	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: s.EventSubscriptionArn})
+	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: s.EventSubscriptionArn}, func(options *neptune.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

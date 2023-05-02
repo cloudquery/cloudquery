@@ -30,6 +30,7 @@ func buildFindings(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&securityhub.GetFindingsInput{
 			MaxResults: 100,
 		},
+		gomock.Any(),
 	).Return(
 		&securityhub.GetFindingsOutput{
 			Findings: []types.AwsSecurityFinding{findings},

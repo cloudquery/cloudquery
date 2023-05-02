@@ -47,7 +47,9 @@ func fetchBatchJobDefinitions(ctx context.Context, meta schema.ClientMeta, paren
 	svc := c.Services().Batch
 	p := batch.NewDescribeJobDefinitionsPaginator(svc, &config)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *batch.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -64,7 +66,9 @@ func resolveBatchJobDefinitionTags(ctx context.Context, meta schema.ClientMeta, 
 	input := batch.ListTagsForResourceInput{
 		ResourceArn: summary.JobDefinitionArn,
 	}
-	output, err := svc.ListTagsForResource(ctx, &input)
+	output, err := svc.ListTagsForResource(ctx, &input, func(options *batch.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

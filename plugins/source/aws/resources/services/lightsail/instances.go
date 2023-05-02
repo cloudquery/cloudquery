@@ -53,7 +53,9 @@ func fetchLightsailInstances(ctx context.Context, meta schema.ClientMeta, parent
 	input := lightsail.GetInstancesInput{}
 	// No paginator available
 	for {
-		output, err := svc.GetInstances(ctx, &input)
+		output, err := svc.GetInstances(ctx, &input, func(options *lightsail.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -71,7 +73,9 @@ func resolveLightsailInstanceAccessDetails(ctx context.Context, meta schema.Clie
 	cli := meta.(*client.Client)
 	svc := cli.Services().Lightsail
 	input := lightsail.GetInstanceAccessDetailsInput{InstanceName: r.Name}
-	output, err := svc.GetInstanceAccessDetails(ctx, &input)
+	output, err := svc.GetInstanceAccessDetails(ctx, &input, func(options *lightsail.Options) {
+		options.Region = cli.Region
+	})
 	if err != nil {
 		return err
 	}

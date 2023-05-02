@@ -58,7 +58,9 @@ func fetchAthenaDataCatalogDatabaseTables(ctx context.Context, meta schema.Clien
 	}
 	paginator := athena.NewListTableMetadataPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *athena.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

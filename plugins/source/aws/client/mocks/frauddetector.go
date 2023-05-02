@@ -37,6 +37,16 @@ func (m *MockFrauddetectorClient) EXPECT() *MockFrauddetectorClientMockRecorder 
 
 // BatchGetVariable mocks base method.
 func (m *MockFrauddetectorClient) BatchGetVariable(arg0 context.Context, arg1 *frauddetector.BatchGetVariableInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.BatchGetVariableOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetVariable")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockFrauddetectorClientMockRecorder) BatchGetVariable(arg0, arg1 inter
 
 // DescribeDetector mocks base method.
 func (m *MockFrauddetectorClient) DescribeDetector(arg0 context.Context, arg1 *frauddetector.DescribeDetectorInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.DescribeDetectorOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDetector")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockFrauddetectorClientMockRecorder) DescribeDetector(arg0, arg1 inter
 
 // DescribeModelVersions mocks base method.
 func (m *MockFrauddetectorClient) DescribeModelVersions(arg0 context.Context, arg1 *frauddetector.DescribeModelVersionsInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.DescribeModelVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeModelVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockFrauddetectorClientMockRecorder) DescribeModelVersions(arg0, arg1 
 
 // GetBatchImportJobs mocks base method.
 func (m *MockFrauddetectorClient) GetBatchImportJobs(arg0 context.Context, arg1 *frauddetector.GetBatchImportJobsInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetBatchImportJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBatchImportJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetBatchImportJobs(arg0, arg1 int
 
 // GetBatchPredictionJobs mocks base method.
 func (m *MockFrauddetectorClient) GetBatchPredictionJobs(arg0 context.Context, arg1 *frauddetector.GetBatchPredictionJobsInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetBatchPredictionJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBatchPredictionJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetBatchPredictionJobs(arg0, arg1
 
 // GetDeleteEventsByEventTypeStatus mocks base method.
 func (m *MockFrauddetectorClient) GetDeleteEventsByEventTypeStatus(arg0 context.Context, arg1 *frauddetector.GetDeleteEventsByEventTypeStatusInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetDeleteEventsByEventTypeStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDeleteEventsByEventTypeStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetDeleteEventsByEventTypeStatus(
 
 // GetDetectorVersion mocks base method.
 func (m *MockFrauddetectorClient) GetDetectorVersion(arg0 context.Context, arg1 *frauddetector.GetDetectorVersionInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetDetectorVersionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDetectorVersion")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetDetectorVersion(arg0, arg1 int
 
 // GetDetectors mocks base method.
 func (m *MockFrauddetectorClient) GetDetectors(arg0 context.Context, arg1 *frauddetector.GetDetectorsInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetDetectorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDetectors")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetDetectors(arg0, arg1 interface
 
 // GetEntityTypes mocks base method.
 func (m *MockFrauddetectorClient) GetEntityTypes(arg0 context.Context, arg1 *frauddetector.GetEntityTypesInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetEntityTypesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEntityTypes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetEntityTypes(arg0, arg1 interfa
 
 // GetEvent mocks base method.
 func (m *MockFrauddetectorClient) GetEvent(arg0 context.Context, arg1 *frauddetector.GetEventInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetEventOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEvent")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetEvent(arg0, arg1 interface{}, 
 
 // GetEventPrediction mocks base method.
 func (m *MockFrauddetectorClient) GetEventPrediction(arg0 context.Context, arg1 *frauddetector.GetEventPredictionInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetEventPredictionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEventPrediction")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetEventPrediction(arg0, arg1 int
 
 // GetEventPredictionMetadata mocks base method.
 func (m *MockFrauddetectorClient) GetEventPredictionMetadata(arg0 context.Context, arg1 *frauddetector.GetEventPredictionMetadataInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetEventPredictionMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEventPredictionMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetEventPredictionMetadata(arg0, 
 
 // GetEventTypes mocks base method.
 func (m *MockFrauddetectorClient) GetEventTypes(arg0 context.Context, arg1 *frauddetector.GetEventTypesInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetEventTypesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEventTypes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetEventTypes(arg0, arg1 interfac
 
 // GetExternalModels mocks base method.
 func (m *MockFrauddetectorClient) GetExternalModels(arg0 context.Context, arg1 *frauddetector.GetExternalModelsInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetExternalModelsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetExternalModels")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetExternalModels(arg0, arg1 inte
 
 // GetKMSEncryptionKey mocks base method.
 func (m *MockFrauddetectorClient) GetKMSEncryptionKey(arg0 context.Context, arg1 *frauddetector.GetKMSEncryptionKeyInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetKMSEncryptionKeyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetKMSEncryptionKey")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetKMSEncryptionKey(arg0, arg1 in
 
 // GetLabels mocks base method.
 func (m *MockFrauddetectorClient) GetLabels(arg0 context.Context, arg1 *frauddetector.GetLabelsInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetLabelsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLabels")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetLabels(arg0, arg1 interface{},
 
 // GetModelVersion mocks base method.
 func (m *MockFrauddetectorClient) GetModelVersion(arg0 context.Context, arg1 *frauddetector.GetModelVersionInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetModelVersionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetModelVersion")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetModelVersion(arg0, arg1 interf
 
 // GetModels mocks base method.
 func (m *MockFrauddetectorClient) GetModels(arg0 context.Context, arg1 *frauddetector.GetModelsInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetModelsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetModels")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetModels(arg0, arg1 interface{},
 
 // GetOutcomes mocks base method.
 func (m *MockFrauddetectorClient) GetOutcomes(arg0 context.Context, arg1 *frauddetector.GetOutcomesInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetOutcomesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOutcomes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetOutcomes(arg0, arg1 interface{
 
 // GetRules mocks base method.
 func (m *MockFrauddetectorClient) GetRules(arg0 context.Context, arg1 *frauddetector.GetRulesInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetRules(arg0, arg1 interface{}, 
 
 // GetVariables mocks base method.
 func (m *MockFrauddetectorClient) GetVariables(arg0 context.Context, arg1 *frauddetector.GetVariablesInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetVariablesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetVariables")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockFrauddetectorClientMockRecorder) GetVariables(arg0, arg1 interface
 
 // ListEventPredictions mocks base method.
 func (m *MockFrauddetectorClient) ListEventPredictions(arg0 context.Context, arg1 *frauddetector.ListEventPredictionsInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.ListEventPredictionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEventPredictions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockFrauddetectorClientMockRecorder) ListEventPredictions(arg0, arg1 i
 
 // ListTagsForResource mocks base method.
 func (m *MockFrauddetectorClient) ListTagsForResource(arg0 context.Context, arg1 *frauddetector.ListTagsForResourceInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -55,7 +55,9 @@ func fetchApigatewayv2ApiStages(ctx context.Context, meta schema.ClientMeta, par
 	svc := c.Services().Apigatewayv2
 	// No paginator available
 	for {
-		response, err := svc.GetStages(ctx, &config)
+		response, err := svc.GetStages(ctx, &config, func(options *apigatewayv2.Options) {
+			options.Region = c.Region
+		})
 
 		if err != nil {
 			return err

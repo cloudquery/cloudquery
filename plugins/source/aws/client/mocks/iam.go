@@ -37,6 +37,16 @@ func (m *MockIamClient) EXPECT() *MockIamClientMockRecorder {
 
 // GenerateCredentialReport mocks base method.
 func (m *MockIamClient) GenerateCredentialReport(arg0 context.Context, arg1 *iam.GenerateCredentialReportInput, arg2 ...func(*iam.Options)) (*iam.GenerateCredentialReportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GenerateCredentialReport")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockIamClientMockRecorder) GenerateCredentialReport(arg0, arg1 interfa
 
 // GenerateServiceLastAccessedDetails mocks base method.
 func (m *MockIamClient) GenerateServiceLastAccessedDetails(arg0 context.Context, arg1 *iam.GenerateServiceLastAccessedDetailsInput, arg2 ...func(*iam.Options)) (*iam.GenerateServiceLastAccessedDetailsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GenerateServiceLastAccessedDetails")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockIamClientMockRecorder) GenerateServiceLastAccessedDetails(arg0, ar
 
 // GetAccessKeyLastUsed mocks base method.
 func (m *MockIamClient) GetAccessKeyLastUsed(arg0 context.Context, arg1 *iam.GetAccessKeyLastUsedInput, arg2 ...func(*iam.Options)) (*iam.GetAccessKeyLastUsedOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccessKeyLastUsed")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockIamClientMockRecorder) GetAccessKeyLastUsed(arg0, arg1 interface{}
 
 // GetAccountAuthorizationDetails mocks base method.
 func (m *MockIamClient) GetAccountAuthorizationDetails(arg0 context.Context, arg1 *iam.GetAccountAuthorizationDetailsInput, arg2 ...func(*iam.Options)) (*iam.GetAccountAuthorizationDetailsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccountAuthorizationDetails")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockIamClientMockRecorder) GetAccountAuthorizationDetails(arg0, arg1 i
 
 // GetAccountPasswordPolicy mocks base method.
 func (m *MockIamClient) GetAccountPasswordPolicy(arg0 context.Context, arg1 *iam.GetAccountPasswordPolicyInput, arg2 ...func(*iam.Options)) (*iam.GetAccountPasswordPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccountPasswordPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockIamClientMockRecorder) GetAccountPasswordPolicy(arg0, arg1 interfa
 
 // GetAccountSummary mocks base method.
 func (m *MockIamClient) GetAccountSummary(arg0 context.Context, arg1 *iam.GetAccountSummaryInput, arg2 ...func(*iam.Options)) (*iam.GetAccountSummaryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccountSummary")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockIamClientMockRecorder) GetAccountSummary(arg0, arg1 interface{}, a
 
 // GetContextKeysForCustomPolicy mocks base method.
 func (m *MockIamClient) GetContextKeysForCustomPolicy(arg0 context.Context, arg1 *iam.GetContextKeysForCustomPolicyInput, arg2 ...func(*iam.Options)) (*iam.GetContextKeysForCustomPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContextKeysForCustomPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockIamClientMockRecorder) GetContextKeysForCustomPolicy(arg0, arg1 in
 
 // GetContextKeysForPrincipalPolicy mocks base method.
 func (m *MockIamClient) GetContextKeysForPrincipalPolicy(arg0 context.Context, arg1 *iam.GetContextKeysForPrincipalPolicyInput, arg2 ...func(*iam.Options)) (*iam.GetContextKeysForPrincipalPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContextKeysForPrincipalPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockIamClientMockRecorder) GetContextKeysForPrincipalPolicy(arg0, arg1
 
 // GetCredentialReport mocks base method.
 func (m *MockIamClient) GetCredentialReport(arg0 context.Context, arg1 *iam.GetCredentialReportInput, arg2 ...func(*iam.Options)) (*iam.GetCredentialReportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCredentialReport")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockIamClientMockRecorder) GetCredentialReport(arg0, arg1 interface{},
 
 // GetGroup mocks base method.
 func (m *MockIamClient) GetGroup(arg0 context.Context, arg1 *iam.GetGroupInput, arg2 ...func(*iam.Options)) (*iam.GetGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockIamClientMockRecorder) GetGroup(arg0, arg1 interface{}, arg2 ...in
 
 // GetGroupPolicy mocks base method.
 func (m *MockIamClient) GetGroupPolicy(arg0 context.Context, arg1 *iam.GetGroupPolicyInput, arg2 ...func(*iam.Options)) (*iam.GetGroupPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetGroupPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockIamClientMockRecorder) GetGroupPolicy(arg0, arg1 interface{}, arg2
 
 // GetInstanceProfile mocks base method.
 func (m *MockIamClient) GetInstanceProfile(arg0 context.Context, arg1 *iam.GetInstanceProfileInput, arg2 ...func(*iam.Options)) (*iam.GetInstanceProfileOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInstanceProfile")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockIamClientMockRecorder) GetInstanceProfile(arg0, arg1 interface{}, 
 
 // GetLoginProfile mocks base method.
 func (m *MockIamClient) GetLoginProfile(arg0 context.Context, arg1 *iam.GetLoginProfileInput, arg2 ...func(*iam.Options)) (*iam.GetLoginProfileOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLoginProfile")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockIamClientMockRecorder) GetLoginProfile(arg0, arg1 interface{}, arg
 
 // GetOpenIDConnectProvider mocks base method.
 func (m *MockIamClient) GetOpenIDConnectProvider(arg0 context.Context, arg1 *iam.GetOpenIDConnectProviderInput, arg2 ...func(*iam.Options)) (*iam.GetOpenIDConnectProviderOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOpenIDConnectProvider")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockIamClientMockRecorder) GetOpenIDConnectProvider(arg0, arg1 interfa
 
 // GetOrganizationsAccessReport mocks base method.
 func (m *MockIamClient) GetOrganizationsAccessReport(arg0 context.Context, arg1 *iam.GetOrganizationsAccessReportInput, arg2 ...func(*iam.Options)) (*iam.GetOrganizationsAccessReportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOrganizationsAccessReport")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockIamClientMockRecorder) GetOrganizationsAccessReport(arg0, arg1 int
 
 // GetPolicy mocks base method.
 func (m *MockIamClient) GetPolicy(arg0 context.Context, arg1 *iam.GetPolicyInput, arg2 ...func(*iam.Options)) (*iam.GetPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockIamClientMockRecorder) GetPolicy(arg0, arg1 interface{}, arg2 ...i
 
 // GetPolicyVersion mocks base method.
 func (m *MockIamClient) GetPolicyVersion(arg0 context.Context, arg1 *iam.GetPolicyVersionInput, arg2 ...func(*iam.Options)) (*iam.GetPolicyVersionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPolicyVersion")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockIamClientMockRecorder) GetPolicyVersion(arg0, arg1 interface{}, ar
 
 // GetRole mocks base method.
 func (m *MockIamClient) GetRole(arg0 context.Context, arg1 *iam.GetRoleInput, arg2 ...func(*iam.Options)) (*iam.GetRoleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRole")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockIamClientMockRecorder) GetRole(arg0, arg1 interface{}, arg2 ...int
 
 // GetRolePolicy mocks base method.
 func (m *MockIamClient) GetRolePolicy(arg0 context.Context, arg1 *iam.GetRolePolicyInput, arg2 ...func(*iam.Options)) (*iam.GetRolePolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRolePolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockIamClientMockRecorder) GetRolePolicy(arg0, arg1 interface{}, arg2 
 
 // GetSAMLProvider mocks base method.
 func (m *MockIamClient) GetSAMLProvider(arg0 context.Context, arg1 *iam.GetSAMLProviderInput, arg2 ...func(*iam.Options)) (*iam.GetSAMLProviderOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSAMLProvider")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockIamClientMockRecorder) GetSAMLProvider(arg0, arg1 interface{}, arg
 
 // GetSSHPublicKey mocks base method.
 func (m *MockIamClient) GetSSHPublicKey(arg0 context.Context, arg1 *iam.GetSSHPublicKeyInput, arg2 ...func(*iam.Options)) (*iam.GetSSHPublicKeyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSSHPublicKey")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockIamClientMockRecorder) GetSSHPublicKey(arg0, arg1 interface{}, arg
 
 // GetServerCertificate mocks base method.
 func (m *MockIamClient) GetServerCertificate(arg0 context.Context, arg1 *iam.GetServerCertificateInput, arg2 ...func(*iam.Options)) (*iam.GetServerCertificateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetServerCertificate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockIamClientMockRecorder) GetServerCertificate(arg0, arg1 interface{}
 
 // GetServiceLastAccessedDetails mocks base method.
 func (m *MockIamClient) GetServiceLastAccessedDetails(arg0 context.Context, arg1 *iam.GetServiceLastAccessedDetailsInput, arg2 ...func(*iam.Options)) (*iam.GetServiceLastAccessedDetailsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetServiceLastAccessedDetails")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockIamClientMockRecorder) GetServiceLastAccessedDetails(arg0, arg1 in
 
 // GetServiceLastAccessedDetailsWithEntities mocks base method.
 func (m *MockIamClient) GetServiceLastAccessedDetailsWithEntities(arg0 context.Context, arg1 *iam.GetServiceLastAccessedDetailsWithEntitiesInput, arg2 ...func(*iam.Options)) (*iam.GetServiceLastAccessedDetailsWithEntitiesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetServiceLastAccessedDetailsWithEntities")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockIamClientMockRecorder) GetServiceLastAccessedDetailsWithEntities(a
 
 // GetServiceLinkedRoleDeletionStatus mocks base method.
 func (m *MockIamClient) GetServiceLinkedRoleDeletionStatus(arg0 context.Context, arg1 *iam.GetServiceLinkedRoleDeletionStatusInput, arg2 ...func(*iam.Options)) (*iam.GetServiceLinkedRoleDeletionStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetServiceLinkedRoleDeletionStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockIamClientMockRecorder) GetServiceLinkedRoleDeletionStatus(arg0, ar
 
 // GetUser mocks base method.
 func (m *MockIamClient) GetUser(arg0 context.Context, arg1 *iam.GetUserInput, arg2 ...func(*iam.Options)) (*iam.GetUserOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUser")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockIamClientMockRecorder) GetUser(arg0, arg1 interface{}, arg2 ...int
 
 // GetUserPolicy mocks base method.
 func (m *MockIamClient) GetUserPolicy(arg0 context.Context, arg1 *iam.GetUserPolicyInput, arg2 ...func(*iam.Options)) (*iam.GetUserPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUserPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockIamClientMockRecorder) GetUserPolicy(arg0, arg1 interface{}, arg2 
 
 // ListAccessKeys mocks base method.
 func (m *MockIamClient) ListAccessKeys(arg0 context.Context, arg1 *iam.ListAccessKeysInput, arg2 ...func(*iam.Options)) (*iam.ListAccessKeysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAccessKeys")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockIamClientMockRecorder) ListAccessKeys(arg0, arg1 interface{}, arg2
 
 // ListAccountAliases mocks base method.
 func (m *MockIamClient) ListAccountAliases(arg0 context.Context, arg1 *iam.ListAccountAliasesInput, arg2 ...func(*iam.Options)) (*iam.ListAccountAliasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAccountAliases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockIamClientMockRecorder) ListAccountAliases(arg0, arg1 interface{}, 
 
 // ListAttachedGroupPolicies mocks base method.
 func (m *MockIamClient) ListAttachedGroupPolicies(arg0 context.Context, arg1 *iam.ListAttachedGroupPoliciesInput, arg2 ...func(*iam.Options)) (*iam.ListAttachedGroupPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAttachedGroupPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockIamClientMockRecorder) ListAttachedGroupPolicies(arg0, arg1 interf
 
 // ListAttachedRolePolicies mocks base method.
 func (m *MockIamClient) ListAttachedRolePolicies(arg0 context.Context, arg1 *iam.ListAttachedRolePoliciesInput, arg2 ...func(*iam.Options)) (*iam.ListAttachedRolePoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAttachedRolePolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockIamClientMockRecorder) ListAttachedRolePolicies(arg0, arg1 interfa
 
 // ListAttachedUserPolicies mocks base method.
 func (m *MockIamClient) ListAttachedUserPolicies(arg0 context.Context, arg1 *iam.ListAttachedUserPoliciesInput, arg2 ...func(*iam.Options)) (*iam.ListAttachedUserPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAttachedUserPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockIamClientMockRecorder) ListAttachedUserPolicies(arg0, arg1 interfa
 
 // ListEntitiesForPolicy mocks base method.
 func (m *MockIamClient) ListEntitiesForPolicy(arg0 context.Context, arg1 *iam.ListEntitiesForPolicyInput, arg2 ...func(*iam.Options)) (*iam.ListEntitiesForPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEntitiesForPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockIamClientMockRecorder) ListEntitiesForPolicy(arg0, arg1 interface{
 
 // ListGroupPolicies mocks base method.
 func (m *MockIamClient) ListGroupPolicies(arg0 context.Context, arg1 *iam.ListGroupPoliciesInput, arg2 ...func(*iam.Options)) (*iam.ListGroupPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListGroupPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1057,16 @@ func (mr *MockIamClientMockRecorder) ListGroupPolicies(arg0, arg1 interface{}, a
 
 // ListGroups mocks base method.
 func (m *MockIamClient) ListGroups(arg0 context.Context, arg1 *iam.ListGroupsInput, arg2 ...func(*iam.Options)) (*iam.ListGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1087,16 @@ func (mr *MockIamClientMockRecorder) ListGroups(arg0, arg1 interface{}, arg2 ...
 
 // ListGroupsForUser mocks base method.
 func (m *MockIamClient) ListGroupsForUser(arg0 context.Context, arg1 *iam.ListGroupsForUserInput, arg2 ...func(*iam.Options)) (*iam.ListGroupsForUserOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListGroupsForUser")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1117,16 @@ func (mr *MockIamClientMockRecorder) ListGroupsForUser(arg0, arg1 interface{}, a
 
 // ListInstanceProfileTags mocks base method.
 func (m *MockIamClient) ListInstanceProfileTags(arg0 context.Context, arg1 *iam.ListInstanceProfileTagsInput, arg2 ...func(*iam.Options)) (*iam.ListInstanceProfileTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInstanceProfileTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -777,6 +1147,16 @@ func (mr *MockIamClientMockRecorder) ListInstanceProfileTags(arg0, arg1 interfac
 
 // ListInstanceProfiles mocks base method.
 func (m *MockIamClient) ListInstanceProfiles(arg0 context.Context, arg1 *iam.ListInstanceProfilesInput, arg2 ...func(*iam.Options)) (*iam.ListInstanceProfilesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInstanceProfiles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -797,6 +1177,16 @@ func (mr *MockIamClientMockRecorder) ListInstanceProfiles(arg0, arg1 interface{}
 
 // ListInstanceProfilesForRole mocks base method.
 func (m *MockIamClient) ListInstanceProfilesForRole(arg0 context.Context, arg1 *iam.ListInstanceProfilesForRoleInput, arg2 ...func(*iam.Options)) (*iam.ListInstanceProfilesForRoleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInstanceProfilesForRole")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -817,6 +1207,16 @@ func (mr *MockIamClientMockRecorder) ListInstanceProfilesForRole(arg0, arg1 inte
 
 // ListMFADeviceTags mocks base method.
 func (m *MockIamClient) ListMFADeviceTags(arg0 context.Context, arg1 *iam.ListMFADeviceTagsInput, arg2 ...func(*iam.Options)) (*iam.ListMFADeviceTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMFADeviceTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -837,6 +1237,16 @@ func (mr *MockIamClientMockRecorder) ListMFADeviceTags(arg0, arg1 interface{}, a
 
 // ListMFADevices mocks base method.
 func (m *MockIamClient) ListMFADevices(arg0 context.Context, arg1 *iam.ListMFADevicesInput, arg2 ...func(*iam.Options)) (*iam.ListMFADevicesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMFADevices")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -857,6 +1267,16 @@ func (mr *MockIamClientMockRecorder) ListMFADevices(arg0, arg1 interface{}, arg2
 
 // ListOpenIDConnectProviderTags mocks base method.
 func (m *MockIamClient) ListOpenIDConnectProviderTags(arg0 context.Context, arg1 *iam.ListOpenIDConnectProviderTagsInput, arg2 ...func(*iam.Options)) (*iam.ListOpenIDConnectProviderTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOpenIDConnectProviderTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -877,6 +1297,16 @@ func (mr *MockIamClientMockRecorder) ListOpenIDConnectProviderTags(arg0, arg1 in
 
 // ListOpenIDConnectProviders mocks base method.
 func (m *MockIamClient) ListOpenIDConnectProviders(arg0 context.Context, arg1 *iam.ListOpenIDConnectProvidersInput, arg2 ...func(*iam.Options)) (*iam.ListOpenIDConnectProvidersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOpenIDConnectProviders")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -897,6 +1327,16 @@ func (mr *MockIamClientMockRecorder) ListOpenIDConnectProviders(arg0, arg1 inter
 
 // ListPolicies mocks base method.
 func (m *MockIamClient) ListPolicies(arg0 context.Context, arg1 *iam.ListPoliciesInput, arg2 ...func(*iam.Options)) (*iam.ListPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -917,6 +1357,16 @@ func (mr *MockIamClientMockRecorder) ListPolicies(arg0, arg1 interface{}, arg2 .
 
 // ListPoliciesGrantingServiceAccess mocks base method.
 func (m *MockIamClient) ListPoliciesGrantingServiceAccess(arg0 context.Context, arg1 *iam.ListPoliciesGrantingServiceAccessInput, arg2 ...func(*iam.Options)) (*iam.ListPoliciesGrantingServiceAccessOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPoliciesGrantingServiceAccess")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -937,6 +1387,16 @@ func (mr *MockIamClientMockRecorder) ListPoliciesGrantingServiceAccess(arg0, arg
 
 // ListPolicyTags mocks base method.
 func (m *MockIamClient) ListPolicyTags(arg0 context.Context, arg1 *iam.ListPolicyTagsInput, arg2 ...func(*iam.Options)) (*iam.ListPolicyTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPolicyTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -957,6 +1417,16 @@ func (mr *MockIamClientMockRecorder) ListPolicyTags(arg0, arg1 interface{}, arg2
 
 // ListPolicyVersions mocks base method.
 func (m *MockIamClient) ListPolicyVersions(arg0 context.Context, arg1 *iam.ListPolicyVersionsInput, arg2 ...func(*iam.Options)) (*iam.ListPolicyVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPolicyVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -977,6 +1447,16 @@ func (mr *MockIamClientMockRecorder) ListPolicyVersions(arg0, arg1 interface{}, 
 
 // ListRolePolicies mocks base method.
 func (m *MockIamClient) ListRolePolicies(arg0 context.Context, arg1 *iam.ListRolePoliciesInput, arg2 ...func(*iam.Options)) (*iam.ListRolePoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRolePolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -997,6 +1477,16 @@ func (mr *MockIamClientMockRecorder) ListRolePolicies(arg0, arg1 interface{}, ar
 
 // ListRoleTags mocks base method.
 func (m *MockIamClient) ListRoleTags(arg0 context.Context, arg1 *iam.ListRoleTagsInput, arg2 ...func(*iam.Options)) (*iam.ListRoleTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRoleTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1017,6 +1507,16 @@ func (mr *MockIamClientMockRecorder) ListRoleTags(arg0, arg1 interface{}, arg2 .
 
 // ListRoles mocks base method.
 func (m *MockIamClient) ListRoles(arg0 context.Context, arg1 *iam.ListRolesInput, arg2 ...func(*iam.Options)) (*iam.ListRolesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRoles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1037,6 +1537,16 @@ func (mr *MockIamClientMockRecorder) ListRoles(arg0, arg1 interface{}, arg2 ...i
 
 // ListSAMLProviderTags mocks base method.
 func (m *MockIamClient) ListSAMLProviderTags(arg0 context.Context, arg1 *iam.ListSAMLProviderTagsInput, arg2 ...func(*iam.Options)) (*iam.ListSAMLProviderTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSAMLProviderTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1057,6 +1567,16 @@ func (mr *MockIamClientMockRecorder) ListSAMLProviderTags(arg0, arg1 interface{}
 
 // ListSAMLProviders mocks base method.
 func (m *MockIamClient) ListSAMLProviders(arg0 context.Context, arg1 *iam.ListSAMLProvidersInput, arg2 ...func(*iam.Options)) (*iam.ListSAMLProvidersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSAMLProviders")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1077,6 +1597,16 @@ func (mr *MockIamClientMockRecorder) ListSAMLProviders(arg0, arg1 interface{}, a
 
 // ListSSHPublicKeys mocks base method.
 func (m *MockIamClient) ListSSHPublicKeys(arg0 context.Context, arg1 *iam.ListSSHPublicKeysInput, arg2 ...func(*iam.Options)) (*iam.ListSSHPublicKeysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSSHPublicKeys")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1097,6 +1627,16 @@ func (mr *MockIamClientMockRecorder) ListSSHPublicKeys(arg0, arg1 interface{}, a
 
 // ListServerCertificateTags mocks base method.
 func (m *MockIamClient) ListServerCertificateTags(arg0 context.Context, arg1 *iam.ListServerCertificateTagsInput, arg2 ...func(*iam.Options)) (*iam.ListServerCertificateTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListServerCertificateTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1117,6 +1657,16 @@ func (mr *MockIamClientMockRecorder) ListServerCertificateTags(arg0, arg1 interf
 
 // ListServerCertificates mocks base method.
 func (m *MockIamClient) ListServerCertificates(arg0 context.Context, arg1 *iam.ListServerCertificatesInput, arg2 ...func(*iam.Options)) (*iam.ListServerCertificatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListServerCertificates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1137,6 +1687,16 @@ func (mr *MockIamClientMockRecorder) ListServerCertificates(arg0, arg1 interface
 
 // ListServiceSpecificCredentials mocks base method.
 func (m *MockIamClient) ListServiceSpecificCredentials(arg0 context.Context, arg1 *iam.ListServiceSpecificCredentialsInput, arg2 ...func(*iam.Options)) (*iam.ListServiceSpecificCredentialsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListServiceSpecificCredentials")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1157,6 +1717,16 @@ func (mr *MockIamClientMockRecorder) ListServiceSpecificCredentials(arg0, arg1 i
 
 // ListSigningCertificates mocks base method.
 func (m *MockIamClient) ListSigningCertificates(arg0 context.Context, arg1 *iam.ListSigningCertificatesInput, arg2 ...func(*iam.Options)) (*iam.ListSigningCertificatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSigningCertificates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1177,6 +1747,16 @@ func (mr *MockIamClientMockRecorder) ListSigningCertificates(arg0, arg1 interfac
 
 // ListUserPolicies mocks base method.
 func (m *MockIamClient) ListUserPolicies(arg0 context.Context, arg1 *iam.ListUserPoliciesInput, arg2 ...func(*iam.Options)) (*iam.ListUserPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUserPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1197,6 +1777,16 @@ func (mr *MockIamClientMockRecorder) ListUserPolicies(arg0, arg1 interface{}, ar
 
 // ListUserTags mocks base method.
 func (m *MockIamClient) ListUserTags(arg0 context.Context, arg1 *iam.ListUserTagsInput, arg2 ...func(*iam.Options)) (*iam.ListUserTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUserTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1217,6 +1807,16 @@ func (mr *MockIamClientMockRecorder) ListUserTags(arg0, arg1 interface{}, arg2 .
 
 // ListUsers mocks base method.
 func (m *MockIamClient) ListUsers(arg0 context.Context, arg1 *iam.ListUsersInput, arg2 ...func(*iam.Options)) (*iam.ListUsersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUsers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1237,6 +1837,16 @@ func (mr *MockIamClientMockRecorder) ListUsers(arg0, arg1 interface{}, arg2 ...i
 
 // ListVirtualMFADevices mocks base method.
 func (m *MockIamClient) ListVirtualMFADevices(arg0 context.Context, arg1 *iam.ListVirtualMFADevicesInput, arg2 ...func(*iam.Options)) (*iam.ListVirtualMFADevicesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iam.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListVirtualMFADevices")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
