@@ -46,14 +46,7 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 	cl := meta.(*client.Client)
 	svc := cl.Services().Cloudtrail
 
-	le := &cloudtrail.LookupEventsInput{
-		StartTime:        nil,
-		EndTime:          nil,
-		EventCategory:    "",
-		LookupAttributes: nil,
-		MaxResults:       nil,
-		NextToken:        nil,
-	}
+	le := &cloudtrail.LookupEventsInput{}
 
 	if cl.Backend != nil {
 		value, err := cl.Backend.Get(ctx, tableName, cl.ID())
