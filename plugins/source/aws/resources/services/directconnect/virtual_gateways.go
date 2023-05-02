@@ -37,7 +37,9 @@ func fetchDirectconnectVirtualGateways(ctx context.Context, meta schema.ClientMe
 	var config directconnect.DescribeVirtualGatewaysInput
 	c := meta.(*client.Client)
 	svc := c.Services().Directconnect
-	output, err := svc.DescribeVirtualGateways(ctx, &config)
+	output, err := svc.DescribeVirtualGateways(ctx, &config, func(options *directconnect.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

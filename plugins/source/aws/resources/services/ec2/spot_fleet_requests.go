@@ -38,7 +38,9 @@ func fetchEC2SpotFleetRequests(ctx context.Context, meta schema.ClientMeta, pare
 	svc := c.Services().Ec2
 	pag := ec2.NewDescribeSpotFleetRequestsPaginator(svc, &ec2.DescribeSpotFleetRequestsInput{})
 	for pag.HasMorePages() {
-		resp, err := pag.NextPage(ctx)
+		resp, err := pag.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
