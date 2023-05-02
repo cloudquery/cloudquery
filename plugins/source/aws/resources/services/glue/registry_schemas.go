@@ -54,7 +54,9 @@ func fetchGlueRegistrySchemas(ctx context.Context, meta schema.ClientMeta, paren
 	}
 	paginator := glue.NewListSchemasPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		result, err := paginator.NextPage(ctx)
+		result, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -68,7 +70,9 @@ func getRegistrySchema(ctx context.Context, meta schema.ClientMeta, resource *sc
 	svc := cl.Services().Glue
 	item := resource.Item.(types.SchemaListItem)
 
-	s, err := svc.GetSchema(ctx, &glue.GetSchemaInput{SchemaId: &types.SchemaId{SchemaArn: item.SchemaArn}})
+	s, err := svc.GetSchema(ctx, &glue.GetSchemaInput{SchemaId: &types.SchemaId{SchemaArn: item.SchemaArn}}, func(options *glue.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -83,6 +87,8 @@ func resolveGlueRegistrySchemaTags(ctx context.Context, meta schema.ClientMeta, 
 	s := resource.Item.(*glue.GetSchemaOutput)
 	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
 		ResourceArn: s.SchemaArn,
+	}, func(options *glue.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {

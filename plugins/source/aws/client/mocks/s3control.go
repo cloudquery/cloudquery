@@ -37,6 +37,16 @@ func (m *MockS3controlClient) EXPECT() *MockS3controlClientMockRecorder {
 
 // DescribeJob mocks base method.
 func (m *MockS3controlClient) DescribeJob(arg0 context.Context, arg1 *s3control.DescribeJobInput, arg2 ...func(*s3control.Options)) (*s3control.DescribeJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockS3controlClientMockRecorder) DescribeJob(arg0, arg1 interface{}, a
 
 // DescribeMultiRegionAccessPointOperation mocks base method.
 func (m *MockS3controlClient) DescribeMultiRegionAccessPointOperation(arg0 context.Context, arg1 *s3control.DescribeMultiRegionAccessPointOperationInput, arg2 ...func(*s3control.Options)) (*s3control.DescribeMultiRegionAccessPointOperationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMultiRegionAccessPointOperation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockS3controlClientMockRecorder) DescribeMultiRegionAccessPointOperati
 
 // GetAccessPoint mocks base method.
 func (m *MockS3controlClient) GetAccessPoint(arg0 context.Context, arg1 *s3control.GetAccessPointInput, arg2 ...func(*s3control.Options)) (*s3control.GetAccessPointOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccessPoint")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockS3controlClientMockRecorder) GetAccessPoint(arg0, arg1 interface{}
 
 // GetAccessPointConfigurationForObjectLambda mocks base method.
 func (m *MockS3controlClient) GetAccessPointConfigurationForObjectLambda(arg0 context.Context, arg1 *s3control.GetAccessPointConfigurationForObjectLambdaInput, arg2 ...func(*s3control.Options)) (*s3control.GetAccessPointConfigurationForObjectLambdaOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccessPointConfigurationForObjectLambda")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockS3controlClientMockRecorder) GetAccessPointConfigurationForObjectL
 
 // GetAccessPointForObjectLambda mocks base method.
 func (m *MockS3controlClient) GetAccessPointForObjectLambda(arg0 context.Context, arg1 *s3control.GetAccessPointForObjectLambdaInput, arg2 ...func(*s3control.Options)) (*s3control.GetAccessPointForObjectLambdaOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccessPointForObjectLambda")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockS3controlClientMockRecorder) GetAccessPointForObjectLambda(arg0, a
 
 // GetAccessPointPolicy mocks base method.
 func (m *MockS3controlClient) GetAccessPointPolicy(arg0 context.Context, arg1 *s3control.GetAccessPointPolicyInput, arg2 ...func(*s3control.Options)) (*s3control.GetAccessPointPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccessPointPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockS3controlClientMockRecorder) GetAccessPointPolicy(arg0, arg1 inter
 
 // GetAccessPointPolicyForObjectLambda mocks base method.
 func (m *MockS3controlClient) GetAccessPointPolicyForObjectLambda(arg0 context.Context, arg1 *s3control.GetAccessPointPolicyForObjectLambdaInput, arg2 ...func(*s3control.Options)) (*s3control.GetAccessPointPolicyForObjectLambdaOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccessPointPolicyForObjectLambda")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockS3controlClientMockRecorder) GetAccessPointPolicyForObjectLambda(a
 
 // GetAccessPointPolicyStatus mocks base method.
 func (m *MockS3controlClient) GetAccessPointPolicyStatus(arg0 context.Context, arg1 *s3control.GetAccessPointPolicyStatusInput, arg2 ...func(*s3control.Options)) (*s3control.GetAccessPointPolicyStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccessPointPolicyStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockS3controlClientMockRecorder) GetAccessPointPolicyStatus(arg0, arg1
 
 // GetAccessPointPolicyStatusForObjectLambda mocks base method.
 func (m *MockS3controlClient) GetAccessPointPolicyStatusForObjectLambda(arg0 context.Context, arg1 *s3control.GetAccessPointPolicyStatusForObjectLambdaInput, arg2 ...func(*s3control.Options)) (*s3control.GetAccessPointPolicyStatusForObjectLambdaOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccessPointPolicyStatusForObjectLambda")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockS3controlClientMockRecorder) GetAccessPointPolicyStatusForObjectLa
 
 // GetBucket mocks base method.
 func (m *MockS3controlClient) GetBucket(arg0 context.Context, arg1 *s3control.GetBucketInput, arg2 ...func(*s3control.Options)) (*s3control.GetBucketOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucket")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockS3controlClientMockRecorder) GetBucket(arg0, arg1 interface{}, arg
 
 // GetBucketLifecycleConfiguration mocks base method.
 func (m *MockS3controlClient) GetBucketLifecycleConfiguration(arg0 context.Context, arg1 *s3control.GetBucketLifecycleConfigurationInput, arg2 ...func(*s3control.Options)) (*s3control.GetBucketLifecycleConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketLifecycleConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockS3controlClientMockRecorder) GetBucketLifecycleConfiguration(arg0,
 
 // GetBucketPolicy mocks base method.
 func (m *MockS3controlClient) GetBucketPolicy(arg0 context.Context, arg1 *s3control.GetBucketPolicyInput, arg2 ...func(*s3control.Options)) (*s3control.GetBucketPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockS3controlClientMockRecorder) GetBucketPolicy(arg0, arg1 interface{
 
 // GetBucketTagging mocks base method.
 func (m *MockS3controlClient) GetBucketTagging(arg0 context.Context, arg1 *s3control.GetBucketTaggingInput, arg2 ...func(*s3control.Options)) (*s3control.GetBucketTaggingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketTagging")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockS3controlClientMockRecorder) GetBucketTagging(arg0, arg1 interface
 
 // GetBucketVersioning mocks base method.
 func (m *MockS3controlClient) GetBucketVersioning(arg0 context.Context, arg1 *s3control.GetBucketVersioningInput, arg2 ...func(*s3control.Options)) (*s3control.GetBucketVersioningOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketVersioning")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockS3controlClientMockRecorder) GetBucketVersioning(arg0, arg1 interf
 
 // GetJobTagging mocks base method.
 func (m *MockS3controlClient) GetJobTagging(arg0 context.Context, arg1 *s3control.GetJobTaggingInput, arg2 ...func(*s3control.Options)) (*s3control.GetJobTaggingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetJobTagging")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockS3controlClientMockRecorder) GetJobTagging(arg0, arg1 interface{},
 
 // GetMultiRegionAccessPoint mocks base method.
 func (m *MockS3controlClient) GetMultiRegionAccessPoint(arg0 context.Context, arg1 *s3control.GetMultiRegionAccessPointInput, arg2 ...func(*s3control.Options)) (*s3control.GetMultiRegionAccessPointOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMultiRegionAccessPoint")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockS3controlClientMockRecorder) GetMultiRegionAccessPoint(arg0, arg1 
 
 // GetMultiRegionAccessPointPolicy mocks base method.
 func (m *MockS3controlClient) GetMultiRegionAccessPointPolicy(arg0 context.Context, arg1 *s3control.GetMultiRegionAccessPointPolicyInput, arg2 ...func(*s3control.Options)) (*s3control.GetMultiRegionAccessPointPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMultiRegionAccessPointPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockS3controlClientMockRecorder) GetMultiRegionAccessPointPolicy(arg0,
 
 // GetMultiRegionAccessPointPolicyStatus mocks base method.
 func (m *MockS3controlClient) GetMultiRegionAccessPointPolicyStatus(arg0 context.Context, arg1 *s3control.GetMultiRegionAccessPointPolicyStatusInput, arg2 ...func(*s3control.Options)) (*s3control.GetMultiRegionAccessPointPolicyStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMultiRegionAccessPointPolicyStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockS3controlClientMockRecorder) GetMultiRegionAccessPointPolicyStatus
 
 // GetMultiRegionAccessPointRoutes mocks base method.
 func (m *MockS3controlClient) GetMultiRegionAccessPointRoutes(arg0 context.Context, arg1 *s3control.GetMultiRegionAccessPointRoutesInput, arg2 ...func(*s3control.Options)) (*s3control.GetMultiRegionAccessPointRoutesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMultiRegionAccessPointRoutes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockS3controlClientMockRecorder) GetMultiRegionAccessPointRoutes(arg0,
 
 // GetPublicAccessBlock mocks base method.
 func (m *MockS3controlClient) GetPublicAccessBlock(arg0 context.Context, arg1 *s3control.GetPublicAccessBlockInput, arg2 ...func(*s3control.Options)) (*s3control.GetPublicAccessBlockOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPublicAccessBlock")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockS3controlClientMockRecorder) GetPublicAccessBlock(arg0, arg1 inter
 
 // GetStorageLensConfiguration mocks base method.
 func (m *MockS3controlClient) GetStorageLensConfiguration(arg0 context.Context, arg1 *s3control.GetStorageLensConfigurationInput, arg2 ...func(*s3control.Options)) (*s3control.GetStorageLensConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetStorageLensConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockS3controlClientMockRecorder) GetStorageLensConfiguration(arg0, arg
 
 // GetStorageLensConfigurationTagging mocks base method.
 func (m *MockS3controlClient) GetStorageLensConfigurationTagging(arg0 context.Context, arg1 *s3control.GetStorageLensConfigurationTaggingInput, arg2 ...func(*s3control.Options)) (*s3control.GetStorageLensConfigurationTaggingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetStorageLensConfigurationTagging")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockS3controlClientMockRecorder) GetStorageLensConfigurationTagging(ar
 
 // ListAccessPoints mocks base method.
 func (m *MockS3controlClient) ListAccessPoints(arg0 context.Context, arg1 *s3control.ListAccessPointsInput, arg2 ...func(*s3control.Options)) (*s3control.ListAccessPointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAccessPoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockS3controlClientMockRecorder) ListAccessPoints(arg0, arg1 interface
 
 // ListAccessPointsForObjectLambda mocks base method.
 func (m *MockS3controlClient) ListAccessPointsForObjectLambda(arg0 context.Context, arg1 *s3control.ListAccessPointsForObjectLambdaInput, arg2 ...func(*s3control.Options)) (*s3control.ListAccessPointsForObjectLambdaOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAccessPointsForObjectLambda")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockS3controlClientMockRecorder) ListAccessPointsForObjectLambda(arg0,
 
 // ListJobs mocks base method.
 func (m *MockS3controlClient) ListJobs(arg0 context.Context, arg1 *s3control.ListJobsInput, arg2 ...func(*s3control.Options)) (*s3control.ListJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockS3controlClientMockRecorder) ListJobs(arg0, arg1 interface{}, arg2
 
 // ListMultiRegionAccessPoints mocks base method.
 func (m *MockS3controlClient) ListMultiRegionAccessPoints(arg0 context.Context, arg1 *s3control.ListMultiRegionAccessPointsInput, arg2 ...func(*s3control.Options)) (*s3control.ListMultiRegionAccessPointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMultiRegionAccessPoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockS3controlClientMockRecorder) ListMultiRegionAccessPoints(arg0, arg
 
 // ListRegionalBuckets mocks base method.
 func (m *MockS3controlClient) ListRegionalBuckets(arg0 context.Context, arg1 *s3control.ListRegionalBucketsInput, arg2 ...func(*s3control.Options)) (*s3control.ListRegionalBucketsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRegionalBuckets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockS3controlClientMockRecorder) ListRegionalBuckets(arg0, arg1 interf
 
 // ListStorageLensConfigurations mocks base method.
 func (m *MockS3controlClient) ListStorageLensConfigurations(arg0 context.Context, arg1 *s3control.ListStorageLensConfigurationsInput, arg2 ...func(*s3control.Options)) (*s3control.ListStorageLensConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStorageLensConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

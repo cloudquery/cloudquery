@@ -51,12 +51,12 @@ func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	cluster1.InstanceCollectionType = types.InstanceCollectionTypeInstanceFleet
 	cluster2.InstanceCollectionType = types.InstanceCollectionTypeInstanceGroup
 
-	mock.EXPECT().DescribeCluster(gomock.Any(), &emr.DescribeClusterInput{ClusterId: summary1.Id}).Return(
+	mock.EXPECT().DescribeCluster(gomock.Any(), &emr.DescribeClusterInput{ClusterId: summary1.Id}, gomock.Any()).Return(
 		&emr.DescribeClusterOutput{Cluster: &cluster1},
 		nil,
 	)
 
-	mock.EXPECT().DescribeCluster(gomock.Any(), &emr.DescribeClusterInput{ClusterId: summary2.Id}).Return(
+	mock.EXPECT().DescribeCluster(gomock.Any(), &emr.DescribeClusterInput{ClusterId: summary2.Id}, gomock.Any()).Return(
 		&emr.DescribeClusterOutput{Cluster: &cluster2},
 		nil,
 	)
@@ -65,7 +65,7 @@ func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err := faker.FakeObject(&instanceFleet); err != nil {
 		t.Fatal(err)
 	}
-	mock.EXPECT().ListInstanceFleets(gomock.Any(), &emr.ListInstanceFleetsInput{ClusterId: summary1.Id}).Return(
+	mock.EXPECT().ListInstanceFleets(gomock.Any(), &emr.ListInstanceFleetsInput{ClusterId: summary1.Id}, gomock.Any()).Return(
 		&emr.ListInstanceFleetsOutput{InstanceFleets: []types.InstanceFleet{instanceFleet}},
 		nil,
 	)
@@ -74,7 +74,7 @@ func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err := faker.FakeObject(&instanceGroup); err != nil {
 		t.Fatal(err)
 	}
-	mock.EXPECT().ListInstanceGroups(gomock.Any(), &emr.ListInstanceGroupsInput{ClusterId: summary2.Id}).Return(
+	mock.EXPECT().ListInstanceGroups(gomock.Any(), &emr.ListInstanceGroupsInput{ClusterId: summary2.Id}, gomock.Any()).Return(
 		&emr.ListInstanceGroupsOutput{InstanceGroups: []types.InstanceGroup{instanceGroup}},
 		nil,
 	)

@@ -48,7 +48,9 @@ func fetchRamResourceShareInvitations(ctx context.Context, meta schema.ClientMet
 	svc := c.Services().Ram
 	paginator := ram.NewGetResourceShareInvitationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ram.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

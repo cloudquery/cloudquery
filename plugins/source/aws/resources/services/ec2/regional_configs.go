@@ -29,13 +29,17 @@ func fetchEc2RegionalConfigs(ctx context.Context, meta schema.ClientMeta, _ *sch
 
 	svc := c.Services().Ec2
 	var regionalConfig models.RegionalConfig
-	resp, err := svc.GetEbsDefaultKmsKeyId(ctx, &ec2.GetEbsDefaultKmsKeyIdInput{})
+	resp, err := svc.GetEbsDefaultKmsKeyId(ctx, &ec2.GetEbsDefaultKmsKeyIdInput{}, func(options *ec2.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
 	regionalConfig.EbsDefaultKmsKeyId = resp.KmsKeyId
 
-	ebsResp, err := svc.GetEbsEncryptionByDefault(ctx, &ec2.GetEbsEncryptionByDefaultInput{})
+	ebsResp, err := svc.GetEbsEncryptionByDefault(ctx, &ec2.GetEbsEncryptionByDefaultInput{}, func(options *ec2.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

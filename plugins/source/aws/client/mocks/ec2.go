@@ -37,6 +37,16 @@ func (m *MockEc2Client) EXPECT() *MockEc2ClientMockRecorder {
 
 // DescribeAccountAttributes mocks base method.
 func (m *MockEc2Client) DescribeAccountAttributes(arg0 context.Context, arg1 *ec2.DescribeAccountAttributesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeAccountAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccountAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeAccountAttributes(arg0, arg1 interf
 
 // DescribeAddressTransfers mocks base method.
 func (m *MockEc2Client) DescribeAddressTransfers(arg0 context.Context, arg1 *ec2.DescribeAddressTransfersInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeAddressTransfersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAddressTransfers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeAddressTransfers(arg0, arg1 interfa
 
 // DescribeAddresses mocks base method.
 func (m *MockEc2Client) DescribeAddresses(arg0 context.Context, arg1 *ec2.DescribeAddressesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeAddressesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAddresses")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeAddresses(arg0, arg1 interface{}, a
 
 // DescribeAddressesAttribute mocks base method.
 func (m *MockEc2Client) DescribeAddressesAttribute(arg0 context.Context, arg1 *ec2.DescribeAddressesAttributeInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeAddressesAttributeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAddressesAttribute")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeAddressesAttribute(arg0, arg1 inter
 
 // DescribeAggregateIdFormat mocks base method.
 func (m *MockEc2Client) DescribeAggregateIdFormat(arg0 context.Context, arg1 *ec2.DescribeAggregateIdFormatInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeAggregateIdFormatOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAggregateIdFormat")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeAggregateIdFormat(arg0, arg1 interf
 
 // DescribeAvailabilityZones mocks base method.
 func (m *MockEc2Client) DescribeAvailabilityZones(arg0 context.Context, arg1 *ec2.DescribeAvailabilityZonesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeAvailabilityZonesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAvailabilityZones")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeAvailabilityZones(arg0, arg1 interf
 
 // DescribeAwsNetworkPerformanceMetricSubscriptions mocks base method.
 func (m *MockEc2Client) DescribeAwsNetworkPerformanceMetricSubscriptions(arg0 context.Context, arg1 *ec2.DescribeAwsNetworkPerformanceMetricSubscriptionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeAwsNetworkPerformanceMetricSubscriptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAwsNetworkPerformanceMetricSubscriptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeAwsNetworkPerformanceMetricSubscrip
 
 // DescribeBundleTasks mocks base method.
 func (m *MockEc2Client) DescribeBundleTasks(arg0 context.Context, arg1 *ec2.DescribeBundleTasksInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeBundleTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeBundleTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeBundleTasks(arg0, arg1 interface{},
 
 // DescribeByoipCidrs mocks base method.
 func (m *MockEc2Client) DescribeByoipCidrs(arg0 context.Context, arg1 *ec2.DescribeByoipCidrsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeByoipCidrsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeByoipCidrs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeByoipCidrs(arg0, arg1 interface{}, 
 
 // DescribeCapacityReservationFleets mocks base method.
 func (m *MockEc2Client) DescribeCapacityReservationFleets(arg0 context.Context, arg1 *ec2.DescribeCapacityReservationFleetsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeCapacityReservationFleetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCapacityReservationFleets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeCapacityReservationFleets(arg0, arg
 
 // DescribeCapacityReservations mocks base method.
 func (m *MockEc2Client) DescribeCapacityReservations(arg0 context.Context, arg1 *ec2.DescribeCapacityReservationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeCapacityReservationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCapacityReservations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeCapacityReservations(arg0, arg1 int
 
 // DescribeCarrierGateways mocks base method.
 func (m *MockEc2Client) DescribeCarrierGateways(arg0 context.Context, arg1 *ec2.DescribeCarrierGatewaysInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeCarrierGatewaysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCarrierGateways")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeCarrierGateways(arg0, arg1 interfac
 
 // DescribeClassicLinkInstances mocks base method.
 func (m *MockEc2Client) DescribeClassicLinkInstances(arg0 context.Context, arg1 *ec2.DescribeClassicLinkInstancesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeClassicLinkInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClassicLinkInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeClassicLinkInstances(arg0, arg1 int
 
 // DescribeClientVpnAuthorizationRules mocks base method.
 func (m *MockEc2Client) DescribeClientVpnAuthorizationRules(arg0 context.Context, arg1 *ec2.DescribeClientVpnAuthorizationRulesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeClientVpnAuthorizationRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClientVpnAuthorizationRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeClientVpnAuthorizationRules(arg0, a
 
 // DescribeClientVpnConnections mocks base method.
 func (m *MockEc2Client) DescribeClientVpnConnections(arg0 context.Context, arg1 *ec2.DescribeClientVpnConnectionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeClientVpnConnectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClientVpnConnections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeClientVpnConnections(arg0, arg1 int
 
 // DescribeClientVpnEndpoints mocks base method.
 func (m *MockEc2Client) DescribeClientVpnEndpoints(arg0 context.Context, arg1 *ec2.DescribeClientVpnEndpointsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeClientVpnEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClientVpnEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeClientVpnEndpoints(arg0, arg1 inter
 
 // DescribeClientVpnRoutes mocks base method.
 func (m *MockEc2Client) DescribeClientVpnRoutes(arg0 context.Context, arg1 *ec2.DescribeClientVpnRoutesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeClientVpnRoutesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClientVpnRoutes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeClientVpnRoutes(arg0, arg1 interfac
 
 // DescribeClientVpnTargetNetworks mocks base method.
 func (m *MockEc2Client) DescribeClientVpnTargetNetworks(arg0 context.Context, arg1 *ec2.DescribeClientVpnTargetNetworksInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeClientVpnTargetNetworksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClientVpnTargetNetworks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeClientVpnTargetNetworks(arg0, arg1 
 
 // DescribeCoipPools mocks base method.
 func (m *MockEc2Client) DescribeCoipPools(arg0 context.Context, arg1 *ec2.DescribeCoipPoolsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeCoipPoolsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCoipPools")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeCoipPools(arg0, arg1 interface{}, a
 
 // DescribeConversionTasks mocks base method.
 func (m *MockEc2Client) DescribeConversionTasks(arg0 context.Context, arg1 *ec2.DescribeConversionTasksInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeConversionTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConversionTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeConversionTasks(arg0, arg1 interfac
 
 // DescribeCustomerGateways mocks base method.
 func (m *MockEc2Client) DescribeCustomerGateways(arg0 context.Context, arg1 *ec2.DescribeCustomerGatewaysInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeCustomerGatewaysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCustomerGateways")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeCustomerGateways(arg0, arg1 interfa
 
 // DescribeDhcpOptions mocks base method.
 func (m *MockEc2Client) DescribeDhcpOptions(arg0 context.Context, arg1 *ec2.DescribeDhcpOptionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeDhcpOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDhcpOptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeDhcpOptions(arg0, arg1 interface{},
 
 // DescribeEgressOnlyInternetGateways mocks base method.
 func (m *MockEc2Client) DescribeEgressOnlyInternetGateways(arg0 context.Context, arg1 *ec2.DescribeEgressOnlyInternetGatewaysInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeEgressOnlyInternetGatewaysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEgressOnlyInternetGateways")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeEgressOnlyInternetGateways(arg0, ar
 
 // DescribeElasticGpus mocks base method.
 func (m *MockEc2Client) DescribeElasticGpus(arg0 context.Context, arg1 *ec2.DescribeElasticGpusInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeElasticGpusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeElasticGpus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeElasticGpus(arg0, arg1 interface{},
 
 // DescribeExportImageTasks mocks base method.
 func (m *MockEc2Client) DescribeExportImageTasks(arg0 context.Context, arg1 *ec2.DescribeExportImageTasksInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeExportImageTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeExportImageTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeExportImageTasks(arg0, arg1 interfa
 
 // DescribeExportTasks mocks base method.
 func (m *MockEc2Client) DescribeExportTasks(arg0 context.Context, arg1 *ec2.DescribeExportTasksInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeExportTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeExportTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeExportTasks(arg0, arg1 interface{},
 
 // DescribeFastLaunchImages mocks base method.
 func (m *MockEc2Client) DescribeFastLaunchImages(arg0 context.Context, arg1 *ec2.DescribeFastLaunchImagesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeFastLaunchImagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFastLaunchImages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeFastLaunchImages(arg0, arg1 interfa
 
 // DescribeFastSnapshotRestores mocks base method.
 func (m *MockEc2Client) DescribeFastSnapshotRestores(arg0 context.Context, arg1 *ec2.DescribeFastSnapshotRestoresInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeFastSnapshotRestoresOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFastSnapshotRestores")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeFastSnapshotRestores(arg0, arg1 int
 
 // DescribeFleetHistory mocks base method.
 func (m *MockEc2Client) DescribeFleetHistory(arg0 context.Context, arg1 *ec2.DescribeFleetHistoryInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeFleetHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFleetHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeFleetHistory(arg0, arg1 interface{}
 
 // DescribeFleetInstances mocks base method.
 func (m *MockEc2Client) DescribeFleetInstances(arg0 context.Context, arg1 *ec2.DescribeFleetInstancesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeFleetInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFleetInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeFleetInstances(arg0, arg1 interface
 
 // DescribeFleets mocks base method.
 func (m *MockEc2Client) DescribeFleets(arg0 context.Context, arg1 *ec2.DescribeFleetsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeFleetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFleets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeFleets(arg0, arg1 interface{}, arg2
 
 // DescribeFlowLogs mocks base method.
 func (m *MockEc2Client) DescribeFlowLogs(arg0 context.Context, arg1 *ec2.DescribeFlowLogsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeFlowLogsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFlowLogs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeFlowLogs(arg0, arg1 interface{}, ar
 
 // DescribeFpgaImageAttribute mocks base method.
 func (m *MockEc2Client) DescribeFpgaImageAttribute(arg0 context.Context, arg1 *ec2.DescribeFpgaImageAttributeInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeFpgaImageAttributeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFpgaImageAttribute")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeFpgaImageAttribute(arg0, arg1 inter
 
 // DescribeFpgaImages mocks base method.
 func (m *MockEc2Client) DescribeFpgaImages(arg0 context.Context, arg1 *ec2.DescribeFpgaImagesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeFpgaImagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFpgaImages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1057,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeFpgaImages(arg0, arg1 interface{}, 
 
 // DescribeHostReservationOfferings mocks base method.
 func (m *MockEc2Client) DescribeHostReservationOfferings(arg0 context.Context, arg1 *ec2.DescribeHostReservationOfferingsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeHostReservationOfferingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeHostReservationOfferings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1087,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeHostReservationOfferings(arg0, arg1
 
 // DescribeHostReservations mocks base method.
 func (m *MockEc2Client) DescribeHostReservations(arg0 context.Context, arg1 *ec2.DescribeHostReservationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeHostReservationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeHostReservations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1117,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeHostReservations(arg0, arg1 interfa
 
 // DescribeHosts mocks base method.
 func (m *MockEc2Client) DescribeHosts(arg0 context.Context, arg1 *ec2.DescribeHostsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeHostsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeHosts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -777,6 +1147,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeHosts(arg0, arg1 interface{}, arg2 
 
 // DescribeIamInstanceProfileAssociations mocks base method.
 func (m *MockEc2Client) DescribeIamInstanceProfileAssociations(arg0 context.Context, arg1 *ec2.DescribeIamInstanceProfileAssociationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeIamInstanceProfileAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIamInstanceProfileAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -797,6 +1177,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeIamInstanceProfileAssociations(arg0
 
 // DescribeIdFormat mocks base method.
 func (m *MockEc2Client) DescribeIdFormat(arg0 context.Context, arg1 *ec2.DescribeIdFormatInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeIdFormatOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIdFormat")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -817,6 +1207,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeIdFormat(arg0, arg1 interface{}, ar
 
 // DescribeIdentityIdFormat mocks base method.
 func (m *MockEc2Client) DescribeIdentityIdFormat(arg0 context.Context, arg1 *ec2.DescribeIdentityIdFormatInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeIdentityIdFormatOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIdentityIdFormat")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -837,6 +1237,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeIdentityIdFormat(arg0, arg1 interfa
 
 // DescribeImageAttribute mocks base method.
 func (m *MockEc2Client) DescribeImageAttribute(arg0 context.Context, arg1 *ec2.DescribeImageAttributeInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeImageAttributeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImageAttribute")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -857,6 +1267,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeImageAttribute(arg0, arg1 interface
 
 // DescribeImages mocks base method.
 func (m *MockEc2Client) DescribeImages(arg0 context.Context, arg1 *ec2.DescribeImagesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeImagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -877,6 +1297,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeImages(arg0, arg1 interface{}, arg2
 
 // DescribeImportImageTasks mocks base method.
 func (m *MockEc2Client) DescribeImportImageTasks(arg0 context.Context, arg1 *ec2.DescribeImportImageTasksInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeImportImageTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImportImageTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -897,6 +1327,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeImportImageTasks(arg0, arg1 interfa
 
 // DescribeImportSnapshotTasks mocks base method.
 func (m *MockEc2Client) DescribeImportSnapshotTasks(arg0 context.Context, arg1 *ec2.DescribeImportSnapshotTasksInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeImportSnapshotTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImportSnapshotTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -917,6 +1357,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeImportSnapshotTasks(arg0, arg1 inte
 
 // DescribeInstanceAttribute mocks base method.
 func (m *MockEc2Client) DescribeInstanceAttribute(arg0 context.Context, arg1 *ec2.DescribeInstanceAttributeInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeInstanceAttributeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstanceAttribute")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -937,6 +1387,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeInstanceAttribute(arg0, arg1 interf
 
 // DescribeInstanceCreditSpecifications mocks base method.
 func (m *MockEc2Client) DescribeInstanceCreditSpecifications(arg0 context.Context, arg1 *ec2.DescribeInstanceCreditSpecificationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeInstanceCreditSpecificationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstanceCreditSpecifications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -957,6 +1417,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeInstanceCreditSpecifications(arg0, 
 
 // DescribeInstanceEventNotificationAttributes mocks base method.
 func (m *MockEc2Client) DescribeInstanceEventNotificationAttributes(arg0 context.Context, arg1 *ec2.DescribeInstanceEventNotificationAttributesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeInstanceEventNotificationAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstanceEventNotificationAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -977,6 +1447,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeInstanceEventNotificationAttributes
 
 // DescribeInstanceEventWindows mocks base method.
 func (m *MockEc2Client) DescribeInstanceEventWindows(arg0 context.Context, arg1 *ec2.DescribeInstanceEventWindowsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeInstanceEventWindowsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstanceEventWindows")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -997,6 +1477,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeInstanceEventWindows(arg0, arg1 int
 
 // DescribeInstanceStatus mocks base method.
 func (m *MockEc2Client) DescribeInstanceStatus(arg0 context.Context, arg1 *ec2.DescribeInstanceStatusInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeInstanceStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstanceStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1017,6 +1507,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeInstanceStatus(arg0, arg1 interface
 
 // DescribeInstanceTypeOfferings mocks base method.
 func (m *MockEc2Client) DescribeInstanceTypeOfferings(arg0 context.Context, arg1 *ec2.DescribeInstanceTypeOfferingsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeInstanceTypeOfferingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstanceTypeOfferings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1037,6 +1537,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeInstanceTypeOfferings(arg0, arg1 in
 
 // DescribeInstanceTypes mocks base method.
 func (m *MockEc2Client) DescribeInstanceTypes(arg0 context.Context, arg1 *ec2.DescribeInstanceTypesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeInstanceTypesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstanceTypes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1057,6 +1567,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeInstanceTypes(arg0, arg1 interface{
 
 // DescribeInstances mocks base method.
 func (m *MockEc2Client) DescribeInstances(arg0 context.Context, arg1 *ec2.DescribeInstancesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1077,6 +1597,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeInstances(arg0, arg1 interface{}, a
 
 // DescribeInternetGateways mocks base method.
 func (m *MockEc2Client) DescribeInternetGateways(arg0 context.Context, arg1 *ec2.DescribeInternetGatewaysInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeInternetGatewaysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInternetGateways")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1097,6 +1627,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeInternetGateways(arg0, arg1 interfa
 
 // DescribeIpamPools mocks base method.
 func (m *MockEc2Client) DescribeIpamPools(arg0 context.Context, arg1 *ec2.DescribeIpamPoolsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeIpamPoolsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIpamPools")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1117,6 +1657,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeIpamPools(arg0, arg1 interface{}, a
 
 // DescribeIpamScopes mocks base method.
 func (m *MockEc2Client) DescribeIpamScopes(arg0 context.Context, arg1 *ec2.DescribeIpamScopesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeIpamScopesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIpamScopes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1137,6 +1687,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeIpamScopes(arg0, arg1 interface{}, 
 
 // DescribeIpams mocks base method.
 func (m *MockEc2Client) DescribeIpams(arg0 context.Context, arg1 *ec2.DescribeIpamsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeIpamsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIpams")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1157,6 +1717,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeIpams(arg0, arg1 interface{}, arg2 
 
 // DescribeIpv6Pools mocks base method.
 func (m *MockEc2Client) DescribeIpv6Pools(arg0 context.Context, arg1 *ec2.DescribeIpv6PoolsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeIpv6PoolsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIpv6Pools")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1177,6 +1747,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeIpv6Pools(arg0, arg1 interface{}, a
 
 // DescribeKeyPairs mocks base method.
 func (m *MockEc2Client) DescribeKeyPairs(arg0 context.Context, arg1 *ec2.DescribeKeyPairsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeKeyPairsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeKeyPairs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1197,6 +1777,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeKeyPairs(arg0, arg1 interface{}, ar
 
 // DescribeLaunchTemplateVersions mocks base method.
 func (m *MockEc2Client) DescribeLaunchTemplateVersions(arg0 context.Context, arg1 *ec2.DescribeLaunchTemplateVersionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeLaunchTemplateVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLaunchTemplateVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1217,6 +1807,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeLaunchTemplateVersions(arg0, arg1 i
 
 // DescribeLaunchTemplates mocks base method.
 func (m *MockEc2Client) DescribeLaunchTemplates(arg0 context.Context, arg1 *ec2.DescribeLaunchTemplatesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeLaunchTemplatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLaunchTemplates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1237,6 +1837,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeLaunchTemplates(arg0, arg1 interfac
 
 // DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociations mocks base method.
 func (m *MockEc2Client) DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociations(arg0 context.Context, arg1 *ec2.DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1257,6 +1867,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeLocalGatewayRouteTableVirtualInterf
 
 // DescribeLocalGatewayRouteTableVpcAssociations mocks base method.
 func (m *MockEc2Client) DescribeLocalGatewayRouteTableVpcAssociations(arg0 context.Context, arg1 *ec2.DescribeLocalGatewayRouteTableVpcAssociationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeLocalGatewayRouteTableVpcAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLocalGatewayRouteTableVpcAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1277,6 +1897,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeLocalGatewayRouteTableVpcAssociatio
 
 // DescribeLocalGatewayRouteTables mocks base method.
 func (m *MockEc2Client) DescribeLocalGatewayRouteTables(arg0 context.Context, arg1 *ec2.DescribeLocalGatewayRouteTablesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeLocalGatewayRouteTablesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLocalGatewayRouteTables")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1297,6 +1927,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeLocalGatewayRouteTables(arg0, arg1 
 
 // DescribeLocalGatewayVirtualInterfaceGroups mocks base method.
 func (m *MockEc2Client) DescribeLocalGatewayVirtualInterfaceGroups(arg0 context.Context, arg1 *ec2.DescribeLocalGatewayVirtualInterfaceGroupsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeLocalGatewayVirtualInterfaceGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLocalGatewayVirtualInterfaceGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1317,6 +1957,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeLocalGatewayVirtualInterfaceGroups(
 
 // DescribeLocalGatewayVirtualInterfaces mocks base method.
 func (m *MockEc2Client) DescribeLocalGatewayVirtualInterfaces(arg0 context.Context, arg1 *ec2.DescribeLocalGatewayVirtualInterfacesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeLocalGatewayVirtualInterfacesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLocalGatewayVirtualInterfaces")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1337,6 +1987,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeLocalGatewayVirtualInterfaces(arg0,
 
 // DescribeLocalGateways mocks base method.
 func (m *MockEc2Client) DescribeLocalGateways(arg0 context.Context, arg1 *ec2.DescribeLocalGatewaysInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeLocalGatewaysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLocalGateways")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1357,6 +2017,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeLocalGateways(arg0, arg1 interface{
 
 // DescribeManagedPrefixLists mocks base method.
 func (m *MockEc2Client) DescribeManagedPrefixLists(arg0 context.Context, arg1 *ec2.DescribeManagedPrefixListsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeManagedPrefixListsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeManagedPrefixLists")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1377,6 +2047,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeManagedPrefixLists(arg0, arg1 inter
 
 // DescribeMovingAddresses mocks base method.
 func (m *MockEc2Client) DescribeMovingAddresses(arg0 context.Context, arg1 *ec2.DescribeMovingAddressesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeMovingAddressesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMovingAddresses")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1397,6 +2077,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeMovingAddresses(arg0, arg1 interfac
 
 // DescribeNatGateways mocks base method.
 func (m *MockEc2Client) DescribeNatGateways(arg0 context.Context, arg1 *ec2.DescribeNatGatewaysInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeNatGatewaysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeNatGateways")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1417,6 +2107,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeNatGateways(arg0, arg1 interface{},
 
 // DescribeNetworkAcls mocks base method.
 func (m *MockEc2Client) DescribeNetworkAcls(arg0 context.Context, arg1 *ec2.DescribeNetworkAclsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeNetworkAclsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeNetworkAcls")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1437,6 +2137,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeNetworkAcls(arg0, arg1 interface{},
 
 // DescribeNetworkInsightsAccessScopeAnalyses mocks base method.
 func (m *MockEc2Client) DescribeNetworkInsightsAccessScopeAnalyses(arg0 context.Context, arg1 *ec2.DescribeNetworkInsightsAccessScopeAnalysesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeNetworkInsightsAccessScopeAnalysesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeNetworkInsightsAccessScopeAnalyses")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1457,6 +2167,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeNetworkInsightsAccessScopeAnalyses(
 
 // DescribeNetworkInsightsAccessScopes mocks base method.
 func (m *MockEc2Client) DescribeNetworkInsightsAccessScopes(arg0 context.Context, arg1 *ec2.DescribeNetworkInsightsAccessScopesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeNetworkInsightsAccessScopesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeNetworkInsightsAccessScopes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1477,6 +2197,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeNetworkInsightsAccessScopes(arg0, a
 
 // DescribeNetworkInsightsAnalyses mocks base method.
 func (m *MockEc2Client) DescribeNetworkInsightsAnalyses(arg0 context.Context, arg1 *ec2.DescribeNetworkInsightsAnalysesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeNetworkInsightsAnalysesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeNetworkInsightsAnalyses")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1497,6 +2227,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeNetworkInsightsAnalyses(arg0, arg1 
 
 // DescribeNetworkInsightsPaths mocks base method.
 func (m *MockEc2Client) DescribeNetworkInsightsPaths(arg0 context.Context, arg1 *ec2.DescribeNetworkInsightsPathsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeNetworkInsightsPathsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeNetworkInsightsPaths")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1517,6 +2257,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeNetworkInsightsPaths(arg0, arg1 int
 
 // DescribeNetworkInterfaceAttribute mocks base method.
 func (m *MockEc2Client) DescribeNetworkInterfaceAttribute(arg0 context.Context, arg1 *ec2.DescribeNetworkInterfaceAttributeInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeNetworkInterfaceAttributeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeNetworkInterfaceAttribute")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1537,6 +2287,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeNetworkInterfaceAttribute(arg0, arg
 
 // DescribeNetworkInterfacePermissions mocks base method.
 func (m *MockEc2Client) DescribeNetworkInterfacePermissions(arg0 context.Context, arg1 *ec2.DescribeNetworkInterfacePermissionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeNetworkInterfacePermissionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeNetworkInterfacePermissions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1557,6 +2317,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeNetworkInterfacePermissions(arg0, a
 
 // DescribeNetworkInterfaces mocks base method.
 func (m *MockEc2Client) DescribeNetworkInterfaces(arg0 context.Context, arg1 *ec2.DescribeNetworkInterfacesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeNetworkInterfacesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeNetworkInterfaces")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1577,6 +2347,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeNetworkInterfaces(arg0, arg1 interf
 
 // DescribePlacementGroups mocks base method.
 func (m *MockEc2Client) DescribePlacementGroups(arg0 context.Context, arg1 *ec2.DescribePlacementGroupsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribePlacementGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePlacementGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1597,6 +2377,16 @@ func (mr *MockEc2ClientMockRecorder) DescribePlacementGroups(arg0, arg1 interfac
 
 // DescribePrefixLists mocks base method.
 func (m *MockEc2Client) DescribePrefixLists(arg0 context.Context, arg1 *ec2.DescribePrefixListsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribePrefixListsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePrefixLists")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1617,6 +2407,16 @@ func (mr *MockEc2ClientMockRecorder) DescribePrefixLists(arg0, arg1 interface{},
 
 // DescribePrincipalIdFormat mocks base method.
 func (m *MockEc2Client) DescribePrincipalIdFormat(arg0 context.Context, arg1 *ec2.DescribePrincipalIdFormatInput, arg2 ...func(*ec2.Options)) (*ec2.DescribePrincipalIdFormatOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePrincipalIdFormat")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1637,6 +2437,16 @@ func (mr *MockEc2ClientMockRecorder) DescribePrincipalIdFormat(arg0, arg1 interf
 
 // DescribePublicIpv4Pools mocks base method.
 func (m *MockEc2Client) DescribePublicIpv4Pools(arg0 context.Context, arg1 *ec2.DescribePublicIpv4PoolsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribePublicIpv4PoolsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePublicIpv4Pools")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1657,6 +2467,16 @@ func (mr *MockEc2ClientMockRecorder) DescribePublicIpv4Pools(arg0, arg1 interfac
 
 // DescribeRegions mocks base method.
 func (m *MockEc2Client) DescribeRegions(arg0 context.Context, arg1 *ec2.DescribeRegionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeRegionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRegions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1677,6 +2497,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeRegions(arg0, arg1 interface{}, arg
 
 // DescribeReplaceRootVolumeTasks mocks base method.
 func (m *MockEc2Client) DescribeReplaceRootVolumeTasks(arg0 context.Context, arg1 *ec2.DescribeReplaceRootVolumeTasksInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeReplaceRootVolumeTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReplaceRootVolumeTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1697,6 +2527,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeReplaceRootVolumeTasks(arg0, arg1 i
 
 // DescribeReservedInstances mocks base method.
 func (m *MockEc2Client) DescribeReservedInstances(arg0 context.Context, arg1 *ec2.DescribeReservedInstancesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeReservedInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReservedInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1717,6 +2557,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeReservedInstances(arg0, arg1 interf
 
 // DescribeReservedInstancesListings mocks base method.
 func (m *MockEc2Client) DescribeReservedInstancesListings(arg0 context.Context, arg1 *ec2.DescribeReservedInstancesListingsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeReservedInstancesListingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReservedInstancesListings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1737,6 +2587,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeReservedInstancesListings(arg0, arg
 
 // DescribeReservedInstancesModifications mocks base method.
 func (m *MockEc2Client) DescribeReservedInstancesModifications(arg0 context.Context, arg1 *ec2.DescribeReservedInstancesModificationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeReservedInstancesModificationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReservedInstancesModifications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1757,6 +2617,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeReservedInstancesModifications(arg0
 
 // DescribeReservedInstancesOfferings mocks base method.
 func (m *MockEc2Client) DescribeReservedInstancesOfferings(arg0 context.Context, arg1 *ec2.DescribeReservedInstancesOfferingsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeReservedInstancesOfferingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReservedInstancesOfferings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1777,6 +2647,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeReservedInstancesOfferings(arg0, ar
 
 // DescribeRouteTables mocks base method.
 func (m *MockEc2Client) DescribeRouteTables(arg0 context.Context, arg1 *ec2.DescribeRouteTablesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeRouteTablesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRouteTables")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1797,6 +2677,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeRouteTables(arg0, arg1 interface{},
 
 // DescribeScheduledInstanceAvailability mocks base method.
 func (m *MockEc2Client) DescribeScheduledInstanceAvailability(arg0 context.Context, arg1 *ec2.DescribeScheduledInstanceAvailabilityInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeScheduledInstanceAvailabilityOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScheduledInstanceAvailability")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1817,6 +2707,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeScheduledInstanceAvailability(arg0,
 
 // DescribeScheduledInstances mocks base method.
 func (m *MockEc2Client) DescribeScheduledInstances(arg0 context.Context, arg1 *ec2.DescribeScheduledInstancesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeScheduledInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScheduledInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1837,6 +2737,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeScheduledInstances(arg0, arg1 inter
 
 // DescribeSecurityGroupReferences mocks base method.
 func (m *MockEc2Client) DescribeSecurityGroupReferences(arg0 context.Context, arg1 *ec2.DescribeSecurityGroupReferencesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeSecurityGroupReferencesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSecurityGroupReferences")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1857,6 +2767,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeSecurityGroupReferences(arg0, arg1 
 
 // DescribeSecurityGroupRules mocks base method.
 func (m *MockEc2Client) DescribeSecurityGroupRules(arg0 context.Context, arg1 *ec2.DescribeSecurityGroupRulesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeSecurityGroupRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSecurityGroupRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1877,6 +2797,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeSecurityGroupRules(arg0, arg1 inter
 
 // DescribeSecurityGroups mocks base method.
 func (m *MockEc2Client) DescribeSecurityGroups(arg0 context.Context, arg1 *ec2.DescribeSecurityGroupsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeSecurityGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSecurityGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1897,6 +2827,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeSecurityGroups(arg0, arg1 interface
 
 // DescribeSnapshotAttribute mocks base method.
 func (m *MockEc2Client) DescribeSnapshotAttribute(arg0 context.Context, arg1 *ec2.DescribeSnapshotAttributeInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeSnapshotAttributeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSnapshotAttribute")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1917,6 +2857,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeSnapshotAttribute(arg0, arg1 interf
 
 // DescribeSnapshotTierStatus mocks base method.
 func (m *MockEc2Client) DescribeSnapshotTierStatus(arg0 context.Context, arg1 *ec2.DescribeSnapshotTierStatusInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeSnapshotTierStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSnapshotTierStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1937,6 +2887,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeSnapshotTierStatus(arg0, arg1 inter
 
 // DescribeSnapshots mocks base method.
 func (m *MockEc2Client) DescribeSnapshots(arg0 context.Context, arg1 *ec2.DescribeSnapshotsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeSnapshotsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSnapshots")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1957,6 +2917,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeSnapshots(arg0, arg1 interface{}, a
 
 // DescribeSpotDatafeedSubscription mocks base method.
 func (m *MockEc2Client) DescribeSpotDatafeedSubscription(arg0 context.Context, arg1 *ec2.DescribeSpotDatafeedSubscriptionInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeSpotDatafeedSubscriptionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSpotDatafeedSubscription")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1977,6 +2947,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeSpotDatafeedSubscription(arg0, arg1
 
 // DescribeSpotFleetInstances mocks base method.
 func (m *MockEc2Client) DescribeSpotFleetInstances(arg0 context.Context, arg1 *ec2.DescribeSpotFleetInstancesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeSpotFleetInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSpotFleetInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1997,6 +2977,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeSpotFleetInstances(arg0, arg1 inter
 
 // DescribeSpotFleetRequestHistory mocks base method.
 func (m *MockEc2Client) DescribeSpotFleetRequestHistory(arg0 context.Context, arg1 *ec2.DescribeSpotFleetRequestHistoryInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeSpotFleetRequestHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSpotFleetRequestHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2017,6 +3007,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeSpotFleetRequestHistory(arg0, arg1 
 
 // DescribeSpotFleetRequests mocks base method.
 func (m *MockEc2Client) DescribeSpotFleetRequests(arg0 context.Context, arg1 *ec2.DescribeSpotFleetRequestsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeSpotFleetRequestsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSpotFleetRequests")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2037,6 +3037,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeSpotFleetRequests(arg0, arg1 interf
 
 // DescribeSpotInstanceRequests mocks base method.
 func (m *MockEc2Client) DescribeSpotInstanceRequests(arg0 context.Context, arg1 *ec2.DescribeSpotInstanceRequestsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeSpotInstanceRequestsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSpotInstanceRequests")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2057,6 +3067,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeSpotInstanceRequests(arg0, arg1 int
 
 // DescribeSpotPriceHistory mocks base method.
 func (m *MockEc2Client) DescribeSpotPriceHistory(arg0 context.Context, arg1 *ec2.DescribeSpotPriceHistoryInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeSpotPriceHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSpotPriceHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2077,6 +3097,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeSpotPriceHistory(arg0, arg1 interfa
 
 // DescribeStaleSecurityGroups mocks base method.
 func (m *MockEc2Client) DescribeStaleSecurityGroups(arg0 context.Context, arg1 *ec2.DescribeStaleSecurityGroupsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeStaleSecurityGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStaleSecurityGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2097,6 +3127,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeStaleSecurityGroups(arg0, arg1 inte
 
 // DescribeStoreImageTasks mocks base method.
 func (m *MockEc2Client) DescribeStoreImageTasks(arg0 context.Context, arg1 *ec2.DescribeStoreImageTasksInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeStoreImageTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStoreImageTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2117,6 +3157,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeStoreImageTasks(arg0, arg1 interfac
 
 // DescribeSubnets mocks base method.
 func (m *MockEc2Client) DescribeSubnets(arg0 context.Context, arg1 *ec2.DescribeSubnetsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeSubnetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSubnets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2137,6 +3187,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeSubnets(arg0, arg1 interface{}, arg
 
 // DescribeTags mocks base method.
 func (m *MockEc2Client) DescribeTags(arg0 context.Context, arg1 *ec2.DescribeTagsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2157,6 +3217,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTags(arg0, arg1 interface{}, arg2 .
 
 // DescribeTrafficMirrorFilters mocks base method.
 func (m *MockEc2Client) DescribeTrafficMirrorFilters(arg0 context.Context, arg1 *ec2.DescribeTrafficMirrorFiltersInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTrafficMirrorFiltersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrafficMirrorFilters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2177,6 +3247,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTrafficMirrorFilters(arg0, arg1 int
 
 // DescribeTrafficMirrorSessions mocks base method.
 func (m *MockEc2Client) DescribeTrafficMirrorSessions(arg0 context.Context, arg1 *ec2.DescribeTrafficMirrorSessionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTrafficMirrorSessionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrafficMirrorSessions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2197,6 +3277,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTrafficMirrorSessions(arg0, arg1 in
 
 // DescribeTrafficMirrorTargets mocks base method.
 func (m *MockEc2Client) DescribeTrafficMirrorTargets(arg0 context.Context, arg1 *ec2.DescribeTrafficMirrorTargetsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTrafficMirrorTargetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrafficMirrorTargets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2217,6 +3307,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTrafficMirrorTargets(arg0, arg1 int
 
 // DescribeTransitGatewayAttachments mocks base method.
 func (m *MockEc2Client) DescribeTransitGatewayAttachments(arg0 context.Context, arg1 *ec2.DescribeTransitGatewayAttachmentsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewayAttachmentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTransitGatewayAttachments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2237,6 +3337,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTransitGatewayAttachments(arg0, arg
 
 // DescribeTransitGatewayConnectPeers mocks base method.
 func (m *MockEc2Client) DescribeTransitGatewayConnectPeers(arg0 context.Context, arg1 *ec2.DescribeTransitGatewayConnectPeersInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewayConnectPeersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTransitGatewayConnectPeers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2257,6 +3367,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTransitGatewayConnectPeers(arg0, ar
 
 // DescribeTransitGatewayConnects mocks base method.
 func (m *MockEc2Client) DescribeTransitGatewayConnects(arg0 context.Context, arg1 *ec2.DescribeTransitGatewayConnectsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewayConnectsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTransitGatewayConnects")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2277,6 +3397,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTransitGatewayConnects(arg0, arg1 i
 
 // DescribeTransitGatewayMulticastDomains mocks base method.
 func (m *MockEc2Client) DescribeTransitGatewayMulticastDomains(arg0 context.Context, arg1 *ec2.DescribeTransitGatewayMulticastDomainsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewayMulticastDomainsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTransitGatewayMulticastDomains")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2297,6 +3427,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTransitGatewayMulticastDomains(arg0
 
 // DescribeTransitGatewayPeeringAttachments mocks base method.
 func (m *MockEc2Client) DescribeTransitGatewayPeeringAttachments(arg0 context.Context, arg1 *ec2.DescribeTransitGatewayPeeringAttachmentsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewayPeeringAttachmentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTransitGatewayPeeringAttachments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2317,6 +3457,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTransitGatewayPeeringAttachments(ar
 
 // DescribeTransitGatewayPolicyTables mocks base method.
 func (m *MockEc2Client) DescribeTransitGatewayPolicyTables(arg0 context.Context, arg1 *ec2.DescribeTransitGatewayPolicyTablesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewayPolicyTablesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTransitGatewayPolicyTables")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2337,6 +3487,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTransitGatewayPolicyTables(arg0, ar
 
 // DescribeTransitGatewayRouteTableAnnouncements mocks base method.
 func (m *MockEc2Client) DescribeTransitGatewayRouteTableAnnouncements(arg0 context.Context, arg1 *ec2.DescribeTransitGatewayRouteTableAnnouncementsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewayRouteTableAnnouncementsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTransitGatewayRouteTableAnnouncements")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2357,6 +3517,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTransitGatewayRouteTableAnnouncemen
 
 // DescribeTransitGatewayRouteTables mocks base method.
 func (m *MockEc2Client) DescribeTransitGatewayRouteTables(arg0 context.Context, arg1 *ec2.DescribeTransitGatewayRouteTablesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewayRouteTablesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTransitGatewayRouteTables")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2377,6 +3547,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTransitGatewayRouteTables(arg0, arg
 
 // DescribeTransitGatewayVpcAttachments mocks base method.
 func (m *MockEc2Client) DescribeTransitGatewayVpcAttachments(arg0 context.Context, arg1 *ec2.DescribeTransitGatewayVpcAttachmentsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewayVpcAttachmentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTransitGatewayVpcAttachments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2397,6 +3577,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTransitGatewayVpcAttachments(arg0, 
 
 // DescribeTransitGateways mocks base method.
 func (m *MockEc2Client) DescribeTransitGateways(arg0 context.Context, arg1 *ec2.DescribeTransitGatewaysInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTransitGatewaysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTransitGateways")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2417,6 +3607,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTransitGateways(arg0, arg1 interfac
 
 // DescribeTrunkInterfaceAssociations mocks base method.
 func (m *MockEc2Client) DescribeTrunkInterfaceAssociations(arg0 context.Context, arg1 *ec2.DescribeTrunkInterfaceAssociationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeTrunkInterfaceAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrunkInterfaceAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2437,6 +3637,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeTrunkInterfaceAssociations(arg0, ar
 
 // DescribeVerifiedAccessEndpoints mocks base method.
 func (m *MockEc2Client) DescribeVerifiedAccessEndpoints(arg0 context.Context, arg1 *ec2.DescribeVerifiedAccessEndpointsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVerifiedAccessEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVerifiedAccessEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2457,6 +3667,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVerifiedAccessEndpoints(arg0, arg1 
 
 // DescribeVerifiedAccessGroups mocks base method.
 func (m *MockEc2Client) DescribeVerifiedAccessGroups(arg0 context.Context, arg1 *ec2.DescribeVerifiedAccessGroupsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVerifiedAccessGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVerifiedAccessGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2477,6 +3697,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVerifiedAccessGroups(arg0, arg1 int
 
 // DescribeVerifiedAccessInstanceLoggingConfigurations mocks base method.
 func (m *MockEc2Client) DescribeVerifiedAccessInstanceLoggingConfigurations(arg0 context.Context, arg1 *ec2.DescribeVerifiedAccessInstanceLoggingConfigurationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVerifiedAccessInstanceLoggingConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVerifiedAccessInstanceLoggingConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2497,6 +3727,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVerifiedAccessInstanceLoggingConfig
 
 // DescribeVerifiedAccessInstances mocks base method.
 func (m *MockEc2Client) DescribeVerifiedAccessInstances(arg0 context.Context, arg1 *ec2.DescribeVerifiedAccessInstancesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVerifiedAccessInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVerifiedAccessInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2517,6 +3757,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVerifiedAccessInstances(arg0, arg1 
 
 // DescribeVerifiedAccessTrustProviders mocks base method.
 func (m *MockEc2Client) DescribeVerifiedAccessTrustProviders(arg0 context.Context, arg1 *ec2.DescribeVerifiedAccessTrustProvidersInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVerifiedAccessTrustProvidersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVerifiedAccessTrustProviders")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2537,6 +3787,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVerifiedAccessTrustProviders(arg0, 
 
 // DescribeVolumeAttribute mocks base method.
 func (m *MockEc2Client) DescribeVolumeAttribute(arg0 context.Context, arg1 *ec2.DescribeVolumeAttributeInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVolumeAttributeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVolumeAttribute")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2557,6 +3817,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVolumeAttribute(arg0, arg1 interfac
 
 // DescribeVolumeStatus mocks base method.
 func (m *MockEc2Client) DescribeVolumeStatus(arg0 context.Context, arg1 *ec2.DescribeVolumeStatusInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVolumeStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVolumeStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2577,6 +3847,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVolumeStatus(arg0, arg1 interface{}
 
 // DescribeVolumes mocks base method.
 func (m *MockEc2Client) DescribeVolumes(arg0 context.Context, arg1 *ec2.DescribeVolumesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVolumesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVolumes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2597,6 +3877,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVolumes(arg0, arg1 interface{}, arg
 
 // DescribeVolumesModifications mocks base method.
 func (m *MockEc2Client) DescribeVolumesModifications(arg0 context.Context, arg1 *ec2.DescribeVolumesModificationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVolumesModificationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVolumesModifications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2617,6 +3907,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVolumesModifications(arg0, arg1 int
 
 // DescribeVpcAttribute mocks base method.
 func (m *MockEc2Client) DescribeVpcAttribute(arg0 context.Context, arg1 *ec2.DescribeVpcAttributeInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcAttributeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpcAttribute")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2637,6 +3937,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVpcAttribute(arg0, arg1 interface{}
 
 // DescribeVpcClassicLink mocks base method.
 func (m *MockEc2Client) DescribeVpcClassicLink(arg0 context.Context, arg1 *ec2.DescribeVpcClassicLinkInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcClassicLinkOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpcClassicLink")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2657,6 +3967,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVpcClassicLink(arg0, arg1 interface
 
 // DescribeVpcClassicLinkDnsSupport mocks base method.
 func (m *MockEc2Client) DescribeVpcClassicLinkDnsSupport(arg0 context.Context, arg1 *ec2.DescribeVpcClassicLinkDnsSupportInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcClassicLinkDnsSupportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpcClassicLinkDnsSupport")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2677,6 +3997,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVpcClassicLinkDnsSupport(arg0, arg1
 
 // DescribeVpcEndpointConnectionNotifications mocks base method.
 func (m *MockEc2Client) DescribeVpcEndpointConnectionNotifications(arg0 context.Context, arg1 *ec2.DescribeVpcEndpointConnectionNotificationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcEndpointConnectionNotificationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpcEndpointConnectionNotifications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2697,6 +4027,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVpcEndpointConnectionNotifications(
 
 // DescribeVpcEndpointConnections mocks base method.
 func (m *MockEc2Client) DescribeVpcEndpointConnections(arg0 context.Context, arg1 *ec2.DescribeVpcEndpointConnectionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcEndpointConnectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpcEndpointConnections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2717,6 +4057,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVpcEndpointConnections(arg0, arg1 i
 
 // DescribeVpcEndpointServiceConfigurations mocks base method.
 func (m *MockEc2Client) DescribeVpcEndpointServiceConfigurations(arg0 context.Context, arg1 *ec2.DescribeVpcEndpointServiceConfigurationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcEndpointServiceConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpcEndpointServiceConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2737,6 +4087,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVpcEndpointServiceConfigurations(ar
 
 // DescribeVpcEndpointServicePermissions mocks base method.
 func (m *MockEc2Client) DescribeVpcEndpointServicePermissions(arg0 context.Context, arg1 *ec2.DescribeVpcEndpointServicePermissionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcEndpointServicePermissionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpcEndpointServicePermissions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2757,6 +4117,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVpcEndpointServicePermissions(arg0,
 
 // DescribeVpcEndpointServices mocks base method.
 func (m *MockEc2Client) DescribeVpcEndpointServices(arg0 context.Context, arg1 *ec2.DescribeVpcEndpointServicesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcEndpointServicesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpcEndpointServices")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2777,6 +4147,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVpcEndpointServices(arg0, arg1 inte
 
 // DescribeVpcEndpoints mocks base method.
 func (m *MockEc2Client) DescribeVpcEndpoints(arg0 context.Context, arg1 *ec2.DescribeVpcEndpointsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpcEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2797,6 +4177,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVpcEndpoints(arg0, arg1 interface{}
 
 // DescribeVpcPeeringConnections mocks base method.
 func (m *MockEc2Client) DescribeVpcPeeringConnections(arg0 context.Context, arg1 *ec2.DescribeVpcPeeringConnectionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcPeeringConnectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpcPeeringConnections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2817,6 +4207,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVpcPeeringConnections(arg0, arg1 in
 
 // DescribeVpcs mocks base method.
 func (m *MockEc2Client) DescribeVpcs(arg0 context.Context, arg1 *ec2.DescribeVpcsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpcs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2837,6 +4237,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVpcs(arg0, arg1 interface{}, arg2 .
 
 // DescribeVpnConnections mocks base method.
 func (m *MockEc2Client) DescribeVpnConnections(arg0 context.Context, arg1 *ec2.DescribeVpnConnectionsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpnConnectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpnConnections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2857,6 +4267,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVpnConnections(arg0, arg1 interface
 
 // DescribeVpnGateways mocks base method.
 func (m *MockEc2Client) DescribeVpnGateways(arg0 context.Context, arg1 *ec2.DescribeVpnGatewaysInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpnGatewaysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpnGateways")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2877,6 +4297,16 @@ func (mr *MockEc2ClientMockRecorder) DescribeVpnGateways(arg0, arg1 interface{},
 
 // GetAssociatedEnclaveCertificateIamRoles mocks base method.
 func (m *MockEc2Client) GetAssociatedEnclaveCertificateIamRoles(arg0 context.Context, arg1 *ec2.GetAssociatedEnclaveCertificateIamRolesInput, arg2 ...func(*ec2.Options)) (*ec2.GetAssociatedEnclaveCertificateIamRolesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAssociatedEnclaveCertificateIamRoles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2897,6 +4327,16 @@ func (mr *MockEc2ClientMockRecorder) GetAssociatedEnclaveCertificateIamRoles(arg
 
 // GetAssociatedIpv6PoolCidrs mocks base method.
 func (m *MockEc2Client) GetAssociatedIpv6PoolCidrs(arg0 context.Context, arg1 *ec2.GetAssociatedIpv6PoolCidrsInput, arg2 ...func(*ec2.Options)) (*ec2.GetAssociatedIpv6PoolCidrsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAssociatedIpv6PoolCidrs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2917,6 +4357,16 @@ func (mr *MockEc2ClientMockRecorder) GetAssociatedIpv6PoolCidrs(arg0, arg1 inter
 
 // GetAwsNetworkPerformanceData mocks base method.
 func (m *MockEc2Client) GetAwsNetworkPerformanceData(arg0 context.Context, arg1 *ec2.GetAwsNetworkPerformanceDataInput, arg2 ...func(*ec2.Options)) (*ec2.GetAwsNetworkPerformanceDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAwsNetworkPerformanceData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2937,6 +4387,16 @@ func (mr *MockEc2ClientMockRecorder) GetAwsNetworkPerformanceData(arg0, arg1 int
 
 // GetCapacityReservationUsage mocks base method.
 func (m *MockEc2Client) GetCapacityReservationUsage(arg0 context.Context, arg1 *ec2.GetCapacityReservationUsageInput, arg2 ...func(*ec2.Options)) (*ec2.GetCapacityReservationUsageOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCapacityReservationUsage")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2957,6 +4417,16 @@ func (mr *MockEc2ClientMockRecorder) GetCapacityReservationUsage(arg0, arg1 inte
 
 // GetCoipPoolUsage mocks base method.
 func (m *MockEc2Client) GetCoipPoolUsage(arg0 context.Context, arg1 *ec2.GetCoipPoolUsageInput, arg2 ...func(*ec2.Options)) (*ec2.GetCoipPoolUsageOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCoipPoolUsage")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2977,6 +4447,16 @@ func (mr *MockEc2ClientMockRecorder) GetCoipPoolUsage(arg0, arg1 interface{}, ar
 
 // GetConsoleOutput mocks base method.
 func (m *MockEc2Client) GetConsoleOutput(arg0 context.Context, arg1 *ec2.GetConsoleOutputInput, arg2 ...func(*ec2.Options)) (*ec2.GetConsoleOutputOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetConsoleOutput")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2997,6 +4477,16 @@ func (mr *MockEc2ClientMockRecorder) GetConsoleOutput(arg0, arg1 interface{}, ar
 
 // GetConsoleScreenshot mocks base method.
 func (m *MockEc2Client) GetConsoleScreenshot(arg0 context.Context, arg1 *ec2.GetConsoleScreenshotInput, arg2 ...func(*ec2.Options)) (*ec2.GetConsoleScreenshotOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetConsoleScreenshot")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3017,6 +4507,16 @@ func (mr *MockEc2ClientMockRecorder) GetConsoleScreenshot(arg0, arg1 interface{}
 
 // GetDefaultCreditSpecification mocks base method.
 func (m *MockEc2Client) GetDefaultCreditSpecification(arg0 context.Context, arg1 *ec2.GetDefaultCreditSpecificationInput, arg2 ...func(*ec2.Options)) (*ec2.GetDefaultCreditSpecificationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDefaultCreditSpecification")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3037,6 +4537,16 @@ func (mr *MockEc2ClientMockRecorder) GetDefaultCreditSpecification(arg0, arg1 in
 
 // GetEbsDefaultKmsKeyId mocks base method.
 func (m *MockEc2Client) GetEbsDefaultKmsKeyId(arg0 context.Context, arg1 *ec2.GetEbsDefaultKmsKeyIdInput, arg2 ...func(*ec2.Options)) (*ec2.GetEbsDefaultKmsKeyIdOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEbsDefaultKmsKeyId")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3057,6 +4567,16 @@ func (mr *MockEc2ClientMockRecorder) GetEbsDefaultKmsKeyId(arg0, arg1 interface{
 
 // GetEbsEncryptionByDefault mocks base method.
 func (m *MockEc2Client) GetEbsEncryptionByDefault(arg0 context.Context, arg1 *ec2.GetEbsEncryptionByDefaultInput, arg2 ...func(*ec2.Options)) (*ec2.GetEbsEncryptionByDefaultOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEbsEncryptionByDefault")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3077,6 +4597,16 @@ func (mr *MockEc2ClientMockRecorder) GetEbsEncryptionByDefault(arg0, arg1 interf
 
 // GetFlowLogsIntegrationTemplate mocks base method.
 func (m *MockEc2Client) GetFlowLogsIntegrationTemplate(arg0 context.Context, arg1 *ec2.GetFlowLogsIntegrationTemplateInput, arg2 ...func(*ec2.Options)) (*ec2.GetFlowLogsIntegrationTemplateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFlowLogsIntegrationTemplate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3097,6 +4627,16 @@ func (mr *MockEc2ClientMockRecorder) GetFlowLogsIntegrationTemplate(arg0, arg1 i
 
 // GetGroupsForCapacityReservation mocks base method.
 func (m *MockEc2Client) GetGroupsForCapacityReservation(arg0 context.Context, arg1 *ec2.GetGroupsForCapacityReservationInput, arg2 ...func(*ec2.Options)) (*ec2.GetGroupsForCapacityReservationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetGroupsForCapacityReservation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3117,6 +4657,16 @@ func (mr *MockEc2ClientMockRecorder) GetGroupsForCapacityReservation(arg0, arg1 
 
 // GetHostReservationPurchasePreview mocks base method.
 func (m *MockEc2Client) GetHostReservationPurchasePreview(arg0 context.Context, arg1 *ec2.GetHostReservationPurchasePreviewInput, arg2 ...func(*ec2.Options)) (*ec2.GetHostReservationPurchasePreviewOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetHostReservationPurchasePreview")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3137,6 +4687,16 @@ func (mr *MockEc2ClientMockRecorder) GetHostReservationPurchasePreview(arg0, arg
 
 // GetInstanceTypesFromInstanceRequirements mocks base method.
 func (m *MockEc2Client) GetInstanceTypesFromInstanceRequirements(arg0 context.Context, arg1 *ec2.GetInstanceTypesFromInstanceRequirementsInput, arg2 ...func(*ec2.Options)) (*ec2.GetInstanceTypesFromInstanceRequirementsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInstanceTypesFromInstanceRequirements")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3157,6 +4717,16 @@ func (mr *MockEc2ClientMockRecorder) GetInstanceTypesFromInstanceRequirements(ar
 
 // GetInstanceUefiData mocks base method.
 func (m *MockEc2Client) GetInstanceUefiData(arg0 context.Context, arg1 *ec2.GetInstanceUefiDataInput, arg2 ...func(*ec2.Options)) (*ec2.GetInstanceUefiDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInstanceUefiData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3177,6 +4747,16 @@ func (mr *MockEc2ClientMockRecorder) GetInstanceUefiData(arg0, arg1 interface{},
 
 // GetIpamAddressHistory mocks base method.
 func (m *MockEc2Client) GetIpamAddressHistory(arg0 context.Context, arg1 *ec2.GetIpamAddressHistoryInput, arg2 ...func(*ec2.Options)) (*ec2.GetIpamAddressHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetIpamAddressHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3197,6 +4777,16 @@ func (mr *MockEc2ClientMockRecorder) GetIpamAddressHistory(arg0, arg1 interface{
 
 // GetIpamPoolAllocations mocks base method.
 func (m *MockEc2Client) GetIpamPoolAllocations(arg0 context.Context, arg1 *ec2.GetIpamPoolAllocationsInput, arg2 ...func(*ec2.Options)) (*ec2.GetIpamPoolAllocationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetIpamPoolAllocations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3217,6 +4807,16 @@ func (mr *MockEc2ClientMockRecorder) GetIpamPoolAllocations(arg0, arg1 interface
 
 // GetIpamPoolCidrs mocks base method.
 func (m *MockEc2Client) GetIpamPoolCidrs(arg0 context.Context, arg1 *ec2.GetIpamPoolCidrsInput, arg2 ...func(*ec2.Options)) (*ec2.GetIpamPoolCidrsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetIpamPoolCidrs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3237,6 +4837,16 @@ func (mr *MockEc2ClientMockRecorder) GetIpamPoolCidrs(arg0, arg1 interface{}, ar
 
 // GetIpamResourceCidrs mocks base method.
 func (m *MockEc2Client) GetIpamResourceCidrs(arg0 context.Context, arg1 *ec2.GetIpamResourceCidrsInput, arg2 ...func(*ec2.Options)) (*ec2.GetIpamResourceCidrsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetIpamResourceCidrs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3257,6 +4867,16 @@ func (mr *MockEc2ClientMockRecorder) GetIpamResourceCidrs(arg0, arg1 interface{}
 
 // GetLaunchTemplateData mocks base method.
 func (m *MockEc2Client) GetLaunchTemplateData(arg0 context.Context, arg1 *ec2.GetLaunchTemplateDataInput, arg2 ...func(*ec2.Options)) (*ec2.GetLaunchTemplateDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLaunchTemplateData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3277,6 +4897,16 @@ func (mr *MockEc2ClientMockRecorder) GetLaunchTemplateData(arg0, arg1 interface{
 
 // GetManagedPrefixListAssociations mocks base method.
 func (m *MockEc2Client) GetManagedPrefixListAssociations(arg0 context.Context, arg1 *ec2.GetManagedPrefixListAssociationsInput, arg2 ...func(*ec2.Options)) (*ec2.GetManagedPrefixListAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetManagedPrefixListAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3297,6 +4927,16 @@ func (mr *MockEc2ClientMockRecorder) GetManagedPrefixListAssociations(arg0, arg1
 
 // GetManagedPrefixListEntries mocks base method.
 func (m *MockEc2Client) GetManagedPrefixListEntries(arg0 context.Context, arg1 *ec2.GetManagedPrefixListEntriesInput, arg2 ...func(*ec2.Options)) (*ec2.GetManagedPrefixListEntriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetManagedPrefixListEntries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3317,6 +4957,16 @@ func (mr *MockEc2ClientMockRecorder) GetManagedPrefixListEntries(arg0, arg1 inte
 
 // GetNetworkInsightsAccessScopeAnalysisFindings mocks base method.
 func (m *MockEc2Client) GetNetworkInsightsAccessScopeAnalysisFindings(arg0 context.Context, arg1 *ec2.GetNetworkInsightsAccessScopeAnalysisFindingsInput, arg2 ...func(*ec2.Options)) (*ec2.GetNetworkInsightsAccessScopeAnalysisFindingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetNetworkInsightsAccessScopeAnalysisFindings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3337,6 +4987,16 @@ func (mr *MockEc2ClientMockRecorder) GetNetworkInsightsAccessScopeAnalysisFindin
 
 // GetNetworkInsightsAccessScopeContent mocks base method.
 func (m *MockEc2Client) GetNetworkInsightsAccessScopeContent(arg0 context.Context, arg1 *ec2.GetNetworkInsightsAccessScopeContentInput, arg2 ...func(*ec2.Options)) (*ec2.GetNetworkInsightsAccessScopeContentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetNetworkInsightsAccessScopeContent")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3357,6 +5017,16 @@ func (mr *MockEc2ClientMockRecorder) GetNetworkInsightsAccessScopeContent(arg0, 
 
 // GetPasswordData mocks base method.
 func (m *MockEc2Client) GetPasswordData(arg0 context.Context, arg1 *ec2.GetPasswordDataInput, arg2 ...func(*ec2.Options)) (*ec2.GetPasswordDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPasswordData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3377,6 +5047,16 @@ func (mr *MockEc2ClientMockRecorder) GetPasswordData(arg0, arg1 interface{}, arg
 
 // GetReservedInstancesExchangeQuote mocks base method.
 func (m *MockEc2Client) GetReservedInstancesExchangeQuote(arg0 context.Context, arg1 *ec2.GetReservedInstancesExchangeQuoteInput, arg2 ...func(*ec2.Options)) (*ec2.GetReservedInstancesExchangeQuoteOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetReservedInstancesExchangeQuote")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3397,6 +5077,16 @@ func (mr *MockEc2ClientMockRecorder) GetReservedInstancesExchangeQuote(arg0, arg
 
 // GetSerialConsoleAccessStatus mocks base method.
 func (m *MockEc2Client) GetSerialConsoleAccessStatus(arg0 context.Context, arg1 *ec2.GetSerialConsoleAccessStatusInput, arg2 ...func(*ec2.Options)) (*ec2.GetSerialConsoleAccessStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSerialConsoleAccessStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3417,6 +5107,16 @@ func (mr *MockEc2ClientMockRecorder) GetSerialConsoleAccessStatus(arg0, arg1 int
 
 // GetSpotPlacementScores mocks base method.
 func (m *MockEc2Client) GetSpotPlacementScores(arg0 context.Context, arg1 *ec2.GetSpotPlacementScoresInput, arg2 ...func(*ec2.Options)) (*ec2.GetSpotPlacementScoresOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSpotPlacementScores")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3437,6 +5137,16 @@ func (mr *MockEc2ClientMockRecorder) GetSpotPlacementScores(arg0, arg1 interface
 
 // GetSubnetCidrReservations mocks base method.
 func (m *MockEc2Client) GetSubnetCidrReservations(arg0 context.Context, arg1 *ec2.GetSubnetCidrReservationsInput, arg2 ...func(*ec2.Options)) (*ec2.GetSubnetCidrReservationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSubnetCidrReservations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3457,6 +5167,16 @@ func (mr *MockEc2ClientMockRecorder) GetSubnetCidrReservations(arg0, arg1 interf
 
 // GetTransitGatewayAttachmentPropagations mocks base method.
 func (m *MockEc2Client) GetTransitGatewayAttachmentPropagations(arg0 context.Context, arg1 *ec2.GetTransitGatewayAttachmentPropagationsInput, arg2 ...func(*ec2.Options)) (*ec2.GetTransitGatewayAttachmentPropagationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTransitGatewayAttachmentPropagations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3477,6 +5197,16 @@ func (mr *MockEc2ClientMockRecorder) GetTransitGatewayAttachmentPropagations(arg
 
 // GetTransitGatewayMulticastDomainAssociations mocks base method.
 func (m *MockEc2Client) GetTransitGatewayMulticastDomainAssociations(arg0 context.Context, arg1 *ec2.GetTransitGatewayMulticastDomainAssociationsInput, arg2 ...func(*ec2.Options)) (*ec2.GetTransitGatewayMulticastDomainAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTransitGatewayMulticastDomainAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3497,6 +5227,16 @@ func (mr *MockEc2ClientMockRecorder) GetTransitGatewayMulticastDomainAssociation
 
 // GetTransitGatewayPolicyTableAssociations mocks base method.
 func (m *MockEc2Client) GetTransitGatewayPolicyTableAssociations(arg0 context.Context, arg1 *ec2.GetTransitGatewayPolicyTableAssociationsInput, arg2 ...func(*ec2.Options)) (*ec2.GetTransitGatewayPolicyTableAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTransitGatewayPolicyTableAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3517,6 +5257,16 @@ func (mr *MockEc2ClientMockRecorder) GetTransitGatewayPolicyTableAssociations(ar
 
 // GetTransitGatewayPolicyTableEntries mocks base method.
 func (m *MockEc2Client) GetTransitGatewayPolicyTableEntries(arg0 context.Context, arg1 *ec2.GetTransitGatewayPolicyTableEntriesInput, arg2 ...func(*ec2.Options)) (*ec2.GetTransitGatewayPolicyTableEntriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTransitGatewayPolicyTableEntries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3537,6 +5287,16 @@ func (mr *MockEc2ClientMockRecorder) GetTransitGatewayPolicyTableEntries(arg0, a
 
 // GetTransitGatewayPrefixListReferences mocks base method.
 func (m *MockEc2Client) GetTransitGatewayPrefixListReferences(arg0 context.Context, arg1 *ec2.GetTransitGatewayPrefixListReferencesInput, arg2 ...func(*ec2.Options)) (*ec2.GetTransitGatewayPrefixListReferencesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTransitGatewayPrefixListReferences")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3557,6 +5317,16 @@ func (mr *MockEc2ClientMockRecorder) GetTransitGatewayPrefixListReferences(arg0,
 
 // GetTransitGatewayRouteTableAssociations mocks base method.
 func (m *MockEc2Client) GetTransitGatewayRouteTableAssociations(arg0 context.Context, arg1 *ec2.GetTransitGatewayRouteTableAssociationsInput, arg2 ...func(*ec2.Options)) (*ec2.GetTransitGatewayRouteTableAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTransitGatewayRouteTableAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3577,6 +5347,16 @@ func (mr *MockEc2ClientMockRecorder) GetTransitGatewayRouteTableAssociations(arg
 
 // GetTransitGatewayRouteTablePropagations mocks base method.
 func (m *MockEc2Client) GetTransitGatewayRouteTablePropagations(arg0 context.Context, arg1 *ec2.GetTransitGatewayRouteTablePropagationsInput, arg2 ...func(*ec2.Options)) (*ec2.GetTransitGatewayRouteTablePropagationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTransitGatewayRouteTablePropagations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3597,6 +5377,16 @@ func (mr *MockEc2ClientMockRecorder) GetTransitGatewayRouteTablePropagations(arg
 
 // GetVerifiedAccessEndpointPolicy mocks base method.
 func (m *MockEc2Client) GetVerifiedAccessEndpointPolicy(arg0 context.Context, arg1 *ec2.GetVerifiedAccessEndpointPolicyInput, arg2 ...func(*ec2.Options)) (*ec2.GetVerifiedAccessEndpointPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetVerifiedAccessEndpointPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3617,6 +5407,16 @@ func (mr *MockEc2ClientMockRecorder) GetVerifiedAccessEndpointPolicy(arg0, arg1 
 
 // GetVerifiedAccessGroupPolicy mocks base method.
 func (m *MockEc2Client) GetVerifiedAccessGroupPolicy(arg0 context.Context, arg1 *ec2.GetVerifiedAccessGroupPolicyInput, arg2 ...func(*ec2.Options)) (*ec2.GetVerifiedAccessGroupPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetVerifiedAccessGroupPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3637,6 +5437,16 @@ func (mr *MockEc2ClientMockRecorder) GetVerifiedAccessGroupPolicy(arg0, arg1 int
 
 // GetVpnConnectionDeviceSampleConfiguration mocks base method.
 func (m *MockEc2Client) GetVpnConnectionDeviceSampleConfiguration(arg0 context.Context, arg1 *ec2.GetVpnConnectionDeviceSampleConfigurationInput, arg2 ...func(*ec2.Options)) (*ec2.GetVpnConnectionDeviceSampleConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetVpnConnectionDeviceSampleConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3657,6 +5467,16 @@ func (mr *MockEc2ClientMockRecorder) GetVpnConnectionDeviceSampleConfiguration(a
 
 // GetVpnConnectionDeviceTypes mocks base method.
 func (m *MockEc2Client) GetVpnConnectionDeviceTypes(arg0 context.Context, arg1 *ec2.GetVpnConnectionDeviceTypesInput, arg2 ...func(*ec2.Options)) (*ec2.GetVpnConnectionDeviceTypesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetVpnConnectionDeviceTypes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3677,6 +5497,16 @@ func (mr *MockEc2ClientMockRecorder) GetVpnConnectionDeviceTypes(arg0, arg1 inte
 
 // ListImagesInRecycleBin mocks base method.
 func (m *MockEc2Client) ListImagesInRecycleBin(arg0 context.Context, arg1 *ec2.ListImagesInRecycleBinInput, arg2 ...func(*ec2.Options)) (*ec2.ListImagesInRecycleBinOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListImagesInRecycleBin")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3697,6 +5527,16 @@ func (mr *MockEc2ClientMockRecorder) ListImagesInRecycleBin(arg0, arg1 interface
 
 // ListSnapshotsInRecycleBin mocks base method.
 func (m *MockEc2Client) ListSnapshotsInRecycleBin(arg0 context.Context, arg1 *ec2.ListSnapshotsInRecycleBinInput, arg2 ...func(*ec2.Options)) (*ec2.ListSnapshotsInRecycleBinOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSnapshotsInRecycleBin")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3717,6 +5557,16 @@ func (mr *MockEc2ClientMockRecorder) ListSnapshotsInRecycleBin(arg0, arg1 interf
 
 // SearchLocalGatewayRoutes mocks base method.
 func (m *MockEc2Client) SearchLocalGatewayRoutes(arg0 context.Context, arg1 *ec2.SearchLocalGatewayRoutesInput, arg2 ...func(*ec2.Options)) (*ec2.SearchLocalGatewayRoutesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchLocalGatewayRoutes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3737,6 +5587,16 @@ func (mr *MockEc2ClientMockRecorder) SearchLocalGatewayRoutes(arg0, arg1 interfa
 
 // SearchTransitGatewayMulticastGroups mocks base method.
 func (m *MockEc2Client) SearchTransitGatewayMulticastGroups(arg0 context.Context, arg1 *ec2.SearchTransitGatewayMulticastGroupsInput, arg2 ...func(*ec2.Options)) (*ec2.SearchTransitGatewayMulticastGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchTransitGatewayMulticastGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -3757,6 +5617,16 @@ func (mr *MockEc2ClientMockRecorder) SearchTransitGatewayMulticastGroups(arg0, a
 
 // SearchTransitGatewayRoutes mocks base method.
 func (m *MockEc2Client) SearchTransitGatewayRoutes(arg0 context.Context, arg1 *ec2.SearchTransitGatewayRoutesInput, arg2 ...func(*ec2.Options)) (*ec2.SearchTransitGatewayRoutesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchTransitGatewayRoutes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -47,7 +47,9 @@ func fetchApigatewayDomainNameBasePathMappings(ctx context.Context, meta schema.
 	svc := c.Services().Apigateway
 	config := apigateway.GetBasePathMappingsInput{DomainName: r.DomainName, Limit: aws.Int32(500)}
 	for p := apigateway.NewGetBasePathMappingsPaginator(svc, &config); p.HasMorePages(); {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *apigateway.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

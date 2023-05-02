@@ -30,16 +30,16 @@ func buildRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 	document := `{"stuff": 3}`
 	r.AssumeRolePolicyDocument = &document
 
-	m.EXPECT().GetRole(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().GetRole(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.GetRoleOutput{
 			Role: &r,
 		}, nil)
 
-	m.EXPECT().ListRoles(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListRoles(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListRolesOutput{
 			Roles: []iamTypes.Role{r},
 		}, nil)
-	m.EXPECT().ListAttachedRolePolicies(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListAttachedRolePolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListAttachedRolePoliciesOutput{
 			AttachedPolicies: []iamTypes.AttachedPolicy{p},
 		}, nil)

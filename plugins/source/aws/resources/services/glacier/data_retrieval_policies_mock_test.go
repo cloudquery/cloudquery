@@ -16,7 +16,7 @@ func buildDRPMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	p := glacier.GetDataRetrievalPolicyOutput{}
 	require.NoError(t, faker.FakeObject(&p))
-	m.EXPECT().GetDataRetrievalPolicy(gomock.Any(), gomock.Any()).Return(&p, nil)
+	m.EXPECT().GetDataRetrievalPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&p, nil)
 
 	return client.Services{
 		Glacier: m,

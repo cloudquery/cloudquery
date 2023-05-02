@@ -40,7 +40,9 @@ func fetchAppstreamImageBuilders(ctx context.Context, meta schema.ClientMeta, pa
 	svc := c.Services().Appstream
 	// No paginator available
 	for {
-		response, err := svc.DescribeImageBuilders(ctx, &input)
+		response, err := svc.DescribeImageBuilders(ctx, &input, func(options *appstream.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -33,14 +33,17 @@ func ledgerJournalS3Exports() *schema.Table {
 
 func fetchQldbLedgerJournalS3Exports(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	ledger := parent.Item.(*qldb.DescribeLedgerOutput)
-	svc := meta.(*client.Client).Services().Qldb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Qldb
 	config := &qldb.ListJournalS3ExportsForLedgerInput{
 		Name:       ledger.Name,
 		MaxResults: aws.Int32(100),
 	}
 	paginator := qldb.NewListJournalS3ExportsForLedgerPaginator(svc, config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *qldb.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

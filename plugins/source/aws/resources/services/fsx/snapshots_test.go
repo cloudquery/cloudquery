@@ -24,6 +24,7 @@ func buildSnapshotsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().DescribeSnapshots(
 		gomock.Any(),
 		&fsx.DescribeSnapshotsInput{MaxResults: aws.Int32(1000)},
+		gomock.Any(),
 	).Return(
 		&fsx.DescribeSnapshotsOutput{Snapshots: []types.Snapshot{s}},
 		nil,

@@ -50,10 +50,13 @@ func Secrets() *schema.Table {
 }
 
 func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Secretsmanager
+	cl := meta.(*client.Client)
+	svc := cl.Services().Secretsmanager
 	paginator := secretsmanager.NewListSecretsPaginator(svc, &secretsmanager.ListSecretsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *secretsmanager.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -63,13 +66,15 @@ func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *
 }
 
 func getSecret(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Secretsmanager
+	cl := meta.(*client.Client)
+	svc := cl.Services().Secretsmanager
 	n := resource.Item.(types.SecretListEntry)
 
 	// get more details about the secret
 	resp, err := svc.DescribeSecret(ctx, &secretsmanager.DescribeSecretInput{
 		SecretId: n.ARN,
+	}, func(o *secretsmanager.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -86,7 +91,9 @@ func fetchSecretsmanagerSecretPolicy(ctx context.Context, meta schema.ClientMeta
 	cfg := secretsmanager.GetResourcePolicyInput{
 		SecretId: r.ARN,
 	}
-	response, err := svc.GetResourcePolicy(ctx, &cfg)
+	response, err := svc.GetResourcePolicy(ctx, &cfg, func(o *secretsmanager.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

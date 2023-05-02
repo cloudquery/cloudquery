@@ -42,7 +42,9 @@ func listBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	config := dynamodb.ListBackupsInput{}
 	// No paginator available
 	for {
-		output, err := svc.ListBackups(ctx, &config)
+		output, err := svc.ListBackups(ctx, &config, func(options *dynamodb.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -58,11 +60,14 @@ func listBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 }
 
 func getBackup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Dynamodb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Dynamodb
 
 	backupSummary := resource.Item.(types.BackupSummary)
 
-	response, err := svc.DescribeBackup(ctx, &dynamodb.DescribeBackupInput{BackupArn: backupSummary.BackupArn})
+	response, err := svc.DescribeBackup(ctx, &dynamodb.DescribeBackupInput{BackupArn: backupSummary.BackupArn}, func(options *dynamodb.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
