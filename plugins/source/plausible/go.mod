@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/plausible
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk/v2 v2.5.0
+	github.com/cloudquery/plugin-sdk/v2 v2.5.1
 	github.com/gorilla/mux v1.8.0
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
@@ -14,7 +14,7 @@ replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/apache/arrow/go/v12 v12.0.0-20230401212133-adf33cc43010 // indirect
+	github.com/apache/arrow/go/v12 v12.0.0-20230430004532-0ea1a103dfc2 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect

@@ -224,6 +224,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot v
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot v1.0.0/go.mod h1:kdl0zSso4qqJdaxAr31cwQXwBZLd+zUT5O3EQbC3Jc8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads v0.2.0 h1:t6Ef1sDPDa/hPY6HWuATAYD7OEX4e3tz0sh32ecN+g8=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads v0.2.0/go.mod h1:zUdgDi+dBwp7+g8LdXMrPMg5pV0irXxuVvPCZtawpaE=
+github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue v0.1.0 h1:TOtQFiO403wClfrZId/EKvlKOfUhL0mWgvWgZ0FNn8I=
+github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue v0.1.0/go.mod h1:U0IH4deB/maBcagR9SiNeIfgZ1BY/zYCq8SOiQ4vfRc=
 github.com/AzureAD/microsoft-authentication-library-for-go v0.9.0 h1:UE9n9rkJF62ArLb1F3DEjRt8O3jLwMWdSoypKV4f3MU=
 github.com/AzureAD/microsoft-authentication-library-for-go v0.9.0/go.mod h1:kgDmCTgBzIEPFElEF+FK0SdjAor06dRq2Go927dnQ6o=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
@@ -242,8 +244,8 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMn
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/arrow/go/v12 v12.0.0-20230411134648-a5b71cd453c8 h1:v4ST367e8h0VyazUy3O/8soQzpHHGxH/8Jng9YlhZH8=
 github.com/cloudquery/arrow/go/v12 v12.0.0-20230411134648-a5b71cd453c8/go.mod h1:d+tV/eHZZ7Dz7RPrFKtPK02tpr+c9/PEd/zm8mDS9Vg=
-github.com/cloudquery/plugin-sdk/v2 v2.5.0 h1:N3w3Yc9gu0eMtrzfTWdgnMvSiilcubg7Oa3oUzhemnY=
-github.com/cloudquery/plugin-sdk/v2 v2.5.0/go.mod h1:3Q7i+PadZpHSLDy2b1yjCarxwHe2dTG0jB9l4IvWxgk=
+github.com/cloudquery/plugin-sdk/v2 v2.5.1 h1:6qCadOLCLR2w1WmaosvM6JzjsQlpYChgIbw4cg65KhM=
+github.com/cloudquery/plugin-sdk/v2 v2.5.1/go.mod h1:3Q7i+PadZpHSLDy2b1yjCarxwHe2dTG0jB9l4IvWxgk=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=

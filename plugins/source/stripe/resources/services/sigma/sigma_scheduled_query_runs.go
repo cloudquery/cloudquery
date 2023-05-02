@@ -12,7 +12,7 @@ import (
 func SigmaScheduledQueryRuns() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_sigma_scheduled_query_runs",
-		Description: `https://stripe.com/docs/api/sigma_scheduled_query_runs`,
+		Description: `https://stripe.com/docs/api/sigma/scheduled_queries`,
 		Transform:   client.TransformWithStruct(&stripe.SigmaScheduledQueryRun{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchSigmaScheduledQueryRuns,
 

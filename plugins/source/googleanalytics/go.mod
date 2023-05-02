@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/googleanalytics
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk/v2 v2.5.0
+	github.com/cloudquery/plugin-sdk/v2 v2.5.1
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
 	golang.org/x/oauth2 v0.6.0
@@ -17,7 +17,7 @@ require (
 	cloud.google.com/go/compute v1.19.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/apache/arrow/go/v12 v12.0.0-20230401212133-adf33cc43010 // indirect
+	github.com/apache/arrow/go/v12 v12.0.0-20230430004532-0ea1a103dfc2 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
