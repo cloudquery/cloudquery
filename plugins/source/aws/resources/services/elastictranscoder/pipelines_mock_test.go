@@ -19,7 +19,7 @@ func buildElastictranscoderPipelinesMock(t *testing.T, ctrl *gomock.Controller) 
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListPipelines(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListPipelines(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elastictranscoder.ListPipelinesOutput{Pipelines: []types.Pipeline{pipeline}},
 		nil,
 	)
@@ -30,7 +30,7 @@ func buildElastictranscoderPipelinesMock(t *testing.T, ctrl *gomock.Controller) 
 	}
 	job.PipelineId = pipeline.Id
 
-	m.EXPECT().ListJobsByPipeline(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListJobsByPipeline(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elastictranscoder.ListJobsByPipelineOutput{Jobs: []types.Job{job}},
 		nil,
 	)

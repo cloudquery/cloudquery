@@ -44,10 +44,13 @@ func TaskDefinitions() *schema.Table {
 
 func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config ecs.ListTaskDefinitionsInput
-	svc := meta.(*client.Client).Services().Ecs
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecs
 	paginator := ecs.NewListTaskDefinitionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ecs.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -64,6 +67,8 @@ func getTaskDefinition(ctx context.Context, meta schema.ClientMeta, resource *sc
 	describeTaskDefinitionOutput, err := svc.DescribeTaskDefinition(ctx, &ecs.DescribeTaskDefinitionInput{
 		TaskDefinition: aws.String(taskArn),
 		Include:        []types.TaskDefinitionField{types.TaskDefinitionFieldTags},
+	}, func(options *ecs.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err

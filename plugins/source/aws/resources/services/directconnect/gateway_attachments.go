@@ -43,7 +43,9 @@ func fetchDirectconnectGatewayAttachments(ctx context.Context, meta schema.Clien
 	config := directconnect.DescribeDirectConnectGatewayAttachmentsInput{DirectConnectGatewayId: gateway.DirectConnectGatewayId}
 	// No paginator available
 	for {
-		output, err := svc.DescribeDirectConnectGatewayAttachments(ctx, &config)
+		output, err := svc.DescribeDirectConnectGatewayAttachments(ctx, &config, func(options *directconnect.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

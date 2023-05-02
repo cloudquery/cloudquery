@@ -37,6 +37,16 @@ func (m *MockSnsClient) EXPECT() *MockSnsClientMockRecorder {
 
 // GetDataProtectionPolicy mocks base method.
 func (m *MockSnsClient) GetDataProtectionPolicy(arg0 context.Context, arg1 *sns.GetDataProtectionPolicyInput, arg2 ...func(*sns.Options)) (*sns.GetDataProtectionPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDataProtectionPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockSnsClientMockRecorder) GetDataProtectionPolicy(arg0, arg1 interfac
 
 // GetEndpointAttributes mocks base method.
 func (m *MockSnsClient) GetEndpointAttributes(arg0 context.Context, arg1 *sns.GetEndpointAttributesInput, arg2 ...func(*sns.Options)) (*sns.GetEndpointAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEndpointAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockSnsClientMockRecorder) GetEndpointAttributes(arg0, arg1 interface{
 
 // GetPlatformApplicationAttributes mocks base method.
 func (m *MockSnsClient) GetPlatformApplicationAttributes(arg0 context.Context, arg1 *sns.GetPlatformApplicationAttributesInput, arg2 ...func(*sns.Options)) (*sns.GetPlatformApplicationAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPlatformApplicationAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockSnsClientMockRecorder) GetPlatformApplicationAttributes(arg0, arg1
 
 // GetSMSAttributes mocks base method.
 func (m *MockSnsClient) GetSMSAttributes(arg0 context.Context, arg1 *sns.GetSMSAttributesInput, arg2 ...func(*sns.Options)) (*sns.GetSMSAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSMSAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockSnsClientMockRecorder) GetSMSAttributes(arg0, arg1 interface{}, ar
 
 // GetSMSSandboxAccountStatus mocks base method.
 func (m *MockSnsClient) GetSMSSandboxAccountStatus(arg0 context.Context, arg1 *sns.GetSMSSandboxAccountStatusInput, arg2 ...func(*sns.Options)) (*sns.GetSMSSandboxAccountStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSMSSandboxAccountStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockSnsClientMockRecorder) GetSMSSandboxAccountStatus(arg0, arg1 inter
 
 // GetSubscriptionAttributes mocks base method.
 func (m *MockSnsClient) GetSubscriptionAttributes(arg0 context.Context, arg1 *sns.GetSubscriptionAttributesInput, arg2 ...func(*sns.Options)) (*sns.GetSubscriptionAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSubscriptionAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockSnsClientMockRecorder) GetSubscriptionAttributes(arg0, arg1 interf
 
 // GetTopicAttributes mocks base method.
 func (m *MockSnsClient) GetTopicAttributes(arg0 context.Context, arg1 *sns.GetTopicAttributesInput, arg2 ...func(*sns.Options)) (*sns.GetTopicAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTopicAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockSnsClientMockRecorder) GetTopicAttributes(arg0, arg1 interface{}, 
 
 // ListEndpointsByPlatformApplication mocks base method.
 func (m *MockSnsClient) ListEndpointsByPlatformApplication(arg0 context.Context, arg1 *sns.ListEndpointsByPlatformApplicationInput, arg2 ...func(*sns.Options)) (*sns.ListEndpointsByPlatformApplicationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEndpointsByPlatformApplication")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockSnsClientMockRecorder) ListEndpointsByPlatformApplication(arg0, ar
 
 // ListOriginationNumbers mocks base method.
 func (m *MockSnsClient) ListOriginationNumbers(arg0 context.Context, arg1 *sns.ListOriginationNumbersInput, arg2 ...func(*sns.Options)) (*sns.ListOriginationNumbersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOriginationNumbers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockSnsClientMockRecorder) ListOriginationNumbers(arg0, arg1 interface
 
 // ListPhoneNumbersOptedOut mocks base method.
 func (m *MockSnsClient) ListPhoneNumbersOptedOut(arg0 context.Context, arg1 *sns.ListPhoneNumbersOptedOutInput, arg2 ...func(*sns.Options)) (*sns.ListPhoneNumbersOptedOutOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPhoneNumbersOptedOut")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockSnsClientMockRecorder) ListPhoneNumbersOptedOut(arg0, arg1 interfa
 
 // ListPlatformApplications mocks base method.
 func (m *MockSnsClient) ListPlatformApplications(arg0 context.Context, arg1 *sns.ListPlatformApplicationsInput, arg2 ...func(*sns.Options)) (*sns.ListPlatformApplicationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPlatformApplications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockSnsClientMockRecorder) ListPlatformApplications(arg0, arg1 interfa
 
 // ListSMSSandboxPhoneNumbers mocks base method.
 func (m *MockSnsClient) ListSMSSandboxPhoneNumbers(arg0 context.Context, arg1 *sns.ListSMSSandboxPhoneNumbersInput, arg2 ...func(*sns.Options)) (*sns.ListSMSSandboxPhoneNumbersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSMSSandboxPhoneNumbers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockSnsClientMockRecorder) ListSMSSandboxPhoneNumbers(arg0, arg1 inter
 
 // ListSubscriptions mocks base method.
 func (m *MockSnsClient) ListSubscriptions(arg0 context.Context, arg1 *sns.ListSubscriptionsInput, arg2 ...func(*sns.Options)) (*sns.ListSubscriptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSubscriptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockSnsClientMockRecorder) ListSubscriptions(arg0, arg1 interface{}, a
 
 // ListSubscriptionsByTopic mocks base method.
 func (m *MockSnsClient) ListSubscriptionsByTopic(arg0 context.Context, arg1 *sns.ListSubscriptionsByTopicInput, arg2 ...func(*sns.Options)) (*sns.ListSubscriptionsByTopicOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSubscriptionsByTopic")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockSnsClientMockRecorder) ListSubscriptionsByTopic(arg0, arg1 interfa
 
 // ListTagsForResource mocks base method.
 func (m *MockSnsClient) ListTagsForResource(arg0 context.Context, arg1 *sns.ListTagsForResourceInput, arg2 ...func(*sns.Options)) (*sns.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockSnsClientMockRecorder) ListTagsForResource(arg0, arg1 interface{},
 
 // ListTopics mocks base method.
 func (m *MockSnsClient) ListTopics(arg0 context.Context, arg1 *sns.ListTopicsInput, arg2 ...func(*sns.Options)) (*sns.ListTopicsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sns.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTopics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

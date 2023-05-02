@@ -39,7 +39,9 @@ func fetchEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	svc := c.Services().Eventbridge
 	// No paginator available
 	for {
-		response, err := svc.ListEndpoints(ctx, &input)
+		response, err := svc.ListEndpoints(ctx, &input, func(options *eventbridge.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

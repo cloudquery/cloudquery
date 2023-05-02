@@ -19,7 +19,7 @@ func buildOrganizationsRoots(t *testing.T, ctrl *gomock.Controller) client.Servi
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListRoots(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListRoots(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListRootsOutput{
 			Roots: []types.Root{g},
 		}, nil)

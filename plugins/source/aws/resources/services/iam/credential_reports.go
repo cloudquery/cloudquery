@@ -107,9 +107,12 @@ func fetchIamCredentialReports(ctx context.Context, meta schema.ClientMeta, _ *s
 	var err error
 	var apiErr smithy.APIError
 	var reportOutput *iam.GetCredentialReportOutput
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	for {
-		reportOutput, err = svc.GetCredentialReport(ctx, &iam.GetCredentialReportInput{})
+		reportOutput, err = svc.GetCredentialReport(ctx, &iam.GetCredentialReportInput{}, func(options *iam.Options) {
+			options.Region = cl.Region
+		})
 		if err == nil && reportOutput != nil {
 			var users []*models.CredentialReportEntry
 			err = gocsv.UnmarshalBytes(reportOutput.Content, &users)

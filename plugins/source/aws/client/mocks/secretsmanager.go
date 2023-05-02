@@ -37,6 +37,16 @@ func (m *MockSecretsmanagerClient) EXPECT() *MockSecretsmanagerClientMockRecorde
 
 // DescribeSecret mocks base method.
 func (m *MockSecretsmanagerClient) DescribeSecret(arg0 context.Context, arg1 *secretsmanager.DescribeSecretInput, arg2 ...func(*secretsmanager.Options)) (*secretsmanager.DescribeSecretOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &secretsmanager.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSecret")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockSecretsmanagerClientMockRecorder) DescribeSecret(arg0, arg1 interf
 
 // GetRandomPassword mocks base method.
 func (m *MockSecretsmanagerClient) GetRandomPassword(arg0 context.Context, arg1 *secretsmanager.GetRandomPasswordInput, arg2 ...func(*secretsmanager.Options)) (*secretsmanager.GetRandomPasswordOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &secretsmanager.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRandomPassword")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockSecretsmanagerClientMockRecorder) GetRandomPassword(arg0, arg1 int
 
 // GetResourcePolicy mocks base method.
 func (m *MockSecretsmanagerClient) GetResourcePolicy(arg0 context.Context, arg1 *secretsmanager.GetResourcePolicyInput, arg2 ...func(*secretsmanager.Options)) (*secretsmanager.GetResourcePolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &secretsmanager.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetResourcePolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockSecretsmanagerClientMockRecorder) GetResourcePolicy(arg0, arg1 int
 
 // GetSecretValue mocks base method.
 func (m *MockSecretsmanagerClient) GetSecretValue(arg0 context.Context, arg1 *secretsmanager.GetSecretValueInput, arg2 ...func(*secretsmanager.Options)) (*secretsmanager.GetSecretValueOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &secretsmanager.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSecretValue")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockSecretsmanagerClientMockRecorder) GetSecretValue(arg0, arg1 interf
 
 // ListSecretVersionIds mocks base method.
 func (m *MockSecretsmanagerClient) ListSecretVersionIds(arg0 context.Context, arg1 *secretsmanager.ListSecretVersionIdsInput, arg2 ...func(*secretsmanager.Options)) (*secretsmanager.ListSecretVersionIdsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &secretsmanager.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSecretVersionIds")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockSecretsmanagerClientMockRecorder) ListSecretVersionIds(arg0, arg1 
 
 // ListSecrets mocks base method.
 func (m *MockSecretsmanagerClient) ListSecrets(arg0 context.Context, arg1 *secretsmanager.ListSecretsInput, arg2 ...func(*secretsmanager.Options)) (*secretsmanager.ListSecretsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &secretsmanager.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSecrets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
