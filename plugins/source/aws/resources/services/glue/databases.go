@@ -50,7 +50,9 @@ func fetchGlueDatabases(ctx context.Context, meta schema.ClientMeta, parent *sch
 	svc := cl.Services().Glue
 	paginator := glue.NewGetDatabasesPaginator(svc, &glue.GetDatabasesInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -69,7 +71,9 @@ func resolveGlueDatabaseTags(ctx context.Context, meta schema.ClientMeta, resour
 		ResourceArn: aws.String(databaseARN(cl, aws.ToString(resource.Item.(types.Database).Name))),
 	}
 
-	response, err := svc.GetTags(ctx, &input)
+	response, err := svc.GetTags(ctx, &input, func(options *glue.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -84,7 +88,9 @@ func fetchGlueDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	paginator := glue.NewGetTablesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -100,7 +106,9 @@ func fetchGlueDatabaseTableIndexes(ctx context.Context, meta schema.ClientMeta, 
 	input := glue.GetPartitionIndexesInput{DatabaseName: d.Name, CatalogId: d.CatalogId, TableName: t.Name}
 	paginator := glue.NewGetPartitionIndexesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

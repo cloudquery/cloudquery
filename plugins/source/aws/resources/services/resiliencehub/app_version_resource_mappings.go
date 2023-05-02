@@ -38,7 +38,9 @@ func fetchAppVersionResourceMappings(ctx context.Context, meta schema.ClientMeta
 		AppVersion: parent.Item.(types.AppVersionSummary).AppVersion,
 	})
 	for p.HasMorePages() {
-		out, err := p.NextPage(ctx)
+		out, err := p.NextPage(ctx, func(options *resiliencehub.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

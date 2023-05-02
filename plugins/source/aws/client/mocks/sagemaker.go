@@ -37,6 +37,16 @@ func (m *MockSagemakerClient) EXPECT() *MockSagemakerClientMockRecorder {
 
 // DescribeAction mocks base method.
 func (m *MockSagemakerClient) DescribeAction(arg0 context.Context, arg1 *sagemaker.DescribeActionInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeActionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAction")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeAction(arg0, arg1 interface{}
 
 // DescribeAlgorithm mocks base method.
 func (m *MockSagemakerClient) DescribeAlgorithm(arg0 context.Context, arg1 *sagemaker.DescribeAlgorithmInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeAlgorithmOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAlgorithm")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeAlgorithm(arg0, arg1 interfac
 
 // DescribeApp mocks base method.
 func (m *MockSagemakerClient) DescribeApp(arg0 context.Context, arg1 *sagemaker.DescribeAppInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeAppOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeApp")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeApp(arg0, arg1 interface{}, a
 
 // DescribeAppImageConfig mocks base method.
 func (m *MockSagemakerClient) DescribeAppImageConfig(arg0 context.Context, arg1 *sagemaker.DescribeAppImageConfigInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeAppImageConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAppImageConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeAppImageConfig(arg0, arg1 int
 
 // DescribeArtifact mocks base method.
 func (m *MockSagemakerClient) DescribeArtifact(arg0 context.Context, arg1 *sagemaker.DescribeArtifactInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeArtifactOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeArtifact")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeArtifact(arg0, arg1 interface
 
 // DescribeAutoMLJob mocks base method.
 func (m *MockSagemakerClient) DescribeAutoMLJob(arg0 context.Context, arg1 *sagemaker.DescribeAutoMLJobInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeAutoMLJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAutoMLJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeAutoMLJob(arg0, arg1 interfac
 
 // DescribeCodeRepository mocks base method.
 func (m *MockSagemakerClient) DescribeCodeRepository(arg0 context.Context, arg1 *sagemaker.DescribeCodeRepositoryInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeCodeRepositoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCodeRepository")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeCodeRepository(arg0, arg1 int
 
 // DescribeCompilationJob mocks base method.
 func (m *MockSagemakerClient) DescribeCompilationJob(arg0 context.Context, arg1 *sagemaker.DescribeCompilationJobInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeCompilationJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCompilationJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeCompilationJob(arg0, arg1 int
 
 // DescribeContext mocks base method.
 func (m *MockSagemakerClient) DescribeContext(arg0 context.Context, arg1 *sagemaker.DescribeContextInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeContextOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeContext")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeContext(arg0, arg1 interface{
 
 // DescribeDataQualityJobDefinition mocks base method.
 func (m *MockSagemakerClient) DescribeDataQualityJobDefinition(arg0 context.Context, arg1 *sagemaker.DescribeDataQualityJobDefinitionInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeDataQualityJobDefinitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDataQualityJobDefinition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeDataQualityJobDefinition(arg0
 
 // DescribeDevice mocks base method.
 func (m *MockSagemakerClient) DescribeDevice(arg0 context.Context, arg1 *sagemaker.DescribeDeviceInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeDeviceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDevice")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeDevice(arg0, arg1 interface{}
 
 // DescribeDeviceFleet mocks base method.
 func (m *MockSagemakerClient) DescribeDeviceFleet(arg0 context.Context, arg1 *sagemaker.DescribeDeviceFleetInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeDeviceFleetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDeviceFleet")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeDeviceFleet(arg0, arg1 interf
 
 // DescribeDomain mocks base method.
 func (m *MockSagemakerClient) DescribeDomain(arg0 context.Context, arg1 *sagemaker.DescribeDomainInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeDomainOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDomain")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeDomain(arg0, arg1 interface{}
 
 // DescribeEdgeDeploymentPlan mocks base method.
 func (m *MockSagemakerClient) DescribeEdgeDeploymentPlan(arg0 context.Context, arg1 *sagemaker.DescribeEdgeDeploymentPlanInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeEdgeDeploymentPlanOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEdgeDeploymentPlan")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeEdgeDeploymentPlan(arg0, arg1
 
 // DescribeEdgePackagingJob mocks base method.
 func (m *MockSagemakerClient) DescribeEdgePackagingJob(arg0 context.Context, arg1 *sagemaker.DescribeEdgePackagingJobInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeEdgePackagingJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEdgePackagingJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeEdgePackagingJob(arg0, arg1 i
 
 // DescribeEndpoint mocks base method.
 func (m *MockSagemakerClient) DescribeEndpoint(arg0 context.Context, arg1 *sagemaker.DescribeEndpointInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeEndpointOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEndpoint")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeEndpoint(arg0, arg1 interface
 
 // DescribeEndpointConfig mocks base method.
 func (m *MockSagemakerClient) DescribeEndpointConfig(arg0 context.Context, arg1 *sagemaker.DescribeEndpointConfigInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeEndpointConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEndpointConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeEndpointConfig(arg0, arg1 int
 
 // DescribeExperiment mocks base method.
 func (m *MockSagemakerClient) DescribeExperiment(arg0 context.Context, arg1 *sagemaker.DescribeExperimentInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeExperimentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeExperiment")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeExperiment(arg0, arg1 interfa
 
 // DescribeFeatureGroup mocks base method.
 func (m *MockSagemakerClient) DescribeFeatureGroup(arg0 context.Context, arg1 *sagemaker.DescribeFeatureGroupInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeFeatureGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFeatureGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeFeatureGroup(arg0, arg1 inter
 
 // DescribeFeatureMetadata mocks base method.
 func (m *MockSagemakerClient) DescribeFeatureMetadata(arg0 context.Context, arg1 *sagemaker.DescribeFeatureMetadataInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeFeatureMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFeatureMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeFeatureMetadata(arg0, arg1 in
 
 // DescribeFlowDefinition mocks base method.
 func (m *MockSagemakerClient) DescribeFlowDefinition(arg0 context.Context, arg1 *sagemaker.DescribeFlowDefinitionInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeFlowDefinitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFlowDefinition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeFlowDefinition(arg0, arg1 int
 
 // DescribeHub mocks base method.
 func (m *MockSagemakerClient) DescribeHub(arg0 context.Context, arg1 *sagemaker.DescribeHubInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeHubOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeHub")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeHub(arg0, arg1 interface{}, a
 
 // DescribeHubContent mocks base method.
 func (m *MockSagemakerClient) DescribeHubContent(arg0 context.Context, arg1 *sagemaker.DescribeHubContentInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeHubContentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeHubContent")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeHubContent(arg0, arg1 interfa
 
 // DescribeHumanTaskUi mocks base method.
 func (m *MockSagemakerClient) DescribeHumanTaskUi(arg0 context.Context, arg1 *sagemaker.DescribeHumanTaskUiInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeHumanTaskUiOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeHumanTaskUi")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeHumanTaskUi(arg0, arg1 interf
 
 // DescribeHyperParameterTuningJob mocks base method.
 func (m *MockSagemakerClient) DescribeHyperParameterTuningJob(arg0 context.Context, arg1 *sagemaker.DescribeHyperParameterTuningJobInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeHyperParameterTuningJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeHyperParameterTuningJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeHyperParameterTuningJob(arg0,
 
 // DescribeImage mocks base method.
 func (m *MockSagemakerClient) DescribeImage(arg0 context.Context, arg1 *sagemaker.DescribeImageInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeImageOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImage")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeImage(arg0, arg1 interface{},
 
 // DescribeImageVersion mocks base method.
 func (m *MockSagemakerClient) DescribeImageVersion(arg0 context.Context, arg1 *sagemaker.DescribeImageVersionInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeImageVersionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImageVersion")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeImageVersion(arg0, arg1 inter
 
 // DescribeInferenceExperiment mocks base method.
 func (m *MockSagemakerClient) DescribeInferenceExperiment(arg0 context.Context, arg1 *sagemaker.DescribeInferenceExperimentInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeInferenceExperimentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInferenceExperiment")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeInferenceExperiment(arg0, arg
 
 // DescribeInferenceRecommendationsJob mocks base method.
 func (m *MockSagemakerClient) DescribeInferenceRecommendationsJob(arg0 context.Context, arg1 *sagemaker.DescribeInferenceRecommendationsJobInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeInferenceRecommendationsJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInferenceRecommendationsJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeInferenceRecommendationsJob(a
 
 // DescribeLabelingJob mocks base method.
 func (m *MockSagemakerClient) DescribeLabelingJob(arg0 context.Context, arg1 *sagemaker.DescribeLabelingJobInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeLabelingJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLabelingJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeLabelingJob(arg0, arg1 interf
 
 // DescribeLineageGroup mocks base method.
 func (m *MockSagemakerClient) DescribeLineageGroup(arg0 context.Context, arg1 *sagemaker.DescribeLineageGroupInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeLineageGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLineageGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeLineageGroup(arg0, arg1 inter
 
 // DescribeModel mocks base method.
 func (m *MockSagemakerClient) DescribeModel(arg0 context.Context, arg1 *sagemaker.DescribeModelInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeModelOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeModel")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeModel(arg0, arg1 interface{},
 
 // DescribeModelBiasJobDefinition mocks base method.
 func (m *MockSagemakerClient) DescribeModelBiasJobDefinition(arg0 context.Context, arg1 *sagemaker.DescribeModelBiasJobDefinitionInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeModelBiasJobDefinitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeModelBiasJobDefinition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeModelBiasJobDefinition(arg0, 
 
 // DescribeModelCard mocks base method.
 func (m *MockSagemakerClient) DescribeModelCard(arg0 context.Context, arg1 *sagemaker.DescribeModelCardInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeModelCardOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeModelCard")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1057,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeModelCard(arg0, arg1 interfac
 
 // DescribeModelCardExportJob mocks base method.
 func (m *MockSagemakerClient) DescribeModelCardExportJob(arg0 context.Context, arg1 *sagemaker.DescribeModelCardExportJobInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeModelCardExportJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeModelCardExportJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1087,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeModelCardExportJob(arg0, arg1
 
 // DescribeModelExplainabilityJobDefinition mocks base method.
 func (m *MockSagemakerClient) DescribeModelExplainabilityJobDefinition(arg0 context.Context, arg1 *sagemaker.DescribeModelExplainabilityJobDefinitionInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeModelExplainabilityJobDefinitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeModelExplainabilityJobDefinition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1117,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeModelExplainabilityJobDefinit
 
 // DescribeModelPackage mocks base method.
 func (m *MockSagemakerClient) DescribeModelPackage(arg0 context.Context, arg1 *sagemaker.DescribeModelPackageInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeModelPackageOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeModelPackage")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -777,6 +1147,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeModelPackage(arg0, arg1 inter
 
 // DescribeModelPackageGroup mocks base method.
 func (m *MockSagemakerClient) DescribeModelPackageGroup(arg0 context.Context, arg1 *sagemaker.DescribeModelPackageGroupInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeModelPackageGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeModelPackageGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -797,6 +1177,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeModelPackageGroup(arg0, arg1 
 
 // DescribeModelQualityJobDefinition mocks base method.
 func (m *MockSagemakerClient) DescribeModelQualityJobDefinition(arg0 context.Context, arg1 *sagemaker.DescribeModelQualityJobDefinitionInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeModelQualityJobDefinitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeModelQualityJobDefinition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -817,6 +1207,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeModelQualityJobDefinition(arg
 
 // DescribeMonitoringSchedule mocks base method.
 func (m *MockSagemakerClient) DescribeMonitoringSchedule(arg0 context.Context, arg1 *sagemaker.DescribeMonitoringScheduleInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeMonitoringScheduleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMonitoringSchedule")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -837,6 +1237,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeMonitoringSchedule(arg0, arg1
 
 // DescribeNotebookInstance mocks base method.
 func (m *MockSagemakerClient) DescribeNotebookInstance(arg0 context.Context, arg1 *sagemaker.DescribeNotebookInstanceInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeNotebookInstanceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeNotebookInstance")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -857,6 +1267,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeNotebookInstance(arg0, arg1 i
 
 // DescribeNotebookInstanceLifecycleConfig mocks base method.
 func (m *MockSagemakerClient) DescribeNotebookInstanceLifecycleConfig(arg0 context.Context, arg1 *sagemaker.DescribeNotebookInstanceLifecycleConfigInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeNotebookInstanceLifecycleConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeNotebookInstanceLifecycleConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -877,6 +1297,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeNotebookInstanceLifecycleConf
 
 // DescribePipeline mocks base method.
 func (m *MockSagemakerClient) DescribePipeline(arg0 context.Context, arg1 *sagemaker.DescribePipelineInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribePipelineOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePipeline")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -897,6 +1327,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribePipeline(arg0, arg1 interface
 
 // DescribePipelineDefinitionForExecution mocks base method.
 func (m *MockSagemakerClient) DescribePipelineDefinitionForExecution(arg0 context.Context, arg1 *sagemaker.DescribePipelineDefinitionForExecutionInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribePipelineDefinitionForExecutionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePipelineDefinitionForExecution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -917,6 +1357,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribePipelineDefinitionForExecutio
 
 // DescribePipelineExecution mocks base method.
 func (m *MockSagemakerClient) DescribePipelineExecution(arg0 context.Context, arg1 *sagemaker.DescribePipelineExecutionInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribePipelineExecutionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePipelineExecution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -937,6 +1387,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribePipelineExecution(arg0, arg1 
 
 // DescribeProcessingJob mocks base method.
 func (m *MockSagemakerClient) DescribeProcessingJob(arg0 context.Context, arg1 *sagemaker.DescribeProcessingJobInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeProcessingJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProcessingJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -957,6 +1417,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeProcessingJob(arg0, arg1 inte
 
 // DescribeProject mocks base method.
 func (m *MockSagemakerClient) DescribeProject(arg0 context.Context, arg1 *sagemaker.DescribeProjectInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeProjectOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProject")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -977,6 +1447,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeProject(arg0, arg1 interface{
 
 // DescribeSpace mocks base method.
 func (m *MockSagemakerClient) DescribeSpace(arg0 context.Context, arg1 *sagemaker.DescribeSpaceInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeSpaceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSpace")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -997,6 +1477,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeSpace(arg0, arg1 interface{},
 
 // DescribeStudioLifecycleConfig mocks base method.
 func (m *MockSagemakerClient) DescribeStudioLifecycleConfig(arg0 context.Context, arg1 *sagemaker.DescribeStudioLifecycleConfigInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeStudioLifecycleConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStudioLifecycleConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1017,6 +1507,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeStudioLifecycleConfig(arg0, a
 
 // DescribeSubscribedWorkteam mocks base method.
 func (m *MockSagemakerClient) DescribeSubscribedWorkteam(arg0 context.Context, arg1 *sagemaker.DescribeSubscribedWorkteamInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeSubscribedWorkteamOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSubscribedWorkteam")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1037,6 +1537,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeSubscribedWorkteam(arg0, arg1
 
 // DescribeTrainingJob mocks base method.
 func (m *MockSagemakerClient) DescribeTrainingJob(arg0 context.Context, arg1 *sagemaker.DescribeTrainingJobInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeTrainingJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrainingJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1057,6 +1567,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeTrainingJob(arg0, arg1 interf
 
 // DescribeTransformJob mocks base method.
 func (m *MockSagemakerClient) DescribeTransformJob(arg0 context.Context, arg1 *sagemaker.DescribeTransformJobInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeTransformJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTransformJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1077,6 +1597,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeTransformJob(arg0, arg1 inter
 
 // DescribeTrial mocks base method.
 func (m *MockSagemakerClient) DescribeTrial(arg0 context.Context, arg1 *sagemaker.DescribeTrialInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeTrialOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrial")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1097,6 +1627,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeTrial(arg0, arg1 interface{},
 
 // DescribeTrialComponent mocks base method.
 func (m *MockSagemakerClient) DescribeTrialComponent(arg0 context.Context, arg1 *sagemaker.DescribeTrialComponentInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeTrialComponentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrialComponent")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1117,6 +1657,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeTrialComponent(arg0, arg1 int
 
 // DescribeUserProfile mocks base method.
 func (m *MockSagemakerClient) DescribeUserProfile(arg0 context.Context, arg1 *sagemaker.DescribeUserProfileInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeUserProfileOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUserProfile")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1137,6 +1687,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeUserProfile(arg0, arg1 interf
 
 // DescribeWorkforce mocks base method.
 func (m *MockSagemakerClient) DescribeWorkforce(arg0 context.Context, arg1 *sagemaker.DescribeWorkforceInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeWorkforceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeWorkforce")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1157,6 +1717,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeWorkforce(arg0, arg1 interfac
 
 // DescribeWorkteam mocks base method.
 func (m *MockSagemakerClient) DescribeWorkteam(arg0 context.Context, arg1 *sagemaker.DescribeWorkteamInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeWorkteamOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeWorkteam")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1177,6 +1747,16 @@ func (mr *MockSagemakerClientMockRecorder) DescribeWorkteam(arg0, arg1 interface
 
 // GetDeviceFleetReport mocks base method.
 func (m *MockSagemakerClient) GetDeviceFleetReport(arg0 context.Context, arg1 *sagemaker.GetDeviceFleetReportInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.GetDeviceFleetReportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDeviceFleetReport")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1197,6 +1777,16 @@ func (mr *MockSagemakerClientMockRecorder) GetDeviceFleetReport(arg0, arg1 inter
 
 // GetLineageGroupPolicy mocks base method.
 func (m *MockSagemakerClient) GetLineageGroupPolicy(arg0 context.Context, arg1 *sagemaker.GetLineageGroupPolicyInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.GetLineageGroupPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLineageGroupPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1217,6 +1807,16 @@ func (mr *MockSagemakerClientMockRecorder) GetLineageGroupPolicy(arg0, arg1 inte
 
 // GetModelPackageGroupPolicy mocks base method.
 func (m *MockSagemakerClient) GetModelPackageGroupPolicy(arg0 context.Context, arg1 *sagemaker.GetModelPackageGroupPolicyInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.GetModelPackageGroupPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetModelPackageGroupPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1237,6 +1837,16 @@ func (mr *MockSagemakerClientMockRecorder) GetModelPackageGroupPolicy(arg0, arg1
 
 // GetSagemakerServicecatalogPortfolioStatus mocks base method.
 func (m *MockSagemakerClient) GetSagemakerServicecatalogPortfolioStatus(arg0 context.Context, arg1 *sagemaker.GetSagemakerServicecatalogPortfolioStatusInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.GetSagemakerServicecatalogPortfolioStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSagemakerServicecatalogPortfolioStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1257,6 +1867,16 @@ func (mr *MockSagemakerClientMockRecorder) GetSagemakerServicecatalogPortfolioSt
 
 // GetSearchSuggestions mocks base method.
 func (m *MockSagemakerClient) GetSearchSuggestions(arg0 context.Context, arg1 *sagemaker.GetSearchSuggestionsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.GetSearchSuggestionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSearchSuggestions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1277,6 +1897,16 @@ func (mr *MockSagemakerClientMockRecorder) GetSearchSuggestions(arg0, arg1 inter
 
 // ListActions mocks base method.
 func (m *MockSagemakerClient) ListActions(arg0 context.Context, arg1 *sagemaker.ListActionsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListActionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListActions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1297,6 +1927,16 @@ func (mr *MockSagemakerClientMockRecorder) ListActions(arg0, arg1 interface{}, a
 
 // ListAlgorithms mocks base method.
 func (m *MockSagemakerClient) ListAlgorithms(arg0 context.Context, arg1 *sagemaker.ListAlgorithmsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListAlgorithmsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAlgorithms")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1317,6 +1957,16 @@ func (mr *MockSagemakerClientMockRecorder) ListAlgorithms(arg0, arg1 interface{}
 
 // ListAliases mocks base method.
 func (m *MockSagemakerClient) ListAliases(arg0 context.Context, arg1 *sagemaker.ListAliasesInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListAliasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAliases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1337,6 +1987,16 @@ func (mr *MockSagemakerClientMockRecorder) ListAliases(arg0, arg1 interface{}, a
 
 // ListAppImageConfigs mocks base method.
 func (m *MockSagemakerClient) ListAppImageConfigs(arg0 context.Context, arg1 *sagemaker.ListAppImageConfigsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListAppImageConfigsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAppImageConfigs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1357,6 +2017,16 @@ func (mr *MockSagemakerClientMockRecorder) ListAppImageConfigs(arg0, arg1 interf
 
 // ListApps mocks base method.
 func (m *MockSagemakerClient) ListApps(arg0 context.Context, arg1 *sagemaker.ListAppsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListAppsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListApps")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1377,6 +2047,16 @@ func (mr *MockSagemakerClientMockRecorder) ListApps(arg0, arg1 interface{}, arg2
 
 // ListArtifacts mocks base method.
 func (m *MockSagemakerClient) ListArtifacts(arg0 context.Context, arg1 *sagemaker.ListArtifactsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListArtifactsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListArtifacts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1397,6 +2077,16 @@ func (mr *MockSagemakerClientMockRecorder) ListArtifacts(arg0, arg1 interface{},
 
 // ListAssociations mocks base method.
 func (m *MockSagemakerClient) ListAssociations(arg0 context.Context, arg1 *sagemaker.ListAssociationsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1417,6 +2107,16 @@ func (mr *MockSagemakerClientMockRecorder) ListAssociations(arg0, arg1 interface
 
 // ListAutoMLJobs mocks base method.
 func (m *MockSagemakerClient) ListAutoMLJobs(arg0 context.Context, arg1 *sagemaker.ListAutoMLJobsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListAutoMLJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAutoMLJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1437,6 +2137,16 @@ func (mr *MockSagemakerClientMockRecorder) ListAutoMLJobs(arg0, arg1 interface{}
 
 // ListCandidatesForAutoMLJob mocks base method.
 func (m *MockSagemakerClient) ListCandidatesForAutoMLJob(arg0 context.Context, arg1 *sagemaker.ListCandidatesForAutoMLJobInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListCandidatesForAutoMLJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCandidatesForAutoMLJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1457,6 +2167,16 @@ func (mr *MockSagemakerClientMockRecorder) ListCandidatesForAutoMLJob(arg0, arg1
 
 // ListCodeRepositories mocks base method.
 func (m *MockSagemakerClient) ListCodeRepositories(arg0 context.Context, arg1 *sagemaker.ListCodeRepositoriesInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListCodeRepositoriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCodeRepositories")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1477,6 +2197,16 @@ func (mr *MockSagemakerClientMockRecorder) ListCodeRepositories(arg0, arg1 inter
 
 // ListCompilationJobs mocks base method.
 func (m *MockSagemakerClient) ListCompilationJobs(arg0 context.Context, arg1 *sagemaker.ListCompilationJobsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListCompilationJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCompilationJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1497,6 +2227,16 @@ func (mr *MockSagemakerClientMockRecorder) ListCompilationJobs(arg0, arg1 interf
 
 // ListContexts mocks base method.
 func (m *MockSagemakerClient) ListContexts(arg0 context.Context, arg1 *sagemaker.ListContextsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListContextsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListContexts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1517,6 +2257,16 @@ func (mr *MockSagemakerClientMockRecorder) ListContexts(arg0, arg1 interface{}, 
 
 // ListDataQualityJobDefinitions mocks base method.
 func (m *MockSagemakerClient) ListDataQualityJobDefinitions(arg0 context.Context, arg1 *sagemaker.ListDataQualityJobDefinitionsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListDataQualityJobDefinitionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDataQualityJobDefinitions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1537,6 +2287,16 @@ func (mr *MockSagemakerClientMockRecorder) ListDataQualityJobDefinitions(arg0, a
 
 // ListDeviceFleets mocks base method.
 func (m *MockSagemakerClient) ListDeviceFleets(arg0 context.Context, arg1 *sagemaker.ListDeviceFleetsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListDeviceFleetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDeviceFleets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1557,6 +2317,16 @@ func (mr *MockSagemakerClientMockRecorder) ListDeviceFleets(arg0, arg1 interface
 
 // ListDevices mocks base method.
 func (m *MockSagemakerClient) ListDevices(arg0 context.Context, arg1 *sagemaker.ListDevicesInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListDevicesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDevices")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1577,6 +2347,16 @@ func (mr *MockSagemakerClientMockRecorder) ListDevices(arg0, arg1 interface{}, a
 
 // ListDomains mocks base method.
 func (m *MockSagemakerClient) ListDomains(arg0 context.Context, arg1 *sagemaker.ListDomainsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListDomainsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDomains")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1597,6 +2377,16 @@ func (mr *MockSagemakerClientMockRecorder) ListDomains(arg0, arg1 interface{}, a
 
 // ListEdgeDeploymentPlans mocks base method.
 func (m *MockSagemakerClient) ListEdgeDeploymentPlans(arg0 context.Context, arg1 *sagemaker.ListEdgeDeploymentPlansInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListEdgeDeploymentPlansOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEdgeDeploymentPlans")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1617,6 +2407,16 @@ func (mr *MockSagemakerClientMockRecorder) ListEdgeDeploymentPlans(arg0, arg1 in
 
 // ListEdgePackagingJobs mocks base method.
 func (m *MockSagemakerClient) ListEdgePackagingJobs(arg0 context.Context, arg1 *sagemaker.ListEdgePackagingJobsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListEdgePackagingJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEdgePackagingJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1637,6 +2437,16 @@ func (mr *MockSagemakerClientMockRecorder) ListEdgePackagingJobs(arg0, arg1 inte
 
 // ListEndpointConfigs mocks base method.
 func (m *MockSagemakerClient) ListEndpointConfigs(arg0 context.Context, arg1 *sagemaker.ListEndpointConfigsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListEndpointConfigsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEndpointConfigs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1657,6 +2467,16 @@ func (mr *MockSagemakerClientMockRecorder) ListEndpointConfigs(arg0, arg1 interf
 
 // ListEndpoints mocks base method.
 func (m *MockSagemakerClient) ListEndpoints(arg0 context.Context, arg1 *sagemaker.ListEndpointsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1677,6 +2497,16 @@ func (mr *MockSagemakerClientMockRecorder) ListEndpoints(arg0, arg1 interface{},
 
 // ListExperiments mocks base method.
 func (m *MockSagemakerClient) ListExperiments(arg0 context.Context, arg1 *sagemaker.ListExperimentsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListExperimentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListExperiments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1697,6 +2527,16 @@ func (mr *MockSagemakerClientMockRecorder) ListExperiments(arg0, arg1 interface{
 
 // ListFeatureGroups mocks base method.
 func (m *MockSagemakerClient) ListFeatureGroups(arg0 context.Context, arg1 *sagemaker.ListFeatureGroupsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListFeatureGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFeatureGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1717,6 +2557,16 @@ func (mr *MockSagemakerClientMockRecorder) ListFeatureGroups(arg0, arg1 interfac
 
 // ListFlowDefinitions mocks base method.
 func (m *MockSagemakerClient) ListFlowDefinitions(arg0 context.Context, arg1 *sagemaker.ListFlowDefinitionsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListFlowDefinitionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFlowDefinitions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1737,6 +2587,16 @@ func (mr *MockSagemakerClientMockRecorder) ListFlowDefinitions(arg0, arg1 interf
 
 // ListHubContentVersions mocks base method.
 func (m *MockSagemakerClient) ListHubContentVersions(arg0 context.Context, arg1 *sagemaker.ListHubContentVersionsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListHubContentVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListHubContentVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1757,6 +2617,16 @@ func (mr *MockSagemakerClientMockRecorder) ListHubContentVersions(arg0, arg1 int
 
 // ListHubContents mocks base method.
 func (m *MockSagemakerClient) ListHubContents(arg0 context.Context, arg1 *sagemaker.ListHubContentsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListHubContentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListHubContents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1777,6 +2647,16 @@ func (mr *MockSagemakerClientMockRecorder) ListHubContents(arg0, arg1 interface{
 
 // ListHubs mocks base method.
 func (m *MockSagemakerClient) ListHubs(arg0 context.Context, arg1 *sagemaker.ListHubsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListHubsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListHubs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1797,6 +2677,16 @@ func (mr *MockSagemakerClientMockRecorder) ListHubs(arg0, arg1 interface{}, arg2
 
 // ListHumanTaskUis mocks base method.
 func (m *MockSagemakerClient) ListHumanTaskUis(arg0 context.Context, arg1 *sagemaker.ListHumanTaskUisInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListHumanTaskUisOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListHumanTaskUis")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1817,6 +2707,16 @@ func (mr *MockSagemakerClientMockRecorder) ListHumanTaskUis(arg0, arg1 interface
 
 // ListHyperParameterTuningJobs mocks base method.
 func (m *MockSagemakerClient) ListHyperParameterTuningJobs(arg0 context.Context, arg1 *sagemaker.ListHyperParameterTuningJobsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListHyperParameterTuningJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListHyperParameterTuningJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1837,6 +2737,16 @@ func (mr *MockSagemakerClientMockRecorder) ListHyperParameterTuningJobs(arg0, ar
 
 // ListImageVersions mocks base method.
 func (m *MockSagemakerClient) ListImageVersions(arg0 context.Context, arg1 *sagemaker.ListImageVersionsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListImageVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListImageVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1857,6 +2767,16 @@ func (mr *MockSagemakerClientMockRecorder) ListImageVersions(arg0, arg1 interfac
 
 // ListImages mocks base method.
 func (m *MockSagemakerClient) ListImages(arg0 context.Context, arg1 *sagemaker.ListImagesInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListImagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListImages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1877,6 +2797,16 @@ func (mr *MockSagemakerClientMockRecorder) ListImages(arg0, arg1 interface{}, ar
 
 // ListInferenceExperiments mocks base method.
 func (m *MockSagemakerClient) ListInferenceExperiments(arg0 context.Context, arg1 *sagemaker.ListInferenceExperimentsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListInferenceExperimentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInferenceExperiments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1897,6 +2827,16 @@ func (mr *MockSagemakerClientMockRecorder) ListInferenceExperiments(arg0, arg1 i
 
 // ListInferenceRecommendationsJobSteps mocks base method.
 func (m *MockSagemakerClient) ListInferenceRecommendationsJobSteps(arg0 context.Context, arg1 *sagemaker.ListInferenceRecommendationsJobStepsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListInferenceRecommendationsJobStepsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInferenceRecommendationsJobSteps")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1917,6 +2857,16 @@ func (mr *MockSagemakerClientMockRecorder) ListInferenceRecommendationsJobSteps(
 
 // ListInferenceRecommendationsJobs mocks base method.
 func (m *MockSagemakerClient) ListInferenceRecommendationsJobs(arg0 context.Context, arg1 *sagemaker.ListInferenceRecommendationsJobsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListInferenceRecommendationsJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInferenceRecommendationsJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1937,6 +2887,16 @@ func (mr *MockSagemakerClientMockRecorder) ListInferenceRecommendationsJobs(arg0
 
 // ListLabelingJobs mocks base method.
 func (m *MockSagemakerClient) ListLabelingJobs(arg0 context.Context, arg1 *sagemaker.ListLabelingJobsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListLabelingJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListLabelingJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1957,6 +2917,16 @@ func (mr *MockSagemakerClientMockRecorder) ListLabelingJobs(arg0, arg1 interface
 
 // ListLabelingJobsForWorkteam mocks base method.
 func (m *MockSagemakerClient) ListLabelingJobsForWorkteam(arg0 context.Context, arg1 *sagemaker.ListLabelingJobsForWorkteamInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListLabelingJobsForWorkteamOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListLabelingJobsForWorkteam")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1977,6 +2947,16 @@ func (mr *MockSagemakerClientMockRecorder) ListLabelingJobsForWorkteam(arg0, arg
 
 // ListLineageGroups mocks base method.
 func (m *MockSagemakerClient) ListLineageGroups(arg0 context.Context, arg1 *sagemaker.ListLineageGroupsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListLineageGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListLineageGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1997,6 +2977,16 @@ func (mr *MockSagemakerClientMockRecorder) ListLineageGroups(arg0, arg1 interfac
 
 // ListModelBiasJobDefinitions mocks base method.
 func (m *MockSagemakerClient) ListModelBiasJobDefinitions(arg0 context.Context, arg1 *sagemaker.ListModelBiasJobDefinitionsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListModelBiasJobDefinitionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListModelBiasJobDefinitions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2017,6 +3007,16 @@ func (mr *MockSagemakerClientMockRecorder) ListModelBiasJobDefinitions(arg0, arg
 
 // ListModelCardExportJobs mocks base method.
 func (m *MockSagemakerClient) ListModelCardExportJobs(arg0 context.Context, arg1 *sagemaker.ListModelCardExportJobsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListModelCardExportJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListModelCardExportJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2037,6 +3037,16 @@ func (mr *MockSagemakerClientMockRecorder) ListModelCardExportJobs(arg0, arg1 in
 
 // ListModelCardVersions mocks base method.
 func (m *MockSagemakerClient) ListModelCardVersions(arg0 context.Context, arg1 *sagemaker.ListModelCardVersionsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListModelCardVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListModelCardVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2057,6 +3067,16 @@ func (mr *MockSagemakerClientMockRecorder) ListModelCardVersions(arg0, arg1 inte
 
 // ListModelCards mocks base method.
 func (m *MockSagemakerClient) ListModelCards(arg0 context.Context, arg1 *sagemaker.ListModelCardsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListModelCardsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListModelCards")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2077,6 +3097,16 @@ func (mr *MockSagemakerClientMockRecorder) ListModelCards(arg0, arg1 interface{}
 
 // ListModelExplainabilityJobDefinitions mocks base method.
 func (m *MockSagemakerClient) ListModelExplainabilityJobDefinitions(arg0 context.Context, arg1 *sagemaker.ListModelExplainabilityJobDefinitionsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListModelExplainabilityJobDefinitionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListModelExplainabilityJobDefinitions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2097,6 +3127,16 @@ func (mr *MockSagemakerClientMockRecorder) ListModelExplainabilityJobDefinitions
 
 // ListModelMetadata mocks base method.
 func (m *MockSagemakerClient) ListModelMetadata(arg0 context.Context, arg1 *sagemaker.ListModelMetadataInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListModelMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListModelMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2117,6 +3157,16 @@ func (mr *MockSagemakerClientMockRecorder) ListModelMetadata(arg0, arg1 interfac
 
 // ListModelPackageGroups mocks base method.
 func (m *MockSagemakerClient) ListModelPackageGroups(arg0 context.Context, arg1 *sagemaker.ListModelPackageGroupsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListModelPackageGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListModelPackageGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2137,6 +3187,16 @@ func (mr *MockSagemakerClientMockRecorder) ListModelPackageGroups(arg0, arg1 int
 
 // ListModelPackages mocks base method.
 func (m *MockSagemakerClient) ListModelPackages(arg0 context.Context, arg1 *sagemaker.ListModelPackagesInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListModelPackagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListModelPackages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2157,6 +3217,16 @@ func (mr *MockSagemakerClientMockRecorder) ListModelPackages(arg0, arg1 interfac
 
 // ListModelQualityJobDefinitions mocks base method.
 func (m *MockSagemakerClient) ListModelQualityJobDefinitions(arg0 context.Context, arg1 *sagemaker.ListModelQualityJobDefinitionsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListModelQualityJobDefinitionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListModelQualityJobDefinitions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2177,6 +3247,16 @@ func (mr *MockSagemakerClientMockRecorder) ListModelQualityJobDefinitions(arg0, 
 
 // ListModels mocks base method.
 func (m *MockSagemakerClient) ListModels(arg0 context.Context, arg1 *sagemaker.ListModelsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListModelsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListModels")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2197,6 +3277,16 @@ func (mr *MockSagemakerClientMockRecorder) ListModels(arg0, arg1 interface{}, ar
 
 // ListMonitoringAlertHistory mocks base method.
 func (m *MockSagemakerClient) ListMonitoringAlertHistory(arg0 context.Context, arg1 *sagemaker.ListMonitoringAlertHistoryInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListMonitoringAlertHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMonitoringAlertHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2217,6 +3307,16 @@ func (mr *MockSagemakerClientMockRecorder) ListMonitoringAlertHistory(arg0, arg1
 
 // ListMonitoringAlerts mocks base method.
 func (m *MockSagemakerClient) ListMonitoringAlerts(arg0 context.Context, arg1 *sagemaker.ListMonitoringAlertsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListMonitoringAlertsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMonitoringAlerts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2237,6 +3337,16 @@ func (mr *MockSagemakerClientMockRecorder) ListMonitoringAlerts(arg0, arg1 inter
 
 // ListMonitoringExecutions mocks base method.
 func (m *MockSagemakerClient) ListMonitoringExecutions(arg0 context.Context, arg1 *sagemaker.ListMonitoringExecutionsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListMonitoringExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMonitoringExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2257,6 +3367,16 @@ func (mr *MockSagemakerClientMockRecorder) ListMonitoringExecutions(arg0, arg1 i
 
 // ListMonitoringSchedules mocks base method.
 func (m *MockSagemakerClient) ListMonitoringSchedules(arg0 context.Context, arg1 *sagemaker.ListMonitoringSchedulesInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListMonitoringSchedulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMonitoringSchedules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2277,6 +3397,16 @@ func (mr *MockSagemakerClientMockRecorder) ListMonitoringSchedules(arg0, arg1 in
 
 // ListNotebookInstanceLifecycleConfigs mocks base method.
 func (m *MockSagemakerClient) ListNotebookInstanceLifecycleConfigs(arg0 context.Context, arg1 *sagemaker.ListNotebookInstanceLifecycleConfigsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListNotebookInstanceLifecycleConfigsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListNotebookInstanceLifecycleConfigs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2297,6 +3427,16 @@ func (mr *MockSagemakerClientMockRecorder) ListNotebookInstanceLifecycleConfigs(
 
 // ListNotebookInstances mocks base method.
 func (m *MockSagemakerClient) ListNotebookInstances(arg0 context.Context, arg1 *sagemaker.ListNotebookInstancesInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListNotebookInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListNotebookInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2317,6 +3457,16 @@ func (mr *MockSagemakerClientMockRecorder) ListNotebookInstances(arg0, arg1 inte
 
 // ListPipelineExecutionSteps mocks base method.
 func (m *MockSagemakerClient) ListPipelineExecutionSteps(arg0 context.Context, arg1 *sagemaker.ListPipelineExecutionStepsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListPipelineExecutionStepsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPipelineExecutionSteps")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2337,6 +3487,16 @@ func (mr *MockSagemakerClientMockRecorder) ListPipelineExecutionSteps(arg0, arg1
 
 // ListPipelineExecutions mocks base method.
 func (m *MockSagemakerClient) ListPipelineExecutions(arg0 context.Context, arg1 *sagemaker.ListPipelineExecutionsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListPipelineExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPipelineExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2357,6 +3517,16 @@ func (mr *MockSagemakerClientMockRecorder) ListPipelineExecutions(arg0, arg1 int
 
 // ListPipelineParametersForExecution mocks base method.
 func (m *MockSagemakerClient) ListPipelineParametersForExecution(arg0 context.Context, arg1 *sagemaker.ListPipelineParametersForExecutionInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListPipelineParametersForExecutionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPipelineParametersForExecution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2377,6 +3547,16 @@ func (mr *MockSagemakerClientMockRecorder) ListPipelineParametersForExecution(ar
 
 // ListPipelines mocks base method.
 func (m *MockSagemakerClient) ListPipelines(arg0 context.Context, arg1 *sagemaker.ListPipelinesInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListPipelinesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPipelines")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2397,6 +3577,16 @@ func (mr *MockSagemakerClientMockRecorder) ListPipelines(arg0, arg1 interface{},
 
 // ListProcessingJobs mocks base method.
 func (m *MockSagemakerClient) ListProcessingJobs(arg0 context.Context, arg1 *sagemaker.ListProcessingJobsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListProcessingJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProcessingJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2417,6 +3607,16 @@ func (mr *MockSagemakerClientMockRecorder) ListProcessingJobs(arg0, arg1 interfa
 
 // ListProjects mocks base method.
 func (m *MockSagemakerClient) ListProjects(arg0 context.Context, arg1 *sagemaker.ListProjectsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListProjectsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProjects")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2437,6 +3637,16 @@ func (mr *MockSagemakerClientMockRecorder) ListProjects(arg0, arg1 interface{}, 
 
 // ListSpaces mocks base method.
 func (m *MockSagemakerClient) ListSpaces(arg0 context.Context, arg1 *sagemaker.ListSpacesInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListSpacesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSpaces")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2457,6 +3667,16 @@ func (mr *MockSagemakerClientMockRecorder) ListSpaces(arg0, arg1 interface{}, ar
 
 // ListStageDevices mocks base method.
 func (m *MockSagemakerClient) ListStageDevices(arg0 context.Context, arg1 *sagemaker.ListStageDevicesInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListStageDevicesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStageDevices")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2477,6 +3697,16 @@ func (mr *MockSagemakerClientMockRecorder) ListStageDevices(arg0, arg1 interface
 
 // ListStudioLifecycleConfigs mocks base method.
 func (m *MockSagemakerClient) ListStudioLifecycleConfigs(arg0 context.Context, arg1 *sagemaker.ListStudioLifecycleConfigsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListStudioLifecycleConfigsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStudioLifecycleConfigs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2497,6 +3727,16 @@ func (mr *MockSagemakerClientMockRecorder) ListStudioLifecycleConfigs(arg0, arg1
 
 // ListSubscribedWorkteams mocks base method.
 func (m *MockSagemakerClient) ListSubscribedWorkteams(arg0 context.Context, arg1 *sagemaker.ListSubscribedWorkteamsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListSubscribedWorkteamsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSubscribedWorkteams")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2517,6 +3757,16 @@ func (mr *MockSagemakerClientMockRecorder) ListSubscribedWorkteams(arg0, arg1 in
 
 // ListTags mocks base method.
 func (m *MockSagemakerClient) ListTags(arg0 context.Context, arg1 *sagemaker.ListTagsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2537,6 +3787,16 @@ func (mr *MockSagemakerClientMockRecorder) ListTags(arg0, arg1 interface{}, arg2
 
 // ListTrainingJobs mocks base method.
 func (m *MockSagemakerClient) ListTrainingJobs(arg0 context.Context, arg1 *sagemaker.ListTrainingJobsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListTrainingJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTrainingJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2557,6 +3817,16 @@ func (mr *MockSagemakerClientMockRecorder) ListTrainingJobs(arg0, arg1 interface
 
 // ListTrainingJobsForHyperParameterTuningJob mocks base method.
 func (m *MockSagemakerClient) ListTrainingJobsForHyperParameterTuningJob(arg0 context.Context, arg1 *sagemaker.ListTrainingJobsForHyperParameterTuningJobInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListTrainingJobsForHyperParameterTuningJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTrainingJobsForHyperParameterTuningJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2577,6 +3847,16 @@ func (mr *MockSagemakerClientMockRecorder) ListTrainingJobsForHyperParameterTuni
 
 // ListTransformJobs mocks base method.
 func (m *MockSagemakerClient) ListTransformJobs(arg0 context.Context, arg1 *sagemaker.ListTransformJobsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListTransformJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTransformJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2597,6 +3877,16 @@ func (mr *MockSagemakerClientMockRecorder) ListTransformJobs(arg0, arg1 interfac
 
 // ListTrialComponents mocks base method.
 func (m *MockSagemakerClient) ListTrialComponents(arg0 context.Context, arg1 *sagemaker.ListTrialComponentsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListTrialComponentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTrialComponents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2617,6 +3907,16 @@ func (mr *MockSagemakerClientMockRecorder) ListTrialComponents(arg0, arg1 interf
 
 // ListTrials mocks base method.
 func (m *MockSagemakerClient) ListTrials(arg0 context.Context, arg1 *sagemaker.ListTrialsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListTrialsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTrials")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2637,6 +3937,16 @@ func (mr *MockSagemakerClientMockRecorder) ListTrials(arg0, arg1 interface{}, ar
 
 // ListUserProfiles mocks base method.
 func (m *MockSagemakerClient) ListUserProfiles(arg0 context.Context, arg1 *sagemaker.ListUserProfilesInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListUserProfilesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUserProfiles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2657,6 +3967,16 @@ func (mr *MockSagemakerClientMockRecorder) ListUserProfiles(arg0, arg1 interface
 
 // ListWorkforces mocks base method.
 func (m *MockSagemakerClient) ListWorkforces(arg0 context.Context, arg1 *sagemaker.ListWorkforcesInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListWorkforcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListWorkforces")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2677,6 +3997,16 @@ func (mr *MockSagemakerClientMockRecorder) ListWorkforces(arg0, arg1 interface{}
 
 // ListWorkteams mocks base method.
 func (m *MockSagemakerClient) ListWorkteams(arg0 context.Context, arg1 *sagemaker.ListWorkteamsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListWorkteamsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListWorkteams")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -2697,6 +4027,16 @@ func (mr *MockSagemakerClientMockRecorder) ListWorkteams(arg0, arg1 interface{},
 
 // Search mocks base method.
 func (m *MockSagemakerClient) Search(arg0 context.Context, arg1 *sagemaker.SearchInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.SearchOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to Search")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

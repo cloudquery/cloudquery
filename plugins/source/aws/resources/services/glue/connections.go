@@ -41,7 +41,9 @@ func fetchGlueConnections(ctx context.Context, meta schema.ClientMeta, parent *s
 	svc := c.Services().Glue
 	paginator := glue.NewGetConnectionsPaginator(svc, &glue.GetConnectionsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

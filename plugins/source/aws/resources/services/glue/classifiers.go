@@ -39,7 +39,9 @@ func fetchGlueClassifiers(ctx context.Context, meta schema.ClientMeta, parent *s
 
 	paginator := glue.NewGetClassifiersPaginator(svc, &glue.GetClassifiersInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

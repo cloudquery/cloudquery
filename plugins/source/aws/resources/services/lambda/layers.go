@@ -43,7 +43,9 @@ func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	svc := c.Services().Lambda
 	paginator := lambda.NewListLayersPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *lambda.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -54,13 +56,16 @@ func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(types.LayersListItem)
-	svc := meta.(*client.Client).Services().Lambda
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lambda
 	config := lambda.ListLayerVersionsInput{
 		LayerName: p.LayerName,
 	}
 	paginator := lambda.NewListLayerVersionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *lambda.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -80,7 +85,9 @@ func fetchLambdaLayerVersionPolicies(ctx context.Context, meta schema.ClientMeta
 		VersionNumber: p.Version,
 	}
 
-	output, err := svc.GetLayerVersionPolicy(ctx, &config)
+	output, err := svc.GetLayerVersionPolicy(ctx, &config, func(options *lambda.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		if client.IsAWSError(err, "ResourceNotFoundException") {
 			return nil

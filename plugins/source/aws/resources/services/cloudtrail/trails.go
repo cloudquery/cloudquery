@@ -58,7 +58,9 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail
 	log := c.Logger()
-	response, err := svc.DescribeTrails(ctx, nil)
+	response, err := svc.DescribeTrails(ctx, nil, func(options *cloudtrail.Options) {
+		options.Region = c.Region
+	})
 
 	if err != nil {
 		return err
