@@ -46,7 +46,9 @@ func fetchDetectorFindings(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	paginator := guardduty.NewListFindingsPaginator(svc, config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *guardduty.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,6 +59,8 @@ func fetchDetectorFindings(ctx context.Context, meta schema.ClientMeta, parent *
 		f, err := svc.GetFindings(ctx, &guardduty.GetFindingsInput{
 			DetectorId: &detector.Id,
 			FindingIds: page.FindingIds,
+		}, func(options *guardduty.Options) {
+			options.Region = c.Region
 		})
 		if err != nil {
 			return err

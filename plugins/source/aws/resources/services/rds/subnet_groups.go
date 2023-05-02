@@ -34,10 +34,13 @@ func SubnetGroups() *schema.Table {
 }
 
 func fetchRdsSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Rds
+	cl := meta.(*client.Client)
+	svc := cl.Services().Rds
 	paginator := rds.NewDescribeDBSubnetGroupsPaginator(svc, &rds.DescribeDBSubnetGroupsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

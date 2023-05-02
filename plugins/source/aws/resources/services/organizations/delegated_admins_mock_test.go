@@ -18,7 +18,7 @@ func buildDelegatedAdministrators(t *testing.T, ctrl *gomock.Controller) client.
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListDelegatedAdministrators(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListDelegatedAdministrators(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListDelegatedAdministratorsOutput{
 			DelegatedAdministrators: []types.DelegatedAdministrator{da},
 		}, nil)

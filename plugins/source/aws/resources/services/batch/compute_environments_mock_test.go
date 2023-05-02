@@ -22,7 +22,7 @@ func buildBatchComputeEnvironmentsMock(t *testing.T, ctrl *gomock.Controller) cl
 		t.Fatal(err)
 	}
 
-	m.EXPECT().DescribeComputeEnvironments(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().DescribeComputeEnvironments(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&batch.DescribeComputeEnvironmentsOutput{
 			ComputeEnvironments: []types.ComputeEnvironmentDetail{a},
 		}, nil)

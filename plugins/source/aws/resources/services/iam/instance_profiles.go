@@ -39,10 +39,13 @@ func InstanceProfiles() *schema.Table {
 
 func fetchIamInstanceProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := iam.ListInstanceProfilesInput{}
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	p := iam.NewListInstanceProfilesPaginator(svc, &config)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *iam.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -55,7 +58,9 @@ func resolveIamInstanceProfileTags(ctx context.Context, meta schema.ClientMeta, 
 	r := resource.Item.(types.InstanceProfile)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Iam
-	response, err := svc.ListInstanceProfileTags(ctx, &iam.ListInstanceProfileTagsInput{InstanceProfileName: r.InstanceProfileName})
+	response, err := svc.ListInstanceProfileTags(ctx, &iam.ListInstanceProfileTagsInput{InstanceProfileName: r.InstanceProfileName}, func(options *iam.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {
 			return nil

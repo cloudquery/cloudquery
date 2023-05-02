@@ -18,7 +18,7 @@ func buildConnections(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 	connecions.NextToken = nil
-	m.EXPECT().GetConnections(gomock.Any(), gomock.Any()).Return(&connecions, nil)
+	m.EXPECT().GetConnections(gomock.Any(), gomock.Any(), gomock.Any()).Return(&connecions, nil)
 
 	return client.Services{
 		Glue: m,

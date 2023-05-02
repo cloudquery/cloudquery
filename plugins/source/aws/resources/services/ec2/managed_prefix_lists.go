@@ -51,7 +51,9 @@ func fetchEc2ManagedPrefixLists(ctx context.Context, meta schema.ClientMeta, par
 	svc := c.Services().Ec2
 	paginator := ec2.NewDescribeManagedPrefixListsPaginator(svc, &ec2.DescribeManagedPrefixListsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

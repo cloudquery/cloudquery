@@ -18,7 +18,7 @@ func buildElasticSearchVpcEndpoints(t *testing.T, ctrl *gomock.Controller) clien
 	if err := faker.FakeObject(&summary); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListVpcEndpoints(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListVpcEndpoints(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.ListVpcEndpointsOutput{
 			VpcEndpointSummaryList: []types.VpcEndpointSummary{summary},
 		},
@@ -31,7 +31,7 @@ func buildElasticSearchVpcEndpoints(t *testing.T, ctrl *gomock.Controller) clien
 	}
 	endpoint.VpcEndpointId = summary.VpcEndpointId
 
-	m.EXPECT().DescribeVpcEndpoints(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().DescribeVpcEndpoints(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.DescribeVpcEndpointsOutput{
 			VpcEndpoints: []types.VpcEndpoint{endpoint},
 		},

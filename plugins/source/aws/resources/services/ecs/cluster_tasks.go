@@ -47,13 +47,16 @@ func clusterTasks() *schema.Table {
 func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cluster := parent.Item.(types.Cluster)
 
-	svc := meta.(*client.Client).Services().Ecs
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecs
 	config := ecs.ListTasksInput{
 		Cluster: cluster.ClusterArn,
 	}
 	paginator := ecs.NewListTasksPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ecs.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -65,7 +68,9 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 			Tasks:   page.TaskArns,
 			Include: []types.TaskField{types.TaskFieldTags},
 		}
-		describeTasks, err := svc.DescribeTasks(ctx, &describeServicesInput)
+		describeTasks, err := svc.DescribeTasks(ctx, &describeServicesInput, func(options *ecs.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -75,11 +80,14 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func getEcsTaskProtection(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	svc := meta.(*client.Client).Services().Ecs
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecs
 	task := resource.Item.(types.Task)
 	resp, err := svc.GetTaskProtection(ctx, &ecs.GetTaskProtectionInput{
 		Cluster: task.ClusterArn,
 		Tasks:   []string{aws.ToString(task.TaskArn)},
+	}, func(options *ecs.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

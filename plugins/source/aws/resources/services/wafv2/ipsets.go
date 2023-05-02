@@ -55,7 +55,9 @@ func fetchWafv2Ipsets(ctx context.Context, meta schema.ClientMeta, parent *schem
 		Limit: aws.Int32(100), // maximum value: https://docs.aws.amazon.com/waf/latest/APIReference/API_ListIPSets.html
 	}
 	for {
-		result, err := svc.ListIPSets(ctx, &params)
+		result, err := svc.ListIPSets(ctx, &params, func(o *wafv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -76,8 +78,8 @@ func getIpset(ctx context.Context, meta schema.ClientMeta, resource *schema.Reso
 	input := &wafv2.GetIPSetInput{
 		Id: s.Id, Name: s.Name, Scope: cl.WAFScope,
 	}
-	info, err := svc.GetIPSet(ctx, input, func(options *wafv2.Options) {
-		options.Region = cl.Region
+	info, err := svc.GetIPSet(ctx, input, func(o *wafv2.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -108,8 +110,8 @@ func resolveIpsetTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 	params := wafv2.ListTagsForResourceInput{ResourceARN: s.ARN}
 
 	for {
-		result, err := svc.ListTagsForResource(ctx, &params, func(options *wafv2.Options) {
-			options.Region = cl.Region
+		result, err := svc.ListTagsForResource(ctx, &params, func(o *wafv2.Options) {
+			o.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -50,7 +50,9 @@ func fetchBackupPlans(ctx context.Context, meta schema.ClientMeta, parent *schem
 	params := backup.ListBackupPlansInput{MaxResults: aws.Int32(1000)} // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupPlans.html
 	paginator := backup.NewListBackupPlansPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *backup.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -67,6 +69,9 @@ func getPlan(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 	plan, err := svc.GetBackupPlan(
 		ctx,
 		&backup.GetBackupPlanInput{BackupPlanId: m.BackupPlanId, VersionId: m.VersionId},
+		func(options *backup.Options) {
+			options.Region = cl.Region
+		},
 	)
 	if err != nil {
 		return err
@@ -83,7 +88,9 @@ func resolvePlanTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	tags := make(map[string]string)
 	paginator := backup.NewListTagsPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *backup.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

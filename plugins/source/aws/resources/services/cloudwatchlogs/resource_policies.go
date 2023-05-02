@@ -45,7 +45,9 @@ func fetchCloudwatchlogsResourcePolicies(ctx context.Context, meta schema.Client
 	svc := c.Services().Cloudwatchlogs
 	// No paginator available
 	for {
-		response, err := svc.DescribeResourcePolicies(ctx, &config)
+		response, err := svc.DescribeResourcePolicies(ctx, &config, func(options *cloudwatchlogs.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
