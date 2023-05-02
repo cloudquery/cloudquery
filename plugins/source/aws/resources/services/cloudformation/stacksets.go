@@ -61,7 +61,9 @@ func fetchCloudformationStackSets(ctx context.Context, meta schema.ClientMeta, _
 		}
 		paginator := cloudformation.NewListStackSetsPaginator(svc, &config)
 		for paginator.HasMorePages() {
-			page, err = paginator.NextPage(ctx)
+			page, err = paginator.NextPage(ctx, func(options *cloudformation.Options) {
+				options.Region = c.Region
+			})
 			if err != nil {
 				c.Logger().Info().Err(err).Msgf("failed to list stack sets with callAs: %s", string(callAs))
 				break
@@ -81,16 +83,20 @@ func fetchCloudformationStackSets(ctx context.Context, meta schema.ClientMeta, _
 }
 
 func getStackSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	stack := resource.Item.(models.ExpandedSummary)
 	var err error
 	var stackSet *cloudformation.DescribeStackSetOutput
+
+	stack := resource.Item.(models.ExpandedSummary)
+	c := meta.(*client.Client)
 
 	input := &cloudformation.DescribeStackSetInput{
 		StackSetName: stack.StackSetName,
 		CallAs:       stack.CallAs,
 	}
 
-	stackSet, err = meta.(*client.Client).Services().Cloudformation.DescribeStackSet(ctx, input)
+	stackSet, err = meta.(*client.Client).Services().Cloudformation.DescribeStackSet(ctx, input, func(options *cloudformation.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

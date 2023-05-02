@@ -35,6 +35,7 @@ func Apps() *schema.Table {
 }
 
 func fetchApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
 	svc := meta.(*client.Client).Services().Amplify
 
 	config := amplify.ListAppsInput{
@@ -42,7 +43,9 @@ func fetchApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 	}
 	// No paginator available
 	for {
-		output, err := svc.ListApps(ctx, &config)
+		output, err := svc.ListApps(ctx, &config, func(options *amplify.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

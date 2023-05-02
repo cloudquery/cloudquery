@@ -37,6 +37,16 @@ func (m *MockLambdaClient) EXPECT() *MockLambdaClientMockRecorder {
 
 // GetAccountSettings mocks base method.
 func (m *MockLambdaClient) GetAccountSettings(arg0 context.Context, arg1 *lambda.GetAccountSettingsInput, arg2 ...func(*lambda.Options)) (*lambda.GetAccountSettingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccountSettings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockLambdaClientMockRecorder) GetAccountSettings(arg0, arg1 interface{
 
 // GetAlias mocks base method.
 func (m *MockLambdaClient) GetAlias(arg0 context.Context, arg1 *lambda.GetAliasInput, arg2 ...func(*lambda.Options)) (*lambda.GetAliasOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAlias")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockLambdaClientMockRecorder) GetAlias(arg0, arg1 interface{}, arg2 ..
 
 // GetCodeSigningConfig mocks base method.
 func (m *MockLambdaClient) GetCodeSigningConfig(arg0 context.Context, arg1 *lambda.GetCodeSigningConfigInput, arg2 ...func(*lambda.Options)) (*lambda.GetCodeSigningConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCodeSigningConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockLambdaClientMockRecorder) GetCodeSigningConfig(arg0, arg1 interfac
 
 // GetEventSourceMapping mocks base method.
 func (m *MockLambdaClient) GetEventSourceMapping(arg0 context.Context, arg1 *lambda.GetEventSourceMappingInput, arg2 ...func(*lambda.Options)) (*lambda.GetEventSourceMappingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEventSourceMapping")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockLambdaClientMockRecorder) GetEventSourceMapping(arg0, arg1 interfa
 
 // GetFunction mocks base method.
 func (m *MockLambdaClient) GetFunction(arg0 context.Context, arg1 *lambda.GetFunctionInput, arg2 ...func(*lambda.Options)) (*lambda.GetFunctionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFunction")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockLambdaClientMockRecorder) GetFunction(arg0, arg1 interface{}, arg2
 
 // GetFunctionCodeSigningConfig mocks base method.
 func (m *MockLambdaClient) GetFunctionCodeSigningConfig(arg0 context.Context, arg1 *lambda.GetFunctionCodeSigningConfigInput, arg2 ...func(*lambda.Options)) (*lambda.GetFunctionCodeSigningConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFunctionCodeSigningConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockLambdaClientMockRecorder) GetFunctionCodeSigningConfig(arg0, arg1 
 
 // GetFunctionConcurrency mocks base method.
 func (m *MockLambdaClient) GetFunctionConcurrency(arg0 context.Context, arg1 *lambda.GetFunctionConcurrencyInput, arg2 ...func(*lambda.Options)) (*lambda.GetFunctionConcurrencyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFunctionConcurrency")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockLambdaClientMockRecorder) GetFunctionConcurrency(arg0, arg1 interf
 
 // GetFunctionConfiguration mocks base method.
 func (m *MockLambdaClient) GetFunctionConfiguration(arg0 context.Context, arg1 *lambda.GetFunctionConfigurationInput, arg2 ...func(*lambda.Options)) (*lambda.GetFunctionConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFunctionConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockLambdaClientMockRecorder) GetFunctionConfiguration(arg0, arg1 inte
 
 // GetFunctionEventInvokeConfig mocks base method.
 func (m *MockLambdaClient) GetFunctionEventInvokeConfig(arg0 context.Context, arg1 *lambda.GetFunctionEventInvokeConfigInput, arg2 ...func(*lambda.Options)) (*lambda.GetFunctionEventInvokeConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFunctionEventInvokeConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockLambdaClientMockRecorder) GetFunctionEventInvokeConfig(arg0, arg1 
 
 // GetFunctionUrlConfig mocks base method.
 func (m *MockLambdaClient) GetFunctionUrlConfig(arg0 context.Context, arg1 *lambda.GetFunctionUrlConfigInput, arg2 ...func(*lambda.Options)) (*lambda.GetFunctionUrlConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFunctionUrlConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockLambdaClientMockRecorder) GetFunctionUrlConfig(arg0, arg1 interfac
 
 // GetLayerVersion mocks base method.
 func (m *MockLambdaClient) GetLayerVersion(arg0 context.Context, arg1 *lambda.GetLayerVersionInput, arg2 ...func(*lambda.Options)) (*lambda.GetLayerVersionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLayerVersion")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockLambdaClientMockRecorder) GetLayerVersion(arg0, arg1 interface{}, 
 
 // GetLayerVersionByArn mocks base method.
 func (m *MockLambdaClient) GetLayerVersionByArn(arg0 context.Context, arg1 *lambda.GetLayerVersionByArnInput, arg2 ...func(*lambda.Options)) (*lambda.GetLayerVersionByArnOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLayerVersionByArn")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockLambdaClientMockRecorder) GetLayerVersionByArn(arg0, arg1 interfac
 
 // GetLayerVersionPolicy mocks base method.
 func (m *MockLambdaClient) GetLayerVersionPolicy(arg0 context.Context, arg1 *lambda.GetLayerVersionPolicyInput, arg2 ...func(*lambda.Options)) (*lambda.GetLayerVersionPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLayerVersionPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockLambdaClientMockRecorder) GetLayerVersionPolicy(arg0, arg1 interfa
 
 // GetPolicy mocks base method.
 func (m *MockLambdaClient) GetPolicy(arg0 context.Context, arg1 *lambda.GetPolicyInput, arg2 ...func(*lambda.Options)) (*lambda.GetPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockLambdaClientMockRecorder) GetPolicy(arg0, arg1 interface{}, arg2 .
 
 // GetProvisionedConcurrencyConfig mocks base method.
 func (m *MockLambdaClient) GetProvisionedConcurrencyConfig(arg0 context.Context, arg1 *lambda.GetProvisionedConcurrencyConfigInput, arg2 ...func(*lambda.Options)) (*lambda.GetProvisionedConcurrencyConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetProvisionedConcurrencyConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockLambdaClientMockRecorder) GetProvisionedConcurrencyConfig(arg0, ar
 
 // GetRuntimeManagementConfig mocks base method.
 func (m *MockLambdaClient) GetRuntimeManagementConfig(arg0 context.Context, arg1 *lambda.GetRuntimeManagementConfigInput, arg2 ...func(*lambda.Options)) (*lambda.GetRuntimeManagementConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRuntimeManagementConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockLambdaClientMockRecorder) GetRuntimeManagementConfig(arg0, arg1 in
 
 // ListAliases mocks base method.
 func (m *MockLambdaClient) ListAliases(arg0 context.Context, arg1 *lambda.ListAliasesInput, arg2 ...func(*lambda.Options)) (*lambda.ListAliasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAliases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockLambdaClientMockRecorder) ListAliases(arg0, arg1 interface{}, arg2
 
 // ListCodeSigningConfigs mocks base method.
 func (m *MockLambdaClient) ListCodeSigningConfigs(arg0 context.Context, arg1 *lambda.ListCodeSigningConfigsInput, arg2 ...func(*lambda.Options)) (*lambda.ListCodeSigningConfigsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCodeSigningConfigs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockLambdaClientMockRecorder) ListCodeSigningConfigs(arg0, arg1 interf
 
 // ListEventSourceMappings mocks base method.
 func (m *MockLambdaClient) ListEventSourceMappings(arg0 context.Context, arg1 *lambda.ListEventSourceMappingsInput, arg2 ...func(*lambda.Options)) (*lambda.ListEventSourceMappingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEventSourceMappings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockLambdaClientMockRecorder) ListEventSourceMappings(arg0, arg1 inter
 
 // ListFunctionEventInvokeConfigs mocks base method.
 func (m *MockLambdaClient) ListFunctionEventInvokeConfigs(arg0 context.Context, arg1 *lambda.ListFunctionEventInvokeConfigsInput, arg2 ...func(*lambda.Options)) (*lambda.ListFunctionEventInvokeConfigsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFunctionEventInvokeConfigs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockLambdaClientMockRecorder) ListFunctionEventInvokeConfigs(arg0, arg
 
 // ListFunctionUrlConfigs mocks base method.
 func (m *MockLambdaClient) ListFunctionUrlConfigs(arg0 context.Context, arg1 *lambda.ListFunctionUrlConfigsInput, arg2 ...func(*lambda.Options)) (*lambda.ListFunctionUrlConfigsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFunctionUrlConfigs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockLambdaClientMockRecorder) ListFunctionUrlConfigs(arg0, arg1 interf
 
 // ListFunctions mocks base method.
 func (m *MockLambdaClient) ListFunctions(arg0 context.Context, arg1 *lambda.ListFunctionsInput, arg2 ...func(*lambda.Options)) (*lambda.ListFunctionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFunctions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockLambdaClientMockRecorder) ListFunctions(arg0, arg1 interface{}, ar
 
 // ListFunctionsByCodeSigningConfig mocks base method.
 func (m *MockLambdaClient) ListFunctionsByCodeSigningConfig(arg0 context.Context, arg1 *lambda.ListFunctionsByCodeSigningConfigInput, arg2 ...func(*lambda.Options)) (*lambda.ListFunctionsByCodeSigningConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFunctionsByCodeSigningConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockLambdaClientMockRecorder) ListFunctionsByCodeSigningConfig(arg0, a
 
 // ListLayerVersions mocks base method.
 func (m *MockLambdaClient) ListLayerVersions(arg0 context.Context, arg1 *lambda.ListLayerVersionsInput, arg2 ...func(*lambda.Options)) (*lambda.ListLayerVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListLayerVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockLambdaClientMockRecorder) ListLayerVersions(arg0, arg1 interface{}
 
 // ListLayers mocks base method.
 func (m *MockLambdaClient) ListLayers(arg0 context.Context, arg1 *lambda.ListLayersInput, arg2 ...func(*lambda.Options)) (*lambda.ListLayersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListLayers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockLambdaClientMockRecorder) ListLayers(arg0, arg1 interface{}, arg2 
 
 // ListProvisionedConcurrencyConfigs mocks base method.
 func (m *MockLambdaClient) ListProvisionedConcurrencyConfigs(arg0 context.Context, arg1 *lambda.ListProvisionedConcurrencyConfigsInput, arg2 ...func(*lambda.Options)) (*lambda.ListProvisionedConcurrencyConfigsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProvisionedConcurrencyConfigs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockLambdaClientMockRecorder) ListProvisionedConcurrencyConfigs(arg0, 
 
 // ListTags mocks base method.
 func (m *MockLambdaClient) ListTags(arg0 context.Context, arg1 *lambda.ListTagsInput, arg2 ...func(*lambda.Options)) (*lambda.ListTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockLambdaClientMockRecorder) ListTags(arg0, arg1 interface{}, arg2 ..
 
 // ListVersionsByFunction mocks base method.
 func (m *MockLambdaClient) ListVersionsByFunction(arg0 context.Context, arg1 *lambda.ListVersionsByFunctionInput, arg2 ...func(*lambda.Options)) (*lambda.ListVersionsByFunctionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lambda.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListVersionsByFunction")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

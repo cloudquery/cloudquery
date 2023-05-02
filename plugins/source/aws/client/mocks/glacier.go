@@ -37,6 +37,16 @@ func (m *MockGlacierClient) EXPECT() *MockGlacierClientMockRecorder {
 
 // DescribeJob mocks base method.
 func (m *MockGlacierClient) DescribeJob(arg0 context.Context, arg1 *glacier.DescribeJobInput, arg2 ...func(*glacier.Options)) (*glacier.DescribeJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glacier.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockGlacierClientMockRecorder) DescribeJob(arg0, arg1 interface{}, arg
 
 // DescribeVault mocks base method.
 func (m *MockGlacierClient) DescribeVault(arg0 context.Context, arg1 *glacier.DescribeVaultInput, arg2 ...func(*glacier.Options)) (*glacier.DescribeVaultOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glacier.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVault")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockGlacierClientMockRecorder) DescribeVault(arg0, arg1 interface{}, a
 
 // GetDataRetrievalPolicy mocks base method.
 func (m *MockGlacierClient) GetDataRetrievalPolicy(arg0 context.Context, arg1 *glacier.GetDataRetrievalPolicyInput, arg2 ...func(*glacier.Options)) (*glacier.GetDataRetrievalPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glacier.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDataRetrievalPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockGlacierClientMockRecorder) GetDataRetrievalPolicy(arg0, arg1 inter
 
 // GetJobOutput mocks base method.
 func (m *MockGlacierClient) GetJobOutput(arg0 context.Context, arg1 *glacier.GetJobOutputInput, arg2 ...func(*glacier.Options)) (*glacier.GetJobOutputOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glacier.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetJobOutput")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockGlacierClientMockRecorder) GetJobOutput(arg0, arg1 interface{}, ar
 
 // GetVaultAccessPolicy mocks base method.
 func (m *MockGlacierClient) GetVaultAccessPolicy(arg0 context.Context, arg1 *glacier.GetVaultAccessPolicyInput, arg2 ...func(*glacier.Options)) (*glacier.GetVaultAccessPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glacier.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetVaultAccessPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockGlacierClientMockRecorder) GetVaultAccessPolicy(arg0, arg1 interfa
 
 // GetVaultLock mocks base method.
 func (m *MockGlacierClient) GetVaultLock(arg0 context.Context, arg1 *glacier.GetVaultLockInput, arg2 ...func(*glacier.Options)) (*glacier.GetVaultLockOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glacier.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetVaultLock")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockGlacierClientMockRecorder) GetVaultLock(arg0, arg1 interface{}, ar
 
 // GetVaultNotifications mocks base method.
 func (m *MockGlacierClient) GetVaultNotifications(arg0 context.Context, arg1 *glacier.GetVaultNotificationsInput, arg2 ...func(*glacier.Options)) (*glacier.GetVaultNotificationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glacier.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetVaultNotifications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockGlacierClientMockRecorder) GetVaultNotifications(arg0, arg1 interf
 
 // ListJobs mocks base method.
 func (m *MockGlacierClient) ListJobs(arg0 context.Context, arg1 *glacier.ListJobsInput, arg2 ...func(*glacier.Options)) (*glacier.ListJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glacier.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockGlacierClientMockRecorder) ListJobs(arg0, arg1 interface{}, arg2 .
 
 // ListMultipartUploads mocks base method.
 func (m *MockGlacierClient) ListMultipartUploads(arg0 context.Context, arg1 *glacier.ListMultipartUploadsInput, arg2 ...func(*glacier.Options)) (*glacier.ListMultipartUploadsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glacier.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMultipartUploads")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockGlacierClientMockRecorder) ListMultipartUploads(arg0, arg1 interfa
 
 // ListParts mocks base method.
 func (m *MockGlacierClient) ListParts(arg0 context.Context, arg1 *glacier.ListPartsInput, arg2 ...func(*glacier.Options)) (*glacier.ListPartsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glacier.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListParts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockGlacierClientMockRecorder) ListParts(arg0, arg1 interface{}, arg2 
 
 // ListProvisionedCapacity mocks base method.
 func (m *MockGlacierClient) ListProvisionedCapacity(arg0 context.Context, arg1 *glacier.ListProvisionedCapacityInput, arg2 ...func(*glacier.Options)) (*glacier.ListProvisionedCapacityOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glacier.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProvisionedCapacity")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockGlacierClientMockRecorder) ListProvisionedCapacity(arg0, arg1 inte
 
 // ListTagsForVault mocks base method.
 func (m *MockGlacierClient) ListTagsForVault(arg0 context.Context, arg1 *glacier.ListTagsForVaultInput, arg2 ...func(*glacier.Options)) (*glacier.ListTagsForVaultOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glacier.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForVault")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockGlacierClientMockRecorder) ListTagsForVault(arg0, arg1 interface{}
 
 // ListVaults mocks base method.
 func (m *MockGlacierClient) ListVaults(arg0 context.Context, arg1 *glacier.ListVaultsInput, arg2 ...func(*glacier.Options)) (*glacier.ListVaultsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glacier.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListVaults")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

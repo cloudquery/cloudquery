@@ -21,6 +21,7 @@ func buildWorkflowsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().ListWorkflows(
 		gomock.Any(),
 		&glue.ListWorkflowsInput{MaxResults: aws.Int32(25)},
+		gomock.Any(),
 	).Return(
 		&glue.ListWorkflowsOutput{Workflows: []string{name}},
 		nil,
@@ -32,6 +33,7 @@ func buildWorkflowsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetWorkflow(
 		gomock.Any(),
 		&glue.GetWorkflowInput{Name: aws.String(name)},
+		gomock.Any(),
 	).Return(
 		&glue.GetWorkflowOutput{Workflow: &w},
 		nil,
@@ -40,6 +42,7 @@ func buildWorkflowsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetTags(
 		gomock.Any(),
 		&glue.GetTagsInput{ResourceArn: aws.String("arn:aws:glue:us-east-1:testAccount:workflow/" + name)},
+		gomock.Any(),
 	).Return(
 		&glue.GetTagsOutput{Tags: map[string]string{"key": "value"}},
 		nil,

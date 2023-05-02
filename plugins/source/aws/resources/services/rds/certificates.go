@@ -39,7 +39,9 @@ func fetchRdsCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 	svc := c.Services().Rds
 	paginator := rds.NewDescribeCertificatesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
