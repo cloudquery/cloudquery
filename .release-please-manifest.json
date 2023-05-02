@@ -45,7 +45,7 @@
   "plugins/source/slack+FILLER": "0.0.0",
   "plugins/source/pagerduty": "1.5.0",
   "plugins/source/pagerduty+FILLER": "0.0.0",
-  "plugins/destination/mongodb": "2.0.0",
+  "plugins/destination/mongodb": "2.0.1",
   "plugins/destination/mongodb+FILLER": "0.0.0",
   "plugins/source/gitlab": "2.3.1",
   "plugins/source/gitlab+FILLER": "0.0.0",
