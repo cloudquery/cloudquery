@@ -37,6 +37,16 @@ func (m *MockGuarddutyClient) EXPECT() *MockGuarddutyClientMockRecorder {
 
 // DescribeMalwareScans mocks base method.
 func (m *MockGuarddutyClient) DescribeMalwareScans(arg0 context.Context, arg1 *guardduty.DescribeMalwareScansInput, arg2 ...func(*guardduty.Options)) (*guardduty.DescribeMalwareScansOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMalwareScans")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockGuarddutyClientMockRecorder) DescribeMalwareScans(arg0, arg1 inter
 
 // DescribeOrganizationConfiguration mocks base method.
 func (m *MockGuarddutyClient) DescribeOrganizationConfiguration(arg0 context.Context, arg1 *guardduty.DescribeOrganizationConfigurationInput, arg2 ...func(*guardduty.Options)) (*guardduty.DescribeOrganizationConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOrganizationConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockGuarddutyClientMockRecorder) DescribeOrganizationConfiguration(arg
 
 // DescribePublishingDestination mocks base method.
 func (m *MockGuarddutyClient) DescribePublishingDestination(arg0 context.Context, arg1 *guardduty.DescribePublishingDestinationInput, arg2 ...func(*guardduty.Options)) (*guardduty.DescribePublishingDestinationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePublishingDestination")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockGuarddutyClientMockRecorder) DescribePublishingDestination(arg0, a
 
 // GetAdministratorAccount mocks base method.
 func (m *MockGuarddutyClient) GetAdministratorAccount(arg0 context.Context, arg1 *guardduty.GetAdministratorAccountInput, arg2 ...func(*guardduty.Options)) (*guardduty.GetAdministratorAccountOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAdministratorAccount")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockGuarddutyClientMockRecorder) GetAdministratorAccount(arg0, arg1 in
 
 // GetDetector mocks base method.
 func (m *MockGuarddutyClient) GetDetector(arg0 context.Context, arg1 *guardduty.GetDetectorInput, arg2 ...func(*guardduty.Options)) (*guardduty.GetDetectorOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDetector")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockGuarddutyClientMockRecorder) GetDetector(arg0, arg1 interface{}, a
 
 // GetFilter mocks base method.
 func (m *MockGuarddutyClient) GetFilter(arg0 context.Context, arg1 *guardduty.GetFilterInput, arg2 ...func(*guardduty.Options)) (*guardduty.GetFilterOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFilter")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockGuarddutyClientMockRecorder) GetFilter(arg0, arg1 interface{}, arg
 
 // GetFindings mocks base method.
 func (m *MockGuarddutyClient) GetFindings(arg0 context.Context, arg1 *guardduty.GetFindingsInput, arg2 ...func(*guardduty.Options)) (*guardduty.GetFindingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFindings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockGuarddutyClientMockRecorder) GetFindings(arg0, arg1 interface{}, a
 
 // GetFindingsStatistics mocks base method.
 func (m *MockGuarddutyClient) GetFindingsStatistics(arg0 context.Context, arg1 *guardduty.GetFindingsStatisticsInput, arg2 ...func(*guardduty.Options)) (*guardduty.GetFindingsStatisticsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFindingsStatistics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockGuarddutyClientMockRecorder) GetFindingsStatistics(arg0, arg1 inte
 
 // GetIPSet mocks base method.
 func (m *MockGuarddutyClient) GetIPSet(arg0 context.Context, arg1 *guardduty.GetIPSetInput, arg2 ...func(*guardduty.Options)) (*guardduty.GetIPSetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetIPSet")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockGuarddutyClientMockRecorder) GetIPSet(arg0, arg1 interface{}, arg2
 
 // GetInvitationsCount mocks base method.
 func (m *MockGuarddutyClient) GetInvitationsCount(arg0 context.Context, arg1 *guardduty.GetInvitationsCountInput, arg2 ...func(*guardduty.Options)) (*guardduty.GetInvitationsCountOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInvitationsCount")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockGuarddutyClientMockRecorder) GetInvitationsCount(arg0, arg1 interf
 
 // GetMalwareScanSettings mocks base method.
 func (m *MockGuarddutyClient) GetMalwareScanSettings(arg0 context.Context, arg1 *guardduty.GetMalwareScanSettingsInput, arg2 ...func(*guardduty.Options)) (*guardduty.GetMalwareScanSettingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMalwareScanSettings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockGuarddutyClientMockRecorder) GetMalwareScanSettings(arg0, arg1 int
 
 // GetMasterAccount mocks base method.
 func (m *MockGuarddutyClient) GetMasterAccount(arg0 context.Context, arg1 *guardduty.GetMasterAccountInput, arg2 ...func(*guardduty.Options)) (*guardduty.GetMasterAccountOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMasterAccount")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockGuarddutyClientMockRecorder) GetMasterAccount(arg0, arg1 interface
 
 // GetMemberDetectors mocks base method.
 func (m *MockGuarddutyClient) GetMemberDetectors(arg0 context.Context, arg1 *guardduty.GetMemberDetectorsInput, arg2 ...func(*guardduty.Options)) (*guardduty.GetMemberDetectorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMemberDetectors")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockGuarddutyClientMockRecorder) GetMemberDetectors(arg0, arg1 interfa
 
 // GetMembers mocks base method.
 func (m *MockGuarddutyClient) GetMembers(arg0 context.Context, arg1 *guardduty.GetMembersInput, arg2 ...func(*guardduty.Options)) (*guardduty.GetMembersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMembers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockGuarddutyClientMockRecorder) GetMembers(arg0, arg1 interface{}, ar
 
 // GetRemainingFreeTrialDays mocks base method.
 func (m *MockGuarddutyClient) GetRemainingFreeTrialDays(arg0 context.Context, arg1 *guardduty.GetRemainingFreeTrialDaysInput, arg2 ...func(*guardduty.Options)) (*guardduty.GetRemainingFreeTrialDaysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRemainingFreeTrialDays")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockGuarddutyClientMockRecorder) GetRemainingFreeTrialDays(arg0, arg1 
 
 // GetThreatIntelSet mocks base method.
 func (m *MockGuarddutyClient) GetThreatIntelSet(arg0 context.Context, arg1 *guardduty.GetThreatIntelSetInput, arg2 ...func(*guardduty.Options)) (*guardduty.GetThreatIntelSetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetThreatIntelSet")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockGuarddutyClientMockRecorder) GetThreatIntelSet(arg0, arg1 interfac
 
 // GetUsageStatistics mocks base method.
 func (m *MockGuarddutyClient) GetUsageStatistics(arg0 context.Context, arg1 *guardduty.GetUsageStatisticsInput, arg2 ...func(*guardduty.Options)) (*guardduty.GetUsageStatisticsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUsageStatistics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockGuarddutyClientMockRecorder) GetUsageStatistics(arg0, arg1 interfa
 
 // ListDetectors mocks base method.
 func (m *MockGuarddutyClient) ListDetectors(arg0 context.Context, arg1 *guardduty.ListDetectorsInput, arg2 ...func(*guardduty.Options)) (*guardduty.ListDetectorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDetectors")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockGuarddutyClientMockRecorder) ListDetectors(arg0, arg1 interface{},
 
 // ListFilters mocks base method.
 func (m *MockGuarddutyClient) ListFilters(arg0 context.Context, arg1 *guardduty.ListFiltersInput, arg2 ...func(*guardduty.Options)) (*guardduty.ListFiltersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFilters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockGuarddutyClientMockRecorder) ListFilters(arg0, arg1 interface{}, a
 
 // ListFindings mocks base method.
 func (m *MockGuarddutyClient) ListFindings(arg0 context.Context, arg1 *guardduty.ListFindingsInput, arg2 ...func(*guardduty.Options)) (*guardduty.ListFindingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFindings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockGuarddutyClientMockRecorder) ListFindings(arg0, arg1 interface{}, 
 
 // ListIPSets mocks base method.
 func (m *MockGuarddutyClient) ListIPSets(arg0 context.Context, arg1 *guardduty.ListIPSetsInput, arg2 ...func(*guardduty.Options)) (*guardduty.ListIPSetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListIPSets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockGuarddutyClientMockRecorder) ListIPSets(arg0, arg1 interface{}, ar
 
 // ListInvitations mocks base method.
 func (m *MockGuarddutyClient) ListInvitations(arg0 context.Context, arg1 *guardduty.ListInvitationsInput, arg2 ...func(*guardduty.Options)) (*guardduty.ListInvitationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInvitations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockGuarddutyClientMockRecorder) ListInvitations(arg0, arg1 interface{
 
 // ListMembers mocks base method.
 func (m *MockGuarddutyClient) ListMembers(arg0 context.Context, arg1 *guardduty.ListMembersInput, arg2 ...func(*guardduty.Options)) (*guardduty.ListMembersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMembers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockGuarddutyClientMockRecorder) ListMembers(arg0, arg1 interface{}, a
 
 // ListOrganizationAdminAccounts mocks base method.
 func (m *MockGuarddutyClient) ListOrganizationAdminAccounts(arg0 context.Context, arg1 *guardduty.ListOrganizationAdminAccountsInput, arg2 ...func(*guardduty.Options)) (*guardduty.ListOrganizationAdminAccountsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOrganizationAdminAccounts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockGuarddutyClientMockRecorder) ListOrganizationAdminAccounts(arg0, a
 
 // ListPublishingDestinations mocks base method.
 func (m *MockGuarddutyClient) ListPublishingDestinations(arg0 context.Context, arg1 *guardduty.ListPublishingDestinationsInput, arg2 ...func(*guardduty.Options)) (*guardduty.ListPublishingDestinationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPublishingDestinations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockGuarddutyClientMockRecorder) ListPublishingDestinations(arg0, arg1
 
 // ListTagsForResource mocks base method.
 func (m *MockGuarddutyClient) ListTagsForResource(arg0 context.Context, arg1 *guardduty.ListTagsForResourceInput, arg2 ...func(*guardduty.Options)) (*guardduty.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockGuarddutyClientMockRecorder) ListTagsForResource(arg0, arg1 interf
 
 // ListThreatIntelSets mocks base method.
 func (m *MockGuarddutyClient) ListThreatIntelSets(arg0 context.Context, arg1 *guardduty.ListThreatIntelSetsInput, arg2 ...func(*guardduty.Options)) (*guardduty.ListThreatIntelSetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &guardduty.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListThreatIntelSets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

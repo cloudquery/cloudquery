@@ -51,7 +51,9 @@ func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 	config := iam.ListUserPoliciesInput{UserName: user.UserName}
 	paginator := iam.NewListUserPoliciesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iam.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil
@@ -64,11 +66,14 @@ func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func getUserPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	p := resource.Item.(string)
 	user := resource.Parent.Item.(*types.User)
 
-	policyResult, err := svc.GetUserPolicy(ctx, &iam.GetUserPolicyInput{PolicyName: &p, UserName: user.UserName})
+	policyResult, err := svc.GetUserPolicy(ctx, &iam.GetUserPolicyInput{PolicyName: &p, UserName: user.UserName}, func(options *iam.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

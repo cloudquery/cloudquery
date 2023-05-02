@@ -47,7 +47,9 @@ func fetchApigatewayRestApiGatewayResponses(ctx context.Context, meta schema.Cli
 	config := apigateway.GetGatewayResponsesInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	// No paginator available
 	for {
-		response, err := svc.GetGatewayResponses(ctx, &config)
+		response, err := svc.GetGatewayResponses(ctx, &config, func(options *apigateway.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil

@@ -23,7 +23,7 @@ func buildSecurityConfigurations(t *testing.T, ctrl *gomock.Controller) client.S
 	)
 
 	configString := "{}"
-	mock.EXPECT().DescribeSecurityConfiguration(gomock.Any(), &emr.DescribeSecurityConfigurationInput{Name: summary.Name}).Return(
+	mock.EXPECT().DescribeSecurityConfiguration(gomock.Any(), &emr.DescribeSecurityConfigurationInput{Name: summary.Name}, gomock.Any()).Return(
 		&emr.DescribeSecurityConfigurationOutput{CreationDateTime: summary.CreationDateTime, Name: summary.Name, SecurityConfiguration: &configString},
 		nil,
 	)

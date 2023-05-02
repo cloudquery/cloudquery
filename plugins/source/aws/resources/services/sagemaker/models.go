@@ -47,12 +47,14 @@ type WrappedSageMakerModel struct {
 }
 
 func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sagemaker
 	config := sagemaker.ListModelsInput{}
 	paginator := sagemaker.NewListModelsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sagemaker.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -62,12 +64,14 @@ func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema
 }
 
 func getModel(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sagemaker
 	n := resource.Item.(types.ModelSummary)
 
 	response, err := svc.DescribeModel(ctx, &sagemaker.DescribeModelInput{
 		ModelName: n.ModelName,
+	}, func(o *sagemaker.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -83,8 +87,8 @@ func getModel(ctx context.Context, meta schema.ClientMeta, resource *schema.Reso
 
 func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	r := resource.Item.(*WrappedSageMakerModel)
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sagemaker
 
 	config := &sagemaker.ListTagsInput{
 		ResourceArn: r.ModelArn,
@@ -93,7 +97,9 @@ func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, reso
 	paginator := sagemaker.NewListTagsPaginator(svc, config)
 	var tags []types.Tag
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sagemaker.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

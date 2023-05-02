@@ -37,6 +37,16 @@ func (m *MockEfsClient) EXPECT() *MockEfsClientMockRecorder {
 
 // DescribeAccessPoints mocks base method.
 func (m *MockEfsClient) DescribeAccessPoints(arg0 context.Context, arg1 *efs.DescribeAccessPointsInput, arg2 ...func(*efs.Options)) (*efs.DescribeAccessPointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &efs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccessPoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockEfsClientMockRecorder) DescribeAccessPoints(arg0, arg1 interface{}
 
 // DescribeAccountPreferences mocks base method.
 func (m *MockEfsClient) DescribeAccountPreferences(arg0 context.Context, arg1 *efs.DescribeAccountPreferencesInput, arg2 ...func(*efs.Options)) (*efs.DescribeAccountPreferencesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &efs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccountPreferences")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockEfsClientMockRecorder) DescribeAccountPreferences(arg0, arg1 inter
 
 // DescribeBackupPolicy mocks base method.
 func (m *MockEfsClient) DescribeBackupPolicy(arg0 context.Context, arg1 *efs.DescribeBackupPolicyInput, arg2 ...func(*efs.Options)) (*efs.DescribeBackupPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &efs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeBackupPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockEfsClientMockRecorder) DescribeBackupPolicy(arg0, arg1 interface{}
 
 // DescribeFileSystemPolicy mocks base method.
 func (m *MockEfsClient) DescribeFileSystemPolicy(arg0 context.Context, arg1 *efs.DescribeFileSystemPolicyInput, arg2 ...func(*efs.Options)) (*efs.DescribeFileSystemPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &efs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFileSystemPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockEfsClientMockRecorder) DescribeFileSystemPolicy(arg0, arg1 interfa
 
 // DescribeFileSystems mocks base method.
 func (m *MockEfsClient) DescribeFileSystems(arg0 context.Context, arg1 *efs.DescribeFileSystemsInput, arg2 ...func(*efs.Options)) (*efs.DescribeFileSystemsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &efs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFileSystems")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockEfsClientMockRecorder) DescribeFileSystems(arg0, arg1 interface{},
 
 // DescribeLifecycleConfiguration mocks base method.
 func (m *MockEfsClient) DescribeLifecycleConfiguration(arg0 context.Context, arg1 *efs.DescribeLifecycleConfigurationInput, arg2 ...func(*efs.Options)) (*efs.DescribeLifecycleConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &efs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLifecycleConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockEfsClientMockRecorder) DescribeLifecycleConfiguration(arg0, arg1 i
 
 // DescribeMountTargetSecurityGroups mocks base method.
 func (m *MockEfsClient) DescribeMountTargetSecurityGroups(arg0 context.Context, arg1 *efs.DescribeMountTargetSecurityGroupsInput, arg2 ...func(*efs.Options)) (*efs.DescribeMountTargetSecurityGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &efs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMountTargetSecurityGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockEfsClientMockRecorder) DescribeMountTargetSecurityGroups(arg0, arg
 
 // DescribeMountTargets mocks base method.
 func (m *MockEfsClient) DescribeMountTargets(arg0 context.Context, arg1 *efs.DescribeMountTargetsInput, arg2 ...func(*efs.Options)) (*efs.DescribeMountTargetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &efs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMountTargets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockEfsClientMockRecorder) DescribeMountTargets(arg0, arg1 interface{}
 
 // DescribeReplicationConfigurations mocks base method.
 func (m *MockEfsClient) DescribeReplicationConfigurations(arg0 context.Context, arg1 *efs.DescribeReplicationConfigurationsInput, arg2 ...func(*efs.Options)) (*efs.DescribeReplicationConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &efs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReplicationConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockEfsClientMockRecorder) DescribeReplicationConfigurations(arg0, arg
 
 // DescribeTags mocks base method.
 func (m *MockEfsClient) DescribeTags(arg0 context.Context, arg1 *efs.DescribeTagsInput, arg2 ...func(*efs.Options)) (*efs.DescribeTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &efs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockEfsClientMockRecorder) DescribeTags(arg0, arg1 interface{}, arg2 .
 
 // ListTagsForResource mocks base method.
 func (m *MockEfsClient) ListTagsForResource(arg0 context.Context, arg1 *efs.ListTagsForResourceInput, arg2 ...func(*efs.Options)) (*efs.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &efs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

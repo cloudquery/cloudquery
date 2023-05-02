@@ -35,12 +35,15 @@ func fetchEc2VpcEndpointServicePermissions(ctx context.Context, meta schema.Clie
 	if aws.ToString(endpointService.Owner) == "amazon" {
 		return nil
 	}
-	svc := meta.(*client.Client).Services().Ec2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ec2
 	paginator := ec2.NewDescribeVpcEndpointServicePermissionsPaginator(svc, &ec2.DescribeVpcEndpointServicePermissionsInput{
 		ServiceId: endpointService.ServiceId,
 	})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
