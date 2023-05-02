@@ -49,10 +49,13 @@ Notes:
 
 func fetchApprunnerVpcIngressConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apprunner.ListVpcIngressConnectionsInput
-	svc := meta.(*client.Client).Services().Apprunner
+	c := meta.(*client.Client)
+	svc := c.Services().Apprunner
 	paginator := apprunner.NewListVpcIngressConnectionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *apprunner.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -66,7 +69,9 @@ func getVpcIngressConnection(ctx context.Context, meta schema.ClientMeta, resour
 	svc := c.Services().Apprunner
 	asConfig := resource.Item.(types.VpcIngressConnectionSummary)
 
-	describeTaskDefinitionOutput, err := svc.DescribeVpcIngressConnection(ctx, &apprunner.DescribeVpcIngressConnectionInput{VpcIngressConnectionArn: asConfig.VpcIngressConnectionArn})
+	describeTaskDefinitionOutput, err := svc.DescribeVpcIngressConnection(ctx, &apprunner.DescribeVpcIngressConnectionInput{VpcIngressConnectionArn: asConfig.VpcIngressConnectionArn}, func(options *apprunner.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

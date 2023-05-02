@@ -37,6 +37,16 @@ func (m *MockDynamodbstreamsClient) EXPECT() *MockDynamodbstreamsClientMockRecor
 
 // DescribeStream mocks base method.
 func (m *MockDynamodbstreamsClient) DescribeStream(arg0 context.Context, arg1 *dynamodbstreams.DescribeStreamInput, arg2 ...func(*dynamodbstreams.Options)) (*dynamodbstreams.DescribeStreamOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodbstreams.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStream")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockDynamodbstreamsClientMockRecorder) DescribeStream(arg0, arg1 inter
 
 // GetRecords mocks base method.
 func (m *MockDynamodbstreamsClient) GetRecords(arg0 context.Context, arg1 *dynamodbstreams.GetRecordsInput, arg2 ...func(*dynamodbstreams.Options)) (*dynamodbstreams.GetRecordsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodbstreams.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRecords")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockDynamodbstreamsClientMockRecorder) GetRecords(arg0, arg1 interface
 
 // GetShardIterator mocks base method.
 func (m *MockDynamodbstreamsClient) GetShardIterator(arg0 context.Context, arg1 *dynamodbstreams.GetShardIteratorInput, arg2 ...func(*dynamodbstreams.Options)) (*dynamodbstreams.GetShardIteratorOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodbstreams.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetShardIterator")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockDynamodbstreamsClientMockRecorder) GetShardIterator(arg0, arg1 int
 
 // ListStreams mocks base method.
 func (m *MockDynamodbstreamsClient) ListStreams(arg0 context.Context, arg1 *dynamodbstreams.ListStreamsInput, arg2 ...func(*dynamodbstreams.Options)) (*dynamodbstreams.ListStreamsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodbstreams.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStreams")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -37,6 +37,16 @@ func (m *MockApplicationautoscalingClient) EXPECT() *MockApplicationautoscalingC
 
 // DescribeScalableTargets mocks base method.
 func (m *MockApplicationautoscalingClient) DescribeScalableTargets(arg0 context.Context, arg1 *applicationautoscaling.DescribeScalableTargetsInput, arg2 ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScalableTargetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &applicationautoscaling.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScalableTargets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockApplicationautoscalingClientMockRecorder) DescribeScalableTargets(
 
 // DescribeScalingActivities mocks base method.
 func (m *MockApplicationautoscalingClient) DescribeScalingActivities(arg0 context.Context, arg1 *applicationautoscaling.DescribeScalingActivitiesInput, arg2 ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScalingActivitiesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &applicationautoscaling.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScalingActivities")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockApplicationautoscalingClientMockRecorder) DescribeScalingActivitie
 
 // DescribeScalingPolicies mocks base method.
 func (m *MockApplicationautoscalingClient) DescribeScalingPolicies(arg0 context.Context, arg1 *applicationautoscaling.DescribeScalingPoliciesInput, arg2 ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScalingPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &applicationautoscaling.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScalingPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockApplicationautoscalingClientMockRecorder) DescribeScalingPolicies(
 
 // DescribeScheduledActions mocks base method.
 func (m *MockApplicationautoscalingClient) DescribeScheduledActions(arg0 context.Context, arg1 *applicationautoscaling.DescribeScheduledActionsInput, arg2 ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScheduledActionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &applicationautoscaling.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScheduledActions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

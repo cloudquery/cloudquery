@@ -51,7 +51,9 @@ func fetchDirectconnectGateways(ctx context.Context, meta schema.ClientMeta, par
 	svc := c.Services().Directconnect
 	// No paginator available
 	for {
-		output, err := svc.DescribeDirectConnectGateways(ctx, &config)
+		output, err := svc.DescribeDirectConnectGateways(ctx, &config, func(options *directconnect.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -49,7 +49,9 @@ func fetchElasticbeanstalkApplications(ctx context.Context, meta schema.ClientMe
 	var config elasticbeanstalk.DescribeApplicationsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Elasticbeanstalk
-	output, err := svc.DescribeApplications(ctx, &config)
+	output, err := svc.DescribeApplications(ctx, &config, func(options *elasticbeanstalk.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -63,7 +65,9 @@ func resolveElasticbeanstalkApplicationTags(ctx context.Context, meta schema.Cli
 	svc := cl.Services().Elasticbeanstalk
 	tagsOutput, err := svc.ListTagsForResource(ctx, &elasticbeanstalk.ListTagsForResourceInput{
 		ResourceArn: p.ApplicationArn,
-	}, func(o *elasticbeanstalk.Options) {})
+	}, func(o *elasticbeanstalk.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		// It takes a few minutes for an environment to be terminated
 		// This ensures we don't error while trying to fetch related resources for a terminated environment

@@ -55,8 +55,8 @@ func buildAccount(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().GetAccountSummary(gomock.Any(), gomock.Any()).Return(&iam.GetAccountSummaryOutput{SummaryMap: summaryData}, nil)
-	m.EXPECT().ListAccountAliases(gomock.Any(), gomock.Any()).Return(&iam.ListAccountAliasesOutput{AccountAliases: []string{"testAccount"}}, nil)
+	m.EXPECT().GetAccountSummary(gomock.Any(), gomock.Any(), gomock.Any()).Return(&iam.GetAccountSummaryOutput{SummaryMap: summaryData}, nil)
+	m.EXPECT().ListAccountAliases(gomock.Any(), gomock.Any(), gomock.Any()).Return(&iam.ListAccountAliasesOutput{AccountAliases: []string{"testAccount"}}, nil)
 
 	return client.Services{
 		Iam: m,

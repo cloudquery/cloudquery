@@ -44,10 +44,13 @@ func Roles() *schema.Table {
 
 func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListRolesInput
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	paginator := iam.NewListRolesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
+		response, err := paginator.NextPage(ctx, func(options *iam.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -58,9 +61,12 @@ func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 
 func getRole(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	role := resource.Item.(types.Role)
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	roleDetails, err := svc.GetRole(ctx, &iam.GetRoleInput{
 		RoleName: role.RoleName,
+	}, func(options *iam.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

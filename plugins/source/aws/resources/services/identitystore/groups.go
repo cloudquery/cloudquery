@@ -30,13 +30,16 @@ func fetchIdentitystoreGroups(ctx context.Context, meta schema.ClientMeta, paren
 	if err != nil {
 		return err
 	}
-	svc := meta.(*client.Client).Services().Identitystore
+	cl := meta.(*client.Client)
+	svc := cl.Services().Identitystore
 	config := identitystore.ListGroupsInput{
 		IdentityStoreId: instance.IdentityStoreId,
 	}
 	paginator := identitystore.NewListGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *identitystore.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

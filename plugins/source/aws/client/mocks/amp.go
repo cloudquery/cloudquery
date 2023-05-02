@@ -37,6 +37,16 @@ func (m *MockAmpClient) EXPECT() *MockAmpClientMockRecorder {
 
 // DescribeAlertManagerDefinition mocks base method.
 func (m *MockAmpClient) DescribeAlertManagerDefinition(arg0 context.Context, arg1 *amp.DescribeAlertManagerDefinitionInput, arg2 ...func(*amp.Options)) (*amp.DescribeAlertManagerDefinitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amp.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAlertManagerDefinition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockAmpClientMockRecorder) DescribeAlertManagerDefinition(arg0, arg1 i
 
 // DescribeLoggingConfiguration mocks base method.
 func (m *MockAmpClient) DescribeLoggingConfiguration(arg0 context.Context, arg1 *amp.DescribeLoggingConfigurationInput, arg2 ...func(*amp.Options)) (*amp.DescribeLoggingConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amp.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLoggingConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockAmpClientMockRecorder) DescribeLoggingConfiguration(arg0, arg1 int
 
 // DescribeRuleGroupsNamespace mocks base method.
 func (m *MockAmpClient) DescribeRuleGroupsNamespace(arg0 context.Context, arg1 *amp.DescribeRuleGroupsNamespaceInput, arg2 ...func(*amp.Options)) (*amp.DescribeRuleGroupsNamespaceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amp.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRuleGroupsNamespace")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockAmpClientMockRecorder) DescribeRuleGroupsNamespace(arg0, arg1 inte
 
 // DescribeWorkspace mocks base method.
 func (m *MockAmpClient) DescribeWorkspace(arg0 context.Context, arg1 *amp.DescribeWorkspaceInput, arg2 ...func(*amp.Options)) (*amp.DescribeWorkspaceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amp.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeWorkspace")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockAmpClientMockRecorder) DescribeWorkspace(arg0, arg1 interface{}, a
 
 // ListRuleGroupsNamespaces mocks base method.
 func (m *MockAmpClient) ListRuleGroupsNamespaces(arg0 context.Context, arg1 *amp.ListRuleGroupsNamespacesInput, arg2 ...func(*amp.Options)) (*amp.ListRuleGroupsNamespacesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amp.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRuleGroupsNamespaces")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockAmpClientMockRecorder) ListRuleGroupsNamespaces(arg0, arg1 interfa
 
 // ListTagsForResource mocks base method.
 func (m *MockAmpClient) ListTagsForResource(arg0 context.Context, arg1 *amp.ListTagsForResourceInput, arg2 ...func(*amp.Options)) (*amp.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amp.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockAmpClientMockRecorder) ListTagsForResource(arg0, arg1 interface{},
 
 // ListWorkspaces mocks base method.
 func (m *MockAmpClient) ListWorkspaces(arg0 context.Context, arg1 *amp.ListWorkspacesInput, arg2 ...func(*amp.Options)) (*amp.ListWorkspacesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amp.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListWorkspaces")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

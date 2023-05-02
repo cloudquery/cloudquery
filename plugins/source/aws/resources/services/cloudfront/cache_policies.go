@@ -44,7 +44,9 @@ func fetchCloudfrontCachePolicies(ctx context.Context, meta schema.ClientMeta, p
 	s := c.Services()
 	svc := s.Cloudfront
 	for {
-		response, err := svc.ListCachePolicies(ctx, nil)
+		response, err := svc.ListCachePolicies(ctx, nil, func(options *cloudfront.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -37,6 +37,16 @@ func (m *MockResiliencehubClient) EXPECT() *MockResiliencehubClientMockRecorder 
 
 // DescribeApp mocks base method.
 func (m *MockResiliencehubClient) DescribeApp(arg0 context.Context, arg1 *resiliencehub.DescribeAppInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.DescribeAppOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeApp")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockResiliencehubClientMockRecorder) DescribeApp(arg0, arg1 interface{
 
 // DescribeAppAssessment mocks base method.
 func (m *MockResiliencehubClient) DescribeAppAssessment(arg0 context.Context, arg1 *resiliencehub.DescribeAppAssessmentInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.DescribeAppAssessmentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAppAssessment")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockResiliencehubClientMockRecorder) DescribeAppAssessment(arg0, arg1 
 
 // DescribeAppVersionResourcesResolutionStatus mocks base method.
 func (m *MockResiliencehubClient) DescribeAppVersionResourcesResolutionStatus(arg0 context.Context, arg1 *resiliencehub.DescribeAppVersionResourcesResolutionStatusInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.DescribeAppVersionResourcesResolutionStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAppVersionResourcesResolutionStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockResiliencehubClientMockRecorder) DescribeAppVersionResourcesResolu
 
 // DescribeAppVersionTemplate mocks base method.
 func (m *MockResiliencehubClient) DescribeAppVersionTemplate(arg0 context.Context, arg1 *resiliencehub.DescribeAppVersionTemplateInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.DescribeAppVersionTemplateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAppVersionTemplate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockResiliencehubClientMockRecorder) DescribeAppVersionTemplate(arg0, 
 
 // DescribeDraftAppVersionResourcesImportStatus mocks base method.
 func (m *MockResiliencehubClient) DescribeDraftAppVersionResourcesImportStatus(arg0 context.Context, arg1 *resiliencehub.DescribeDraftAppVersionResourcesImportStatusInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.DescribeDraftAppVersionResourcesImportStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDraftAppVersionResourcesImportStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockResiliencehubClientMockRecorder) DescribeDraftAppVersionResourcesI
 
 // DescribeResiliencyPolicy mocks base method.
 func (m *MockResiliencehubClient) DescribeResiliencyPolicy(arg0 context.Context, arg1 *resiliencehub.DescribeResiliencyPolicyInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.DescribeResiliencyPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeResiliencyPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockResiliencehubClientMockRecorder) DescribeResiliencyPolicy(arg0, ar
 
 // ListAlarmRecommendations mocks base method.
 func (m *MockResiliencehubClient) ListAlarmRecommendations(arg0 context.Context, arg1 *resiliencehub.ListAlarmRecommendationsInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListAlarmRecommendationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAlarmRecommendations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockResiliencehubClientMockRecorder) ListAlarmRecommendations(arg0, ar
 
 // ListAppAssessments mocks base method.
 func (m *MockResiliencehubClient) ListAppAssessments(arg0 context.Context, arg1 *resiliencehub.ListAppAssessmentsInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListAppAssessmentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAppAssessments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockResiliencehubClientMockRecorder) ListAppAssessments(arg0, arg1 int
 
 // ListAppComponentCompliances mocks base method.
 func (m *MockResiliencehubClient) ListAppComponentCompliances(arg0 context.Context, arg1 *resiliencehub.ListAppComponentCompliancesInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListAppComponentCompliancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAppComponentCompliances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockResiliencehubClientMockRecorder) ListAppComponentCompliances(arg0,
 
 // ListAppComponentRecommendations mocks base method.
 func (m *MockResiliencehubClient) ListAppComponentRecommendations(arg0 context.Context, arg1 *resiliencehub.ListAppComponentRecommendationsInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListAppComponentRecommendationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAppComponentRecommendations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockResiliencehubClientMockRecorder) ListAppComponentRecommendations(a
 
 // ListAppVersionResourceMappings mocks base method.
 func (m *MockResiliencehubClient) ListAppVersionResourceMappings(arg0 context.Context, arg1 *resiliencehub.ListAppVersionResourceMappingsInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListAppVersionResourceMappingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAppVersionResourceMappings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockResiliencehubClientMockRecorder) ListAppVersionResourceMappings(ar
 
 // ListAppVersionResources mocks base method.
 func (m *MockResiliencehubClient) ListAppVersionResources(arg0 context.Context, arg1 *resiliencehub.ListAppVersionResourcesInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListAppVersionResourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAppVersionResources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockResiliencehubClientMockRecorder) ListAppVersionResources(arg0, arg
 
 // ListAppVersions mocks base method.
 func (m *MockResiliencehubClient) ListAppVersions(arg0 context.Context, arg1 *resiliencehub.ListAppVersionsInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListAppVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAppVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockResiliencehubClientMockRecorder) ListAppVersions(arg0, arg1 interf
 
 // ListApps mocks base method.
 func (m *MockResiliencehubClient) ListApps(arg0 context.Context, arg1 *resiliencehub.ListAppsInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListAppsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListApps")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockResiliencehubClientMockRecorder) ListApps(arg0, arg1 interface{}, 
 
 // ListRecommendationTemplates mocks base method.
 func (m *MockResiliencehubClient) ListRecommendationTemplates(arg0 context.Context, arg1 *resiliencehub.ListRecommendationTemplatesInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListRecommendationTemplatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRecommendationTemplates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockResiliencehubClientMockRecorder) ListRecommendationTemplates(arg0,
 
 // ListResiliencyPolicies mocks base method.
 func (m *MockResiliencehubClient) ListResiliencyPolicies(arg0 context.Context, arg1 *resiliencehub.ListResiliencyPoliciesInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListResiliencyPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListResiliencyPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockResiliencehubClientMockRecorder) ListResiliencyPolicies(arg0, arg1
 
 // ListSopRecommendations mocks base method.
 func (m *MockResiliencehubClient) ListSopRecommendations(arg0 context.Context, arg1 *resiliencehub.ListSopRecommendationsInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListSopRecommendationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSopRecommendations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockResiliencehubClientMockRecorder) ListSopRecommendations(arg0, arg1
 
 // ListSuggestedResiliencyPolicies mocks base method.
 func (m *MockResiliencehubClient) ListSuggestedResiliencyPolicies(arg0 context.Context, arg1 *resiliencehub.ListSuggestedResiliencyPoliciesInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListSuggestedResiliencyPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSuggestedResiliencyPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockResiliencehubClientMockRecorder) ListSuggestedResiliencyPolicies(a
 
 // ListTagsForResource mocks base method.
 func (m *MockResiliencehubClient) ListTagsForResource(arg0 context.Context, arg1 *resiliencehub.ListTagsForResourceInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockResiliencehubClientMockRecorder) ListTagsForResource(arg0, arg1 in
 
 // ListTestRecommendations mocks base method.
 func (m *MockResiliencehubClient) ListTestRecommendations(arg0 context.Context, arg1 *resiliencehub.ListTestRecommendationsInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListTestRecommendationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTestRecommendations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockResiliencehubClientMockRecorder) ListTestRecommendations(arg0, arg
 
 // ListUnsupportedAppVersionResources mocks base method.
 func (m *MockResiliencehubClient) ListUnsupportedAppVersionResources(arg0 context.Context, arg1 *resiliencehub.ListUnsupportedAppVersionResourcesInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListUnsupportedAppVersionResourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUnsupportedAppVersionResources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

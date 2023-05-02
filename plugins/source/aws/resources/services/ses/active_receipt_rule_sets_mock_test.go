@@ -18,7 +18,7 @@ func buildActiveReceiptRuleSets(t *testing.T, ctrl *gomock.Controller) client.Se
 		t.Fatal(err)
 	}
 
-	sesClient.EXPECT().DescribeActiveReceiptRuleSet(gomock.Any(), gomock.Any()).Return(data, nil)
+	sesClient.EXPECT().DescribeActiveReceiptRuleSet(gomock.Any(), gomock.Any(), gomock.Any()).Return(data, nil)
 
 	return client.Services{
 		Ses: sesClient,
