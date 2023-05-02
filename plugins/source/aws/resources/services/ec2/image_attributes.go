@@ -37,6 +37,8 @@ func fetchEc2ImageAttributeLaunchPermissions(ctx context.Context, meta schema.Cl
 	output, err := svc.DescribeImageAttribute(ctx, &ec2.DescribeImageAttributeInput{
 		Attribute: types.ImageAttributeNameLaunchPermission,
 		ImageId:   p.ImageId,
+	}, func(options *ec2.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err

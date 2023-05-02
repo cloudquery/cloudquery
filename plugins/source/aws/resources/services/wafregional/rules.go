@@ -88,7 +88,9 @@ func resolveWafregionalRuleTags(ctx context.Context, meta schema.ClientMeta, res
 	params := wafregional.ListTagsForResourceInput{ResourceARN: &arnStr}
 	tags := make(map[string]string)
 	for {
-		result, err := svc.ListTagsForResource(ctx, &params)
+		result, err := svc.ListTagsForResource(ctx, &params, func(o *wafregional.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

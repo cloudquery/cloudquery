@@ -116,12 +116,15 @@ func fetchPolicyLastAccessedDetails(ctx context.Context, meta schema.ClientMeta,
 }
 
 func fetchLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, arn *string, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	generateConfig := iam.GenerateServiceLastAccessedDetailsInput{
 		Arn:         arn,
 		Granularity: types.AccessAdvisorUsageGranularityTypeActionLevel,
 	}
-	output, err := svc.GenerateServiceLastAccessedDetails(ctx, &generateConfig)
+	output, err := svc.GenerateServiceLastAccessedDetails(ctx, &generateConfig, func(options *iam.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -134,7 +137,9 @@ func fetchLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, arn *
 	}
 
 	for {
-		details, err := svc.GetServiceLastAccessedDetails(ctx, &config)
+		details, err := svc.GetServiceLastAccessedDetails(ctx, &config, func(options *iam.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

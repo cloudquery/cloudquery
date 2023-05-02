@@ -48,7 +48,9 @@ func fetchDocdbInstances(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 	p := docdb.NewDescribeDBInstancesPaginator(svc, input)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *docdb.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -42,7 +42,9 @@ func fetchLightsailLoadBalancerTlsCertificates(ctx context.Context, meta schema.
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
-	response, err := svc.GetLoadBalancerTlsCertificates(ctx, &input)
+	response, err := svc.GetLoadBalancerTlsCertificates(ctx, &input, func(options *lightsail.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		if c.IsNotFoundError(err) {
 			return nil

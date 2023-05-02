@@ -48,7 +48,9 @@ func fetchNeptuneInstances(ctx context.Context, meta schema.ClientMeta, parent *
 	svc := c.Services().Neptune
 	paginator := neptune.NewDescribeDBInstancesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *neptune.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -61,7 +63,9 @@ func resolveNeptuneInstanceTags(ctx context.Context, meta schema.ClientMeta, res
 	s := resource.Item.(types.DBInstance)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Neptune
-	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: s.DBInstanceArn})
+	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: s.DBInstanceArn}, func(options *neptune.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

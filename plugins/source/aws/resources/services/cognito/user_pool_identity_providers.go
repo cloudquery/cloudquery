@@ -39,7 +39,9 @@ func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.Clie
 	params := cognitoidentityprovider.ListIdentityProvidersInput{UserPoolId: pool.Id}
 	paginator := cognitoidentityprovider.NewListIdentityProvidersPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cognitoidentityprovider.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,6 +59,8 @@ func getUserPoolIdentityProvider(ctx context.Context, meta schema.ClientMeta, re
 	pd, err := svc.DescribeIdentityProvider(ctx, &cognitoidentityprovider.DescribeIdentityProviderInput{
 		ProviderName: item.ProviderName,
 		UserPoolId:   pool.Id,
+	}, func(options *cognitoidentityprovider.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err

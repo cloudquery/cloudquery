@@ -19,7 +19,7 @@ func buildWorkspaces(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListWorkspaces(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListWorkspaces(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&amp.ListWorkspacesOutput{
 			Workspaces: []types.WorkspaceSummary{summary},
 		},
@@ -31,7 +31,7 @@ func buildWorkspaces(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().DescribeWorkspace(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().DescribeWorkspace(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&amp.DescribeWorkspaceOutput{
 			Workspace: &description,
 		},
@@ -43,7 +43,7 @@ func buildWorkspaces(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().DescribeAlertManagerDefinition(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().DescribeAlertManagerDefinition(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&amp.DescribeAlertManagerDefinitionOutput{
 			AlertManagerDefinition: &alertManagerDefinition,
 		},
@@ -55,7 +55,7 @@ func buildWorkspaces(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().DescribeLoggingConfiguration(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().DescribeLoggingConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&amp.DescribeLoggingConfigurationOutput{
 			LoggingConfiguration: &loggingConfiguration,
 		},

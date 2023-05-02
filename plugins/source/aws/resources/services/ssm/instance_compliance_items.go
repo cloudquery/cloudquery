@@ -51,7 +51,9 @@ func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta
 	}
 	paginator := ssm.NewListComplianceItemsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *ssm.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
