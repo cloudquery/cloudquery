@@ -43,7 +43,9 @@ func fetchElastictranscoderPipelineJobs(ctx context.Context, meta schema.ClientM
 		},
 	)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *elastictranscoder.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -21,7 +21,9 @@ func resolveTags(ctx context.Context, meta schema.ClientMeta, r *schema.Resource
 	svc := cl.Services().Quicksight
 	params := quicksight.ListTagsForResourceInput{ResourceArn: arn}
 
-	output, err := svc.ListTagsForResource(ctx, &params)
+	output, err := svc.ListTagsForResource(ctx, &params, func(options *quicksight.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {
 			return nil

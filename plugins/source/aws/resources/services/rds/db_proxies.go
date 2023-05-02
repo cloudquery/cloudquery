@@ -44,7 +44,9 @@ func fetchDbProxies(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	input := rds.DescribeDBProxiesInput{}
 	paginator := rds.NewDescribeDBProxiesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,7 +59,9 @@ func resolveRdsDbProxyTags(ctx context.Context, meta schema.ClientMeta, resource
 	g := resource.Item.(types.DBProxy)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Rds
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBProxyArn})
+	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBProxyArn}, func(options *rds.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

@@ -73,7 +73,9 @@ func fetchNeptuneSubnetGroups(ctx context.Context, meta schema.ClientMeta, paren
 	svc := c.Services().Neptune
 	paginator := neptune.NewDescribeDBSubnetGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *neptune.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -86,7 +88,9 @@ func resolveNeptuneSubnetGroupTags(ctx context.Context, meta schema.ClientMeta, 
 	s := resource.Item.(types.DBSubnetGroup)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Neptune
-	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: s.DBSubnetGroupArn})
+	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: s.DBSubnetGroupArn}, func(options *neptune.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

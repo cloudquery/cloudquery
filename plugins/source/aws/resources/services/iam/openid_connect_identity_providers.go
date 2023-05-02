@@ -39,8 +39,11 @@ func OpenidConnectIdentityProviders() *schema.Table {
 }
 
 func fetchIamOpenidConnectIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Iam
-	response, err := svc.ListOpenIDConnectProviders(ctx, &iam.ListOpenIDConnectProvidersInput{})
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
+	response, err := svc.ListOpenIDConnectProviders(ctx, &iam.ListOpenIDConnectProvidersInput{}, func(options *iam.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -50,10 +53,13 @@ func fetchIamOpenidConnectIdentityProviders(ctx context.Context, meta schema.Cli
 }
 
 func getOpenIdConnectIdentityProvider(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 
 	p := resource.Item.(types.OpenIDConnectProviderListEntry)
-	providerResponse, err := svc.GetOpenIDConnectProvider(ctx, &iam.GetOpenIDConnectProviderInput{OpenIDConnectProviderArn: p.Arn})
+	providerResponse, err := svc.GetOpenIDConnectProvider(ctx, &iam.GetOpenIDConnectProviderInput{OpenIDConnectProviderArn: p.Arn}, func(options *iam.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

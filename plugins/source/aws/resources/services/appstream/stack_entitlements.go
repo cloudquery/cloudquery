@@ -49,7 +49,9 @@ func fetchAppstreamStackEntitlements(ctx context.Context, meta schema.ClientMeta
 	svc := c.Services().Appstream
 	// No paginator available
 	for {
-		response, err := svc.DescribeEntitlements(ctx, &input)
+		response, err := svc.DescribeEntitlements(ctx, &input, func(options *appstream.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

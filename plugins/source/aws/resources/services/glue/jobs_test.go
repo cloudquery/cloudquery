@@ -23,14 +23,14 @@ func buildJobsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		ExecutionClass:            types.ExecutionClassFlex,
 	}
 	require.NoError(t, faker.FakeObject(&job))
-	m.EXPECT().GetJobs(gomock.Any(), gomock.Any()).Return(&glue.GetJobsOutput{Jobs: []types.Job{job}}, nil)
+	m.EXPECT().GetJobs(gomock.Any(), gomock.Any(), gomock.Any()).Return(&glue.GetJobsOutput{Jobs: []types.Job{job}}, nil)
 
 	var jobRuns glue.GetJobRunsOutput
 	require.NoError(t, faker.FakeObject(&jobRuns))
 	jobRuns.NextToken = nil
-	m.EXPECT().GetJobRuns(gomock.Any(), gomock.Any()).Return(&jobRuns, nil)
+	m.EXPECT().GetJobRuns(gomock.Any(), gomock.Any(), gomock.Any()).Return(&jobRuns, nil)
 
-	m.EXPECT().GetTags(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().GetTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&glue.GetTagsOutput{Tags: map[string]string{"key": "value"}},
 		nil,
 	)

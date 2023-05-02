@@ -35,7 +35,9 @@ func fetchLambdaFunctionsRecommendations(ctx context.Context, meta schema.Client
 	}
 	// No paginator available
 	for {
-		response, err := svc.GetLambdaFunctionRecommendations(ctx, &input)
+		response, err := svc.GetLambdaFunctionRecommendations(ctx, &input, func(options *computeoptimizer.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -57,7 +57,9 @@ func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, paren
 		for _, h := range healthChecks {
 			tagsCfg.ResourceIds = append(tagsCfg.ResourceIds, *h.Id)
 		}
-		tagsResponse, err := svc.ListTagsForResources(ctx, tagsCfg)
+		tagsResponse, err := svc.ListTagsForResources(ctx, tagsCfg, func(options *route53.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -73,7 +75,9 @@ func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, paren
 
 	paginator := route53.NewListHealthChecksPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *route53.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
