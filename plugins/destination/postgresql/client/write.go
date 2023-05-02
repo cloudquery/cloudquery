@@ -9,8 +9,8 @@ import (
 	"sync/atomic"
 
 	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/specs"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 )
@@ -54,27 +54,30 @@ func pgErrToStr(err *pgconn.PgError) string {
 	return sb.String()
 }
 
-func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan arrow.Record) error {
+func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan arrow.Record) error {
 	var sql string
 	batch := &pgx.Batch{}
 	pgTables, err := c.listPgTables(ctx, tables)
 	if err != nil {
 		return err
 	}
-	tables = c.normalizeTables(tables, pgTables)
+	tables = c.normalizeTables(tables.FlattenTables(), pgTables)
 	if err != nil {
 		return err
 	}
 	for r := range res {
-		tableName := schema.TableName(r.Schema())
-		table := tables.SchemaByName(tableName)
+		tableName, ok := r.Schema().Metadata().GetValue(schema.MetadataTableName)
+		if !ok {
+			return fmt.Errorf("table name not found in metadata")
+		}
+		table := tables.Get(tableName)
 		if table == nil {
 			panic(fmt.Errorf("table %s not found", tableName))
 		}
 		if c.spec.WriteMode == specs.WriteModeAppend {
 			sql = c.insert(table)
 		} else {
-			if len(schema.PrimaryKeyIndices(table)) > 0 {
+			if len(table.PrimaryKeys()) > 0 {
 				sql = c.upsert(table)
 			} else {
 				sql = c.insert(table)
@@ -117,15 +120,13 @@ func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan ar
 	return nil
 }
 
-func (*Client) insert(table *arrow.Schema) string {
+func (*Client) insert(table *schema.Table) string {
 	var sb strings.Builder
-	tableName := schema.TableName(table)
 	sb.WriteString("insert into ")
-	sb.WriteString(pgx.Identifier{tableName}.Sanitize())
+	sb.WriteString(pgx.Identifier{table.Name}.Sanitize())
 	sb.WriteString(" (")
-	columns := table.Fields()
-	columnsLen := len(columns)
-	for i, c := range columns {
+	columnsLen := len(table.Columns)
+	for i, c := range table.Columns {
 		sb.WriteString(pgx.Identifier{c.Name}.Sanitize())
 		if i < columnsLen-1 {
 			sb.WriteString(",")
@@ -133,7 +134,7 @@ func (*Client) insert(table *arrow.Schema) string {
 			sb.WriteString(") values (")
 		}
 	}
-	for i := range columns {
+	for i := range table.Columns {
 		sb.WriteString(fmt.Sprintf("$%d", i+1))
 		if i < columnsLen-1 {
 			sb.WriteString(",")
@@ -144,17 +145,14 @@ func (*Client) insert(table *arrow.Schema) string {
 	return sb.String()
 }
 
-func (c *Client) upsert(table *arrow.Schema) string {
+func (c *Client) upsert(table *schema.Table) string {
 	var sb strings.Builder
 
 	sb.WriteString(c.insert(table))
-	columns := table.Fields()
+	columns := table.Columns
 	columnsLen := len(columns)
 
-	constraintName, ok := table.Metadata().GetValue(schema.MetadataConstraintName)
-	if !ok {
-		panic(fmt.Errorf("constraint_name not found in table metadata"))
-	}
+	constraintName := table.PkConstraintName
 	sb.WriteString(" on conflict on constraint ")
 	sb.WriteString(pgx.Identifier{constraintName}.Sanitize())
 	sb.WriteString(" do update set ")

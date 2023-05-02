@@ -11,8 +11,8 @@ import (
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"
 	"github.com/apache/arrow/go/v12/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 )
@@ -124,24 +124,24 @@ func (c *Client) reverseTransformer(sc *arrow.Schema, values []any) (arrow.Recor
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
-	colNames := make([]string, 0, len(table.Fields()))
-	for _, col := range table.Fields() {
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+	colNames := make([]string, 0, len(table.Columns))
+	for _, col := range table.Columns {
 		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
 	}
 	cols := strings.Join(colNames, ",")
-	tableName := schema.TableName(table)
-	sql := fmt.Sprintf(readSQL, cols, pgx.Identifier{tableName}.Sanitize())
+	sql := fmt.Sprintf(readSQL, cols, pgx.Identifier{table.Name}.Sanitize())
 	rows, err := c.conn.Query(ctx, sql, sourceName)
 	if err != nil {
 		return err
 	}
+	sc := table.ToArrowSchema()
 	for rows.Next() {
 		values, err := rows.Values()
 		if err != nil {
 			return err
 		}
-		rec, err := c.reverseTransformer(table, values)
+		rec, err := c.reverseTransformer(sc, values)
 		if err != nil {
 			return err
 		}
