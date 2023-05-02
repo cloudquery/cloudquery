@@ -47,7 +47,9 @@ func fetchBatchComputeEnvironments(ctx context.Context, meta schema.ClientMeta, 
 	svc := c.Services().Batch
 	p := batch.NewDescribeComputeEnvironmentsPaginator(svc, &config)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *batch.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -64,7 +66,9 @@ func resolveBatchComputeEnvironmentTags(ctx context.Context, meta schema.ClientM
 	input := batch.ListTagsForResourceInput{
 		ResourceArn: summary.ComputeEnvironmentArn,
 	}
-	output, err := svc.ListTagsForResource(ctx, &input)
+	output, err := svc.ListTagsForResource(ctx, &input, func(options *batch.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

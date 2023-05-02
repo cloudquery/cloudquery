@@ -40,7 +40,9 @@ func fetchGlueJobRuns(ctx context.Context, meta schema.ClientMeta, parent *schem
 	}
 	paginator := glue.NewGetJobRunsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

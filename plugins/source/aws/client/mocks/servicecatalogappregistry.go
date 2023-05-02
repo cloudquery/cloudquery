@@ -37,6 +37,16 @@ func (m *MockServicecatalogappregistryClient) EXPECT() *MockServicecatalogappreg
 
 // GetApplication mocks base method.
 func (m *MockServicecatalogappregistryClient) GetApplication(arg0 context.Context, arg1 *servicecatalogappregistry.GetApplicationInput, arg2 ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.GetApplicationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalogappregistry.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetApplication")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockServicecatalogappregistryClientMockRecorder) GetApplication(arg0, 
 
 // GetAssociatedResource mocks base method.
 func (m *MockServicecatalogappregistryClient) GetAssociatedResource(arg0 context.Context, arg1 *servicecatalogappregistry.GetAssociatedResourceInput, arg2 ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.GetAssociatedResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalogappregistry.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAssociatedResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockServicecatalogappregistryClientMockRecorder) GetAssociatedResource
 
 // GetAttributeGroup mocks base method.
 func (m *MockServicecatalogappregistryClient) GetAttributeGroup(arg0 context.Context, arg1 *servicecatalogappregistry.GetAttributeGroupInput, arg2 ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.GetAttributeGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalogappregistry.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAttributeGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockServicecatalogappregistryClientMockRecorder) GetAttributeGroup(arg
 
 // GetConfiguration mocks base method.
 func (m *MockServicecatalogappregistryClient) GetConfiguration(arg0 context.Context, arg1 *servicecatalogappregistry.GetConfigurationInput, arg2 ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.GetConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalogappregistry.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockServicecatalogappregistryClientMockRecorder) GetConfiguration(arg0
 
 // ListApplications mocks base method.
 func (m *MockServicecatalogappregistryClient) ListApplications(arg0 context.Context, arg1 *servicecatalogappregistry.ListApplicationsInput, arg2 ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.ListApplicationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalogappregistry.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListApplications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockServicecatalogappregistryClientMockRecorder) ListApplications(arg0
 
 // ListAssociatedAttributeGroups mocks base method.
 func (m *MockServicecatalogappregistryClient) ListAssociatedAttributeGroups(arg0 context.Context, arg1 *servicecatalogappregistry.ListAssociatedAttributeGroupsInput, arg2 ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.ListAssociatedAttributeGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalogappregistry.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAssociatedAttributeGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockServicecatalogappregistryClientMockRecorder) ListAssociatedAttribu
 
 // ListAssociatedResources mocks base method.
 func (m *MockServicecatalogappregistryClient) ListAssociatedResources(arg0 context.Context, arg1 *servicecatalogappregistry.ListAssociatedResourcesInput, arg2 ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.ListAssociatedResourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalogappregistry.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAssociatedResources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockServicecatalogappregistryClientMockRecorder) ListAssociatedResourc
 
 // ListAttributeGroups mocks base method.
 func (m *MockServicecatalogappregistryClient) ListAttributeGroups(arg0 context.Context, arg1 *servicecatalogappregistry.ListAttributeGroupsInput, arg2 ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.ListAttributeGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalogappregistry.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAttributeGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockServicecatalogappregistryClientMockRecorder) ListAttributeGroups(a
 
 // ListAttributeGroupsForApplication mocks base method.
 func (m *MockServicecatalogappregistryClient) ListAttributeGroupsForApplication(arg0 context.Context, arg1 *servicecatalogappregistry.ListAttributeGroupsForApplicationInput, arg2 ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.ListAttributeGroupsForApplicationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalogappregistry.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAttributeGroupsForApplication")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockServicecatalogappregistryClientMockRecorder) ListAttributeGroupsFo
 
 // ListTagsForResource mocks base method.
 func (m *MockServicecatalogappregistryClient) ListTagsForResource(arg0 context.Context, arg1 *servicecatalogappregistry.ListTagsForResourceInput, arg2 ...func(*servicecatalogappregistry.Options)) (*servicecatalogappregistry.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicecatalogappregistry.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

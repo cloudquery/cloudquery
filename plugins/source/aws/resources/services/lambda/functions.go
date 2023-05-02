@@ -74,10 +74,13 @@ func Functions() *schema.Table {
 }
 
 func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Lambda
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lambda
 	paginator := lambda.NewListFunctionsPaginator(svc, &lambda.ListFunctionsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *lambda.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -93,6 +96,8 @@ func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 
 	funcResponse, err := svc.GetFunction(ctx, &lambda.GetFunctionInput{
 		FunctionName: f.FunctionName,
+	}, func(options *lambda.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		if c.IsNotFoundError(err) {
@@ -135,6 +140,8 @@ func resolveCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resou
 
 	functionSigning, err := svc.GetFunctionCodeSigningConfig(ctx, &lambda.GetFunctionCodeSigningConfigInput{
 		FunctionName: r.Configuration.FunctionName,
+	}, func(options *lambda.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err
@@ -145,6 +152,8 @@ func resolveCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resou
 
 	signing, err := svc.GetCodeSigningConfig(ctx, &lambda.GetCodeSigningConfigInput{
 		CodeSigningConfigArn: functionSigning.CodeSigningConfigArn,
+	}, func(options *lambda.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		if c.IsNotFoundError(err) {
@@ -170,6 +179,8 @@ func resolveResourcePolicy(ctx context.Context, meta schema.ClientMeta, resource
 
 	response, err := svc.GetPolicy(ctx, &lambda.GetPolicyInput{
 		FunctionName: r.Configuration.FunctionName,
+	}, func(options *lambda.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		if client.IsAWSError(err, "ResourceNotFoundException") {
@@ -202,6 +213,8 @@ func resolveRuntimeManagementConfig(ctx context.Context, meta schema.ClientMeta,
 
 	runtimeManagementConfig, err := svc.GetRuntimeManagementConfig(ctx, &lambda.GetRuntimeManagementConfigInput{
 		FunctionName: r.Configuration.FunctionName,
+	}, func(options *lambda.Options) {
+		options.Region = c.Region
 	})
 
 	if err != nil {

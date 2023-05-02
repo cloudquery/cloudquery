@@ -43,7 +43,9 @@ func fetchQuicksightIngestions(ctx context.Context, meta schema.ClientMeta, pare
 	}
 	paginator := quicksight.NewListIngestionsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		result, err := paginator.NextPage(ctx)
+		result, err := paginator.NextPage(ctx, func(options *quicksight.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

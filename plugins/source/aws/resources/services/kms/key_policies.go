@@ -62,6 +62,8 @@ func fetchKeyPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	d, err := svc.GetKeyPolicy(ctx, &kms.GetKeyPolicyInput{
 		KeyId:      k.Arn,
 		PolicyName: aws.String(policyName),
+	}, func(o *kms.Options) {
+		o.Region = c.Region
 	})
 	if err != nil {
 		return err
