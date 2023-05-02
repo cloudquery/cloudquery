@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [17.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v17.0.0...plugins-source-aws-v17.1.0) (2023-05-02)
+
+
+### Features
+
+* **aws-services:** Support newly added regions ([#10480](https://github.com/cloudquery/cloudquery/issues/10480)) ([f0b7aad](https://github.com/cloudquery/cloudquery/commit/f0b7aaddcafdbc5d6d6cc7525cfe8fb34bc1d10a))
+* **aws:** Add Support for Cost Explorer data ([#10288](https://github.com/cloudquery/cloudquery/issues/10288)) ([c22f9b7](https://github.com/cloudquery/cloudquery/commit/c22f9b7677fa16030d08463bf159e06d385ea39c))
+* **aws:** Make Cost And Forecast tables fixed time intervals ([#10479](https://github.com/cloudquery/cloudquery/issues/10479)) ([0560cb3](https://github.com/cloudquery/cloudquery/commit/0560cb3edc9c0abec45fc7416b1707c30741acc8))
+
+
+### Bug Fixes
+
+* **aws:** Cost Explorer Date Range ([#10458](https://github.com/cloudquery/cloudquery/issues/10458)) ([1bc7fdd](https://github.com/cloudquery/cloudquery/commit/1bc7fdd85a0d7d444ab838e3953a67c669d301e7))
+* **aws:** Explicitly set region in all SDK calls ([#10453](https://github.com/cloudquery/cloudquery/issues/10453)) ([32a52ba](https://github.com/cloudquery/cloudquery/commit/32a52ba0d3b1342dd2346d47c13787e62e9e191a))
+* **deps:** Update github.com/apache/arrow/go/v12 digest to 0ea1a10 ([#10461](https://github.com/cloudquery/cloudquery/issues/10461)) ([022709f](https://github.com/cloudquery/cloudquery/commit/022709f710cc6d95aee60260d6f58991698bbf42))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.0 ([#10390](https://github.com/cloudquery/cloudquery/issues/10390)) ([f706688](https://github.com/cloudquery/cloudquery/commit/f706688b2f5b8393d09d57020d31fb1d280f0dbd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.1 ([#10448](https://github.com/cloudquery/cloudquery/issues/10448)) ([cc85b93](https://github.com/cloudquery/cloudquery/commit/cc85b939fe945939caf72f8c08095e1e744b9ee8))
+
 ## [17.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v16.3.0...plugins-source-aws-v17.0.0) (2023-04-25)
 
 
