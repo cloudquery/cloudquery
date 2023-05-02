@@ -31,7 +31,9 @@ func fetchSsoadminAccountAssignments(ctx context.Context, meta schema.ClientMeta
 	}
 	paginator := ssoadmin.NewListAccountAssignmentsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *ssoadmin.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

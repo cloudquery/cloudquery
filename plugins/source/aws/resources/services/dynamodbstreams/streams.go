@@ -36,13 +36,15 @@ func Streams() *schema.Table {
 }
 
 func listStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Dynamodbstreams
+	cl := meta.(*client.Client)
+	svc := cl.Services().Dynamodbstreams
 
 	config := dynamodbstreams.ListStreamsInput{}
 	// No paginator available
 	for {
-		output, err := svc.ListStreams(ctx, &config)
+		output, err := svc.ListStreams(ctx, &config, func(options *dynamodbstreams.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -58,9 +60,12 @@ func listStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 }
 
 func describeStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Dynamodbstreams
+	cl := meta.(*client.Client)
+	svc := cl.Services().Dynamodbstreams
 	stream := resource.Item.(types.Stream)
-	response, err := svc.DescribeStream(ctx, &dynamodbstreams.DescribeStreamInput{StreamArn: stream.StreamArn})
+	response, err := svc.DescribeStream(ctx, &dynamodbstreams.DescribeStreamInput{StreamArn: stream.StreamArn}, func(options *dynamodbstreams.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

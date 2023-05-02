@@ -47,7 +47,9 @@ func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 		RoleName: role.RoleName,
 	})
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *iam.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil
@@ -65,7 +67,9 @@ func getRolePolicy(ctx context.Context, meta schema.ClientMeta, resource *schema
 	p := resource.Item.(string)
 	role := resource.Parent.Item.(*types.Role)
 
-	policyResult, err := svc.GetRolePolicy(ctx, &iam.GetRolePolicyInput{PolicyName: &p, RoleName: role.RoleName})
+	policyResult, err := svc.GetRolePolicy(ctx, &iam.GetRolePolicyInput{PolicyName: &p, RoleName: role.RoleName}, func(options *iam.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

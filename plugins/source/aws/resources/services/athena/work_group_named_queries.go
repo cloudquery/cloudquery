@@ -39,7 +39,9 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 	input := athena.ListNamedQueriesInput{WorkGroup: wg.Name}
 	paginator := athena.NewListNamedQueriesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *athena.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -55,6 +57,8 @@ func getWorkGroupNamedQuery(ctx context.Context, meta schema.ClientMeta, resourc
 	d := resource.Item.(string)
 	dc, err := svc.GetNamedQuery(ctx, &athena.GetNamedQueryInput{
 		NamedQueryId: aws.String(d),
+	}, func(options *athena.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err

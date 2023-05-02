@@ -51,7 +51,9 @@ func fetchNeptuneClusterParameterGroups(ctx context.Context, meta schema.ClientM
 	}
 	paginator := neptune.NewDescribeDBClusterParameterGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *neptune.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
