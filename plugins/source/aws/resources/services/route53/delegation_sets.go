@@ -40,7 +40,9 @@ func fetchRoute53DelegationSets(ctx context.Context, meta schema.ClientMeta, par
 	svc := c.Services().Route53
 	// no paginator available
 	for {
-		response, err := svc.ListReusableDelegationSets(ctx, &config)
+		response, err := svc.ListReusableDelegationSets(ctx, &config, func(options *route53.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

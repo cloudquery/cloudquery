@@ -48,7 +48,9 @@ func fetchCloudwatchlogsLogGroups(ctx context.Context, meta schema.ClientMeta, p
 	svc := c.Services().Cloudwatchlogs
 	paginator := cloudwatchlogs.NewDescribeLogGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cloudwatchlogs.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -59,8 +61,11 @@ func fetchCloudwatchlogsLogGroups(ctx context.Context, meta schema.ClientMeta, p
 
 func resolveLogGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	lg := resource.Item.(types.LogGroup)
-	svc := meta.(*client.Client).Services().Cloudwatchlogs
-	out, err := svc.ListTagsLogGroup(ctx, &cloudwatchlogs.ListTagsLogGroupInput{LogGroupName: lg.LogGroupName})
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudwatchlogs
+	out, err := svc.ListTagsLogGroup(ctx, &cloudwatchlogs.ListTagsLogGroupInput{LogGroupName: lg.LogGroupName}, func(options *cloudwatchlogs.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

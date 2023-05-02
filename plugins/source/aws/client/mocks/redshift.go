@@ -37,6 +37,16 @@ func (m *MockRedshiftClient) EXPECT() *MockRedshiftClientMockRecorder {
 
 // DescribeAccountAttributes mocks base method.
 func (m *MockRedshiftClient) DescribeAccountAttributes(arg0 context.Context, arg1 *redshift.DescribeAccountAttributesInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeAccountAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccountAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeAccountAttributes(arg0, arg1 i
 
 // DescribeAuthenticationProfiles mocks base method.
 func (m *MockRedshiftClient) DescribeAuthenticationProfiles(arg0 context.Context, arg1 *redshift.DescribeAuthenticationProfilesInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeAuthenticationProfilesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAuthenticationProfiles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeAuthenticationProfiles(arg0, a
 
 // DescribeClusterDbRevisions mocks base method.
 func (m *MockRedshiftClient) DescribeClusterDbRevisions(arg0 context.Context, arg1 *redshift.DescribeClusterDbRevisionsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeClusterDbRevisionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClusterDbRevisions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeClusterDbRevisions(arg0, arg1 
 
 // DescribeClusterParameterGroups mocks base method.
 func (m *MockRedshiftClient) DescribeClusterParameterGroups(arg0 context.Context, arg1 *redshift.DescribeClusterParameterGroupsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeClusterParameterGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClusterParameterGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeClusterParameterGroups(arg0, a
 
 // DescribeClusterParameters mocks base method.
 func (m *MockRedshiftClient) DescribeClusterParameters(arg0 context.Context, arg1 *redshift.DescribeClusterParametersInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeClusterParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClusterParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeClusterParameters(arg0, arg1 i
 
 // DescribeClusterSecurityGroups mocks base method.
 func (m *MockRedshiftClient) DescribeClusterSecurityGroups(arg0 context.Context, arg1 *redshift.DescribeClusterSecurityGroupsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeClusterSecurityGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClusterSecurityGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeClusterSecurityGroups(arg0, ar
 
 // DescribeClusterSnapshots mocks base method.
 func (m *MockRedshiftClient) DescribeClusterSnapshots(arg0 context.Context, arg1 *redshift.DescribeClusterSnapshotsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeClusterSnapshotsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClusterSnapshots")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeClusterSnapshots(arg0, arg1 in
 
 // DescribeClusterSubnetGroups mocks base method.
 func (m *MockRedshiftClient) DescribeClusterSubnetGroups(arg0 context.Context, arg1 *redshift.DescribeClusterSubnetGroupsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeClusterSubnetGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClusterSubnetGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeClusterSubnetGroups(arg0, arg1
 
 // DescribeClusterTracks mocks base method.
 func (m *MockRedshiftClient) DescribeClusterTracks(arg0 context.Context, arg1 *redshift.DescribeClusterTracksInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeClusterTracksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClusterTracks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeClusterTracks(arg0, arg1 inter
 
 // DescribeClusterVersions mocks base method.
 func (m *MockRedshiftClient) DescribeClusterVersions(arg0 context.Context, arg1 *redshift.DescribeClusterVersionsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeClusterVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClusterVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeClusterVersions(arg0, arg1 int
 
 // DescribeClusters mocks base method.
 func (m *MockRedshiftClient) DescribeClusters(arg0 context.Context, arg1 *redshift.DescribeClustersInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeClustersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClusters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeClusters(arg0, arg1 interface{
 
 // DescribeDataShares mocks base method.
 func (m *MockRedshiftClient) DescribeDataShares(arg0 context.Context, arg1 *redshift.DescribeDataSharesInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeDataSharesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDataShares")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeDataShares(arg0, arg1 interfac
 
 // DescribeDataSharesForConsumer mocks base method.
 func (m *MockRedshiftClient) DescribeDataSharesForConsumer(arg0 context.Context, arg1 *redshift.DescribeDataSharesForConsumerInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeDataSharesForConsumerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDataSharesForConsumer")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeDataSharesForConsumer(arg0, ar
 
 // DescribeDataSharesForProducer mocks base method.
 func (m *MockRedshiftClient) DescribeDataSharesForProducer(arg0 context.Context, arg1 *redshift.DescribeDataSharesForProducerInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeDataSharesForProducerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDataSharesForProducer")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeDataSharesForProducer(arg0, ar
 
 // DescribeDefaultClusterParameters mocks base method.
 func (m *MockRedshiftClient) DescribeDefaultClusterParameters(arg0 context.Context, arg1 *redshift.DescribeDefaultClusterParametersInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeDefaultClusterParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDefaultClusterParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeDefaultClusterParameters(arg0,
 
 // DescribeEndpointAccess mocks base method.
 func (m *MockRedshiftClient) DescribeEndpointAccess(arg0 context.Context, arg1 *redshift.DescribeEndpointAccessInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeEndpointAccessOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEndpointAccess")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeEndpointAccess(arg0, arg1 inte
 
 // DescribeEndpointAuthorization mocks base method.
 func (m *MockRedshiftClient) DescribeEndpointAuthorization(arg0 context.Context, arg1 *redshift.DescribeEndpointAuthorizationInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeEndpointAuthorizationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEndpointAuthorization")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeEndpointAuthorization(arg0, ar
 
 // DescribeEventCategories mocks base method.
 func (m *MockRedshiftClient) DescribeEventCategories(arg0 context.Context, arg1 *redshift.DescribeEventCategoriesInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeEventCategoriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEventCategories")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeEventCategories(arg0, arg1 int
 
 // DescribeEventSubscriptions mocks base method.
 func (m *MockRedshiftClient) DescribeEventSubscriptions(arg0 context.Context, arg1 *redshift.DescribeEventSubscriptionsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeEventSubscriptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEventSubscriptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeEventSubscriptions(arg0, arg1 
 
 // DescribeEvents mocks base method.
 func (m *MockRedshiftClient) DescribeEvents(arg0 context.Context, arg1 *redshift.DescribeEventsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeEventsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEvents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeEvents(arg0, arg1 interface{},
 
 // DescribeHsmClientCertificates mocks base method.
 func (m *MockRedshiftClient) DescribeHsmClientCertificates(arg0 context.Context, arg1 *redshift.DescribeHsmClientCertificatesInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeHsmClientCertificatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeHsmClientCertificates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeHsmClientCertificates(arg0, ar
 
 // DescribeHsmConfigurations mocks base method.
 func (m *MockRedshiftClient) DescribeHsmConfigurations(arg0 context.Context, arg1 *redshift.DescribeHsmConfigurationsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeHsmConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeHsmConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeHsmConfigurations(arg0, arg1 i
 
 // DescribeLoggingStatus mocks base method.
 func (m *MockRedshiftClient) DescribeLoggingStatus(arg0 context.Context, arg1 *redshift.DescribeLoggingStatusInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeLoggingStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLoggingStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeLoggingStatus(arg0, arg1 inter
 
 // DescribeNodeConfigurationOptions mocks base method.
 func (m *MockRedshiftClient) DescribeNodeConfigurationOptions(arg0 context.Context, arg1 *redshift.DescribeNodeConfigurationOptionsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeNodeConfigurationOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeNodeConfigurationOptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeNodeConfigurationOptions(arg0,
 
 // DescribeOrderableClusterOptions mocks base method.
 func (m *MockRedshiftClient) DescribeOrderableClusterOptions(arg0 context.Context, arg1 *redshift.DescribeOrderableClusterOptionsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeOrderableClusterOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOrderableClusterOptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeOrderableClusterOptions(arg0, 
 
 // DescribePartners mocks base method.
 func (m *MockRedshiftClient) DescribePartners(arg0 context.Context, arg1 *redshift.DescribePartnersInput, arg2 ...func(*redshift.Options)) (*redshift.DescribePartnersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePartners")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribePartners(arg0, arg1 interface{
 
 // DescribeReservedNodeExchangeStatus mocks base method.
 func (m *MockRedshiftClient) DescribeReservedNodeExchangeStatus(arg0 context.Context, arg1 *redshift.DescribeReservedNodeExchangeStatusInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeReservedNodeExchangeStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReservedNodeExchangeStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeReservedNodeExchangeStatus(arg
 
 // DescribeReservedNodeOfferings mocks base method.
 func (m *MockRedshiftClient) DescribeReservedNodeOfferings(arg0 context.Context, arg1 *redshift.DescribeReservedNodeOfferingsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeReservedNodeOfferingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReservedNodeOfferings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeReservedNodeOfferings(arg0, ar
 
 // DescribeReservedNodes mocks base method.
 func (m *MockRedshiftClient) DescribeReservedNodes(arg0 context.Context, arg1 *redshift.DescribeReservedNodesInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeReservedNodesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReservedNodes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeReservedNodes(arg0, arg1 inter
 
 // DescribeResize mocks base method.
 func (m *MockRedshiftClient) DescribeResize(arg0 context.Context, arg1 *redshift.DescribeResizeInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeResizeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeResize")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeResize(arg0, arg1 interface{},
 
 // DescribeScheduledActions mocks base method.
 func (m *MockRedshiftClient) DescribeScheduledActions(arg0 context.Context, arg1 *redshift.DescribeScheduledActionsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeScheduledActionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScheduledActions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeScheduledActions(arg0, arg1 in
 
 // DescribeSnapshotCopyGrants mocks base method.
 func (m *MockRedshiftClient) DescribeSnapshotCopyGrants(arg0 context.Context, arg1 *redshift.DescribeSnapshotCopyGrantsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeSnapshotCopyGrantsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSnapshotCopyGrants")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeSnapshotCopyGrants(arg0, arg1 
 
 // DescribeSnapshotSchedules mocks base method.
 func (m *MockRedshiftClient) DescribeSnapshotSchedules(arg0 context.Context, arg1 *redshift.DescribeSnapshotSchedulesInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeSnapshotSchedulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSnapshotSchedules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeSnapshotSchedules(arg0, arg1 i
 
 // DescribeStorage mocks base method.
 func (m *MockRedshiftClient) DescribeStorage(arg0 context.Context, arg1 *redshift.DescribeStorageInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeStorageOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStorage")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1057,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeStorage(arg0, arg1 interface{}
 
 // DescribeTableRestoreStatus mocks base method.
 func (m *MockRedshiftClient) DescribeTableRestoreStatus(arg0 context.Context, arg1 *redshift.DescribeTableRestoreStatusInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeTableRestoreStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTableRestoreStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1087,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeTableRestoreStatus(arg0, arg1 
 
 // DescribeTags mocks base method.
 func (m *MockRedshiftClient) DescribeTags(arg0 context.Context, arg1 *redshift.DescribeTagsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1117,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeTags(arg0, arg1 interface{}, a
 
 // DescribeUsageLimits mocks base method.
 func (m *MockRedshiftClient) DescribeUsageLimits(arg0 context.Context, arg1 *redshift.DescribeUsageLimitsInput, arg2 ...func(*redshift.Options)) (*redshift.DescribeUsageLimitsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUsageLimits")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -777,6 +1147,16 @@ func (mr *MockRedshiftClientMockRecorder) DescribeUsageLimits(arg0, arg1 interfa
 
 // GetClusterCredentials mocks base method.
 func (m *MockRedshiftClient) GetClusterCredentials(arg0 context.Context, arg1 *redshift.GetClusterCredentialsInput, arg2 ...func(*redshift.Options)) (*redshift.GetClusterCredentialsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetClusterCredentials")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -797,6 +1177,16 @@ func (mr *MockRedshiftClientMockRecorder) GetClusterCredentials(arg0, arg1 inter
 
 // GetClusterCredentialsWithIAM mocks base method.
 func (m *MockRedshiftClient) GetClusterCredentialsWithIAM(arg0 context.Context, arg1 *redshift.GetClusterCredentialsWithIAMInput, arg2 ...func(*redshift.Options)) (*redshift.GetClusterCredentialsWithIAMOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetClusterCredentialsWithIAM")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -817,6 +1207,16 @@ func (mr *MockRedshiftClientMockRecorder) GetClusterCredentialsWithIAM(arg0, arg
 
 // GetReservedNodeExchangeConfigurationOptions mocks base method.
 func (m *MockRedshiftClient) GetReservedNodeExchangeConfigurationOptions(arg0 context.Context, arg1 *redshift.GetReservedNodeExchangeConfigurationOptionsInput, arg2 ...func(*redshift.Options)) (*redshift.GetReservedNodeExchangeConfigurationOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetReservedNodeExchangeConfigurationOptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -837,6 +1237,16 @@ func (mr *MockRedshiftClientMockRecorder) GetReservedNodeExchangeConfigurationOp
 
 // GetReservedNodeExchangeOfferings mocks base method.
 func (m *MockRedshiftClient) GetReservedNodeExchangeOfferings(arg0 context.Context, arg1 *redshift.GetReservedNodeExchangeOfferingsInput, arg2 ...func(*redshift.Options)) (*redshift.GetReservedNodeExchangeOfferingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &redshift.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetReservedNodeExchangeOfferings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

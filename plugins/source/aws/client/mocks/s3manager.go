@@ -37,6 +37,16 @@ func (m *MockS3managerClient) EXPECT() *MockS3managerClientMockRecorder {
 
 // GetBucketRegion mocks base method.
 func (m *MockS3managerClient) GetBucketRegion(arg0 context.Context, arg1 string, arg2 ...func(*s3.Options)) (string, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketRegion")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

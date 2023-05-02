@@ -18,7 +18,7 @@ func buildClassifiers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 	c.NextToken = nil
-	m.EXPECT().GetClassifiers(gomock.Any(), gomock.Any()).Return(&c, nil)
+	m.EXPECT().GetClassifiers(gomock.Any(), gomock.Any(), gomock.Any()).Return(&c, nil)
 
 	return client.Services{
 		Glue: m,

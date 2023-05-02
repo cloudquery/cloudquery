@@ -40,6 +40,8 @@ func fetchGlacierVaultNotifications(ctx context.Context, meta schema.ClientMeta,
 
 	response, err := svc.GetVaultNotifications(ctx, &glacier.GetVaultNotificationsInput{
 		VaultName: p.VaultName,
+	}, func(options *glacier.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err

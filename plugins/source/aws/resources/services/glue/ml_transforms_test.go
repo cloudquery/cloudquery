@@ -20,6 +20,7 @@ func buildMlTransformsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	m.EXPECT().GetMLTransforms(
 		gomock.Any(),
 		gomock.Any(),
+		gomock.Any(),
 	).Return(&transforms, nil)
 
 	var runs glue.GetMLTaskRunsOutput
@@ -28,9 +29,11 @@ func buildMlTransformsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	m.EXPECT().GetMLTaskRuns(
 		gomock.Any(),
 		gomock.Any(),
+		gomock.Any(),
 	).Return(&runs, nil)
 
 	m.EXPECT().GetTags(
+		gomock.Any(),
 		gomock.Any(),
 		gomock.Any(),
 	).Return(
