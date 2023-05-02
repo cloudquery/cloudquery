@@ -50,7 +50,9 @@ func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, par
 		MaxResults: aws.Int32(1000),
 	})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ecrpublic.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			if client.IsAWSError(err, "UnsupportedCommandException") {
 				return nil
@@ -70,7 +72,9 @@ func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource
 	input := ecrpublic.ListTagsForResourceInput{
 		ResourceArn: repo.RepositoryArn,
 	}
-	output, err := svc.ListTagsForResource(ctx, &input)
+	output, err := svc.ListTagsForResource(ctx, &input, func(options *ecrpublic.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

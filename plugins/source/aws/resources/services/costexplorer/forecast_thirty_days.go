@@ -64,7 +64,9 @@ func fetchForecast(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		},
 	}
 
-	resp, err := svc.GetCostForecast(ctx, &input)
+	resp, err := svc.GetCostForecast(ctx, &input, func(options *costexplorer.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

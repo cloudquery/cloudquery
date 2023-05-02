@@ -16,7 +16,7 @@ func buildRuleGroupsNamespaces(t *testing.T, m *mocks.MockAmpClient) {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListRuleGroupsNamespaces(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListRuleGroupsNamespaces(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&amp.ListRuleGroupsNamespacesOutput{
 			RuleGroupsNamespaces: []types.RuleGroupsNamespaceSummary{summary},
 		},
@@ -28,7 +28,7 @@ func buildRuleGroupsNamespaces(t *testing.T, m *mocks.MockAmpClient) {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().DescribeRuleGroupsNamespace(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().DescribeRuleGroupsNamespace(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&amp.DescribeRuleGroupsNamespaceOutput{
 			RuleGroupsNamespace: &description,
 		},

@@ -32,20 +32,23 @@ func fetchDocdbClusterParameters(ctx context.Context, meta schema.ClientMeta, pa
 	svc := c.Services().Docdb
 	switch item := parent.Item.(type) {
 	case types.DBClusterParameterGroup:
-		return fetchParameterGroupParameters(ctx, svc, item, res)
+		return fetchParameterGroupParameters(ctx, meta, svc, item, res)
 	case types.DBEngineVersion:
-		return fetchEngineVersionParameters(ctx, svc, item, res)
+		return fetchEngineVersionParameters(ctx, meta, svc, item, res)
 	}
 	return fmt.Errorf("wrong parrent type to fetch cluster parameters")
 }
 
-func fetchParameterGroupParameters(ctx context.Context, svc services.DocdbClient, item types.DBClusterParameterGroup, res chan<- any) error {
+func fetchParameterGroupParameters(ctx context.Context, meta schema.ClientMeta, svc services.DocdbClient, item types.DBClusterParameterGroup, res chan<- any) error {
+	c := meta.(*client.Client)
 	input := &docdb.DescribeDBClusterParametersInput{
 		DBClusterParameterGroupName: item.DBClusterParameterGroupName,
 	}
 	p := docdb.NewDescribeDBClusterParametersPaginator(svc, input)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *docdb.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -54,11 +57,14 @@ func fetchParameterGroupParameters(ctx context.Context, svc services.DocdbClient
 	return nil
 }
 
-func fetchEngineVersionParameters(ctx context.Context, svc services.DocdbClient, item types.DBEngineVersion, res chan<- any) error {
+func fetchEngineVersionParameters(ctx context.Context, meta schema.ClientMeta, svc services.DocdbClient, item types.DBEngineVersion, res chan<- any) error {
+	c := meta.(*client.Client)
 	input := &docdb.DescribeEngineDefaultClusterParametersInput{
 		DBParameterGroupFamily: item.DBParameterGroupFamily,
 	}
-	output, err := svc.DescribeEngineDefaultClusterParameters(ctx, input)
+	output, err := svc.DescribeEngineDefaultClusterParameters(ctx, input, func(options *docdb.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

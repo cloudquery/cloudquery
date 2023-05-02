@@ -35,7 +35,9 @@ func fetchEc2InstanceRecommendations(ctx context.Context, meta schema.ClientMeta
 	}
 	// No paginator available
 	for {
-		response, err := svc.GetEC2InstanceRecommendations(ctx, &input)
+		response, err := svc.GetEC2InstanceRecommendations(ctx, &input, func(options *computeoptimizer.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

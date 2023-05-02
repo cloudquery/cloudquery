@@ -52,7 +52,9 @@ func fetchNeptuneClusterSnapshots(ctx context.Context, meta schema.ClientMeta, p
 	}
 	paginator := neptune.NewDescribeDBClusterSnapshotsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *neptune.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return nil
 		}
@@ -89,7 +91,9 @@ func resolveNeptuneClusterSnapshotTags(ctx context.Context, meta schema.ClientMe
 	s := resource.Item.(types.DBClusterSnapshot)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Neptune
-	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: s.DBClusterSnapshotArn})
+	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: s.DBClusterSnapshotArn}, func(options *neptune.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

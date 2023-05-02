@@ -42,7 +42,9 @@ func fetchApigatewayVpcLinks(ctx context.Context, meta schema.ClientMeta, parent
 	svc := c.Services().Apigateway
 	paginator := apigateway.NewGetVpcLinksPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
+		response, err := paginator.NextPage(ctx, func(options *apigateway.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

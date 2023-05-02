@@ -35,13 +35,16 @@ func Plans() *schema.Table {
 }
 
 func fetchSavingsPlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Savingsplans
+	cl := meta.(*client.Client)
+	svc := cl.Services().Savingsplans
 	config := savingsplans.DescribeSavingsPlansInput{
 		MaxResults: aws.Int32(1000),
 	}
 	// no paginator available
 	for {
-		response, err := svc.DescribeSavingsPlans(ctx, &config)
+		response, err := svc.DescribeSavingsPlans(ctx, &config, func(o *savingsplans.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

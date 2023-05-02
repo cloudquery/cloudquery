@@ -45,6 +45,8 @@ func fetchGlacierVaultAccessPolicies(ctx context.Context, meta schema.ClientMeta
 
 	response, err := svc.GetVaultAccessPolicy(ctx, &glacier.GetVaultAccessPolicyInput{
 		VaultName: p.VaultName,
+	}, func(options *glacier.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err
