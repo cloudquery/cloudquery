@@ -49,7 +49,9 @@ func fetchSecurityConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 	svc := c.Services().Emr
 	paginator := emr.NewListSecurityConfigurationsPaginator(svc, &emr.ListSecurityConfigurationsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *emr.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -62,7 +64,9 @@ func resolveConfiguration(ctx context.Context, meta schema.ClientMeta, resource 
 	c := meta.(*client.Client)
 	item := resource.Item.(types.SecurityConfigurationSummary)
 	svc := c.Services().Emr
-	response, err := svc.DescribeSecurityConfiguration(ctx, &emr.DescribeSecurityConfigurationInput{Name: item.Name})
+	response, err := svc.DescribeSecurityConfiguration(ctx, &emr.DescribeSecurityConfigurationInput{Name: item.Name}, func(options *emr.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

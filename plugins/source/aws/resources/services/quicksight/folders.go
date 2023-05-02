@@ -35,7 +35,9 @@ func fetchQuicksightFolders(ctx context.Context, meta schema.ClientMeta, parent 
 	var ae smithy.APIError
 	// No paginator available
 	for {
-		out, err := svc.ListFolders(ctx, &input)
+		out, err := svc.ListFolders(ctx, &input, func(options *quicksight.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if errors.As(err, &ae) && ae.ErrorCode() == "UnsupportedUserEditionException" {
 				return nil
@@ -61,6 +63,8 @@ func getFolder(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 	out, err := svc.DescribeFolder(ctx, &quicksight.DescribeFolderInput{
 		AwsAccountId: aws.String(cl.AccountID),
 		FolderId:     item.FolderId,
+	}, func(options *quicksight.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

@@ -37,6 +37,16 @@ func (m *MockWorkspacesClient) EXPECT() *MockWorkspacesClientMockRecorder {
 
 // DescribeAccount mocks base method.
 func (m *MockWorkspacesClient) DescribeAccount(arg0 context.Context, arg1 *workspaces.DescribeAccountInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeAccountOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccount")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeAccount(arg0, arg1 interface
 
 // DescribeAccountModifications mocks base method.
 func (m *MockWorkspacesClient) DescribeAccountModifications(arg0 context.Context, arg1 *workspaces.DescribeAccountModificationsInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeAccountModificationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccountModifications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeAccountModifications(arg0, a
 
 // DescribeClientBranding mocks base method.
 func (m *MockWorkspacesClient) DescribeClientBranding(arg0 context.Context, arg1 *workspaces.DescribeClientBrandingInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeClientBrandingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClientBranding")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeClientBranding(arg0, arg1 in
 
 // DescribeClientProperties mocks base method.
 func (m *MockWorkspacesClient) DescribeClientProperties(arg0 context.Context, arg1 *workspaces.DescribeClientPropertiesInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeClientPropertiesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClientProperties")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeClientProperties(arg0, arg1 
 
 // DescribeConnectClientAddIns mocks base method.
 func (m *MockWorkspacesClient) DescribeConnectClientAddIns(arg0 context.Context, arg1 *workspaces.DescribeConnectClientAddInsInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeConnectClientAddInsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConnectClientAddIns")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeConnectClientAddIns(arg0, ar
 
 // DescribeConnectionAliasPermissions mocks base method.
 func (m *MockWorkspacesClient) DescribeConnectionAliasPermissions(arg0 context.Context, arg1 *workspaces.DescribeConnectionAliasPermissionsInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeConnectionAliasPermissionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConnectionAliasPermissions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeConnectionAliasPermissions(a
 
 // DescribeConnectionAliases mocks base method.
 func (m *MockWorkspacesClient) DescribeConnectionAliases(arg0 context.Context, arg1 *workspaces.DescribeConnectionAliasesInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeConnectionAliasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConnectionAliases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeConnectionAliases(arg0, arg1
 
 // DescribeIpGroups mocks base method.
 func (m *MockWorkspacesClient) DescribeIpGroups(arg0 context.Context, arg1 *workspaces.DescribeIpGroupsInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeIpGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIpGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeIpGroups(arg0, arg1 interfac
 
 // DescribeTags mocks base method.
 func (m *MockWorkspacesClient) DescribeTags(arg0 context.Context, arg1 *workspaces.DescribeTagsInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeTags(arg0, arg1 interface{},
 
 // DescribeWorkspaceBundles mocks base method.
 func (m *MockWorkspacesClient) DescribeWorkspaceBundles(arg0 context.Context, arg1 *workspaces.DescribeWorkspaceBundlesInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeWorkspaceBundlesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeWorkspaceBundles")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeWorkspaceBundles(arg0, arg1 
 
 // DescribeWorkspaceDirectories mocks base method.
 func (m *MockWorkspacesClient) DescribeWorkspaceDirectories(arg0 context.Context, arg1 *workspaces.DescribeWorkspaceDirectoriesInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeWorkspaceDirectoriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeWorkspaceDirectories")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeWorkspaceDirectories(arg0, a
 
 // DescribeWorkspaceImagePermissions mocks base method.
 func (m *MockWorkspacesClient) DescribeWorkspaceImagePermissions(arg0 context.Context, arg1 *workspaces.DescribeWorkspaceImagePermissionsInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeWorkspaceImagePermissionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeWorkspaceImagePermissions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeWorkspaceImagePermissions(ar
 
 // DescribeWorkspaceImages mocks base method.
 func (m *MockWorkspacesClient) DescribeWorkspaceImages(arg0 context.Context, arg1 *workspaces.DescribeWorkspaceImagesInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeWorkspaceImagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeWorkspaceImages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeWorkspaceImages(arg0, arg1 i
 
 // DescribeWorkspaceSnapshots mocks base method.
 func (m *MockWorkspacesClient) DescribeWorkspaceSnapshots(arg0 context.Context, arg1 *workspaces.DescribeWorkspaceSnapshotsInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeWorkspaceSnapshotsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeWorkspaceSnapshots")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeWorkspaceSnapshots(arg0, arg
 
 // DescribeWorkspaces mocks base method.
 func (m *MockWorkspacesClient) DescribeWorkspaces(arg0 context.Context, arg1 *workspaces.DescribeWorkspacesInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeWorkspacesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeWorkspaces")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeWorkspaces(arg0, arg1 interf
 
 // DescribeWorkspacesConnectionStatus mocks base method.
 func (m *MockWorkspacesClient) DescribeWorkspacesConnectionStatus(arg0 context.Context, arg1 *workspaces.DescribeWorkspacesConnectionStatusInput, arg2 ...func(*workspaces.Options)) (*workspaces.DescribeWorkspacesConnectionStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeWorkspacesConnectionStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockWorkspacesClientMockRecorder) DescribeWorkspacesConnectionStatus(a
 
 // ListAvailableManagementCidrRanges mocks base method.
 func (m *MockWorkspacesClient) ListAvailableManagementCidrRanges(arg0 context.Context, arg1 *workspaces.ListAvailableManagementCidrRangesInput, arg2 ...func(*workspaces.Options)) (*workspaces.ListAvailableManagementCidrRangesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &workspaces.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAvailableManagementCidrRanges")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

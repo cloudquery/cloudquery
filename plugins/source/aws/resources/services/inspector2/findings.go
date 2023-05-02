@@ -51,7 +51,9 @@ func fetchInspector2Findings(ctx context.Context, meta schema.ClientMeta, parent
 	input := inspector2.ListFindingsInput{MaxResults: aws.Int32(100)}
 	paginator := inspector2.NewListFindingsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *inspector2.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

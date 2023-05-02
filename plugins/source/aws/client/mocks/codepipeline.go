@@ -37,6 +37,16 @@ func (m *MockCodepipelineClient) EXPECT() *MockCodepipelineClientMockRecorder {
 
 // GetActionType mocks base method.
 func (m *MockCodepipelineClient) GetActionType(arg0 context.Context, arg1 *codepipeline.GetActionTypeInput, arg2 ...func(*codepipeline.Options)) (*codepipeline.GetActionTypeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codepipeline.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetActionType")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockCodepipelineClientMockRecorder) GetActionType(arg0, arg1 interface
 
 // GetJobDetails mocks base method.
 func (m *MockCodepipelineClient) GetJobDetails(arg0 context.Context, arg1 *codepipeline.GetJobDetailsInput, arg2 ...func(*codepipeline.Options)) (*codepipeline.GetJobDetailsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codepipeline.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetJobDetails")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockCodepipelineClientMockRecorder) GetJobDetails(arg0, arg1 interface
 
 // GetPipeline mocks base method.
 func (m *MockCodepipelineClient) GetPipeline(arg0 context.Context, arg1 *codepipeline.GetPipelineInput, arg2 ...func(*codepipeline.Options)) (*codepipeline.GetPipelineOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codepipeline.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPipeline")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockCodepipelineClientMockRecorder) GetPipeline(arg0, arg1 interface{}
 
 // GetPipelineExecution mocks base method.
 func (m *MockCodepipelineClient) GetPipelineExecution(arg0 context.Context, arg1 *codepipeline.GetPipelineExecutionInput, arg2 ...func(*codepipeline.Options)) (*codepipeline.GetPipelineExecutionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codepipeline.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPipelineExecution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockCodepipelineClientMockRecorder) GetPipelineExecution(arg0, arg1 in
 
 // GetPipelineState mocks base method.
 func (m *MockCodepipelineClient) GetPipelineState(arg0 context.Context, arg1 *codepipeline.GetPipelineStateInput, arg2 ...func(*codepipeline.Options)) (*codepipeline.GetPipelineStateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codepipeline.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPipelineState")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockCodepipelineClientMockRecorder) GetPipelineState(arg0, arg1 interf
 
 // GetThirdPartyJobDetails mocks base method.
 func (m *MockCodepipelineClient) GetThirdPartyJobDetails(arg0 context.Context, arg1 *codepipeline.GetThirdPartyJobDetailsInput, arg2 ...func(*codepipeline.Options)) (*codepipeline.GetThirdPartyJobDetailsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codepipeline.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetThirdPartyJobDetails")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockCodepipelineClientMockRecorder) GetThirdPartyJobDetails(arg0, arg1
 
 // ListActionExecutions mocks base method.
 func (m *MockCodepipelineClient) ListActionExecutions(arg0 context.Context, arg1 *codepipeline.ListActionExecutionsInput, arg2 ...func(*codepipeline.Options)) (*codepipeline.ListActionExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codepipeline.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListActionExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockCodepipelineClientMockRecorder) ListActionExecutions(arg0, arg1 in
 
 // ListActionTypes mocks base method.
 func (m *MockCodepipelineClient) ListActionTypes(arg0 context.Context, arg1 *codepipeline.ListActionTypesInput, arg2 ...func(*codepipeline.Options)) (*codepipeline.ListActionTypesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codepipeline.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListActionTypes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockCodepipelineClientMockRecorder) ListActionTypes(arg0, arg1 interfa
 
 // ListPipelineExecutions mocks base method.
 func (m *MockCodepipelineClient) ListPipelineExecutions(arg0 context.Context, arg1 *codepipeline.ListPipelineExecutionsInput, arg2 ...func(*codepipeline.Options)) (*codepipeline.ListPipelineExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codepipeline.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPipelineExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockCodepipelineClientMockRecorder) ListPipelineExecutions(arg0, arg1 
 
 // ListPipelines mocks base method.
 func (m *MockCodepipelineClient) ListPipelines(arg0 context.Context, arg1 *codepipeline.ListPipelinesInput, arg2 ...func(*codepipeline.Options)) (*codepipeline.ListPipelinesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codepipeline.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPipelines")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockCodepipelineClientMockRecorder) ListPipelines(arg0, arg1 interface
 
 // ListTagsForResource mocks base method.
 func (m *MockCodepipelineClient) ListTagsForResource(arg0 context.Context, arg1 *codepipeline.ListTagsForResourceInput, arg2 ...func(*codepipeline.Options)) (*codepipeline.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codepipeline.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockCodepipelineClientMockRecorder) ListTagsForResource(arg0, arg1 int
 
 // ListWebhooks mocks base method.
 func (m *MockCodepipelineClient) ListWebhooks(arg0 context.Context, arg1 *codepipeline.ListWebhooksInput, arg2 ...func(*codepipeline.Options)) (*codepipeline.ListWebhooksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codepipeline.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListWebhooks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -56,7 +56,9 @@ func fetchApigatewayRestApiResourceMethods(ctx context.Context, meta schema.Clie
 	svc := c.Services().Apigateway
 	for method := range resource.ResourceMethods {
 		config := apigateway.GetMethodInput{RestApiId: api.Id, ResourceId: resource.Id, HttpMethod: aws.String(method)}
-		resp, err := svc.GetMethod(ctx, &config)
+		resp, err := svc.GetMethod(ctx, &config, func(options *apigateway.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

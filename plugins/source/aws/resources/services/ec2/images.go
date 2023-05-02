@@ -55,7 +55,9 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			Owners: []string{"self"},
 		})
 		for pag.HasMorePages() {
-			resp, err := pag.NextPage(ctx)
+			resp, err := pag.NextPage(ctx, func(options *ec2.Options) {
+				options.Region = c.Region
+			})
 			if err != nil {
 				return err
 			}
@@ -70,7 +72,9 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			ExecutableUsers: []string{"self"},
 		})
 		for pag.HasMorePages() {
-			resp, err := pag.NextPage(ctx)
+			resp, err := pag.NextPage(ctx, func(options *ec2.Options) {
+				options.Region = c.Region
+			})
 			if err != nil {
 				return err
 			}

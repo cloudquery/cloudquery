@@ -34,9 +34,12 @@ func Users() *schema.Table {
 }
 
 func fetchElasticacheUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
 	paginator := elasticache.NewDescribeUsersPaginator(meta.(*client.Client).Services().Elasticache, nil)
 	for paginator.HasMorePages() {
-		v, err := paginator.NextPage(ctx)
+		v, err := paginator.NextPage(ctx, func(options *elasticache.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

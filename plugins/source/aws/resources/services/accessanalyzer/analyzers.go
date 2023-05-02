@@ -43,7 +43,9 @@ func fetchAccessanalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, p
 	paginator := accessanalyzer.NewListAnalyzersPaginator(svc, &accessanalyzer.ListAnalyzersInput{})
 	for paginator.HasMorePages() {
 		// no need to override API call options anymore: https://github.com/aws/aws-sdk-go-v2/issues/1260
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
