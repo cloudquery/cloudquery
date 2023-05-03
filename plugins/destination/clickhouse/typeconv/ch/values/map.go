@@ -45,7 +45,7 @@ func makeMapSlice(mapType reflect.Type, arr *array.Map) (any, error) {
 			continue
 		}
 		start, end := arr.ValueOffsets(i)
-		mapVal, err := makeMapWithList(mapType, array.NewSlice(arr.ListValues(), start, end))
+		mapVal, err := makeMap(mapType, array.NewSlice(arr.ListValues(), start, end))
 		if err != nil {
 			return nil, err
 		}
@@ -55,12 +55,12 @@ func makeMapSlice(mapType reflect.Type, arr *array.Map) (any, error) {
 	return res.Interface(), nil
 }
 
-func makeMapWithList(mapType reflect.Type, arr arrow.Array) (*reflect.Value, error) {
+func makeMap(mapType reflect.Type, arr arrow.Array) (*reflect.Value, error) {
 	data, err := FromArray(arr)
 	if err != nil {
 		return nil, err
 	}
-	// we do know that this is []*[]*map[string]any (map is implemented as list of structs(key, item))
+	// we do know that this is []*map[string]any (map is implemented as list of structs(key, item))
 	actualData := data.([]*map[string]any)
 
 	const (
@@ -71,19 +71,23 @@ func makeMapWithList(mapType reflect.Type, arr arrow.Array) (*reflect.Value, err
 	value := reflect.MakeMapWithSize(mapType, len(actualData))
 	for _, elem := range actualData {
 		// elem should NEVER be nil (at least key has to be filled in)
-		key := reflect.ValueOf((*elem)[keyField]).Elem()
-		item := reflect.ValueOf((*elem)[itemField])
-		if item.Kind() == reflect.Pointer {
-			switch item.Type().Elem().Kind() {
-			case reflect.Map, reflect.Slice:
-				if item.IsNil() {
-					item = reflect.New(item.Type().Elem()).Elem()
-				} else {
-					item = item.Elem()
-				}
-			}
-		}
-		value.SetMapIndex(key, item)
+		value.SetMapIndex(reflect.ValueOf((*elem)[keyField]).Elem(), mapItemValue(reflect.ValueOf((*elem)[itemField])))
 	}
 	return &value, nil
+}
+
+// mapItemValue adds logic to unwrap value stored in map, if the value is a pointer to map or slice
+func mapItemValue(item reflect.Value) reflect.Value {
+	if item.Kind() != reflect.Pointer {
+		return item
+	}
+	switch item.Type().Elem().Kind() {
+	case reflect.Map, reflect.Slice:
+		if item.IsNil() {
+			return reflect.New(item.Type().Elem()).Elem()
+		}
+		return item.Elem()
+	default:
+		return item
+	}
 }
