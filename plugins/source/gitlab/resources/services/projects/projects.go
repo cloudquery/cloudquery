@@ -15,7 +15,7 @@ func Projects() *schema.Table {
 		Resolver:  fetchProjects,
 		Transform: client.TransformWithStruct(&gitlab.Project{}, transformers.WithPrimaryKeys("ID")),
 		Columns:   schema.ColumnList{client.BaseURLColumn},
-		Relations: schema.Tables{ProjectsReleases(), ProjectBranches(), ProjectMembers()},
+		Relations: schema.Tables{releases(), branches(), members()},
 	}
 }
 

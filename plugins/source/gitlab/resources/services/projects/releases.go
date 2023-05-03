@@ -9,19 +9,19 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-func ProjectMembers() *schema.Table {
+func releases() *schema.Table {
 	return &schema.Table{
-		Name:      "gitlab_project_members",
-		Resolver:  fetchProjectMembers,
-		Transform: client.TransformWithStruct(&gitlab.ProjectMember{}, transformers.WithPrimaryKeys("ID")),
+		Name:      "gitlab_projects_releases",
+		Resolver:  fetchReleases,
+		Transform: client.TransformWithStruct(&gitlab.Release{}, transformers.WithPrimaryKeys("CreatedAt")),
 		Columns:   schema.ColumnList{client.BaseURLColumn, projectIDColumn},
 	}
 }
 
-func fetchProjectMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchReleases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	project := parent.Item.(*gitlab.Project)
-	opt := &gitlab.ListProjectMembersOptions{
+	opt := &gitlab.ListReleasesOptions{
 		ListOptions: gitlab.ListOptions{
 			PerPage: 1000,
 		},
@@ -29,7 +29,7 @@ func fetchProjectMembers(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 	for {
 		// Get the first page with projects.
-		members, resp, err := c.Gitlab.ProjectMembers.ListProjectMembers(project.ID, opt, gitlab.WithContext(ctx))
+		members, resp, err := c.Gitlab.Releases.ListReleases(project.ID, opt, gitlab.WithContext(ctx))
 		if err != nil {
 			return err
 		}

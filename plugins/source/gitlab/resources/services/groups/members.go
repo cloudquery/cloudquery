@@ -9,10 +9,10 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-func GroupMembers() *schema.Table {
+func members() *schema.Table {
 	return &schema.Table{
 		Name:      "gitlab_group_members",
-		Resolver:  fetchGroupMembers,
+		Resolver:  fetchMembers,
 		Transform: client.TransformWithStruct(&gitlab.GroupMember{}, transformers.WithPrimaryKeys("ID")),
 		Columns: schema.ColumnList{client.BaseURLColumn,
 			{
@@ -25,7 +25,7 @@ func GroupMembers() *schema.Table {
 	}
 }
 
-func fetchGroupMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	group := parent.Item.(*gitlab.Group)
 	opt := &gitlab.ListGroupMembersOptions{

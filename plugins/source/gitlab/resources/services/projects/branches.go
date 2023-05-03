@@ -9,16 +9,16 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-func ProjectBranches() *schema.Table {
+func branches() *schema.Table {
 	return &schema.Table{
 		Name:      "gitlab_project_branches",
-		Resolver:  fetchProjectBranches,
+		Resolver:  fetchBranches,
 		Transform: client.TransformWithStruct(&gitlab.Branch{}, transformers.WithPrimaryKeys("Name")),
 		Columns:   schema.ColumnList{client.BaseURLColumn, projectIDColumn},
 	}
 }
 
-func fetchProjectBranches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchBranches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	project := parent.Item.(*gitlab.Project)
 	opt := &gitlab.ListBranchesOptions{

@@ -15,7 +15,7 @@ func Groups() *schema.Table {
 		Resolver:  fetchGroups,
 		Transform: client.TransformWithStruct(&gitlab.Group{}, transformers.WithPrimaryKeys("ID", "Name")),
 		Columns:   schema.ColumnList{client.BaseURLColumn},
-		Relations: schema.Tables{GroupMembers()},
+		Relations: schema.Tables{members()},
 	}
 }
 
