@@ -2,7 +2,7 @@
 
 This table shows data for Config Config Rule Compliance Details.
 
-https://docs.aws.amazon.com/config/latest/APIReference/API_GetComplianceDetailsByConfigRule.html
+https://docs.aws.amazon.com/config/latest/APIReference/API_EvaluationResult.html
 
 The composite primary key for this table is (**account_id**, **region**, **_evaluation_hash**).
 
