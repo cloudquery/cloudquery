@@ -74,6 +74,6 @@ func FromArray(arr arrow.Array) (any, error) {
 		return listValue(arr)
 	}
 
-	// default to string
-	return valueStrData(arr), nil
+	// default to string via JSON
+	return marshalValuesToStrings(arr)
 }

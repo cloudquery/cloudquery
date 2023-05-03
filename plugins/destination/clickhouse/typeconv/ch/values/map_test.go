@@ -149,5 +149,3 @@ func Test_mapValue(t *testing.T) {
 	require.NotNil(t, elem)
 	require.Nil(t, *elem)
 }
-
-func ptr[A any](a A) *A { return &a }

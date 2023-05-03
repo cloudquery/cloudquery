@@ -80,7 +80,8 @@ func buildValue(builder array.Builder, value any) error {
 		return buildList(builder, value)
 
 	default:
-		return buildFromString(builder, value)
+		// we default to JSON representation, so stick with it
+		return buildUnmarshalOne(builder, value)
 	}
 
 	return nil

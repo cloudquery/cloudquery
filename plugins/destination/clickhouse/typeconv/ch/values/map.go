@@ -1,7 +1,6 @@
 package values
 
 import (
-	"encoding/json"
 	"fmt"
 	"reflect"
 	"time"
@@ -19,7 +18,7 @@ func mapValue(arr *array.Map) (any, error) {
 		return nil, err
 	}
 	if colType == "String" {
-		return marshalValuesToStrings(arr), nil
+		return marshalValuesToStrings(arr)
 	}
 
 	// Need to create slice of the proper type.
@@ -34,19 +33,6 @@ func mapValue(arr *array.Map) (any, error) {
 	}
 
 	return makeMapSlice(valueType, arr)
-}
-
-func marshalValuesToStrings(arr *array.Map) []*string {
-	data := marshalValue[json.RawMessage](arr)
-	res := make([]*string, len(data))
-	for i, elem := range data {
-		if elem == nil {
-			continue
-		}
-		str := string(*elem)
-		res[i] = &str
-	}
-	return res
 }
 
 func makeMapSlice(mapType reflect.Type, arr *array.Map) (any, error) {
