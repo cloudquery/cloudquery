@@ -29,7 +29,9 @@ func fetchBackupRegionSettings(ctx context.Context, meta schema.ClientMeta, pare
 	svc := c.Services().Backup
 	input := backup.DescribeRegionSettingsInput{}
 
-	output, err := svc.DescribeRegionSettings(ctx, &input)
+	output, err := svc.DescribeRegionSettings(ctx, &input, func(options *backup.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

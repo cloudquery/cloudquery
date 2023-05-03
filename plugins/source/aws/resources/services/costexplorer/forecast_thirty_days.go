@@ -12,13 +12,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
-func CurrentMonthForecast() *schema.Table {
-	tableName := "aws_costexplorer_forecast_current_month"
+func ThirtyDayCostForecast() *schema.Table {
+	tableName := "aws_costexplorer_cost_forecast_30d"
 	return &schema.Table{
 		Name: tableName,
 		Description: `https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetCostForecast.html
 To sync this table you must set the 'use_paid_apis' option to 'true' in the AWS provider configuration. `,
 		Resolver:  fetchForecast,
+		Title:     "AWS Cost Explorer cost forecast for the next 30 days",
 		Transform: transformers.TransformWithStruct(&types.ForecastResult{}),
 		Multiplex: client.AccountMultiplex(tableName),
 		Columns: []schema.Column{
@@ -51,22 +52,24 @@ func fetchForecast(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		cl.Logger().Info().Msg("skipping `aws_costexplorer_forecast_current_month` because `use_paid_apis` is set to false")
 		return nil
 	}
-
+	now := time.Now()
 	svc := cl.Services().Costexplorer
+
 	input := costexplorer.GetCostForecastInput{
 		Granularity: types.GranularityDaily,
 		Metric:      types.MetricBlendedCost,
 		TimePeriod: &types.DateInterval{
-			Start: aws.String(time.Now().Format("2006-01-02")),
-			End:   aws.String(endOfMonth(time.Now()).Format("2006-01-02")),
+			Start: aws.String(now.Format("2006-01-02")),
+			End:   aws.String(now.AddDate(0, 0, 30).Format("2006-01-02")),
 		},
 	}
 
-	resp, err := svc.GetCostForecast(ctx, &input)
+	resp, err := svc.GetCostForecast(ctx, &input, func(options *costexplorer.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
 	res <- resp.ForecastResultsByTime
-
 	return nil
 }

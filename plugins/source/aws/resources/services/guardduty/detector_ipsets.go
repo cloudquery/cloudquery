@@ -42,7 +42,9 @@ func fetchDetectorIPSets(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	paginator := guardduty.NewListIPSetsPaginator(svc, config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *guardduty.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -60,6 +62,8 @@ func getDetectorIPSet(ctx context.Context, meta schema.ClientMeta, resource *sch
 	out, err := svc.GetIPSet(ctx, &guardduty.GetIPSetInput{
 		DetectorId: &detector.Id,
 		IpSetId:    &id,
+	}, func(options *guardduty.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err

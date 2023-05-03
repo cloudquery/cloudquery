@@ -19,11 +19,11 @@ func buildMwaaEnvironments(t *testing.T, ctrl *gomock.Controller) client.Service
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListEnvironments(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListEnvironments(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&mwaa.ListEnvironmentsOutput{
 			Environments: []string{*g.Name},
 		}, nil)
-	m.EXPECT().GetEnvironment(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().GetEnvironment(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&mwaa.GetEnvironmentOutput{
 			Environment: &g,
 		}, nil)

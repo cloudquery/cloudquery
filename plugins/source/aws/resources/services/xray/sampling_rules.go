@@ -39,9 +39,12 @@ func SamplingRules() *schema.Table {
 }
 
 func fetchXraySamplingRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	paginator := xray.NewGetSamplingRulesPaginator(meta.(*client.Client).Services().Xray, nil)
+	cl := meta.(*client.Client)
+	paginator := xray.NewGetSamplingRulesPaginator(cl.Services().Xray, nil)
 	for paginator.HasMorePages() {
-		v, err := paginator.NextPage(ctx)
+		v, err := paginator.NextPage(ctx, func(o *xray.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -55,7 +58,9 @@ func resolveXraySamplingRuleTags(ctx context.Context, meta schema.ClientMeta, re
 	svc := cl.Services().Xray
 	params := xray.ListTagsForResourceInput{ResourceARN: sr.SamplingRule.RuleARN}
 
-	output, err := svc.ListTagsForResource(ctx, &params)
+	output, err := svc.ListTagsForResource(ctx, &params, func(o *xray.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {
 			return nil

@@ -63,7 +63,9 @@ func fetchDocdbClusterSnapshots(ctx context.Context, meta schema.ClientMeta, par
 	}
 	p := docdb.NewDescribeDBClusterSnapshotsPaginator(svc, input)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *docdb.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -81,7 +83,9 @@ func resolveDocdbClusterSnapshotAttributes(ctx context.Context, meta schema.Clie
 		DBClusterSnapshotIdentifier: item.DBClusterSnapshotIdentifier,
 	}
 
-	output, err := svc.DescribeDBClusterSnapshotAttributes(ctx, input)
+	output, err := svc.DescribeDBClusterSnapshotAttributes(ctx, input, func(options *docdb.Options) {
+		options.Region = cli.Region
+	})
 	if err != nil {
 		return err
 	}

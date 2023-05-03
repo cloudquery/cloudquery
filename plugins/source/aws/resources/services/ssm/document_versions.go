@@ -34,8 +34,8 @@ func documentVersions() *schema.Table {
 }
 
 func fetchSsmDocumentVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ssm
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ssm
 	item := parent.Item.(*types.DocumentDescription)
 
 	params := ssm.ListDocumentVersionsInput{
@@ -43,7 +43,9 @@ func fetchSsmDocumentVersions(ctx context.Context, meta schema.ClientMeta, paren
 	}
 	// No paginator
 	for {
-		output, err := svc.ListDocumentVersions(ctx, &params)
+		output, err := svc.ListDocumentVersions(ctx, &params, func(o *ssm.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -51,10 +51,10 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMn
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/arrow/go/v12 v12.0.0-20230417154311-f9add0212acd h1:G093N165IqQvq84MK3Ozi7QwfAWyfYywXijkOyxGJdI=
 github.com/cloudquery/arrow/go/v12 v12.0.0-20230417154311-f9add0212acd/go.mod h1:d+tV/eHZZ7Dz7RPrFKtPK02tpr+c9/PEd/zm8mDS9Vg=
-github.com/cloudquery/filetypes/v2 v2.0.3 h1:iP117DpnR2Xw2Q5+XkRN0Vfl0KDx0N2a7/DNWlowLi4=
-github.com/cloudquery/filetypes/v2 v2.0.3/go.mod h1:MBJ7YIFcDusfVIEoYHiUdMY+mK34Vc+dT5lXMeEvTpA=
-github.com/cloudquery/plugin-sdk/v2 v2.5.0 h1:N3w3Yc9gu0eMtrzfTWdgnMvSiilcubg7Oa3oUzhemnY=
-github.com/cloudquery/plugin-sdk/v2 v2.5.0/go.mod h1:3Q7i+PadZpHSLDy2b1yjCarxwHe2dTG0jB9l4IvWxgk=
+github.com/cloudquery/filetypes/v2 v2.0.4 h1:2000+whZYftuAMvkeGiUtdPo/izJHOmvom6sVhjyfLY=
+github.com/cloudquery/filetypes/v2 v2.0.4/go.mod h1:Fty5xVFXeiiyutBUdQlufSFLsc1ntlVxpHw34+Yf8lE=
+github.com/cloudquery/plugin-sdk/v2 v2.5.1 h1:6qCadOLCLR2w1WmaosvM6JzjsQlpYChgIbw4cg65KhM=
+github.com/cloudquery/plugin-sdk/v2 v2.5.1/go.mod h1:3Q7i+PadZpHSLDy2b1yjCarxwHe2dTG0jB9l4IvWxgk=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=

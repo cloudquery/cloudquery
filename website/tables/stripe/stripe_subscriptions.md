@@ -25,6 +25,7 @@ It supports incremental syncs based on the **created** column.
 |cancel_at|Int|
 |cancel_at_period_end|Bool|
 |canceled_at|Int|
+|cancellation_details|JSON|
 |collection_method|String|
 |currency|String|
 |current_period_end|Int|
@@ -55,4 +56,5 @@ It supports incremental syncs based on the **created** column.
 |test_clock|JSON|
 |transfer_data|JSON|
 |trial_end|Int|
+|trial_settings|JSON|
 |trial_start|Int|

@@ -47,12 +47,14 @@ type WrappedSageMakerNotebookInstance struct {
 }
 
 func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sagemaker
 	config := sagemaker.ListNotebookInstancesInput{}
 	paginator := sagemaker.NewListNotebookInstancesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sagemaker.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -63,13 +65,15 @@ func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta
 }
 
 func getNotebookInstance(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sagemaker
 	n := resource.Item.(types.NotebookInstanceSummary)
 
 	// get more details about the notebook instance
 	response, err := svc.DescribeNotebookInstance(ctx, &sagemaker.DescribeNotebookInstanceInput{
 		NotebookInstanceName: n.NotebookInstanceName,
+	}, func(o *sagemaker.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -85,15 +89,17 @@ func getNotebookInstance(ctx context.Context, meta schema.ClientMeta, resource *
 
 func resolveSagemakerNotebookInstanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	r := resource.Item.(*WrappedSageMakerNotebookInstance)
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sagemaker
 	config := sagemaker.ListTagsInput{
 		ResourceArn: &r.NotebookInstanceArn,
 	}
 	paginator := sagemaker.NewListTagsPaginator(svc, &config)
 	var tags []types.Tag
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sagemaker.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Apple Pay Domains.
 
-https://stripe.com/docs/api/apple_pay_domains
+https://stripe.com/docs/api
 
 The primary key for this table is **id**.
 

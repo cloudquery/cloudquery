@@ -12,11 +12,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
 
-func CurrentMonthCost() *schema.Table {
-	tableName := "aws_costexplorer_cost_current_month"
+func ThirtyDayCost() *schema.Table {
+	tableName := "aws_costexplorer_cost_30d"
 	return &schema.Table{
 		Name:     tableName,
 		Resolver: fetchCost,
+		Title:    "AWS Cost Explorer costs for the last 30 days",
 		Description: `https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetCostAndUsage.html
 To sync this table you must set the 'use_paid_apis' option to 'true' in the AWS provider configuration. `,
 		Transform: transformers.TransformWithStruct(&types.ResultByTime{}),
@@ -53,6 +54,9 @@ func fetchCost(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 		return nil
 	}
 	svc := cl.Services().Costexplorer
+	// Only use a single `time.Now()` call to ensure that the start and end dates are the same.
+	now := time.Now()
+
 	input := costexplorer.GetCostAndUsageInput{
 		Granularity: types.GranularityDaily,
 		Metrics: []string{
@@ -64,12 +68,14 @@ func fetchCost(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 			"UnblendedCost",
 		},
 		TimePeriod: &types.DateInterval{
-			Start: aws.String(beginningOfMonth(time.Now()).Format("2006-01-02")),
-			End:   aws.String(time.Now().Format("2006-01-02")),
+			Start: aws.String(now.AddDate(0, 0, -30).Format("2006-01-02")),
+			End:   aws.String(now.AddDate(0, 0, 1).Format("2006-01-02")),
 		},
 	}
 	for {
-		resp, err := svc.GetCostAndUsage(ctx, &input)
+		resp, err := svc.GetCostAndUsage(ctx, &input, func(options *costexplorer.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
