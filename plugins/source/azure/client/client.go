@@ -369,29 +369,26 @@ func (c *Client) withBillingPeriod(billingPeriod *armbilling.Period) *Client {
 }
 
 func (c *Client) GetStorageAccountKey(ctx context.Context, acc *armstorage.Account) (string, error) {
-	if val, ok := c.storageAccountKeys.Load(*acc.Name); ok {
-		return val.(string), nil
-	}
+	key, err := loadOrStore(c.storageAccountKeys, *acc.Name, func() (any, error) {
+		svc, err := armstorage.NewAccountsClient(c.SubscriptionId, c.Creds, c.Options)
+		if err != nil {
+			return "", err
+		}
 
-	svc, err := armstorage.NewAccountsClient(c.SubscriptionId, c.Creds, c.Options)
-	if err != nil {
-		return "", err
-	}
+		group, err := ParseResourceGroup(*acc.ID)
+		if err != nil {
+			return "", err
+		}
 
-	group, err := ParseResourceGroup(*acc.ID)
-	if err != nil {
-		return "", err
-	}
+		keysResponse, err := svc.ListKeys(ctx, group, *acc.Name, nil)
+		if err != nil {
+			return "", err
+		}
 
-	keysResponse, err := svc.ListKeys(ctx, group, *acc.Name, nil)
-	if err != nil {
-		return "", err
-	}
-	for i := range keysResponse.Keys {
-		c.storageAccountKeys.Store(*acc.Name, *keysResponse.Keys[i].Value)
-
-		return *keysResponse.Keys[i].Value, nil
-	}
-
-	return "", nil
+		for i := range keysResponse.Keys {
+			return *keysResponse.Keys[i].Value, nil
+		}
+		return "", nil
+	})
+	return key.(string), err
 }
