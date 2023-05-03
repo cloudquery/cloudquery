@@ -9,8 +9,8 @@ import (
 )
 
 // https://clickhouse.com/docs/en/sql-reference/data-types/datetime64
-func timestampType(_type *arrow.TimestampType) (string, error) {
-	loc, err := _type.GetZone()
+func timestampType(tsType *arrow.TimestampType) (string, error) {
+	loc, err := tsType.GetZone()
 	if err != nil {
 		return "", err
 	}
@@ -21,7 +21,7 @@ func timestampType(_type *arrow.TimestampType) (string, error) {
 	}
 
 	var precision int
-	switch unit := _type.TimeUnit(); unit {
+	switch unit := tsType.TimeUnit(); unit {
 	case arrow.Second:
 		precision = 0
 	case arrow.Millisecond:

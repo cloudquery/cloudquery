@@ -10,22 +10,22 @@ import (
 func Test_structType(t *testing.T) {
 	for _, tc := range []testCase{
 		{
-			_type:    arrow.StructOf(arrow.Field{Name: "f1", Type: new(arrow.BooleanType)}),
+			dataType: arrow.StructOf(arrow.Field{Name: "f1", Type: new(arrow.BooleanType)}),
 			expected: "Tuple(`f1` Bool)",
 		},
 		{
-			_type:    arrow.StructOf(arrow.Field{Name: "f1", Type: new(arrow.BooleanType), Nullable: true}),
+			dataType: arrow.StructOf(arrow.Field{Name: "f1", Type: new(arrow.BooleanType), Nullable: true}),
 			expected: "Tuple(`f1` Nullable(Bool))",
 		},
 		{
-			_type: arrow.StructOf(
+			dataType: arrow.StructOf(
 				arrow.Field{Name: "bool_list", Type: arrow.ListOfNonNullable(new(arrow.BooleanType))},
 				arrow.Field{Name: "bool_list_nullable", Type: arrow.ListOf(new(arrow.BooleanType))},
 			),
 			expected: "Tuple(`bool_list` Array(Bool), `bool_list_nullable` Array(Nullable(Bool)))",
 		},
 		{
-			_type: arrow.StructOf(
+			dataType: arrow.StructOf(
 				arrow.Field{Name: "uuid_list", Type: arrow.ListOf(types.NewUUIDType())},
 				arrow.Field{
 					Name: "struct",

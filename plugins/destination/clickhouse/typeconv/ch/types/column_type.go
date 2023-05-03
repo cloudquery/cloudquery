@@ -6,8 +6,8 @@ import (
 	"github.com/apache/arrow/go/v12/arrow"
 )
 
-func dataType(_type arrow.DataType) (string, error) {
-	switch _type := _type.(type) {
+func columnType(dataType arrow.DataType) (string, error) {
+	switch dataType := dataType.(type) {
 	// https://clickhouse.com/docs/en/sql-reference/data-types/boolean
 	case *arrow.BooleanType:
 		return "Bool", nil
@@ -42,7 +42,7 @@ func dataType(_type arrow.DataType) (string, error) {
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/fixedstring
 	case *arrow.FixedSizeBinaryType:
-		return "FixedString(" + strconv.Itoa(_type.ByteWidth) + ")", nil
+		return "FixedString(" + strconv.Itoa(dataType.ByteWidth) + ")", nil
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/date32
 	case *arrow.Date32Type:
@@ -52,11 +52,11 @@ func dataType(_type arrow.DataType) (string, error) {
 	case *arrow.Date64Type:
 		return "DateTime64(3)", nil // 3 = milliseconds
 	case *arrow.TimestampType:
-		return timestampType(_type)
+		return timestampType(dataType)
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/decimal
 	case arrow.DecimalType:
-		return decimalType(_type)
+		return decimalType(dataType)
 
 	case *arrow.MapType:
 		// TODO: support https://clickhouse.com/docs/en/sql-reference/data-types/map
@@ -64,15 +64,15 @@ func dataType(_type arrow.DataType) (string, error) {
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/array
 	case listDataType:
-		return listType(_type)
+		return listType(dataType)
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/tuple
 	case *arrow.StructType:
-		return structType(_type)
+		return structType(dataType)
 
 	// Only support CQ extensions for now
 	case arrow.ExtensionType:
-		return extensionType(_type), nil
+		return extensionType(dataType), nil
 
 	// everything else that's not supported ATM
 	default:

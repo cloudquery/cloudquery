@@ -12,16 +12,16 @@ import (
 )
 
 type testCase struct {
-	_type    arrow.DataType
+	dataType arrow.DataType
 	value    any
 	expected any
 }
 
 func ensureRecord(t *testing.T, tc testCase) {
 	t.Helper()
-	t.Run(tc._type.String(), func(t *testing.T) {
+	t.Run(tc.dataType.String(), func(t *testing.T) {
 		t.Helper()
-		sc := arrow.NewSchema([]arrow.Field{{Name: "field", Type: tc._type, Nullable: true}}, nil)
+		sc := arrow.NewSchema([]arrow.Field{{Name: "field", Type: tc.dataType, Nullable: true}}, nil)
 		record, err := Record(sc, []any{tc.value})
 		require.NoError(t, err)
 		require.Equal(t, int64(1), record.NumRows())

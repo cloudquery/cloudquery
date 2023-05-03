@@ -10,29 +10,29 @@ import (
 
 func TestFieldType(t *testing.T) {
 	for _, tc := range []testCase{
-		{_type: new(arrow.BooleanType), expected: "Bool"},
-		{_type: new(arrow.Int8Type), expected: "Int8"},
-		{_type: new(arrow.Int16Type), expected: "Int16"},
-		{_type: new(arrow.Int32Type), expected: "Int32"},
-		{_type: new(arrow.Int64Type), expected: "Int64"},
-		{_type: new(arrow.Uint8Type), expected: "UInt8"},
-		{_type: new(arrow.Uint16Type), expected: "UInt16"},
-		{_type: new(arrow.Uint32Type), expected: "UInt32"},
-		{_type: new(arrow.Uint64Type), expected: "UInt64"},
-		{_type: new(arrow.Float16Type), expected: "Float32"},
-		{_type: new(arrow.Float32Type), expected: "Float32"},
-		{_type: new(arrow.Float64Type), expected: "Float64"},
-		{_type: &arrow.FixedSizeBinaryType{ByteWidth: 125}, expected: "FixedString(125)"},
-		{_type: new(arrow.Date32Type), expected: "Date32"},
-		{_type: new(arrow.Date64Type), expected: "DateTime64(3)"},
-		{_type: arrow.MapOf(new(arrow.StringType), new(arrow.BooleanType)), expected: "String"},
+		{dataType: new(arrow.BooleanType), expected: "Bool"},
+		{dataType: new(arrow.Int8Type), expected: "Int8"},
+		{dataType: new(arrow.Int16Type), expected: "Int16"},
+		{dataType: new(arrow.Int32Type), expected: "Int32"},
+		{dataType: new(arrow.Int64Type), expected: "Int64"},
+		{dataType: new(arrow.Uint8Type), expected: "UInt8"},
+		{dataType: new(arrow.Uint16Type), expected: "UInt16"},
+		{dataType: new(arrow.Uint32Type), expected: "UInt32"},
+		{dataType: new(arrow.Uint64Type), expected: "UInt64"},
+		{dataType: new(arrow.Float16Type), expected: "Float32"},
+		{dataType: new(arrow.Float32Type), expected: "Float32"},
+		{dataType: new(arrow.Float64Type), expected: "Float64"},
+		{dataType: &arrow.FixedSizeBinaryType{ByteWidth: 125}, expected: "FixedString(125)"},
+		{dataType: new(arrow.Date32Type), expected: "Date32"},
+		{dataType: new(arrow.Date64Type), expected: "DateTime64(3)"},
+		{dataType: arrow.MapOf(new(arrow.StringType), new(arrow.BooleanType)), expected: "String"},
 	} {
 		ensureDefinition(t, tc)
 	}
 }
 
 type testCase struct {
-	_type    arrow.DataType
+	dataType arrow.DataType
 	expected string
 }
 
@@ -50,11 +50,11 @@ func ensureDefinition(t *testing.T, tc testCase) {
 		",", "_",
 	)
 
-	t.Run(tc._type.String(), func(t *testing.T) {
+	t.Run(tc.dataType.String(), func(t *testing.T) {
 		// non-nullable
 		field := arrow.Field{
-			Name: replacer.Replace(tc._type.String()),
-			Type: tc._type,
+			Name: replacer.Replace(tc.dataType.String()),
+			Type: tc.dataType,
 		}
 		fieldType, err := FieldType(field)
 		require.NoError(t, err)

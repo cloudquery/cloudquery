@@ -9,7 +9,7 @@ import (
 func extensionValue(arr array.ExtensionArray) any {
 	switch arr := arr.(type) {
 	case *types.UUIDArray:
-		return marshalValue[uuid.UUID](arr)
+		return primitiveValue[uuid.UUID](arr)
 	case *types.InetArray, *types.MacArray, *types.JSONArray:
 		return valueStrData(arr)
 	default:

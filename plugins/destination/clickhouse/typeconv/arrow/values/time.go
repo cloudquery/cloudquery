@@ -39,8 +39,8 @@ func buildTimestampValues(builder *array.TimestampBuilder, value any) error {
 	return nil
 }
 
-func timeToTimestamp(value time.Time, _type *arrow.TimestampType) (arrow.Timestamp, error) {
-	loc, err := _type.GetZone()
+func timeToTimestamp(value time.Time, tsType *arrow.TimestampType) (arrow.Timestamp, error) {
+	loc, err := tsType.GetZone()
 	if err != nil {
 		return arrow.Timestamp(0), err
 	}
@@ -48,7 +48,7 @@ func timeToTimestamp(value time.Time, _type *arrow.TimestampType) (arrow.Timesta
 		value = value.In(loc)
 	}
 
-	switch _type.Unit {
+	switch tsType.Unit {
 	case arrow.Second:
 		return arrow.Timestamp(value.Unix()), nil
 	case arrow.Millisecond:
@@ -58,6 +58,6 @@ func timeToTimestamp(value time.Time, _type *arrow.TimestampType) (arrow.Timesta
 	case arrow.Nanosecond:
 		return arrow.Timestamp(value.UnixNano()), nil
 	default:
-		return arrow.Timestamp(0), fmt.Errorf("unsupported Apache Arrow time unit: %s", _type.Unit.String())
+		return arrow.Timestamp(0), fmt.Errorf("unsupported Apache Arrow time unit: %s", tsType.Unit.String())
 	}
 }

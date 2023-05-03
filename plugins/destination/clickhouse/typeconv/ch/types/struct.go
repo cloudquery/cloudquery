@@ -7,8 +7,8 @@ import (
 )
 
 // https://clickhouse.com/docs/en/sql-reference/data-types/tuple
-func structType(_struct *arrow.StructType) (string, error) {
-	defs, err := definitions(_struct.Fields())
+func structType(structType *arrow.StructType) (string, error) {
+	defs, err := definitions(structType.Fields())
 	if err != nil {
 		return "", err
 	}

@@ -18,16 +18,16 @@ func Test_list(t *testing.T) {
 	ensureRecord(t, genListTestCase(t, arrow.ListOf(types.NewUUIDType()), uuid.New, amount))
 }
 
-func genListTestCase[A any](t *testing.T, _type arrow.DataType, _new func() A, n int) testCase {
+func genListTestCase[A any](t *testing.T, dataType arrow.DataType, f func() A, n int) testCase {
 	values := make([]*A, n)
 	expected := make([]A, n)
 	for i := range expected {
-		val := _new()
+		val := f()
 		values[i], expected[i] = &val, val
 	}
 
 	return testCase{
-		_type:    _type,
+		dataType: dataType,
 		value:    values,
 		expected: marshalList(t, expected),
 	}
