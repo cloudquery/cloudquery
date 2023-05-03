@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,7 +23,7 @@ WHERE [_cq_source_name] = @sourceName
 ORDER BY [_cq_sync_time] ASC;`
 	)
 
-	query, params := Read(schemaName, sourceName, &schema.Table{
+	query, params := Read(schemaName, sourceName, schema.CQSchemaToArrow(&schema.Table{
 		Name: "table_name",
 		Columns: schema.ColumnList{
 			schema.CqIDColumn,
@@ -32,7 +32,7 @@ ORDER BY [_cq_sync_time] ASC;`
 			schema.CqSyncTimeColumn,
 			schema.Column{Name: "extra_col", Type: schema.TypeFloat},
 		},
-	})
+	}))
 
 	require.Equal(t, expected, query)
 	require.Equal(t, 1, len(params))
