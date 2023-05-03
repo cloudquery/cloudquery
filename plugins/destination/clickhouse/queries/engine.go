@@ -17,10 +17,6 @@ type Engine struct {
 }
 
 func (e *Engine) String() string {
-	if len(e.Parameters) == 0 {
-		return e.Name
-	}
-
 	return e.Name + "(" + strings.Join(e.params(), ", ") + ")"
 }
 
