@@ -18,12 +18,14 @@ func SQLType(dataType arrow.DataType) string {
 
 	case *arrow.Uint8Type:
 		return "tinyint" // uint8
-	case *arrow.Int8Type, *arrow.Uint16Type, *arrow.Int16Type:
+	case *arrow.Int8Type, *arrow.Int16Type: // no special int8 type, upscale
 		return "smallint" // int16
-	case *arrow.Uint32Type, *arrow.Int32Type:
+	case *arrow.Uint16Type, *arrow.Int32Type: // no special uint16 type, upscale
 		return "int" // int32
-	case *arrow.Uint64Type, *arrow.Int64Type:
+	case *arrow.Uint32Type, *arrow.Int64Type: // no special uint32 type, upscale
 		return "bigint" // int64
+	case *arrow.Uint64Type: // we can only store this reliably as string for now
+		return "nvarchar(4000)"
 
 	case *arrow.Float32Type:
 		return "real"
@@ -111,12 +113,14 @@ func columnGoType(dataType arrow.DataType) reflect.Type {
 
 	case *arrow.Uint8Type:
 		return reflect.TypeOf(uint8(0))
-	case *arrow.Int8Type, *arrow.Uint16Type, *arrow.Int16Type:
+	case *arrow.Int8Type, *arrow.Int16Type: // no special int8 type, upscale
 		return reflect.TypeOf(int16(0))
-	case *arrow.Uint32Type, *arrow.Int32Type:
+	case *arrow.Uint16Type, *arrow.Int32Type: // no special uint16 type, upscale
 		return reflect.TypeOf(int32(0))
-	case *arrow.Uint64Type, *arrow.Int64Type:
+	case *arrow.Uint32Type, *arrow.Int64Type: // no special uint32 type, upscale
 		return reflect.TypeOf(int64(0))
+	case *arrow.Uint64Type: // we can only store this reliably as string for now
+		return reflect.TypeOf("")
 
 	case *arrow.Float32Type:
 		return reflect.TypeOf(float32(0))

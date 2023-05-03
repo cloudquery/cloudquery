@@ -56,14 +56,14 @@ func getColValue(arr arrow.Array, idx int) (any, error) {
 	case *array.Uint8:
 		return ptr(arr.Value(idx)), nil
 	case *array.Uint16:
-		return ptr(int16(arr.Value(idx))), nil // as we map those to the signed types for now
+		return ptr(int32(arr.Value(idx))), nil // no special uint16 type, upscale
 	case *array.Uint32:
-		return ptr(int32(arr.Value(idx))), nil // as we map those to the signed types for now
+		return ptr(int64(arr.Value(idx))), nil // no special uint32 type, upscale
 	case *array.Uint64:
-		return ptr(int64(arr.Value(idx))), nil // as we map those to the signed types for now
+		return ptr(arr.ValueStr(idx)), nil // we can only store this reliably as string for now
 
 	case *array.Int8:
-		return ptr(arr.Value(idx)), nil
+		return ptr(int16(arr.Value(idx))), nil // no special int8 type, upscale
 	case *array.Int16:
 		return ptr(arr.Value(idx)), nil
 	case *array.Int32:

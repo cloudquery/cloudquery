@@ -37,14 +37,14 @@ func buildValue(builder array.Builder, elem any) error {
 	case *array.Uint8Builder:
 		builder.Append(elem.(uint8))
 	case *array.Uint16Builder:
-		builder.Append(uint16(elem.(int16)))
+		builder.Append(uint16(elem.(int32))) // no special uint16 type, downscale
 	case *array.Uint32Builder:
-		builder.Append(uint32(elem.(int32)))
+		builder.Append(uint32(elem.(int64))) // no special uint32 type, downscale
 	case *array.Uint64Builder:
-		builder.Append(uint64(elem.(int64)))
+		return builder.AppendValueFromString(elem.(string)) // no special uint64 type, was stored as string
 
 	case *array.Int8Builder:
-		builder.Append(elem.(int8))
+		builder.Append(int8(elem.(int16))) // no special int8 type, downscale
 	case *array.Int16Builder:
 		builder.Append(elem.(int16))
 	case *array.Int32Builder:

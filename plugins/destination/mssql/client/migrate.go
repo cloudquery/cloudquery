@@ -24,7 +24,7 @@ func (c *Client) Migrate(ctx context.Context, scs schema.Schemas) error {
 	if c.spec.MigrateMode != specs.MigrateModeForced {
 		unsafe := unsafeSchemaChanges(have, want)
 		if len(unsafe) > 0 {
-			return fmt.Errorf("The following changes cannot be automatically migrated:\n%s\n\nPlease perform this migration manually or enable `migrate_mode: 'forced'`.", prettifyChanges(unsafe))
+			return fmt.Errorf("the following changes cannot be automatically migrated:\n%s\n\nPlease perform this migration manually or enable `migrate_mode: 'forced'`", prettifyChanges(unsafe))
 		}
 	}
 
