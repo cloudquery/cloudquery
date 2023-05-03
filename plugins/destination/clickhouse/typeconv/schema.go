@@ -22,6 +22,10 @@ func CanonizedSchemas(scs schema.Schemas) (schema.Schemas, error) {
 func CanonizedSchema(sc *arrow.Schema) (*arrow.Schema, error) {
 	fields := make([]arrow.Field, len(sc.Fields()))
 	for i, fld := range sc.Fields() {
+		if schema.IsPk(fld) {
+			// we mark as non-nullable
+			fld.Nullable = false
+		}
 		canonized, err := CanonizedField(fld)
 		if err != nil {
 			return nil, err
