@@ -24,8 +24,8 @@ func SQLType(dataType arrow.DataType) string {
 		return "int" // int32
 	case *arrow.Uint32Type, *arrow.Int64Type: // no special uint32 type, upscale
 		return "bigint" // int64
-	case *arrow.Uint64Type: // we can only store this reliably as string for now
-		return "nvarchar(4000)"
+	case *arrow.Uint64Type: // we store this as int64, although it may produce overflow and negative numbers
+		return "bigint" // int64
 
 	case *arrow.Float32Type:
 		return "real"
@@ -119,8 +119,8 @@ func columnGoType(dataType arrow.DataType) reflect.Type {
 		return reflect.TypeOf(int32(0))
 	case *arrow.Uint32Type, *arrow.Int64Type: // no special uint32 type, upscale
 		return reflect.TypeOf(int64(0))
-	case *arrow.Uint64Type: // we can only store this reliably as string for now
-		return reflect.TypeOf("")
+	case *arrow.Uint64Type: // we store this as int64, although it may produce overflow and negative numbers
+		return reflect.TypeOf(int64(0))
 
 	case *arrow.Float32Type:
 		return reflect.TypeOf(float32(0))

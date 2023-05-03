@@ -41,7 +41,7 @@ func buildValue(builder array.Builder, elem any) error {
 	case *array.Uint32Builder:
 		builder.Append(uint32(elem.(int64))) // no special uint32 type, downscale
 	case *array.Uint64Builder:
-		return builder.AppendValueFromString(elem.(string)) // no special uint64 type, was stored as string
+		builder.Append(uint64(elem.(int64))) // we store this as int64, although it may produce overflow and negative numbers
 
 	case *array.Int8Builder:
 		builder.Append(int8(elem.(int16))) // no special int8 type, downscale
