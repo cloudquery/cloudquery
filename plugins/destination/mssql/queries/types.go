@@ -10,8 +10,8 @@ import (
 	"golang.org/x/exp/maps"
 )
 
-func SQLType(_type arrow.DataType) string {
-	switch _type.(type) {
+func SQLType(dataType arrow.DataType) string {
+	switch dataType.(type) {
 	case *arrow.BooleanType:
 		return "bit"
 
@@ -72,8 +72,8 @@ func SchemaType(tableName, columnName, sqlType string) (arrow.DataType, error) {
 }
 
 // columnGoType has to be in sync with SQLType
-func columnGoType(_type arrow.DataType) reflect.Type {
-	switch _type.(type) {
+func columnGoType(dataType arrow.DataType) reflect.Type {
+	switch dataType.(type) {
 	case *arrow.BooleanType:
 		return reflect.TypeOf(true)
 
