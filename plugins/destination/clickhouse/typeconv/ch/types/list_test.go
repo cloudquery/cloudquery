@@ -14,13 +14,7 @@ func Test_listType(t *testing.T) {
 		{dataType: arrow.ListOf(new(types.UUIDType)), expected: "Array(Nullable(UUID))"},
 		{dataType: arrow.ListOfNonNullable(new(types.UUIDType)), expected: "Array(UUID)"},
 		{
-			dataType: arrow.ListOfField(
-				arrow.Field{
-					Name:     "map",
-					Type:     arrow.MapOf(new(arrow.StringType), new(arrow.Decimal128Type)),
-					Nullable: true,
-				},
-			),
+			dataType: arrow.ListOf(arrow.MapOf(new(arrow.StringType), new(arrow.Decimal128Type))),
 			expected: "Array(Map(String, Nullable(Decimal(19,0))))",
 		},
 	} {
