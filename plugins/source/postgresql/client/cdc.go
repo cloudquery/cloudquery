@@ -20,7 +20,7 @@ func (c *Client) tablesWithPks() []string {
 	var tables []string
 	for _, table := range c.Tables {
 		if len(table.PrimaryKeys()) > 0 {
-			tables = append(tables, table.Name)
+			tables = append(tables, pgx.Identifier{table.Name}.Sanitize())
 		}
 	}
 	return tables

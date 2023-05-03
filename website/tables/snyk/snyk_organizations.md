@@ -6,6 +6,12 @@ https://snyk.docs.apiary.io/#reference/organizations/the-snyk-organization-for-a
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on snyk_organizations:
+  - [snyk_organization_members](snyk_organization_members)
+  - [snyk_organization_provisions](snyk_organization_provisions)
+
 ## Columns
 
 | Name          | Type          |

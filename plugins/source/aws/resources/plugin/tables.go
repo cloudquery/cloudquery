@@ -28,6 +28,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cognito"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/computeoptimizer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/config"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/costexplorer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dax"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/directconnect"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms"
@@ -175,9 +176,13 @@ func tables() []*schema.Table {
 		computeoptimizer.EnrollmentStatuses(),
 		computeoptimizer.LambdaFunctionsRecommendations(),
 		config.ConfigRules(),
+		config.ConfigurationAggregators(),
 		config.ConfigurationRecorders(),
 		config.ConformancePacks(),
 		config.DeliveryChannels(),
+		config.RetentionConfigurations(),
+		costexplorer.ThirtyDayCost(),
+		costexplorer.ThirtyDayCostForecast(),
 		dax.Clusters(),
 		directconnect.Connections(),
 		directconnect.Gateways(),

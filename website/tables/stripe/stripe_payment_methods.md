@@ -27,6 +27,7 @@ The primary key for this table is **id**.
 |boleto|JSON|
 |card|JSON|
 |card_present|JSON|
+|cashapp|JSON|
 |created|Timestamp|
 |customer|JSON|
 |customer_balance|JSON|

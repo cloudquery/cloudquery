@@ -35,7 +35,9 @@ func fetchOUs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, r
 	paginator := organizations.NewListRootsPaginator(svc, &input)
 	var roots []types.Root
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -43,7 +45,7 @@ func fetchOUs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, r
 	}
 
 	for _, root := range roots {
-		err := getOUs(ctx, svc, res, *root.Id)
+		err := getOUs(ctx, meta, svc, res, *root.Id)
 		if err != nil {
 			return err
 		}
@@ -51,11 +53,11 @@ func fetchOUs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, r
 	return nil
 }
 
-func getOUs(ctx context.Context, accountsApi services.OrganizationsClient, res chan<- any, parentID string) error {
+func getOUs(ctx context.Context, meta schema.ClientMeta, accountsApi services.OrganizationsClient, res chan<- any, parentID string) error {
 	q := []string{parentID}
 	var ou string
 	seenOUs := map[string]struct{}{}
-
+	cl := meta.(*client.Client)
 	for len(q) > 0 {
 		ou, q = q[0], q[1:]
 		if _, found := seenOUs[ou]; found {
@@ -68,7 +70,9 @@ func getOUs(ctx context.Context, accountsApi services.OrganizationsClient, res c
 			ParentId:  aws.String(ou),
 		})
 		for ouPaginator.HasMorePages() {
-			output, err := ouPaginator.NextPage(ctx)
+			output, err := ouPaginator.NextPage(ctx, func(options *organizations.Options) {
+				options.Region = cl.Region
+			})
 			if err != nil {
 				return err
 			}
@@ -88,6 +92,8 @@ func getOU(ctx context.Context, meta schema.ClientMeta, resource *schema.Resourc
 	svc := c.Services().Organizations
 	ou, err := svc.DescribeOrganizationalUnit(ctx, &organizations.DescribeOrganizationalUnitInput{
 		OrganizationalUnitId: child.Id,
+	}, func(options *organizations.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err

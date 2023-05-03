@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Treasury Transactions.
 
-https://stripe.com/docs/api/treasury_transactions
+https://stripe.com/docs/api/treasury/transactions
 
 The primary key for this table is **id**.
 It supports incremental syncs based on the **created** column.

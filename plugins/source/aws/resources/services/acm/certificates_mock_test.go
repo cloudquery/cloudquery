@@ -45,6 +45,7 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 	mock.EXPECT().ListTagsForCertificate(
 		gomock.Any(),
 		&acm.ListTagsForCertificateInput{CertificateArn: cert.CertificateArn},
+		gomock.Any(),
 	).Return(
 		&acm.ListTagsForCertificateOutput{
 			Tags: []types.Tag{

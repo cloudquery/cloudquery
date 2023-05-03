@@ -46,7 +46,9 @@ func fetchEc2ReservedInstances(ctx context.Context, meta schema.ClientMeta, pare
 	svc := c.Services().Ec2
 
 	// this API does not seem to support any form of pagination
-	output, err := svc.DescribeReservedInstances(ctx, &config)
+	output, err := svc.DescribeReservedInstances(ctx, &config, func(options *ec2.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

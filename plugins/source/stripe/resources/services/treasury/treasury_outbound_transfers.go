@@ -12,7 +12,7 @@ import (
 func TreasuryOutboundTransfers() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_treasury_outbound_transfers",
-		Description: `https://stripe.com/docs/api/treasury_outbound_transfers`,
+		Description: `https://stripe.com/docs/api/treasury/outbound_transfers`,
 		Transform:   client.TransformWithStruct(&stripe.TreasuryOutboundTransfer{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchTreasuryOutboundTransfers,
 

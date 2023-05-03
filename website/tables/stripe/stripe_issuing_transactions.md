@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Issuing Transactions.
 
-https://stripe.com/docs/api/issuing_transactions
+https://stripe.com/docs/api/issuing/transactions
 
 The primary key for this table is **id**.
 It supports incremental syncs based on the **created** column.

@@ -41,7 +41,9 @@ func fetchEc2InstanceStatuses(ctx context.Context, meta schema.ClientMeta, paren
 	svc := c.Services().Ec2
 	paginator := ec2.NewDescribeInstanceStatusPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

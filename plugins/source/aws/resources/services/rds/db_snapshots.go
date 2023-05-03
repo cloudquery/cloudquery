@@ -49,7 +49,9 @@ func fetchRdsDbSnapshots(ctx context.Context, meta schema.ClientMeta, parent *sc
 	var input rds.DescribeDBSnapshotsInput
 	paginator := rds.NewDescribeDBSnapshotsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return nil
 		}

@@ -33,6 +33,7 @@ func ConfigRules() *schema.Table {
 
 		Relations: []*schema.Table{
 			configRuleCompliances(),
+			remediationConfigurations(),
 		},
 	}
 }
@@ -44,7 +45,9 @@ func fetchConfigConfigRules(ctx context.Context, meta schema.ClientMeta, parent 
 	input := &configservice.DescribeConfigRulesInput{}
 	p := configservice.NewDescribeConfigRulesPaginator(svc, input)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *configservice.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

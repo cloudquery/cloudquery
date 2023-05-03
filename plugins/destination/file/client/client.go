@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/cloudquery/filetypes/v2"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
@@ -48,10 +47,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to create filetype client: %w", err)
-	}
-
-	if err := os.MkdirAll(c.pluginSpec.Directory, 0755); err != nil {
-		return nil, fmt.Errorf("failed to create directory: %w", err)
 	}
 
 	return c, nil

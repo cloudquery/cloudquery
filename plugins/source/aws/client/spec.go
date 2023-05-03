@@ -42,6 +42,7 @@ type Spec struct {
 	PartitionID               string    `json:"custom_endpoint_partition_id,omitempty"`
 	SigningRegion             string    `json:"custom_endpoint_signing_region,omitempty"`
 	InitializationConcurrency int       `json:"initialization_concurrency"`
+	UsePaidAPIs               bool      `json:"use_paid_apis"`
 }
 
 func (s *Spec) Validate() error {

@@ -37,7 +37,9 @@ func fetchNeptuneClusterParameterGroupParameters(ctx context.Context, meta schem
 	input := neptune.DescribeDBClusterParametersInput{DBClusterParameterGroupName: g.DBClusterParameterGroupName}
 	paginator := neptune.NewDescribeDBClusterParametersPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *neptune.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -50,7 +52,9 @@ func resolveNeptuneClusterParameterGroupTags(ctx context.Context, meta schema.Cl
 	g := resource.Item.(types.DBClusterParameterGroup)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Neptune
-	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: g.DBClusterParameterGroupArn})
+	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: g.DBClusterParameterGroupArn}, func(options *neptune.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

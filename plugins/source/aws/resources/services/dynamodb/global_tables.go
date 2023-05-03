@@ -51,7 +51,9 @@ func fetchGlobalTables(ctx context.Context, meta schema.ClientMeta, parent *sche
 	}
 	// No paginator available
 	for {
-		output, err := svc.ListGlobalTables(ctx, &config)
+		output, err := svc.ListGlobalTables(ctx, &config, func(options *dynamodb.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -67,11 +69,14 @@ func fetchGlobalTables(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 
 func getGlobalTable(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Dynamodb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Dynamodb
 
 	table := resource.Item.(types.GlobalTable)
 
-	response, err := svc.DescribeGlobalTable(ctx, &dynamodb.DescribeGlobalTableInput{GlobalTableName: table.GlobalTableName})
+	response, err := svc.DescribeGlobalTable(ctx, &dynamodb.DescribeGlobalTableInput{GlobalTableName: table.GlobalTableName}, func(options *dynamodb.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -91,7 +96,9 @@ func resolveDynamodbGlobalTableTags(ctx context.Context, meta schema.ClientMeta,
 	}
 	// // No paginator available
 	for {
-		response, err := svc.ListTagsOfResource(ctx, input)
+		response, err := svc.ListTagsOfResource(ctx, input, func(options *dynamodb.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil

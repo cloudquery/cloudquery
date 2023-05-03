@@ -3,8 +3,8 @@ package {{.Service}}
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-  "github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/stripe/stripe-go/v74"
 )
@@ -32,10 +32,13 @@ func {{.TableName | ToPascal}}() *schema.Table {
 				 },
 			},
 {{end}}
-{{if .Children}}
+{{if or .Children .ExtraChildren}}
 	Relations: []*schema.Table{
 	{{- range .Children}}
 		{{.TableName | ToPascal}}(),
+	{{- end}}
+	{{- range .ExtraChildren}}
+		{{.}},
 	{{- end}}
 	},
 {{end}}

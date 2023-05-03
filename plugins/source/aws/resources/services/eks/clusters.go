@@ -43,7 +43,9 @@ func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	svc := c.Services().Eks
 	paginator := eks.NewListClustersPaginator(svc, &eks.ListClustersInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *eks.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

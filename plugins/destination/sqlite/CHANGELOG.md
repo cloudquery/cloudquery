@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.0.4...plugins-destination-sqlite-v2.0.5) (2023-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v12 digest to 0ea1a10 ([#10461](https://github.com/cloudquery/cloudquery/issues/10461)) ([022709f](https://github.com/cloudquery/cloudquery/commit/022709f710cc6d95aee60260d6f58991698bbf42))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.0 ([#10390](https://github.com/cloudquery/cloudquery/issues/10390)) ([f706688](https://github.com/cloudquery/cloudquery/commit/f706688b2f5b8393d09d57020d31fb1d280f0dbd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.1 ([#10448](https://github.com/cloudquery/cloudquery/issues/10448)) ([cc85b93](https://github.com/cloudquery/cloudquery/commit/cc85b939fe945939caf72f8c08095e1e744b9ee8))
+
+## [2.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.0.3...plugins-destination-sqlite-v2.0.4) (2023-04-25)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.6 ([#10208](https://github.com/cloudquery/cloudquery/issues/10208)) ([91c80a7](https://github.com/cloudquery/cloudquery/commit/91c80a795b46480447cfaef67c4db721a31e3206))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.8 ([#10213](https://github.com/cloudquery/cloudquery/issues/10213)) ([f358666](https://github.com/cloudquery/cloudquery/commit/f35866611cd206c37e6e9f9ad3329561e4cb32af))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.4.0 ([#10278](https://github.com/cloudquery/cloudquery/issues/10278)) ([a0a713e](https://github.com/cloudquery/cloudquery/commit/a0a713e8490b970b9d8bfaa1b50e01f43ff51c36))
+* Update to SDK v2.3.7, remove release calls ([#10211](https://github.com/cloudquery/cloudquery/issues/10211)) ([dc9e0d5](https://github.com/cloudquery/cloudquery/commit/dc9e0d53f6c663cf4fd54919629fee2bc83e34d8))
+
 ## [2.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.0.2...plugins-destination-sqlite-v2.0.3) (2023-04-19)
 
 

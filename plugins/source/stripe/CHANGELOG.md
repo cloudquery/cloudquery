@@ -1,5 +1,57 @@
 # Changelog
 
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-stripe-v1.2.0...plugins-source-stripe-v1.3.0) (2023-05-01)
+
+
+### This Release has the Following Changes to Tables
+- Table `stripe_checkout_session_line_items` was added
+- Table `stripe_checkout_sessions`: column added with name `currency_conversion` and type `JSON`
+- Table `stripe_checkout_sessions`: column added with name `custom_fields` and type `JSON`
+- Table `stripe_credit_notes`: column added with name `amount_shipping` and type `Int`
+- Table `stripe_credit_notes`: column added with name `shipping_cost` and type `JSON`
+- Table `stripe_invoices`: column added with name `amount_shipping` and type `Int`
+- Table `stripe_invoices`: column added with name `shipping_cost` and type `JSON`
+- Table `stripe_invoices`: column added with name `shipping_details` and type `JSON`
+- Table `stripe_payment_link_line_items` was added
+- Table `stripe_payment_links`: column added with name `custom_fields` and type `JSON`
+- Table `stripe_payment_links`: column added with name `invoice_creation` and type `JSON`
+- Table `stripe_payment_methods`: column added with name `cashapp` and type `JSON`
+- Table `stripe_payouts`: column added with name `reconciliation_status` and type `String`
+- Table `stripe_subscriptions`: column added with name `cancellation_details` and type `JSON`
+- Table `stripe_subscriptions`: column added with name `trial_settings` and type `JSON`
+
+### Features
+
+* **stripe:** Upgrade to v74.16.0, add lineitem tables ([#10454](https://github.com/cloudquery/cloudquery/issues/10454)) ([0cf7cd2](https://github.com/cloudquery/cloudquery/commit/0cf7cd2ef1ca6cedfd583e90f5a52b667720baa2)), closes [#10392](https://github.com/cloudquery/cloudquery/issues/10392)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v12 digest to 0ea1a10 ([#10461](https://github.com/cloudquery/cloudquery/issues/10461)) ([022709f](https://github.com/cloudquery/cloudquery/commit/022709f710cc6d95aee60260d6f58991698bbf42))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.0 ([#10390](https://github.com/cloudquery/cloudquery/issues/10390)) ([f706688](https://github.com/cloudquery/cloudquery/commit/f706688b2f5b8393d09d57020d31fb1d280f0dbd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.1 ([#10448](https://github.com/cloudquery/cloudquery/issues/10448)) ([cc85b93](https://github.com/cloudquery/cloudquery/commit/cc85b939fe945939caf72f8c08095e1e744b9ee8))
+
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-stripe-v1.1.5...plugins-source-stripe-v1.2.0) (2023-04-25)
+
+
+### Features
+
+* **stripe:** Upgrade to `github.com/cloudquery/plugin-sdk/v2` ([#9983](https://github.com/cloudquery/cloudquery/issues/9983)) ([686fc38](https://github.com/cloudquery/cloudquery/commit/686fc389490255295869f63c9732d31b15153531)), closes [#9980](https://github.com/cloudquery/cloudquery/issues/9980)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.2.0 ([#10135](https://github.com/cloudquery/cloudquery/issues/10135)) ([cf33b89](https://github.com/cloudquery/cloudquery/commit/cf33b892ead0bb231e3956aa70967de552a21624))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.2.2 ([#10143](https://github.com/cloudquery/cloudquery/issues/10143)) ([8f887e0](https://github.com/cloudquery/cloudquery/commit/8f887e05de2096e8efd1e55863a8cf3c7620ccc3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.0 ([#10163](https://github.com/cloudquery/cloudquery/issues/10163)) ([9a7f214](https://github.com/cloudquery/cloudquery/commit/9a7f21460772200e7a588409ebc7eb19f97b195b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.1 ([#10175](https://github.com/cloudquery/cloudquery/issues/10175)) ([5b53423](https://github.com/cloudquery/cloudquery/commit/5b53423e72672f6c2bfb8ae00cfce1641410443e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.3 ([#10187](https://github.com/cloudquery/cloudquery/issues/10187)) ([b185248](https://github.com/cloudquery/cloudquery/commit/b1852480b6ec8b721d94c72d8435051352f26932))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.4 ([#10196](https://github.com/cloudquery/cloudquery/issues/10196)) ([c6d2f59](https://github.com/cloudquery/cloudquery/commit/c6d2f59c7d77177a351cb82ecdc381dec6aad30c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.5 ([#10200](https://github.com/cloudquery/cloudquery/issues/10200)) ([5a33693](https://github.com/cloudquery/cloudquery/commit/5a33693fe29f7068b03d80be1859d6e479c42c0d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.6 ([#10208](https://github.com/cloudquery/cloudquery/issues/10208)) ([91c80a7](https://github.com/cloudquery/cloudquery/commit/91c80a795b46480447cfaef67c4db721a31e3206))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.8 ([#10213](https://github.com/cloudquery/cloudquery/issues/10213)) ([f358666](https://github.com/cloudquery/cloudquery/commit/f35866611cd206c37e6e9f9ad3329561e4cb32af))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.4.0 ([#10278](https://github.com/cloudquery/cloudquery/issues/10278)) ([a0a713e](https://github.com/cloudquery/cloudquery/commit/a0a713e8490b970b9d8bfaa1b50e01f43ff51c36))
+
 ## [1.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-stripe-v1.1.4...plugins-source-stripe-v1.1.5) (2023-04-13)
 
 
