@@ -14,7 +14,7 @@ func Findings() *schema.Table {
 	tableName := "aws_securityhub_findings"
 	return &schema.Table{
 		Name: tableName,
-		Description: `https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html.
+		Description: `https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html
 ` + "The `request_account_id` and `request_region` columns are added to show the account and region of where the request was made from." + `
 This is useful when multi region and account aggregation is enabled.`,
 		Resolver: fetchFindings,
