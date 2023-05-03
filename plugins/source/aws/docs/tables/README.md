@@ -525,6 +525,7 @@
 - [aws_scheduler_schedules](../../../../../website/tables/aws/aws_scheduler_schedules.md)
 - [aws_secretsmanager_secrets](../../../../../website/tables/aws/aws_secretsmanager_secrets.md)
   - [aws_secretsmanager_secret_versions](../../../../../website/tables/aws/aws_secretsmanager_secret_versions.md)
+- [aws_securityhub_enabled_standards](../../../../../website/tables/aws/aws_securityhub_enabled_standards.md)
 - [aws_securityhub_findings](../../../../../website/tables/aws/aws_securityhub_findings.md)
 - [aws_servicecatalog_portfolios](../../../../../website/tables/aws/aws_servicecatalog_portfolios.md)
 - [aws_servicecatalog_products](../../../../../website/tables/aws/aws_servicecatalog_products.md)

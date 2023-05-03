@@ -443,6 +443,7 @@ func tables() []*schema.Table {
 		scheduler.ScheduleGroups(),
 		scheduler.Schedules(),
 		secretsmanager.Secrets(),
+		securityhub.EnabledStandards(),
 		securityhub.Findings(),
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
