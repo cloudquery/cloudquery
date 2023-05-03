@@ -3,7 +3,6 @@ package networkfirewall
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -56,8 +55,9 @@ func fetchRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema
 	var input networkfirewall.ListRuleGroupsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Networkfirewall
-	for {
-		response, err := svc.ListRuleGroups(ctx, &input, func(options *networkfirewall.Options) {
+	p := networkfirewall.NewListRuleGroupsPaginator(svc, &input)
+	for p.HasMorePages() {
+		response, err := p.NextPage(ctx, func(options *networkfirewall.Options) {
 			options.Region = c.Region
 		})
 		if err != nil {
@@ -65,11 +65,6 @@ func fetchRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema
 		}
 
 		res <- response.RuleGroups
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
 	}
 	return nil
 }

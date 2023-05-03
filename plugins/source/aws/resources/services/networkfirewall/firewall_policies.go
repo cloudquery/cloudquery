@@ -3,7 +3,6 @@ package networkfirewall
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -48,20 +47,15 @@ func fetchFirewallPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 	var input networkfirewall.ListFirewallPoliciesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Networkfirewall
-	for {
-		response, err := svc.ListFirewallPolicies(ctx, &input, func(options *networkfirewall.Options) {
+	p := networkfirewall.NewListFirewallPoliciesPaginator(svc, &input)
+	for p.HasMorePages() {
+		response, err := p.NextPage(ctx, func(options *networkfirewall.Options) {
 			options.Region = c.Region
 		})
 		if err != nil {
 			return err
 		}
-
 		res <- response.FirewallPolicies
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
 	}
 	return nil
 }
