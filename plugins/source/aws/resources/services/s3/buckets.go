@@ -74,9 +74,11 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	bucket := r.Item.(types.Bucket)
 	resource := &models.WrappedBucket{Name: bucket.Name, CreationDate: bucket.CreationDate}
 	cl := meta.(*client.Client)
-	mgr := cl.Services().S3manager
+	svc := cl.Services().S3
 
-	output, err := mgr.GetBucketRegion(ctx, *resource.Name, func(o *s3.Options) {
+	output, err := svc.GetBucketLocation(ctx, &s3.GetBucketLocationInput{
+		Bucket: bucket.Name,
+	}, func(o *s3.Options) {
 		o.Region = listBucketRegion(cl)
 	})
 	if err != nil {
@@ -87,8 +89,8 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	}
 	// AWS does not specify a region if bucket is in us-east-1, so as long as no error we can assume an empty string is us-east-1
 	resource.Region = "us-east-1"
-	if output != "" {
-		resource.Region = output
+	if output != nil && output.LocationConstraint != "" {
+		resource.Region = string(output.LocationConstraint)
 	}
 
 	resolvers := []func(context.Context, schema.ClientMeta, *models.WrappedBucket) error{
