@@ -68,7 +68,7 @@ func FromArray(arr arrow.Array) (any, error) {
 
 	case *array.Map:
 		// it also matches array.ListLike, so we check it before the array.ListLike case
-		return mapValue(arr), nil
+		return mapValue(arr)
 
 	case array.ListLike:
 		return listValue(arr)

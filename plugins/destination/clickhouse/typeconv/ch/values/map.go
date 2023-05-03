@@ -2,6 +2,7 @@ package values
 
 import (
 	"encoding/json"
+	"fmt"
 	"reflect"
 	"time"
 
@@ -27,6 +28,9 @@ func mapValue(arr *array.Map) (any, error) {
 		return nil, err
 	}
 	valueType := col.ScanType()
+	if valueType.Kind() != reflect.Map {
+		return nil, fmt.Errorf("unexpected reflect type for map: %q", valueType.String())
+	}
 
 	keysArr, itemsArr := arr.Keys(), arr.Items()
 	keys, err := FromArray(keysArr) // []*[]*...
@@ -41,24 +45,16 @@ func mapValue(arr *array.Map) (any, error) {
 
 	res := reflect.MakeSlice(reflect.SliceOf(reflect.PointerTo(valueType)), arr.Len(), arr.Len()) // we do []*(type) for nullable assignment
 	for i := 0; i < arr.Len(); i++ {
-		val := reflect.New(valueType)
+		var val reflect.Value
 		// we need to fill in for the in-depth recursive parsing by ClickHouse SDK
 		if arr.IsNull(i) {
-			res.Index(i).Set(val)
-			continue
+			val = reflect.MakeMap(valueType) // zero-sized map
+		} else {
+			val = makeMap(valueType, keysValue.Index(i).Elem(), itemsValue.Index(i).Elem())
 		}
-
-		rowKeys, rowItems := keysValue.Index(i).Elem(), itemsValue.Index(i).Elem() // ->[]*
-		for idx := 0; idx < rowKeys.Len(); idx++ {
-			// this is matched exactly by the items
-			reflect.Ma
-		}
-		from, to := arr.ValueOffsets(i)
-		elems[i], err = FromArray(array.NewSlice(arr.ListValues(), from, to))
-		if err != nil {
-			return nil, err
-		}
+		res.Index(i).Set(val)
 	}
+	return res.Interface(), nil
 }
 
 func marshalValuesToStrings(arr *array.Map) []*string {
@@ -72,4 +68,13 @@ func marshalValuesToStrings(arr *array.Map) []*string {
 		res[i] = &str
 	}
 	return res
+}
+
+func makeMap(mapType reflect.Type, keys, items reflect.Value) reflect.Value {
+	val := reflect.MakeMapWithSize(mapType, keys.Len())
+	for i := 0; i < keys.Len(); i++ {
+		// Arrow maps don't support nullable keys, so no need to check
+		val.SetMapIndex(keys.Index(i).Elem(), items.Index(i))
+	}
+	return val
 }

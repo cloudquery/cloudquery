@@ -1,4 +1,4 @@
-// Package value allows conversion from Apache Arrow array to the type accepted by ClickHouse SDK
+// Package values allows conversion from Apache Arrow array to the type accepted by ClickHouse SDK
 // The conversion can become tricky for some nested types, specifically, maps.
 // Nullable(item) -> *scanType(item)
 // Decimal(precision,scale) -> decimal.Decimal
@@ -10,6 +10,4 @@
 //
 // example:
 // Map(String, Map(UUID, Map(String, Tuple(`uint8` UInt8?, `uuid` UUID)?)?)?)? -> *map[string]*map[uuid.UUID]*map[string]*map[string]any
-//
-// Currently, Map will be mapped to string values
 package values
