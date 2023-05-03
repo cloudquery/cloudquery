@@ -71,9 +71,7 @@ func (c *Client) normalizeSchema(sc *arrow.Schema) *arrow.Schema {
 	for i, field := range sc.Fields() {
 		// Since multiple schema types can map to the same MSSQL type we need to normalize them to avoid false positives when detecting schema changes
 		// This should never return an error
-		typ, _ := queries.SchemaType(tableName, field.Name, queries.SQLType(field.Type))
-
-		field.Type = typ
+		field.Type = queries.SchemaType(queries.SQLType(field.Type))
 		field.Metadata = c.normalizeFieldMetadata(field.Metadata)
 		if schema.IsPk(field) {
 			field.Nullable = false

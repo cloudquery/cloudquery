@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"database/sql"
-	"fmt"
 
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
@@ -28,29 +27,22 @@ func (c *Client) getTableFields(ctx context.Context, tableName string, pks []str
 	fields := make([]arrow.Field, 0)
 	if err := processRows(rows, func(row *sql.Rows) error {
 		var name string
-		var typ string
+		var sqlType string
 		var nullable string
 		var charMaxLength *string
 
-		if err := row.Scan(&name, &typ, &nullable, &charMaxLength); err != nil {
+		if err := row.Scan(&name, &sqlType, &nullable, &charMaxLength); err != nil {
 			return err
 		}
 
-		if (typ == "nvarchar" || typ == "varbinary") && charMaxLength != nil {
+		if (sqlType == "nvarchar" || sqlType == "varbinary") && charMaxLength != nil {
 			if *charMaxLength == "-1" {
 				*charMaxLength = "max"
 			}
-			typ += "(" + *charMaxLength + ")"
+			sqlType += "(" + *charMaxLength + ")"
 		}
 
-		if typ == "datetimeoffset" {
-			return fmt.Errorf(`column %q from table %q is of type "datetimeoffset" which was changed to "datetime2". Please drop the database to upgrade to this version`, name, tableName)
-		}
-
-		dataType, err := queries.SchemaType(tableName, name, typ)
-		if err != nil {
-			return err
-		}
+		dataType := queries.SchemaType(sqlType)
 
 		fields = append(fields, arrow.Field{
 			Name:     name,

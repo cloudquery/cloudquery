@@ -3,15 +3,16 @@ package queries
 import (
 	"fmt"
 	"reflect"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/types"
-	"golang.org/x/exp/maps"
 )
 
 func SQLType(dataType arrow.DataType) string {
-	switch dataType.(type) {
+	switch dataType := dataType.(type) {
 	case *arrow.BooleanType:
 		return "bit"
 
@@ -35,7 +36,10 @@ func SQLType(dataType arrow.DataType) string {
 	case *arrow.StringType, *types.InetType, *types.MacType:
 		return "nvarchar(4000)" // feasible to see these as PK, so need to limit the value
 
-	case arrow.BinaryDataType, *arrow.FixedSizeBinaryType:
+	case *arrow.FixedSizeBinaryType:
+		return "varbinary(" + strconv.Itoa(dataType.ByteWidth) + ")"
+
+	case arrow.BinaryDataType:
 		return "varbinary(max)"
 
 	case *types.UUIDType:
@@ -49,26 +53,54 @@ func SQLType(dataType arrow.DataType) string {
 	}
 }
 
-func SchemaType(tableName, columnName, sqlType string) (arrow.DataType, error) {
-	sqlToSchema := map[string]arrow.DataType{
-		"bit":              new(arrow.BooleanType),
-		"tinyint":          new(arrow.Uint8Type),
-		"smallint":         new(arrow.Int16Type),
-		"int":              new(arrow.Int32Type),
-		"bigint":           new(arrow.Int64Type),
-		"real":             new(arrow.Float32Type),
-		"float":            new(arrow.Float64Type),
+func SchemaType(sqlType string) arrow.DataType {
+	// this is for the types without precision
+	simpleSQLToSchema := map[string]arrow.DataType{
+		"bit":              arrow.FixedWidthTypes.Boolean,
+		"tinyint":          arrow.PrimitiveTypes.Uint8,
+		"smallint":         arrow.PrimitiveTypes.Int16,
+		"int":              arrow.PrimitiveTypes.Int32,
+		"bigint":           arrow.PrimitiveTypes.Int64,
+		"real":             arrow.PrimitiveTypes.Float32,
+		"float":            arrow.PrimitiveTypes.Float64,
 		"uniqueidentifier": types.NewUUIDType(),
-		"varbinary(max)":   new(arrow.LargeBinaryType),
-		"datetime2":        &arrow.TimestampType{Unit: arrow.Nanosecond}, // the precision is 100ns in MSSQL
-		"nvarchar(4000)":   new(arrow.StringType),
-		"nvarchar(max)":    new(arrow.LargeStringType),
+		"datetime2":        arrow.FixedWidthTypes.Timestamp_ns, // the precision is 100ns in MSSQL
+		"datetimeoffset":   arrow.FixedWidthTypes.Timestamp_ns, // the precision is 100ns in MSSQL
 	}
 
-	if v, ok := sqlToSchema[sqlType]; ok {
-		return v, nil
+	if dt, ok := simpleSQLToSchema[sqlType]; ok {
+		return dt
 	}
-	return nil, fmt.Errorf("got unknown MSSQL type %q of column %q for table %q while trying to convert it to Apache Arrow type. Supported MSSQL types are %q", sqlType, columnName, tableName, maps.Keys(sqlToSchema))
+
+	// 2 types left to check: nvarchar & varbinary
+	colType, precision := sqlType, ""
+	if parts := strings.SplitN(sqlType, "(", 2); len(parts) == 2 {
+		colType, precision = parts[0], strings.TrimSuffix(parts[1], ")")
+	}
+	switch colType {
+	case "nvarchar":
+		if precision == "max" {
+			return new(arrow.LargeStringType)
+		}
+
+		// we just return the arrow.String here
+		return new(arrow.StringType)
+	case "varbinary":
+		if precision == "max" {
+			return new(arrow.LargeBinaryType)
+		}
+
+		width, err := strconv.ParseInt(precision, 10, 64)
+		if err != nil {
+			// should never happen
+			panic(fmt.Errorf("failed to parse %q into int64: %w", precision, err))
+		}
+
+		return &arrow.FixedSizeBinaryType{ByteWidth: int(width)}
+	}
+
+	// default to LargeString (nvarchar(max))
+	return new(arrow.LargeStringType)
 }
 
 // columnGoType has to be in sync with SQLType
