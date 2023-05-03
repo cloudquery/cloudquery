@@ -40,6 +40,7 @@ func loadOrStore(m *sync.Map, key string, f func() (any, error)) (any, error) {
 		d.once.Do(func() {
 			d.data, err = f()
 			if err != nil {
+				d.data = nil
 				d.once = &sync.Once{}
 			}
 		})
