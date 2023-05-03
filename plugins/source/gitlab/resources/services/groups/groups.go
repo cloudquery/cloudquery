@@ -3,6 +3,7 @@ package groups
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"github.com/xanzy/go-gitlab"
 )
 
@@ -10,34 +11,8 @@ func Groups() *schema.Table {
 	return &schema.Table{
 		Name:      "gitlab_groups",
 		Resolver:  fetchGroups,
-		Transform: client.TransformWithStruct(&gitlab.Group{}),
-		Columns: []schema.Column{
-			client.BaseURLColumn,
-			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "marked_for_deletion_on",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("MarkedForDeletionOn"),
-			},
-		},
-
-		Relations: []*schema.Table{
-			GroupMembers(),
-		},
+		Transform: client.TransformWithStruct(&gitlab.Group{}, transformers.WithPrimaryKeys("ID", "Name")),
+		Columns:   schema.ColumnList{client.BaseURLColumn},
+		Relations: schema.Tables{GroupMembers()},
 	}
 }

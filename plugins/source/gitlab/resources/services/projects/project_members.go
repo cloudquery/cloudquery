@@ -14,16 +14,12 @@ func ProjectMembers() *schema.Table {
 		Name:      "gitlab_project_members",
 		Resolver:  fetchProjectMembers,
 		Transform: client.TransformWithStruct(&gitlab.ProjectMember{}, transformers.WithPrimaryKeys("ID")),
-		Columns: []schema.Column{
-			client.BaseURLColumn,
+		Columns: schema.ColumnList{client.BaseURLColumn,
 			{
-				Name:     "project_id",
-				Type:     schema.TypeInt,
-				Resolver: resolveProjectID,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-					NotNull:    true,
-				},
+				Name:            "project_id",
+				Type:            schema.TypeInt,
+				Resolver:        resolveProjectID,
+				CreationOptions: schema.ColumnCreationOptions{NotNull: true, PrimaryKey: true},
 			},
 		},
 	}
