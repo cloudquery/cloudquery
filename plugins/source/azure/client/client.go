@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
@@ -50,6 +51,8 @@ type Client struct {
 	BillingProfile  *armbilling.Profile
 	BillingPeriods  map[string][]*armbilling.Period
 	BillingPeriod   *armbilling.Period
+
+	storageAccountKeys *sync.Map
 }
 
 func (c *Client) discoverSubscriptions(ctx context.Context) error {
@@ -244,9 +247,10 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 
 	uniqueSubscriptions := funk.Uniq(spec.Subscriptions).([]string)
 	c := &Client{
-		logger:        logger,
-		subscriptions: uniqueSubscriptions,
-		pluginSpec:    &spec,
+		logger:             logger,
+		subscriptions:      uniqueSubscriptions,
+		pluginSpec:         &spec,
+		storageAccountKeys: &sync.Map{},
 	}
 
 	if spec.CloudName != "" {
@@ -362,4 +366,32 @@ func (c *Client) withBillingPeriod(billingPeriod *armbilling.Period) *Client {
 	newC.logger = c.logger.With().Str("billing_period", *billingPeriod.ID).Logger()
 	newC.BillingPeriod = billingPeriod
 	return &newC
+}
+
+func (c *Client) GetStorageAccountKey(ctx context.Context, acc *armstorage.Account) (string, error) {
+	if val, ok := c.storageAccountKeys.Load(*acc.Name); ok {
+		return val.(string), nil
+	}
+
+	svc, err := armstorage.NewAccountsClient(c.SubscriptionId, c.Creds, c.Options)
+	if err != nil {
+		return "", err
+	}
+
+	group, err := ParseResourceGroup(*acc.ID)
+	if err != nil {
+		return "", err
+	}
+
+	keysResponse, err := svc.ListKeys(ctx, group, *acc.Name, nil)
+	if err != nil {
+		return "", err
+	}
+	for i := range keysResponse.Keys {
+		c.storageAccountKeys.Store(*acc.Name, *keysResponse.Keys[i].Value)
+
+		return *keysResponse.Keys[i].Value, nil
+	}
+
+	return "", nil
 }
