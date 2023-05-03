@@ -43,8 +43,8 @@ func loadOrStore(m *sync.Map, key string, f func() (any, error)) (any, error) {
 				d.data = nil
 				d.once = &sync.Once{}
 			}
+			m.Store(key, d)
 		})
-		m.Store(key, d)
 	}
 	return d.data, err
 }
