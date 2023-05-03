@@ -73,8 +73,8 @@ func buildValue(builder array.Builder, value any) error {
 		return buildStruct(builder, value)
 
 	case *array.MapBuilder:
-		// just before other list-like builders, as this one is special
-		return buildFromString(builder, value)
+		// just before array.ListLikeBuilder as it also matches
+		return buildMap(builder, value)
 
 	case array.ListLikeBuilder:
 		return buildList(builder, value)

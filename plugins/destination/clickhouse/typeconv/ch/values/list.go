@@ -5,23 +5,22 @@ import (
 	"time"
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/column"
-	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
 )
 
 func listValue(arr array.ListLike) (any, error) {
-	fieldType, err := types.FieldType(arrow.Field{Type: arr.DataType()})
+	colType, err := types.ColumnType(arr.DataType())
 	if err != nil {
 		return nil, err
 	}
 	// Need to create slice of the proper type.
 	// We could infer in from elements, but sometimes array is empty
-	colType, err := column.Type(fieldType).Column("tmp", time.UTC)
+	col, err := column.Type(colType).Column("tmp", time.UTC)
 	if err != nil {
 		return nil, err
 	}
-	valueType := colType.ScanType()
+	valueType := col.ScanType()
 
 	elems := make([]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {

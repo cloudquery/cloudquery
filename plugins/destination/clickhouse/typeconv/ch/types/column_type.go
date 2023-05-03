@@ -6,7 +6,7 @@ import (
 	"github.com/apache/arrow/go/v12/arrow"
 )
 
-func columnType(dataType arrow.DataType) (string, error) {
+func ColumnType(dataType arrow.DataType) (string, error) {
 	switch dataType := dataType.(type) {
 	// https://clickhouse.com/docs/en/sql-reference/data-types/boolean
 	case *arrow.BooleanType:
@@ -58,9 +58,9 @@ func columnType(dataType arrow.DataType) (string, error) {
 	case arrow.DecimalType:
 		return decimalType(dataType)
 
+	// https://clickhouse.com/docs/en/sql-reference/data-types/map
 	case *arrow.MapType:
-		// TODO: support https://clickhouse.com/docs/en/sql-reference/data-types/map
-		return "String", nil
+		return mapType(dataType)
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/array
 	case listDataType:
