@@ -14,7 +14,7 @@ func ConfigRules() *schema.Table {
 	tableName := "aws_config_config_rules"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConfigRules.html`,
+		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_ConfigRule.html`,
 		Resolver:    fetchConfigConfigRules,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		Transform:   transformers.TransformWithStruct(&types.ConfigRule{}),

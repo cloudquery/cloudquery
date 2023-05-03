@@ -14,7 +14,7 @@ func configRuleComplianceDetails() *schema.Table {
 	tableName := "aws_config_config_rule_compliance_details"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_GetComplianceDetailsByConfigRule.html`,
+		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_EvaluationResult.html`,
 		Resolver:    fetchConfigConfigRuleComplianceDetails,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		// no primary key because all the relevant candidate fields can either be null or are not
@@ -29,14 +29,6 @@ func configRuleComplianceDetails() *schema.Table {
 				Name:     "config_rule_name",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("config_rule_name"),
-			},
-			{
-				Name:     "_evaluation_hash",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveObjectHash,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 		},
 	}

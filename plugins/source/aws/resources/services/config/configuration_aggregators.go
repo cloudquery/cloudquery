@@ -14,7 +14,7 @@ func ConfigurationAggregators() *schema.Table {
 	tableName := "aws_config_configuration_aggregators"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConfigurationAggregators.html`,
+		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_ConfigurationAggregator.html`,
 		Resolver:    fetchConfigurationAggregators,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		Transform:   transformers.TransformWithStruct(&types.ConfigurationAggregator{}),

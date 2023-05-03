@@ -2,7 +2,7 @@
 
 This table shows data for Config Remediation Configurations.
 
-https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeRemediationConfigurations.html
+https://docs.aws.amazon.com/config/latest/APIReference/API_RemediationConfiguration.html
 
 The primary key for this table is **arn**.
 

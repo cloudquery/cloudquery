@@ -14,7 +14,7 @@ func RetentionConfigurations() *schema.Table {
 	tableName := "aws_config_retention_configurations"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeRetentionConfigurations.html`,
+		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_RetentionConfiguration.html`,
 		Resolver:    fetchRetentionConfigurations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		Transform: transformers.TransformWithStruct(&types.RetentionConfiguration{},

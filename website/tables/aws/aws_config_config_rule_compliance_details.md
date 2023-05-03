@@ -2,9 +2,9 @@
 
 This table shows data for Config Config Rule Compliance Details.
 
-https://docs.aws.amazon.com/config/latest/APIReference/API_GetComplianceDetailsByConfigRule.html
+https://docs.aws.amazon.com/config/latest/APIReference/API_EvaluationResult.html
 
-The composite primary key for this table is (**account_id**, **region**, **_evaluation_hash**).
+The composite primary key for this table is (**account_id**, **region**).
 
 ## Relations
 
@@ -21,7 +21,6 @@ This table depends on [aws_config_config_rules](aws_config_config_rules).
 |account_id (PK)|String|
 |region (PK)|String|
 |config_rule_name|String|
-|_evaluation_hash (PK)|String|
 |annotation|String|
 |compliance_type|String|
 |config_rule_invoked_time|Timestamp|

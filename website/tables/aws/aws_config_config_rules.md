@@ -2,7 +2,7 @@
 
 This table shows data for Config Config Rules.
 
-https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConfigRules.html
+https://docs.aws.amazon.com/config/latest/APIReference/API_ConfigRule.html
 
 The primary key for this table is **arn**.
 
