@@ -106,7 +106,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 	"github.com/aws/aws-sdk-go-v2/service/xray"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/models/s3manager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 )
 
@@ -218,7 +217,6 @@ func initServices(region string, c aws.Config) Services {
 		Wafv2:                     wafv2.NewFromConfig(awsCfg),
 		Workspaces:                workspaces.NewFromConfig(awsCfg),
 		Xray:                      xray.NewFromConfig(awsCfg),
-		S3manager:                 s3manager.NewFromConfig(awsCfg),
 	}
 }
 
@@ -327,5 +325,4 @@ type Services struct {
 	Wafv2                     services.Wafv2Client
 	Workspaces                services.WorkspacesClient
 	Xray                      services.XrayClient
-	S3manager                 services.S3managerClient
 }
