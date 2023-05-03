@@ -21,7 +21,7 @@ func listValue(arr array.ListLike) (any, error) {
 	if err != nil {
 		return nil, err
 	}
-	_type := colType.ScanType()
+	valueType := colType.ScanType()
 
 	elems := make([]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
@@ -36,10 +36,10 @@ func listValue(arr array.ListLike) (any, error) {
 		}
 	}
 
-	res := reflect.MakeSlice(reflect.SliceOf(reflect.PointerTo(_type)), len(elems), len(elems)) // we do []*(type) for nullable assignment
+	res := reflect.MakeSlice(reflect.SliceOf(reflect.PointerTo(valueType)), len(elems), len(elems)) // we do []*(type) for nullable assignment
 	for i, elem := range elems {
 		// we need to fill in for the in-depth recursive parsing by ClickHouse SDK
-		val := reflect.New(_type)
+		val := reflect.New(valueType)
 		if elem != nil {
 			val.Elem().Set(reflect.ValueOf(elem))
 		}

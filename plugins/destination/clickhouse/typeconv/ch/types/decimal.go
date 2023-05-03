@@ -9,15 +9,15 @@ import (
 )
 
 // https://clickhouse.com/docs/en/sql-reference/data-types/decimal
-func decimalType(_type arrow.DecimalType) (string, error) {
-	precision, scale := _type.GetPrecision(), _type.GetScale()
+func decimalType(decimalType arrow.DecimalType) (string, error) {
+	precision, scale := decimalType.GetPrecision(), decimalType.GetScale()
 	if scale > 76 {
 		return "", fmt.Errorf("unsupported Apache Arrow decimal scale: %d", scale)
 	}
 
 	precision = max(precision, scale)
 
-	switch id := _type.ID(); id {
+	switch id := decimalType.ID(); id {
 	case arrow.DECIMAL128:
 		precision = ensureBetween(precision, 19, 38)
 	case arrow.DECIMAL256:

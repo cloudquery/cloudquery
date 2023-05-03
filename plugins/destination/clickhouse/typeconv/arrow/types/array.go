@@ -11,14 +11,14 @@ func arrayType(name string, col *column.Array) (*arrow.Field, error) {
 		return nil, err
 	}
 
-	var _type arrow.DataType
+	var dataType arrow.DataType
 	_, nullable := col.Base().(*column.Nullable)
 	if nullable {
-		_type = arrow.ListOf(base.Type)
+		dataType = arrow.ListOf(base.Type)
 	} else {
-		_type = arrow.ListOfNonNullable(base.Type)
+		dataType = arrow.ListOfNonNullable(base.Type)
 	}
 
 	// we base Array nullability on its values
-	return &arrow.Field{Name: name, Type: _type, Nullable: nullable}, nil
+	return &arrow.Field{Name: name, Type: dataType, Nullable: nullable}, nil
 }

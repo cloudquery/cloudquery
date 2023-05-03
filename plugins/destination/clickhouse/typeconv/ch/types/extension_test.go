@@ -8,10 +8,10 @@ import (
 
 func Test_extensionType(t *testing.T) {
 	for _, tc := range []testCase{
-		{_type: types.NewUUIDType(), expected: "UUID"},
-		{_type: types.NewInetType(), expected: "String"},
-		{_type: types.NewMacType(), expected: "String"},
-		{_type: types.NewJSONType(), expected: "String"},
+		{dataType: types.NewUUIDType(), expected: "UUID"},
+		{dataType: types.NewInetType(), expected: "String"},
+		{dataType: types.NewMacType(), expected: "String"},
+		{dataType: types.NewJSONType(), expected: "String"},
 	} {
 		ensureDefinition(t, tc)
 	}

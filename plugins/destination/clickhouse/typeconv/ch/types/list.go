@@ -10,8 +10,8 @@ type listDataType interface {
 }
 
 // https://clickhouse.com/docs/en/sql-reference/data-types/array
-func listType(_type listDataType) (string, error) {
-	item, err := FieldType(_type.ElemField())
+func listType(listType listDataType) (string, error) {
+	item, err := FieldType(listType.ElemField())
 	if err != nil {
 		return "", err
 	}

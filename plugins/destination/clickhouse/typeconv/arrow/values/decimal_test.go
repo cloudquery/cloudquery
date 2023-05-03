@@ -12,7 +12,7 @@ import (
 
 func Test_decimal128(t *testing.T) {
 	value := decimal.NewFromFloat((rand.Float64()-rand.Float64())*1000 + rand.Float64())
-	for _, _type := range []*arrow.Decimal128Type{
+	for _, decimalType := range []*arrow.Decimal128Type{
 		{Precision: 10, Scale: 0},
 		{Precision: 10, Scale: 3},
 		{Precision: 10, Scale: 5},
@@ -26,7 +26,7 @@ func Test_decimal128(t *testing.T) {
 		{Precision: 38, Scale: 32},
 	} {
 		ensureRecord(t, testCase{
-			_type:    _type,
+			dataType: decimalType,
 			value:    &value,
 			expected: decimal128.FromBigInt(value.Coefficient()),
 		})
@@ -35,7 +35,7 @@ func Test_decimal128(t *testing.T) {
 
 func Test_decimal256(t *testing.T) {
 	value := decimal.NewFromFloat((rand.Float64()-rand.Float64())*1000 + rand.Float64())
-	for _, _type := range []*arrow.Decimal256Type{
+	for _, decimalType := range []*arrow.Decimal256Type{
 		{Precision: 10, Scale: 0},
 		{Precision: 10, Scale: 3},
 		{Precision: 10, Scale: 5},
@@ -49,7 +49,7 @@ func Test_decimal256(t *testing.T) {
 		{Precision: 38, Scale: 32},
 	} {
 		ensureRecord(t, testCase{
-			_type:    _type,
+			dataType: decimalType,
 			value:    &value,
 			expected: decimal256.FromBigInt(value.Coefficient()),
 		})
