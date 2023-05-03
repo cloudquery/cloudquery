@@ -23,8 +23,8 @@ func configRuleComplianceDetails() *schema.Table {
 		// all fields must be unique.
 		Transform: transformers.TransformWithStruct(&types.EvaluationResult{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:     "config_rule_name",
 				Type:     schema.TypeString,
