@@ -12,14 +12,7 @@ func Settings() *schema.Table {
 		Resolver:  fetchSettings,
 		Transform: client.TransformWithStruct(&gitlab.Settings{}),
 		Columns: []schema.Column{
-			{
-				Name:     "base_url",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveURL,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.BaseURLColumn,
 			{
 				Name:     "id",
 				Type:     schema.TypeInt,

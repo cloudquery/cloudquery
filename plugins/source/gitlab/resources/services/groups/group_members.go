@@ -12,14 +12,7 @@ func GroupMembers() *schema.Table {
 		Resolver:  fetchGroupMembers,
 		Transform: client.TransformWithStruct(&gitlab.GroupMember{}),
 		Columns: []schema.Column{
-			{
-				Name:     "base_url",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveURL,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.BaseURLColumn,
 			{
 				Name:     "group_id",
 				Type:     schema.TypeInt,

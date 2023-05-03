@@ -12,14 +12,7 @@ func Projects() *schema.Table {
 		Resolver:  fetchProjects,
 		Transform: client.TransformWithStruct(&gitlab.Project{}),
 		Columns: []schema.Column{
-			{
-				Name:     "base_url",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveURL,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.BaseURLColumn,
 			{
 				Name:     "id",
 				Type:     schema.TypeInt,

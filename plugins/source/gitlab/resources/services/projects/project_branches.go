@@ -12,11 +12,7 @@ func ProjectBranches() *schema.Table {
 		Resolver:  fetchProjectBranches,
 		Transform: client.TransformWithStruct(&gitlab.Branch{}),
 		Columns: []schema.Column{
-			{
-				Name:     "base_url",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveURL,
-			},
+			client.BaseURLColumn,
 			{
 				Name:     "project_id",
 				Type:     schema.TypeInt,

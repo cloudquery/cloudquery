@@ -15,14 +15,7 @@ func ProjectMembers() *schema.Table {
 		Resolver:  fetchProjectMembers,
 		Transform: client.TransformWithStruct(&gitlab.ProjectMember{}, transformers.WithPrimaryKeys("ID")),
 		Columns: []schema.Column{
-			{
-				Name:     "base_url",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveURL,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.BaseURLColumn,
 			{
 				Name:     "project_id",
 				Type:     schema.TypeInt,

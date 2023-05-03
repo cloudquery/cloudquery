@@ -12,14 +12,7 @@ func Users() *schema.Table {
 		Resolver:  fetchUsers,
 		Transform: client.TransformWithStruct(&gitlab.User{}),
 		Columns: []schema.Column{
-			{
-				Name:     "base_url",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveURL,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
+			client.BaseURLColumn,
 			{
 				Name:          "last_activity_on",
 				Type:          schema.TypeJSON,
