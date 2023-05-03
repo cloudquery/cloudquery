@@ -60,9 +60,6 @@ func makeMapSlice(mapType reflect.Type, arr *array.Map) (any, error) {
 		}
 		start, end := arr.ValueOffsets(i)
 		mapVal, err := makeMapWithList(mapType, array.NewSlice(arr.ListValues(), start, end))
-		//keys := array.NewSlice(arr.Keys(), start, end)
-		//items := array.NewSlice(arr.Items(), start, end)
-		//mapVal, err := makeMapKV(mapType, keys, items)
 		if err != nil {
 			return nil, err
 		}
@@ -70,42 +67,6 @@ func makeMapSlice(mapType reflect.Type, arr *array.Map) (any, error) {
 		res.Index(i).Set(val)
 	}
 	return res.Interface(), nil
-}
-
-func makeMapKV(mapType reflect.Type, keyArr, itemArr arrow.Array) (*reflect.Value, error) {
-	keysVal, err := FromArray(keyArr)
-	if err != nil {
-		return nil, err
-	}
-	keys := reflect.ValueOf(keysVal)
-
-	itemsVal, err := FromArray(itemArr)
-	if err != nil {
-		return nil, err
-	}
-	items := reflect.ValueOf(itemsVal)
-
-	if keys.Len() != items.Len() {
-		return nil, fmt.Errorf("keys len (%d) != items len (%d)", keys.Len(), items.Len())
-	}
-
-	val := reflect.MakeMapWithSize(mapType, keys.Len())
-	for i := 0; i < keys.Len(); i++ {
-		key, item := keys.Index(i).Elem(), items.Index(i)
-		// we unwrap the item only if it's nested type: map or slice/array
-		if item.Kind() == reflect.Pointer {
-			switch item.Type().Elem().Kind() {
-			case reflect.Map, reflect.Slice, reflect.Array:
-				item = item.Elem()
-			case reflect.Invalid: // we encountered the nil value, still we need to unwrap
-
-			}
-		}
-		// Arrow maps don't support nullable keys, so no need to check
-		// BEWARE: reflect.Value.SetMapIndex deletes the value from map if it's the zero value (nil)
-		val.SetMapIndex(key, item)
-	}
-	return &val, nil
 }
 
 func makeMapWithList(mapType reflect.Type, arr arrow.Array) (*reflect.Value, error) {

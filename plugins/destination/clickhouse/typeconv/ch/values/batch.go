@@ -2,7 +2,6 @@ package values
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/apache/arrow/go/v12/arrow"
@@ -24,9 +23,6 @@ func appendRecord(ctx context.Context, batch driver.Batch, record arrow.Record) 
 	for i, col := range record.Columns() {
 		i, col := i, col
 		eg.Go(func() error {
-			if record.Schema().Field(i).Name == `time32s_map` {
-				fmt.Println("need to investigate")
-			}
 			return appendArray(batch.Column(i), col)
 		})
 	}
