@@ -1,6 +1,8 @@
 package projects
 
 import (
+	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
@@ -15,4 +17,42 @@ func Projects() *schema.Table {
 		Columns:   schema.ColumnList{client.BaseURLColumn},
 		Relations: schema.Tables{ProjectsReleases(), ProjectBranches(), ProjectMembers()},
 	}
+}
+
+func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+
+	opt := &gitlab.ListProjectsOptions{
+		MinAccessLevel: c.MinAccessLevel,
+		ListOptions: gitlab.ListOptions{
+			PerPage: 1000,
+		},
+	}
+	for {
+		// Get the first page with projects.
+		projects, resp, err := c.Gitlab.Projects.ListProjects(opt, gitlab.WithContext(ctx))
+		if err != nil {
+			return err
+		}
+		res <- projects
+
+		// Exit the loop when we've seen all pages.
+		if resp.NextPage == 0 {
+			break
+		}
+
+		// Update the page number to get the next page.
+		opt.Page = resp.NextPage
+	}
+
+	return nil
+}
+
+var projectIDColumn = schema.Column{
+	Name: "project_id",
+	Type: schema.TypeInt,
+	Resolver: func(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+		return resource.Set(c.Name, resource.Parent.Item.(*gitlab.Project).ID)
+	},
+	CreationOptions: schema.ColumnCreationOptions{NotNull: true, PrimaryKey: true},
 }
