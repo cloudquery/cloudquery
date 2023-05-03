@@ -18,23 +18,10 @@ func Test_mapValue(t *testing.T) {
 			arrow.Field{Name: "bool_n", Type: new(arrow.BooleanType), Nullable: true},
 			arrow.Field{Name: "bool", Type: new(arrow.BooleanType)},
 			arrow.Field{Name: "list", Type: arrow.ListOf(types.NewUUIDType())},
-			arrow.Field{
-				Name: "map",
-				Type: arrow.MapOf(new(arrow.Int32Type), new(arrow.Float64Type)),
-			},
-			arrow.Field{
-				Name:     "map_n",
-				Type:     arrow.MapOf(new(arrow.Int32Type), new(arrow.Float64Type)),
-				Nullable: true,
-			},
-			arrow.Field{
-				Name: "map_uuid",
-				Type: arrow.MapOf(types.NewUUIDType(), types.NewUUIDType()),
-			},
-			arrow.Field{
-				Name: "mapped_to_string",
-				Type: arrow.MapOf(new(arrow.Float64Type), new(arrow.StringType)),
-			},
+			arrow.Field{Name: "map", Type: arrow.MapOf(new(arrow.Int32Type), new(arrow.Float64Type))},
+			arrow.Field{Name: "map_n", Type: arrow.MapOf(new(arrow.Int32Type), new(arrow.Float64Type)), Nullable: true},
+			arrow.Field{Name: "map_uuid", Type: arrow.MapOf(types.NewUUIDType(), types.NewUUIDType())},
+			arrow.Field{Name: "mapped_to_string", Type: arrow.MapOf(new(arrow.Float64Type), new(arrow.StringType))},
 		),
 	)
 

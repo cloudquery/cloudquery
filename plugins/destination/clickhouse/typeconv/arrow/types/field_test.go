@@ -42,13 +42,9 @@ func ensureField(t *testing.T, tc testCase) {
 		// simple
 		field, err := Field("field", tc.columnType)
 		require.NoError(t, err)
+		require.NotNil(t, field)
 		require.Truef(t, arrow.TypeEqual(tc.expected, field.Type), "expected type:\n%s\nactual:\n%s", tc.expected.String(), field.Type.String())
-		if list, ok := field.Type.(*arrow.ListType); ok {
-			// Arrays are special, as we consider both Nullable(Array(...)) and Array(Nullable(...)) to be nullable
-			require.Equal(t, list.ElemField().Nullable || field.Nullable, field.Nullable)
-		} else {
-			require.False(t, field.Nullable)
-		}
+		require.False(t, field.Nullable)
 
 		// nullable
 		field, err = Field("field", "Nullable("+tc.columnType+")")
