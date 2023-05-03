@@ -16,6 +16,10 @@ func Test_mapType(t *testing.T) {
 			dataType: arrow.MapOf(new(arrow.StringType), new(arrow.Decimal128Type)),
 			expected: "Map(String, Nullable(Decimal(19,0)))",
 		},
+		{
+			dataType: arrow.MapOf(new(arrow.Float64Type), new(arrow.Decimal128Type)),
+			expected: "String",
+		},
 	} {
 		ensureDefinition(t, tc)
 	}

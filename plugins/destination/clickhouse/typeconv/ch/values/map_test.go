@@ -27,6 +27,14 @@ func Test_mapValue(t *testing.T) {
 				Type:     arrow.MapOf(new(arrow.Int32Type), new(arrow.Float64Type)),
 				Nullable: true,
 			},
+			arrow.Field{
+				Name: "map_uuid",
+				Type: arrow.MapOf(types.NewUUIDType(), types.NewUUIDType()),
+			},
+			arrow.Field{
+				Name: "mapped_to_string",
+				Type: arrow.MapOf(new(arrow.Float64Type), new(arrow.StringType)),
+			},
 		),
 	)
 
@@ -44,6 +52,12 @@ func Test_mapValue(t *testing.T) {
 	mapNBld := itemBuilder.FieldBuilder(4).(*array.MapBuilder)
 	mapNKeyBld, mapNItemBld := mapNBld.KeyBuilder().(*array.Int32Builder), mapNBld.ItemBuilder().(*array.Float64Builder)
 
+	mapUUIDBld := itemBuilder.FieldBuilder(5).(*array.MapBuilder)
+	mapUUIDKeyBld, mapUUIDItemBld := mapUUIDBld.KeyBuilder().(*types.UUIDBuilder), mapUUIDBld.ItemBuilder().(*types.UUIDBuilder)
+
+	mapToStrBld := itemBuilder.FieldBuilder(6).(*array.MapBuilder)
+	mapToStrKeyBld, mapToStrItemBld := mapToStrBld.KeyBuilder().(*array.Float64Builder), mapToStrBld.ItemBuilder().(*array.StringBuilder)
+
 	// single proper value
 	builder.Append(true)
 	keyBuilder.Append("proper")
@@ -58,6 +72,12 @@ func Test_mapValue(t *testing.T) {
 	mapNBld.Append(true)
 	mapNKeyBld.Append(321)
 	mapNItemBld.Append(654.321)
+	mapUUIDBld.Append(true)
+	mapUUIDKeyBld.Append(uuid.NameSpaceURL)
+	mapUUIDItemBld.Append(uuid.NameSpaceURL)
+	mapToStrBld.Append(true)
+	mapToStrKeyBld.Append(1010.543)
+	mapToStrItemBld.Append("some string")
 
 	// single empty value
 	builder.Append(true)
@@ -76,6 +96,12 @@ func Test_mapValue(t *testing.T) {
 	mapKeyBld.Append(123)
 	mapItemBld.Append(123.456)
 	mapNBld.AppendNull() // nil map
+	mapUUIDBld.Append(true)
+	mapUUIDKeyBld.Append(uuid.NameSpaceURL)
+	mapUUIDItemBld.AppendNull()
+	mapToStrBld.Append(true)
+	mapToStrKeyBld.Append(1010.543)
+	mapToStrItemBld.AppendNull()
 
 	keyBuilder.Append("empty")
 	itemBuilder.AppendNull()
@@ -96,11 +122,13 @@ func Test_mapValue(t *testing.T) {
 	require.True(t, ok)
 	require.NotNil(t, val)
 	require.EqualValues(t, map[string]any{
-		"bool":   ptr(true),
-		"bool_n": ptr(false),
-		"list":   ptr([]*uuid.UUID{&uuid.NameSpaceDNS}),
-		"map":    ptr(map[int32]*float64{123: ptr(float64(123.456))}),
-		"map_n":  ptr(map[int32]*float64{321: ptr(float64(654.321))}),
+		"bool":             ptr(true),
+		"bool_n":           ptr(false),
+		"list":             ptr([]*uuid.UUID{&uuid.NameSpaceDNS}),
+		"map":              ptr(map[int32]*float64{123: ptr(float64(123.456))}),
+		"map_n":            ptr(map[int32]*float64{321: ptr(float64(654.321))}),
+		"map_uuid":         ptr(map[uuid.UUID]*uuid.UUID{uuid.NameSpaceURL: ptr(uuid.NameSpaceURL)}),
+		"mapped_to_string": ptr(`[{"key":1010.543,"value":"some string"}]`),
 	}, val)
 
 	// single empty value
@@ -117,11 +145,13 @@ func Test_mapValue(t *testing.T) {
 	require.True(t, ok)
 	require.NotNil(t, val)
 	require.EqualValues(t, map[string]any{
-		"bool":   ptr(true),
-		"bool_n": ptr(false),
-		"list":   ptr([]*uuid.UUID{&uuid.NameSpaceDNS}),
-		"map":    ptr(map[int32]*float64{123: ptr(float64(123.456))}),
-		"map_n":  ptr(map[int32]*float64(nil)),
+		"bool":             ptr(true),
+		"bool_n":           ptr(false),
+		"list":             ptr([]*uuid.UUID{&uuid.NameSpaceDNS}),
+		"map":              ptr(map[int32]*float64{123: ptr(float64(123.456))}),
+		"map_n":            ptr(map[int32]*float64(nil)),
+		"map_uuid":         ptr(map[uuid.UUID]*uuid.UUID{uuid.NameSpaceURL: (*uuid.UUID)(nil)}),
+		"mapped_to_string": ptr(`[{"key":1010.543,"value":null}]`),
 	}, val)
 	val, ok = (*elem)["empty"]
 	require.True(t, ok)

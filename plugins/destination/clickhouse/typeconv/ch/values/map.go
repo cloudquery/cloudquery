@@ -128,7 +128,7 @@ func makeMapWithList(mapType reflect.Type, arr arrow.Array) (*reflect.Value, err
 		item := reflect.ValueOf((*elem)[itemField])
 		if item.Kind() == reflect.Pointer {
 			switch item.Type().Elem().Kind() {
-			case reflect.Map, reflect.Slice, reflect.Array:
+			case reflect.Map, reflect.Slice:
 				if item.IsNil() {
 					item = reflect.New(item.Type().Elem()).Elem()
 				} else {
