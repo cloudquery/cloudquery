@@ -19,6 +19,5 @@ func arrayType(name string, col *column.Array) (*arrow.Field, error) {
 		dataType = arrow.ListOfNonNullable(base.Type)
 	}
 
-	// we base Array nullability on its values
-	return &arrow.Field{Name: name, Type: dataType, Nullable: nullable}, nil
+	return &arrow.Field{Name: name, Type: dataType}, nil
 }

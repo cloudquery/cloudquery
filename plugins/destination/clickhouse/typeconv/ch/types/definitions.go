@@ -6,17 +6,16 @@ import (
 )
 
 func FieldType(field arrow.Field) (string, error) {
-	dt, err := columnType(field.Type)
+	dt, err := ColumnType(field.Type)
 	if err != nil {
 		return "", err
 	}
 
-	// We allow nullable values in arrays, but arrays shouldn't be nullable themselves in ClickHouse
-	if field.Type.ID() == arrow.LIST || !field.Nullable {
-		return dt, nil
+	if canBeNullable(field.Type) && field.Nullable {
+		return "Nullable(" + dt + ")", nil
 	}
 
-	return "Nullable(" + dt + ")", nil
+	return dt, nil
 }
 
 func FieldDefinition(field arrow.Field) (string, error) {

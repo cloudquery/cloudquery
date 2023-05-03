@@ -25,7 +25,6 @@ func TestFieldType(t *testing.T) {
 		{dataType: &arrow.FixedSizeBinaryType{ByteWidth: 125}, expected: "FixedString(125)"},
 		{dataType: new(arrow.Date32Type), expected: "Date32"},
 		{dataType: new(arrow.Date64Type), expected: "DateTime64(3)"},
-		{dataType: arrow.MapOf(new(arrow.StringType), new(arrow.BooleanType)), expected: "String"},
 	} {
 		ensureDefinition(t, tc)
 	}
@@ -60,8 +59,7 @@ func ensureDefinition(t *testing.T, tc testCase) {
 		require.NoError(t, err)
 		require.Equal(t, tc.expected, fieldType)
 
-		if field.Type.ID() == arrow.LIST {
-			// arrays cannot be marked nullable in ClickHouse
+		if !canBeNullable(field.Type) {
 			return
 		}
 

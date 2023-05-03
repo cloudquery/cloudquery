@@ -71,8 +71,7 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 		return nullableType(name, col)
 
 	case *column.Map:
-		// TODO: parse into Apache Arrow map
-		return &arrow.Field{Name: name, Type: new(arrow.StringType)}, nil
+		return mapType(name, col)
 
 	case *column.Tuple:
 		return structType(name, col)

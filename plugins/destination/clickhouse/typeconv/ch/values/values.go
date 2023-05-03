@@ -66,14 +66,14 @@ func FromArray(arr arrow.Array) (any, error) {
 	case *array.Struct:
 		return structValue(arr)
 
-	case *array.Map: // it also matches array.ListLike, so we check it before the array.ListLike case
-		// TODO: once we parse into proper map just use this
-		return valueStrData(arr), nil
+	case *array.Map:
+		// it also matches array.ListLike, so we check it before the array.ListLike case
+		return mapValue(arr)
 
 	case array.ListLike:
 		return listValue(arr)
 	}
 
-	// default to string
-	return valueStrData(arr), nil
+	// default to string via JSON
+	return marshalValuesToStrings(arr)
 }
