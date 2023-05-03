@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 	"sync"
@@ -368,27 +369,32 @@ func (c *Client) withBillingPeriod(billingPeriod *armbilling.Period) *Client {
 	return &newC
 }
 
+var ErrNoStorageKeysFound = errors.New("no storage keys found")
+
 func (c *Client) GetStorageAccountKey(ctx context.Context, acc *armstorage.Account) (string, error) {
 	key, err := loadOrStore(c.storageAccountKeys, *acc.Name, func() (any, error) {
 		svc, err := armstorage.NewAccountsClient(c.SubscriptionId, c.Creds, c.Options)
 		if err != nil {
-			return "", err
+			return nil, err
 		}
 
 		group, err := ParseResourceGroup(*acc.ID)
 		if err != nil {
-			return "", err
+			return nil, err
 		}
 
 		keysResponse, err := svc.ListKeys(ctx, group, *acc.Name, nil)
 		if err != nil {
-			return "", err
+			return nil, err
 		}
 
 		for i := range keysResponse.Keys {
 			return *keysResponse.Keys[i].Value, nil
 		}
-		return "", nil
+		return nil, ErrNoStorageKeysFound
 	})
+	if key == nil {
+		return "", err
+	}
 	return key.(string), err
 }

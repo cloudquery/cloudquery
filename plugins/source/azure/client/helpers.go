@@ -26,25 +26,33 @@ func ParseResourceGroup(resourceID string) (string, error) {
 
 type syncData struct {
 	data any
+	err  error
 	once *sync.Once
 }
 
 func loadOrStore(m *sync.Map, key string, f func() (any, error)) (any, error) {
-	temp, _ := m.LoadOrStore(key, &syncData{
+	temp, _ := m.LoadOrStore(key, syncData{
 		data: nil,
+		err:  nil,
 		once: &sync.Once{},
 	})
-	d := temp.(*syncData)
-	var err error
-	if d.data == nil {
+	d := temp.(syncData)
+	if d.data == nil && d.err == nil {
 		d.once.Do(func() {
-			d.data, err = f()
+			dt, err := f()
 			if err != nil {
-				d.data = nil
+				dt = nil
 				d.once = &sync.Once{}
 			}
-			m.Store(key, d)
+			m.Store(key, syncData{
+				data: dt,
+				err:  err,
+				once: d.once,
+			})
 		})
+		temp, _ = m.Load(key)
+		d = temp.(syncData)
 	}
-	return d.data, err
+
+	return d.data, d.err
 }
