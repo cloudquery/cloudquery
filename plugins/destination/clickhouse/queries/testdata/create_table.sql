@@ -6,4 +6,4 @@ CREATE TABLE `table_name` (
   `extra_col` Float64,
   `extra_inet_col` Nullable(String),
   `extra_inet_arr_col` Array(Nullable(String))
-) ENGINE = MergeTree ORDER BY (`extra_col`, `_cq_id`) SETTINGS allow_nullable_key=1
+) ENGINE = MergeTree() ORDER BY (`extra_col`, `_cq_id`) SETTINGS allow_nullable_key=1
