@@ -14,14 +14,7 @@ func members() *schema.Table {
 		Name:      "gitlab_group_members",
 		Resolver:  fetchMembers,
 		Transform: client.TransformWithStruct(&gitlab.GroupMember{}, transformers.WithPrimaryKeys("ID")),
-		Columns: schema.ColumnList{client.BaseURLColumn,
-			{
-				Name:            "group_id",
-				Type:            schema.TypeInt,
-				Resolver:        resolveGroupID,
-				CreationOptions: schema.ColumnCreationOptions{NotNull: true, PrimaryKey: true},
-			},
-		},
+		Columns:   schema.ColumnList{client.BaseURLColumn, groupIDColumn},
 	}
 }
 
@@ -51,8 +44,4 @@ func fetchMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	}
 
 	return nil
-}
-
-func resolveGroupID(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return resource.Set(c.Name, resource.Parent.Item.(*gitlab.Group).ID)
 }

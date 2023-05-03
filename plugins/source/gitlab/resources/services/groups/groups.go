@@ -51,3 +51,12 @@ func fetchGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 	return nil
 }
+
+var groupIDColumn = schema.Column{
+	Name: "group_id",
+	Type: schema.TypeInt,
+	Resolver: func(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+		return resource.Set(c.Name, resource.Parent.Item.(*gitlab.Group).ID)
+	},
+	CreationOptions: schema.ColumnCreationOptions{NotNull: true, PrimaryKey: true},
+}
