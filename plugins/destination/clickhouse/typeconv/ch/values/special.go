@@ -3,17 +3,24 @@ package values
 import (
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"
+	"github.com/goccy/go-json"
 )
 
-func marshalValue[A any](arr arrow.Array) []*A {
-	res := make([]*A, arr.Len())
+func ptr[A any](a A) *A { return &a }
+
+func marshalValuesToStrings(arr arrow.Array) ([]*string, error) {
+	res := make([]*string, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) {
-			val := arr.GetOneForMarshal(i).(A)
-			res[i] = &val
+		if arr.IsNull(i) {
+			continue
 		}
+		data, err := json.MarshalWithOption(arr.GetOneForMarshal(i), json.DisableHTMLEscape())
+		if err != nil {
+			return nil, err
+		}
+		res[i] = ptr(string(data))
 	}
-	return res
+	return res, nil
 }
 
 func valueStrData(arr arrow.Array) []*string {

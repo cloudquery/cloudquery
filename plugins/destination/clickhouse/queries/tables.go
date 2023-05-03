@@ -51,6 +51,7 @@ func CreateTable(sc *arrow.Schema, cluster string, engine *Engine) (string, erro
 		builder.WriteString(strings.Join(util.Sanitized(orderBy...), ", "))
 		builder.WriteString(")")
 	}
+	builder.WriteString(" SETTINGS allow_nullable_key=1") // allows nullable keys
 
 	return builder.String(), nil
 }

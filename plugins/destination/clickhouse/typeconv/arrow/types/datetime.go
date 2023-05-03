@@ -21,7 +21,7 @@ func dateTimeType(name string, col *column.DateTime) (*arrow.Field, error) {
 
 func dateTime64Type(name string, col *column.DateTime64) (*arrow.Field, error) {
 	// need to parse
-	params := strings.Split(params(col.Type()), ",")
+	params := strings.SplitN(params(col.Type()), ",", 2)
 	precision, err := strconv.Atoi(params[0])
 	if err != nil {
 		return nil, err
