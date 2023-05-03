@@ -445,6 +445,7 @@ func tables() []*schema.Table {
 		secretsmanager.Secrets(),
 		securityhub.EnabledStandards(),
 		securityhub.Findings(),
+		securityhub.Hubs(),
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),

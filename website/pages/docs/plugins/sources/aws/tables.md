@@ -527,6 +527,7 @@
   - [aws_secretsmanager_secret_versions](tables/aws_secretsmanager_secret_versions)
 - [aws_securityhub_enabled_standards](tables/aws_securityhub_enabled_standards)
 - [aws_securityhub_findings](tables/aws_securityhub_findings)
+- [aws_securityhub_hubs](tables/aws_securityhub_hubs)
 - [aws_servicecatalog_portfolios](tables/aws_servicecatalog_portfolios)
 - [aws_servicecatalog_products](tables/aws_servicecatalog_products)
 - [aws_servicecatalog_provisioned_products](tables/aws_servicecatalog_provisioned_products)
