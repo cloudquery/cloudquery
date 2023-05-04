@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - main
+      - duckdb-windows-support
     paths:
       - "plugins/destination/duckdb/**"
       - ".github/workflows/dest_duckdb.yml"
@@ -53,10 +54,10 @@ jobs:
         CGO_ENABLED: 1
     steps:
       - name: Checkout
-        # if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/checkout@v3
       - uses: actions/cache@v3
-        # if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
           path: |
             ~/.cache/go-build
@@ -65,24 +66,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-1.19.5-release-cache-plugins-destination-duckdb
       - name: Set up Go
-        # if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
         with:
           go-version-file: plugins/destination/duckdb/go.mod
       - name: Install GoReleaser
-        # if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: goreleaser/goreleaser-action@v3
         with:
           distribution: goreleaser-pro
           version: latest
           install-only: true
       - name: Copy gencc and gencpp
-        # if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         run: |
           cp plugins/destination/duckdb/gencc.sh /usr/bin/gencc.sh
           cp plugins/destination/duckdb/gencpp.sh /usr/bin/gencpp.sh
       - name: Run GoReleaser Dry-Run
-        # if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign --timeout 1h0s -f ./plugins/destination/duckdb/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
