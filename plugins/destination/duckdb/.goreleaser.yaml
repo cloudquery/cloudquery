@@ -21,6 +21,8 @@ builds:
       - GO111MODULE=on
       - CC=/usr/bin/gencc.sh
       - CXX=/usr/bin/gencpp.sh
+      - CC_windows_amd64=x86_64-w64-mingw32-gcc-posix
+      - CCX_windows_amd64=x86_64-w64-mingw32-g++-posix
     ldflags:
       - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
     goos:
