@@ -388,10 +388,10 @@ func (c *Client) GetStorageAccountKey(ctx context.Context, acc *armstorage.Accou
 			return nil, err
 		}
 
-		for i := range keysResponse.Keys {
-			return *keysResponse.Keys[i].Value, nil
+		if len(keysResponse.Keys) == 0 {
+			return nil, ErrNoStorageKeysFound
 		}
-		return nil, ErrNoStorageKeysFound
+		return *keysResponse.Keys[0].Value, nil
 	})
 	if key == nil {
 		return "", err
