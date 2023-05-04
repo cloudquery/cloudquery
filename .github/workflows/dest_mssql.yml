@@ -70,7 +70,7 @@ jobs:
       run:  go get -t -d ./...
     - name: Build
       run:  go build .
-    - name: Test Microsoft SQL
+    - name: Test Microsoft SQL Server
       run:  make test
   validate-release:
     timeout-minutes: 30
