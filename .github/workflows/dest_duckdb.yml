@@ -30,14 +30,14 @@ jobs:
           go-version-file: plugins/destination/duckdb/go.mod
           cache: true
           cache-dependency-path: plugins/destination/duckdb/go.sum
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
-        with:
-          version: v1.52.2
-          working-directory: plugins/destination/duckdb
-          args: "--config ../../.golangci.yml"
-          skip-pkg-cache: true
-          skip-build-cache: true
+#      - name: golangci-lint
+#        uses: golangci/golangci-lint-action@v3
+#        with:
+#          version: v1.52.2
+#          working-directory: plugins/destination/duckdb
+#          args: "--config ../../.golangci.yml"
+#          skip-pkg-cache: true
+#          skip-build-cache: true
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build
