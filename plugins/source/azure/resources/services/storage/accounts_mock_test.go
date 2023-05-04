@@ -26,7 +26,11 @@ func createAccounts(router *mux.Router) error {
 	val2.ID = to.Ptr("testaccount2")
 	val2.Name = to.Ptr("testaccount2")
 
-	item.Value = []*armstorage.Account{&val1, &val2}
+	val3 := *item.Value[0]
+	val3.ID = to.Ptr("testaccount3")
+	val3.Name = to.Ptr("testaccount3")
+
+	item.Value = []*armstorage.Account{&val1, &val2, &val3}
 
 	emptyStr := ""
 	item.NextLink = &emptyStr

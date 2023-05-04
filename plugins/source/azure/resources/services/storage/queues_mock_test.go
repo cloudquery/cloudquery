@@ -29,6 +29,8 @@ func createQueues(router *mux.Router) error {
 			prefix = "acc1"
 		case strings.Contains(r.RequestURI, "/storageAccounts/testaccount2/"):
 			prefix = "acc2"
+		case strings.Contains(r.RequestURI, "/storageAccounts/testaccount3/"):
+			prefix = "acc3"
 		}
 
 		val1 := tempVal

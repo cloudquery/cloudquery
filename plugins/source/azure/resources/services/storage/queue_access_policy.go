@@ -11,7 +11,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
-	"github.com/rs/zerolog"
 )
 
 func queueAccessPolicy() *schema.Table {
@@ -39,18 +38,12 @@ func fetchQueueACL(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	acc := parent.Parent.Item.(*armstorage.Account)
 
 	storageKey, err := cl.GetStorageAccountKey(ctx, acc)
-	if err == client.ErrNoStorageKeysFound || storageKey == "" {
-		var lgr *zerolog.Event
-		if err != nil && err != client.ErrNoStorageKeysFound {
-			lgr = cl.Logger().Error().Err(err)
-		} else {
-			lgr = cl.Logger().Warn()
-		}
-		lgr.Msg("no storage key found, skipping queue access policy")
-		return nil
-	}
-	if err != nil {
+	if err != nil && err != client.ErrNoStorageKeysFound {
 		return err
+	}
+	if storageKey == "" {
+		cl.Logger().Warn().Str("queue", *queue.ID).Msg("no storage key found, skipping queue access policy")
+		return nil
 	}
 
 	skc, err := azqueue.NewSharedKeyCredential(*acc.Name, storageKey)

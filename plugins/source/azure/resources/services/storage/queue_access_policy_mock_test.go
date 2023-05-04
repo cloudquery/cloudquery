@@ -21,7 +21,7 @@ func createQueueAccessPolicy(router *mux.Router) error {
 		return err
 	}
 
-	for _, qName := range []string{"acc1testqueue1", "acc1testqueue2", "acc2testqueue1", "acc2testqueue2"} {
+	for _, qName := range []string{"acc1testqueue1", "acc1testqueue2", "acc2testqueue1", "acc2testqueue2", "acc3testqueue1", "acc3testqueue2"} {
 		qName := qName
 		router.HandleFunc("/"+qName, func(w http.ResponseWriter, r *http.Request) {
 			auth := r.Header.Get("Authorization")
@@ -36,6 +36,8 @@ func createQueueAccessPolicy(router *mux.Router) error {
 				wantAcc = "testaccount1"
 			case strings.HasPrefix(qName, "acc2"):
 				wantAcc = "testaccount2"
+			case strings.HasPrefix(qName, "acc3"):
+				wantAcc = "testaccount3"
 			}
 			if keyAcc != wantAcc {
 				http.Error(w, "invalid account got: "+keyAcc+" want: "+wantAcc, http.StatusUnauthorized)
@@ -78,7 +80,12 @@ func createAccountKey(router *mux.Router) error {
 
 		reqCounts[r.RequestURI]++
 
-		b, err := json.Marshal(&keyResp)
+		var resp armstorage.AccountsClientListKeysResponse
+		if !strings.Contains(r.RequestURI, "testaccount3") {
+			resp = keyResp
+		}
+
+		b, err := json.Marshal(&resp)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
 			return
