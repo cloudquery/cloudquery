@@ -47,6 +47,9 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 	svc := cl.Services().Cloudtrail
 
 	le := &cloudtrail.LookupEventsInput{}
+	if cl.Spec.TableOptions.CloudTrailEvents != nil {
+		le = cl.Spec.TableOptions.CloudTrailEvents.LookupEvents()
+	}
 
 	if cl.Backend != nil {
 		value, err := cl.Backend.Get(ctx, tableName, cl.ID())
