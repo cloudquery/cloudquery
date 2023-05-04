@@ -5,10 +5,20 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"github.com/xanzy/go-gitlab"
 )
 
-func fetchGroupMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func members() *schema.Table {
+	return &schema.Table{
+		Name:      "gitlab_group_members",
+		Resolver:  fetchMembers,
+		Transform: client.TransformWithStruct(&gitlab.GroupMember{}, transformers.WithPrimaryKeys("ID")),
+		Columns:   schema.ColumnList{client.BaseURLColumn, groupIDColumn},
+	}
+}
+
+func fetchMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	group := parent.Item.(*gitlab.Group)
 	opt := &gitlab.ListGroupMembersOptions{
@@ -34,8 +44,4 @@ func fetchGroupMembers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	}
 
 	return nil
-}
-
-func resolveGroupID(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return resource.Set("group_id", resource.Parent.Item.(*gitlab.Group).ID)
 }

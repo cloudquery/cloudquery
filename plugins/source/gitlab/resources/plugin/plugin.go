@@ -10,15 +10,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
-var (
-	Version = "Development"
-)
+var Version = "Development"
 
 func Plugin() *source.Plugin {
 	return source.NewPlugin(
 		"gitlab",
 		Version,
-		[]*schema.Table{
+		schema.Tables{
 			groups.Groups(),
 			projects.Projects(),
 			settings.Settings(),
