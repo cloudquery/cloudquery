@@ -1,14 +1,14 @@
 name: Destination Plugin DuckDB Workflow
 
 on:
+#  pull_request:
+#    paths:
+#      - "plugins/destination/duckdb/**"
+#      - ".github/workflows/dest_duckdb.yml"
   push:
     branches:
       - main
       - duckdb-windows-support
-    paths:
-      - "plugins/destination/duckdb/**"
-      - ".github/workflows/dest_duckdb.yml"
-  pull_request:
     paths:
       - "plugins/destination/duckdb/**"
       - ".github/workflows/dest_duckdb.yml"
