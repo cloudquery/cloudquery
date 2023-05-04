@@ -20,18 +20,18 @@ builds:
       - CGO_ENABLED=1
       - GO111MODULE=on
       - CC=/usr/bin/gencc.sh
-      - CCX=/usr/bin/gencpp.sh
+      - CXX=/usr/bin/gencpp.sh
       - CC_windows_amd64=x86_64-w64-mingw32-gcc-posix
-      - CCX_windows_amd64=x86_64-w64-mingw32-g++-posix
+      - CXX_windows_amd64=x86_64-w64-mingw32-g++-posix
     ldflags:
       - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
     goos:
       - windows
-      - linux
-      - darwin
+      #- linux
+      #- darwin
     goarch:
       - amd64
-      - arm64
+      #- arm64
     ignore:
       - goos: windows
         goarch: arm64
