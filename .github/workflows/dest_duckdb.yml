@@ -16,7 +16,7 @@ jobs:
   plugins-destination-duckdb:
     timeout-minutes: 30
     name: "plugins/destination/duckdb"
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     defaults:
       run:
         working-directory: ./plugins/destination/duckdb

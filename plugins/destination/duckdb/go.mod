@@ -10,6 +10,7 @@ require (
 )
 
 replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230424203127-ca31eee92780
+// replace github.com/marcboeker/go-duckdb v1.2.2 => github.com/cloudquery/go-duckdb v1.0.0
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
