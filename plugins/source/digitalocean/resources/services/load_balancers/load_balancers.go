@@ -24,19 +24,19 @@ func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 	}
 	for {
 		var (
-			items []godo.LoadBalancer
-			resp  *godo.Response
+			data []godo.LoadBalancer
+			resp *godo.Response
 		)
-		getFunc := func() error {
+		listFunc := func() error {
 			var err error
-			items, resp, err = svc.Services.LoadBalancers.List(ctx, opt)
+			data, resp, err = svc.Services.LoadBalancers.List(ctx, opt)
 			return err
 		}
-		err := client.ThrottleWrapper(ctx, svc, getFunc)
+		err := client.ThrottleWrapper(ctx, svc, listFunc)
 		if err != nil {
 			return err
 		}
-		res <- items
+		res <- data
 		if resp.Links == nil || resp.Links.IsLastPage() {
 			break
 		}

@@ -24,19 +24,19 @@ func fetchRegions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resourc
 	}
 	for {
 		var (
-			items []godo.Region
-			resp  *godo.Response
+			data []godo.Region
+			resp *godo.Response
 		)
-		getFunc := func() error {
+		listFunc := func() error {
 			var err error
-			items, resp, err = svc.Services.Regions.List(ctx, opt)
+			data, resp, err = svc.Services.Regions.List(ctx, opt)
 			return err
 		}
-		err := client.ThrottleWrapper(ctx, svc, getFunc)
+		err := client.ThrottleWrapper(ctx, svc, listFunc)
 		if err != nil {
 			return err
 		}
-		res <- items
+		res <- data
 		if resp.Links == nil || resp.Links.IsLastPage() {
 			break
 		}
