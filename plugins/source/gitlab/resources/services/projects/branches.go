@@ -5,10 +5,20 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/transformers"
 	"github.com/xanzy/go-gitlab"
 )
 
-func fetchProjectBranches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func branches() *schema.Table {
+	return &schema.Table{
+		Name:      "gitlab_project_branches",
+		Resolver:  fetchBranches,
+		Transform: client.TransformWithStruct(&gitlab.Branch{}, transformers.WithPrimaryKeys("Name")),
+		Columns:   schema.ColumnList{client.BaseURLColumn, projectIDColumn},
+	}
+}
+
+func fetchBranches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	project := parent.Item.(*gitlab.Project)
 	opt := &gitlab.ListBranchesOptions{

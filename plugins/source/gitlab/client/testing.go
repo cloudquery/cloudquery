@@ -58,9 +58,7 @@ func GitlabMockTestHelper(t *testing.T, table *schema.Table, createService func(
 	p := source.NewPlugin(
 		table.Name,
 		version,
-		[]*schema.Table{
-			table,
-		},
+		schema.Tables{table},
 		newTestExecutionClient)
 	p.SetLogger(l)
 	source.TestPluginSync(t, p, specs.Source{
