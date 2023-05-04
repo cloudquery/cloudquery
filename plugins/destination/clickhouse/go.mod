@@ -14,7 +14,7 @@ require (
 // TODO: remove once the changes are merged to upstream
 replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230425184555-43f156fcdec9
 
-replace github.com/cloudquery/plugin-sdk/v2 => github.com/cloudquery/plugin-sdk/v2 v2.5.1-0.20230428161527-ace8fb17ca20
+replace github.com/cloudquery/plugin-sdk/v2 => github.com/cloudquery/plugin-sdk/v2 v2.5.3-0.20230504104327-980953467459
 
 require (
 	github.com/ClickHouse/ch-go v0.55.0 // indirect
