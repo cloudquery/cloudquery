@@ -48,9 +48,13 @@ The 'request_account_id' and 'request_region' columns are added to show from whe
 func fetchInspector2Findings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Inspector2
+	var err error
 	input := &inspector2.ListFindingsInput{}
 	if c.Spec.TableOptions.Inspector2Findings != nil {
-		input = c.Spec.TableOptions.Inspector2Findings.ListFindings()
+		input, err = c.Spec.TableOptions.Inspector2Findings.ListFindings()
+		if err != nil {
+			return err
+		}
 	}
 
 	if input.MaxResults == nil {
