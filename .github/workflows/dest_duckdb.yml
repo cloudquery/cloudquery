@@ -46,7 +46,7 @@ jobs:
         run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: cloudquery-release-runner
     container:
       image: ghcr.io/cloudquery/golang-cross:v10.0.0
       env:
