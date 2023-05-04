@@ -47,6 +47,8 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMn
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/arrow/go/v12 v12.0.0-20230424203127-ca31eee92780 h1:fEIZXGMnQMxJe3DSHbiLfRGzOv98EUYod9U0YdZUcXk=
 github.com/cloudquery/arrow/go/v12 v12.0.0-20230424203127-ca31eee92780/go.mod h1:d+tV/eHZZ7Dz7RPrFKtPK02tpr+c9/PEd/zm8mDS9Vg=
+github.com/cloudquery/go-duckdb v0.0.0-20230504105749-ab7880c0c423 h1:QNDHZdQXA7AIH4ht2EgXg3vTz/cAqMe4P0hELF+HVY4=
+github.com/cloudquery/go-duckdb v0.0.0-20230504105749-ab7880c0c423/go.mod h1:wm91jO2GNKa6iO9NTcjXIRsW+/ykPoJbQcHSXhdAl28=
 github.com/cloudquery/plugin-sdk/v2 v2.5.1 h1:6qCadOLCLR2w1WmaosvM6JzjsQlpYChgIbw4cg65KhM=
 github.com/cloudquery/plugin-sdk/v2 v2.5.1/go.mod h1:3Q7i+PadZpHSLDy2b1yjCarxwHe2dTG0jB9l4IvWxgk=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
@@ -162,8 +164,6 @@ github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
 github.com/kr/text v0.2.0 h1:5Nx0Ya0ZqY2ygV366QzturHI13Jq95ApcVaJBhpS+AY=
 github.com/kr/text v0.2.0/go.mod h1:eLer722TekiGuMkidMxC/pM04lWEeraHUUmBw8l2grE=
-github.com/marcboeker/go-duckdb v1.2.2 h1:Qy5yW83qAcZgsEmGo+pkEZeZvxA2dzuQNPLh7wcorb0=
-github.com/marcboeker/go-duckdb v1.2.2/go.mod h1:wm91jO2GNKa6iO9NTcjXIRsW+/ykPoJbQcHSXhdAl28=
 github.com/mattn/go-colorable v0.1.12/go.mod h1:u5H1YNBxpqRaxsYJYSkiCWKzEfiAb1Gb520KVy5xxl4=
 github.com/mattn/go-colorable v0.1.13 h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=
 github.com/mattn/go-colorable v0.1.13/go.mod h1:7S9/ev0klgBDR4GtXTXX8a3vIGJpMovkB8vQcUbaXHg=
