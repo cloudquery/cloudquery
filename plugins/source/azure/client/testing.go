@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"os"
+	"sync"
 	"testing"
 	"time"
 
@@ -136,6 +137,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			BillingPeriods: map[string][]*armbilling.Period{
 				TestSubscription: {&billingPeriod},
 			},
+			storageAccountKeys: &sync.Map{},
 		}
 
 		return c, nil
