@@ -1,12 +1,11 @@
 package client
 
 import (
-	"time"
+	"errors"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
-	cloudtrailTypes "github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
-	"github.com/aws/aws-sdk-go-v2/service/inspector2/types"
 )
 
 type TableOptions struct {
@@ -15,43 +14,30 @@ type TableOptions struct {
 }
 
 type ctAPIs struct {
-	LookupEventsOpts LookupEventsOptions `json:"LookupEvents,omitempty"`
+	LookupEventsOpts cloudtrail.LookupEventsInput `json:"LookupEvents,omitempty"`
 }
 
-type LookupEventsOptions struct {
-	EndTime          *time.Time
-	EventCategory    cloudtrailTypes.EventCategory
-	LookupAttributes []cloudtrailTypes.LookupAttribute
-	StartTime        *time.Time
-}
-
-func (c *ctAPIs) LookupEvents() *cloudtrail.LookupEventsInput {
+func (c *ctAPIs) LookupEvents() (*cloudtrail.LookupEventsInput, error) {
 	if c == nil {
-		return &cloudtrail.LookupEventsInput{}
+		return &cloudtrail.LookupEventsInput{}, nil
 	}
-
-	return &cloudtrail.LookupEventsInput{
-		EndTime:          c.LookupEventsOpts.EndTime,
-		EventCategory:    c.LookupEventsOpts.EventCategory,
-		LookupAttributes: c.LookupEventsOpts.LookupAttributes,
-		StartTime:        c.LookupEventsOpts.StartTime,
+	if aws.ToString(c.LookupEventsOpts.NextToken) != "" {
+		return &cloudtrail.LookupEventsInput{}, errors.New("invalid input: cannot set NextToken in LookupEvents")
 	}
+	return &c.LookupEventsOpts, nil
 }
 
 type inspector2APIs struct {
-	ListFindingOpts inspector2ListFindingsOptions `json:"ListFindings,omitempty"`
+	ListFindingOpts inspector2.ListFindingsInput `json:"ListFindings,omitempty"`
 }
 
-type inspector2ListFindingsOptions struct {
-	FilterCriteria *types.FilterCriteria
-	SortCriteria   *types.SortCriteria
-}
-
-func (c *inspector2APIs) ListFindings() *inspector2.ListFindingsInput {
+func (c *inspector2APIs) ListFindings() (*inspector2.ListFindingsInput, error) {
 	if c == nil {
-		return &inspector2.ListFindingsInput{}
+		return &inspector2.ListFindingsInput{}, nil
 	}
-	return &inspector2.ListFindingsInput{
-		FilterCriteria: c.ListFindingOpts.FilterCriteria,
+
+	if aws.ToString(c.ListFindingOpts.NextToken) != "" {
+		return &inspector2.ListFindingsInput{}, errors.New("invalid input: cannot set NextToken in ListFindings")
 	}
+	return &c.ListFindingOpts, nil
 }
