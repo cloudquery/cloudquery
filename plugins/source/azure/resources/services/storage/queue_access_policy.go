@@ -37,6 +37,20 @@ func fetchQueueACL(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	queue := parent.Item.(*armstorage.ListQueue)
 	acc := parent.Parent.Item.(*armstorage.Account)
 
+	storageKey, err := cl.GetStorageAccountKey(ctx, acc)
+	if err != nil && err != client.ErrNoStorageKeysFound {
+		return err
+	}
+	if storageKey == "" {
+		cl.Logger().Warn().Str("queue", *queue.ID).Msg("no storage key found, skipping queue access policy")
+		return nil
+	}
+
+	skc, err := azqueue.NewSharedKeyCredential(*acc.Name, storageKey)
+	if err != nil {
+		return err
+	}
+
 	opts := azqueue.ClientOptions{}
 	if cl.Options != nil {
 		opts.ClientOptions = cl.Options.ClientOptions
@@ -44,7 +58,7 @@ func fetchQueueACL(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 
 	nm := strings.ReplaceAll(*acc.Name, " ", "_") // This is for the tests, real data will not have spaces
 	queueURL := runtime.JoinPaths("https://"+nm+".queue.core.windows.net", url.PathEscape(*queue.Name))
-	svc, err := azqueue.NewQueueClient(queueURL, cl.Creds, &opts)
+	svc, err := azqueue.NewQueueClientWithSharedKeyCredential(queueURL, skc, &opts)
 	if err != nil {
 		return err
 	}
