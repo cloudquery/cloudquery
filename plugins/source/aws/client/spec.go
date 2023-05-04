@@ -31,18 +31,19 @@ type AwsOrg struct {
 }
 
 type Spec struct {
-	Regions                   []string  `json:"regions,omitempty"`
-	Accounts                  []Account `json:"accounts"`
-	Organization              *AwsOrg   `json:"org"`
-	AWSDebug                  bool      `json:"aws_debug,omitempty"`
-	MaxRetries                *int      `json:"max_retries,omitempty"`
-	MaxBackoff                *int      `json:"max_backoff,omitempty"`
-	EndpointURL               string    `json:"custom_endpoint_url,omitempty"`
-	HostnameImmutable         *bool     `json:"custom_endpoint_hostname_immutable,omitempty"`
-	PartitionID               string    `json:"custom_endpoint_partition_id,omitempty"`
-	SigningRegion             string    `json:"custom_endpoint_signing_region,omitempty"`
-	InitializationConcurrency int       `json:"initialization_concurrency"`
-	UsePaidAPIs               bool      `json:"use_paid_apis"`
+	Regions                   []string      `json:"regions,omitempty"`
+	Accounts                  []Account     `json:"accounts"`
+	Organization              *AwsOrg       `json:"org"`
+	AWSDebug                  bool          `json:"aws_debug,omitempty"`
+	MaxRetries                *int          `json:"max_retries,omitempty"`
+	MaxBackoff                *int          `json:"max_backoff,omitempty"`
+	EndpointURL               string        `json:"custom_endpoint_url,omitempty"`
+	HostnameImmutable         *bool         `json:"custom_endpoint_hostname_immutable,omitempty"`
+	PartitionID               string        `json:"custom_endpoint_partition_id,omitempty"`
+	SigningRegion             string        `json:"custom_endpoint_signing_region,omitempty"`
+	InitializationConcurrency int           `json:"initialization_concurrency"`
+	UsePaidAPIs               bool          `json:"use_paid_apis"`
+	TableOptions              *TableOptions `json:"table_options,omitempty"`
 }
 
 func (s *Spec) Validate() error {
@@ -89,5 +90,8 @@ func validateOUs(ous []string) error {
 func (s *Spec) SetDefaults() {
 	if s.InitializationConcurrency <= 0 {
 		s.InitializationConcurrency = 4
+	}
+	if s.TableOptions == nil {
+		s.TableOptions = &TableOptions{}
 	}
 }
