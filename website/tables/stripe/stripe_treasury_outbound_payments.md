@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Treasury Outbound Payments.
 
-https://stripe.com/docs/api/treasury_outbound_payments
+https://stripe.com/docs/api/treasury/outbound_payments
 
 The primary key for this table is **id**.
 

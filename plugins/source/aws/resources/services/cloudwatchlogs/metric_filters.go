@@ -41,7 +41,9 @@ func fetchCloudwatchlogsMetricFilters(ctx context.Context, meta schema.ClientMet
 	svc := c.Services().Cloudwatchlogs
 	paginator := cloudwatchlogs.NewDescribeMetricFiltersPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cloudwatchlogs.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

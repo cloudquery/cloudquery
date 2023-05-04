@@ -59,7 +59,9 @@ func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, par
 	svc := c.Services().Apigatewayv2
 	// No paginator available
 	for {
-		response, err := svc.GetModels(ctx, &config)
+		response, err := svc.GetModels(ctx, &config, func(options *apigatewayv2.Options) {
+			options.Region = c.Region
+		})
 
 		if err != nil {
 			return err
@@ -83,7 +85,9 @@ func resolveApigatewayv2apiModelModelTemplate(ctx context.Context, meta schema.C
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
 
-	response, err := svc.GetModelTemplate(ctx, &config)
+	response, err := svc.GetModelTemplate(ctx, &config, func(options *apigatewayv2.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

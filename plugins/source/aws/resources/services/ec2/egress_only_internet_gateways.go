@@ -46,7 +46,9 @@ func fetchEc2EgressOnlyInternetGateways(ctx context.Context, meta schema.ClientM
 	input := ec2.DescribeEgressOnlyInternetGatewaysInput{}
 	paginator := ec2.NewDescribeEgressOnlyInternetGatewaysPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

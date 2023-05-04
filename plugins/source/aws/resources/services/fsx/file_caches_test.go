@@ -20,6 +20,7 @@ func buildFileCachesMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	m.EXPECT().DescribeFileCaches(
 		gomock.Any(),
 		gomock.Any(),
+		gomock.Any(),
 	).Return(
 		&fsx.DescribeFileCachesOutput{FileCaches: []types.FileCache{fc}},
 		nil,
@@ -29,6 +30,7 @@ func buildFileCachesMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	require.NoError(t, faker.FakeObject(&tags))
 
 	m.EXPECT().ListTagsForResource(
+		gomock.Any(),
 		gomock.Any(),
 		gomock.Any(),
 	).Return(

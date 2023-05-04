@@ -10,9 +10,12 @@ import (
 )
 
 func getIamInstance(ctx context.Context, meta schema.ClientMeta) (types.InstanceMetadata, error) {
-	svc := meta.(*client.Client).Services().Ssoadmin
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ssoadmin
 	config := ssoadmin.ListInstancesInput{}
-	response, err := svc.ListInstances(ctx, &config)
+	response, err := svc.ListInstances(ctx, &config, func(options *ssoadmin.Options) {
+		options.Region = cl.Region
+	})
 	if err == nil {
 		for _, i := range response.Instances {
 			return i, err

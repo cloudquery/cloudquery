@@ -40,7 +40,9 @@ func fetchLightsailDatabaseParameters(ctx context.Context, meta schema.ClientMet
 	svc := c.Services().Lightsail
 	// No paginator available
 	for {
-		response, err := svc.GetRelationalDatabaseParameters(ctx, &input)
+		response, err := svc.GetRelationalDatabaseParameters(ctx, &input, func(options *lightsail.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

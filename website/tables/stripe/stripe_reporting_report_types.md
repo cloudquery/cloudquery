@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Reporting Report Types.
 
-https://stripe.com/docs/api/reporting_report_types
+https://stripe.com/docs/api/reporting/report_type
 
 The primary key for this table is **id**.
 

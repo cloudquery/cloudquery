@@ -38,7 +38,9 @@ func fetchEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	}
 	paginator := redshift.NewDescribeEventsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *redshift.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

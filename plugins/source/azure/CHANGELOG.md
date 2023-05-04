@@ -5,6 +5,34 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.4.0...plugins-source-azure-v7.4.1) (2023-05-04)
+
+
+### Bug Fixes
+
+* **azure:** Storage Queue ACL should use storage keys and not OAuth ([#10554](https://github.com/cloudquery/cloudquery/issues/10554)) ([f590947](https://github.com/cloudquery/cloudquery/commit/f590947460cdec7b61a1d773dbfa8b8bf03dc98c))
+
+## [7.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.3.0...plugins-source-azure-v7.4.0) (2023-05-01)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_security_sub_assessments` was added
+- Table `azure_storage_queue_acl` was added
+
+### Features
+
+* **azure-resources:** Add `azure_security_sub_assessments` ([#10378](https://github.com/cloudquery/cloudquery/issues/10378)) ([68ec55b](https://github.com/cloudquery/cloudquery/commit/68ec55b8ddffbd8ed5c88cd8aeacf946bd3d1d56))
+* **azure-resources:** Add `azure_storage_queue_acl` table ([#10323](https://github.com/cloudquery/cloudquery/issues/10323)) ([b025adb](https://github.com/cloudquery/cloudquery/commit/b025adbf65404d569a52a66f39d5c3261d677e82))
+* **azure-resources:** Include signedIdentifiers in `azure_storage_tables` ([#10300](https://github.com/cloudquery/cloudquery/issues/10300)) ([d8a2a7b](https://github.com/cloudquery/cloudquery/commit/d8a2a7b80b15f7eb76be0d22d1c5797976d205da)), closes [#10142](https://github.com/cloudquery/cloudquery/issues/10142)
+
+
+### Bug Fixes
+
+* **azure:** Improve the query of CIS Azure v1.3.0 Section 7.7 ([#10012](https://github.com/cloudquery/cloudquery/issues/10012)) ([e206526](https://github.com/cloudquery/cloudquery/commit/e206526774b7587eb1d0b568a552158826de34cb))
+* **deps:** Update github.com/apache/arrow/go/v12 digest to 0ea1a10 ([#10461](https://github.com/cloudquery/cloudquery/issues/10461)) ([022709f](https://github.com/cloudquery/cloudquery/commit/022709f710cc6d95aee60260d6f58991698bbf42))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.0 ([#10390](https://github.com/cloudquery/cloudquery/issues/10390)) ([f706688](https://github.com/cloudquery/cloudquery/commit/f706688b2f5b8393d09d57020d31fb1d280f0dbd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.1 ([#10448](https://github.com/cloudquery/cloudquery/issues/10448)) ([cc85b93](https://github.com/cloudquery/cloudquery/commit/cc85b939fe945939caf72f8c08095e1e744b9ee8))
+
 ## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.2.0...plugins-source-azure-v7.3.0) (2023-04-25)
 
 

@@ -40,12 +40,14 @@ func ContactLists() *schema.Table {
 }
 
 func fetchSesContactLists(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sesv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sesv2
 
 	p := sesv2.NewListContactListsPaginator(svc, nil)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(o *sesv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -56,11 +58,16 @@ func fetchSesContactLists(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func getContactList(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sesv2
-	cl := resource.Item.(types.ContactList)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sesv2
+	item := resource.Item.(types.ContactList)
 
-	getOutput, err := svc.GetContactList(ctx, &sesv2.GetContactListInput{ContactListName: cl.ContactListName})
+	getOutput, err := svc.GetContactList(ctx,
+		&sesv2.GetContactListInput{ContactListName: item.ContactListName},
+		func(o *sesv2.Options) {
+			o.Region = cl.Region
+		},
+	)
 	if err != nil {
 		return err
 	}

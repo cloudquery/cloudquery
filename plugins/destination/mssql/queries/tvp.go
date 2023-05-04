@@ -4,7 +4,9 @@ import (
 	"database/sql"
 	"reflect"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v12/arrow/array"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	mssql "github.com/microsoft/go-mssqldb"
 )
 
@@ -18,18 +20,18 @@ type tvpProcQueryBuilder struct {
 	Values      []string
 }
 
-func tvpProcName(table *schema.Table) string {
+func tvpProcName(sc *arrow.Schema) string {
 	const pfx = "cq_proc_"
-	return pfx + table.Name
+	return pfx + schema.TableName(sc)
 }
 
-func tvpTableType(table *schema.Table) string {
+func tvpTableType(sc *arrow.Schema) string {
 	const pfx = "cq_tbl_"
-	return pfx + table.Name
+	return pfx + schema.TableName(sc)
 }
 
-func TVPDropProc(schemaName string, table *schema.Table) (query string, params []any) {
-	procName := tvpProcName(table)
+func TVPDropProc(schemaName string, sc *arrow.Schema) (query string, params []any) {
+	procName := tvpProcName(sc)
 	data := &tvpProcQueryBuilder{
 		Name: sanitizeID(schemaName, procName),
 	}
@@ -41,8 +43,8 @@ func TVPDropProc(schemaName string, table *schema.Table) (query string, params [
 		}
 }
 
-func TVPDropType(schemaName string, table *schema.Table) (query string, params []any) {
-	typeName := tvpTableType(table)
+func TVPDropType(schemaName string, sc *arrow.Schema) (query string, params []any) {
+	typeName := tvpTableType(sc)
 	data := &tvpProcQueryBuilder{
 		Type: sanitizeID(schemaName, typeName),
 	}
@@ -54,49 +56,58 @@ func TVPDropType(schemaName string, table *schema.Table) (query string, params [
 		}
 }
 
-func TVPAddProc(schemaName string, table *schema.Table) string {
+func TVPAddProc(schemaName string, sc *arrow.Schema) string {
 	data := &tvpProcQueryBuilder{
-		Name:        sanitizeID(schemaName, tvpProcName(table)),
-		Type:        sanitizeID(schemaName, tvpTableType(table)),
-		Table:       sanitizeID(schemaName, table.Name),
-		PK:          GetPKColumns(table),
-		Values:      GetValueColumns(table.Columns),
-		ColumnNames: sanitized(table.Columns.Names()...),
+		Name:        sanitizeID(schemaName, tvpProcName(sc)),
+		Type:        sanitizeID(schemaName, tvpTableType(sc)),
+		Table:       sanitizeID(schemaName, schema.TableName(sc)),
+		PK:          GetPKColumns(sc),
+		Values:      GetValueColumns(sc),
+		ColumnNames: sanitized(ColumnNames(sc)...),
 	}
 
 	return execTemplate("tvp_add_proc.sql.tpl", data)
 }
 
-func TVPAddType(schemaName string, table *schema.Table) string {
+func TVPAddType(schemaName string, sc *arrow.Schema) string {
 	data := &tvpProcQueryBuilder{
-		Type:    sanitizeID(schemaName, tvpTableType(table)),
-		Columns: GetDefinitions(table.Columns, true),
+		Type:    sanitizeID(schemaName, tvpTableType(sc)),
+		Columns: GetDefinitions(sc, true),
 	}
 
 	return execTemplate("tvp_add_type.sql.tpl", data)
 }
 
-func TVPQuery(schemaName string, table *schema.Table, data [][]any) (query string, params []any) {
-	tf := tableTransformer(table.Columns)
+func TVPQuery(schemaName string, sc *arrow.Schema, records []arrow.Record) (query string, params []any, err error) {
+	reader, err := array.NewRecordReader(sc, records)
+	if err != nil {
+		return "", nil, err
+	}
 
-	return "exec " + sanitizeID(schemaName, tvpProcName(table)) + " @TVP;",
+	rows, err := GetRows(reader)
+	if err != nil {
+		return "", nil, err
+	}
+
+	return "exec " + sanitizeID(schemaName, tvpProcName(sc)) + " @TVP;",
 		[]any{
 			sql.Named("TVP", mssql.TVP{
-				TypeName: sanitizeID(schemaName, tvpTableType(table)),
-				Value:    tf(data),
+				TypeName: sanitizeID(schemaName, tvpTableType(sc)),
+				Value:    tableTransformer(sc)(rows),
 			}),
-		}
+		},
+		nil
 }
 
 type transformer func([][]any) any
 
-func tableTransformer(columns schema.ColumnList) transformer {
+func tableTransformer(sc *arrow.Schema) transformer {
 	// 1 prep the fields
-	fld := make([]reflect.StructField, len(columns))
-	for i, col := range columns {
+	fld := make([]reflect.StructField, len(sc.Fields()))
+	for i, field := range sc.Fields() {
 		fld[i] = reflect.StructField{
-			Name: "Fld_" + col.Name,
-			Type: columnGoType(col.Type),
+			Name: "Fld_" + field.Name,
+			Type: reflect.PointerTo(columnGoType(field.Type)), // to account for nullability
 		}
 	}
 
@@ -109,8 +120,7 @@ func tableTransformer(columns schema.ColumnList) transformer {
 		for i, elem := range rowData {
 			val := reflect.ValueOf(elem)
 			switch {
-			case elem == nil:
-			case val.IsZero():
+			case elem == nil, val.IsNil():
 			default:
 				v.Field(i).Set(val)
 			}
