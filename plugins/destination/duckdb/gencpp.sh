@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ "${GOOS}" = "windows" ]; then
-  x86_64-w64-mingw32-g++ $@
+  x86_64-w64-mingw32-g++-posix $@
 elif [ "${GOOS}" = "linux" ]; then
   g++ $@
 elif [ "${GOOS}" = "darwin" ]; then
