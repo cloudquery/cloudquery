@@ -58,12 +58,20 @@ func migrate(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	defer managedSourceClients.Terminate()
+	defer func() {
+		if err := managedSourceClients.Terminate(); err != nil {
+			fmt.Println(err)
+		}
+	}()
 	managedDestinationsClients, err := manageddestination.NewClients(ctx, destinations, destinationOpts...)
 	if err != nil {
 		return err
 	}
-	defer managedDestinationsClients.Terminate()
+	defer func() {
+		if err := managedDestinationsClients.Terminate(); err != nil {
+			fmt.Println(err)
+		}
+	}()
 
 	for _, cl := range managedSourceClients {
 		maxVersion, err := cl.MaxVersion(ctx)

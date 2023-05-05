@@ -52,7 +52,7 @@ func initAnalytics() (*AnalyticsClient, error) {
 	}, nil
 }
 
-func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, m *metrics.Metrics, exitReason string) error {
+func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, m *metrics.Metrics) error {
 	if m == nil {
 		// handle nil metrics
 		m = &metrics.Metrics{TableClient: map[string]map[string]*metrics.TableClientMetrics{}}
@@ -71,7 +71,6 @@ func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.
 			Errors:          int64(m.TotalErrors()),
 			Panics:          int64(m.TotalPanics()),
 			ClientVersion:   Version,
-			ExitReason:      exitReason,
 		}
 		for _, destinationSpec := range destinationsSpecs {
 			destPath := destinationSpec.Path

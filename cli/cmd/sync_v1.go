@@ -19,6 +19,7 @@ import (
 )
 
 func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, destinationsClients manageddestination.Clients, uid string, noMigrate bool) error {
+	var mt metrics.Metrics
 	syncTime := time.Now().UTC()
 	sourceSpec := sourceClient.Spec
 	destinationStrings := destinationsClients.Names()
@@ -122,6 +123,11 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 	var m metrics.Metrics
 	if err := json.Unmarshal(getMetricsRes.Metrics, &m); err != nil {
 		return err
+	}
+
+	log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
+	if err := analyticsClient.SendSyncMetrics(ctx, sourceClient.Spec, destinationsClients.Specs(), uid, &mt); err != nil {
+		log.Warn().Err(err).Msg("Failed to send sync summary")
 	}
 
 	syncTimeTook := time.Since(syncTime)

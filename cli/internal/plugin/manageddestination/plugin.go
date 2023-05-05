@@ -92,11 +92,11 @@ func (c Clients) ClientsByNames(names []string) []*Client {
 }
 
 func (c Clients) Specs() []specs.Destination {
-	specs := make([]specs.Destination, len(c))
+	destSpecs := make([]specs.Destination, len(c))
 	for i, client := range c {
-		specs[i] = client.Spec
+		destSpecs[i] = client.Spec
 	}
-	return specs
+	return destSpecs
 }
 
 func (c Clients) Names() []string {

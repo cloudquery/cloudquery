@@ -61,23 +61,39 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
-	var sourceOpts []managedsource.Option
-	var destinationOpts []manageddestination.Option
+	sourceOpts := []managedsource.Option{
+		managedsource.WithLogger(log.Logger),
+	}
+	destinationOpts := []manageddestination.Option{
+		manageddestination.WithLogger(log.Logger),
+	}
 	if cqDir != "" {
 		sourceOpts = append(sourceOpts, managedsource.WithDirectory(cqDir))
 		destinationOpts = append(destinationOpts, manageddestination.WithDirectory(cqDir))
+	}
+	if disableSentry {
+		sourceOpts = append(sourceOpts, managedsource.WithNoSentry())
+		destinationOpts = append(destinationOpts, manageddestination.WithNoSentry())
 	}
 
 	sourcesClients, err := managedsource.NewClients(ctx, sources, sourceOpts...)
 	if err != nil {
 		return err
 	}
-	defer sourcesClients.Terminate()
+	defer func() {
+		if err := sourcesClients.Terminate(); err != nil {
+			fmt.Println(err)
+		}
+	}()
 	destinationsClients, err := manageddestination.NewClients(ctx, destinations, destinationOpts...)
 	if err != nil {
 		return err
 	}
-	defer destinationsClients.Terminate()
+	defer func() {
+		if err := destinationsClients.Terminate(); err != nil {
+			fmt.Println(err)
+		}
+	}()
 
 	for _, cl := range sourcesClients {
 		maxVersion, err := cl.MaxVersion(ctx)

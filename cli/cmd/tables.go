@@ -68,7 +68,11 @@ func tables(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	defer sourceClients.Terminate()
+	defer func() {
+		if err := sourceClients.Terminate(); err != nil {
+			fmt.Println(err)
+		}
+	}()
 	for _, sourceClient := range sourceClients {
 		outputPath := path.Join(outputDir, sourceClient.Spec.Name)
 		pbSourceClient := source.NewSourceClient(sourceClient.Conn)

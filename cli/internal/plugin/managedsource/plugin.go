@@ -209,7 +209,7 @@ func (c *Client) MaxVersion(ctx context.Context) (int, error) {
 	versionsRes, err := discoveryClient.GetVersions(ctx, &discovery.GetVersions_Request{})
 	if err != nil {
 		// If we get an error here, we assume that the plugin is not a v1 plugin and we try to sync it as a v0 plugin
-		// this is for backward compatability where we used incorrect versioning mechanism
+		// this is for backward compatibility where we used incorrect versioning mechanism
 		oldDiscoveryClient := source.NewSourceClient(c.Conn)
 		versionRes, err := oldDiscoveryClient.GetProtocolVersion(ctx, &base.GetProtocolVersion_Request{})
 		if err != nil {

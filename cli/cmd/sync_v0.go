@@ -129,6 +129,11 @@ func syncConnectionV0_2(ctx context.Context, sourceClient *managedsource.Client,
 		return err
 	}
 
+	log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
+	if err := analyticsClient.SendSyncMetrics(ctx, sourceClient.Spec, destinationsClients.Specs(), uid, &m); err != nil {
+		log.Warn().Err(err).Msg("Failed to send sync summary")
+	}
+
 	syncTimeTook := time.Since(syncTime)
 	fmt.Printf("Sync completed successfully. Resources: %d, Errors: %d, Panics: %d, Time: %s\n", m.TotalResources(), m.TotalErrors(), m.TotalPanics(), syncTimeTook.Truncate(time.Second).String())
 	return nil
