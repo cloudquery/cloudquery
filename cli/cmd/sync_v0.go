@@ -34,20 +34,9 @@ func syncConnectionV0_2(ctx context.Context, sourceClient *source.Client, destin
 		return err
 	}
 
-	var tablesBytes []byte
-	getTablesForSpecRes, err := sourcePbClient.GetTablesForSpec(ctx, &pbSource.GetTablesForSpec_Request{
-		Spec: specBytes,
-	})
-	if isUnimplemented(err) {
-		getTablesRes, err := sourcePbClient.GetTables(ctx, &pbSource.GetTables_Request{})
-		if err != nil {
-			return err
-		}
-		tablesBytes = getTablesRes.Tables
-	} else if err != nil {
+	tablesBytes, err := getTablesForSpec(ctx, sourcePbClient, specBytes)
+	if err != nil {
 		return err
-	} else {
-		tablesBytes = getTablesForSpecRes.Tables
 	}
 
 	if !noMigrate {
@@ -124,3 +113,25 @@ func syncConnectionV0_2(ctx context.Context, sourceClient *source.Client, destin
 	return nil
 }
 
+
+
+// getTablesForSpec first tries the newer GetTablesForSpec call, but if it is not available, falls back to
+// GetTables. The returned `supported` value indicates whether GetTablesForSpec was supported by the server.
+func getTablesForSpec(ctx context.Context, sourceClient pbSource.SourceClient, specSourceBytes []byte) (tables []byte, err error) {
+	getTablesForSpecRes, err := sourceClient.GetTablesForSpec(ctx, &pbSource.GetTablesForSpec_Request{
+		Spec: specSourceBytes,
+	})
+	if isUnimplemented(err) {
+		// the plugin server does not support GetTablesForSpec. Fall back to GetTables.
+		getTablesRes, err := sourceClient.GetTables(ctx, &pbSource.GetTables_Request{})
+		if err != nil {
+			return getTablesRes.Tables, fmt.Errorf("failed to call GetTables: %w", err)
+		}
+		return tables, nil
+	} else if err != nil {
+		// the method is supported, but failed for some other reason
+		return nil, fmt.Errorf("failed to call GetTablesForSpec: %w", err)
+	}
+
+	return getTablesForSpecRes.Tables, nil
+}

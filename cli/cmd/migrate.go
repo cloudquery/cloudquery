@@ -71,11 +71,13 @@ func migrate(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return err
 		}
+		destinationsForSource := specReader.GetDestinationNamesForSource(cl.Spec.Name)
+		destinationsClientsForSource := destinationsClients.ClientsByNames(destinationsForSource)
 		switch maxVersion {
 			case 1:
-				return migrateConnectionV1(ctx, cl, destinationsClients)
+				return migrateConnectionV1(ctx, cl, destinationsClientsForSource)
 			case 0:
-				return migrateConnectionV0(ctx, cl, destinationsClients)
+				return migrateConnectionV0(ctx, cl, destinationsClientsForSource)
 			default:
 				return fmt.Errorf("unknown version %d", maxVersion)
 		}

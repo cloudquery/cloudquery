@@ -8,8 +8,8 @@ import (
 	"path"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/internal/pb"
 	"github.com/cloudquery/plugin-pb-go/metrics"
+	"github.com/cloudquery/plugin-pb-go/pb/analytics/v0"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -21,7 +21,7 @@ const (
 )
 
 type AnalyticsClient struct {
-	client pb.AnalyticsClient
+	client analytics.AnalyticsClient
 	conn   *grpc.ClientConn
 	host   string
 }
@@ -46,7 +46,7 @@ func initAnalytics() (*AnalyticsClient, error) {
 		return nil, fmt.Errorf("failed to dial analytics host %v: %w", host, err)
 	}
 	return &AnalyticsClient{
-		client: pb.NewAnalyticsClient(conn),
+		client: analytics.NewAnalyticsClient(conn),
 		conn:   conn,
 		host:   host,
 	}, nil
@@ -62,11 +62,11 @@ func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.
 		if sourceSpec.Registry == specs.RegistryLocal || sourceSpec.Registry == specs.RegistryGrpc {
 			_, sourcePath = path.Split(sourceSpec.Path)
 		}
-		syncSummary := &pb.SyncSummary{
+		syncSummary := &analytics.SyncSummary{
 			Invocation_UUID: invocationUUID,
 			SourcePath:      sourcePath,
 			SourceVersion:   sourceSpec.Version,
-			Destinations:    make([]*pb.Destination, 0, 1),
+			Destinations:    make([]*analytics.Destination, 0, 1),
 			Resources:       int64(m.TotalResources()),
 			Errors:          int64(m.TotalErrors()),
 			Panics:          int64(m.TotalPanics()),
@@ -78,13 +78,13 @@ func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.
 			if destinationSpec.Registry == specs.RegistryLocal || destinationSpec.Registry == specs.RegistryGrpc {
 				_, destPath = path.Split(destinationSpec.Path)
 			}
-			syncSummary.Destinations = append(syncSummary.Destinations, &pb.Destination{
+			syncSummary.Destinations = append(syncSummary.Destinations, &analytics.Destination{
 				Path:    destPath,
 				Version: destinationSpec.Version,
 			})
 		}
 
-		_, err := c.client.SendEvent(ctx, &pb.Event_Request{
+		_, err := c.client.SendEvent(ctx, &analytics.Event_Request{
 			SyncSummary: syncSummary,
 		})
 		return err

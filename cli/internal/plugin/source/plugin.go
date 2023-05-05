@@ -19,7 +19,6 @@ import (
 	"github.com/cloudquery/plugin-pb-go/pb/discovery/v0"
 	"github.com/cloudquery/plugin-pb-go/pb/source/v0"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/registry"
 	"github.com/rs/zerolog"
 	"golang.org/x/exp/slices"
 	"google.golang.org/grpc"
@@ -132,9 +131,12 @@ func NewClient(ctx context.Context, spec specs.Source, opts ...PluginOption) (*C
 			return nil, fmt.Errorf("invalid github plugin path: %s. format should be owner/repo", spec.Path)
 		}
 		org, name := pathSplit[0], pathSplit[1]
-		localPath := filepath.Join(c.directory, "plugins", string(registry.PluginTypeDestination), org, name, spec.Version, "plugin")
-		localPath = registry.WithBinarySuffix(localPath)
+		localPath := filepath.Join(c.directory, "plugins", string(download.PluginTypeDestination), org, name, spec.Version, "plugin")
+		localPath = download.WithBinarySuffix(localPath)
 		if err := download.DownloadPluginFromGithub(ctx, localPath, org, name, spec.Version, download.PluginTypeSource); err != nil {
+			return nil, err
+		}
+		if err := c.startLocal(ctx, localPath); err != nil {
 			return nil, err
 		}
 	}

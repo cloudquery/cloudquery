@@ -5,8 +5,9 @@ import (
 	"path"
 	"strings"
 
-	source "github.com/cloudquery/plugin-sdk/v2/clients/source/v1"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/source"
+	pbSource "github.com/cloudquery/plugin-pb-go/pb/source/v1"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -57,27 +58,23 @@ func tables(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
-
-	for _, sourceSpec := range specReader.Sources {
-		opts := []source.ClientOption{
-			source.WithLogger(log.Logger),
-			source.WithDirectory(cqDir),
-		}
-		sourceClient, err := source.NewClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version, opts...)
-		if err != nil {
-			return fmt.Errorf("failed to create source client. Error: %w", err)
-		}
-
-		outputPath := path.Join(outputDir, sourceSpec.Name)
-		fmt.Printf("Generating docs for: %s to %s\n", sourceSpec.VersionString(), outputPath)
-		err = sourceClient.GenDocs(ctx, outputPath, format)
-		if err != nil {
-			return fmt.Errorf("failed to generate docs. Error: %w", err)
-		}
-
-		err = sourceClient.Terminate()
-		if err != nil {
-			fmt.Println("Failed to terminate source client. Error: ", err)
+	opts := []source.PluginOption{
+		source.WithLogger(log.Logger),
+		source.WithDirectory(cqDir),
+	}
+	sourceClients, err := source.NewClients(ctx, specReader.Sources, opts...)
+	if err != nil {
+		return err
+	}
+	defer sourceClients.Terminate()
+	for _, sourceClient := range sourceClients {
+		outputPath := path.Join(outputDir, sourceClient.Spec.Name)
+		pbSourceClient := pbSource.NewSourceClient(sourceClient.Conn)
+		if _, err := pbSourceClient.GenDocs(ctx, &pbSource.GenDocs_Request{
+			Format:    pbSource.GenDocs_FORMAT(pbSource.GenDocs_FORMAT_value[format]),
+			Path: outputPath,
+		}); err != nil {
+			return err
 		}
 	}
 
