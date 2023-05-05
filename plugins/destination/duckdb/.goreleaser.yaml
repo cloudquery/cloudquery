@@ -21,9 +21,8 @@ builds:
       - GO111MODULE=on
       - CC=/usr/bin/gencc.sh
       - CXX=/usr/bin/gencpp.sh
-      - CGO_CFLAGS="-ffunction-sections -fdata-sections"
     ldflags:
-      - -s -w -Wl,-gc-sections -Wa,-mbig-obj -O2 -extldflags '-Wl,-gc-sections -Wa,-mbig-obj -O2' -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
+      - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
     goos:
       - windows
       #- linux

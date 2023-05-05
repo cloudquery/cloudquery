@@ -11,7 +11,9 @@ require (
 
 replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230424203127-ca31eee92780
 
-replace github.com/marcboeker/go-duckdb v1.2.2 => github.com/cloudquery/go-duckdb v0.0.0-20230504105749-ab7880c0c423
+replace github.com/marcboeker/go-duckdb v1.2.2 => github.com/cloudquery/go-duckdb v0.0.0-20230505150417-305e8fab6260
+
+// replace github.com/marcboeker/go-duckdb v1.2.2 => ../go-duckdb
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
