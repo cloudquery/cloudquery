@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/destination"
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/source"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -47,39 +47,38 @@ func migrate(cmd *cobra.Command, args []string) error {
 	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
-	var sourceOpts []source.PluginOption
-	var destinationOpts []destination.PluginOption
+	var sourceOpts []managedsource.Option
+	var destinationOpts []manageddestination.Option
 	if cqDir != "" {
-		sourceOpts = append(sourceOpts, source.WithDirectory(cqDir))
-		destinationOpts = append(destinationOpts, destination.WithDirectory(cqDir))
+		sourceOpts = append(sourceOpts, managedsource.WithDirectory(cqDir))
+		destinationOpts = append(destinationOpts, manageddestination.WithDirectory(cqDir))
 	}
 
-	sourcesClients, err := source.NewClients(ctx, sources, sourceOpts...)
+	managedSourceClients, err := managedsource.NewClients(ctx, sources, sourceOpts...)
 	if err != nil {
 		return err
 	}
-	defer sourcesClients.Terminate()
-	destinationsClients, err := destination.NewClients(ctx, destinations, destinationOpts...)
+	defer managedSourceClients.Terminate()
+	managedDestinationsClients, err := manageddestination.NewClients(ctx, destinations, destinationOpts...)
 	if err != nil {
 		return err
 	}
-	defer destinationsClients.Terminate()
+	defer managedDestinationsClients.Terminate()
 
-
-	for _, cl := range sourcesClients {
+	for _, cl := range managedSourceClients {
 		maxVersion, err := cl.MaxVersion(ctx)
 		if err != nil {
 			return err
 		}
 		destinationsForSource := specReader.GetDestinationNamesForSource(cl.Spec.Name)
-		destinationsClientsForSource := destinationsClients.ClientsByNames(destinationsForSource)
+		destinationsClientsForSource := managedDestinationsClients.ClientsByNames(destinationsForSource)
 		switch maxVersion {
-			case 1:
-				return migrateConnectionV1(ctx, cl, destinationsClientsForSource)
-			case 0:
-				return migrateConnectionV0(ctx, cl, destinationsClientsForSource)
-			default:
-				return fmt.Errorf("unknown version %d", maxVersion)
+		case 1:
+			return migrateConnectionV1(ctx, cl, destinationsClientsForSource)
+		case 0:
+			return migrateConnectionV0(ctx, cl, destinationsClientsForSource)
+		default:
+			return fmt.Errorf("unknown version %d", maxVersion)
 		}
 	}
 	return nil

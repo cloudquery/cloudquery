@@ -1,4 +1,4 @@
-package source
+package managedsource
 
 import (
 	"math/rand"
@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 	"time"
 )
-
 
 var unixSocketDir = os.TempDir()
 

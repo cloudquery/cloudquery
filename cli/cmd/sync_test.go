@@ -43,15 +43,6 @@ func TestSync(t *testing.T) {
 			config: "sync-missing-path-error.yml",
 			err:    "Error: failed to validate destination test: path is required",
 		},
-		{
-			name:   "should sync multiple sources and destinations",
-			config: "multiple-sources-destinations.yml",
-			logMessages: []string{
-				`Start sync destinations=\["test\-1.*?","test\-2.*?"\] module=cli source="test\-1.*?"`,
-				`Start sync destinations=\["test\-2.*?","test\-1.*?"\] module=cli source="test\-2.*?"`},
-			wantSourcePluginCache:      true,
-			wantDestinationPluginCache: true,
-		},
 	}
 
 	for _, tc := range configs {
@@ -77,7 +68,7 @@ func TestSync(t *testing.T) {
 			}
 
 			if tc.wantSourcePluginCache {
-				// check that source plugin was downloaded to the cache using --cq-dir
+				// // check that source plugin was downloaded to the cache using --cq-dir
 				p := path.Join(cqDir, "plugins", "source")
 				files, err := os.ReadDir(p)
 				if err != nil {

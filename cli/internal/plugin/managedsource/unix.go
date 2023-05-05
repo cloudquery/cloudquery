@@ -1,6 +1,6 @@
 //go:build !windows
 
-package destination
+package managedsource
 
 import (
 	"fmt"

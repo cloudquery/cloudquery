@@ -5,8 +5,8 @@ import (
 	"path"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/source"
-	pbSource "github.com/cloudquery/plugin-pb-go/pb/source/v1"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
+	"github.com/cloudquery/plugin-pb-go/pb/source/v1"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -58,21 +58,21 @@ func tables(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
-	opts := []source.PluginOption{
-		source.WithLogger(log.Logger),
-		source.WithDirectory(cqDir),
+	opts := []managedsource.Option{
+		managedsource.WithLogger(log.Logger),
+		managedsource.WithDirectory(cqDir),
 	}
-	sourceClients, err := source.NewClients(ctx, specReader.Sources, opts...)
+	sourceClients, err := managedsource.NewClients(ctx, specReader.Sources, opts...)
 	if err != nil {
 		return err
 	}
 	defer sourceClients.Terminate()
 	for _, sourceClient := range sourceClients {
 		outputPath := path.Join(outputDir, sourceClient.Spec.Name)
-		pbSourceClient := pbSource.NewSourceClient(sourceClient.Conn)
-		if _, err := pbSourceClient.GenDocs(ctx, &pbSource.GenDocs_Request{
-			Format:    pbSource.GenDocs_FORMAT(pbSource.GenDocs_FORMAT_value[format]),
-			Path: outputPath,
+		pbSourceClient := source.NewSourceClient(sourceClient.Conn)
+		if _, err := pbSourceClient.GenDocs(ctx, &source.GenDocs_Request{
+			Format: source.GenDocs_FORMAT(source.GenDocs_FORMAT_value[format]),
+			Path:   outputPath,
 		}); err != nil {
 			return err
 		}

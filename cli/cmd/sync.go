@@ -6,8 +6,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/destination"
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/source"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -61,19 +61,19 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
-	var sourceOpts []source.PluginOption
-	var destinationOpts []destination.PluginOption
+	var sourceOpts []managedsource.Option
+	var destinationOpts []manageddestination.Option
 	if cqDir != "" {
-		sourceOpts = append(sourceOpts, source.WithDirectory(cqDir))
-		destinationOpts = append(destinationOpts, destination.WithDirectory(cqDir))
+		sourceOpts = append(sourceOpts, managedsource.WithDirectory(cqDir))
+		destinationOpts = append(destinationOpts, manageddestination.WithDirectory(cqDir))
 	}
 
-	sourcesClients, err := source.NewClients(ctx, sources, sourceOpts...)
+	sourcesClients, err := managedsource.NewClients(ctx, sources, sourceOpts...)
 	if err != nil {
 		return err
 	}
 	defer sourcesClients.Terminate()
-	destinationsClients, err := destination.NewClients(ctx, destinations, destinationOpts...)
+	destinationsClients, err := manageddestination.NewClients(ctx, destinations, destinationOpts...)
 	if err != nil {
 		return err
 	}
@@ -99,7 +99,5 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-
-	
 	return nil
 }

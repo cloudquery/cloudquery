@@ -7,40 +7,39 @@ import (
 	"io"
 	"time"
 
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/destination"
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/source"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
 	"github.com/cloudquery/plugin-pb-go/metrics"
-	pbdestination "github.com/cloudquery/plugin-pb-go/pb/destination/v0"
-	pbSource "github.com/cloudquery/plugin-pb-go/pb/source/v1"
+	"github.com/cloudquery/plugin-pb-go/pb/base/v0"
+	"github.com/cloudquery/plugin-pb-go/pb/destination/v0"
+	"github.com/cloudquery/plugin-pb-go/pb/source/v1"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-
-
-func syncConnectionV1(ctx context.Context, sourceClient *source.Client, destinationsClients destination.Clients, uid string, noMigrate bool) error {
+func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, destinationsClients manageddestination.Clients, uid string, noMigrate bool) error {
 	syncTime := time.Now().UTC()
 	sourceSpec := sourceClient.Spec
 	destinationStrings := destinationsClients.Names()
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("Start sync")
 	defer log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("End sync")
 
-	sourcePbClient := pbSource.NewSourceClient(sourceClient.Conn)
-	destinationsPbClients := make([]pbdestination.DestinationClient, len(destinationsClients))
+	sourcePbClient := source.NewSourceClient(sourceClient.Conn)
+	destinationsPbClients := make([]destination.DestinationClient, len(destinationsClients))
 	for i := range destinationsClients {
-		destinationsPbClients[i] = pbdestination.NewDestinationClient(destinationsClients[i].Conn)
+		destinationsPbClients[i] = destination.NewDestinationClient(destinationsClients[i].Conn)
 	}
 	specBytes, err := json.Marshal(sourceClient.Spec)
 	if err != nil {
 		return err
 	}
-	if _, err := sourcePbClient.Init(ctx, &pbSource.Init_Request{
+	if _, err := sourcePbClient.Init(ctx, &source.Init_Request{
 		Spec: specBytes,
 	}); err != nil {
 		return err
 	}
-	tablesRes, err := sourcePbClient.GetDynamicTables(ctx, &pbSource.GetDynamicTables_Request{})
+	tablesRes, err := sourcePbClient.GetDynamicTables(ctx, &source.GetDynamicTables_Request{})
 	if err != nil {
 		return err
 	}
@@ -49,7 +48,16 @@ func syncConnectionV1(ctx context.Context, sourceClient *source.Client, destinat
 		migrateStart := time.Now().UTC()
 		fmt.Printf("Starting migration with for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 		for i := range destinationsClients {
-			if _, err := destinationsPbClients[i].Migrate(ctx, &pbdestination.Migrate_Request{
+			destSpecBytes, err := json.Marshal(destinationsClients[i].Spec)
+			if err != nil {
+				return err
+			}
+			if _, err := destinationsPbClients[i].Configure(ctx, &base.Configure_Request{
+				Config: destSpecBytes,
+			}); err != nil {
+				return err
+			}
+			if _, err := destinationsPbClients[i].Migrate(ctx, &destination.Migrate_Request{
 				Tables: tablesRes.Tables,
 			}); err != nil {
 				return err
@@ -67,19 +75,19 @@ func syncConnectionV1(ctx context.Context, sourceClient *source.Client, destinat
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start fetching resources")
 	fmt.Printf("Starting sync for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 
-	syncClient, err := sourcePbClient.Sync(ctx, &pbSource.Sync_Request{})
+	syncClient, err := sourcePbClient.Sync(ctx, &source.Sync_Request{})
 	if err != nil {
 		return err
 	}
-	writeClients := make([]pbdestination.Destination_Write2Client, len(destinationsPbClients))
+	writeClients := make([]destination.Destination_Write2Client, len(destinationsPbClients))
 	for i := range destinationsPbClients {
 		writeClients[i], err = destinationsPbClients[i].Write2(ctx)
 		if err != nil {
 			return err
 		}
-		writeClients[i].Send(&pbdestination.Write2_Request{
-			Source: sourceClient.Spec.Name,
-			Tables: tablesRes.Tables,
+		writeClients[i].Send(&destination.Write2_Request{
+			Source:    sourceClient.Spec.Name,
+			Tables:    tablesRes.Tables,
 			Timestamp: timestamppb.New(syncTime),
 		})
 	}
@@ -98,14 +106,14 @@ func syncConnectionV1(ctx context.Context, sourceClient *source.Client, destinat
 		}
 		_ = bar.Add(1)
 		for i := range destinationsPbClients {
-			if err := writeClients[i].Send(&pbdestination.Write2_Request{
+			if err := writeClients[i].Send(&destination.Write2_Request{
 				Resource: r.Resource,
 			}); err != nil {
 				return err
 			}
 		}
 	}
-	getMetricsRes, err := sourcePbClient.GetMetrics(ctx, &pbSource.GetMetrics_Request{})
+	getMetricsRes, err := sourcePbClient.GetMetrics(ctx, &source.GetMetrics_Request{})
 	if err != nil {
 		return err
 	}
@@ -118,4 +126,3 @@ func syncConnectionV1(ctx context.Context, sourceClient *source.Client, destinat
 	fmt.Printf("Sync completed successfully. Resources: %d, Errors: %d, Panics: %d, Time: %s\n", m.TotalResources(), m.TotalErrors(), m.TotalPanics(), syncTimeTook.Truncate(time.Second).String())
 	return nil
 }
-

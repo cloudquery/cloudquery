@@ -92,7 +92,6 @@ func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.
 	return nil
 }
 
-
 func (c *AnalyticsClient) Host() string {
 	return c.host
 }

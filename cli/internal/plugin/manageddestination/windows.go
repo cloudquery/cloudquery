@@ -1,6 +1,6 @@
 //go:build windows
 
-package destination
+package manageddestination
 
 func getSysProcAttr() *syscall.SysProcAttr {
 	return &syscall.SysProcAttr{
@@ -27,4 +27,3 @@ func (c *Client) terminateProcess() error {
 
 	return nil
 }
-

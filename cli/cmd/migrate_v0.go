@@ -6,14 +6,14 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/destination"
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/source"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
 	pbdestination "github.com/cloudquery/plugin-pb-go/pb/destination/v0"
 	pbSource "github.com/cloudquery/plugin-pb-go/pb/source/v0"
 	"github.com/rs/zerolog/log"
 )
 
-func migrateConnectionV0(ctx context.Context, sourceClient *source.Client, destinationsClients destination.Clients) error {
+func migrateConnectionV0(ctx context.Context, sourceClient *managedsource.Client, destinationsClients manageddestination.Clients) error {
 	sourceSpec := sourceClient.Spec
 	destinationStrings := destinationsClients.Names()
 	migrateStart := time.Now().UTC()

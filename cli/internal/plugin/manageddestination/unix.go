@@ -1,6 +1,6 @@
 //go:build !windows
 
-package source
+package manageddestination
 
 import (
 	"fmt"

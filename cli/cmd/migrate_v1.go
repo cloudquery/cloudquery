@@ -6,26 +6,25 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/destination"
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/source"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
 	pbBase "github.com/cloudquery/plugin-pb-go/pb/base/v0"
 	pbdestination "github.com/cloudquery/plugin-pb-go/pb/destination/v0"
 	pbSource "github.com/cloudquery/plugin-pb-go/pb/source/v1"
 	"github.com/rs/zerolog/log"
 )
 
-
-func migrateConnectionV1(ctx context.Context, sourceClient *source.Client, destinationsClients destination.Clients) error {
+func migrateConnectionV1(ctx context.Context, sourceClient *managedsource.Client, managedDestinationsClients manageddestination.Clients) error {
 	sourceSpec := sourceClient.Spec
-	destinationStrings := destinationsClients.Names()
+	destinationStrings := managedDestinationsClients.Names()
 	migrateStart := time.Now().UTC()
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationStrings).Time("migrate_time", migrateStart).Msg("Start migration")
 	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationStrings).Time("migrate_time", migrateStart).Msg("End migration")
 
 	sourcePbClient := pbSource.NewSourceClient(sourceClient.Conn)
-	destinationsPbClients := make([]pbdestination.DestinationClient, len(destinationsClients))
-	for i := range destinationsClients {
-		destinationsPbClients[i] = pbdestination.NewDestinationClient(destinationsClients[i].Conn)
+	destinationsPbClients := make([]pbdestination.DestinationClient, len(managedDestinationsClients))
+	for i := range managedDestinationsClients {
+		destinationsPbClients[i] = pbdestination.NewDestinationClient(managedDestinationsClients[i].Conn)
 	}
 	specBytes, err := json.Marshal(sourceClient.Spec)
 	if err != nil {
@@ -42,8 +41,8 @@ func migrateConnectionV1(ctx context.Context, sourceClient *source.Client, desti
 	}
 
 	fmt.Printf("Starting migration with for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
-	for i := range destinationsClients {
-		destSpecBytes, err := json.Marshal(destinationsClients[i].Spec)
+	for i := range managedDestinationsClients {
+		destSpecBytes, err := json.Marshal(managedDestinationsClients[i].Spec)
 		if err != nil {
 			return err
 		}

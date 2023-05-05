@@ -1,4 +1,4 @@
-package destination
+package managedsource
 
 import (
 	"context"
@@ -15,6 +15,9 @@ import (
 
 	"github.com/cloudquery/cloudquery/cli/internal/download"
 	"github.com/cloudquery/cloudquery/cli/internal/logging"
+	"github.com/cloudquery/plugin-pb-go/pb/base/v0"
+	"github.com/cloudquery/plugin-pb-go/pb/discovery/v0"
+	"github.com/cloudquery/plugin-pb-go/pb/source/v0"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog"
 	"golang.org/x/exp/slices"
@@ -23,9 +26,11 @@ import (
 )
 
 const (
-	defaultDownloadDir               = ".cq"
-	maxMsgSize = 100 * 1024 * 1024 // 100 MiB
+	defaultDownloadDir = ".cq"
+	maxMsgSize         = 100 * 1024 * 1024 // 100 MiB
 )
+
+type Clients []*Client
 
 type Client struct {
 	directory      string
@@ -34,13 +39,11 @@ type Client struct {
 	grpcSocketName string
 	wg             *sync.WaitGroup
 	Conn           *grpc.ClientConn
-	Spec           specs.Destination
-	noSentry 			 bool
+	Spec           specs.Source
+	noSentry       bool
 }
 
-type Clients []*Client
-
-type PluginOption func(*Client)
+type Option func(*Client)
 
 func WithLogger(logger zerolog.Logger) func(*Client) {
 	return func(c *Client) {
@@ -54,14 +57,13 @@ func WithDirectory(directory string) func(*Client) {
 	}
 }
 
-
 func WithNoSentry() func(*Client) {
 	return func(c *Client) {
 		c.noSentry = true
 	}
 }
 
-func NewClients(ctx context.Context, specs []*specs.Destination, opts ...PluginOption) (Clients, error) {
+func NewClients(ctx context.Context, specs []*specs.Source, opts ...Option) (Clients, error) {
 	clients := make(Clients, len(specs))
 	for i, spec := range specs {
 		client, err := NewClient(ctx, *spec, opts...)
@@ -82,32 +84,6 @@ func (c Clients) ClientByName(name string) *Client {
 	return nil
 }
 
-func (c Clients) ClientsByNames(names []string) []*Client {
-	clients := make([]*Client, len(names))
-	for i, client := range c {
-		if slices.Contains(names, client.Spec.Name) {
-			clients[i] = client
-		}
-	}
-	return clients
-}
-
-func (c Clients) Specs() []specs.Destination {
-	specs := make([]specs.Destination, len(c))
-	for i, client := range c {
-		specs[i] = client.Spec
-	}
-	return specs
-}
-
-func (c Clients) Names() []string {
-	names := make([]string, len(c))
-	for i, client := range c {
-		names[i] = client.Spec.Name
-	}
-	return names
-}
-
 func (c Clients) Terminate() error {
 	for _, client := range c {
 		if err := client.Terminate(); err != nil {
@@ -121,7 +97,7 @@ func (c Clients) Terminate() error {
 // If registrySpec is GitHub then client downloads the plugin, spawns it and creates a gRPC connection.
 // If registrySpec is Local then client spawns the plugin and creates a gRPC connection.
 // If registrySpec is gRPC then clients creates a new connection
-func NewClient(ctx context.Context, spec specs.Destination, opts ...PluginOption) (*Client, error) {
+func NewClient(ctx context.Context, spec specs.Source, opts ...Option) (*Client, error) {
 	c := Client{
 		directory: defaultDownloadDir,
 		wg:        &sync.WaitGroup{},
@@ -153,9 +129,9 @@ func NewClient(ctx context.Context, spec specs.Destination, opts ...PluginOption
 			return nil, fmt.Errorf("invalid github plugin path: %s. format should be owner/repo", spec.Path)
 		}
 		org, name := pathSplit[0], pathSplit[1]
-		localPath := filepath.Join(c.directory, "plugins", string(download.PluginTypeDestination), org, name, spec.Version, "plugin")
+		localPath := filepath.Join(c.directory, "plugins", string(download.PluginTypeSource), org, name, spec.Version, "plugin")
 		localPath = download.WithBinarySuffix(localPath)
-		if err := download.DownloadPluginFromGithub(ctx, localPath, org, name, spec.Version, download.PluginTypeDestination); err != nil {
+		if err := download.DownloadPluginFromGithub(ctx, localPath, org, name, spec.Version, download.PluginTypeSource); err != nil {
 			return nil, err
 		}
 		if err := c.startLocal(ctx, localPath); err != nil {
@@ -225,6 +201,35 @@ func (c *Client) startLocal(ctx context.Context, path string) error {
 		return err
 	}
 	return nil
+}
+
+func (c *Client) MaxVersion(ctx context.Context) (int, error) {
+	discoveryClient := discovery.NewDiscoveryClient(c.Conn)
+	versionsRes, err := discoveryClient.GetVersions(ctx, &discovery.GetVersions_Request{})
+	if err != nil {
+		// If we get an error here, we assume that the plugin is not a v1 plugin and we try to sync it as a v0 plugin
+		// this is for backward compatability where we used incorrect versioning mechanism
+		oldDiscoveryClient := source.NewSourceClient(c.Conn)
+		versionRes, err := oldDiscoveryClient.GetProtocolVersion(ctx, &base.GetProtocolVersion_Request{})
+		if err != nil {
+			return -1, err
+		}
+		switch versionRes.Version {
+		case 2:
+			return 0, nil
+		case 1:
+			return -1, nil
+		default:
+			return -1, fmt.Errorf("unknown protocol version %d", versionRes.Version)
+		}
+	}
+	if slices.Contains(versionsRes.Versions, "v1") {
+		return 1, nil
+	}
+	if slices.Contains(versionsRes.Versions, "v0") {
+		return 0, nil
+	}
+	return -1, fmt.Errorf("unknown protocol versions %v", versionsRes.Versions)
 }
 
 func (c *Client) Terminate() error {
