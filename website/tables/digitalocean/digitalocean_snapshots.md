@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Snapshots.
 
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Snapshots
+
 The primary key for this table is **id**.
 
 ## Columns

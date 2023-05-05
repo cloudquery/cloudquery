@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Registries.
 
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Container-Registry
+
 The primary key for this table is **name**.
 
 ## Relations

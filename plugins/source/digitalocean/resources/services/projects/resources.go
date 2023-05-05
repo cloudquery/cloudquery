@@ -8,9 +8,10 @@ import (
 
 func resources() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_project_resources",
-		Resolver:  fetchProjectsResources,
-		Transform: transformers.TransformWithStruct(&godo.ProjectResource{}),
+		Name:        "digitalocean_project_resources",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/Project-Resources",
+		Resolver:    fetchProjectsResources,
+		Transform:   transformers.TransformWithStruct(&godo.ProjectResource{}),
 		Columns: []schema.Column{
 			{
 				Name:     "urn",

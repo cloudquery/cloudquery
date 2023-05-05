@@ -12,7 +12,7 @@ import (
 func LoadBalancers() *schema.Table {
 	return &schema.Table{
 		Name:        "digitalocean_load_balancers",
-		Description: "https://pkg.go.dev/github.com/digitalocean/godo#LoadBalancer",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/Load-Balancers",
 		Resolver:    fetchLoadBalancers,
 		Transform:   transformers.TransformWithStruct(&godo.LoadBalancer{}, transformers.WithPrimaryKeys("ID")),
 	}

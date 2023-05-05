@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Floating IPs.
 
+Deprecated. https://docs.digitalocean.com/reference/api/api-reference/#tag/Floating-IPs
+
 The primary key for this table is **ip**.
 
 ## Columns

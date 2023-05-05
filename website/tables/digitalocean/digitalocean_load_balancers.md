@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Load Balancers.
 
-https://pkg.go.dev/github.com/digitalocean/godo#LoadBalancer
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Load-Balancers
 
 The primary key for this table is **id**.
 
