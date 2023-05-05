@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Keys.
 
-https://pkg.go.dev/github.com/digitalocean/godo#Key
+https://docs.digitalocean.com/reference/api/api-reference/#tag/SSH-Keys
 
 The primary key for this table is **id**.
 

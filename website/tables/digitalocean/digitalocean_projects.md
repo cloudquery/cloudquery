@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Projects.
 
-https://pkg.go.dev/github.com/digitalocean/godo#Project
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Projects
 
 The primary key for this table is **id**.
 

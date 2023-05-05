@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Balances.
 
-https://pkg.go.dev/github.com/digitalocean/godo#Balance
+https://docs.digitalocean.com/reference/api/api-reference/#operation/balance_get
 
 The primary key for this table is **_cq_id**.
 

@@ -9,7 +9,7 @@ import (
 func Volumes() *schema.Table {
 	return &schema.Table{
 		Name:        "digitalocean_storage_volumes",
-		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Volume",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/Block-Storage",
 		Resolver:    fetchStorageVolumes,
 		Transform:   transformers.TransformWithStruct(&godo.Volume{}),
 		Columns: []schema.Column{

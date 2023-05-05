@@ -9,7 +9,7 @@ import (
 func resources() *schema.Table {
 	return &schema.Table{
 		Name:        "digitalocean_project_resources",
-		Description: "https://pkg.go.dev/github.com/digitalocean/godo#ProjectResource",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/Project-Resources",
 		Resolver:    fetchProjectsResources,
 		Transform:   transformers.TransformWithStruct(&godo.ProjectResource{}),
 		Columns: []schema.Column{

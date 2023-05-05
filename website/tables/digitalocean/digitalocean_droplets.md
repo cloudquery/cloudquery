@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Droplets.
 
-https://pkg.go.dev/github.com/digitalocean/godo#Droplet
+https://docs.digitalocean.com/reference/api/api-reference/#operation/droplets_list
 
 The primary key for this table is **id**.
 

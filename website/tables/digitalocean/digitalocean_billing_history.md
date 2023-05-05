@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Billing History.
 
-https://pkg.go.dev/github.com/digitalocean/godo#BillingHistoryEntry
+https://docs.digitalocean.com/reference/api/api-reference/#operation/billingHistory_list
 
 The primary key for this table is **_cq_id**.
 

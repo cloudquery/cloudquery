@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Images.
 
-https://pkg.go.dev/github.com/digitalocean/godo#Image
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Images
 
 The primary key for this table is **id**.
 

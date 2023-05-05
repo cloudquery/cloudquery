@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Snapshots.
 
-https://pkg.go.dev/github.com/digitalocean/godo#Snapshot
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Snapshots
 
 The primary key for this table is **id**.
 

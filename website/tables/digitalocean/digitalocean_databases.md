@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Databases.
 
-https://pkg.go.dev/github.com/digitalocean/godo#Database
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Databases
 
 The primary key for this table is **id**.
 

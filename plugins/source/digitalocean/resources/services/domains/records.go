@@ -9,7 +9,7 @@ import (
 func records() *schema.Table {
 	return &schema.Table{
 		Name:        "digitalocean_domain_records",
-		Description: "https://pkg.go.dev/github.com/digitalocean/godo#DomainRecord",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#operation/domains_list_records",
 		Resolver:    fetchDomainsRecords,
 		Transform:   transformers.TransformWithStruct(&godo.DomainRecord{}),
 		Columns: []schema.Column{

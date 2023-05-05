@@ -9,7 +9,7 @@ import (
 func Sizes() *schema.Table {
 	return &schema.Table{
 		Name:        "digitalocean_sizes",
-		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Size",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/Sizes",
 		Resolver:    fetchSizesSizes,
 		Transform:   transformers.TransformWithStruct(&godo.Size{}),
 		Columns: []schema.Column{

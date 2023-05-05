@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Project Resources.
 
-https://pkg.go.dev/github.com/digitalocean/godo#ProjectResource
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Project-Resources
 
 The primary key for this table is **urn**.
 

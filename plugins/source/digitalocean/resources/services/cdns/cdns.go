@@ -9,7 +9,7 @@ import (
 func Cdns() *schema.Table {
 	return &schema.Table{
 		Name:        "digitalocean_cdns",
-		Description: "https://pkg.go.dev/github.com/digitalocean/godo#CDN",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/CDN-Endpoints",
 		Resolver:    fetchCdnsCdns,
 		Transform:   transformers.TransformWithStruct(&godo.CDN{}),
 		Columns: []schema.Column{

@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Domain Records.
 
-https://pkg.go.dev/github.com/digitalocean/godo#DomainRecord
+https://docs.digitalocean.com/reference/api/api-reference/#operation/domains_list_records
 
 The primary key for this table is **id**.
 

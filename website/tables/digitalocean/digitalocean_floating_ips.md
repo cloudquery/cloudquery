@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Floating IPs.
 
-https://pkg.go.dev/github.com/digitalocean/godo#FloatingIP
+Deprecated. https://docs.digitalocean.com/reference/api/api-reference/#tag/Floating-IPs
 
 The primary key for this table is **ip**.
 

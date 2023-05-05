@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean VPC Members.
 
-https://pkg.go.dev/github.com/digitalocean/godo#VPCMember
+https://docs.digitalocean.com/reference/api/api-reference/#operation/vpcs_list_members
 
 The primary key for this table is **urn**.
 

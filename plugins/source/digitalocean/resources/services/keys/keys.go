@@ -9,7 +9,7 @@ import (
 func Keys() *schema.Table {
 	return &schema.Table{
 		Name:        "digitalocean_keys",
-		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Key",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/SSH-Keys",
 		Resolver:    fetchKeysKeys,
 		Transform:   transformers.TransformWithStruct(&godo.Key{}),
 		Columns: []schema.Column{

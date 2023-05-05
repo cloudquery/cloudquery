@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Certificates.
 
-https://pkg.go.dev/github.com/digitalocean/godo#Certificate
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Certificates
 
 The primary key for this table is **id**.
 

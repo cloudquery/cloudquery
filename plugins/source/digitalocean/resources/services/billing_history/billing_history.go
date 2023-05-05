@@ -9,7 +9,7 @@ import (
 func BillingHistory() *schema.Table {
 	return &schema.Table{
 		Name:        "digitalocean_billing_history",
-		Description: "https://pkg.go.dev/github.com/digitalocean/godo#BillingHistoryEntry",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#operation/billingHistory_list",
 		Resolver:    fetchBillingHistoryBillingHistory,
 		Transform:   transformers.TransformWithStruct(&godo.BillingHistoryEntry{}),
 		Columns:     []schema.Column{},

@@ -9,7 +9,7 @@ import (
 func Certificates() *schema.Table {
 	return &schema.Table{
 		Name:        "digitalocean_certificates",
-		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Certificate",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/Certificates",
 		Resolver:    fetchCertificatesCertificates,
 		Transform:   transformers.TransformWithStruct(&godo.Certificate{}),
 		Columns: []schema.Column{

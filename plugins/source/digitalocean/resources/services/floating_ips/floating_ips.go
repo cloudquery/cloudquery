@@ -9,7 +9,7 @@ import (
 func FloatingIps() *schema.Table {
 	return &schema.Table{
 		Name:        "digitalocean_floating_ips",
-		Description: "https://pkg.go.dev/github.com/digitalocean/godo#FloatingIP",
+		Description: "Deprecated. https://docs.digitalocean.com/reference/api/api-reference/#tag/Floating-IPs",
 		Resolver:    fetchFloatingIpsFloatingIps,
 		Transform:   transformers.TransformWithStruct(&godo.FloatingIP{}),
 		Columns: []schema.Column{

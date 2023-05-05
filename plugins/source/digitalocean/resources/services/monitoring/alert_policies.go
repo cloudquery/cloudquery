@@ -9,7 +9,7 @@ import (
 func AlertPolicies() *schema.Table {
 	return &schema.Table{
 		Name:        "digitalocean_monitoring_alert_policies",
-		Description: "https://pkg.go.dev/github.com/digitalocean/godo#AlertPolicy",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#operation/monitoring_list_alertPolicy",
 		Resolver:    fetchMonitoringAlertPolicies,
 		Transform:   transformers.TransformWithStruct(&godo.AlertPolicy{}),
 		Columns: []schema.Column{

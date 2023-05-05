@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean VPCs.
 
-https://pkg.go.dev/github.com/digitalocean/godo#VPC
+https://docs.digitalocean.com/reference/api/api-reference/#tag/VPCs
 
 The primary key for this table is **id**.
 

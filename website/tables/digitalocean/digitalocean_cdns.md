@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean CDNs.
 
-https://pkg.go.dev/github.com/digitalocean/godo#CDN
+https://docs.digitalocean.com/reference/api/api-reference/#tag/CDN-Endpoints
 
 The primary key for this table is **id**.
 

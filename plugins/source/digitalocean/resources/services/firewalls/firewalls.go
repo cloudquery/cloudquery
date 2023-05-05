@@ -9,7 +9,7 @@ import (
 func Firewalls() *schema.Table {
 	return &schema.Table{
 		Name:        "digitalocean_firewalls",
-		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Firewall",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/Firewalls",
 		Resolver:    fetchFirewallsFirewalls,
 		Transform:   transformers.TransformWithStruct(&godo.Firewall{}),
 		Columns: []schema.Column{

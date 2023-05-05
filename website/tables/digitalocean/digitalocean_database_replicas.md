@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Database Replicas.
 
-https://pkg.go.dev/github.com/digitalocean/godo#DatabaseReplica
+https://docs.digitalocean.com/reference/api/api-reference/#operation/databases_list_replicas
 
 The primary key for this table is **_cq_id**.
 

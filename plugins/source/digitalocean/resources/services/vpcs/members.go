@@ -9,7 +9,7 @@ import (
 func members() *schema.Table {
 	return &schema.Table{
 		Name:        "digitalocean_vpc_members",
-		Description: "https://pkg.go.dev/github.com/digitalocean/godo#VPCMember",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#operation/vpcs_list_members",
 		Resolver:    fetchVpcsMembers,
 		Transform:   transformers.TransformWithStruct(&godo.VPCMember{}),
 		Columns: []schema.Column{

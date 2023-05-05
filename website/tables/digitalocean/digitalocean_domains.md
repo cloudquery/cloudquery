@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Domains.
 
-https://pkg.go.dev/github.com/digitalocean/godo#Domain
+https://docs.digitalocean.com/reference/api/api-reference/#operation/domains_list
 
 The primary key for this table is **name**.
 

@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Registry Repositories.
 
-https://pkg.go.dev/github.com/digitalocean/godo#Repository
+Deprecated. https://docs.digitalocean.com/reference/api/api-reference/#operation/registry_list_repositories
 
 The primary key for this table is **name**.
 

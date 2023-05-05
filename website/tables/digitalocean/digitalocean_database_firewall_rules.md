@@ -2,7 +2,7 @@
 
 This table shows data for DigitalOcean Database Firewall Rules.
 
-https://pkg.go.dev/github.com/digitalocean/godo#DatabaseFirewallRule
+https://docs.digitalocean.com/reference/api/api-reference/#operation/databases_list_firewall_rules
 
 The primary key for this table is **_cq_id**.
 
