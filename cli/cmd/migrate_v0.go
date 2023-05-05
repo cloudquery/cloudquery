@@ -8,6 +8,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
 	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
+	"github.com/cloudquery/plugin-pb-go/pb/base/v0"
 	pbdestination "github.com/cloudquery/plugin-pb-go/pb/destination/v0"
 	pbSource "github.com/cloudquery/plugin-pb-go/pb/source/v0"
 	"github.com/rs/zerolog/log"
@@ -37,6 +38,15 @@ func migrateConnectionV0(ctx context.Context, sourceClient *managedsource.Client
 
 	fmt.Printf("Starting migration with for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 	for i := range destinationsClients {
+		destSpecBytes, err := json.Marshal(destinationsClients[i].Spec)
+		if err != nil {
+			return err
+		}
+		if _, err := destinationsPbClients[i].Configure(ctx, &base.Configure_Request{
+			Config: destSpecBytes,
+		}); err != nil {
+			return fmt.Errorf("failed to call Migrate: %w", err)
+		}
 		if _, err := destinationsPbClients[i].Migrate(ctx, &pbdestination.Migrate_Request{
 			Tables: tablesBytes,
 		}); err != nil {
