@@ -23,9 +23,10 @@ builds:
       - CXX=/usr/bin/gencpp.sh
       - CC_windows_amd64=x86_64-w64-mingw32-gcc-posix
       - CXX_windows_amd64=x86_64-w64-mingw32-g++-posix
-      - CXXFLAGS=-Wa,-mbig-obj -O2
+      - CGO_CFLAGS="-ffunction-sections -fdata-sections"
+      - CXXFLAGS="-Wa,-mbig-obj -O2"
     ldflags:
-      - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
+      - -s -w -extldflags '-Wl,-gc-sections' -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
     goos:
       - windows
       #- linux
