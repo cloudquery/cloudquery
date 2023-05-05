@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/jackc/pgx/v5"
+	"golang.org/x/sync/errgroup"
 )
 
 func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *schema.Resource) error {
@@ -57,36 +58,19 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 	return nil
 }
 
-func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- *schema.Resource) error {
-	colNames := make([]string, len(table.Columns))
-	for i, col := range table.Columns {
-		colNames[i] = pgx.Identifier{col.Name}.Sanitize()
+func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<- *schema.Resource) error {
+	g, gctx := errgroup.WithContext(ctx)
+	g.SetLimit(10)
+	for _, table := range c.Tables {
+		table := table
+		g.Go(func() error {
+			return c.syncTableInTransaction(gctx, table, snapshotName, res)
+		})
 	}
-	query := "SELECT " + strings.Join(colNames, ",") + " FROM " + pgx.Identifier{table.Name}.Sanitize()
-	rows, err := tx.Query(ctx, query)
-	if err != nil {
-		c.metrics.TableClient[table.Name][c.ID()].Errors++
-		return err
-	}
-	defer rows.Close()
-	for rows.Next() {
-		values, err := rows.Values()
-		if err != nil {
-			c.metrics.TableClient[table.Name][c.ID()].Errors++
-			return err
-		}
-		resource, err := c.resourceFromValues(table.Name, values)
-		if err != nil {
-			c.metrics.TableClient[table.Name][c.ID()].Errors++
-			return err
-		}
-		c.metrics.TableClient[table.Name][c.ID()].Resources++
-		res <- resource
-	}
-	return nil
+	return g.Wait()
 }
 
-func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<- *schema.Resource) error {
+func (c *Client) syncTableInTransaction(ctx context.Context, table *schema.Table, snapshotName string, res chan<- *schema.Resource) error {
 	tx, err := c.Conn.BeginTx(ctx, pgx.TxOptions{
 		// this transaction is needed for us to take a snapshot and we need to close it only at the end of the initial sync
 		// https://www.postgresql.org/docs/current/transaction-iso.html
@@ -112,13 +96,38 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<-
 		}
 	}
 
-	for _, table := range c.Tables {
-		if err := c.syncTable(ctx, tx, table, res); err != nil {
+	err = c.syncTable(ctx, tx, table, res)
+	if err != nil {
+		return err
+	}
+	return tx.Commit(ctx)
+}
+
+func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- *schema.Resource) error {
+	colNames := make([]string, len(table.Columns))
+	for i, col := range table.Columns {
+		colNames[i] = pgx.Identifier{col.Name}.Sanitize()
+	}
+	query := "SELECT " + strings.Join(colNames, ",") + " FROM " + pgx.Identifier{table.Name}.Sanitize()
+	rows, err := tx.Query(ctx, query)
+	if err != nil {
+		c.metrics.TableClient[table.Name][c.ID()].Errors++
+		return err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		values, err := rows.Values()
+		if err != nil {
+			c.metrics.TableClient[table.Name][c.ID()].Errors++
 			return err
 		}
-	}
-	if err := tx.Commit(ctx); err != nil {
-		return fmt.Errorf("failed to commit sync transaction: %w", err)
+		resource, err := c.resourceFromValues(table.Name, values)
+		if err != nil {
+			c.metrics.TableClient[table.Name][c.ID()].Errors++
+			return err
+		}
+		c.metrics.TableClient[table.Name][c.ID()].Resources++
+		res <- resource
 	}
 	return nil
 }
