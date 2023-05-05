@@ -11,9 +11,10 @@ import (
 
 func Regions() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_regions",
-		Resolver:  fetchRegions,
-		Transform: transformers.TransformWithStruct(&godo.Region{}, transformers.WithPrimaryKeys("Slug")),
+		Name:        "digitalocean_regions",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Region",
+		Resolver:    fetchRegions,
+		Transform:   transformers.TransformWithStruct(&godo.Region{}, transformers.WithPrimaryKeys("Slug")),
 	}
 }
 

@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Regions.
 
+https://pkg.go.dev/github.com/digitalocean/godo#Region
+
 The primary key for this table is **slug**.
 
 ## Columns
