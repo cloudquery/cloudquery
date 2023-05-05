@@ -87,11 +87,13 @@ func syncConnectionV0_2(ctx context.Context, sourceClient *managedsource.Client,
 		if err != nil {
 			return err
 		}
-		writeClients[i].Send(&destination.Write2_Request{
+		if err := writeClients[i].Send(&destination.Write2_Request{
 			Source:    sourceClient.Spec.Name,
 			Tables:    tablesBytes,
 			Timestamp: timestamppb.New(syncTime),
-		})
+		}); err != nil {
+			return err
+		}
 	}
 	bar := progressbar.NewOptions(-1,
 		progressbar.OptionSetDescription("Syncing resources..."),

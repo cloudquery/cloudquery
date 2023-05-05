@@ -94,6 +94,7 @@ func sync(cmd *cobra.Command, args []string) error {
 				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Spec.Name, err)
 			}
 		case -1:
+			return fmt.Errorf("please upgrade your source or use an older CLI version < v3.0.1")
 		default:
 			return fmt.Errorf("unknown source version %d", maxVersion)
 		}

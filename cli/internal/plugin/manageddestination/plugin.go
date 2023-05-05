@@ -60,9 +60,9 @@ func WithNoSentry() func(*Client) {
 	}
 }
 
-func NewClients(ctx context.Context, specs []*specs.Destination, opts ...Option) (Clients, error) {
-	clients := make(Clients, len(specs))
-	for i, spec := range specs {
+func NewClients(ctx context.Context, destinationSpecs []*specs.Destination, opts ...Option) (Clients, error) {
+	clients := make(Clients, len(destinationSpecs))
+	for i, spec := range destinationSpecs {
 		client, err := NewClient(ctx, *spec, opts...)
 		if err != nil {
 			return nil, err

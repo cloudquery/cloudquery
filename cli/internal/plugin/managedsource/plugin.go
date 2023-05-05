@@ -36,6 +36,7 @@ type Client struct {
 	directory      string
 	cmd            *exec.Cmd
 	logger         zerolog.Logger
+	LocalPath      string
 	grpcSocketName string
 	wg             *sync.WaitGroup
 	Conn           *grpc.ClientConn
@@ -63,9 +64,9 @@ func WithNoSentry() func(*Client) {
 	}
 }
 
-func NewClients(ctx context.Context, specs []*specs.Source, opts ...Option) (Clients, error) {
-	clients := make(Clients, len(specs))
-	for i, spec := range specs {
+func NewClients(ctx context.Context, sourceSpecs []*specs.Source, opts ...Option) (Clients, error) {
+	clients := make(Clients, len(sourceSpecs))
+	for i, spec := range sourceSpecs {
 		client, err := NewClient(ctx, *spec, opts...)
 		if err != nil {
 			return nil, err
@@ -129,12 +130,12 @@ func NewClient(ctx context.Context, spec specs.Source, opts ...Option) (*Client,
 			return nil, fmt.Errorf("invalid github plugin path: %s. format should be owner/repo", spec.Path)
 		}
 		org, name := pathSplit[0], pathSplit[1]
-		localPath := filepath.Join(c.directory, "plugins", string(download.PluginTypeSource), org, name, spec.Version, "plugin")
-		localPath = download.WithBinarySuffix(localPath)
-		if err := download.DownloadPluginFromGithub(ctx, localPath, org, name, spec.Version, download.PluginTypeSource); err != nil {
+		c.LocalPath = filepath.Join(c.directory, "plugins", string(download.PluginTypeSource), org, name, spec.Version, "plugin")
+		c.LocalPath = download.WithBinarySuffix(c.LocalPath)
+		if err := download.DownloadPluginFromGithub(ctx, c.LocalPath, org, name, spec.Version, download.PluginTypeSource); err != nil {
 			return nil, err
 		}
-		if err := c.startLocal(ctx, localPath); err != nil {
+		if err := c.startLocal(ctx, c.LocalPath); err != nil {
 			return nil, err
 		}
 	}

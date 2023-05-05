@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"bytes"
 	"fmt"
+	"os/exec"
 	"path"
 	"strings"
 
@@ -73,8 +75,20 @@ func tables(cmd *cobra.Command, args []string) error {
 		if _, err := pbSourceClient.GenDocs(ctx, &source.GenDocs_Request{
 			Format: source.GenDocs_FORMAT(source.GenDocs_FORMAT_value[format]),
 			Path:   outputPath,
-		}); err != nil {
-			return err
+		}); err == nil {
+			continue
+		}
+		// If we have a local path, we can fallback to running the docs command
+		if err != nil && sourceClient.LocalPath == "" {
+			return fmt.Errorf("failed to call GenDocs: %w", err)
+		}
+		args := []string{"doc", "--format", format, outputPath}
+		cmd := exec.CommandContext(ctx, sourceClient.LocalPath, args...)
+		var outb, errb bytes.Buffer
+		cmd.Stdout = &outb
+		cmd.Stderr = &errb
+		if err := cmd.Run(); err != nil {
+			return fmt.Errorf("failed to run source plugin %s: %w. Output: %s. Error: %s", sourceClient.LocalPath, err, outb.String(), errb.String())
 		}
 	}
 

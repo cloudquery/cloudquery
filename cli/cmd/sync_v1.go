@@ -85,11 +85,13 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 		if err != nil {
 			return err
 		}
-		writeClients[i].Send(&destination.Write2_Request{
+		if err := writeClients[i].Send(&destination.Write2_Request{
 			Source:    sourceClient.Spec.Name,
 			Tables:    tablesRes.Tables,
 			Timestamp: timestamppb.New(syncTime),
-		})
+		}); err != nil {
+			return err
+		}
 	}
 	bar := progressbar.NewOptions(-1,
 		progressbar.OptionSetDescription("Syncing resources..."),
@@ -102,7 +104,7 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 	for {
 		r, err := syncClient.Recv()
 		if err == io.EOF {
-			return nil
+			break
 		}
 		_ = bar.Add(1)
 		for i := range destinationsPbClients {
