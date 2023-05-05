@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Domain Records.
 
+https://pkg.go.dev/github.com/digitalocean/godo#DomainRecord
+
 The primary key for this table is **id**.
 
 ## Relations

@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Accounts.
 
+https://pkg.go.dev/github.com/digitalocean/godo#Account
+
 The primary key for this table is **uuid**.
 
 ## Columns

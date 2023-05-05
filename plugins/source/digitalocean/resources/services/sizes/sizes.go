@@ -8,9 +8,10 @@ import (
 
 func Sizes() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_sizes",
-		Resolver:  fetchSizesSizes,
-		Transform: transformers.TransformWithStruct(&godo.Size{}),
+		Name:        "digitalocean_sizes",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Size",
+		Resolver:    fetchSizesSizes,
+		Transform:   transformers.TransformWithStruct(&godo.Size{}),
 		Columns: []schema.Column{
 			{
 				Name:     "slug",

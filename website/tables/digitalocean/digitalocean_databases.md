@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Databases.
 
+https://pkg.go.dev/github.com/digitalocean/godo#Database
+
 The primary key for this table is **id**.
 
 ## Relations

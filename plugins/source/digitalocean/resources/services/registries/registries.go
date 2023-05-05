@@ -8,9 +8,10 @@ import (
 
 func Registries() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_registries",
-		Resolver:  fetchRegistriesRegistries,
-		Transform: transformers.TransformWithStruct(&godo.Registry{}),
+		Name:        "digitalocean_registries",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Registry",
+		Resolver:    fetchRegistriesRegistries,
+		Transform:   transformers.TransformWithStruct(&godo.Registry{}),
 		Columns: []schema.Column{
 			{
 				Name:     "name",

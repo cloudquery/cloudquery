@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Storage Volumes.
 
+https://pkg.go.dev/github.com/digitalocean/godo#Volume
+
 The primary key for this table is **id**.
 
 ## Columns

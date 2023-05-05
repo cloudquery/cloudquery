@@ -8,9 +8,10 @@ import (
 
 func Keys() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_keys",
-		Resolver:  fetchKeysKeys,
-		Transform: transformers.TransformWithStruct(&godo.Key{}),
+		Name:        "digitalocean_keys",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Key",
+		Resolver:    fetchKeysKeys,
+		Transform:   transformers.TransformWithStruct(&godo.Key{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

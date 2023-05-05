@@ -8,9 +8,10 @@ import (
 
 func firewallRules() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_database_firewall_rules",
-		Resolver:  fetchDatabasesFirewallRules,
-		Transform: transformers.TransformWithStruct(&godo.DatabaseFirewallRule{}),
-		Columns:   []schema.Column{},
+		Name:        "digitalocean_database_firewall_rules",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#DatabaseFirewallRule",
+		Resolver:    fetchDatabasesFirewallRules,
+		Transform:   transformers.TransformWithStruct(&godo.DatabaseFirewallRule{}),
+		Columns:     []schema.Column{},
 	}
 }

@@ -8,9 +8,10 @@ import (
 
 func Images() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_images",
-		Resolver:  fetchImagesImages,
-		Transform: transformers.TransformWithStruct(&godo.Image{}),
+		Name:        "digitalocean_images",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Image",
+		Resolver:    fetchImagesImages,
+		Transform:   transformers.TransformWithStruct(&godo.Image{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

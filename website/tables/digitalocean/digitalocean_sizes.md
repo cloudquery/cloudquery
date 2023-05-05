@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Sizes.
 
+https://pkg.go.dev/github.com/digitalocean/godo#Size
+
 The primary key for this table is **slug**.
 
 ## Columns

@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Database Firewall Rules.
 
+https://pkg.go.dev/github.com/digitalocean/godo#DatabaseFirewallRule
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

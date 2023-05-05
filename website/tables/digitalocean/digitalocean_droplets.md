@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Droplets.
 
+https://pkg.go.dev/github.com/digitalocean/godo#Droplet
+
 The primary key for this table is **id**.
 
 ## Relations

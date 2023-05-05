@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Database Backups.
 
+https://pkg.go.dev/github.com/digitalocean/godo#DatabaseBackup
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

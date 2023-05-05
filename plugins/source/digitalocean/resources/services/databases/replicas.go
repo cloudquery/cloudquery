@@ -8,9 +8,10 @@ import (
 
 func replicas() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_database_replicas",
-		Resolver:  fetchDatabasesReplicas,
-		Transform: transformers.TransformWithStruct(&godo.DatabaseReplica{}),
-		Columns:   []schema.Column{},
+		Name:        "digitalocean_database_replicas",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#DatabaseReplica",
+		Resolver:    fetchDatabasesReplicas,
+		Transform:   transformers.TransformWithStruct(&godo.DatabaseReplica{}),
+		Columns:     []schema.Column{},
 	}
 }

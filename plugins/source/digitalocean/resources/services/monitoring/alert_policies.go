@@ -8,9 +8,10 @@ import (
 
 func AlertPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_monitoring_alert_policies",
-		Resolver:  fetchMonitoringAlertPolicies,
-		Transform: transformers.TransformWithStruct(&godo.AlertPolicy{}),
+		Name:        "digitalocean_monitoring_alert_policies",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#AlertPolicy",
+		Resolver:    fetchMonitoringAlertPolicies,
+		Transform:   transformers.TransformWithStruct(&godo.AlertPolicy{}),
 		Columns: []schema.Column{
 			{
 				Name:     "uuid",

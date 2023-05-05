@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Projects.
 
+https://pkg.go.dev/github.com/digitalocean/godo#Project
+
 The primary key for this table is **id**.
 
 ## Relations

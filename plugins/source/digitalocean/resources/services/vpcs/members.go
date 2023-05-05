@@ -8,9 +8,10 @@ import (
 
 func members() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_vpc_members",
-		Resolver:  fetchVpcsMembers,
-		Transform: transformers.TransformWithStruct(&godo.VPCMember{}),
+		Name:        "digitalocean_vpc_members",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#VPCMember",
+		Resolver:    fetchVpcsMembers,
+		Transform:   transformers.TransformWithStruct(&godo.VPCMember{}),
 		Columns: []schema.Column{
 			{
 				Name:     "urn",

@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Images.
 
+https://pkg.go.dev/github.com/digitalocean/godo#Image
+
 The primary key for this table is **id**.
 
 ## Columns

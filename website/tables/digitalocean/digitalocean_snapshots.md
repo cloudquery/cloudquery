@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Snapshots.
 
+https://pkg.go.dev/github.com/digitalocean/godo#Snapshot
+
 The primary key for this table is **id**.
 
 ## Columns

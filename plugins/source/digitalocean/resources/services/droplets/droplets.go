@@ -8,9 +8,10 @@ import (
 
 func Droplets() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_droplets",
-		Resolver:  fetchDropletsDroplets,
-		Transform: transformers.TransformWithStruct(&godo.Droplet{}),
+		Name:        "digitalocean_droplets",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Droplet",
+		Resolver:    fetchDropletsDroplets,
+		Transform:   transformers.TransformWithStruct(&godo.Droplet{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

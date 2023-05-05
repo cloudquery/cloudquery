@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Registry Repositories.
 
+https://pkg.go.dev/github.com/digitalocean/godo#Repository
+
 The primary key for this table is **name**.
 
 ## Relations

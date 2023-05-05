@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Database Replicas.
 
+https://pkg.go.dev/github.com/digitalocean/godo#DatabaseReplica
+
 The primary key for this table is **_cq_id**.
 
 ## Relations

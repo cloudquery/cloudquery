@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Certificates.
 
+https://pkg.go.dev/github.com/digitalocean/godo#Certificate
+
 The primary key for this table is **id**.
 
 ## Columns

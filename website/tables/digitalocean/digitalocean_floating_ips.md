@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Floating IPs.
 
+https://pkg.go.dev/github.com/digitalocean/godo#FloatingIP
+
 The primary key for this table is **ip**.
 
 ## Columns

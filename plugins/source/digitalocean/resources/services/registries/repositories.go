@@ -8,9 +8,10 @@ import (
 
 func repositories() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_registry_repositories",
-		Resolver:  fetchRegistriesRepositories,
-		Transform: transformers.TransformWithStruct(&godo.Repository{}),
+		Name:        "digitalocean_registry_repositories",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Repository",
+		Resolver:    fetchRegistriesRepositories,
+		Transform:   transformers.TransformWithStruct(&godo.Repository{}),
 		Columns: []schema.Column{
 			{
 				Name:     "name",

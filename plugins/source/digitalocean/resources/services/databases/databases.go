@@ -8,9 +8,10 @@ import (
 
 func Databases() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_databases",
-		Resolver:  fetchDatabasesDatabases,
-		Transform: transformers.TransformWithStruct(&godo.Database{}),
+		Name:        "digitalocean_databases",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Database",
+		Resolver:    fetchDatabasesDatabases,
+		Transform:   transformers.TransformWithStruct(&godo.Database{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean VPCs.
 
+https://pkg.go.dev/github.com/digitalocean/godo#VPC
+
 The primary key for this table is **id**.
 
 ## Relations

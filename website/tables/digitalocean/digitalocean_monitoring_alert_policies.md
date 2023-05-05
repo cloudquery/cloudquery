@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Monitoring Alert Policies.
 
+https://pkg.go.dev/github.com/digitalocean/godo#AlertPolicy
+
 The primary key for this table is **uuid**.
 
 ## Columns

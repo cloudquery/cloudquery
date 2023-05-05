@@ -8,9 +8,10 @@ import (
 
 func Volumes() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_storage_volumes",
-		Resolver:  fetchStorageVolumes,
-		Transform: transformers.TransformWithStruct(&godo.Volume{}),
+		Name:        "digitalocean_storage_volumes",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Volume",
+		Resolver:    fetchStorageVolumes,
+		Transform:   transformers.TransformWithStruct(&godo.Volume{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

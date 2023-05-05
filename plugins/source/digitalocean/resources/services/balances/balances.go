@@ -8,9 +8,10 @@ import (
 
 func Balances() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_balances",
-		Resolver:  fetchBalancesBalances,
-		Transform: transformers.TransformWithStruct(&godo.Balance{}),
-		Columns:   []schema.Column{},
+		Name:        "digitalocean_balances",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Balance",
+		Resolver:    fetchBalancesBalances,
+		Transform:   transformers.TransformWithStruct(&godo.Balance{}),
+		Columns:     []schema.Column{},
 	}
 }

@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean VPC Members.
 
+https://pkg.go.dev/github.com/digitalocean/godo#VPCMember
+
 The primary key for this table is **urn**.
 
 ## Relations

@@ -8,9 +8,10 @@ import (
 
 func Snapshots() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_snapshots",
-		Resolver:  fetchSnapshotsSnapshots,
-		Transform: transformers.TransformWithStruct(&godo.Snapshot{}),
+		Name:        "digitalocean_snapshots",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Snapshot",
+		Resolver:    fetchSnapshotsSnapshots,
+		Transform:   transformers.TransformWithStruct(&godo.Snapshot{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

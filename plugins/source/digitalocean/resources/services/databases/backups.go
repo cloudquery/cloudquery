@@ -8,9 +8,10 @@ import (
 
 func backups() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_database_backups",
-		Resolver:  fetchDatabasesBackups,
-		Transform: transformers.TransformWithStruct(&godo.DatabaseBackup{}),
-		Columns:   []schema.Column{},
+		Name:        "digitalocean_database_backups",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#DatabaseBackup",
+		Resolver:    fetchDatabasesBackups,
+		Transform:   transformers.TransformWithStruct(&godo.DatabaseBackup{}),
+		Columns:     []schema.Column{},
 	}
 }

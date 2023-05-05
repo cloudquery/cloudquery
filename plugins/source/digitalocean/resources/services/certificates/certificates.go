@@ -8,9 +8,10 @@ import (
 
 func Certificates() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_certificates",
-		Resolver:  fetchCertificatesCertificates,
-		Transform: transformers.TransformWithStruct(&godo.Certificate{}),
+		Name:        "digitalocean_certificates",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Certificate",
+		Resolver:    fetchCertificatesCertificates,
+		Transform:   transformers.TransformWithStruct(&godo.Certificate{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean CDNs.
 
+https://pkg.go.dev/github.com/digitalocean/godo#CDN
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -8,9 +8,10 @@ import (
 
 func Projects() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_projects",
-		Resolver:  fetchProjectsProjects,
-		Transform: transformers.TransformWithStruct(&godo.Project{}),
+		Name:        "digitalocean_projects",
+		Description: "https://pkg.go.dev/github.com/digitalocean/godo#Project",
+		Resolver:    fetchProjectsProjects,
+		Transform:   transformers.TransformWithStruct(&godo.Project{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",
