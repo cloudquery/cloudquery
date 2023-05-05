@@ -2,48 +2,125 @@ package cmd
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
+	"time"
 
-	"github.com/cloudquery/plugin-sdk/v2/clients/source/v0"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/destination"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/source"
+	"github.com/cloudquery/plugin-pb-go/metrics"
+	pbdestination "github.com/cloudquery/plugin-pb-go/pb/destination/v0"
+	pbSource "github.com/cloudquery/plugin-pb-go/pb/source/v0"
 	"github.com/rs/zerolog/log"
+	"github.com/schollz/progressbar/v3"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func syncConnectionV0(ctx context.Context, cqDir string, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string, noMigrate bool) error {
-	opts := []source.ClientOption{
-		source.WithLogger(log.Logger),
-		source.WithDirectory(cqDir),
-	}
-	if disableSentry {
-		opts = append(opts, source.WithNoSentry())
-	}
-	sourceClient, err := source.NewClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version, opts...)
-	if err != nil {
-		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
-	}
-	//nolint:revive
-	defer func() {
-		if err := sourceClient.Terminate(); err != nil {
-			log.Error().Err(err).Msg("Failed to terminate source client")
-			fmt.Println("failed to terminate source client: ", err)
-		}
-	}()
+func syncConnectionV0_2(ctx context.Context, sourceClient *source.Client, destinationsClients destination.Clients, uid string, noMigrate bool) error {
+	syncTime := time.Now().UTC()
+	sourceSpec := sourceClient.Spec
+	destinationStrings := destinationsClients.Names()
+	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("Start sync")
+	defer log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("End sync")
 
-	v, err := sourceClient.GetProtocolVersion(ctx)
+	sourcePbClient := pbSource.NewSourceClient(sourceClient.Conn)
+	destinationsPbClients := make([]pbdestination.DestinationClient, len(destinationsClients))
+	for i := range destinationsClients {
+		destinationsPbClients[i] = pbdestination.NewDestinationClient(destinationsClients[i].Conn)
+	}
+	specBytes, err := json.Marshal(sourceClient.Spec)
 	if err != nil {
-		return fmt.Errorf("failed to get protocol version for source %s: %w", sourceSpec.Name, err)
+		return err
 	}
-	switch v {
-	case 1:
-		if err := syncConnectionV0_1(ctx, cqDir, sourceClient, sourceSpec, destinationsSpecs, uid, noMigrate); err != nil {
+
+	var tablesBytes []byte
+	getTablesForSpecRes, err := sourcePbClient.GetTablesForSpec(ctx, &pbSource.GetTablesForSpec_Request{
+		Spec: specBytes,
+	})
+	if isUnimplemented(err) {
+		getTablesRes, err := sourcePbClient.GetTables(ctx, &pbSource.GetTables_Request{})
+		if err != nil {
 			return err
 		}
-	case 2:
-		if err := syncConnectionV0_2(ctx, cqDir, sourceClient, sourceSpec, destinationsSpecs, uid, noMigrate); err != nil {
+		tablesBytes = getTablesRes.Tables
+	} else if err != nil {
+		return err
+	} else {
+		tablesBytes = getTablesForSpecRes.Tables
+	}
+
+	if !noMigrate {
+		migrateStart := time.Now().UTC()
+		fmt.Printf("Starting migration with for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
+		for i := range destinationsClients {
+			if _, err := destinationsPbClients[i].Migrate(ctx, &pbdestination.Migrate_Request{
+				Tables: tablesBytes,
+			}); err != nil {
+				return err
+			}
+		}
+		migrateTimeTook := time.Since(migrateStart)
+		fmt.Printf("Migration completed successfully.\n")
+		log.Info().
+			Str("source", sourceSpec.VersionString()).
+			Strs("destinations", destinationStrings).
+			Float64("time_took", migrateTimeTook.Seconds()).
+			Msg("End migration")
+	}
+
+	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start fetching resources")
+	fmt.Printf("Starting sync for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
+
+	syncClient, err := sourcePbClient.Sync2(ctx, &pbSource.Sync2_Request{})
+	if err != nil {
+		return err
+	}
+	writeClients := make([]pbdestination.Destination_Write2Client, len(destinationsPbClients))
+	for i := range destinationsPbClients {
+		writeClients[i], err = destinationsPbClients[i].Write2(ctx)
+		if err != nil {
 			return err
 		}
-	default:
-		return fmt.Errorf("unknown protocol version %d for source %s", v, sourceSpec.Name)
+		writeClients[i].Send(&pbdestination.Write2_Request{
+			Source: sourceClient.Spec.Name,
+			Tables: tablesBytes,
+			Timestamp: timestamppb.New(syncTime),
+		})
 	}
+	bar := progressbar.NewOptions(-1,
+		progressbar.OptionSetDescription("Syncing resources..."),
+		progressbar.OptionSetItsString("resources"),
+		progressbar.OptionShowIts(),
+		progressbar.OptionSetElapsedTime(true),
+		progressbar.OptionShowCount(),
+		progressbar.OptionClearOnFinish(),
+	)
+	for {
+		r, err := syncClient.Recv()
+		if err == io.EOF {
+			return nil
+		}
+		_ = bar.Add(1)
+		for i := range destinationsPbClients {
+			if err := writeClients[i].Send(&pbdestination.Write2_Request{
+				Resource: r.Resource,
+			}); err != nil {
+				return err
+			}
+		}
+	}
+	getMetricsRes, err := sourcePbClient.GetMetrics(ctx, &pbSource.GetSourceMetrics_Request{})
+	if err != nil {
+		return err
+	}
+	var m metrics.Metrics
+	if err := json.Unmarshal(getMetricsRes.Metrics, &m); err != nil {
+		return err
+	}
+
+	syncTimeTook := time.Since(syncTime)
+	fmt.Printf("Sync completed successfully. Resources: %d, Errors: %d, Panics: %d, Time: %s\n", m.TotalResources(), m.TotalErrors(), m.TotalPanics(), syncTimeTook.Truncate(time.Second).String())
 	return nil
 }
+

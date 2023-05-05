@@ -5,11 +5,10 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"golang.org/x/exp/slices"
 
-	"github.com/cloudquery/plugin-sdk/v2/clients/discovery/v0"
-	"github.com/cloudquery/plugin-sdk/v2/registry"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/destination"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/source"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -60,57 +59,47 @@ func sync(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to generate invocation uuid: %w", err)
 	}
-
-	for _, sourceSpec := range specReader.Sources {
-		if len(sourceSpec.Destinations) == 0 {
-			return fmt.Errorf("no destinations found for source %s", sourceSpec.Name)
-		}
-		var destinationsSpecs []specs.Destination
-		for _, destination := range sourceSpec.Destinations {
-			spec := specReader.GetDestinationByName(destination)
-			if spec == nil {
-				return fmt.Errorf("failed to find destination %s in source %s", destination, sourceSpec.Name)
-			}
-			destinationsSpecs = append(destinationsSpecs, *spec)
-		}
-
-		discoveryClient, err := discovery.NewClient(ctx, sourceSpec.Registry, registry.PluginTypeSource, sourceSpec.Path, sourceSpec.Version, discovery.WithDirectory(cqDir))
-		if err != nil {
-			return fmt.Errorf("failed to create discovery client for source %s: %w", sourceSpec.Name, err)
-		}
-
-		versions, err := discoveryClient.GetVersions(ctx)
-		if err != nil {
-			if discoveryErr := discoveryClient.Terminate(); discoveryErr != nil {
-				log.Error().Err(discoveryErr).Msg("failed to terminate discovery client")
-				fmt.Println("failed to terminate discovery client:", discoveryErr)
-			}
-			// If we get an error here, we assume that the plugin is not a v1 plugin and we try to sync it as a v0 plugin
-			if err := syncConnectionV0(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
-				return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
-			}
-			continue
-		}
-		if err := discoveryClient.Terminate(); err != nil {
-			return fmt.Errorf("failed to terminate discovery client: %w", err)
-		}
-
-		if slices.Index(versions, "v1") != -1 {
-			if err := syncConnectionV1(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
-				return fmt.Errorf("failed to sync v1 source %s: %w", sourceSpec.Name, err)
-			}
-			continue
-		}
-
-		if slices.Index(versions, "v0") != -1 {
-			if err := syncConnectionV0(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
-				return fmt.Errorf("failed to sync v0 source %s: %w", sourceSpec.Name, err)
-			}
-			continue
-		}
-
-		return fmt.Errorf("failed to sync source %s, unknown versions %v", sourceSpec.Name, versions)
+	sources := specReader.Sources
+	destinations := specReader.Destinations
+	var sourceOpts []source.PluginOption
+	var destinationOpts []destination.PluginOption
+	if cqDir != "" {
+		sourceOpts = append(sourceOpts, source.WithDirectory(cqDir))
+		destinationOpts = append(destinationOpts, destination.WithDirectory(cqDir))
 	}
 
+	sourcesClients, err := source.NewClients(ctx, sources, sourceOpts...)
+	if err != nil {
+		return err
+	}
+	defer sourcesClients.Terminate()
+	destinationsClients, err := destination.NewClients(ctx, destinations, destinationOpts...)
+	if err != nil {
+		return err
+	}
+	defer destinationsClients.Terminate()
+
+	for _, cl := range sourcesClients {
+		maxVersion, err := cl.MaxVersion(ctx)
+		if err != nil {
+			return err
+		}
+		switch maxVersion {
+		case 1:
+			if err := syncConnectionV1(ctx, cl, destinationsClients, invocationUUID.String(), noMigrate); err != nil {
+				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Spec.Name, err)
+			}
+		case 0:
+			if err := syncConnectionV0_2(ctx, cl, destinationsClients, invocationUUID.String(), noMigrate); err != nil {
+				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Spec.Name, err)
+			}
+		case -1:
+		default:
+			return fmt.Errorf("unknown source version %d", maxVersion)
+		}
+	}
+
+
+	
 	return nil
 }

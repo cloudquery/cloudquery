@@ -3,8 +3,11 @@ module github.com/cloudquery/cloudquery/cli
 go 1.19
 
 require (
+	github.com/avast/retry-go/v4 v4.3.3
+	github.com/cloudquery/plugin-pb-go v1.0.3
 	github.com/cloudquery/plugin-sdk/v2 v2.5.1
 	github.com/getsentry/sentry-go v0.20.0
+	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.0
 	github.com/schollz/progressbar/v3 v3.13.1
@@ -24,7 +27,6 @@ require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apache/arrow/go/v12 v12.0.0-20230430004532-0ea1a103dfc2 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
-	github.com/avast/retry-go/v4 v4.3.3 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect

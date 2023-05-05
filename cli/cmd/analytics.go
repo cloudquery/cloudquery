@@ -9,9 +9,8 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/internal/pb"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/plugin-pb-go/metrics"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
@@ -53,10 +52,10 @@ func initAnalytics() (*AnalyticsClient, error) {
 	}, nil
 }
 
-func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, metrics *source.Metrics, exitReason string) error {
-	if metrics == nil {
+func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, m *metrics.Metrics, exitReason string) error {
+	if m == nil {
 		// handle nil metrics
-		metrics = &source.Metrics{TableClient: map[string]map[string]*source.TableClientMetrics{}}
+		m = &metrics.Metrics{TableClient: map[string]map[string]*metrics.TableClientMetrics{}}
 	}
 	if c.client != nil {
 		sourcePath := sourceSpec.Path
@@ -68,9 +67,9 @@ func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.
 			SourcePath:      sourcePath,
 			SourceVersion:   sourceSpec.Version,
 			Destinations:    make([]*pb.Destination, 0, 1),
-			Resources:       int64(metrics.TotalResources()),
-			Errors:          int64(metrics.TotalErrors()),
-			Panics:          int64(metrics.TotalPanics()),
+			Resources:       int64(m.TotalResources()),
+			Errors:          int64(m.TotalErrors()),
+			Panics:          int64(m.TotalPanics()),
 			ClientVersion:   Version,
 			ExitReason:      exitReason,
 		}
@@ -93,32 +92,6 @@ func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.
 	return nil
 }
 
-func (c *AnalyticsClient) SendSyncSummary(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, summary schema.SyncSummary) error {
-	if c.client != nil {
-		syncSummary := &pb.SyncSummary{
-			Invocation_UUID: invocationUUID,
-			SourcePath:      sourceSpec.Path,
-			SourceVersion:   sourceSpec.Version,
-			Destinations:    make([]*pb.Destination, 0, 1),
-			Resources:       int64(summary.Resources),
-			Errors:          int64(summary.Errors),
-			Panics:          int64(summary.Panics),
-			ClientVersion:   Version,
-		}
-		for _, destinationSpec := range destinationsSpecs {
-			syncSummary.Destinations = append(syncSummary.Destinations, &pb.Destination{
-				Path:    destinationSpec.Path,
-				Version: destinationSpec.Version,
-			})
-		}
-
-		_, err := c.client.SendEvent(ctx, &pb.Event_Request{
-			SyncSummary: syncSummary,
-		})
-		return err
-	}
-	return nil
-}
 
 func (c *AnalyticsClient) Host() string {
 	return c.host

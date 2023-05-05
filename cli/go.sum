@@ -8,6 +8,8 @@ github.com/avast/retry-go/v4 v4.3.3/go.mod h1:rg6XFaiuFYII0Xu3RDbZQkxCofFwruZKW8
 github.com/bradleyjkemp/cupaloy/v2 v2.8.0 h1:any4BmKE+jGIaMpnU8YgH/I2LPiLBufr6oMMlVBbn9M=
 github.com/cloudquery/arrow/go/v12 v12.0.0-20230411134648-a5b71cd453c8 h1:v4ST367e8h0VyazUy3O/8soQzpHHGxH/8Jng9YlhZH8=
 github.com/cloudquery/arrow/go/v12 v12.0.0-20230411134648-a5b71cd453c8/go.mod h1:d+tV/eHZZ7Dz7RPrFKtPK02tpr+c9/PEd/zm8mDS9Vg=
+github.com/cloudquery/plugin-pb-go v1.0.3 h1:LqeZdXhEpjtv2v0rbMfhbu2FoxszqKInmGNOOBtKh1U=
+github.com/cloudquery/plugin-pb-go v1.0.3/go.mod h1:O+Qly8RQRphXEKiZqNyIG0SnIvIh1yPe8ExULy86xBA=
 github.com/cloudquery/plugin-sdk/v2 v2.5.1 h1:6qCadOLCLR2w1WmaosvM6JzjsQlpYChgIbw4cg65KhM=
 github.com/cloudquery/plugin-sdk/v2 v2.5.1/go.mod h1:3Q7i+PadZpHSLDy2b1yjCarxwHe2dTG0jB9l4IvWxgk=
 github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
@@ -35,6 +37,7 @@ github.com/google/flatbuffers v2.0.8+incompatible h1:ivUb1cGomAB101ZM1T0nOiWz9pS
 github.com/google/flatbuffers v2.0.8+incompatible/go.mod h1:1AeVuKshWv4vARoZatz6mlQ0JxURH0Kv5+zNeJKJCa8=
 github.com/google/go-cmp v0.5.5/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-cmp v0.5.9 h1:O2Tfq5qg4qc4AmwVlvv0oLiVAGB7enBSJ2x2DqQFi38=
+github.com/google/go-cmp v0.5.9/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
 github.com/google/uuid v1.3.0 h1:t6JiXgmwXMjEs8VusXIJk2BXHsn+wx8BZdTaoZ5fu7I=
 github.com/google/uuid v1.3.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/inconshreveable/mousetrap v1.0.1/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
