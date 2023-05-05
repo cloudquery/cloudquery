@@ -40,15 +40,21 @@ func analyzerFindings() *schema.Table {
 
 func fetchAccessanalyzerAnalyzerFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	analyzer := parent.Item.(types.AnalyzerSummary)
-	c := meta.(*client.Client)
-	svc := c.Services().Accessanalyzer
-	config := accessanalyzer.ListFindingsInput{
-		AnalyzerArn: analyzer.Arn,
+	cl := meta.(*client.Client)
+	svc := cl.Services().Accessanalyzer
+	var err error
+	lfi := &accessanalyzer.ListFindingsInput{}
+	if cl.Spec.TableOptions.AccessAnalyzerFindings != nil {
+		lfi, err = cl.Spec.TableOptions.AccessAnalyzerFindings.ListFindings()
+		if err != nil {
+			return err
+		}
 	}
-	paginator := accessanalyzer.NewListFindingsPaginator(svc, &config)
+	lfi.AnalyzerArn = analyzer.Arn
+	paginator := accessanalyzer.NewListFindingsPaginator(svc, lfi)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
