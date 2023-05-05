@@ -11,7 +11,7 @@ require (
 
 replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230424203127-ca31eee92780
 
-replace github.com/marcboeker/go-duckdb v1.2.2 => github.com/cloudquery/go-duckdb v0.0.0-20230505150417-305e8fab6260
+replace github.com/marcboeker/go-duckdb v1.2.2 => github.com/cloudquery/go-duckdb v0.0.0-20230505161949-7855fd124a7b
 
 // replace github.com/marcboeker/go-duckdb v1.2.2 => ../go-duckdb
 
