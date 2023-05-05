@@ -2,6 +2,10 @@
 
 package managedsource
 
+import (
+	"syscall"
+)
+
 func getSysProcAttr() *syscall.SysProcAttr {
 	return &syscall.SysProcAttr{
 		// launch as new process group so that signals are not sent to the child process
