@@ -51,12 +51,12 @@ func syncConnectionV0_2(ctx context.Context, sourceClient *managedsource.Client,
 			if _, err := destinationsPbClients[i].Configure(ctx, &base.Configure_Request{
 				Config: destSpecBytes,
 			}); err != nil {
-				return err
+				return fmt.Errorf("failed to call Configure %s: %w", destinationsClients[i].Spec.Name, err)
 			}
 			if _, err := destinationsPbClients[i].Migrate(ctx, &destination.Migrate_Request{
 				Tables: tablesBytes,
 			}); err != nil {
-				return err
+				return fmt.Errorf("failed to call Migrate %s: %w", destinationsClients[i].Spec.Name, err)
 			}
 		}
 		migrateTimeTook := time.Since(migrateStart)
@@ -129,9 +129,11 @@ func syncConnectionV0_2(ctx context.Context, sourceClient *managedsource.Client,
 		return err
 	}
 
-	log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
-	if err := analyticsClient.SendSyncMetrics(ctx, sourceClient.Spec, destinationsClients.Specs(), uid, &m); err != nil {
-		log.Warn().Err(err).Msg("Failed to send sync summary")
+	if analyticsClient != nil {
+		log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
+		if err := analyticsClient.SendSyncMetrics(ctx, sourceClient.Spec, destinationsClients.Specs(), uid, &m); err != nil {
+			log.Warn().Err(err).Msg("Failed to send sync summary")
+		}
 	}
 
 	syncTimeTook := time.Since(syncTime)
@@ -151,7 +153,7 @@ func getTablesForSpec(ctx context.Context, sourceClient source.SourceClient, spe
 		if err != nil {
 			return getTablesRes.Tables, fmt.Errorf("failed to call GetTables: %w", err)
 		}
-		return tables, nil
+		return getTablesRes.Tables, nil
 	} else if err != nil {
 		// the method is supported, but failed for some other reason
 		return nil, fmt.Errorf("failed to call GetTablesForSpec: %w", err)

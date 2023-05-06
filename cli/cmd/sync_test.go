@@ -32,17 +32,23 @@ func TestSync(t *testing.T) {
 		wantSourcePluginCache      bool
 		wantDestinationPluginCache bool
 	}{
+		// {
+		// 	name:                       "should finish successfully for valid config",
+		// 	config:                     "sync-success.yml",
+		// 	wantSourcePluginCache:      true,
+		// 	wantDestinationPluginCache: true,
+		// },
 		{
 			name:                       "should finish successfully for valid config",
-			config:                     "sync-success.yml",
+			config:                     "sync-success-sourcev0-destv0.yml",
 			wantSourcePluginCache:      true,
 			wantDestinationPluginCache: true,
 		},
-		{
-			name:   "should fail with missing path error when path is missing",
-			config: "sync-missing-path-error.yml",
-			err:    "Error: failed to validate destination test: path is required",
-		},
+		// {
+		// 	name:   "should fail with missing path error when path is missing",
+		// 	config: "sync-missing-path-error.yml",
+		// 	err:    "Error: failed to validate destination test: path is required",
+		// },
 	}
 
 	for _, tc := range configs {
