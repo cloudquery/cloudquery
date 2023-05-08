@@ -68,11 +68,13 @@ func genPackage(srcPkgUrl, fileName string) error {
 	c.loadType(srcPkgUrl)
 	dir := "../table_option_inputs/" + service + "/"
 	targetFilename := input + ".go"
-	os.MkdirAll(dir, os.ModePerm)
+	err := os.MkdirAll(dir, os.ModePerm)
+	if err != nil {
+		return err
+	}
 	// 7. Write generated file
-	err := c.f.Save(dir + targetFilename)
+	err = c.f.Save(dir + targetFilename)
 	return fmt.Errorf("writing output: %v", err)
-
 }
 
 func main() {
@@ -87,7 +89,10 @@ func main() {
 	for _, srcPkgUrl := range srcPkgUrls {
 		split := strings.Split(srcPkgUrl, "/")
 		fileName := split[len(split)-1]
-		genPackage(srcPkgUrl, fileName)
+		err := genPackage(srcPkgUrl, fileName)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
@@ -140,7 +145,6 @@ func contains(s []string, str string) bool {
 }
 
 func (c *client) generateStruct(sourceTypeName string, structType *types.Struct) error {
-
 	if c.checkGeneratedType(sourceTypeName) {
 		return nil
 	}

@@ -31,7 +31,6 @@ func (c *AaFindings) ListFindings() (*accessanalyzer.ListFindingsInput, error) {
 	if err := c.validateListFindings(); err != nil {
 		return &aaLFI, err
 	}
-	copier.Copy(&aaLFI, &c.ListFindingOpts)
-	return &aaLFI, nil
 
+	return &aaLFI, copier.Copy(&aaLFI, &c.ListFindingOpts)
 }

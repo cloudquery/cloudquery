@@ -14,7 +14,6 @@ type CtAPIs struct {
 }
 
 func (c *CtAPIs) validateLookupEvents() error {
-
 	if aws.ToString(c.LookupEventsOpts.NextToken) != "" {
 		return errors.New("invalid input: cannot set NextToken in LookupEvents")
 	}
@@ -26,13 +25,12 @@ func (c *CtAPIs) LookupEvents() (*cloudtrail.LookupEventsInput, error) {
 	if c == nil {
 		return &lookupEventsInput, nil
 	}
-	//validate input
+	// validate input
 	if err := c.validateLookupEvents(); err != nil {
 		return &lookupEventsInput, err
 	}
 
 	// copy input to AWS type
-	copier.Copy(&lookupEventsInput, &c.LookupEventsOpts)
 
-	return &lookupEventsInput, nil
+	return &lookupEventsInput, copier.Copy(&lookupEventsInput, &c.LookupEventsOpts)
 }

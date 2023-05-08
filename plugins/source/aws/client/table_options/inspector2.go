@@ -14,7 +14,6 @@ type Inspector2APIs struct {
 }
 
 func (c *Inspector2APIs) validateListFindings() error {
-
 	if aws.ToString(c.ListFindingOpts.NextToken) != "" {
 		return errors.New("invalid input: cannot set NextToken in ListFindings")
 	}
@@ -26,13 +25,11 @@ func (c *Inspector2APIs) ListFindings() (*inspector2.ListFindingsInput, error) {
 	if c == nil {
 		return &inspector2LFI, nil
 	}
-	//validate input
+	// validate input
 	if err := c.validateListFindings(); err != nil {
 		return &inspector2.ListFindingsInput{}, err
 	}
 
 	// copy input to AWS type
-	copier.Copy(&inspector2LFI, &c.ListFindingOpts)
-
-	return &inspector2LFI, nil
+	return &inspector2LFI, copier.Copy(&inspector2LFI, &c.ListFindingOpts)
 }
