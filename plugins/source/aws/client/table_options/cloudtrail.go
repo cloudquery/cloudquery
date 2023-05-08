@@ -5,7 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/table_option_inputs/cloudtrail_input"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/table_options/inputs/cloudtrail_input"
 	"github.com/jinzhu/copier"
 )
 

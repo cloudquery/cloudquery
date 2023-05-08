@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/table_option_inputs/cloudtrail_input"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/table_options/inputs/cloudtrail_input"
 	"github.com/cloudquery/plugin-sdk/faker"
 )
 

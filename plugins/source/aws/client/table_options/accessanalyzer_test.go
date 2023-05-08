@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/table_option_inputs/accessanalyzer_input"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/table_options/inputs/accessanalyzer_input"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/cloudquery/plugin-sdk/faker"
