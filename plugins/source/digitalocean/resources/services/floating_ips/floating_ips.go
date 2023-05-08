@@ -8,9 +8,10 @@ import (
 
 func FloatingIps() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_floating_ips",
-		Resolver:  fetchFloatingIpsFloatingIps,
-		Transform: transformers.TransformWithStruct(&godo.FloatingIP{}),
+		Name:        "digitalocean_floating_ips",
+		Description: "Deprecated. https://docs.digitalocean.com/reference/api/api-reference/#tag/Floating-IPs",
+		Resolver:    fetchFloatingIpsFloatingIps,
+		Transform:   transformers.TransformWithStruct(&godo.FloatingIP{}),
 		Columns: []schema.Column{
 			{
 				Name:     "ip",

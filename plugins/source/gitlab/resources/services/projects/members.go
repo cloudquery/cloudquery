@@ -9,34 +9,16 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-func ProjectMembers() *schema.Table {
+func members() *schema.Table {
 	return &schema.Table{
 		Name:      "gitlab_project_members",
-		Resolver:  fetchProjectMembers,
+		Resolver:  fetchMembers,
 		Transform: client.TransformWithStruct(&gitlab.ProjectMember{}, transformers.WithPrimaryKeys("ID")),
-		Columns: []schema.Column{
-			{
-				Name:     "base_url",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveURL,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "project_id",
-				Type:     schema.TypeInt,
-				Resolver: resolveProjectID,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-					NotNull:    true,
-				},
-			},
-		},
+		Columns:   schema.ColumnList{client.BaseURLColumn, projectIDColumn},
 	}
 }
 
-func fetchProjectMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	project := parent.Item.(*gitlab.Project)
 	opt := &gitlab.ListProjectMembersOptions{

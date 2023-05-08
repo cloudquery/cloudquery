@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
@@ -17,6 +18,19 @@ func createAccounts(router *mux.Router) error {
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
+	val1 := *item.Value[0]
+	val1.ID = to.Ptr("testaccount1")
+	val1.Name = to.Ptr("testaccount1")
+
+	val2 := *item.Value[0]
+	val2.ID = to.Ptr("testaccount2")
+	val2.Name = to.Ptr("testaccount2")
+
+	val3 := *item.Value[0]
+	val3.ID = to.Ptr("testaccount3")
+	val3.Name = to.Ptr("testaccount3")
+
+	item.Value = []*armstorage.Account{&val1, &val2, &val3}
 
 	emptyStr := ""
 	item.NextLink = &emptyStr

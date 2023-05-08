@@ -8,9 +8,10 @@ import (
 
 func Cdns() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_cdns",
-		Resolver:  fetchCdnsCdns,
-		Transform: transformers.TransformWithStruct(&godo.CDN{}),
+		Name:        "digitalocean_cdns",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/CDN-Endpoints",
+		Resolver:    fetchCdnsCdns,
+		Transform:   transformers.TransformWithStruct(&godo.CDN{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",
