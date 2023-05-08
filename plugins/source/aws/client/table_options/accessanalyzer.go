@@ -10,7 +10,7 @@ import (
 )
 
 type AaFindings struct {
-	ListFindingOpts accessanalyzer_input.ListFindingsInput `json:"ListFindings,omitempty"`
+	ListFindingOpts accessanalyzer_input.ListFindingsInput `json:"list_findings,omitempty"`
 }
 
 func (c *AaFindings) validateListFindings() error {

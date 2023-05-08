@@ -10,7 +10,7 @@ import (
 )
 
 type CtAPIs struct {
-	LookupEventsOpts cloudtrail_input.LookupEventsInput `json:"LookupEvents,omitempty"`
+	LookupEventsOpts cloudtrail_input.LookupEventsInput `json:"lookup_events,omitempty"`
 }
 
 func (c *CtAPIs) validateLookupEvents() error {

@@ -10,7 +10,7 @@ import (
 )
 
 type Inspector2APIs struct {
-	ListFindingOpts inspector2_input.ListFindingsInput `json:"ListFindings,omitempty"`
+	ListFindingOpts inspector2_input.ListFindingsInput `json:"list_findings,omitempty"`
 }
 
 func (c *Inspector2APIs) validateListFindings() error {
