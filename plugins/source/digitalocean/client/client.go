@@ -112,6 +112,7 @@ type Services struct {
 	Keys           KeysService
 	LoadBalancers  LoadBalancersService
 	Projects       ProjectsService
+	Regions        RegionsService
 	Registry       RegistryService
 	Sizes          SizesService
 	Snapshots      SnapshotsService
@@ -221,6 +222,7 @@ func initServices(doClient *godo.Client, spacesService SpacesService) *Services 
 		Keys:           doClient.Keys,
 		LoadBalancers:  doClient.LoadBalancers,
 		Projects:       doClient.Projects,
+		Regions:        doClient.Regions,
 		Registry:       doClient.Registry,
 		Sizes:          doClient.Sizes,
 		Snapshots:      doClient.Snapshots,

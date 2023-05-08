@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Domains.
 
+https://docs.digitalocean.com/reference/api/api-reference/#operation/domains_list
+
 The primary key for this table is **name**.
 
 ## Relations

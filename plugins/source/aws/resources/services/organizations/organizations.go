@@ -30,7 +30,9 @@ func Organizations() *schema.Table {
 
 func fetchOrganizationsOrganizations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	o, err := c.Services().Organizations.DescribeOrganization(ctx, &organizations.DescribeOrganizationInput{})
+	o, err := c.Services().Organizations.DescribeOrganization(ctx, &organizations.DescribeOrganizationInput{}, func(options *organizations.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}

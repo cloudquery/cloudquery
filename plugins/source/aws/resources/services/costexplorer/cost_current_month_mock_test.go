@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildCurrentMonthCost(t *testing.T, ctrl *gomock.Controller) client.Services {
+func build30DayCost(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockCostexplorerClient(ctrl)
 
 	gcuo := costexplorer.GetCostAndUsageOutput{}
@@ -28,5 +28,5 @@ func buildCurrentMonthCost(t *testing.T, ctrl *gomock.Controller) client.Service
 }
 
 func TestCostExplorerCurrentMonth(t *testing.T) {
-	client.AwsMockTestHelper(t, CurrentMonthCost(), buildCurrentMonthCost, client.TestOptions{})
+	client.AwsMockTestHelper(t, ThirtyDayCost(), build30DayCost, client.TestOptions{})
 }

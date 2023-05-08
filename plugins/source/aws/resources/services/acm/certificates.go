@@ -45,7 +45,9 @@ func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 	var input acm.ListCertificatesInput
 	paginator := acm.NewListCertificatesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *acm.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -58,7 +60,7 @@ func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schem
 	cl := meta.(*client.Client)
 	svc := cl.Services().Acm
 	input := acm.DescribeCertificateInput{CertificateArn: resource.Item.(types.CertificateSummary).CertificateArn}
-	output, err := svc.DescribeCertificate(ctx, &input)
+	output, err := svc.DescribeCertificate(ctx, &input, func(o *acm.Options) { o.Region = cl.Region })
 	if err != nil {
 		return err
 	}
@@ -70,7 +72,12 @@ func resolveCertificateTags(ctx context.Context, meta schema.ClientMeta, resourc
 	cert := resource.Item.(*types.CertificateDetail)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Acm
-	out, err := svc.ListTagsForCertificate(ctx, &acm.ListTagsForCertificateInput{CertificateArn: cert.CertificateArn})
+	out, err := svc.ListTagsForCertificate(ctx,
+		&acm.ListTagsForCertificateInput{CertificateArn: cert.CertificateArn},
+		func(o *acm.Options) {
+			o.Region = cl.Region
+		},
+	)
 	if err != nil {
 		return err
 	}

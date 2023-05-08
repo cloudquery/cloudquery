@@ -8,9 +8,10 @@ import (
 
 func Vpcs() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_vpcs",
-		Resolver:  fetchVpcsVpcs,
-		Transform: transformers.TransformWithStruct(&godo.VPC{}),
+		Name:        "digitalocean_vpcs",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/VPCs",
+		Resolver:    fetchVpcsVpcs,
+		Transform:   transformers.TransformWithStruct(&godo.VPC{}),
 		Columns: []schema.Column{
 			{
 				Name:     "id",

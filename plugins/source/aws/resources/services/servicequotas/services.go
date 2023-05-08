@@ -51,10 +51,13 @@ func fetchServicequotasServices(ctx context.Context, meta schema.ClientMeta, par
 		MaxResults: aws.Int32(100),
 	}
 
-	svc := meta.(*client.Client).Services().Servicequotas
+	cl := meta.(*client.Client)
+	svc := cl.Services().Servicequotas
 	servicePaginator := servicequotas.NewListServicesPaginator(svc, &config)
 	for servicePaginator.HasMorePages() {
-		output, err := servicePaginator.NextPage(ctx)
+		output, err := servicePaginator.NextPage(ctx, func(o *servicequotas.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

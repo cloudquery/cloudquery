@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Project Resources.
 
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Project-Resources
+
 The primary key for this table is **urn**.
 
 ## Relations

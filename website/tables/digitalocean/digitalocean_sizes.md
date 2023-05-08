@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Sizes.
 
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Sizes
+
 The primary key for this table is **slug**.
 
 ## Columns

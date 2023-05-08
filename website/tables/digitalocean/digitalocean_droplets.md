@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Droplets.
 
+https://docs.digitalocean.com/reference/api/api-reference/#operation/droplets_list
+
 The primary key for this table is **id**.
 
 ## Relations
