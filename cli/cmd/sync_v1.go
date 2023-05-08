@@ -121,6 +121,8 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 		r, err := syncClient.Recv()
 		if err == io.EOF {
 			break
+		} else if err != nil {
+			return err
 		}
 		_ = bar.Add(1)
 		for i := range destinationsPbClients {
