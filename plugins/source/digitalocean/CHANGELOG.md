@@ -5,6 +5,24 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v4.3.1...plugins-source-digitalocean-v4.4.0) (2023-05-08)
+
+
+### This Release has the Following Changes to Tables
+- Table `digitalocean_load_balancers` was added
+- Table `digitalocean_regions` was added
+
+### Features
+
+* **digitalocean:** Update DO SDK, S3 SDK and add docs ([#10567](https://github.com/cloudquery/cloudquery/issues/10567)) ([2f1f979](https://github.com/cloudquery/cloudquery/commit/2f1f9796ac8795a57e329f9a5d49f52b2d4ecd16))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.23 ([#10576](https://github.com/cloudquery/cloudquery/issues/10576)) ([eeb13d5](https://github.com/cloudquery/cloudquery/commit/eeb13d5b1b6b6fcb32764c8711bfbb79da35f9a8))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/internal/v4a to v1.0.25 ([#10585](https://github.com/cloudquery/cloudquery/issues/10585)) ([00d7449](https://github.com/cloudquery/cloudquery/commit/00d744988953f8a3f9c177970645be7b0f34fc69))
+* **digitalocean:** Re-add missing resources: Load Balancers and Regions ([#10563](https://github.com/cloudquery/cloudquery/issues/10563)) ([d3f308d](https://github.com/cloudquery/cloudquery/commit/d3f308d51d7ae25cda170d976da51e5150b69307)), closes [#10561](https://github.com/cloudquery/cloudquery/issues/10561)
+
 ## [4.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v4.3.0...plugins-source-digitalocean-v4.3.1) (2023-05-02)
 
 
