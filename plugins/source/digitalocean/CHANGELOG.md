@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [4.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v4.3.1...plugins-source-digitalocean-v4.4.0) (2023-05-08)
 
 
+### This Release has the Following Changes to Tables
+- Table `digitalocean_load_balancers` was added
+- Table `digitalocean_regions` was added
+
 ### Features
 
 * **digitalocean:** Update DO SDK, S3 SDK and add docs ([#10567](https://github.com/cloudquery/cloudquery/issues/10567)) ([2f1f979](https://github.com/cloudquery/cloudquery/commit/2f1f9796ac8795a57e329f9a5d49f52b2d4ecd16))
