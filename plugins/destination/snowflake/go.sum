@@ -63,8 +63,9 @@ github.com/apache/arrow/go/arrow v0.0.0-20211112161151-bc219186db40/go.mod h1:Q7
 github.com/apache/thrift v0.16.0 h1:qEy6UW60iVOlUy+b9ZR0d5WzUWYGOo4HfopoyBaNmoY=
 github.com/apache/thrift v0.16.0/go.mod h1:PHK3hniurgQaNMZYaCLEqXKsYK8upmhPbmdP2FXSqgU=
 github.com/avast/retry-go/v4 v4.3.3 h1:G56Bp6mU0b5HE1SkaoVjscZjlQb0oy4mezwY/cGH19w=
-github.com/aws/aws-sdk-go-v2 v1.17.8 h1:GMupCNNI7FARX27L7GjCJM8NgivWbRgpjNI/hOQjFS8=
 github.com/aws/aws-sdk-go-v2 v1.17.8/go.mod h1:uzbQtefpm44goOPmdKyAlXSNcwlRgF3ePWVW6EtJvvw=
+github.com/aws/aws-sdk-go-v2 v1.18.0 h1:882kkTpSFhdgYRKVZ/VCgf7sd0ru57p2JCxz4/oN5RY=
+github.com/aws/aws-sdk-go-v2 v1.18.0/go.mod h1:uzbQtefpm44goOPmdKyAlXSNcwlRgF3ePWVW6EtJvvw=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 h1:dK82zF6kkPeCo8J1e+tGx4JdvDIQzj7ygIoLg8WMuGs=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10/go.mod h1:VeTZetY5KRJLuD/7fkQXMU6Mw7H5m/KP2J5Iy9osMno=
 github.com/aws/aws-sdk-go-v2/config v1.18.21 h1:ENTXWKwE8b9YXgQCsruGLhvA9bhg+RqAsL9XEMEsa2c=
@@ -75,8 +76,9 @@ github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.2 h1:jOzQAesnBFDmz93feqKnsTH
 github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.2/go.mod h1:cDh1p6XkSGSwSRIArWRc6+UqAQ7x4alQ0QfpVR6f+co=
 github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.63 h1:3TZm9tzOXOX/aPAxBh3+LtMZtjHMzNO/wQ41+HFUzIA=
 github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.63/go.mod h1:M1piIHmVL5lJ6OomRJdZtemge4TeGw6sPPsQzIIjHWw=
-github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.32 h1:dpbVNUjczQ8Ae3QKHbpHBpfvaVkRdesxpTOe9pTouhU=
 github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.32/go.mod h1:RudqOgadTWdcS3t/erPQo24pcVEoYyqj/kKW5Vya21I=
+github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.33 h1:kG5eQilShqmJbv11XL1VpyDbaEJzWxd4zRiCG30GSn4=
+github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.33/go.mod h1:7i0PF1ME/2eUPFcjkVIwq+DOygHEoK92t5cDqNgYbIw=
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.26 h1:QH2kOS3Ht7x+u0gHCh06CXL/h6G8LQJFpZfFBYBNboo=
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.26/go.mod h1:vq86l7956VgFr0/FWQ2BWnK07QC3WYsepKzy33qqY5U=
 github.com/aws/aws-sdk-go-v2/internal/ini v1.3.33 h1:HbH1VjUgrCdLJ+4lnnuLI4iVNRvBbBELGaJ5f69ClA8=
