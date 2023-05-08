@@ -2,20 +2,20 @@
 package accessanalyzer_input
 
 type Criterion struct {
-	Contains []string
-	Eq       []string
-	Exists   *bool
-	Neq      []string
+	Contains []string `json:"contains,omitempty"`
+	Eq       []string `json:"eq,omitempty"`
+	Exists   *bool    `json:"exists,omitempty"`
+	Neq      []string `json:"neq,omitempty"`
 }
 type OrderBy string
 type SortCriteria struct {
-	AttributeName *string
-	OrderBy       *OrderBy
+	AttributeName *string  `json:"attribute_name,omitempty"`
+	OrderBy       *OrderBy `json:"order_by,omitempty"`
 }
 type ListFindingsInput struct {
-	AnalyzerArn *string
-	Filter      map[string]Criterion
-	MaxResults  *int32
-	NextToken   *string
-	Sort        *SortCriteria
+	AnalyzerArn *string              `json:"analyzer_arn,omitempty"`
+	Filter      map[string]Criterion `json:"filter,omitempty"`
+	MaxResults  *int32               `json:"max_results,omitempty"`
+	NextToken   *string              `json:"next_token,omitempty"`
+	Sort        *SortCriteria        `json:"sort,omitempty"`
 }

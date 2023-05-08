@@ -3,44 +3,44 @@ package costexplorer_input
 
 type Granularity string
 type DateInterval struct {
-	End   *string
-	Start *string
+	End   *string `json:"end,omitempty"`
+	Start *string `json:"start,omitempty"`
 }
 type MatchOption string
 type CostCategoryValues struct {
-	Key          *string
-	MatchOptions []MatchOption
-	Values       []string
+	Key          *string       `json:"key,omitempty"`
+	MatchOptions []MatchOption `json:"match_options,omitempty"`
+	Values       []string      `json:"values,omitempty"`
 }
 type Dimension string
 type DimensionValues struct {
-	Key          *Dimension
-	MatchOptions []MatchOption
-	Values       []string
+	Key          *Dimension    `json:"key,omitempty"`
+	MatchOptions []MatchOption `json:"match_options,omitempty"`
+	Values       []string      `json:"values,omitempty"`
 }
 type TagValues struct {
-	Key          *string
-	MatchOptions []MatchOption
-	Values       []string
+	Key          *string       `json:"key,omitempty"`
+	MatchOptions []MatchOption `json:"match_options,omitempty"`
+	Values       []string      `json:"values,omitempty"`
 }
 type Expression struct {
-	And            []Expression
-	CostCategories *CostCategoryValues
-	Dimensions     *DimensionValues
-	Not            *Expression
-	Or             []Expression
-	Tags           *TagValues
+	And            []Expression        `json:"and,omitempty"`
+	CostCategories *CostCategoryValues `json:"cost_categories,omitempty"`
+	Dimensions     *DimensionValues    `json:"dimensions,omitempty"`
+	Not            *Expression         `json:"not,omitempty"`
+	Or             []Expression        `json:"or,omitempty"`
+	Tags           *TagValues          `json:"tags,omitempty"`
 }
 type GroupDefinitionType string
 type GroupDefinition struct {
-	Key  *string
-	Type *GroupDefinitionType
+	Key  *string              `json:"key,omitempty"`
+	Type *GroupDefinitionType `json:"type,omitempty"`
 }
 type GetCostAndUsageInput struct {
-	Granularity   *Granularity
-	Metrics       []string
-	TimePeriod    *DateInterval
-	Filter        *Expression
-	GroupBy       []GroupDefinition
-	NextPageToken *string
+	Granularity   *Granularity      `json:"granularity,omitempty"`
+	Metrics       []string          `json:"metrics,omitempty"`
+	TimePeriod    *DateInterval     `json:"time_period,omitempty"`
+	Filter        *Expression       `json:"filter,omitempty"`
+	GroupBy       []GroupDefinition `json:"group_by,omitempty"`
+	NextPageToken *string           `json:"next_page_token,omitempty"`
 }
