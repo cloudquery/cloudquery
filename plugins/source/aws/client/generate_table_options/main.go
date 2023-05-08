@@ -158,7 +158,7 @@ func (c *client) generateStruct(sourceTypeName string, structType *types.Struct)
 				if typeName.Name() != sourceTypeName {
 					c.loadType(typeName.Pkg().Path() + "." + typeName.Name())
 				}
-				code.Op("*").Id(typeName.Name())
+				code.Op("[]").Id(typeName.Name())
 			default:
 				return fmt.Errorf("struct field type not handled: %T", vNested)
 			}
