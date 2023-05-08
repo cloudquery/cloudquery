@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -58,6 +59,8 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 
 	cfg.Region = c.pluginSpec.Region
+	cfg.EndpointResolverWithOptions = c
+
 	c.s3Client = s3.NewFromConfig(cfg)
 	c.uploader = manager.NewUploader(c.s3Client)
 	c.downloader = manager.NewDownloader(c.s3Client)
@@ -79,4 +82,18 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 
 func (*Client) Close(ctx context.Context) error {
 	return nil
+}
+
+func (*Client) ResolveEndpoint(service, region string, options ...interface{}) (aws.Endpoint, error) {
+	endpoint := os.Getenv("AWS_S3_ENDPOINT")
+	if endpoint == "" || service != s3.ServiceID {
+		return aws.Endpoint{}, &aws.EndpointNotFoundError{}
+	}
+
+	return aws.Endpoint{
+		PartitionID:   "aws",
+		URL:           endpoint,
+		SigningRegion: region,
+		Source:        aws.EndpointSourceCustom,
+	}, nil
 }
