@@ -41,19 +41,19 @@ func (c *client) copyType(sourceType string) {
 	// Ensure that the variable is declared in that package
 	obj := pkg.Types.Scope().Lookup(sourceTypeName)
 	if obj == nil {
-		failErr(fmt.Errorf("%s not found in declared types of %s", sourceTypeName, pkg))
+		panic(fmt.Errorf("%s not found in declared types of %s", sourceTypeName, pkg))
 	}
 
 	// check if it is a declared type
 	if _, ok := obj.(*types.TypeName); !ok {
-		failErr(fmt.Errorf("%v is not a named type", obj))
+		panic(fmt.Errorf("%v is not a named type", obj))
 	}
 	// only support copying strings and structs
 	switch v := obj.Type().Underlying().(type) {
 	case *types.Struct:
 		err := c.generateStruct(sourceTypeName, v)
 		if err != nil {
-			failErr(err)
+			panic(err)
 		}
 	case *types.Basic:
 		c.generateString(sourceTypeName)
@@ -111,7 +111,7 @@ func loadPackage(path string) *packages.Package {
 	cfg := &packages.Config{Mode: packages.NeedTypes | packages.NeedImports}
 	pkgs, err := packages.Load(cfg, path)
 	if err != nil {
-		failErr(fmt.Errorf("loading packages for inspection: %v", err))
+		panic(fmt.Errorf("loading packages for inspection: %v", err))
 	}
 	if packages.PrintErrors(pkgs) > 0 {
 		os.Exit(1)
@@ -123,18 +123,11 @@ func loadPackage(path string) *packages.Package {
 func splitSourceType(sourceType string) (string, string) {
 	idx := strings.LastIndexByte(sourceType, '.')
 	if idx == -1 {
-		failErr(fmt.Errorf(`expected qualified type as "pkg/path.MyType"`))
+		panic(fmt.Errorf(`expected qualified type as "pkg/path.MyType"`))
 	}
 	sourceTypePackage := sourceType[0:idx]
 	sourceTypeName := sourceType[idx+1:]
 	return sourceTypePackage, sourceTypeName
-}
-
-func failErr(err error) {
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-		os.Exit(1)
-	}
 }
 
 func (c *client) generateString(sourceTypeName string) {
@@ -179,9 +172,7 @@ func (c *client) generateStruct(sourceTypeName string, structType *types.Struct)
 				code.Op("[]").Id(vNested.String())
 			case *types.Named:
 				typeName := vNested.Obj()
-				if typeName.Name() != sourceTypeName {
-					c.copyType(typeName.Pkg().Path() + "." + typeName.Name())
-				}
+				c.copyType(typeName.Pkg().Path() + "." + typeName.Name())
 				code.Op("[]").Id(typeName.Name())
 			default:
 				return fmt.Errorf("struct field type not handled: %T", vNested)
@@ -193,43 +184,36 @@ func (c *client) generateStruct(sourceTypeName string, structType *types.Struct)
 				code.Op("map[string]").Id(vNested.String())
 			case *types.Named:
 				nestedTypeName := vNested.Obj()
-				// Qual automatically imports packages
-				if nestedTypeName.Name() != sourceTypeName {
-					c.copyType(nestedTypeName.Pkg().Path() + "." + nestedTypeName.Name())
-				}
+				// Skip copying the type if it is the same type
+				c.copyType(nestedTypeName.Pkg().Path() + "." + nestedTypeName.Name())
 				code.Map(jen.Id(v.Key().String())).Id(nestedTypeName.Name())
 
 			default:
 				return fmt.Errorf("struct field type not handled: %T", vNested)
 			}
 		case *types.Pointer:
-			switch vNested := v.Elem().(type) {
+			switch vNestedType := v.Elem().(type) {
 			case *types.Basic:
-				code.Op("*").Id(vNested.String())
+				code.Op("*").Id(vNestedType.String())
 			case *types.Named:
-				typeName := vNested.Obj()
-				// Qual automatically imports packages
-
-				if typeName.Name() != sourceTypeName {
-					c.copyType(typeName.Pkg().Path() + "." + typeName.Name())
-				}
+				typeName := vNestedType.Obj()
 				path := typeName.Pkg().Path()
-
+				c.copyType(path + "." + typeName.Name())
+				// This is a hack to skip copying types from the standard library
 				if strings.HasPrefix(path, "github.com/") {
 					code.Op("*").Id(typeName.Name())
 				} else {
-					code.Op("*").Qual(typeName.Pkg().Path(), typeName.Name())
+					code.Op("*").Qual(path, typeName.Name())
 				}
 
 			default:
-				return fmt.Errorf("struct field type not handled: %T", vNested)
+				return fmt.Errorf("struct field type not handled: %T", vNestedType)
 			}
 
 		case *types.Basic:
 			code.Op("*").Id(v.String())
 		case *types.Named:
 			typeName := v.Obj()
-
 			c.copyType(typeName.Pkg().Path() + "." + typeName.Name())
 			code.Op("*").Id(typeName.Name())
 		default:
