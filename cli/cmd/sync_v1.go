@@ -18,7 +18,19 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+type ExitReason string
+
 func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, destinationsClients manageddestination.Clients, uid string, noMigrate bool) error {
+	var mt metrics.Metrics
+	var exitReason = ExitReasonStopped
+	defer func() {
+		if analyticsClient != nil {
+			log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
+			if err := analyticsClient.SendSyncMetrics(context.Background(), sourceClient.Spec, destinationsClients.Specs(), uid, &mt, exitReason); err != nil {
+				log.Warn().Err(err).Msg("Failed to send sync summary")
+			}
+		}
+	}()
 	syncTime := time.Now().UTC()
 	sourceSpec := sourceClient.Spec
 	destinationStrings := destinationsClients.Names()
@@ -137,22 +149,16 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 	if err != nil {
 		return err
 	}
-	var m metrics.Metrics
-	if err := json.Unmarshal(getMetricsRes.Metrics, &m); err != nil {
+	if err := json.Unmarshal(getMetricsRes.Metrics, &mt); err != nil {
 		return err
 	}
 
-	if analyticsClient != nil {
-		log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
-		if err := analyticsClient.SendSyncMetrics(ctx, sourceClient.Spec, destinationsClients.Specs(), uid, &m); err != nil {
-			log.Warn().Err(err).Msg("Failed to send sync summary")
-		}
-	}
 	err = bar.Finish()
 	if err != nil {
 		log.Warn().Err(err).Msg("Failed to finish progress bar")
 	}
 	syncTimeTook := time.Since(syncTime)
-	fmt.Printf("Sync completed successfully. Resources: %d, Errors: %d, Panics: %d, Time: %s\n", m.TotalResources(), m.TotalErrors(), m.TotalPanics(), syncTimeTook.Truncate(time.Second).String())
+	exitReason = ExitReasonCompleted
+	fmt.Printf("Sync completed successfully. Resources: %d, Errors: %d, Panics: %d, Time: %s\n", mt.TotalResources(), mt.TotalErrors(), mt.TotalPanics(), syncTimeTook.Truncate(time.Second).String())
 	return nil
 }

@@ -131,7 +131,7 @@ func syncConnectionV0_2(ctx context.Context, sourceClient *managedsource.Client,
 
 	if analyticsClient != nil {
 		log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
-		if err := analyticsClient.SendSyncMetrics(ctx, sourceClient.Spec, destinationsClients.Specs(), uid, &m); err != nil {
+		if err := analyticsClient.SendSyncMetrics(ctx, sourceClient.Spec, destinationsClients.Specs(), uid, &m, ExitReasonUnset); err != nil {
 			log.Warn().Err(err).Msg("Failed to send sync summary")
 		}
 	}

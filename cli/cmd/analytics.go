@@ -20,6 +20,12 @@ const (
 	defaultAnalyticsHost = "analyticsv1.cloudquery.io:443"
 )
 
+const (
+	ExitReasonUnset     ExitReason = ""
+	ExitReasonStopped   ExitReason = "stopped"
+	ExitReasonCompleted ExitReason = "completed"
+)
+
 type AnalyticsClient struct {
 	client analytics.AnalyticsClient
 	conn   *grpc.ClientConn
@@ -52,7 +58,7 @@ func initAnalytics() (*AnalyticsClient, error) {
 	}, nil
 }
 
-func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, m *metrics.Metrics) error {
+func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, m *metrics.Metrics, exitReason ExitReason) error {
 	if m == nil {
 		// handle nil metrics
 		m = &metrics.Metrics{TableClient: map[string]map[string]*metrics.TableClientMetrics{}}
@@ -71,6 +77,7 @@ func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.
 			Errors:          int64(m.TotalErrors()),
 			Panics:          int64(m.TotalPanics()),
 			ClientVersion:   Version,
+			ExitReason:      string(exitReason),
 		}
 		for _, destinationSpec := range destinationsSpecs {
 			destPath := destinationSpec.Path
