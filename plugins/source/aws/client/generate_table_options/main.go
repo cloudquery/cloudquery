@@ -28,6 +28,24 @@ func (c *client) checkGeneratedType(genType string) bool {
 	return contains(c.generatedTypes, genType) || contains(skipPackageImports, genType)
 }
 
+func main() {
+	// To add more inputs to copy add them to this list
+	srcPkgUrls := []string{
+		"github.com/aws/aws-sdk-go-v2/service/costexplorer.GetCostAndUsageInput",
+		"github.com/aws/aws-sdk-go-v2/service/inspector2.ListFindingsInput",
+		"github.com/aws/aws-sdk-go-v2/service/accessanalyzer.ListFindingsInput",
+		"github.com/aws/aws-sdk-go-v2/service/cloudtrail.LookupEventsInput",
+	}
+	for _, srcPkgUrl := range srcPkgUrls {
+		split := strings.Split(srcPkgUrl, "/")
+		fileName := split[len(split)-1]
+		err := genPackage(srcPkgUrl, fileName)
+		if err != nil {
+			panic(err)
+		}
+	}
+}
+
 // Function takes in the full path of th struct you want to copy locally
 func (c *client) copyType(sourceType string) {
 	if c.checkGeneratedType(sourceType) {
@@ -90,23 +108,6 @@ func genPackage(srcPkgUrl, fileName string) error {
 	return nil
 }
 
-func main() {
-	srcPkgUrls := []string{
-		"github.com/aws/aws-sdk-go-v2/service/costexplorer.GetCostAndUsageInput",
-		"github.com/aws/aws-sdk-go-v2/service/inspector2.ListFindingsInput",
-		"github.com/aws/aws-sdk-go-v2/service/accessanalyzer.ListFindingsInput",
-		"github.com/aws/aws-sdk-go-v2/service/cloudtrail.LookupEventsInput",
-	}
-	for _, srcPkgUrl := range srcPkgUrls {
-		split := strings.Split(srcPkgUrl, "/")
-		fileName := split[len(split)-1]
-		err := genPackage(srcPkgUrl, fileName)
-		if err != nil {
-			panic(err)
-		}
-	}
-}
-
 func loadPackage(path string) *packages.Package {
 	cfg := &packages.Config{Mode: packages.NeedTypes | packages.NeedImports}
 	pkgs, err := packages.Load(cfg, path)
@@ -155,7 +156,7 @@ func (c *client) generateStruct(sourceTypeName string, structType *types.Struct)
 	c.addGeneratedType(sourceTypeName)
 	var changeSetFields []jen.Code
 
-	// 4. Iterate over struct fields
+	// Iterate over struct fields
 	for i := 0; i < structType.NumFields(); i++ {
 		field := structType.Field(i)
 		name := field.Name()
@@ -166,30 +167,30 @@ func (c *client) generateStruct(sourceTypeName string, structType *types.Struct)
 		// Generate code for each changeset field
 		code := jen.Id(name)
 		switch v := field.Type().(type) {
+		case *types.Basic:
+			code.Op("*").Id(v.String())
 		case *types.Slice:
-			switch vNested := v.Elem().(type) {
+			switch vNestedType := v.Elem().(type) {
 			case *types.Basic:
-				code.Op("[]").Id(vNested.String())
+				code.Op("[]").Id(vNestedType.String())
 			case *types.Named:
-				typeName := vNested.Obj()
+				typeName := vNestedType.Obj()
 				c.copyType(typeName.Pkg().Path() + "." + typeName.Name())
 				code.Op("[]").Id(typeName.Name())
 			default:
-				return fmt.Errorf("struct field type not handled: %T", vNested)
+				return fmt.Errorf("struct field type not handled: %T", vNestedType)
 			}
 		case *types.Map:
-			switch vNested := v.Elem().(type) {
+			switch vNestedType := v.Elem().(type) {
 			case *types.Basic:
 				// TODO this is a hack, once we need to support maps with keys other than string we will need to handle this
-				code.Op("map[string]").Id(vNested.String())
+				code.Op("map[string]").Id(vNestedType.String())
 			case *types.Named:
-				nestedTypeName := vNested.Obj()
-				// Skip copying the type if it is the same type
+				nestedTypeName := vNestedType.Obj()
 				c.copyType(nestedTypeName.Pkg().Path() + "." + nestedTypeName.Name())
 				code.Map(jen.Id(v.Key().String())).Id(nestedTypeName.Name())
-
 			default:
-				return fmt.Errorf("struct field type not handled: %T", vNested)
+				return fmt.Errorf("struct field type not handled: %T", vNestedType)
 			}
 		case *types.Pointer:
 			switch vNestedType := v.Elem().(type) {
@@ -210,8 +211,6 @@ func (c *client) generateStruct(sourceTypeName string, structType *types.Struct)
 				return fmt.Errorf("struct field type not handled: %T", vNestedType)
 			}
 
-		case *types.Basic:
-			code.Op("*").Id(v.String())
 		case *types.Named:
 			typeName := v.Obj()
 			c.copyType(typeName.Pkg().Path() + "." + typeName.Name())
