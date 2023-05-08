@@ -1,12 +1,9 @@
 package table_options
 
 import (
-	"math/rand"
 	"reflect"
 	"testing"
-	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/table_option_inputs/cloudtrail_input"
@@ -18,7 +15,6 @@ func TestLookupEvents(t *testing.T) {
 	if err := faker.FakeObject(&u); err != nil {
 		t.Fatal(err)
 	}
-	u.EndTime = aws.Time(time.Now().Add(time.Duration(rand.Int63())))
 	api := CtAPIs{
 		LookupEventsOpts: u,
 	}
