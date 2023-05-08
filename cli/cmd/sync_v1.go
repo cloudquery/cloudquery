@@ -131,7 +131,10 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 			log.Warn().Err(err).Msg("Failed to send sync summary")
 		}
 	}
-
+	err = bar.Finish()
+	if err != nil {
+		log.Warn().Err(err).Msg("Failed to finish progress bar")
+	}
 	syncTimeTook := time.Since(syncTime)
 	fmt.Printf("Sync completed successfully. Resources: %d, Errors: %d, Panics: %d, Time: %s\n", m.TotalResources(), m.TotalErrors(), m.TotalPanics(), syncTimeTook.Truncate(time.Second).String())
 	return nil
