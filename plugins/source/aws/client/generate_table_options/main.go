@@ -5,27 +5,21 @@ import (
 	"go/types"
 	"os"
 	"strings"
-	"sync"
 
 	"github.com/dave/jennifer/jen"
 	"golang.org/x/tools/go/packages"
 )
 
 type client struct {
-	mu             sync.Mutex
 	generatedTypes []string
 	f              *jen.File
 }
 
 func (c *client) addGeneratedType(genType string) {
-	c.mu.Lock()
 	c.generatedTypes = append(c.generatedTypes, genType)
-	c.mu.Unlock()
 }
 
 func (c *client) checkGeneratedType(genType string) bool {
-	c.mu.Lock()
-	defer c.mu.Unlock()
 	return contains(c.generatedTypes, genType)
 }
 
@@ -113,7 +107,7 @@ func (c *client) generateString(sourceTypeName string, structType *types.Basic) 
 	if contains(c.generatedTypes, sourceTypeName) {
 		return nil
 	}
-	defer c.addGeneratedType(sourceTypeName)
+	c.addGeneratedType(sourceTypeName)
 
 	c.f.Type().Id(sourceTypeName).String()
 	return nil
@@ -133,7 +127,7 @@ func (c *client) generateStruct(sourceTypeName string, structType *types.Struct)
 	if c.checkGeneratedType(sourceTypeName) {
 		return nil
 	}
-	defer c.addGeneratedType(sourceTypeName)
+	c.addGeneratedType(sourceTypeName)
 	var (
 		changeSetFields []jen.Code
 	)
