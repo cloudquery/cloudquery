@@ -15,7 +15,7 @@ func TestLookupEvents(t *testing.T) {
 	if err := faker.FakeObject(&u); err != nil {
 		t.Fatal(err)
 	}
-	api := CtAPIs{
+	api := CloudtrailAPIs{
 		LookupEventsOpts: u,
 	}
 	// Ensure that the validation works as expected

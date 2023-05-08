@@ -9,11 +9,11 @@ import (
 	"github.com/jinzhu/copier"
 )
 
-type AaFindings struct {
+type AccessanalyzerFindings struct {
 	ListFindingOpts accessanalyzer_input.ListFindingsInput `json:"list_findings,omitempty"`
 }
 
-func (c *AaFindings) validateListFindings() error {
+func (c *AccessanalyzerFindings) validateListFindings() error {
 	if aws.ToString(c.ListFindingOpts.NextToken) != "" {
 		return errors.New("invalid input: cannot set NextToken in ListFindings")
 	}
@@ -23,7 +23,7 @@ func (c *AaFindings) validateListFindings() error {
 	return nil
 }
 
-func (c *AaFindings) ListFindings() (*accessanalyzer.ListFindingsInput, error) {
+func (c *AccessanalyzerFindings) ListFindings() (*accessanalyzer.ListFindingsInput, error) {
 	var aaLFI accessanalyzer.ListFindingsInput
 	if c == nil {
 		return &aaLFI, nil

@@ -9,18 +9,18 @@ import (
 	"github.com/jinzhu/copier"
 )
 
-type CtAPIs struct {
+type CloudtrailAPIs struct {
 	LookupEventsOpts cloudtrail_input.LookupEventsInput `json:"lookup_events,omitempty"`
 }
 
-func (c *CtAPIs) validateLookupEvents() error {
+func (c *CloudtrailAPIs) validateLookupEvents() error {
 	if aws.ToString(c.LookupEventsOpts.NextToken) != "" {
 		return errors.New("invalid input: cannot set NextToken in LookupEvents")
 	}
 	return nil
 }
 
-func (c *CtAPIs) LookupEvents() (*cloudtrail.LookupEventsInput, error) {
+func (c *CloudtrailAPIs) LookupEvents() (*cloudtrail.LookupEventsInput, error) {
 	var lookupEventsInput cloudtrail.LookupEventsInput
 	if c == nil {
 		return &lookupEventsInput, nil

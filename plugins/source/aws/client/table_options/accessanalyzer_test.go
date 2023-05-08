@@ -16,7 +16,7 @@ func TestAAListFindings(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	api := AaFindings{
+	api := AccessanalyzerFindings{
 		ListFindingOpts: u,
 	}
 	// Ensure that the validation works as expected
