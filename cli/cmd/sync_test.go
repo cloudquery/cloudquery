@@ -81,6 +81,7 @@ func TestSyncCqDir(t *testing.T) {
 	cmd := NewCmdRoot()
 	cmd.SetArgs([]string{"sync", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
 	err := cmd.Execute()
+	defer CloseLogFile()
 	require.NoError(t, err)
 
 	// check that destination plugin was downloaded to the cache using --cq-dir
