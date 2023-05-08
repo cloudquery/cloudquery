@@ -84,7 +84,7 @@ func (*Client) Close(ctx context.Context) error {
 	return nil
 }
 
-func (*Client) ResolveEndpoint(service, region string, options ...interface{}) (aws.Endpoint, error) {
+func (*Client) ResolveEndpoint(service, region string, options ...any) (aws.Endpoint, error) {
 	endpoint := os.Getenv("AWS_S3_ENDPOINT")
 	if endpoint == "" || service != s3.ServiceID {
 		return aws.Endpoint{}, &aws.EndpointNotFoundError{}
