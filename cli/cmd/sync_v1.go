@@ -101,6 +101,22 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 		progressbar.OptionShowCount(),
 		progressbar.OptionClearOnFinish(),
 	)
+
+	// Add a ticker to update the progress bar every second.
+	t := time.NewTicker(1 * time.Second)
+	defer t.Stop()
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case <-t.C:
+				_ = bar.Add(0)
+			}
+		}
+	}()
+
+	// Read from the sync stream and write to all destinations.
 	for {
 		r, err := syncClient.Recv()
 		if err == io.EOF {
