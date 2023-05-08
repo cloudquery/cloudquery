@@ -9,26 +9,26 @@ type DateInterval struct {
 type MatchOption string
 type CostCategoryValues struct {
 	Key          *string
-	MatchOptions *MatchOption
+	MatchOptions []MatchOption
 	Values       []string
 }
 type Dimension string
 type DimensionValues struct {
 	Key          *Dimension
-	MatchOptions *MatchOption
+	MatchOptions []MatchOption
 	Values       []string
 }
 type TagValues struct {
 	Key          *string
-	MatchOptions *MatchOption
+	MatchOptions []MatchOption
 	Values       []string
 }
 type Expression struct {
-	And            *Expression
+	And            []Expression
 	CostCategories *CostCategoryValues
 	Dimensions     *DimensionValues
 	Not            *Expression
-	Or             *Expression
+	Or             []Expression
 	Tags           *TagValues
 }
 type GroupDefinitionType string
@@ -41,6 +41,6 @@ type GetCostAndUsageInput struct {
 	Metrics       []string
 	TimePeriod    *DateInterval
 	Filter        *Expression
-	GroupBy       *GroupDefinition
+	GroupBy       []GroupDefinition
 	NextPageToken *string
 }
