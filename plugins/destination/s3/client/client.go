@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -84,15 +83,14 @@ func (*Client) Close(ctx context.Context) error {
 	return nil
 }
 
-func (*Client) ResolveEndpoint(service, region string, options ...any) (aws.Endpoint, error) {
-	endpoint := os.Getenv("AWS_S3_ENDPOINT")
-	if endpoint == "" || service != s3.ServiceID {
+func (c *Client) ResolveEndpoint(service, region string, options ...any) (aws.Endpoint, error) {
+	if c.pluginSpec.Endpoint == "" || service != s3.ServiceID {
 		return aws.Endpoint{}, &aws.EndpointNotFoundError{}
 	}
 
 	return aws.Endpoint{
 		PartitionID:   "aws",
-		URL:           endpoint,
+		URL:           c.pluginSpec.Endpoint,
 		SigningRegion: region,
 		Source:        aws.EndpointSourceCustom,
 	}, nil
