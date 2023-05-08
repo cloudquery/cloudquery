@@ -10,6 +10,8 @@ import (
 	"golang.org/x/tools/go/packages"
 )
 
+var skipPackageImports = []string{"time.Time"}
+
 type client struct {
 	generatedTypes []string
 	f              *jen.File
@@ -24,6 +26,10 @@ func (c *client) checkGeneratedType(genType string) bool {
 }
 
 func (c *client) loadType(fullDef string) {
+	if contains(skipPackageImports, fullDef) {
+		return
+	}
+
 	sourceType := fullDef
 	sourceTypePackage, sourceTypeName := splitSourceType(sourceType)
 	// 2. Inspect package and use type checker to infer imported types
@@ -73,9 +79,9 @@ func main() {
 	// 1. Get the package of the file with go:generate comment
 	// goPackage := "table_option_inputs"
 	srcPkgUrls := []string{
-		// "github.com/aws/aws-sdk-go-v2/service/costexplorer.GetCostAndUsageInput",
-		// "github.com/aws/aws-sdk-go-v2/service/inspector2.ListFindingsInput",
-		// "github.com/aws/aws-sdk-go-v2/service/accessanalyzer.ListFindingsInput",
+		"github.com/aws/aws-sdk-go-v2/service/costexplorer.GetCostAndUsageInput",
+		"github.com/aws/aws-sdk-go-v2/service/inspector2.ListFindingsInput",
+		"github.com/aws/aws-sdk-go-v2/service/accessanalyzer.ListFindingsInput",
 		"github.com/aws/aws-sdk-go-v2/service/cloudtrail.LookupEventsInput",
 	}
 	for _, srcPkgUrl := range srcPkgUrls {
@@ -157,9 +163,10 @@ func (c *client) generateStruct(sourceTypeName string, structType *types.Struct)
 				code.Op("[]").Id(vNested.String())
 			case *types.Named:
 				typeName := vNested.Obj()
-				// Qual automatically imports packages
 				if typeName.Name() != sourceTypeName {
-					c.loadType(typeName.Pkg().Path() + "." + typeName.Name())
+					path := typeName.Pkg().Path()
+					name := typeName.Name()
+					c.loadType(path + "." + name)
 				}
 				code.Op("[]").Id(typeName.Name())
 			default:
@@ -187,10 +194,18 @@ func (c *client) generateStruct(sourceTypeName string, structType *types.Struct)
 			case *types.Named:
 				typeName := vNested.Obj()
 				// Qual automatically imports packages
+
 				if typeName.Name() != sourceTypeName {
 					c.loadType(typeName.Pkg().Path() + "." + typeName.Name())
 				}
-				code.Op("*").Id(typeName.Name())
+				path := typeName.Pkg().Path()
+
+				if strings.HasPrefix(path, "github.com/") {
+					code.Op("*").Id(typeName.Name())
+				} else {
+					code.Op("*").Qual(typeName.Pkg().Path(), typeName.Name())
+				}
+
 			default:
 				return fmt.Errorf("struct field type not handled: %T", vNested)
 			}
