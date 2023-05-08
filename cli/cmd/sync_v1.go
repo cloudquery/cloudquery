@@ -19,7 +19,6 @@ import (
 )
 
 func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, destinationsClients manageddestination.Clients, uid string, noMigrate bool) error {
-	var mt metrics.Metrics
 	syncTime := time.Now().UTC()
 	sourceSpec := sourceClient.Spec
 	destinationStrings := destinationsClients.Names()
@@ -127,7 +126,7 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 
 	if analyticsClient != nil {
 		log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
-		if err := analyticsClient.SendSyncMetrics(ctx, sourceClient.Spec, destinationsClients.Specs(), uid, &mt); err != nil {
+		if err := analyticsClient.SendSyncMetrics(ctx, sourceClient.Spec, destinationsClients.Specs(), uid, &m); err != nil {
 			log.Warn().Err(err).Msg("Failed to send sync summary")
 		}
 	}
