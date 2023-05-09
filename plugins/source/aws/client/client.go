@@ -248,6 +248,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 	}
 
 	if len(client.ServicesManager.services) == 0 {
+		// This is a special error case where we found active accounts, but just weren't able to assume a role in any of them
+		if client.Spec.Organization != nil && len(client.Spec.Accounts) > 0 && client.Spec.Organization.MemberCredentials == nil {
+			return nil, fmt.Errorf("discovered %d accounts in the AWS Organization, but the credentials specified in 'admin_account' were unable to assume a role in the member accounts. Verify that the role you are trying to assume (arn:aws:iam::<account_id>:role/%s) exists. If you need to use a different set of credentials to do the role assumption use 'member_trusted_principal'", len(client.Spec.Accounts), client.Spec.Organization.ChildAccountRoleName)
+		}
 		return nil, fmt.Errorf("no enabled accounts instantiated")
 	}
 	return &client, nil
