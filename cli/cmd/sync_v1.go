@@ -100,7 +100,7 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 			if wc == nil {
 				continue
 			}
-			if closeErr := wc.CloseSend(); closeErr != nil {
+			if _, closeErr := wc.CloseAndRecv(); closeErr != nil {
 				log.Err(closeErr).Str("destination", destinationsClients[i].Spec.Name).Msg("Failed to close write stream")
 			}
 		}
