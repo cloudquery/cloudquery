@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [17.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v17.1.0...plugins-source-aws-v17.2.0) (2023-05-09)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_config_configuration_aggregators` was added
+- Table `aws_config_remediation_configurations` was added
+- Table `aws_config_retention_configurations` was added
+- Table `aws_networkfirewall_firewall_policies` was added
+- Table `aws_networkfirewall_rule_groups` was added
+- Table `aws_securityhub_enabled_standards` was added
+- Table `aws_securityhub_hubs` was added
+- Table `aws_wafregional_rule_groups`: column added with name `rule_ids` and type `StringArray`
+
 ### Features
 
 * **aws-services:** Support newly added regions ([#10598](https://github.com/cloudquery/cloudquery/issues/10598)) ([e56bae2](https://github.com/cloudquery/cloudquery/commit/e56bae2a0d344b3ccccedd403932395da06c61fe))
