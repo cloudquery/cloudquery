@@ -52,9 +52,11 @@ type ServicesManager struct {
 }
 
 const (
-	defaultRegion         = "us-east-1"
-	defaultVar            = "default"
-	cloudfrontScopeRegion = defaultRegion
+	defaultRegion               = "us-east-1"
+	defaultVar                  = "default"
+	awsCloudfrontScopeRegion    = defaultRegion
+	awsGovCloudfrontScopeRegion = "us-gov-east-1"
+	awsCnCloudfrontScopeRegion  = "cn-north-1"
 )
 
 var errInvalidRegion = errors.New("region wildcard \"*\" is only supported as first argument")
@@ -169,6 +171,16 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 }
 
 func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, region string, scope wafv2types.Scope) *Client {
+	if region == "" {
+		switch partition {
+		case "aws":
+			region = awsCloudfrontScopeRegion
+		case "aws-us-gov":
+			region = awsGovCloudfrontScopeRegion
+		case "aws-cn":
+			region = awsCnCloudfrontScopeRegion
+		}
+	}
 	return &Client{
 		Partition:            partition,
 		ServicesManager:      c.ServicesManager,
