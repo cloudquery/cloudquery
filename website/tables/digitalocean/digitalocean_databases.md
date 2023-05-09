@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Databases.
 
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Databases
+
 The primary key for this table is **id**.
 
 ## Relations

@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Domain Records.
 
+https://docs.digitalocean.com/reference/api/api-reference/#operation/domains_list_records
+
 The primary key for this table is **id**.
 
 ## Relations

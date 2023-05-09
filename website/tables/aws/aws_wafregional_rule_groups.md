@@ -18,6 +18,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |tags|JSON|
+|rule_ids|StringArray|
 |rule_group_id|String|
 |metric_name|String|
 |name|String|

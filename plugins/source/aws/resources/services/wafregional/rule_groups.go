@@ -38,6 +38,11 @@ func RuleGroups() *schema.Table {
 				Resolver:    resolveWafregionalRuleGroupTags,
 				Description: `Rule group tags.`,
 			},
+			{
+				Name:     "rule_ids",
+				Type:     schema.TypeStringArray,
+				Resolver: resolveWafregionalRuleGroupRuleIds,
+			},
 		},
 	}
 }
@@ -79,6 +84,33 @@ func fetchWafregionalRuleGroups(ctx context.Context, meta schema.ClientMeta, par
 
 func resolveWafregionalRuleGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	return resource.Set(c.Name, ruleGroupARN(meta, *resource.Item.(types.RuleGroup).RuleGroupId))
+}
+
+func resolveWafregionalRuleGroupRuleIds(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	ruleGroup := resource.Item.(types.RuleGroup)
+
+	// Resolves rule group rules
+	cl := meta.(*client.Client)
+	service := cl.Services().Wafregional
+	listActivatedRulesConfig := wafregional.ListActivatedRulesInRuleGroupInput{RuleGroupId: ruleGroup.RuleGroupId}
+	var ruleIDs []string
+	for {
+		rules, err := service.ListActivatedRulesInRuleGroup(ctx, &listActivatedRulesConfig, func(o *wafregional.Options) {
+			o.Region = cl.Region
+		})
+		if err != nil {
+			return err
+		}
+		for _, rule := range rules.ActivatedRules {
+			ruleIDs = append(ruleIDs, aws.ToString(rule.RuleId))
+		}
+
+		if aws.ToString(rules.NextMarker) == "" {
+			break
+		}
+		listActivatedRulesConfig.NextMarker = rules.NextMarker
+	}
+	return resource.Set("rule_ids", ruleIDs)
 }
 
 func resolveWafregionalRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

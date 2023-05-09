@@ -8,9 +8,10 @@ import (
 
 func repositories() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_registry_repositories",
-		Resolver:  fetchRegistriesRepositories,
-		Transform: transformers.TransformWithStruct(&godo.Repository{}),
+		Name:        "digitalocean_registry_repositories",
+		Description: "Deprecated. https://docs.digitalocean.com/reference/api/api-reference/#operation/registry_list_repositories",
+		Resolver:    fetchRegistriesRepositories,
+		Transform:   transformers.TransformWithStruct(&godo.Repository{}),
 		Columns: []schema.Column{
 			{
 				Name:     "name",
