@@ -2,13 +2,14 @@
 
 This table shows data for Config Config Rules.
 
-https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConfigRules.html
+https://docs.aws.amazon.com/config/latest/APIReference/API_ConfigRule.html
 
 The primary key for this table is **arn**.
 
 ## Relations
 
 The following tables depend on aws_config_config_rules:
+  - [aws_config_config_rule_compliance_details](aws_config_config_rule_compliance_details)
   - [aws_config_config_rule_compliances](aws_config_config_rule_compliances)
   - [aws_config_remediation_configurations](aws_config_remediation_configurations)
 
