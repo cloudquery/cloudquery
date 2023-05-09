@@ -18,11 +18,10 @@ import (
 type svcsDetail struct {
 	partition string
 	accountId string
-	region    string
 	svcs      Services
 }
 
-func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec, adminAccountSts AssumeRoleAPIClient, account Account) ([]svcsDetail, error) {
+func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec, adminAccountSts AssumeRoleAPIClient, account Account) (*svcsDetail, error) {
 	if account.AccountName == "" {
 		account.AccountName = account.ID
 	}
@@ -78,22 +77,15 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 	if err != nil {
 		return nil, err
 	}
-	svcsDetails := make([]svcsDetail, len(account.Regions)+1)
-	for i, region := range account.Regions {
-		svcsDetails[i] = svcsDetail{
-			partition: iamArn.Partition,
-			accountId: *output.Account,
-			region:    region,
-			svcs:      initServices(region, awsCfg),
-		}
-	}
 
-	svcsDetails[len(account.Regions)] = svcsDetail{
+	svcsDetails := svcsDetail{
 		partition: iamArn.Partition,
 		accountId: *output.Account,
-		svcs:      initServices(cloudfrontScopeRegion, awsCfg),
+		svcs:      initServices(awsCfg),
 	}
-	return svcsDetails, nil
+	svcsDetails.svcs.Regions = append(account.Regions, cloudfrontScopeRegion)
+
+	return &svcsDetails, nil
 }
 
 func findEnabledRegions(ctx context.Context, logger zerolog.Logger, accountName string, ec2Client services.Ec2Client, localRegions []string, accountDefaultRegion string) []string {

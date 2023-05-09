@@ -18,6 +18,18 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
+func removeDuplicateStr(strSlice []string) []string {
+	allKeys := make(map[string]bool)
+	list := []string{}
+	for _, item := range strSlice {
+		if _, value := allKeys[item]; !value {
+			allKeys[item] = true
+			list = append(list, item)
+		}
+	}
+	return list
+}
+
 type Client struct {
 	// Those are already normalized values after configure and this is why we don't want to hold
 	// config directly.
@@ -43,7 +55,7 @@ type AssumeRoleAPIClient interface {
 	AssumeRole(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error)
 }
 
-type ServicesPartitionAccountRegionMap map[string]map[string]map[string]*Services
+type ServicesPartitionAccountRegionMap map[string]map[string]*Services
 
 // ServicesManager will hold the entire map of (account X region) services
 type ServicesManager struct {
@@ -67,7 +79,7 @@ func (s *ServicesManager) ServicesByPartitionAccountAndRegion(partition, account
 	if region == "" {
 		region = defaultRegion
 	}
-	return s.services[partition][accountId][region]
+	return s.services[partition][accountId]
 }
 
 func (s *ServicesManager) ServicesByAccountForWAFScope(partition, accountId string) *Services {
@@ -75,24 +87,22 @@ func (s *ServicesManager) ServicesByAccountForWAFScope(partition, accountId stri
 }
 
 func (s *ServicesManager) InitServices(details svcsDetail) {
-	if details.region != "" {
-		s.InitServicesForPartitionAccountAndRegion(details.partition, details.accountId, details.region, details.svcs)
-	} else {
-		s.InitServicesForPartitionAccountAndScope(details.partition, details.accountId, details.svcs)
-	}
+	s.InitServicesForPartitionAccountAndRegion(details.partition, details.accountId, details.svcs)
+	s.InitServicesForPartitionAccountAndScope(details.partition, details.accountId, details.svcs)
 }
 
-func (s *ServicesManager) InitServicesForPartitionAccountAndRegion(partition, accountId, region string, svcs Services) {
+func (s *ServicesManager) InitServicesForPartitionAccountAndRegion(partition, accountId string, svcs Services) {
 	if s.services == nil {
-		s.services = make(map[string]map[string]map[string]*Services)
+		s.services = make(map[string]map[string]*Services)
 	}
 	if s.services[partition] == nil {
-		s.services[partition] = make(map[string]map[string]*Services)
+		s.services[partition] = make(map[string]*Services)
 	}
 	if s.services[partition][accountId] == nil {
-		s.services[partition][accountId] = make(map[string]*Services)
+		s.services[partition][accountId] = &svcs
 	}
-	s.services[partition][accountId][region] = &svcs
+	s.services[partition][accountId].Regions = removeDuplicateStr(append(s.services[partition][accountId].Regions, svcs.Regions...))
+
 }
 
 func (s *ServicesManager) InitServicesForPartitionAccountAndScope(partition, accountId string, svcs Services) {
@@ -133,6 +143,7 @@ func (c *Client) ID() string {
 }
 
 func (c *Client) Services() *Services {
+
 	s := c.ServicesManager.ServicesByPartitionAccountAndRegion(c.Partition, c.AccountID, c.Region)
 	if s == nil && c.WAFScope == wafv2types.ScopeCloudfront {
 		return c.ServicesManager.ServicesByAccountForWAFScope(c.Partition, c.AccountID)
@@ -169,6 +180,16 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 }
 
 func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, region string, scope wafv2types.Scope) *Client {
+	if region == "" {
+		switch partition {
+		case "aws":
+			region = "us-east-1"
+		case "aws-us-gov":
+			region = "us-gov-east-1"
+		case "aws-cn":
+			region = "cn-north-1"
+		}
+	}
 	return &Client{
 		Partition:            partition,
 		ServicesManager:      c.ServicesManager,
@@ -236,9 +257,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 			}
 			initLock.Lock()
 			defer initLock.Unlock()
-			for _, details := range svcsDetail {
-				client.ServicesManager.InitServices(details)
-			}
+			client.ServicesManager.InitServices(*svcsDetail)
 			return nil
 		})
 	}

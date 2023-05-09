@@ -12,14 +12,11 @@ var AllNamespaces = []string{ // this is only used in applicationautoscaling
 }
 
 // Extract region from service list
-func getRegion(regionalMap map[string]*Services) string {
-	if len(regionalMap) == 0 {
+func getRegion(regionalList *Services) string {
+	if len(regionalList.Regions) == 0 {
 		return ""
 	}
-	regions := make([]string, 0)
-	for i := range regionalMap {
-		regions = append(regions, i)
-	}
+	regions := append([]string{}, regionalList.Regions...)
 	sort.Strings(regions)
 	return regions[0]
 }
@@ -54,7 +51,7 @@ func ServiceAccountRegionMultiplexer(table, service string) func(meta schema.Cli
 		client := meta.(*Client)
 		for partition := range client.ServicesManager.services {
 			for accountID := range client.ServicesManager.services[partition] {
-				for region := range client.ServicesManager.services[partition][accountID] {
+				for _, region := range client.ServicesManager.services[partition][accountID].Regions {
 					if !isSupportedServiceForRegion(service, region) {
 						if client.specificRegions {
 							notSupportedRegions = append(notSupportedRegions, region)
@@ -92,7 +89,7 @@ func ServiceAccountRegionNamespaceMultiplexer(table, service string) func(meta s
 		client := meta.(*Client)
 		for partition := range client.ServicesManager.services {
 			for accountID := range client.ServicesManager.services[partition] {
-				for region := range client.ServicesManager.services[partition][accountID] {
+				for _, region := range client.ServicesManager.services[partition][accountID].Regions {
 					if !isSupportedServiceForRegion(service, region) {
 						if client.specificRegions {
 							notSupportedRegions = append(notSupportedRegions, region)
@@ -119,8 +116,8 @@ func ServiceAccountRegionScopeMultiplexer(table, service string) func(meta schem
 		for partition := range client.ServicesManager.services {
 			for accountID := range client.ServicesManager.services[partition] {
 				// always fetch cloudfront related resources
-				l = append(l, client.withPartitionAccountIDRegionAndScope(partition, accountID, cloudfrontScopeRegion, wafv2types.ScopeCloudfront))
-				for region := range client.ServicesManager.services[partition][accountID] {
+				l = append(l, client.withPartitionAccountIDRegionAndScope(partition, accountID, "", wafv2types.ScopeCloudfront))
+				for _, region := range client.ServicesManager.services[partition][accountID].Regions {
 					if !isSupportedServiceForRegion(service, region) {
 						if client.specificRegions {
 							notSupportedRegions = append(notSupportedRegions, region)
