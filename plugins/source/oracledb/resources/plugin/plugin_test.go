@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/oracledb/client"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/cloudquery/plugin-sdk/v2/testdata"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"

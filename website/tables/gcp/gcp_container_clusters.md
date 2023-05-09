@@ -78,3 +78,4 @@ The primary key for this table is **self_link**.
 |monitoring_config|JSON|
 |node_pool_auto_config|JSON|
 |etag|String|
+|fleet|JSON|
