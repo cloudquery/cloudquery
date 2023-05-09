@@ -14,7 +14,7 @@ func ConfigurationAggregators() *schema.Table {
 	tableName := "aws_config_configuration_aggregators"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConfigurationAggregators.html`,
+		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_ConfigurationAggregator.html`,
 		Resolver:    fetchConfigurationAggregators,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		Transform:   transformers.TransformWithStruct(&types.ConfigurationAggregator{}),
@@ -38,8 +38,7 @@ func fetchConfigurationAggregators(ctx context.Context, meta schema.ClientMeta, 
 	c := meta.(*client.Client)
 	svc := c.Services().Configservice
 
-	input := &configservice.DescribeConfigurationAggregatorsInput{}
-	p := configservice.NewDescribeConfigurationAggregatorsPaginator(svc, input)
+	p := configservice.NewDescribeConfigurationAggregatorsPaginator(svc, nil)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *configservice.Options) {
 			options.Region = c.Region
