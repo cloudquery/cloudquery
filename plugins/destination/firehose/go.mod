@@ -12,7 +12,7 @@ require (
 	github.com/rs/zerolog v1.29.0
 )
 
-// TODO: remove once al updates are merged
+// TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230509053643-898a79b1d3c8
 
 // TODO: remove after https://github.com/cloudquery/plugin-sdk/pull/852 is merged & released
