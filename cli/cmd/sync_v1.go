@@ -96,8 +96,13 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 	}
 	writeClients := make([]destination.Destination_Write2Client, len(destinationsPbClients))
 	defer func() {
-		for i := range writeClients {
-			_ = writeClients[i].CloseSend()
+		for i, wc := range writeClients {
+			if wc == nil {
+				continue
+			}
+			if closeErr := wc.CloseSend(); closeErr != nil {
+				log.Err(closeErr).Str("destination", destinationsClients[i].Spec.Name).Msg("Failed to close write stream")
+			}
 		}
 	}()
 
