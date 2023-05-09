@@ -4,6 +4,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/destination/file/client"
 	"github.com/cloudquery/cloudquery/plugins/destination/file/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination/batchingwriter"
 	"github.com/cloudquery/plugin-sdk/v3/serve"
 )
 
@@ -12,6 +13,8 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("file", plugin.Version, client.New, destination.WithManagedWriter())
+	p := destination.NewPlugin("file", plugin.Version, client.New,
+		destination.WithManagedWriter(batchingwriter.New(batchingwriter.WithDedupPK(false))),
+	)
 	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
 }

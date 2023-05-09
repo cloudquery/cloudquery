@@ -3,8 +3,11 @@ package client
 import (
 	"context"
 	"fmt"
+	"os"
+	"sync"
 
 	"github.com/cloudquery/filetypes/v3"
+	"github.com/cloudquery/filetypes/v3/types"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
 	"github.com/rs/zerolog"
@@ -17,6 +20,15 @@ type Client struct {
 	pluginSpec Spec
 
 	*filetypes.Client
+
+	tableFiles   map[string]writer
+	tableFilesMu sync.RWMutex // This protects tableFiles and lastSpec
+	lastSpec     specs.Source
+}
+
+type writer struct {
+	f *os.File
+	h types.Handle
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -24,8 +36,9 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("file destination only supports append mode")
 	}
 	c := &Client{
-		logger: logger.With().Str("module", "file").Logger(),
-		spec:   spec,
+		logger:     logger.With().Str("module", "file").Logger(),
+		spec:       spec,
+		tableFiles: make(map[string]writer),
 	}
 
 	if err := spec.UnmarshalSpec(&c.pluginSpec); err != nil {

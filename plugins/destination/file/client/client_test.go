@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/filetypes/v3/csv"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination/batchingwriter"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -142,7 +143,9 @@ func TestPlugin(t *testing.T) {
 func testPlugin(t *testing.T, spec *Spec) {
 	destination.PluginTestSuiteRunner(t,
 		func() *destination.Plugin {
-			return destination.NewPlugin("file", "development", New, destination.WithManagedWriter())
+			return destination.NewPlugin("file", "development", New,
+				destination.WithManagedWriter(batchingwriter.New(batchingwriter.WithDedupPK(false))),
+			)
 		},
 		specs.Destination{
 			Spec: spec,

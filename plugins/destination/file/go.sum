@@ -47,16 +47,12 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMn
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/arrow/go/v13 v13.0.0-20230521112802-adef07d4bbaa h1:6y3l+YgGqMJsx5TrxFHPjxDqZ5c3M9+r3dv+CYIRl44=
 github.com/cloudquery/arrow/go/v13 v13.0.0-20230521112802-adef07d4bbaa/go.mod h1:/XatdE3kDIBqZKhZ7OBUHwP2jaASDFZHqF4puOWM8po=
-github.com/cloudquery/filetypes/v3 v3.1.0 h1:t4pN2rFQjeVaW9DjFOTaGdGzWQ3zVXuNKdWT5/ZECOQ=
-github.com/cloudquery/filetypes/v3 v3.1.0/go.mod h1:+EKl7EvsehObyggkJRwLW+fWolb8pkAo7zyCZMq5bcU=
-github.com/cloudquery/arrow/go/v13 v13.0.0-20230509053643-898a79b1d3c8 h1:CmgLSEGQNLHpUQ5cU4L4aF7cuJZRnc1toIIWqC1gmPg=
-github.com/cloudquery/arrow/go/v13 v13.0.0-20230509053643-898a79b1d3c8/go.mod h1:/XatdE3kDIBqZKhZ7OBUHwP2jaASDFZHqF4puOWM8po=
+github.com/cloudquery/filetypes/v3 v3.1.1-0.20230525203919-7a1d60739423 h1:mfzMPSyr/5eV1aaqnqQQD8gQucxVfsjjMmwbSjFuHPw=
+github.com/cloudquery/filetypes/v3 v3.1.1-0.20230525203919-7a1d60739423/go.mod h1:+EKl7EvsehObyggkJRwLW+fWolb8pkAo7zyCZMq5bcU=
 github.com/cloudquery/plugin-pb-go v1.0.8 h1:wn3GXhcNItcP+6wUUZuzUFbvdL59liKBO37/izMi+FQ=
 github.com/cloudquery/plugin-pb-go v1.0.8/go.mod h1:vAGA27psem7ZZNAY4a3S9TKuA/JDQWstjKcHPJX91Mc=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
-github.com/cloudquery/plugin-sdk/v3 v3.6.4 h1:P4OkS5tJYkv3OqeL60DAVqXXbFQUyPKJ5YDtAgjl9b4=
-github.com/cloudquery/plugin-sdk/v3 v3.6.4/go.mod h1:3JrZXEULmGXpkOukVaRIzaA63d7TJr9Ukp6hemTjbtc=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
@@ -65,6 +61,8 @@ github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46t
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/disq/plugin-sdk/v3 v3.0.0-20230525203908-a2e923d19b8e h1:eek0xFcq+mugfEZGiY/owq7nstcyFlqdgAV7icGt1PE=
+github.com/disq/plugin-sdk/v3 v3.0.0-20230525203908-a2e923d19b8e/go.mod h1:3JrZXEULmGXpkOukVaRIzaA63d7TJr9Ukp6hemTjbtc=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.4/go.mod h1:6rpuAdCZL397s3pYoYcLgu1mIlRU8Am5FuJP05cCM98=
