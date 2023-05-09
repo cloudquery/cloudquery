@@ -53,7 +53,7 @@ func syncConnectionV0_2(ctx context.Context, sourceClient *managedsource.Client,
 
 	if !noMigrate {
 		migrateStart := time.Now().UTC()
-		fmt.Printf("Starting migration with for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
+		fmt.Printf("Starting migration for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 		for i := range destinationsClients {
 			if _, err := destinationsPbClients[i].Migrate(ctx, &destination.Migrate_Request{
 				Tables: tablesBytes,
