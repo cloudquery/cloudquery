@@ -1,16 +1,33 @@
 package table_options
 
 import (
+	"encoding/json"
 	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/table_options/inputs/accessanalyzer_input"
 	"github.com/jinzhu/copier"
 )
 
 type AccessanalyzerFindings struct {
-	ListFindingOpts accessanalyzer_input.ListFindingsInput `json:"list_findings,omitempty"`
+	ListFindingOpts CustomAccessAnalyzerListFindingsInput `json:"list_findings,omitempty"`
+}
+
+type CustomAccessAnalyzerListFindingsInput struct {
+	accessanalyzer.ListFindingsInput
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface for the CustomLookupEventsOpts type.
+// It is the same as default, but allows the use of underscore in the JSON field names.
+func (c *CustomAccessAnalyzerListFindingsInput) UnmarshalJSON(data []byte) error {
+	m := map[string]any{}
+	err := json.Unmarshal(data, &m)
+	if err != nil {
+		return err
+	}
+	changeCaseForObject(m)
+	b, _ := json.Marshal(m)
+	return json.Unmarshal(b, &c.ListFindingsInput)
 }
 
 func (c *AccessanalyzerFindings) validateListFindings() error {
@@ -21,6 +38,10 @@ func (c *AccessanalyzerFindings) validateListFindings() error {
 		return errors.New("invalid input: cannot set AnalyzerARN in ListFindings")
 	}
 	return nil
+}
+
+func (c *AccessanalyzerFindings) Validate() error {
+	return c.validateListFindings()
 }
 
 func (c *AccessanalyzerFindings) ListFindings() (*accessanalyzer.ListFindingsInput, error) {

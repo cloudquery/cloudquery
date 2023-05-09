@@ -1,35 +1,41 @@
 package table_options
 
 import (
+	"encoding/json"
 	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/table_options/inputs/inspector2_input"
-	"github.com/jinzhu/copier"
 )
 
 type Inspector2APIs struct {
-	ListFindingOpts inspector2_input.ListFindingsInput `json:"list_findings,omitempty"`
+	ListFindingsOpts CustomInspector2ListFindingsInput `json:"list_findings,omitempty"`
+}
+
+type CustomInspector2ListFindingsInput struct {
+	inspector2.ListFindingsInput
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface for the CustomLookupEventsOpts type.
+// It is the same as default, but allows the use of underscore in the JSON field names.
+func (c *CustomInspector2ListFindingsInput) UnmarshalJSON(data []byte) error {
+	m := map[string]any{}
+	err := json.Unmarshal(data, &m)
+	if err != nil {
+		return err
+	}
+	changeCaseForObject(m)
+	b, _ := json.Marshal(m)
+	return json.Unmarshal(b, &c.ListFindingsInput)
 }
 
 func (c *Inspector2APIs) validateListFindings() error {
-	if aws.ToString(c.ListFindingOpts.NextToken) != "" {
+	if aws.ToString(c.ListFindingsOpts.NextToken) != "" {
 		return errors.New("invalid input: cannot set NextToken in ListFindings")
 	}
 	return nil
 }
 
-func (c *Inspector2APIs) ListFindings() (*inspector2.ListFindingsInput, error) {
-	var inspector2LFI inspector2.ListFindingsInput
-	if c == nil {
-		return &inspector2LFI, nil
-	}
-	// validate input
-	if err := c.validateListFindings(); err != nil {
-		return &inspector2.ListFindingsInput{}, err
-	}
-
-	// copy input to AWS type
-	return &inspector2LFI, copier.Copy(&inspector2LFI, &c.ListFindingOpts)
+func (c *Inspector2APIs) Validate() error {
+	return c.validateListFindings()
 }

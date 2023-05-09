@@ -1,16 +1,32 @@
 package table_options
 
 import (
+	"encoding/json"
 	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/table_options/inputs/cloudtrail_input"
-	"github.com/jinzhu/copier"
 )
 
 type CloudtrailAPIs struct {
-	LookupEventsOpts cloudtrail_input.LookupEventsInput `json:"lookup_events,omitempty"`
+	LookupEventsOpts CustomLookupEventsOpts `json:"lookup_events,omitempty"`
+}
+
+type CustomLookupEventsOpts struct {
+	cloudtrail.LookupEventsInput
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface for the CustomLookupEventsOpts type.
+// It is the same as default, but allows the use of underscore in the JSON field names.
+func (c *CustomLookupEventsOpts) UnmarshalJSON(data []byte) error {
+	m := map[string]any{}
+	err := json.Unmarshal(data, &m)
+	if err != nil {
+		return err
+	}
+	changeCaseForObject(m)
+	b, _ := json.Marshal(m)
+	return json.Unmarshal(b, &c.LookupEventsInput)
 }
 
 func (c *CloudtrailAPIs) validateLookupEvents() error {
@@ -20,17 +36,6 @@ func (c *CloudtrailAPIs) validateLookupEvents() error {
 	return nil
 }
 
-func (c *CloudtrailAPIs) LookupEvents() (*cloudtrail.LookupEventsInput, error) {
-	var lookupEventsInput cloudtrail.LookupEventsInput
-	if c == nil {
-		return &lookupEventsInput, nil
-	}
-	// validate input
-	if err := c.validateLookupEvents(); err != nil {
-		return &lookupEventsInput, err
-	}
-
-	// copy input to AWS type
-
-	return &lookupEventsInput, copier.Copy(&lookupEventsInput, &c.LookupEventsOpts)
+func (c *CloudtrailAPIs) Validate() error {
+	return c.validateLookupEvents()
 }
