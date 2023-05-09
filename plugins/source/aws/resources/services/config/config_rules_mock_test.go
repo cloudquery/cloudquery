@@ -29,6 +29,7 @@ func buildConfigRules(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&configservice.DescribeComplianceByConfigRuleOutput{
 			ComplianceByConfigRules: []types.ComplianceByConfigRule{sl},
 		}, nil)
+	buildRemediationConfigurations(t, m)
 	return client.Services{
 		Configservice: m,
 	}

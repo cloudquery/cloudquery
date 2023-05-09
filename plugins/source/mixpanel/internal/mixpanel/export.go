@@ -33,7 +33,7 @@ func (c *Client) ExportData(ctx context.Context, startDate, endDate string, sinc
 	for s.Scan() {
 		var d ExportEvent
 		if err := json.Unmarshal(s.Bytes(), &d); err != nil {
-			return fmt.Errorf("error parsing line %d: %w", line, err)
+			return fmt.Errorf("error parsing line %d: %w. Content: %v", line, err, s.Text())
 		}
 
 		out <- d

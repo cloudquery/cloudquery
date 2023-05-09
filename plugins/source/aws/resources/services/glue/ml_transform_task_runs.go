@@ -40,7 +40,9 @@ func fetchGlueMlTransformTaskRuns(ctx context.Context, meta schema.ClientMeta, p
 		TransformId: parent.Item.(types.MLTransform).TransformId,
 	})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

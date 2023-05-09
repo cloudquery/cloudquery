@@ -16,8 +16,16 @@ import (
 func buildRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockWafregionalClient(ctrl)
 
-	var g types.RuleGroup
-	if err := faker.FakeObject(&g); err != nil {
+	tempRuleGroup := types.RuleGroup{}
+	if err := faker.FakeObject(&tempRuleGroup); err != nil {
+		t.Fatal(err)
+	}
+	tempRule := types.ActivatedRule{}
+	if err := faker.FakeObject(&tempRule); err != nil {
+		t.Fatal(err)
+	}
+	var tempTags []types.Tag
+	if err := faker.FakeObject(&tempTags); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListRuleGroups(
@@ -26,28 +34,40 @@ func buildRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 		gomock.Any(),
 	).Return(
 		&wafregional.ListRuleGroupsOutput{
-			RuleGroups: []types.RuleGroupSummary{{RuleGroupId: g.RuleGroupId}},
+			RuleGroups: []types.RuleGroupSummary{{RuleGroupId: tempRuleGroup.RuleGroupId}},
 		},
 		nil,
 	)
 
 	m.EXPECT().GetRuleGroup(
 		gomock.Any(),
-		&wafregional.GetRuleGroupInput{RuleGroupId: g.RuleGroupId},
+		&wafregional.GetRuleGroupInput{RuleGroupId: tempRuleGroup.RuleGroupId},
 		gomock.Any(),
 	).Return(
-		&wafregional.GetRuleGroupOutput{RuleGroup: &g},
+		&wafregional.GetRuleGroupOutput{RuleGroup: &tempRuleGroup},
 		nil,
 	)
+
+	m.EXPECT().ListActivatedRulesInRuleGroup(
+		gomock.Any(),
+		gomock.Any(),
+		gomock.Any(),
+	).Return(&wafregional.ListActivatedRulesInRuleGroupOutput{
+		ActivatedRules: []types.ActivatedRule{tempRule},
+	}, nil)
 
 	m.EXPECT().ListTagsForResource(
 		gomock.Any(),
 		&wafregional.ListTagsForResourceInput{
-			ResourceARN: aws.String(fmt.Sprintf("arn:aws:waf-regional:us-east-1:testAccount:rulegroup/%v", *g.RuleGroupId)),
+			ResourceARN: aws.String(fmt.Sprintf("arn:aws:waf-regional:us-east-1:testAccount:rulegroup/%v", *tempRuleGroup.RuleGroupId)),
 		},
 		gomock.Any(),
 	).Return(
-		&wafregional.ListTagsForResourceOutput{},
+		&wafregional.ListTagsForResourceOutput{
+			TagInfoForResource: &types.TagInfoForResource{
+				TagList: tempTags,
+			},
+		},
 		nil,
 	)
 

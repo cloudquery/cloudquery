@@ -42,7 +42,9 @@ func fetchLightsailDiskSnapshots(ctx context.Context, meta schema.ClientMeta, pa
 	svc := c.Services().Lightsail
 	// No paginator available
 	for {
-		response, err := svc.GetDiskSnapshots(ctx, &input)
+		response, err := svc.GetDiskSnapshots(ctx, &input, func(options *lightsail.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

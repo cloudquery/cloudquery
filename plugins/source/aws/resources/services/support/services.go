@@ -30,11 +30,13 @@ func Services() *schema.Table {
 }
 
 func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Support
-	input := support.DescribeServicesInput{Language: aws.String(c.LanguageCode)}
+	cl := meta.(*client.Client)
+	svc := cl.Services().Support
+	input := support.DescribeServicesInput{Language: aws.String(cl.LanguageCode)}
 
-	response, err := svc.DescribeServices(ctx, &input)
+	response, err := svc.DescribeServices(ctx, &input, func(o *support.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

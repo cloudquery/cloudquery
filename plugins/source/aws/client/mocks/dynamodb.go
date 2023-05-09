@@ -37,6 +37,16 @@ func (m *MockDynamodbClient) EXPECT() *MockDynamodbClientMockRecorder {
 
 // BatchGetItem mocks base method.
 func (m *MockDynamodbClient) BatchGetItem(arg0 context.Context, arg1 *dynamodb.BatchGetItemInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.BatchGetItemOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetItem")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockDynamodbClientMockRecorder) BatchGetItem(arg0, arg1 interface{}, a
 
 // DescribeBackup mocks base method.
 func (m *MockDynamodbClient) DescribeBackup(arg0 context.Context, arg1 *dynamodb.DescribeBackupInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.DescribeBackupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeBackup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockDynamodbClientMockRecorder) DescribeBackup(arg0, arg1 interface{},
 
 // DescribeContinuousBackups mocks base method.
 func (m *MockDynamodbClient) DescribeContinuousBackups(arg0 context.Context, arg1 *dynamodb.DescribeContinuousBackupsInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.DescribeContinuousBackupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeContinuousBackups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockDynamodbClientMockRecorder) DescribeContinuousBackups(arg0, arg1 i
 
 // DescribeContributorInsights mocks base method.
 func (m *MockDynamodbClient) DescribeContributorInsights(arg0 context.Context, arg1 *dynamodb.DescribeContributorInsightsInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.DescribeContributorInsightsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeContributorInsights")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockDynamodbClientMockRecorder) DescribeContributorInsights(arg0, arg1
 
 // DescribeEndpoints mocks base method.
 func (m *MockDynamodbClient) DescribeEndpoints(arg0 context.Context, arg1 *dynamodb.DescribeEndpointsInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.DescribeEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockDynamodbClientMockRecorder) DescribeEndpoints(arg0, arg1 interface
 
 // DescribeExport mocks base method.
 func (m *MockDynamodbClient) DescribeExport(arg0 context.Context, arg1 *dynamodb.DescribeExportInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.DescribeExportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeExport")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockDynamodbClientMockRecorder) DescribeExport(arg0, arg1 interface{},
 
 // DescribeGlobalTable mocks base method.
 func (m *MockDynamodbClient) DescribeGlobalTable(arg0 context.Context, arg1 *dynamodb.DescribeGlobalTableInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.DescribeGlobalTableOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeGlobalTable")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockDynamodbClientMockRecorder) DescribeGlobalTable(arg0, arg1 interfa
 
 // DescribeGlobalTableSettings mocks base method.
 func (m *MockDynamodbClient) DescribeGlobalTableSettings(arg0 context.Context, arg1 *dynamodb.DescribeGlobalTableSettingsInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.DescribeGlobalTableSettingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeGlobalTableSettings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockDynamodbClientMockRecorder) DescribeGlobalTableSettings(arg0, arg1
 
 // DescribeImport mocks base method.
 func (m *MockDynamodbClient) DescribeImport(arg0 context.Context, arg1 *dynamodb.DescribeImportInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.DescribeImportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImport")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockDynamodbClientMockRecorder) DescribeImport(arg0, arg1 interface{},
 
 // DescribeKinesisStreamingDestination mocks base method.
 func (m *MockDynamodbClient) DescribeKinesisStreamingDestination(arg0 context.Context, arg1 *dynamodb.DescribeKinesisStreamingDestinationInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.DescribeKinesisStreamingDestinationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeKinesisStreamingDestination")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockDynamodbClientMockRecorder) DescribeKinesisStreamingDestination(ar
 
 // DescribeLimits mocks base method.
 func (m *MockDynamodbClient) DescribeLimits(arg0 context.Context, arg1 *dynamodb.DescribeLimitsInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.DescribeLimitsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLimits")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockDynamodbClientMockRecorder) DescribeLimits(arg0, arg1 interface{},
 
 // DescribeTable mocks base method.
 func (m *MockDynamodbClient) DescribeTable(arg0 context.Context, arg1 *dynamodb.DescribeTableInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.DescribeTableOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTable")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockDynamodbClientMockRecorder) DescribeTable(arg0, arg1 interface{}, 
 
 // DescribeTableReplicaAutoScaling mocks base method.
 func (m *MockDynamodbClient) DescribeTableReplicaAutoScaling(arg0 context.Context, arg1 *dynamodb.DescribeTableReplicaAutoScalingInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.DescribeTableReplicaAutoScalingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTableReplicaAutoScaling")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockDynamodbClientMockRecorder) DescribeTableReplicaAutoScaling(arg0, 
 
 // DescribeTimeToLive mocks base method.
 func (m *MockDynamodbClient) DescribeTimeToLive(arg0 context.Context, arg1 *dynamodb.DescribeTimeToLiveInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.DescribeTimeToLiveOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTimeToLive")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockDynamodbClientMockRecorder) DescribeTimeToLive(arg0, arg1 interfac
 
 // GetItem mocks base method.
 func (m *MockDynamodbClient) GetItem(arg0 context.Context, arg1 *dynamodb.GetItemInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.GetItemOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetItem")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockDynamodbClientMockRecorder) GetItem(arg0, arg1 interface{}, arg2 .
 
 // ListBackups mocks base method.
 func (m *MockDynamodbClient) ListBackups(arg0 context.Context, arg1 *dynamodb.ListBackupsInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.ListBackupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBackups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockDynamodbClientMockRecorder) ListBackups(arg0, arg1 interface{}, ar
 
 // ListContributorInsights mocks base method.
 func (m *MockDynamodbClient) ListContributorInsights(arg0 context.Context, arg1 *dynamodb.ListContributorInsightsInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.ListContributorInsightsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListContributorInsights")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockDynamodbClientMockRecorder) ListContributorInsights(arg0, arg1 int
 
 // ListExports mocks base method.
 func (m *MockDynamodbClient) ListExports(arg0 context.Context, arg1 *dynamodb.ListExportsInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.ListExportsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListExports")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockDynamodbClientMockRecorder) ListExports(arg0, arg1 interface{}, ar
 
 // ListGlobalTables mocks base method.
 func (m *MockDynamodbClient) ListGlobalTables(arg0 context.Context, arg1 *dynamodb.ListGlobalTablesInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.ListGlobalTablesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListGlobalTables")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockDynamodbClientMockRecorder) ListGlobalTables(arg0, arg1 interface{
 
 // ListImports mocks base method.
 func (m *MockDynamodbClient) ListImports(arg0 context.Context, arg1 *dynamodb.ListImportsInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.ListImportsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListImports")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockDynamodbClientMockRecorder) ListImports(arg0, arg1 interface{}, ar
 
 // ListTables mocks base method.
 func (m *MockDynamodbClient) ListTables(arg0 context.Context, arg1 *dynamodb.ListTablesInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.ListTablesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTables")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockDynamodbClientMockRecorder) ListTables(arg0, arg1 interface{}, arg
 
 // ListTagsOfResource mocks base method.
 func (m *MockDynamodbClient) ListTagsOfResource(arg0 context.Context, arg1 *dynamodb.ListTagsOfResourceInput, arg2 ...func(*dynamodb.Options)) (*dynamodb.ListTagsOfResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dynamodb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsOfResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

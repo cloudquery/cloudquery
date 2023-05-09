@@ -53,11 +53,14 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 			types.EntityTypeAWSManagedPolicy, types.EntityTypeLocalManagedPolicy,
 		},
 	}
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	paginator := iam.NewGetAccountAuthorizationDetailsPaginator(svc, &config)
 
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iam.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -70,7 +73,9 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 	r := resource.Item.(types.ManagedPolicyDetail)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Iam
-	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn})
+	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn}, func(options *iam.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {
 			return nil

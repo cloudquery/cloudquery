@@ -3,89 +3,143 @@ package queries
 import (
 	"fmt"
 	"reflect"
+	"strconv"
+	"strings"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"golang.org/x/exp/maps"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v2/types"
 )
 
-func SQLType(t schema.ValueType) string {
-	switch t {
-	case schema.TypeBool:
+func SQLType(dataType arrow.DataType) string {
+	switch dataType := dataType.(type) {
+	case *arrow.BooleanType:
 		return "bit"
-	case schema.TypeInt:
-		return "bigint"
-	case schema.TypeFloat:
-		return "float" // = float(53)
-	case schema.TypeUUID:
-		return "uniqueidentifier"
-	case schema.TypeByteArray:
-		return "varbinary(max)"
-	case schema.TypeTimestamp:
-		return "datetime2"
-	case schema.TypeString,
-		schema.TypeCIDR,
-		schema.TypeMacAddr,
-		schema.TypeInet:
+
+	case *arrow.Uint8Type:
+		return "tinyint" // uint8
+	case *arrow.Int8Type, *arrow.Int16Type: // no special int8 type, upscale
+		return "smallint" // int16
+	case *arrow.Uint16Type, *arrow.Int32Type: // no special uint16 type, upscale
+		return "int" // int32
+	case *arrow.Uint32Type, *arrow.Int64Type: // no special uint32 type, upscale
+		return "bigint" // int64
+	case *arrow.Uint64Type: // we store this as int64, although it may produce overflow and negative numbers
+		return "bigint" // int64
+
+	case *arrow.Float32Type:
+		return "real"
+	case *arrow.Float64Type:
+		return "float" // == float(53)
+
+	case *arrow.LargeStringType:
+		return "nvarchar(max)" // we will also use it as the default type
+
+	case *arrow.StringType, *types.InetType, *types.MacType:
 		return "nvarchar(4000)" // feasible to see these as PK, so need to limit the value
-	case schema.TypeStringArray,
-		schema.TypeJSON,
-		schema.TypeUUIDArray,
-		schema.TypeCIDRArray,
-		schema.TypeMacAddrArray,
-		schema.TypeInetArray,
-		schema.TypeIntArray:
-		return "nvarchar(max)"
+
+	case *arrow.FixedSizeBinaryType:
+		return "varbinary(" + strconv.Itoa(dataType.ByteWidth) + ")"
+
+	case arrow.BinaryDataType:
+		return "varbinary(max)"
+
+	case *types.UUIDType:
+		return "uniqueidentifier"
+
+	case *arrow.TimestampType:
+		return "datetime2"
+
 	default:
-		panic("unknown type " + t.String())
+		return "nvarchar(max)"
 	}
 }
 
-func SchemaType(tableName string, columnName string, sqlType string) (schema.ValueType, error) {
-	sqlToSchema := map[string]schema.ValueType{
-		"bit":              schema.TypeBool,
-		"bigint":           schema.TypeInt,
-		"float":            schema.TypeFloat,
-		"uniqueidentifier": schema.TypeUUID,
-		"varbinary(max)":   schema.TypeByteArray,
-		"datetime2":        schema.TypeTimestamp,
-		"nvarchar(4000)":   schema.TypeString,
-		"nvarchar(max)":    schema.TypeStringArray,
+func SchemaType(sqlType string) arrow.DataType {
+	// this is for the types without precision
+	simpleSQLToSchema := map[string]arrow.DataType{
+		"bit":              arrow.FixedWidthTypes.Boolean,
+		"tinyint":          arrow.PrimitiveTypes.Uint8,
+		"smallint":         arrow.PrimitiveTypes.Int16,
+		"int":              arrow.PrimitiveTypes.Int32,
+		"bigint":           arrow.PrimitiveTypes.Int64,
+		"real":             arrow.PrimitiveTypes.Float32,
+		"float":            arrow.PrimitiveTypes.Float64,
+		"uniqueidentifier": types.NewUUIDType(),
+		"datetime2":        arrow.FixedWidthTypes.Timestamp_ns, // the precision is 100ns in MSSQL
+		"datetimeoffset":   arrow.FixedWidthTypes.Timestamp_ns, // the precision is 100ns in MSSQL
 	}
 
-	if v, ok := sqlToSchema[sqlType]; ok {
-		return v, nil
+	if dt, ok := simpleSQLToSchema[sqlType]; ok {
+		return dt
 	}
 
-	return schema.TypeInvalid, fmt.Errorf("got unknown MSSQL type %q of column %q for table %q while trying to convert it to CloudQuery internal schema type. Supported MSSQL types are %q", sqlType, columnName, tableName, maps.Keys(sqlToSchema))
+	// 2 types left to check: nvarchar & varbinary
+	colType, precision := sqlType, ""
+	if parts := strings.SplitN(sqlType, "(", 2); len(parts) == 2 {
+		colType, precision = parts[0], strings.TrimSuffix(parts[1], ")")
+	}
+	switch colType {
+	case "nvarchar":
+		if precision == "max" {
+			return new(arrow.LargeStringType)
+		}
+
+		// we just return the arrow.String here
+		return new(arrow.StringType)
+	case "varbinary":
+		if precision == "max" {
+			return new(arrow.LargeBinaryType)
+		}
+
+		width, err := strconv.ParseInt(precision, 10, 64)
+		if err != nil {
+			// should never happen
+			panic(fmt.Errorf("failed to parse %q into int64: %w", precision, err))
+		}
+
+		return &arrow.FixedSizeBinaryType{ByteWidth: int(width)}
+	}
+
+	// default to LargeString (nvarchar(max))
+	return new(arrow.LargeStringType)
 }
 
 // columnGoType has to be in sync with SQLType
-func columnGoType(t schema.ValueType) reflect.Type {
-	switch t {
-	case schema.TypeBool:
+func columnGoType(dataType arrow.DataType) reflect.Type {
+	switch dataType.(type) {
+	case *arrow.BooleanType:
 		return reflect.TypeOf(true)
-	case schema.TypeInt:
+
+	case *arrow.Uint8Type:
+		return reflect.TypeOf(uint8(0))
+	case *arrow.Int8Type, *arrow.Int16Type: // no special int8 type, upscale
+		return reflect.TypeOf(int16(0))
+	case *arrow.Uint16Type, *arrow.Int32Type: // no special uint16 type, upscale
+		return reflect.TypeOf(int32(0))
+	case *arrow.Uint32Type, *arrow.Int64Type: // no special uint32 type, upscale
 		return reflect.TypeOf(int64(0))
-	case schema.TypeFloat:
+	case *arrow.Uint64Type: // we store this as int64, although it may produce overflow and negative numbers
+		return reflect.TypeOf(int64(0))
+
+	case *arrow.Float32Type:
+		return reflect.TypeOf(float32(0))
+	case *arrow.Float64Type:
 		return reflect.TypeOf(float64(0))
-	case schema.TypeUUID, schema.TypeByteArray:
-		return reflect.TypeOf([]byte{})
-	case schema.TypeTimestamp:
-		return reflect.TypeOf(time.Time{})
-	case schema.TypeString,
-		schema.TypeCIDR,
-		schema.TypeMacAddr,
-		schema.TypeInet,
-		schema.TypeStringArray,
-		schema.TypeJSON,
-		schema.TypeUUIDArray,
-		schema.TypeCIDRArray,
-		schema.TypeMacAddrArray,
-		schema.TypeInetArray,
-		schema.TypeIntArray:
+
+	case *arrow.LargeStringType, *arrow.StringType, *types.InetType, *types.MacType:
 		return reflect.TypeOf("")
+
+	case arrow.BinaryDataType, *arrow.FixedSizeBinaryType:
+		return reflect.TypeOf([]byte{})
+
+	case *types.UUIDType:
+		return reflect.TypeOf([]byte{})
+
+	case *arrow.TimestampType:
+		return reflect.TypeOf(time.Time{})
+
 	default:
-		panic("unknown type " + t.String())
+		return reflect.TypeOf("")
 	}
 }

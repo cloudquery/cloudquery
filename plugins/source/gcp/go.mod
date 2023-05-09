@@ -3,11 +3,11 @@ module github.com/cloudquery/plugins/source/gcp
 go 1.19
 
 require (
-	cloud.google.com/go/aiplatform v1.36.1
+	cloud.google.com/go/aiplatform v1.37.0
 	cloud.google.com/go/apigateway v1.5.0
 	cloud.google.com/go/apikeys v0.6.0
-	cloud.google.com/go/appengine v1.7.0
-	cloud.google.com/go/artifactregistry v1.12.0
+	cloud.google.com/go/appengine v1.7.1
+	cloud.google.com/go/artifactregistry v1.13.0
 	cloud.google.com/go/baremetalsolution v0.5.0
 	cloud.google.com/go/batch v0.7.0
 	cloud.google.com/go/beyondcorp v0.5.0
@@ -16,20 +16,20 @@ require (
 	cloud.google.com/go/binaryauthorization v1.5.0
 	cloud.google.com/go/certificatemanager v1.6.0
 	cloud.google.com/go/compute v1.19.0
-	cloud.google.com/go/container v1.14.0
+	cloud.google.com/go/container v1.15.0
 	cloud.google.com/go/containeranalysis v0.9.0
 	cloud.google.com/go/deploy v1.8.0
 	cloud.google.com/go/domains v0.8.0
 	cloud.google.com/go/errorreporting v0.3.0
-	cloud.google.com/go/functions v1.12.0
+	cloud.google.com/go/functions v1.13.0
 	cloud.google.com/go/iam v0.13.0
 	cloud.google.com/go/iot v1.6.0
-	cloud.google.com/go/kms v1.10.0
+	cloud.google.com/go/kms v1.10.1
 	cloud.google.com/go/logging v1.7.0
 	cloud.google.com/go/longrunning v0.4.1
 	cloud.google.com/go/monitoring v1.13.0
 	cloud.google.com/go/redis v1.11.0
-	cloud.google.com/go/resourcemanager v1.6.0
+	cloud.google.com/go/resourcemanager v1.7.0
 	cloud.google.com/go/run v0.9.0
 	cloud.google.com/go/scheduler v1.9.0
 	cloud.google.com/go/secretmanager v1.10.0
@@ -37,13 +37,14 @@ require (
 	cloud.google.com/go/serviceusage v1.6.0
 	cloud.google.com/go/storage v1.28.1
 	cloud.google.com/go/translate v1.7.0
-	cloud.google.com/go/video v1.14.0
+	cloud.google.com/go/video v1.15.0
 	cloud.google.com/go/vision/v2 v2.7.0
 	cloud.google.com/go/vmmigration v1.6.0
 	cloud.google.com/go/vpcaccess v1.6.0
 	cloud.google.com/go/websecurityscanner v1.5.0
 	cloud.google.com/go/workflows v1.10.0
-	github.com/cloudquery/plugin-sdk/v2 v2.5.1
+	github.com/cloudquery/plugin-pb-go v1.0.5
+	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/golang/mock v1.6.0
 	github.com/googleapis/gax-go/v2 v2.7.1
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3
@@ -54,23 +55,23 @@ require (
 	github.com/spf13/cast v1.5.0
 	github.com/stretchr/testify v1.8.2
 	github.com/thoas/go-funk v0.9.3
-	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
+	golang.org/x/exp v0.0.0-20230425010034-47ecfdc1ba53
 	golang.org/x/sync v0.1.0
 	google.golang.org/api v0.114.0
-	google.golang.org/genproto v0.0.0-20230331144136-dcfb400f0633
+	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1
 	google.golang.org/grpc v1.54.0
 	google.golang.org/protobuf v1.30.0
 )
 
-// TODO: remove once the changes are merged to upstream
-replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230411134648-a5b71cd453c8
+// TODO: remove once all updates are merged
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230509053643-898a79b1d3c8
 
 require (
 	cloud.google.com/go v0.110.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/vision v1.2.0 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/apache/arrow/go/v12 v12.0.0-20230430004532-0ea1a103dfc2 // indirect
+	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect

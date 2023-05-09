@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 	"sync"
@@ -15,10 +16,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 	"github.com/thoas/go-funk"
 	"golang.org/x/exp/maps"
@@ -50,6 +52,8 @@ type Client struct {
 	BillingProfile  *armbilling.Profile
 	BillingPeriods  map[string][]*armbilling.Period
 	BillingPeriod   *armbilling.Period
+
+	storageAccountKeys *sync.Map
 }
 
 func (c *Client) discoverSubscriptions(ctx context.Context) error {
@@ -244,9 +248,10 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 
 	uniqueSubscriptions := funk.Uniq(spec.Subscriptions).([]string)
 	c := &Client{
-		logger:        logger,
-		subscriptions: uniqueSubscriptions,
-		pluginSpec:    &spec,
+		logger:             logger,
+		subscriptions:      uniqueSubscriptions,
+		pluginSpec:         &spec,
+		storageAccountKeys: &sync.Map{},
 	}
 
 	if spec.CloudName != "" {
@@ -362,4 +367,34 @@ func (c *Client) withBillingPeriod(billingPeriod *armbilling.Period) *Client {
 	newC.logger = c.logger.With().Str("billing_period", *billingPeriod.ID).Logger()
 	newC.BillingPeriod = billingPeriod
 	return &newC
+}
+
+var ErrNoStorageKeysFound = errors.New("no storage keys found")
+
+func (c *Client) GetStorageAccountKey(ctx context.Context, acc *armstorage.Account) (string, error) {
+	key, err := loadOrStore(c.storageAccountKeys, *acc.Name, func() (any, error) {
+		svc, err := armstorage.NewAccountsClient(c.SubscriptionId, c.Creds, c.Options)
+		if err != nil {
+			return nil, err
+		}
+
+		group, err := ParseResourceGroup(*acc.ID)
+		if err != nil {
+			return nil, err
+		}
+
+		keysResponse, err := svc.ListKeys(ctx, group, *acc.Name, nil)
+		if err != nil {
+			return nil, err
+		}
+
+		if len(keysResponse.Keys) == 0 {
+			return nil, ErrNoStorageKeysFound
+		}
+		return *keysResponse.Keys[0].Value, nil
+	})
+	if key == nil {
+		return "", err
+	}
+	return key.(string), err
 }

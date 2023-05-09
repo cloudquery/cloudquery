@@ -38,7 +38,9 @@ func fetchKafkaConfigurations(ctx context.Context, meta schema.ClientMeta, paren
 	svc := c.Services().Kafka
 	paginator := kafka.NewListConfigurationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *kafka.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

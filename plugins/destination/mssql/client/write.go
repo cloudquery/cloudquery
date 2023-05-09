@@ -4,16 +4,15 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/apache/arrow/go/v13/arrow"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
-	if c.spec.WriteMode == specs.WriteModeAppend {
-		return c.doInTx(ctx, func(tx *sql.Tx) error {
-			return c.bulkInsert(ctx, tx, table, data)
-		})
+func (c *Client) WriteTableBatch(ctx context.Context, sc *arrow.Schema, records []arrow.Record) error {
+	if c.useTVP(sc) {
+		return c.insertTVP(ctx, sc, records)
 	}
 
-	return c.insertTVP(ctx, table, data)
+	return c.doInTx(ctx, func(tx *sql.Tx) error {
+		return c.bulkInsert(ctx, tx, sc, records)
+	})
 }
