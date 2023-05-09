@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [17.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v17.1.0...plugins-source-aws-v17.2.0) (2023-05-09)
+
+
+### Features
+
+* **aws-services:** Support newly added regions ([#10598](https://github.com/cloudquery/cloudquery/issues/10598)) ([e56bae2](https://github.com/cloudquery/cloudquery/commit/e56bae2a0d344b3ccccedd403932395da06c61fe))
+* **aws:** Add `aws_securityhub_hubs` and `aws_securityhub_enabled_standards` tables ([#10553](https://github.com/cloudquery/cloudquery/issues/10553)) ([bc77f53](https://github.com/cloudquery/cloudquery/commit/bc77f5315331071e765d858829814086534d4750)), closes [#1592](https://github.com/cloudquery/cloudquery/issues/1592)
+* **aws:** Add networkfirewall resources ([#10547](https://github.com/cloudquery/cloudquery/issues/10547)) ([74ada09](https://github.com/cloudquery/cloudquery/commit/74ada094e737ab2892b884bdad0332489968d3e4))
+* **aws:** Add rule_ids to wafregional rule_group ([#10594](https://github.com/cloudquery/cloudquery/issues/10594)) ([4637baa](https://github.com/cloudquery/cloudquery/commit/4637baaed1d725a26bcbdb923c5bc9280446b8dd))
+* **aws:** Refine AWS Org Error Message ([#10569](https://github.com/cloudquery/cloudquery/issues/10569)) ([b761ebc](https://github.com/cloudquery/cloudquery/commit/b761ebc2e91ee20492439e60b65322eb400436a3))
+* More AWS Config resources ([#10509](https://github.com/cloudquery/cloudquery/issues/10509)) ([3db4ebb](https://github.com/cloudquery/cloudquery/commit/3db4ebb9394cda0279887a507aaee256261910f5))
+
+
+### Bug Fixes
+
+* **aws-policies:** Api Gateway xray tracing enabled query ([#10597](https://github.com/cloudquery/cloudquery/issues/10597)) ([341d849](https://github.com/cloudquery/cloudquery/commit/341d84931ac4fd698505e6894fe69111d8a7ebb2))
+* **aws:** Use GetBucketLocation for S3 bucket region ([#10550](https://github.com/cloudquery/cloudquery/issues/10550)) ([7f0128f](https://github.com/cloudquery/cloudquery/commit/7f0128f2ba1af1cb88cfa4de93cfee148959c488)), closes [#10548](https://github.com/cloudquery/cloudquery/issues/10548)
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.23 ([#10576](https://github.com/cloudquery/cloudquery/issues/10576)) ([eeb13d5](https://github.com/cloudquery/cloudquery/commit/eeb13d5b1b6b6fcb32764c8711bfbb79da35f9a8))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/internal/v4a to v1.0.25 ([#10585](https://github.com/cloudquery/cloudquery/issues/10585)) ([00d7449](https://github.com/cloudquery/cloudquery/commit/00d744988953f8a3f9c177970645be7b0f34fc69))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/accessanalyzer to v1.19.12 ([#10586](https://github.com/cloudquery/cloudquery/issues/10586)) ([4f929fe](https://github.com/cloudquery/cloudquery/commit/4f929fe811675ca9c520cf4cba11ed6debee7239))
+* Remove unused line in mockassert library ([#10608](https://github.com/cloudquery/cloudquery/issues/10608)) ([3fc8708](https://github.com/cloudquery/cloudquery/commit/3fc8708ecc66b1642e6963aa1094392d5b2533f2))
+
 ## [17.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v17.0.0...plugins-source-aws-v17.1.0) (2023-05-02)
 
 
