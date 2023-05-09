@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean VPC Members.
 
+https://docs.digitalocean.com/reference/api/api-reference/#operation/vpcs_list_members
+
 The primary key for this table is **urn**.
 
 ## Relations

@@ -4,13 +4,13 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
-	"github.com/cloudquery/plugin-sdk/schema"
-	mssql "github.com/microsoft/go-mssqldb"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
-	query, params := queries.Read(c.schemaName, sourceName, table)
+func (c *Client) Read(ctx context.Context, sc *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
+	query, params := queries.Read(c.schemaName, sourceName, sc)
+	l := len(sc.Fields())
 
 	return c.doInTx(ctx, func(tx *sql.Tx) error {
 		rows, err := tx.QueryContext(ctx, query, params...)
@@ -20,40 +20,26 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 
 		return processRows(rows, func(row *sql.Rows) error {
 			// We consider only the current schema from table
-			resource := rowArr(table)
-			if err := row.Scan(resource...); err != nil {
+			resource := make([]any, l)
+			if err := row.Scan(wrap(resource)...); err != nil {
 				return err
 			}
 
-			res <- fixUUID(table, resource)
+			record, err := queries.Record(sc, resource)
+			if err != nil {
+				return err
+			}
 
+			res <- record
 			return nil
 		})
 	})
 }
 
-func rowArr(table *schema.Table) []any {
-	res := make([]any, len(table.Columns))
+func wrap(arr []any) []any {
+	res := make([]any, len(arr))
 	for i := range res {
-		res[i] = new(any)
+		res[i] = &arr[i]
 	}
 	return res
-}
-
-func unwrap(arr []any) {
-	for i, v := range arr {
-		arr[i] = *v.(*any)
-	}
-}
-
-func fixUUID(table *schema.Table, resource []any) []any {
-	unwrap(resource)
-	for i, v := range resource {
-		if table.Columns[i].Type == schema.TypeUUID {
-			uid := mssql.UniqueIdentifier{}
-			_ = uid.Scan(v)
-			resource[i] = uid
-		}
-	}
-	return resource
 }

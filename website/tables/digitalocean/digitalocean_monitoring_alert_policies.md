@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Monitoring Alert Policies.
 
+https://docs.digitalocean.com/reference/api/api-reference/#operation/monitoring_list_alertPolicy
+
 The primary key for this table is **uuid**.
 
 ## Columns

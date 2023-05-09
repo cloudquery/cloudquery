@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Accounts.
 
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Account
+
 The primary key for this table is **uuid**.
 
 ## Columns

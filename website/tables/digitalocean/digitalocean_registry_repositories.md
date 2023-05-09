@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Registry Repositories.
 
+Deprecated. https://docs.digitalocean.com/reference/api/api-reference/#operation/registry_list_repositories
+
 The primary key for this table is **name**.
 
 ## Relations
