@@ -2,7 +2,7 @@ package types
 
 import (
 	"github.com/ClickHouse/clickhouse-go/v2/lib/column"
-	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v13/arrow"
 )
 
 func nullableType(name string, col *column.Nullable) (*arrow.Field, error) {

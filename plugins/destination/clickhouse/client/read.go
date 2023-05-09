@@ -5,7 +5,7 @@ import (
 	"reflect"
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
-	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow/values"
 )

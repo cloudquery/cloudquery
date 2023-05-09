@@ -3,7 +3,7 @@ package types
 import (
 	"testing"
 
-	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v13/arrow"
 )
 
 func Test_decimalType(t *testing.T) {

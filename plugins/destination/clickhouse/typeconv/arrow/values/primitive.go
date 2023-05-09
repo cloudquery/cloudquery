@@ -1,7 +1,7 @@
 package values
 
 import (
-	"github.com/apache/arrow/go/v12/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/array"
 )
 
 type primitiveBuilder[A any] interface {
