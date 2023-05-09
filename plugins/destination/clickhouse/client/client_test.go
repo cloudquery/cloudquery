@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/resources/plugin"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v2/testdata"
 )
 
 var migrateStrategy = destination.MigrateStrategy{
@@ -52,6 +53,18 @@ func TestPlugin(t *testing.T) {
 
 			MigrateStrategyOverwrite: migrateStrategy,
 			MigrateStrategyAppend:    migrateStrategy,
+
+			TestSourceOptions: testdata.TestSourceOptions{
+				IncludeLists:      true,
+				IncludeTimestamps: true,
+				IncludeDates:      true,
+				IncludeMaps:       true,
+				IncludeStructs:    true,
+				IncludeIntervals:  true,
+				IncludeDurations:  true,
+				IncludeTimes:      true,
+				IncludeLargeTypes: true,
+			},
 		},
 	)
 }
