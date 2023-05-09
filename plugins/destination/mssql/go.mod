@@ -3,7 +3,8 @@ module github.com/cloudquery/cloudquery/plugins/destination/mssql
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v12 v12.0.0-20230430004532-0ea1a103dfc2
+	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604
+	github.com/cloudquery/plugin-pb-go v1.0.5
 	github.com/cloudquery/plugin-sdk/v2 v2.5.2
 	github.com/google/uuid v1.3.0
 	github.com/microsoft/go-mssqldb v0.19.0
@@ -12,8 +13,11 @@ require (
 	golang.org/x/exp v0.0.0-20230425010034-47ecfdc1ba53
 )
 
-// TODO: remove once the changes are merged to upstream
-replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230425184555-43f156fcdec9
+// TODO: remove once all updates are merged
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230509053643-898a79b1d3c8
+
+// TODO: remove after https://github.com/cloudquery/plugin-sdk/pull/852 is merged & released
+replace github.com/cloudquery/plugin-sdk/v2 => github.com/cloudquery/plugin-sdk/v2 v2.6.1-0.20230509061301-9c7cb8a16ba1
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.4.0 // indirect
