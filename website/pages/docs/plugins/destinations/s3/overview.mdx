@@ -55,6 +55,10 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   Ensure write access to the given bucket and path by writing a test object on each sync. If you are sure that the bucket and path are writable, you can set this to `false` to skip the test.
 
+- `endpoint` (string) (optional, default empty)
+
+  Endpoint to use for S3 API calls. This is useful for S3-compatible storage services such as MinIO.
+
 - `format` (string) (required)
 
   Format of the output file. Supported values are `csv`, `json` and `parquet`.
