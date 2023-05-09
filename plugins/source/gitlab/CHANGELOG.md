@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v2.3.2...plugins-source-gitlab-v3.0.0) (2023-05-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **gitlab:** Change `last_activity_on` field of `gitlab_users` table to `Timestamp`
+* **gitlab:** Add `base_url` to `gitlab_project_branches` primary key
+
+### Features
+
+* **gitlab:** Add `base_url` to `gitlab_project_branches` primary key ([1bb9200](https://github.com/cloudquery/cloudquery/commit/1bb92008b1e5b6f0f37a2095661ddfeb19865232))
+* **gitlab:** Change `last_activity_on` field of `gitlab_users` table to `Timestamp` ([1bb9200](https://github.com/cloudquery/cloudquery/commit/1bb92008b1e5b6f0f37a2095661ddfeb19865232))
+* **gitlab:** Refactor GitLab source plugin ([#10549](https://github.com/cloudquery/cloudquery/issues/10549)) ([1bb9200](https://github.com/cloudquery/cloudquery/commit/1bb92008b1e5b6f0f37a2095661ddfeb19865232))
+
 ## [2.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v2.3.1...plugins-source-gitlab-v2.3.2) (2023-05-02)
 
 
