@@ -4,14 +4,16 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
+	"sync"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-
 	"github.com/cloudquery/filetypes/v3"
+	"github.com/cloudquery/filetypes/v3/types"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
 	"github.com/rs/zerolog"
@@ -27,6 +29,15 @@ type Client struct {
 	uploader   *manager.Uploader
 	downloader *manager.Downloader
 	*filetypes.Client
+
+	tableWorkers   map[string]*worker
+	tableWorkersMu sync.RWMutex // This protects tableWorkers and lastSpec
+}
+
+type worker struct {
+	h    types.Handle
+	pw   *io.PipeWriter
+	done chan error
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -34,8 +45,9 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("destination only supports append mode")
 	}
 	c := &Client{
-		logger: logger.With().Str("module", "s3").Logger(),
-		spec:   spec,
+		logger:       logger.With().Str("module", "s3").Logger(),
+		spec:         spec,
+		tableWorkers: make(map[string]*worker),
 	}
 
 	if err := spec.UnmarshalSpec(&c.pluginSpec); err != nil {

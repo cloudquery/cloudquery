@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/filetypes/v3"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination/batchingwriter"
 )
 
 const bucket = "cq-playground-test"
@@ -24,7 +25,7 @@ func TestPluginCSV(t *testing.T) {
 	spec.SetDefaults()
 	destination.PluginTestSuiteRunner(t,
 		func() *destination.Plugin {
-			return destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
+			return destination.NewPlugin("s3", "development", New, destination.WithManagedWriter(batchingwriter.New()))
 		},
 		specs.Destination{
 			Spec: &spec,
@@ -54,7 +55,7 @@ func TestPluginJSON(t *testing.T) {
 	spec.SetDefaults()
 	destination.PluginTestSuiteRunner(t,
 		func() *destination.Plugin {
-			return destination.NewPlugin("s3", "development", New, destination.WithManagedWriter())
+			return destination.NewPlugin("s3", "development", New, destination.WithManagedWriter(batchingwriter.New()))
 		},
 		specs.Destination{
 			Spec: &spec,
