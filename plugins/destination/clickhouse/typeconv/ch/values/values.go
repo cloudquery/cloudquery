@@ -72,8 +72,8 @@ func FromArray(arr arrow.Array) (any, error) {
 
 	case array.ListLike:
 		return listValue(arr)
-	}
 
-	// default to string via JSON
-	return marshalValuesToStrings(arr)
+	default:
+		return valueStrData(arr), nil
+	}
 }

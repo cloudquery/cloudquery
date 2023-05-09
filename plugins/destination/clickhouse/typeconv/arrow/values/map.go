@@ -16,8 +16,7 @@ func buildMap(builder *array.MapBuilder, value any) error {
 	}
 
 	if colType == "String" {
-		// we store this as marshaled value
-		return buildUnmarshalOne(builder, value)
+		return buildFromString(builder, value)
 	}
 
 	return buildMapFromReflect(builder, reflect.ValueOf(value))

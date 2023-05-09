@@ -18,7 +18,7 @@ func mapValue(arr *array.Map) (any, error) {
 		return nil, err
 	}
 	if colType == "String" {
-		return marshalValuesToStrings(arr)
+		return valueStrData(arr), nil
 	}
 
 	// Need to create slice of the proper type.
