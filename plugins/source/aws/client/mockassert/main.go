@@ -61,7 +61,6 @@ func AddAssertions(mockFile string) error {
 
 	newContent := strings.Join(lines, "\n")
 	s, _ := f.Stat()
-	s.Mode().Perm()
 	return os.WriteFile(mockFile, []byte(newContent), s.Mode().Perm())
 }
 
