@@ -2,7 +2,7 @@
 
 This table shows data for Config Delivery Channels.
 
-https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeDeliveryChannels.html
+https://docs.aws.amazon.com/config/latest/APIReference/API_DeliveryChannel.html
 
 The composite primary key for this table is (**account_id**, **region**, **name**).
 

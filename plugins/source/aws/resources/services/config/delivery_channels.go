@@ -14,7 +14,7 @@ func DeliveryChannels() *schema.Table {
 	tableName := "aws_config_delivery_channels"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeDeliveryChannels.html`,
+		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DeliveryChannel.html`,
 		Resolver:    fetchDeliveryChannels,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		Transform:   transformers.TransformWithStruct(&types.DeliveryChannel{}, transformers.WithPrimaryKeys("Name")),
