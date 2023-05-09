@@ -42,13 +42,9 @@ func fetchAccessanalyzerAnalyzerFindings(ctx context.Context, meta schema.Client
 	analyzer := parent.Item.(types.AnalyzerSummary)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Accessanalyzer
-	var err error
 	lfi := &accessanalyzer.ListFindingsInput{}
 	if cl.Spec.TableOptions.AccessAnalyzerFindings != nil {
-		lfi, err = cl.Spec.TableOptions.AccessAnalyzerFindings.ListFindings()
-		if err != nil {
-			return err
-		}
+		lfi = &cl.Spec.TableOptions.AccessAnalyzerFindings.ListFindingOpts.ListFindingsInput
 	}
 	lfi.AnalyzerArn = analyzer.Arn
 	paginator := accessanalyzer.NewListFindingsPaginator(svc, lfi)

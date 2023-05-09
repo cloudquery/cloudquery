@@ -1,16 +1,32 @@
 package table_options
 
 import (
+	"encoding/json"
 	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/table_options/inputs/accessanalyzer_input"
-	"github.com/jinzhu/copier"
 )
 
+type CustomAccessAnalyzerListFindingsInput struct {
+	accessanalyzer.ListFindingsInput
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface for the CustomLookupEventsOpts type.
+// It is the same as default, but allows the use of underscore in the JSON field names.
+func (c *CustomAccessAnalyzerListFindingsInput) UnmarshalJSON(data []byte) error {
+	m := map[string]any{}
+	err := json.Unmarshal(data, &m)
+	if err != nil {
+		return err
+	}
+	changeCaseForObject(m)
+	b, _ := json.Marshal(m)
+	return json.Unmarshal(b, &c.ListFindingsInput)
+}
+
 type AccessanalyzerFindings struct {
-	ListFindingOpts accessanalyzer_input.ListFindingsInput `json:"list_findings,omitempty"`
+	ListFindingOpts CustomAccessAnalyzerListFindingsInput `json:"list_findings,omitempty"`
 }
 
 func (c *AccessanalyzerFindings) validateListFindings() error {
@@ -23,14 +39,6 @@ func (c *AccessanalyzerFindings) validateListFindings() error {
 	return nil
 }
 
-func (c *AccessanalyzerFindings) ListFindings() (*accessanalyzer.ListFindingsInput, error) {
-	var aaLFI accessanalyzer.ListFindingsInput
-	if c == nil {
-		return &aaLFI, nil
-	}
-	if err := c.validateListFindings(); err != nil {
-		return &aaLFI, err
-	}
-
-	return &aaLFI, copier.Copy(&aaLFI, &c.ListFindingOpts)
+func (c *AccessanalyzerFindings) Validate() error {
+	return c.validateListFindings()
 }

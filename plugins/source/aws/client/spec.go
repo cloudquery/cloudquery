@@ -73,6 +73,11 @@ func (s *Spec) Validate() error {
 			return fmt.Errorf("invalid skip_organization_units: %w", err)
 		}
 	}
+	if s.TableOptions != nil {
+		if err := s.TableOptions.Validate(); err != nil {
+			return fmt.Errorf("invalid table_options: %w", err)
+		}
+	}
 
 	return nil
 }
