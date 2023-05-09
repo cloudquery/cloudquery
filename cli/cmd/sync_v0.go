@@ -39,20 +39,22 @@ func syncConnectionV0_2(ctx context.Context, sourceClient *managedsource.Client,
 	if err != nil {
 		return err
 	}
+	for i := range destinationsClients {
+		destSpecBytes, err := json.Marshal(destinationsClients[i].Spec)
+		if err != nil {
+			return err
+		}
+		if _, err := destinationsPbClients[i].Configure(ctx, &base.Configure_Request{
+			Config: destSpecBytes,
+		}); err != nil {
+			return fmt.Errorf("failed to call Configure %s: %w", destinationsClients[i].Spec.Name, err)
+		}
+	}
 
 	if !noMigrate {
 		migrateStart := time.Now().UTC()
 		fmt.Printf("Starting migration with for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 		for i := range destinationsClients {
-			destSpecBytes, err := json.Marshal(destinationsClients[i].Spec)
-			if err != nil {
-				return err
-			}
-			if _, err := destinationsPbClients[i].Configure(ctx, &base.Configure_Request{
-				Config: destSpecBytes,
-			}); err != nil {
-				return fmt.Errorf("failed to call Configure %s: %w", destinationsClients[i].Spec.Name, err)
-			}
 			if _, err := destinationsPbClients[i].Migrate(ctx, &destination.Migrate_Request{
 				Tables: tablesBytes,
 			}); err != nil {
