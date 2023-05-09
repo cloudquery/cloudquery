@@ -4,7 +4,7 @@ import (
 	"crypto/sha256"
 	"fmt"
 
-	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/google/uuid"
 )

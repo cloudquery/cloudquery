@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -13,7 +13,7 @@ func TestRead(t *testing.T) {
 		sourceName = "cq_source"
 	)
 
-	query, params := Read(sourceName, &schema.Table{
+	query, params := Read(sourceName, schema.CQSchemaToArrow(&schema.Table{
 		Name: "table_name",
 		Columns: schema.ColumnList{
 			schema.CqIDColumn,
@@ -22,7 +22,7 @@ func TestRead(t *testing.T) {
 			schema.CqSyncTimeColumn,
 			schema.Column{Name: "extra_col", Type: schema.TypeFloat},
 		},
-	})
+	}))
 
 	ensureContents(t, query, "read.sql")
 	require.Equal(t, 1, len(params))

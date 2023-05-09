@@ -14,7 +14,7 @@ func RetentionConfigurations() *schema.Table {
 	tableName := "aws_config_retention_configurations"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeRetentionConfigurations.html`,
+		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_RetentionConfiguration.html`,
 		Resolver:    fetchRetentionConfigurations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		Transform: transformers.TransformWithStruct(&types.RetentionConfiguration{},
@@ -31,8 +31,7 @@ func fetchRetentionConfigurations(ctx context.Context, meta schema.ClientMeta, p
 	c := meta.(*client.Client)
 	svc := c.Services().Configservice
 
-	input := &configservice.DescribeRetentionConfigurationsInput{}
-	p := configservice.NewDescribeRetentionConfigurationsPaginator(svc, input)
+	p := configservice.NewDescribeRetentionConfigurationsPaginator(svc, nil)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *configservice.Options) {
 			options.Region = c.Region

@@ -140,7 +140,7 @@ func NewClient(ctx context.Context, spec specs.Destination, opts ...Option) (*Cl
 			),
 		)
 		if err != nil {
-			return nil, fmt.Errorf("failed to dial grpc source plugin at %s: %w", spec.Path, err)
+			return nil, fmt.Errorf("failed to dial grpc destination plugin at %s: %w", spec.Path, err)
 		}
 	case specs.RegistryLocal:
 		if err := c.startLocal(ctx, spec.Path); err != nil {
@@ -233,14 +233,14 @@ func (c *Client) Terminate() error {
 	if c.grpcSocketName != "" {
 		defer func() {
 			if err := os.RemoveAll(c.grpcSocketName); err != nil {
-				c.logger.Error().Err(err).Msg("failed to remove source socket file")
+				c.logger.Error().Err(err).Msg("failed to remove destination socket file")
 			}
 		}()
 	}
 
 	if c.Conn != nil {
 		if err := c.Conn.Close(); err != nil {
-			c.logger.Error().Err(err).Msg("failed to close gRPC connection to source plugin")
+			c.logger.Error().Err(err).Msg("failed to close gRPC connection to destination plugin")
 		}
 		c.Conn = nil
 	}

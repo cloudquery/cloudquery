@@ -18,9 +18,6 @@ require (
 	google.golang.org/protobuf v1.30.0
 )
 
-// TODO: remove once the changes are merged to upstream
-replace github.com/apache/arrow/go/v12 => github.com/cloudquery/arrow/go/v12 v12.0.0-20230411134648-a5b71cd453c8
-
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect

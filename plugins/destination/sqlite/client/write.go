@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
 )
 
 func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan arrow.Record) error {

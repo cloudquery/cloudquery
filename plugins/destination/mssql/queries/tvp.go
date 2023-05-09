@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"reflect"
 
-	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/apache/arrow/go/v12/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	mssql "github.com/microsoft/go-mssqldb"
 )

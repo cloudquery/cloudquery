@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-mixpanel-v1.2.1...plugins-source-mixpanel-v1.2.2) (2023-05-09)
+
+
+### Bug Fixes
+
+* Add line content to error message in mixpanel export table ([#10607](https://github.com/cloudquery/cloudquery/issues/10607)) ([97dd650](https://github.com/cloudquery/cloudquery/commit/97dd650728af4b23ccb4af38b4cb53307365c6e4))
+
 ## [1.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-mixpanel-v1.2.0...plugins-source-mixpanel-v1.2.1) (2023-05-02)
 
 
