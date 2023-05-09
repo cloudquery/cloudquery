@@ -56,19 +56,22 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 		return err
 	}
 
+	for i := range destinationsClients {
+		destSpecBytes, err := json.Marshal(destinationsClients[i].Spec)
+		if err != nil {
+			return err
+		}
+		if _, err := destinationsPbClients[i].Configure(ctx, &base.Configure_Request{
+			Config: destSpecBytes,
+		}); err != nil {
+			return err
+		}
+	}
+
 	if !noMigrate {
 		migrateStart := time.Now().UTC()
 		fmt.Printf("Starting migration with for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 		for i := range destinationsClients {
-			destSpecBytes, err := json.Marshal(destinationsClients[i].Spec)
-			if err != nil {
-				return err
-			}
-			if _, err := destinationsPbClients[i].Configure(ctx, &base.Configure_Request{
-				Config: destSpecBytes,
-			}); err != nil {
-				return err
-			}
 			if _, err := destinationsPbClients[i].Migrate(ctx, &destination.Migrate_Request{
 				Tables: tablesRes.Tables,
 			}); err != nil {
