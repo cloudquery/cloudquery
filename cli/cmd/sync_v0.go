@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"time"
@@ -84,6 +85,12 @@ func syncConnectionV0_2(ctx context.Context, sourceClient *managedsource.Client,
 		return err
 	}
 	writeClients := make([]destination.Destination_Write2Client, len(destinationsPbClients))
+	defer func() {
+		for i := range writeClients {
+			_ = writeClients[i].CloseSend()
+		}
+	}()
+
 	for i := range destinationsPbClients {
 		writeClients[i], err = destinationsPbClients[i].Write2(ctx)
 		if err != nil {
@@ -107,10 +114,10 @@ func syncConnectionV0_2(ctx context.Context, sourceClient *managedsource.Client,
 	)
 	for {
 		r, err := syncClient.Recv()
-		if err == io.EOF {
-			break
-		}
 		if err != nil {
+			if errors.Is(err, io.EOF) {
+				break
+			}
 			return err
 		}
 		_ = bar.Add(1)
