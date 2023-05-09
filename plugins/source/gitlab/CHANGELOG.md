@@ -3,6 +3,15 @@
 ## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v2.3.2...plugins-source-gitlab-v3.0.0) (2023-05-09)
 
 
+### This Release has the Following Changes to Tables
+- Table `gitlab_group_members`: column order changed for `expires_at`
+- Table `gitlab_groups`: column order changed for `marked_for_deletion_on`
+- Table `gitlab_project_branches`: primary key constraint added to column `base_url` (:warning: breaking)
+- Table `gitlab_project_branches`: column order changed for `name`
+- Table `gitlab_projects`: column order changed for `marked_for_deletion_at`
+- Table `gitlab_projects_releases`: column order changed for `created_at`
+- Table `gitlab_users`: column type changed from `JSON` to `Timestamp` for `last_activity_on` (:warning: breaking)
+
 ### ⚠ BREAKING CHANGES
 
 * **gitlab:** Change `last_activity_on` field of `gitlab_users` table to `Timestamp`
