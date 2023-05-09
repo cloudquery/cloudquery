@@ -117,7 +117,6 @@ require (
 	github.com/cloudquery/codegen v0.2.1
 	github.com/cloudquery/plugin-sdk v1.24.0
 	github.com/cloudquery/plugin-sdk/v2 v2.5.1
-	github.com/dave/jennifer v1.6.1
 	github.com/gocarina/gocsv v0.0.0-20230325173030-9a18a846a479
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
@@ -130,7 +129,6 @@ require (
 	github.com/thoas/go-funk v0.9.3
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
 	golang.org/x/sync v0.1.0
-	golang.org/x/tools v0.6.0
 )
 
 // TODO: remove once the changes are merged to upstream
@@ -186,6 +184,7 @@ require (
 	golang.org/x/net v0.9.0 // indirect
 	golang.org/x/sys v0.7.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
+	golang.org/x/tools v0.6.0 // indirect
 	google.golang.org/genproto v0.0.0-20230331144136-dcfb400f0633 // indirect
 	google.golang.org/grpc v1.54.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
