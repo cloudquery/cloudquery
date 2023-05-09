@@ -116,7 +116,7 @@ require (
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
 	github.com/cloudquery/plugin-pb-go v1.0.5
-	github.com/cloudquery/plugin-sdk/v2 v2.6.0
+	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/gocarina/gocsv v0.0.0-20230325173030-9a18a846a479
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
@@ -132,9 +132,6 @@ require (
 
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230509053643-898a79b1d3c8
-
-// TODO: remove after https://github.com/cloudquery/plugin-sdk/pull/852 is merged & released
-replace github.com/cloudquery/plugin-sdk/v2 => github.com/cloudquery/plugin-sdk/v2 v2.6.1-0.20230509061301-9c7cb8a16ba1
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect

@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.33.1
 	github.com/cloudquery/filetypes/v2 v2.0.4
 	github.com/cloudquery/plugin-pb-go v1.0.5
-	github.com/cloudquery/plugin-sdk/v2 v2.6.0
+	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
@@ -19,9 +19,6 @@ require (
 
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230509053643-898a79b1d3c8
-
-// TODO: remove after https://github.com/cloudquery/plugin-sdk/pull/852 is merged & released
-replace github.com/cloudquery/plugin-sdk/v2 => github.com/cloudquery/plugin-sdk/v2 v2.6.1-0.20230509061301-9c7cb8a16ba1
 
 // TODO: remove after https://github.com/cloudquery/filetypes/pull/153 is merged & released
 replace github.com/cloudquery/filetypes/v2 => github.com/cloudquery/filetypes/v2 v2.0.5-0.20230509061707-cede00f98740

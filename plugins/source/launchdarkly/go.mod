@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudquery/plugin-pb-go v1.0.5
-	github.com/cloudquery/plugin-sdk/v2 v2.6.0
+	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/gorilla/mux v1.8.0
 	github.com/launchdarkly/api-client-go/v11 v11.0.0
 	github.com/rs/zerolog v1.29.0
@@ -13,9 +13,6 @@ require (
 
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230509053643-898a79b1d3c8
-
-// TODO: remove after https://github.com/cloudquery/plugin-sdk/pull/852 is merged & released
-replace github.com/cloudquery/plugin-sdk/v2 => github.com/cloudquery/plugin-sdk/v2 v2.6.1-0.20230509061301-9c7cb8a16ba1
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
