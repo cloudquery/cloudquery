@@ -67,7 +67,6 @@ func TestSync(t *testing.T) {
 			require.NoError(t, logFileError, "failed to read cloudquery.log")
 			require.NotEmpty(t, logContent, "cloudquery.log empty; expected some logs")
 
-			logFileName = path.Join(cqDir, "cloudquery1.log")
 			cmd = NewCmdRoot()
 			cmd.SetArgs([]string{"sync", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName, "--no-migrate"})
 			err = cmd.Execute()
