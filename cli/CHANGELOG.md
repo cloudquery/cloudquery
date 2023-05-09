@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.2.0...cli-v3.2.1) (2023-05-09)
+
+
+### Bug Fixes
+
+* **cli:** Close send after write ([#10688](https://github.com/cloudquery/cloudquery/issues/10688)) ([420bb36](https://github.com/cloudquery/cloudquery/commit/420bb36e0edb68a81e899cf196bbecb0344212e9))
+* Fix typos in CLI output text and logs ([#10686](https://github.com/cloudquery/cloudquery/issues/10686)) ([ab7870a](https://github.com/cloudquery/cloudquery/commit/ab7870a551414cad73e9542dcc2360296ee93568))
+
 ## [3.2.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.1.0...cli-v3.2.0) (2023-05-09)
 
 
