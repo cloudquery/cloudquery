@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v4.1.0...plugins-destination-s3-v4.2.0) (2023-05-09)
+
+
+### Features
+
+* **s3:** Add support for custom S3 endpoint ([#10589](https://github.com/cloudquery/cloudquery/issues/10589)) ([48c6379](https://github.com/cloudquery/cloudquery/commit/48c63791fcc1cdf665548403a0dcb6c4ef846bc3))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.23 ([#10576](https://github.com/cloudquery/cloudquery/issues/10576)) ([eeb13d5](https://github.com/cloudquery/cloudquery/commit/eeb13d5b1b6b6fcb32764c8711bfbb79da35f9a8))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.65 ([#10582](https://github.com/cloudquery/cloudquery/issues/10582)) ([4ed90e3](https://github.com/cloudquery/cloudquery/commit/4ed90e3aa7454e54f956144da544d9fe6532cf1f))
+
 ## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v4.0.0...plugins-destination-s3-v4.1.0) (2023-05-02)
 
 

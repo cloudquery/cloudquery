@@ -7,7 +7,7 @@ insert into aws_policy_results
     r.account_id,
     'arn:' || 'aws' || ':apigateway:' || r.region || ':/restapis/' || r.id as resource_id,
     case
-        when s.logging_level not in ('ERROR', 'INFO') then 'fail'
+        when s.logging_level not in ('"ERROR"', '"INFO"') then 'fail'
         else 'pass'
     end as status
 from

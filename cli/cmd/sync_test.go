@@ -67,6 +67,21 @@ func TestSync(t *testing.T) {
 			require.NoError(t, logFileError, "failed to read cloudquery.log")
 			require.NotEmpty(t, logContent, "cloudquery.log empty; expected some logs")
 		})
+
+		t.Run(tc.name+" with --no-migrate", func(t *testing.T) {
+			defer CloseLogFile()
+			testConfig := path.Join(currentDir, "testdata", tc.config)
+			logFileName := path.Join(cqDir, "cloudquery.log")
+
+			cmd := NewCmdRoot()
+			cmd.SetArgs([]string{"sync", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName, "--no-migrate"})
+			err := cmd.Execute()
+			if tc.err != "" {
+				assert.Contains(t, err.Error(), tc.err)
+			} else {
+				assert.NoError(t, err)
+			}
+		})
 	}
 }
 
