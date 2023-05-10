@@ -8,6 +8,7 @@
 - [aws_account_alternate_contacts](../../../../../website/tables/aws/aws_account_alternate_contacts.md)
 - [aws_account_contacts](../../../../../website/tables/aws/aws_account_contacts.md)
 - [aws_acm_certificates](../../../../../website/tables/aws/aws_acm_certificates.md)
+- [aws_acmpca_certificate_authorities](../../../../../website/tables/aws/aws_acmpca_certificate_authorities.md)
 - [aws_amp_workspaces](../../../../../website/tables/aws/aws_amp_workspaces.md)
   - [aws_amp_rule_groups_namespaces](../../../../../website/tables/aws/aws_amp_rule_groups_namespaces.md)
 - [aws_amplify_apps](../../../../../website/tables/aws/aws_amplify_apps.md)
