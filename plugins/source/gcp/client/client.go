@@ -277,11 +277,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	}
 	if gcpSpec.EnabledServicesOnly {
 		if err := c.configureEnabledServices(ctx, s.Concurrency); err != nil {
-			if status.Code(err) == codes.ResourceExhausted {
-				c.logger.Err(err).Msg("failed to list enabled services because of rate limiting. Consider setting larger values for `backoff_retries` and `backoff_delay`")
-			} else {
-				c.logger.Err(err).Msg("failed to list enabled services")
-			}
 			return nil, err
 		}
 	}
@@ -499,6 +494,11 @@ func (c *Client) configureEnabledServices(ctx context.Context, concurrency int) 
 			esLock.Lock()
 			c.EnabledServices[project] = svc
 			esLock.Unlock()
+			if status.Code(err) == codes.ResourceExhausted {
+				c.logger.Err(err).Msg("failed to list enabled services because of rate limiting. Consider setting larger values for `backoff_retries` and `backoff_delay`")
+			} else {
+				c.logger.Err(err).Msg("failed to list enabled services")
+			}
 			return err
 		})
 	}
