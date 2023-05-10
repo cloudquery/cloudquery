@@ -507,7 +507,7 @@ func (c *Client) configureEnabledServices(ctx context.Context, concurrency int) 
 			esLock.Lock()
 			c.EnabledServices[project] = svc
 			esLock.Unlock()
-			return nil
+			return err
 		})
 	}
 	return g.Wait()
