@@ -21,7 +21,6 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
-	"golang.org/x/sync/semaphore"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
@@ -488,17 +487,13 @@ func setUnion(a []string, b []string) []string {
 	return union
 }
 
-func (c *Client) configureEnabledServices(ctx context.Context, concurrency uint64) error {
+func (c *Client) configureEnabledServices(ctx context.Context, concurrency int) error {
 	var esLock sync.Mutex
 	g, ctx := errgroup.WithContext(ctx)
-	goroutinesSem := semaphore.NewWeighted(int64(concurrency))
+	g.SetLimit(concurrency)
 	for _, p := range c.projects {
 		project := p
-		if err := goroutinesSem.Acquire(ctx, 1); err != nil {
-			return err
-		}
 		g.Go(func() error {
-			defer goroutinesSem.Release(1)
 			cl := c.withProject(project)
 			svc, err := cl.fetchEnabledServices(ctx)
 			esLock.Lock()
