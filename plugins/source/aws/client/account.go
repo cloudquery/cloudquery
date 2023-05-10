@@ -91,7 +91,7 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 	svcsDetails[len(account.Regions)] = svcsDetail{
 		partition: iamArn.Partition,
 		accountId: *output.Account,
-		svcs:      initServices(awscloudfrontScopeRegion, awsCfg),
+		svcs:      initServices(awsCloudfrontScopeRegion, awsCfg),
 	}
 	return svcsDetails, nil
 }
