@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v13/arrow"
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/cloudquery/plugin-sdk/v2/schema"

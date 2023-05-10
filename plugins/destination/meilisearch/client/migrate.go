@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
 )
 
 func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {

@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"time"
@@ -39,20 +40,22 @@ func syncConnectionV0_2(ctx context.Context, sourceClient *managedsource.Client,
 	if err != nil {
 		return err
 	}
+	for i := range destinationsClients {
+		destSpecBytes, err := json.Marshal(destinationsClients[i].Spec)
+		if err != nil {
+			return err
+		}
+		if _, err := destinationsPbClients[i].Configure(ctx, &base.Configure_Request{
+			Config: destSpecBytes,
+		}); err != nil {
+			return fmt.Errorf("failed to call Configure %s: %w", destinationsClients[i].Spec.Name, err)
+		}
+	}
 
 	if !noMigrate {
 		migrateStart := time.Now().UTC()
-		fmt.Printf("Starting migration with for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
+		fmt.Printf("Starting migration for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 		for i := range destinationsClients {
-			destSpecBytes, err := json.Marshal(destinationsClients[i].Spec)
-			if err != nil {
-				return err
-			}
-			if _, err := destinationsPbClients[i].Configure(ctx, &base.Configure_Request{
-				Config: destSpecBytes,
-			}); err != nil {
-				return fmt.Errorf("failed to call Configure %s: %w", destinationsClients[i].Spec.Name, err)
-			}
 			if _, err := destinationsPbClients[i].Migrate(ctx, &destination.Migrate_Request{
 				Tables: tablesBytes,
 			}); err != nil {
@@ -82,6 +85,17 @@ func syncConnectionV0_2(ctx context.Context, sourceClient *managedsource.Client,
 		return err
 	}
 	writeClients := make([]destination.Destination_Write2Client, len(destinationsPbClients))
+	defer func() {
+		for i, wc := range writeClients {
+			if wc == nil {
+				continue
+			}
+			if _, closeErr := wc.CloseAndRecv(); closeErr != nil {
+				log.Err(closeErr).Str("destination", destinationsClients[i].Spec.Name).Msg("Failed to close write stream")
+			}
+		}
+	}()
+
 	for i := range destinationsPbClients {
 		writeClients[i], err = destinationsPbClients[i].Write2(ctx)
 		if err != nil {
@@ -105,10 +119,10 @@ func syncConnectionV0_2(ctx context.Context, sourceClient *managedsource.Client,
 	)
 	for {
 		r, err := syncClient.Recv()
-		if err == io.EOF {
-			break
-		}
 		if err != nil {
+			if errors.Is(err, io.EOF) {
+				break
+			}
 			return err
 		}
 		_ = bar.Add(1)

@@ -2,7 +2,7 @@
 
 This table shows data for Config Configuration Aggregators.
 
-https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConfigurationAggregators.html
+https://docs.aws.amazon.com/config/latest/APIReference/API_ConfigurationAggregator.html
 
 The primary key for this table is **arn**.
 
