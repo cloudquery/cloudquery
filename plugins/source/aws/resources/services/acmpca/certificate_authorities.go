@@ -16,7 +16,7 @@ func CertificateAuthorities() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/privateca/latest/APIReference/API_CertificateAuthority.html`,
 		Resolver:    fetchAcmpcaCertificateAuthorities,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "acmpca"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "acm-pca"),
 		Transform:   transformers.TransformWithStruct(&types.CertificateAuthority{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -41,8 +41,7 @@ func CertificateAuthorities() *schema.Table {
 func fetchAcmpcaCertificateAuthorities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Acmpca
-	var input acmpca.ListCertificateAuthoritiesInput
-	paginator := acmpca.NewListCertificateAuthoritiesPaginator(svc, &input)
+	paginator := acmpca.NewListCertificateAuthoritiesPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(o *acmpca.Options) {
 			o.Region = cl.Region
@@ -56,7 +55,7 @@ func fetchAcmpcaCertificateAuthorities(ctx context.Context, meta schema.ClientMe
 }
 
 func resolveCertificateAuthorityTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	certAuthority := resource.Item.(*types.CertificateAuthority)
+	certAuthority := resource.Item.(types.CertificateAuthority)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Acmpca
 	out, err := svc.ListTags(ctx,
