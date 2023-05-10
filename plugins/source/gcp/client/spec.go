@@ -19,5 +19,4 @@ func (spec *Spec) setDefaults() {
 	if spec.FolderRecursionDepth == nil {
 		spec.FolderRecursionDepth = &defaultRecursionDepth
 	}
-
 }
