@@ -276,7 +276,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		c.ProjectId = projects[0]
 	}
 	if gcpSpec.EnabledServicesOnly {
-		if err := c.configureEnabledServices(ctx, *gcpSpec.DiscoveryConcurrency); err != nil {
+		if err := c.configureEnabledServices(ctx, int(s.Concurrency)); err != nil {
 			return nil, err
 		}
 	}
@@ -486,7 +486,6 @@ func (c *Client) configureEnabledServices(ctx context.Context, concurrency int) 
 	var esLock sync.Mutex
 	g, ctx := errgroup.WithContext(ctx)
 	g.SetLimit(concurrency)
-
 	for _, p := range c.projects {
 		project := p
 		g.Go(func() error {
