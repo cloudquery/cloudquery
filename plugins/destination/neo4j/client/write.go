@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.0.1...plugins-destination-gremlin-v2.0.2) (2023-05-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.23 ([#10576](https://github.com/cloudquery/cloudquery/issues/10576)) ([eeb13d5](https://github.com/cloudquery/cloudquery/commit/eeb13d5b1b6b6fcb32764c8711bfbb79da35f9a8))
+
 ## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.0.0...plugins-destination-gremlin-v2.0.1) (2023-05-02)
 
 
