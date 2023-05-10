@@ -24,10 +24,18 @@ func ProjectMultiplexEnabledServices(enabledService string) func(schema.ClientMe
 		// preallocate all clients just in case
 		l := make([]schema.ClientMeta, 0, len(cl.projects))
 		for _, projectId := range cl.projects {
-			// This map can only be empty if user has not opted into `EnabledServicesOnly` via the spec
+			// When EnabledServicesOnly is empty, we can assume that all services should be synced
 			if len(cl.EnabledServices) == 0 {
 				l = append(l, cl.withProject(projectId))
-			} else if cl.EnabledServices[projectId] != nil && cl.EnabledServices[projectId][enabledService] != nil {
+				continue
+			}
+			// When EnabledServices[projectId] is nil then we can assume that all services should be synced as the Listing of Enabled Services must have failed
+			if cl.EnabledServices[projectId] == nil {
+				l = append(l, cl.withProject(projectId))
+				continue
+			}
+			// When `projectId` key is set then we can assume listing was completed successfully and only if the enabledService is set should we sync
+			if cl.EnabledServices[projectId] != nil && cl.EnabledServices[projectId][enabledService] != nil {
 				l = append(l, cl.withProject(projectId))
 			}
 		}
