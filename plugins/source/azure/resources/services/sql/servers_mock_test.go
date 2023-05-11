@@ -51,6 +51,9 @@ func createServers(router *mux.Router) error {
 	if err := createMockServerSecurityAlertPolicies(router); err != nil {
 		return err
 	}
+	if err := createServerAdvancedThreatProtectionSettings(router); err != nil {
+		return err
+	}
 	return createDatabases(router)
 }
 

@@ -21,7 +21,6 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
-	"golang.org/x/sync/semaphore"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
@@ -278,11 +277,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	}
 	if gcpSpec.EnabledServicesOnly {
 		if err := c.configureEnabledServices(ctx, s.Concurrency); err != nil {
-			if status.Code(err) == codes.ResourceExhausted {
-				c.logger.Err(err).Msg("failed to list enabled services because of rate limiting. Consider setting larger values for `backoff_retries` and `backoff_delay`")
-			} else {
-				c.logger.Err(err).Msg("failed to list enabled services")
-			}
 			return nil, err
 		}
 	}
@@ -491,19 +485,21 @@ func setUnion(a []string, b []string) []string {
 func (c *Client) configureEnabledServices(ctx context.Context, concurrency uint64) error {
 	var esLock sync.Mutex
 	g, ctx := errgroup.WithContext(ctx)
-	goroutinesSem := semaphore.NewWeighted(int64(concurrency))
+	g.SetLimit(int(concurrency))
+
 	for _, p := range c.projects {
 		project := p
-		if err := goroutinesSem.Acquire(ctx, 1); err != nil {
-			return err
-		}
 		g.Go(func() error {
-			defer goroutinesSem.Release(1)
 			cl := c.withProject(project)
 			svc, err := cl.fetchEnabledServices(ctx)
 			esLock.Lock()
 			c.EnabledServices[project] = svc
 			esLock.Unlock()
+			if status.Code(err) == codes.ResourceExhausted {
+				c.logger.Err(err).Msg("failed to list enabled services because of rate limiting. Consider setting larger values for `backoff_retries` and `backoff_delay`")
+			} else {
+				c.logger.Err(err).Msg("failed to list enabled services")
+			}
 			return err
 		})
 	}
