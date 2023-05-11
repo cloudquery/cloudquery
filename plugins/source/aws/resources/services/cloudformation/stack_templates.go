@@ -24,7 +24,7 @@ func stackTemplates() *schema.Table {
 			{
 				Name:     "stack_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("stack_arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -40,7 +40,9 @@ func fetchCloudformationStackTemplates(ctx context.Context, meta schema.ClientMe
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudformation
-	resp, err := svc.GetTemplate(ctx, &config)
+	resp, err := svc.GetTemplate(ctx, &config, func(options *cloudformation.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		return err
 	}
