@@ -181,16 +181,6 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 }
 
 func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, region string, scope wafv2types.Scope) *Client {
-	if region == "" {
-		switch partition {
-		case "aws":
-			region = "us-east-1"
-		case "aws-us-gov":
-			region = "us-gov-east-1"
-		case "aws-cn":
-			region = "cn-north-1"
-		}
-	}
 	return &Client{
 		Partition:            partition,
 		ServicesManager:      c.ServicesManager,
