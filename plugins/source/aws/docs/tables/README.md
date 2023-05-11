@@ -97,6 +97,7 @@
     - [aws_cloudformation_stack_set_operation_results](../../../../../website/tables/aws/aws_cloudformation_stack_set_operation_results.md)
 - [aws_cloudformation_stacks](../../../../../website/tables/aws/aws_cloudformation_stacks.md)
   - [aws_cloudformation_stack_resources](../../../../../website/tables/aws/aws_cloudformation_stack_resources.md)
+  - [aws_cloudformation_stack_templates](../../../../../website/tables/aws/aws_cloudformation_stack_templates.md)
 - [aws_cloudfront_cache_policies](../../../../../website/tables/aws/aws_cloudfront_cache_policies.md)
 - [aws_cloudfront_distributions](../../../../../website/tables/aws/aws_cloudfront_distributions.md)
 - [aws_cloudhsmv2_backups](../../../../../website/tables/aws/aws_cloudhsmv2_backups.md)
