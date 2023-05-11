@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func (*Client) DeleteStale(ctx context.Context, schemas schema.Schemas, sourceName string, syncTime time.Time) error {
