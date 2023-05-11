@@ -10,6 +10,7 @@ The primary key for this table is **arn**.
 
 The following tables depend on aws_cloudformation_stacks:
   - [aws_cloudformation_stack_resources](aws_cloudformation_stack_resources)
+  - [aws_cloudformation_stack_templates](aws_cloudformation_stack_templates)
 
 ## Columns
 
