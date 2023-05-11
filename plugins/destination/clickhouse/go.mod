@@ -6,11 +6,16 @@ require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.9.2
 	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604
 	github.com/cloudquery/plugin-pb-go v1.0.5
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0
+	github.com/cloudquery/plugin-sdk/v3 v3.0.1
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.2
 	golang.org/x/sync v0.2.0
+)
+
+require (
+	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
+	github.com/kr/text v0.2.0 // indirect
 )
 
 // TODO: remove once al updates are merged
@@ -45,7 +50,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
 	github.com/shopspring/decimal v1.3.1
-	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.7.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect

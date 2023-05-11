@@ -4,7 +4,7 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	arrow_types "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow/types"
 	ch_types "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func CanonizedSchemas(scs schema.Schemas) (schema.Schemas, error) {

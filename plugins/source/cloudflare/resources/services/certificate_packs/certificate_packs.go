@@ -3,8 +3,8 @@ package certificate_packs
 import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func CertificatePacks() *schema.Table {

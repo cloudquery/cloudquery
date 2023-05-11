@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudquery/plugin-pb-go v1.0.5
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0
+	github.com/cloudquery/plugin-sdk/v3 v3.0.1
 	github.com/gorilla/mux v1.8.0
 	github.com/launchdarkly/api-client-go/v11 v11.0.0
 	github.com/rs/zerolog v1.29.0

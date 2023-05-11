@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func (c *Client) getTableDefinitions(ctx context.Context, scs schema.Schemas) (schema.Schemas, error) {

@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/fastly/go-fastly/v7/fastly"
 )
 

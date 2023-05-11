@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/clarkmcc/go-hubspot v0.0.0-20221010213350-20c2f9cbf936
 	github.com/cloudquery/plugin-pb-go v1.0.5
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0
+	github.com/cloudquery/plugin-sdk/v3 v3.0.1
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/time v0.3.0
 )

@@ -2,8 +2,8 @@ package teams
 
 import (
 	"github.com/PagerDuty/go-pagerduty"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Teams() *schema.Table {

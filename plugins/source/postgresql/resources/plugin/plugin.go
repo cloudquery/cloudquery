@@ -2,7 +2,7 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/postgresql/client"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
 )
 
 var Version = "Development"
