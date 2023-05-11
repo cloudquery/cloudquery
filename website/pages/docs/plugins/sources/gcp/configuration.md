@@ -51,6 +51,7 @@ This is the (nested) spec used by GCP Source Plugin
   More examples:
     - `"name:how-* OR name:test-*"` matches projects starting with `how-` or `test-`
     - `"NOT name:test-*"` matches all projects *not* starting with `test-`
+  
   For syntax and example queries refer to API References [here](https://cloud.google.com/resource-manager/reference/rest/v1/projects/list#google.cloudresourcemanager.v1.Projects.ListProjects) and [here](https://cloud.google.com/sdk/gcloud/reference/topic/filters).
   
 
