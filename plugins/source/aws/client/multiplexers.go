@@ -1,8 +1,6 @@
 package client
 
 import (
-	"sort"
-
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
@@ -12,12 +10,17 @@ var AllNamespaces = []string{ // this is only used in applicationautoscaling
 }
 
 // Extract region from service list
-func getRegion(regionalList *Services) string {
-	if len(regionalList.Regions) == 0 {
+func getRegion(regionalList []string) string {
+	// We should try and find the closest region if possible. This will require checking the following locations:
+	// 1. Region defined by the ec2 metadata service
+	// 2. Region defined by the AWS_REGION environment variable
+	// 3. Region defined by the AWS_DEFAULT_REGION environment variable
+	// 4. Region defined by the local config file
+	if len(regionalList) == 0 {
 		return ""
 	}
-	regions := append([]string{}, regionalList.Regions...)
-	sort.Strings(regions)
+	regions := append([]string{}, regionalList...)
+
 	return regions[0]
 }
 
@@ -27,7 +30,7 @@ func AccountMultiplex(table string) func(meta schema.ClientMeta) []schema.Client
 		client := meta.(*Client)
 		for partition := range client.ServicesManager.services {
 			for accountID := range client.ServicesManager.services[partition] {
-				region := getRegion(client.ServicesManager.services[partition][accountID])
+				region := getRegion(client.ServicesManager.services[partition][accountID].Regions)
 				// Ensure that the region is always set by a region that has been initialized
 				if region == "" {
 					// This can only happen if a user specifies a region from a different partition
