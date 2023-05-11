@@ -55,11 +55,11 @@ type AssumeRoleAPIClient interface {
 	AssumeRole(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error)
 }
 
-type ServicesPartitionAccountRegionMap map[string]map[string]*Services
+type ServicesPartitionAccountMap map[string]map[string]*Services
 
 // ServicesManager will hold the entire map of (account X region) services
 type ServicesManager struct {
-	services ServicesPartitionAccountRegionMap
+	services ServicesPartitionAccountMap
 }
 
 const (
@@ -101,7 +101,7 @@ func NewAwsClient(logger zerolog.Logger, b backend.Backend, spec *Spec) Client {
 	return Client{
 		Backend: b,
 		ServicesManager: ServicesManager{
-			services: ServicesPartitionAccountRegionMap{},
+			services: ServicesPartitionAccountMap{},
 		},
 		logger: logger,
 		Spec:   spec,
