@@ -15,7 +15,7 @@ import (
 	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/cloudquery/filetypes/v2"
+	"github.com/cloudquery/filetypes/v3"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/google/uuid"
@@ -50,7 +50,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 
 	timeNow := time.Now().UTC()
 
-	if err := c.Client.WriteTableBatchFile(w, table.ToArrowSchema(), data); err != nil {
+	if err := c.Client.WriteTableBatchFile(w, table, data); err != nil {
 		return err
 	}
 	// we don't upload in parallel here because AWS sdk moves the burden to the developer, and

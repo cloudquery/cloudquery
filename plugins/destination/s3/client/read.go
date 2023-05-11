@@ -34,5 +34,5 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		return err
 	}
 	r := bytes.NewReader(writerAtBuffer.Bytes())
-	return c.Client.Read(r, table.ToArrowSchema(), sourceName, res)
+	return c.Client.Read(r, table, sourceName, res)
 }
