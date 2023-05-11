@@ -9,6 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.12
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.0
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.0
+	github.com/aws/aws-sdk-go-v2/service/acmpca v1.21.12
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.9
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.0
@@ -143,7 +144,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.27 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.34 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.25 // indirect
-	github.com/aws/aws-sdk-go-v2/service/acmpca v1.21.12 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.27 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.23 // indirect
