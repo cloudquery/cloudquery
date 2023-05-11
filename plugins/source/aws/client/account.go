@@ -68,7 +68,7 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 		logger.Warn().Str("account", account.AccountName).Err(err).Msg("No enabled regions provided in config for account")
 		return nil, nil
 	}
-	awsCfg.Region = account.Regions[0]
+	awsCfg.Region = getRegion(account.Regions)
 	output, err := getAccountId(ctx, awsCfg)
 	if err != nil {
 		return nil, err
