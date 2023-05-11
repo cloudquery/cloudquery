@@ -6,6 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
+	"github.com/cloudquery/plugin-sdk/v3/caser"
 )
 
 type Inspector2APIs struct {
@@ -24,7 +25,8 @@ func (c *CustomInspector2ListFindingsInput) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	changeCaseForObject(m)
+	csr := caser.New()
+	changeCaseForObject(m, csr.ToPascal)
 	b, _ := json.Marshal(m)
 	return json.Unmarshal(b, &c.ListFindingsInput)
 }

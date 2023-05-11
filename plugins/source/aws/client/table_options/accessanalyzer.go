@@ -6,6 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
+	"github.com/cloudquery/plugin-sdk/v3/caser"
 	"github.com/jinzhu/copier"
 )
 
@@ -25,7 +26,8 @@ func (c *CustomAccessAnalyzerListFindingsInput) UnmarshalJSON(data []byte) error
 	if err != nil {
 		return err
 	}
-	changeCaseForObject(m)
+	csr := caser.New()
+	changeCaseForObject(m, csr.ToPascal)
 	b, _ := json.Marshal(m)
 	return json.Unmarshal(b, &c.ListFindingsInput)
 }

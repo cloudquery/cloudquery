@@ -117,6 +117,7 @@ require (
 	github.com/cloudquery/codegen v0.2.1
 	github.com/cloudquery/plugin-pb-go v1.0.5
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0
+	github.com/cloudquery/plugin-sdk/v3 v3.0.1
 	github.com/gocarina/gocsv v0.0.0-20230325173030-9a18a846a479
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
