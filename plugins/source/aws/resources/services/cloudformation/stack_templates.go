@@ -29,6 +29,11 @@ func stackTemplates() *schema.Table {
 					PrimaryKey: true,
 				},
 			},
+			{
+				Name:     "template_body",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("TemplateBody"),
+			},
 		},
 	}
 }
