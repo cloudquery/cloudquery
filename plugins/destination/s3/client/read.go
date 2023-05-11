@@ -10,20 +10,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 const maxFileSize = 1024 * 1024 * 20
 
-func (c *Client) Read(ctx context.Context, arrowSchema *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
-	tableName := schema.TableName(arrowSchema)
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
 	if !c.pluginSpec.NoRotate {
-		return fmt.Errorf("reading is not supported when no_rotate is false. Table: %q; Source: %q", tableName, sourceName)
+		return fmt.Errorf("reading is not supported when no_rotate is false. Table: %q; Source: %q", table.Name, sourceName)
 	}
 	if strings.Contains(c.pluginSpec.Path, PathVarUUID) {
-		return fmt.Errorf("reading is not supported when path contains uuid variable. Table: %q; Source: %q", tableName, sourceName)
+		return fmt.Errorf("reading is not supported when path contains uuid variable. Table: %q; Source: %q", table.Name, sourceName)
 	}
-	name := strings.ReplaceAll(c.pluginSpec.Path, PathVarTable, tableName)
+	name := strings.ReplaceAll(c.pluginSpec.Path, PathVarTable, table.Name)
 	writerAtBuffer := manager.NewWriteAtBuffer(make([]byte, 0, maxFileSize))
 	_, err := c.downloader.Download(ctx,
 		writerAtBuffer,
@@ -35,5 +34,5 @@ func (c *Client) Read(ctx context.Context, arrowSchema *arrow.Schema, sourceName
 		return err
 	}
 	r := bytes.NewReader(writerAtBuffer.Bytes())
-	return c.Client.Read(r, arrowSchema, sourceName, res)
+	return c.Client.Read(r, table.ToArrowSchema(), sourceName, res)
 }
