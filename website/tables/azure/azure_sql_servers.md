@@ -10,6 +10,7 @@ The primary key for this table is **id**.
 
 The following tables depend on azure_sql_servers:
   - [azure_sql_server_admins](azure_sql_server_admins)
+  - [azure_sql_server_advanced_threat_protection_settings](azure_sql_server_advanced_threat_protection_settings)
   - [azure_sql_server_blob_auditing_policies](azure_sql_server_blob_auditing_policies)
   - [azure_sql_server_databases](azure_sql_server_databases)
   - [azure_sql_server_encryption_protectors](azure_sql_server_encryption_protectors)
