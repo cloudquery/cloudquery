@@ -37,6 +37,16 @@ func (m *MockSecurityhubClient) EXPECT() *MockSecurityhubClientMockRecorder {
 
 // DescribeActionTargets mocks base method.
 func (m *MockSecurityhubClient) DescribeActionTargets(arg0 context.Context, arg1 *securityhub.DescribeActionTargetsInput, arg2 ...func(*securityhub.Options)) (*securityhub.DescribeActionTargetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeActionTargets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockSecurityhubClientMockRecorder) DescribeActionTargets(arg0, arg1 in
 
 // DescribeHub mocks base method.
 func (m *MockSecurityhubClient) DescribeHub(arg0 context.Context, arg1 *securityhub.DescribeHubInput, arg2 ...func(*securityhub.Options)) (*securityhub.DescribeHubOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeHub")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockSecurityhubClientMockRecorder) DescribeHub(arg0, arg1 interface{},
 
 // DescribeOrganizationConfiguration mocks base method.
 func (m *MockSecurityhubClient) DescribeOrganizationConfiguration(arg0 context.Context, arg1 *securityhub.DescribeOrganizationConfigurationInput, arg2 ...func(*securityhub.Options)) (*securityhub.DescribeOrganizationConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOrganizationConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockSecurityhubClientMockRecorder) DescribeOrganizationConfiguration(a
 
 // DescribeProducts mocks base method.
 func (m *MockSecurityhubClient) DescribeProducts(arg0 context.Context, arg1 *securityhub.DescribeProductsInput, arg2 ...func(*securityhub.Options)) (*securityhub.DescribeProductsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProducts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockSecurityhubClientMockRecorder) DescribeProducts(arg0, arg1 interfa
 
 // DescribeStandards mocks base method.
 func (m *MockSecurityhubClient) DescribeStandards(arg0 context.Context, arg1 *securityhub.DescribeStandardsInput, arg2 ...func(*securityhub.Options)) (*securityhub.DescribeStandardsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStandards")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockSecurityhubClientMockRecorder) DescribeStandards(arg0, arg1 interf
 
 // DescribeStandardsControls mocks base method.
 func (m *MockSecurityhubClient) DescribeStandardsControls(arg0 context.Context, arg1 *securityhub.DescribeStandardsControlsInput, arg2 ...func(*securityhub.Options)) (*securityhub.DescribeStandardsControlsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStandardsControls")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockSecurityhubClientMockRecorder) DescribeStandardsControls(arg0, arg
 
 // GetAdministratorAccount mocks base method.
 func (m *MockSecurityhubClient) GetAdministratorAccount(arg0 context.Context, arg1 *securityhub.GetAdministratorAccountInput, arg2 ...func(*securityhub.Options)) (*securityhub.GetAdministratorAccountOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAdministratorAccount")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockSecurityhubClientMockRecorder) GetAdministratorAccount(arg0, arg1 
 
 // GetEnabledStandards mocks base method.
 func (m *MockSecurityhubClient) GetEnabledStandards(arg0 context.Context, arg1 *securityhub.GetEnabledStandardsInput, arg2 ...func(*securityhub.Options)) (*securityhub.GetEnabledStandardsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEnabledStandards")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockSecurityhubClientMockRecorder) GetEnabledStandards(arg0, arg1 inte
 
 // GetFindingAggregator mocks base method.
 func (m *MockSecurityhubClient) GetFindingAggregator(arg0 context.Context, arg1 *securityhub.GetFindingAggregatorInput, arg2 ...func(*securityhub.Options)) (*securityhub.GetFindingAggregatorOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFindingAggregator")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockSecurityhubClientMockRecorder) GetFindingAggregator(arg0, arg1 int
 
 // GetFindings mocks base method.
 func (m *MockSecurityhubClient) GetFindings(arg0 context.Context, arg1 *securityhub.GetFindingsInput, arg2 ...func(*securityhub.Options)) (*securityhub.GetFindingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFindings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockSecurityhubClientMockRecorder) GetFindings(arg0, arg1 interface{},
 
 // GetInsightResults mocks base method.
 func (m *MockSecurityhubClient) GetInsightResults(arg0 context.Context, arg1 *securityhub.GetInsightResultsInput, arg2 ...func(*securityhub.Options)) (*securityhub.GetInsightResultsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInsightResults")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockSecurityhubClientMockRecorder) GetInsightResults(arg0, arg1 interf
 
 // GetInsights mocks base method.
 func (m *MockSecurityhubClient) GetInsights(arg0 context.Context, arg1 *securityhub.GetInsightsInput, arg2 ...func(*securityhub.Options)) (*securityhub.GetInsightsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInsights")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockSecurityhubClientMockRecorder) GetInsights(arg0, arg1 interface{},
 
 // GetInvitationsCount mocks base method.
 func (m *MockSecurityhubClient) GetInvitationsCount(arg0 context.Context, arg1 *securityhub.GetInvitationsCountInput, arg2 ...func(*securityhub.Options)) (*securityhub.GetInvitationsCountOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInvitationsCount")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockSecurityhubClientMockRecorder) GetInvitationsCount(arg0, arg1 inte
 
 // GetMasterAccount mocks base method.
 func (m *MockSecurityhubClient) GetMasterAccount(arg0 context.Context, arg1 *securityhub.GetMasterAccountInput, arg2 ...func(*securityhub.Options)) (*securityhub.GetMasterAccountOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMasterAccount")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockSecurityhubClientMockRecorder) GetMasterAccount(arg0, arg1 interfa
 
 // GetMembers mocks base method.
 func (m *MockSecurityhubClient) GetMembers(arg0 context.Context, arg1 *securityhub.GetMembersInput, arg2 ...func(*securityhub.Options)) (*securityhub.GetMembersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMembers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockSecurityhubClientMockRecorder) GetMembers(arg0, arg1 interface{}, 
 
 // ListEnabledProductsForImport mocks base method.
 func (m *MockSecurityhubClient) ListEnabledProductsForImport(arg0 context.Context, arg1 *securityhub.ListEnabledProductsForImportInput, arg2 ...func(*securityhub.Options)) (*securityhub.ListEnabledProductsForImportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEnabledProductsForImport")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockSecurityhubClientMockRecorder) ListEnabledProductsForImport(arg0, 
 
 // ListFindingAggregators mocks base method.
 func (m *MockSecurityhubClient) ListFindingAggregators(arg0 context.Context, arg1 *securityhub.ListFindingAggregatorsInput, arg2 ...func(*securityhub.Options)) (*securityhub.ListFindingAggregatorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFindingAggregators")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockSecurityhubClientMockRecorder) ListFindingAggregators(arg0, arg1 i
 
 // ListInvitations mocks base method.
 func (m *MockSecurityhubClient) ListInvitations(arg0 context.Context, arg1 *securityhub.ListInvitationsInput, arg2 ...func(*securityhub.Options)) (*securityhub.ListInvitationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInvitations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockSecurityhubClientMockRecorder) ListInvitations(arg0, arg1 interfac
 
 // ListMembers mocks base method.
 func (m *MockSecurityhubClient) ListMembers(arg0 context.Context, arg1 *securityhub.ListMembersInput, arg2 ...func(*securityhub.Options)) (*securityhub.ListMembersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMembers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockSecurityhubClientMockRecorder) ListMembers(arg0, arg1 interface{},
 
 // ListOrganizationAdminAccounts mocks base method.
 func (m *MockSecurityhubClient) ListOrganizationAdminAccounts(arg0 context.Context, arg1 *securityhub.ListOrganizationAdminAccountsInput, arg2 ...func(*securityhub.Options)) (*securityhub.ListOrganizationAdminAccountsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOrganizationAdminAccounts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockSecurityhubClientMockRecorder) ListOrganizationAdminAccounts(arg0,
 
 // ListTagsForResource mocks base method.
 func (m *MockSecurityhubClient) ListTagsForResource(arg0 context.Context, arg1 *securityhub.ListTagsForResourceInput, arg2 ...func(*securityhub.Options)) (*securityhub.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

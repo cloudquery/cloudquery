@@ -10,6 +10,9 @@ The primary key for this table is **id**.
 
 This table depends on [azure_storage_accounts](azure_storage_accounts).
 
+The following tables depend on azure_storage_queues:
+  - [azure_storage_queue_acl](azure_storage_queue_acl)
+
 ## Columns
 
 | Name          | Type          |

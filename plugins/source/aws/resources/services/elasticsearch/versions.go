@@ -38,13 +38,16 @@ func Versions() *schema.Table {
 }
 
 func fetchElasticsearchVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Elasticsearchservice
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticsearchservice
 
 	p := elasticsearchservice.NewListElasticsearchVersionsPaginator(svc,
 		&elasticsearchservice.ListElasticsearchVersionsInput{MaxResults: 100},
 	)
 	for p.HasMorePages() {
-		out, err := p.NextPage(ctx)
+		out, err := p.NextPage(ctx, func(options *elasticsearchservice.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -60,7 +63,8 @@ func resolveVersion(ctx context.Context, meta schema.ClientMeta, resource *schem
 }
 
 func resolveInstanceTypes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	svc := meta.(*client.Client).Services().Elasticsearchservice
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticsearchservice
 
 	var instanceTypes []types.ESPartitionInstanceType
 	p := elasticsearchservice.NewListElasticsearchInstanceTypesPaginator(svc,
@@ -69,7 +73,9 @@ func resolveInstanceTypes(ctx context.Context, meta schema.ClientMeta, resource 
 		},
 	)
 	for p.HasMorePages() {
-		out, err := p.NextPage(ctx)
+		out, err := p.NextPage(ctx, func(options *elasticsearchservice.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

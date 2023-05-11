@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v13/arrow"
 )
 
 func (*Client) arrowTypeToSqliteStr(t arrow.DataType) string {

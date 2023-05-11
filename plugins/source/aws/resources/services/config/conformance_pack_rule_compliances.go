@@ -40,7 +40,9 @@ func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.
 	}
 	paginator := configservice.NewDescribeConformancePackCompliancePaginator(cs, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *configservice.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -53,7 +55,9 @@ func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.
 			}
 			getPaginator := configservice.NewGetConformancePackComplianceDetailsPaginator(cs, detailParams)
 			for getPaginator.HasMorePages() {
-				getPage, err := getPaginator.NextPage(ctx)
+				getPage, err := getPaginator.NextPage(ctx, func(options *configservice.Options) {
+					options.Region = c.Region
+				})
 				if err != nil {
 					return err
 				}

@@ -43,11 +43,14 @@ func EngineVersions() *schema.Table {
 }
 
 func fetchRdsEngineVersions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Rds
+	cl := meta.(*client.Client)
+	svc := cl.Services().Rds
 	input := &rds.DescribeDBEngineVersionsInput{}
 	p := rds.NewDescribeDBEngineVersionsPaginator(svc, input)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *rds.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

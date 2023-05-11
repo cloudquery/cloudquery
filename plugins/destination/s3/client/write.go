@@ -10,24 +10,26 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/apache/arrow/go/v12/arrow/array"
-	"github.com/apache/arrow/go/v12/arrow/memory"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/cloudquery/filetypes/v2"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v2/types"
 	"github.com/google/uuid"
 )
 
 const (
-	PathVarTable = "{{TABLE}}"
-	PathVarUUID  = "{{UUID}}"
-	YearVar      = "{{YEAR}}"
-	MonthVar     = "{{MONTH}}"
-	DayVar       = "{{DAY}}"
-	HourVar      = "{{HOUR}}"
-	MinuteVar    = "{{MINUTE}}"
+	PathVarFormat = "{{FORMAT}}"
+	PathVarTable  = "{{TABLE}}"
+	PathVarUUID   = "{{UUID}}"
+	YearVar       = "{{YEAR}}"
+	MonthVar      = "{{MONTH}}"
+	DayVar        = "{{DAY}}"
+	HourVar       = "{{HOUR}}"
+	MinuteVar     = "{{MINUTE}}"
 )
 
 var reInvalidJSONKey = regexp.MustCompile(`\W`)
@@ -57,7 +59,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, arrowSchema *arrow.Schema,
 	r := io.Reader(&b)
 	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
 		Bucket: aws.String(c.pluginSpec.Bucket),
-		Key:    aws.String(replacePathVariables(c.pluginSpec.Path, tableName, uuid.NewString(), timeNow)),
+		Key:    aws.String(replacePathVariables(c.pluginSpec.Path, tableName, uuid.NewString(), c.pluginSpec.Format, timeNow)),
 		Body:   r,
 	}); err != nil {
 		return err
@@ -112,8 +114,9 @@ func sanitizeJSONKeysForObject(obj any) {
 	}
 }
 
-func replacePathVariables(specPath, table, fileIdentifier string, t time.Time) string {
+func replacePathVariables(specPath, table, fileIdentifier string, format filetypes.FormatType, t time.Time) string {
 	name := strings.ReplaceAll(specPath, PathVarTable, table)
+	name = strings.ReplaceAll(name, PathVarFormat, string(format))
 	name = strings.ReplaceAll(name, PathVarUUID, fileIdentifier)
 	name = strings.ReplaceAll(name, YearVar, t.Format("2006"))
 	name = strings.ReplaceAll(name, MonthVar, t.Format("01"))

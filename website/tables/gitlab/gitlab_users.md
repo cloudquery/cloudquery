@@ -13,7 +13,6 @@ The composite primary key for this table is (**base_url**, **id**).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |base_url (PK)|String|
-|last_activity_on|JSON|
 |id (PK)|Int|
 |username|String|
 |email|String|
@@ -34,6 +33,7 @@ The composite primary key for this table is (**base_url**, **id**).
 |extern_uid|String|
 |provider|String|
 |theme_id|Int|
+|last_activity_on|Timestamp|
 |color_scheme_id|Int|
 |is_admin|Bool|
 |avatar_url|String|

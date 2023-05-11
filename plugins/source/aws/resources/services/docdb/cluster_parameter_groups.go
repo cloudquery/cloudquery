@@ -61,7 +61,9 @@ func fetchDocdbClusterParameterGroups(ctx context.Context, meta schema.ClientMet
 
 	p := docdb.NewDescribeDBClusterParameterGroupsPaginator(svc, input)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *docdb.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -72,7 +74,8 @@ func fetchDocdbClusterParameterGroups(ctx context.Context, meta schema.ClientMet
 
 func resolveDocdbClusterParameterGroupParameters(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	item := resource.Item.(types.DBClusterParameterGroup)
-	svc := meta.(*client.Client).Services().Docdb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Docdb
 
 	input := &docdb.DescribeDBClusterParametersInput{
 		DBClusterParameterGroupName: item.DBClusterParameterGroupName,
@@ -81,7 +84,9 @@ func resolveDocdbClusterParameterGroupParameters(ctx context.Context, meta schem
 	var params []types.Parameter
 	p := docdb.NewDescribeDBClusterParametersPaginator(svc, input)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *docdb.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

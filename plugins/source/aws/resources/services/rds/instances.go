@@ -49,7 +49,9 @@ func fetchRdsInstances(ctx context.Context, meta schema.ClientMeta, parent *sche
 	svc := c.Services().Rds
 	paginator := rds.NewDescribeDBInstancesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

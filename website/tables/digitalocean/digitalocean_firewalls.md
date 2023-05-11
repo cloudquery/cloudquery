@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Firewalls.
 
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Firewalls
+
 The primary key for this table is **id**.
 
 ## Columns

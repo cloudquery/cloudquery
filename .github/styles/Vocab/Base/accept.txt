@@ -117,6 +117,7 @@ meilisearch
 Metabase
 Metastore
 Mixpanel
+Minikube
 Monorepo
 NACL
 NACLs
@@ -126,6 +127,7 @@ oad
 OAuth
 okta
 Okta
+Onfleet
 OpenAPI
 OUs
 parallelization

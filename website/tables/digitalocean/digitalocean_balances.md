@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Balances.
 
+https://docs.digitalocean.com/reference/api/api-reference/#operation/balance_get
+
 The primary key for this table is **_cq_id**.
 
 ## Columns

@@ -33,11 +33,14 @@ func workGroupQueryExecutions() *schema.Table {
 }
 
 func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services().Athena
 	wg := parent.Item.(types.WorkGroup)
 	paginator := athena.NewListQueryExecutionsPaginator(svc, &athena.ListQueryExecutionsInput{WorkGroup: wg.Name})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *athena.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -53,6 +56,8 @@ func getWorkGroupQueryExecution(ctx context.Context, meta schema.ClientMeta, res
 	d := resource.Item.(string)
 	dc, err := svc.GetQueryExecution(ctx, &athena.GetQueryExecutionInput{
 		QueryExecutionId: aws.String(d),
+	}, func(options *athena.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err

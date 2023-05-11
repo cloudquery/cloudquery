@@ -44,10 +44,13 @@ func Databases() *schema.Table {
 }
 
 func fetchTimestreamDatabases(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 	input := &timestreamwrite.ListDatabasesInput{MaxResults: aws.Int32(20)}
-	paginator := timestreamwrite.NewListDatabasesPaginator(meta.(*client.Client).Services().Timestreamwrite, input)
+	paginator := timestreamwrite.NewListDatabasesPaginator(cl.Services().Timestreamwrite, input)
 	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
+		response, err := paginator.NextPage(ctx, func(o *timestreamwrite.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,9 +60,13 @@ func fetchTimestreamDatabases(ctx context.Context, meta schema.ClientMeta, _ *sc
 }
 
 func fetchDatabaseTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	output, err := meta.(*client.Client).Services().Timestreamwrite.ListTagsForResource(ctx,
+	cl := meta.(*client.Client)
+	output, err := cl.Services().Timestreamwrite.ListTagsForResource(ctx,
 		&timestreamwrite.ListTagsForResourceInput{
 			ResourceARN: resource.Item.(types.Database).Arn,
+		},
+		func(o *timestreamwrite.Options) {
+			o.Region = cl.Region
 		},
 	)
 	if err != nil {

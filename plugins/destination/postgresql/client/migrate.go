@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/jackc/pgx/v5"
 )
 
@@ -151,13 +151,13 @@ func (c *Client) normalizeTable(table *arrow.Schema, pgTable *arrow.Schema) *arr
 	fields := make([]arrow.Field, len(table.Fields()))
 	for i, f := range table.Fields() {
 		metadata := make(map[string]string, 0)
-		if !schema.IsPk(f) {
-			metadata[schema.MetadataPrimaryKey] = schema.MetadataFalse
-		}
 		if c.enabledPks() && schema.IsPk(f) {
 			metadata[schema.MetadataPrimaryKey] = schema.MetadataTrue
 			f.Nullable = false
+		} else {
+			metadata[schema.MetadataPrimaryKey] = schema.MetadataFalse
 		}
+
 		f.Metadata = arrow.MetadataFrom(metadata)
 		f.Type = c.PgToSchemaType(c.SchemaTypeToPg(f.Type))
 		fields[i] = f
@@ -339,7 +339,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *arrow.Schema)
 			sb.WriteString(",")
 		}
 		if c.enabledPks() && schema.IsPk(col) {
-			primaryKeys = append(primaryKeys, col.Name)
+			primaryKeys = append(primaryKeys, pgx.Identifier{col.Name}.Sanitize())
 		}
 	}
 

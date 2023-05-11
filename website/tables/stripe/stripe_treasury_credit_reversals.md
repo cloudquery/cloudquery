@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Treasury Credit Reversals.
 
-https://stripe.com/docs/api/treasury_credit_reversals
+https://stripe.com/docs/api/treasury/credit_reversals
 
 The primary key for this table is **id**.
 

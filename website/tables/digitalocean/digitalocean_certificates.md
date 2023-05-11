@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Certificates.
 
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Certificates
+
 The primary key for this table is **id**.
 
 ## Columns

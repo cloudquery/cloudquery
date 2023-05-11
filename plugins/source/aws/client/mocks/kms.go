@@ -37,6 +37,16 @@ func (m *MockKmsClient) EXPECT() *MockKmsClientMockRecorder {
 
 // DescribeCustomKeyStores mocks base method.
 func (m *MockKmsClient) DescribeCustomKeyStores(arg0 context.Context, arg1 *kms.DescribeCustomKeyStoresInput, arg2 ...func(*kms.Options)) (*kms.DescribeCustomKeyStoresOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kms.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCustomKeyStores")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockKmsClientMockRecorder) DescribeCustomKeyStores(arg0, arg1 interfac
 
 // DescribeKey mocks base method.
 func (m *MockKmsClient) DescribeKey(arg0 context.Context, arg1 *kms.DescribeKeyInput, arg2 ...func(*kms.Options)) (*kms.DescribeKeyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kms.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeKey")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockKmsClientMockRecorder) DescribeKey(arg0, arg1 interface{}, arg2 ..
 
 // GetKeyPolicy mocks base method.
 func (m *MockKmsClient) GetKeyPolicy(arg0 context.Context, arg1 *kms.GetKeyPolicyInput, arg2 ...func(*kms.Options)) (*kms.GetKeyPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kms.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetKeyPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockKmsClientMockRecorder) GetKeyPolicy(arg0, arg1 interface{}, arg2 .
 
 // GetKeyRotationStatus mocks base method.
 func (m *MockKmsClient) GetKeyRotationStatus(arg0 context.Context, arg1 *kms.GetKeyRotationStatusInput, arg2 ...func(*kms.Options)) (*kms.GetKeyRotationStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kms.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetKeyRotationStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockKmsClientMockRecorder) GetKeyRotationStatus(arg0, arg1 interface{}
 
 // GetParametersForImport mocks base method.
 func (m *MockKmsClient) GetParametersForImport(arg0 context.Context, arg1 *kms.GetParametersForImportInput, arg2 ...func(*kms.Options)) (*kms.GetParametersForImportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kms.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetParametersForImport")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockKmsClientMockRecorder) GetParametersForImport(arg0, arg1 interface
 
 // GetPublicKey mocks base method.
 func (m *MockKmsClient) GetPublicKey(arg0 context.Context, arg1 *kms.GetPublicKeyInput, arg2 ...func(*kms.Options)) (*kms.GetPublicKeyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kms.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPublicKey")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockKmsClientMockRecorder) GetPublicKey(arg0, arg1 interface{}, arg2 .
 
 // ListAliases mocks base method.
 func (m *MockKmsClient) ListAliases(arg0 context.Context, arg1 *kms.ListAliasesInput, arg2 ...func(*kms.Options)) (*kms.ListAliasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kms.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAliases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockKmsClientMockRecorder) ListAliases(arg0, arg1 interface{}, arg2 ..
 
 // ListGrants mocks base method.
 func (m *MockKmsClient) ListGrants(arg0 context.Context, arg1 *kms.ListGrantsInput, arg2 ...func(*kms.Options)) (*kms.ListGrantsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kms.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListGrants")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockKmsClientMockRecorder) ListGrants(arg0, arg1 interface{}, arg2 ...
 
 // ListKeyPolicies mocks base method.
 func (m *MockKmsClient) ListKeyPolicies(arg0 context.Context, arg1 *kms.ListKeyPoliciesInput, arg2 ...func(*kms.Options)) (*kms.ListKeyPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kms.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListKeyPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockKmsClientMockRecorder) ListKeyPolicies(arg0, arg1 interface{}, arg
 
 // ListKeys mocks base method.
 func (m *MockKmsClient) ListKeys(arg0 context.Context, arg1 *kms.ListKeysInput, arg2 ...func(*kms.Options)) (*kms.ListKeysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kms.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListKeys")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockKmsClientMockRecorder) ListKeys(arg0, arg1 interface{}, arg2 ...in
 
 // ListResourceTags mocks base method.
 func (m *MockKmsClient) ListResourceTags(arg0 context.Context, arg1 *kms.ListResourceTagsInput, arg2 ...func(*kms.Options)) (*kms.ListResourceTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kms.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListResourceTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockKmsClientMockRecorder) ListResourceTags(arg0, arg1 interface{}, ar
 
 // ListRetirableGrants mocks base method.
 func (m *MockKmsClient) ListRetirableGrants(arg0 context.Context, arg1 *kms.ListRetirableGrantsInput, arg2 ...func(*kms.Options)) (*kms.ListRetirableGrantsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kms.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRetirableGrants")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

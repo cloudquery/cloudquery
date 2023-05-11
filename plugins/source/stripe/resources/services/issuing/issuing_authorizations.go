@@ -14,7 +14,7 @@ import (
 func IssuingAuthorizations() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_issuing_authorizations",
-		Description: `https://stripe.com/docs/api/issuing_authorizations`,
+		Description: `https://stripe.com/docs/api/issuing/authorizations`,
 		Transform:   client.TransformWithStruct(&stripe.IssuingAuthorization{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchIssuingAuthorizations,
 

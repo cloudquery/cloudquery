@@ -5,6 +5,42 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.2.0...cli-v3.2.1) (2023-05-09)
+
+
+### Bug Fixes
+
+* **cli:** Close send after write ([#10688](https://github.com/cloudquery/cloudquery/issues/10688)) ([420bb36](https://github.com/cloudquery/cloudquery/commit/420bb36e0edb68a81e899cf196bbecb0344212e9))
+* Fix typos in CLI output text and logs ([#10686](https://github.com/cloudquery/cloudquery/issues/10686)) ([ab7870a](https://github.com/cloudquery/cloudquery/commit/ab7870a551414cad73e9542dcc2360296ee93568))
+
+## [3.2.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.1.0...cli-v3.2.0) (2023-05-09)
+
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+
+
+### Bug Fixes
+
+* **cli:** Fix panic in no-migrate mode ([#10636](https://github.com/cloudquery/cloudquery/issues/10636)) ([083cba8](https://github.com/cloudquery/cloudquery/commit/083cba872ed9665551440484537e6b5e384f78f1))
+
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.0.2...cli-v3.1.0) (2023-05-08)
+
+
+### Features
+
+* **cli:** Move CLI to use plugin-pb instead of plugin-sdk ([#10565](https://github.com/cloudquery/cloudquery/issues/10565)) ([b270a5d](https://github.com/cloudquery/cloudquery/commit/b270a5d5891072f17a5dcba99d1e9b1260e80f24))
+
+## [3.0.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.0.1...cli-v3.0.2) (2023-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v12 digest to 0ea1a10 ([#10461](https://github.com/cloudquery/cloudquery/issues/10461)) ([022709f](https://github.com/cloudquery/cloudquery/commit/022709f710cc6d95aee60260d6f58991698bbf42))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.0 ([#10390](https://github.com/cloudquery/cloudquery/issues/10390)) ([f706688](https://github.com/cloudquery/cloudquery/commit/f706688b2f5b8393d09d57020d31fb1d280f0dbd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.1 ([#10448](https://github.com/cloudquery/cloudquery/issues/10448)) ([cc85b93](https://github.com/cloudquery/cloudquery/commit/cc85b939fe945939caf72f8c08095e1e744b9ee8))
+
 ## [3.0.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.0.0...cli-v3.0.1) (2023-04-25)
 
 

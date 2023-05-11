@@ -2,12 +2,13 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 	"time"
 
-	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/filetypes/v2"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/google/uuid"
@@ -17,6 +18,11 @@ func (c *Client) WriteTableBatch(ctx context.Context, arrowSchema *arrow.Schema,
 	tableName := schema.TableName(arrowSchema)
 	timeNow := time.Now().UTC()
 	p := replacePathVariables(c.pluginSpec.Path, tableName, c.pluginSpec.Format, uuid.NewString(), timeNow)
+
+	if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
+		return fmt.Errorf("failed to create directory: %w", err)
+	}
+
 	f, err := os.OpenFile(p, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
@@ -35,5 +41,5 @@ func replacePathVariables(specPath, table string, format filetypes.FormatType, f
 	name = strings.ReplaceAll(name, DayVar, t.Format("02"))
 	name = strings.ReplaceAll(name, HourVar, t.Format("15"))
 	name = strings.ReplaceAll(name, MinuteVar, t.Format("04"))
-	return path.Clean(name)
+	return filepath.Clean(name)
 }

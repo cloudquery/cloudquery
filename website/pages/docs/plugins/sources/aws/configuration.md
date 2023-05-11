@@ -97,6 +97,9 @@ This is the (nested) spec used by the AWS source plugin.
 
   The region that should be used for signing the request to the endpoint
 
+- `use_paid_apis` (boolean) (default: false)
+
+  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` tables require this flag to be set to `true`.
 
 
 ## account
@@ -109,7 +112,7 @@ This is used to specify one or more accounts to extract information from. Note t
 
 - `local_profile` (string) (default: will use current credentials)
 
-  [Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) to use to authenticate this account with.
+  [Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) to use to authenticate this account with.
   Please note this should be set to the name of the profile. For example, with the following credentials file:
 
   ```ini copy

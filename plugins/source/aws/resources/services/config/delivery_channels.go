@@ -14,7 +14,7 @@ func DeliveryChannels() *schema.Table {
 	tableName := "aws_config_delivery_channels"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeDeliveryChannels.html`,
+		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DeliveryChannel.html`,
 		Resolver:    fetchDeliveryChannels,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		Transform:   transformers.TransformWithStruct(&types.DeliveryChannel{}, transformers.WithPrimaryKeys("Name")),
@@ -30,8 +30,11 @@ func DeliveryChannels() *schema.Table {
 }
 
 func fetchDeliveryChannels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Configservice
-	response, err := svc.DescribeDeliveryChannels(ctx, &configservice.DescribeDeliveryChannelsInput{})
+	cl := meta.(*client.Client)
+	svc := cl.Services().Configservice
+	response, err := svc.DescribeDeliveryChannels(ctx, &configservice.DescribeDeliveryChannelsInput{}, func(options *configservice.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

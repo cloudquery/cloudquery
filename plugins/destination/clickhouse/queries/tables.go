@@ -3,45 +3,59 @@ package queries
 import (
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"golang.org/x/exp/slices"
 )
 
-func sortKeys(table *schema.Table) []string {
-	keys := make([]string, 0)
-	for _, col := range table.Columns {
-		if col.CreationOptions.NotNull {
-			keys = append(keys, col.Name)
+func sortKeys(sc *arrow.Schema) []string {
+	keys := make([]string, 0, len(sc.Fields()))
+	for _, field := range sc.Fields() {
+		if !field.Nullable {
+			keys = append(keys, field.Name)
 		}
 	}
-	return keys
-}
 
-func CreateTable(table *schema.Table, cluster string, engine *Engine) string {
-	normalized := normalizeTable(table)
-	strBuilder := strings.Builder{}
-	strBuilder.WriteString("CREATE TABLE ")
-	strBuilder.WriteString(tableNamePart(normalized.Name, cluster))
-	strBuilder.WriteString(" (\n")
-	for i, col := range normalized.Columns {
-		strBuilder.WriteString("  ")
-		strBuilder.WriteString(sanitizeID(col.Name))
-		strBuilder.WriteString(" ")
-		strBuilder.WriteString(chType(&col))
-		if i < len(normalized.Columns)-1 {
-			strBuilder.WriteString(",")
-		}
-		strBuilder.WriteString("\n")
+	// check for _cq_id
+	if idx := slices.Index(keys, schema.CqIDColumn.Name); idx >= 0 {
+		// move to back, as _cq_id is better suited there
+		keys = append(slices.Delete(keys, idx, idx+1), schema.CqIDColumn.Name)
 	}
-	strBuilder.WriteString(") ENGINE = ")
-	strBuilder.WriteString(engine.String())
-	strBuilder.WriteString(" ORDER BY (")
-	sortingKeys := sanitized(sortKeys(normalized)...)
-	strBuilder.WriteString(strings.Join(sortingKeys, ", "))
-	strBuilder.WriteString(")")
 
-	return strBuilder.String()
+	return slices.Clip(keys)
 }
 
-func DropTable(table *schema.Table, cluster string) string {
-	return "DROP TABLE IF EXISTS " + tableNamePart(table.Name, cluster)
+func CreateTable(sc *arrow.Schema, cluster string, engine *Engine) (string, error) {
+	builder := strings.Builder{}
+	builder.WriteString("CREATE TABLE ")
+	builder.WriteString(tableNamePart(schema.TableName(sc), cluster))
+	builder.WriteString(" (\n")
+	builder.WriteString("  ")
+	fields := sc.Fields()
+	for i, field := range fields {
+		definition, err := types.FieldDefinition(field)
+		if err != nil {
+			return "", err
+		}
+		builder.WriteString(definition)
+		if i < len(fields)-1 {
+			builder.WriteString(",\n  ")
+		}
+	}
+	builder.WriteString("\n) ENGINE = ")
+	builder.WriteString(engine.String())
+	if orderBy := sortKeys(sc); len(orderBy) > 0 {
+		builder.WriteString(" ORDER BY (")
+		builder.WriteString(strings.Join(util.Sanitized(orderBy...), ", "))
+		builder.WriteString(")")
+	}
+	builder.WriteString(" SETTINGS allow_nullable_key=1") // allows nullable keys
+
+	return builder.String(), nil
+}
+
+func DropTable(sc *arrow.Schema, cluster string) string {
+	return "DROP TABLE IF EXISTS " + tableNamePart(schema.TableName(sc), cluster)
 }
