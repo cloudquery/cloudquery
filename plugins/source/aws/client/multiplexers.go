@@ -116,7 +116,13 @@ func ServiceAccountRegionScopeMultiplexer(table, service string) func(meta schem
 		for partition := range client.ServicesManager.services {
 			for accountID := range client.ServicesManager.services[partition] {
 				// always fetch cloudfront related resources
-				l = append(l, client.withPartitionAccountIDRegionAndScope(partition, accountID, "", wafv2types.ScopeCloudfront))
+				switch partition {
+				case "aws":
+					l = append(l, client.withPartitionAccountIDRegionAndScope(partition, accountID, awsCloudfrontScopeRegion, wafv2types.ScopeCloudfront))
+				case "aws-cn":
+					l = append(l, client.withPartitionAccountIDRegionAndScope(partition, accountID, awsCnCloudfrontScopeRegion, wafv2types.ScopeCloudfront))
+				}
+
 				for _, region := range client.ServicesManager.services[partition][accountID].Regions {
 					if !isSupportedServiceForRegion(service, region) {
 						if client.specificRegions {

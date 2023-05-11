@@ -64,9 +64,10 @@ type ServicesManager struct {
 }
 
 const (
-	defaultRegion         = "us-east-1"
-	defaultVar            = "default"
-	cloudfrontScopeRegion = defaultRegion
+	defaultRegion              = "us-east-1"
+	defaultVar                 = "default"
+	awsCloudfrontScopeRegion   = defaultRegion
+	awsCnCloudfrontScopeRegion = "cn-north-1"
 )
 
 var errInvalidRegion = errors.New("region wildcard \"*\" is only supported as first argument")
