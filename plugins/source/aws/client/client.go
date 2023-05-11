@@ -15,20 +15,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/rs/zerolog"
+	"github.com/thoas/go-funk"
 	"golang.org/x/sync/errgroup"
 )
-
-func removeDuplicateStr(strSlice []string) []string {
-	allKeys := make(map[string]bool)
-	list := []string{}
-	for _, item := range strSlice {
-		if _, value := allKeys[item]; !value {
-			allKeys[item] = true
-			list = append(list, item)
-		}
-	}
-	return list
-}
 
 type Client struct {
 	// Those are already normalized values after configure and this is why we don't want to hold
@@ -93,7 +82,8 @@ func (s *ServicesManager) InitServicesForPartitionAccount(partition, accountId s
 	if s.services[partition][accountId] == nil {
 		s.services[partition][accountId] = &svcs
 	}
-	s.services[partition][accountId].Regions = removeDuplicateStr(append(s.services[partition][accountId].Regions, svcs.Regions...))
+
+	s.services[partition][accountId].Regions = funk.IntersectString(s.services[partition][accountId].Regions, svcs.Regions)
 
 }
 
@@ -221,6 +211,9 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 			svcsDetail, err := client.setupAWSAccount(gtx, logger, client.Spec, adminAccountSts, account)
 			if err != nil {
 				return err
+			}
+			if svcsDetail == nil {
+				return nil
 			}
 			initLock.Lock()
 			defer initLock.Unlock()

@@ -110,9 +110,10 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 )
 
-func initServices(c aws.Config) Services {
+func initServices(c aws.Config, regions []string) Services {
 	awsCfg := c.Copy()
 	return Services{
+		Regions:                   regions,
 		Accessanalyzer:            accessanalyzer.NewFromConfig(awsCfg),
 		Account:                   account.NewFromConfig(awsCfg),
 		Acm:                       acm.NewFromConfig(awsCfg),
