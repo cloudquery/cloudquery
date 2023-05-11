@@ -36,7 +36,7 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		c := NewAwsClient(l, nil, &awsSpec)
 		services := builder(t, ctrl)
 		services.Regions = []string{"us-east-1"}
-		c.ServicesManager.InitServicesForPartitionAccountAndRegion("aws", "testAccount", services)
+		c.ServicesManager.InitServicesForPartitionAccount("aws", "testAccount", services)
 		c.Partition = "aws"
 		return &c, nil
 	}

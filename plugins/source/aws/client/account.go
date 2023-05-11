@@ -90,8 +90,9 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 	case "aws-cn":
 		cloudfrontRegion = awsCnCloudfrontScopeRegion
 	}
-
-	svcsDetails.svcs.Regions = append(account.Regions, cloudfrontRegion)
+	if cloudfrontRegion != "" {
+		svcsDetails.svcs.Regions = append(account.Regions, cloudfrontRegion)
+	}
 
 	return &svcsDetails, nil
 }

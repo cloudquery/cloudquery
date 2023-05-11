@@ -56,7 +56,7 @@ func testCredentialReportsWithNilValues(t *testing.T) {
 		services := buildCredentialReportsWithNilValues(ctrl)
 		services.Regions = []string{"us-east-1"}
 		cl := client.NewAwsClient(zerolog.Logger{}, nil, nil)
-		cl.ServicesManager.InitServicesForPartitionAccountAndRegion("aws", "testAccount", services)
+		cl.ServicesManager.InitServicesForPartitionAccount("aws", "testAccount", services)
 		cl.Partition = "aws"
 		cl.Region = "us-east-1"
 		cl.AccountID = "testAccount"

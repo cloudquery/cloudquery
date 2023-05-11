@@ -59,8 +59,7 @@ type ServicesPartitionAccountRegionMap map[string]map[string]*Services
 
 // ServicesManager will hold the entire map of (account X region) services
 type ServicesManager struct {
-	services         ServicesPartitionAccountRegionMap
-	wafScopeServices map[string]map[string]*Services
+	services ServicesPartitionAccountRegionMap
 }
 
 const (
@@ -76,23 +75,15 @@ var errUnknownRegion = func(region string) error {
 }
 var errRetrievingCredentials = errors.New("error retrieving AWS credentials (see logs for details). Please verify your credentials and try again")
 
-func (s *ServicesManager) ServicesByPartitionAccountAndRegion(partition, accountId, region string) *Services {
-	if region == "" {
-		region = defaultRegion
-	}
+func (s *ServicesManager) ServicesByPartitionAccount(partition, accountId string) *Services {
 	return s.services[partition][accountId]
 }
 
-func (s *ServicesManager) ServicesByAccountForWAFScope(partition, accountId string) *Services {
-	return s.wafScopeServices[partition][accountId]
-}
-
 func (s *ServicesManager) InitServices(details svcsDetail) {
-	s.InitServicesForPartitionAccountAndRegion(details.partition, details.accountId, details.svcs)
-	s.InitServicesForPartitionAccountAndScope(details.partition, details.accountId, details.svcs)
+	s.InitServicesForPartitionAccount(details.partition, details.accountId, details.svcs)
 }
 
-func (s *ServicesManager) InitServicesForPartitionAccountAndRegion(partition, accountId string, svcs Services) {
+func (s *ServicesManager) InitServicesForPartitionAccount(partition, accountId string, svcs Services) {
 	if s.services == nil {
 		s.services = make(map[string]map[string]*Services)
 	}
@@ -104,16 +95,6 @@ func (s *ServicesManager) InitServicesForPartitionAccountAndRegion(partition, ac
 	}
 	s.services[partition][accountId].Regions = removeDuplicateStr(append(s.services[partition][accountId].Regions, svcs.Regions...))
 
-}
-
-func (s *ServicesManager) InitServicesForPartitionAccountAndScope(partition, accountId string, svcs Services) {
-	if s.wafScopeServices == nil {
-		s.wafScopeServices = make(map[string]map[string]*Services)
-	}
-	if s.wafScopeServices[partition] == nil {
-		s.wafScopeServices[partition] = make(map[string]*Services)
-	}
-	s.wafScopeServices[partition][accountId] = &svcs
 }
 
 func NewAwsClient(logger zerolog.Logger, b backend.Backend, spec *Spec) Client {
@@ -144,12 +125,7 @@ func (c *Client) ID() string {
 }
 
 func (c *Client) Services() *Services {
-
-	s := c.ServicesManager.ServicesByPartitionAccountAndRegion(c.Partition, c.AccountID, c.Region)
-	if s == nil && c.WAFScope == wafv2types.ScopeCloudfront {
-		return c.ServicesManager.ServicesByAccountForWAFScope(c.Partition, c.AccountID)
-	}
-	return s
+	return c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID)
 }
 
 func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region string) *Client {
