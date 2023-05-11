@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/filetypes/v2"
+	"github.com/cloudquery/filetypes/v3"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/google/uuid"
 )
@@ -28,7 +28,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	}
 	defer f.Close()
 
-	return c.Client.WriteTableBatchFile(f, table.ToArrowSchema(), data)
+	return c.Client.WriteTableBatchFile(f, table, data)
 }
 
 func replacePathVariables(specPath, table string, format filetypes.FormatType, fileIdentifier string, t time.Time) string {

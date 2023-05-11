@@ -26,5 +26,5 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	}
 	defer f.Close()
 
-	return c.Client.Read(f, table.ToArrowSchema(), sourceName, res)
+	return c.Client.Read(f, table, sourceName, res)
 }
