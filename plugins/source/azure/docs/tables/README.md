@@ -278,6 +278,7 @@
   - [azure_sql_managed_instance_vulnerability_assessments](../../../../../website/tables/azure/azure_sql_managed_instance_vulnerability_assessments.md)
 - [azure_sql_servers](../../../../../website/tables/azure/azure_sql_servers.md)
   - [azure_sql_server_admins](../../../../../website/tables/azure/azure_sql_server_admins.md)
+  - [azure_sql_server_advanced_threat_protection_settings](../../../../../website/tables/azure/azure_sql_server_advanced_threat_protection_settings.md)
   - [azure_sql_server_blob_auditing_policies](../../../../../website/tables/azure/azure_sql_server_blob_auditing_policies.md)
   - [azure_sql_server_databases](../../../../../website/tables/azure/azure_sql_server_databases.md)
     - [azure_sql_server_database_blob_auditing_policies](../../../../../website/tables/azure/azure_sql_server_database_blob_auditing_policies.md)
