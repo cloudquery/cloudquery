@@ -43,6 +43,7 @@ func Stacks() *schema.Table {
 
 		Relations: []*schema.Table{
 			stackResources(),
+			stackTemplates(),
 		},
 	}
 }
@@ -60,25 +61,6 @@ func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *s
 			return err
 		}
 		res <- page.Stacks
-	}
-	return nil
-}
-func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	stack := parent.Item.(types.Stack)
-	config := cloudformation.ListStackResourcesInput{
-		StackName: stack.StackName,
-	}
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudformation
-	paginator := cloudformation.NewListStackResourcesPaginator(svc, &config)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx, func(options *cloudformation.Options) {
-			options.Region = c.Region
-		})
-		if err != nil {
-			return err
-		}
-		res <- page.StackResourceSummaries
 	}
 	return nil
 }
