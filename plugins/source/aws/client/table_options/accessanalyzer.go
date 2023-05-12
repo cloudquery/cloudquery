@@ -27,7 +27,8 @@ func (c *CustomAccessAnalyzerListFindingsInput) UnmarshalJSON(data []byte) error
 		return err
 	}
 	csr := caser.New()
-	changeCaseForObject(m, csr.ToPascal)
+	skipFields := []string{"filter"}
+	changeCaseForObject(m, csr.ToPascal, skipFields...)
 	b, _ := json.Marshal(m)
 	return json.Unmarshal(b, &c.ListFindingsInput)
 }

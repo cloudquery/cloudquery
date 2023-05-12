@@ -46,10 +46,12 @@ func TestTableOptionsUnmarshal(t *testing.T) {
 		t.Fatal(err)
 	}
 	if diff := cmp.Diff(tableOpts, got, cmpopts.IgnoreUnexported(
-		cloudtrailtypes.LookupAttribute{},
 		accessanalyzer.ListFindingsInput{},
 		accessanalyzertypes.SortCriteria{},
+		accessanalyzertypes.Criterion{},
 		cloudtrail.LookupEventsInput{},
+		cloudtrailtypes.LookupAttribute{},
+		inspector2.ListFindingsInput{},
 		inspector2types.StringFilter{},
 		inspector2types.DateFilter{},
 		inspector2types.NumberFilter{},
@@ -58,7 +60,6 @@ func TestTableOptionsUnmarshal(t *testing.T) {
 		inspector2types.PackageFilter{},
 		inspector2types.FilterCriteria{},
 		inspector2types.SortCriteria{},
-		inspector2.ListFindingsInput{},
 	)); diff != "" {
 		t.Fatalf("mismatch between objects after loading from snake case json: %v", diff)
 	}
