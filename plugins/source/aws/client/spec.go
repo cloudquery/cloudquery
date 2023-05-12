@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/table_options"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 )
 
 type Account struct {
@@ -33,19 +33,19 @@ type AwsOrg struct {
 }
 
 type Spec struct {
-	Regions                   []string                    `json:"regions,omitempty"`
-	Accounts                  []Account                   `json:"accounts"`
-	Organization              *AwsOrg                     `json:"org"`
-	AWSDebug                  bool                        `json:"aws_debug,omitempty"`
-	MaxRetries                *int                        `json:"max_retries,omitempty"`
-	MaxBackoff                *int                        `json:"max_backoff,omitempty"`
-	EndpointURL               string                      `json:"custom_endpoint_url,omitempty"`
-	HostnameImmutable         *bool                       `json:"custom_endpoint_hostname_immutable,omitempty"`
-	PartitionID               string                      `json:"custom_endpoint_partition_id,omitempty"`
-	SigningRegion             string                      `json:"custom_endpoint_signing_region,omitempty"`
-	InitializationConcurrency int                         `json:"initialization_concurrency"`
-	UsePaidAPIs               bool                        `json:"use_paid_apis"`
-	TableOptions              *table_options.TableOptions `json:"table_options,omitempty"`
+	Regions                   []string                   `json:"regions,omitempty"`
+	Accounts                  []Account                  `json:"accounts"`
+	Organization              *AwsOrg                    `json:"org"`
+	AWSDebug                  bool                       `json:"aws_debug,omitempty"`
+	MaxRetries                *int                       `json:"max_retries,omitempty"`
+	MaxBackoff                *int                       `json:"max_backoff,omitempty"`
+	EndpointURL               string                     `json:"custom_endpoint_url,omitempty"`
+	HostnameImmutable         *bool                      `json:"custom_endpoint_hostname_immutable,omitempty"`
+	PartitionID               string                     `json:"custom_endpoint_partition_id,omitempty"`
+	SigningRegion             string                     `json:"custom_endpoint_signing_region,omitempty"`
+	InitializationConcurrency int                        `json:"initialization_concurrency"`
+	UsePaidAPIs               bool                       `json:"use_paid_apis"`
+	TableOptions              *tableoptions.TableOptions `json:"table_options,omitempty"`
 }
 
 func (s *Spec) Validate() error {
@@ -98,6 +98,6 @@ func (s *Spec) SetDefaults() {
 		s.InitializationConcurrency = 4
 	}
 	if s.TableOptions == nil {
-		s.TableOptions = &table_options.TableOptions{}
+		s.TableOptions = &tableoptions.TableOptions{}
 	}
 }

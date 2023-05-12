@@ -1,4 +1,4 @@
-package table_options
+package tableoptions
 
 type TableOptions struct {
 	CloudTrailEvents       *CloudtrailAPIs         `json:"aws_cloudtrail_events,omitempty"`

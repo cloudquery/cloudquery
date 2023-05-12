@@ -1,4 +1,4 @@
-package table_options
+package tableoptions
 
 import (
 	"encoding/json"
