@@ -20,6 +20,15 @@ spec:
     #   installation_id: <ORG_INSTALLATION_ID> # Installation ID for this org
     orgs: [] # Optional. List of organizations to extract from
     repos: ["cloudquery/cloudquery"] # Optional. List of repositories to extract from
+    ## GitHub Enterprise
+    # In order to enable GHE you have to provide two urls, the base url of the server and the upload url.
+    # Quote from GitHub's client:
+    #   If the base URL does not have the suffix "/api/v3/", it will be added automatically. If the upload URL does not have the suffix "/api/uploads", it will be added automatically.
+    #   Another important thing is that by default, the GitHub Enterprise URL format should be http(s)://[hostname]/api/v3/ or you will always receive the 406 status code. The upload URL format should be http(s)://[hostname]/api/uploads/"
+    # If you are not configuring against an enterprise server please omit the enterprise stanza bellow
+    enterprise:
+        base_url: "http(s)://[your-ghe-hostname]/api/v3/"
+        upload_url: "http(s)://[your-ghe-hostname]/api/uploads/"
 ```
 
 You must specify either `orgs` or `repos` in the configuration. If a repository is specified in both `orgs` and `repos`, it will be extracted only once, and other repositories from that organization will be ignored.
