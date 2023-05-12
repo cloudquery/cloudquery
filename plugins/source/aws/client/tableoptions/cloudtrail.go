@@ -10,7 +10,7 @@ import (
 )
 
 type CloudtrailAPIs struct {
-	LookupEventsOpts CustomLookupEventsOpts `json:"lookup_events,omitempty"`
+	LookupEventsOpts []CustomLookupEventsOpts `json:"lookup_events,omitempty"`
 }
 
 type CustomLookupEventsOpts struct {
@@ -32,8 +32,10 @@ func (c *CustomLookupEventsOpts) UnmarshalJSON(data []byte) error {
 }
 
 func (c *CloudtrailAPIs) validateLookupEvents() error {
-	if aws.ToString(c.LookupEventsOpts.NextToken) != "" {
-		return errors.New("invalid input: cannot set NextToken in LookupEvents")
+	for _, opt := range c.LookupEventsOpts {
+		if aws.ToString(opt.NextToken) != "" {
+			return errors.New("invalid input: cannot set NextToken in LookupEvents")
+		}
 	}
 	return nil
 }

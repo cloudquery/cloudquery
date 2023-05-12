@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	accessanalyzertypes "github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
@@ -16,6 +17,33 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
+
+func TestTableOptionsValidate(t *testing.T) {
+	tOpts := TableOptions{}
+	err := tOpts.Validate()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	tOpts.CloudTrailEvents = &CloudtrailAPIs{
+		LookupEventsOpts: []CustomLookupEventsOpts{
+			{
+				LookupEventsInput: cloudtrail.LookupEventsInput{
+					EndTime:          nil,
+					EventCategory:    "",
+					LookupAttributes: nil,
+					MaxResults:       nil,
+					NextToken:        aws.String("123"),
+					StartTime:        nil,
+				},
+			},
+		},
+	}
+	err = tOpts.Validate()
+	if err == nil {
+		t.Fatal("expected error validating cloud_trail_events, got nil")
+	}
+}
 
 // TestTableOptionsUnmarshal tests that the TableOptions struct can be unmarshaled from JSON using
 // snake_case keys.

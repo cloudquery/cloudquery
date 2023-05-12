@@ -10,7 +10,7 @@ import (
 )
 
 type Inspector2APIs struct {
-	ListFindingsOpts CustomInspector2ListFindingsInput `json:"list_findings,omitempty"`
+	ListFindingsOpts []CustomInspector2ListFindingsInput `json:"list_findings,omitempty"`
 }
 
 type CustomInspector2ListFindingsInput struct {
@@ -32,8 +32,10 @@ func (c *CustomInspector2ListFindingsInput) UnmarshalJSON(data []byte) error {
 }
 
 func (c *Inspector2APIs) validateListFindings() error {
-	if aws.ToString(c.ListFindingsOpts.NextToken) != "" {
-		return errors.New("invalid input: cannot set NextToken in ListFindings")
+	for _, opt := range c.ListFindingsOpts {
+		if aws.ToString(opt.NextToken) != "" {
+			return errors.New("invalid input: cannot set NextToken in ListFindings")
+		}
 	}
 	return nil
 }

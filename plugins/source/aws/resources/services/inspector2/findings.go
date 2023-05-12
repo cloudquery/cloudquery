@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
@@ -49,24 +50,25 @@ func fetchInspector2Findings(ctx context.Context, meta schema.ClientMeta, parent
 	c := meta.(*client.Client)
 	svc := c.Services().Inspector2
 
-	input := &inspector2.ListFindingsInput{}
+	allConfigs := []tableoptions.CustomInspector2ListFindingsInput{{}}
 	if c.Spec.TableOptions.Inspector2Findings != nil {
-		input = &c.Spec.TableOptions.Inspector2Findings.ListFindingsOpts.ListFindingsInput
+		allConfigs = c.Spec.TableOptions.Inspector2Findings.ListFindingsOpts
 	}
-
-	if input.MaxResults == nil {
-		input.MaxResults = aws.Int32(100)
-	}
-
-	paginator := inspector2.NewListFindingsPaginator(svc, input)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx, func(options *inspector2.Options) {
-			options.Region = c.Region
-		})
-		if err != nil {
-			return err
+	for _, input := range allConfigs {
+		if input.MaxResults == nil {
+			input.MaxResults = aws.Int32(100)
 		}
-		res <- page.Findings
+
+		paginator := inspector2.NewListFindingsPaginator(svc, &input.ListFindingsInput)
+		for paginator.HasMorePages() {
+			page, err := paginator.NextPage(ctx, func(options *inspector2.Options) {
+				options.Region = c.Region
+			})
+			if err != nil {
+				return err
+			}
+			res <- page.Findings
+		}
 	}
 	return nil
 }

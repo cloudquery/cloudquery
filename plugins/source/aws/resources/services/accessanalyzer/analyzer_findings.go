@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
 )
@@ -42,24 +43,22 @@ func fetchAccessanalyzerAnalyzerFindings(ctx context.Context, meta schema.Client
 	analyzer := parent.Item.(types.AnalyzerSummary)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Accessanalyzer
-	var err error
-	lfi := &accessanalyzer.ListFindingsInput{}
+	allConfigs := []tableoptions.CustomAccessAnalyzerListFindingsInput{{}}
 	if cl.Spec.TableOptions.AccessAnalyzerFindings != nil {
-		lfi, err = cl.Spec.TableOptions.AccessAnalyzerFindings.ListFindings()
-		if err != nil {
-			return err
-		}
+		allConfigs = cl.Spec.TableOptions.AccessAnalyzerFindings.ListFindingOpts
 	}
-	lfi.AnalyzerArn = analyzer.Arn
-	paginator := accessanalyzer.NewListFindingsPaginator(svc, lfi)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {
-			options.Region = cl.Region
-		})
-		if err != nil {
-			return err
+	for _, cfg := range allConfigs {
+		cfg.AnalyzerArn = analyzer.Arn
+		paginator := accessanalyzer.NewListFindingsPaginator(svc, &cfg.ListFindingsInput)
+		for paginator.HasMorePages() {
+			page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {
+				options.Region = cl.Region
+			})
+			if err != nil {
+				return err
+			}
+			res <- page.Findings
 		}
-		res <- page.Findings
 	}
 	return nil
 }

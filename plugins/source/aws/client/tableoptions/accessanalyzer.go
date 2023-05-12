@@ -7,11 +7,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/cloudquery/plugin-sdk/v3/caser"
-	"github.com/jinzhu/copier"
 )
 
 type AccessanalyzerFindings struct {
-	ListFindingOpts CustomAccessAnalyzerListFindingsInput `json:"list_findings,omitempty"`
+	ListFindingOpts []CustomAccessAnalyzerListFindingsInput `json:"list_findings,omitempty"`
 }
 
 type CustomAccessAnalyzerListFindingsInput struct {
@@ -34,27 +33,17 @@ func (c *CustomAccessAnalyzerListFindingsInput) UnmarshalJSON(data []byte) error
 }
 
 func (c *AccessanalyzerFindings) validateListFindings() error {
-	if aws.ToString(c.ListFindingOpts.NextToken) != "" {
-		return errors.New("invalid input: cannot set NextToken in ListFindings")
-	}
-	if aws.ToString(c.ListFindingOpts.AnalyzerArn) != "" {
-		return errors.New("invalid input: cannot set AnalyzerARN in ListFindings")
+	for _, opt := range c.ListFindingOpts {
+		if aws.ToString(opt.NextToken) != "" {
+			return errors.New("invalid input: cannot set NextToken in ListFindings")
+		}
+		if aws.ToString(opt.AnalyzerArn) != "" {
+			return errors.New("invalid input: cannot set AnalyzerARN in ListFindings")
+		}
 	}
 	return nil
 }
 
 func (c *AccessanalyzerFindings) Validate() error {
 	return c.validateListFindings()
-}
-
-func (c *AccessanalyzerFindings) ListFindings() (*accessanalyzer.ListFindingsInput, error) {
-	var aaLFI accessanalyzer.ListFindingsInput
-	if c == nil {
-		return &aaLFI, nil
-	}
-	if err := c.validateListFindings(); err != nil {
-		return &aaLFI, err
-	}
-
-	return &aaLFI, copier.Copy(&aaLFI, &c.ListFindingOpts)
 }

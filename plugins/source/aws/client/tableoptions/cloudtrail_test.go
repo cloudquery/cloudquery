@@ -13,14 +13,14 @@ func TestLookupEvents(t *testing.T) {
 		t.Fatal(err)
 	}
 	api := CloudtrailAPIs{
-		LookupEventsOpts: u,
+		LookupEventsOpts: []CustomLookupEventsOpts{u},
 	}
 	// Ensure that the validation works as expected
 	err := api.Validate()
 	assert.EqualError(t, err, "invalid input: cannot set NextToken in LookupEvents")
 
 	// Ensure that as soon as the validation passes that there are no unexpected empty or nil fields
-	api.LookupEventsOpts.NextToken = nil
+	api.LookupEventsOpts[0].NextToken = nil
 	err = api.Validate()
 	assert.Nil(t, err)
 }

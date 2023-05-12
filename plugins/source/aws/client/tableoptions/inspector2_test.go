@@ -15,14 +15,14 @@ func TestInspector2ListFindings(t *testing.T) {
 	}
 
 	api := Inspector2APIs{
-		ListFindingsOpts: u,
+		ListFindingsOpts: []CustomInspector2ListFindingsInput{u},
 	}
 	// Ensure that the validation works as expected
 	err := api.Validate()
 	assert.EqualError(t, err, "invalid input: cannot set NextToken in ListFindings")
 
 	// Ensure that as soon as the validation passes that there are no unexpected empty or nil fields
-	api.ListFindingsOpts.NextToken = nil
+	api.ListFindingsOpts[0].NextToken = nil
 	err = api.Validate()
 
 	assert.Nil(t, err)
