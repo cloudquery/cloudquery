@@ -6,7 +6,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.2
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.0.0
 	github.com/apache/arrow/go/v13 v13.0.0-20230509093403-7f3e87d2d5e6
-	github.com/cloudquery/filetypes/v2 v2.1.0
+	github.com/cloudquery/filetypes/v3 v3.0.0
 	github.com/cloudquery/plugin-pb-go v1.0.5
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/google/uuid v1.3.0
@@ -23,6 +23,7 @@ require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apache/thrift v0.18.1 // indirect
+	github.com/cloudquery/plugin-sdk/v3 v3.0.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dnaeon/go-vcr v1.2.0 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect

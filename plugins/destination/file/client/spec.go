@@ -5,7 +5,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/cloudquery/filetypes/v2"
+	"github.com/cloudquery/filetypes/v3"
 )
 
 const (

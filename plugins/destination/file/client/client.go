@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/filetypes/v2"
+	"github.com/cloudquery/filetypes/v3"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
 	"github.com/rs/zerolog"

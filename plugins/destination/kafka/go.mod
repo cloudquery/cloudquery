@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/Shopify/sarama v1.37.2
 	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604
-	github.com/cloudquery/filetypes/v2 v2.1.0
+	github.com/cloudquery/filetypes/v3 v3.0.0
 	github.com/cloudquery/plugin-pb-go v1.0.5
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/rs/zerolog v1.29.1
@@ -18,6 +18,7 @@ require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apache/thrift v0.18.1 // indirect
+	github.com/cloudquery/plugin-sdk/v3 v3.0.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/eapache/go-resiliency v1.3.0 // indirect
 	github.com/eapache/go-xerial-snappy v0.0.0-20230111030713-bf00bc1b83b6 // indirect

@@ -5,7 +5,7 @@ import (
 	"path"
 	"strings"
 
-	filetypes "github.com/cloudquery/filetypes/v2"
+	filetypes "github.com/cloudquery/filetypes/v3"
 )
 
 type Spec struct {
