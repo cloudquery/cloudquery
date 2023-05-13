@@ -9,15 +9,14 @@ import (
 	"time"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/filetypes/v2"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/filetypes/v3"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/google/uuid"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, arrowSchema *arrow.Schema, data []arrow.Record) error {
-	tableName := schema.TableName(arrowSchema)
+func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data []arrow.Record) error {
 	timeNow := time.Now().UTC()
-	p := replacePathVariables(c.pluginSpec.Path, tableName, c.pluginSpec.Format, uuid.NewString(), timeNow)
+	p := replacePathVariables(c.pluginSpec.Path, table.Name, c.pluginSpec.Format, uuid.NewString(), timeNow)
 
 	if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
 		return fmt.Errorf("failed to create directory: %w", err)
@@ -29,7 +28,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, arrowSchema *arrow.Schema,
 	}
 	defer f.Close()
 
-	return c.Client.WriteTableBatchFile(f, arrowSchema, data)
+	return c.Client.WriteTableBatchFile(f, table, data)
 }
 
 func replacePathVariables(specPath, table string, format filetypes.FormatType, fileIdentifier string, t time.Time) string {
