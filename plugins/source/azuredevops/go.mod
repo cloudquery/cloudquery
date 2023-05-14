@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/azuredevops
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-pb-go v1.0.5
+	github.com/cloudquery/plugin-pb-go v1.0.6
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/google/uuid v1.3.0
 	github.com/microsoft/azure-devops-go-api/azuredevops/v6 v6.0.1
