@@ -88,10 +88,18 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 		}
 	}
 
+	var cloudfrontRegion string
+	switch iamArn.Partition {
+	case "aws":
+		cloudfrontRegion = awsCloudfrontScopeRegion
+	case "aws-cn":
+		cloudfrontRegion = awsCnCloudfrontScopeRegion
+	}
+
 	svcsDetails[len(account.Regions)] = svcsDetail{
 		partition: iamArn.Partition,
 		accountId: *output.Account,
-		svcs:      initServices(cloudfrontScopeRegion, awsCfg),
+		svcs:      initServices(cloudfrontRegion, awsCfg),
 	}
 	return svcsDetails, nil
 }
