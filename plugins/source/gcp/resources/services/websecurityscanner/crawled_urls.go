@@ -2,7 +2,8 @@ package websecurityscanner
 
 import (
 	pb "cloud.google.com/go/websecurityscanner/apiv1/websecurityscannerpb"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
@@ -16,7 +17,7 @@ func CrawledUrls() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveProject,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
@@ -24,7 +25,7 @@ func CrawledUrls() *schema.Table {
 			},
 			{
 				Name:     "scan_run_name",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
@@ -32,7 +33,7 @@ func CrawledUrls() *schema.Table {
 			},
 			{
 				Name:     "http_method",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("HttpMethod"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
@@ -40,7 +41,7 @@ func CrawledUrls() *schema.Table {
 			},
 			{
 				Name:     "url",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("Url"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,

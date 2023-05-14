@@ -1,8 +1,9 @@
 package bigquery
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	pb "google.golang.org/api/bigquery/v2"
 )
@@ -18,7 +19,7 @@ func Tables() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveProject,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
