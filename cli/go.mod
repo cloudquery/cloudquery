@@ -18,6 +18,8 @@ require (
 	google.golang.org/protobuf v1.30.0
 )
 
+replace github.com/cloudquery/plugin-pb-go => ../../plugin-pb-go
+
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect

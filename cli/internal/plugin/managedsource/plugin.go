@@ -224,6 +224,9 @@ func (c *Client) MaxVersion(ctx context.Context) (int, error) {
 			return -1, fmt.Errorf("unknown protocol version %d", versionRes.Version)
 		}
 	}
+	if slices.Contains(versionsRes.Versions, "v2") {
+		return 2, nil
+	}
 	if slices.Contains(versionsRes.Versions, "v1") {
 		return 1, nil
 	}
