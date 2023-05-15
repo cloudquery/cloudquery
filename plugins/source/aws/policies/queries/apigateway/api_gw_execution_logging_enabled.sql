@@ -26,7 +26,7 @@ union
      a.account_id,
      'arn:' || 'aws' || ':apigateway:' || a.region || ':/apis/' || a.id as resource_id,
      case
-         when s.route_settings->>'LoggingLevel' in (NULL, 'OFF') then 'fail'
+         when s.default_route_settings->>'LoggingLevel' in (NULL, 'OFF') then 'fail'
          else 'pass'
          end as status
 from

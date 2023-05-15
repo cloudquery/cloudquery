@@ -11,9 +11,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 
-	"github.com/cloudquery/filetypes/v2"
+	"github.com/cloudquery/filetypes/v3"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
 	"github.com/rs/zerolog"
 )
 
@@ -69,7 +69,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		timeNow := time.Now().UTC()
 		if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
 			Bucket: aws.String(c.pluginSpec.Bucket),
-			Key:    aws.String(replacePathVariables(c.pluginSpec.Path, "TEST_TABLE", "TEST_UUID", timeNow)),
+			Key:    aws.String(replacePathVariables(c.pluginSpec.Path, "TEST_TABLE", "TEST_UUID", c.pluginSpec.Format, timeNow)),
 			Body:   bytes.NewReader([]byte("")),
 		}); err != nil {
 			return nil, fmt.Errorf("failed to write test file to S3: %w", err)
