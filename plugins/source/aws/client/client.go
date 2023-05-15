@@ -83,7 +83,7 @@ func (s *ServicesManager) InitServicesForPartitionAccount(partition, accountId s
 		s.services[partition][accountId] = &svcs
 	}
 
-	s.services[partition][accountId].Regions = funk.IntersectString(s.services[partition][accountId].Regions, svcs.Regions)
+	s.services[partition][accountId].Regions = funk.UniqString(append(s.services[partition][accountId].Regions, svcs.Regions...))
 }
 
 func NewAwsClient(logger zerolog.Logger, b backend.Backend, spec *Spec) Client {
