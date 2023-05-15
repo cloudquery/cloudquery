@@ -2,7 +2,7 @@ package values
 
 import (
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/google/uuid"
 )
 
@@ -66,7 +66,7 @@ func buildValue(builder array.Builder, value any) error {
 	case *types.UUIDBuilder:
 		buildPrimitive[uuid.UUID](builder, value)
 
-	case *types.JSONBuilder, *types.InetBuilder, *types.MacBuilder:
+	case *types.JSONBuilder, *types.InetBuilder, *types.MACBuilder:
 		return buildFromString(builder, value)
 
 	case *array.StructBuilder:

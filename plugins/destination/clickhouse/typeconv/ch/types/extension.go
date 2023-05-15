@@ -2,7 +2,7 @@ package types
 
 import (
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func extensionType(extensionType arrow.ExtensionType) string {
@@ -12,7 +12,7 @@ func extensionType(extensionType arrow.ExtensionType) string {
 		return "UUID"
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/string
-	case *types.InetType, *types.MacType:
+	case *types.InetType, *types.MACType:
 		return "String"
 	case *types.JSONType:
 		// ClickHouse can't handle values like [{"x":{"y":"z"}}] at the moment.
