@@ -39,7 +39,7 @@ func IdentityPools() *schema.Table {
 				},
 			},
 			{
-				Name:     "saml_provider_ar_ns",
+				Name:     "saml_provider_arns",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("SamlProviderARNs"),
 			},
