@@ -276,7 +276,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		c.ProjectId = projects[0]
 	}
 	if gcpSpec.EnabledServicesOnly {
-		if err := c.configureEnabledServices(ctx, int(s.Concurrency)); err != nil {
+		if err := c.configureEnabledServices(ctx, *gcpSpec.DiscoveryConcurrency); err != nil {
 			return nil, err
 		}
 	}
