@@ -88,7 +88,9 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedsource.Client, d
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start fetching resources")
 	fmt.Printf("Starting sync for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 
-	syncClient, err := sourcePbClient.Sync(ctx, &source.Sync_Request{})
+	syncClient, err := sourcePbClient.Sync(ctx, &source.Sync_Request{
+		SyncTime: timestamppb.New(syncTime),
+	})
 	if err != nil {
 		return err
 	}
