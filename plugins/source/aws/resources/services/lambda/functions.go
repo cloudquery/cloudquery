@@ -4,11 +4,15 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/cloudquery/plugin-sdk/v3/scalar"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Functions() *schema.Table {
@@ -24,41 +28,39 @@ func Functions() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Configuration.FunctionArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Configuration.FunctionArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name: "policy_revision_id",
-				Type: schema.TypeString,
+				Type: arrow.BinaryTypes.String,
 				// resolved in resolveResourcePolicy
 			},
 			{
 				Name:     "policy_document",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveResourcePolicy,
 			},
 			{
 				Name:     "code_signing_config",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveCodeSigningConfig,
 			},
 			{
 				Name:     "code_repository_type",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("Code.RepositoryType"),
 			},
 			{
 				Name: "update_runtime_on",
-				Type: schema.TypeString,
+				Type: arrow.BinaryTypes.String,
 				// resolved in resolveRuntimeManagementConfig
 			},
 			{
 				Name:     "runtime_version_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: resolveRuntimeManagementConfig,
 			},
 		},
@@ -133,8 +135,8 @@ func resolveCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resou
 
 	// skip getting CodeSigningConfig since containerized lambda functions does not support this feature
 	// value can be nil if the caller doesn't have GetFunctionConfiguration permission and only has List*
-	lambdaType := resource.Get("code_repository_type").(*schema.Text)
-	if lambdaType != nil && lambdaType.Str == "ECR" {
+	lambdaType := resource.Get("code_repository_type").(*scalar.String)
+	if lambdaType != nil && lambdaType.Value == "ECR" {
 		return nil
 	}
 

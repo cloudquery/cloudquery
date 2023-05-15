@@ -3,10 +3,11 @@ package ses
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func ActiveReceiptRuleSets() *schema.Table {
@@ -21,16 +22,14 @@ func ActiveReceiptRuleSets() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Metadata.Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Metadata.Name"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "created_timestamp",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: schema.PathResolver("Metadata.CreatedTimestamp"),
 			},
 		},

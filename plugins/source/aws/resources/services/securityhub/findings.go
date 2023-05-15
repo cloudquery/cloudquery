@@ -3,11 +3,12 @@ package securityhub
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Findings() *schema.Table {
@@ -27,15 +28,15 @@ This is useful when multi region and account aggregation is enabled.`,
 		Columns: []schema.Column{
 			{
 				Name:            "request_account_id",
-				Type:            schema.TypeString,
+				Type:            arrow.BinaryTypes.String,
 				Resolver:        client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				PrimaryKey: true,
 			},
 			{
 				Name:            "request_region",
-				Type:            schema.TypeString,
+				Type:            arrow.BinaryTypes.String,
 				Resolver:        client.ResolveAWSRegion,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				PrimaryKey: true,
 			},
 		},
 	}

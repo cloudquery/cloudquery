@@ -3,11 +3,14 @@ package organizations
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Accounts() *schema.Table {
@@ -22,13 +25,13 @@ The 'request_account_id' column is added to show from where the request was made
 		Columns: []schema.Column{
 			{
 				Name:            "request_account_id",
-				Type:            schema.TypeString,
+				Type:            arrow.BinaryTypes.String,
 				Resolver:        client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveAccountTags,
 			},
 		},

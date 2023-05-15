@@ -1,41 +1,42 @@
 package resiliencehub
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 var (
 	appARN = schema.Column{
 		Name:            "app_arn",
-		Type:            schema.TypeString,
+		Type:            arrow.BinaryTypes.String,
 		Resolver:        schema.ParentColumnResolver("app_arn"),
-		CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+		PrimaryKey: true,
 	}
 	appARNTop = schema.Column{
 		Name:            "app_arn",
-		Type:            schema.TypeString,
+		Type:            arrow.BinaryTypes.String,
 		Resolver:        schema.ParentColumnResolver("arn"),
-		CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+		PrimaryKey: true,
 	}
 	assessmentARN = schema.Column{
 		Name:            "assessment_arn",
-		Type:            schema.TypeString,
+		Type:            arrow.BinaryTypes.String,
 		Resolver:        schema.ParentColumnResolver("arn"),
-		CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+		PrimaryKey: true,
 	}
 	appVersion = schema.Column{
 		Name:            "app_version",
-		Type:            schema.TypeString,
+		Type:            arrow.BinaryTypes.String,
 		Resolver:        schema.ParentColumnResolver("app_version"),
-		CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+		PrimaryKey: true,
 	}
 )
 
 func arnColumn(path string) schema.Column {
 	return schema.Column{
 		Name:            "arn",
-		Type:            schema.TypeString,
+		Type:            arrow.BinaryTypes.String,
 		Resolver:        schema.PathResolver(path),
-		CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+		PrimaryKey: true,
 	}
 }
