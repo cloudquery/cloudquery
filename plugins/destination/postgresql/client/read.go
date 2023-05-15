@@ -65,7 +65,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.BinaryBuilder:
 		b.Append(val.([]byte))
 	case *array.TimestampBuilder:
-		switch  b.Type().(*arrow.TimestampType).Unit {
+		switch b.Type().(*arrow.TimestampType).Unit {
 		case arrow.Second:
 			b.Append(arrow.Timestamp(val.(time.Time).Unix()))
 		case arrow.Millisecond:
@@ -95,7 +95,9 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 			return fmt.Errorf("failed to marshal struct: %w", err)
 		}
 		dec := json.NewDecoder(bytes.NewReader(structBytes))
-		b.UnmarshalOne(dec)
+		if err := b.UnmarshalOne(dec); err != nil {
+			return fmt.Errorf("failed to unmarshal struct: %w", err)
+		}
 	case *types.InetBuilder:
 		if v, ok := val.(netip.Prefix); ok {
 			_, ipnet, err := net.ParseCIDR(v.String())

@@ -20,7 +20,7 @@ func (c *Client) SchemaTypeToCockroach(t arrow.DataType) string {
 		return "smallint"
 	case *arrow.Int32Type, *arrow.Uint32Type:
 		return "integer"
-	case  *arrow.Int64Type, *arrow.Uint64Type:
+	case *arrow.Int64Type, *arrow.Uint64Type:
 		return "bigint"
 	case *arrow.Float32Type:
 		return "real"

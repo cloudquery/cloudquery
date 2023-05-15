@@ -125,8 +125,8 @@ func (c *Client) listPgTables(ctx context.Context, pluginTables schema.Tables) (
 		}
 		schemaType := c.PgToSchemaType(columnType)
 		table.Columns = append(table.Columns, schema.Column{
-			Name: columnName,
-			Type: schemaType,
+			Name:       columnName,
+			Type:       schemaType,
 			PrimaryKey: isPrimaryKey,
 			NotNull:    notNull,
 		})
