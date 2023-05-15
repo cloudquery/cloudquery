@@ -491,14 +491,22 @@ func (c *Client) configureEnabledServices(ctx context.Context, concurrency int) 
 		g.Go(func() error {
 			cl := c.withProject(project)
 			svc, err := cl.fetchEnabledServices(ctx)
+			if err != nil {
+				switch status.Code(err) {
+				case codes.ResourceExhausted:
+					c.logger.Warn().Err(err).Msgf("failed to list enabled services because of rate limiting. Sync will continue without filtering out disabled services for this project: %s. Consider setting larger values for `backoff_retries` and `backoff_delay`", project)
+				case codes.PermissionDenied:
+					c.logger.Warn().Err(err).Msgf("failed to list enabled services because of insufficient permissions. Sync will continue without filtering out disabled services for this project: %s", project)
+				default:
+					c.logger.Err(err).Msg("failed to list enabled services")
+					return err
+				}
+				return nil
+			}
+			// Only update the enabled services if we were able to list all services successfully
 			esLock.Lock()
 			c.EnabledServices[project] = svc
 			esLock.Unlock()
-			if status.Code(err) == codes.ResourceExhausted {
-				c.logger.Err(err).Msg("failed to list enabled services because of rate limiting. Consider setting larger values for `backoff_retries` and `backoff_delay`")
-			} else {
-				c.logger.Err(err).Msg("failed to list enabled services")
-			}
 			return err
 		})
 	}

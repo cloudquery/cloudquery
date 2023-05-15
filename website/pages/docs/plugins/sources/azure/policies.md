@@ -25,9 +25,9 @@ tables:
   - azure_security_auto_provisioning_settings
   - azure_security_pricings
   - azure_sql_server_admins
+  - azure_sql_server_advanced_threat_protection_settings
   - azure_sql_server_blob_auditing_policies
   - azure_sql_server_database_blob_auditing_policies
-  - azure_sql_server_database_threat_protections
   - azure_sql_server_databases
   - azure_sql_server_encryption_protectors
   - azure_sql_server_vulnerability_assessments

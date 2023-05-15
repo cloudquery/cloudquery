@@ -278,6 +278,7 @@
   - [azure_sql_managed_instance_vulnerability_assessments](tables/azure_sql_managed_instance_vulnerability_assessments)
 - [azure_sql_servers](tables/azure_sql_servers)
   - [azure_sql_server_admins](tables/azure_sql_server_admins)
+  - [azure_sql_server_advanced_threat_protection_settings](tables/azure_sql_server_advanced_threat_protection_settings)
   - [azure_sql_server_blob_auditing_policies](tables/azure_sql_server_blob_auditing_policies)
   - [azure_sql_server_databases](tables/azure_sql_server_databases)
     - [azure_sql_server_database_blob_auditing_policies](tables/azure_sql_server_database_blob_auditing_policies)

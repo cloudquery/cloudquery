@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/filetypes/v3"
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -80,6 +81,12 @@ func TestReplacePathVariables(t *testing.T) {
 			expectedPath: "test/test/FAKE-UUID.json",
 		},
 		{
+			inputPath:    "test/test/{{TABLE}}/{{UUID}}.{{FORMAT}}",
+			tableName:    "",
+			uuid:         "FAKE-UUID",
+			expectedPath: "test/test/FAKE-UUID.json",
+		},
+		{
 			inputPath:    "test/test/{{TABLE}}/year={{YEAR}}/month={{MONTH}}/day={{DAY}}/hour={{HOUR}}/minute={{MINUTE}}/{{UUID}}.json",
 			tableName:    "test-table",
 			uuid:         "FAKE-UUID",
@@ -89,7 +96,7 @@ func TestReplacePathVariables(t *testing.T) {
 
 	tm := time.Date(2021, 3, 5, 4, 1, 2, 3, time.UTC)
 	for _, tc := range cases {
-		if diff := cmp.Diff(tc.expectedPath, replacePathVariables(tc.inputPath, tc.tableName, tc.uuid, tm)); diff != "" {
+		if diff := cmp.Diff(tc.expectedPath, replacePathVariables(tc.inputPath, tc.tableName, tc.uuid, filetypes.FormatTypeJSON, tm)); diff != "" {
 			t.Errorf("unexpected Path Substitution (-want +got):\n%s", diff)
 		}
 	}
