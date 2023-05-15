@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-pb-go v1.0.5
+	github.com/cloudquery/plugin-pb-go v1.0.8
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/fastly/go-fastly/v7 v7.0.0
 	github.com/golang/mock v1.6.0
