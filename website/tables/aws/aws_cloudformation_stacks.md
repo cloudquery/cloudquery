@@ -36,7 +36,7 @@ The following tables depend on aws_cloudformation_stacks:
 |drift_information|JSON|
 |enable_termination_protection|Bool|
 |last_updated_time|Timestamp|
-|notification_ar_ns|StringArray|
+|notification_arns|StringArray|
 |outputs|JSON|
 |parameters|JSON|
 |parent_id|String|
