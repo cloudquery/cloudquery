@@ -109,7 +109,7 @@ func sync(cmd *cobra.Command, args []string) error {
 					return fmt.Errorf("failed to get destination versions: %w", err)
 				}
 				if !slices.Contains(versions, 2) {
-					return fmt.Errorf("destination %s does not support version 2. please upgrade destination", destination.Spec.Name)
+					return fmt.Errorf("destination %[1]s does not support CloudQuery SDK version 2. Please upgrade to newer version of %[1]s", destination.Spec.Name)
 				}
 			}
 			if err := syncConnectionV2(ctx, cl, destinationsClients, invocationUUID.String(), noMigrate); err != nil {
