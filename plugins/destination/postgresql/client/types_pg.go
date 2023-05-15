@@ -60,7 +60,7 @@ func (c *Client) SchemaTypeToPg10(t arrow.DataType) string {
 		return "jsonb"
 	case *types.InetType:
 		return "inet"
-	case *types.MacType:
+	case *types.MACType:
 		return "macaddr"
 	default:
 		return "text"
@@ -99,7 +99,7 @@ func (c *Client) Pg10ToSchemaType(t string) arrow.DataType {
 	case "cidr":
 		return types.ExtensionTypes.Inet
 	case "macaddr", "macaddr8":
-		return types.ExtensionTypes.Mac
+		return types.ExtensionTypes.MAC
 	case "inet":
 		return types.ExtensionTypes.Inet
 	default:

@@ -127,10 +127,8 @@ func (c *Client) listPgTables(ctx context.Context, pluginTables schema.Tables) (
 		table.Columns = append(table.Columns, schema.Column{
 			Name: columnName,
 			Type: schemaType,
-			CreationOptions: schema.ColumnCreationOptions{
-				PrimaryKey: isPrimaryKey,
-				NotNull:    notNull,
-			},
+			PrimaryKey: isPrimaryKey,
+			NotNull:    notNull,
 		})
 	}
 	return tables, nil
@@ -142,10 +140,10 @@ func (c *Client) normalizeTable(table *schema.Table, pgTable *schema.Table) *sch
 	}
 	for _, f := range table.Columns {
 		col := f
-		if c.enabledPks() && f.CreationOptions.PrimaryKey {
-			col.CreationOptions.NotNull = true
+		if c.enabledPks() && f.PrimaryKey {
+			col.NotNull = true
 		} else {
-			col.CreationOptions.PrimaryKey = false
+			col.PrimaryKey = false
 		}
 		col.Type = c.PgToSchemaType(c.SchemaTypeToPg(col.Type))
 		normalizedTable.Columns = append(normalizedTable.Columns, col)
@@ -179,11 +177,11 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 	for _, change := range changes {
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
-			if change.Current.CreationOptions.PrimaryKey || change.Current.CreationOptions.NotNull {
+			if change.Current.PrimaryKey || change.Current.NotNull {
 				return false
 			}
 		case schema.TableColumnChangeTypeRemove:
-			if change.Previous.CreationOptions.PrimaryKey || change.Previous.CreationOptions.NotNull {
+			if change.Previous.PrimaryKey || change.Previous.NotNull {
 				return false
 			}
 		case schema.TableColumnChangeTypeUpdate:
@@ -316,17 +314,17 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		pgType := c.SchemaTypeToPg(col.Type)
 		columnName := pgx.Identifier{col.Name}.Sanitize()
 		fieldDef := columnName + " " + pgType
-		if col.CreationOptions.Unique {
+		if col.Unique {
 			fieldDef += " UNIQUE"
 		}
-		if col.CreationOptions.NotNull {
+		if col.NotNull {
 			fieldDef += " NOT NULL"
 		}
 		sb.WriteString(fieldDef)
 		if i != totalColumns-1 {
 			sb.WriteString(",")
 		}
-		if c.enabledPks() && col.CreationOptions.PrimaryKey {
+		if c.enabledPks() && col.PrimaryKey {
 			primaryKeys = append(primaryKeys, pgx.Identifier{col.Name}.Sanitize())
 		}
 	}
