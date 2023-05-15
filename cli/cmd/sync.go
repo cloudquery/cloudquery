@@ -106,7 +106,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			for _, destination := range destinationsClients {
 				versions, err := destination.Versions(ctx)
 				if err != nil {
-					return fmt.Errorf("failed to get destination versions%w", err)
+					return fmt.Errorf("failed to get destination versions: %w", err)
 				}
 				if !slices.Contains(versions, 2) {
 					return fmt.Errorf("destination %s does not support version 2. please upgrade destination", destination.Spec.Name)
