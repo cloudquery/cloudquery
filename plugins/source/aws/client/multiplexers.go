@@ -11,7 +11,7 @@ var AllNamespaces = []string{ // this is only used in applicationautoscaling
 
 // Extract region from service list
 func getRegion(regionalList []string) string {
-	// We should try and find the closest region if possible. This will require checking the following locations:
+	// TODO: We should try and find the closest region if possible. This will require checking the following locations:
 	// 1. Region defined by the ec2 metadata service
 	// 2. Region defined by the AWS_REGION environment variable
 	// 3. Region defined by the AWS_DEFAULT_REGION environment variable
