@@ -15,9 +15,9 @@ import (
 
 	"github.com/cloudquery/cloudquery/cli/internal/download"
 	"github.com/cloudquery/cloudquery/cli/internal/logging"
-	"github.com/cloudquery/plugin-pb-go/pb/base/v0"
-	"github.com/cloudquery/plugin-pb-go/pb/discovery/v0"
-	"github.com/cloudquery/plugin-pb-go/pb/source/v0"
+	pbBase "github.com/cloudquery/plugin-pb-go/pb/base/v0"
+	pbDiscovery "github.com/cloudquery/plugin-pb-go/pb/discovery/v0"
+	pbSource "github.com/cloudquery/plugin-pb-go/pb/source/v0"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog"
 	"golang.org/x/exp/slices"
@@ -205,13 +205,13 @@ func (c *Client) startLocal(ctx context.Context, path string) error {
 }
 
 func (c *Client) MaxVersion(ctx context.Context) (int, error) {
-	discoveryClient := discovery.NewDiscoveryClient(c.Conn)
-	versionsRes, err := discoveryClient.GetVersions(ctx, &discovery.GetVersions_Request{})
+	discoveryClient := pbDiscovery.NewDiscoveryClient(c.Conn)
+	versionsRes, err := discoveryClient.GetVersions(ctx, &pbDiscovery.GetVersions_Request{})
 	if err != nil {
 		// If we get an error here, we assume that the plugin is not a v1 plugin and we try to sync it as a v0 plugin
 		// this is for backward compatibility where we used incorrect versioning mechanism
-		oldDiscoveryClient := source.NewSourceClient(c.Conn)
-		versionRes, err := oldDiscoveryClient.GetProtocolVersion(ctx, &base.GetProtocolVersion_Request{})
+		oldDiscoveryClient := pbSource.NewSourceClient(c.Conn)
+		versionRes, err := oldDiscoveryClient.GetProtocolVersion(ctx, &pbBase.GetProtocolVersion_Request{})
 		if err != nil {
 			return -1, err
 		}
@@ -223,6 +223,9 @@ func (c *Client) MaxVersion(ctx context.Context) (int, error) {
 		default:
 			return -1, fmt.Errorf("unknown protocol version %d", versionRes.Version)
 		}
+	}
+	if slices.Contains(versionsRes.Versions, "v2") {
+		return 2, nil
 	}
 	if slices.Contains(versionsRes.Versions, "v1") {
 		return 1, nil

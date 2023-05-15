@@ -11,18 +11,15 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
 	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
 	"github.com/cloudquery/plugin-pb-go/metrics"
-	"github.com/cloudquery/plugin-pb-go/pb/base/v0"
-	"github.com/cloudquery/plugin-pb-go/pb/destination/v0"
-	"github.com/cloudquery/plugin-pb-go/pb/source/v1"
+	"github.com/cloudquery/plugin-pb-go/pb/destination/v1"
+	"github.com/cloudquery/plugin-pb-go/pb/source/v2"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-type ExitReason string
-
 // nolint:dupl
-func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, destinationsClients manageddestination.Clients, uid string, noMigrate bool) error {
+func syncConnectionV2(ctx context.Context, sourceClient *managedsource.Client, destinationsClients manageddestination.Clients, uid string, noMigrate bool) error {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	defer func() {
@@ -62,7 +59,7 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 		if err != nil {
 			return err
 		}
-		if _, err := destinationsPbClients[i].Configure(ctx, &base.Configure_Request{
+		if _, err := destinationsPbClients[i].Configure(ctx, &destination.Configure_Request{
 			Config: destSpecBytes,
 		}); err != nil {
 			return err
@@ -95,7 +92,7 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 	if err != nil {
 		return err
 	}
-	writeClients := make([]destination.Destination_Write2Client, len(destinationsPbClients))
+	writeClients := make([]destination.Destination_WriteClient, len(destinationsPbClients))
 	defer func() {
 		for i, wc := range writeClients {
 			if wc == nil {
@@ -108,11 +105,11 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 	}()
 
 	for i := range destinationsPbClients {
-		writeClients[i], err = destinationsPbClients[i].Write2(ctx)
+		writeClients[i], err = destinationsPbClients[i].Write(ctx)
 		if err != nil {
 			return err
 		}
-		if err := writeClients[i].Send(&destination.Write2_Request{
+		if err := writeClients[i].Send(&destination.Write_Request{
 			Source:    sourceClient.Spec.Name,
 			Tables:    tablesRes.Tables,
 			Timestamp: timestamppb.New(syncTime),
@@ -154,7 +151,7 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, d
 		}
 		_ = bar.Add(1)
 		for i := range destinationsPbClients {
-			if err := writeClients[i].Send(&destination.Write2_Request{
+			if err := writeClients[i].Send(&destination.Write_Request{
 				Resource: r.Resource,
 			}); err != nil {
 				return err

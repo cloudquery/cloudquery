@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
+	"golang.org/x/exp/slices"
 
 	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
 	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
@@ -101,6 +102,19 @@ func sync(cmd *cobra.Command, args []string) error {
 			return err
 		}
 		switch maxVersion {
+		case 2:
+			for _, destination := range destinationsClients {
+				versions, err := destination.Versions(ctx)
+				if err != nil {
+					return fmt.Errorf("failed to get destination versions: %w", err)
+				}
+				if !slices.Contains(versions, 2) {
+					return fmt.Errorf("destination %[1]s does not support CloudQuery SDK version 2. Please upgrade to newer version of %[1]s", destination.Spec.Name)
+				}
+			}
+			if err := syncConnectionV2(ctx, cl, destinationsClients, invocationUUID.String(), noMigrate); err != nil {
+				return fmt.Errorf("failed to sync v2 source %s: %w", cl.Spec.Name, err)
+			}
 		case 1:
 			if err := syncConnectionV1(ctx, cl, destinationsClients, invocationUUID.String(), noMigrate); err != nil {
 				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Spec.Name, err)
