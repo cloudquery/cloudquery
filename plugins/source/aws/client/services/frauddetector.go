@@ -4,6 +4,7 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/frauddetector"
+	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/frauddetector.go -source=frauddetector.go FrauddetectorClient

@@ -54,9 +54,8 @@ func testCredentialReportsWithNilValues(t *testing.T) {
 		ctx := context.Background()
 		ctrl := gomock.NewController(t)
 		services := buildCredentialReportsWithNilValues(ctrl)
-		services.Regions = []string{"us-east-1"}
 		cl := client.NewAwsClient(zerolog.Logger{}, nil, nil)
-		cl.ServicesManager.InitServicesForPartitionAccount("aws", "testAccount", services)
+		cl.ServicesManager.InitServicesForPartitionAccountAndRegion("aws", "testAccount", "us-east-1", services)
 		cl.Partition = "aws"
 		cl.Region = "us-east-1"
 		cl.AccountID = "testAccount"

@@ -4,6 +4,7 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
+	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/inspector2.go -source=inspector2.go Inspector2Client
