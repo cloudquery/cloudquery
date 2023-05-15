@@ -106,7 +106,7 @@ func transformArr(arr arrow.Array) []any {
 			}
 		case *array.Timestamp:
 			pgArr[i] = pgtype.Timestamptz{
-				Time:  a.Value(i).ToTime(arrow.Microsecond),
+				Time:  a.Value(i).ToTime(arrow.Microsecond).UTC(),
 				Valid: a.IsValid(i),
 			}
 		case *types.UUIDArray:
@@ -123,6 +123,8 @@ func transformArr(arr arrow.Array) []any {
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)
 			pgArr[i] = transformArr(nested)
+		case *types.JSONArray:
+			pgArr[i] = a.Storage().(*array.Binary).Value(i)
 		default:
 			pgArr[i] = stripNulls(arr.ValueStr(i))
 		}
