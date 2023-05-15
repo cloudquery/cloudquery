@@ -48,10 +48,10 @@ github.com/aws/aws-sdk-go-v2 v1.18.0 h1:882kkTpSFhdgYRKVZ/VCgf7sd0ru57p2JCxz4/oN
 github.com/aws/aws-sdk-go-v2 v1.18.0/go.mod h1:uzbQtefpm44goOPmdKyAlXSNcwlRgF3ePWVW6EtJvvw=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 h1:dK82zF6kkPeCo8J1e+tGx4JdvDIQzj7ygIoLg8WMuGs=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10/go.mod h1:VeTZetY5KRJLuD/7fkQXMU6Mw7H5m/KP2J5Iy9osMno=
-github.com/aws/aws-sdk-go-v2/config v1.18.23 h1:gc3lPsAnZpwfi2exupmgHfva0JiAY2BWDg5JWYlmA28=
-github.com/aws/aws-sdk-go-v2/config v1.18.23/go.mod h1:rx0ruaQ+gk3OrLFHRRx56lA//XxP8K8uPzeNiKNuWVY=
-github.com/aws/aws-sdk-go-v2/credentials v1.13.22 h1:Hp9rwJS4giQ48xqonRV/s7QcDf/wxF6UY7osRmBabvI=
-github.com/aws/aws-sdk-go-v2/credentials v1.13.22/go.mod h1:BfNcm6A9nSd+bzejDcMJ5RE+k6WbkCwWkQil7q4heRk=
+github.com/aws/aws-sdk-go-v2/config v1.18.25 h1:JuYyZcnMPBiFqn87L2cRppo+rNwgah6YwD3VuyvaW6Q=
+github.com/aws/aws-sdk-go-v2/config v1.18.25/go.mod h1:dZnYpD5wTW/dQF0rRNLVypB396zWCcPiBIvdvSWHEg4=
+github.com/aws/aws-sdk-go-v2/credentials v1.13.24 h1:PjiYyls3QdCrzqUN35jMWtUK1vqVZ+zLfdOa/UPFDp0=
+github.com/aws/aws-sdk-go-v2/credentials v1.13.24/go.mod h1:jYPYi99wUOPIFi0rhiOvXeSEReVOzBqFNOX5bXYoG2o=
 github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.3 h1:jJPgroehGvjrde3XufFIJUZVK5A2L9a3KwSFgKy9n8w=
 github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.3/go.mod h1:4Q0UFP0YJf0NrsEuEYHpM9fTSEVnD16Z3uyEF7J9JGM=
 github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.27/go.mod h1:a1/UpzeyBBerajpnP5nGZa9mGzsBn5cOKxm6NWQsvoI=
@@ -289,8 +289,8 @@ github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.16.0 h1:YFYW7hI6XCmmPb9eqhIZk0L
 github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.16.0/go.mod h1:xH7hHxhm765Db3QuS51w9DNgN3iMpcth0o1mMmYh6eY=
 github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.10 h1:PkHIIJs8qvq0e5QybnZoG1K/9QTrLr9OsqCIo59jOBA=
 github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.10/go.mod h1:AFvkxc8xfBe8XA+5St5XIHHrQQtkxqrRincx4hmMHOk=
-github.com/aws/aws-sdk-go-v2/service/sts v1.18.11 h1:uBE+Zj478pfxV98L6SEpvxYiADNjTlMNY714PJLE7uo=
-github.com/aws/aws-sdk-go-v2/service/sts v1.18.11/go.mod h1:BgQOMsg8av8jset59jelyPW7NoZcZXLVpDsXunGDrk8=
+github.com/aws/aws-sdk-go-v2/service/sts v1.19.0 h1:2DQLAKDteoEDI8zpCzqBMaZlJuoE9iTYD0gFmXVax9E=
+github.com/aws/aws-sdk-go-v2/service/sts v1.19.0/go.mod h1:BgQOMsg8av8jset59jelyPW7NoZcZXLVpDsXunGDrk8=
 github.com/aws/aws-sdk-go-v2/service/support v1.14.1 h1:q/V7gFb9w+nfTZ62F3lQyQ8XEX49Osm8f78NGPRe4Tc=
 github.com/aws/aws-sdk-go-v2/service/support v1.14.1/go.mod h1:I66KaUvtqQiOMQe4p/mgHnRXIgh7rCazNenP5UVM9Bo=
 github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.15.0 h1:2s9bsjDcaThDWfu/SmGIj9oLCtL3JrA0rt7dgTWCffs=
