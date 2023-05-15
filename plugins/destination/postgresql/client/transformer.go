@@ -65,6 +65,11 @@ func transformArr(arr arrow.Array) []any {
 				Bool:  a.Value(i),
 				Valid: a.IsValid(i),
 			}
+		case *array.Int8:
+			pgArr[i] = pgtype.Int2{
+				Int16: int16(a.Value(i)),
+				Valid: a.IsValid(i),
+			}
 		case *array.Int16:
 			pgArr[i] = pgtype.Int2{
 				Int16: a.Value(i),
@@ -78,6 +83,26 @@ func transformArr(arr arrow.Array) []any {
 		case *array.Int64:
 			pgArr[i] = pgtype.Int8{
 				Int64: a.Value(i),
+				Valid: a.IsValid(i),
+			}
+		case *array.Uint8:
+			pgArr[i] = pgtype.Int2{
+				Int16: int16(a.Value(i)),
+				Valid: a.IsValid(i),
+			}
+		case *array.Uint16:
+			pgArr[i] = pgtype.Int2{
+				Int16: int16(a.Value(i)),
+				Valid: a.IsValid(i),
+			}
+		case *array.Uint32:
+			pgArr[i] = pgtype.Int4{
+				Int32: int32(a.Value(i)),
+				Valid: a.IsValid(i),
+			}
+		case *array.Uint64:
+			pgArr[i] = pgtype.Int8{
+				Int64: int64(a.Value(i)),
 				Valid: a.IsValid(i),
 			}
 		case *array.Float32:
@@ -106,7 +131,7 @@ func transformArr(arr arrow.Array) []any {
 			}
 		case *array.Timestamp:
 			pgArr[i] = pgtype.Timestamptz{
-				Time:  a.Value(i).ToTime(arrow.Microsecond).UTC(),
+				Time:  a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit).UTC(),
 				Valid: a.IsValid(i),
 			}
 		case *types.UUIDArray:

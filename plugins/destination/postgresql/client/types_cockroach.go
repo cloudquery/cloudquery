@@ -16,13 +16,11 @@ func (c *Client) SchemaTypeToCockroach(t arrow.DataType) string {
 		return c.SchemaTypeToCockroach(v.Elem()) + fmt.Sprintf("[%d]", v.Len())
 	case *arrow.BooleanType:
 		return "boolean"
-	case *arrow.Int8Type, *arrow.Uint8Type:
-		return "smallint"
-	case *arrow.Int16Type, *arrow.Uint16Type:
+	case *arrow.Int8Type, *arrow.Uint8Type, *arrow.Int16Type, *arrow.Uint16Type:
 		return "smallint"
 	case *arrow.Int32Type, *arrow.Uint32Type:
 		return "integer"
-	case *arrow.Int64Type, *arrow.Uint64Type:
+	case  *arrow.Int64Type, *arrow.Uint64Type:
 		return "bigint"
 	case *arrow.Float32Type:
 		return "real"

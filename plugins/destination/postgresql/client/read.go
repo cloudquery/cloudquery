@@ -1,12 +1,15 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"net"
 	"net/netip"
 	"strings"
 	"time"
+
+	"github.com/goccy/go-json"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
@@ -26,11 +29,13 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		bldr.AppendNull()
 		return nil
 	}
+
 	switch b := bldr.(type) {
 	case *array.BooleanBuilder:
 		b.Append(val.(bool))
 	case *array.Int8Builder:
-		b.Append(val.(int8))
+		// pgx always return int16 for int8
+		b.Append(int8(val.(int16)))
 	case *array.Int16Builder:
 		b.Append(val.(int16))
 	case *array.Int32Builder:
@@ -38,13 +43,13 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.Int64Builder:
 		b.Append(val.(int64))
 	case *array.Uint8Builder:
-		b.Append(val.(uint8))
+		b.Append(uint8(val.(int16)))
 	case *array.Uint16Builder:
-		b.Append(val.(uint16))
+		b.Append(uint16(val.(int16)))
 	case *array.Uint32Builder:
-		b.Append(val.(uint32))
+		b.Append(uint32(val.(int32)))
 	case *array.Uint64Builder:
-		b.Append(val.(uint64))
+		b.Append(uint64(val.(int64)))
 	case *array.Float32Builder:
 		b.Append(val.(float32))
 	case *array.Float64Builder:
@@ -60,7 +65,18 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.BinaryBuilder:
 		b.Append(val.([]byte))
 	case *array.TimestampBuilder:
-		b.Append(arrow.Timestamp(val.(time.Time).UnixMicro()))
+		switch  b.Type().(*arrow.TimestampType).Unit {
+		case arrow.Second:
+			b.Append(arrow.Timestamp(val.(time.Time).Unix()))
+		case arrow.Millisecond:
+			b.Append(arrow.Timestamp(val.(time.Time).UnixMilli()))
+		case arrow.Microsecond:
+			b.Append(arrow.Timestamp(val.(time.Time).UnixMicro()))
+		case arrow.Nanosecond:
+			b.Append(arrow.Timestamp(val.(time.Time).UnixNano()))
+		default:
+			return fmt.Errorf("unsupported timestamp unit %s", f.Type.(*arrow.TimestampType).Unit)
+		}
 	case *types.UUIDBuilder:
 		va, ok := val.([16]byte)
 		if !ok {
@@ -73,6 +89,13 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		b.Append(u)
 	case *types.JSONBuilder:
 		b.Append(val)
+	case *array.StructBuilder:
+		structBytes, err := json.Marshal(val)
+		if err != nil {
+			return fmt.Errorf("failed to marshal struct: %w", err)
+		}
+		dec := json.NewDecoder(bytes.NewReader(structBytes))
+		b.UnmarshalOne(dec)
 	case *types.InetBuilder:
 		if v, ok := val.(netip.Prefix); ok {
 			_, ipnet, err := net.ParseCIDR(v.String())
