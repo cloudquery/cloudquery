@@ -20,7 +20,10 @@ func restApiAuthorizers() *schema.Table {
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Authorizer.html`,
 		Resolver:    fetchApigatewayRestApiAuthorizers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
-		Transform:   transformers.TransformWithStruct(&types.Authorizer{}),
+		Transform: transformers.TransformWithStruct(
+			&types.Authorizer{},
+			transformers.WithNameTransformer(client.CreateReplaceTransformer(map[string]string{"ar_ns": "arns"})),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),

@@ -30,5 +30,5 @@ This table depends on [aws_apigateway_rest_apis](aws_apigateway_rest_apis).
 |identity_source|String|
 |identity_validation_expression|String|
 |name|String|
-|provider_ar_ns|StringArray|
+|provider_arns|StringArray|
 |type|String|

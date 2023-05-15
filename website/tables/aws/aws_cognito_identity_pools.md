@@ -26,6 +26,7 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 |cognito_identity_providers|JSON|
 |developer_provider_name|String|
 |identity_pool_tags|JSON|
-|open_id_connect_provider_ar_ns|StringArray|
+|open_id_connect_provider_arns|StringArray|
+|saml_provider_arns|StringArray|
 |supported_login_providers|JSON|
 |result_metadata|JSON|
