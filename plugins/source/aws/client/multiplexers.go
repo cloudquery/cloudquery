@@ -1,6 +1,8 @@
 package client
 
 import (
+	"sort"
+
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
@@ -20,7 +22,9 @@ func getRegion(regionalList []string) string {
 		return ""
 	}
 	regions := append([]string{}, regionalList...)
-
+	// Sorting is important because the plugin SDK requires that multiplexers return a deterministic client. This means if it calls
+	// Multiplex multiple times the clients returned should be the same.
+	sort.Strings(regions)
 	return regions[0]
 }
 
