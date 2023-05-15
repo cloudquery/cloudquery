@@ -105,7 +105,7 @@ This is the (nested) spec used by the AWS source plugin.
 
   This is an experimental feature that enables users to override the default options for specific tables. The root of the object takes a table name, and the next level takes an API method name. The final level is the actual input object as defined by the API. 
   The format of the `table_options` object is as follows:
-  ```yml
+  ```yaml
   table_options:
     <table_name>:
       <api_method_name>:
@@ -114,7 +114,7 @@ This is the (nested) spec used by the AWS source plugin.
 
   For the `<input_object>` it is able to take a list of objects which cloudquery will iterate through to make multiple API calls. This is useful for APIs like CloudTrail's `LookupEvents` that only supports a single event type per call. for example:
 
-    ```
+    ```yaml
         table_options:
       aws_cloudtrail_events:
         lookup_events:
@@ -136,7 +136,7 @@ This is the (nested) spec used by the AWS source plugin.
 ```
 
   The naming for all of the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `VERSION_SOURCE_AWS` the following tables and APIs are supported:
-```
+```yaml
   table_options:
     aws_accessanalyzer_analyzer_findings:
       list_findings:
