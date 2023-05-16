@@ -149,9 +149,9 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 }
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
-	colNames := make([]string, 0, len(table.Columns))
-	for _, col := range table.Columns {
-		colNames = append(colNames, `"`+col.Name+`"`)
+	colNames := make([]string, len(table.Columns))
+	for i, col := range table.Columns {
+		colNames[i] = `"` + col.Name + `"`
 	}
 	cols := strings.Join(colNames, ", ")
 	rows, err := c.db.Query(fmt.Sprintf(readSQL, cols, table.Name), sourceName)
