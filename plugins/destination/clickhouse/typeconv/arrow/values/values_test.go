@@ -7,6 +7,7 @@ import (
 	"github.com/apache/arrow/go/v13/arrow/decimal128"
 	"github.com/apache/arrow/go/v13/arrow/decimal256"
 	"github.com/apache/arrow/go/v13/arrow/float16"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )
@@ -21,8 +22,8 @@ func ensureRecord(t *testing.T, tc testCase) {
 	t.Helper()
 	t.Run(tc.dataType.String(), func(t *testing.T) {
 		t.Helper()
-		sc := arrow.NewSchema([]arrow.Field{{Name: "field", Type: tc.dataType, Nullable: true}}, nil)
-		record, err := Record(sc, []any{tc.value})
+		table := &schema.Table{Columns: schema.ColumnList{{Name: "field", Type: tc.dataType}}}
+		record, err := Record(table.ToArrowSchema(), []any{tc.value})
 		require.NoError(t, err)
 		require.Equal(t, int64(1), record.NumRows())
 		require.Equal(t, int64(1), record.NumCols())
