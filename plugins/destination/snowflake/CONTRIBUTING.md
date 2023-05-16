@@ -15,7 +15,6 @@ go run main.go serve
 make test
 ```
 
-
 ## Lint
 
 ```bash
