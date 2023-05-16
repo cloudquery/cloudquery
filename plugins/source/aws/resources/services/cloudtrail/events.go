@@ -83,7 +83,7 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 				le.StartTime = &date
 			}
 		}
-		
+
 		var lastEventTime *time.Time
 		// var err error
 		paginator := cloudtrail.NewLookupEventsPaginator(svc, &le)
