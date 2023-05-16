@@ -158,8 +158,8 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	if err != nil {
 		return err
 	}
+	arrowSchema := table.ToArrowSchema()
 	for rows.Next() {
-		arrowSchema := table.ToArrowSchema()
 		values := c.createResultsArray(arrowSchema)
 		if err := rows.Scan(values...); err != nil {
 			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)

@@ -70,13 +70,9 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 }
 
 func (c *Client) normalizeField(field arrow.Field) *arrow.Field {
-	// 1 - convert to the ClickHouse
-	fieldType := c.arrowTypeToSqlite(field.Type)
-
-	// 2 - convert back to Apache Arrow
 	return &arrow.Field{
 		Name:     field.Name,
-		Type:     fieldType,
+		Type:     c.arrowTypeToSqlite(field.Type),
 		Nullable: field.Nullable,
 		Metadata: field.Metadata,
 	}
