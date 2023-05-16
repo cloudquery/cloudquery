@@ -11,7 +11,7 @@ import (
 )
 
 func AccessPoints() *schema.Table {
-	tableName := "aws_efs_accesspoints"
+	tableName := "aws_efs_access_points"
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/efs/latest/ug/API_AccessPointDescription.html`,
