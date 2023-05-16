@@ -5,6 +5,22 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.4.1...plugins-source-azure-v7.5.0) (2023-05-16)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_sql_server_advanced_threat_protection_settings` was added
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+
+
+### Bug Fixes
+
+* **azure:** Improve query of CIS v1.3.0 Section 4.2.1 ([#10362](https://github.com/cloudquery/cloudquery/issues/10362)) ([48138be](https://github.com/cloudquery/cloudquery/commit/48138bed72ae8d737e5550449b01b3610d621697))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [7.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.4.0...plugins-source-azure-v7.4.1) (2023-05-04)
 
 
