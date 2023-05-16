@@ -1,6 +1,6 @@
-# Table: aws_efs_accesspoints
+# Table: aws_efs_access_points
 
-This table shows data for Amazon Elastic File System (EFS) Accesspoints.
+This table shows data for Amazon Elastic File System (EFS) Access Points.
 
 https://docs.aws.amazon.com/efs/latest/ug/API_AccessPointDescription.html
 

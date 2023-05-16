@@ -226,7 +226,7 @@
     - [aws_ecs_cluster_task_sets](../../../../../website/tables/aws/aws_ecs_cluster_task_sets.md)
   - [aws_ecs_cluster_tasks](../../../../../website/tables/aws/aws_ecs_cluster_tasks.md)
 - [aws_ecs_task_definitions](../../../../../website/tables/aws/aws_ecs_task_definitions.md)
-- [aws_efs_accesspoints](../../../../../website/tables/aws/aws_efs_accesspoints.md)
+- [aws_efs_access_points](../../../../../website/tables/aws/aws_efs_access_points.md)
 - [aws_efs_filesystems](../../../../../website/tables/aws/aws_efs_filesystems.md)
 - [aws_eks_clusters](../../../../../website/tables/aws/aws_eks_clusters.md)
   - [aws_eks_cluster_node_groups](../../../../../website/tables/aws/aws_eks_cluster_node_groups.md)
