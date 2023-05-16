@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [17.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v17.2.0...plugins-source-aws-v17.3.0) (2023-05-16)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_acmpca_certificate_authorities` was added
+- Table `aws_cloudformation_stack_templates` was added
+- Table `aws_cloudformation_template_summaries` was added
+- Table `aws_config_config_rule_compliance_details` was added
+- Table `aws_efs_access_points` was added
+
 ### Features
 
 * Add AWS Config Compliance Details table ([#10544](https://github.com/cloudquery/cloudquery/issues/10544)) ([9b43a2a](https://github.com/cloudquery/cloudquery/commit/9b43a2af489389a4cdd340e7880e899c149566aa))
