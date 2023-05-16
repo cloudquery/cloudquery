@@ -39,7 +39,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.Int16Builder:
 		b.Append(val.(int16))
 	case *array.Int32Builder:
-		b.Append(int32(val.(int32)))
+		b.Append(val.(int32))
 	case *array.Int64Builder:
 		b.Append(val.(int64))
 	case *array.Uint8Builder:
