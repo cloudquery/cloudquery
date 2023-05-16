@@ -16,6 +16,7 @@ var (
 var awsExceptions = map[string]string{
 	"accessanalyzer":         "AWS Identity and Access Management (IAM) Access Analyzer",
 	"acm":                    "Amazon Certificate Manager (ACM)",
+	"acmpca":                 "AWS Certificate Manager Private Certificate Authority (ACM PCA)",
 	"amp":                    "Amazon Managed Service for Prometheus (AMP)",
 	"apigateway":             "Amazon API Gateway",
 	"apigatewayv2":           "Amazon API Gateway v2",
