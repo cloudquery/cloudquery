@@ -97,6 +97,7 @@
 - [aws_cloudformation_stacks](tables/aws_cloudformation_stacks)
   - [aws_cloudformation_stack_resources](tables/aws_cloudformation_stack_resources)
   - [aws_cloudformation_stack_templates](tables/aws_cloudformation_stack_templates)
+  - [aws_cloudformation_template_summaries](tables/aws_cloudformation_template_summaries)
 - [aws_cloudfront_cache_policies](tables/aws_cloudfront_cache_policies)
 - [aws_cloudfront_distributions](tables/aws_cloudfront_distributions)
 - [aws_cloudhsmv2_backups](tables/aws_cloudhsmv2_backups)
