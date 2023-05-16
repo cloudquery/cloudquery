@@ -9,7 +9,7 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 const (
@@ -148,23 +148,23 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
-	colNames := make([]string, 0, len(table.Fields()))
-	for _, col := range table.Fields() {
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+	colNames := make([]string, 0, len(table.Columns))
+	for _, col := range table.Columns {
 		colNames = append(colNames, `"`+col.Name+`"`)
 	}
 	cols := strings.Join(colNames, ", ")
-	tableName := schema.TableName(table)
-	rows, err := c.db.Query(fmt.Sprintf(readSQL, cols, tableName), sourceName)
+	rows, err := c.db.Query(fmt.Sprintf(readSQL, cols, table.Name), sourceName)
 	if err != nil {
 		return err
 	}
 	for rows.Next() {
-		values := c.createResultsArray(table)
+		arrowSchema := table.ToArrowSchema()
+		values := c.createResultsArray(arrowSchema)
 		if err := rows.Scan(values...); err != nil {
-			return fmt.Errorf("failed to read from table %s: %w", tableName, err)
+			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 		}
-		record, err := reverseTransform(table, values)
+		record, err := reverseTransform(arrowSchema, values)
 		if err != nil {
 			return err
 		}

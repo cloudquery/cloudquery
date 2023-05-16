@@ -7,7 +7,7 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 const (
@@ -62,7 +62,7 @@ func (c *Client) sqliteTables(schemas schema.Schemas) (schema.Schemas, error) {
 	return schemaTables, nil
 }
 
-func (c *Client) normalizeSchemas(scs schema.Schemas) schema.Schemas {
+func (c *Client) normalizeSchemas(tables schema.Tables) schema.Tables {
 	var normalized schema.Schemas
 	for _, sc := range scs {
 		fields := make([]arrow.Field, 0)
@@ -110,10 +110,10 @@ func (c *Client) nonAutoMigrableTables(tables schema.Schemas, sqliteTables schem
 	return result, tableChanges
 }
 
-func (c *Client) autoMigrateTable(table *arrow.Schema, changes []schema.FieldChange) error {
+func (c *Client) autoMigrateTable(table *schema.Table, changes []schema.TableColumnChange) error {
 	for _, change := range changes {
 		if change.Type == schema.TableColumnChangeTypeAdd {
-			if err := c.addColumn(schema.TableName(table), change.Current.Name, c.arrowTypeToSqliteStr(change.Current.Type)); err != nil {
+			if err := c.addColumn(table.Name, change.Current.Name, c.arrowTypeToSqliteStr(change.Current.Type)); err != nil {
 				return err
 			}
 		}
@@ -121,7 +121,7 @@ func (c *Client) autoMigrateTable(table *arrow.Schema, changes []schema.FieldCha
 	return nil
 }
 
-func (*Client) canAutoMigrate(changes []schema.FieldChange) bool {
+func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 	for _, change := range changes {
 		if change.Type == schema.TableColumnChangeTypeAdd && (schema.IsPk(change.Current) || !change.Current.Nullable) {
 			return false
@@ -139,7 +139,7 @@ func (*Client) canAutoMigrate(changes []schema.FieldChange) bool {
 }
 
 // This is the responsibility of the CLI of the client to lock before running migration
-func (c *Client) Migrate(ctx context.Context, schemas schema.Schemas) error {
+func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	schemas = c.normalizeSchemas(schemas)
 	sqliteTables, err := c.sqliteTables(schemas)
 	if err != nil {
