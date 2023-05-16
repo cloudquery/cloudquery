@@ -4,6 +4,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/accessanalyzer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/account"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acm"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acmpca"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amp"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amplify"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
@@ -110,6 +111,7 @@ func tables() []*schema.Table {
 		account.AlternateContacts(),
 		account.Contacts(),
 		acm.Certificates(),
+		acmpca.CertificateAuthorities(),
 		amp.Workspaces(),
 		amplify.Apps(),
 		apigateway.ApiKeys(),
@@ -251,6 +253,7 @@ func tables() []*schema.Table {
 		ecrpublic.Repositories(),
 		ecs.Clusters(),
 		ecs.TaskDefinitions(),
+		efs.AccessPoints(),
 		efs.Filesystems(),
 		eks.Clusters(),
 		elasticache.Clusters(),
