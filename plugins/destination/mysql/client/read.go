@@ -10,9 +10,13 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/google/uuid"
+)
+
+const (
+	readSQL = `SELECT %s FROM %s WHERE _cq_source_name = ? order by _cq_sync_time asc`
 )
 
 func (*Client) createResultsArray(table *arrow.Schema) []any {
@@ -166,7 +170,7 @@ func reverseTransform(table *arrow.Schema, values []any) (arrow.Record, error) {
 			} else {
 				recordBuilder.Field(i).(*array.LargeStringBuilder).Append(val.(*sql.NullString).String)
 			}
-		case *arrow.BinaryType:
+		case *arrow.BinaryType, *arrow.LargeBinaryType:
 			if *val.(*[]byte) == nil {
 				recordBuilder.Field(i).AppendNull()
 			} else {
@@ -204,29 +208,25 @@ func reverseTransform(table *arrow.Schema, values []any) (arrow.Record, error) {
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
-	builder := strings.Builder{}
-	builder.WriteString("SELECT")
-	fields := table.Fields()
-	for i, col := range fields {
-		builder.WriteString(" " + identifier(col.Name))
-		if i != len(fields)-1 {
-			builder.WriteString(", ")
-		}
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+	colNames := make([]string, len(table.Columns))
+	for i, col := range table.Columns {
+		colNames[i] = identifier(col.Name)
 	}
-	tableName := schema.TableName(table)
-	builder.WriteString("FROM " + identifier(tableName) + " WHERE _cq_source_name = ? ORDER BY _cq_sync_time ASC")
-	rows, err := c.db.QueryContext(ctx, builder.String(), sourceName)
+	cols := strings.Join(colNames, ", ")
+	read := fmt.Sprintf(readSQL, cols, table.Name)
+	rows, err := c.db.QueryContext(ctx, read, sourceName)
 	if err != nil {
 		return err
 	}
 	defer rows.Close()
+	arrowSchemaTable := table.ToArrowSchema()
 	for rows.Next() {
-		values := c.createResultsArray(table)
+		values := c.createResultsArray(arrowSchemaTable)
 		if err := rows.Scan(values...); err != nil {
-			return fmt.Errorf("failed to read from table %s: %w", tableName, err)
+			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 		}
-		record, err := reverseTransform(table, values)
+		record, err := reverseTransform(arrowSchemaTable, values)
 		if err != nil {
 			return err
 		}
