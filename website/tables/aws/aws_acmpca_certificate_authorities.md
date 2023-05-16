@@ -1,6 +1,6 @@
 # Table: aws_acmpca_certificate_authorities
 
-This table shows data for Acmpca Certificate Authorities.
+This table shows data for AWS Certificate Manager Private Certificate Authority (ACM PCA) Certificate Authorities.
 
 https://docs.aws.amazon.com/privateca/latest/APIReference/API_CertificateAuthority.html
 

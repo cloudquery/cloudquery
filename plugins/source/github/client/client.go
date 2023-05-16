@@ -75,14 +75,12 @@ func limitDetectedCallback(logger zerolog.Logger) github_ratelimit.OnLimitDetect
 
 func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
 	var spec Spec
-	err := s.UnmarshalSpec(&spec)
-	if err != nil {
+	if err := s.UnmarshalSpec(&spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal GitHub spec: %w", err)
 	}
 
 	// validate plugin config
-	err = spec.Validate()
-	if err != nil {
+	if err := spec.Validate(); err != nil {
 		return nil, fmt.Errorf("failed to validate GitHub spec: %w", err)
 	}
 
@@ -97,7 +95,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 			return nil, fmt.Errorf("failed to create app config: %w", err)
 		}
 		httpClient := i.Client(ctx)
-		ghc, err := githubClientForHTTPClient(httpClient, logger)
+		ghc, err := githubClientForHTTPClient(httpClient, logger, spec.EnterpriseSettings)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create GitHub client for org %v: %w", auth.Org, err)
 		}
@@ -108,7 +106,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 	if spec.AccessToken != "" {
 		ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: spec.AccessToken})
 		httpClient := oauth2.NewClient(ctx, ts)
-		ghc, err := githubClientForHTTPClient(httpClient, logger)
+		ghc, err := githubClientForHTTPClient(httpClient, logger, spec.EnterpriseSettings)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create GitHub client for access token: %w", err)
 		}
@@ -186,11 +184,16 @@ func (c *Client) discoverRepositories(ctx context.Context, orgs []string, repos 
 	return orgRepos, nil
 }
 
-func githubClientForHTTPClient(httpClient *http.Client, logger zerolog.Logger) (*github.Client, error) {
+func githubClientForHTTPClient(httpClient *http.Client, logger zerolog.Logger, enterpriseSettings *EnterpriseSettings) (*github.Client, error) {
 	rateLimiter, err := github_ratelimit.NewRateLimitWaiterClient(httpClient.Transport, github_ratelimit.WithLimitDetectedCallback(limitDetectedCallback(logger)))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create rate limiter: %w", err)
 	}
+
+	if enterpriseSettings != nil {
+		return github.NewEnterpriseClient(enterpriseSettings.BaseURL, enterpriseSettings.UploadURL, rateLimiter)
+	}
+
 	return github.NewClient(rateLimiter), nil
 }
 

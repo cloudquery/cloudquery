@@ -253,6 +253,7 @@ func tables() []*schema.Table {
 		ecrpublic.Repositories(),
 		ecs.Clusters(),
 		ecs.TaskDefinitions(),
+		efs.AccessPoints(),
 		efs.Filesystems(),
 		eks.Clusters(),
 		elasticache.Clusters(),
