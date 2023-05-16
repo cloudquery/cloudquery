@@ -1,25 +1,28 @@
 package queries
 
 import (
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 type (
 	createTableQueryBuilder struct {
-		Table       string
-		Definitions Definitions
-		PrimaryKey  *pkQueryBuilder
+		Schema     string
+		Table      string
+		Columns    schema.ColumnList
+		PrimaryKey *pkQueryBuilder
 	}
 )
 
-func CreateTable(schemaName string, sc *arrow.Schema, pkEnabled bool) string {
+func CreateTable(schemaName string, table *schema.Table, pkEnabled bool) string {
 	builder := &createTableQueryBuilder{
-		Table:       SanitizedTableName(schemaName, sc),
-		Definitions: GetDefinitions(sc, pkEnabled),
+		Schema:  schemaName,
+		Table:   table.Name,
+		Columns: table.Columns,
 		PrimaryKey: &pkQueryBuilder{
-			Table:   SanitizedTableName(schemaName, sc),
-			Name:    pkConstraint(sc),
-			Columns: GetPKColumns(sc),
+			Schema:  schemaName,
+			Table:   table.Name,
+			Name:    pkConstraint(table),
+			Columns: table.PrimaryKeys(),
 		},
 	}
 
@@ -30,8 +33,9 @@ func CreateTable(schemaName string, sc *arrow.Schema, pkEnabled bool) string {
 	return execTemplate("create_table.sql.tpl", builder)
 }
 
-func DropTable(schemaName string, sc *arrow.Schema) string {
+func DropTable(schemaName string, table *schema.Table) string {
 	return execTemplate("drop_table.sql.tpl", &createTableQueryBuilder{
-		Table: SanitizedTableName(schemaName, sc),
+		Schema: schemaName,
+		Table:  table.Name,
 	})
 }

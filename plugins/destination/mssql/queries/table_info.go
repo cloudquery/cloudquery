@@ -4,10 +4,6 @@ import (
 	"database/sql"
 )
 
-func Database() string {
-	return `SELECT DB_NAME();`
-}
-
 func AllTables(schemaName string) (query string, params []any) {
 	return `SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = @schemaName AND TABLE_TYPE = 'BASE TABLE';`, []any{sql.Named("schemaName", schemaName)}
 }

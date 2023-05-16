@@ -1,1 +1,1 @@
-ALTER TABLE {{.Table}} ADD {{template "col_def.sql.tpl" .Definition}};
+ALTER TABLE {{sanitizeID .Schema .Table}} ADD {{template "col_def.sql.tpl" .Column}};
