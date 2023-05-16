@@ -27,11 +27,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		if boolVal, ok := val.(bool); ok {
 			b.Append(boolVal)
 		} else {
-			boolVal, err := strconv.ParseBool(val.(string))
-			if err != nil {
-				return fmt.Errorf("failed to parse bool: %w", err)
-			}
-			b.Append(boolVal)
+			return b.AppendValueFromString(val.(string))
 		}
 	case *array.Int8Builder:
 		u, err := strconv.ParseInt(val.(string), 10, 8)
