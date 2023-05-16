@@ -114,7 +114,7 @@ func (c *Client) reverseTransformCockroach(f arrow.Field, bldr array.Builder, va
 		b.Append(true)
 		valBuilder := b.ValueBuilder()
 		for _, v := range val.([]any) {
-			if err := c.reverseTransform(f, valBuilder, v); err != nil {
+			if err := c.reverseTransformCockroach(f, valBuilder, v); err != nil {
 				return err
 			}
 		}

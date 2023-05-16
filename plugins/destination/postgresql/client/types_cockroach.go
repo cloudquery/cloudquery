@@ -56,7 +56,7 @@ func (c *Client) CockroachToSchemaType(t string) arrow.DataType {
 	switch t {
 	case "boolean":
 		return arrow.FixedWidthTypes.Boolean
-	case "bigint", "int", "oid", "serial":
+	case "bigint", "int", "oid", "serial", "integer":
 		return arrow.PrimitiveTypes.Int64
 	case "decimal", "float", "real", "double precision":
 		return arrow.PrimitiveTypes.Float64
