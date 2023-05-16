@@ -19,9 +19,17 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	}
 	defer closer()
 
+	cqTimeIndex := -1
+	for i := range table.Columns {
+		if table.Columns[i].Name == schema.CqSyncTimeColumn.Name {
+			cqTimeIndex = i
+			break
+		}
+	}
+
 	rows := make([]map[string]any, 0)
 	for _, record := range records {
-		rows = append(rows, transformValues(record)...)
+		rows = append(rows, transformValues(record, cqTimeIndex)...)
 	}
 
 	pks := table.PrimaryKeys()
