@@ -5,6 +5,41 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.3.0...cli-v3.3.1) (2023-05-15)
+
+
+### Bug Fixes
+
+* **cli:** Send sync time to new sources ([#10796](https://github.com/cloudquery/cloudquery/issues/10796)) ([8d9b5be](https://github.com/cloudquery/cloudquery/commit/8d9b5be519f6da469f71ae6ce485e710d220e340))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
+## [3.3.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.2.1...cli-v3.3.0) (2023-05-15)
+
+
+### Features
+
+* **cli:** Support V2 sources and V1 destinations ([#10785](https://github.com/cloudquery/cloudquery/issues/10785)) ([e01db3b](https://github.com/cloudquery/cloudquery/commit/e01db3bc5348833865efc9b0c1ea5ab7575f3e5b))
+
+## [3.2.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.2.0...cli-v3.2.1) (2023-05-09)
+
+
+### Bug Fixes
+
+* **cli:** Close send after write ([#10688](https://github.com/cloudquery/cloudquery/issues/10688)) ([420bb36](https://github.com/cloudquery/cloudquery/commit/420bb36e0edb68a81e899cf196bbecb0344212e9))
+* Fix typos in CLI output text and logs ([#10686](https://github.com/cloudquery/cloudquery/issues/10686)) ([ab7870a](https://github.com/cloudquery/cloudquery/commit/ab7870a551414cad73e9542dcc2360296ee93568))
+
+## [3.2.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.1.0...cli-v3.2.0) (2023-05-09)
+
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+
+
+### Bug Fixes
+
+* **cli:** Fix panic in no-migrate mode ([#10636](https://github.com/cloudquery/cloudquery/issues/10636)) ([083cba8](https://github.com/cloudquery/cloudquery/commit/083cba872ed9665551440484537e6b5e384f78f1))
+
 ## [3.1.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.0.2...cli-v3.1.0) (2023-05-08)
 
 

@@ -45,9 +45,15 @@ This is the (nested) spec used by GCP Source Plugin
 
 - `project_filter` (string) (default: empty).
 
-  A filter to determine the projects that are synced. For instance, to only sync projects where the name starts with `how-`,
-  set `project_filter` to `name:how-*`. Another example is: `"name:how-* OR name:test-*"`. For syntax and example queries refer to API Reference [here](https://cloud.google.com/resource-manager/reference/rest/v1/projects/list#google.cloudresourcemanager.v1.Projects.ListProjects).
-  Mutually exclusive with `folder_ids`.
+  A filter to determine the projects that are synced, mutually exclusive with `folder_ids`. For instance, to only sync projects where the name starts with `how-`,
+  set `project_filter` to `name:how-*`. 
+  
+  More examples:
+    - `"name:how-* OR name:test-*"` matches projects starting with `how-` or `test-`
+    - `"NOT name:test-*"` matches all projects *not* starting with `test-`
+  
+  For syntax and example queries refer to API References [here](https://cloud.google.com/resource-manager/reference/rest/v1/projects/list#google.cloudresourcemanager.v1.Projects.ListProjects) and [here](https://cloud.google.com/sdk/gcloud/reference/topic/filters).
+  
 
 - `organization_ids` ([]string) (default: empty. will use all organizations available to the current authenticated account)
 

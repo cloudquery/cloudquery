@@ -56,6 +56,21 @@ func buildStacks(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	var template cloudformation.GetTemplateOutput
+	if err := faker.FakeObject(&template); err != nil {
+		t.Fatal(err)
+	}
+	template.TemplateBody = aws.String(`{"foo": "bar"}`) // Required as faker doesn't handle this.
+
+	mock.EXPECT().GetTemplate(
+		gomock.Any(),
+		&cloudformation.GetTemplateInput{StackName: stack.StackName},
+		gomock.Any(),
+	).Return(
+		&template,
+		nil,
+	)
+
 	return client.Services{Cloudformation: mock}
 }
 

@@ -14,7 +14,7 @@ func remediationConfigurations() *schema.Table {
 	tableName := "aws_config_remediation_configurations"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeRemediationConfigurations.html`,
+		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_RemediationConfiguration.html`,
 		Resolver:    fetchRemediationConfigurations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		Transform: transformers.TransformWithStruct(&types.RemediationConfiguration{},

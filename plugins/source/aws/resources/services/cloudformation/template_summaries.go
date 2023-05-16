@@ -30,6 +30,11 @@ func templateSummaries() *schema.Table {
 				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
+				Name:            "stack_arn",
+				Type:            schema.TypeString,
+				Resolver:        schema.ParentColumnResolver("arn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true}},
+			{
 				Name:     "metadata",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Metadata"),
@@ -46,6 +51,8 @@ func fetchTemplateSummary(ctx context.Context, meta schema.ClientMeta, parent *s
 
 	summary, err := svc.GetTemplateSummary(ctx, &cloudformation.GetTemplateSummaryInput{
 		StackName: stack.StackName,
+	}, func(o *cloudformation.Options) {
+		o.Region = c.Region
 	})
 	if err != nil {
 		return err

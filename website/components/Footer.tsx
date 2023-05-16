@@ -50,13 +50,13 @@ const navigation = {
     { name: "GitHub", href: "https://github.com/cloudquery/cloudquery" },
     { name: "Twitter", href: "https://twitter.com/cloudqueryio" },
     { name: "Brand Logo", href: "/logo" },
+    { name: "Careers", href: "https://cloudquery.notion.site/Job-Board-76c28ed942054d72993a29fa0ff52a98"}
   ],
   legal: [
     { name: "Privacy Policy", href: "/privacy" },
     { name: "Terms of Use", href: "/terms" },
   ],
 };
-
 
 interface Page {
   name: string;

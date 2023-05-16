@@ -10,11 +10,13 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 
 	"github.com/cloudquery/cloudquery/cli/internal/download"
 	"github.com/cloudquery/cloudquery/cli/internal/logging"
+	"github.com/cloudquery/plugin-pb-go/pb/discovery/v0"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog"
 	"golang.org/x/exp/slices"
@@ -140,7 +142,7 @@ func NewClient(ctx context.Context, spec specs.Destination, opts ...Option) (*Cl
 			),
 		)
 		if err != nil {
-			return nil, fmt.Errorf("failed to dial grpc source plugin at %s: %w", spec.Path, err)
+			return nil, fmt.Errorf("failed to dial grpc destination plugin at %s: %w", spec.Path, err)
 		}
 	case specs.RegistryLocal:
 		if err := c.startLocal(ctx, spec.Path); err != nil {
@@ -226,6 +228,24 @@ func (c *Client) startLocal(ctx context.Context, path string) error {
 	return nil
 }
 
+func (c *Client) Versions(ctx context.Context) ([]int, error) {
+	discoveryClient := discovery.NewDiscoveryClient(c.Conn)
+	versionsRes, err := discoveryClient.GetVersions(ctx, &discovery.GetVersions_Request{})
+	if err != nil {
+		return nil, err
+	}
+	versions := make([]int, len(versionsRes.Versions))
+	for i, vStr := range versionsRes.Versions {
+		vStr = strings.TrimPrefix(vStr, "v")
+		v, err := strconv.ParseInt(vStr, 10, 64)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse version %s: %w", vStr, err)
+		}
+		versions[i] = int(v)
+	}
+	return versions, nil
+}
+
 func (c *Client) Terminate() error {
 	// wait for log streaming to complete before returning from this function
 	defer c.wg.Wait()
@@ -233,14 +253,14 @@ func (c *Client) Terminate() error {
 	if c.grpcSocketName != "" {
 		defer func() {
 			if err := os.RemoveAll(c.grpcSocketName); err != nil {
-				c.logger.Error().Err(err).Msg("failed to remove source socket file")
+				c.logger.Error().Err(err).Msg("failed to remove destination socket file")
 			}
 		}()
 	}
 
 	if c.Conn != nil {
 		if err := c.Conn.Close(); err != nil {
-			c.logger.Error().Err(err).Msg("failed to close gRPC connection to source plugin")
+			c.logger.Error().Err(err).Msg("failed to close gRPC connection to destination plugin")
 		}
 		c.Conn = nil
 	}

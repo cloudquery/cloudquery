@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/oracle
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-pb-go v1.0.5
+	github.com/cloudquery/plugin-pb-go v1.0.8
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/oracle/oci-go-sdk/v65 v65.28.3
