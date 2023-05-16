@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [7.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.4.1...plugins-source-azure-v7.5.0) (2023-05-16)
 
 
+### This Release has the Following Changes to Tables
+- Table `azure_sql_server_advanced_threat_protection_settings` was added
+
 ### Features
 
 * **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
