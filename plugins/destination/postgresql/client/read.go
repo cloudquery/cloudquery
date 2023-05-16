@@ -149,7 +149,7 @@ func (c *Client) reverseTransformer(table *schema.Table, values []any) (arrow.Re
 		} else {
 			if err := c.reverseTransformCockroach(f, bldr.Field(i), values[i]); err != nil {
 				return nil, err
-			}	
+			}
 		}
 	}
 	rec := bldr.NewRecord()

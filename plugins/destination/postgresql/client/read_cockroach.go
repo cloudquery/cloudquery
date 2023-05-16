@@ -15,7 +15,6 @@ import (
 	"github.com/google/uuid"
 )
 
-
 func (c *Client) reverseTransformCockroach(f arrow.Field, bldr array.Builder, val any) error {
 	if val == nil {
 		bldr.AppendNull()
