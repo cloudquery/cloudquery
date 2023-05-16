@@ -2,5 +2,5 @@
 {{- range .}}
   {{- if $first}}{{$first = false}}  {{else}},
   {{end -}}
-  [src].{{.}}
+  [src].{{sanitizeID .}}
 {{- end -}}
