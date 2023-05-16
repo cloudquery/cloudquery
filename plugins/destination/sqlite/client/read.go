@@ -127,7 +127,7 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 			} else {
 				bldr.Field(i).(*array.StringBuilder).Append(val.(*sql.NullString).String)
 			}
-		case arrow.BINARY:
+		case arrow.BINARY, arrow.LARGE_BINARY:
 			if *val.(*[]byte) == nil {
 				bldr.Field(i).AppendNull()
 			} else {
