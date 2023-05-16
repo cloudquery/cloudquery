@@ -44,7 +44,9 @@ func fetchGlueDevEndpoints(ctx context.Context, meta schema.ClientMeta, parent *
 	svc := cl.Services().Glue
 	paginator := glue.NewGetDevEndpointsPaginator(svc, &glue.GetDevEndpointsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil
@@ -64,6 +66,8 @@ func resolveGlueDevEndpointTags(ctx context.Context, meta schema.ClientMeta, res
 	svc := cl.Services().Glue
 	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
 		ResourceArn: aws.String(devEndpointARN(cl, aws.ToString(resource.Item.(types.DevEndpoint).EndpointName))),
+	}, func(options *glue.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {

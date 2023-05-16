@@ -1,5 +1,42 @@
 # Changelog
 
+## [3.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v3.0.1...plugins-destination-file-v3.0.2) (2023-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v12 digest to 0ea1a10 ([#10461](https://github.com/cloudquery/cloudquery/issues/10461)) ([022709f](https://github.com/cloudquery/cloudquery/commit/022709f710cc6d95aee60260d6f58991698bbf42))
+
+## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v3.0.0...plugins-destination-file-v3.0.1) (2023-04-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes/v2 to v2.0.4 ([#10451](https://github.com/cloudquery/cloudquery/issues/10451)) ([6b6867e](https://github.com/cloudquery/cloudquery/commit/6b6867e91556b69a1471a1b43585cce6820c5cd3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.0 ([#10390](https://github.com/cloudquery/cloudquery/issues/10390)) ([f706688](https://github.com/cloudquery/cloudquery/commit/f706688b2f5b8393d09d57020d31fb1d280f0dbd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.1 ([#10448](https://github.com/cloudquery/cloudquery/issues/10448)) ([cc85b93](https://github.com/cloudquery/cloudquery/commit/cc85b939fe945939caf72f8c08095e1e744b9ee8))
+* **file:** Always create directories after processing path variables ([#10388](https://github.com/cloudquery/cloudquery/issues/10388)) ([65bdf8c](https://github.com/cloudquery/cloudquery/commit/65bdf8c8eb5749a0612f788e356f943f9fcbbf51))
+
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v2.0.1...plugins-destination-file-v3.0.0) (2023-04-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes for CSV or JSON output formats, however the Parquet output changes for UUID columns, which now have dashes, and timestamps, which now uses the default Arrow time format (e.g. `2023-01-02 12:23:45`). If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose).
+
+### Features
+
+* Introduce `path` parameter with placeholder variables to replace `directory`. Please consider updating your config to use `path` instead of `directory`. ([881a11c](https://github.com/cloudquery/cloudquery/commit/881a11c1ccc3a25dc9df2612965b7b6183fc4275))
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([881a11c](https://github.com/cloudquery/cloudquery/commit/881a11c1ccc3a25dc9df2612965b7b6183fc4275))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes/v2 to v2.0.3 ([#10277](https://github.com/cloudquery/cloudquery/issues/10277)) ([1988c5a](https://github.com/cloudquery/cloudquery/commit/1988c5a38a32a10bc65a47d092045cc8d5b02394))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.45.0 ([#9863](https://github.com/cloudquery/cloudquery/issues/9863)) ([2799d62](https://github.com/cloudquery/cloudquery/commit/2799d62518283ac304beecda9478f8f2db43cdc5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.8 ([#10260](https://github.com/cloudquery/cloudquery/issues/10260)) ([53cbd9a](https://github.com/cloudquery/cloudquery/commit/53cbd9acd3e2fded9c002909e478010ae8371fe4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.4.0 ([#10278](https://github.com/cloudquery/cloudquery/issues/10278)) ([a0a713e](https://github.com/cloudquery/cloudquery/commit/a0a713e8490b970b9d8bfaa1b50e01f43ff51c36))
+
 ## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v2.0.0...plugins-destination-file-v2.0.1) (2023-04-04)
 
 

@@ -8,9 +8,10 @@ import (
 
 func Domains() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_domains",
-		Resolver:  fetchDomainsDomains,
-		Transform: transformers.TransformWithStruct(&godo.Domain{}),
+		Name:        "digitalocean_domains",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#operation/domains_list",
+		Resolver:    fetchDomainsDomains,
+		Transform:   transformers.TransformWithStruct(&godo.Domain{}),
 		Columns: []schema.Column{
 			{
 				Name:     "name",

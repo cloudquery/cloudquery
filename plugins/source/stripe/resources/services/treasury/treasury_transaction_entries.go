@@ -14,7 +14,7 @@ import (
 func TreasuryTransactionEntries() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_treasury_transaction_entries",
-		Description: `https://stripe.com/docs/api/treasury_transaction_entries`,
+		Description: `https://stripe.com/docs/api/treasury/transaction_entries`,
 		Transform:   client.TransformWithStruct(&stripe.TreasuryTransactionEntry{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchTreasuryTransactionEntries,
 

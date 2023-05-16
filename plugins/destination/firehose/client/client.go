@@ -8,9 +8,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 
-	"github.com/cloudquery/filetypes"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
 	"github.com/rs/zerolog"
 )
 
@@ -21,7 +20,6 @@ type Client struct {
 	pluginSpec     Spec
 	metrics        destination.Metrics
 	firehoseClient *firehose.Client
-	*filetypes.Client
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
@@ -50,12 +48,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	}
 
 	c.firehoseClient = firehose.NewFromConfig(cfg)
-
-	filetypesClient, err := filetypes.NewClient(c.pluginSpec.FileSpec)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
-	}
-	c.Client = filetypesClient
 
 	return c, nil
 }

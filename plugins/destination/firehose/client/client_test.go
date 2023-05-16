@@ -3,8 +3,8 @@ package client
 import (
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
 )
 
 const streamARN = "cq-playground-test"
@@ -21,11 +21,12 @@ func TestPluginJSON(t *testing.T) {
 			},
 		},
 		destination.PluginTestSuiteTests{
-			SkipAppend:                true,
-			SkipDeleteStale:           true,
-			SkipMigrateAppend:         true,
 			SkipOverwrite:             true,
+			SkipDeleteStale:           true,
+			SkipAppend:                true,
 			SkipSecondAppend:          true,
+			SkipMigrateAppend:         true,
+			SkipMigrateAppendForce:    true,
 			SkipMigrateOverwrite:      true,
 			SkipMigrateOverwriteForce: true,
 		},

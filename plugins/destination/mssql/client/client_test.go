@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
 )
 
 var migrateStrategy = destination.MigrateStrategy{

@@ -28,6 +28,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cognito"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/computeoptimizer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/config"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/costexplorer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dax"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/directconnect"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms"
@@ -67,6 +68,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mq"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mwaa"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/neptune"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/networkfirewall"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/organizations"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/quicksight"
@@ -175,8 +177,13 @@ func tables() []*schema.Table {
 		computeoptimizer.EnrollmentStatuses(),
 		computeoptimizer.LambdaFunctionsRecommendations(),
 		config.ConfigRules(),
+		config.ConfigurationAggregators(),
 		config.ConfigurationRecorders(),
 		config.ConformancePacks(),
+		config.DeliveryChannels(),
+		config.RetentionConfigurations(),
+		costexplorer.ThirtyDayCost(),
+		costexplorer.ThirtyDayCostForecast(),
 		dax.Clusters(),
 		directconnect.Connections(),
 		directconnect.Gateways(),
@@ -373,6 +380,8 @@ func tables() []*schema.Table {
 		neptune.GlobalClusters(),
 		neptune.Instances(),
 		neptune.SubnetGroups(),
+		networkfirewall.FirewallPolicies(),
+		networkfirewall.RuleGroups(),
 		organizations.Accounts(),
 		organizations.DelegatedAdministrators(),
 		organizations.OrganizationalUnits(),
@@ -437,7 +446,9 @@ func tables() []*schema.Table {
 		scheduler.ScheduleGroups(),
 		scheduler.Schedules(),
 		secretsmanager.Secrets(),
+		securityhub.EnabledStandards(),
 		securityhub.Findings(),
+		securityhub.Hubs(),
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),

@@ -12,7 +12,7 @@ import (
 func BillingPortalConfigurations() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_billing_portal_configurations",
-		Description: `https://stripe.com/docs/api/billing_portal_configurations`,
+		Description: `https://stripe.com/docs/api/customer_portal/configuration`,
 		Transform:   client.TransformWithStruct(&stripe.BillingPortalConfiguration{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchBillingPortalConfigurations,
 

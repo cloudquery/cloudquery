@@ -35,14 +35,17 @@ tables:
   - gcp_log_metric_filters
   - gcp_logging_metrics
   - gcp_logging_sinks
+  - gcp_monitoring_alert_policies
   - gcp_project_policy_members
   - gcp_public_buckets_accesses
   - gcp_resourcemanager_project_policies
   - gcp_sql_instances
+  - gcp_storage_bucket_policies
   - gcp_storage_buckets
 ```
 
 ### Queries
+
 GCP CIS v1.2.0 performs the following checks:
   - Ensure that there are only GCP-managed service account keys for each service account (Automated)
   - Ensure that Service Account has no Admin privileges (Automated)
@@ -115,3 +118,14 @@ GCP CIS v1.2.0 performs the following checks:
   - Ensure that BigQuery datasets are not anonymously or publicly accessible (Automated)
   - Ensure that a Default Customer-managed encryption key (CMEK) is specified for all BigQuery Data Sets (Automated)
   - Ensure that all BigQuery Tables are encrypted with Customer-managed encryption key (CMEK) (Automated)
+
+### Dependent Views
+
+GCP CIS v1.2.0 depends on the following views:
+
+  - gcp_firewall_allowed_rules<sup>*</sup>
+  - gcp_log_metric_filters<sup>*</sup>
+  - gcp_project_policy_members<sup>*</sup>
+  - gcp_public_buckets_accesses<sup>*</sup>
+
+  <sup>*</sup> These views are automatically created or updated by this policy.

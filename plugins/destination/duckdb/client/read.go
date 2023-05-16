@@ -1,106 +1,57 @@
 package client
 
 import (
+	"bufio"
 	"context"
-	"database/sql"
 	"fmt"
-	"strings"
+	"os"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/marcboeker/go-duckdb"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
-const (
-	readSQL = `SELECT %s FROM "%s" WHERE _cq_source_name = $1 order by _cq_sync_time asc`
-)
-
-func (*Client) createResultsArray(table *schema.Table) []any {
-	results := make([]any, 0, len(table.Columns))
-	for _, col := range table.Columns {
-		switch col.Type {
-		case schema.TypeBool:
-			var r *bool
-			results = append(results, &r)
-		case schema.TypeInt:
-			var r *int
-			results = append(results, &r)
-		case schema.TypeFloat:
-			var r *float64
-			results = append(results, &r)
-		case schema.TypeUUID:
-			var r []byte
-			results = append(results, &r)
-		case schema.TypeString:
-			var r *string
-			results = append(results, &r)
-		case schema.TypeByteArray:
-			var r sql.RawBytes
-			results = append(results, &r)
-		case schema.TypeStringArray:
-			var r duckdb.Composite[[]string]
-			results = append(results, &r)
-		case schema.TypeTimestamp:
-			var r *string
-			results = append(results, &r)
-		case schema.TypeJSON:
-			var r string
-			results = append(results, &r)
-		case schema.TypeUUIDArray:
-			var r duckdb.Composite[[][]byte]
-			results = append(results, &r)
-		case schema.TypeCIDR:
-			var r *string
-			results = append(results, &r)
-		case schema.TypeCIDRArray:
-			var r duckdb.Composite[[]string]
-			results = append(results, &r)
-		case schema.TypeMacAddr:
-			var r *string
-			results = append(results, &r)
-		case schema.TypeMacAddrArray:
-			var r duckdb.Composite[[]string]
-			results = append(results, &r)
-		case schema.TypeInet:
-			var r *string
-			results = append(results, &r)
-		case schema.TypeInetArray:
-			var r duckdb.Composite[[]string]
-			results = append(results, &r)
-		case schema.TypeIntArray:
-			var r duckdb.Composite[[]int]
-			results = append(results, &r)
-		}
-	}
-	return results
-}
-
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
-	colNames := make([]string, 0, len(table.Columns))
-	for _, col := range table.Columns {
-		colNames = append(colNames, `"`+col.Name+`"`)
-	}
-	cols := strings.Join(colNames, ", ")
-	rows, err := c.db.Query(fmt.Sprintf(readSQL, cols, table.Name), sourceName)
+func (c *Client) Read(ctx context.Context, sc *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
+	tableName := schema.TableName(sc)
+	f, err := os.CreateTemp("", fmt.Sprintf("%s-*.json", tableName))
 	if err != nil {
 		return err
 	}
-	defer rows.Close()
-	for rows.Next() {
-		values := c.createResultsArray(table)
-		if err := rows.Scan(values...); err != nil {
-			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
-		}
-		for i := range values {
-			switch v := values[i].(type) {
-			case *duckdb.Composite[[]string]:
-				values[i] = v.Get()
-			case *duckdb.Composite[[][]byte]:
-				values[i] = v.Get()
-			case *duckdb.Composite[[]int]:
-				values[i] = v.Get()
-			}
-		}
-		res <- values
+
+	defer os.Remove(f.Name())
+
+	fName := f.Name()
+	if err := f.Close(); err != nil {
+		return err
 	}
+
+	_, err = c.db.Exec("copy " + tableName + " to '" + f.Name() + "' (timestampformat '%Y-%m-%d %H:%M:%S.%f')")
+	if err != nil {
+		return err
+	}
+	f, err = os.Open(fName)
+	if err != nil {
+		return err
+	}
+
+	// Create a new scanner to read the file
+	scanner := bufio.NewScanner(f)
+
+	// Loop through the scanner, reading line by line
+	for scanner.Scan() {
+		line := scanner.Bytes()
+		bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
+		if err := bldr.UnmarshalJSON(line); err != nil {
+			return err
+		}
+		res <- bldr.NewRecord()
+	}
+
+	// Check for errors
+	if err := scanner.Err(); err != nil {
+		return fmt.Errorf("error reading temporary json file: %s", err)
+	}
+
 	return nil
 }

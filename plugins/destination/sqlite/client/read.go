@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/apache/arrow/go/v12/arrow/array"
-	"github.com/apache/arrow/go/v12/arrow/memory"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
@@ -42,7 +42,6 @@ func (*Client) createResultsArray(table *arrow.Schema) []any {
 
 func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
-	defer bldr.Release()
 	for i, val := range values {
 		switch sc.Field(i).Type.ID() {
 		case arrow.BOOL:

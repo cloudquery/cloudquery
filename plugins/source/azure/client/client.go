@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 	"sync"
@@ -11,12 +12,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 	"github.com/thoas/go-funk"
 	"golang.org/x/exp/maps"
@@ -42,7 +46,14 @@ type Client struct {
 	Creds         azcore.TokenCredential
 	Options       *arm.ClientOptions
 
-	pluginSpec *Spec
+	pluginSpec      *Spec
+	BillingAccounts []*armbilling.Account
+	BillingAccount  *armbilling.Account
+	BillingProfile  *armbilling.Profile
+	BillingPeriods  map[string][]*armbilling.Period
+	BillingPeriod   *armbilling.Period
+
+	storageAccountKeys *sync.Map
 }
 
 func (c *Client) discoverSubscriptions(ctx context.Context) error {
@@ -114,6 +125,63 @@ func (c *Client) getRegisteredProvidersForSubscription(ctx context.Context, subs
 	return providers, nil
 }
 
+func (c *Client) discoverBillingAccounts(ctx context.Context) error {
+	accounts := make([]*armbilling.Account, 0)
+	svc, err := armbilling.NewAccountsClient(c.Creds, c.Options)
+	if err != nil {
+		return err
+	}
+	pager := svc.NewListPager(&armbilling.AccountsClientListOptions{Expand: to.Ptr("soldTo,billingProfiles,billingProfiles/invoiceSections")})
+	for pager.More() {
+		p, err := pager.NextPage(ctx)
+		if err != nil {
+			return err
+		}
+		accounts = append(accounts, p.Value...)
+	}
+	c.BillingAccounts = accounts
+	return nil
+}
+
+func (c *Client) discoverBillingPeriods(ctx context.Context) error {
+	billingPeriods := make(map[string][]*armbilling.Period, len(c.subscriptions))
+	errorGroup, gtx := errgroup.WithContext(ctx)
+	errorGroup.SetLimit(c.pluginSpec.DiscoveryConcurrency)
+
+	periodsLock := sync.Mutex{}
+
+	for _, subID := range c.subscriptions {
+		subID := subID
+		errorGroup.Go(func() error {
+			periods := make([]*armbilling.Period, 0)
+			svc, err := armbilling.NewPeriodsClient(subID, c.Creds, c.Options)
+			if err != nil {
+				return err
+			}
+			pager := svc.NewListPager(nil)
+			for pager.More() {
+				p, err := pager.NextPage(gtx)
+				if err != nil {
+					return err
+				}
+				periods = append(periods, p.Value...)
+			}
+
+			periodsLock.Lock()
+			defer periodsLock.Unlock()
+			billingPeriods[subID] = periods
+
+			return nil
+		})
+	}
+	err := errorGroup.Wait()
+	if err != nil {
+		return err
+	}
+	c.BillingPeriods = billingPeriods
+	return nil
+}
+
 func (c *Client) discoverResourceGroups(ctx context.Context) error {
 	c.ResourceGroups = make(map[string][]*armresources.ResourceGroup, len(c.subscriptions))
 	c.registeredNamespaces = make(map[string]map[string]bool, len(c.subscriptions))
@@ -180,9 +248,10 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 
 	uniqueSubscriptions := funk.Uniq(spec.Subscriptions).([]string)
 	c := &Client{
-		logger:        logger,
-		subscriptions: uniqueSubscriptions,
-		pluginSpec:    &spec,
+		logger:             logger,
+		subscriptions:      uniqueSubscriptions,
+		pluginSpec:         &spec,
+		storageAccountKeys: &sync.Map{},
 	}
 
 	if spec.CloudName != "" {
@@ -233,6 +302,14 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		return nil, err
 	}
 
+	if err := c.discoverBillingAccounts(ctx); err != nil {
+		c.logger.Warn().Err(err).Msg("failed to discover billing accounts (skipping)")
+	}
+
+	if err := c.discoverBillingPeriods(ctx); err != nil {
+		c.logger.Warn().Err(err).Msg("failed to discover billing periods (skipping)")
+	}
+
 	return c, nil
 }
 
@@ -243,6 +320,15 @@ func (c *Client) Logger() *zerolog.Logger {
 func (c *Client) ID() string {
 	if c.ResourceGroup != "" {
 		return fmt.Sprintf("subscriptions/%s/resourceGroups/%s", c.SubscriptionId, c.ResourceGroup)
+	}
+	if c.BillingProfile != nil {
+		return fmt.Sprintf("billingAccounts/%s/billingProfiles/%s", *c.BillingAccount.Name, *c.BillingProfile.Name)
+	}
+	if c.BillingAccount != nil {
+		return fmt.Sprintf("billingAccounts/%s", *c.BillingAccount.Name)
+	}
+	if c.BillingPeriod != nil {
+		return fmt.Sprintf("subscriptions/%s/billingPeriods/%s", c.SubscriptionId, *c.BillingPeriod.Name)
 	}
 	return fmt.Sprintf("subscriptions/%s", c.SubscriptionId)
 }
@@ -260,4 +346,55 @@ func (c *Client) withResourceGroup(resourceGroup string) *Client {
 	newC.logger = c.logger.With().Str("resource_group", resourceGroup).Logger()
 	newC.ResourceGroup = resourceGroup
 	return &newC
+}
+
+func (c *Client) withBillingAccount(billingAccount *armbilling.Account) *Client {
+	newC := *c
+	newC.logger = c.logger.With().Str("billing_account", *billingAccount.ID).Logger()
+	newC.BillingAccount = billingAccount
+	return &newC
+}
+
+func (c *Client) withBillingProfile(billingProfile *armbilling.Profile) *Client {
+	newC := *c
+	newC.logger = c.logger.With().Str("billing_profile", *billingProfile.ID).Logger()
+	newC.BillingProfile = billingProfile
+	return &newC
+}
+
+func (c *Client) withBillingPeriod(billingPeriod *armbilling.Period) *Client {
+	newC := *c
+	newC.logger = c.logger.With().Str("billing_period", *billingPeriod.ID).Logger()
+	newC.BillingPeriod = billingPeriod
+	return &newC
+}
+
+var ErrNoStorageKeysFound = errors.New("no storage keys found")
+
+func (c *Client) GetStorageAccountKey(ctx context.Context, acc *armstorage.Account) (string, error) {
+	key, err := loadOrStore(c.storageAccountKeys, *acc.Name, func() (any, error) {
+		svc, err := armstorage.NewAccountsClient(c.SubscriptionId, c.Creds, c.Options)
+		if err != nil {
+			return nil, err
+		}
+
+		group, err := ParseResourceGroup(*acc.ID)
+		if err != nil {
+			return nil, err
+		}
+
+		keysResponse, err := svc.ListKeys(ctx, group, *acc.Name, nil)
+		if err != nil {
+			return nil, err
+		}
+
+		if len(keysResponse.Keys) == 0 {
+			return nil, ErrNoStorageKeysFound
+		}
+		return *keysResponse.Keys[0].Value, nil
+	})
+	if key == nil {
+		return "", err
+	}
+	return key.(string), err
 }

@@ -4,28 +4,29 @@ import (
 	"crypto/sha256"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/google/uuid"
 )
 
 const hashColumnName = "_cq_pk_hash_uuid"
 
-func hashUUID(table *schema.Table) func(item []any) string {
-	names := table.PrimaryKeys()
-	if len(names) == 0 {
-		return func([]any) string { return uuid.New().String() }
+func hashUUID(sc *arrow.Schema) func(map[string]any) string {
+	pk := schema.PrimaryKeyIndices(sc)
+	if len(pk) == 0 {
+		return func(map[string]any) string { return uuid.New().String() }
 	}
 
-	idx := make(map[string]int)
-	for _, name := range names {
-		idx[name] = table.Columns.Index(name)
+	names := make([]string, len(pk))
+	for i, idx := range pk {
+		names[i] = sc.Field(idx).Name
 	}
 
-	return func(item []any) string {
+	return func(row map[string]any) string {
 		h := sha256.New()
-		for name, i := range idx {
+		for _, name := range names {
 			h.Write([]byte(name))
-			h.Write([]byte(fmt.Sprint(item[i])))
+			h.Write([]byte(fmt.Sprint(row[name])))
 		}
 		return uuid.NewSHA1(uuid.UUID{}, h.Sum(nil)).String()
 	}

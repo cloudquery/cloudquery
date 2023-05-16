@@ -102,6 +102,7 @@ IPs
 json
 JSON
 jsonb
+Kestra
 keyless
 Kibana
 Kinesis
@@ -116,6 +117,7 @@ meilisearch
 Metabase
 Metastore
 Mixpanel
+Minikube
 Monorepo
 NACL
 NACLs
@@ -125,6 +127,7 @@ oad
 OAuth
 okta
 Okta
+Onfleet
 OpenAPI
 OUs
 parallelization

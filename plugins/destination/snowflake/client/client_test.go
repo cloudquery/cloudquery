@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
 )
 
 func TestPlugin(t *testing.T) {

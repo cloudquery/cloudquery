@@ -5,6 +5,97 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.4.0...plugins-source-azure-v7.4.1) (2023-05-04)
+
+
+### Bug Fixes
+
+* **azure:** Storage Queue ACL should use storage keys and not OAuth ([#10554](https://github.com/cloudquery/cloudquery/issues/10554)) ([f590947](https://github.com/cloudquery/cloudquery/commit/f590947460cdec7b61a1d773dbfa8b8bf03dc98c))
+
+## [7.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.3.0...plugins-source-azure-v7.4.0) (2023-05-01)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_security_sub_assessments` was added
+- Table `azure_storage_queue_acl` was added
+
+### Features
+
+* **azure-resources:** Add `azure_security_sub_assessments` ([#10378](https://github.com/cloudquery/cloudquery/issues/10378)) ([68ec55b](https://github.com/cloudquery/cloudquery/commit/68ec55b8ddffbd8ed5c88cd8aeacf946bd3d1d56))
+* **azure-resources:** Add `azure_storage_queue_acl` table ([#10323](https://github.com/cloudquery/cloudquery/issues/10323)) ([b025adb](https://github.com/cloudquery/cloudquery/commit/b025adbf65404d569a52a66f39d5c3261d677e82))
+* **azure-resources:** Include signedIdentifiers in `azure_storage_tables` ([#10300](https://github.com/cloudquery/cloudquery/issues/10300)) ([d8a2a7b](https://github.com/cloudquery/cloudquery/commit/d8a2a7b80b15f7eb76be0d22d1c5797976d205da)), closes [#10142](https://github.com/cloudquery/cloudquery/issues/10142)
+
+
+### Bug Fixes
+
+* **azure:** Improve the query of CIS Azure v1.3.0 Section 7.7 ([#10012](https://github.com/cloudquery/cloudquery/issues/10012)) ([e206526](https://github.com/cloudquery/cloudquery/commit/e206526774b7587eb1d0b568a552158826de34cb))
+* **deps:** Update github.com/apache/arrow/go/v12 digest to 0ea1a10 ([#10461](https://github.com/cloudquery/cloudquery/issues/10461)) ([022709f](https://github.com/cloudquery/cloudquery/commit/022709f710cc6d95aee60260d6f58991698bbf42))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.0 ([#10390](https://github.com/cloudquery/cloudquery/issues/10390)) ([f706688](https://github.com/cloudquery/cloudquery/commit/f706688b2f5b8393d09d57020d31fb1d280f0dbd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.1 ([#10448](https://github.com/cloudquery/cloudquery/issues/10448)) ([cc85b93](https://github.com/cloudquery/cloudquery/commit/cc85b939fe945939caf72f8c08095e1e744b9ee8))
+
+## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.2.0...plugins-source-azure-v7.3.0) (2023-04-25)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_network_private_link_services` was added
+
+### Features
+
+* **azure-resources:** Add Network Private Link Services ([#10261](https://github.com/cloudquery/cloudquery/issues/10261)) ([c3a507c](https://github.com/cloudquery/cloudquery/commit/c3a507cb8573e27990a0db8055d7066023bbb428))
+
+
+### Bug Fixes
+
+* **azure-consumption:** Update Price Sheets next link on new response when paginating ([#10290](https://github.com/cloudquery/cloudquery/issues/10290)) ([4c91468](https://github.com/cloudquery/cloudquery/commit/4c914688551b4bf606110dc570c19c220fefbfb2))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.4.0 ([#10278](https://github.com/cloudquery/cloudquery/issues/10278)) ([a0a713e](https://github.com/cloudquery/cloudquery/commit/a0a713e8490b970b9d8bfaa1b50e01f43ff51c36))
+
+## [7.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.1.1...plugins-source-azure-v7.2.0) (2023-04-23)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_consumption_billing_account_balances` was added
+- Table `azure_consumption_billing_account_budgets` was added
+- Table `azure_consumption_billing_account_charges` was added
+- Table `azure_consumption_billing_account_events` was added
+- Table `azure_consumption_billing_account_legacy_usage_details` was added
+- Table `azure_consumption_billing_account_lots` was added
+- Table `azure_consumption_billing_account_marketplaces` was added
+- Table `azure_consumption_billing_account_modern_usage_details` was added
+- Table `azure_consumption_billing_account_reservation_recommendations` was added
+- Table `azure_consumption_billing_account_tags` was added
+- Table `azure_consumption_billing_profile_reservation_details` was added
+- Table `azure_consumption_billing_profile_reservation_recommendations` was added
+- Table `azure_consumption_billing_profile_reservation_summaries` was added
+- Table `azure_consumption_billing_profile_reservation_transactions` was added
+- Table `azure_consumption_subscription_budgets` was added
+- Table `azure_consumption_subscription_legacy_usage_details` was added
+- Table `azure_consumption_subscription_marketplaces` was added
+- Table `azure_consumption_subscription_price_sheets` was added
+- Table `azure_consumption_subscription_reservation_recommendations` was added
+- Table `azure_consumption_subscription_tags` was added
+
+### Features
+
+* **azure-resources:** Add Consumption Resources ([#9117](https://github.com/cloudquery/cloudquery/issues/9117)) ([007421a](https://github.com/cloudquery/cloudquery/commit/007421ae13e3c6ad8c8b46dde915f03369b9a186))
+* **azure:** Add policy docs ([#10253](https://github.com/cloudquery/cloudquery/issues/10253)) ([e5b9ec7](https://github.com/cloudquery/cloudquery/commit/e5b9ec7a36cd055440542bf30b2cd89e41af2df7))
+* **azure:** Upgrade to `github.com/cloudquery/plugin-sdk/v2` ([#9943](https://github.com/cloudquery/cloudquery/issues/9943)) ([11d98b3](https://github.com/cloudquery/cloudquery/commit/11d98b3edc0212b9841a833833cc3d8df41448bf)), closes [#9942](https://github.com/cloudquery/cloudquery/issues/9942)
+
+
+### Bug Fixes
+
+* **azure:** Added missing character ([#10183](https://github.com/cloudquery/cloudquery/issues/10183)) ([cbd948d](https://github.com/cloudquery/cloudquery/commit/cbd948d15a891e30108a196cee8b5fed8744b6b7))
+* **azure:** Fix detecting conditions in CIS Section 8 ([#9923](https://github.com/cloudquery/cloudquery/issues/9923)) ([612da16](https://github.com/cloudquery/cloudquery/commit/612da16c7f233ff0dbfe65648a530c4d5a19ed2c))
+* **Azure:** Reduce duplicate results of Azure CIS v1.3.0 Section 9.1 ([#10013](https://github.com/cloudquery/cloudquery/issues/10013)) ([6539ee3](https://github.com/cloudquery/cloudquery/commit/6539ee3862ae1296ce699db5da9a247130eb3311))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.2.0 ([#10135](https://github.com/cloudquery/cloudquery/issues/10135)) ([cf33b89](https://github.com/cloudquery/cloudquery/commit/cf33b892ead0bb231e3956aa70967de552a21624))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.2.2 ([#10143](https://github.com/cloudquery/cloudquery/issues/10143)) ([8f887e0](https://github.com/cloudquery/cloudquery/commit/8f887e05de2096e8efd1e55863a8cf3c7620ccc3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.0 ([#10163](https://github.com/cloudquery/cloudquery/issues/10163)) ([9a7f214](https://github.com/cloudquery/cloudquery/commit/9a7f21460772200e7a588409ebc7eb19f97b195b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.1 ([#10175](https://github.com/cloudquery/cloudquery/issues/10175)) ([5b53423](https://github.com/cloudquery/cloudquery/commit/5b53423e72672f6c2bfb8ae00cfce1641410443e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.3 ([#10187](https://github.com/cloudquery/cloudquery/issues/10187)) ([b185248](https://github.com/cloudquery/cloudquery/commit/b1852480b6ec8b721d94c72d8435051352f26932))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.4 ([#10196](https://github.com/cloudquery/cloudquery/issues/10196)) ([c6d2f59](https://github.com/cloudquery/cloudquery/commit/c6d2f59c7d77177a351cb82ecdc381dec6aad30c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.5 ([#10200](https://github.com/cloudquery/cloudquery/issues/10200)) ([5a33693](https://github.com/cloudquery/cloudquery/commit/5a33693fe29f7068b03d80be1859d6e479c42c0d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.6 ([#10208](https://github.com/cloudquery/cloudquery/issues/10208)) ([91c80a7](https://github.com/cloudquery/cloudquery/commit/91c80a795b46480447cfaef67c4db721a31e3206))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.3.8 ([#10213](https://github.com/cloudquery/cloudquery/issues/10213)) ([f358666](https://github.com/cloudquery/cloudquery/commit/f35866611cd206c37e6e9f9ad3329561e4cb32af))
+
 ## [7.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.1.0...plugins-source-azure-v7.1.1) (2023-04-12)
 
 

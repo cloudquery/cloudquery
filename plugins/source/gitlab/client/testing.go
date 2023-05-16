@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/zerolog"
 	"github.com/xanzy/go-gitlab"
@@ -58,9 +58,7 @@ func GitlabMockTestHelper(t *testing.T, table *schema.Table, createService func(
 	p := source.NewPlugin(
 		table.Name,
 		version,
-		[]*schema.Table{
-			table,
-		},
+		schema.Tables{table},
 		newTestExecutionClient)
 	p.SetLogger(l)
 	source.TestPluginSync(t, p, specs.Source{

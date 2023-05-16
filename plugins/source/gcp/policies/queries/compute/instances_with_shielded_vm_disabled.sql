@@ -2,6 +2,7 @@
 -- FROM gcp_compute_instances gci
 -- WHERE shielded_instance_config_enable_integrity_monitoring = FALSE
 --     OR shielded_instance_config_enable_vtpm = FALSE;
+--     OR shielded_instance_config_enable_secure_boot = FALSE;
 
 
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
@@ -15,6 +16,7 @@ SELECT "name"                                                                   
            WHEN
                (shielded_instance_config->>'enable_integrity_monitoring')::boolean = FALSE
                    OR (shielded_instance_config->>'enable_vtpm')::boolean = FALSE
+                   OR (shielded_instance_config->>'enable_secure_boot')::boolean = FALSE
                THEN 'fail'
            ELSE 'pass'
            END                                                                      AS status

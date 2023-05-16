@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v13/arrow"
 )
 
 func (*Client) arrowTypeToSqliteStr(t arrow.DataType) string {
@@ -16,6 +16,8 @@ func (*Client) arrowTypeToSqliteStr(t arrow.DataType) string {
 		return "real"
 	case arrow.BOOL:
 		return "boolean"
+	case arrow.TIMESTAMP:
+		return "timestamp"
 	default:
 		return "text"
 	}
@@ -33,6 +35,8 @@ func (*Client) arrowTypeToSqlite(t arrow.DataType) arrow.DataType {
 		return arrow.PrimitiveTypes.Float64
 	case arrow.BOOL:
 		return arrow.FixedWidthTypes.Boolean
+	case arrow.TIMESTAMP:
+		return arrow.FixedWidthTypes.Timestamp_us
 	default:
 		return arrow.BinaryTypes.LargeString
 	}
@@ -50,7 +54,9 @@ func (*Client) sqliteTypeToArrowType(t string) arrow.DataType {
 		return arrow.BinaryTypes.LargeBinary
 	case "boolean":
 		return arrow.FixedWidthTypes.Boolean
+	case "timestamp":
+		return arrow.FixedWidthTypes.Timestamp_us
 	default:
-		panic("unknown type")
+		panic("unknown type: " + t)
 	}
 }

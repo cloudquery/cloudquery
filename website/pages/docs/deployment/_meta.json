@@ -1,5 +1,8 @@
 {
   "overview": "Overview",
+  "airflow": "Apache Airflow",
+  "docker": "Docker",
+  "ecs": "Amazon ECS",
   "github-actions": "GitHub Actions",
-  "ecs": "Amazon ECS"
+  "kestra": "Kestra"
 }

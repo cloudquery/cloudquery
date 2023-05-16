@@ -33,13 +33,16 @@ func groupAttachedPolicies() *schema.Table {
 
 func fetchIamGroupAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(types.Group)
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	config := iam.ListAttachedGroupPoliciesInput{
 		GroupName: p.GroupName,
 	}
 	paginator := iam.NewListAttachedGroupPoliciesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iam.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

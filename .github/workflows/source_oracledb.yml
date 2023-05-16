@@ -1,0 +1,97 @@
+name: Source Plugin OracleDB Workflow
+
+on:
+  pull_request:
+    paths:
+      - "plugins/source/oracledb/**"
+      - ".github/workflows/source_oracledb.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/oracledb/**"
+      - ".github/workflows/source_oracledb.yml"
+
+jobs:
+  plugins-source-oracledb:
+    timeout-minutes: 30
+    name: "plugins/source/oracledb"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/oracledb
+    services:
+      # Reference in https://github.com/gvenzl/oci-oracle-xe/tree/c96c28fc41dd1735abf03d508d4ea3f2cf76d14e#github-actions
+      oracledb:
+        image: gvenzl/oracle-xe:latest
+        env:
+          APP_USER: cq
+          APP_USER_PASSWORD: test
+          ORACLE_DATABASE: cloudquery
+          ORACLE_PASSWORD: test
+        ports:
+          - 1521:1521
+        options: >-
+          --health-cmd healthcheck.sh
+          --health-interval 10s
+          --health-timeout 120s
+          --health-retries 20
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/oracledb/go.mod
+          cache: true
+          cache-dependency-path: plugins/source/oracledb/go.sum
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.52.2
+          working-directory: plugins/source/oracledb
+          args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      - name: Test oracledb
+        run: make test
+  validate-release:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    env:
+      CGO_ENABLED: 0
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/oracledb/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-oracledb
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/oracledb/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/oracledb/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

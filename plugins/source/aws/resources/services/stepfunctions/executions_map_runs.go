@@ -43,14 +43,17 @@ func mapRuns() *schema.Table {
 }
 
 func fetchStepfunctionsMapRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Sfn
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sfn
 	config := sfn.ListMapRunsInput{
 		MaxResults:   1000,
 		ExecutionArn: parent.Item.(*sfn.DescribeExecutionOutput).ExecutionArn,
 	}
 	paginator := sfn.NewListMapRunsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *sfn.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -60,11 +63,14 @@ func fetchStepfunctionsMapRuns(ctx context.Context, meta schema.ClientMeta, pare
 }
 
 func getMapRun(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Sfn
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sfn
 	config := sfn.DescribeMapRunInput{
 		MapRunArn: resource.Item.(types.MapRunListItem).MapRunArn,
 	}
-	output, err := svc.DescribeMapRun(ctx, &config)
+	output, err := svc.DescribeMapRun(ctx, &config, func(o *sfn.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {
 	c.logger.Info().Msg("Migrate")
 
 	have, err := c.indexes()

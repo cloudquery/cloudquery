@@ -23,7 +23,7 @@ spec:
   name: aws
   path: "cloudquery/aws"
   version: "VERSION_SOURCE_AWS"
-  tables: ["*"]
+  tables: ["aws_s3_buckets"]
   destinations: ["s3"] 
 ---
 kind: destination

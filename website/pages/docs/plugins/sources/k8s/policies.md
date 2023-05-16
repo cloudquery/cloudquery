@@ -23,6 +23,7 @@ tables:
 ```
 
 ### Queries
+
 Kubernetes NSA CISA v1 performs the following checks:
   - Daemonset enforces cpu limits
   - Deployment enforces cpu limits

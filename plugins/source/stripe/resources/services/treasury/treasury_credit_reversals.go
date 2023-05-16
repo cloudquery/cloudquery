@@ -12,7 +12,7 @@ import (
 func TreasuryCreditReversals() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_treasury_credit_reversals",
-		Description: `https://stripe.com/docs/api/treasury_credit_reversals`,
+		Description: `https://stripe.com/docs/api/treasury/credit_reversals`,
 		Transform:   client.TransformWithStruct(&stripe.TreasuryCreditReversal{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchTreasuryCreditReversals,
 

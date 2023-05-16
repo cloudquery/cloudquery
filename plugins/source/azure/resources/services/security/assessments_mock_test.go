@@ -3,7 +3,6 @@ package security
 import (
 	"encoding/json"
 	"net/http"
-
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
@@ -34,7 +33,7 @@ func createAssessments(router *mux.Router) error {
 		}
 	})
 
-	return nil
+	return createSubAssessments(router)
 }
 
 func TestAssessments(t *testing.T) {

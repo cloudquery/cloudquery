@@ -11,7 +11,7 @@ spec:
   name: aws
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
-  tables: ["*"]
+  tables: ["aws_s3_buckets"]
   destinations: ["DESTINATION_NAME"]
   spec: 
     # AWS Spec section described below
@@ -22,43 +22,6 @@ spec:
         local_profile: "account1"
     aws_debug: false
 ```
-
-## Skipping tables with configuration parameters
-
-Some tables document the parameters and options available to your AWS accounts and don't correspond to real resources. If you don't need these tables, the time it takes to sync can be reduced by skipping these tables: 
-
-```yaml copy
-kind: source
-spec:
-  name: aws
-  path: cloudquery/aws
-  version: "VERSION_SOURCE_AWS"
-  tables: ["*"]
-
-  # Comment out any of the following tables if you want to sync them
-  # unless otherwise indicated they are configuration parameters rather than configured resources
-  skip_tables:
-    - aws_ec2_vpc_endpoint_services # this resource includes services that are available from AWS as well as other AWS Accounts
-    - aws_cloudtrail_events
-    - aws_docdb_cluster_parameter_groups
-    - aws_docdb_engine_versions
-    - aws_ec2_instance_types
-    - aws_elasticache_engine_versions
-    - aws_elasticache_parameter_groups
-    - aws_elasticache_reserved_cache_nodes_offerings
-    - aws_elasticache_service_updates
-    - aws_iam_group_last_accessed_details
-    - aws_iam_policy_last_accessed_details
-    - aws_iam_role_last_accessed_details
-    - aws_iam_user_last_accessed_details
-    - aws_neptune_cluster_parameter_groups
-    - aws_neptune_db_parameter_groups
-    - aws_rds_cluster_parameter_groups
-    - aws_rds_db_parameter_groups
-    - aws_rds_engine_versions
-    - aws_servicequotas_services
-  destinations: ["DESTINATION_NAME"]
-``` 
 
 ## AWS Organization Example
 
@@ -71,7 +34,7 @@ spec:
   registry: github
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
-  tables: ['*']
+  tables: ['aws_s3_buckets']
   destinations: ["DESTINATION_NAME"]
   spec:
     aws_debug: false
@@ -101,6 +64,11 @@ This is the (nested) spec used by the AWS source plugin.
 
   In AWS organization mode, CloudQuery will source all accounts underneath automatically
 
+- `initialization_concurrency` (int) (default: 4)
+
+  During initialization the AWS source plugin fetches information about each account and region. This setting controls how many accounts can be initialized concurrently.
+  Only configurations with many accounts (either hardcoded or discovered via Organizations) should require modifying this setting, to either lower it to avoid rate limit errors, or to increase it to speed up the initialization process.
+
 - `aws_debug` (bool) (default: false)
 
   If true, will log AWS debug logs, including retries and other request/response metadata
@@ -129,6 +97,10 @@ This is the (nested) spec used by the AWS source plugin.
 
   The region that should be used for signing the request to the endpoint
 
+- `use_paid_apis` (boolean) (default: false)
+
+  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` tables require this flag to be set to `true`.
+
 
 ## account
 
@@ -140,7 +112,7 @@ This is used to specify one or more accounts to extract information from. Note t
 
 - `local_profile` (string) (default: will use current credentials)
 
-  [Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) to use to authenticate this account with.
+  [Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) to use to authenticate this account with.
   Please note this should be set to the name of the profile. For example, with the following credentials file:
 
   ```ini copy

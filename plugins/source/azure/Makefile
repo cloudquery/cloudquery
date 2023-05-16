@@ -5,6 +5,10 @@ test:
 
 .PHONY: gen-docs
 gen-docs:
+	go run main.go doc --format json docs
+	go run scripts/policy_docs/main.go azure policies ../../../website/pages/docs/plugins/sources/azure/policies.md docs/__tables.json
+	rm docs/__tables.json
+
 	rm -rf ../../../website/tables/azure
 	go run main.go doc ../../../website/tables/azure
 	sed 's_(\(.*\))_(../../../../../website/tables/azure/\1)_' ../../../website/tables/azure/README.md > ./docs/tables/README.md

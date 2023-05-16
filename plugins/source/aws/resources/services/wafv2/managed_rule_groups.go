@@ -40,12 +40,14 @@ func ManagedRuleGroups() *schema.Table {
 }
 
 func fetchWafv2ManagedRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	service := c.Services().Wafv2
+	cl := meta.(*client.Client)
+	service := cl.Services().Wafv2
 
-	config := wafv2.ListAvailableManagedRuleGroupsInput{Scope: c.WAFScope}
+	config := wafv2.ListAvailableManagedRuleGroupsInput{Scope: cl.WAFScope}
 	for {
-		output, err := service.ListAvailableManagedRuleGroups(ctx, &config)
+		output, err := service.ListAvailableManagedRuleGroups(ctx, &config, func(o *wafv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -61,16 +63,16 @@ func fetchWafv2ManagedRuleGroups(ctx context.Context, meta schema.ClientMeta, pa
 func resolveManageRuleGroupProperties(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	managedRuleGroupSum := resource.Item.(types.ManagedRuleGroupSummary)
 
-	c := meta.(*client.Client)
-	service := c.Services().Wafv2
+	cl := meta.(*client.Client)
+	service := cl.Services().Wafv2
 
 	// Resolve managed rule group via describe managed rule group
 	output, err := service.DescribeManagedRuleGroup(ctx, &wafv2.DescribeManagedRuleGroupInput{
 		Name:       managedRuleGroupSum.Name,
 		VendorName: managedRuleGroupSum.VendorName,
-		Scope:      c.WAFScope,
-	}, func(options *wafv2.Options) {
-		options.Region = c.Region
+		Scope:      cl.WAFScope,
+	}, func(o *wafv2.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err

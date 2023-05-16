@@ -29,5 +29,17 @@ func createTables(router *mux.Router) error {
 			return
 		}
 	})
+
+	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables/test string", func(w http.ResponseWriter, r *http.Request) {
+		b, err := json.Marshal(item.Value[0])
+		if err != nil {
+			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
+			return
+		}
+		if _, err := w.Write(b); err != nil {
+			http.Error(w, "failed to write", http.StatusBadRequest)
+			return
+		}
+	})
 	return nil
 }

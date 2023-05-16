@@ -23,6 +23,7 @@ It supports incremental syncs based on the **created** column.
 |amount_due|Int|
 |amount_paid|Int|
 |amount_remaining|Int|
+|amount_shipping|Int|
 |application|JSON|
 |application_fee_amount|Int|
 |attempt_count|Int|
@@ -75,6 +76,8 @@ It supports incremental syncs based on the **created** column.
 |quote|JSON|
 |receipt_number|String|
 |rendering_options|JSON|
+|shipping_cost|JSON|
+|shipping_details|JSON|
 |starting_balance|Int|
 |statement_descriptor|String|
 |status|String|

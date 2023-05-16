@@ -4,15 +4,14 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 	"github.com/rs/zerolog"
 )
 
 type Client struct {
 	destination.UnimplementedUnmanagedWriter
-	destination.DefaultReverseTransformer
 	logger     zerolog.Logger
 	spec       specs.Destination
 	pluginSpec Spec

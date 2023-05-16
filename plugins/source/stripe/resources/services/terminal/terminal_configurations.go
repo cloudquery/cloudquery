@@ -12,7 +12,7 @@ import (
 func TerminalConfigurations() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_terminal_configurations",
-		Description: `https://stripe.com/docs/api/terminal_configurations`,
+		Description: `https://stripe.com/docs/api/terminal/configuration`,
 		Transform:   client.TransformWithStruct(&stripe.TerminalConfiguration{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchTerminalConfigurations,
 

@@ -26,7 +26,9 @@ func BlockPublicAccessConfigs() *schema.Table {
 func fetchEmrBlockPublicAccessConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Emr
-	out, err := svc.GetBlockPublicAccessConfiguration(ctx, &emr.GetBlockPublicAccessConfigurationInput{})
+	out, err := svc.GetBlockPublicAccessConfiguration(ctx, &emr.GetBlockPublicAccessConfigurationInput{}, func(options *emr.Options) {
+		options.Region = c.Region
+	})
 	if err != nil {
 		if client.IgnoreNotAvailableRegion(err) {
 			return nil

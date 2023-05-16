@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 )
 
@@ -43,17 +43,22 @@ func (*Client) Migrate(context.Context, schema.Schemas) error {
 }
 
 //revive:disable We need to range over the channel to clear it, but revive thinks it can be removed
-func (c *Client) Write(_ context.Context, _ schema.Schemas, res <-chan arrow.Record) error {
+func (c *Client) Write(_ context.Context, _ schema.Schemas, records <-chan arrow.Record) error {
 	if c.spec.ErrorOnWrite {
 		return errors.New("error_on_write is true")
 	}
-	for range res {
-		// do nothing
+	for record := range records {
+		record.Release()
 	}
 	return nil
 }
 
-func (c *Client) WriteTableBatch(context.Context, *arrow.Schema, []arrow.Record) error {
+func (c *Client) WriteTableBatch(_ context.Context, _ *arrow.Schema, records []arrow.Record) error {
+	defer func() {
+		for _, record := range records {
+			record.Release()
+		}
+	}()
 	if c.spec.ErrorOnWrite {
 		return errors.New("error_on_write is true")
 	}

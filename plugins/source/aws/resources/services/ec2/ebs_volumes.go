@@ -46,7 +46,9 @@ func fetchEc2EbsVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 	config := ec2.DescribeVolumesInput{}
 	paginator := ec2.NewDescribeVolumesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

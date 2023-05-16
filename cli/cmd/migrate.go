@@ -4,12 +4,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v2/clients/discovery/v0"
-	"github.com/cloudquery/plugin-sdk/v2/registry"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"golang.org/x/exp/slices"
 )
 
 const (
@@ -46,55 +45,49 @@ func migrate(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
-
-	for _, sourceSpec := range specReader.Sources {
-		if len(sourceSpec.Destinations) == 0 {
-			return fmt.Errorf("no destinations found for source %s", sourceSpec.Name)
-		}
-		var destinationsSpecs []specs.Destination
-		for _, destination := range sourceSpec.Destinations {
-			spec := specReader.GetDestinationByName(destination)
-			if spec == nil {
-				return fmt.Errorf("failed to find destination %s in source %s", destination, sourceSpec.Name)
-			}
-			destinationsSpecs = append(destinationsSpecs, *spec)
-		}
-		discoveryClient, err := discovery.NewClient(ctx, sourceSpec.Registry, registry.PluginTypeSource, sourceSpec.Path, sourceSpec.Version)
-		if err != nil {
-			return fmt.Errorf("failed to create discovery client for source %s: %w", sourceSpec.Name, err)
-		}
-		versions, err := discoveryClient.GetVersions(ctx)
-		if err != nil {
-			if discoveryErr := discoveryClient.Terminate(); discoveryErr != nil {
-				log.Error().Err(discoveryErr).Msg("failed to terminate discovery client")
-				fmt.Println("failed to terminate discovery client:", discoveryErr)
-			}
-			if err := migrateConnectionV0(ctx, cqDir, *sourceSpec, destinationsSpecs); err != nil {
-				return fmt.Errorf("failed to migrate source %s: %w", sourceSpec.Name, err)
-			}
-			continue
-		}
-
-		if err := discoveryClient.Terminate(); err != nil {
-			return fmt.Errorf("failed to terminate discovery client: %w", err)
-		}
-
-		if slices.Index(versions, "v1") != -1 {
-			if err := migrateConnectionV1(ctx, cqDir, *sourceSpec, destinationsSpecs); err != nil {
-				return fmt.Errorf("failed to migrate source %s: %w", sourceSpec.Name, err)
-			}
-			continue
-		}
-
-		if slices.Index(versions, "v0") != -1 {
-			if err := migrateConnectionV0(ctx, cqDir, *sourceSpec, destinationsSpecs); err != nil {
-				return fmt.Errorf("failed to migrate source %s: %w", sourceSpec.Name, err)
-			}
-			continue
-		}
-
-		return fmt.Errorf("failed to migrate source %s, unknown versions %v", sourceSpec.Name, versions)
+	sources := specReader.Sources
+	destinations := specReader.Destinations
+	var sourceOpts []managedsource.Option
+	var destinationOpts []manageddestination.Option
+	if cqDir != "" {
+		sourceOpts = append(sourceOpts, managedsource.WithDirectory(cqDir))
+		destinationOpts = append(destinationOpts, manageddestination.WithDirectory(cqDir))
 	}
 
+	managedSourceClients, err := managedsource.NewClients(ctx, sources, sourceOpts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := managedSourceClients.Terminate(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+	managedDestinationsClients, err := manageddestination.NewClients(ctx, destinations, destinationOpts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := managedDestinationsClients.Terminate(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+
+	for _, cl := range managedSourceClients {
+		maxVersion, err := cl.MaxVersion(ctx)
+		if err != nil {
+			return err
+		}
+		destinationsForSource := specReader.GetDestinationNamesForSource(cl.Spec.Name)
+		destinationsClientsForSource := managedDestinationsClients.ClientsByNames(destinationsForSource)
+		switch maxVersion {
+		case 1:
+			return migrateConnectionV1(ctx, cl, destinationsClientsForSource)
+		case 0:
+			return migrateConnectionV0(ctx, cl, destinationsClientsForSource)
+		default:
+			return fmt.Errorf("unknown version %d", maxVersion)
+		}
+	}
 	return nil
 }

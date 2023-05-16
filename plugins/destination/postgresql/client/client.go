@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
 
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
@@ -17,7 +17,6 @@ import (
 
 type Client struct {
 	destination.UnimplementedManagedWriter
-	destination.DefaultReverseTransformer
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
 	spec                specs.Destination

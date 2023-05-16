@@ -7,9 +7,9 @@ import (
 	"github.com/google/uuid"
 	"golang.org/x/exp/slices"
 
-	"github.com/cloudquery/plugin-sdk/v2/clients/discovery/v0"
-	"github.com/cloudquery/plugin-sdk/v2/registry"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -60,56 +60,74 @@ func sync(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to generate invocation uuid: %w", err)
 	}
+	sources := specReader.Sources
+	destinations := specReader.Destinations
+	sourceOpts := []managedsource.Option{
+		managedsource.WithLogger(log.Logger),
+	}
+	destinationOpts := []manageddestination.Option{
+		manageddestination.WithLogger(log.Logger),
+	}
+	if cqDir != "" {
+		sourceOpts = append(sourceOpts, managedsource.WithDirectory(cqDir))
+		destinationOpts = append(destinationOpts, manageddestination.WithDirectory(cqDir))
+	}
+	if disableSentry {
+		sourceOpts = append(sourceOpts, managedsource.WithNoSentry())
+		destinationOpts = append(destinationOpts, manageddestination.WithNoSentry())
+	}
 
-	for _, sourceSpec := range specReader.Sources {
-		if len(sourceSpec.Destinations) == 0 {
-			return fmt.Errorf("no destinations found for source %s", sourceSpec.Name)
+	sourcesClients, err := managedsource.NewClients(ctx, sources, sourceOpts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := sourcesClients.Terminate(); err != nil {
+			fmt.Println(err)
 		}
-		var destinationsSpecs []specs.Destination
-		for _, destination := range sourceSpec.Destinations {
-			spec := specReader.GetDestinationByName(destination)
-			if spec == nil {
-				return fmt.Errorf("failed to find destination %s in source %s", destination, sourceSpec.Name)
-			}
-			destinationsSpecs = append(destinationsSpecs, *spec)
+	}()
+	destinationsClients, err := manageddestination.NewClients(ctx, destinations, destinationOpts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := destinationsClients.Terminate(); err != nil {
+			fmt.Println(err)
 		}
+	}()
 
-		discoveryClient, err := discovery.NewClient(ctx, sourceSpec.Registry, registry.PluginTypeSource, sourceSpec.Path, sourceSpec.Version, discovery.WithDirectory(cqDir))
+	for _, cl := range sourcesClients {
+		maxVersion, err := cl.MaxVersion(ctx)
 		if err != nil {
-			return fmt.Errorf("failed to create discovery client for source %s: %w", sourceSpec.Name, err)
+			return err
 		}
-
-		versions, err := discoveryClient.GetVersions(ctx)
-		if err != nil {
-			if discoveryErr := discoveryClient.Terminate(); discoveryErr != nil {
-				log.Error().Err(discoveryErr).Msg("failed to terminate discovery client")
-				fmt.Println("failed to terminate discovery client:", discoveryErr)
+		switch maxVersion {
+		case 2:
+			for _, destination := range destinationsClients {
+				versions, err := destination.Versions(ctx)
+				if err != nil {
+					return fmt.Errorf("failed to get destination versions: %w", err)
+				}
+				if !slices.Contains(versions, 2) {
+					return fmt.Errorf("destination %[1]s does not support CloudQuery SDK version 2. Please upgrade to newer version of %[1]s", destination.Spec.Name)
+				}
 			}
-			// If we get an error here, we assume that the plugin is not a v1 plugin and we try to sync it as a v0 plugin
-			if err := syncConnectionV0(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
-				return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
+			if err := syncConnectionV2(ctx, cl, destinationsClients, invocationUUID.String(), noMigrate); err != nil {
+				return fmt.Errorf("failed to sync v2 source %s: %w", cl.Spec.Name, err)
 			}
-			continue
-		}
-		if err := discoveryClient.Terminate(); err != nil {
-			return fmt.Errorf("failed to terminate discovery client: %w", err)
-		}
-
-		if slices.Index(versions, "v1") != -1 {
-			if err := syncConnectionV1(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
-				return fmt.Errorf("failed to sync v1 source %s: %w", sourceSpec.Name, err)
+		case 1:
+			if err := syncConnectionV1(ctx, cl, destinationsClients, invocationUUID.String(), noMigrate); err != nil {
+				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Spec.Name, err)
 			}
-			continue
-		}
-
-		if slices.Index(versions, "v0") != -1 {
-			if err := syncConnectionV0(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
-				return fmt.Errorf("failed to sync v0 source %s: %w", sourceSpec.Name, err)
+		case 0:
+			if err := syncConnectionV0_2(ctx, cl, destinationsClients, invocationUUID.String(), noMigrate); err != nil {
+				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Spec.Name, err)
 			}
-			continue
+		case -1:
+			return fmt.Errorf("please upgrade your source or use an older CLI version < v3.0.1")
+		default:
+			return fmt.Errorf("unknown source version %d", maxVersion)
 		}
-
-		return fmt.Errorf("failed to sync source %s, unknown versions %v", sourceSpec.Name, versions)
 	}
 
 	return nil

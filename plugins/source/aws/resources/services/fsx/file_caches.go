@@ -45,7 +45,9 @@ func fetchFsxFileCaches(ctx context.Context, meta schema.ClientMeta, parent *sch
 	input := fsx.DescribeFileCachesInput{MaxResults: aws.Int32(1000)}
 	paginator := fsx.NewDescribeFileCachesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		result, err := paginator.NextPage(ctx)
+		result, err := paginator.NextPage(ctx, func(options *fsx.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -61,7 +63,9 @@ func resolveFileCacheTags(ctx context.Context, meta schema.ClientMeta, resource 
 	var tags []types.Tag
 	paginator := fsx.NewListTagsForResourcePaginator(svc, &fsx.ListTagsForResourceInput{ResourceARN: item.ResourceARN})
 	for paginator.HasMorePages() {
-		result, err := paginator.NextPage(ctx)
+		result, err := paginator.NextPage(ctx, func(options *fsx.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

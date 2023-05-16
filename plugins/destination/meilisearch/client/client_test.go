@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/meilisearch/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
 )
 
 var migrateStrategy = destination.MigrateStrategy{
@@ -15,7 +15,7 @@ var migrateStrategy = destination.MigrateStrategy{
 	AddColumnNotNull:    specs.MigrateModeSafe,
 	RemoveColumn:        specs.MigrateModeSafe,
 	RemoveColumnNotNull: specs.MigrateModeSafe,
-	ChangeColumn:        specs.MigrateModeSafe,
+	ChangeColumn:        specs.MigrateModeForced,
 }
 
 func getTestSpec() *Spec {
@@ -38,9 +38,11 @@ func TestPlugin(t *testing.T) {
 		},
 		specs.Destination{Spec: getTestSpec()},
 		destination.PluginTestSuiteTests{
-			SkipDeleteStale:          true,
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
+			SkipDeleteStale:           true,
+			SkipMigrateAppendForce:    true, // as Meilisearch doesn't actually store the schema
+			SkipMigrateOverwriteForce: true, // as Meilisearch doesn't actually store the schema
+			MigrateStrategyOverwrite:  migrateStrategy,
+			MigrateStrategyAppend:     migrateStrategy,
 		},
 	)
 }
