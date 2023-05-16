@@ -26,9 +26,9 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.BooleanBuilder:
 		if boolVal, ok := val.(bool); ok {
 			b.Append(boolVal)
-		} else {
-			return b.AppendValueFromString(val.(string))
+			return nil
 		}
+		return b.AppendValueFromString(val.(string))
 	case *array.Int8Builder:
 		u, err := strconv.ParseInt(val.(string), 10, 8)
 		if err != nil {
