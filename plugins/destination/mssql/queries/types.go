@@ -130,10 +130,7 @@ func columnGoType(dataType arrow.DataType) reflect.Type {
 	case *arrow.LargeStringType, *arrow.StringType, *types.InetType, *types.MACType:
 		return reflect.TypeOf("")
 
-	case arrow.BinaryDataType, *arrow.FixedSizeBinaryType:
-		return reflect.TypeOf([]byte{})
-
-	case *types.UUIDType:
+	case arrow.BinaryDataType, *arrow.FixedSizeBinaryType, *types.UUIDType:
 		return reflect.TypeOf([]byte{})
 
 	case *arrow.TimestampType:

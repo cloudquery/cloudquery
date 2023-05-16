@@ -35,25 +35,25 @@ func buildValue(builder array.Builder, elem any) error {
 		builder.Append(elem.(bool))
 
 	case *array.Uint8Builder:
-		builder.Append(elem.(uint8))
+		builder.Append(uint8(elem.(int64)))
 	case *array.Uint16Builder:
-		builder.Append(uint16(elem.(int32))) // no special uint16 type, downscale
+		builder.Append(uint16(elem.(int64)))
 	case *array.Uint32Builder:
-		builder.Append(uint32(elem.(int64))) // no special uint32 type, downscale
+		builder.Append(uint32(elem.(int64)))
 	case *array.Uint64Builder:
-		builder.Append(uint64(elem.(int64))) // we store this as int64, although it may produce overflow and negative numbers
+		builder.Append(uint64(elem.(int64)))
 
 	case *array.Int8Builder:
-		builder.Append(int8(elem.(int16))) // no special int8 type, downscale
+		builder.Append(int8(elem.(int64)))
 	case *array.Int16Builder:
-		builder.Append(elem.(int16))
+		builder.Append(int16(elem.(int64)))
 	case *array.Int32Builder:
-		builder.Append(elem.(int32))
+		builder.Append(int32(elem.(int64)))
 	case *array.Int64Builder:
 		builder.Append(elem.(int64))
 
 	case *array.Float32Builder:
-		builder.Append(elem.(float32))
+		builder.Append(float32(elem.(float64))) // mssql scans in into float64
 	case *array.Float64Builder:
 		builder.Append(elem.(float64))
 
@@ -79,9 +79,6 @@ func buildValue(builder array.Builder, elem any) error {
 			return err
 		}
 		builder.Append(uuid.UUID(val))
-
-	case array.ListLikeBuilder:
-		return builder.UnmarshalJSON([]byte(elem.(string)))
 
 	default:
 		return builder.AppendValueFromString(elem.(string))

@@ -60,7 +60,7 @@ func getColValue(arr arrow.Array, idx int) (any, error) {
 	case *array.Uint32:
 		return ptr(int64(arr.Value(idx))), nil // no special uint32 type, upscale
 	case *array.Uint64:
-		return ptr(arr.ValueStr(idx)), nil // we can only store this reliably as string for now
+		return ptr(int64(arr.Value(idx))), nil // we store this as int64, although it may produce overflow and negative numbers
 
 	case *array.Int8:
 		return ptr(int16(arr.Value(idx))), nil // no special int8 type, upscale
@@ -98,13 +98,6 @@ func getColValue(arr arrow.Array, idx int) (any, error) {
 	case *types.UUIDArray:
 		val, _ := mssql.UniqueIdentifier(arr.Value(idx)).Value()
 		return ptr(val.([]byte)), nil
-
-	case array.ListLike:
-		data, err := arr.MarshalJSON()
-		if err != nil {
-			return nil, err
-		}
-		return ptr(string(data)), nil
 
 	default:
 		return ptr(arr.ValueStr(idx)), nil
