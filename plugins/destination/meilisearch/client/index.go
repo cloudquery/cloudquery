@@ -4,8 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/meilisearch/meilisearch-go"
 	"golang.org/x/exp/slices"
 )
@@ -35,19 +34,15 @@ func (i *indexSchema) canMigrate(o *indexSchema) bool {
 	return i.UID == o.UID && i.PrimaryKey == o.PrimaryKey
 }
 
-func (c *Client) tableIndexSchema(sc *arrow.Schema) *indexSchema {
-	attributes := make([]string, len(sc.Fields()))
-	for i, fld := range sc.Fields() {
-		attributes[i] = fld.Name
-	}
+func (c *Client) tableIndexSchema(table *schema.Table) *indexSchema {
 	return &indexSchema{
-		UID:        schema.TableName(sc),
+		UID:        table.Name,
 		PrimaryKey: c.pkColumn,
-		Attributes: attributes,
+		Attributes: table.Columns.Names(),
 	}
 }
 
-func (c *Client) tablesIndexSchemas(tables schema.Schemas) map[string]*indexSchema {
+func (c *Client) tablesIndexSchemas(tables schema.Tables) map[string]*indexSchema {
 	res := make(map[string]*indexSchema)
 	for _, table := range tables {
 		s := c.tableIndexSchema(table)
