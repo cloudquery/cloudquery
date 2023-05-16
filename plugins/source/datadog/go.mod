@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/DataDog/datadog-api-client-go/v2 v2.9.0
+	github.com/cloudquery/codegen v0.2.1
 	github.com/cloudquery/plugin-pb-go v1.0.5
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/golang/mock v1.6.0
@@ -20,6 +21,7 @@ require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
+	github.com/cloudquery/plugin-sdk v1.24.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
