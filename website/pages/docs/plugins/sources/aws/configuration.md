@@ -112,10 +112,10 @@ This is the (nested) spec used by the AWS source plugin.
         - <input_object>
   ```
 
-  For the `<input_object>` it is able to take a list of objects which cloudquery will iterate through to make multiple API calls. This is useful for APIs like CloudTrail's `LookupEvents` that only supports a single event type per call. for example:
+  A list of `<input_object>` objects should be provided. CloudQuery will iterate through these to make multiple API calls. This is useful for APIs like CloudTrail's `LookupEvents` that only supports a single event type per call. For example:
 
   ```yaml
-        table_options:
+    table_options:
       aws_cloudtrail_events:
         lookup_events:
           - start_time: 2023-05-01T20:20:52Z
@@ -135,7 +135,7 @@ This is the (nested) spec used by the AWS source plugin.
                 attribute_value: StopInstances
   ```
 
-  The naming for all of the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `VERSION_SOURCE_AWS` the following tables and APIs are supported:
+  The naming for all of the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `v17.3.0` the following tables and APIs are supported:
   ```yaml
   table_options:
     aws_accessanalyzer_analyzer_findings:
