@@ -32,10 +32,13 @@ func rules() *schema.Table {
 }
 
 func fetchFrauddetectorRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
 	paginator := frauddetector.NewGetRulesPaginator(meta.(*client.Client).Services().Frauddetector,
 		&frauddetector.GetRulesInput{DetectorId: parent.Item.(types.Detector).DetectorId})
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *frauddetector.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

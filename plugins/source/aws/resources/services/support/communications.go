@@ -27,13 +27,16 @@ func communications() *schema.Table {
 }
 
 func fetchCommunications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Support
+	cl := meta.(*client.Client)
+	svc := cl.Services().Support
 	p := parent.Item.(types.CaseDetails)
 	input := support.DescribeCommunicationsInput{MaxResults: aws.Int32(100), CaseId: p.CaseId}
 
 	paginator := support.NewDescribeCommunicationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *support.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -51,6 +54,6 @@ func mockCommunications(parent types.CaseDetails, m *mocks.MockSupportClient) er
 	}
 
 	input := support.DescribeCommunicationsInput{MaxResults: aws.Int32(100), CaseId: parent.CaseId}
-	m.EXPECT().DescribeCommunications(gomock.Any(), &input).Return(&support.DescribeCommunicationsOutput{Communications: communications}, nil)
+	m.EXPECT().DescribeCommunications(gomock.Any(), &input, gomock.Any()).Return(&support.DescribeCommunicationsOutput{Communications: communications}, nil)
 	return nil
 }

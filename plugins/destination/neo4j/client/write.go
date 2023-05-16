@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
@@ -16,7 +16,6 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, recor
 	rows := make([]map[string]any, 0)
 	for _, record := range records {
 		rows = append(rows, transformValues(record)...)
-		record.Release()
 	}
 	var sb strings.Builder
 	sb.WriteString("UNWIND $rows AS row MERGE (t:")

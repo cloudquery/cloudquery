@@ -3,8 +3,8 @@ package client
 import (
 	"fmt"
 
-	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/apache/arrow/go/v12/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v2/types"
 )
 
@@ -12,7 +12,7 @@ func timestampValues(arr *array.Timestamp) []any {
 	unit := arr.DataType().(*arrow.TimestampType).Unit
 	res := make([]any, arr.Len())
 	for i := range res {
-		if arr.IsValid(i) && !arr.IsNull(i) {
+		if arr.IsValid(i) {
 			res[i] = arr.Value(i).ToTime(unit).UTC()
 		}
 	}
@@ -26,7 +26,7 @@ func getValues(arr arrow.Array) []any {
 
 	res := make([]any, arr.Len())
 	for i := range res {
-		if arr.IsValid(i) && !arr.IsNull(i) {
+		if arr.IsValid(i) {
 			res[i] = arr.GetOneForMarshal(i)
 		}
 	}

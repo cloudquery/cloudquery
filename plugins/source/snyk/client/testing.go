@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/julienschmidt/httprouter"
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 	"github.com/rs/zerolog"
@@ -38,9 +38,14 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 		}
 
 		c := &Client{
-			Client:        snykClient,
-			logger:        logger,
-			organizations: []string{"test-org"},
+			Client: snykClient,
+			logger: logger,
+			Organizations: []snyk.Organization{
+				{ID: "test-org-id", Name: "test-org-name", Group: &snyk.Group{
+					ID:   "test-group-id",
+					Name: "test-group-name",
+				}},
+			},
 		}
 		return c, nil
 	}

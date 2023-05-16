@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Identity Verification Reports.
 
-https://stripe.com/docs/api/identity_verification_reports
+https://stripe.com/docs/api/identity/verification_reports
 
 The primary key for this table is **id**.
 It supports incremental syncs based on the **created** column.

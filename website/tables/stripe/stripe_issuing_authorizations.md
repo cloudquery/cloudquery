@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Issuing Authorizations.
 
-https://stripe.com/docs/api/issuing_authorizations
+https://stripe.com/docs/api/issuing/authorizations
 
 The primary key for this table is **id**.
 It supports incremental syncs based on the **created** column.

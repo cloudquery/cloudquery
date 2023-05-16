@@ -8,9 +8,10 @@ import (
 
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_accounts",
-		Resolver:  fetchAccountsAccounts,
-		Transform: transformers.TransformWithStruct(&godo.Account{}),
+		Name:        "digitalocean_accounts",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/Account",
+		Resolver:    fetchAccountsAccounts,
+		Transform:   transformers.TransformWithStruct(&godo.Account{}),
 		Columns: []schema.Column{
 			{
 				Name:     "uuid",

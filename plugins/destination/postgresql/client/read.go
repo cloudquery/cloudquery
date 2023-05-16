@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/apache/arrow/go/v12/arrow/array"
-	"github.com/apache/arrow/go/v12/arrow/memory"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v2/types"
 	"github.com/google/uuid"
@@ -79,10 +79,10 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 			if err != nil {
 				return err
 			}
-			b.Append(*ipnet)
+			b.Append(ipnet)
 			return nil
 		}
-		b.Append(val.(net.IPNet))
+		b.Append(val.(*net.IPNet))
 	case *types.MacBuilder:
 		if c.pgType == pgTypePostgreSQL {
 			b.Append(val.(net.HardwareAddr))

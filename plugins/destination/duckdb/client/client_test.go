@@ -3,8 +3,8 @@ package client
 import (
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
 )
 
 var migrateStrategy = destination.MigrateStrategy{
@@ -18,7 +18,7 @@ var migrateStrategy = destination.MigrateStrategy{
 func TestPlugin(t *testing.T) {
 	destination.PluginTestSuiteRunner(t,
 		func() *destination.Plugin {
-			return destination.NewPlugin("duckdb", "development", New)
+			return destination.NewPlugin("duckdb", "development", New, destination.WithManagedWriter())
 		},
 		specs.Destination{
 			Spec: &Spec{

@@ -44,7 +44,9 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 	svc := c.Services().Cloudfront
 	paginator := cloudfront.NewListDistributionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cloudfront.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -61,6 +63,8 @@ func getDistribution(ctx context.Context, meta schema.ClientMeta, resource *sche
 
 	distribution, err := svc.GetDistribution(ctx, &cloudfront.GetDistributionInput{
 		Id: d.Id,
+	}, func(options *cloudfront.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		return err
@@ -76,6 +80,8 @@ func resolveCloudfrontDistributionTags(ctx context.Context, meta schema.ClientMe
 	svc := cl.Services().Cloudfront
 	response, err := svc.ListTagsForResource(ctx, &cloudfront.ListTagsForResourceInput{
 		Resource: distribution.ARN,
+	}, func(options *cloudfront.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {

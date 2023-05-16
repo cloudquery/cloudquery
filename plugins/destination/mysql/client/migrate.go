@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/apache/arrow/go/v12/arrow"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
 )
 
-func normalizeSchemas(tables schema.Schemas) (schema.Schemas, error) {
+func (c *Client) normalizeSchemas(tables schema.Schemas) (schema.Schemas, error) {
 	var normalized schema.Schemas
 	for _, sc := range tables {
 		tableName := schema.TableName(sc)
@@ -21,10 +21,17 @@ func normalizeSchemas(tables schema.Schemas) (schema.Schemas, error) {
 			origKeys := f.Metadata.Keys()
 			origValues := f.Metadata.Values()
 			for k, v := range origKeys {
-				if v != schema.MetadataUnique {
-					keys = append(keys, v)
-					values = append(values, origValues[k])
+				switch v {
+				case schema.MetadataUnique:
+					// we skip as we don't scan the constraints ATM
+					continue
+				case schema.MetadataPrimaryKey:
+					if !c.pkEnabled() {
+						continue
+					}
 				}
+				keys = append(keys, v)
+				values = append(values, origValues[k])
 			}
 			normalizedType, err := mySQLTypeToArrowType(tableName, f.Name, arrowTypeToMySqlStr(f.Type))
 			if err != nil {
@@ -99,7 +106,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {
 		return err
 	}
 
-	normalizedTables, err := normalizeSchemas(tables)
+	normalizedTables, err := c.normalizeSchemas(tables)
 	if err != nil {
 		return err
 	}

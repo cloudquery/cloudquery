@@ -10,10 +10,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/aws/smithy-go/logging"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/backend"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
 )
@@ -32,6 +32,7 @@ type Client struct {
 	LanguageCode         string
 	Backend              backend.Backend
 	specificRegions      bool
+	Spec                 *Spec
 }
 
 type AwsLogger struct {
@@ -51,9 +52,10 @@ type ServicesManager struct {
 }
 
 const (
-	defaultRegion         = "us-east-1"
-	defaultVar            = "default"
-	cloudfrontScopeRegion = defaultRegion
+	defaultRegion              = "us-east-1"
+	defaultVar                 = "default"
+	awsCloudfrontScopeRegion   = defaultRegion
+	awsCnCloudfrontScopeRegion = "cn-north-1"
 )
 
 var errInvalidRegion = errors.New("region wildcard \"*\" is only supported as first argument")
@@ -104,13 +106,14 @@ func (s *ServicesManager) InitServicesForPartitionAccountAndScope(partition, acc
 	s.wafScopeServices[partition][accountId] = &svcs
 }
 
-func NewAwsClient(logger zerolog.Logger, b backend.Backend) Client {
+func NewAwsClient(logger zerolog.Logger, b backend.Backend, spec *Spec) Client {
 	return Client{
 		Backend: b,
 		ServicesManager: ServicesManager{
 			services: ServicesPartitionAccountRegionMap{},
 		},
 		logger: logger,
+		Spec:   spec,
 	}
 }
 
@@ -148,6 +151,7 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 		AutoscalingNamespace: c.AutoscalingNamespace,
 		WAFScope:             c.WAFScope,
 		Backend:              c.Backend,
+		Spec:                 c.Spec,
 	}
 }
 
@@ -161,6 +165,7 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 		AutoscalingNamespace: namespace,
 		WAFScope:             c.WAFScope,
 		Backend:              c.Backend,
+		Spec:                 c.Spec,
 	}
 }
 
@@ -174,6 +179,7 @@ func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, regi
 		AutoscalingNamespace: c.AutoscalingNamespace,
 		WAFScope:             scope,
 		Backend:              c.Backend,
+		Spec:                 c.Spec,
 	}
 }
 
@@ -199,31 +205,33 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 
 	awsPluginSpec.SetDefaults()
 
-	client := NewAwsClient(logger, opts.Backend)
+	client := NewAwsClient(logger, opts.Backend, &awsPluginSpec)
 
 	var adminAccountSts AssumeRoleAPIClient
 
-	if awsPluginSpec.Organization != nil {
+	if client.Spec.Organization != nil {
 		var err error
-		awsPluginSpec.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, &awsPluginSpec)
+		client.Spec.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, client.Spec)
 		if err != nil {
 			logger.Error().Err(err).Msg("error getting child accounts")
 			return nil, err
 		}
 	}
-	if len(awsPluginSpec.Accounts) == 0 {
-		awsPluginSpec.Accounts = append(awsPluginSpec.Accounts, Account{
-			ID: defaultVar,
-		})
+	if len(client.Spec.Accounts) == 0 {
+		client.Spec.Accounts = []Account{
+			{
+				ID: defaultVar,
+			},
+		}
 	}
 
 	initLock := sync.Mutex{}
 	errorGroup, gtx := errgroup.WithContext(ctx)
-	errorGroup.SetLimit(awsPluginSpec.InitializationConcurrency)
-	for _, account := range awsPluginSpec.Accounts {
+	errorGroup.SetLimit(client.Spec.InitializationConcurrency)
+	for _, account := range client.Spec.Accounts {
 		account := account
 		errorGroup.Go(func() error {
-			svcsDetail, err := client.setupAWSAccount(gtx, logger, &awsPluginSpec, adminAccountSts, account)
+			svcsDetail, err := client.setupAWSAccount(gtx, logger, client.Spec, adminAccountSts, account)
 			if err != nil {
 				return err
 			}
@@ -241,6 +249,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 	}
 
 	if len(client.ServicesManager.services) == 0 {
+		// This is a special error case where we found active accounts, but just weren't able to assume a role in any of them
+		if client.Spec.Organization != nil && len(client.Spec.Accounts) > 0 && client.Spec.Organization.MemberCredentials == nil {
+			return nil, fmt.Errorf("discovered %d accounts in the AWS Organization, but the credentials specified in 'admin_account' were unable to assume a role in the member accounts. Verify that the role you are trying to assume (arn:aws:iam::<account_id>:role/%s) exists. If you need to use a different set of credentials to do the role assumption use 'member_trusted_principal'", len(client.Spec.Accounts), client.Spec.Organization.ChildAccountRoleName)
+		}
 		return nil, fmt.Errorf("no enabled accounts instantiated")
 	}
 	return &client, nil

@@ -1,5 +1,33 @@
 # Changelog
 
+## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v3.0.0...plugins-destination-azblob-v3.0.1) (2023-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v12 digest to 0ea1a10 ([#10461](https://github.com/cloudquery/cloudquery/issues/10461)) ([022709f](https://github.com/cloudquery/cloudquery/commit/022709f710cc6d95aee60260d6f58991698bbf42))
+* **deps:** Update module github.com/cloudquery/filetypes/v2 to v2.0.4 ([#10451](https://github.com/cloudquery/cloudquery/issues/10451)) ([6b6867e](https://github.com/cloudquery/cloudquery/commit/6b6867e91556b69a1471a1b43585cce6820c5cd3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.0 ([#10390](https://github.com/cloudquery/cloudquery/issues/10390)) ([f706688](https://github.com/cloudquery/cloudquery/commit/f706688b2f5b8393d09d57020d31fb1d280f0dbd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.5.1 ([#10448](https://github.com/cloudquery/cloudquery/issues/10448)) ([cc85b93](https://github.com/cloudquery/cloudquery/commit/cc85b939fe945939caf72f8c08095e1e744b9ee8))
+
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v2.3.1...plugins-destination-azblob-v3.0.0) (2023-04-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes for CSV or JSON output formats, however the Parquet output changes for UUID columns, which now have dashes, and timestamps, which now uses the default Arrow time format (e.g. `2023-01-02 12:23:45`). If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose).
+
+### Features
+
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([c86c36a](https://github.com/cloudquery/cloudquery/commit/c86c36a7fca58d600074b5408a6a7f0aeaebc26e))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes/v2 to v2.0.3 ([#10230](https://github.com/cloudquery/cloudquery/issues/10230)) ([730fa51](https://github.com/cloudquery/cloudquery/commit/730fa51814f6800069c138daf074d49b7dc3958b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.45.0 ([#9863](https://github.com/cloudquery/cloudquery/issues/9863)) ([2799d62](https://github.com/cloudquery/cloudquery/commit/2799d62518283ac304beecda9478f8f2db43cdc5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v2 to v2.4.0 ([#10278](https://github.com/cloudquery/cloudquery/issues/10278)) ([a0a713e](https://github.com/cloudquery/cloudquery/commit/a0a713e8490b970b9d8bfaa1b50e01f43ff51c36))
+
 ## [2.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v2.3.0...plugins-destination-azblob-v2.3.1) (2023-04-04)
 
 

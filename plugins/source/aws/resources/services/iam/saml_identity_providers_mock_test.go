@@ -18,7 +18,7 @@ func buildIamSAMLProviders(t *testing.T, ctrl *gomock.Controller) client.Service
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListSAMLProviders(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListSAMLProviders(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListSAMLProvidersOutput{
 			SAMLProviderList: []iamTypes.SAMLProviderListEntry{l},
 		}, nil)
@@ -28,7 +28,7 @@ func buildIamSAMLProviders(t *testing.T, ctrl *gomock.Controller) client.Service
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().GetSAMLProvider(gomock.Any(), gomock.Any()).Return(&p, nil)
+	m.EXPECT().GetSAMLProvider(gomock.Any(), gomock.Any(), gomock.Any()).Return(&p, nil)
 
 	return client.Services{
 		Iam: m,

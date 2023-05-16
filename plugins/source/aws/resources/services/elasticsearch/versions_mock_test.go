@@ -18,7 +18,7 @@ func buildElasticSearchVersions(t *testing.T, ctrl *gomock.Controller) client.Se
 	if err := faker.FakeObject(&versions); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListElasticsearchVersions(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListElasticsearchVersions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.ListElasticsearchVersionsOutput{
 			ElasticsearchVersions: versions,
 		},
@@ -29,7 +29,7 @@ func buildElasticSearchVersions(t *testing.T, ctrl *gomock.Controller) client.Se
 	if err := faker.FakeObject(&versions); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListElasticsearchInstanceTypes(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListElasticsearchInstanceTypes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.ListElasticsearchInstanceTypesOutput{
 			ElasticsearchInstanceTypes: instanceTypes,
 		},

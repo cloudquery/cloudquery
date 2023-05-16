@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"cloud.google.com/go/bigquery"
-	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func TestSchemaTypeToBigQueryType(t *testing.T) {
@@ -18,6 +18,7 @@ func TestSchemaTypeToBigQueryType(t *testing.T) {
 		{dataType: types.ExtensionTypes.JSON, want: bigquery.JSONFieldType, wantRepeated: false},
 		{dataType: arrow.ListOf(arrow.BinaryTypes.String), want: bigquery.StringFieldType, wantRepeated: true},
 		{dataType: arrow.ListOf(types.ExtensionTypes.JSON), want: bigquery.JSONFieldType, wantRepeated: true},
+		{dataType: arrow.StructOf([]arrow.Field{{Name: "foo", Type: arrow.BinaryTypes.String}}...), want: bigquery.JSONFieldType, wantRepeated: false},
 	}
 	cl := &Client{}
 	for _, c := range cases {

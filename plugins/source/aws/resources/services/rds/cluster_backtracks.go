@@ -50,7 +50,9 @@ func fetchRdsClusterBacktracks(ctx context.Context, meta schema.ClientMeta, pare
 	svc := c.Services().Rds
 	p := rds.NewDescribeDBClusterBacktracksPaginator(svc, &config)
 	for p.HasMorePages() {
-		resp, err := p.NextPage(ctx)
+		resp, err := p.NextPage(ctx, func(options *rds.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}

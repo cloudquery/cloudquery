@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/apache/arrow/go/v12/arrow/array"
-	"github.com/apache/arrow/go/v12/arrow/memory"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
@@ -85,7 +85,6 @@ func (c *Client) reverseTransformer(sc *arrow.Schema, node *neo4j.Node) (arrow.R
 		}
 	}
 	rec := bldr.NewRecord()
-	bldr.Release()
 	return rec, nil
 }
 

@@ -2,8 +2,8 @@ package client
 
 import (
 	"cloud.google.com/go/bigquery"
-	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 var (
@@ -30,25 +30,37 @@ var (
 		arrow.FixedWidthTypes.Timestamp_us: bigquery.TimestampFieldType,
 		arrow.FixedWidthTypes.Timestamp_ns: bigquery.TimestampFieldType,
 		types.ExtensionTypes.Inet:          bigquery.StringFieldType,
-		types.ExtensionTypes.Mac:           bigquery.StringFieldType,
+		types.ExtensionTypes.MAC:           bigquery.StringFieldType,
 		types.ExtensionTypes.UUID:          bigquery.StringFieldType,
 		types.ExtensionTypes.JSON:          bigquery.JSONFieldType,
 	}
 )
 
-func (c *Client) SchemaTypeToBigQueryType(dt arrow.DataType) (ft bigquery.FieldType, repeated bool) {
-	if arrow.IsListLike(dt.ID()) {
-		ift, isRepeated := c.SchemaTypeToBigQueryType(dt.(*arrow.ListType).Elem())
+func (c *Client) ArrowTypeToBigQuery(dt arrow.DataType) (ft bigquery.FieldType, schema []*bigquery.FieldSchema, repeated bool) {
+	switch v := dt.(type) {
+	case *arrow.ListType:
+		ift, sch, isRepeated := c.ArrowTypeToBigQuery(v.Elem())
 		if isRepeated {
 			// store nested arrays as JSON
-			return bigquery.JSONFieldType, false
+			return bigquery.JSONFieldType, nil, false
 		}
-		return ift, true
+		return ift, sch, true
+	case *arrow.MapType:
+		// store maps as JSON
+		return bigquery.JSONFieldType, nil, false
+	}
+
+	switch dt.ID() {
+	case arrow.STRUCT:
+		return bigquery.RecordFieldType, nil, false
+	case arrow.INTERVAL_MONTH_DAY_NANO:
+		return bigquery.RecordFieldType, nil, false
 	}
 	for k, v := range TypeMapping {
 		if arrow.TypeEqual(k, dt) {
-			return v, false
+			return v, nil, false
 		}
 	}
-	panic("supported type: " + dt.Name())
+	// default to string
+	return bigquery.StringFieldType, nil, false
 }

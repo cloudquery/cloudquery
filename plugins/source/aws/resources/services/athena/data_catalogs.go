@@ -51,7 +51,9 @@ func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent
 	input := athena.ListDataCatalogsInput{}
 	paginator := athena.NewListDataCatalogsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *athena.Options) {
+			options.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -66,6 +68,8 @@ func getDataCatalog(ctx context.Context, meta schema.ClientMeta, resource *schem
 	catalogSummary := resource.Item.(types.DataCatalogSummary)
 	dc, err := svc.GetDataCatalog(ctx, &athena.GetDataCatalogInput{
 		Name: catalogSummary.CatalogName,
+	}, func(options *athena.Options) {
+		options.Region = c.Region
 	})
 	if err != nil {
 		// retrieving of default data catalog (AwsDataCatalog) returns "not found error" (with statuscode 400: InvalidRequestException:...) but it exists and its
@@ -94,7 +98,9 @@ func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, r
 	paginator := athena.NewListTagsForResourcePaginator(svc, &athena.ListTagsForResourceInput{ResourceARN: &arnStr})
 	tags := make(map[string]string)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *athena.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil

@@ -3,10 +3,16 @@ package client
 import "fmt"
 
 type Spec struct {
-	AccessToken string        `json:"access_token"`
-	Orgs        []string      `json:"orgs"`
-	Repos       []string      `json:"repos"`
-	AppAuth     []AppAuthSpec `json:"app_auth"`
+	AccessToken        string              `json:"access_token"`
+	Orgs               []string            `json:"orgs"`
+	Repos              []string            `json:"repos"`
+	AppAuth            []AppAuthSpec       `json:"app_auth"`
+	EnterpriseSettings *EnterpriseSettings `json:"enterprise"`
+}
+
+type EnterpriseSettings struct {
+	BaseURL   string `json:"base_url"`
+	UploadURL string `json:"upload_url"`
 }
 
 type AppAuthSpec struct {
@@ -19,6 +25,11 @@ type AppAuthSpec struct {
 func (s *Spec) Validate() error {
 	if s.AccessToken == "" && len(s.AppAuth) == 0 {
 		return fmt.Errorf("missing personal access token or app auth in configuration")
+	}
+	if s.EnterpriseSettings != nil {
+		if err := s.ValidateEnterpriseSettings(); err != nil {
+			return err
+		}
 	}
 	for _, appAuth := range s.AppAuth {
 		if appAuth.Org == "" {
@@ -39,6 +50,18 @@ func (s *Spec) Validate() error {
 			return err
 		}
 	}
+	return nil
+}
+
+func (s *Spec) ValidateEnterpriseSettings() error {
+	if s.EnterpriseSettings.BaseURL == "" {
+		return fmt.Errorf("enterprise base url is empty")
+	}
+
+	if s.EnterpriseSettings.UploadURL == "" {
+		return fmt.Errorf("enterprise upload url is empty")
+	}
+
 	return nil
 }
 

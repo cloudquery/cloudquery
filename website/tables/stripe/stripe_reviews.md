@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Reviews.
 
-https://stripe.com/docs/api/reviews
+https://stripe.com/docs/api/radar/reviews
 
 The primary key for this table is **id**.
 It supports incremental syncs based on the **created** column.

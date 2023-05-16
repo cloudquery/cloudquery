@@ -10,37 +10,38 @@ import (
 	"strings"
 	"time"
 
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/filetypes/v3"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/google/uuid"
 )
 
 const (
-	PathVarTable = "{{TABLE}}"
-	PathVarUUID  = "{{UUID}}"
-	YearVar      = "{{YEAR}}"
-	MonthVar     = "{{MONTH}}"
-	DayVar       = "{{DAY}}"
-	HourVar      = "{{HOUR}}"
-	MinuteVar    = "{{MINUTE}}"
+	PathVarFormat = "{{FORMAT}}"
+	PathVarTable  = "{{TABLE}}"
+	PathVarUUID   = "{{UUID}}"
+	YearVar       = "{{YEAR}}"
+	MonthVar      = "{{MONTH}}"
+	DayVar        = "{{DAY}}"
+	HourVar       = "{{HOUR}}"
+	MinuteVar     = "{{MINUTE}}"
 )
 
 var reInvalidJSONKey = regexp.MustCompile(`\W`)
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
+func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data []arrow.Record) error {
 	if len(data) == 0 {
 		return nil
 	}
 
 	if c.pluginSpec.Athena {
-		for _, resource := range data {
-			for u := range resource {
-				if table.Columns[u].Type != schema.TypeJSON {
-					continue
-				}
-				sanitizeJSONKeys(resource[u])
-			}
+		for i, record := range data {
+			data[i] = sanitizeRecordJSONKeys(record)
 		}
 	}
 
@@ -57,7 +58,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	r := io.Reader(&b)
 	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
 		Bucket: aws.String(c.pluginSpec.Bucket),
-		Key:    aws.String(replacePathVariables(c.pluginSpec.Path, table.Name, uuid.NewString(), timeNow)),
+		Key:    aws.String(replacePathVariables(c.pluginSpec.Path, table.Name, uuid.NewString(), c.pluginSpec.Format, timeNow)),
 		Body:   r,
 	}); err != nil {
 		return err
@@ -66,10 +67,31 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data 
 	return nil
 }
 
-// sanitizeJSONKeys replaces all invalid characters in JSON keys with underscores.
-// It does the replacement in-place, modifying the original object. This is required
+// sanitizeRecordJSONKeys replaces all invalid characters in JSON keys with underscores. This is required
 // for compatibility with Athena.
-func sanitizeJSONKeys(obj any) {
+func sanitizeRecordJSONKeys(record arrow.Record) arrow.Record {
+	cols := make([]arrow.Array, record.NumCols())
+	for i, col := range record.Columns() {
+		if arrow.TypeEqual(col.DataType(), types.NewJSONType()) {
+			b := types.NewJSONBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewJSONType()))
+			for r := 0; r < int(record.NumRows()); r++ {
+				if col.IsNull(r) {
+					b.AppendNull()
+					continue
+				}
+				obj := col.GetOneForMarshal(r)
+				sanitizeJSONKeysForObject(obj)
+				b.Append(obj)
+			}
+			cols[i] = b.NewArray()
+			continue
+		}
+		cols[i] = col
+	}
+	return array.NewRecord(record.Schema(), cols, record.NumRows())
+}
+
+func sanitizeJSONKeysForObject(obj any) {
 	value := reflect.ValueOf(obj)
 	switch value.Kind() {
 	case reflect.Map:
@@ -79,20 +101,21 @@ func sanitizeJSONKeys(obj any) {
 			if k.Kind() == reflect.String {
 				nk := reInvalidJSONKey.ReplaceAllString(k.String(), "_")
 				v := iter.Value()
-				sanitizeJSONKeys(v.Interface())
+				sanitizeJSONKeysForObject(v.Interface())
 				value.SetMapIndex(k, reflect.Value{})
 				value.SetMapIndex(reflect.ValueOf(nk), v)
 			}
 		}
 	case reflect.Slice:
 		for i := 0; i < value.Len(); i++ {
-			sanitizeJSONKeys(value.Index(i).Interface())
+			sanitizeJSONKeysForObject(value.Index(i).Interface())
 		}
 	}
 }
 
-func replacePathVariables(specPath, table, fileIdentifier string, t time.Time) string {
+func replacePathVariables(specPath, table, fileIdentifier string, format filetypes.FormatType, t time.Time) string {
 	name := strings.ReplaceAll(specPath, PathVarTable, table)
+	name = strings.ReplaceAll(name, PathVarFormat, string(format))
 	name = strings.ReplaceAll(name, PathVarUUID, fileIdentifier)
 	name = strings.ReplaceAll(name, YearVar, t.Format("2006"))
 	name = strings.ReplaceAll(name, MonthVar, t.Format("01"))

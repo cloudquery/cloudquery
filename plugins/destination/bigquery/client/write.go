@@ -2,12 +2,14 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
 	"cloud.google.com/go/bigquery"
-	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"google.golang.org/api/googleapi"
 )
 
@@ -24,23 +26,22 @@ func (i *item) Save() (map[string]bigquery.Value, string, error) {
 	return i.cols, bigquery.NoDedupeID, nil
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, arrowSchema *arrow.Schema, records []arrow.Record) error {
-	tableName := schema.TableName(arrowSchema)
-	inserter := c.client.Dataset(c.pluginSpec.DatasetID).Table(tableName).Inserter()
+func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) error {
+	inserter := c.client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Inserter()
 	inserter.IgnoreUnknownValues = true
 	inserter.SkipInvalidRows = false
 	batch := make([]*item, 0)
 	for _, rec := range records {
 		for r := 0; r < int(rec.NumRows()); r++ {
 			saver := &item{
-				cols: make(map[string]bigquery.Value, len(arrowSchema.Fields())),
+				cols: make(map[string]bigquery.Value, len(table.Columns)),
 			}
 			for i, col := range rec.Columns() {
 				if col.IsNull(r) {
 					// save some bandwidth by not sending nil values
 					continue
 				}
-				saver.cols[arrowSchema.Field(i).Name] = col.GetOneForMarshal(r)
+				saver.cols[table.Columns[i].Name] = c.getValueForBigQuery(col, r)
 			}
 			batch = append(batch, saver)
 		}
@@ -53,12 +54,32 @@ func (c *Client) WriteTableBatch(ctx context.Context, arrowSchema *arrow.Schema,
 		// check if bigquery error is 404 (table does not exist yet), then wait a bit and retry until it does exist
 		if e, ok := err.(*googleapi.Error); ok && e.Code == 404 {
 			// retry
-			c.logger.Info().Str("table", tableName).Msg("Table does not exist yet, waiting for it to be created before retrying write")
+			c.logger.Info().Str("table", table.Name).Msg("Table does not exist yet, waiting for it to be created before retrying write")
 			time.Sleep(1 * time.Second)
 			continue
 		}
-		return fmt.Errorf("failed to put item into BigQuery table %s: %w", tableName, err)
+		return fmt.Errorf("failed to put item into BigQuery table %s: %w", table.Name, err)
 	}
 
 	return nil
+}
+
+func (c *Client) getValueForBigQuery(col arrow.Array, i int) any {
+	switch col.DataType().ID() {
+	case arrow.MAP, arrow.STRUCT:
+		v := col.GetOneForMarshal(i)
+		b, _ := json.Marshal(v)
+		return string(b)
+	case arrow.LIST:
+		_, repeated := c.SchemaTypeToBigQueryType(col.DataType())
+		if repeated {
+			return col.GetOneForMarshal(i)
+		}
+		v := col.GetOneForMarshal(i)
+		b, _ := json.Marshal(v)
+		return string(b)
+	case arrow.INTERVAL_MONTH_DAY_NANO:
+		return col.(*array.MonthDayNanoInterval).ValueStr(i)
+	}
+	return col.GetOneForMarshal(i)
 }

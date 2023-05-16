@@ -7,11 +7,11 @@ import (
 	"time"
 
 	"cloud.google.com/go/bigquery"
-	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/apache/arrow/go/v12/arrow/array"
-	"github.com/apache/arrow/go/v12/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/goccy/go-json"
 	"google.golang.org/api/iterator"
 )
@@ -20,14 +20,9 @@ const (
 	readSQL = "SELECT %s FROM `%s.%s.%s` WHERE `_cq_source_name` = @cq_source_name order by _cq_sync_time asc"
 )
 
-func (c *Client) Read(ctx context.Context, arrowSchema *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
-	tableName := schema.TableName(arrowSchema)
-	colNames := make([]string, 0, len(arrowSchema.Fields()))
-	for _, col := range arrowSchema.Fields() {
-		colNames = append(colNames, col.Name)
-	}
-	colSQL := "`" + strings.Join(colNames, "`, `") + "`"
-	stmt := fmt.Sprintf(readSQL, colSQL, c.pluginSpec.ProjectID, c.pluginSpec.DatasetID, tableName)
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+	colSQL := "`" + strings.Join(table.Columns.Names(), "`, `") + "`"
+	stmt := fmt.Sprintf(readSQL, colSQL, c.pluginSpec.ProjectID, c.pluginSpec.DatasetID, table.Name)
 	q := c.client.Query(stmt)
 	q.Parameters = []bigquery.QueryParameter{
 		{
@@ -38,8 +33,9 @@ func (c *Client) Read(ctx context.Context, arrowSchema *arrow.Schema, sourceName
 	q.Location = c.client.Location
 	it, err := q.Read(ctx)
 	if err != nil {
-		return fmt.Errorf("failed to read table %s: %w", tableName, err)
+		return fmt.Errorf("failed to read table %s: %w", table.Name, err)
 	}
+	arrowSchema := table.ToArrowSchema()
 	for {
 		values := c.createResultsArray(arrowSchema)
 		err := it.Next(&values)
@@ -47,7 +43,7 @@ func (c *Client) Read(ctx context.Context, arrowSchema *arrow.Schema, sourceName
 			break
 		}
 		if err != nil {
-			return fmt.Errorf("failed to read from table %s: %w", tableName, err)
+			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 		}
 		rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
 		for i := range values {
@@ -144,10 +140,10 @@ func (*Client) createResultsArray(sc *arrow.Schema) []bigquery.Value {
 		case arrow.TypeEqual(dt, arrow.ListOf(types.ExtensionTypes.Inet)):
 			var r string
 			results = append(results, &r)
-		case arrow.TypeEqual(dt, types.ExtensionTypes.Mac):
+		case arrow.TypeEqual(dt, types.ExtensionTypes.MAC):
 			var r string
 			results = append(results, &r)
-		case arrow.TypeEqual(dt, arrow.ListOf(types.ExtensionTypes.Mac)):
+		case arrow.TypeEqual(dt, arrow.ListOf(types.ExtensionTypes.MAC)):
 			var r string
 			results = append(results, &r)
 		case arrow.TypeEqual(dt, types.ExtensionTypes.UUID):

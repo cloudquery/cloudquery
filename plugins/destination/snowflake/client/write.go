@@ -7,8 +7,8 @@ import (
 	"os"
 	"path"
 
-	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/apache/arrow/go/v12/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
@@ -36,13 +36,9 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, resou
 		enc.SetEscapeHTML(false)
 		for i := 0; i < arr.Len(); i++ {
 			if err := enc.Encode(arr.GetOneForMarshal(i)); err != nil {
-				arr.Release()
-				r.Release()
 				return err
 			}
 		}
-		arr.Release()
-		r.Release()
 	}
 
 	if err := f.Close(); err != nil {

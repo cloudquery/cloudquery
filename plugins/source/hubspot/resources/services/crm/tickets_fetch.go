@@ -19,7 +19,10 @@ func fetchTickets(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 			return nil
 		}
 
-		req := hubspotClient.BasicApi.GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).Limit(client.DefaultPageSize)
+		req := hubspotClient.BasicApi.
+			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
+			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_tickets").GetProperties()).
+			Limit(client.DefaultPageSize)
 
 		if len(after) > 0 {
 			req = req.After(after)

@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 	"github.com/rs/zerolog"
 )
@@ -23,7 +23,7 @@ type Client struct {
 
 	Spec           Spec
 	OrganizationID string
-	organizations  []string
+	Organizations  []snyk.Organization
 
 	logger zerolog.Logger
 
@@ -110,12 +110,11 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 		backoff = time.Duration(snykSpec.RetryDelaySeconds) * time.Second
 	}
 	c := &Client{
-		Client:        client,
-		Spec:          *snykSpec,
-		logger:        logger,
-		organizations: snykSpec.Organizations,
-		maxRetries:    maxRetries,
-		backoff:       backoff,
+		Client:     client,
+		Spec:       *snykSpec,
+		logger:     logger,
+		maxRetries: maxRetries,
+		backoff:    backoff,
 	}
 
 	return c, c.initOrganizations(ctx)

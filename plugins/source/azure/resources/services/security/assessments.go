@@ -17,6 +17,9 @@ func Assessments() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_assessments", client.Namespacemicrosoft_security),
 		Transform:   transformers.TransformWithStruct(&armsecurity.AssessmentResponse{}, transformers.WithPrimaryKeys("ID")),
 		Columns:     schema.ColumnList{client.SubscriptionID},
+		Relations: []*schema.Table{
+			subAssessments(),
+		},
 	}
 }
 

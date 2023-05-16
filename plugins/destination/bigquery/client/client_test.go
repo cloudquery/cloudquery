@@ -4,9 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
-	"github.com/cloudquery/plugin-sdk/v2/testdata"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
 )
 
 var migrateStrategy = destination.MigrateStrategy{
@@ -40,17 +39,6 @@ func TestPlugin(t *testing.T) {
 
 			MigrateStrategyOverwrite: migrateStrategy,
 			MigrateStrategyAppend:    migrateStrategy,
-
-			TestSourceOptions: testdata.TestSourceOptions{
-				IncludeLists:      true,
-				IncludeTimestamps: true,
-				IncludeDates:      false,
-				IncludeMaps:       false,
-				IncludeStructs:    false,
-				IncludeIntervals:  false,
-				IncludeDurations:  false,
-				IncludeTimes:      false,
-				IncludeLargeTypes: false,
-			},
-		})
+		},
+	)
 }

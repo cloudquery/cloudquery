@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
 )
@@ -31,7 +31,9 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		if err := spec.UnmarshalSpec(&awsSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal aws spec: %w", err)
 		}
-		c := NewAwsClient(l, nil)
+		awsSpec.SetDefaults()
+		awsSpec.UsePaidAPIs = true
+		c := NewAwsClient(l, nil, &awsSpec)
 		c.ServicesManager.InitServicesForPartitionAccountAndRegion("aws", "testAccount", "us-east-1", builder(t, ctrl))
 		c.Partition = "aws"
 		return &c, nil

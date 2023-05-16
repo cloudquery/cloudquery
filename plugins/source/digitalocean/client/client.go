@@ -9,9 +9,9 @@ import (
 	awscfg "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/smithy-go/logging"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
 	"github.com/digitalocean/godo"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
@@ -112,6 +112,7 @@ type Services struct {
 	Keys           KeysService
 	LoadBalancers  LoadBalancersService
 	Projects       ProjectsService
+	Regions        RegionsService
 	Registry       RegistryService
 	Sizes          SizesService
 	Snapshots      SnapshotsService
@@ -221,6 +222,7 @@ func initServices(doClient *godo.Client, spacesService SpacesService) *Services 
 		Keys:           doClient.Keys,
 		LoadBalancers:  doClient.LoadBalancers,
 		Projects:       doClient.Projects,
+		Regions:        doClient.Regions,
 		Registry:       doClient.Registry,
 		Sizes:          doClient.Sizes,
 		Snapshots:      doClient.Snapshots,

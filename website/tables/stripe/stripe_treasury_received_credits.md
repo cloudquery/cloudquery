@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Treasury Received Credits.
 
-https://stripe.com/docs/api/treasury_received_credits
+https://stripe.com/docs/api/treasury/received_credits
 
 The primary key for this table is **id**.
 

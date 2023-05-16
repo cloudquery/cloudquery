@@ -37,12 +37,13 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   Path to where the files will be uploaded in the above bucket. The path supports the following placeholder variables:
 
-  - `{{TABLE}}` will be replaced with the table name,
-  - `{{UUID}}` will be replaced with a random UUID to uniquely identify each file,
-  - `{{YEAR}}` will be replaced with the current year in `YYYY` format,
-  - `{{MONTH}}` will be replaced with the current month in `MM` format,
-  - `{{DAY}}` will be replaced with the current day in `DD` format,
-  - `{{HOUR}}` will be replaced with the current hour in `HH` format, and
+  - `{{TABLE}}` will be replaced with the table name
+  - `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`
+  - `{{UUID}}` will be replaced with a random UUID to uniquely identify each file
+  - `{{YEAR}}` will be replaced with the current year in `YYYY` format
+  - `{{MONTH}}` will be replaced with the current month in `MM` format
+  - `{{DAY}}` will be replaced with the current day in `DD` format
+  - `{{HOUR}}` will be replaced with the current hour in `HH` format
   - `{{MINUTE}}` will be replaced with the current minute in `mm` format
 
   Note that timestamps are in UTC and will be the current time at the time the file is written, not when the sync started.
@@ -50,6 +51,14 @@ This is the (nested) spec used by the CSV destination Plugin.
 - `athena` (boolean) (optional, default `false`)
 
   When `athena` is set to `true`, the S3 plugin will sanitize keys in JSON columns to be compatible with the Hive Metastore / Athena. This allows tables to be created with a Glue Crawler and then queried via Athena, without changes to the table schema.
+
+- `test_write` (boolean) (optional, default `true`)
+
+  Ensure write access to the given bucket and path by writing a test object on each sync. If you are sure that the bucket and path are writable, you can set this to `false` to skip the test.
+
+- `endpoint` (string) (optional, default empty)
+
+  Endpoint to use for S3 API calls. This is useful for S3-compatible storage services such as MinIO.
 
 - `format` (string) (required)
 

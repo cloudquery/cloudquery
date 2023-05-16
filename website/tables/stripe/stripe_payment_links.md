@@ -6,6 +6,11 @@ https://stripe.com/docs/api/payment_links
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on stripe_payment_links:
+  - [stripe_payment_link_line_items](stripe_payment_link_line_items)
+
 ## Columns
 
 | Name          | Type          |
@@ -25,7 +30,9 @@ The primary key for this table is **id**.
 |consent_collection|JSON|
 |currency|String|
 |customer_creation|String|
+|custom_fields|JSON|
 |custom_text|JSON|
+|invoice_creation|JSON|
 |line_items|JSON|
 |livemode|Bool|
 |metadata|JSON|

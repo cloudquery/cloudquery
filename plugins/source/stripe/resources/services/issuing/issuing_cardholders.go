@@ -14,7 +14,7 @@ import (
 func IssuingCardholders() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_issuing_cardholders",
-		Description: `https://stripe.com/docs/api/issuing_cardholders`,
+		Description: `https://stripe.com/docs/api/issuing/cardholders`,
 		Transform:   client.TransformWithStruct(&stripe.IssuingCardholder{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchIssuingCardholders,
 

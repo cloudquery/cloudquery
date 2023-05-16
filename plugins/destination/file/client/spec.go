@@ -5,7 +5,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/cloudquery/filetypes/v2"
+	"github.com/cloudquery/filetypes/v3"
 )
 
 const (
@@ -32,8 +32,6 @@ func (s *Spec) SetDefaults() {
 		if !s.NoRotate {
 			s.Path += "." + PathVarUUID
 		}
-	} else {
-		s.Directory = path.Dir(s.Path)
 	}
 	if !strings.Contains(s.Path, PathVarTable) {
 		s.Path = path.Join(s.Path, fmt.Sprintf("%s.%s", PathVarTable, s.Format))

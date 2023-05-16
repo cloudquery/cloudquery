@@ -14,7 +14,7 @@ import (
 func Reviews() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_reviews",
-		Description: `https://stripe.com/docs/api/reviews`,
+		Description: `https://stripe.com/docs/api/radar/reviews`,
 		Transform:   client.TransformWithStruct(&stripe.Review{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchReviews,
 
