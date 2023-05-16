@@ -53,22 +53,22 @@ func (c *Client) sqliteTables(tables schema.Tables) (schema.Tables, error) {
 
 func (c *Client) normalizeTables(tables schema.Tables) (schema.Tables, error) {
 	flattened := tables.FlattenTables()
-	canonized := make(schema.Tables, len(flattened))
+	normalized := make(schema.Tables, len(flattened))
 	var err error
 	for i, table := range flattened {
-		canonized[i], err = c.normalizeTable(table)
+		normalized[i], err = c.normalizeTable(table)
 		if err != nil {
 			return nil, err
 		}
 	}
-	return canonized, nil
+	return normalized, nil
 }
 
 func (c *Client) normalizeTable(table *schema.Table) (*schema.Table, error) {
 	columns := make([]schema.Column, len(table.Columns))
 	for i, col := range table.Columns {
-		canonized := c.normalizeField(col.ToArrowField())
-		columns[i] = schema.NewColumnFromArrowField(*canonized)
+		normalized := c.normalizeField(col.ToArrowField())
+		columns[i] = schema.NewColumnFromArrowField(*normalized)
 	}
 	return &schema.Table{Name: table.Name, Columns: columns}, nil
 }
