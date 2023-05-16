@@ -83,7 +83,7 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 				le.StartTime = &date
 			}
 		}
-
+		
 		var lastEventTime *time.Time
 		// var err error
 		paginator := cloudtrail.NewLookupEventsPaginator(svc, &le)
@@ -109,7 +109,10 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 		}
 
 		if cl.Backend != nil && lastEventTime != nil {
-			return cl.Backend.Set(ctx, tableName, backendKey, lastEventTime.Format(time.RFC3339Nano))
+			err := cl.Backend.Set(ctx, tableName, backendKey, lastEventTime.Format(time.RFC3339Nano))
+			if err != nil {
+				return fmt.Errorf("failed to save state to backend: %w", err)
+			}
 		}
 	}
 
