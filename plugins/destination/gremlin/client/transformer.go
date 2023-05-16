@@ -10,7 +10,7 @@ import (
 	"github.com/apache/arrow/go/v13/arrow/memory"
 )
 
-func transformArr(arr arrow.Array) []any {
+func transformArr(arr arrow.Array, isCQTime bool) []any {
 	dbArr := make([]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
 		if arr.IsNull(i) || !arr.IsValid(i) {
@@ -39,11 +39,15 @@ func transformArr(arr arrow.Array) []any {
 		case *array.LargeString:
 			dbArr[i] = stripNulls(a.Value(i))
 		case *array.Timestamp:
-			dbArr[i] = a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit).UTC()
+			if isCQTime {
+				dbArr[i] = a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit).UTC()
+				continue
+			}
+			dbArr[i] = a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit).UTC().Format("2006-01-02 15:04:05.999999999")
 		case array.ListLike:
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)
-			dbArr[i] = transformArr(nested)
+			dbArr[i] = transformArr(nested, false)
 		default:
 			dbArr[i] = stripNulls(arr.ValueStr(i))
 		}
@@ -52,7 +56,7 @@ func transformArr(arr arrow.Array) []any {
 	return dbArr
 }
 
-func transformValues(r arrow.Record) []map[string]any {
+func transformValues(r arrow.Record, cqTimeIndex int) []map[string]any {
 	results := make([]map[string]any, r.NumRows())
 
 	for i := range results {
@@ -61,7 +65,7 @@ func transformValues(r arrow.Record) []map[string]any {
 	sc := r.Schema()
 	for i := 0; i < int(r.NumCols()); i++ {
 		col := r.Column(i)
-		transformed := transformArr(col)
+		transformed := transformArr(col, i == cqTimeIndex)
 		for l := 0; l < col.Len(); l++ {
 			results[l][sc.Field(i).Name] = transformed[l]
 		}
@@ -78,6 +82,10 @@ func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 		bldr.AppendNull()
 		return nil
 	}
+	if str, ok := val.(string); ok {
+		return bldr.AppendValueFromString(str)
+	}
+
 	switch b := bldr.(type) {
 	case *array.BooleanBuilder:
 		b.Append(val.(bool))

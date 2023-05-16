@@ -41,11 +41,26 @@ func buildStacks(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	var summary cloudformation.GetTemplateSummaryOutput
+	if err := faker.FakeObject(&summary); err != nil {
+		t.Fatal(err)
+	}
+	summary.Metadata = aws.String(`{ "some": "metadata" }`) // Required as faker doesn't handle this.
+
+	mock.EXPECT().GetTemplateSummary(
+		gomock.Any(),
+		&cloudformation.GetTemplateSummaryInput{StackName: stack.StackName},
+		gomock.Any(),
+	).Return(
+		&summary,
+		nil,
+	)
+
 	var template cloudformation.GetTemplateOutput
 	if err := faker.FakeObject(&template); err != nil {
 		t.Fatal(err)
 	}
-	template.TemplateBody = aws.String(`{"foo": "bar"}`)
+	template.TemplateBody = aws.String(`{"foo": "bar"}`) // Required as faker doesn't handle this.
 
 	mock.EXPECT().GetTemplate(
 		gomock.Any(),

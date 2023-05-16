@@ -3,22 +3,21 @@ package queries
 import (
 	"database/sql"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 type readQueryBuilder struct {
-	Table            string
-	Columns          []string
+	Schema           string
+	Table            *schema.Table
 	SourceNameColumn string
 	SyncTimeColumn   string
 }
 
-func Read(schemaName, sourceName string, sc *arrow.Schema) (query string, params []any) {
+func Read(schemaName, sourceName string, table *schema.Table) (query string, params []any) {
 	return execTemplate("read.sql.tpl",
 			&readQueryBuilder{
-				Table:            SanitizedTableName(schemaName, sc),
-				Columns:          sanitized(ColumnNames(sc)...),
+				Schema:           schemaName,
+				Table:            table,
 				SourceNameColumn: sanitizeID(schema.CqSourceNameColumn.Name),
 				SyncTimeColumn:   sanitizeID(schema.CqSyncTimeColumn.Name),
 			},
