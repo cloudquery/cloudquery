@@ -21,6 +21,7 @@ import (
 
 type ExitReason string
 
+// nolint:dupl
 func syncConnectionV1(ctx context.Context, sourceClient *managedsource.Client, destinationsClients manageddestination.Clients, uid string, noMigrate bool) error {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
