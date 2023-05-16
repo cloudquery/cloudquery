@@ -4,15 +4,14 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {
+func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	for _, t := range tables {
 		if err := c.migrateTable(ctx, t); err != nil {
 			return err
@@ -22,8 +21,8 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {
 	return nil
 }
 
-func (c *Client) migrateTable(ctx context.Context, table *arrow.Schema) error {
-	tableName := schema.TableName(table)
+func (c *Client) migrateTable(ctx context.Context, table *schema.Table) error {
+	tableName := table.Name
 	for _, mdl := range c.getIndexTemplates(table) {
 		res, err := c.client.Database(c.pluginSpec.Database).Collection(tableName).Indexes().CreateOne(ctx, mdl)
 		switch {
@@ -44,8 +43,8 @@ func (c *Client) migrateTable(ctx context.Context, table *arrow.Schema) error {
 	return nil
 }
 
-func (c *Client) migrateTableOnConflict(ctx context.Context, table *arrow.Schema, mdl mongo.IndexModel) error {
-	tableName := schema.TableName(table)
+func (c *Client) migrateTableOnConflict(ctx context.Context, table *schema.Table, mdl mongo.IndexModel) error {
+	tableName := table.Name
 	if c.spec.MigrateMode != specs.MigrateModeForced {
 		return fmt.Errorf("collection %s requires forced migration due to changes in unique indexes. use 'migrate_mode: forced'", tableName)
 	}
@@ -61,14 +60,14 @@ func (c *Client) migrateTableOnConflict(ctx context.Context, table *arrow.Schema
 	return nil
 }
 
-func (c *Client) getIndexTemplates(table *arrow.Schema) []mongo.IndexModel {
+func (c *Client) getIndexTemplates(table *schema.Table) []mongo.IndexModel {
 	var indexes []mongo.IndexModel
 
-	pks := schema.PrimaryKeyIndices(table)
+	pks := table.PrimaryKeysIndexes()
 	if len(pks) > 0 {
 		indexCols := bson.D{}
 		for _, colIndex := range pks {
-			col := table.Field(colIndex).Name
+			col := table.Columns[colIndex].Name
 			indexCols = append(indexCols, bson.E{Key: col, Value: 1})
 		}
 
