@@ -51,26 +51,22 @@ func (c *Client) sqliteTables(tables schema.Tables) (schema.Tables, error) {
 	return schemaTables, nil
 }
 
-func (c *Client) normalizeTables(tables schema.Tables) (schema.Tables, error) {
+func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
 	flattened := tables.FlattenTables()
 	normalized := make(schema.Tables, len(flattened))
-	var err error
 	for i, table := range flattened {
-		normalized[i], err = c.normalizeTable(table)
-		if err != nil {
-			return nil, err
-		}
+		normalized[i] = c.normalizeTable(table)
 	}
-	return normalized, nil
+	return normalized
 }
 
-func (c *Client) normalizeTable(table *schema.Table) (*schema.Table, error) {
+func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 	columns := make([]schema.Column, len(table.Columns))
 	for i, col := range table.Columns {
 		normalized := c.normalizeField(col.ToArrowField())
 		columns[i] = schema.NewColumnFromArrowField(*normalized)
 	}
-	return &schema.Table{Name: table.Name, Columns: columns}, nil
+	return &schema.Table{Name: table.Name, Columns: columns}
 }
 
 func (c *Client) normalizeField(field arrow.Field) *arrow.Field {
@@ -90,7 +86,6 @@ func (c *Client) nonAutoMigratableTables(tables schema.Tables, sqliteTables sche
 	var result []string
 	var tableChanges [][]schema.TableColumnChange
 	for _, t := range tables {
-
 		sqliteTable := sqliteTables.Get(t.Name)
 		if sqliteTable == nil {
 			continue
@@ -137,11 +132,7 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 
 // This is the responsibility of the CLI of the client to lock before running migration
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	normalizedTables, err := c.normalizeTables(tables)
-	if err != nil {
-		return err
-	}
-
+	normalizedTables := c.normalizeTables(tables)
 	sqliteTables, err := c.sqliteTables(normalizedTables)
 	if err != nil {
 		return err
@@ -168,7 +159,6 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 				return err
 			}
 		} else {
-
 			changes := table.GetChanges(sqlite)
 			if c.canAutoMigrate(changes) {
 				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
@@ -188,7 +178,6 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 }
 
 func (c *Client) recreateTable(table *schema.Table) error {
-
 	sql := "drop table if exists \"" + table.Name + "\""
 	if _, err := c.db.Exec(sql); err != nil {
 		return fmt.Errorf("failed to drop table %s: %w", table.Name, err)
