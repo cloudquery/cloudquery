@@ -122,7 +122,6 @@ require (
 	github.com/gocarina/gocsv v0.0.0-20230325173030-9a18a846a479
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
-	github.com/jinzhu/copier v0.3.5
 	github.com/mitchellh/hashstructure/v2 v2.0.2
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/pkg/errors v0.9.1
@@ -157,7 +156,7 @@ require (
 	github.com/cloudquery/plugin-sdk v1.24.0
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
-	github.com/ghodss/yaml v1.0.0 // indirect
+	github.com/ghodss/yaml v1.0.0
 	github.com/goccy/go-json v0.9.11 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
