@@ -32,13 +32,13 @@ func (c *Client) reverseTransformCockroach(f arrow.Field, bldr array.Builder, va
 	case *array.Int16Builder:
 		b.Append(val.(int16))
 	case *array.Int32Builder:
-		b.Append(val.(int32))
+		b.Append(int32(val.(int64)))
 	case *array.Int64Builder:
 		b.Append(val.(int64))
 	case *array.Uint8Builder:
 		b.Append(uint8(val.(int16)))
 	case *array.Uint16Builder:
-		b.Append(uint16(val.(int32)))
+		b.Append(uint16(val.(int64)))
 	case *array.Uint32Builder:
 		b.Append(uint32(val.(int64)))
 	case *array.Uint64Builder:

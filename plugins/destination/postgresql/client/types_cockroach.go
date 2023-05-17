@@ -18,9 +18,7 @@ func (c *Client) SchemaTypeToCockroach(t arrow.DataType) string {
 		return "boolean"
 	case *arrow.Int8Type, *arrow.Uint8Type, *arrow.Int16Type:
 		return "smallint"
-	case *arrow.Uint16Type, *arrow.Int32Type:
-		return "int4"
-	case *arrow.Uint32Type, *arrow.Int64Type:
+	case *arrow.Uint16Type, *arrow.Int32Type, *arrow.Uint32Type, *arrow.Int64Type:
 		return "bigint"
 	case *arrow.Uint64Type:
 		return "numeric"
@@ -60,9 +58,7 @@ func (c *Client) CockroachToSchemaType(t string) arrow.DataType {
 		return arrow.FixedWidthTypes.Boolean
 	case "smallint":
 		return arrow.PrimitiveTypes.Int16
-	case "int4":
-		return arrow.PrimitiveTypes.Int32
-	case "bigint", "int", "oid", "serial", "integer", "int8":
+	case "int4", "bigint", "int", "oid", "serial", "integer", "int8", "int64":
 		return arrow.PrimitiveTypes.Int64
 	case "decimal", "float", "real", "double precision":
 		return arrow.PrimitiveTypes.Float64
