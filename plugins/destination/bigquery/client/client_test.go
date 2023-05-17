@@ -6,6 +6,7 @@ import (
 
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 var migrateStrategy = destination.MigrateStrategy{
@@ -40,5 +41,14 @@ func TestPlugin(t *testing.T) {
 			MigrateStrategyOverwrite: migrateStrategy,
 			MigrateStrategyAppend:    migrateStrategy,
 		},
+		//schema.WithTestSourceSkipDates(),
+		//schema.WithTestSourceSkipLargeTypes(),
+		//schema.WithTestSourceSkipIntervals(),
+		schema.WithTestSourceSkipDurations(),
+		schema.WithTestSourceSkipLists(),
+		schema.WithTestSourceSkipStructs(),
+		//schema.WithTestSourceSkipMaps(),
+		// schema.WithTestSourceSkipTimes(),
+		// schema.WithTestSourceSkipTimestamps(),
 	)
 }

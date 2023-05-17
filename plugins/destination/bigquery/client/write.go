@@ -8,7 +8,6 @@ import (
 
 	"cloud.google.com/go/bigquery"
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"google.golang.org/api/googleapi"
 )
@@ -18,7 +17,7 @@ const (
 )
 
 type item struct {
-	cols map[string]bigquery.Value
+	cols map[string]bigquery.ValueSaver
 }
 
 func (i *item) Save() (map[string]bigquery.Value, string, error) {
@@ -34,7 +33,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	for _, rec := range records {
 		for r := 0; r < int(rec.NumRows()); r++ {
 			saver := &item{
-				cols: make(map[string]bigquery.Value, len(table.Columns)),
+				cols: make(map[string]bigquery.ValueSaver, len(table.Columns)),
 			}
 			for i, col := range rec.Columns() {
 				if col.IsNull(r) {
@@ -64,22 +63,22 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	return nil
 }
 
-func (c *Client) getValueForBigQuery(col arrow.Array, i int) any {
+func (c *Client) getValueForBigQuery(col arrow.Array, i int) bigquery.ValueSaver {
 	switch col.DataType().ID() {
 	case arrow.MAP, arrow.STRUCT:
 		v := col.GetOneForMarshal(i)
 		b, _ := json.Marshal(v)
 		return string(b)
-	case arrow.LIST:
-		_, repeated := c.SchemaTypeToBigQueryType(col.DataType())
-		if repeated {
-			return col.GetOneForMarshal(i)
-		}
-		v := col.GetOneForMarshal(i)
-		b, _ := json.Marshal(v)
-		return string(b)
 	case arrow.INTERVAL_MONTH_DAY_NANO:
-		return col.(*array.MonthDayNanoInterval).ValueStr(i)
+		return &bigquery.StructSaver{
+			Schema: c.DataTypeToBigQuerySchema(arrow.FixedWidthTypes.MonthDayNanoInterval),
+			Struct: col.GetOneForMarshal(i).(arrow.MonthDayNanoInterval),
+		}
+	case arrow.INTERVAL_DAY_TIME:
+		return &bigquery.StructSaver{
+			Schema: c.DataTypeToBigQuerySchema(arrow.FixedWidthTypes.DayTimeInterval),
+			Struct: col.GetOneForMarshal(i).(arrow.DayTimeInterval),
+		}
 	}
 	return col.GetOneForMarshal(i)
 }

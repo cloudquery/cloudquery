@@ -11,35 +11,39 @@ func (c *Client) ColumnToBigQuerySchema(col schema.Column) *bigquery.FieldSchema
 	sc := bigquery.FieldSchema{
 		Name:        col.Name,
 		Description: col.Description,
-		// Repeated:               false,
-		Required: col.NotNull,
-		// Type:                   "",
-		// Schema:                 nil,
-		// MaxLength:              0,
-		// Precision:              0,
-		// Scale:                  0,
-		// DefaultValueExpression: "",
-		// Collation:              "",
+		// Required:    col.NotNull,
+		Type:   c.DataTypeToBigQueryType(col.Type),
+		Schema: c.DataTypeToBigQuerySchema(col.Type),
 	}
 
-	switch v := col.Type.(type) {
-	case *arrow.ListType:
-		ift, sch, isRepeated := c.ArrowTypeToBigQuery(v.Elem())
-		if isRepeated {
-			// store nested arrays as JSON
-			return bigquery.JSONFieldType, nil, false
+	if col.Type.ID() == arrow.LIST {
+		sc.Repeated = true
+	}
+	return &sc
+}
+
+func (c *Client) DataTypeToBigQueryType(dataType arrow.DataType) bigquery.FieldType {
+	// handle complex types
+	switch dataType.ID() {
+	case arrow.MAP:
+		return bigquery.JSONFieldType
+	case arrow.STRUCT:
+		return bigquery.RecordFieldType
+	case arrow.LIST:
+		switch v := dataType.(type) {
+		case *arrow.ListType:
+			return c.DataTypeToBigQueryType(v.Elem())
+		case *arrow.LargeListType:
+			return c.DataTypeToBigQueryType(v.Elem())
 		}
-		return ift, sch, true
-	case *arrow.MapType:
-		// store maps as JSON
-		return bigquery.JSONFieldType, nil, false
 	}
 
+	// handle basic types
 	switch {
-	case typeOneOf(col.Type,
+	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.Boolean):
-		sc.Type = bigquery.BooleanFieldType
-	case typeOneOf(col.Type,
+		return bigquery.BooleanFieldType
+	case typeOneOf(dataType,
 		arrow.PrimitiveTypes.Int8,
 		arrow.PrimitiveTypes.Int16,
 		arrow.PrimitiveTypes.Int32,
@@ -48,57 +52,102 @@ func (c *Client) ColumnToBigQuerySchema(col schema.Column) *bigquery.FieldSchema
 		arrow.PrimitiveTypes.Uint16,
 		arrow.PrimitiveTypes.Uint32,
 		arrow.PrimitiveTypes.Uint64):
-		sc.Type = bigquery.IntegerFieldType
-	case typeOneOf(col.Type,
+		return bigquery.IntegerFieldType
+	case typeOneOf(dataType,
 		arrow.PrimitiveTypes.Float32,
 		arrow.PrimitiveTypes.Float64):
-		sc.Type = bigquery.FloatFieldType
-	case typeOneOf(col.Type,
+		return bigquery.FloatFieldType
+	case typeOneOf(dataType,
 		arrow.BinaryTypes.String,
 		arrow.BinaryTypes.LargeString):
-		sc.Type = bigquery.StringFieldType
-	case typeOneOf(col.Type,
+		return bigquery.StringFieldType
+	case typeOneOf(dataType,
 		arrow.BinaryTypes.Binary,
 		arrow.BinaryTypes.LargeBinary):
-		sc.Type = bigquery.BytesFieldType
-	case typeOneOf(col.Type,
+		return bigquery.BytesFieldType
+	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.Date32,
 		arrow.FixedWidthTypes.Date64):
-		sc.Type = bigquery.DateFieldType
-	case typeOneOf(col.Type,
+		return bigquery.DateFieldType
+	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.Timestamp_s,
 		arrow.FixedWidthTypes.Timestamp_ms,
 		arrow.FixedWidthTypes.Timestamp_us,
 		arrow.FixedWidthTypes.Timestamp_ns):
-		sc.Type = bigquery.TimestampFieldType
-	case typeOneOf(col.Type,
+		return bigquery.TimestampFieldType
+	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.Time32s,
+		arrow.FixedWidthTypes.Time32ms,
 		arrow.FixedWidthTypes.Time64us):
-		sc.Type = bigquery.TimeFieldType
-	case typeOneOf(col.Type,
+		return bigquery.TimeFieldType
+	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.Time64ns):
 		// we lose nanosecond precision here. BigQuery doesn't support it
 		// so we need to live with this for now.
-		sc.Type = bigquery.TimeFieldType
-	case typeOneOf(col.Type,
+		return bigquery.TimeFieldType
+	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.Duration_s,
 		arrow.FixedWidthTypes.Duration_ms,
 		arrow.FixedWidthTypes.Duration_us,
 		arrow.FixedWidthTypes.Duration_ns):
-		sc.Type = bigquery.IntervalFieldType
-	case typeOneOf(col.Type,
+		return bigquery.IntervalFieldType
+	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.MonthInterval):
-		sc.Type = bigquery.RecordFieldType
-		sc.Schema = []*bigquery.FieldSchema{
+		return bigquery.RecordFieldType
+	case typeOneOf(dataType,
+		arrow.FixedWidthTypes.DayTimeInterval):
+		return bigquery.RecordFieldType
+	case typeOneOf(dataType,
+		arrow.FixedWidthTypes.MonthDayNanoInterval):
+		return bigquery.RecordFieldType
+	case typeOneOf(dataType,
+		types.ExtensionTypes.Inet,
+		types.ExtensionTypes.MAC,
+		types.ExtensionTypes.UUID):
+		return bigquery.StringFieldType
+	case typeOneOf(dataType,
+		types.ExtensionTypes.JSON):
+		return bigquery.JSONFieldType
+	default:
+		panic("unsupported data type: " + dataType.String())
+	}
+}
+
+func (c *Client) DataTypeToBigQuerySchema(dataType arrow.DataType) bigquery.Schema {
+	// handle complex types
+	switch dataType.ID() {
+	case arrow.STRUCT:
+		switch v := dataType.(type) {
+		case *arrow.StructType:
+			fields := make([]*bigquery.FieldSchema, len(v.Fields()))
+			for i, field := range v.Fields() {
+				fields[i] = c.ColumnToBigQuerySchema(schema.Column{
+					Name: field.Name,
+					Type: field.Type,
+				})
+			}
+			return fields
+		}
+	case arrow.LIST:
+		switch v := dataType.(type) {
+		case *arrow.ListType:
+			return c.DataTypeToBigQuerySchema(v.Elem())
+		case *arrow.LargeListType:
+			return c.DataTypeToBigQuerySchema(v.Elem())
+		}
+	}
+
+	// handle basic types
+	switch {
+	case arrow.TypeEqual(dataType, arrow.FixedWidthTypes.MonthInterval):
+		return []*bigquery.FieldSchema{
 			{
 				Name: "months",
 				Type: bigquery.IntegerFieldType,
 			},
 		}
-	case typeOneOf(col.Type,
-		arrow.FixedWidthTypes.DayTimeInterval):
-		sc.Type = bigquery.RecordFieldType
-		sc.Schema = []*bigquery.FieldSchema{
+	case arrow.TypeEqual(dataType, arrow.FixedWidthTypes.DayTimeInterval):
+		return []*bigquery.FieldSchema{
 			{
 				Name: "days",
 				Type: bigquery.IntegerFieldType,
@@ -108,10 +157,8 @@ func (c *Client) ColumnToBigQuerySchema(col schema.Column) *bigquery.FieldSchema
 				Type: bigquery.IntegerFieldType,
 			},
 		}
-	case typeOneOf(col.Type,
-		arrow.FixedWidthTypes.MonthDayNanoInterval):
-		sc.Type = bigquery.RecordFieldType
-		sc.Schema = []*bigquery.FieldSchema{
+	case arrow.TypeEqual(dataType, arrow.FixedWidthTypes.MonthDayNanoInterval):
+		return []*bigquery.FieldSchema{
 			{
 				Name: "months",
 				Type: bigquery.IntegerFieldType,
@@ -125,17 +172,8 @@ func (c *Client) ColumnToBigQuerySchema(col schema.Column) *bigquery.FieldSchema
 				Type: bigquery.IntegerFieldType,
 			},
 		}
-	case typeOneOf(col.Type,
-		types.ExtensionTypes.Inet,
-		types.ExtensionTypes.MAC,
-		types.ExtensionTypes.UUID):
-		sc.Type = bigquery.StringFieldType
-	case typeOneOf(col.Type,
-		types.ExtensionTypes.JSON):
-		sc.Type = bigquery.JSONFieldType
 	}
-
-	return &sc
+	return nil
 }
 
 func typeOneOf(left arrow.DataType, dt ...arrow.DataType) bool {
