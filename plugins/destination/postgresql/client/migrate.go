@@ -138,9 +138,8 @@ func (c *Client) normalizeTable(table *schema.Table, pgTable *schema.Table) *sch
 	normalizedTable := schema.Table{
 		Name: table.Name,
 	}
-	for _, f := range table.Columns {
-		col := f
-		if c.enabledPks() && f.PrimaryKey {
+	for _, col := range table.Columns {
+		if c.enabledPks() && col.PrimaryKey {
 			col.NotNull = true
 		} else {
 			col.PrimaryKey = false
