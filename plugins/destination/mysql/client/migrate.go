@@ -52,11 +52,11 @@ func (c *Client) nonAutoMigratableTables(tables schema.Tables, mysqlTables schem
 	var result []string
 	var tableChanges [][]schema.TableColumnChange
 	for _, t := range tables {
-		sqliteTable := mysqlTables.Get(t.Name)
-		if sqliteTable == nil {
+		mysqlTable := mysqlTables.Get(t.Name)
+		if mysqlTable == nil {
 			continue
 		}
-		changes := sqliteTable.GetChanges(t)
+		changes := mysqlTable.GetChanges(t)
 		if !c.canAutoMigrate(changes) {
 			result = append(result, t.Name)
 			tableChanges = append(tableChanges, changes)

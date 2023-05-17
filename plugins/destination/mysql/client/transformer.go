@@ -37,11 +37,22 @@ func getValue(arr arrow.Array, i int) (any, error) {
 		return a.Value(i), nil
 	case *array.Binary:
 		return a.Value(i), nil
+	case *array.LargeBinary:
+		return a.Value(i), nil
 	case *array.FixedSizeBinary:
 		return a.Value(i), nil
 	case *array.Timestamp:
-		val := arr.(*array.Timestamp).Value(i).ToTime(arrow.Microsecond)
-		return val, nil
+		ts := arr.(*array.Timestamp)
+		switch ts.DataType().(*arrow.TimestampType).Unit {
+		case arrow.Nanosecond:
+			return ts.Value(i).ToTime(arrow.Nanosecond), nil
+		case arrow.Millisecond:
+			return ts.Value(i).ToTime(arrow.Millisecond), nil
+		case arrow.Second:
+			return ts.Value(i).ToTime(arrow.Second), nil
+		default:
+			return ts.Value(i).ToTime(arrow.Microsecond), nil
+		}
 	case *types.UUIDArray:
 		bUUID, err := a.Value(i).MarshalBinary()
 		if err != nil {

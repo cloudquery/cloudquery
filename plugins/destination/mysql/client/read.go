@@ -181,7 +181,8 @@ func reverseTransform(table *arrow.Schema, values []any) (arrow.Record, error) {
 			if *asTime == nil {
 				recordBuilder.Field(i).AppendNull()
 			} else {
-				recordBuilder.Field(i).(*array.TimestampBuilder).Append(arrow.Timestamp((*asTime).UnixMicro()))
+				ts := (*asTime)
+				recordBuilder.Field(i).(*array.TimestampBuilder).Append(arrow.Timestamp((ts)))
 			}
 		case *types.UUIDType:
 			if *val.(*[]byte) == nil {
