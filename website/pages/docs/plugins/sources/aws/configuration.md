@@ -1,6 +1,8 @@
 # AWS Source Plugin Configuration Reference
 
-## Simple Example
+## Examples
+
+### Single Account Example
 
 This example connects a single AWS account in one region to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
@@ -23,7 +25,7 @@ spec:
     aws_debug: false
 ```
 
-## AWS Organization Example
+### AWS Organization Example
 
 CloudQuery supports discovery of AWS Accounts via AWS Organizations. This means that as Accounts get added or removed from your organization CloudQuery will be able to handle new or removed accounts without any configuration changes.
 
@@ -151,7 +153,7 @@ This is the (nested) spec used by the AWS source plugin.
 
 
 
-## account
+### account
 
 This is used to specify one or more accounts to extract information from. Note that it should be an array of objects, each with the following fields:
 
@@ -197,7 +199,7 @@ This is used to specify one or more accounts to extract information from. Note t
   Regions to use for this account. Defaults to global `regions` setting.
 
 
-## org
+### org
 
 - `admin_account` ([Account](#account))
 
@@ -234,3 +236,38 @@ This is used to specify one or more accounts to extract information from. Note t
 - `skip_member_accounts` ([]string)
 
   List of OU member accounts to skip. This is useful in conjunction with `organization_units` if there are accounts under the selected OUs that should be ignored.
+
+## Advanced Configuration
+
+### Skip Tables
+
+AWS has tables that may contain many resources, nested information, and AWS-provided data.  These tables may cause certain syncs to be slow due to the amount of AWS-provided data and may not be needed.  Below is a reference configuration of skip tables, where certain tables are skipped.  We recommend validating if the data contained in the tables below are necessary and to ensure syncing from required tables.
+
+```yaml
+kind: source
+spec:
+  # Source spec section
+  name: aws
+  path: cloudquery/aws
+  version: "v17.2.0"
+  tables: ["*"]
+  skip_tables:
+    - aws_ec2_vpc_endpoint_services 
+    - aws_cloudtrail_events
+    - aws_docdb_cluster_parameter_groups
+    - aws_docdb_engine_versions
+    - aws_ec2_instance_types
+    - aws_elasticache_engine_versions
+    - aws_elasticache_parameter_groups
+    - aws_elasticache_reserved_cache_nodes_offerings
+    - aws_elasticache_service_updates
+    - aws_neptune_cluster_parameter_groups
+    - aws_neptune_db_parameter_groups
+    - aws_rds_cluster_parameter_groups
+    - aws_rds_db_parameter_groups
+    - aws_rds_engine_versions
+    - aws_servicequotas_services
+  destinations: ["postgresql"]
+  spec: 
+    # AWS Spec section described below
+```
