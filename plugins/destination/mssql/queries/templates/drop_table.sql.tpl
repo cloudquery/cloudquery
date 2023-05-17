@@ -1,1 +1,1 @@
-DROP TABLE {{.Table}};
+DROP TABLE {{sanitizeID .Schema .Table}};
