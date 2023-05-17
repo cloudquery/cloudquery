@@ -91,20 +91,17 @@ func transformArr(arr arrow.Array) []any {
 				Valid: a.IsValid(i),
 			}
 		case *array.Uint16:
-			pgArr[i] = pgtype.Int2{
-				Int16: int16(a.Value(i)),
-				Valid: a.IsValid(i),
-			}
-		case *array.Uint32:
 			pgArr[i] = pgtype.Int4{
 				Int32: int32(a.Value(i)),
 				Valid: a.IsValid(i),
 			}
-		case *array.Uint64:
+		case *array.Uint32:
 			pgArr[i] = pgtype.Int8{
 				Int64: int64(a.Value(i)),
 				Valid: a.IsValid(i),
 			}
+		case *array.Uint64:
+			pgArr[i] = a.Value(i)
 		case *array.Float32:
 			pgArr[i] = pgtype.Float4{
 				Float32: a.Value(i),
