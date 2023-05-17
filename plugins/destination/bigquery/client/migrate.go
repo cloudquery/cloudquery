@@ -226,17 +226,7 @@ func (c *Client) timePartitioning() *bigquery.TimePartitioning {
 func (c *Client) bigQuerySchemaForTable(table *schema.Table) bigquery.Schema {
 	s := bigquery.Schema{}
 	for _, col := range table.Columns {
-
-		columnType, fieldSchema, repeated := c.ArrowTypeToBigQuery(col.Name, col.Type)
-		fs := bigquery.FieldSchema{
-			Name:     col.Name,
-			Repeated: repeated,
-			Type:     columnType,
-		}
-		if fs.Type == bigquery.RecordFieldType {
-			fs.Schema = fieldSchema
-		}
-		s = append(s, &fs)
+		s = append(s, c.ColumnToBigQuerySchema(col))
 	}
 	return s
 }
