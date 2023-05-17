@@ -17,7 +17,7 @@ const (
 )
 
 type item struct {
-	cols map[string]bigquery.ValueSaver
+	cols map[string]bigquery.Value
 }
 
 func (i *item) Save() (map[string]bigquery.Value, string, error) {
@@ -33,7 +33,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	for _, rec := range records {
 		for r := 0; r < int(rec.NumRows()); r++ {
 			saver := &item{
-				cols: make(map[string]bigquery.ValueSaver, len(table.Columns)),
+				cols: make(map[string]bigquery.Value, len(table.Columns)),
 			}
 			for i, col := range rec.Columns() {
 				if col.IsNull(r) {
@@ -63,22 +63,16 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	return nil
 }
 
-func (c *Client) getValueForBigQuery(col arrow.Array, i int) bigquery.ValueSaver {
+func (c *Client) getValueForBigQuery(col arrow.Array, i int) any {
 	switch col.DataType().ID() {
 	case arrow.MAP, arrow.STRUCT:
 		v := col.GetOneForMarshal(i)
 		b, _ := json.Marshal(v)
 		return string(b)
 	case arrow.INTERVAL_MONTH_DAY_NANO:
-		return &bigquery.StructSaver{
-			Schema: c.DataTypeToBigQuerySchema(arrow.FixedWidthTypes.MonthDayNanoInterval),
-			Struct: col.GetOneForMarshal(i).(arrow.MonthDayNanoInterval),
-		}
+		return col.GetOneForMarshal(i).(arrow.MonthDayNanoInterval)
 	case arrow.INTERVAL_DAY_TIME:
-		return &bigquery.StructSaver{
-			Schema: c.DataTypeToBigQuerySchema(arrow.FixedWidthTypes.DayTimeInterval),
-			Struct: col.GetOneForMarshal(i).(arrow.DayTimeInterval),
-		}
+		return col.GetOneForMarshal(i).(arrow.DayTimeInterval)
 	}
 	return col.GetOneForMarshal(i)
 }

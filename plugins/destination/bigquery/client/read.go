@@ -68,9 +68,19 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 			case *array.DayTimeIntervalBuilder:
 				t := values[i].([]bigquery.Value)
 				rbv.Append(arrow.DayTimeInterval{
-					Days:         int32(t[0].(int)),
-					Milliseconds: int32(t[1].(int)),
+					Days:         int32(t[0].(int64)),
+					Milliseconds: int32(t[1].(int64)),
 				})
+			case *array.MonthDayNanoIntervalBuilder:
+				t := values[i].([]bigquery.Value)
+				rbv.Append(arrow.MonthDayNanoInterval{
+					Months:      int32(t[0].(int64)),
+					Days:        int32(t[1].(int64)),
+					Nanoseconds: t[2].(int64),
+				})
+			case *array.MonthIntervalBuilder:
+				t := values[i].([]bigquery.Value)
+				rbv.Append(arrow.MonthInterval(t[0].(int64)))
 			default:
 				// catch-all case to keep the code simple; this is only for testing
 				// so performance is not a big concern
