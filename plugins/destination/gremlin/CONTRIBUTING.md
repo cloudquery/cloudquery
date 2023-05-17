@@ -16,7 +16,7 @@ To run the tests you will need a Gremlin database.
 To run TinkerPop gremlin-server on `ws://localhost:8182` (see also official [docs](https://tinkerpop.apache.org/docs/current/reference/#gremlin-server-docker-image)):
 
 ```bash
-docker run -p 8182:8182 -d tinkerpop/gremlin-server:3.6.2
+docker run -p 8182:8182 -d tinkerpop/gremlin-server:3.6.3
 ```
 
 Once docker is up you can run:

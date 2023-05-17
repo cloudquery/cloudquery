@@ -22,7 +22,7 @@ jobs:
         working-directory: ./plugins/destination/gremlin
     services:
       gremlin-server:
-        image: tinkerpop/gremlin-server:3.6.2
+        image: tinkerpop/gremlin-server:3.6.3
         ports:
           - 8182:8182
     steps:
