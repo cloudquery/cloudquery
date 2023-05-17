@@ -181,8 +181,25 @@ func reverseTransform(table *arrow.Schema, values []any) (arrow.Record, error) {
 			if *asTime == nil {
 				recordBuilder.Field(i).AppendNull()
 			} else {
-				ts := (*asTime)
-				recordBuilder.Field(i).(*array.TimestampBuilder).Append(arrow.Timestamp((ts)))
+
+				switch recordBuilder.Field(i).Type().(*arrow.TimestampType).Unit {
+				case arrow.Second:
+					ts := (*asTime).Unix()
+					recordBuilder.Field(i).(*array.TimestampBuilder).Append(arrow.Timestamp((ts)))
+				case arrow.Millisecond:
+					ts := (*asTime).UnixMilli()
+					recordBuilder.Field(i).(*array.TimestampBuilder).Append(arrow.Timestamp((ts)))
+				case arrow.Microsecond:
+					ts := (*asTime).UnixMicro()
+					recordBuilder.Field(i).(*array.TimestampBuilder).Append(arrow.Timestamp((ts)))
+				case arrow.Nanosecond:
+					ts := (*asTime).UnixNano()
+					recordBuilder.Field(i).(*array.TimestampBuilder).Append(arrow.Timestamp((ts)))
+
+				default:
+					return nil, fmt.Errorf("unsupported timestamp unit %s", table.Field(i).Type.(*arrow.TimestampType).Unit)
+				}
+
 			}
 		case *types.UUIDType:
 			if *val.(*[]byte) == nil {
