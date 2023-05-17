@@ -75,7 +75,7 @@ func resolveTemplateBody(_ context.Context, _ schema.ClientMeta, r *schema.Resou
 	// the API can also return YAML. To maintain backwards-compatibility, we attempt
 	// to parse the template body as JSON first, and if that fails, we try to parse
 	// it as YAML. We return an error if both attempts fail.
-	m := map[string]interface{}{}
+	m := map[string]any{}
 	err := json.Unmarshal([]byte(*resp.TemplateBody), &m)
 	if err != nil {
 		// this template might be YAML
