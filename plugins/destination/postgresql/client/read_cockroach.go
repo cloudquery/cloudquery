@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/goccy/go-json"
+	"github.com/jackc/pgx/v5/pgtype"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
@@ -30,17 +31,18 @@ func (c *Client) reverseTransformCockroach(f arrow.Field, bldr array.Builder, va
 	case *array.Int16Builder:
 		b.Append(val.(int16))
 	case *array.Int32Builder:
-		b.Append(int32(val.(int64)))
+		b.Append(val.(int32))
 	case *array.Int64Builder:
 		b.Append(val.(int64))
 	case *array.Uint8Builder:
 		b.Append(uint8(val.(int16)))
 	case *array.Uint16Builder:
-		b.Append(uint16(val.(int16)))
+		b.Append(uint16(val.(int32)))
 	case *array.Uint32Builder:
 		b.Append(uint32(val.(int64)))
 	case *array.Uint64Builder:
-		b.Append(uint64(val.(int64)))
+		v := val.(pgtype.Numeric)
+		b.Append(v.Int.Uint64())
 	case *array.Float32Builder:
 		b.Append(val.(float32))
 	case *array.Float64Builder:

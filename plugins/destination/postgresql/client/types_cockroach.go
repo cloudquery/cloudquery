@@ -16,12 +16,14 @@ func (c *Client) SchemaTypeToCockroach(t arrow.DataType) string {
 		return c.SchemaTypeToCockroach(v.Elem()) + fmt.Sprintf("[%d]", v.Len())
 	case *arrow.BooleanType:
 		return "boolean"
-	case *arrow.Int8Type, *arrow.Uint8Type, *arrow.Int16Type, *arrow.Uint16Type:
+	case *arrow.Int8Type, *arrow.Uint8Type, *arrow.Int16Type:
 		return "smallint"
-	case *arrow.Int32Type, *arrow.Uint32Type:
-		return "integer"
-	case *arrow.Int64Type, *arrow.Uint64Type:
+	case *arrow.Uint16Type, *arrow.Int32Type:
+		return "int4"
+	case *arrow.Uint32Type, *arrow.Int64Type:
 		return "bigint"
+	case *arrow.Uint64Type:
+		return "numeric"
 	case *arrow.Float32Type:
 		return "real"
 	case *arrow.Float64Type:
@@ -56,10 +58,16 @@ func (c *Client) CockroachToSchemaType(t string) arrow.DataType {
 	switch t {
 	case "boolean":
 		return arrow.FixedWidthTypes.Boolean
-	case "bigint", "int", "oid", "serial", "integer":
+	case "smallint":
+		return arrow.PrimitiveTypes.Int16
+	case "int4":
+		return arrow.PrimitiveTypes.Int32
+	case "bigint", "int", "oid", "serial", "integer", "int8":
 		return arrow.PrimitiveTypes.Int64
 	case "decimal", "float", "real", "double precision":
 		return arrow.PrimitiveTypes.Float64
+	case "numeric":
+		return arrow.PrimitiveTypes.Uint64
 	case "uuid":
 		return types.ExtensionTypes.UUID
 	case "bytea":

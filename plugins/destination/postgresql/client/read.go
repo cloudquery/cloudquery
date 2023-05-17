@@ -18,6 +18,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const (
@@ -45,11 +46,12 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.Uint8Builder:
 		b.Append(uint8(val.(int16)))
 	case *array.Uint16Builder:
-		b.Append(uint16(val.(int16)))
+		b.Append(uint16(val.(int32)))
 	case *array.Uint32Builder:
-		b.Append(uint32(val.(int32)))
+		b.Append(uint32(val.(int64)))
 	case *array.Uint64Builder:
-		b.Append(uint64(val.(int64)))
+		v := val.(pgtype.Numeric)
+		b.Append(v.Int.Uint64())
 	case *array.Float32Builder:
 		b.Append(val.(float32))
 	case *array.Float64Builder:
