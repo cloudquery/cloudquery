@@ -105,6 +105,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		b.Append(val.([]uint8))
 	case *array.TimestampBuilder:
 		var timeVal time.Time
+		// nolint:revive
 		if t, ok := val.(time.Time); ok {
 			timeVal = t
 		} else {
