@@ -109,11 +109,6 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		if t, ok := val.(time.Time); ok {
 			timeVal = t
 		} else {
-			// parsedTime, err := time.Parse("2006-01-02 15:04:05.999999999", val.(string))
-			// if err != nil {
-			// 	return fmt.Errorf("failed to parse timestamp: %w", err)
-			// }
-			// timeVal = parsedTime
 			t, err := arrow.TimestampFromString(val.(string), b.Type().(*arrow.TimestampType).Unit)
 			if err != nil {
 				return fmt.Errorf("failed to parse timestamp: %w", err)
