@@ -25,6 +25,7 @@ const (
 	readSQL = "SELECT %s FROM %s WHERE _cq_source_name = $1 order by _cq_sync_time asc"
 )
 
+// nolint: dupl
 func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 	if val == nil {
 		bldr.AppendNull()
