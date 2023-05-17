@@ -11,8 +11,8 @@ Thanks for contributing to CloudQuery! You are awesome. This document serves as 
 ### Step 1. Add the service to the client
 
 When adding support for new APIs, you may need to add a new service to the client. To do this:
- 1. open `codegen/services/clients.go` and add the client from the Datadog SDK to the list of clients
- 2. run `make gen-mocks` to generate the service interface and mocks
+ 1. Open `codegen/services/clients.go` and add the client from the Datadog SDK to the list of clients
+ 2. Run `make gen-mocks` to generate the service interface and mocks
 
 ### Step 2. Add the resource to the plugin
 
