@@ -3,7 +3,8 @@ package queries
 import (
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -13,10 +14,10 @@ func TestAddColumn(t *testing.T) {
 		expected   = `ALTER TABLE [cq].[table_name] ADD [my_col] bigint NOT NULL;`
 	)
 
-	query := AddColumn(schemaName, schema.CQSchemaToArrow(&schema.Table{Name: "table_name"}), &Definition{
+	query := AddColumn(schemaName, &schema.Table{Name: "table_name"}, &schema.Column{
 		Name:    "my_col",
-		typ:     "bigint",
-		notNull: true,
+		Type:    arrow.PrimitiveTypes.Int64,
+		NotNull: true,
 	})
 
 	require.Equal(t, expected, query)

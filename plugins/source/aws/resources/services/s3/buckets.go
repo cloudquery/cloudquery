@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
@@ -52,7 +51,12 @@ func listS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 	if err != nil {
 		return err
 	}
-	res <- response.Buckets
+	for _, bucket := range response.Buckets {
+		res <- &models.WrappedBucket{
+			Name:         bucket.Name,
+			CreationDate: bucket.CreationDate,
+		}
+	}
 	return nil
 }
 
@@ -71,13 +75,12 @@ func listBucketRegion(cl *client.Client) string {
 }
 
 func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
-	bucket := r.Item.(types.Bucket)
-	resource := &models.WrappedBucket{Name: bucket.Name, CreationDate: bucket.CreationDate}
+	resource := r.Item.(*models.WrappedBucket)
 	cl := meta.(*client.Client)
 	svc := cl.Services().S3
 
 	output, err := svc.GetBucketLocation(ctx, &s3.GetBucketLocationInput{
-		Bucket: bucket.Name,
+		Bucket: resource.Name,
 	}, func(o *s3.Options) {
 		o.Region = listBucketRegion(cl)
 	})
