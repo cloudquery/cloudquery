@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v4.1.0...plugins-destination-postgresql-v4.1.1) (2023-05-18)
+
+
+### Bug Fixes
+
+* Upgrade to plugin-sdk v3.5.2 (Fixes delete-stale for incremental tables) ([#10851](https://github.com/cloudquery/cloudquery/issues/10851)) ([244e9a4](https://github.com/cloudquery/cloudquery/commit/244e9a4cc50d216d85462fc60331ec71239152c3))
+
 ## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v4.0.5...plugins-destination-postgresql-v4.1.0) (2023-05-18)
 
 
