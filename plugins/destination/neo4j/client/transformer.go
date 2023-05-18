@@ -15,11 +15,21 @@ func transformArr(arr arrow.Array) []any {
 		switch a := arr.(type) {
 		case *array.Boolean:
 			pgArr[i] = a.Value(i)
+		case *array.Int8:
+			pgArr[i] = int64(a.Value(i))
 		case *array.Int16:
 			pgArr[i] = int64(a.Value(i))
 		case *array.Int32:
 			pgArr[i] = int64(a.Value(i))
 		case *array.Int64:
+			pgArr[i] = a.Value(i)
+		case *array.Uint8:
+			pgArr[i] = uint64(a.Value(i))
+		case *array.Uint16:
+			pgArr[i] = uint64(a.Value(i))
+		case *array.Uint32:
+			pgArr[i] = uint64(a.Value(i))
+		case *array.Uint64:
 			pgArr[i] = a.Value(i)
 		case *array.Float32:
 			pgArr[i] = float64(a.Value(i))
@@ -34,7 +44,7 @@ func transformArr(arr arrow.Array) []any {
 		case *array.LargeString:
 			pgArr[i] = a.Value(i)
 		case *array.Timestamp:
-			pgArr[i] = a.Value(i).ToTime(arrow.Microsecond)
+			pgArr[i] = a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit)
 		case array.ListLike:
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v2.1.0...plugins-destination-snowflake-v2.1.1) (2023-05-18)
+
+
+### Bug Fixes
+
+* Upgrade to plugin-sdk v3.5.2 (Fixes delete-stale for incremental tables) ([#10855](https://github.com/cloudquery/cloudquery/issues/10855)) ([ef35098](https://github.com/cloudquery/cloudquery/commit/ef35098dc0855faa7c9b959119e5881d29a826fa))
+
 ## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v2.0.3...plugins-destination-snowflake-v2.1.0) (2023-05-18)
 
 
