@@ -21,16 +21,15 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	sb.WriteString("UNWIND $rows AS row MERGE (t:")
 	sb.WriteString(table.Name)
 	sb.WriteString(" {")
-	pks := table.PrimaryKeysIndexes()
+	pks := table.PrimaryKeys()
 	if len(pks) == 0 {
 		// If no primary keys are defined, use _cq_id
-		pks = []int{table.Columns.Index(schema.CqIDColumn.Name)}
+		pks = []string{schema.CqIDColumn.Name}
 	}
-	for i, columnIndice := range pks {
+	for i, column := range pks {
 		if i != 0 {
 			sb.WriteString(", ")
 		}
-		column := table.Columns[columnIndice].Name
 		sb.WriteString(column)
 		sb.WriteString(": row.")
 		sb.WriteString(column)
