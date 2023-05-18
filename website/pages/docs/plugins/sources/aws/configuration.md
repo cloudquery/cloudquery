@@ -241,7 +241,7 @@ This is used to specify one or more accounts to extract information from. Note t
 
 ### Skip Tables
 
-AWS has tables that may contain many resources, nested information, and AWS-provided data.  These tables may cause certain syncs to be slow due to the amount of AWS-provided data and may not be needed.  Below is a reference configuration of skip tables, where certain tables are skipped.  We recommend only specifying syncing from necessary tables.  If `*` is necessary for tables, we recommend validating if the data contained in the tables below are necessary and to ensure syncing from required tables.
+AWS has tables that may contain many resources, nested information, and AWS-provided data.  These tables may cause certain syncs to be slow due to the amount of AWS-provided data and may not be needed.  We recommend only specifying syncing from necessary tables.  If `*` is necessary for tables, Below is a reference configuration of skip tables, where certain tables are skipped.  
 
 ```yaml
 kind: source
