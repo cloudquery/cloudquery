@@ -78,3 +78,7 @@ This is the (nested) spec used by the Gremlin destination Plugin.
 - `max_concurrent_connections` (integer, optional. default: number of runtime processors)
 
   Maximum number of concurrent connections to the database.
+
+- `complete_types` (boolean, optional. default: false)
+
+  Whether to use all Gremlin-supported types or just a basic set. Should remain `false` for Amazon Neptune compatibility.
