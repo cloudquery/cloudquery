@@ -241,7 +241,7 @@ This is used to specify one or more accounts to extract information from. Note t
 
 ### Skip Tables
 
-AWS has tables that may contain many resources, nested information, and AWS-provided data.  These tables may cause certain syncs to be slow due to the amount of AWS-provided data and may not be needed.  Below is a reference configuration of skip tables, where certain tables are skipped.  We recommend validating if the data contained in the tables below are necessary and to ensure syncing from required tables.
+AWS has tables that may contain many resources, nested information, and AWS-provided data.  These tables may cause certain syncs to be slow due to the amount of AWS-provided data and may not be needed.  Below is a reference configuration of skip tables, where certain tables are skipped.  We recommend only specifying syncing from necessary tables.  If `*` is necessary for tables, we recommend validating if the data contained in the tables below are necessary and to ensure syncing from required tables.
 
 ```yaml
 kind: source
@@ -249,7 +249,7 @@ spec:
   # Source spec section
   name: aws
   path: cloudquery/aws
-  version: "v17.2.0"
+  version: "VERSION_SOURCE_AWS"
   tables: ["*"]
   skip_tables:
     - aws_ec2_vpc_endpoint_services 
