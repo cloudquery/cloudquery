@@ -87,7 +87,6 @@ func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema
 }
 
 func (c *Client) addColumn(ctx context.Context, table *schema.Table, column *schema.Column) error {
-
 	builder := strings.Builder{}
 	builder.WriteString("ALTER TABLE ")
 	builder.WriteString(identifier(table.Name))
@@ -107,7 +106,6 @@ func (c *Client) addColumn(ctx context.Context, table *schema.Table, column *sch
 }
 
 func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
-
 	totalColumns := len(table.Columns)
 	primaryKeysIndices := []int{}
 

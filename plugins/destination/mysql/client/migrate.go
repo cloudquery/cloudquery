@@ -38,7 +38,7 @@ func (c *Client) normalizeTable(table *schema.Table) (*schema.Table, error) {
 	return &schema.Table{Name: table.Name, Columns: columns}, nil
 }
 
-func (c *Client) normalizeField(field arrow.Field) (*arrow.Field, error) {
+func (*Client) normalizeField(field arrow.Field) (*arrow.Field, error) {
 	normalizedType, err := mySQLTypeToArrowType("", "", arrowTypeToMySqlStr(field.Type))
 	if err != nil {
 		return nil, err
@@ -123,7 +123,6 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 			c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
 			continue
 		}
-
 		mysql := mysqlTables.Get(table.Name)
 		if mysql == nil {
 			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
@@ -144,7 +143,6 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 				}
 			}
 		}
-
 	}
 
 	return nil

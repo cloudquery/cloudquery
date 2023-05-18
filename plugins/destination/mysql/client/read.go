@@ -79,7 +79,7 @@ func (*Client) createResultsArray(table *arrow.Schema) []any {
 func reverseTransform(table *arrow.Schema, values []any) (arrow.Record, error) {
 	recordBuilder := array.NewRecordBuilder(memory.DefaultAllocator, table)
 	for i, val := range values {
-		switch table.Field(i).Type.(type) {
+		switch fType := table.Field(i).Type.(type) {
 		case *arrow.BooleanType:
 			if val.(*sql.NullBool).Valid {
 				recordBuilder.Field(i).(*array.BooleanBuilder).Append(val.(*sql.NullBool).Bool)
@@ -181,7 +181,6 @@ func reverseTransform(table *arrow.Schema, values []any) (arrow.Record, error) {
 			if *asTime == nil {
 				recordBuilder.Field(i).AppendNull()
 			} else {
-
 				switch recordBuilder.Field(i).Type().(*arrow.TimestampType).Unit {
 				case arrow.Second:
 					ts := (*asTime).Unix()
@@ -195,11 +194,9 @@ func reverseTransform(table *arrow.Schema, values []any) (arrow.Record, error) {
 				case arrow.Nanosecond:
 					ts := (*asTime).UnixNano()
 					recordBuilder.Field(i).(*array.TimestampBuilder).Append(arrow.Timestamp((ts)))
-
 				default:
-					return nil, fmt.Errorf("unsupported timestamp unit %s", table.Field(i).Type.(*arrow.TimestampType).Unit)
+					return nil, fmt.Errorf("unsupported timestamp unit %s", fType.Unit)
 				}
-
 			}
 		case *types.UUIDType:
 			if *val.(*[]byte) == nil {
