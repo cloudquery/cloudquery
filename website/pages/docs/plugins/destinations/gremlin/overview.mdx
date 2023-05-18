@@ -79,6 +79,6 @@ This is the (nested) spec used by the Gremlin destination Plugin.
 
   Maximum number of concurrent connections to the database.
 
-- `neptune_compatibility` (boolean, optional. default: true)
+- `complete_types` (boolean, optional. default: false)
 
-  Whether to enable Neptune type-compatibility mode. This is required for AWS Neptune, but could be disabled for other databases.
+  Whether to use all Gremlin-supported types or just a basic set. Should remain `false` for Neptune compatibility.

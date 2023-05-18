@@ -25,7 +25,8 @@ type Spec struct {
 	// Connection settings
 	MaxConcurrentConnections int `json:"max_concurrent_connections"`
 
-	NeptuneCompatibility *bool `json:"neptune_compatibility"`
+	// Whether to use all Gremlin types or just a basic subset
+	CompleteTypes bool `json:"complete_types"`
 }
 
 type authMode string
@@ -63,11 +64,6 @@ func (s *Spec) SetDefaults() {
 
 	if s.MaxConcurrentConnections < 1 {
 		s.MaxConcurrentConnections = runtime.NumCPU()
-	}
-
-	if s.NeptuneCompatibility == nil {
-		b := true
-		s.NeptuneCompatibility = &b
 	}
 }
 

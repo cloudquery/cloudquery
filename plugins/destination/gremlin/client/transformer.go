@@ -45,7 +45,7 @@ func (c *Client) transformArr(arr arrow.Array, isCQTime bool) []any {
 			}
 			dbArr[i] = a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit).UTC().Format("2006-01-02 15:04:05.999999999")
 		case array.ListLike:
-			if *c.pluginSpec.NeptuneCompatibility {
+			if !c.pluginSpec.CompleteTypes {
 				dbArr[i] = stripNulls(arr.ValueStr(i))
 				continue
 			}
