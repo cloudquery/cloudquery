@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.1.0...plugins-destination-mssql-v4.1.1) (2023-05-18)
+
+
+### Bug Fixes
+
+* Upgrade to plugin-sdk v3.5.2 (Fixes delete-stale for incremental tables) ([#10856](https://github.com/cloudquery/cloudquery/issues/10856)) ([b581394](https://github.com/cloudquery/cloudquery/commit/b5813944da89aa8350be3084783a20c5f1adb49f))
+
 ## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.0.0...plugins-destination-mssql-v4.1.0) (2023-05-18)
 
 
