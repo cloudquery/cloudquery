@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [17.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v17.3.0...plugins-source-aws-v17.3.1) (2023-05-18)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_cloudformation_stack_templates`: column added with name `template_body_text` and type `String`
+
+### Bug Fixes
+
+* **aws-s3:** Always use models.WrappedBucket to avoid panic ([#10827](https://github.com/cloudquery/cloudquery/issues/10827)) ([be55852](https://github.com/cloudquery/cloudquery/commit/be558527b244670cf07349f3128768d06371b2b3))
+* **aws:** Handle YAML cloudformation template bodies ([#10826](https://github.com/cloudquery/cloudquery/issues/10826)) ([498f394](https://github.com/cloudquery/cloudquery/commit/498f39479d9810a6b87a9c552ac915981b050fd9))
+
 ## [17.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v17.2.0...plugins-source-aws-v17.3.0) (2023-05-16)
 
 
