@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"cloud.google.com/go/bigquery"
 	"cloud.google.com/go/civil"
@@ -81,6 +82,27 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 			case *array.MonthIntervalBuilder:
 				t := values[i].([]bigquery.Value)
 				rbv.Append(arrow.MonthInterval(t[0].(int64)))
+			case *array.TimestampBuilder:
+				unit := arrowSchema.Field(i).Type.(*arrow.TimestampType).Unit
+				switch unit {
+				case arrow.Nanosecond:
+					v := values[i].([]bigquery.Value)
+					t := v[0].(time.Time)
+					nano := v[1].(int64)
+					nanoTime := t.Add(time.Duration(nano) * time.Nanosecond)
+					ts, err := arrow.TimestampFromString(nanoTime.Format(time.RFC3339Nano), arrow.Nanosecond)
+					if err != nil {
+						return fmt.Errorf("failed to call arrow.TimestampFromString: %w", err)
+					}
+					rbv.Append(ts)
+				default:
+					t := values[i].(time.Time)
+					ts, err := arrow.TimestampFromString(t.Format(time.RFC3339Nano), unit)
+					if err != nil {
+						return err
+					}
+					rbv.Append(ts)
+				}
 			default:
 				// catch-all case to keep the code simple; this is only for testing
 				// so performance is not a big concern

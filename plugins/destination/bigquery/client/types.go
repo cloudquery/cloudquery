@@ -100,11 +100,13 @@ func (c *Client) DataTypeToBigQueryType(dataType arrow.DataType) bigquery.FieldT
 	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.Duration_s,
 		arrow.FixedWidthTypes.Duration_ms,
-		arrow.FixedWidthTypes.Duration_us):
-		return bigquery.IntervalFieldType
-	case typeOneOf(dataType,
+		arrow.FixedWidthTypes.Duration_us,
 		arrow.FixedWidthTypes.Duration_ns):
-		return bigquery.RecordFieldType
+		// BigQuery does not support intervals with precisions higher than seconds,
+		// and in the case of seconds the max value is not large enough to contain the
+		// max Arrow duration, so we store durations as plain integers. Users will need
+		// to cast or transform to interval, if necessary.
+		return bigquery.IntegerFieldType
 	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.MonthInterval):
 		return bigquery.RecordFieldType
@@ -191,17 +193,6 @@ func (c *Client) DataTypeToBigQuerySchema(dataType arrow.DataType) bigquery.Sche
 			{
 				Name: "timestamp",
 				Type: bigquery.TimestampFieldType,
-			},
-			{
-				Name: "nanoseconds",
-				Type: bigquery.IntegerFieldType,
-			},
-		}
-	case typeOneOf(dataType, arrow.FixedWidthTypes.Duration_ns):
-		return []*bigquery.FieldSchema{
-			{
-				Name: "duration",
-				Type: bigquery.IntervalFieldType,
 			},
 			{
 				Name: "nanoseconds",

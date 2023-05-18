@@ -77,27 +77,20 @@ func (c *Client) getValueForBigQuery(col arrow.Array, i int) any {
 	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.DayTimeInterval):
 		return col.GetOneForMarshal(i).(arrow.DayTimeInterval)
 	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Duration_s):
-		d := col.(*array.Duration).Value(i)
-		return fmt.Sprintf("%d SECOND", d)
+		return col.(*array.Duration).Value(i)
 	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Duration_ms):
-		d := col.(*array.Duration).Value(i)
-		return fmt.Sprintf("%d MILLISECOND", d)
+		return col.(*array.Duration).Value(i)
 	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Duration_us):
-		d := col.(*array.Duration).Value(i)
-		return fmt.Sprintf("%d MICROSECOND", d)
+		return col.(*array.Duration).Value(i)
 	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Duration_ns):
-		d := col.(*array.Duration).Value(i)
-		return DurationNanoseconds{
-			Duration:    fmt.Sprintf("%d MICROSECOND", d/1000),
-			Nanoseconds: int(d % 1000),
-		}
+		return col.(*array.Duration).Value(i)
 	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Timestamp_ns):
 		ts := col.(*array.Timestamp)
 		t := ts.Value(i).ToTime(arrow.Nanosecond)
 		format := "2006-01-02 15:04:05.999999"
 		return TimestampNanoseconds{
 			Timestamp:   t.Format(format),
-			Nanoseconds: t.Nanosecond(),
+			Nanoseconds: t.Nanosecond() % 1000,
 		}
 	}
 	return col.GetOneForMarshal(i)
