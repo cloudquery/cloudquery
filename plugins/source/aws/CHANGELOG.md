@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [17.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v17.3.0...plugins-source-aws-v17.3.1) (2023-05-18)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_cloudformation_stack_templates`: column added with name `template_body_text` and type `String`
+
 ### Bug Fixes
 
 * **aws-s3:** Always use models.WrappedBucket to avoid panic ([#10827](https://github.com/cloudquery/cloudquery/issues/10827)) ([be55852](https://github.com/cloudquery/cloudquery/commit/be558527b244670cf07349f3128768d06371b2b3))
