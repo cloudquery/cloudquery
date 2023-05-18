@@ -7,6 +7,20 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
+// TimestampNanoseconds is a struct to hold a timestamp with nanosecond precision,
+// because BigQuery does not support nanosecond precision timestamps.
+type TimestampNanoseconds struct {
+	Timestamp   string `json:"timestamp" bigquery:"timestamp"`
+	Nanoseconds int    `json:"nanoseconds" bigquery:"nanoseconds"`
+}
+
+// DurationNanoseconds is a struct to hold a duration with nanosecond precision,
+// because BigQuery does not support nanosecond precision durations.
+type DurationNanoseconds struct {
+	Duration    string `json:"duration" bigquery:"duration"`
+	Nanoseconds int    `json:"nanoseconds" bigquery:"nanoseconds"`
+}
+
 func (c *Client) ColumnToBigQuerySchema(col schema.Column) *bigquery.FieldSchema {
 	sc := bigquery.FieldSchema{
 		Name:        col.Name,
@@ -72,25 +86,25 @@ func (c *Client) DataTypeToBigQueryType(dataType arrow.DataType) bigquery.FieldT
 	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.Timestamp_s,
 		arrow.FixedWidthTypes.Timestamp_ms,
-		arrow.FixedWidthTypes.Timestamp_us,
-		arrow.FixedWidthTypes.Timestamp_ns):
+		arrow.FixedWidthTypes.Timestamp_us):
 		return bigquery.TimestampFieldType
+	case typeOneOf(dataType,
+		arrow.FixedWidthTypes.Timestamp_ns):
+		return bigquery.RecordFieldType
 	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.Time32s,
 		arrow.FixedWidthTypes.Time32ms,
-		arrow.FixedWidthTypes.Time64us):
-		return bigquery.TimeFieldType
-	case typeOneOf(dataType,
+		arrow.FixedWidthTypes.Time64us,
 		arrow.FixedWidthTypes.Time64ns):
-		// we lose nanosecond precision here. BigQuery doesn't support it
-		// so we need to live with this for now.
 		return bigquery.TimeFieldType
 	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.Duration_s,
 		arrow.FixedWidthTypes.Duration_ms,
-		arrow.FixedWidthTypes.Duration_us,
-		arrow.FixedWidthTypes.Duration_ns):
+		arrow.FixedWidthTypes.Duration_us):
 		return bigquery.IntervalFieldType
+	case typeOneOf(dataType,
+		arrow.FixedWidthTypes.Duration_ns):
+		return bigquery.RecordFieldType
 	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.MonthInterval):
 		return bigquery.RecordFieldType
@@ -166,6 +180,28 @@ func (c *Client) DataTypeToBigQuerySchema(dataType arrow.DataType) bigquery.Sche
 			{
 				Name: "days",
 				Type: bigquery.IntegerFieldType,
+			},
+			{
+				Name: "nanoseconds",
+				Type: bigquery.IntegerFieldType,
+			},
+		}
+	case typeOneOf(dataType, arrow.FixedWidthTypes.Timestamp_ns):
+		return []*bigquery.FieldSchema{
+			{
+				Name: "timestamp",
+				Type: bigquery.TimestampFieldType,
+			},
+			{
+				Name: "nanoseconds",
+				Type: bigquery.IntegerFieldType,
+			},
+		}
+	case typeOneOf(dataType, arrow.FixedWidthTypes.Duration_ns):
+		return []*bigquery.FieldSchema{
+			{
+				Name: "duration",
+				Type: bigquery.IntervalFieldType,
 			},
 			{
 				Name: "nanoseconds",

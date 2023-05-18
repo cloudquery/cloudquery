@@ -8,6 +8,7 @@ import (
 
 	"cloud.google.com/go/bigquery"
 	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"google.golang.org/api/googleapi"
 )
@@ -69,10 +70,35 @@ func (c *Client) getValueForBigQuery(col arrow.Array, i int) any {
 		v := col.GetOneForMarshal(i)
 		b, _ := json.Marshal(v)
 		return string(b)
-	case arrow.INTERVAL_MONTH_DAY_NANO:
+	}
+	switch {
+	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.MonthDayNanoInterval):
 		return col.GetOneForMarshal(i).(arrow.MonthDayNanoInterval)
-	case arrow.INTERVAL_DAY_TIME:
+	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.DayTimeInterval):
 		return col.GetOneForMarshal(i).(arrow.DayTimeInterval)
+	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Duration_s):
+		d := col.(*array.Duration).Value(i)
+		return fmt.Sprintf("%d SECOND", d)
+	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Duration_ms):
+		d := col.(*array.Duration).Value(i)
+		return fmt.Sprintf("%d MILLISECOND", d)
+	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Duration_us):
+		d := col.(*array.Duration).Value(i)
+		return fmt.Sprintf("%d MICROSECOND", d)
+	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Duration_ns):
+		d := col.(*array.Duration).Value(i)
+		return DurationNanoseconds{
+			Duration:    fmt.Sprintf("%d MICROSECOND", d/1000),
+			Nanoseconds: int(d % 1000),
+		}
+	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Timestamp_ns):
+		ts := col.(*array.Timestamp)
+		t := ts.Value(i).ToTime(arrow.Nanosecond)
+		format := "2006-01-02 15:04:05.999999"
+		return TimestampNanoseconds{
+			Timestamp:   t.Format(format),
+			Nanoseconds: t.Nanosecond(),
+		}
 	}
 	return col.GetOneForMarshal(i)
 }

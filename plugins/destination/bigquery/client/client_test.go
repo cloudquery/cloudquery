@@ -44,7 +44,7 @@ func TestPlugin(t *testing.T) {
 		//schema.WithTestSourceSkipDates(),
 		//schema.WithTestSourceSkipLargeTypes(),
 		//schema.WithTestSourceSkipIntervals(),
-		schema.WithTestSourceSkipDurations(),
+		//schema.WithTestSourceSkipDurations(),
 		schema.WithTestSourceSkipLists(),
 		schema.WithTestSourceSkipStructs(),
 		//schema.WithTestSourceSkipMaps(),
