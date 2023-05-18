@@ -7,12 +7,13 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/meilisearch/meilisearch-go"
 )
 
-func (c *Client) Read(_ context.Context, sc *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
-	index, err := c.Meilisearch.GetIndex(schema.TableName(sc))
+func (c *Client) Read(_ context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+	sc := table.ToArrowSchema()
+	index, err := c.Meilisearch.GetIndex(table.Name)
 	if err != nil {
 		return err
 	}
