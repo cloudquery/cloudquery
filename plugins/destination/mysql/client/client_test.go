@@ -36,28 +36,8 @@ func TestPlugin(t *testing.T) {
 			},
 		},
 		destination.PluginTestSuiteTests{
-			SkipOverwrite: true,
-
-			SkipDeleteStale: true,
-			SkipAppend:      false,
-
-			SkipSecondAppend: true,
-
-			// SkipMigrateAppend skips a test for the migrate function where a column is added,
-			// data is appended, then the column is removed and more data appended, checking that the migrations handle
-			// this correctly.
-			SkipMigrateAppend: true,
-			// SkipMigrateAppendForce skips a test for the migrate function where a column is changed in force mode
-			SkipMigrateAppendForce: true,
-
-			// SkipMigrateOverwrite skips a test for the migrate function where a column is added,
-			// data is appended, then the column is removed and more data overwritten, checking that the migrations handle
-			// this correctly.
-			SkipMigrateOverwrite: true,
-			// SkipMigrateOverwriteForce skips a test for the migrate function where a column is changed in force mode
-			SkipMigrateOverwriteForce: true,
-			MigrateStrategyOverwrite:  migrateStrategy,
-			MigrateStrategyAppend:     migrateStrategy,
+			MigrateStrategyOverwrite: migrateStrategy,
+			MigrateStrategyAppend:    migrateStrategy,
 		},
 	)
 }

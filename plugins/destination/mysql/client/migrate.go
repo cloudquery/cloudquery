@@ -26,6 +26,9 @@ func (c *Client) normalizeTables(tables schema.Tables) (schema.Tables, error) {
 func (c *Client) normalizeTable(table *schema.Table) (*schema.Table, error) {
 	columns := make([]schema.Column, len(table.Columns))
 	for i, col := range table.Columns {
+		if !c.pkEnabled() {
+			col.PrimaryKey = false
+		}
 		normalized, err := c.normalizeField(col.ToArrowField())
 		if err != nil {
 			return nil, err

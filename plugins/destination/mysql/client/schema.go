@@ -14,7 +14,7 @@ func identifier(name string) string {
 }
 
 func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schema.Column, error) {
-	query := `SELECT COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, CHARACTER_MAXIMUM_LENGTH, COLUMN_KEY FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ?;`
+	query := ` SELECT  cols.COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, CHARACTER_MAXIMUM_LENGTH, constraint_type FROM INFORMATION_SCHEMA.COLUMNS AS cols LEFT JOIN (SELECT tc.constraint_schema, tc.table_name, kcu.column_name, GROUP_CONCAT(tc.constraint_type SEPARATOR ',') as constraint_type FROM information_schema.table_constraints tc INNER JOIN information_schema.key_column_usage kcu ON tc.constraint_catalog = kcu.constraint_catalog AND tc.constraint_schema = kcu.constraint_schema AND tc.constraint_name = kcu.constraint_name AND tc.table_name = kcu.table_name LEFT JOIN information_schema.referential_constraints rc ON tc.constraint_catalog = rc.constraint_catalog AND tc.constraint_schema = rc.constraint_schema AND tc.constraint_name = rc.constraint_name AND tc.table_name = rc.table_name group by tc.constraint_schema, tc.table_name, kcu.column_name ) AS constraints ON constraints.constraint_schema = cols.table_schema AND constraints.table_name = cols.TABLE_NAME AND constraints.column_name = cols.COLUMN_NAME WHERE cols.TABLE_NAME = ?;`
 	var columns []schema.Column
 
 	rows, err := c.db.QueryContext(ctx, query, tableName)
@@ -27,9 +27,9 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 		var typ string
 		var nullable string
 		var charMaxLength *string
-		var key string
+		var constraintType *string
 
-		if err := rows.Scan(&name, &typ, &nullable, &charMaxLength, &key); err != nil {
+		if err := rows.Scan(&name, &typ, &nullable, &charMaxLength, &constraintType); err != nil {
 			return nil, err
 		}
 
@@ -37,11 +37,14 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 		if err != nil {
 			return nil, err
 		}
-
+		var primaryKey bool
+		if constraintType != nil && c.pkEnabled() {
+			primaryKey = strings.Contains(*constraintType, "PRIMARY KEY")
+		}
 		columns = append(columns, schema.Column{
 			Name:       name,
 			Type:       schemaType,
-			PrimaryKey: key == "PRI",
+			PrimaryKey: primaryKey,
 			NotNull:    nullable != "YES",
 		})
 	}
