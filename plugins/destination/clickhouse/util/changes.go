@@ -3,10 +3,10 @@ package util
 import (
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func prettifyChanges(tableName string, changes schema.FieldChanges, builder *strings.Builder) {
+func prettifyChanges(tableName string, changes []schema.TableColumnChange, builder *strings.Builder) {
 	builder.WriteString(tableName + ":")
 	for _, c := range changes {
 		builder.WriteString("\n  ")
@@ -14,7 +14,7 @@ func prettifyChanges(tableName string, changes schema.FieldChanges, builder *str
 	}
 }
 
-func SchemasChangesPrettified(changes map[string]schema.FieldChanges) string {
+func SchemasChangesPrettified(changes map[string][]schema.TableColumnChange) string {
 	builder := new(strings.Builder)
 	left := len(changes)
 	for name, change := range changes {

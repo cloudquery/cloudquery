@@ -3,11 +3,11 @@ package client
 import (
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"golang.org/x/exp/slices"
 )
 
-func prettifyChanges(byTable map[string]schema.FieldChanges) string {
+func prettifyChanges(byTable map[string][]schema.TableColumnChange) string {
 	builder := new(strings.Builder)
 	for name, changes := range byTable {
 		builder.WriteString(name + ":")
@@ -19,23 +19,23 @@ func prettifyChanges(byTable map[string]schema.FieldChanges) string {
 	return builder.String()
 }
 
-func unsafeSchemaChanges(have, want schema.Schemas) map[string]schema.FieldChanges {
-	result := make(map[string]schema.FieldChanges)
+func unsafeSchemaChanges(have, want schema.Tables) map[string][]schema.TableColumnChange {
+	result := make(map[string][]schema.TableColumnChange)
 	for _, w := range want {
-		current := have.SchemaByName(schema.TableName(w))
+		current := have.Get(w.Name)
 		if current == nil {
 			continue
 		}
-		unsafe := unsafeChanges(schema.GetSchemaChanges(w, current))
+		unsafe := unsafeChanges(w.GetChanges(current))
 		if len(unsafe) > 0 {
-			result[schema.TableName(w)] = unsafe
+			result[w.Name] = unsafe
 		}
 	}
 	return result
 }
 
-func unsafeChanges(changes []schema.FieldChange) schema.FieldChanges {
-	unsafe := make([]schema.FieldChange, 0, len(changes))
+func unsafeChanges(changes []schema.TableColumnChange) []schema.TableColumnChange {
+	unsafe := make([]schema.TableColumnChange, 0, len(changes))
 	for _, c := range changes {
 		if needsTableDrop(c) {
 			unsafe = append(unsafe, c)
@@ -44,12 +44,12 @@ func unsafeChanges(changes []schema.FieldChange) schema.FieldChanges {
 	return slices.Clip(unsafe)
 }
 
-func needsTableDrop(change schema.FieldChange) bool {
+func needsTableDrop(change schema.TableColumnChange) bool {
 	switch change.Type {
 	case schema.TableColumnChangeTypeAdd:
-		return !change.Current.Nullable || schema.IsPk(change.Current)
+		return change.Current.NotNull || change.Current.PrimaryKey
 	case schema.TableColumnChangeTypeRemove:
-		return !change.Previous.Nullable || schema.IsPk(change.Previous)
+		return change.Previous.NotNull || change.Previous.PrimaryKey
 	case schema.TableColumnChangeTypeUpdate:
 		return true
 	default:

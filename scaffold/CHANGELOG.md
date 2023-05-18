@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/cloudquery/cloudquery/compare/scaffold-v1.7.0...scaffold-v1.8.0) (2023-05-18)
+
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+
 ## [1.7.0](https://github.com/cloudquery/cloudquery/compare/scaffold-v1.6.7...scaffold-v1.7.0) (2023-05-02)
 
 

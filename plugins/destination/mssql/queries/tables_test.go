@@ -3,7 +3,8 @@ package queries
 import (
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -11,7 +12,7 @@ func TestCreateTable(t *testing.T) {
 	const (
 		schemaName = "cq"
 		expected   = `CREATE TABLE [cq].[table_name] (
-  [_cq_id] uniqueidentifier UNIQUE NOT NULL,
+  [_cq_id] uniqueidentifier NOT NULL,
   [_cq_parent_id] uniqueidentifier,
   [_cq_source_name] nvarchar(4000),
   [_cq_sync_time] datetime2,
@@ -23,20 +24,16 @@ func TestCreateTable(t *testing.T) {
 	)
 
 	query := CreateTable(schemaName,
-		schema.CQSchemaToArrow(&schema.Table{
+		&schema.Table{
 			Name: "table_name",
 			Columns: schema.ColumnList{
 				schema.CqIDColumn,
 				schema.CqParentIDColumn,
 				schema.CqSourceNameColumn,
 				schema.CqSyncTimeColumn,
-				schema.Column{
-					Name:            "extra_col",
-					Type:            schema.TypeFloat,
-					CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
+				schema.Column{Name: "extra_col", Type: arrow.PrimitiveTypes.Float64, PrimaryKey: true, NotNull: true},
 			},
-		}),
+		},
 		true,
 	)
 
@@ -47,7 +44,7 @@ func TestCreateTableNoPK(t *testing.T) {
 	const (
 		schemaName = "cq"
 		expected   = `CREATE TABLE [cq].[table_name] (
-  [_cq_id] uniqueidentifier UNIQUE NOT NULL,
+  [_cq_id] uniqueidentifier NOT NULL,
   [_cq_parent_id] uniqueidentifier,
   [_cq_source_name] nvarchar(4000),
   [_cq_sync_time] datetime2,
@@ -56,20 +53,16 @@ func TestCreateTableNoPK(t *testing.T) {
 	)
 
 	query := CreateTable(schemaName,
-		schema.CQSchemaToArrow(&schema.Table{
+		&schema.Table{
 			Name: "table_name",
 			Columns: schema.ColumnList{
 				schema.CqIDColumn,
 				schema.CqParentIDColumn,
 				schema.CqSourceNameColumn,
 				schema.CqSyncTimeColumn,
-				schema.Column{
-					Name:            "extra_col",
-					Type:            schema.TypeFloat,
-					CreationOptions: schema.ColumnCreationOptions{NotNull: true},
-				},
+				schema.Column{Name: "extra_col", Type: arrow.PrimitiveTypes.Float64, NotNull: true},
 			},
-		}),
+		},
 		true,
 	)
 
@@ -93,7 +86,7 @@ func TestCreateTableCustomPKConstraintName(t *testing.T) {
 	)
 
 	query := CreateTable(schemaName,
-		schema.CQSchemaToArrow(&schema.Table{
+		&schema.Table{
 			Name:             "table_name",
 			PkConstraintName: "custom_pk_constraint_name",
 			Columns: schema.ColumnList{
@@ -101,13 +94,9 @@ func TestCreateTableCustomPKConstraintName(t *testing.T) {
 				schema.CqParentIDColumn,
 				schema.CqSourceNameColumn,
 				schema.CqSyncTimeColumn,
-				schema.Column{
-					Name:            "extra_col",
-					Type:            schema.TypeFloat,
-					CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true, NotNull: true},
-				},
+				schema.Column{Name: "extra_col", Type: arrow.PrimitiveTypes.Float64, PrimaryKey: true},
 			},
-		}),
+		},
 		true,
 	)
 
