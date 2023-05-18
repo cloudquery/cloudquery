@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.3.1...cli-v3.3.2) (2023-05-18)
+
+
+### Bug Fixes
+
+* **cli:** Regression support 100MB msgs ([#10841](https://github.com/cloudquery/cloudquery/issues/10841)) ([9736cc6](https://github.com/cloudquery/cloudquery/commit/9736cc69f63f7eb2901bced5fbbe906a8f1c34e3))
+
 ## [3.3.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.3.0...cli-v3.3.1) (2023-05-15)
 
 

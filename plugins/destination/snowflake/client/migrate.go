@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 const (
@@ -36,9 +35,9 @@ func (i *tableInfo) getColumn(name string) *columnInfo {
 }
 
 // This is the responsibility of the CLI of the client to lock before running migration
-func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {
+func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	for _, table := range tables {
-		tableName := schema.TableName(table)
+		tableName := table.Name
 		c.logger.Debug().Str("table", tableName).Msg("Migrating table")
 		tableExist, err := c.isTableExistSQL(ctx, tableName)
 		if err != nil {
@@ -67,15 +66,15 @@ func (c *Client) isTableExistSQL(_ context.Context, table string) (bool, error) 
 	return tableExist == 1, nil
 }
 
-func (c *Client) autoMigrateTable(_ context.Context, table *arrow.Schema) error {
+func (c *Client) autoMigrateTable(_ context.Context, table *schema.Table) error {
 	var err error
 	var info *tableInfo
-	tableName := schema.TableName(table)
+	tableName := table.Name
 	if info, err = c.getTableInfo(tableName); err != nil {
 		return fmt.Errorf("failed to get table %s columns types: %w", tableName, err)
 	}
 
-	for _, col := range table.Fields() {
+	for _, col := range table.Columns {
 		columnName := col.Name
 		columnType := c.SchemaTypeToSnowflake(col.Type)
 		snowflakeColumn := info.getColumn(columnName)
@@ -94,16 +93,16 @@ func (c *Client) autoMigrateTable(_ context.Context, table *arrow.Schema) error 
 	return nil
 }
 
-func (c *Client) createTableIfNotExist(_ context.Context, table *arrow.Schema) error {
+func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) error {
 	var sb strings.Builder
 	// TODO sanitize tablename
-	tableName := schema.TableName(table)
+	tableName := table.Name
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
 	sb.WriteString(tableName)
 	sb.WriteString(" (")
-	totalColumns := len(table.Fields())
+	totalColumns := len(table.Columns)
 
-	for i, col := range table.Fields() {
+	for i, col := range table.Columns {
 		sqlType := c.SchemaTypeToSnowflake(col.Type)
 		// TODO: sanitize column name
 		fieldDef := `"` + col.Name + `" ` + sqlType

@@ -29,7 +29,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 
 	rows := make([]map[string]any, 0)
 	for _, record := range records {
-		rows = append(rows, transformValues(record, cqTimeIndex)...)
+		rows = append(rows, c.transformValues(record, cqTimeIndex)...)
 	}
 
 	pks := table.PrimaryKeys()

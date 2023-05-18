@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/meilisearch/meilisearch-go"
 	"github.com/rs/zerolog"
 )
@@ -31,7 +31,7 @@ func (c *Client) Close(context.Context) error {
 	return nil
 }
 
-func (*Client) DeleteStale(context.Context, schema.Schemas, string, time.Time) error {
+func (*Client) DeleteStale(context.Context, schema.Tables, string, time.Time) error {
 	return fmt.Errorf("DeleteStale not supported")
 }
 
