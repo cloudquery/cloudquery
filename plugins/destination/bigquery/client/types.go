@@ -30,6 +30,8 @@ func (c *Client) ColumnToBigQuerySchema(col schema.Column) *bigquery.FieldSchema
 		Schema: c.DataTypeToBigQuerySchema(col.Type),
 	}
 
+	// handle repeated; we currently don't handle the case where we get a list of lists,
+	// but that's not a valid case in CloudQuery right now
 	if col.Type.ID() == arrow.LIST {
 		sc.Repeated = true
 	}

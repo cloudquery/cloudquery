@@ -71,26 +71,36 @@ func (c *Client) getValueForBigQuery(col arrow.Array, i int) any {
 		b, _ := json.Marshal(v)
 		return string(b)
 	}
-	switch {
-	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.MonthDayNanoInterval):
-		return col.GetOneForMarshal(i).(arrow.MonthDayNanoInterval)
-	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.DayTimeInterval):
-		return col.GetOneForMarshal(i).(arrow.DayTimeInterval)
-	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Duration_s):
-		return col.(*array.Duration).Value(i)
-	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Duration_ms):
-		return col.(*array.Duration).Value(i)
-	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Duration_us):
-		return col.(*array.Duration).Value(i)
-	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Duration_ns):
-		return col.(*array.Duration).Value(i)
-	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Timestamp_ns):
-		ts := col.(*array.Timestamp)
-		t := ts.Value(i).ToTime(arrow.Nanosecond)
-		format := "2006-01-02 15:04:05.999999"
-		return TimestampNanoseconds{
-			Timestamp:   t.Format(format),
-			Nanoseconds: t.Nanosecond() % 1000,
+	switch v := col.(type) {
+	case *array.List:
+		arr := col.(*array.List)
+		elems := make([]any, arr.Len())
+		for j := 0; j < arr.Len(); j++ {
+			if arr.IsNull(i) {
+				continue
+			}
+			from, to := arr.ValueOffsets(j)
+			elems[j] = c.getValueForBigQuery(array.NewSlice(arr.ListValues(), from, to), j)
+		}
+		return elems
+	case *array.MonthDayNanoInterval:
+		return v.Value(i)
+	case *array.DayTimeInterval:
+		return v.Value(i)
+	case *array.Duration:
+		return v.Value(i)
+	case *array.Timestamp:
+		unit := v.DataType().(*arrow.TimestampType).Unit
+		switch unit {
+		case arrow.Nanosecond:
+			t := v.Value(i).ToTime(arrow.Nanosecond)
+			format := "2006-01-02 15:04:05.999999"
+			return TimestampNanoseconds{
+				Timestamp:   t.Format(format),
+				Nanoseconds: t.Nanosecond() % 1000,
+			}
+		default:
+			return v.GetOneForMarshal(i)
 		}
 	}
 	return col.GetOneForMarshal(i)
