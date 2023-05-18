@@ -62,14 +62,27 @@ func readItem(values []bigquery.Value, rb *array.RecordBuilder, i int) error {
 
 func appendValue(bldr array.Builder, value any) error {
 	switch arr := bldr.(type) {
-	case *array.ListBuilder:
-		lst := value.([]bigquery.Value)
-		for _, v := range lst {
-			arr.Append(true)
-			if err := appendValue(arr.ValueBuilder(), v); err != nil {
+	case *array.StructBuilder:
+		m := value.([]bigquery.Value)
+		arr.Append(true)
+		// fields := bldr.Type().(*arrow.StructType).Fields()
+		for f := 0; f < arr.NumField(); f++ {
+			fieldBldr := arr.FieldBuilder(f)
+			if err := appendValue(fieldBldr, m[f]); err != nil {
 				return err
 			}
 		}
+		return nil
+	case array.ListLikeBuilder:
+		lst := value.([]bigquery.Value)
+		arr.Append(true)
+		valBuilder := arr.ValueBuilder()
+		for _, v := range lst {
+			if err := appendValue(valBuilder, v); err != nil {
+				return err
+			}
+		}
+		return nil
 	}
 	switch rbv := bldr.(type) {
 	case *array.Time32Builder:

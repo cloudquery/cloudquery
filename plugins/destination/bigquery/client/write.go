@@ -65,15 +65,20 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 }
 
 func (c *Client) getValueForBigQuery(col arrow.Array, i int) any {
-	switch col.DataType().ID() {
-	case arrow.MAP, arrow.STRUCT:
-		v := col.GetOneForMarshal(i)
-		b, _ := json.Marshal(v)
-		return string(b)
-	}
 	switch v := col.(type) {
-	case *array.List:
-		arr := col.(*array.List)
+	case *array.Struct:
+		m := map[string]bigquery.Value{}
+		fields := v.DataType().(*arrow.StructType).Fields()
+		for f, field := range fields {
+			m[field.Name] = c.getValueForBigQuery(v.Field(f), i)
+		}
+		return m
+	case *array.Map:
+		v2 := col.GetOneForMarshal(i)
+		b, _ := json.Marshal(v2)
+		return string(b)
+	case array.ListLike:
+		arr := col.(array.ListLike)
 		elems := make([]any, arr.Len())
 		for j := 0; j < arr.Len(); j++ {
 			if arr.IsNull(i) {
