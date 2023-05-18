@@ -30,7 +30,7 @@ func transformArr(arr arrow.Array) []any {
 		case *array.Uint32:
 			pgArr[i] = uint64(a.Value(i))
 		case *array.Uint64:
-			pgArr[i] = uint64(a.Value(i))
+			pgArr[i] = a.Value(i)
 		case *array.Float32:
 			pgArr[i] = float64(a.Value(i))
 		case *array.Float64:

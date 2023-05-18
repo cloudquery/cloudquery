@@ -57,16 +57,16 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		b.Append(val.([]byte))
 	case *array.TimestampBuilder:
 		switch b.Type().(*arrow.TimestampType).Unit {
-			case arrow.Second:
-				b.Append(arrow.Timestamp(val.(time.Time).Unix()))
-			case arrow.Millisecond:
-				b.Append(arrow.Timestamp(val.(time.Time).UnixMilli()))
-			case arrow.Microsecond:
-				b.Append(arrow.Timestamp(val.(time.Time).UnixMicro()))
-			case arrow.Nanosecond:
-				b.Append(arrow.Timestamp(val.(time.Time).UnixNano()))
-			default:
-				return fmt.Errorf("unsupported timestamp unit %s", f.Type.(*arrow.TimestampType).Unit)
+		case arrow.Second:
+			b.Append(arrow.Timestamp(val.(time.Time).Unix()))
+		case arrow.Millisecond:
+			b.Append(arrow.Timestamp(val.(time.Time).UnixMilli()))
+		case arrow.Microsecond:
+			b.Append(arrow.Timestamp(val.(time.Time).UnixMicro()))
+		case arrow.Nanosecond:
+			b.Append(arrow.Timestamp(val.(time.Time).UnixNano()))
+		default:
+			return fmt.Errorf("unsupported timestamp unit %s", f.Type.(*arrow.TimestampType).Unit)
 		}
 	case array.ListLikeBuilder:
 		b.Append(true)
