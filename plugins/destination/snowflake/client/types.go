@@ -2,7 +2,7 @@ package client
 
 import (
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func (*Client) SchemaTypeToSnowflake(t arrow.DataType) string {
