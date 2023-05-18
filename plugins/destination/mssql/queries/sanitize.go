@@ -3,12 +3,11 @@ package queries
 import (
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func SanitizedTableName(schemaName string, sc *arrow.Schema) string {
-	return sanitizeID(schemaName, schema.TableName(sc))
+func SanitizedTableName(schemaName string, table *schema.Table) string {
+	return sanitizeID(schemaName, table.Name)
 }
 
 func sanitizeID(parts ...string) string {
@@ -16,12 +15,4 @@ func sanitizeID(parts ...string) string {
 		parts[i] = `[` + strings.ReplaceAll(pt, string([]byte{0}), ``) + `]`
 	}
 	return strings.Join(parts, ".")
-}
-
-func sanitized(elems ...string) []string {
-	result := make([]string, len(elems))
-	for i, column := range elems {
-		result[i] = sanitizeID(column)
-	}
-	return result
 }

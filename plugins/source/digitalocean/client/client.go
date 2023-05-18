@@ -17,7 +17,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
-var defaultSpacesRegions = []string{"nyc3", "sfo3", "ams3", "sgp1", "fra1"}
+var defaultSpacesRegions = []string{"nyc3", "sfo3", "ams3", "sgp1", "fra1", "syd1"}
 
 const MaxItemsPerPage = 200
 

@@ -10,7 +10,10 @@ import (
 var queriesFS embed.FS
 
 func execTemplate(name string, data any) string {
-	tpl := template.Must(template.New(name).ParseFS(queriesFS, "templates/*.sql.tpl"))
+	tpl := template.Must(template.New(name).Funcs(map[string]any{
+		"sanitizeID": sanitizeID,
+		"sql":        SQLType,
+	}).ParseFS(queriesFS, "templates/*.sql.tpl"))
 	var buf bytes.Buffer
 	template.Must(tpl, tpl.Execute(&buf, data))
 	return buf.String()

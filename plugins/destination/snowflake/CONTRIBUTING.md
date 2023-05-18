@@ -11,6 +11,7 @@ go run main.go serve
 ## Testing
 
 ```bash
+# export SNOW_TEST_DSN="username:password@account_locator.europe-west4.gcp/testdb/public?warehouse=test
 make test
 ```
 
