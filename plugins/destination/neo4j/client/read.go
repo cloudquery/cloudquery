@@ -8,7 +8,7 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
@@ -56,7 +56,18 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.BinaryBuilder:
 		b.Append(val.([]byte))
 	case *array.TimestampBuilder:
-		b.Append(arrow.Timestamp(val.(time.Time).UnixMicro()))
+		switch b.Type().(*arrow.TimestampType).Unit {
+			case arrow.Second:
+				b.Append(arrow.Timestamp(val.(time.Time).Unix()))
+			case arrow.Millisecond:
+				b.Append(arrow.Timestamp(val.(time.Time).UnixMilli()))
+			case arrow.Microsecond:
+				b.Append(arrow.Timestamp(val.(time.Time).UnixMicro()))
+			case arrow.Nanosecond:
+				b.Append(arrow.Timestamp(val.(time.Time).UnixNano()))
+			default:
+				return fmt.Errorf("unsupported timestamp unit %s", f.Type.(*arrow.TimestampType).Unit)
+		}
 	case array.ListLikeBuilder:
 		b.Append(true)
 		valBuilder := b.ValueBuilder()
@@ -77,7 +88,8 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	return nil
 }
 
-func (c *Client) reverseTransformer(sc *arrow.Schema, node *neo4j.Node) (arrow.Record, error) {
+func (c *Client) reverseTransformer(table *schema.Table, node *neo4j.Node) (arrow.Record, error) {
+	sc := table.ToArrowSchema()
 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 	for i, f := range sc.Fields() {
 		if err := c.reverseTransform(f, bldr.Field(i), node.Props[f.Name]); err != nil {
@@ -88,9 +100,8 @@ func (c *Client) reverseTransformer(sc *arrow.Schema, node *neo4j.Node) (arrow.R
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
-	tableName := schema.TableName(table)
-	stmt := fmt.Sprintf(readCypher, tableName)
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+	stmt := fmt.Sprintf(readCypher, table.Name)
 
 	session := c.LoggedSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)

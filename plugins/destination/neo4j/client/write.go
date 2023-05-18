@@ -5,32 +5,32 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, records []arrow.Record) error {
+func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) error {
 	session := c.LoggedSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
-	tableName := schema.TableName(table)
+
 	rows := make([]map[string]any, 0)
 	for _, record := range records {
 		rows = append(rows, transformValues(record)...)
 	}
 	var sb strings.Builder
 	sb.WriteString("UNWIND $rows AS row MERGE (t:")
-	sb.WriteString(tableName)
+	sb.WriteString(table.Name)
 	sb.WriteString(" {")
-	pks := schema.PrimaryKeyIndices(table)
+	pks := table.PrimaryKeysIndexes()
 	if len(pks) == 0 {
 		// If no primary keys are defined, use _cq_id
-		pks = table.FieldIndices(schema.CqIDColumn.Name)
+		pks = []int{table.Columns.Index(schema.CqIDColumn.Name)}
 	}
 	for i, columnIndice := range pks {
 		if i != 0 {
 			sb.WriteString(", ")
 		}
-		column := table.Field(columnIndice).Name
+		column := table.Columns[columnIndice].Name
 		sb.WriteString(column)
 		sb.WriteString(": row.")
 		sb.WriteString(column)
