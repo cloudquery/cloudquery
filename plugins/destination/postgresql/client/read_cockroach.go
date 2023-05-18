@@ -2,31 +2,22 @@ package client
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"net"
 	"net/netip"
-	"strings"
 	"time"
 
 	"github.com/goccy/go-json"
+	"github.com/jackc/pgx/v5/pgtype"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
-const (
-	readSQL = "SELECT %s FROM %s WHERE _cq_source_name = $1 order by _cq_sync_time asc"
-)
-
-// nolint: dupl
-func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
+// nolint:dupl
+func (c *Client) reverseTransformCockroach(f arrow.Field, bldr array.Builder, val any) error {
 	if val == nil {
 		bldr.AppendNull()
 		return nil
@@ -41,13 +32,13 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.Int16Builder:
 		b.Append(val.(int16))
 	case *array.Int32Builder:
-		b.Append(val.(int32))
+		b.Append(int32(val.(int64)))
 	case *array.Int64Builder:
 		b.Append(val.(int64))
 	case *array.Uint8Builder:
 		b.Append(uint8(val.(int16)))
 	case *array.Uint16Builder:
-		b.Append(uint16(val.(int32)))
+		b.Append(uint16(val.(int64)))
 	case *array.Uint32Builder:
 		b.Append(uint32(val.(int64)))
 	case *array.Uint64Builder:
@@ -125,7 +116,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		b.Append(true)
 		valBuilder := b.ValueBuilder()
 		for _, v := range val.([]any) {
-			if err := c.reverseTransform(f, valBuilder, v); err != nil {
+			if err := c.reverseTransformCockroach(f, valBuilder, v); err != nil {
 				return err
 			}
 		}
@@ -138,50 +129,5 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 			return err
 		}
 	}
-	return nil
-}
-
-func (c *Client) reverseTransformer(table *schema.Table, values []any) (arrow.Record, error) {
-	sc := table.ToArrowSchema()
-	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
-	for i, f := range sc.Fields() {
-		if c.pgType == pgTypePostgreSQL {
-			if err := c.reverseTransform(f, bldr.Field(i), values[i]); err != nil {
-				return nil, err
-			}
-		} else {
-			if err := c.reverseTransformCockroach(f, bldr.Field(i), values[i]); err != nil {
-				return nil, err
-			}
-		}
-	}
-	rec := bldr.NewRecord()
-	return rec, nil
-}
-
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
-	colNames := make([]string, 0, len(table.Columns))
-	for _, col := range table.Columns {
-		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
-	}
-	cols := strings.Join(colNames, ",")
-	tableName := table.Name
-	sql := fmt.Sprintf(readSQL, cols, pgx.Identifier{tableName}.Sanitize())
-	rows, err := c.conn.Query(ctx, sql, sourceName)
-	if err != nil {
-		return err
-	}
-	for rows.Next() {
-		values, err := rows.Values()
-		if err != nil {
-			return err
-		}
-		rec, err := c.reverseTransformer(table, values)
-		if err != nil {
-			return err
-		}
-		res <- rec
-	}
-	rows.Close()
 	return nil
 }

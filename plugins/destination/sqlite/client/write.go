@@ -7,10 +7,10 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan arrow.Record) error {
+func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan arrow.Record) error {
 	var sql string
 	for r := range res {
 		if c.spec.WriteMode == specs.WriteModeAppend {
