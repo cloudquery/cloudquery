@@ -15,12 +15,12 @@ func TestClient_ColumnToBigQuerySchema(t *testing.T) {
 		col  schema.Column
 		want *bigquery.FieldSchema
 	}{
-		{col: schema.Column{Name: "int32", Description: "bar", NotNull: true, Type: arrow.PrimitiveTypes.Int32}, want: &bigquery.FieldSchema{Name: "int32", Description: "bar", Required: true, Type: bigquery.IntegerFieldType}},
-		{col: schema.Column{Name: "bool", Description: "bar", NotNull: true, Type: arrow.FixedWidthTypes.Boolean}, want: &bigquery.FieldSchema{Name: "bool", Description: "bar", Required: true, Type: bigquery.BooleanFieldType}},
-		{col: schema.Column{Name: "json", Description: "bar", NotNull: true, Type: types.ExtensionTypes.JSON}, want: &bigquery.FieldSchema{Name: "json", Description: "bar", Required: true, Type: bigquery.JSONFieldType}},
-		{col: schema.Column{Name: "string_list", Description: "bar", NotNull: true, Type: arrow.ListOf(arrow.BinaryTypes.String)}, want: &bigquery.FieldSchema{Name: "string_list", Description: "bar", Required: true, Type: bigquery.StringFieldType, Repeated: true}},
-		{col: schema.Column{Name: "json_list", Description: "bar", NotNull: true, Type: arrow.ListOf(types.ExtensionTypes.JSON)}, want: &bigquery.FieldSchema{Name: "json_list", Description: "bar", Required: true, Type: bigquery.JSONFieldType, Repeated: true}},
-		{col: schema.Column{Name: "struct", Description: "bar", NotNull: true, Type: arrow.StructOf([]arrow.Field{{Name: "foo", Type: arrow.BinaryTypes.String}}...)}, want: &bigquery.FieldSchema{Name: "struct", Description: "bar", Required: true, Type: bigquery.RecordFieldType, Schema: bigquery.Schema{{Name: "foo", Type: bigquery.StringFieldType}}}},
+		{col: schema.Column{Name: "int32", Description: "bar", NotNull: true, Type: arrow.PrimitiveTypes.Int32}, want: &bigquery.FieldSchema{Name: "int32", Description: "bar", Required: false, Type: bigquery.IntegerFieldType}},
+		{col: schema.Column{Name: "bool", Description: "bar", NotNull: true, Type: arrow.FixedWidthTypes.Boolean}, want: &bigquery.FieldSchema{Name: "bool", Description: "bar", Required: false, Type: bigquery.BooleanFieldType}},
+		{col: schema.Column{Name: "json", Description: "bar", NotNull: true, Type: types.ExtensionTypes.JSON}, want: &bigquery.FieldSchema{Name: "json", Description: "bar", Required: false, Type: bigquery.JSONFieldType}},
+		{col: schema.Column{Name: "string_list", Description: "bar", NotNull: true, Type: arrow.ListOf(arrow.BinaryTypes.String)}, want: &bigquery.FieldSchema{Name: "string_list", Description: "bar", Required: false, Type: bigquery.StringFieldType, Repeated: true}},
+		{col: schema.Column{Name: "json_list", Description: "bar", NotNull: true, Type: arrow.ListOf(types.ExtensionTypes.JSON)}, want: &bigquery.FieldSchema{Name: "json_list", Description: "bar", Required: false, Type: bigquery.JSONFieldType, Repeated: true}},
+		{col: schema.Column{Name: "struct", Description: "bar", NotNull: true, Type: arrow.StructOf([]arrow.Field{{Name: "foo", Type: arrow.BinaryTypes.String}}...)}, want: &bigquery.FieldSchema{Name: "struct", Description: "bar", Required: false, Type: bigquery.RecordFieldType, Schema: bigquery.Schema{{Name: "foo", Type: bigquery.StringFieldType}}}},
 	}
 	cl := &Client{}
 	for _, c := range cases {
