@@ -6,11 +6,11 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, sc *arrow.Schema, records []arrow.Record) error {
-	index, err := c.Meilisearch.GetIndex(schema.TableName(sc))
+func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) error {
+	index, err := c.Meilisearch.GetIndex(table.Name)
 	if err != nil {
 		return err
 	}
@@ -18,9 +18,9 @@ func (c *Client) WriteTableBatch(ctx context.Context, sc *arrow.Schema, records 
 	var transformer rowTransformer
 	switch c.dstSpec.WriteMode {
 	case specs.WriteModeAppend:
-		transformer = toMap(sc)
+		transformer = toMap(table)
 	case specs.WriteModeOverwrite, specs.WriteModeOverwriteDeleteStale:
-		transformer = toMapWithHash(sc)
+		transformer = toMapWithHash(table)
 	default:
 		return fmt.Errorf("unsupported write mode %q", c.dstSpec.WriteMode.String())
 	}
@@ -48,11 +48,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, sc *arrow.Schema, records 
 
 type rowTransformer func(record arrow.Record) ([]map[string]any, error)
 
-func toMap(sc *arrow.Schema) rowTransformer {
-	columns := make([]string, len(sc.Fields()))
-	for i, fld := range sc.Fields() {
-		columns[i] = fld.Name
-	}
+func toMap(table *schema.Table) rowTransformer {
+	columns := table.Columns.Names()
 	return func(record arrow.Record) ([]map[string]any, error) {
 		byColumn := make(map[string][]any, len(columns))
 		for i, col := range record.Columns() {
@@ -62,9 +59,9 @@ func toMap(sc *arrow.Schema) rowTransformer {
 	}
 }
 
-func toMapWithHash(sc *arrow.Schema) rowTransformer {
-	m := toMap(sc)
-	h := hashUUID(sc)
+func toMapWithHash(table *schema.Table) rowTransformer {
+	m := toMap(table)
+	h := hashUUID(table)
 	return func(record arrow.Record) ([]map[string]any, error) {
 		rows, err := m(record)
 		if err != nil {

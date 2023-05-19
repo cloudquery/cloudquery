@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func SQLType(dataType arrow.DataType) string {
@@ -35,7 +35,7 @@ func SQLType(dataType arrow.DataType) string {
 	case *arrow.LargeStringType:
 		return "nvarchar(max)" // we will also use it as the default type
 
-	case *arrow.StringType, *types.InetType, *types.MacType:
+	case *arrow.StringType, *types.InetType, *types.MACType:
 		return "nvarchar(4000)" // feasible to see these as PK, so need to limit the value
 
 	case *arrow.FixedSizeBinaryType:
@@ -127,13 +127,10 @@ func columnGoType(dataType arrow.DataType) reflect.Type {
 	case *arrow.Float64Type:
 		return reflect.TypeOf(float64(0))
 
-	case *arrow.LargeStringType, *arrow.StringType, *types.InetType, *types.MacType:
+	case *arrow.LargeStringType, *arrow.StringType, *types.InetType, *types.MACType:
 		return reflect.TypeOf("")
 
-	case arrow.BinaryDataType, *arrow.FixedSizeBinaryType:
-		return reflect.TypeOf([]byte{})
-
-	case *types.UUIDType:
+	case arrow.BinaryDataType, *arrow.FixedSizeBinaryType, *types.UUIDType:
 		return reflect.TypeOf([]byte{})
 
 	case *arrow.TimestampType:

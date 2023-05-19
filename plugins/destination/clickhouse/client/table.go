@@ -4,10 +4,10 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func (c *Client) getTableDefinitions(ctx context.Context, scs schema.Schemas) (schema.Schemas, error) {
+func (c *Client) getTableDefinitions(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
 	// need proper description without flattened columns
 	const flattenNested0 = "SET flatten_nested = 0"
 	if err := c.conn.Exec(ctx, flattenNested0); err != nil {
@@ -21,5 +21,5 @@ func (c *Client) getTableDefinitions(ctx context.Context, scs schema.Schemas) (s
 	}
 	defer rows.Close()
 
-	return queries.ScanTableSchemas(rows, scs)
+	return queries.ScanTableSchemas(rows, tables)
 }
