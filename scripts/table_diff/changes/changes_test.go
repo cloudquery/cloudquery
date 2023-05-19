@@ -361,6 +361,84 @@ func Test_getChanges(t *testing.T) {
 				},
 			},
 		},
+		{
+			name:         "Should handle CQTypes -> Apache Arrow column changes",
+			diffDataFile: "testdata/pr_10831_diff.txt",
+			wantChanges: []change{
+				{
+					Text:     "Table `hackernews_items`: column order changed for `_cq_id`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `_cq_parent_id`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `_cq_source_name`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `_cq_sync_time`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `by`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `dead`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `deleted`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `descendants`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `id`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `kids`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `parent`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `parts`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `score`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `text`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `time`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `title`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `type`",
+					Breaking: false,
+				},
+				{
+					Text:     "Table `hackernews_items`: column order changed for `url`",
+					Breaking: false,
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
