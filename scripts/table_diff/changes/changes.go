@@ -121,7 +121,8 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 			continue
 		}
 
-		if !dataTypesEqual(deleted.dataType, added.dataType) {
+		dtEqual, toArrow := dataTypesEqual(deleted.dataType, added.dataType)
+		if !dtEqual {
 			changes = append(changes, change{
 				Text:     fmt.Sprintf("Table %s: column type changed from %s to %s for %s", backtickStrings(table, deleted.dataType, added.dataType, name)...),
 				Breaking: true,
@@ -130,10 +131,12 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 		}
 
 		if deleted.columnType == added.columnType {
-			changes = append(changes, change{
-				Text:     fmt.Sprintf("Table %s: column order changed for %s", backtickStrings(table, name)...),
-				Breaking: false,
-			})
+			if !toArrow { // we do this ckeck to eliminate migration diff
+				changes = append(changes, change{
+					Text:     fmt.Sprintf("Table %s: column order changed for %s", backtickStrings(table, name)...),
+					Breaking: false,
+				})
+			}
 			continue
 		}
 

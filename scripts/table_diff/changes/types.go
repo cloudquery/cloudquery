@@ -23,15 +23,15 @@ func init() {
 }
 
 // dataTypesEqual checks if the old & current are the same OR if the current is an Arrow mapping of the old
-func dataTypesEqual(old, current string) bool {
+func dataTypesEqual(old, current string) (equal, toArrow bool) {
 	if old == current {
-		return true
+		return true, false
 	}
 
 	dt, ok := cqToArrow[old]
 	if !ok {
-		return false
+		return false, false
 	}
 
-	return dt.String() == current
+	return dt.String() == current, true
 }
