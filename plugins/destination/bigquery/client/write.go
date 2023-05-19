@@ -81,10 +81,14 @@ func (c *Client) getValueForBigQuery(col arrow.Array, i int) any {
 		arr := col.(array.ListLike)
 		elems := make([]any, arr.Len())
 		for j := 0; j < arr.Len(); j++ {
-			if arr.IsNull(i) {
+			if arr.IsNull(j) {
 				continue
 			}
 			from, to := arr.ValueOffsets(j)
+			if from == to {
+				// empty
+				continue
+			}
 			elems[j] = c.getValueForBigQuery(array.NewSlice(arr.ListValues(), from, to), j)
 		}
 		return elems
