@@ -13,11 +13,38 @@ func identifier(name string) string {
 	return fmt.Sprintf("`%s`", name)
 }
 
-func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schema.Column, error) {
-	query := ` SELECT  cols.COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, CHARACTER_MAXIMUM_LENGTH, constraint_type FROM INFORMATION_SCHEMA.COLUMNS AS cols LEFT JOIN (SELECT tc.constraint_schema, tc.table_name, kcu.column_name, GROUP_CONCAT(tc.constraint_type SEPARATOR ',') as constraint_type FROM information_schema.table_constraints tc INNER JOIN information_schema.key_column_usage kcu ON tc.constraint_catalog = kcu.constraint_catalog AND tc.constraint_schema = kcu.constraint_schema AND tc.constraint_name = kcu.constraint_name AND tc.table_name = kcu.table_name LEFT JOIN information_schema.referential_constraints rc ON tc.constraint_catalog = rc.constraint_catalog AND tc.constraint_schema = rc.constraint_schema AND tc.constraint_name = rc.constraint_name AND tc.table_name = rc.table_name group by tc.constraint_schema, tc.table_name, kcu.column_name ) AS constraints ON constraints.constraint_schema = cols.table_schema AND constraints.table_name = cols.TABLE_NAME AND constraints.column_name = cols.COLUMN_NAME WHERE cols.TABLE_NAME = ?;`
-	var columns []schema.Column
+const columnQuery = `SELECT 
+cols.COLUMN_NAME,
+COLUMN_TYPE,
+IS_NULLABLE,
+constraint_type
+FROM
+INFORMATION_SCHEMA.COLUMNS AS cols
+	LEFT JOIN
+(SELECT 
+	tc.constraint_schema,
+		tc.table_name,
+		kcu.column_name,
+		GROUP_CONCAT(tc.constraint_type SEPARATOR ',') AS constraint_type # a single column can have multiple constraints
+FROM
+	information_schema.table_constraints tc
+INNER JOIN information_schema.key_column_usage kcu ON tc.constraint_catalog = kcu.constraint_catalog
+	AND tc.constraint_schema = kcu.constraint_schema
+	AND tc.constraint_name = kcu.constraint_name
+	AND tc.table_name = kcu.table_name
+LEFT JOIN information_schema.referential_constraints rc ON tc.constraint_catalog = rc.constraint_catalog
+	AND tc.constraint_schema = rc.constraint_schema
+	AND tc.constraint_name = rc.constraint_name
+	AND tc.table_name = rc.table_name
+GROUP BY tc.constraint_schema , tc.table_name , kcu.column_name) AS constraints ON constraints.constraint_schema = cols.table_schema
+	AND constraints.table_name = cols.TABLE_NAME
+	AND constraints.column_name = cols.COLUMN_NAME
+WHERE
+cols.TABLE_NAME = ?;`
 
-	rows, err := c.db.QueryContext(ctx, query, tableName)
+func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schema.Column, error) {
+	var columns []schema.Column
+	rows, err := c.db.QueryContext(ctx, columnQuery, tableName)
 	if err != nil {
 		return nil, err
 	}
@@ -26,10 +53,9 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 		var name string
 		var typ string
 		var nullable string
-		var charMaxLength *string
 		var constraintType *string
 
-		if err := rows.Scan(&name, &typ, &nullable, &charMaxLength, &constraintType); err != nil {
+		if err := rows.Scan(&name, &typ, &nullable, &constraintType); err != nil {
 			return nil, err
 		}
 
@@ -52,6 +78,7 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 	return columns, nil
 }
 
+// TODO: in the future this could theoretically be done in a single query and then the tables could be filtered in memory
 func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
 	query := `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE';`
 	rows, err := c.db.QueryContext(ctx, query)
@@ -71,7 +98,6 @@ func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema
 		if tables.Get(tableName) == nil {
 			continue
 		}
-
 		tableNames = append(tableNames, tableName)
 	}
 
