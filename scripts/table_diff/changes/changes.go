@@ -42,10 +42,10 @@ func (c column) incremental() bool {
 	return c.columnType&columnTypeIncremental != 0
 }
 
-func backtickStrings(strings ...string) []interface{} {
-	backticked := make([]interface{}, len(strings))
+func backtickStrings(strings ...string) []any {
+	backticked := make([]any, len(strings))
 	for i, s := range strings {
-		backticked[i] = fmt.Sprintf("`%s`", s)
+		backticked[i] = "`" + s + "`"
 	}
 	return backticked
 }
