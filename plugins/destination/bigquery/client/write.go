@@ -79,17 +79,23 @@ func (c *Client) getValueForBigQuery(col arrow.Array, i int) any {
 		return string(b)
 	case array.ListLike:
 		arr := col.(array.ListLike)
-		elems := make([]any, arr.Len())
+		elems := make([]any, 0, arr.Len())
 		for j := 0; j < arr.Len(); j++ {
 			if arr.IsNull(j) {
 				continue
 			}
 			from, to := arr.ValueOffsets(j)
-			if from == to {
-				// empty
-				continue
+			slc := array.NewSlice(arr.ListValues(), from, to)
+			for k := 0; k < int(to-from); k++ {
+				if slc.IsNull(k) {
+					// LIMITATION: BigQuery does not support null values in repeated columns.
+					// Therefore, these get stripped out here. In the future, perhaps we should support
+					// an option to use JSON instead of repeated columns for users who need to preserve
+					// the null values.
+					continue
+				}
+				elems = append(elems, c.getValueForBigQuery(slc, k))
 			}
-			elems[j] = c.getValueForBigQuery(array.NewSlice(arr.ListValues(), from, to), j)
 		}
 		return elems
 	case *array.MonthDayNanoInterval:
