@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func stackTemplates() *schema.Table {
@@ -30,7 +31,7 @@ func stackTemplates() *schema.Table {
 			},
 			{
 				Name:     "template_body",
-				Type:     schema.TypeJSON,
+				Type:     cqtypes.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("TemplateBody"),
 			},
 		},
