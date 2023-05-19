@@ -1,7 +1,8 @@
 # Generate mocks for mock/unit testing
-.PHONY: generate-mocks
-generate-mocks:
+.PHONY: gen-mocks
+gen-mocks:
 	go install github.com/golang/mock/mockgen@v1.7.0-rc.1
+	go run codegen/main.go
 	go generate ./client/services/...
 
 # Test unit
@@ -25,4 +26,4 @@ lint:
 
 # All gen targets
 .PHONY: gen
-gen: generate-mocks gen-docs
+gen: gen-mocks gen-docs

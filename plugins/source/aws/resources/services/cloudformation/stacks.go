@@ -44,6 +44,7 @@ func Stacks() *schema.Table {
 
 		Relations: []*schema.Table{
 			stackResources(),
+			templateSummaries(),
 			stackTemplates(),
 		},
 	}

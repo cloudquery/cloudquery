@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -51,22 +52,23 @@ func ensureDefinition(t *testing.T, tc testCase) {
 
 	t.Run(tc.dataType.String(), func(t *testing.T) {
 		// non-nullable
-		field := arrow.Field{
-			Name: replacer.Replace(tc.dataType.String()),
-			Type: tc.dataType,
+		col := schema.Column{
+			Name:    replacer.Replace(tc.dataType.String()),
+			Type:    tc.dataType,
+			NotNull: true,
 		}
-		fieldType, err := FieldType(field)
+		typeDef, err := FieldType(col.ToArrowField())
 		require.NoError(t, err)
-		require.Equal(t, tc.expected, fieldType)
+		require.Equal(t, tc.expected, typeDef)
 
-		if !canBeNullable(field.Type) {
+		if !canBeNullable(col.Type) {
 			return
 		}
 
 		// nullable
-		field.Nullable = true
-		fieldType, err = FieldType(field)
+		col.NotNull = false
+		typeDef, err = FieldType(col.ToArrowField())
 		require.NoError(t, err)
-		require.Equal(t, "Nullable("+tc.expected+")", fieldType)
+		require.Equal(t, "Nullable("+tc.expected+")", typeDef)
 	})
 }

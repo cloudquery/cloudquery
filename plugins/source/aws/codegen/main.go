@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/account"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
+	"github.com/aws/aws-sdk-go-v2/service/acmpca"
 	"github.com/aws/aws-sdk-go-v2/service/amp"
 	"github.com/aws/aws-sdk-go-v2/service/amplify"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
@@ -118,6 +119,7 @@ var clients = []any{
 	&accessanalyzer.Client{},
 	&account.Client{},
 	&acm.Client{},
+	&acmpca.Client{},
 	&amp.Client{},
 	&amplify.Client{},
 	&apigateway.Client{},

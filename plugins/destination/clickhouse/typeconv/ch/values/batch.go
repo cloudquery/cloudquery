@@ -5,12 +5,13 @@ import (
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"golang.org/x/sync/errgroup"
 )
 
-func BatchAddRecords(ctx context.Context, batch driver.Batch, sc *arrow.Schema, records []arrow.Record) error {
+func BatchAddRecords(ctx context.Context, batch driver.Batch, table *schema.Table, records []arrow.Record) error {
 	eg, _ := errgroup.WithContext(ctx)
-	for n := range sc.Fields() {
+	for n := range table.Columns {
 		n := n
 		eg.Go(func() error {
 			column := batch.Column(n)
