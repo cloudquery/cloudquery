@@ -132,31 +132,26 @@ func (c *Client) DataTypeToBigQueryType(dataType arrow.DataType) bigquery.FieldT
 }
 
 func (c *Client) DataTypeToBigQuerySchema(dataType arrow.DataType) bigquery.Schema {
-	// handle complex types
-	switch dataType.ID() {
-	case arrow.STRUCT:
-		switch v := dataType.(type) {
-		case *arrow.StructType:
-			fields := make([]*bigquery.FieldSchema, len(v.Fields()))
-			for i, field := range v.Fields() {
-				fields[i] = c.ColumnToBigQuerySchema(schema.Column{
-					Name: field.Name,
-					Type: field.Type,
-				})
-			}
-			return fields
+	switch {
+	case dataType.ID() == arrow.STRUCT:
+		v := dataType.(*arrow.StructType)
+		fields := make([]*bigquery.FieldSchema, len(v.Fields()))
+		for i, field := range v.Fields() {
+			fields[i] = c.ColumnToBigQuerySchema(schema.Column{
+				Name: field.Name,
+				Type: field.Type,
+			})
 		}
-	case arrow.LIST:
+		return fields
+	case arrow.IsListLike(dataType.ID()):
 		switch v := dataType.(type) {
 		case *arrow.ListType:
 			return c.DataTypeToBigQuerySchema(v.Elem())
 		case *arrow.LargeListType:
 			return c.DataTypeToBigQuerySchema(v.Elem())
+		default:
+			panic("unsupported list type: " + dataType.String())
 		}
-	}
-
-	// handle basic types
-	switch {
 	case arrow.TypeEqual(dataType, arrow.FixedWidthTypes.MonthInterval):
 		return []*bigquery.FieldSchema{
 			{
