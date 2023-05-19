@@ -13,8 +13,6 @@ require (
 	google.golang.org/api v0.114.0
 )
 
-replace github.com/cloudquery/plugin-sdk/v3 v3.2.0 => ../../../../plugin-sdk
-
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apache/arrow/go/v11 v11.0.0 // indirect
