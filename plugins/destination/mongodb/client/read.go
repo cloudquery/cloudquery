@@ -68,7 +68,11 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		if v, ok := val.(string); !ok {
 			return fmt.Errorf("unsupported type %T with builder %T", val, bldr)
 		} else {
-			b.AppendBytes([]byte(v))
+			var res any
+			if err := json.Unmarshal([]byte(v), &res); err != nil {
+				return fmt.Errorf("cannot unmarshal json: %w", err)
+			}
+			b.Append(res)
 		}
 	case *array.StructBuilder:
 		v, err := json.Marshal(val.(primitive.M))

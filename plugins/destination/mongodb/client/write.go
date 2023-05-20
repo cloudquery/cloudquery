@@ -2,7 +2,8 @@ package client
 
 import (
 	"context"
-	"encoding/json"
+
+	"github.com/goccy/go-json"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
