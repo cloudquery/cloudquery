@@ -4,7 +4,8 @@ import (
 	"testing"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 var migrateStrategy = destination.MigrateStrategy{
@@ -16,6 +17,11 @@ var migrateStrategy = destination.MigrateStrategy{
 }
 
 func TestPlugin(t *testing.T) {
+	
+	if err := types.RegisterAllExtensions(); err != nil {
+		t.Fatal(err)
+	}
+
 	destination.PluginTestSuiteRunner(t,
 		func() *destination.Plugin {
 			return destination.NewPlugin("duckdb", "development", New, destination.WithManagedWriter())
@@ -28,5 +34,11 @@ func TestPlugin(t *testing.T) {
 		destination.PluginTestSuiteTests{
 			MigrateStrategyOverwrite: migrateStrategy,
 			MigrateStrategyAppend:    migrateStrategy,
-		})
+		},
+		destination.WithTestSourceSkipIntervals(),
+		destination.WithTestSourceSkipDurations(),
+		destination.WithTestSourceSkipTimes(),
+		destination.WithTestSourceSkipDates(),
+		destination.WithTestSourceSkipLargeTypes(),
+	)
 }

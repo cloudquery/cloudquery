@@ -5,17 +5,21 @@ go 1.19
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604
 	github.com/cloudquery/plugin-pb-go v1.0.8
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0
+	github.com/cloudquery/plugin-sdk/v3 v3.6.1
 	github.com/marcboeker/go-duckdb v1.2.3
 	github.com/rs/zerolog v1.29.0
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230509053643-898a79b1d3c8
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230521112802-adef07d4bbaa
+
+replace github.com/cloudquery/plugin-sdk/v3 => ../../../../plugin-sdk
 
 require (
+	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apache/thrift v0.18.1 // indirect
+	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/golang/snappy v0.0.4 // indirect

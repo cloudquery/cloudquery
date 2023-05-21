@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func (c *Client) SchemaTypeToDuckDB(t arrow.DataType) string {
@@ -18,15 +18,15 @@ func (c *Client) SchemaTypeToDuckDB(t arrow.DataType) string {
 	case *arrow.Int16Type:
 		return "smallint"
 	case *arrow.Int32Type:
-		return "int"
+		return "integer"
 	case *arrow.Int64Type:
 		return "bigint"
 	case *arrow.Uint8Type:
-		return "utinyint"
+		return "uinteger"
 	case *arrow.Uint16Type:
-		return "usmallint"
+		return "uinteger"
 	case *arrow.Uint32Type:
-		return "uint"
+		return "uinteger"
 	case *arrow.Uint64Type:
 		return "ubigint"
 	case *arrow.Float32Type:
@@ -59,9 +59,9 @@ func (c *Client) duckdbTypeToSchema(t string) arrow.DataType {
 	switch t {
 	case "tinyint", "int1":
 		return arrow.PrimitiveTypes.Int8
-	case "smallint":
+	case "smallint", "int2", "short":
 		return arrow.PrimitiveTypes.Int16
-	case "int", "int4", "integer", "signed":
+	case "integer", "int4", "signed", "int":
 		return arrow.PrimitiveTypes.Int32
 	case "bigint", "int8", "long":
 		return arrow.PrimitiveTypes.Int64
@@ -69,7 +69,7 @@ func (c *Client) duckdbTypeToSchema(t string) arrow.DataType {
 		return arrow.PrimitiveTypes.Uint8
 	case "usmallint":
 		return arrow.PrimitiveTypes.Uint16
-	case "uint", "uint4", "uinteger":
+	case "uinteger", "uint4":
 		return arrow.PrimitiveTypes.Uint32
 	case "ubigint":
 		return arrow.PrimitiveTypes.Uint64
