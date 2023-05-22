@@ -8,7 +8,16 @@ import (
 	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
-func fetchApplicationGroupAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func groupAssignments() *schema.Table {
+	return &schema.Table{
+		Name:      "okta_application_group_assignments",
+		Resolver:  fetchGroupAssignments,
+		Transform: client.TransformWithStruct(&okta.ApplicationGroupAssignment{}),
+		Columns:   schema.ColumnList{appIDColumn},
+	}
+}
+
+func fetchGroupAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	app := parent.Item.(*okta.Application)
 
