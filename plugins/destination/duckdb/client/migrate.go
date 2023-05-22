@@ -41,11 +41,11 @@ func (c *Client) duckdbTables(tables schema.Tables) (schema.Tables, error) {
 		columns := make(schema.ColumnList, len(info.columns))
 		for i, col := range info.columns {
 			columns[i] = schema.Column{
-				Name:     col.name,
-				Type:     c.duckdbTypeToSchema(col.typ),
-				NotNull: col.notNull,
+				Name:       col.name,
+				Type:       c.duckdbTypeToSchema(col.typ),
+				NotNull:    col.notNull,
 				PrimaryKey: col.pk,
-				Unique: col.unique,
+				Unique:     col.unique,
 			}
 		}
 		schemaTables = append(schemaTables, &schema.Table{
@@ -69,10 +69,8 @@ func (c *Client) normalizeColumns(tables schema.Tables) schema.Tables {
 			if !c.enabledPks() {
 				normalizedColumn.PrimaryKey = false
 				normalizedColumn.Unique = false
-			} else {
-				if normalizedColumn.PrimaryKey {
-					normalizedColumn.NotNull = true
-				}
+			} else if normalizedColumn.PrimaryKey {
+				normalizedColumn.NotNull = true
 			}
 			// Since multiple schema types can map to the same duckdb type we need to normalize them to avoid false positives when detecting schema changes
 			normalizedColumn.Type = c.duckdbTypeToSchema(c.SchemaTypeToDuckDB(normalizedColumn.Type))

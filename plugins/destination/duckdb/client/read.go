@@ -24,9 +24,10 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		return err
 	}
 
-	defer os.Remove(f.Name())
+	// defer os.Remove(f.Name())
 	sc := table.ToArrowSchema()
 	fName := f.Name()
+	fmt.Println(fName)
 	if err := f.Close(); err != nil {
 		return err
 	}
@@ -41,7 +42,6 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	}
 	sb.WriteString(") to '" + f.Name() + "' (FORMAT PARQUET)")
 
-	// _, err = c.db.Exec("copy " + table.Name + " to '" + f.Name() + "' (FORMAT PARQUET)")
 	_, err = c.db.Exec(sb.String())
 	if err != nil {
 		return err
@@ -80,27 +80,8 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		return fmt.Errorf("failed to read parquet record: %w", rr.Err())
 	}
 
-	// Create a new scanner to read the file
-	// scanner := bufio.NewScanner(f)
-
-	// // Loop through the scanner, reading line by line
-	// for scanner.Scan() {
-	// 	line := scanner.Bytes()
-	// 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
-	// 	if err := bldr.UnmarshalJSON(line); err != nil {
-	// 		return err
-	// 	}
-	// 	res <- bldr.NewRecord()
-	// }
-
-	// // Check for errors
-	// if err := scanner.Err(); err != nil {
-	// 	return fmt.Errorf("error reading temporary json file: %s", err)
-	// }
-
 	return nil
 }
-
 
 func convertToSingleRowRecords(sc *arrow.Schema, rec arrow.Record) []arrow.Record {
 	records := make([]arrow.Record, rec.NumRows())
@@ -110,7 +91,6 @@ func convertToSingleRowRecords(sc *arrow.Schema, rec arrow.Record) []arrow.Recor
 	return records
 }
 
-
 func reverseTransformRecord(sc *arrow.Schema, rec arrow.Record) arrow.Record {
 	cols := make([]arrow.Array, rec.NumCols())
 	for i := 0; i < int(rec.NumCols()); i++ {
@@ -119,24 +99,25 @@ func reverseTransformRecord(sc *arrow.Schema, rec arrow.Record) arrow.Record {
 	return array.NewRecord(sc, cols, -1)
 }
 
-func reverseTransformArray(ty arrow.DataType, col arrow.Array) arrow.Array {
-	switch  {
-	case arrow.TypeEqual(ty, types.ExtensionTypes.UUID):
+func reverseTransformArray(dt arrow.DataType, col arrow.Array) arrow.Array {
+	switch {
+	case arrow.TypeEqual(dt, types.ExtensionTypes.UUID):
 		return reverseTransformUUID(col.(*array.FixedSizeBinary))
-	case arrow.TypeEqual(ty, types.ExtensionTypes.Inet):
+	case arrow.TypeEqual(dt, types.ExtensionTypes.Inet):
 		return reverseTransformInet(col.(*array.String))
-	case arrow.TypeEqual(ty, types.ExtensionTypes.MAC):
+	case arrow.TypeEqual(dt, types.ExtensionTypes.MAC):
 		return reverseTransformMAC(col.(*array.String))
-	case arrow.TypeEqual(ty, arrow.PrimitiveTypes.Uint16):
+	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint16):
 		return reverseTransformUint16(col.(*array.Uint32))
-	case arrow.TypeEqual(ty, arrow.PrimitiveTypes.Uint8):
+	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint8):
 		return reverseTransformUint8(col.(*array.Uint32))
 	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Timestamp_us):
-		return reverseTransformTimestamp(ty.(*arrow.TimestampType), col.(*array.Timestamp))
-	case arrow.TypeEqual(ty, types.ExtensionTypes.JSON):
+		return reverseTransformTimestamp(dt.(*arrow.TimestampType), col.(*array.Timestamp))
+	case arrow.TypeEqual(dt, types.ExtensionTypes.JSON):
 		return reverseTransformJSON(col.(*array.String))
-	case arrow.IsListLike(ty.ID()):
-		return array.NewListData(reverseTransformArray(ty.(*arrow.ListType).Elem(), col.(*array.List).ListValues()).Data())
+	case arrow.IsListLike(dt.ID()):
+		child := reverseTransformArray(dt.(*arrow.ListType).Elem(), col.(*array.List).ListValues()).Data()
+		return array.NewListData(array.NewData(dt, col.Len(), col.Data().Buffers(), []arrow.ArrayData{child}, col.NullN(), col.Data().Offset()))
 	default:
 		return col
 	}
@@ -204,8 +185,9 @@ func reverseTransformInet(col *array.String) arrow.Array {
 		if !col.IsValid(i) {
 			bldr.AppendNull()
 		} else {
-			bldr.AppendNull()
-			// bldr.AppendValueFromString(col.Value(i))
+			if err := bldr.AppendValueFromString(col.Value(i)); err != nil {
+				panic(err)
+			}
 		}
 	}
 
@@ -224,7 +206,6 @@ func reverseTransformUUID(col *array.FixedSizeBinary) arrow.Array {
 			}
 			bldr.Append(u)
 		}
-
 	}
 
 	return bldr.NewUUIDArray()
@@ -243,7 +224,7 @@ func reverseTransformTimestamp(dtype *arrow.TimestampType, col *array.Timestamp)
 			case arrow.Millisecond:
 				bldr.Append(arrow.Timestamp(t.UnixMilli()))
 			case arrow.Microsecond:
-				bldr.Append(arrow.Timestamp(t.UnixNano()))
+				bldr.Append(arrow.Timestamp(t.UnixMicro()))
 			case arrow.Nanosecond:
 				bldr.Append(arrow.Timestamp(t.UnixNano()))
 			default:

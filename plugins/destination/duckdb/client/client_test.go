@@ -17,7 +17,6 @@ var migrateStrategy = destination.MigrateStrategy{
 }
 
 func TestPlugin(t *testing.T) {
-	
 	if err := types.RegisterAllExtensions(); err != nil {
 		t.Fatal(err)
 	}
@@ -43,6 +42,5 @@ func TestPlugin(t *testing.T) {
 		destination.WithTestSourceSkipLists(),
 		destination.WithTestSourceSkipMaps(),
 		destination.WithTestSourceSkipStructs(),
-		destination.WithTestIgnoreNullsInLists(),
 	)
 }
