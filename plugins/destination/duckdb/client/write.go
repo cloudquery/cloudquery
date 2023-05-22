@@ -224,3 +224,12 @@ func transformToStringArray(arr arrow.Array) arrow.Array {
 	}
 	return bldr.NewArray()
 }
+
+// func isSupportedType(dt arrow.DataType) bool {
+// 	if arrow.TypeEqual(dt, &arrow.Time32Type{}) ||
+// 		arrow.TypeEqual(dt, &arrow.Time64Type{}) ||
+// 		arrow.TypeEqual(dt, &arrow.DurationType{}) {
+// 		return false
+// 	}
+// 	return true
+// }
