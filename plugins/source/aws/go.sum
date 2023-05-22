@@ -88,8 +88,8 @@ github.com/aws/aws-sdk-go-v2/service/amp v1.16.11 h1:hGn4MPtQJGhv7Hf3JaF3yP/NxmJ
 github.com/aws/aws-sdk-go-v2/service/amp v1.16.11/go.mod h1:YBFQWRFJN12u+/MWMLZ/jMrOcWWyIG8iVFnZkgLULeo=
 github.com/aws/aws-sdk-go-v2/service/amplify v1.13.10 h1:d2q01muKiw1VygqdbNkhqdQWD7dAmWmiK6HOJFZH/s4=
 github.com/aws/aws-sdk-go-v2/service/amplify v1.13.10/go.mod h1:VN4PBmFhZdvVqUFC+/DQQ+zr0Gd07SBgT3JLb8fgI80=
-github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.0 h1:INMBcLcEY29u2ZHMnva693HZNCwzO6v42d92HOCk5DA=
-github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.0/go.mod h1:6UIKOkbI/NjVEszKrlgWDrlEPkpd2X+BBrzj0N/XTM4=
+github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.11 h1:90Jf9htQw8RA1FIujUc8ZM8AFWNySHZH1SKe2/0Kla8=
+github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.11/go.mod h1:GXjIkQpFivo8T4szSTIiNQBvONXQz/MbN+M251q9BPk=
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.11 h1:1L2042GftNVyI3TtWclGodfN5zBQjBNXsTQxDNaPXs8=
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.11/go.mod h1:Cs+mG0DXkVYPWsWIE8Ga78C/HeN5zFBbPHdOnJPwZ4M=
 github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.17.0 h1:m+ust0oz1uaZq/NV21yn+tuTqGYyGeghWoxd4fYsfEE=
@@ -104,8 +104,8 @@ github.com/aws/aws-sdk-go-v2/service/athena v1.22.4 h1:lRY7FksBlhEcQxWRLt9YUj31c
 github.com/aws/aws-sdk-go-v2/service/athena v1.22.4/go.mod h1:Fs4cS1T9JdT3mFk6IjpJsTFrwaAd9TQs0WWOeTypAdA=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.26.2 h1:lMmzWec4pL9bYz/ATY0TJuqLjRaqGRTuGS4ABNOV5bw=
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.26.2/go.mod h1:qlmHUWNkEWcU83iUnN/sTAP47G5DUOeB3WYqjKTlU4A=
-github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.8 h1:MatGCBUsAsjgxCAX1CQlSrAx8LPRKEafre9OJomduSE=
-github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.8/go.mod h1:IpGwuI9IXij/q1PTOZelUZbptBv7ILk+jyxKUL+w5wE=
+github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.10 h1:btKROeFu4iSDoNFYxhLPxvgqKIowXjQOK9cdVLdkKtY=
+github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.10/go.mod h1:hCwfN/xcpzBnAjnJjH+ZkZ7GiE17A+/L/eG9ctadhN8=
 github.com/aws/aws-sdk-go-v2/service/backup v1.19.2 h1:nwzOpnf9k86iQq7jFdgswQ7QY3dX+cIXVfjKwcxFxFE=
 github.com/aws/aws-sdk-go-v2/service/backup v1.19.2/go.mod h1:C8OY9BP/rQqiVXrQAoeIiiSref/EAGPPXmebCdiwaA4=
 github.com/aws/aws-sdk-go-v2/service/batch v1.21.6 h1:Pj5Yn8epZW38SSnZJPXiHVLVVvWO6qHUI71lx3QI4xw=
