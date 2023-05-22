@@ -3,6 +3,12 @@
 ## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v2.3.1...plugins-source-okta-v2.4.0) (2023-05-22)
 
 
+### This Release has the Following Changes to Tables
+- Table `okta_application_users`: column order changed for `id`
+- Table `okta_applications`: column order changed for `id`
+- Table `okta_groups`: column order changed for `id`
+- Table `okta_users`: column order changed for `id`
+
 ### Features
 
 * **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
