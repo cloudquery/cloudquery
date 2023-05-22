@@ -11,4 +11,3 @@ test:
 gen-docs:
 	rm -rf ../website/pages/docs/reference/cli/*.md
 	go run main.go doc ../website/pages/docs/reference/cli/
-
