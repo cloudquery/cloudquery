@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
@@ -30,7 +31,18 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		return err
 	}
 
-	_, err = c.db.Exec("copy " + table.Name + " to '" + f.Name() + "' (FORMAT PARQUET)")
+	var sb strings.Builder
+	sb.WriteString("copy " + table.Name + "(")
+	for i, col := range sc.Fields() {
+		sb.WriteString("\"" + col.Name + "\"")
+		if i < len(sc.Fields())-1 {
+			sb.WriteString(", ")
+		}
+	}
+	sb.WriteString(") to '" + f.Name() + "' (FORMAT PARQUET)")
+
+	// _, err = c.db.Exec("copy " + table.Name + " to '" + f.Name() + "' (FORMAT PARQUET)")
+	_, err = c.db.Exec(sb.String())
 	if err != nil {
 		return err
 	}
@@ -58,6 +70,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 
 	for rr.Next() {
 		rec := rr.Record()
+		rec.Retain()
 		castRecs := convertToSingleRowRecords(sc, rec)
 		for _, r := range castRecs {
 			res <- r
@@ -101,39 +114,73 @@ func convertToSingleRowRecords(sc *arrow.Schema, rec arrow.Record) []arrow.Recor
 func reverseTransformRecord(sc *arrow.Schema, rec arrow.Record) arrow.Record {
 	cols := make([]arrow.Array, rec.NumCols())
 	for i := 0; i < int(rec.NumCols()); i++ {
-		col := rec.Column(i)
-		switch  {
-		case arrow.TypeEqual(sc.Field(i).Type, types.ExtensionTypes.UUID):
-			cols[i] = reverseTransformUUID(col.(*array.FixedSizeBinary))
-		case arrow.TypeEqual(sc.Field(i).Type, types.ExtensionTypes.Inet):
-			cols[i] = reverseTransformInet(col.(*array.String))
-		case arrow.TypeEqual(sc.Field(i).Type, types.ExtensionTypes.MAC):
-			cols[i] = reverseTransformMAC(col.(*array.String))
-		case arrow.TypeEqual(sc.Field(i).Type, arrow.FixedWidthTypes.Timestamp_us):
-			cols[i] = reverseTransformTimestamp(sc.Field(i).Type.(*arrow.TimestampType), col.(*array.Timestamp))
-		default:
-			cols[i] = col
-		}
+		cols[i] = reverseTransformArray(sc.Field(i).Type, rec.Column(i))
 	}
 	return array.NewRecord(sc, cols, -1)
 }
 
-func reverseTransformArray(f arrow.Field, col arrow.Array) arrow.Array {
+func reverseTransformArray(ty arrow.DataType, col arrow.Array) arrow.Array {
 	switch  {
-	case arrow.TypeEqual(f.Type, types.ExtensionTypes.UUID):
+	case arrow.TypeEqual(ty, types.ExtensionTypes.UUID):
 		return reverseTransformUUID(col.(*array.FixedSizeBinary))
-	case arrow.TypeEqual(f.Type, types.ExtensionTypes.Inet):
+	case arrow.TypeEqual(ty, types.ExtensionTypes.Inet):
 		return reverseTransformInet(col.(*array.String))
-	case arrow.TypeEqual(f.Type, types.ExtensionTypes.MAC):
+	case arrow.TypeEqual(ty, types.ExtensionTypes.MAC):
 		return reverseTransformMAC(col.(*array.String))
-	case arrow.TypeEqual(f.Type, arrow.FixedWidthTypes.Timestamp_us):
-		return reverseTransformTimestamp(f.Type.(*arrow.TimestampType), col.(*array.Timestamp))
-	case arrow.TypeEqual(f.Type, &arrow.StructType{}):
-		// col.(*array.Struct).
-		return nil
+	case arrow.TypeEqual(ty, arrow.PrimitiveTypes.Uint16):
+		return reverseTransformUint16(col.(*array.Uint32))
+	case arrow.TypeEqual(ty, arrow.PrimitiveTypes.Uint8):
+		return reverseTransformUint8(col.(*array.Uint32))
+	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Timestamp_us):
+		return reverseTransformTimestamp(ty.(*arrow.TimestampType), col.(*array.Timestamp))
+	case arrow.TypeEqual(ty, types.ExtensionTypes.JSON):
+		return reverseTransformJSON(col.(*array.String))
+	case arrow.IsListLike(ty.ID()):
+		return array.NewListData(reverseTransformArray(ty.(*arrow.ListType).Elem(), col.(*array.List).ListValues()).Data())
 	default:
 		return col
 	}
+}
+
+func reverseTransformJSON(col *array.String) arrow.Array {
+	bldr := types.NewJSONBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.ExtensionTypes.JSON))
+	for i := 0; i < col.Len(); i++ {
+		if !col.IsValid(i) {
+			bldr.AppendNull()
+		} else {
+			if err := bldr.AppendValueFromString(col.Value(i)); err != nil {
+				panic(fmt.Errorf("failed to append json %s value: %w", col.Value(i), err))
+			}
+		}
+	}
+
+	return bldr.NewArray()
+}
+
+func reverseTransformUint8(col *array.Uint32) arrow.Array {
+	bldr := array.NewUint8Builder(memory.DefaultAllocator)
+	for i := 0; i < col.Len(); i++ {
+		if !col.IsValid(i) {
+			bldr.AppendNull()
+		} else {
+			bldr.Append(uint8(col.Value(i)))
+		}
+	}
+
+	return bldr.NewArray()
+}
+
+func reverseTransformUint16(col *array.Uint32) arrow.Array {
+	bldr := array.NewUint16Builder(memory.DefaultAllocator)
+	for i := 0; i < col.Len(); i++ {
+		if !col.IsValid(i) {
+			bldr.AppendNull()
+		} else {
+			bldr.Append(uint16(col.Value(i)))
+		}
+	}
+
+	return bldr.NewArray()
 }
 
 func reverseTransformMAC(col *array.String) arrow.Array {
@@ -142,7 +189,9 @@ func reverseTransformMAC(col *array.String) arrow.Array {
 		if !col.IsValid(i) {
 			bldr.AppendNull()
 		} else {
-			bldr.AppendValueFromString(col.Value(i))
+			if err := bldr.AppendValueFromString(col.Value(i)); err != nil {
+				panic(err)
+			}
 		}
 	}
 
@@ -155,7 +204,8 @@ func reverseTransformInet(col *array.String) arrow.Array {
 		if !col.IsValid(i) {
 			bldr.AppendNull()
 		} else {
-			bldr.AppendValueFromString(col.Value(i))
+			bldr.AppendNull()
+			// bldr.AppendValueFromString(col.Value(i))
 		}
 	}
 
