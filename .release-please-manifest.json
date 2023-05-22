@@ -1,5 +1,5 @@
 {
-  "cli": "3.3.2",
+  "cli": "3.4.0",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "17.3.1",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -17,7 +17,7 @@
   "plugins/source/heroku+FILLER": "0.0.0",
   "plugins/source/k8s": "3.5.1",
   "plugins/source/k8s+FILLER": "0.0.0",
-  "plugins/source/okta": "2.3.1",
+  "plugins/source/okta": "2.4.0",
   "plugins/source/okta+FILLER": "0.0.0",
   "plugins/source/terraform": "1.5.2",
   "plugins/source/terraform+FILLER": "0.0.0",
