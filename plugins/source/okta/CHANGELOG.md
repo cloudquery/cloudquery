@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v2.3.1...plugins-source-okta-v2.4.0) (2023-05-22)
+
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* **okta:** Add rate limiter config ([#10880](https://github.com/cloudquery/cloudquery/issues/10880)) ([293d9d0](https://github.com/cloudquery/cloudquery/commit/293d9d0cb7cd78ee0213f09306abeed14e6350b2)), closes [#10570](https://github.com/cloudquery/cloudquery/issues/10570)
+* **okta:** Enable SDK Debug Logs ([#10889](https://github.com/cloudquery/cloudquery/issues/10889)) ([4004bc9](https://github.com/cloudquery/cloudquery/commit/4004bc9bf41e5ab1fc532ae6b2d5dfea9a56ea48))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [2.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v2.3.0...plugins-source-okta-v2.3.1) (2023-05-02)
 
 
