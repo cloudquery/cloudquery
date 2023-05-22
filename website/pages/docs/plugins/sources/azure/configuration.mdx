@@ -26,3 +26,7 @@ This is the (nested) spec used by the Azure source plugin.
   During initialization the Azure source plugin discovers all resource groups and enabled resource providers per subscription, to be used later on during the sync process.
   The plugin runs the discovery process in parallel. This setting controls the maximum number of concurrent requests to the Azure API during discovery.
   Only accounts with many subscriptions should require modifying this setting, to either lower it to avoid network errors, or to increase it to speed up the discovery process.
+
+- `skip_subscriptions` ([]string) (default: empty)
+
+  Subscriptions that CloudQuery will skip syncing. This is useful if CloudQuery is discovering the list of subscription IDs and there are some subscriptions that you want to not even attempt syncing
