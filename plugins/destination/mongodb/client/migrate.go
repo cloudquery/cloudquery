@@ -63,12 +63,11 @@ func (c *Client) migrateTableOnConflict(ctx context.Context, table *schema.Table
 func (c *Client) getIndexTemplates(table *schema.Table) []mongo.IndexModel {
 	var indexes []mongo.IndexModel
 
-	pks := table.PrimaryKeysIndexes()
+	pks := table.PrimaryKeys()
 	if len(pks) > 0 {
 		indexCols := bson.D{}
-		for _, colIndex := range pks {
-			col := table.Columns[colIndex].Name
-			indexCols = append(indexCols, bson.E{Key: col, Value: 1})
+		for _, name := range pks {
+			indexCols = append(indexCols, bson.E{Key: name, Value: 1})
 		}
 
 		pkIndexName := "cq_pk"

@@ -115,13 +115,13 @@ func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, docu
 func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, documents []any) error {
 	tableName := table.Name
 	operations := make([]mongo.WriteModel, len(documents))
-	pks := table.PrimaryKeysIndexes()
+	pks := table.PrimaryKeys()
 	for i, document := range documents {
 		operation := mongo.NewUpdateOneModel()
 		operation.SetUpsert(true)
 		filter := make(bson.M, len(pks))
-		for _, pk := range pks {
-			filter[table.Columns[pk].Name] = document.(bson.M)[table.Columns[pk].Name]
+		for _, name := range pks {
+			filter[name] = document.(bson.M)[name]
 		}
 		operation.SetFilter(filter)
 		update := make(bson.M, len(table.Columns))
@@ -141,8 +141,7 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, d
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources []arrow.Record) error {
 	documents := c.transformRecords(table, resources)
 
-	pks := table.PrimaryKeysIndexes()
-	if len(pks) == 0 {
+	if len(table.PrimaryKeys()) == 0 {
 		return c.appendTableBatch(ctx, table, documents)
 	}
 	switch c.spec.WriteMode {
