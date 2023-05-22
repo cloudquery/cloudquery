@@ -34,7 +34,9 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		awsSpec.SetDefaults()
 		awsSpec.UsePaidAPIs = true
 		c := NewAwsClient(l, nil, &awsSpec)
-		c.ServicesManager.InitServicesForPartitionAccountAndRegion("aws", "testAccount", "us-east-1", builder(t, ctrl))
+		services := builder(t, ctrl)
+		services.Regions = []string{"us-east-1"}
+		c.ServicesManager.InitServicesForPartitionAccount("aws", "testAccount", services)
 		c.Partition = "aws"
 		return &c, nil
 	}
