@@ -194,7 +194,14 @@ func (c *Client) startLocal(ctx context.Context, path string) error {
 		d := &net.Dialer{}
 		return d.DialContext(ctx, "unix", addr)
 	}
-	c.Conn, err = grpc.DialContext(ctx, c.grpcSocketName, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock(), grpc.WithContextDialer(dialer))
+	c.Conn, err = grpc.DialContext(ctx, c.grpcSocketName,
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithBlock(),
+		grpc.WithContextDialer(dialer),
+		grpc.WithDefaultCallOptions(
+			grpc.MaxCallRecvMsgSize(maxMsgSize),
+			grpc.MaxCallSendMsgSize(maxMsgSize),
+		))
 	if err != nil {
 		if err := cmd.Process.Kill(); err != nil {
 			c.logger.Error().Err(err).Msg("failed to kill plugin process")

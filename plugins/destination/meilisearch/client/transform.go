@@ -1,11 +1,12 @@
 package client
 
 import (
-	"fmt"
+	"bytes"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/goccy/go-json"
 )
 
 func timestampValues(arr *array.Timestamp) []any {
@@ -77,6 +78,12 @@ func reverseTransform(builder array.Builder, val any) error {
 		builder.Append(float32(val.(float64)))
 	case *array.Float64Builder:
 		builder.Append(val.(float64))
+	case *array.BinaryBuilder:
+		return builder.AppendValueFromString(val.(string))
+	case *array.StringBuilder:
+		builder.Append(val.(string))
+	case *array.LargeStringBuilder:
+		builder.Append(val.(string))
 	case *types.JSONBuilder:
 		builder.Append(val)
 	case array.ListLikeBuilder:
@@ -87,14 +94,18 @@ func reverseTransform(builder array.Builder, val any) error {
 				return err
 			}
 		}
+
 	default:
-		v, ok := val.(string)
-		if !ok {
-			return fmt.Errorf("unsupported type %T with builder %T", val, builder)
+		data, err := json.MarshalWithOption(val, json.DisableHTMLEscape())
+		if err != nil {
+			return err
 		}
-		if err := builder.AppendValueFromString(v); err != nil {
+
+		dec := json.NewDecoder(bytes.NewReader(data))
+		if err := builder.UnmarshalOne(dec); err != nil {
 			return err
 		}
 	}
+
 	return nil
 }

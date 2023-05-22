@@ -5,6 +5,28 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.3.2...cli-v3.4.0) (2023-05-22)
+
+
+### Features
+
+* **cli:** Mark docker latest correctly ([26c8fe0](https://github.com/cloudquery/cloudquery/commit/26c8fe0ccc49a731c8ddf9eedbcd4eb7ace36f65))
+
+## [3.3.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.3.1...cli-v3.3.2) (2023-05-18)
+
+
+### Bug Fixes
+
+* **cli:** Regression support 100MB msgs ([#10841](https://github.com/cloudquery/cloudquery/issues/10841)) ([9736cc6](https://github.com/cloudquery/cloudquery/commit/9736cc69f63f7eb2901bced5fbbe906a8f1c34e3))
+
+## [3.3.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.3.0...cli-v3.3.1) (2023-05-15)
+
+
+### Bug Fixes
+
+* **cli:** Send sync time to new sources ([#10796](https://github.com/cloudquery/cloudquery/issues/10796)) ([8d9b5be](https://github.com/cloudquery/cloudquery/commit/8d9b5be519f6da469f71ae6ce485e710d220e340))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [3.3.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.2.1...cli-v3.3.0) (2023-05-15)
 
 
