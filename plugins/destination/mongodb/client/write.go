@@ -17,8 +17,7 @@ import (
 func transformArr(arr arrow.Array) []any {
 	dbArr := make([]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsNull(i) || !arr.IsValid(i) {
-			dbArr[i] = nil
+		if arr.IsNull(i) {
 			continue
 		}
 		switch a := arr.(type) {

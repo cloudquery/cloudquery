@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604
 	github.com/cloudquery/plugin-pb-go v1.0.8
-	github.com/cloudquery/plugin-sdk/v3 v3.5.1
+	github.com/cloudquery/plugin-sdk/v3 v3.6.1
 	github.com/goccy/go-json v0.9.11
 	github.com/rs/zerolog v1.29.0
 	go.mongodb.org/mongo-driver v1.11.2
@@ -13,8 +13,6 @@ require (
 
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230509053643-898a79b1d3c8
-
-replace github.com/cloudquery/plugin-sdk/v3 => ../../../../plugin-sdk
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
