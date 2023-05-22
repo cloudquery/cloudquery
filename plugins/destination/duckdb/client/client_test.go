@@ -42,7 +42,6 @@ func TestPlugin(t *testing.T) {
 		destination.WithTestSourceSkipTimes(),
 		destination.WithTestSourceSkipDates(),
 		destination.WithTestSourceSkipLargeTypes(),
-		destination.WithTestSourceSkipMaps(),
 		destination.WithTestSourceSkipStructs(),
 	)
 }
