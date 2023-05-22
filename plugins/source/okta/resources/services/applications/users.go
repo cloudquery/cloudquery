@@ -8,7 +8,16 @@ import (
 	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
-func fetchApplicationUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func users() *schema.Table {
+	return &schema.Table{
+		Name:      "okta_application_users",
+		Resolver:  fetchUsers,
+		Transform: client.TransformWithStruct(&okta.AppUser{}),
+		Columns:   schema.ColumnList{appIDColumn},
+	}
+}
+
+func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	app := parent.Item.(*okta.Application)
 

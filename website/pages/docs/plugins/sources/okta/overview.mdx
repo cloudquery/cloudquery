@@ -22,8 +22,31 @@ The following example sets up the Okta plugin, and connects it to a postgresql d
 
 <Configuration/>
 
-- `domain` (Required) - Specify the Okta domain you are fetching from. [Visit this link](https://developer.okta.com/docs/guides/find-your-domain/findorg/) to find your Okta domain
-- `token` (Optional) - Okta Token to access the API. You can set this with an `OKTA_API_TOKEN` environment variable
+- `domain` (`string`, required)
+
+  Specify the Okta domain you are fetching from.
+  [Visit this link](https://developer.okta.com/docs/guides/find-your-domain/findorg/) to find your Okta domain.
+
+- `token` (`string`, optional)
+
+  Token for Okta API access.
+  You can set this with an `OKTA_API_TOKEN` environment variable.
+
+- `rate_limit` ([Rate limit](#rate-limit-spec) spec, optional. Default: see [rate limit](#rate-limit-spec) spec defaults)
+
+  Rate limit configuration.
+
+### Rate limit spec
+
+- `max_backoff` (`duration`, optional. Default: `5s`)
+
+  Max backoff interval to be used.
+  If the value specified is less than the default one, the default one is used.
+
+- `max_retries` (`int32`, optional. Default: `3`)
+
+  Max retries to be performed.
+  If the value specified is less than the default one, the default one is used.
 
 ## Example Queries
 

@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.0.2...plugins-destination-gremlin-v2.1.0) (2023-05-18)
+
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* **gremlin:** Add `complete_types` option ([#10846](https://github.com/cloudquery/cloudquery/issues/10846)) ([43166e1](https://github.com/cloudquery/cloudquery/commit/43166e15788a6591df73e4ae23d6129556339bd2)), closes [#10839](https://github.com/cloudquery/cloudquery/issues/10839)
+* **gremlin:** Upgrade to SDK v3 ([#10821](https://github.com/cloudquery/cloudquery/issues/10821)) ([27fc337](https://github.com/cloudquery/cloudquery/commit/27fc33799aecfb4d33b5c21add30cd59e0a472ba))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.25 ([#10786](https://github.com/cloudquery/cloudquery/issues/10786)) ([caca1a4](https://github.com/cloudquery/cloudquery/commit/caca1a41e298c06afb6f474b8fd911c4544a2eec))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+* **gremlin:** Upgrade gremlingo to official 3.6.3 ([#10824](https://github.com/cloudquery/cloudquery/issues/10824)) ([656f2a2](https://github.com/cloudquery/cloudquery/commit/656f2a297e3612b29757a9c9de6b7a7afb563684))
+
 ## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.0.1...plugins-destination-gremlin-v2.0.2) (2023-05-09)
 
 

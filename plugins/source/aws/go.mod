@@ -12,20 +12,20 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/acmpca v1.21.12
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.11
 	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.10
-	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.0
-	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.0
+	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.11
+	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.11
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/athena v1.22.4
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.26.2
-	github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.8
+	github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.10
 	github.com/aws/aws-sdk-go-v2/service/backup v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/batch v1.21.6
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.24.1
-	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.6
+	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.10
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.7
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.7
@@ -122,7 +122,6 @@ require (
 	github.com/gocarina/gocsv v0.0.0-20230325173030-9a18a846a479
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
-	github.com/jinzhu/copier v0.3.5
 	github.com/mitchellh/hashstructure/v2 v2.0.2
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/pkg/errors v0.9.1
@@ -157,7 +156,7 @@ require (
 	github.com/cloudquery/plugin-sdk v1.24.0
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
-	github.com/ghodss/yaml v1.0.0 // indirect
+	github.com/ghodss/yaml v1.0.0
 	github.com/goccy/go-json v0.9.11 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
