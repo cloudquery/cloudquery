@@ -12,7 +12,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/acmpca v1.21.12
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.11
 	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.10
-	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.0
+	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.11
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.11
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.16.0
