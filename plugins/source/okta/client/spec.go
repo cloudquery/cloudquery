@@ -11,6 +11,7 @@ type (
 		Token     string     `json:"token,omitempty"`
 		Domain    string     `json:"domain,omitempty"`
 		RateLimit *RateLimit `json:"rate_limit,omitempty"`
+		Debug     bool       `json:"debug,omitempty"`
 	}
 	RateLimit struct {
 		MaxBackoff time.Duration `json:"max_backoff,omitempty"`
