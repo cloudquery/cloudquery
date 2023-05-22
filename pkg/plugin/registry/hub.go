@@ -150,57 +150,7 @@ func (h Hub) Download(ctx context.Context, provider Provider, noVerify bool) (Pr
 		return p, nil
 	}
 
-	if !h.verifyProvider(ctx, provider, requestedVersion) {
-		return ProviderBinary{}, fmt.Errorf("provider %s@%s verification failed", provider.Name, requestedVersion)
-	}
 	return p, nil
-}
-
-func (h Hub) verifyProvider(ctx context.Context, provider Provider, version string) bool {
-	if provider.Source != DefaultOrganization {
-		if h.ProgressUpdater != nil {
-			h.ProgressUpdater.Update(provider.Name, ui.StatusWarn, "skipped community provider verification...", 2)
-		}
-		return true
-	}
-
-	l := log.With().Str("provider", provider.Name).Str("version", version).Logger()
-	if h.ProgressUpdater != nil {
-		h.ProgressUpdater.Update(provider.Name, ui.StatusInProgress, "Verifying...", 1)
-	}
-
-	checksumsPath, err := h.downloadFile(ctx, l, provider, version, "checksums.txt")
-	if err != nil {
-		l.Error().Err(err).Msg("failed to download checksums file")
-		return false
-	}
-
-	_, err = h.downloadFile(ctx, l, provider, version, "checksums.txt.sig")
-	if err != nil {
-		l.Error().Err(err).Msg("failed to download signature file")
-		return false
-	}
-
-	err = validateFile(checksumsPath, checksumsPath+".sig")
-	if err != nil {
-		l.Error().Err(err).Msg("validating provider signature failed")
-		if h.ProgressUpdater != nil {
-			h.ProgressUpdater.Update(provider.Name, ui.StatusError, "Bad signature", 0)
-		}
-		return false
-	}
-	providerPath := h.getProviderPath(provider.Source, provider.Name, version)
-	if err = validateChecksumProvider(providerPath, checksumsPath); err != nil {
-		l.Error().Err(err).Msg("validating provider checksum failed")
-		if h.ProgressUpdater != nil {
-			h.ProgressUpdater.Update(provider.Name, ui.StatusError, "Bad checksum", 0)
-		}
-		return false
-	}
-	if h.ProgressUpdater != nil {
-		h.ProgressUpdater.Update(provider.Name, ui.StatusOK, "verified", 1)
-	}
-	return true
 }
 
 func (h Hub) downloadFile(ctx context.Context, l zerolog.Logger, provider Provider, version string, fileName string) (string, error) {
@@ -270,10 +220,6 @@ func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedV
 	}
 	if err != nil {
 		return ProviderBinary{}, fmt.Errorf("plugin %s/%s@%s failed to download: %w", provider.Source, provider.Name, requestedVersion, err)
-	}
-
-	if ok := h.verifyProvider(ctx, provider, requestedVersion); !ok {
-		return ProviderBinary{}, fmt.Errorf("plugin %s/%s@%s failed to verify", provider.Source, provider.Name, requestedVersion)
 	}
 
 	if err := osFs.Chmod(providerPath, 0754); err != nil {
