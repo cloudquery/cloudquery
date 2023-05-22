@@ -1,15 +1,17 @@
 package client
 
 import (
+	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
+
+	"github.com/goccy/go-json"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -24,23 +26,23 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.BooleanBuilder:
 		b.Append(val.(bool))
 	case *array.Int8Builder:
-		b.Append(val.(int8))
+		b.Append(int8(val.(int32)))
 	case *array.Int16Builder:
-		b.Append(val.(int16))
+		b.Append(int16(val.(int32)))
 	case *array.Int32Builder:
 		b.Append(val.(int32))
 	case *array.Int64Builder:
 		b.Append(val.(int64))
 	case *array.Uint8Builder:
-		b.Append(val.(uint8))
+		b.Append(uint8(val.(int32)))
 	case *array.Uint16Builder:
-		b.Append(val.(uint16))
+		b.Append(uint16(val.(int32)))
 	case *array.Uint32Builder:
-		b.Append(val.(uint32))
+		b.Append(uint32(val.(int64)))
 	case *array.Uint64Builder:
-		b.Append(val.(uint64))
+		b.Append(uint64(val.(int64)))
 	case *array.Float32Builder:
-		b.Append(val.(float32))
+		b.Append(float32(val.(float64)))
 	case *array.Float64Builder:
 		b.Append(val.(float64))
 	case *array.StringBuilder:
@@ -50,15 +52,27 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.BinaryBuilder:
 		b.Append(val.(primitive.Binary).Data)
 	case *array.TimestampBuilder:
-		b.Append(arrow.Timestamp((val).(primitive.DateTime).Time().UTC().UnixMicro()))
+		switch b.Type().(*arrow.TimestampType).Unit {
+		case arrow.Second:
+			b.Append(arrow.Timestamp((val).(primitive.DateTime).Time().UTC().Unix()))
+		case arrow.Millisecond:
+			b.Append(arrow.Timestamp((val).(primitive.DateTime).Time().UTC().UnixMilli()))
+		case arrow.Microsecond:
+			b.Append(arrow.Timestamp((val).(primitive.DateTime).Time().UTC().UnixMicro()))
+		case arrow.Nanosecond:
+			b.Append(arrow.Timestamp((val).(primitive.DateTime).Time().UTC().UnixNano()))
+		default:
+			return fmt.Errorf("unsupported timestamp unit %s", f.Type.(*arrow.TimestampType).Unit)
+		}
 	case *types.JSONBuilder:
-		b.Append(val.(primitive.M))
+		b.Append(val)
 	case *array.StructBuilder:
 		v, err := json.Marshal(val.(primitive.M))
 		if err != nil {
 			return err
 		}
-		if err := b.UnmarshalJSON(v); err != nil {
+		dec := json.NewDecoder(bytes.NewReader(v))
+		if err := b.UnmarshalOne(dec); err != nil {
 			return err
 		}
 	case array.ListLikeBuilder:
@@ -81,7 +95,8 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	return nil
 }
 
-func (c *Client) reverseTransformer(sc *arrow.Schema, values primitive.M) (arrow.Record, error) {
+func (c *Client) reverseTransformer(table *schema.Table, values primitive.M) (arrow.Record, error) {
+	sc := table.ToArrowSchema()
 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 	for i, f := range sc.Fields() {
 		if err := c.reverseTransform(f, bldr.Field(i), values[sc.Field(i).Name]); err != nil {
@@ -92,8 +107,8 @@ func (c *Client) reverseTransformer(sc *arrow.Schema, values primitive.M) (arrow
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
-	tableName := schema.TableName(table)
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+	tableName := table.Name
 	cur, err := c.client.Database(c.pluginSpec.Database).Collection(tableName).Find(
 		ctx,
 		bson.M{"_cq_source_name": sourceName},
