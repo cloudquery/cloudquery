@@ -12,6 +12,7 @@ import (
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/goccy/go-json"
 	"google.golang.org/api/iterator"
 )
@@ -154,13 +155,18 @@ func appendValue(bldr array.Builder, value any) error {
 			rbv.Append(ts)
 			return nil
 		}
+	case *types.JSONBuilder:
+		return rbv.AppendValueFromString(value.(string))
 	default:
 		// catch-all case to keep the code simple; this is only for testing
 		// so the performance of JSON marshaling is not a big concern here
-		b, _ := json.Marshal(value)
+		b, err := json.Marshal(value)
+		if err != nil {
+			return fmt.Errorf("failed to marshal value of type %v: %w", bldr.Type(), err)
+		}
 		r := strings.NewReader(string(b))
 		d := json.NewDecoder(r)
-		err := bldr.UnmarshalOne(d)
+		err = bldr.UnmarshalOne(d)
 		if err != nil {
 			return fmt.Errorf("failed to unmarshal value of type %v: %w. Value was %v", bldr.Type(), err, string(b))
 		}

@@ -10,6 +10,7 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"google.golang.org/api/googleapi"
 )
 
@@ -117,6 +118,8 @@ func (c *Client) getValueForBigQuery(col arrow.Array, i int) any {
 		default:
 			return v.GetOneForMarshal(i)
 		}
+	case *types.JSONArray:
+		return v.ValueStr(i)
 	}
 	return col.GetOneForMarshal(i)
 }
