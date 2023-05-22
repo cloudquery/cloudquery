@@ -23,6 +23,10 @@ The following example sets up the Okta plugin, and connects it to a postgresql d
 
 <Configuration/>
 
+<Callout type="info">
+Make sure you use [environment variable expansion](/docs/advanced-topics/environment-variable-substitution) in production instead of committing the credentials to the configuration file directly.
+</Callout>
+
 - `domain` (`string`, required)
 
   Specify the Okta domain you are fetching from.
@@ -32,6 +36,10 @@ The following example sets up the Okta plugin, and connects it to a postgresql d
 
   Token for Okta API access.
   You can set this with an `OKTA_API_TOKEN` environment variable.
+  <Callout type="warning">
+  Using `OKTA_API_TOKEN` environment variable will be deprecated in the future versions.
+  You can use [environment variable expansion](/docs/advanced-topics/environment-variable-substitution) and `"${OKTA_API_TOKEN}"` value in the configuration instead.
+  </Callout>
 
 - `debug` (`bool`, optional. Default: `false`)
 
