@@ -65,7 +65,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 			return fmt.Errorf("unsupported timestamp unit %s", f.Type.(*arrow.TimestampType).Unit)
 		}
 	case *types.JSONBuilder:
-		b.Append(val.(primitive.M))
+		b.Append(val)
 	case *array.StructBuilder:
 		v, err := json.Marshal(val.(primitive.M))
 		if err != nil {
