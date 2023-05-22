@@ -4,6 +4,7 @@ type TableOptions struct {
 	CloudTrailEvents       *CloudtrailAPIs         `json:"aws_cloudtrail_events,omitempty"`
 	AccessAnalyzerFindings *AccessanalyzerFindings `json:"aws_accessanalyzer_analyzer_findings,omitempty"`
 	Inspector2Findings     *Inspector2APIs         `json:"aws_inspector2_findings,omitempty"`
+	CustomCostExplorer     *CostExplorerAPIs       `json:"aws_costexplorer_cost_custom,omitempty"`
 }
 
 func (t TableOptions) Validate() error {
