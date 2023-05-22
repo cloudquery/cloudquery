@@ -111,10 +111,10 @@ func reverseTransformArray(dt arrow.DataType, col arrow.Array) arrow.Array {
 		return reverseTransformUint16(col.(*array.Uint32))
 	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint8):
 		return reverseTransformUint8(col.(*array.Uint32))
-	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Timestamp_us):
-		return reverseTransformTimestamp(dt.(*arrow.TimestampType), col.(*array.Timestamp))
 	case arrow.TypeEqual(dt, types.ExtensionTypes.JSON):
 		return reverseTransformJSON(col.(*array.String))
+	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Timestamp_us):
+		return reverseTransformTimestamp(dt.(*arrow.TimestampType), col.(*array.Timestamp))
 	case arrow.IsListLike(dt.ID()):
 		child := reverseTransformArray(dt.(*arrow.ListType).Elem(), col.(*array.List).ListValues()).Data()
 		return array.NewListData(array.NewData(dt, col.Len(), col.Data().Buffers(), []arrow.ArrayData{child}, col.NullN(), col.Data().Offset()))

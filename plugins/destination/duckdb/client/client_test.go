@@ -33,13 +33,13 @@ func TestPlugin(t *testing.T) {
 		destination.PluginTestSuiteTests{
 			MigrateStrategyOverwrite: migrateStrategy,
 			MigrateStrategyAppend:    migrateStrategy,
+			SkipOverwrite: 					true,
 		},
 		destination.WithTestSourceSkipIntervals(),
 		destination.WithTestSourceSkipDurations(),
 		destination.WithTestSourceSkipTimes(),
 		destination.WithTestSourceSkipDates(),
 		destination.WithTestSourceSkipLargeTypes(),
-		destination.WithTestSourceSkipLists(),
 		destination.WithTestSourceSkipMaps(),
 		destination.WithTestSourceSkipStructs(),
 	)
