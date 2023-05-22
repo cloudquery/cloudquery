@@ -13,20 +13,20 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/acmpca v1.21.12
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.11
 	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.10
-	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.0
-	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.0
+	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.11
+	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.11
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.19.0
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/athena v1.22.4
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.26.2
-	github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.8
+	github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.10
 	github.com/aws/aws-sdk-go-v2/service/backup v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/batch v1.21.6
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.24.1
-	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.6
+	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.10
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.7
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.7
