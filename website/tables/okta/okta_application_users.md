@@ -17,10 +17,10 @@ This table depends on [okta_applications](okta_applications).
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
 |app_id (PK)|String|
-|id (PK)|String|
 |created|Timestamp|
 |credentials|JSON|
 |external_id|String|
+|id (PK)|String|
 |last_sync|Timestamp|
 |last_updated|Timestamp|
 |password_changed|Timestamp|

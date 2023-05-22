@@ -7,6 +7,7 @@ import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
 import Configuration from "./_configuration.mdx";
 import Authentication from "./_authentication.mdx";
+import { Callout } from 'nextra-theme-docs';
 
 <Badge text={"Latest: " + getLatestVersion("source", "okta")}/>
 
@@ -31,6 +32,14 @@ The following example sets up the Okta plugin, and connects it to a postgresql d
 
   Token for Okta API access.
   You can set this with an `OKTA_API_TOKEN` environment variable.
+
+- `debug` (`bool`, optional. Default: `false`)
+
+  Enables debug logs within the Okta SDK.
+  <Callout type="warning">
+    This feature will result in sensitive information being logged!
+  </Callout>
+
 
 - `rate_limit` ([Rate limit](#rate-limit-spec) spec, optional. Default: see [rate limit](#rate-limit-spec) spec defaults)
 

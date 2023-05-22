@@ -56,6 +56,7 @@ func Configure(_ context.Context, logger zerolog.Logger, srcSpec specs.Source, _
 		okta.WithRateLimitMaxBackOff(int64(spec.RateLimit.MaxBackoff/time.Second)), // this param takes int64 of seconds
 		okta.WithRateLimitMaxRetries(spec.RateLimit.MaxRetries),
 	)
+	cf.Debug = spec.Debug
 	c := okta.NewAPIClient(cf)
 
 	return New(logger, srcSpec, c), nil

@@ -14,6 +14,7 @@ import (
 var options = []transformers.StructTransformerOption{
 	transformers.WithTypeTransformer(typeTransformer),
 	transformers.WithResolverTransformer(resolverTransformer),
+	transformers.WithPrimaryKeys("Id"),
 }
 
 func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) schema.Transform {
