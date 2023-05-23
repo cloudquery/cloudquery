@@ -4,6 +4,7 @@ WITH fields AS (
         subscription_id,
         id,
         location,
+        (properties->'enabled')::boolean AS enabled,
         conditions->>'field' AS field,
         conditions->>'equals' AS equals
     FROM azure_monitor_activity_log_alerts, jsonb_array_elements(properties->'condition'->'allOf') AS conditions
@@ -24,6 +25,7 @@ SELECT
     fields.id                                                            AS resource_id,
     CASE
         WHEN location = 'global'
+         AND enabled
          AND equals = 'Microsoft.Security/policies/write'
          AND scopes.scope ~ '^"\/subscriptions\/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}"$'
         THEN 'pass'
