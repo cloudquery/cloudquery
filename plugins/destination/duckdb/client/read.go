@@ -18,13 +18,12 @@ import (
 )
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
-	// sc := table.ToArrowSchema()
 	f, err := os.CreateTemp("", fmt.Sprintf("%s-*.parquet", table.Name))
 	if err != nil {
 		return err
 	}
 
-	// defer os.Remove(f.Name())
+	defer os.Remove(f.Name())
 	sc := table.ToArrowSchema()
 	fName := f.Name()
 	if err := f.Close(); err != nil {
