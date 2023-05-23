@@ -44,12 +44,13 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan arr
 	for r := range res {
 		var b bytes.Buffer
 		w := bufio.NewWriter(&b)
+		sc := r.Schema()
 		tableName, ok := r.Schema().Metadata().GetValue(schema.MetadataTableName)
 		if !ok {
 			return fmt.Errorf("%q metadata key not found", schema.MetadataTableName)
 		}
 
-		if err := c.Client.WriteTableBatchFile(w, tables.Get(tableName), []arrow.Record{r}); err != nil {
+		if err := c.Client.WriteTableBatchFile(w, sc, []arrow.Record{r}); err != nil {
 			return err
 		}
 		w.Flush()
