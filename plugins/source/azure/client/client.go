@@ -293,6 +293,8 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 			return nil, err
 		}
 	}
+	// User specified subscriptions, that CloudQuery should skip syncing
+	c.subscriptions = funk.LeftJoinString(c.subscriptions, spec.SkipSubscriptions)
 
 	if len(c.subscriptions) == 0 {
 		return nil, fmt.Errorf("no subscriptions found")

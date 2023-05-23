@@ -9,7 +9,25 @@ import (
 	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
-func fetchGroupUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func users() *schema.Table {
+	return &schema.Table{
+		Name:      "okta_group_users",
+		Resolver:  fetchUsers,
+		Transform: client.TransformWithStruct(&models.GroupUser{}),
+		Columns: []schema.Column{
+			{
+				Name:     "group_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+		},
+	}
+}
+
+func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	grp := parent.Item.(okta.Group)
 
@@ -23,7 +41,7 @@ func fetchGroupUsers(ctx context.Context, meta schema.ClientMeta, parent *schema
 		return nil
 	}
 
-	res <- convertGroupUsers(items)
+	res <- convertUsers(items)
 
 	for resp != nil && resp.HasNextPage() {
 		var nextItems []okta.User
@@ -31,17 +49,15 @@ func fetchGroupUsers(ctx context.Context, meta schema.ClientMeta, parent *schema
 		if err != nil {
 			return err
 		}
-		res <- convertGroupUsers(nextItems)
+		res <- convertUsers(nextItems)
 	}
 	return nil
 }
 
-func convertGroupUsers(list []okta.User) []models.GroupUser {
+func convertUsers(list []okta.User) []models.GroupUser {
 	res := make([]models.GroupUser, len(list))
 	for i := range list {
-		res[i] = models.GroupUser{
-			Id: *list[i].Id,
-		}
+		res[i] = models.GroupUser{Id: *list[i].Id}
 	}
 	return res
 }
