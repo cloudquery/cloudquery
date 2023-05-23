@@ -37,11 +37,11 @@ func TestPlugin(t *testing.T) {
 		},
 		// not supported in Parquet Writer
 		destination.WithTestSourceSkipIntervals(),
-		// not supported in Parquet Writer
 		destination.WithTestSourceSkipDurations(),
+
+		// not supported in duckDB for now
 		destination.WithTestSourceSkipTimes(),
 		destination.WithTestSourceSkipDates(),
 		destination.WithTestSourceSkipLargeTypes(),
-		destination.WithTestSourceSkipStructs(),
 	)
 }

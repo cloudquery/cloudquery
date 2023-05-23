@@ -182,7 +182,11 @@ func transformSchema(sc *arrow.Schema) *arrow.Schema {
 
 func transformType(dt arrow.DataType) arrow.DataType {
 	switch {
-	case arrow.TypeEqual(dt, types.ExtensionTypes.UUID) || arrow.TypeEqual(dt, types.ExtensionTypes.Inet) || arrow.TypeEqual(dt, types.ExtensionTypes.MAC) || arrow.TypeEqual(dt, types.ExtensionTypes.JSON):
+	case arrow.TypeEqual(dt, types.ExtensionTypes.UUID) ||
+		arrow.TypeEqual(dt, types.ExtensionTypes.Inet) ||
+		arrow.TypeEqual(dt, types.ExtensionTypes.MAC) ||
+		arrow.TypeEqual(dt, types.ExtensionTypes.JSON) ||
+		dt.ID() == arrow.STRUCT:
 		return arrow.BinaryTypes.String
 	case arrow.IsListLike(dt.ID()):
 		return arrow.ListOf(transformType(dt.(*arrow.ListType).Elem()))
@@ -202,7 +206,11 @@ func transformRecord(sc *arrow.Schema, rec arrow.Record) arrow.Record {
 func transformArray(arr arrow.Array) arrow.Array {
 	dt := arr.DataType()
 	switch {
-	case arrow.TypeEqual(dt, types.ExtensionTypes.UUID) || arrow.TypeEqual(dt, types.ExtensionTypes.Inet) || arrow.TypeEqual(dt, types.ExtensionTypes.MAC) || arrow.TypeEqual(dt, types.ExtensionTypes.JSON):
+	case arrow.TypeEqual(dt, types.ExtensionTypes.UUID) ||
+		arrow.TypeEqual(dt, types.ExtensionTypes.Inet) ||
+		arrow.TypeEqual(dt, types.ExtensionTypes.MAC) ||
+		arrow.TypeEqual(dt, types.ExtensionTypes.JSON) ||
+		dt.ID() == arrow.STRUCT:
 		return transformToStringArray(arr)
 	case arrow.IsListLike(dt.ID()):
 		child := transformArray(arr.(*array.List).ListValues()).Data()

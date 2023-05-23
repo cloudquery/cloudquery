@@ -47,6 +47,8 @@ func (c *Client) SchemaTypeToDuckDB(t arrow.DataType) string {
 		return "date"
 	case *arrow.DayTimeIntervalType:
 		return "interval"
+	case *arrow.StructType:
+		return "json"
 	default:
 		return "varchar"
 	}
@@ -55,6 +57,9 @@ func (c *Client) SchemaTypeToDuckDB(t arrow.DataType) string {
 func (c *Client) duckdbTypeToSchema(t string) arrow.DataType {
 	if strings.HasSuffix(t, "[]") {
 		return arrow.ListOf(c.duckdbTypeToSchema(strings.TrimSuffix(t, "[]")))
+	}
+	if strings.HasPrefix(t, "struct") {
+		return types.ExtensionTypes.JSON
 	}
 	switch t {
 	case "tinyint", "int1":

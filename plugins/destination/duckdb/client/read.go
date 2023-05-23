@@ -27,7 +27,6 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	// defer os.Remove(f.Name())
 	sc := table.ToArrowSchema()
 	fName := f.Name()
-	fmt.Println(fName)
 	if err := f.Close(); err != nil {
 		return err
 	}
@@ -115,12 +114,29 @@ func reverseTransformArray(dt arrow.DataType, col arrow.Array) arrow.Array {
 		return reverseTransformJSON(col.(*array.String))
 	case arrow.TypeEqual(col.DataType(), arrow.FixedWidthTypes.Timestamp_us):
 		return reverseTransformTimestamp(dt.(*arrow.TimestampType), col.(*array.Timestamp))
+	case dt.ID() == arrow.STRUCT:
+		return reverseTransformStruct(dt.(*arrow.StructType), col.(*array.String))
 	case arrow.IsListLike(dt.ID()):
 		child := reverseTransformArray(dt.(*arrow.ListType).Elem(), col.(*array.List).ListValues()).Data()
 		return array.NewListData(array.NewData(dt, col.Len(), col.Data().Buffers(), []arrow.ArrayData{child}, col.NullN(), col.Data().Offset()))
 	default:
 		return col
 	}
+}
+
+func reverseTransformStruct(dt *arrow.StructType, col *array.String) arrow.Array {
+	bldr := array.NewStructBuilder(memory.DefaultAllocator, dt)
+	for i := 0; i < col.Len(); i++ {
+		if !col.IsValid(i) {
+			bldr.AppendNull()
+		} else {
+			if err := bldr.AppendValueFromString(col.Value(i)); err != nil {
+				panic(fmt.Errorf("failed to append json %s value: %w", col.Value(i), err))
+			}
+		}
+	}
+
+	return bldr.NewArray()
 }
 
 func reverseTransformJSON(col *array.String) arrow.Array {
