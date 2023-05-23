@@ -188,6 +188,10 @@ func transformType(dt arrow.DataType) arrow.DataType {
 		arrow.TypeEqual(dt, types.ExtensionTypes.JSON) ||
 		dt.ID() == arrow.STRUCT:
 		return arrow.BinaryTypes.String
+	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint8):
+		return arrow.PrimitiveTypes.Uint32
+	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint16):
+		return arrow.PrimitiveTypes.Uint32
 	case arrow.IsListLike(dt.ID()):
 		return arrow.ListOf(transformType(dt.(*arrow.ListType).Elem()))
 	default:
@@ -212,6 +216,10 @@ func transformArray(arr arrow.Array) arrow.Array {
 		arrow.TypeEqual(dt, types.ExtensionTypes.JSON) ||
 		dt.ID() == arrow.STRUCT:
 		return transformToStringArray(arr)
+	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint8):
+		return transformUint8ToUint32Array(arr.(*array.Uint8))
+	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint16):
+		return transformUint16ToUint32Array(arr.(*array.Uint16))
 	case arrow.IsListLike(dt.ID()):
 		child := transformArray(arr.(*array.List).ListValues()).Data()
 		newType := arrow.ListOf(child.DataType())
@@ -219,6 +227,30 @@ func transformArray(arr arrow.Array) arrow.Array {
 	default:
 		return arr
 	}
+}
+
+func transformUint16ToUint32Array(arr *array.Uint16) arrow.Array {
+	bldr := array.NewUint32Builder(memory.DefaultAllocator)
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsValid(i) {
+			bldr.Append(uint32(arr.Value(i)))
+		} else {
+			bldr.AppendNull()
+		}
+	}
+	return bldr.NewArray()
+}
+
+func transformUint8ToUint32Array(arr *array.Uint8) arrow.Array {
+	bldr := array.NewUint32Builder(memory.DefaultAllocator)
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsValid(i) {
+			bldr.Append(uint32(arr.Value(i)))
+		} else {
+			bldr.AppendNull()
+		}
+	}
+	return bldr.NewArray()
 }
 
 func transformToStringArray(arr arrow.Array) arrow.Array {

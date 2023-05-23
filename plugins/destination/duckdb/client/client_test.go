@@ -33,7 +33,7 @@ func TestPlugin(t *testing.T) {
 		destination.PluginTestSuiteTests{
 			MigrateStrategyOverwrite: migrateStrategy,
 			MigrateStrategyAppend:    migrateStrategy,
-			SkipOverwrite:            true,
+			// SkipOverwrite:            true,
 		},
 		// not supported in Parquet Writer
 		destination.WithTestSourceSkipIntervals(),
