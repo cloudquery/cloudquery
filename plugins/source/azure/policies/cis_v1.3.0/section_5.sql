@@ -43,3 +43,4 @@
 \ir ../queries/monitor/log_alert_for_create_or_update_or_delete_sql_server_firewall_rule.sql
 \set check_id '5.3'
 \echo "Executing check 5.3"
+\ir ../queries/monitor/diagnostic_logs_for_all_services.sql
