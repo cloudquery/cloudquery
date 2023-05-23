@@ -21,10 +21,19 @@ LOOP
 	END IF;
 	-- create an SQL query to select from table and transform it into our resources view schema
 	strSQL = strSQL || FORMAT(E'
-        SELECT _cq_id, _cq_source_name, _cq_sync_time, %L AS _cq_table, account_id, %s AS region,
-        SPLIT_PART(arn, \':\', 2) AS PARTITION, SPLIT_PART(arn, \':\', 3) AS service,
-        CASE WHEN SPLIT_PART(SPLIT_PART(arn, \':\', 6), \'/\', 2) = \'\' AND SPLIT_PART(arn, \':\', 7) = \'\' THEN NULL ELSE SPLIT_PART(SPLIT_PART(arn, \':\', 6), \'/\', 1) END AS type,
-        arn, %s AS tags
+        SELECT _cq_id, 
+        	_cq_source_name, 
+        	_cq_sync_time, 
+        	%L AS _cq_table, 
+        	account_id, 
+        	%s AS region,
+        	SPLIT_PART(arn, \':\', 2) AS PARTITION, 
+        	SPLIT_PART(arn, \':\', 3) AS service,
+        	CASE
+				WHEN SPLIT_PART(SPLIT_PART(ARN, \':\', 6), \'/\', 2) = \'\' AND SPLIT_PART(arn, \':\', 7) = \'\' THEN NULL
+        		ELSE SPLIT_PART(SPLIT_PART(arn, \':\', 6), \'/\', 1)
+        	END AS TYPE,
+        	arn, %s AS tags
         FROM %s',
         tbl,
         CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='region' AND table_name=tbl) THEN 'region' ELSE E'\'unavailable\'' END,
