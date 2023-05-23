@@ -4,12 +4,11 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func (c *Client) schemaTables(ctx context.Context, scs schema.Schemas) (schema.Schemas, error) {
+func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
 	query, params := queries.AllTables(c.schemaName)
 	rows, err := c.db.QueryContext(ctx, query, params...)
 	if err != nil {
@@ -27,7 +26,7 @@ func (c *Client) schemaTables(ctx context.Context, scs schema.Schemas) (schema.S
 		if err := row.Scan(&tableCatalog, &tableType, &tableName, &schemaType); err != nil {
 			return err
 		}
-		if scs.SchemaByName(tableName) == nil {
+		if tables.Get(tableName) == nil {
 			return nil
 		}
 		names = append(names, tableName)
@@ -37,68 +36,45 @@ func (c *Client) schemaTables(ctx context.Context, scs schema.Schemas) (schema.S
 		return nil, err
 	}
 
-	tables := make([]*arrow.Schema, len(names))
+	result := make(schema.Tables, len(names))
 	for i, tableName := range names {
 		pks, err := c.getTablePK(ctx, tableName)
 		if err != nil {
 			return nil, err
 		}
 
-		fields, err := c.getTableFields(ctx, tableName, pks)
+		columns, err := c.getTableColumns(ctx, tableName, pks)
 		if err != nil {
 			return nil, err
 		}
 
-		tableMD := schema.NewSchemaMetadataFromOptions(schema.MetadataSchemaOptions{TableName: tableName})
-		tables[i] = arrow.NewSchema(fields, &tableMD)
+		result[i] = &schema.Table{Name: tableName, Columns: columns}
 	}
 
-	return tables, nil
+	return result, nil
 }
 
-func (c *Client) normalizedSchemas(scs schema.Schemas) schema.Schemas {
-	normalized := make(schema.Schemas, len(scs))
-	for i, sc := range scs {
-		normalized[i] = c.normalizeSchema(sc)
+func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
+	normalized := make(schema.Tables, len(tables))
+	for i, table := range tables {
+		normalized[i] = c.normalizeTable(table)
 	}
 	return normalized
 }
 
-func (c *Client) normalizeSchema(sc *arrow.Schema) *arrow.Schema {
-	tableName := schema.TableName(sc)
-	fields := make([]arrow.Field, len(sc.Fields()))
+func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
+	columns := make(schema.ColumnList, len(table.Columns))
 
-	for i, field := range sc.Fields() {
-		// Since multiple schema types can map to the same MSSQL type we need to normalize them to avoid false positives when detecting schema changes
+	for i, col := range table.Columns {
+		// Since multiple schema types can map to the same MSSQL type
+		// we need to normalize them to avoid false positives when detecting schema changes.
 		// This should never return an error
-		field.Type = queries.SchemaType(queries.SQLType(field.Type))
-		field.Metadata = c.normalizeFieldMetadata(field.Metadata)
-		if schema.IsPk(field) {
-			field.Nullable = false
+		col.Type = queries.SchemaType(queries.SQLType(col.Type))
+		if c.pkEnabled() && col.PrimaryKey {
+			col.NotNull = true
 		}
-		fields[i] = field
+		columns[i] = col
 	}
 
-	tableMD := schema.NewSchemaMetadataFromOptions(schema.MetadataSchemaOptions{TableName: tableName})
-	return arrow.NewSchema(fields, &tableMD)
-}
-
-func (c *Client) normalizeFieldMetadata(metadata arrow.Metadata) arrow.Metadata {
-	keys, values := metadata.Keys(), metadata.Values()
-	md := make(map[string]string, len(keys))
-
-	for idx, key := range keys {
-		switch key {
-		case schema.MetadataUnique:
-			continue // we don't scan unique constraints
-		case schema.MetadataPrimaryKey:
-			if !c.pkEnabled() {
-				continue
-			}
-		}
-
-		md[key] = values[idx]
-	}
-
-	return arrow.MetadataFrom(md)
+	return &schema.Table{Name: table.Name, Columns: columns}
 }

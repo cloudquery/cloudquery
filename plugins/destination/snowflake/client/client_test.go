@@ -5,7 +5,8 @@ import (
 	"testing"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func TestPlugin(t *testing.T) {
@@ -24,5 +25,7 @@ func TestPlugin(t *testing.T) {
 			SkipMigrateOverwrite:      true,
 			SkipMigrateOverwriteForce: true,
 			SkipMigrateAppendForce:    true,
-		})
+		},
+		schema.WithTestSourceSkipIntervals(),
+	)
 }

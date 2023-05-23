@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func (c *Client) SchemaTypeToPg(t arrow.DataType) string {
@@ -36,12 +36,14 @@ func (c *Client) SchemaTypeToPg10(t arrow.DataType) string {
 		return "boolean"
 	case *arrow.Int8Type, *arrow.Uint8Type:
 		return "smallint"
-	case *arrow.Int16Type, *arrow.Uint16Type:
+	case *arrow.Int16Type:
 		return "smallint"
-	case *arrow.Int32Type, *arrow.Uint32Type:
+	case *arrow.Uint16Type, *arrow.Int32Type:
 		return "integer"
-	case *arrow.Int64Type, *arrow.Uint64Type:
+	case *arrow.Uint32Type, *arrow.Int64Type:
 		return "bigint"
+	case *arrow.Uint64Type:
+		return "numeric"
 	case *arrow.Float32Type:
 		return "real"
 	case *arrow.Float64Type:
@@ -60,7 +62,7 @@ func (c *Client) SchemaTypeToPg10(t arrow.DataType) string {
 		return "jsonb"
 	case *types.InetType:
 		return "inet"
-	case *types.MacType:
+	case *types.MACType:
 		return "macaddr"
 	default:
 		return "text"
@@ -86,6 +88,8 @@ func (c *Client) Pg10ToSchemaType(t string) arrow.DataType {
 		return arrow.PrimitiveTypes.Int32
 	case "bigint":
 		return arrow.PrimitiveTypes.Int64
+	case "numeric":
+		return arrow.PrimitiveTypes.Uint64
 	case "real":
 		return arrow.PrimitiveTypes.Float32
 	case "double precision":
@@ -99,7 +103,7 @@ func (c *Client) Pg10ToSchemaType(t string) arrow.DataType {
 	case "cidr":
 		return types.ExtensionTypes.Inet
 	case "macaddr", "macaddr8":
-		return types.ExtensionTypes.Mac
+		return types.ExtensionTypes.MAC
 	case "inet":
 		return types.ExtensionTypes.Inet
 	default:

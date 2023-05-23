@@ -6,20 +6,19 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
+func (c *Client) Read(_ context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
 	session, closer, err := c.newSession()
 	if err != nil {
 		return err
 	}
 	defer closer()
 
-	tableName := schema.TableName(table)
 	g := gremlingo.Traversal_().WithRemote(session).
 		V().
-		HasLabel(tableName).
+		HasLabel(table.Name).
 		Has(schema.CqSourceNameColumn.Name, sourceName).
 		Group().By(gremlingo.T.Id).
 		By(AnonT.ValueMap())
@@ -30,11 +29,12 @@ func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName strin
 	}
 	defer rs.Close()
 
+	sc := table.ToArrowSchema()
 	for row := range rs.Channel() {
 		m := row.Data.(map[any]any)
 		for _, rowCols := range m {
 			rowData := rowCols.(map[any]any)
-			rec, err := reverseTransformer(table, rowData)
+			rec, err := reverseTransformer(sc, rowData)
 			if err != nil {
 				return err
 			}

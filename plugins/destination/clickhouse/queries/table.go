@@ -2,11 +2,9 @@ package queries
 
 import (
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
-	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"golang.org/x/exp/slices"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func GetTablesSchema(database string) (query string, params []any) {
@@ -15,8 +13,8 @@ func GetTablesSchema(database string) (query string, params []any) {
 }
 
 // ScanTableSchemas doesn't close rows, so that's on caller.
-func ScanTableSchemas(rows driver.Rows, need schema.Schemas) (schema.Schemas, error) {
-	defs := make(map[string][]arrow.Field)
+func ScanTableSchemas(rows driver.Rows, need schema.Tables) (schema.Tables, error) {
+	defs := make(map[string]schema.ColumnList)
 
 	var table, name, typ string
 	for rows.Next() {
@@ -24,23 +22,24 @@ func ScanTableSchemas(rows driver.Rows, need schema.Schemas) (schema.Schemas, er
 			return nil, err
 		}
 
+		if need.Get(table) == nil {
+			// only save the info about required tables
+			continue
+		}
+
 		field, err := types.Field(name, typ)
 		if err != nil {
 			return nil, err
 		}
-		defs[table] = append(defs[table], *field)
+		defs[table] = append(defs[table], schema.NewColumnFromArrowField(*field))
 	}
 
-	res := make(schema.Schemas, 0, len(defs))
-	for _, needed := range need {
-		tableName := schema.TableName(needed)
-		if def, ok := defs[tableName]; ok {
-			metadata := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{tableName})
-			res = append(res, arrow.NewSchema(def, &metadata))
-		}
+	res := make(schema.Tables, 0, len(defs))
+	for name, columns := range defs {
+		res = append(res, &schema.Table{Name: name, Columns: columns})
 	}
 
-	return slices.Clip(res), nil
+	return res, nil
 }
 
 func tableNamePart(table, cluster string) string {

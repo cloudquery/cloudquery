@@ -4,10 +4,9 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"golang.org/x/exp/slices"
 )
 
@@ -15,7 +14,7 @@ func (c *Client) pkEnabled() bool {
 	return c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale
 }
 
-func (c *Client) getTableFields(ctx context.Context, tableName string, pks []string) ([]arrow.Field, error) {
+func (c *Client) getTableColumns(ctx context.Context, tableName string, pks []string) (schema.ColumnList, error) {
 	query, params := queries.GetTableSchema(c.schemaName, tableName)
 
 	rows, err := c.db.QueryContext(ctx, query, params...)
@@ -24,7 +23,7 @@ func (c *Client) getTableFields(ctx context.Context, tableName string, pks []str
 		return nil, err
 	}
 
-	fields := make([]arrow.Field, 0)
+	columns := make(schema.ColumnList, 0)
 	if err := processRows(rows, func(row *sql.Rows) error {
 		var name string
 		var sqlType string
@@ -44,11 +43,11 @@ func (c *Client) getTableFields(ctx context.Context, tableName string, pks []str
 
 		dataType := queries.SchemaType(sqlType)
 
-		fields = append(fields, arrow.Field{
-			Name:     name,
-			Type:     dataType,
-			Nullable: nullable != "NO",
-			Metadata: schema.NewFieldMetadataFromOptions(schema.MetadataFieldOptions{PrimaryKey: slices.Contains(pks, name)}),
+		columns = append(columns, schema.Column{
+			Name:       name,
+			Type:       dataType,
+			PrimaryKey: slices.Contains(pks, name),
+			NotNull:    nullable == "NO",
 		})
 
 		return nil
@@ -57,7 +56,7 @@ func (c *Client) getTableFields(ctx context.Context, tableName string, pks []str
 		return nil, err
 	}
 
-	return slices.Clip(fields), nil
+	return slices.Clip(columns), nil
 }
 
 func (c *Client) getTablePK(ctx context.Context, tableName string) ([]string, error) {

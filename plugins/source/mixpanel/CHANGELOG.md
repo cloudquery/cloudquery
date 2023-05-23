@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-mixpanel-v1.2.2...plugins-source-mixpanel-v1.3.0) (2023-05-16)
+
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* Update mixpanel error message for terminated early ([#10637](https://github.com/cloudquery/cloudquery/issues/10637)) ([efc7211](https://github.com/cloudquery/cloudquery/commit/efc7211608835d29347f6e581add05a059feb557))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-mixpanel-v1.2.1...plugins-source-mixpanel-v1.2.2) (2023-05-09)
 
 
