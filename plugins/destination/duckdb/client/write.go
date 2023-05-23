@@ -33,7 +33,7 @@ func nonPkIndices(sc *schema.Table) []int {
 // See https://github.com/duckdb/duckdb/blob/c5d9afb97bbf0be12216f3b89ae3131afbbc3156/src/storage/table/list_column_data.cpp#L243-L251
 func containsList(sc *schema.Table) bool {
 	for _, f := range sc.Columns {
-		if arrow.IsListLike(f.Type.ID()){
+		if arrow.IsListLike(f.Type.ID()) {
 			return true
 		}
 	}
