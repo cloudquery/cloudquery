@@ -16,7 +16,7 @@
 \ir ../queries/monitor/logging_key_calut_is_enabled.sql
 \set check_id '5.2.1'
 \echo "Executing check 5.2.1"
-
+\ir ../queries/monitor/log_alert_for_create_policy_assignment.sql
 \set check_id '5.2.2'
 \echo "Executing check 5.2.2"
 
