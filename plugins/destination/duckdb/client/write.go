@@ -107,7 +107,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 		return err
 	}
 	defer f.Close()
-	// defer os.Remove(f.Name())
+	defer os.Remove(f.Name())
 	sc := transformSchema(table.ToArrowSchema())
 
 	props := parquet.NewWriterProperties(
@@ -121,7 +121,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	if err != nil {
 		return err
 	}
-	// defer fw.Close()
+	defer fw.Close()
 
 	for _, r := range records {
 		transformedRec := transformRecord(sc, r)
