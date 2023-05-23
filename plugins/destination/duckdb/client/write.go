@@ -106,8 +106,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	if err != nil {
 		return err
 	}
-	defer f.Close()
 	defer os.Remove(f.Name())
+	defer f.Close()
 	sc := transformSchema(table.ToArrowSchema())
 
 	props := parquet.NewWriterProperties(

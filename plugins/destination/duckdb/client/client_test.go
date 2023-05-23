@@ -27,13 +27,12 @@ func TestPlugin(t *testing.T) {
 		},
 		specs.Destination{
 			Spec: &Spec{
-				ConnectionString: "",
+				ConnectionString: "?threads=1",
 			},
 		},
 		destination.PluginTestSuiteTests{
 			MigrateStrategyOverwrite: migrateStrategy,
 			MigrateStrategyAppend:    migrateStrategy,
-			// SkipOverwrite:            true,
 		},
 		// not supported in Parquet Writer
 		destination.WithTestSourceSkipIntervals(),
