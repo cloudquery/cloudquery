@@ -44,7 +44,7 @@ func (s *Spec) setDefaults(logger *zerolog.Logger) {
 	}
 
 	if len(s.Token) == 0 {
-		logger.Warn().Msgf("usage of %q environment variable value is deprecated and will be dropped in the future releases", OktaAPIToken)
+		logger.Warn().Msgf("usage of %q environment variable value is deprecated and will be dropped in a future release", OktaAPIToken)
 		s.Token = os.Getenv(OktaAPIToken)
 	}
 }
