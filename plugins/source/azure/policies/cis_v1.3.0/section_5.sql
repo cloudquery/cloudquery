@@ -22,24 +22,24 @@
 \ir ../queries/monitor/log_alert_for_delete_policy_assignment.sql
 \set check_id '5.2.3'
 \echo "Executing check 5.2.3"
-
+\ir ../queries/monitor/log_alert_for_create_or_update_network_sg.sql
 \set check_id '5.2.4'
 \echo "Executing check 5.2.4"
-
+\ir ../queries/monitor/log_alert_for_delete_network_sg.sql
 \set check_id '5.2.5'
 \echo "Executing check 5.2.5"
-
+\ir ../queries/monitor/log_alert_for_create_or_update_network_sg_rule.sql
 \set check_id '5.2.6'
 \echo "Executing check 5.2.6"
-
+\ir ../queries/monitor/log_alert_for_delete_network_sg_rule.sql
 \set check_id '5.2.7'
 \echo "Executing check 5.2.7"
-
+\ir ../queries/monitor/log_alert_for_create_or_update_security_solution.sql
 \set check_id '5.2.8'
 \echo "Executing check 5.2.8"
-
+\ir ../queries/monitor/log_alert_for_delete_security_solution.sql
 \set check_id '5.2.9'
 \echo "Executing check 5.2.9"
-
+\ir ../queries/monitor/log_alert_for_create_or_update_or_delete_sql_server_firewall_rule.sql
 \set check_id '5.3'
 \echo "Executing check 5.3"
