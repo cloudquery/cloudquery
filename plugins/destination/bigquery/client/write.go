@@ -87,7 +87,7 @@ func (c *Client) getValueForBigQuery(col arrow.Array, i int) any {
 			}
 			from, to := arr.ValueOffsets(j)
 			slc := array.NewSlice(arr.ListValues(), from, to)
-			for k := 0; k < int(to-from); k++ {
+			for k := 0; k < slc.Len(); k++ {
 				if slc.IsNull(k) {
 					// LIMITATION: BigQuery does not support null values in repeated columns.
 					// Therefore, these get stripped out here. In the future, perhaps we should support
