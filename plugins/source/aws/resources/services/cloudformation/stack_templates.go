@@ -2,12 +2,15 @@ package cloudformation
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/ghodss/yaml"
 )
 
 func stackTemplates() *schema.Table {
@@ -30,8 +33,16 @@ func stackTemplates() *schema.Table {
 				},
 			},
 			{
+				// Might be deprecated in a future release.
+				// Contains the template converted to JSON.
 				Name:     "template_body",
 				Type:     schema.TypeJSON,
+				Resolver: resolveTemplateBody,
+			},
+			{
+				// raw template body: could be either YAML or JSON
+				Name:     "template_body_text",
+				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("TemplateBody"),
 			},
 		},
@@ -53,4 +64,25 @@ func fetchCloudformationStackTemplates(ctx context.Context, meta schema.ClientMe
 	}
 	res <- resp
 	return nil
+}
+
+func resolveTemplateBody(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+	resp := r.Item.(*cloudformation.GetTemplateOutput)
+	if resp.TemplateBody == nil {
+		return nil
+	}
+	// this column was originally released as a JSON column, but it turns out that
+	// the API can also return YAML. To maintain backwards-compatibility, we attempt
+	// to parse the template body as JSON first, and if that fails, we try to parse
+	// it as YAML. We return an error if both attempts fail.
+	m := map[string]any{}
+	err := json.Unmarshal([]byte(*resp.TemplateBody), &m)
+	if err != nil {
+		// this template might be YAML
+		err = yaml.Unmarshal([]byte(*resp.TemplateBody), &m)
+		if err != nil {
+			return fmt.Errorf("failed to parse Cloudformation template body as either JSON or yaml: %w", err)
+		}
+	}
+	return r.Set(c.Name, m)
 }

@@ -36,6 +36,8 @@ func getValue(arr arrow.Array, i int) any {
 		return arr.(*array.String).Value(i)
 	case arrow.BINARY:
 		return arr.(*array.Binary).Value(i)
+	case arrow.LARGE_BINARY:
+		return arr.(*array.LargeBinary).Value(i)
 	case arrow.FIXED_SIZE_BINARY:
 		return arr.(*array.FixedSizeBinary).Value(i)
 	default:

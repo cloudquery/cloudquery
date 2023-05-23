@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.0.5...plugins-destination-sqlite-v2.1.0) (2023-05-18)
+
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* **sqlite:** Migrate to `github.com/cloudquery/plugin-sdk/v3` ([#10818](https://github.com/cloudquery/cloudquery/issues/10818)) ([38db6c5](https://github.com/cloudquery/cloudquery/commit/38db6c525090d0c99b0ec3cf1a1a2359d4996b6e)), closes [#10730](https://github.com/cloudquery/cloudquery/issues/10730)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+* Upgrade to plugin-sdk v3.5.2 (Fixes delete-stale for incremental tables) ([#10852](https://github.com/cloudquery/cloudquery/issues/10852)) ([d34e3dc](https://github.com/cloudquery/cloudquery/commit/d34e3dca9e2fb7621fe726267dcf7d03df04cfdf))
+
 ## [2.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.0.4...plugins-destination-sqlite-v2.0.5) (2023-05-02)
 
 
