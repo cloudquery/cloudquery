@@ -19,7 +19,7 @@
 \ir ../queries/monitor/log_alert_for_create_policy_assignment.sql
 \set check_id '5.2.2'
 \echo "Executing check 5.2.2"
-
+\ir ../queries/monitor/log_alert_for_delete_policy_assignment.sql
 \set check_id '5.2.3'
 \echo "Executing check 5.2.3"
 
