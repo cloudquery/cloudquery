@@ -7,26 +7,27 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	mssql "github.com/microsoft/go-mssqldb"
 )
 
-func (c *Client) bulkInsert(ctx context.Context, tx *sql.Tx, sc *arrow.Schema, records []arrow.Record) error {
+func (c *Client) bulkInsert(ctx context.Context, tx *sql.Tx, table *schema.Table, records []arrow.Record) error {
 	stmt, err := tx.PrepareContext(ctx,
-		mssql.CopyIn(queries.SanitizedTableName(c.schemaName, sc),
+		mssql.CopyIn(queries.SanitizedTableName(c.schemaName, table),
 			mssql.BulkOptions{
 				KeepNulls:         true,
 				KilobytesPerBatch: c.spec.BatchSizeBytes >> 10,
 				RowsPerBatch:      c.spec.BatchSize,
 				Tablock:           true,
 			},
-			queries.ColumnNames(sc)...,
+			table.Columns.Names()...,
 		),
 	)
 	if err != nil {
 		return err
 	}
 
-	reader, err := array.NewRecordReader(sc, records)
+	reader, err := array.NewRecordReader(table.ToArrowSchema(), records)
 	if err != nil {
 		return err
 	}

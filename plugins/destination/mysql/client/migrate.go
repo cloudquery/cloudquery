@@ -7,148 +7,141 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func (c *Client) normalizeSchemas(tables schema.Schemas) (schema.Schemas, error) {
-	var normalized schema.Schemas
-	for _, sc := range tables {
-		tableName := schema.TableName(sc)
-		fields := make([]arrow.Field, 0)
-		for _, f := range sc.Fields() {
-			keys := make([]string, 0)
-			values := make([]string, 0)
-			origKeys := f.Metadata.Keys()
-			origValues := f.Metadata.Values()
-			for k, v := range origKeys {
-				switch v {
-				case schema.MetadataUnique:
-					// we skip as we don't scan the constraints ATM
-					continue
-				case schema.MetadataPrimaryKey:
-					if !c.pkEnabled() {
-						continue
-					}
-				}
-				keys = append(keys, v)
-				values = append(values, origValues[k])
-			}
-			normalizedType, err := mySQLTypeToArrowType(tableName, f.Name, arrowTypeToMySqlStr(f.Type))
-			if err != nil {
-				return nil, err
-			}
-			fields = append(fields, arrow.Field{
-				Name:     f.Name,
-				Type:     normalizedType,
-				Nullable: f.Nullable && !schema.IsPk(f),
-				Metadata: arrow.NewMetadata(keys, values),
-			})
+func (c *Client) normalizeTables(tables schema.Tables) (schema.Tables, error) {
+	flattened := tables.FlattenTables()
+	normalized := make(schema.Tables, len(flattened))
+	var err error
+	for i, table := range flattened {
+		normalized[i], err = c.normalizeTable(table)
+		if err != nil {
+			return nil, err
 		}
-
-		md := sc.Metadata()
-		normalized = append(normalized, arrow.NewSchema(fields, &md))
 	}
-
 	return normalized, nil
 }
 
-func (c *Client) nonAutoMigrtableTables(tables schema.Schemas, schemaTables schema.Schemas) (names []string, changes [][]schema.FieldChange) {
-	var tableChanges [][]schema.FieldChange
+func (c *Client) normalizeTable(table *schema.Table) (*schema.Table, error) {
+	columns := make([]schema.Column, len(table.Columns))
+	for i, col := range table.Columns {
+		if !c.pkEnabled() {
+			col.PrimaryKey = false
+		}
+		normalized, err := c.normalizeField(col.ToArrowField())
+		if err != nil {
+			return nil, err
+		}
+		columns[i] = schema.NewColumnFromArrowField(*normalized)
+	}
+	return &schema.Table{Name: table.Name, Columns: columns}, nil
+}
+
+func (*Client) normalizeField(field arrow.Field) (*arrow.Field, error) {
+	normalizedType, err := mySQLTypeToArrowType("", "", arrowTypeToMySqlStr(field.Type))
+	if err != nil {
+		return nil, err
+	}
+	return &arrow.Field{
+		Name:     field.Name,
+		Type:     normalizedType,
+		Nullable: field.Nullable,
+		Metadata: field.Metadata,
+	}, nil
+}
+
+func (c *Client) nonAutoMigratableTables(tables schema.Tables, mysqlTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
+	var result []string
+	var tableChanges [][]schema.TableColumnChange
 	for _, t := range tables {
-		tableName := schema.TableName(t)
-		schemaTable := schemaTables.SchemaByName(tableName)
-		if schemaTable == nil {
+		mysqlTable := mysqlTables.Get(t.Name)
+		if mysqlTable == nil {
 			continue
 		}
-		changes := schema.GetSchemaChanges(t, schemaTable)
+		changes := mysqlTable.GetChanges(t)
 		if !c.canAutoMigrate(changes) {
-			names = append(names, tableName)
+			result = append(result, t.Name)
 			tableChanges = append(tableChanges, changes)
 		}
 	}
-	return names, tableChanges
+	return result, tableChanges
 }
 
-func (*Client) canAutoMigrate(changes []schema.FieldChange) bool {
+func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 	for _, change := range changes {
-		if change.Type == schema.TableColumnChangeTypeAdd && (schema.IsPk(change.Current) || !change.Current.Nullable) {
+		switch change.Type {
+		case schema.TableColumnChangeTypeAdd:
+			if change.Current.PrimaryKey || change.Current.NotNull {
+				return false
+			}
+		case schema.TableColumnChangeTypeRemove:
+			if change.Previous.PrimaryKey || change.Previous.NotNull {
+				return false
+			}
+		case schema.TableColumnChangeTypeUpdate:
 			return false
-		}
-
-		if change.Type == schema.TableColumnChangeTypeRemove && (schema.IsPk(change.Previous) || !change.Previous.Nullable) {
-			return false
-		}
-
-		if change.Type == schema.TableColumnChangeTypeUpdate {
-			return false
+		default:
+			panic("unknown change type")
 		}
 	}
 	return true
 }
-
-func (c *Client) autoMigrateTable(ctx context.Context, table *arrow.Schema, changes []schema.FieldChange) error {
+func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
 	for _, change := range changes {
 		if change.Type == schema.TableColumnChangeTypeAdd {
-			err := c.addColumn(ctx, table, change.Current)
-			if err != nil {
+			if err := c.addColumn(ctx, table, table.Columns.Get(change.ColumnName)); err != nil {
 				return err
 			}
 		}
 	}
-
 	return nil
 }
 
 // Migrate relies on the CLI/client to lock before running migration.
-func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {
-	schemaTables, err := c.schemaTables(ctx, tables)
+func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+	mysqlTables, err := c.schemaTables(ctx, tables)
 	if err != nil {
 		return err
 	}
 
-	normalizedTables, err := c.normalizeSchemas(tables)
+	normalizedTables, err := c.normalizeTables(tables)
 	if err != nil {
 		return err
 	}
 
 	if c.spec.MigrateMode != specs.MigrateModeForced {
-		nonAutoMigrtableTables, changes := c.nonAutoMigrtableTables(normalizedTables, schemaTables)
+		nonAutoMigrtableTables, changes := c.nonAutoMigratableTables(normalizedTables, mysqlTables)
 		if len(nonAutoMigrtableTables) > 0 {
 			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigrtableTables, ","), changes)
 		}
 	}
 
 	for _, table := range normalizedTables {
-		tableName := schema.TableName(table)
-		if tableName == "" {
-			return fmt.Errorf("schema %s has no table name", table.String())
-		}
-		c.logger.Info().Str("table", tableName).Msg("Migrating table")
-		if len(table.Fields()) == 0 {
-			c.logger.Info().Str("table", tableName).Msg("Table with no columns, skipping")
+		c.logger.Info().Str("table", table.Name).Msg("Migrating table")
+		if len(table.Columns) == 0 {
+			c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
 			continue
 		}
-		schemaTable := schemaTables.SchemaByName(tableName)
-		if schemaTable == nil {
-			c.logger.Info().Str("table", tableName).Msg("Table doesn't exist, creating")
+		mysql := mysqlTables.Get(table.Name)
+		if mysql == nil {
+			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
 			if err := c.createTable(ctx, table); err != nil {
 				return err
 			}
-			continue
-		}
-
-		changes := schema.GetSchemaChanges(table, schemaTable)
-		if c.canAutoMigrate(changes) {
-			c.logger.Info().Str("table", tableName).Msg("Table exists, auto-migrating")
-			if err := c.autoMigrateTable(ctx, table, changes); err != nil {
-				return err
+		} else {
+			changes := table.GetChanges(mysql)
+			if c.canAutoMigrate(changes) {
+				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
+				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
+					return err
+				}
+			} else {
+				c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
+				if err := c.recreateTable(ctx, table); err != nil {
+					return err
+				}
 			}
-			continue
-		}
-
-		c.logger.Info().Str("table", tableName).Msg("Table exists, force migration required")
-		if err := c.recreateTable(ctx, table); err != nil {
-			return err
 		}
 	}
 

@@ -42,10 +42,10 @@ func (c column) incremental() bool {
 	return c.columnType&columnTypeIncremental != 0
 }
 
-func backtickStrings(strings ...string) []interface{} {
-	backticked := make([]interface{}, len(strings))
+func backtickStrings(strings ...string) []any {
+	backticked := make([]any, len(strings))
 	for i, s := range strings {
-		backticked[i] = fmt.Sprintf("`%s`", s)
+		backticked[i] = "`" + s + "`"
 	}
 	return backticked
 }
@@ -111,75 +111,82 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 			}
 		}
 	}
-	for deletedName, deletedColumn := range deletedColumns {
-		if addedColumn, ok := addedColumns[deletedName]; ok {
-			if deletedColumn.dataType == addedColumn.dataType && deletedColumn.columnType == addedColumn.columnType {
+	for name, deleted := range deletedColumns {
+		added, ok := addedColumns[name]
+		if !ok {
+			changes = append(changes, change{
+				Text:     fmt.Sprintf("Table %s: column %s removed from table", backtickStrings(table, name)...),
+				Breaking: true,
+			})
+			continue
+		}
+
+		dtEqual, toArrow := dataTypesEqual(deleted.dataType, added.dataType)
+		if !dtEqual {
+			changes = append(changes, change{
+				Text:     fmt.Sprintf("Table %s: column type changed from %s to %s for %s", backtickStrings(table, deleted.dataType, added.dataType, name)...),
+				Breaking: true,
+			})
+			continue
+		}
+
+		if deleted.columnType == added.columnType {
+			if !toArrow { // we do this ckeck to eliminate migration diff
 				changes = append(changes, change{
-					Text:     fmt.Sprintf("Table %s: column order changed for %s", backtickStrings(table, deletedName)...),
+					Text:     fmt.Sprintf("Table %s: column order changed for %s", backtickStrings(table, name)...),
 					Breaking: false,
 				})
-				continue
 			}
+			continue
+		}
 
-			if addedColumn.dataType != deletedColumn.dataType {
-				changes = append(changes, change{
-					Text:     fmt.Sprintf("Table %s: column type changed from %s to %s for %s", backtickStrings(table, deletedColumn.dataType, addedColumn.dataType, deletedName)...),
-					Breaking: true,
-				})
-			}
-
-			if addedColumn.pk() && !deletedColumn.pk() {
-				changes = append(changes, change{
-					Text:     fmt.Sprintf("Table %s: primary key constraint added to column %s", backtickStrings(table, deletedName)...),
-					Breaking: true,
-				})
-			}
-
-			if !addedColumn.pk() && deletedColumn.pk() {
-				changes = append(changes, change{
-					Text:     fmt.Sprintf("Table %s: primary key constraint removed from column %s", backtickStrings(table, deletedName)...),
-					Breaking: true,
-				})
-			}
-
-			if addedColumn.incremental() && !deletedColumn.incremental() {
-				changes = append(changes, change{
-					Text:     fmt.Sprintf("Table %s: column %s added to cursor for incremental syncs", backtickStrings(table, deletedName)...),
-					Breaking: true,
-				})
-			}
-
-			if !addedColumn.incremental() && deletedColumn.incremental() {
-				changes = append(changes, change{
-					Text:     fmt.Sprintf("Table %s: column %s removed from cursor for incremental syncs", backtickStrings(table, deletedName)...),
-					Breaking: true,
-				})
-			}
-		} else {
+		if added.pk() && !deleted.pk() {
 			changes = append(changes, change{
-				Text:     fmt.Sprintf("Table %s: column %s removed from table", backtickStrings(table, deletedName)...),
+				Text:     fmt.Sprintf("Table %s: primary key constraint added to column %s", backtickStrings(table, name)...),
+				Breaking: true,
+			})
+		}
+
+		if !added.pk() && deleted.pk() {
+			changes = append(changes, change{
+				Text:     fmt.Sprintf("Table %s: primary key constraint removed from column %s", backtickStrings(table, name)...),
+				Breaking: true,
+			})
+		}
+
+		if added.incremental() && !deleted.incremental() {
+			changes = append(changes, change{
+				Text:     fmt.Sprintf("Table %s: column %s added to cursor for incremental syncs", backtickStrings(table, name)...),
+				Breaking: true,
+			})
+		}
+
+		if !added.incremental() && deleted.incremental() {
+			changes = append(changes, change{
+				Text:     fmt.Sprintf("Table %s: column %s removed from cursor for incremental syncs", backtickStrings(table, name)...),
 				Breaking: true,
 			})
 		}
 	}
-	for addedName, addedColumn := range addedColumns {
-		if _, ok := deletedColumns[addedName]; !ok {
-			name := addedName
-			if addedColumn.pk() {
-				name += " (PK)"
-			}
-			if addedColumn.incremental() {
-				name += " (Incremental Key)"
-			}
-			changes = append(changes, change{
-				Text:     fmt.Sprintf("Table %s: column added with name %s and type %s", backtickStrings(table, name, addedColumn.dataType)...),
-				Breaking: addedColumn.pk(),
-			})
+
+	for name, added := range addedColumns {
+		if _, ok := deletedColumns[name]; ok {
+			continue
 		}
+		if added.pk() {
+			name += " (PK)"
+		}
+		if added.incremental() {
+			name += " (Incremental Key)"
+		}
+		changes = append(changes, change{
+			Text:     fmt.Sprintf("Table %s: column added with name %s and type %s", backtickStrings(table, name, added.dataType)...),
+			Breaking: added.pk(),
+		})
 	}
 
 	// check PK:
-	// Only if all of the Columns are the same before and after the change should
+	// Only if all the Columns are the same before and after the change should
 	// we consider this a "primary key order" change
 	ordering := func(a, b string) bool { return a < b }
 	diff := cmp.Diff(addedPK, deletedPK, cmpopts.SortSlices(ordering))

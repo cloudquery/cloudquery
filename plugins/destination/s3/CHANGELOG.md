@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v4.2.0...plugins-destination-s3-v4.3.0) (2023-05-16)
+
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* **s3:** Support `{{FORMAT}}` placeholder ([#10694](https://github.com/cloudquery/cloudquery/issues/10694)) ([f28795d](https://github.com/cloudquery/cloudquery/commit/f28795d933c445c236343197e338ae0239c4a574))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.25 ([#10786](https://github.com/cloudquery/cloudquery/issues/10786)) ([caca1a4](https://github.com/cloudquery/cloudquery/commit/caca1a41e298c06afb6f474b8fd911c4544a2eec))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.67 ([#10788](https://github.com/cloudquery/cloudquery/issues/10788)) ([fd660b2](https://github.com/cloudquery/cloudquery/commit/fd660b25463256ffc4350c2b795bf5138e03fbdb))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v4.1.0...plugins-destination-s3-v4.2.0) (2023-05-09)
 
 

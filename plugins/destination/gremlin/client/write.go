@@ -9,47 +9,52 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
 	"github.com/cenkalti/backoff/v4"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, records []arrow.Record) error {
+func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) error {
 	session, closer, err := c.newSession()
 	if err != nil {
 		return err
 	}
 	defer closer()
 
-	tableName := schema.TableName(table)
-	rows := make([]map[string]any, 0)
-	for _, record := range records {
-		rows = append(rows, transformValues(record)...)
+	cqTimeIndex := -1
+	for i := range table.Columns {
+		if table.Columns[i].Name == schema.CqSyncTimeColumn.Name {
+			cqTimeIndex = i
+			break
+		}
 	}
 
-	pks := schema.PrimaryKeyIndices(table)
+	rows := make([]map[string]any, 0)
+	for _, record := range records {
+		rows = append(rows, c.transformValues(record, cqTimeIndex)...)
+	}
+
+	pks := table.PrimaryKeys()
 	if len(pks) == 0 {
 		// If no primary keys are defined, use all columns
-		for i := range table.Fields() {
-			pks = append(pks, i)
+		for i := range table.Columns {
+			pks = append(pks, table.Columns[i].Name)
 		}
 	}
 	nonPKs := make(map[string]struct{})
-	for _, f := range table.Fields() {
-		if !schema.IsPk(f) {
-			nonPKs[f.Name] = struct{}{}
+	for _, c := range table.Columns {
+		if !c.PrimaryKey {
+			nonPKs[c.Name] = struct{}{}
 		}
 	}
 
-	g := gremlingo.Traversal_().WithRemote(session).V().HasLabel(tableName)
+	g := gremlingo.Traversal_().WithRemote(session).V().HasLabel(table.Name)
 	for i := range rows {
-		for _, columnIndex := range pks {
-			colName := table.Field(columnIndex).Name
+		for _, colName := range pks {
 			g = g.Has(colName, rows[i][colName])
 		}
 		g = g.Fold()
 
-		ins := AnonT.AddV(tableName)
-		for _, columnIndex := range pks {
-			colName := table.Field(columnIndex).Name
+		ins := AnonT.AddV(table.Name)
+		for _, colName := range pks {
 			ins = ins.Property(colName, rows[i][colName])
 		}
 		g = g.Coalesce(

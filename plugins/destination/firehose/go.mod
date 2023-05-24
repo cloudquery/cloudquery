@@ -7,8 +7,8 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.18.0
 	github.com/aws/aws-sdk-go-v2/config v1.18.25
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.8
-	github.com/cloudquery/plugin-pb-go v1.0.5
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0
+	github.com/cloudquery/plugin-pb-go v1.0.8
+	github.com/cloudquery/plugin-sdk/v3 v3.6.2
 	github.com/rs/zerolog v1.29.0
 )
 
@@ -28,6 +28,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.10 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.19.0 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
+	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect

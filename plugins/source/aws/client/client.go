@@ -15,6 +15,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/rs/zerolog"
+	"github.com/thoas/go-funk"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -43,12 +44,11 @@ type AssumeRoleAPIClient interface {
 	AssumeRole(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error)
 }
 
-type ServicesPartitionAccountRegionMap map[string]map[string]map[string]*Services
+type ServicesPartitionAccountMap map[string]map[string]*Services
 
 // ServicesManager will hold the entire map of (account X region) services
 type ServicesManager struct {
-	services         ServicesPartitionAccountRegionMap
-	wafScopeServices map[string]map[string]*Services
+	services ServicesPartitionAccountMap
 }
 
 const (
@@ -64,53 +64,33 @@ var errUnknownRegion = func(region string) error {
 }
 var errRetrievingCredentials = errors.New("error retrieving AWS credentials (see logs for details). Please verify your credentials and try again")
 
-func (s *ServicesManager) ServicesByPartitionAccountAndRegion(partition, accountId, region string) *Services {
-	if region == "" {
-		region = defaultRegion
-	}
-	return s.services[partition][accountId][region]
-}
-
-func (s *ServicesManager) ServicesByAccountForWAFScope(partition, accountId string) *Services {
-	return s.wafScopeServices[partition][accountId]
+func (s *ServicesManager) ServicesByPartitionAccount(partition, accountId string) *Services {
+	return s.services[partition][accountId]
 }
 
 func (s *ServicesManager) InitServices(details svcsDetail) {
-	if details.region != "" {
-		s.InitServicesForPartitionAccountAndRegion(details.partition, details.accountId, details.region, details.svcs)
-	} else {
-		s.InitServicesForPartitionAccountAndScope(details.partition, details.accountId, details.svcs)
-	}
+	s.InitServicesForPartitionAccount(details.partition, details.accountId, details.svcs)
 }
 
-func (s *ServicesManager) InitServicesForPartitionAccountAndRegion(partition, accountId, region string, svcs Services) {
+func (s *ServicesManager) InitServicesForPartitionAccount(partition, accountId string, svcs Services) {
 	if s.services == nil {
-		s.services = make(map[string]map[string]map[string]*Services)
+		s.services = make(map[string]map[string]*Services)
 	}
 	if s.services[partition] == nil {
-		s.services[partition] = make(map[string]map[string]*Services)
+		s.services[partition] = make(map[string]*Services)
 	}
 	if s.services[partition][accountId] == nil {
-		s.services[partition][accountId] = make(map[string]*Services)
+		s.services[partition][accountId] = &svcs
 	}
-	s.services[partition][accountId][region] = &svcs
-}
 
-func (s *ServicesManager) InitServicesForPartitionAccountAndScope(partition, accountId string, svcs Services) {
-	if s.wafScopeServices == nil {
-		s.wafScopeServices = make(map[string]map[string]*Services)
-	}
-	if s.wafScopeServices[partition] == nil {
-		s.wafScopeServices[partition] = make(map[string]*Services)
-	}
-	s.wafScopeServices[partition][accountId] = &svcs
+	s.services[partition][accountId].Regions = funk.UniqString(append(s.services[partition][accountId].Regions, svcs.Regions...))
 }
 
 func NewAwsClient(logger zerolog.Logger, b backend.Backend, spec *Spec) Client {
 	return Client{
 		Backend: b,
 		ServicesManager: ServicesManager{
-			services: ServicesPartitionAccountRegionMap{},
+			services: ServicesPartitionAccountMap{},
 		},
 		logger: logger,
 		Spec:   spec,
@@ -134,11 +114,7 @@ func (c *Client) ID() string {
 }
 
 func (c *Client) Services() *Services {
-	s := c.ServicesManager.ServicesByPartitionAccountAndRegion(c.Partition, c.AccountID, c.Region)
-	if s == nil && c.WAFScope == wafv2types.ScopeCloudfront {
-		return c.ServicesManager.ServicesByAccountForWAFScope(c.Partition, c.AccountID)
-	}
-	return s
+	return c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID)
 }
 
 func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region string) *Client {
@@ -235,11 +211,12 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 			if err != nil {
 				return err
 			}
+			if svcsDetail == nil {
+				return nil
+			}
 			initLock.Lock()
 			defer initLock.Unlock()
-			for _, details := range svcsDetail {
-				client.ServicesManager.InitServices(details)
-			}
+			client.ServicesManager.InitServices(*svcsDetail)
 			return nil
 		})
 	}

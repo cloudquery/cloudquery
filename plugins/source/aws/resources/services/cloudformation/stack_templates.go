@@ -2,6 +2,8 @@ package cloudformation
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
@@ -9,6 +11,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/ghodss/yaml"
 )
 
 func stackTemplates() *schema.Table {
@@ -27,6 +31,19 @@ func stackTemplates() *schema.Table {
 				Type:       arrow.BinaryTypes.String,
 				Resolver:   schema.ParentColumnResolver("arn"),
 				PrimaryKey: true,
+			},
+			{
+				// Might be deprecated in a future release.
+				// Contains the template converted to JSON.
+				Name:     "template_body",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: resolveTemplateBody,
+			},
+			{
+				// raw template body: could be either YAML or JSON
+				Name:     "template_body_text",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: schema.PathResolver("TemplateBody"),
 			},
 		},
 	}
@@ -47,4 +64,25 @@ func fetchCloudformationStackTemplates(ctx context.Context, meta schema.ClientMe
 	}
 	res <- resp
 	return nil
+}
+
+func resolveTemplateBody(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+	resp := r.Item.(*cloudformation.GetTemplateOutput)
+	if resp.TemplateBody == nil {
+		return nil
+	}
+	// this column was originally released as a JSON column, but it turns out that
+	// the API can also return YAML. To maintain backwards-compatibility, we attempt
+	// to parse the template body as JSON first, and if that fails, we try to parse
+	// it as YAML. We return an error if both attempts fail.
+	m := map[string]any{}
+	err := json.Unmarshal([]byte(*resp.TemplateBody), &m)
+	if err != nil {
+		// this template might be YAML
+		err = yaml.Unmarshal([]byte(*resp.TemplateBody), &m)
+		if err != nil {
+			return fmt.Errorf("failed to parse Cloudformation template body as either JSON or yaml: %w", err)
+		}
+	}
+	return r.Set(c.Name, m)
 }

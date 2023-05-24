@@ -5,6 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/account"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
+	"github.com/aws/aws-sdk-go-v2/service/acmpca"
 	"github.com/aws/aws-sdk-go-v2/service/amp"
 	"github.com/aws/aws-sdk-go-v2/service/amplify"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
@@ -110,13 +111,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 )
 
-func initServices(region string, c aws.Config) Services {
+func initServices(c aws.Config, regions []string) Services {
 	awsCfg := c.Copy()
-	awsCfg.Region = region
 	return Services{
+		Regions:                   regions,
 		Accessanalyzer:            accessanalyzer.NewFromConfig(awsCfg),
 		Account:                   account.NewFromConfig(awsCfg),
 		Acm:                       acm.NewFromConfig(awsCfg),
+		Acmpca:                    acmpca.NewFromConfig(awsCfg),
 		Amp:                       amp.NewFromConfig(awsCfg),
 		Amplify:                   amplify.NewFromConfig(awsCfg),
 		Apigateway:                apigateway.NewFromConfig(awsCfg),
@@ -223,9 +225,11 @@ func initServices(region string, c aws.Config) Services {
 }
 
 type Services struct {
+	Regions                   []string
 	Accessanalyzer            services.AccessanalyzerClient
 	Account                   services.AccountClient
 	Acm                       services.AcmClient
+	Acmpca                    services.AcmpcaClient
 	Amp                       services.AmpClient
 	Amplify                   services.AmplifyClient
 	Apigateway                services.ApigatewayClient

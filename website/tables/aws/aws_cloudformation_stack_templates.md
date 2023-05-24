@@ -21,5 +21,6 @@ This table depends on [aws_cloudformation_stacks](aws_cloudformation_stacks).
 |account_id|String|
 |region|String|
 |stack_arn (PK)|String|
+|template_body|JSON|
+|template_body_text|String|
 |stages_available|StringArray|
-|template_body|String|
