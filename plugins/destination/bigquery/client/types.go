@@ -14,6 +14,13 @@ type TimestampNanoseconds struct {
 	Nanoseconds int    `json:"nanoseconds" bigquery:"nanoseconds"`
 }
 
+// DurationNanoseconds is a struct to hold a duration with nanosecond precision,
+// because BigQuery does not support nanosecond precision durations.
+type DurationNanoseconds struct {
+	Duration    string `json:"duration" bigquery:"duration"`
+	Nanoseconds int    `json:"nanoseconds" bigquery:"nanoseconds"`
+}
+
 func (c *Client) ColumnToBigQuerySchema(col schema.Column) *bigquery.FieldSchema {
 	sc := bigquery.FieldSchema{
 		Name:        col.Name,
@@ -73,11 +80,9 @@ func (c *Client) DataTypeToBigQueryType(dataType arrow.DataType) bigquery.FieldT
 		arrow.PrimitiveTypes.Int64,
 		arrow.PrimitiveTypes.Uint8,
 		arrow.PrimitiveTypes.Uint16,
-		arrow.PrimitiveTypes.Uint32):
-		return bigquery.IntegerFieldType
-	case typeOneOf(dataType,
+		arrow.PrimitiveTypes.Uint32,
 		arrow.PrimitiveTypes.Uint64):
-		return bigquery.NumericFieldType
+		return bigquery.IntegerFieldType
 	case typeOneOf(dataType,
 		arrow.PrimitiveTypes.Float32,
 		arrow.PrimitiveTypes.Float64):
