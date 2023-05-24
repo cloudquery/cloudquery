@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/fsx.go -source=fsx.go FsxClient

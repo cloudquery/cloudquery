@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/mq.go -source=mq.go MqClient

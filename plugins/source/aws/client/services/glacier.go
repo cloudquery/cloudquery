@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/glacier"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/glacier.go -source=glacier.go GlacierClient

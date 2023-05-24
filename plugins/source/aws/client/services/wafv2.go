@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/wafv2.go -source=wafv2.go Wafv2Client

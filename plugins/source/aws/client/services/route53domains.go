@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/route53domains.go -source=route53domains.go Route53domainsClient

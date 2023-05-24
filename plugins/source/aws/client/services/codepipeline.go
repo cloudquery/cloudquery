@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/codepipeline.go -source=codepipeline.go CodepipelineClient

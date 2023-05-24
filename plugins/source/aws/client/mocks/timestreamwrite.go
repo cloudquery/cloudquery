@@ -6,7 +6,6 @@ package mocks
 
 import (
 	context "context"
-	
 	reflect "reflect"
 
 	timestreamwrite "github.com/aws/aws-sdk-go-v2/service/timestreamwrite"

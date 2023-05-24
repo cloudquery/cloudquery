@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/qldb.go -source=qldb.go QldbClient

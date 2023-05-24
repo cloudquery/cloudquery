@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/cloudhsmv2.go -source=cloudhsmv2.go Cloudhsmv2Client

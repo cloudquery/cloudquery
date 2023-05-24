@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/s3.go -source=s3.go S3Client

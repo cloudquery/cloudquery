@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/configservice.go -source=configservice.go ConfigserviceClient

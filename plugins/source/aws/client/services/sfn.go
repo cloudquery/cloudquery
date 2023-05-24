@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/sfn.go -source=sfn.go SfnClient
