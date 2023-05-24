@@ -48,17 +48,11 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		}
 		rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
 		for i := range values {
-			readItem(values, rb, i)
+			appendValue(rb.Field(i), values[i])
 		}
 		res <- rb.NewRecord()
 	}
 	return nil
-}
-
-func readItem(values []bigquery.Value, rb *array.RecordBuilder, i int) error {
-	fieldBuilder := rb.Field(i)
-	value := values[i]
-	return appendValue(fieldBuilder, value)
 }
 
 func appendValue(builder array.Builder, value any) error {
