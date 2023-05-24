@@ -4,15 +4,16 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"fmt"
 	"strings"
 	"sync/atomic"
 
 	"github.com/Shopify/sarama"
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func (c *Client) createTopics(_ context.Context, tables schema.Schemas) error {
+func (c *Client) createTopics(_ context.Context, tables schema.Tables) error {
 	c.conf.Version = sarama.V2_0_0_0
 	admin, err := sarama.NewClusterAdmin(c.pluginSpec.Brokers, c.conf)
 	if err != nil {
@@ -20,8 +21,7 @@ func (c *Client) createTopics(_ context.Context, tables schema.Schemas) error {
 	}
 	defer admin.Close()
 	for _, table := range tables {
-		tableName := schema.TableName(table)
-		err := admin.CreateTopic(tableName, &sarama.TopicDetail{
+		err := admin.CreateTopic(table.Name, &sarama.TopicDetail{
 			NumPartitions:     1,
 			ReplicationFactor: 1,
 		}, false)
@@ -35,7 +35,7 @@ func (c *Client) createTopics(_ context.Context, tables schema.Schemas) error {
 	return nil
 }
 
-func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan arrow.Record) error {
+func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan arrow.Record) error {
 	if err := c.createTopics(ctx, tables); err != nil {
 		return err
 	}
@@ -45,7 +45,11 @@ func (c *Client) Write(ctx context.Context, tables schema.Schemas, res <-chan ar
 		var b bytes.Buffer
 		w := bufio.NewWriter(&b)
 		sc := r.Schema()
-		tableName := schema.TableName(sc)
+		tableName, ok := r.Schema().Metadata().GetValue(schema.MetadataTableName)
+		if !ok {
+			return fmt.Errorf("%q metadata key not found", schema.MetadataTableName)
+		}
+
 		if err := c.Client.WriteTableBatchFile(w, sc, []arrow.Record{r}); err != nil {
 			return err
 		}

@@ -9,12 +9,12 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.25
 	github.com/cenkalti/backoff/v4 v4.2.0
 	github.com/cloudquery/plugin-pb-go v1.0.8
-	github.com/cloudquery/plugin-sdk/v3 v3.5.1
+	github.com/cloudquery/plugin-sdk/v3 v3.6.1
 	github.com/rs/zerolog v1.29.0
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230509053643-898a79b1d3c8
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230521112802-adef07d4bbaa
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect

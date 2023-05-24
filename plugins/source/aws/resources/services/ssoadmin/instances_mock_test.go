@@ -44,7 +44,10 @@ func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&ssoadmin.DescribePermissionSetOutput{
 			PermissionSet: &ps,
 		}, nil)
-
+	mSSOAdmin.EXPECT().ListAccountsForProvisionedPermissionSet(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ssoadmin.ListAccountsForProvisionedPermissionSetOutput{
+			AccountIds: []string{*as.AccountId},
+		}, nil)
 	mSSOAdmin.EXPECT().ListAccountAssignments(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ssoadmin.ListAccountAssignmentsOutput{
 			AccountAssignments: []types.AccountAssignment{as},

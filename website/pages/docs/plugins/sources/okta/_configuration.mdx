@@ -11,7 +11,13 @@ spec:
     # Required. Your Okta domain name
     domain: "https://<YOUR_OKTA_DOMAIN>.okta.com/"
 
-    # Optional. Okta Token to access API, you can set this with OKTA_API_TOKEN environment variable
-    # ⚠️ Warning - Your token should be kept secret and not committed to source control
+    # Optional. Okta Token to access API
+    # ⚠️ Warning - Your token should be kept secret and not committed to source control.
+    # ⚠️ Warning - In the future versions token parameter will become required.
     # token: "<YOUR_OKTA_TOKEN>"
+
+    # Optional. Rate limiter settings
+    # rate_limit:
+    #   max_backoff: 5s
+    #   max_retries: 3
 ```
