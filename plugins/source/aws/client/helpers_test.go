@@ -34,7 +34,7 @@ func TestResolveARN(t *testing.T) {
 				return []string{"restapis", *resource.Item.(types.RestApi).Id}, nil
 			},
 			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: arrow.BinaryTypes.String}}}, nil, types.RestApi{Id: aws.String("myid")}),
-			&scalar.String{Status: schema.Present, Str: "arn:aws:apigateway:region::restapis/myid"},
+			&scalar.String{Valid: true, Value: "arn:aws:apigateway:region::restapis/myid"},
 			false,
 		},
 		{
@@ -45,7 +45,7 @@ func TestResolveARN(t *testing.T) {
 				return []string{"", "restapis", *resource.Item.(types.RestApi).Id}, nil
 			},
 			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: arrow.BinaryTypes.String}}}, nil, types.RestApi{Id: aws.String("myid")}),
-			&scalar.String{Status: schema.Present, Str: "arn:aws:apigateway:region::/restapis/myid"},
+			&scalar.String{Valid: true, Value: "arn:aws:apigateway:region::/restapis/myid"},
 			false,
 		},
 		{
@@ -56,7 +56,7 @@ func TestResolveARN(t *testing.T) {
 				return nil, errors.New("test")
 			},
 			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: arrow.BinaryTypes.String}}}, nil, types.RestApi{Id: aws.String("myid")}),
-			&scalar.String{Status: schema.Undefined},
+			&scalar.String{Valid: false},
 			true,
 		},
 	}

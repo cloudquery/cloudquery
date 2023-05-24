@@ -3,11 +3,13 @@ package cloudformation
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func templateSummaries() *schema.Table {
@@ -26,17 +28,18 @@ func templateSummaries() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "stack_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
-				Name:            "stack_arn",
-				Type:            schema.TypeString,
-				Resolver:        schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true}},
+				Name:       "stack_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
+			},
 			{
 				Name:     "metadata",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("Metadata"),
 			},
 		},
