@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.2.6...plugins-destination-bigquery-v3.0.0) (2023-05-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose).
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([1583df6](https://github.com/cloudquery/cloudquery/commit/1583df68bbb4665795ebfc99ca2ee5c3f752b505))
+
+
+### Bug Fixes
+
+* Use NUMERIC for uint64 ([#10907](https://github.com/cloudquery/cloudquery/issues/10907)) ([649420f](https://github.com/cloudquery/cloudquery/commit/649420f5f2127a3f2f0eb7e6a013b803e8719422))
+
 ## [2.2.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v2.2.5...plugins-destination-bigquery-v2.2.6) (2023-04-25)
 
 
