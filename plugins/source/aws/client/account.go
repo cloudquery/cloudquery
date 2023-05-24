@@ -18,11 +18,10 @@ import (
 type svcsDetail struct {
 	partition string
 	accountId string
-	region    string
 	svcs      Services
 }
 
-func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec, adminAccountSts AssumeRoleAPIClient, account Account) ([]svcsDetail, error) {
+func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec, adminAccountSts AssumeRoleAPIClient, account Account) (*svcsDetail, error) {
 	if account.AccountName == "" {
 		account.AccountName = account.ID
 	}
@@ -69,7 +68,7 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 		logger.Warn().Str("account", account.AccountName).Err(err).Msg("No enabled regions provided in config for account")
 		return nil, nil
 	}
-	awsCfg.Region = account.Regions[0]
+	awsCfg.Region = getRegion(account.Regions)
 	output, err := getAccountId(ctx, awsCfg)
 	if err != nil {
 		return nil, err
@@ -78,30 +77,14 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 	if err != nil {
 		return nil, err
 	}
-	svcsDetails := make([]svcsDetail, len(account.Regions)+1)
-	for i, region := range account.Regions {
-		svcsDetails[i] = svcsDetail{
-			partition: iamArn.Partition,
-			accountId: *output.Account,
-			region:    region,
-			svcs:      initServices(region, awsCfg),
-		}
-	}
 
-	var cloudfrontRegion string
-	switch iamArn.Partition {
-	case "aws":
-		cloudfrontRegion = awsCloudfrontScopeRegion
-	case "aws-cn":
-		cloudfrontRegion = awsCnCloudfrontScopeRegion
-	}
-
-	svcsDetails[len(account.Regions)] = svcsDetail{
+	svcsDetails := svcsDetail{
 		partition: iamArn.Partition,
 		accountId: *output.Account,
-		svcs:      initServices(cloudfrontRegion, awsCfg),
+		svcs:      initServices(awsCfg, account.Regions),
 	}
-	return svcsDetails, nil
+
+	return &svcsDetails, nil
 }
 
 func findEnabledRegions(ctx context.Context, logger zerolog.Logger, accountName string, ec2Client services.Ec2Client, localRegions []string, accountDefaultRegion string) []string {

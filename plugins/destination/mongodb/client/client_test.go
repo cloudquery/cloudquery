@@ -3,9 +3,10 @@ package client
 import (
 	"os"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
 )
 
 var migrateStrategy = destination.MigrateStrategy{
@@ -41,5 +42,6 @@ func TestPlugin(t *testing.T) {
 
 			MigrateStrategyOverwrite: migrateStrategy,
 			MigrateStrategyAppend:    migrateStrategy,
-		})
+		},
+		destination.WithTestSourceTimePrecision(time.Millisecond))
 }
