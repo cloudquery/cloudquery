@@ -48,7 +48,10 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		}
 		rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
 		for i := range values {
-			appendValue(rb.Field(i), values[i])
+			err := appendValue(rb.Field(i), values[i])
+			if err != nil {
+				return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
+			}
 		}
 		res <- rb.NewRecord()
 	}
