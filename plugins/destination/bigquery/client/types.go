@@ -60,11 +60,13 @@ func (c *Client) DataTypeToBigQueryType(dataType arrow.DataType) bigquery.FieldT
 		return bigquery.JSONFieldType
 	case arrow.STRUCT:
 		return bigquery.RecordFieldType
-	case arrow.LIST, arrow.LARGE_LIST, arrow.FIXED_SIZE_LIST:
+	case isListType(dataType):
 		switch v := dataType.(type) {
 		case *arrow.ListType:
 			return c.DataTypeToBigQueryType(v.Elem())
 		case *arrow.LargeListType:
+			return c.DataTypeToBigQueryType(v.Elem())
+		case *arrow.FixedSizeListType:
 			return c.DataTypeToBigQueryType(v.Elem())
 		}
 	}
