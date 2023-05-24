@@ -42,8 +42,8 @@ func isListType(t arrow.DataType) bool {
 }
 
 func (c *Client) DataTypeToBigQueryType(dataType arrow.DataType) bigquery.FieldType {
-	// handle known extensions that require special handling
 	switch {
+	// handle known extensions that require special handling
 	case typeOneOf(dataType,
 		types.ExtensionTypes.JSON):
 		return bigquery.JSONFieldType
@@ -52,13 +52,11 @@ func (c *Client) DataTypeToBigQueryType(dataType arrow.DataType) bigquery.FieldT
 		types.ExtensionTypes.MAC,
 		types.ExtensionTypes.UUID):
 		return bigquery.StringFieldType
-	}
 
 	// handle complex types
-	switch dataType.ID() {
-	case arrow.MAP:
+	case dataType.ID() == arrow.MAP:
 		return bigquery.JSONFieldType
-	case arrow.STRUCT:
+	case dataType.ID() == arrow.STRUCT:
 		return bigquery.RecordFieldType
 	case isListType(dataType):
 		switch v := dataType.(type) {
@@ -69,10 +67,9 @@ func (c *Client) DataTypeToBigQueryType(dataType arrow.DataType) bigquery.FieldT
 		case *arrow.FixedSizeListType:
 			return c.DataTypeToBigQueryType(v.Elem())
 		}
-	}
+		fallthrough
 
 	// handle basic types
-	switch {
 	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.Boolean):
 		return bigquery.BooleanFieldType
