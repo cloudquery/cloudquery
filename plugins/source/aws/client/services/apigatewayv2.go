@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/apigatewayv2.go -source=apigatewayv2.go Apigatewayv2Client

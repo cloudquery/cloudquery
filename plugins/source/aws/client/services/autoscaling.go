@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/autoscaling.go -source=autoscaling.go AutoscalingClient

@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/mwaa"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/mwaa.go -source=mwaa.go MwaaClient

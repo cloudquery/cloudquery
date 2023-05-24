@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/dax.go -source=dax.go DaxClient

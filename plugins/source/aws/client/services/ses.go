@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/ses"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/ses.go -source=ses.go SesClient

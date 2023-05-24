@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/rds.go -source=rds.go RdsClient

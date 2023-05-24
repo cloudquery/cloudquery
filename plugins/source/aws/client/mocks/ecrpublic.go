@@ -6,7 +6,6 @@ package mocks
 
 import (
 	context "context"
-	
 	reflect "reflect"
 
 	ecrpublic "github.com/aws/aws-sdk-go-v2/service/ecrpublic"
