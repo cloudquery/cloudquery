@@ -31,10 +31,14 @@ func (c *Client) ColumnToBigQuerySchema(col schema.Column) *bigquery.FieldSchema
 
 	// TODO: handle repeated; we currently don't handle the case where we get a list of lists,
 	//       but that's not a valid case right now and isn't being explicitly tested for.
-	if col.Type.ID() == arrow.LIST {
+	if isListType(col.Type) {
 		sc.Repeated = true
 	}
 	return &sc
+}
+
+func isListType(t arrow.DataType) bool {
+	return t.ID() == arrow.LIST || t.ID() == arrow.LARGE_LIST || t.ID() == arrow.FIXED_SIZE_LIST
 }
 
 func (c *Client) DataTypeToBigQueryType(dataType arrow.DataType) bigquery.FieldType {

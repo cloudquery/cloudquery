@@ -61,17 +61,17 @@ func readItem(values []bigquery.Value, rb *array.RecordBuilder, i int) error {
 	return appendValue(fieldBuilder, value)
 }
 
-func appendValue(bldr array.Builder, value any) error {
+func appendValue(builder array.Builder, value any) error {
 	if value == nil {
-		bldr.AppendNull()
+		builder.AppendNull()
 		return nil
 	}
-	switch arr := bldr.(type) {
+	switch bldr := builder.(type) {
 	case *array.StructBuilder:
 		m := value.([]bigquery.Value)
-		arr.Append(true)
-		for f := 0; f < arr.NumField(); f++ {
-			fieldBldr := arr.FieldBuilder(f)
+		bldr.Append(true)
+		for f := 0; f < bldr.NumField(); f++ {
+			fieldBldr := bldr.FieldBuilder(f)
 			if err := appendValue(fieldBldr, m[f]); err != nil {
 				return err
 			}
@@ -80,19 +80,17 @@ func appendValue(bldr array.Builder, value any) error {
 	case array.ListLikeBuilder:
 		lst := value.([]bigquery.Value)
 		if lst == nil {
-			arr.AppendNull()
+			bldr.AppendNull()
 			return nil
 		}
-		arr.Append(true)
-		valBuilder := arr.ValueBuilder()
+		bldr.Append(true)
+		valBuilder := bldr.ValueBuilder()
 		for _, v := range lst {
 			if err := appendValue(valBuilder, v); err != nil {
 				return err
 			}
 		}
 		return nil
-	}
-	switch rbv := bldr.(type) {
 	case *array.Time32Builder:
 		t := value.(civil.Time)
 		unit := bldr.Type().(*arrow.Time32Type).Unit
@@ -101,7 +99,7 @@ func appendValue(bldr array.Builder, value any) error {
 		if err != nil {
 			return err
 		}
-		rbv.Append(t32)
+		bldr.Append(t32)
 		return nil
 	case *array.Time64Builder:
 		t := value.(civil.Time)
@@ -111,18 +109,18 @@ func appendValue(bldr array.Builder, value any) error {
 		if err != nil {
 			return err
 		}
-		rbv.Append(t64)
+		bldr.Append(t64)
 		return nil
 	case *array.DayTimeIntervalBuilder:
 		t := value.([]bigquery.Value)
-		rbv.Append(arrow.DayTimeInterval{
+		bldr.Append(arrow.DayTimeInterval{
 			Days:         int32(t[0].(int64)),
 			Milliseconds: int32(t[1].(int64)),
 		})
 		return nil
 	case *array.MonthDayNanoIntervalBuilder:
 		t := value.([]bigquery.Value)
-		rbv.Append(arrow.MonthDayNanoInterval{
+		bldr.Append(arrow.MonthDayNanoInterval{
 			Months:      int32(t[0].(int64)),
 			Days:        int32(t[1].(int64)),
 			Nanoseconds: t[2].(int64),
@@ -130,7 +128,7 @@ func appendValue(bldr array.Builder, value any) error {
 		return nil
 	case *array.MonthIntervalBuilder:
 		t := value.([]bigquery.Value)
-		rbv.Append(arrow.MonthInterval(t[0].(int64)))
+		bldr.Append(arrow.MonthInterval(t[0].(int64)))
 		return nil
 	case *array.TimestampBuilder:
 		unit := bldr.Type().(*arrow.TimestampType).Unit
@@ -144,19 +142,19 @@ func appendValue(bldr array.Builder, value any) error {
 			if err != nil {
 				return fmt.Errorf("failed to call arrow.TimestampFromString: %w", err)
 			}
-			rbv.Append(ts)
+			bldr.Append(ts)
 			return nil
 		default:
 			t := value.(time.Time)
 			ts, err := arrow.TimestampFromString(t.Format(time.RFC3339Nano), unit)
 			if err != nil {
-				return err
+				return fmt.Errorf("failed to call arrow.TimestampFromString: %w", err)
 			}
-			rbv.Append(ts)
+			bldr.Append(ts)
 			return nil
 		}
 	case *types.JSONBuilder:
-		return rbv.AppendValueFromString(value.(string))
+		return bldr.AppendValueFromString(value.(string))
 	default:
 		// catch-all case to keep the code simple; this is only for testing
 		// so the performance of JSON marshaling is not a big concern here
