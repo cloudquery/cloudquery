@@ -44,7 +44,8 @@ func Configure(_ context.Context, logger zerolog.Logger, srcSpec specs.Source, _
 		return nil, fmt.Errorf("failed to unmarshal okta spec: %w", err)
 	}
 
-	spec.setDefaults()
+	l := logger.With().Str("module", "okta-source").Logger()
+	spec.setDefaults(&l)
 	if err := spec.validate(); err != nil {
 		return nil, err
 	}
@@ -59,5 +60,5 @@ func Configure(_ context.Context, logger zerolog.Logger, srcSpec specs.Source, _
 	cf.Debug = spec.Debug
 	c := okta.NewAPIClient(cf)
 
-	return New(logger, srcSpec, c), nil
+	return New(l, srcSpec, c), nil
 }

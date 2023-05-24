@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"time"
+
+	"github.com/rs/zerolog"
 )
 
 type (
@@ -23,7 +25,7 @@ const (
 	OktaAPIToken = "OKTA_API_TOKEN"
 )
 
-func (s *Spec) setDefaults() {
+func (s *Spec) setDefaults(logger *zerolog.Logger) {
 	const (
 		minRetries = int32(3)
 		minBackOff = 5 * time.Second
@@ -42,6 +44,7 @@ func (s *Spec) setDefaults() {
 	}
 
 	if len(s.Token) == 0 {
+		logger.Warn().Msgf("usage of %q environment variable value is deprecated and will be dropped in a future release", OktaAPIToken)
 		s.Token = os.Getenv(OktaAPIToken)
 	}
 }
