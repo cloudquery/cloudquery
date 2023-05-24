@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [17.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v17.3.1...plugins-source-aws-v17.4.0) (2023-05-23)
+
+
+### Features
+
+* **aws-services:** Support newly added regions ([#10894](https://github.com/cloudquery/cloudquery/issues/10894)) ([a9b6633](https://github.com/cloudquery/cloudquery/commit/a9b6633fc0ed56bf9cba11699e3f9b62e3033067))
+* **aws:** Only instantiate a single SDK per Account ([#10794](https://github.com/cloudquery/cloudquery/issues/10794)) ([1a3a4d3](https://github.com/cloudquery/cloudquery/commit/1a3a4d3eb51bcbae65a4e24d61a2f89c905a9a56))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/apigateway to v1.16.11 ([#10875](https://github.com/cloudquery/cloudquery/issues/10875)) ([2a3f966](https://github.com/cloudquery/cloudquery/commit/2a3f96640221383d31da8cecf7e8b8fccb96deae))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/apigatewayv2 to v1.13.11 ([#10876](https://github.com/cloudquery/cloudquery/issues/10876)) ([a9087cd](https://github.com/cloudquery/cloudquery/commit/a9087cde6b2507ad69a222e113e8d2d11997535a))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/autoscalingplans to v1.13.10 ([#10878](https://github.com/cloudquery/cloudquery/issues/10878)) ([ad70bbf](https://github.com/cloudquery/cloudquery/commit/ad70bbffa642ace31ffc963ac8ea9749d21803d2))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 to v1.14.10 ([#10879](https://github.com/cloudquery/cloudquery/issues/10879)) ([9d5887d](https://github.com/cloudquery/cloudquery/commit/9d5887df32cea8feb82a6345b8c1caeacb515cff))
+
 ## [17.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v17.3.0...plugins-source-aws-v17.3.1) (2023-05-18)
 
 

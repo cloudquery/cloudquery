@@ -2,7 +2,8 @@
 
 This table shows data for Ssoadmin Permission Sets.
 
-https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_PermissionSet.html
+https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_PermissionSet.html. 
+The 'request_account_id' and 'request_region' columns are added to show the account_id and region of where the request was made from.
 
 The primary key for this table is **_cq_id**.
 
@@ -21,6 +22,8 @@ The following tables depend on aws_ssoadmin_permission_sets:
 |_cq_sync_time|Timestamp|
 |_cq_id (PK)|UUID|
 |_cq_parent_id|UUID|
+|request_account_id|String|
+|request_region|String|
 |inline_policy|JSON|
 |created_date|Timestamp|
 |description|String|
