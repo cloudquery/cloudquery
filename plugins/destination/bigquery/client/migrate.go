@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/bigquery"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/api/googleapi"
 )
@@ -22,7 +22,7 @@ const (
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	eg, gctx := errgroup.WithContext(ctx)
 	eg.SetLimit(concurrentMigrations)
-	for _, table := range tables.FlattenTables() {
+	for _, table := range tables {
 		table := table
 		eg.Go(func() error {
 			c.logger.Debug().Str("table", table.Name).Msg("Migrating table")
@@ -226,13 +226,7 @@ func (c *Client) timePartitioning() *bigquery.TimePartitioning {
 func (c *Client) bigQuerySchemaForTable(table *schema.Table) bigquery.Schema {
 	s := bigquery.Schema{}
 	for _, col := range table.Columns {
-		columnType, repeated := c.SchemaTypeToBigQuery(col.Type)
-		s = append(s, &bigquery.FieldSchema{
-			Name:        col.Name,
-			Description: col.Description,
-			Repeated:    repeated,
-			Type:        columnType,
-		})
+		s = append(s, c.ColumnToBigQuerySchema(col))
 	}
 	return s
 }
