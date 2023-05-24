@@ -28,7 +28,7 @@ The Gremlin destination (`v2.0.0` and later) supports most [Apache Arrow](https:
 | Interval[MonthDayNano] | ✅ Yes      | `String`              |
 | Interval[Month]        | ✅ Yes      | `String`              |
 | JSON                   | ✅ Yes      | `String`              |
-| Large Binary           | ✅ Yes      | `BYTES`               |
+| Large Binary           | ✅ Yes      | `Bytes`               |
 | Large List             | ✅ Yes      | `String`              |
 | Large String           | ✅ Yes      | `String`              |
 | List                   | ✅ Yes      | `String` or `List` †  |
@@ -51,6 +51,6 @@ The Gremlin destination (`v2.0.0` and later) supports most [Apache Arrow](https:
 
 <sup>*</sup> Timestamps are converted to strings in the format `yyyy-MM-dd HH:mm:ss.SSSSSSSSS` (UTC timezone) (e.g. `2021-01-01 00:00:00.000000000`). `_cq_sync_time` column is persisted in native `Timestamp` type.
 
-† List types are supported only if `complete_types` option is enabled. Otherwise, they are converted to strings.
+† List types are persisted as-is only if `complete_types` option is enabled. Otherwise, they are converted to strings.
 
 `NUL` bytes are stripped from strings.
