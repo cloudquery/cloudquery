@@ -56,7 +56,7 @@ func TestResolveARN(t *testing.T) {
 				return nil, errors.New("test")
 			},
 			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: arrow.BinaryTypes.String}}}, nil, types.RestApi{Id: aws.String("myid")}),
-			&scalar.String{Valid: false},
+			&scalar.String{},
 			true,
 		},
 	}

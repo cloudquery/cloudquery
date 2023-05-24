@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func AccessPoints() *schema.Table {
@@ -31,7 +31,7 @@ func AccessPoints() *schema.Table {
 			},
 			{
 				Name:     "tags",
-				Type:     sdkTypes.ExtensionTypes.JSON,
+				Type:     cqtypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTags,
 			},
 		},

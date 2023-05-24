@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/cloudquery/plugin-sdk/v3/scalar"
 	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -60,8 +61,8 @@ func TestResolveTags(t *testing.T) {
 		r := schema.NewResourceData(ta, nil, tc.InputItem)
 		err := ResolveTags(context.Background(), nil, r, ta.Columns[0])
 		assert.NoError(t, err)
-		// expectedJson := &sdkTypes.JSONType{}
-		// _ = expectedJson.Set(tc.ExpectedTags)
-		// assert.Equal(t, expectedJson, r.Get(ta.Columns[0].Name))
+		expectedJson := &scalar.JSON{}
+		_ = expectedJson.Set(tc.ExpectedTags)
+		assert.Equal(t, expectedJson, r.Get(ta.Columns[0].Name))
 	}
 }

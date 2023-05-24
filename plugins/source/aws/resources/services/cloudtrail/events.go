@@ -7,6 +7,7 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/mitchellh/hashstructure/v2"
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
@@ -14,7 +15,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
-	"github.com/mitchellh/hashstructure/v2"
 )
 
 const tableName = "aws_cloudtrail_events"
