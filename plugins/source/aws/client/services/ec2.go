@@ -4,6 +4,7 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
+	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/ec2.go -source=ec2.go Ec2Client
