@@ -2,8 +2,8 @@
 
 The Neo4j destination (`v3.0.0` and later) supports most [Apache Arrow](https://arrow.apache.org/docs/index.html) types. The following table shows the supported types and how they are mapped to [Neo4j data types](https://neo4j.com/docs/graphql-manual/current/type-definitions/types/).
 
-| Arrow Column Type      | Supported? | Neo4j Type |
-|------------------------|------------|------------|
+| Arrow Column Type      | Supported?  | Neo4j Type |
+|------------------------|-------------|------------|
 | Binary                 | ✅ Yes      | `Bytes`    |
 | Boolean                | ✅ Yes      | `Boolean`  |
 | Date32                 | ✅ Yes      | `String`   |
