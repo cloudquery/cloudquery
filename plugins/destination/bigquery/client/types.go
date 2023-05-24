@@ -42,13 +42,25 @@ func isListType(t arrow.DataType) bool {
 }
 
 func (c *Client) DataTypeToBigQueryType(dataType arrow.DataType) bigquery.FieldType {
+	// handle known extensions that require special handling
+	switch {
+	case typeOneOf(dataType,
+		types.ExtensionTypes.JSON):
+		return bigquery.JSONFieldType
+	case typeOneOf(dataType,
+		types.ExtensionTypes.Inet,
+		types.ExtensionTypes.MAC,
+		types.ExtensionTypes.UUID):
+		return bigquery.StringFieldType
+	}
+
 	// handle complex types
 	switch dataType.ID() {
 	case arrow.MAP:
 		return bigquery.JSONFieldType
 	case arrow.STRUCT:
 		return bigquery.RecordFieldType
-	case arrow.LIST:
+	case arrow.LIST, arrow.LARGE_LIST, arrow.FIXED_SIZE_LIST:
 		switch v := dataType.(type) {
 		case *arrow.ListType:
 			return c.DataTypeToBigQueryType(v.Elem())
@@ -121,14 +133,6 @@ func (c *Client) DataTypeToBigQueryType(dataType arrow.DataType) bigquery.FieldT
 	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.MonthDayNanoInterval):
 		return bigquery.RecordFieldType
-	case typeOneOf(dataType,
-		types.ExtensionTypes.Inet,
-		types.ExtensionTypes.MAC,
-		types.ExtensionTypes.UUID):
-		return bigquery.StringFieldType
-	case typeOneOf(dataType,
-		types.ExtensionTypes.JSON):
-		return bigquery.JSONFieldType
 	default:
 		panic("unsupported data type: " + dataType.String())
 	}
