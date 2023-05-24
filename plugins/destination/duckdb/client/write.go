@@ -43,13 +43,7 @@ func containsList(sc *schema.Table) bool {
 func (c *Client) upsert(tmpTableName string, tableName string, table *schema.Table) error {
 	var sb strings.Builder
 	sb.WriteString("insert into " + tableName + " select * from " + tmpTableName + " on conflict (")
-	pks := table.PrimaryKeys()
-	for i, col := range pks {
-		sb.WriteString(col)
-		if i < len(pks)-1 {
-			sb.WriteString(", ")
-		}
-	}
+	sb.WriteString(strings.Join(table.PrimaryKeys(), ", "))
 	sb.WriteString(" ) do update set ")
 	indices := nonPkIndices(table)
 	for i, indice := range indices {
