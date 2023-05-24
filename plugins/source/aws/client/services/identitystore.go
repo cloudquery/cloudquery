@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/identitystore"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/identitystore.go -source=identitystore.go IdentitystoreClient

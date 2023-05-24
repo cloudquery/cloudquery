@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/appsync.go -source=appsync.go AppsyncClient

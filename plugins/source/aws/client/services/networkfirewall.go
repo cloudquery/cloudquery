@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/networkfirewall.go -source=networkfirewall.go NetworkfirewallClient

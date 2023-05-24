@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/batch"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/batch.go -source=batch.go BatchClient

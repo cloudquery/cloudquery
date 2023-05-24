@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/accessanalyzer.go -source=accessanalyzer.go AccessanalyzerClient

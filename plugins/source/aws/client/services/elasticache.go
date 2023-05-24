@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/elasticache.go -source=elasticache.go ElasticacheClient

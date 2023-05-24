@@ -6,7 +6,6 @@ package mocks
 
 import (
 	context "context"
-	
 	reflect "reflect"
 
 	autoscaling "github.com/aws/aws-sdk-go-v2/service/autoscaling"

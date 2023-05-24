@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/elasticloadbalancing.go -source=elasticloadbalancing.go ElasticloadbalancingClient

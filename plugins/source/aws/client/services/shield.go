@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/shield.go -source=shield.go ShieldClient

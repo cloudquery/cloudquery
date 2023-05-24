@@ -3,6 +3,7 @@ package ssoadmin
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
 
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
@@ -25,12 +26,12 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 		Columns: []schema.Column{
 			{
 				Name:     "request_account_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
 				Name:     "request_region",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveAWSRegion,
 			},
 			{

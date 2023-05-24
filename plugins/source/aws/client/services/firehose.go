@@ -4,7 +4,6 @@ package services
 import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
-	
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/firehose.go -source=firehose.go FirehoseClient
