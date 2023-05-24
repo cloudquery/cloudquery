@@ -14,7 +14,7 @@ func Deals() *schema.Table {
 		Transform: transformers.TransformWithStruct(
 			deals.SimplePublicObjectWithAssociations{},
 			transformers.WithPrimaryKeys("Id"),
-			transformers.WithSkipFields("PropertiesWithHistory", "Associations"),
+			transformers.WithSkipFields("PropertiesWithHistory"),
 		),
 	}
 }
