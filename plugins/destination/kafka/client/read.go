@@ -30,7 +30,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		case <-ctx.Done():
 			return ctx.Err()
 		case msg := <-partitionConsumer.Messages():
-			if err := c.Client.Read(bytes.NewReader(msg.Value), table.ToArrowSchema(), sourceName, res); err != nil {
+			if err := c.Client.Read(bytes.NewReader(msg.Value), table, sourceName, res); err != nil {
 				return err
 			}
 		case err := <-partitionConsumer.Errors():
