@@ -14,19 +14,19 @@ This table depends on [gcp_vpcaccess_locations](gcp_vpcaccess_locations).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|network|String|
-|ip_cidr_range|String|
-|state|String|
-|min_throughput|Int|
-|max_throughput|Int|
-|connected_projects|StringArray|
-|subnet|JSON|
-|machine_type|String|
-|min_instances|Int|
-|max_instances|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|name (PK)|utf8|
+|network|utf8|
+|ip_cidr_range|utf8|
+|state|utf8|
+|min_throughput|int64|
+|max_throughput|int64|
+|connected_projects|list<item: utf8, nullable>|
+|subnet|json|
+|machine_type|utf8|
+|min_instances|int64|
+|max_instances|int64|

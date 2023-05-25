@@ -14,19 +14,19 @@ This table depends on [gcp_cloudscheduler_locations](gcp_cloudscheduler_location
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|description|String|
-|schedule|String|
-|time_zone|String|
-|user_update_time|Timestamp|
-|state|String|
-|status|JSON|
-|schedule_time|Timestamp|
-|last_attempt_time|Timestamp|
-|retry_config|JSON|
-|attempt_deadline|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|name (PK)|utf8|
+|description|utf8|
+|schedule|utf8|
+|time_zone|utf8|
+|user_update_time|timestamp[us, tz=UTC]|
+|state|utf8|
+|status|json|
+|schedule_time|timestamp[us, tz=UTC]|
+|last_attempt_time|timestamp[us, tz=UTC]|
+|retry_config|json|
+|attempt_deadline|int64|

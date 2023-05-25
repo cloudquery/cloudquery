@@ -2,7 +2,8 @@ package storage
 
 import (
 	pb "cloud.google.com/go/iam"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
@@ -16,12 +17,12 @@ func BucketPolicies() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveProject,
 			},
 			{
 				Name:     "bucket_name",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("name"),
 			},
 		},

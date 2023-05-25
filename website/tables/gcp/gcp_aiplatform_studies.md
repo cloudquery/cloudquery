@@ -14,14 +14,14 @@ This table depends on [gcp_aiplatform_vizier_locations](gcp_aiplatform_vizier_lo
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|display_name|String|
-|study_spec|JSON|
-|state|String|
-|create_time|Timestamp|
-|inactive_reason|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|name (PK)|utf8|
+|display_name|utf8|
+|study_spec|json|
+|state|utf8|
+|create_time|timestamp[us, tz=UTC]|
+|inactive_reason|utf8|
