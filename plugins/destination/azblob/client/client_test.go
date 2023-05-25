@@ -38,8 +38,6 @@ func TestPluginCSV(t *testing.T) {
 			SkipMigrateOverwriteForce: true,
 			SkipMigrateAppendForce:    true,
 		},
-		destination.WithTestSourceSkipDates(),
-		destination.WithTestSourceSkipTimes(),
 	)
 }
 
@@ -70,7 +68,5 @@ func TestPluginJSON(t *testing.T) {
 			SkipMigrateOverwriteForce: true,
 			SkipMigrateAppendForce:    true,
 		},
-		destination.WithTestSourceSkipDates(),
-		destination.WithTestSourceSkipTimes(),
 	)
 }
