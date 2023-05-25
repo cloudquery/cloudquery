@@ -14,25 +14,25 @@ This table depends on [aws_lightsail_disks](aws_lightsail_disks).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|disk_arn|String|
-|tags|JSON|
-|arn (PK)|String|
-|created_at|Timestamp|
-|from_disk_arn|String|
-|from_disk_name|String|
-|from_instance_arn|String|
-|from_instance_name|String|
-|is_from_auto_snapshot|Bool|
-|location|JSON|
-|name|String|
-|progress|String|
-|resource_type|String|
-|size_in_gb|Int|
-|state|String|
-|support_code|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|disk_arn|utf8|
+|tags|json|
+|arn (PK)|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|from_disk_arn|utf8|
+|from_disk_name|utf8|
+|from_instance_arn|utf8|
+|from_instance_name|utf8|
+|is_from_auto_snapshot|bool|
+|location|json|
+|name|utf8|
+|progress|utf8|
+|resource_type|utf8|
+|size_in_gb|int64|
+|state|utf8|
+|support_code|utf8|

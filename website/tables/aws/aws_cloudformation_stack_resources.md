@@ -14,18 +14,18 @@ This table depends on [aws_cloudformation_stacks](aws_cloudformation_stacks).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|stack_id|String|
-|last_updated_timestamp|Timestamp|
-|logical_resource_id|String|
-|resource_status|String|
-|resource_type|String|
-|drift_information|JSON|
-|module_info|JSON|
-|physical_resource_id|String|
-|resource_status_reason|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|stack_id|utf8|
+|last_updated_timestamp|timestamp[us, tz=UTC]|
+|logical_resource_id|utf8|
+|resource_status|utf8|
+|resource_type|utf8|
+|drift_information|json|
+|module_info|json|
+|physical_resource_id|utf8|
+|resource_status_reason|utf8|

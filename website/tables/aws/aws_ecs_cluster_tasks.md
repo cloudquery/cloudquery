@@ -14,47 +14,47 @@ This table depends on [aws_ecs_clusters](aws_ecs_clusters).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|task_protection|JSON|
-|attachments|JSON|
-|attributes|JSON|
-|availability_zone|String|
-|capacity_provider_name|String|
-|cluster_arn|String|
-|connectivity|String|
-|connectivity_at|Timestamp|
-|container_instance_arn|String|
-|containers|JSON|
-|cpu|String|
-|created_at|Timestamp|
-|desired_status|String|
-|enable_execute_command|Bool|
-|ephemeral_storage|JSON|
-|execution_stopped_at|Timestamp|
-|group|String|
-|health_status|String|
-|inference_accelerators|JSON|
-|last_status|String|
-|launch_type|String|
-|memory|String|
-|overrides|JSON|
-|platform_family|String|
-|platform_version|String|
-|pull_started_at|Timestamp|
-|pull_stopped_at|Timestamp|
-|started_at|Timestamp|
-|started_by|String|
-|stop_code|String|
-|stopped_at|Timestamp|
-|stopped_reason|String|
-|stopping_at|Timestamp|
-|task_arn|String|
-|task_definition_arn|String|
-|version|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|task_protection|json|
+|attachments|json|
+|attributes|json|
+|availability_zone|utf8|
+|capacity_provider_name|utf8|
+|cluster_arn|utf8|
+|connectivity|utf8|
+|connectivity_at|timestamp[us, tz=UTC]|
+|container_instance_arn|utf8|
+|containers|json|
+|cpu|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|desired_status|utf8|
+|enable_execute_command|bool|
+|ephemeral_storage|json|
+|execution_stopped_at|timestamp[us, tz=UTC]|
+|group|utf8|
+|health_status|utf8|
+|inference_accelerators|json|
+|last_status|utf8|
+|launch_type|utf8|
+|memory|utf8|
+|overrides|json|
+|platform_family|utf8|
+|platform_version|utf8|
+|pull_started_at|timestamp[us, tz=UTC]|
+|pull_stopped_at|timestamp[us, tz=UTC]|
+|started_at|timestamp[us, tz=UTC]|
+|started_by|utf8|
+|stop_code|utf8|
+|stopped_at|timestamp[us, tz=UTC]|
+|stopped_reason|utf8|
+|stopping_at|timestamp[us, tz=UTC]|
+|task_arn|utf8|
+|task_definition_arn|utf8|
+|version|int64|

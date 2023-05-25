@@ -14,18 +14,18 @@ This table depends on [aws_lightsail_databases](aws_lightsail_databases).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|database_arn|String|
-|allowed_values|String|
-|apply_method|String|
-|apply_type|String|
-|data_type|String|
-|description|String|
-|is_modifiable|Bool|
-|parameter_name|String|
-|parameter_value|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|database_arn|utf8|
+|allowed_values|utf8|
+|apply_method|utf8|
+|apply_type|utf8|
+|data_type|utf8|
+|description|utf8|
+|is_modifiable|bool|
+|parameter_name|utf8|
+|parameter_value|utf8|

@@ -10,18 +10,18 @@ The primary key for this table is **self_link**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id|String|
-|creation_timestamp|String|
-|description|String|
-|fingerprint|String|
-|id|Int|
-|kind|String|
-|name|String|
-|proxy_bind|Bool|
-|region|String|
-|self_link (PK)|String|
-|url_map|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id|utf8|
+|creation_timestamp|utf8|
+|description|utf8|
+|fingerprint|utf8|
+|id|int64|
+|kind|utf8|
+|name|utf8|
+|proxy_bind|bool|
+|region|utf8|
+|self_link (PK)|utf8|
+|url_map|utf8|

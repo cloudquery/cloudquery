@@ -15,41 +15,41 @@ The following tables depend on aws_rds_engine_versions:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|_engine_version_hash (PK)|String|
-|tag_list|JSON|
-|create_time|Timestamp|
-|custom_db_engine_version_manifest|String|
-|db_engine_description|String|
-|db_engine_media_type|String|
-|db_engine_version_arn|String|
-|db_engine_version_description|String|
-|db_parameter_group_family|String|
-|database_installation_files_s3_bucket_name|String|
-|database_installation_files_s3_prefix|String|
-|default_character_set|JSON|
-|engine|String|
-|engine_version|String|
-|exportable_log_types|StringArray|
-|image|JSON|
-|kms_key_id|String|
-|major_engine_version|String|
-|status|String|
-|supported_ca_certificate_identifiers|StringArray|
-|supported_character_sets|JSON|
-|supported_engine_modes|StringArray|
-|supported_feature_names|StringArray|
-|supported_nchar_character_sets|JSON|
-|supported_timezones|JSON|
-|supports_babelfish|Bool|
-|supports_certificate_rotation_without_restart|Bool|
-|supports_global_databases|Bool|
-|supports_log_exports_to_cloudwatch_logs|Bool|
-|supports_parallel_query|Bool|
-|supports_read_replica|Bool|
-|valid_upgrade_target|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region (PK)|utf8|
+|_engine_version_hash (PK)|utf8|
+|tag_list|json|
+|create_time|timestamp[us, tz=UTC]|
+|custom_db_engine_version_manifest|utf8|
+|db_engine_description|utf8|
+|db_engine_media_type|utf8|
+|db_engine_version_arn|utf8|
+|db_engine_version_description|utf8|
+|db_parameter_group_family|utf8|
+|database_installation_files_s3_bucket_name|utf8|
+|database_installation_files_s3_prefix|utf8|
+|default_character_set|json|
+|engine|utf8|
+|engine_version|utf8|
+|exportable_log_types|list<item: utf8, nullable>|
+|image|json|
+|kms_key_id|utf8|
+|major_engine_version|utf8|
+|status|utf8|
+|supported_ca_certificate_identifiers|list<item: utf8, nullable>|
+|supported_character_sets|json|
+|supported_engine_modes|list<item: utf8, nullable>|
+|supported_feature_names|list<item: utf8, nullable>|
+|supported_nchar_character_sets|json|
+|supported_timezones|json|
+|supports_babelfish|bool|
+|supports_certificate_rotation_without_restart|bool|
+|supports_global_databases|bool|
+|supports_log_exports_to_cloudwatch_logs|bool|
+|supports_parallel_query|bool|
+|supports_read_replica|bool|
+|valid_upgrade_target|json|

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v2.1.1...plugins-destination-snowflake-v2.2.0) (2023-05-25)
+
+
+### Features
+
+* **snowflake:** Update to SDK v3.6.3 ([#10946](https://github.com/cloudquery/cloudquery/issues/10946)) ([d3f7733](https://github.com/cloudquery/cloudquery/commit/d3f7733bd8cce3247174868c8a433ae0c2e1709e))
+
 ## [2.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v2.1.0...plugins-destination-snowflake-v2.1.1) (2023-05-18)
 
 

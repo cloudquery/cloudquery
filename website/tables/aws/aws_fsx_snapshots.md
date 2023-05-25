@@ -10,19 +10,19 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|administrative_actions|JSON|
-|tags|JSON|
-|creation_time|Timestamp|
-|lifecycle|String|
-|lifecycle_transition_reason|JSON|
-|name|String|
-|resource_arn|String|
-|snapshot_id|String|
-|volume_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|administrative_actions|json|
+|tags|json|
+|creation_time|timestamp[us, tz=UTC]|
+|lifecycle|utf8|
+|lifecycle_transition_reason|json|
+|name|utf8|
+|resource_arn|utf8|
+|snapshot_id|utf8|
+|volume_id|utf8|

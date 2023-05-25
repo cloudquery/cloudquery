@@ -14,13 +14,13 @@ This table depends on [aws_route53_hosted_zones](aws_route53_hosted_zones).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|arn (PK)|String|
-|hosted_zone_arn|String|
-|cloud_watch_logs_log_group_arn|String|
-|hosted_zone_id|String|
-|id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|arn (PK)|utf8|
+|hosted_zone_arn|utf8|
+|cloud_watch_logs_log_group_arn|utf8|
+|hosted_zone_id|utf8|
+|id|utf8|

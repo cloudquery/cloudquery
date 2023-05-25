@@ -15,34 +15,34 @@ The following tables depend on aws_glue_jobs:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|allocated_capacity|Int|
-|code_gen_configuration_nodes|JSON|
-|command|JSON|
-|connections|JSON|
-|created_on|Timestamp|
-|default_arguments|JSON|
-|description|String|
-|execution_class|String|
-|execution_property|JSON|
-|glue_version|String|
-|last_modified_on|Timestamp|
-|log_uri|String|
-|max_capacity|Float|
-|max_retries|Int|
-|name|String|
-|non_overridable_arguments|JSON|
-|notification_property|JSON|
-|number_of_workers|Int|
-|role|String|
-|security_configuration|String|
-|source_control_details|JSON|
-|timeout|Int|
-|worker_type|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|allocated_capacity|int64|
+|code_gen_configuration_nodes|json|
+|command|json|
+|connections|json|
+|created_on|timestamp[us, tz=UTC]|
+|default_arguments|json|
+|description|utf8|
+|execution_class|utf8|
+|execution_property|json|
+|glue_version|utf8|
+|last_modified_on|timestamp[us, tz=UTC]|
+|log_uri|utf8|
+|max_capacity|float64|
+|max_retries|int64|
+|name|utf8|
+|non_overridable_arguments|json|
+|notification_property|json|
+|number_of_workers|int64|
+|role|utf8|
+|security_configuration|utf8|
+|source_control_details|json|
+|timeout|int64|
+|worker_type|utf8|

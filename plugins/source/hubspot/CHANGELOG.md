@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-hubspot-v1.4.0...plugins-source-hubspot-v1.5.0) (2023-05-25)
+
+
+### This Release has the Following Changes to Tables
+- Table `hubspot_crm_companies`: column added with name `associations` and type `JSON`
+- Table `hubspot_crm_companies`: column order changed for `archived_at`
+- Table `hubspot_crm_contacts`: column added with name `associations` and type `JSON`
+- Table `hubspot_crm_contacts`: column order changed for `archived_at`
+- Table `hubspot_crm_deals`: column added with name `associations` and type `JSON`
+- Table `hubspot_crm_deals`: column order changed for `archived_at`
+- Table `hubspot_crm_line_items`: column added with name `associations` and type `JSON`
+- Table `hubspot_crm_line_items`: column order changed for `archived_at`
+- Table `hubspot_crm_products`: column added with name `associations` and type `JSON`
+- Table `hubspot_crm_products`: column order changed for `archived_at`
+- Table `hubspot_crm_quotes`: column added with name `associations` and type `JSON`
+- Table `hubspot_crm_quotes`: column order changed for `archived_at`
+- Table `hubspot_crm_tickets`: column added with name `associations` and type `JSON`
+- Table `hubspot_crm_tickets`: column order changed for `archived_at`
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* **hubspot:** Extract associations ([#10919](https://github.com/cloudquery/cloudquery/issues/10919)) ([a4e1ff1](https://github.com/cloudquery/cloudquery/commit/a4e1ff168972538e398c0761aa07fd2711cac705))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [1.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-hubspot-v1.3.0...plugins-source-hubspot-v1.4.0) (2023-05-02)
 
 

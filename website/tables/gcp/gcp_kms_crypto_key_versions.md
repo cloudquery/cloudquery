@@ -14,24 +14,24 @@ This table depends on [gcp_kms_crypto_keys](gcp_kms_crypto_keys).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|state|String|
-|protection_level|String|
-|algorithm|String|
-|attestation|JSON|
-|create_time|Timestamp|
-|generate_time|Timestamp|
-|destroy_time|Timestamp|
-|destroy_event_time|Timestamp|
-|import_job|String|
-|import_time|Timestamp|
-|import_failure_reason|String|
-|generation_failure_reason|String|
-|external_destruction_failure_reason|String|
-|external_protection_level_options|JSON|
-|reimport_eligible|Bool|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|name (PK)|utf8|
+|state|utf8|
+|protection_level|utf8|
+|algorithm|utf8|
+|attestation|json|
+|create_time|timestamp[us, tz=UTC]|
+|generate_time|timestamp[us, tz=UTC]|
+|destroy_time|timestamp[us, tz=UTC]|
+|destroy_event_time|timestamp[us, tz=UTC]|
+|import_job|utf8|
+|import_time|timestamp[us, tz=UTC]|
+|import_failure_reason|utf8|
+|generation_failure_reason|utf8|
+|external_destruction_failure_reason|utf8|
+|external_protection_level_options|json|
+|reimport_eligible|bool|

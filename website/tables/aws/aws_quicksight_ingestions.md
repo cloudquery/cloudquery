@@ -14,22 +14,22 @@ This table depends on [aws_quicksight_data_sets](aws_quicksight_data_sets).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|tags|JSON|
-|data_set_arn (PK)|String|
-|arn (PK)|String|
-|created_time|Timestamp|
-|ingestion_status|String|
-|error_info|JSON|
-|ingestion_id|String|
-|ingestion_size_in_bytes|Int|
-|ingestion_time_in_seconds|Int|
-|queue_info|JSON|
-|request_source|String|
-|request_type|String|
-|row_info|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region (PK)|utf8|
+|tags|json|
+|data_set_arn (PK)|utf8|
+|arn (PK)|utf8|
+|created_time|timestamp[us, tz=UTC]|
+|ingestion_status|utf8|
+|error_info|json|
+|ingestion_id|utf8|
+|ingestion_size_in_bytes|int64|
+|ingestion_time_in_seconds|int64|
+|queue_info|json|
+|request_source|utf8|
+|request_type|utf8|
+|row_info|json|

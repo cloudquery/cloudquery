@@ -1,10 +1,11 @@
 package lambda
 
 import (
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func layerVersionPolicies() *schema.Table {
@@ -20,12 +21,12 @@ func layerVersionPolicies() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "layer_version_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "layer_version",
-				Type:     schema.TypeInt,
+				Type:     arrow.PrimitiveTypes.Int64,
 				Resolver: schema.ParentColumnResolver("version"),
 			},
 		},

@@ -14,13 +14,13 @@ This table depends on [aws_ec2_ebs_snapshots](aws_ec2_ebs_snapshots).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|snapshot_arn (PK)|String|
-|create_volume_permissions|JSON|
-|product_codes|JSON|
-|snapshot_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|snapshot_arn (PK)|utf8|
+|create_volume_permissions|json|
+|product_codes|json|
+|snapshot_id|utf8|

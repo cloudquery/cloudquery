@@ -17,13 +17,13 @@ The following tables depend on aws_redshift_cluster_parameter_groups:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|cluster_arn (PK)|String|
-|parameter_group_name (PK)|String|
-|cluster_parameter_status_list|JSON|
-|parameter_apply_status|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|cluster_arn (PK)|utf8|
+|parameter_group_name (PK)|utf8|
+|cluster_parameter_status_list|json|
+|parameter_apply_status|utf8|

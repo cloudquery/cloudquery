@@ -10,13 +10,13 @@ The composite primary key for this table is (**account_id**, **region**, **polic
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|policy_name (PK)|String|
-|policy_revision_id (PK)|String|
-|last_updated_time|Timestamp|
-|policy_document|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region (PK)|utf8|
+|policy_name (PK)|utf8|
+|policy_revision_id (PK)|utf8|
+|last_updated_time|timestamp[us, tz=UTC]|
+|policy_document|utf8|

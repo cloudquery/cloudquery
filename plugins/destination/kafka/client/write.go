@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"context"
-	"fmt"
 	"strings"
 	"sync/atomic"
 
@@ -42,20 +41,20 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan arr
 
 	messages := make([]*sarama.ProducerMessage, 0, c.spec.BatchSize)
 	for r := range res {
-		var b bytes.Buffer
-		w := bufio.NewWriter(&b)
-		sc := r.Schema()
-		tableName, ok := r.Schema().Metadata().GetValue(schema.MetadataTableName)
-		if !ok {
-			return fmt.Errorf("%q metadata key not found", schema.MetadataTableName)
+		table, err := schema.NewTableFromArrowSchema(r.Schema())
+		if err != nil {
+			return err
 		}
 
-		if err := c.Client.WriteTableBatchFile(w, sc, []arrow.Record{r}); err != nil {
+		var b bytes.Buffer
+		w := bufio.NewWriter(&b)
+
+		if err := c.Client.WriteTableBatchFile(w, table, []arrow.Record{r}); err != nil {
 			return err
 		}
 		w.Flush()
 		messages = append(messages, &sarama.ProducerMessage{
-			Topic: tableName,
+			Topic: table.Name,
 			Key:   nil,
 			Value: sarama.ByteEncoder(b.Bytes()),
 		})

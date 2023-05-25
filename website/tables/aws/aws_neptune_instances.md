@@ -10,64 +10,64 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|allocated_storage|Int|
-|auto_minor_version_upgrade|Bool|
-|availability_zone|String|
-|backup_retention_period|Int|
-|ca_certificate_identifier|String|
-|character_set_name|String|
-|copy_tags_to_snapshot|Bool|
-|db_cluster_identifier|String|
-|db_instance_arn|String|
-|db_instance_class|String|
-|db_instance_identifier|String|
-|db_instance_status|String|
-|db_name|String|
-|db_parameter_groups|JSON|
-|db_security_groups|JSON|
-|db_subnet_group|JSON|
-|db_instance_port|Int|
-|dbi_resource_id|String|
-|deletion_protection|Bool|
-|domain_memberships|JSON|
-|enabled_cloudwatch_logs_exports|StringArray|
-|endpoint|JSON|
-|engine|String|
-|engine_version|String|
-|enhanced_monitoring_resource_arn|String|
-|iam_database_authentication_enabled|Bool|
-|instance_create_time|Timestamp|
-|iops|Int|
-|kms_key_id|String|
-|latest_restorable_time|Timestamp|
-|license_model|String|
-|master_username|String|
-|monitoring_interval|Int|
-|monitoring_role_arn|String|
-|multi_az|Bool|
-|option_group_memberships|JSON|
-|pending_modified_values|JSON|
-|performance_insights_enabled|Bool|
-|performance_insights_kms_key_id|String|
-|preferred_backup_window|String|
-|preferred_maintenance_window|String|
-|promotion_tier|Int|
-|publicly_accessible|Bool|
-|read_replica_db_cluster_identifiers|StringArray|
-|read_replica_db_instance_identifiers|StringArray|
-|read_replica_source_db_instance_identifier|String|
-|secondary_availability_zone|String|
-|status_infos|JSON|
-|storage_encrypted|Bool|
-|storage_type|String|
-|tde_credential_arn|String|
-|timezone|String|
-|vpc_security_groups|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|allocated_storage|int64|
+|auto_minor_version_upgrade|bool|
+|availability_zone|utf8|
+|backup_retention_period|int64|
+|ca_certificate_identifier|utf8|
+|character_set_name|utf8|
+|copy_tags_to_snapshot|bool|
+|db_cluster_identifier|utf8|
+|db_instance_arn|utf8|
+|db_instance_class|utf8|
+|db_instance_identifier|utf8|
+|db_instance_status|utf8|
+|db_name|utf8|
+|db_parameter_groups|json|
+|db_security_groups|json|
+|db_subnet_group|json|
+|db_instance_port|int64|
+|dbi_resource_id|utf8|
+|deletion_protection|bool|
+|domain_memberships|json|
+|enabled_cloudwatch_logs_exports|list<item: utf8, nullable>|
+|endpoint|json|
+|engine|utf8|
+|engine_version|utf8|
+|enhanced_monitoring_resource_arn|utf8|
+|iam_database_authentication_enabled|bool|
+|instance_create_time|timestamp[us, tz=UTC]|
+|iops|int64|
+|kms_key_id|utf8|
+|latest_restorable_time|timestamp[us, tz=UTC]|
+|license_model|utf8|
+|master_username|utf8|
+|monitoring_interval|int64|
+|monitoring_role_arn|utf8|
+|multi_az|bool|
+|option_group_memberships|json|
+|pending_modified_values|json|
+|performance_insights_enabled|bool|
+|performance_insights_kms_key_id|utf8|
+|preferred_backup_window|utf8|
+|preferred_maintenance_window|utf8|
+|promotion_tier|int64|
+|publicly_accessible|bool|
+|read_replica_db_cluster_identifiers|list<item: utf8, nullable>|
+|read_replica_db_instance_identifiers|list<item: utf8, nullable>|
+|read_replica_source_db_instance_identifier|utf8|
+|secondary_availability_zone|utf8|
+|status_infos|json|
+|storage_encrypted|bool|
+|storage_type|utf8|
+|tde_credential_arn|utf8|
+|timezone|utf8|
+|vpc_security_groups|json|

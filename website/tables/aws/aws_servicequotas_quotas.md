@@ -14,22 +14,22 @@ This table depends on [aws_servicequotas_services](aws_servicequotas_services).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|adjustable|Bool|
-|error_reason|JSON|
-|global_quota|Bool|
-|period|JSON|
-|quota_arn|String|
-|quota_code|String|
-|quota_name|String|
-|service_code|String|
-|service_name|String|
-|unit|String|
-|usage_metric|JSON|
-|value|Float|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|adjustable|bool|
+|error_reason|json|
+|global_quota|bool|
+|period|json|
+|quota_arn|utf8|
+|quota_code|utf8|
+|quota_name|utf8|
+|service_code|utf8|
+|service_name|utf8|
+|unit|utf8|
+|usage_metric|json|
+|value|float64|

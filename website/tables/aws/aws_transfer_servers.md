@@ -10,28 +10,28 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|certificate|String|
-|domain|String|
-|endpoint_details|JSON|
-|endpoint_type|String|
-|host_key_fingerprint|String|
-|identity_provider_details|JSON|
-|identity_provider_type|String|
-|logging_role|String|
-|post_authentication_login_banner|String|
-|pre_authentication_login_banner|String|
-|protocol_details|JSON|
-|protocols|StringArray|
-|security_policy_name|String|
-|server_id|String|
-|state|String|
-|user_count|Int|
-|workflow_details|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|certificate|utf8|
+|domain|utf8|
+|endpoint_details|json|
+|endpoint_type|utf8|
+|host_key_fingerprint|utf8|
+|identity_provider_details|json|
+|identity_provider_type|utf8|
+|logging_role|utf8|
+|post_authentication_login_banner|utf8|
+|pre_authentication_login_banner|utf8|
+|protocol_details|json|
+|protocols|list<item: utf8, nullable>|
+|security_policy_name|utf8|
+|server_id|utf8|
+|state|utf8|
+|user_count|int64|
+|workflow_details|json|

@@ -14,19 +14,19 @@ This table depends on [gcp_sql_instances](gcp_sql_instances).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|dual_password_type|String|
-|etag|String|
-|host|String|
-|instance (PK)|String|
-|kind|String|
-|name (PK)|String|
-|password|String|
-|password_policy|JSON|
-|project|String|
-|sqlserver_user_details|JSON|
-|type|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|dual_password_type|utf8|
+|etag|utf8|
+|host|utf8|
+|instance (PK)|utf8|
+|kind|utf8|
+|name (PK)|utf8|
+|password|utf8|
+|password_policy|json|
+|project|utf8|
+|sqlserver_user_details|json|
+|type|utf8|

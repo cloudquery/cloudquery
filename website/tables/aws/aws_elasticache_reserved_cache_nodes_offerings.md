@@ -10,18 +10,18 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|cache_node_type|String|
-|duration|Int|
-|fixed_price|Float|
-|offering_type|String|
-|product_description|String|
-|recurring_charges|JSON|
-|reserved_cache_nodes_offering_id|String|
-|usage_price|Float|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|cache_node_type|utf8|
+|duration|int64|
+|fixed_price|float64|
+|offering_type|utf8|
+|product_description|utf8|
+|recurring_charges|json|
+|reserved_cache_nodes_offering_id|utf8|
+|usage_price|float64|

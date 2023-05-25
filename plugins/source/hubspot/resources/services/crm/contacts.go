@@ -13,7 +13,7 @@ func Contacts() *schema.Table {
 		Transform: transformers.TransformWithStruct(
 			contacts.SimplePublicObjectWithAssociations{},
 			transformers.WithPrimaryKeys("Id"),
-			transformers.WithSkipFields("PropertiesWithHistory", "Associations"),
+			transformers.WithSkipFields("PropertiesWithHistory"),
 		),
 		Resolver: fetchContacts,
 	}
