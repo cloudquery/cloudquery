@@ -10,21 +10,21 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|auto_scaling_configuration_arn|String|
-|auto_scaling_configuration_name|String|
-|auto_scaling_configuration_revision|Int|
-|created_at|Timestamp|
-|deleted_at|Timestamp|
-|latest|Bool|
-|max_concurrency|Int|
-|max_size|Int|
-|min_size|Int|
-|status|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|auto_scaling_configuration_arn|utf8|
+|auto_scaling_configuration_name|utf8|
+|auto_scaling_configuration_revision|int64|
+|created_at|timestamp[us, tz=UTC]|
+|deleted_at|timestamp[us, tz=UTC]|
+|latest|bool|
+|max_concurrency|int64|
+|max_size|int64|
+|min_size|int64|
+|status|utf8|

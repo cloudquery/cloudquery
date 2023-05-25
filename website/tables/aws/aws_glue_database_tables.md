@@ -17,30 +17,30 @@ The following tables depend on aws_glue_database_tables:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|database_arn (PK)|String|
-|name (PK)|String|
-|catalog_id|String|
-|create_time|Timestamp|
-|created_by|String|
-|database_name|String|
-|description|String|
-|is_registered_with_lake_formation|Bool|
-|last_access_time|Timestamp|
-|last_analyzed_time|Timestamp|
-|owner|String|
-|parameters|JSON|
-|partition_keys|JSON|
-|retention|Int|
-|storage_descriptor|JSON|
-|table_type|String|
-|target_table|JSON|
-|update_time|Timestamp|
-|version_id|String|
-|view_expanded_text|String|
-|view_original_text|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|database_arn (PK)|utf8|
+|name (PK)|utf8|
+|catalog_id|utf8|
+|create_time|timestamp[us, tz=UTC]|
+|created_by|utf8|
+|database_name|utf8|
+|description|utf8|
+|is_registered_with_lake_formation|bool|
+|last_access_time|timestamp[us, tz=UTC]|
+|last_analyzed_time|timestamp[us, tz=UTC]|
+|owner|utf8|
+|parameters|json|
+|partition_keys|json|
+|retention|int64|
+|storage_descriptor|json|
+|table_type|utf8|
+|target_table|json|
+|update_time|timestamp[us, tz=UTC]|
+|version_id|utf8|
+|view_expanded_text|utf8|
+|view_original_text|utf8|

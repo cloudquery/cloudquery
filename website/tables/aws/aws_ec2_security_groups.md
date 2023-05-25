@@ -10,18 +10,18 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|description|String|
-|group_id|String|
-|group_name|String|
-|ip_permissions|JSON|
-|ip_permissions_egress|JSON|
-|owner_id|String|
-|vpc_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|description|utf8|
+|group_id|utf8|
+|group_name|utf8|
+|ip_permissions|json|
+|ip_permissions_egress|json|
+|owner_id|utf8|
+|vpc_id|utf8|

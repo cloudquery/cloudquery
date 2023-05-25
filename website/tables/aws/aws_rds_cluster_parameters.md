@@ -14,20 +14,20 @@ This table depends on [aws_rds_engine_versions](aws_rds_engine_versions).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|allowed_values|String|
-|apply_method|String|
-|apply_type|String|
-|data_type|String|
-|description|String|
-|is_modifiable|Bool|
-|minimum_engine_version|String|
-|parameter_name|String|
-|parameter_value|String|
-|source|String|
-|supported_engine_modes|StringArray|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|allowed_values|utf8|
+|apply_method|utf8|
+|apply_type|utf8|
+|data_type|utf8|
+|description|utf8|
+|is_modifiable|bool|
+|minimum_engine_version|utf8|
+|parameter_name|utf8|
+|parameter_value|utf8|
+|source|utf8|
+|supported_engine_modes|list<item: utf8, nullable>|

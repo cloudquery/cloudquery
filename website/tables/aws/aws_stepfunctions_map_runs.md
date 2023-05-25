@@ -17,21 +17,21 @@ The following tables depend on aws_stepfunctions_map_runs:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|state_machine_arn|String|
-|execution_arn|String|
-|execution_counts|JSON|
-|item_counts|JSON|
-|map_run_arn|String|
-|max_concurrency|Int|
-|start_date|Timestamp|
-|status|String|
-|tolerated_failure_count|Int|
-|tolerated_failure_percentage|Float|
-|stop_date|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|state_machine_arn|utf8|
+|execution_arn|utf8|
+|execution_counts|json|
+|item_counts|json|
+|map_run_arn|utf8|
+|max_concurrency|int64|
+|start_date|timestamp[us, tz=UTC]|
+|status|utf8|
+|tolerated_failure_count|int64|
+|tolerated_failure_percentage|float64|
+|stop_date|timestamp[us, tz=UTC]|

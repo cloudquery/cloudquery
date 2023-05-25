@@ -16,17 +16,17 @@ The following tables depend on aws_docdb_engine_versions:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|db_engine_description|String|
-|db_engine_version_description|String|
-|db_parameter_group_family|String|
-|engine (PK)|String|
-|engine_version (PK)|String|
-|exportable_log_types|StringArray|
-|supports_log_exports_to_cloudwatch_logs|Bool|
-|valid_upgrade_target|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region (PK)|utf8|
+|db_engine_description|utf8|
+|db_engine_version_description|utf8|
+|db_parameter_group_family|utf8|
+|engine (PK)|utf8|
+|engine_version (PK)|utf8|
+|exportable_log_types|list<item: utf8, nullable>|
+|supports_log_exports_to_cloudwatch_logs|bool|
+|valid_upgrade_target|json|
