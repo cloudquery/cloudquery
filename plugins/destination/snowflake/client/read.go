@@ -214,7 +214,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	}
 	cols := strings.Join(colNames, ", ")
 	stmt := fmt.Sprintf(readSQL, cols, tableName)
-	rows, err := c.db.Query(stmt, sourceName)
+	rows, err := c.db.QueryContext(ctx, stmt, sourceName)
 	if err != nil {
 		return err
 	}
