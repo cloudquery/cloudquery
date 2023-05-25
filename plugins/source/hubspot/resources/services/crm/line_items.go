@@ -14,7 +14,7 @@ func LineItems() *schema.Table {
 		Transform: transformers.TransformWithStruct(
 			line_items.SimplePublicObjectWithAssociations{},
 			transformers.WithPrimaryKeys("Id"),
-			transformers.WithSkipFields("PropertiesWithHistory", "Associations"),
+			transformers.WithSkipFields("PropertiesWithHistory"),
 		),
 	}
 }
