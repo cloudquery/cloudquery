@@ -17,9 +17,9 @@ func Projects() *schema.Table {
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
+				Name:       "project_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveProject,
 				PrimaryKey: true,
 			},
 		},

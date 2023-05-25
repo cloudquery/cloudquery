@@ -23,9 +23,9 @@ func DnsAuthorizations() *schema.Table {
 		Transform:   client.TransformWithStruct(&pb.DnsAuthorization{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
+				Name:       "project_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveProject,
 				PrimaryKey: true,
 			},
 		},

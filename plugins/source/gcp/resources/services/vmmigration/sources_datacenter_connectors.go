@@ -17,9 +17,9 @@ func DatacenterConnectors() *schema.Table {
 		Transform:   client.TransformWithStruct(&pb.DatacenterConnector{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
+				Name:       "project_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveProject,
 				PrimaryKey: true,
 			},
 		},

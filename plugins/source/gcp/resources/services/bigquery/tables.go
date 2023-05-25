@@ -18,9 +18,9 @@ func Tables() *schema.Table {
 		Transform:           client.TransformWithStruct(&pb.Table{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
+				Name:       "project_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveProject,
 				PrimaryKey: true,
 			},
 		},

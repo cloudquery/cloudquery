@@ -23,9 +23,9 @@ func CertificateMaps() *schema.Table {
 		Transform:   client.TransformWithStruct(&pb.CertificateMap{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
+				Name:       "project_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveProject,
 				PrimaryKey: true,
 			},
 		},

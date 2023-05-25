@@ -17,15 +17,15 @@ func DeviceConfigs() *schema.Table {
 		Transform:   client.TransformWithStruct(&pb.DeviceConfig{}, transformers.WithPrimaryKeys("Version")),
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
+				Name:       "project_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveProject,
 				PrimaryKey: true,
 			},
 			{
-				Name:     "device_name",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("name"),
+				Name:       "device_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("name"),
 				PrimaryKey: true,
 			},
 		},

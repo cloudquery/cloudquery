@@ -27,9 +27,9 @@ func PipelineJobs() *schema.Table {
 		Transform:   client.TransformWithStruct(&pb.PipelineJob{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
+				Name:       "project_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveProject,
 				PrimaryKey: true,
 			},
 		},

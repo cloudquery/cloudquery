@@ -24,9 +24,9 @@ func Keys() *schema.Table {
 		Transform:   client.TransformWithStruct(&pb.Key{}, transformers.WithPrimaryKeys("Uid")),
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
+				Name:       "project_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveProject,
 				PrimaryKey: true,
 			},
 		},

@@ -17,15 +17,15 @@ func Tables() *schema.Table {
 		Transform:           client.TransformWithStruct(&tableInfoWithName{}, transformers.WithUnwrapStructFields("TableInfo"), transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
+				Name:       "project_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveProject,
 				PrimaryKey: true,
 			},
 			{
-				Name:     "instance_name",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("name"),
+				Name:       "instance_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("name"),
 				PrimaryKey: true,
 			},
 		},

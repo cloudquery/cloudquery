@@ -19,15 +19,15 @@ func FolderFindings() *schema.Table {
 		Transform:     client.TransformWithStruct(&pb.ListFindingsResponse_ListFindingsResult{}),
 		Columns: []schema.Column{
 			{
-				Name:     "folder_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveFolder,
+				Name:       "folder_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveFolder,
 				PrimaryKey: true,
 			},
 			{
-				Name:     "name",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.PathResolver("Finding.Name"),
+				Name:       "name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Finding.Name"),
 				PrimaryKey: true,
 			},
 		},

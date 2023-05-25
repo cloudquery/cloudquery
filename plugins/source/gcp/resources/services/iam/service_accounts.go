@@ -29,9 +29,9 @@ func ServiceAccounts() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "unique_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.PathResolver("UniqueId"),
+				Name:       "unique_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("UniqueId"),
 				PrimaryKey: true,
 			},
 		},

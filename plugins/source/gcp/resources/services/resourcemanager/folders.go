@@ -17,9 +17,9 @@ func Folders() *schema.Table {
 		Transform:   client.TransformWithStruct(&pb.Folder{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
-				Name:     "organization_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveOrganization,
+				Name:       "organization_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveOrganization,
 				PrimaryKey: true,
 			},
 		},

@@ -19,15 +19,15 @@ func OrganizationFindings() *schema.Table {
 		Transform:     client.TransformWithStruct(&pb.ListFindingsResponse_ListFindingsResult{}),
 		Columns: []schema.Column{
 			{
-				Name:     "organization_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveOrganization,
+				Name:       "organization_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveOrganization,
 				PrimaryKey: true,
 			},
 			{
-				Name:     "name",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.PathResolver("Finding.Name"),
+				Name:       "name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Finding.Name"),
 				PrimaryKey: true,
 			},
 		},
