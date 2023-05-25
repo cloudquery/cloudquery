@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v3.1.0...plugins-destination-file-v3.2.0) (2023-05-25)
+
+
+### Features
+
+* Update to `github.com/cloudquery/filetypes/v3` `v3.1.0` ([#10942](https://github.com/cloudquery/cloudquery/issues/10942)) ([40ca741](https://github.com/cloudquery/cloudquery/commit/40ca7415fb4149481b6e601c73c5f2019f3353aa))
+
 ## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v3.0.2...plugins-destination-file-v3.1.0) (2023-05-25)
 
 
