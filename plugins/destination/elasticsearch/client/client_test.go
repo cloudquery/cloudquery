@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
 )
 
 var migrateStrategy = destination.MigrateStrategy{

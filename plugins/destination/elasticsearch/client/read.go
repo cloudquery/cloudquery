@@ -2,17 +2,20 @@ package client
 
 import (
 	"context"
-	"encoding/base64"
-	"encoding/json"
 	"fmt"
 	"io"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/goccy/go-json"
+
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/core/search"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
 	index := c.getIndexNamePattern(table.Name)
 
 	// refresh index before read, to ensure all written data is available
@@ -49,21 +52,38 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		return fmt.Errorf("failed to decode response body: %w", err)
 	}
 
+	schema := table.ToArrowSchema()
 	for _, hit := range result.Hits.Hits {
-		values := make([]any, len(table.Columns))
-		for i, col := range table.Columns {
-			switch col.Type {
-			case schema.TypeByteArray:
-				ba, err := base64.StdEncoding.DecodeString(hit.Source[col.Name].(string))
-				if err != nil {
-					return fmt.Errorf("failed to decode base64 string: %w", err)
-				}
-				values[i] = ba
-			default:
-				values[i] = hit.Source[col.Name]
+		rb := array.NewRecordBuilder(memory.DefaultAllocator, schema)
+		for i, field := range rb.Fields() {
+			err := appendValue(field, hit.Source[schema.Field(i).Name])
+			if err != nil {
+				return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 			}
 		}
-		res <- values
+		res <- rb.NewRecord()
 	}
 	return nil
+}
+
+func appendValue(builder array.Builder, value any) error {
+	if value == nil {
+		builder.AppendNull()
+		return nil
+	}
+	switch bldr := builder.(type) {
+	case *array.StructBuilder:
+		m := value.(map[string]any)
+		bldr.Append(true)
+		bldrType := bldr.Type().(*arrow.StructType)
+		for k, v := range m {
+			idx, _ := bldrType.FieldIdx(k)
+			fieldBldr := bldr.FieldBuilder(idx)
+			if err := appendValue(fieldBldr, v); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	return builder.AppendValueFromString(fmt.Sprintf("%v", value))
 }
