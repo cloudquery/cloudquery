@@ -18,25 +18,25 @@ The following tables depend on gcp_cloudiot_devices:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|id|String|
-|name (PK)|String|
-|num_id|Int|
-|credentials|JSON|
-|last_heartbeat_time|Timestamp|
-|last_event_time|Timestamp|
-|last_state_time|Timestamp|
-|last_config_ack_time|Timestamp|
-|last_config_send_time|Timestamp|
-|blocked|Bool|
-|last_error_time|Timestamp|
-|last_error_status|JSON|
-|config|JSON|
-|state|JSON|
-|log_level|String|
-|metadata|JSON|
-|gateway_config|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|id|utf8|
+|name (PK)|utf8|
+|num_id|int64|
+|credentials|json|
+|last_heartbeat_time|timestamp[us, tz=UTC]|
+|last_event_time|timestamp[us, tz=UTC]|
+|last_state_time|timestamp[us, tz=UTC]|
+|last_config_ack_time|timestamp[us, tz=UTC]|
+|last_config_send_time|timestamp[us, tz=UTC]|
+|blocked|bool|
+|last_error_time|timestamp[us, tz=UTC]|
+|last_error_status|json|
+|config|json|
+|state|json|
+|log_level|utf8|
+|metadata|json|
+|gateway_config|json|

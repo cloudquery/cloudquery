@@ -6,8 +6,9 @@ import (
 	"google.golang.org/api/iterator"
 
 	pb "cloud.google.com/go/redis/apiv1/redispb"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	redis "cloud.google.com/go/redis/apiv1"
@@ -23,7 +24,7 @@ func Instances() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveProject,
 			},
 		},

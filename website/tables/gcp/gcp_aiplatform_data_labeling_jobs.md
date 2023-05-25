@@ -14,26 +14,26 @@ This table depends on [gcp_aiplatform_job_locations](gcp_aiplatform_job_location
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|display_name|String|
-|datasets|StringArray|
-|annotation_labels|JSON|
-|labeler_count|Int|
-|instruction_uri|String|
-|inputs_schema_uri|String|
-|inputs|JSON|
-|state|String|
-|labeling_progress|Int|
-|current_spend|JSON|
-|create_time|Timestamp|
-|update_time|Timestamp|
-|error|JSON|
-|labels|JSON|
-|specialist_pools|StringArray|
-|encryption_spec|JSON|
-|active_learning_config|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|name (PK)|utf8|
+|display_name|utf8|
+|datasets|list<item: utf8, nullable>|
+|annotation_labels|json|
+|labeler_count|int64|
+|instruction_uri|utf8|
+|inputs_schema_uri|utf8|
+|inputs|json|
+|state|utf8|
+|labeling_progress|int64|
+|current_spend|json|
+|create_time|timestamp[us, tz=UTC]|
+|update_time|timestamp[us, tz=UTC]|
+|error|json|
+|labels|json|
+|specialist_pools|list<item: utf8, nullable>|
+|encryption_spec|json|
+|active_learning_config|json|

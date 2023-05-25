@@ -5,6 +5,7 @@ spec:
   destinations: [postgresql]
   path: ./gcp
   registry: local
+  tables: ["*"]
 ---
 kind: destination
 spec:
