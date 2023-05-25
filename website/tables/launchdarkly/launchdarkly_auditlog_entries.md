@@ -11,24 +11,24 @@ It supports incremental syncs based on the **date** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|date (Incremental Key)|Timestamp|
-|id (PK)|String|
-|account_id|String|
-|accesses|JSON|
-|kind|String|
-|name|String|
-|description|String|
-|short_description|String|
-|comment|String|
-|subject|JSON|
-|member|JSON|
-|token|JSON|
-|app|JSON|
-|title_verb|String|
-|title|String|
-|target|JSON|
-|parent|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|date (Incremental Key)|timestamp[us, tz=UTC]|
+|id (PK)|utf8|
+|account_id|utf8|
+|accesses|extension_type<storage=binary>|
+|kind|utf8|
+|name|utf8|
+|description|utf8|
+|short_description|utf8|
+|comment|utf8|
+|subject|extension_type<storage=binary>|
+|member|extension_type<storage=binary>|
+|token|extension_type<storage=binary>|
+|app|extension_type<storage=binary>|
+|title_verb|utf8|
+|title|utf8|
+|target|extension_type<storage=binary>|
+|parent|extension_type<storage=binary>|

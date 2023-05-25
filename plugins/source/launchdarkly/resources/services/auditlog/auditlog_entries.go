@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/launchdarkly/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	ldapi "github.com/launchdarkly/api-client-go/v11"
 )
 
@@ -19,12 +20,10 @@ func AuditLogEntries() *schema.Table {
 		Transform:   client.TransformWithStruct(&ldapi.AuditLogEntryListingRep{}, transformers.WithPrimaryKeys("Id"), transformers.WithSkipFields("Date", "Links")),
 		Columns: schema.ColumnList{
 			{
-				Name:     "date",
-				Type:     schema.TypeTimestamp,
-				Resolver: client.UnixTimeResolver("Date"),
-				CreationOptions: schema.ColumnCreationOptions{
-					IncrementalKey: true,
-				},
+				Name:           "date",
+				Type:           arrow.FixedWidthTypes.Timestamp_us,
+				Resolver:       client.UnixTimeResolver("Date"),
+				IncrementalKey: true,
 			},
 		},
 		IsIncremental: true,
