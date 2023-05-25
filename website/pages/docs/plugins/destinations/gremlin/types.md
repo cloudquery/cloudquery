@@ -47,6 +47,8 @@ The Gremlin destination (`v2.0.0` and later) supports most [Apache Arrow](https:
 | Uint64                 | ✅ Yes      | `Integer`             |
 | Union                  | ✅ Yes      | `String`              |
 
+String-persisted data types are encoded according to the [Arrow String Representation](/docs/advanced-topics/arrow-string-representation) specification.
+
 ## Notes
 
 <sup>*</sup> Timestamps are converted to strings in the format `yyyy-MM-dd HH:mm:ss.SSSSSSSSS` (UTC timezone) (e.g. `2021-01-01 00:00:00.000000000`). `_cq_sync_time` column is persisted in native `Timestamp` type.

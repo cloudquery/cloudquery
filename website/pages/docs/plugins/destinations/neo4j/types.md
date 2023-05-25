@@ -46,3 +46,5 @@ The Neo4j destination (`v3.0.0` and later) supports most [Apache Arrow](https://
 | Uint32                 | ✅ Yes      | `BigInt`   |
 | Uint64                 | ✅ Yes      | `BigInt`   |
 | Union                  | ✅ Yes      | `String`   |
+
+String-persisted data types are encoded according to the [Arrow String Representation](/docs/advanced-topics/arrow-string-representation) specification.
