@@ -53,11 +53,11 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		return fmt.Errorf("failed to decode response body: %w", err)
 	}
 
-	schema := table.ToArrowSchema()
+	sm := table.ToArrowSchema()
 	for _, hit := range result.Hits.Hits {
-		rb := array.NewRecordBuilder(memory.DefaultAllocator, schema)
+		rb := array.NewRecordBuilder(memory.DefaultAllocator, sm)
 		for i, field := range rb.Fields() {
-			err := appendValue(field, hit.Source[schema.Field(i).Name])
+			err := appendValue(field, hit.Source[sm.Field(i).Name])
 			if err != nil {
 				return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 			}

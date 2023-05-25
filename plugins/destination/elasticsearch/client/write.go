@@ -103,11 +103,10 @@ func (c *Client) getValueForElasticsearch(col arrow.Array, i int) any {
 	case *cqtypes.JSONArray:
 		return col.ValueStr(i)
 	case array.ListLike:
-		arr := col.(array.ListLike)
-		elems := make([]any, 0, arr.Len())
-		for j := 0; j < arr.Len(); j++ {
-			from, to := arr.ValueOffsets(j)
-			slc := array.NewSlice(arr.ListValues(), from, to)
+		elems := make([]any, 0, col.Len())
+		for j := 0; j < col.Len(); j++ {
+			from, to := col.ValueOffsets(j)
+			slc := array.NewSlice(col.ListValues(), from, to)
 			for k := 0; k < slc.Len(); k++ {
 				if slc.IsNull(k) {
 					elems = append(elems, nil)
@@ -135,10 +134,10 @@ func (c *Client) getValueForElasticsearch(col arrow.Array, i int) any {
 		switch u {
 		case arrow.Second:
 			format := "15:04:05"
-			return padRight(col.Value(i).ToTime(u).Format(format), "0", len(format))
+			return padRightWithZero(col.Value(i).ToTime(u).Format(format), len(format))
 		case arrow.Millisecond:
 			format := "15:04:05.999"
-			return padRight(col.Value(i).ToTime(u).Format(format), "0", len(format))
+			return padRightWithZero(col.Value(i).ToTime(u).Format(format), len(format))
 		}
 		panic(fmt.Sprintf("unsupported time32 unit: %s", u))
 	case *array.Time64:
@@ -146,10 +145,10 @@ func (c *Client) getValueForElasticsearch(col arrow.Array, i int) any {
 		switch u {
 		case arrow.Microsecond:
 			format := "15:04:05.999999"
-			return padRight(col.Value(i).ToTime(u).Format(format), "0", len(format))
+			return padRightWithZero(col.Value(i).ToTime(u).Format(format), len(format))
 		case arrow.Nanosecond:
 			format := "15:04:05.999999999"
-			return padRight(col.Value(i).ToTime(u).Format(format), "0", len(format))
+			return padRightWithZero(col.Value(i).ToTime(u).Format(format), len(format))
 		}
 		panic(fmt.Sprintf("unsupported time64 unit: %s", u))
 	}
@@ -179,10 +178,10 @@ func resourceID(record arrow.Record, i int, pkIndexes []int) uint64 {
 	return h1
 }
 
-func padRight(s, padding string, length int) string {
+func padRightWithZero(s string, length int) string {
 	count := length - len(s)
 	if count <= 0 {
 		return s
 	}
-	return s + strings.Repeat(padding, count)
+	return s + strings.Repeat("0", count)
 }
