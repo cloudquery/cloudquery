@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.1.1...plugins-destination-mssql-v4.2.0) (2023-05-25)
+
+
+### Features
+
+* **mssql:** Update to SDK V363 ([#10938](https://github.com/cloudquery/cloudquery/issues/10938)) ([9ea47ed](https://github.com/cloudquery/cloudquery/commit/9ea47ede18b840fb17f7096e210ef6d440ce22c6))
+
 ## [4.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.1.0...plugins-destination-mssql-v4.1.1) (2023-05-18)
 
 
