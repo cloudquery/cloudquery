@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"golang.org/x/exp/slices"
 )
 
 const (
@@ -81,6 +82,17 @@ func migrate(cmd *cobra.Command, args []string) error {
 		destinationsForSource := specReader.GetDestinationNamesForSource(cl.Spec.Name)
 		destinationsClientsForSource := managedDestinationsClients.ClientsByNames(destinationsForSource)
 		switch maxVersion {
+		case 2:
+			for _, destination := range destinationsClientsForSource {
+				versions, err := destination.Versions(ctx)
+				if err != nil {
+					return fmt.Errorf("failed to get destination versions: %w", err)
+				}
+				if !slices.Contains(versions, 1) {
+					return fmt.Errorf("destination %[1]s does not support CloudQuery SDK version 1. Please upgrade to newer version of %[1]s", destination.Spec.Name)
+				}
+			}
+			return migrateConnectionV2(ctx, cl, destinationsClientsForSource)
 		case 1:
 			return migrateConnectionV1(ctx, cl, destinationsClientsForSource)
 		case 0:
