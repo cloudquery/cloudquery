@@ -2,6 +2,8 @@ package ssoadmin
 
 import (
 	"context"
+	"encoding/json"
+	"net/url"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
@@ -33,8 +35,9 @@ func inlinePolicies() *schema.Table {
 				PrimaryKey: true,
 			},
 			{
-				Name: "inline_policy",
-				Type: sdkTypes.ExtensionTypes.JSON,
+				Name:     "inline_policy_json",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: resolveInlinePolicyJSON,
 			},
 		},
 	}
@@ -58,6 +61,22 @@ func fetchInlinePolicies(ctx context.Context, meta schema.ClientMeta, parent *sc
 		return err
 	}
 
-	res <- response.InlinePolicy
+	res <- response
 	return nil
+}
+
+func resolveInlinePolicyJSON(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	r := resource.Item.(*ssoadmin.GetInlinePolicyForPermissionSetOutput)
+
+	decodedDocument, err := url.QueryUnescape(*r.InlinePolicy)
+	if err != nil {
+		return err
+	}
+
+	var document map[string]any
+	err = json.Unmarshal([]byte(decodedDocument), &document)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, document)
 }
