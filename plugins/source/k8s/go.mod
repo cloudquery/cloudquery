@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudquery/plugin-pb-go v1.0.8
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0
+	github.com/cloudquery/plugin-sdk/v3 v3.6.4
 	github.com/golang/mock v1.6.0
 	github.com/google/gnostic v0.6.9
 	github.com/rs/zerolog v1.29.0
@@ -23,6 +23,7 @@ require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
+	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emicklei/go-restful/v3 v3.9.0 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
@@ -56,6 +57,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
+	github.com/pierrec/lz4/v4 v4.1.15 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
