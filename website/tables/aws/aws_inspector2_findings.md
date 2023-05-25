@@ -11,29 +11,29 @@ The composite primary key for this table is (**request_account_id**, **request_r
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|request_account_id (PK)|String|
-|request_region (PK)|String|
-|arn (PK)|String|
-|aws_account_id|String|
-|description|String|
-|finding_arn|String|
-|first_observed_at|Timestamp|
-|last_observed_at|Timestamp|
-|remediation|JSON|
-|resources|JSON|
-|severity|String|
-|status|String|
-|type|String|
-|exploit_available|String|
-|exploitability_details|JSON|
-|fix_available|String|
-|inspector_score|Float|
-|inspector_score_details|JSON|
-|network_reachability_details|JSON|
-|package_vulnerability_details|JSON|
-|title|String|
-|updated_at|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|request_account_id (PK)|utf8|
+|request_region (PK)|utf8|
+|arn (PK)|utf8|
+|aws_account_id|utf8|
+|description|utf8|
+|finding_arn|utf8|
+|first_observed_at|timestamp[us, tz=UTC]|
+|last_observed_at|timestamp[us, tz=UTC]|
+|remediation|json|
+|resources|json|
+|severity|utf8|
+|status|utf8|
+|type|utf8|
+|exploit_available|utf8|
+|exploitability_details|json|
+|fix_available|utf8|
+|inspector_score|float64|
+|inspector_score_details|json|
+|network_reachability_details|json|
+|package_vulnerability_details|json|
+|title|utf8|
+|updated_at|timestamp[us, tz=UTC]|

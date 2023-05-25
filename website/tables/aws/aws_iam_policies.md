@@ -15,22 +15,22 @@ The following tables depend on aws_iam_policies:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|id (PK)|String|
-|tags|JSON|
-|policy_version_list|JSON|
-|arn|String|
-|attachment_count|Int|
-|create_date|Timestamp|
-|default_version_id|String|
-|description|String|
-|is_attachable|Bool|
-|path|String|
-|permissions_boundary_usage_count|Int|
-|policy_id|String|
-|policy_name|String|
-|update_date|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|id (PK)|utf8|
+|tags|json|
+|policy_version_list|json|
+|arn|utf8|
+|attachment_count|int64|
+|create_date|timestamp[us, tz=UTC]|
+|default_version_id|utf8|
+|description|utf8|
+|is_attachable|bool|
+|path|utf8|
+|permissions_boundary_usage_count|int64|
+|policy_id|utf8|
+|policy_name|utf8|
+|update_date|timestamp[us, tz=UTC]|

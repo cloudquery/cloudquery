@@ -14,22 +14,22 @@ This table depends on [aws_elasticbeanstalk_environments](aws_elasticbeanstalk_e
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|environment_id|String|
-|change_severity|String|
-|default_value|String|
-|max_length|Int|
-|max_value|Int|
-|min_value|Int|
-|name|String|
-|namespace|String|
-|regex|JSON|
-|user_defined|Bool|
-|value_options|StringArray|
-|value_type|String|
-|application_arn|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|environment_id|utf8|
+|change_severity|utf8|
+|default_value|utf8|
+|max_length|int64|
+|max_value|int64|
+|min_value|int64|
+|name|utf8|
+|namespace|utf8|
+|regex|json|
+|user_defined|bool|
+|value_options|list<item: utf8, nullable>|
+|value_type|utf8|
+|application_arn|utf8|

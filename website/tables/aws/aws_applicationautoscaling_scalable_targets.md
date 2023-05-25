@@ -10,17 +10,17 @@ The composite primary key for this table is (**account_id**, **region**, **resou
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|creation_time|Timestamp|
-|max_capacity|Int|
-|min_capacity|Int|
-|resource_id (PK)|String|
-|role_arn|String|
-|scalable_dimension|String|
-|service_namespace|String|
-|suspended_state|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region (PK)|utf8|
+|creation_time|timestamp[us, tz=UTC]|
+|max_capacity|int64|
+|min_capacity|int64|
+|resource_id (PK)|utf8|
+|role_arn|utf8|
+|scalable_dimension|utf8|
+|service_namespace|utf8|
+|suspended_state|json|

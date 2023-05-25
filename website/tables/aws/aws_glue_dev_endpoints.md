@@ -10,36 +10,36 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|arguments|JSON|
-|availability_zone|String|
-|created_timestamp|Timestamp|
-|endpoint_name|String|
-|extra_jars_s3_path|String|
-|extra_python_libs_s3_path|String|
-|failure_reason|String|
-|glue_version|String|
-|last_modified_timestamp|Timestamp|
-|last_update_status|String|
-|number_of_nodes|Int|
-|number_of_workers|Int|
-|private_address|String|
-|public_address|String|
-|public_key|String|
-|public_keys|StringArray|
-|role_arn|String|
-|security_configuration|String|
-|security_group_ids|StringArray|
-|status|String|
-|subnet_id|String|
-|vpc_id|String|
-|worker_type|String|
-|yarn_endpoint_address|String|
-|zeppelin_remote_spark_interpreter_port|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|arguments|json|
+|availability_zone|utf8|
+|created_timestamp|timestamp[us, tz=UTC]|
+|endpoint_name|utf8|
+|extra_jars_s3_path|utf8|
+|extra_python_libs_s3_path|utf8|
+|failure_reason|utf8|
+|glue_version|utf8|
+|last_modified_timestamp|timestamp[us, tz=UTC]|
+|last_update_status|utf8|
+|number_of_nodes|int64|
+|number_of_workers|int64|
+|private_address|utf8|
+|public_address|utf8|
+|public_key|utf8|
+|public_keys|list<item: utf8, nullable>|
+|role_arn|utf8|
+|security_configuration|utf8|
+|security_group_ids|list<item: utf8, nullable>|
+|status|utf8|
+|subnet_id|utf8|
+|vpc_id|utf8|
+|worker_type|utf8|
+|yarn_endpoint_address|utf8|
+|zeppelin_remote_spark_interpreter_port|int64|

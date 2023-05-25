@@ -3,12 +3,13 @@ package appstream
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func applicationFleetAssociations() *schema.Table {
@@ -23,20 +24,16 @@ func applicationFleetAssociations() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "application_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ApplicationArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "application_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ApplicationArn"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "fleet_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FleetName"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "fleet_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("FleetName"),
+				PrimaryKey: true,
 			},
 		},
 	}

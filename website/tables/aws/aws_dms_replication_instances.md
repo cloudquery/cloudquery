@@ -10,36 +10,36 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|allocated_storage|Int|
-|auto_minor_version_upgrade|Bool|
-|availability_zone|String|
-|dns_name_servers|String|
-|engine_version|String|
-|free_until|Timestamp|
-|instance_create_time|Timestamp|
-|kms_key_id|String|
-|multi_az|Bool|
-|network_type|String|
-|pending_modified_values|JSON|
-|preferred_maintenance_window|String|
-|publicly_accessible|Bool|
-|replication_instance_arn|String|
-|replication_instance_class|String|
-|replication_instance_identifier|String|
-|replication_instance_ipv6_addresses|StringArray|
-|replication_instance_private_ip_address|String|
-|replication_instance_private_ip_addresses|StringArray|
-|replication_instance_public_ip_address|String|
-|replication_instance_public_ip_addresses|StringArray|
-|replication_instance_status|String|
-|replication_subnet_group|JSON|
-|secondary_availability_zone|String|
-|vpc_security_groups|JSON|
-|tags|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|allocated_storage|int64|
+|auto_minor_version_upgrade|bool|
+|availability_zone|utf8|
+|dns_name_servers|utf8|
+|engine_version|utf8|
+|free_until|timestamp[us, tz=UTC]|
+|instance_create_time|timestamp[us, tz=UTC]|
+|kms_key_id|utf8|
+|multi_az|bool|
+|network_type|utf8|
+|pending_modified_values|json|
+|preferred_maintenance_window|utf8|
+|publicly_accessible|bool|
+|replication_instance_arn|utf8|
+|replication_instance_class|utf8|
+|replication_instance_identifier|utf8|
+|replication_instance_ipv6_addresses|list<item: utf8, nullable>|
+|replication_instance_private_ip_address|utf8|
+|replication_instance_private_ip_addresses|list<item: utf8, nullable>|
+|replication_instance_public_ip_address|utf8|
+|replication_instance_public_ip_addresses|list<item: utf8, nullable>|
+|replication_instance_status|utf8|
+|replication_subnet_group|json|
+|secondary_availability_zone|utf8|
+|vpc_security_groups|json|
+|tags|json|

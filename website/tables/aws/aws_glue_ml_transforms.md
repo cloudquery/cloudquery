@@ -15,30 +15,30 @@ The following tables depend on aws_glue_ml_transforms:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|schema|JSON|
-|created_on|Timestamp|
-|description|String|
-|evaluation_metrics|JSON|
-|glue_version|String|
-|input_record_tables|JSON|
-|label_count|Int|
-|last_modified_on|Timestamp|
-|max_capacity|Float|
-|max_retries|Int|
-|name|String|
-|number_of_workers|Int|
-|parameters|JSON|
-|role|String|
-|status|String|
-|timeout|Int|
-|transform_encryption|JSON|
-|transform_id|String|
-|worker_type|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|schema|json|
+|created_on|timestamp[us, tz=UTC]|
+|description|utf8|
+|evaluation_metrics|json|
+|glue_version|utf8|
+|input_record_tables|json|
+|label_count|int64|
+|last_modified_on|timestamp[us, tz=UTC]|
+|max_capacity|float64|
+|max_retries|int64|
+|name|utf8|
+|number_of_workers|int64|
+|parameters|json|
+|role|utf8|
+|status|utf8|
+|timeout|int64|
+|transform_encryption|json|
+|transform_id|utf8|
+|worker_type|utf8|

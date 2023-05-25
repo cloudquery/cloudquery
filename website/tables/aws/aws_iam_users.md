@@ -21,16 +21,16 @@ The following tables depend on aws_iam_users:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|arn (PK)|String|
-|tags|JSON|
-|create_date|Timestamp|
-|path|String|
-|user_id|String|
-|user_name|String|
-|password_last_used|Timestamp|
-|permissions_boundary|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|create_date|timestamp[us, tz=UTC]|
+|path|utf8|
+|user_id|utf8|
+|user_name|utf8|
+|password_last_used|timestamp[us, tz=UTC]|
+|permissions_boundary|json|

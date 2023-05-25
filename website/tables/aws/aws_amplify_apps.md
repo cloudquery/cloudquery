@@ -10,34 +10,34 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|app_arn|String|
-|app_id|String|
-|create_time|Timestamp|
-|default_domain|String|
-|description|String|
-|enable_basic_auth|Bool|
-|enable_branch_auto_build|Bool|
-|environment_variables|JSON|
-|name|String|
-|platform|String|
-|repository|String|
-|update_time|Timestamp|
-|auto_branch_creation_config|JSON|
-|auto_branch_creation_patterns|StringArray|
-|basic_auth_credentials|String|
-|build_spec|String|
-|custom_headers|String|
-|custom_rules|JSON|
-|enable_auto_branch_creation|Bool|
-|enable_branch_auto_deletion|Bool|
-|iam_service_role_arn|String|
-|production_branch|JSON|
-|repository_clone_method|String|
-|tags|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|app_arn|utf8|
+|app_id|utf8|
+|create_time|timestamp[us, tz=UTC]|
+|default_domain|utf8|
+|description|utf8|
+|enable_basic_auth|bool|
+|enable_branch_auto_build|bool|
+|environment_variables|json|
+|name|utf8|
+|platform|utf8|
+|repository|utf8|
+|update_time|timestamp[us, tz=UTC]|
+|auto_branch_creation_config|json|
+|auto_branch_creation_patterns|list<item: utf8, nullable>|
+|basic_auth_credentials|utf8|
+|build_spec|utf8|
+|custom_headers|utf8|
+|custom_rules|json|
+|enable_auto_branch_creation|bool|
+|enable_branch_auto_deletion|bool|
+|iam_service_role_arn|utf8|
+|production_branch|json|
+|repository_clone_method|utf8|
+|tags|json|

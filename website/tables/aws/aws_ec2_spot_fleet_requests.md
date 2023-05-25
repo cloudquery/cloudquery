@@ -15,15 +15,15 @@ The following tables depend on aws_ec2_spot_fleet_requests:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|tags|JSON|
-|activity_status|String|
-|create_time|Timestamp|
-|spot_fleet_request_config|JSON|
-|spot_fleet_request_id (PK)|String|
-|spot_fleet_request_state|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region (PK)|utf8|
+|tags|json|
+|activity_status|utf8|
+|create_time|timestamp[us, tz=UTC]|
+|spot_fleet_request_config|json|
+|spot_fleet_request_id (PK)|utf8|
+|spot_fleet_request_state|utf8|

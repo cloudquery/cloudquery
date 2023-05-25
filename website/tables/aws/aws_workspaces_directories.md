@@ -10,27 +10,27 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|arn (PK)|String|
-|alias|String|
-|certificate_based_auth_properties|JSON|
-|customer_user_name|String|
-|directory_id|String|
-|directory_name|String|
-|directory_type|String|
-|dns_ip_addresses|StringArray|
-|iam_role_id|String|
-|ip_group_ids|StringArray|
-|registration_code|String|
-|saml_properties|JSON|
-|selfservice_permissions|JSON|
-|state|String|
-|subnet_ids|StringArray|
-|tenancy|String|
-|workspace_access_properties|JSON|
-|workspace_creation_properties|JSON|
-|workspace_security_group_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|arn (PK)|utf8|
+|alias|utf8|
+|certificate_based_auth_properties|json|
+|customer_user_name|utf8|
+|directory_id|utf8|
+|directory_name|utf8|
+|directory_type|utf8|
+|dns_ip_addresses|list<item: utf8, nullable>|
+|iam_role_id|utf8|
+|ip_group_ids|list<item: utf8, nullable>|
+|registration_code|utf8|
+|saml_properties|json|
+|selfservice_permissions|json|
+|state|utf8|
+|subnet_ids|list<item: utf8, nullable>|
+|tenancy|utf8|
+|workspace_access_properties|json|
+|workspace_creation_properties|json|
+|workspace_security_group_id|utf8|

@@ -16,23 +16,23 @@ The following tables depend on aws_appstream_stacks:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|name|String|
-|access_endpoints|JSON|
-|application_settings|JSON|
-|created_time|Timestamp|
-|description|String|
-|display_name|String|
-|embed_host_domains|StringArray|
-|feedback_url|String|
-|redirect_url|String|
-|stack_errors|JSON|
-|storage_connectors|JSON|
-|streaming_experience_settings|JSON|
-|user_settings|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|name|utf8|
+|access_endpoints|json|
+|application_settings|json|
+|created_time|timestamp[us, tz=UTC]|
+|description|utf8|
+|display_name|utf8|
+|embed_host_domains|list<item: utf8, nullable>|
+|feedback_url|utf8|
+|redirect_url|utf8|
+|stack_errors|json|
+|storage_connectors|json|
+|streaming_experience_settings|json|
+|user_settings|json|

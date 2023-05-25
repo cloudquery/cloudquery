@@ -10,16 +10,16 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|cluster_subnet_group_name|String|
-|description|String|
-|subnet_group_status|String|
-|subnets|JSON|
-|vpc_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|cluster_subnet_group_name|utf8|
+|description|utf8|
+|subnet_group_status|utf8|
+|subnets|json|
+|vpc_id|utf8|

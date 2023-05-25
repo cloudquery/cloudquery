@@ -10,30 +10,30 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|created_time|Timestamp|
-|image_id|String|
-|instance_type|String|
-|launch_configuration_name|String|
-|associate_public_ip_address|Bool|
-|block_device_mappings|JSON|
-|classic_link_vpc_id|String|
-|classic_link_vpc_security_groups|StringArray|
-|ebs_optimized|Bool|
-|iam_instance_profile|String|
-|instance_monitoring|JSON|
-|kernel_id|String|
-|key_name|String|
-|launch_configuration_arn|String|
-|metadata_options|JSON|
-|placement_tenancy|String|
-|ramdisk_id|String|
-|security_groups|StringArray|
-|spot_price|String|
-|user_data|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|created_time|timestamp[us, tz=UTC]|
+|image_id|utf8|
+|instance_type|utf8|
+|launch_configuration_name|utf8|
+|associate_public_ip_address|bool|
+|block_device_mappings|json|
+|classic_link_vpc_id|utf8|
+|classic_link_vpc_security_groups|list<item: utf8, nullable>|
+|ebs_optimized|bool|
+|iam_instance_profile|utf8|
+|instance_monitoring|json|
+|kernel_id|utf8|
+|key_name|utf8|
+|launch_configuration_arn|utf8|
+|metadata_options|json|
+|placement_tenancy|utf8|
+|ramdisk_id|utf8|
+|security_groups|list<item: utf8, nullable>|
+|spot_price|utf8|
+|user_data|utf8|

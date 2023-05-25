@@ -10,21 +10,21 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|creation_time|Timestamp|
-|endpoint_config_arn|String|
-|endpoint_config_name|String|
-|production_variants|JSON|
-|async_inference_config|JSON|
-|data_capture_config|JSON|
-|explainer_config|JSON|
-|kms_key_id|String|
-|shadow_production_variants|JSON|
-|result_metadata|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|creation_time|timestamp[us, tz=UTC]|
+|endpoint_config_arn|utf8|
+|endpoint_config_name|utf8|
+|production_variants|json|
+|async_inference_config|json|
+|data_capture_config|json|
+|explainer_config|json|
+|kms_key_id|utf8|
+|shadow_production_variants|json|
+|result_metadata|json|

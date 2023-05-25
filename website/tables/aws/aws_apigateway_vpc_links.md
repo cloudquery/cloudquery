@@ -10,17 +10,17 @@ The composite primary key for this table is (**account_id**, **arn**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|arn (PK)|String|
-|description|String|
-|id|String|
-|name|String|
-|status|String|
-|status_message|String|
-|tags|JSON|
-|target_arns|StringArray|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|description|utf8|
+|id|utf8|
+|name|utf8|
+|status|utf8|
+|status_message|utf8|
+|tags|json|
+|target_arns|list<item: utf8, nullable>|
