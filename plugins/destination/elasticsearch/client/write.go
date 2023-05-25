@@ -89,6 +89,9 @@ func (c *Client) writeRecord(ctx context.Context, table *schema.Table, record ar
 }
 
 func (c *Client) getValueForElasticsearch(col arrow.Array, i int) any {
+	if col.IsNull(i) {
+		return nil
+	}
 	switch col := col.(type) {
 	case *array.Struct:
 		m := map[string]any{}
@@ -115,7 +118,40 @@ func (c *Client) getValueForElasticsearch(col arrow.Array, i int) any {
 		}
 		return elems
 	case *array.Timestamp:
-		return col.Value(i).ToTime(col.DataType().(*arrow.TimestampType).Unit).Format("2006-01-02T15:04:05.999Z")
+		u := col.DataType().(*arrow.TimestampType).Unit
+		switch u {
+		case arrow.Nanosecond:
+			return col.Value(i).ToTime(u).Format("2006-01-02T15:04:05.99999999Z")
+		case arrow.Microsecond:
+			return col.Value(i).ToTime(u).Format("2006-01-02T15:04:05.999999Z")
+		case arrow.Millisecond:
+			return col.Value(i).ToTime(u).Format("2006-01-02T15:04:05.999Z")
+		case arrow.Second:
+			return col.Value(i).ToTime(u).Format("2006-01-02T15:04:05Z")
+		}
+		panic(fmt.Sprintf("unsupported timestamp unit: %s", u))
+	case *array.Time32:
+		u := col.DataType().(*arrow.Time32Type).Unit
+		switch u {
+		case arrow.Second:
+			format := "15:04:05"
+			return padRight(col.Value(i).ToTime(u).Format(format), "0", len(format))
+		case arrow.Millisecond:
+			format := "15:04:05.999"
+			return padRight(col.Value(i).ToTime(u).Format(format), "0", len(format))
+		}
+		panic(fmt.Sprintf("unsupported time32 unit: %s", u))
+	case *array.Time64:
+		u := col.DataType().(*arrow.Time64Type).Unit
+		switch u {
+		case arrow.Microsecond:
+			format := "15:04:05.999999"
+			return padRight(col.Value(i).ToTime(u).Format(format), "0", len(format))
+		case arrow.Nanosecond:
+			format := "15:04:05.999999999"
+			return padRight(col.Value(i).ToTime(u).Format(format), "0", len(format))
+		}
+		panic(fmt.Sprintf("unsupported time64 unit: %s", u))
 	case *array.DayTimeInterval:
 		return col.ValueStr(i)
 	case *array.MonthInterval:
@@ -147,4 +183,12 @@ func resourceID(record arrow.Record, i int, pkIndexes []int) uint64 {
 	}
 	h1 := fnv1a.HashString64(strings.Join(parts, "-"))
 	return h1
+}
+
+func padRight(s, padding string, length int) string {
+	count := length - len(s)
+	if count <= 0 {
+		return s
+	}
+	return s + strings.Repeat(padding, count)
 }

@@ -72,6 +72,20 @@ func appendValue(builder array.Builder, value any) error {
 		return nil
 	}
 	switch bldr := builder.(type) {
+	case array.ListLikeBuilder:
+		lst := value.([]any)
+		if lst == nil {
+			bldr.AppendNull()
+			return nil
+		}
+		bldr.Append(true)
+		valBuilder := bldr.ValueBuilder()
+		for _, v := range lst {
+			if err := appendValue(valBuilder, v); err != nil {
+				return err
+			}
+		}
+		return nil
 	case *array.StructBuilder:
 		m := value.(map[string]any)
 		bldr.Append(true)
