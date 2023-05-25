@@ -3,11 +3,12 @@ package cloudformation
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func stackSetOperations() *schema.Table {
@@ -24,16 +25,14 @@ func stackSetOperations() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("OperationId"),
 			},
 			{
-				Name:     "stack_set_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("stack_set_arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "stack_set_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("stack_set_arn"),
+				PrimaryKey: true,
 			},
 		},
 

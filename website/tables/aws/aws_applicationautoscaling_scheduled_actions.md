@@ -10,21 +10,21 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|creation_time|Timestamp|
-|resource_id|String|
-|schedule|String|
-|scheduled_action_arn|String|
-|scheduled_action_name|String|
-|service_namespace|String|
-|end_time|Timestamp|
-|scalable_dimension|String|
-|scalable_target_action|JSON|
-|start_time|Timestamp|
-|timezone|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|creation_time|timestamp[us, tz=UTC]|
+|resource_id|utf8|
+|schedule|utf8|
+|scheduled_action_arn|utf8|
+|scheduled_action_name|utf8|
+|service_namespace|utf8|
+|end_time|timestamp[us, tz=UTC]|
+|scalable_dimension|utf8|
+|scalable_target_action|json|
+|start_time|timestamp[us, tz=UTC]|
+|timezone|utf8|

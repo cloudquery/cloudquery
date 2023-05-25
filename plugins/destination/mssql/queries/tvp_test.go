@@ -4,7 +4,8 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -19,7 +20,7 @@ func TestTVPDropProc(t *testing.T) {
 DROP PROCEDURE [cq].[cq_proc_table_name];`
 	)
 
-	query, params := TVPDropProc(schemaName, schema.CQSchemaToArrow(&schema.Table{Name: "table_name"}))
+	query, params := TVPDropProc(schemaName, &schema.Table{Name: "table_name"})
 
 	require.Equal(t, expected, query)
 	require.Equal(t, 2, len(params))
@@ -46,7 +47,7 @@ func TestTVPDropType(t *testing.T) {
 DROP TYPE [cq].[cq_tbl_table_name];`
 	)
 
-	query, params := TVPDropType(schemaName, schema.CQSchemaToArrow(&schema.Table{Name: "table_name"}))
+	query, params := TVPDropType(schemaName, &schema.Table{Name: "table_name"})
 
 	require.Equal(t, expected, query)
 	require.Equal(t, 2, len(params))
@@ -66,7 +67,7 @@ func TestTVPAddType(t *testing.T) {
 	const (
 		schemaName = "cq"
 		expected   = `CREATE TYPE [cq].[cq_tbl_table_name] AS TABLE (
-  [_cq_id] uniqueidentifier UNIQUE NOT NULL,
+  [_cq_id] uniqueidentifier NOT NULL,
   [_cq_parent_id] uniqueidentifier,
   [_cq_source_name] nvarchar(4000),
   [_cq_sync_time] datetime2,
@@ -77,33 +78,19 @@ func TestTVPAddType(t *testing.T) {
 );`
 	)
 
-	query := TVPAddType(schemaName, schema.CQSchemaToArrow(&schema.Table{
+	query := TVPAddType(schemaName, &schema.Table{
 		Name: "table_name",
 		Columns: schema.ColumnList{
 			schema.CqIDColumn,
 			schema.CqParentIDColumn,
 			schema.CqSourceNameColumn,
 			schema.CqSyncTimeColumn,
-			schema.Column{
-				Name:            "extra_col_pk1",
-				Type:            schema.TypeFloat,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			schema.Column{
-				Name:            "extra_col_pk2",
-				Type:            schema.TypeBool,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			schema.Column{
-				Name: "extra_col_not_pk1",
-				Type: schema.TypeInt,
-			},
-			schema.Column{
-				Name: "extra_col_not_pk2",
-				Type: schema.TypeByteArray,
-			},
+			schema.Column{Name: "extra_col_pk1", Type: arrow.PrimitiveTypes.Float64, PrimaryKey: true, NotNull: true},
+			schema.Column{Name: "extra_col_pk2", Type: arrow.FixedWidthTypes.Boolean, PrimaryKey: true, NotNull: true},
+			schema.Column{Name: "extra_col_not_pk1", Type: arrow.PrimitiveTypes.Int64},
+			schema.Column{Name: "extra_col_not_pk2", Type: new(arrow.BinaryType)},
 		},
-	}))
+	})
 
 	require.Equal(t, expected, query)
 }
@@ -162,33 +149,19 @@ INSERT [cq].[table_name] (
 END;`
 	)
 
-	query := TVPAddProc(schemaName, schema.CQSchemaToArrow(&schema.Table{
+	query := TVPAddProc(schemaName, &schema.Table{
 		Name: "table_name",
 		Columns: schema.ColumnList{
 			schema.CqIDColumn,
 			schema.CqParentIDColumn,
 			schema.CqSourceNameColumn,
 			schema.CqSyncTimeColumn,
-			schema.Column{
-				Name:            "extra_col_pk1",
-				Type:            schema.TypeFloat,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			schema.Column{
-				Name:            "extra_col_pk2",
-				Type:            schema.TypeBool,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			schema.Column{
-				Name: "extra_col_not_pk1",
-				Type: schema.TypeInt,
-			},
-			schema.Column{
-				Name: "extra_col_not_pk2",
-				Type: schema.TypeByteArray,
-			},
+			schema.Column{Name: "extra_col_pk1", Type: arrow.PrimitiveTypes.Float64, PrimaryKey: true, NotNull: true},
+			schema.Column{Name: "extra_col_pk2", Type: arrow.FixedWidthTypes.Boolean, PrimaryKey: true, NotNull: true},
+			schema.Column{Name: "extra_col_not_pk1", Type: arrow.PrimitiveTypes.Int64},
+			schema.Column{Name: "extra_col_not_pk2", Type: new(arrow.BinaryType)},
 		},
-	}))
+	})
 
 	require.Equal(t, expected, query)
 }

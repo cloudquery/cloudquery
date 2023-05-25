@@ -10,32 +10,32 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|attributes|JSON|
-|tags|JSON|
-|allocated_storage|Int|
-|availability_zones|StringArray|
-|cluster_create_time|Timestamp|
-|db_cluster_identifier|String|
-|db_cluster_snapshot_arn|String|
-|db_cluster_snapshot_identifier|String|
-|engine|String|
-|engine_version|String|
-|iam_database_authentication_enabled|Bool|
-|kms_key_id|String|
-|license_model|String|
-|master_username|String|
-|percent_progress|Int|
-|port|Int|
-|snapshot_create_time|Timestamp|
-|snapshot_type|String|
-|source_db_cluster_snapshot_arn|String|
-|status|String|
-|storage_encrypted|Bool|
-|vpc_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|attributes|json|
+|tags|json|
+|allocated_storage|int64|
+|availability_zones|list<item: utf8, nullable>|
+|cluster_create_time|timestamp[us, tz=UTC]|
+|db_cluster_identifier|utf8|
+|db_cluster_snapshot_arn|utf8|
+|db_cluster_snapshot_identifier|utf8|
+|engine|utf8|
+|engine_version|utf8|
+|iam_database_authentication_enabled|bool|
+|kms_key_id|utf8|
+|license_model|utf8|
+|master_username|utf8|
+|percent_progress|int64|
+|port|int64|
+|snapshot_create_time|timestamp[us, tz=UTC]|
+|snapshot_type|utf8|
+|source_db_cluster_snapshot_arn|utf8|
+|status|utf8|
+|storage_encrypted|bool|
+|vpc_id|utf8|

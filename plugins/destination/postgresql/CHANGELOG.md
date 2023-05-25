@@ -1,5 +1,32 @@
 # Changelog
 
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v4.1.1...plugins-destination-postgresql-v4.2.0) (2023-05-25)
+
+
+### Features
+
+* **pg:** Update to SDK v3.6.3 ([#10937](https://github.com/cloudquery/cloudquery/issues/10937)) ([cfa0c10](https://github.com/cloudquery/cloudquery/commit/cfa0c10e69d9c1b5f7941fa91f6ced2a61ede67d))
+
+## [4.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v4.1.0...plugins-destination-postgresql-v4.1.1) (2023-05-18)
+
+
+### Bug Fixes
+
+* Upgrade to plugin-sdk v3.5.2 (Fixes delete-stale for incremental tables) ([#10851](https://github.com/cloudquery/cloudquery/issues/10851)) ([244e9a4](https://github.com/cloudquery/cloudquery/commit/244e9a4cc50d216d85462fc60331ec71239152c3))
+
+## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v4.0.5...plugins-destination-postgresql-v4.1.0) (2023-05-18)
+
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* **postgresql:** Update PG to SDK V3 native arrow support ([#10783](https://github.com/cloudquery/cloudquery/issues/10783)) ([d242030](https://github.com/cloudquery/cloudquery/commit/d242030204c90b0f916b123926d242d71fc14c4e))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [4.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v4.0.4...plugins-destination-postgresql-v4.0.5) (2023-05-02)
 
 

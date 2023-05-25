@@ -14,15 +14,15 @@ This table depends on [gcp_vmmigration_source_migrating_vms](gcp_vmmigration_sou
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|create_time|Timestamp|
-|end_time|Timestamp|
-|name (PK)|String|
-|state|String|
-|state_time|Timestamp|
-|error|JSON|
-|steps|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|create_time|timestamp[us, tz=UTC]|
+|end_time|timestamp[us, tz=UTC]|
+|name (PK)|utf8|
+|state|utf8|
+|state_time|timestamp[us, tz=UTC]|
+|error|json|
+|steps|json|

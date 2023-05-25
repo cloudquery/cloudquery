@@ -24,6 +24,7 @@ func fetchContacts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		req := hubspotClient.BasicApi.
 			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
 			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_contacts").GetProperties()).
+			Associations(cqClient.Spec.TableOptions.ForTable("hubspot_crm_contacts").GetAssociations()).
 			Limit(client.DefaultPageSize)
 
 		if len(after) > 0 {

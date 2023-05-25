@@ -10,18 +10,18 @@ The primary key for this table is **service_arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|current_performance_risk|String|
-|current_service_configuration|JSON|
-|finding|String|
-|finding_reason_codes|StringArray|
-|last_refresh_timestamp|Timestamp|
-|launch_type|String|
-|lookback_period_in_days|Float|
-|service_arn (PK)|String|
-|service_recommendation_options|JSON|
-|utilization_metrics|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|current_performance_risk|utf8|
+|current_service_configuration|json|
+|finding|utf8|
+|finding_reason_codes|list<item: utf8, nullable>|
+|last_refresh_timestamp|timestamp[us, tz=UTC]|
+|launch_type|utf8|
+|lookback_period_in_days|float64|
+|service_arn (PK)|utf8|
+|service_recommendation_options|json|
+|utilization_metrics|json|

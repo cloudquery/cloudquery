@@ -10,34 +10,34 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|arn (PK)|String|
-|abort_config|JSON|
-|comment|String|
-|completed_at|Timestamp|
-|created_at|Timestamp|
-|description|String|
-|document_parameters|JSON|
-|force_canceled|Bool|
-|is_concurrent|Bool|
-|job_arn|String|
-|job_executions_retry_config|JSON|
-|job_executions_rollout_config|JSON|
-|job_id|String|
-|job_process_details|JSON|
-|job_template_arn|String|
-|last_updated_at|Timestamp|
-|namespace_id|String|
-|presigned_url_config|JSON|
-|reason_code|String|
-|scheduling_config|JSON|
-|status|String|
-|target_selection|String|
-|targets|StringArray|
-|timeout_config|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|tags|json|
+|arn (PK)|utf8|
+|abort_config|json|
+|comment|utf8|
+|completed_at|timestamp[us, tz=UTC]|
+|created_at|timestamp[us, tz=UTC]|
+|description|utf8|
+|document_parameters|json|
+|force_canceled|bool|
+|is_concurrent|bool|
+|job_arn|utf8|
+|job_executions_retry_config|json|
+|job_executions_rollout_config|json|
+|job_id|utf8|
+|job_process_details|json|
+|job_template_arn|utf8|
+|last_updated_at|timestamp[us, tz=UTC]|
+|namespace_id|utf8|
+|presigned_url_config|json|
+|reason_code|utf8|
+|scheduling_config|json|
+|status|utf8|
+|target_selection|utf8|
+|targets|list<item: utf8, nullable>|
+|timeout_config|json|

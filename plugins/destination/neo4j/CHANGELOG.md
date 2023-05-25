@@ -1,5 +1,29 @@
 # Changelog
 
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v3.0.0...plugins-destination-neo4j-v3.1.0) (2023-05-25)
+
+
+### Features
+
+* **neo4j:** Update to SDK v3.6.3 ([#10945](https://github.com/cloudquery/cloudquery/issues/10945)) ([23cf6f0](https://github.com/cloudquery/cloudquery/commit/23cf6f0e8fa8b4e3a606aff0b52ece3f8524f000))
+
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v2.0.3...plugins-destination-neo4j-v3.0.0) (2023-05-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* **neo4j:** Update to SDK V3 with native arrow ([#10849](https://github.com/cloudquery/cloudquery/issues/10849))
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* **neo4j:** Update to SDK V3 with native arrow ([#10849](https://github.com/cloudquery/cloudquery/issues/10849)) ([56b3655](https://github.com/cloudquery/cloudquery/commit/56b3655af552b485515bd0a82ff9c5846fcc65ee))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [2.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v2.0.2...plugins-destination-neo4j-v2.0.3) (2023-05-02)
 
 

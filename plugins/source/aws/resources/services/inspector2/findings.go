@@ -3,12 +3,14 @@ package inspector2
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Findings() *schema.Table {
@@ -22,24 +24,22 @@ The 'request_account_id' and 'request_region' columns are added to show from whe
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "inspector2"),
 		Columns: []schema.Column{
 			{
-				Name:            "request_account_id",
-				Type:            schema.TypeString,
-				Resolver:        client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
 			},
 			{
-				Name:            "request_region",
-				Type:            schema.TypeString,
-				Resolver:        client.ResolveAWSRegion,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				Name:       "request_region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSRegion,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FindingArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("FindingArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -48,16 +48,26 @@ The 'request_account_id' and 'request_region' columns are added to show from whe
 func fetchInspector2Findings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Inspector2
-	input := inspector2.ListFindingsInput{MaxResults: aws.Int32(100)}
-	paginator := inspector2.NewListFindingsPaginator(svc, &input)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx, func(options *inspector2.Options) {
-			options.Region = c.Region
-		})
-		if err != nil {
-			return err
+
+	allConfigs := []tableoptions.CustomInspector2ListFindingsInput{{}}
+	if c.Spec.TableOptions.Inspector2Findings != nil {
+		allConfigs = c.Spec.TableOptions.Inspector2Findings.ListFindingsOpts
+	}
+	for _, input := range allConfigs {
+		if input.MaxResults == nil {
+			input.MaxResults = aws.Int32(100)
 		}
-		res <- page.Findings
+
+		paginator := inspector2.NewListFindingsPaginator(svc, &input.ListFindingsInput)
+		for paginator.HasMorePages() {
+			page, err := paginator.NextPage(ctx, func(options *inspector2.Options) {
+				options.Region = c.Region
+			})
+			if err != nil {
+				return err
+			}
+			res <- page.Findings
+		}
 	}
 	return nil
 }

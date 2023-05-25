@@ -5,11 +5,12 @@ spec:
   destinations: [postgresql]
   path: ./aws
   registry: local
+  tables: ["*"]
 ---
 kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
-  version: "v4.0.5" # latest version of postgresql plugin
+  version: "v4.2.0" # latest version of postgresql plugin
   spec:
     connection_string: ${CQ_DSN}

@@ -10,21 +10,21 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|allows_vpc_and_non_vpc_instance_memberships|Bool|
-|copy_timestamp|Timestamp|
-|engine_name|String|
-|major_engine_version|String|
-|option_group_arn|String|
-|option_group_description|String|
-|option_group_name|String|
-|options|JSON|
-|source_account_id|String|
-|source_option_group|String|
-|vpc_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|allows_vpc_and_non_vpc_instance_memberships|bool|
+|copy_timestamp|timestamp[us, tz=UTC]|
+|engine_name|utf8|
+|major_engine_version|utf8|
+|option_group_arn|utf8|
+|option_group_description|utf8|
+|option_group_name|utf8|
+|options|json|
+|source_account_id|utf8|
+|source_option_group|utf8|
+|vpc_id|utf8|

@@ -5,12 +5,13 @@ import (
 	"errors"
 	"time"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/gocarina/gocsv"
 	"github.com/thoas/go-funk"
 )
@@ -34,69 +35,65 @@ func CredentialReports() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Arn"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "user_creation_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: timestampPathResolver("UserCreationTime"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "user_creation_time",
+				Type:       arrow.FixedWidthTypes.Timestamp_us,
+				Resolver:   timestampPathResolver("UserCreationTime"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "password_last_changed",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: timestampPathResolver("PasswordLastChanged"),
 			},
 			{
 				Name:     "password_next_rotation",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: timestampPathResolver("PasswordNextRotation"),
 			},
 			{
 				Name:     "access_key_1_last_rotated",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: timestampPathResolver("AccessKey1LastRotated"),
 			},
 			{
 				Name:     "access_key_2_last_rotated",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: timestampPathResolver("AccessKey2LastRotated"),
 			},
 			{
 				Name:     "cert_1_last_rotated",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: timestampPathResolver("Cert1LastRotated"),
 			},
 			{
 				Name:     "cert_2_last_rotated",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: timestampPathResolver("Cert2LastRotated"),
 			},
 			{
 				Name:     "access_key_1_last_used_date",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: timestampPathResolver("AccessKey1LastUsedDate"),
 			},
 			{
 				Name:     "access_key_2_last_used_date",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: timestampPathResolver("AccessKey2LastUsedDate"),
 			},
 			{
 				Name:     "password_last_used",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: timestampPathResolver("PasswordLastUsed"),
 			},
 			{
 				Name:     "password_enabled",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("PasswordStatus"),
 			},
 		},

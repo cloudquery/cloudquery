@@ -3,7 +3,7 @@ package cloudsupport
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	cloudsupport "google.golang.org/api/cloudsupport/v2beta"

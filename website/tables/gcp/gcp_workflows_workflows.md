@@ -10,17 +10,17 @@ The composite primary key for this table is (**project_id**, **name**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|description|String|
-|state|String|
-|revision_id|String|
-|create_time|Timestamp|
-|update_time|Timestamp|
-|revision_create_time|Timestamp|
-|labels|JSON|
-|service_account|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|name (PK)|utf8|
+|description|utf8|
+|state|utf8|
+|revision_id|utf8|
+|create_time|timestamp[us, tz=UTC]|
+|update_time|timestamp[us, tz=UTC]|
+|revision_create_time|timestamp[us, tz=UTC]|
+|labels|json|
+|service_account|utf8|

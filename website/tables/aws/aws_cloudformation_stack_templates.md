@@ -14,12 +14,13 @@ This table depends on [aws_cloudformation_stacks](aws_cloudformation_stacks).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|stack_arn (PK)|String|
-|template_body|JSON|
-|stages_available|StringArray|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|stack_arn (PK)|utf8|
+|template_body|json|
+|template_body_text|utf8|
+|stages_available|list<item: utf8, nullable>|

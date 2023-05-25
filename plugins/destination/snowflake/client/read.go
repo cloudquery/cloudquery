@@ -10,7 +10,7 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 const (
@@ -22,61 +22,89 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		bldr.AppendNull()
 		return nil
 	}
+
+	if s, ok := val.(string); ok {
+		if s == "null" {
+			bldr.AppendNull()
+			return nil
+		}
+	}
+
 	switch b := bldr.(type) {
 	case *array.BooleanBuilder:
-		b.Append(val.(bool))
+		if boolVal, ok := val.(bool); ok {
+			b.Append(boolVal)
+			return nil
+		}
+		return b.AppendValueFromString(val.(string))
 	case *array.Int8Builder:
 		u, err := strconv.ParseInt(val.(string), 10, 8)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to parse int8: %w", err)
 		}
 		b.Append(int8(u))
 	case *array.Int16Builder:
 		u, err := strconv.ParseInt(val.(string), 10, 16)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to parse int16: %w", err)
 		}
 		b.Append(int16(u))
 	case *array.Int32Builder:
 		u, err := strconv.ParseInt(val.(string), 10, 32)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to parse int32: %w", err)
 		}
 		b.Append(int32(u))
 	case *array.Int64Builder:
 		u, err := strconv.ParseInt(val.(string), 10, 64)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to parse int64: %w", err)
 		}
 		b.Append(u)
 	case *array.Uint8Builder:
 		u, err := strconv.ParseUint(val.(string), 10, 8)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to parse uint8: %w", err)
 		}
 		b.Append(uint8(u))
 	case *array.Uint16Builder:
 		u, err := strconv.ParseUint(val.(string), 10, 16)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to parse uint16: %w", err)
 		}
 		b.Append(uint16(u))
 	case *array.Uint32Builder:
 		u, err := strconv.ParseUint(val.(string), 10, 32)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to parse uint32: %w", err)
 		}
 		b.Append(uint32(u))
 	case *array.Uint64Builder:
 		u, err := strconv.ParseUint(val.(string), 10, 64)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to parse uint64: %w", err)
 		}
 		b.Append(u)
 	case *array.Float32Builder:
-		b.Append(val.(float32))
+		if floatVal, ok := val.(float64); ok {
+			b.Append(float32(floatVal))
+		} else {
+			floatVal, err := strconv.ParseFloat(val.(string), 32)
+			if err != nil {
+				return fmt.Errorf("failed to parse float32: %w", err)
+			}
+			b.Append(float32(floatVal))
+		}
 	case *array.Float64Builder:
-		b.Append(val.(float64))
+		if floatVal, ok := val.(float64); ok {
+			b.Append(floatVal)
+		} else {
+			floatVal, err := strconv.ParseFloat(val.(string), 64)
+			if err != nil {
+				return fmt.Errorf("failed to parse float64: %w", err)
+			}
+			b.Append(floatVal)
+		}
 	case *array.StringBuilder:
 		b.Append(val.(string))
 	case *array.LargeStringBuilder:
@@ -84,20 +112,41 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.BinaryBuilder:
 		b.Append(val.([]uint8))
 	case *array.TimestampBuilder:
-		b.Append(arrow.Timestamp(val.(time.Time).UnixMicro()))
+		var timeVal time.Time
+		// nolint:revive
+		if t, ok := val.(time.Time); ok {
+			timeVal = t
+		} else {
+			t, err := arrow.TimestampFromString(val.(string), b.Type().(*arrow.TimestampType).Unit)
+			if err != nil {
+				return fmt.Errorf("failed to parse timestamp: %w", err)
+			}
+			b.Append(t)
+			return nil
+		}
+
+		switch b.Type().(*arrow.TimestampType).Unit {
+		case arrow.Second:
+			b.Append(arrow.Timestamp(timeVal.UTC().Unix()))
+		case arrow.Millisecond:
+			b.Append(arrow.Timestamp(timeVal.UTC().UnixMilli()))
+		case arrow.Microsecond:
+			b.Append(arrow.Timestamp(timeVal.UTC().UnixMicro()))
+		case arrow.Nanosecond:
+			b.Append(arrow.Timestamp(timeVal.UTC().UnixNano()))
+		default:
+			return fmt.Errorf("unsupported timestamp unit %s", f.Type.(*arrow.TimestampType).Unit)
+		}
 	case array.ListLikeBuilder:
 		b.Append(true)
 		valBuilder := b.ValueBuilder()
 		s := val.(string)
 		var values []string
 		// nolint:gocritic,revive
-		if strings.HasPrefix(s, "[\n  \"") {
-			values = snowflakeStrToArray(s)
-		} else if strings.HasPrefix(s, "[\n  ") {
-			values = snowflakeStrToIntArray(s)
-		} else {
+		if !strings.HasPrefix(s, "[\n  ") {
 			return fmt.Errorf("unknown array format %s", s)
 		}
+		values = snowflakeStrToArray(s)
 
 		for _, v := range values {
 			if err := c.reverseTransform(f, valBuilder, v); err != nil {
@@ -110,17 +159,18 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 			return fmt.Errorf("unsupported type %T with builder %T", val, bldr)
 		}
 		if err := bldr.AppendValueFromString(v); err != nil {
-			return err
+			return fmt.Errorf("failed to AppendValueFromString %s: %w", v, err)
 		}
 	}
 	return nil
 }
 
-func (c *Client) reverseTransformer(sc *arrow.Schema, values []any) (arrow.Record, error) {
+func (c *Client) reverseTransformer(table *schema.Table, values []any) (arrow.Record, error) {
+	sc := table.ToArrowSchema()
 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 	for i, f := range sc.Fields() {
 		if err := c.reverseTransform(f, bldr.Field(i), *values[i].(*any)); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to transform field %s: %w", f.Name, err)
 		}
 	}
 	rec := bldr.NewRecord()
@@ -128,46 +178,21 @@ func (c *Client) reverseTransformer(sc *arrow.Schema, values []any) (arrow.Recor
 	return rec, nil
 }
 
-// https://github.com/snowflakedb/gosnowflake/issues/674
-func snowflakeStrToIntArray(val string) []string {
-	val = strings.TrimPrefix(val, "[\n  ")
-	val = strings.TrimSuffix(val, "\n]")
-	strs := strings.Split(val, ",\n  ")
-	for i := range strs {
-		strs[i] = strings.ReplaceAll(strs[i], "\\\"", "\"")
-		strs[i] = strings.ReplaceAll(strs[i], "\\n", "\n")
-	}
-	return strs
-}
-
-// https://github.com/snowflakedb/gosnowflake/issues/674
-func snowflakeStrToArray(val string) []string {
-	val = strings.TrimPrefix(val, "[\n  \"")
-	val = strings.TrimSuffix(val, "\"\n]")
-	strs := strings.Split(val, "\",\n  \"")
-	for i := range strs {
-		strs[i] = strings.ReplaceAll(strs[i], "\\\"", "\"")
-		strs[i] = strings.ReplaceAll(strs[i], "\\u0000", "\u0000")
-		strs[i] = strings.ReplaceAll(strs[i], "\\n", "\n")
-	}
-	return strs
-}
-
-func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
-	tableName := schema.TableName(table)
-	colNames := make([]string, 0, len(table.Fields()))
-	for _, col := range table.Fields() {
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+	tableName := table.Name
+	colNames := make([]string, 0, len(table.Columns))
+	for _, col := range table.Columns {
 		colNames = append(colNames, `"`+col.Name+`"`)
 	}
 	cols := strings.Join(colNames, ", ")
 	stmt := fmt.Sprintf(readSQL, cols, tableName)
-	rows, err := c.db.Query(stmt, sourceName)
+	rows, err := c.db.QueryContext(ctx, stmt, sourceName)
 	if err != nil {
 		return err
 	}
 	defer rows.Close()
 	for rows.Next() {
-		values := make([]any, len(table.Fields()))
+		values := make([]any, len(table.Columns))
 		for i := range values {
 			values[i] = new(any)
 		}

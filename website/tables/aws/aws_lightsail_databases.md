@@ -17,35 +17,35 @@ The following tables depend on aws_lightsail_databases:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|arn (PK)|String|
-|backup_retention_enabled|Bool|
-|ca_certificate_identifier|String|
-|created_at|Timestamp|
-|engine|String|
-|engine_version|String|
-|hardware|JSON|
-|latest_restorable_time|Timestamp|
-|location|JSON|
-|master_database_name|String|
-|master_endpoint|JSON|
-|master_username|String|
-|name|String|
-|parameter_apply_status|String|
-|pending_maintenance_actions|JSON|
-|pending_modified_values|JSON|
-|preferred_backup_window|String|
-|preferred_maintenance_window|String|
-|publicly_accessible|Bool|
-|relational_database_blueprint_id|String|
-|relational_database_bundle_id|String|
-|resource_type|String|
-|secondary_availability_zone|String|
-|state|String|
-|support_code|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|tags|json|
+|arn (PK)|utf8|
+|backup_retention_enabled|bool|
+|ca_certificate_identifier|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|engine|utf8|
+|engine_version|utf8|
+|hardware|json|
+|latest_restorable_time|timestamp[us, tz=UTC]|
+|location|json|
+|master_database_name|utf8|
+|master_endpoint|json|
+|master_username|utf8|
+|name|utf8|
+|parameter_apply_status|utf8|
+|pending_maintenance_actions|json|
+|pending_modified_values|json|
+|preferred_backup_window|utf8|
+|preferred_maintenance_window|utf8|
+|publicly_accessible|bool|
+|relational_database_blueprint_id|utf8|
+|relational_database_bundle_id|utf8|
+|resource_type|utf8|
+|secondary_availability_zone|utf8|
+|state|utf8|
+|support_code|utf8|

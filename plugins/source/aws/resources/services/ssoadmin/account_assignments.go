@@ -3,11 +3,12 @@ package ssoadmin
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func accountAssignments() *schema.Table {
@@ -24,20 +25,36 @@ func accountAssignments() *schema.Table {
 func fetchSsoadminAccountAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Ssoadmin
-	config := ssoadmin.ListAccountAssignmentsInput{
-		AccountId:        &cl.AccountID,
+	configListAccountForPPS := ssoadmin.ListAccountsForProvisionedPermissionSetInput{
 		InstanceArn:      parent.Parent.Item.(types.InstanceMetadata).InstanceArn,
 		PermissionSetArn: parent.Item.(*types.PermissionSet).PermissionSetArn,
 	}
-	paginator := ssoadmin.NewListAccountAssignmentsPaginator(svc, &config)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx, func(o *ssoadmin.Options) {
+
+	paginatorListAccountForPPS := ssoadmin.NewListAccountsForProvisionedPermissionSetPaginator(svc, &configListAccountForPPS)
+	for paginatorListAccountForPPS.HasMorePages() {
+		accounts, err := paginatorListAccountForPPS.NextPage(ctx, func(o *ssoadmin.Options) {
 			o.Region = cl.Region
 		})
 		if err != nil {
 			return err
 		}
-		res <- page.AccountAssignments
+		for _, account := range accounts.AccountIds {
+			configLAA := ssoadmin.ListAccountAssignmentsInput{
+				AccountId:        aws.String(account),
+				InstanceArn:      parent.Parent.Item.(types.InstanceMetadata).InstanceArn,
+				PermissionSetArn: parent.Item.(*types.PermissionSet).PermissionSetArn,
+			}
+			paginator := ssoadmin.NewListAccountAssignmentsPaginator(svc, &configLAA)
+			for paginator.HasMorePages() {
+				page, err := paginator.NextPage(ctx, func(o *ssoadmin.Options) {
+					o.Region = cl.Region
+				})
+				if err != nil {
+					return err
+				}
+				res <- page.AccountAssignments
+			}
+		}
 	}
 	return nil
 }

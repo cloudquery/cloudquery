@@ -4,9 +4,9 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/caser"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/caser"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 var (
@@ -16,6 +16,7 @@ var (
 var awsExceptions = map[string]string{
 	"accessanalyzer":         "AWS Identity and Access Management (IAM) Access Analyzer",
 	"acm":                    "Amazon Certificate Manager (ACM)",
+	"acmpca":                 "AWS Certificate Manager Private Certificate Authority (ACM PCA)",
 	"amp":                    "Amazon Managed Service for Prometheus (AMP)",
 	"apigateway":             "Amazon API Gateway",
 	"apigatewayv2":           "Amazon API Gateway v2",

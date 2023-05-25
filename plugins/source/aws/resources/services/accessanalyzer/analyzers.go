@@ -3,11 +3,12 @@ package accessanalyzer
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Analyzers() *schema.Table {
@@ -22,12 +23,10 @@ func Analyzers() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Arn"),
+				PrimaryKey: true,
 			},
 		},
 		Relations: []*schema.Table{
@@ -42,7 +41,6 @@ func fetchAccessanalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, p
 	svc := c.Services().Accessanalyzer
 	paginator := accessanalyzer.NewListAnalyzersPaginator(svc, &accessanalyzer.ListAnalyzersInput{})
 	for paginator.HasMorePages() {
-		// no need to override API call options anymore: https://github.com/aws/aws-sdk-go-v2/issues/1260
 		page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {
 			options.Region = c.Region
 		})

@@ -14,13 +14,13 @@ This table depends on [aws_config_delivery_channels](aws_config_delivery_channel
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|config_history_delivery_info|JSON|
-|config_snapshot_delivery_info|JSON|
-|config_stream_delivery_info|JSON|
-|name (PK)|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region (PK)|utf8|
+|config_history_delivery_info|json|
+|config_snapshot_delivery_info|json|
+|config_stream_delivery_info|json|
+|name (PK)|utf8|

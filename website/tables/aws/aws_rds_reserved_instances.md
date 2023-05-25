@@ -10,27 +10,27 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|currency_code|String|
-|db_instance_class|String|
-|db_instance_count|Int|
-|duration|Int|
-|fixed_price|Float|
-|lease_id|String|
-|multi_az|Bool|
-|offering_type|String|
-|product_description|String|
-|recurring_charges|JSON|
-|reserved_db_instance_arn|String|
-|reserved_db_instance_id|String|
-|reserved_db_instances_offering_id|String|
-|start_time|Timestamp|
-|state|String|
-|usage_price|Float|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|currency_code|utf8|
+|db_instance_class|utf8|
+|db_instance_count|int64|
+|duration|int64|
+|fixed_price|float64|
+|lease_id|utf8|
+|multi_az|bool|
+|offering_type|utf8|
+|product_description|utf8|
+|recurring_charges|json|
+|reserved_db_instance_arn|utf8|
+|reserved_db_instance_id|utf8|
+|reserved_db_instances_offering_id|utf8|
+|start_time|timestamp[us, tz=UTC]|
+|state|utf8|
+|usage_price|float64|

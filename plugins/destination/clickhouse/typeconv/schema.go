@@ -4,33 +4,33 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	arrow_types "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow/types"
 	ch_types "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func CanonizedSchemas(scs schema.Schemas) (schema.Schemas, error) {
-	schemas := make(schema.Schemas, len(scs))
+func CanonizedTables(tables schema.Tables) (schema.Tables, error) {
+	flattened := tables.FlattenTables()
+	canonized := make(schema.Tables, len(flattened))
 	var err error
-	for i, sc := range scs {
-		schemas[i], err = CanonizedSchema(sc)
+	for i, table := range flattened {
+		canonized[i], err = CanonizedTable(table)
 		if err != nil {
 			return nil, err
 		}
 	}
-	return schemas, nil
+	return canonized, nil
 }
 
-func CanonizedSchema(sc *arrow.Schema) (*arrow.Schema, error) {
-	fields := make([]arrow.Field, len(sc.Fields()))
-	for i, fld := range sc.Fields() {
-		canonized, err := CanonizedField(fld)
+func CanonizedTable(table *schema.Table) (*schema.Table, error) {
+	columns := make(schema.ColumnList, len(table.Columns))
+	for i, col := range table.Columns {
+		canonized, err := CanonizedField(col.ToArrowField())
 		if err != nil {
 			return nil, err
 		}
-		fields[i] = *canonized
+		columns[i] = schema.NewColumnFromArrowField(*canonized)
 	}
 
-	metadata := sc.Metadata()
-	return arrow.NewSchema(fields, &metadata), nil
+	return &schema.Table{Name: table.Name, Columns: columns}, nil
 }
 
 // CanonizedField allows to know what type we associate the Apache Arrow type with.

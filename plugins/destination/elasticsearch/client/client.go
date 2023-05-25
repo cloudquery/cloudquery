@@ -7,15 +7,14 @@ import (
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
 	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/rs/zerolog"
 )
 
 type Client struct {
 	destination.UnimplementedUnmanagedWriter
-	destination.DefaultReverseTransformer
 	logger      zerolog.Logger
 	spec        specs.Destination
 	metrics     destination.Metrics

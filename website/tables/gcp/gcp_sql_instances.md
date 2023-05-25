@@ -15,44 +15,44 @@ The following tables depend on gcp_sql_instances:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id|String|
-|available_maintenance_versions|StringArray|
-|backend_type|String|
-|connection_name|String|
-|create_time|String|
-|current_disk_size|Int|
-|database_installed_version|String|
-|database_version|String|
-|disk_encryption_configuration|JSON|
-|disk_encryption_status|JSON|
-|etag|String|
-|failover_replica|JSON|
-|gce_zone|String|
-|instance_type|String|
-|ip_addresses|JSON|
-|ipv6_address|String|
-|kind|String|
-|maintenance_version|String|
-|master_instance_name|String|
-|max_disk_size|Int|
-|name|String|
-|on_premises_configuration|JSON|
-|out_of_disk_report|JSON|
-|project|String|
-|region|String|
-|replica_configuration|JSON|
-|replica_names|StringArray|
-|root_password|String|
-|satisfies_pzs|Bool|
-|scheduled_maintenance|JSON|
-|secondary_gce_zone|String|
-|self_link (PK)|String|
-|server_ca_cert|JSON|
-|service_account_email_address|String|
-|settings|JSON|
-|state|String|
-|suspension_reason|StringArray|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id|utf8|
+|available_maintenance_versions|list<item: utf8, nullable>|
+|backend_type|utf8|
+|connection_name|utf8|
+|create_time|utf8|
+|current_disk_size|int64|
+|database_installed_version|utf8|
+|database_version|utf8|
+|disk_encryption_configuration|json|
+|disk_encryption_status|json|
+|etag|utf8|
+|failover_replica|json|
+|gce_zone|utf8|
+|instance_type|utf8|
+|ip_addresses|json|
+|ipv6_address|utf8|
+|kind|utf8|
+|maintenance_version|utf8|
+|master_instance_name|utf8|
+|max_disk_size|int64|
+|name|utf8|
+|on_premises_configuration|json|
+|out_of_disk_report|json|
+|project|utf8|
+|region|utf8|
+|replica_configuration|json|
+|replica_names|list<item: utf8, nullable>|
+|root_password|utf8|
+|satisfies_pzs|bool|
+|scheduled_maintenance|json|
+|secondary_gce_zone|utf8|
+|self_link (PK)|utf8|
+|server_ca_cert|json|
+|service_account_email_address|utf8|
+|settings|json|
+|state|utf8|
+|suspension_reason|list<item: utf8, nullable>|

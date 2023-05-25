@@ -1,5 +1,32 @@
 # Changelog
 
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.1.1...plugins-destination-mssql-v4.2.0) (2023-05-25)
+
+
+### Features
+
+* **mssql:** Update to SDK V363 ([#10938](https://github.com/cloudquery/cloudquery/issues/10938)) ([9ea47ed](https://github.com/cloudquery/cloudquery/commit/9ea47ede18b840fb17f7096e210ef6d440ce22c6))
+
+## [4.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.1.0...plugins-destination-mssql-v4.1.1) (2023-05-18)
+
+
+### Bug Fixes
+
+* Upgrade to plugin-sdk v3.5.2 (Fixes delete-stale for incremental tables) ([#10856](https://github.com/cloudquery/cloudquery/issues/10856)) ([b581394](https://github.com/cloudquery/cloudquery/commit/b5813944da89aa8350be3084783a20c5f1adb49f))
+
+## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.0.0...plugins-destination-mssql-v4.1.0) (2023-05-18)
+
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* **mssql:** Migrate to `github.com/cloudquery/plugin-sdk/v3` ([#10809](https://github.com/cloudquery/cloudquery/issues/10809)) ([7cacb57](https://github.com/cloudquery/cloudquery/commit/7cacb57dff1f87083238d2a2843b31b130b561a3)), closes [#10724](https://github.com/cloudquery/cloudquery/issues/10724)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v3.0.5...plugins-destination-mssql-v4.0.0) (2023-05-03)
 
 

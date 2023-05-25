@@ -8,40 +8,40 @@ The primary key for this table is **self_link**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id|String|
-|architecture|String|
-|archive_size_bytes|Int|
-|creation_timestamp|String|
-|deprecated|JSON|
-|description|String|
-|disk_size_gb|Int|
-|family|String|
-|guest_os_features|JSON|
-|id|Int|
-|image_encryption_key|JSON|
-|kind|String|
-|label_fingerprint|String|
-|labels|JSON|
-|license_codes|IntArray|
-|licenses|StringArray|
-|name|String|
-|raw_disk|JSON|
-|satisfies_pzs|Bool|
-|self_link (PK)|String|
-|shielded_instance_initial_state|JSON|
-|source_disk|String|
-|source_disk_encryption_key|JSON|
-|source_disk_id|String|
-|source_image|String|
-|source_image_encryption_key|JSON|
-|source_image_id|String|
-|source_snapshot|String|
-|source_snapshot_encryption_key|JSON|
-|source_snapshot_id|String|
-|source_type|String|
-|status|String|
-|storage_locations|StringArray|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id|utf8|
+|architecture|utf8|
+|archive_size_bytes|int64|
+|creation_timestamp|utf8|
+|deprecated|json|
+|description|utf8|
+|disk_size_gb|int64|
+|family|utf8|
+|guest_os_features|json|
+|id|int64|
+|image_encryption_key|json|
+|kind|utf8|
+|label_fingerprint|utf8|
+|labels|json|
+|license_codes|list<item: int64, nullable>|
+|licenses|list<item: utf8, nullable>|
+|name|utf8|
+|raw_disk|json|
+|satisfies_pzs|bool|
+|self_link (PK)|utf8|
+|shielded_instance_initial_state|json|
+|source_disk|utf8|
+|source_disk_encryption_key|json|
+|source_disk_id|utf8|
+|source_image|utf8|
+|source_image_encryption_key|json|
+|source_image_id|utf8|
+|source_snapshot|utf8|
+|source_snapshot_encryption_key|json|
+|source_snapshot_id|utf8|
+|source_type|utf8|
+|status|utf8|
+|storage_locations|list<item: utf8, nullable>|

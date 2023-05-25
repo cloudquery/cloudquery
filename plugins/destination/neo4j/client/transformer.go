@@ -6,41 +6,54 @@ import (
 )
 
 func transformArr(arr arrow.Array) []any {
-	pgArr := make([]any, arr.Len())
+	pgArr := make([]any, 0, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsNull(i) || !arr.IsValid(i) {
-			pgArr[i] = nil
+		if !arr.IsValid(i) {
+			// we are using append and not pgArr[i] = nil
+			// because neo4j doesn't support nil values in collection so
+			// we just skip those
+			// pgArr = append(pgArr, nil)
 			continue
 		}
 		switch a := arr.(type) {
 		case *array.Boolean:
-			pgArr[i] = a.Value(i)
+			pgArr = append(pgArr, a.Value(i))
+		case *array.Int8:
+			pgArr = append(pgArr, int64(a.Value(i)))
 		case *array.Int16:
-			pgArr[i] = int64(a.Value(i))
+			pgArr = append(pgArr, int64(a.Value(i)))
 		case *array.Int32:
-			pgArr[i] = int64(a.Value(i))
+			pgArr = append(pgArr, int64(a.Value(i)))
 		case *array.Int64:
-			pgArr[i] = a.Value(i)
+			pgArr = append(pgArr, a.Value(i))
+		case *array.Uint8:
+			pgArr = append(pgArr, uint64(a.Value(i)))
+		case *array.Uint16:
+			pgArr = append(pgArr, uint64(a.Value(i)))
+		case *array.Uint32:
+			pgArr = append(pgArr, uint64(a.Value(i)))
+		case *array.Uint64:
+			pgArr = append(pgArr, a.Value(i))
 		case *array.Float32:
-			pgArr[i] = float64(a.Value(i))
+			pgArr = append(pgArr, float64(a.Value(i)))
 		case *array.Float64:
-			pgArr[i] = a.Value(i)
+			pgArr = append(pgArr, a.Value(i))
 		case *array.Binary:
-			pgArr[i] = a.Value(i)
+			pgArr = append(pgArr, a.Value(i))
 		case *array.LargeBinary:
-			pgArr[i] = a.Value(i)
+			pgArr = append(pgArr, a.Value(i))
 		case *array.String:
-			pgArr[i] = a.Value(i)
+			pgArr = append(pgArr, a.Value(i))
 		case *array.LargeString:
-			pgArr[i] = a.Value(i)
+			pgArr = append(pgArr, a.Value(i))
 		case *array.Timestamp:
-			pgArr[i] = a.Value(i).ToTime(arrow.Microsecond)
+			pgArr = append(pgArr, a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit))
 		case array.ListLike:
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)
-			pgArr[i] = transformArr(nested)
+			pgArr = append(pgArr, transformArr(nested))
 		default:
-			pgArr[i] = arr.ValueStr(i)
+			pgArr = append(pgArr, arr.ValueStr(i))
 		}
 	}
 
@@ -58,7 +71,9 @@ func transformValues(r arrow.Record) []map[string]any {
 		col := r.Column(i)
 		transformed := transformArr(col)
 		for l := 0; l < col.Len(); l++ {
-			results[l][sc.Field(i).Name] = transformed[l]
+			if l < len(transformed) {
+				results[l][sc.Field(i).Name] = transformed[l]
+			}
 		}
 	}
 	return results

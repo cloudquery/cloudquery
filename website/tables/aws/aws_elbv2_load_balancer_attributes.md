@@ -14,12 +14,12 @@ This table depends on [aws_elbv2_load_balancers](aws_elbv2_load_balancers).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|load_balancer_arn|String|
-|key|String|
-|value|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|load_balancer_arn|utf8|
+|key|utf8|
+|value|utf8|

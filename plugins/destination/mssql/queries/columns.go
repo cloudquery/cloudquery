@@ -1,48 +1,31 @@
 package queries
 
 import (
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"golang.org/x/exp/slices"
 )
 
 type colQueryBuilder struct {
-	Table      string
-	Definition *Definition
+	Schema string
+	Table  string
+	Column *schema.Column
 }
 
-func AddColumn(schemaName string, sc *arrow.Schema, definition *Definition) string {
+func AddColumn(schemaName string, table *schema.Table, column *schema.Column) string {
 	return execTemplate("col_add.sql.tpl", &colQueryBuilder{
-		Table:      SanitizedTableName(schemaName, sc),
-		Definition: definition.sanitized(),
+		Schema: schemaName,
+		Table:  table.Name,
+		Column: column,
 	})
 }
 
-func GetPKColumns(sc *arrow.Schema) []string {
-	pk := make([]string, 0, len(sc.Fields()))
-	for _, field := range sc.Fields() {
-		if schema.IsPk(field) {
-			pk = append(pk, field.Name)
-		}
-	}
-	return sanitized(slices.Clip(pk)...)
-}
-
-func GetValueColumns(sc *arrow.Schema) []string {
-	columns := make([]string, 0, len(sc.Fields()))
-	for _, field := range sc.Fields() {
-		if !schema.IsPk(field) {
-			columns = append(columns, field.Name)
+func GetValueColumns(table *schema.Table) []string {
+	columns := make([]string, 0, len(table.Columns))
+	for _, col := range table.Columns {
+		if !col.PrimaryKey {
+			columns = append(columns, col.Name)
 		}
 	}
 
-	return sanitized(slices.Clip(columns)...)
-}
-
-func ColumnNames(sc *arrow.Schema) []string {
-	columns := make([]string, len(sc.Fields()))
-	for i, field := range sc.Fields() {
-		columns[i] = field.Name
-	}
-	return columns
+	return slices.Clip(columns)
 }

@@ -22,26 +22,26 @@ The following tables depend on aws_resiliencehub_app_assessments:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|app_arn (PK)|String|
-|arn (PK)|String|
-|assessment_arn|String|
-|assessment_status|String|
-|invoker|String|
-|app_version|String|
-|assessment_name|String|
-|compliance|JSON|
-|compliance_status|String|
-|cost|JSON|
-|end_time|Timestamp|
-|message|String|
-|policy|JSON|
-|resiliency_score|JSON|
-|resource_errors_details|JSON|
-|start_time|Timestamp|
-|tags|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|app_arn (PK)|utf8|
+|arn (PK)|utf8|
+|assessment_arn|utf8|
+|assessment_status|utf8|
+|invoker|utf8|
+|app_version|utf8|
+|assessment_name|utf8|
+|compliance|json|
+|compliance_status|utf8|
+|cost|json|
+|end_time|timestamp[us, tz=UTC]|
+|message|utf8|
+|policy|json|
+|resiliency_score|json|
+|resource_errors_details|json|
+|start_time|timestamp[us, tz=UTC]|
+|tags|json|

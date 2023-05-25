@@ -14,13 +14,13 @@ This table depends on [aws_cloudwatchlogs_log_groups](aws_cloudwatchlogs_log_gro
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|log_group_arn (PK)|String|
-|last_updated_time|Int|
-|log_group_identifier|String|
-|policy_document|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|log_group_arn (PK)|utf8|
+|last_updated_time|int64|
+|log_group_identifier|utf8|
+|policy_document|utf8|

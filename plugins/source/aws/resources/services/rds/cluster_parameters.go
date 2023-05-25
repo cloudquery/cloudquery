@@ -4,12 +4,13 @@ import (
 	"context"
 	"strings"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func clusterParameters() *schema.Table {
@@ -25,57 +26,57 @@ func clusterParameters() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "allowed_values",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("AllowedValues"),
 			},
 			{
 				Name:     "apply_method",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("ApplyMethod"),
 			},
 			{
 				Name:     "apply_type",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("ApplyType"),
 			},
 			{
 				Name:     "data_type",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("DataType"),
 			},
 			{
 				Name:     "description",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("Description"),
 			},
 			{
 				Name:     "is_modifiable",
-				Type:     schema.TypeBool,
+				Type:     arrow.FixedWidthTypes.Boolean,
 				Resolver: schema.PathResolver("IsModifiable"),
 			},
 			{
 				Name:     "minimum_engine_version",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("MinimumEngineVersion"),
 			},
 			{
 				Name:     "parameter_name",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("ParameterName"),
 			},
 			{
 				Name:     "parameter_value",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("ParameterValue"),
 			},
 			{
 				Name:     "source",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("Source"),
 			},
 			{
 				Name:     "supported_engine_modes",
-				Type:     schema.TypeStringArray,
+				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: schema.PathResolver("SupportedEngineModes"),
 			},
 		},

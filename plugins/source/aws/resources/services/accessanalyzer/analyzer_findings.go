@@ -3,13 +3,15 @@ package accessanalyzer
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func analyzerFindings() *schema.Table {
@@ -22,16 +24,14 @@ func analyzerFindings() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveFindingArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveFindingArn,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "analyzer_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 		},
@@ -40,20 +40,24 @@ func analyzerFindings() *schema.Table {
 
 func fetchAccessanalyzerAnalyzerFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	analyzer := parent.Item.(types.AnalyzerSummary)
-	c := meta.(*client.Client)
-	svc := c.Services().Accessanalyzer
-	config := accessanalyzer.ListFindingsInput{
-		AnalyzerArn: analyzer.Arn,
+	cl := meta.(*client.Client)
+	svc := cl.Services().Accessanalyzer
+	allConfigs := []tableoptions.CustomAccessAnalyzerListFindingsInput{{}}
+	if cl.Spec.TableOptions.AccessAnalyzerFindings != nil {
+		allConfigs = cl.Spec.TableOptions.AccessAnalyzerFindings.ListFindingOpts
 	}
-	paginator := accessanalyzer.NewListFindingsPaginator(svc, &config)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {
-			options.Region = c.Region
-		})
-		if err != nil {
-			return err
+	for _, cfg := range allConfigs {
+		cfg.AnalyzerArn = analyzer.Arn
+		paginator := accessanalyzer.NewListFindingsPaginator(svc, &cfg.ListFindingsInput)
+		for paginator.HasMorePages() {
+			page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {
+				options.Region = cl.Region
+			})
+			if err != nil {
+				return err
+			}
+			res <- page.Findings
 		}
-		res <- page.Findings
 	}
 	return nil
 }
