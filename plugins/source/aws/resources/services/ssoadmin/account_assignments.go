@@ -3,6 +3,7 @@ package ssoadmin
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin/types"
@@ -14,11 +15,29 @@ import (
 func accountAssignments() *schema.Table {
 	tableName := "aws_ssoadmin_account_assignments"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_AccountAssignment.html`,
-		Resolver:    fetchSsoadminAccountAssignments,
-		Transform:   transformers.TransformWithStruct(&types.AccountAssignment{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "identitystore"),
+		Name: tableName,
+		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_AccountAssignment.html
+The 'request_account_id' and 'request_region' columns are added to show the account_id and region of where the request was made from.`,
+		Resolver:  fetchSsoadminAccountAssignments,
+		Transform: transformers.TransformWithStruct(&types.AccountAssignment{}, transformers.WithPrimaryKeys("PermissionSetArn", "PrincipalId", "PrincipalType", "AccountId")),
+		Columns: schema.ColumnList{
+			{
+				Name:     "request_account_id",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: client.ResolveAWSAccount,
+			},
+			{
+				Name:     "request_region",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: client.ResolveAWSRegion,
+			},
+			{
+				Name:       "instance_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("instance_arn"),
+				PrimaryKey: true,
+			},
+		},
 	}
 }
 

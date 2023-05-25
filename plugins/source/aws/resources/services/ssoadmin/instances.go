@@ -16,7 +16,7 @@ func Instances() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_InstanceMetadata.html`,
 		Resolver:    fetchSsoadminInstances,
-		Transform:   transformers.TransformWithStruct(&types.InstanceMetadata{}),
+		Transform:   transformers.TransformWithStruct(&types.InstanceMetadata{}, transformers.WithPrimaryKeys("InstanceArn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "identitystore"),
 
 		Relations: []*schema.Table{

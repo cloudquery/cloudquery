@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
 
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin/types"
@@ -21,8 +20,7 @@ func permissionSets() *schema.Table {
 The 'request_account_id' and 'request_region' columns are added to show the account_id and region of where the request was made from.`,
 		Resolver:            fetchSsoadminPermissionSets,
 		PreResourceResolver: getSsoadminPermissionSet,
-		Transform:           transformers.TransformWithStruct(&types.PermissionSet{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "identitystore"),
+		Transform:           transformers.TransformWithStruct(&types.PermissionSet{}, transformers.WithPrimaryKeys("PermissionSetArn")),
 		Columns: []schema.Column{
 			{
 				Name:     "request_account_id",
@@ -35,36 +33,21 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "inline_policy",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: getSsoadminPermissionSetInlinePolicy,
+				Name:       "instance_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("instance_arn"),
+				PrimaryKey: true,
 			},
 		},
 
 		Relations: []*schema.Table{
 			accountAssignments(),
+			inlinePolicies(),
+			customerMangedPolices(),
+			managedPolicies(),
+			permissionBoundaries(),
 		},
 	}
-}
-
-func getSsoadminPermissionSetInlinePolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services().Ssoadmin
-	permissionSetARN := resource.Item.(*types.PermissionSet).PermissionSetArn
-	instanceARN := resource.Parent.Item.(types.InstanceMetadata).InstanceArn
-	config := ssoadmin.GetInlinePolicyForPermissionSetInput{
-		InstanceArn:      instanceARN,
-		PermissionSetArn: permissionSetARN,
-	}
-
-	response, err := svc.GetInlinePolicyForPermissionSet(ctx, &config, func(o *ssoadmin.Options) {
-		o.Region = cl.Region
-	})
-	if err != nil {
-		return err
-	}
-
-	return resource.Set(c.Name, response.InlinePolicy)
 }
 
 func getSsoadminPermissionSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
