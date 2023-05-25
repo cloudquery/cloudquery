@@ -13,33 +13,33 @@ The following tables depend on shopify_price_rules:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|Int|
-|updated_at (Incremental Key)|Timestamp|
-|value_type|String|
-|value|String|
-|customer_selection|String|
-|target_type|String|
-|target_selection|String|
-|allocation_method|String|
-|once_per_customer|Bool|
-|usage_limit|Int|
-|starts_at|Timestamp|
-|ends_at|Timestamp|
-|created_at|Timestamp|
-|entitled_product_ids|JSON|
-|entitled_variant_ids|JSON|
-|entitled_collection_ids|JSON|
-|entitled_country_ids|JSON|
-|prerequisite_product_ids|JSON|
-|prerequisite_variant_ids|JSON|
-|prerequisite_collection_ids|JSON|
-|customer_segment_prerequisite_ids|JSON|
-|prerequisite_customer_ids|JSON|
-|prerequisite_to_entitlement_quantity_ratio|JSON|
-|prerequisite_to_entitlement_purchase|JSON|
-|title|String|
-|admin_graphql_api_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|int64|
+|updated_at (Incremental Key)|timestamp[us, tz=UTC]|
+|value_type|extension_type<storage=binary>|
+|value|extension_type<storage=binary>|
+|customer_selection|extension_type<storage=binary>|
+|target_type|extension_type<storage=binary>|
+|target_selection|extension_type<storage=binary>|
+|allocation_method|extension_type<storage=binary>|
+|once_per_customer|extension_type<storage=binary>|
+|usage_limit|extension_type<storage=binary>|
+|starts_at|extension_type<storage=binary>|
+|ends_at|extension_type<storage=binary>|
+|created_at|extension_type<storage=binary>|
+|entitled_product_ids|extension_type<storage=binary>|
+|entitled_variant_ids|extension_type<storage=binary>|
+|entitled_collection_ids|extension_type<storage=binary>|
+|entitled_country_ids|extension_type<storage=binary>|
+|prerequisite_product_ids|extension_type<storage=binary>|
+|prerequisite_variant_ids|extension_type<storage=binary>|
+|prerequisite_collection_ids|extension_type<storage=binary>|
+|customer_segment_prerequisite_ids|extension_type<storage=binary>|
+|prerequisite_customer_ids|extension_type<storage=binary>|
+|prerequisite_to_entitlement_quantity_ratio|extension_type<storage=binary>|
+|prerequisite_to_entitlement_purchase|extension_type<storage=binary>|
+|title|extension_type<storage=binary>|
+|admin_graphql_api_id|extension_type<storage=binary>|

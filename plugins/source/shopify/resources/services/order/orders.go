@@ -1,40 +1,35 @@
 package order
 
 import (
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/cloudquery/plugins/source/shopify/client"
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/internal/shopify"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func Orders() *schema.Table {
 	return &schema.Table{
 		Name:      "shopify_orders",
 		Resolver:  fetchOrders,
-		Transform: transformers.TransformWithStruct(&shopify.Order{}),
+		Transform: client.TransformWithStruct(&shopify.Order{}),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.PrimitiveTypes.Int64,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "created_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreatedAt"),
-				CreationOptions: schema.ColumnCreationOptions{
-					IncrementalKey: true,
-				},
+				Name:           "created_at",
+				Type:           arrow.FixedWidthTypes.Timestamp_us,
+				Resolver:       schema.PathResolver("CreatedAt"),
+				IncrementalKey: true,
 			},
 			{
-				Name:     "updated_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UpdatedAt"),
-				CreationOptions: schema.ColumnCreationOptions{
-					IncrementalKey: true,
-				},
+				Name:           "updated_at",
+				Type:           arrow.FixedWidthTypes.Timestamp_us,
+				Resolver:       schema.PathResolver("UpdatedAt"),
+				IncrementalKey: true,
 			},
 		},
 		IsIncremental: true,

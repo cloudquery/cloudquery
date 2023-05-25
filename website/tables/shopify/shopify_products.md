@@ -14,22 +14,22 @@ The following tables depend on shopify_products:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|Int|
-|updated_at (Incremental Key)|Timestamp|
-|title|String|
-|body_html|String|
-|vendor|String|
-|product_type|String|
-|created_at|Timestamp|
-|handle|String|
-|published_at|Timestamp|
-|template_suffix|String|
-|status|String|
-|published_scope|String|
-|tags|StringArray|
-|image|JSON|
-|admin_graphql_api_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|int64|
+|updated_at (Incremental Key)|timestamp[us, tz=UTC]|
+|title|extension_type<storage=binary>|
+|body_html|extension_type<storage=binary>|
+|vendor|extension_type<storage=binary>|
+|product_type|extension_type<storage=binary>|
+|created_at|extension_type<storage=binary>|
+|handle|extension_type<storage=binary>|
+|published_at|extension_type<storage=binary>|
+|template_suffix|extension_type<storage=binary>|
+|status|extension_type<storage=binary>|
+|published_scope|extension_type<storage=binary>|
+|tags|extension_type<storage=binary>|
+|image|extension_type<storage=binary>|
+|admin_graphql_api_id|extension_type<storage=binary>|

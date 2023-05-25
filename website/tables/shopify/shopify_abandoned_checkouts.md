@@ -9,40 +9,40 @@ It supports incremental syncs based on the **updated_at** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|Int|
-|updated_at (Incremental Key)|Timestamp|
-|token|String|
-|cart_token|String|
-|email|String|
-|gateway|String|
-|buyer_accepts_marketing|Bool|
-|created_at|Timestamp|
-|landing_site|String|
-|note_attributes|JSON|
-|referring_site|String|
-|shipping_lines|JSON|
-|taxes_included|Bool|
-|total_weight|Int|
-|currency|String|
-|completed_at|Timestamp|
-|closed_at|Timestamp|
-|user_id|Int|
-|customer_locale|String|
-|line_items|JSON|
-|name|String|
-|abandoned_checkout_url|String|
-|discount_codes|JSON|
-|tax_lines|JSON|
-|source_name|String|
-|presentment_currency|String|
-|buyer_accepts_sms_marketing|Bool|
-|total_discounts|String|
-|total_line_items_price|String|
-|total_price|String|
-|total_tax|String|
-|subtotal_price|String|
-|customer|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|int64|
+|updated_at (Incremental Key)|timestamp[us, tz=UTC]|
+|token|extension_type<storage=binary>|
+|cart_token|extension_type<storage=binary>|
+|email|extension_type<storage=binary>|
+|gateway|extension_type<storage=binary>|
+|buyer_accepts_marketing|extension_type<storage=binary>|
+|created_at|extension_type<storage=binary>|
+|landing_site|extension_type<storage=binary>|
+|note_attributes|extension_type<storage=binary>|
+|referring_site|extension_type<storage=binary>|
+|shipping_lines|extension_type<storage=binary>|
+|taxes_included|extension_type<storage=binary>|
+|total_weight|extension_type<storage=binary>|
+|currency|extension_type<storage=binary>|
+|completed_at|extension_type<storage=binary>|
+|closed_at|extension_type<storage=binary>|
+|user_id|extension_type<storage=binary>|
+|customer_locale|extension_type<storage=binary>|
+|line_items|extension_type<storage=binary>|
+|name|extension_type<storage=binary>|
+|abandoned_checkout_url|extension_type<storage=binary>|
+|discount_codes|extension_type<storage=binary>|
+|tax_lines|extension_type<storage=binary>|
+|source_name|extension_type<storage=binary>|
+|presentment_currency|extension_type<storage=binary>|
+|buyer_accepts_sms_marketing|extension_type<storage=binary>|
+|total_discounts|extension_type<storage=binary>|
+|total_line_items_price|extension_type<storage=binary>|
+|total_price|extension_type<storage=binary>|
+|total_tax|extension_type<storage=binary>|
+|subtotal_price|extension_type<storage=binary>|
+|customer|extension_type<storage=binary>|
