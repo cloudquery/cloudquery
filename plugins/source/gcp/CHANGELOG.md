@@ -5,6 +5,28 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v8.5.1...plugins-source-gcp-v9.0.0) (2023-05-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose).
+* **gcp:** Initialization concurrency ([#10700](https://github.com/cloudquery/cloudquery/issues/10700))
+* **gcp:** Make Listing Enabled Services failures not block the sync ([#10699](https://github.com/cloudquery/cloudquery/issues/10699))
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* **gcp:** Enable Better Logging for when `enabled_services_only` fails ([#10695](https://github.com/cloudquery/cloudquery/issues/10695)) ([a849aea](https://github.com/cloudquery/cloudquery/commit/a849aea5783cbfb6dc69e07f395e4137ab13ffb3))
+* **gcp:** Initialization concurrency ([#10700](https://github.com/cloudquery/cloudquery/issues/10700)) ([0c9f510](https://github.com/cloudquery/cloudquery/commit/0c9f5108d96072d6d69cae4abda8b821217374e8))
+* **gcp:** Make Listing Enabled Services failures not block the sync ([#10699](https://github.com/cloudquery/cloudquery/issues/10699)) ([5b49481](https://github.com/cloudquery/cloudquery/commit/5b49481f53f8e0720e9db48c908964aca2821a81))
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([612d3ea](https://github.com/cloudquery/cloudquery/commit/612d3eaa47f58350245348779a0e109815ed4e18))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [8.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v8.5.0...plugins-source-gcp-v8.5.1) (2023-05-02)
 
 
