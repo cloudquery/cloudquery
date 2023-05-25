@@ -10,7 +10,7 @@
 \ir ../queries/storage/no_publicly_accessible_insights_activity_logs.sql
 \set check_id '5.1.4'
 \echo "Executing check 5.1.4"
-\ir ../queries/storage/encrypt_with_cmk.sql
+\ir ../queries/storage/encrypt_with_cmk_for_activity_log.sql
 \set check_id '5.1.5'
 \echo "Executing check 5.1.5"
 \ir ../queries/monitor/logging_key_calut_is_enabled.sql
