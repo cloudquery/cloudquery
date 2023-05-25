@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v3.0.1...plugins-destination-gcs-v3.1.0) (2023-05-25)
+
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* **gcs:** Upgrade to v3 ([#10925](https://github.com/cloudquery/cloudquery/issues/10925)) ([c6619e3](https://github.com/cloudquery/cloudquery/commit/c6619e37a479e26e40ccc71f53029609fcffb00f))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v3.0.0...plugins-destination-gcs-v3.0.1) (2023-05-02)
 
 
