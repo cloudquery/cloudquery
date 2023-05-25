@@ -15,41 +15,41 @@ The following tables depend on aws_ssm_documents:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|permissions|JSON|
-|tags|JSON|
-|approved_version|String|
-|attachments_information|JSON|
-|author|String|
-|category|StringArray|
-|category_enum|StringArray|
-|created_date|Timestamp|
-|default_version|String|
-|description|String|
-|display_name|String|
-|document_format|String|
-|document_type|String|
-|document_version|String|
-|hash|String|
-|hash_type|String|
-|latest_version|String|
-|name|String|
-|owner|String|
-|parameters|JSON|
-|pending_review_version|String|
-|platform_types|StringArray|
-|requires|JSON|
-|review_information|JSON|
-|review_status|String|
-|schema_version|String|
-|sha1|String|
-|status|String|
-|status_information|String|
-|target_type|String|
-|version_name|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|permissions|json|
+|tags|json|
+|approved_version|utf8|
+|attachments_information|json|
+|author|utf8|
+|category|list<item: utf8, nullable>|
+|category_enum|list<item: utf8, nullable>|
+|created_date|timestamp[us, tz=UTC]|
+|default_version|utf8|
+|description|utf8|
+|display_name|utf8|
+|document_format|utf8|
+|document_type|utf8|
+|document_version|utf8|
+|hash|utf8|
+|hash_type|utf8|
+|latest_version|utf8|
+|name|utf8|
+|owner|utf8|
+|parameters|json|
+|pending_review_version|utf8|
+|platform_types|list<item: utf8, nullable>|
+|requires|json|
+|review_information|json|
+|review_status|utf8|
+|schema_version|utf8|
+|sha1|utf8|
+|status|utf8|
+|status_information|utf8|
+|target_type|utf8|
+|version_name|utf8|

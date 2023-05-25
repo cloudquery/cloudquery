@@ -3,12 +3,13 @@ package route53
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func TrafficPolicies() *schema.Table {
@@ -22,12 +23,10 @@ func TrafficPolicies() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveTrafficPolicyArn(),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveTrafficPolicyArn(),
+				PrimaryKey: true,
 			},
 		},
 

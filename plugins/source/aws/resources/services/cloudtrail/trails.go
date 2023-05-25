@@ -5,14 +5,17 @@ import (
 	"fmt"
 	"regexp"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Trails() *schema.Table {
@@ -28,20 +31,18 @@ func Trails() *schema.Table {
 			client.DefaultRegionColumn(true),
 			{
 				Name:     "cloudwatch_logs_log_group_name",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: resolveCloudtrailTrailCloudwatchLogsLogGroupName,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TrailARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("TrailARN"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "status",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveCloudTrailStatus,
 			},
 		},

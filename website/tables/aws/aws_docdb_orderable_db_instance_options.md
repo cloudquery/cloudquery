@@ -14,13 +14,13 @@ This table depends on [aws_docdb_engine_versions](aws_docdb_engine_versions).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|availability_zones|JSON|
-|db_instance_class|String|
-|engine|String|
-|engine_version|String|
-|license_model|String|
-|vpc|Bool|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|availability_zones|json|
+|db_instance_class|utf8|
+|engine|utf8|
+|engine_version|utf8|
+|license_model|utf8|
+|vpc|bool|

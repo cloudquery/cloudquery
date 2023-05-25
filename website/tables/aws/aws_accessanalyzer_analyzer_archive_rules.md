@@ -14,14 +14,14 @@ This table depends on [aws_accessanalyzer_analyzers](aws_accessanalyzer_analyzer
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|analyzer_arn|String|
-|created_at|Timestamp|
-|filter|JSON|
-|rule_name|String|
-|updated_at|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|analyzer_arn|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|filter|json|
+|rule_name|utf8|
+|updated_at|timestamp[us, tz=UTC]|

@@ -10,23 +10,23 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|delivery_policy|JSON|
-|policy|JSON|
-|effective_delivery_policy|JSON|
-|display_name|String|
-|owner|String|
-|subscriptions_confirmed|Int|
-|subscriptions_deleted|Int|
-|subscriptions_pending|Int|
-|kms_master_key_id|String|
-|fifo_topic|Bool|
-|content_based_deduplication|Bool|
-|unknown_fields|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|delivery_policy|json|
+|policy|json|
+|effective_delivery_policy|json|
+|display_name|utf8|
+|owner|utf8|
+|subscriptions_confirmed|int64|
+|subscriptions_deleted|int64|
+|subscriptions_pending|int64|
+|kms_master_key_id|utf8|
+|fifo_topic|bool|
+|content_based_deduplication|bool|
+|unknown_fields|json|

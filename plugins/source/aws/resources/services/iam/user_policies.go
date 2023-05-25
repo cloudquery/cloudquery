@@ -5,11 +5,14 @@ import (
 	"encoding/json"
 	"net/url"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func userPolicies() *schema.Table {
@@ -23,21 +26,19 @@ func userPolicies() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "user_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "user_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "user_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("user_id"),
 			},
 			{
 				Name:     "policy_document",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveIamUserPolicyPolicyDocument,
 			},
 		},

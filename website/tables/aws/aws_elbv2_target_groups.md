@@ -15,29 +15,29 @@ The following tables depend on aws_elbv2_target_groups:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|arn (PK)|String|
-|health_check_enabled|Bool|
-|health_check_interval_seconds|Int|
-|health_check_path|String|
-|health_check_port|String|
-|health_check_protocol|String|
-|health_check_timeout_seconds|Int|
-|healthy_threshold_count|Int|
-|ip_address_type|String|
-|load_balancer_arns|StringArray|
-|matcher|JSON|
-|port|Int|
-|protocol|String|
-|protocol_version|String|
-|target_group_arn|String|
-|target_group_name|String|
-|target_type|String|
-|unhealthy_threshold_count|Int|
-|vpc_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|tags|json|
+|arn (PK)|utf8|
+|health_check_enabled|bool|
+|health_check_interval_seconds|int64|
+|health_check_path|utf8|
+|health_check_port|utf8|
+|health_check_protocol|utf8|
+|health_check_timeout_seconds|int64|
+|healthy_threshold_count|int64|
+|ip_address_type|utf8|
+|load_balancer_arns|list<item: utf8, nullable>|
+|matcher|json|
+|port|int64|
+|protocol|utf8|
+|protocol_version|utf8|
+|target_group_arn|utf8|
+|target_group_name|utf8|
+|target_type|utf8|
+|unhealthy_threshold_count|int64|
+|vpc_id|utf8|

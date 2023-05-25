@@ -14,17 +14,17 @@ This table depends on [aws_resiliencehub_app_versions](aws_resiliencehub_app_ver
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|app_arn (PK)|String|
-|app_version (PK)|String|
-|physical_resource_identifier (PK)|String|
-|logical_resource_id|JSON|
-|physical_resource_id|JSON|
-|resource_type|String|
-|app_components|JSON|
-|resource_name|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|app_arn (PK)|utf8|
+|app_version (PK)|utf8|
+|physical_resource_identifier (PK)|utf8|
+|logical_resource_id|json|
+|physical_resource_id|json|
+|resource_type|utf8|
+|app_components|json|
+|resource_name|utf8|

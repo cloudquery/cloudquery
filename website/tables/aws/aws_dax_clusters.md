@@ -10,29 +10,29 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|active_nodes|Int|
-|cluster_arn|String|
-|cluster_discovery_endpoint|JSON|
-|cluster_endpoint_encryption_type|String|
-|cluster_name|String|
-|description|String|
-|iam_role_arn|String|
-|node_ids_to_remove|StringArray|
-|node_type|String|
-|nodes|JSON|
-|notification_configuration|JSON|
-|parameter_group|JSON|
-|preferred_maintenance_window|String|
-|sse_description|JSON|
-|security_groups|JSON|
-|status|String|
-|subnet_group|String|
-|total_nodes|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|active_nodes|int64|
+|cluster_arn|utf8|
+|cluster_discovery_endpoint|json|
+|cluster_endpoint_encryption_type|utf8|
+|cluster_name|utf8|
+|description|utf8|
+|iam_role_arn|utf8|
+|node_ids_to_remove|list<item: utf8, nullable>|
+|node_type|utf8|
+|nodes|json|
+|notification_configuration|json|
+|parameter_group|json|
+|preferred_maintenance_window|utf8|
+|sse_description|json|
+|security_groups|json|
+|status|utf8|
+|subnet_group|utf8|
+|total_nodes|int64|

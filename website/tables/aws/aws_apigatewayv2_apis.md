@@ -20,27 +20,27 @@ The following tables depend on aws_apigatewayv2_apis:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|arn (PK)|String|
-|id|String|
-|name|String|
-|protocol_type|String|
-|route_selection_expression|String|
-|api_endpoint|String|
-|api_gateway_managed|Bool|
-|api_id|String|
-|api_key_selection_expression|String|
-|cors_configuration|JSON|
-|created_date|Timestamp|
-|description|String|
-|disable_execute_api_endpoint|Bool|
-|disable_schema_validation|Bool|
-|import_info|StringArray|
-|tags|JSON|
-|version|String|
-|warnings|StringArray|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|id|utf8|
+|name|utf8|
+|protocol_type|utf8|
+|route_selection_expression|utf8|
+|api_endpoint|utf8|
+|api_gateway_managed|bool|
+|api_id|utf8|
+|api_key_selection_expression|utf8|
+|cors_configuration|json|
+|created_date|timestamp[us, tz=UTC]|
+|description|utf8|
+|disable_execute_api_endpoint|bool|
+|disable_schema_validation|bool|
+|import_info|list<item: utf8, nullable>|
+|tags|json|
+|version|utf8|
+|warnings|list<item: utf8, nullable>|

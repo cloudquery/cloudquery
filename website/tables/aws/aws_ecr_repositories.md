@@ -15,20 +15,20 @@ The following tables depend on aws_ecr_repositories:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|policy_text|JSON|
-|created_at|Timestamp|
-|encryption_configuration|JSON|
-|image_scanning_configuration|JSON|
-|image_tag_mutability|String|
-|registry_id|String|
-|repository_arn|String|
-|repository_name|String|
-|repository_uri|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|policy_text|json|
+|created_at|timestamp[us, tz=UTC]|
+|encryption_configuration|json|
+|image_scanning_configuration|json|
+|image_tag_mutability|utf8|
+|registry_id|utf8|
+|repository_arn|utf8|
+|repository_name|utf8|
+|repository_uri|utf8|

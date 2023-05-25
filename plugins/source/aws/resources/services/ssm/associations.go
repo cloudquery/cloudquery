@@ -3,11 +3,12 @@ package ssm
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Associations() *schema.Table {
@@ -22,12 +23,10 @@ func Associations() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:     "association_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AssociationId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "association_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("AssociationId"),
+				PrimaryKey: true,
 			},
 		},
 	}

@@ -10,20 +10,20 @@ The composite primary key for this table is (**account_id**, **region**, **arn**
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|tags|JSON|
-|analysis_id|String|
-|arn (PK)|String|
-|created_time|Timestamp|
-|data_set_arns|StringArray|
-|errors|JSON|
-|last_updated_time|Timestamp|
-|name|String|
-|sheets|JSON|
-|status|String|
-|theme_arn|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region (PK)|utf8|
+|tags|json|
+|analysis_id|utf8|
+|arn (PK)|utf8|
+|created_time|timestamp[us, tz=UTC]|
+|data_set_arns|list<item: utf8, nullable>|
+|errors|json|
+|last_updated_time|timestamp[us, tz=UTC]|
+|name|utf8|
+|sheets|json|
+|status|utf8|
+|theme_arn|utf8|

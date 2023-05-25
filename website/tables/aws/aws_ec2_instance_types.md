@@ -10,34 +10,34 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|auto_recovery_supported|Bool|
-|bare_metal|Bool|
-|burstable_performance_supported|Bool|
-|current_generation|Bool|
-|dedicated_hosts_supported|Bool|
-|ebs_info|JSON|
-|fpga_info|JSON|
-|free_tier_eligible|Bool|
-|gpu_info|JSON|
-|hibernation_supported|Bool|
-|hypervisor|String|
-|inference_accelerator_info|JSON|
-|instance_storage_info|JSON|
-|instance_storage_supported|Bool|
-|instance_type|String|
-|memory_info|JSON|
-|network_info|JSON|
-|placement_group_info|JSON|
-|processor_info|JSON|
-|supported_boot_modes|StringArray|
-|supported_root_device_types|StringArray|
-|supported_usage_classes|StringArray|
-|supported_virtualization_types|StringArray|
-|v_cpu_info|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|auto_recovery_supported|bool|
+|bare_metal|bool|
+|burstable_performance_supported|bool|
+|current_generation|bool|
+|dedicated_hosts_supported|bool|
+|ebs_info|json|
+|fpga_info|json|
+|free_tier_eligible|bool|
+|gpu_info|json|
+|hibernation_supported|bool|
+|hypervisor|utf8|
+|inference_accelerator_info|json|
+|instance_storage_info|json|
+|instance_storage_supported|bool|
+|instance_type|utf8|
+|memory_info|json|
+|network_info|json|
+|placement_group_info|json|
+|processor_info|json|
+|supported_boot_modes|list<item: utf8, nullable>|
+|supported_root_device_types|list<item: utf8, nullable>|
+|supported_usage_classes|list<item: utf8, nullable>|
+|supported_virtualization_types|list<item: utf8, nullable>|
+|v_cpu_info|json|

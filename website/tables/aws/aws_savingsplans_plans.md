@@ -10,27 +10,27 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|arn (PK)|String|
-|commitment|String|
-|currency|String|
-|description|String|
-|ec2_instance_family|String|
-|end|String|
-|offering_id|String|
-|payment_option|String|
-|product_types|StringArray|
-|recurring_payment_amount|String|
-|region|String|
-|savings_plan_arn|String|
-|savings_plan_id|String|
-|savings_plan_type|String|
-|start|String|
-|state|String|
-|tags|JSON|
-|term_duration_in_seconds|Int|
-|upfront_payment_amount|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|arn (PK)|utf8|
+|commitment|utf8|
+|currency|utf8|
+|description|utf8|
+|ec2_instance_family|utf8|
+|end|utf8|
+|offering_id|utf8|
+|payment_option|utf8|
+|product_types|list<item: utf8, nullable>|
+|recurring_payment_amount|utf8|
+|region|utf8|
+|savings_plan_arn|utf8|
+|savings_plan_id|utf8|
+|savings_plan_type|utf8|
+|start|utf8|
+|state|utf8|
+|tags|json|
+|term_duration_in_seconds|int64|
+|upfront_payment_amount|utf8|
