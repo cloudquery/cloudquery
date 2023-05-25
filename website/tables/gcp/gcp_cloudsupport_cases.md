@@ -10,23 +10,23 @@ The composite primary key for this table is (**project_id**, **name**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|classification|JSON|
-|create_time|String|
-|creator|JSON|
-|description|String|
-|display_name|String|
-|escalated|Bool|
-|language_code|String|
-|name (PK)|String|
-|priority|String|
-|severity|String|
-|state|String|
-|subscriber_email_addresses|StringArray|
-|test_case|Bool|
-|time_zone|String|
-|update_time|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|classification|json|
+|create_time|utf8|
+|creator|json|
+|description|utf8|
+|display_name|utf8|
+|escalated|bool|
+|language_code|utf8|
+|name (PK)|utf8|
+|priority|utf8|
+|severity|utf8|
+|state|utf8|
+|subscriber_email_addresses|list<item: utf8, nullable>|
+|test_case|bool|
+|time_zone|utf8|
+|update_time|utf8|

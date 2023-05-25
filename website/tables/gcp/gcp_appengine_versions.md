@@ -17,45 +17,45 @@ The following tables depend on gcp_appengine_versions:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|id|String|
-|inbound_services|IntArray|
-|instance_class|String|
-|network|JSON|
-|zones|StringArray|
-|resources|JSON|
-|runtime|String|
-|runtime_channel|String|
-|threadsafe|Bool|
-|vm|Bool|
-|app_engine_apis|Bool|
-|beta_settings|JSON|
-|env|String|
-|serving_status|String|
-|created_by|String|
-|create_time|Timestamp|
-|disk_usage_bytes|Int|
-|runtime_api_version|String|
-|runtime_main_executable_path|String|
-|service_account|String|
-|handlers|JSON|
-|error_handlers|JSON|
-|libraries|JSON|
-|api_config|JSON|
-|env_variables|JSON|
-|build_env_variables|JSON|
-|default_expiration|Int|
-|health_check|JSON|
-|readiness_check|JSON|
-|liveness_check|JSON|
-|nobuild_files_regex|String|
-|deployment|JSON|
-|version_url|String|
-|endpoints_api_service|JSON|
-|entrypoint|JSON|
-|vpc_access_connector|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|name (PK)|utf8|
+|id|utf8|
+|inbound_services|list<item: int64, nullable>|
+|instance_class|utf8|
+|network|json|
+|zones|list<item: utf8, nullable>|
+|resources|json|
+|runtime|utf8|
+|runtime_channel|utf8|
+|threadsafe|bool|
+|vm|bool|
+|app_engine_apis|bool|
+|beta_settings|json|
+|env|utf8|
+|serving_status|utf8|
+|created_by|utf8|
+|create_time|timestamp[us, tz=UTC]|
+|disk_usage_bytes|int64|
+|runtime_api_version|utf8|
+|runtime_main_executable_path|utf8|
+|service_account|utf8|
+|handlers|json|
+|error_handlers|json|
+|libraries|json|
+|api_config|json|
+|env_variables|json|
+|build_env_variables|json|
+|default_expiration|int64|
+|health_check|json|
+|readiness_check|json|
+|liveness_check|json|
+|nobuild_files_regex|utf8|
+|deployment|json|
+|version_url|utf8|
+|endpoints_api_service|json|
+|entrypoint|json|
+|vpc_access_connector|json|

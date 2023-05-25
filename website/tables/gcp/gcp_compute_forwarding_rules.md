@@ -10,41 +10,41 @@ The primary key for this table is **self_link**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id|String|
-|ip_address|String|
-|ip_protocol|String|
-|all_ports|Bool|
-|allow_global_access|Bool|
-|backend_service|String|
-|base_forwarding_rule|String|
-|creation_timestamp|String|
-|description|String|
-|fingerprint|String|
-|id|Int|
-|ip_version|String|
-|is_mirroring_collector|Bool|
-|kind|String|
-|label_fingerprint|String|
-|labels|JSON|
-|load_balancing_scheme|String|
-|metadata_filters|JSON|
-|name|String|
-|network|String|
-|network_tier|String|
-|no_automate_dns_zone|Bool|
-|port_range|String|
-|ports|StringArray|
-|psc_connection_id|Int|
-|psc_connection_status|String|
-|region|String|
-|self_link (PK)|String|
-|service_directory_registrations|JSON|
-|service_label|String|
-|service_name|String|
-|source_ip_ranges|StringArray|
-|subnetwork|String|
-|target|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id|utf8|
+|ip_address|utf8|
+|ip_protocol|utf8|
+|all_ports|bool|
+|allow_global_access|bool|
+|backend_service|utf8|
+|base_forwarding_rule|utf8|
+|creation_timestamp|utf8|
+|description|utf8|
+|fingerprint|utf8|
+|id|int64|
+|ip_version|utf8|
+|is_mirroring_collector|bool|
+|kind|utf8|
+|label_fingerprint|utf8|
+|labels|json|
+|load_balancing_scheme|utf8|
+|metadata_filters|json|
+|name|utf8|
+|network|utf8|
+|network_tier|utf8|
+|no_automate_dns_zone|bool|
+|port_range|utf8|
+|ports|list<item: utf8, nullable>|
+|psc_connection_id|int64|
+|psc_connection_status|utf8|
+|region|utf8|
+|self_link (PK)|utf8|
+|service_directory_registrations|json|
+|service_label|utf8|
+|service_name|utf8|
+|source_ip_ranges|list<item: utf8, nullable>|
+|subnetwork|utf8|
+|target|utf8|
