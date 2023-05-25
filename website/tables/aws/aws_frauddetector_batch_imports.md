@@ -10,22 +10,22 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|completion_time|String|
-|event_type_name|String|
-|failed_records_count|Int|
-|failure_reason|String|
-|iam_role_arn|String|
-|input_path|String|
-|job_id|String|
-|output_path|String|
-|processed_records_count|Int|
-|start_time|String|
-|status|String|
-|total_records_count|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|completion_time|utf8|
+|event_type_name|utf8|
+|failed_records_count|int64|
+|failure_reason|utf8|
+|iam_role_arn|utf8|
+|input_path|utf8|
+|job_id|utf8|
+|output_path|utf8|
+|processed_records_count|int64|
+|start_time|utf8|
+|status|utf8|
+|total_records_count|int64|

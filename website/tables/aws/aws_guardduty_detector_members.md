@@ -14,17 +14,17 @@ This table depends on [aws_guardduty_detectors](aws_guardduty_detectors).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|region|String|
-|detector_arn|String|
-|account_id|String|
-|email|String|
-|master_id|String|
-|relationship_status|String|
-|updated_at|Timestamp|
-|administrator_id|String|
-|detector_id|String|
-|invited_at|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|region|utf8|
+|detector_arn|utf8|
+|account_id|utf8|
+|email|utf8|
+|master_id|utf8|
+|relationship_status|utf8|
+|updated_at|timestamp[us, tz=UTC]|
+|administrator_id|utf8|
+|detector_id|utf8|
+|invited_at|timestamp[us, tz=UTC]|

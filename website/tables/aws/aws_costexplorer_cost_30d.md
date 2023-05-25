@@ -11,14 +11,14 @@ The composite primary key for this table is (**account_id**, **start_date**, **e
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|start_date (PK)|String|
-|end_date (PK)|String|
-|estimated|Bool|
-|groups|JSON|
-|time_period|JSON|
-|total|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|start_date (PK)|utf8|
+|end_date (PK)|utf8|
+|estimated|bool|
+|groups|json|
+|time_period|json|
+|total|json|

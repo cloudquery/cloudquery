@@ -16,26 +16,26 @@ The following tables depend on aws_apprunner_services:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|auto_scaling_configuration_summary|JSON|
-|created_at|Timestamp|
-|instance_configuration|JSON|
-|network_configuration|JSON|
-|service_arn|String|
-|service_id|String|
-|service_name|String|
-|source_configuration|JSON|
-|status|String|
-|updated_at|Timestamp|
-|deleted_at|Timestamp|
-|encryption_configuration|JSON|
-|health_check_configuration|JSON|
-|observability_configuration|JSON|
-|service_url|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|auto_scaling_configuration_summary|json|
+|created_at|timestamp[us, tz=UTC]|
+|instance_configuration|json|
+|network_configuration|json|
+|service_arn|utf8|
+|service_id|utf8|
+|service_name|utf8|
+|source_configuration|json|
+|status|utf8|
+|updated_at|timestamp[us, tz=UTC]|
+|deleted_at|timestamp[us, tz=UTC]|
+|encryption_configuration|json|
+|health_check_configuration|json|
+|observability_configuration|json|
+|service_url|utf8|

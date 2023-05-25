@@ -14,24 +14,24 @@ This table depends on [aws_resiliencehub_app_assessments](aws_resiliencehub_app_
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|assessment_arn (PK)|String|
-|format|String|
-|name|String|
-|recommendation_template_arn|String|
-|recommendation_types|StringArray|
-|status|String|
-|app_arn (PK)|String|
-|end_time|Timestamp|
-|message|String|
-|needs_replacements|Bool|
-|recommendation_ids|StringArray|
-|start_time|Timestamp|
-|tags|JSON|
-|templates_location|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|assessment_arn (PK)|utf8|
+|format|utf8|
+|name|utf8|
+|recommendation_template_arn|utf8|
+|recommendation_types|list<item: utf8, nullable>|
+|status|utf8|
+|app_arn (PK)|utf8|
+|end_time|timestamp[us, tz=UTC]|
+|message|utf8|
+|needs_replacements|bool|
+|recommendation_ids|list<item: utf8, nullable>|
+|start_time|timestamp[us, tz=UTC]|
+|tags|json|
+|templates_location|json|

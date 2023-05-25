@@ -15,24 +15,24 @@ The following tables depend on aws_appstream_applications:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|app_block_arn|String|
-|created_time|Timestamp|
-|description|String|
-|display_name|String|
-|enabled|Bool|
-|icon_s3_location|JSON|
-|icon_url|String|
-|instance_families|StringArray|
-|launch_parameters|String|
-|launch_path|String|
-|metadata|JSON|
-|name|String|
-|platforms|StringArray|
-|working_directory|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|app_block_arn|utf8|
+|created_time|timestamp[us, tz=UTC]|
+|description|utf8|
+|display_name|utf8|
+|enabled|bool|
+|icon_s3_location|json|
+|icon_url|utf8|
+|instance_families|list<item: utf8, nullable>|
+|launch_parameters|utf8|
+|launch_path|utf8|
+|metadata|json|
+|name|utf8|
+|platforms|list<item: utf8, nullable>|
+|working_directory|utf8|

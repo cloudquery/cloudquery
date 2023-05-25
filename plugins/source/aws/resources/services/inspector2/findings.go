@@ -3,13 +3,14 @@ package inspector2
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Findings() *schema.Table {
@@ -23,24 +24,22 @@ The 'request_account_id' and 'request_region' columns are added to show from whe
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "inspector2"),
 		Columns: []schema.Column{
 			{
-				Name:            "request_account_id",
-				Type:            schema.TypeString,
-				Resolver:        client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
 			},
 			{
-				Name:            "request_region",
-				Type:            schema.TypeString,
-				Resolver:        client.ResolveAWSRegion,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				Name:       "request_region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSRegion,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FindingArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("FindingArn"),
+				PrimaryKey: true,
 			},
 		},
 	}

@@ -10,22 +10,22 @@ The primary key for this table is **self_link**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id|String|
-|autoscaling_policy|JSON|
-|creation_timestamp|String|
-|description|String|
-|id|Int|
-|kind|String|
-|name|String|
-|recommended_size|Int|
-|region|String|
-|scaling_schedule_status|JSON|
-|self_link (PK)|String|
-|status|String|
-|status_details|JSON|
-|target|String|
-|zone|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id|utf8|
+|autoscaling_policy|json|
+|creation_timestamp|utf8|
+|description|utf8|
+|id|int64|
+|kind|utf8|
+|name|utf8|
+|recommended_size|int64|
+|region|utf8|
+|scaling_schedule_status|json|
+|self_link (PK)|utf8|
+|status|utf8|
+|status_details|json|
+|target|utf8|
+|zone|utf8|

@@ -3,11 +3,12 @@ package resiliencehub
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func appVersionResourceMappings() *schema.Table {
@@ -21,10 +22,10 @@ func appVersionResourceMappings() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, appVersion,
 			{
-				Name:            "physical_resource_identifier",
-				Type:            schema.TypeString,
-				Resolver:        schema.PathResolver("PhysicalResourceId.Identifier"),
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				Name:       "physical_resource_identifier",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("PhysicalResourceId.Identifier"),
+				PrimaryKey: true,
 			},
 		},
 	}

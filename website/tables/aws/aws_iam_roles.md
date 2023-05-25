@@ -17,19 +17,19 @@ The following tables depend on aws_iam_roles:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|assume_role_policy_document|JSON|
-|tags|JSON|
-|arn (PK)|String|
-|create_date|Timestamp|
-|path|String|
-|role_id|String|
-|role_name|String|
-|description|String|
-|max_session_duration|Int|
-|permissions_boundary|JSON|
-|role_last_used|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|assume_role_policy_document|json|
+|tags|json|
+|arn (PK)|utf8|
+|create_date|timestamp[us, tz=UTC]|
+|path|utf8|
+|role_id|utf8|
+|role_name|utf8|
+|description|utf8|
+|max_session_duration|int64|
+|permissions_boundary|json|
+|role_last_used|json|

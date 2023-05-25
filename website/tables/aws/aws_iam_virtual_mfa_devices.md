@@ -10,14 +10,14 @@ The primary key for this table is **serial_number**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|serial_number (PK)|String|
-|tags|JSON|
-|base32_string_seed|ByteArray|
-|enable_date|Timestamp|
-|qr_code_png|ByteArray|
-|user|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|serial_number (PK)|utf8|
+|tags|json|
+|base32_string_seed|binary|
+|enable_date|timestamp[us, tz=UTC]|
+|qr_code_png|binary|
+|user|json|

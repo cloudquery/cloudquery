@@ -1,38 +1,33 @@
 package client
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func DefaultAccountIDColumn(pk bool) schema.Column {
 	return schema.Column{
-		Name:     "account_id",
-		Type:     schema.TypeString,
-		Resolver: ResolveAWSAccount,
-		CreationOptions: schema.ColumnCreationOptions{
-			PrimaryKey: pk,
-		},
+		Name:       "account_id",
+		Type:       arrow.BinaryTypes.String,
+		Resolver:   ResolveAWSAccount,
+		PrimaryKey: pk,
 	}
 }
 
 func DefaultRegionColumn(pk bool) schema.Column {
 	return schema.Column{
-		Name:     "region",
-		Type:     schema.TypeString,
-		Resolver: ResolveAWSRegion,
-		CreationOptions: schema.ColumnCreationOptions{
-			PrimaryKey: pk,
-		},
+		Name:       "region",
+		Type:       arrow.BinaryTypes.String,
+		Resolver:   ResolveAWSRegion,
+		PrimaryKey: pk,
 	}
 }
 
 func LanguageCodeColumn(pk bool) schema.Column {
 	return schema.Column{
-		Name:     "language_code",
-		Type:     schema.TypeString,
-		Resolver: ResolveLanguageCode,
-		CreationOptions: schema.ColumnCreationOptions{
-			PrimaryKey: pk,
-		},
+		Name:       "language_code",
+		Type:       arrow.BinaryTypes.String,
+		Resolver:   ResolveLanguageCode,
+		PrimaryKey: pk,
 	}
 }

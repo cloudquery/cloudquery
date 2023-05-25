@@ -10,16 +10,16 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id|String|
-|alternative_name_server_config|JSON|
-|description|String|
-|enable_inbound_forwarding|Bool|
-|enable_logging|Bool|
-|id (PK)|Int|
-|kind|String|
-|name|String|
-|networks|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id|utf8|
+|alternative_name_server_config|json|
+|description|utf8|
+|enable_inbound_forwarding|bool|
+|enable_logging|bool|
+|id (PK)|int64|
+|kind|utf8|
+|name|utf8|
+|networks|json|

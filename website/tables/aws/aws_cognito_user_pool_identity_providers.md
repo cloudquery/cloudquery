@@ -14,18 +14,18 @@ This table depends on [aws_cognito_user_pools](aws_cognito_user_pools).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|user_pool_arn|String|
-|attribute_mapping|JSON|
-|creation_date|Timestamp|
-|idp_identifiers|StringArray|
-|last_modified_date|Timestamp|
-|provider_details|JSON|
-|provider_name|String|
-|provider_type|String|
-|user_pool_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|user_pool_arn|utf8|
+|attribute_mapping|json|
+|creation_date|timestamp[us, tz=UTC]|
+|idp_identifiers|list<item: utf8, nullable>|
+|last_modified_date|timestamp[us, tz=UTC]|
+|provider_details|json|
+|provider_name|utf8|
+|provider_type|utf8|
+|user_pool_id|utf8|

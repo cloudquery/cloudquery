@@ -15,17 +15,17 @@ The following tables depend on aws_autoscaling_plans:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|application_source|JSON|
-|scaling_instructions|JSON|
-|scaling_plan_name (PK)|String|
-|scaling_plan_version|Int|
-|status_code|String|
-|creation_time|Timestamp|
-|status_message|String|
-|status_start_time|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region (PK)|utf8|
+|application_source|json|
+|scaling_instructions|json|
+|scaling_plan_name (PK)|utf8|
+|scaling_plan_version|int64|
+|status_code|utf8|
+|creation_time|timestamp[us, tz=UTC]|
+|status_message|utf8|
+|status_start_time|timestamp[us, tz=UTC]|

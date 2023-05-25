@@ -10,18 +10,18 @@ The composite primary key for this table is (**project_id**, **name**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|input_uri|String|
-|output_uri|String|
-|state|String|
-|create_time|Timestamp|
-|start_time|Timestamp|
-|end_time|Timestamp|
-|ttl_after_completion_days|Int|
-|labels|JSON|
-|error|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|name (PK)|utf8|
+|input_uri|utf8|
+|output_uri|utf8|
+|state|utf8|
+|create_time|timestamp[us, tz=UTC]|
+|start_time|timestamp[us, tz=UTC]|
+|end_time|timestamp[us, tz=UTC]|
+|ttl_after_completion_days|int64|
+|labels|json|
+|error|json|

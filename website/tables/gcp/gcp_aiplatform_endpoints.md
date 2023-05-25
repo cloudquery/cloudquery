@@ -14,22 +14,22 @@ This table depends on [gcp_aiplatform_endpoint_locations](gcp_aiplatform_endpoin
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|display_name|String|
-|description|String|
-|deployed_models|JSON|
-|traffic_split|JSON|
-|etag|String|
-|labels|JSON|
-|create_time|Timestamp|
-|update_time|Timestamp|
-|encryption_spec|JSON|
-|network|String|
-|enable_private_service_connect|Bool|
-|model_deployment_monitoring_job|String|
-|predict_request_response_logging_config|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|name (PK)|utf8|
+|display_name|utf8|
+|description|utf8|
+|deployed_models|json|
+|traffic_split|json|
+|etag|utf8|
+|labels|json|
+|create_time|timestamp[us, tz=UTC]|
+|update_time|timestamp[us, tz=UTC]|
+|encryption_spec|json|
+|network|utf8|
+|enable_private_service_connect|bool|
+|model_deployment_monitoring_job|utf8|
+|predict_request_response_logging_config|json|

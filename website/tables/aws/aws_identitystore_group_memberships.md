@@ -14,11 +14,11 @@ This table depends on [aws_identitystore_groups](aws_identitystore_groups).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|member_id|String|
-|identity_store_id|String|
-|group_id|String|
-|membership_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|member_id|utf8|
+|identity_store_id|utf8|
+|group_id|utf8|
+|membership_id|utf8|

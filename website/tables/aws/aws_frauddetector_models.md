@@ -15,16 +15,16 @@ The following tables depend on aws_frauddetector_models:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|created_time|String|
-|description|String|
-|event_type_name|String|
-|last_updated_time|String|
-|model_id|String|
-|model_type|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|created_time|utf8|
+|description|utf8|
+|event_type_name|utf8|
+|last_updated_time|utf8|
+|model_id|utf8|
+|model_type|utf8|
