@@ -2,51 +2,51 @@
 
 The Elasticsearch destination (`v2.0.0` and later) supports most [Apache Arrow](https://arrow.apache.org/docs/index.html) types. The following table shows the supported types and how they are mapped to [Elasticsearch field data types](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-types.html).
 
-| Arrow Column Type      | Supported? | Elasticsearch Type                                         |
-|------------------------|------------|------------------------------------------------------------|
-| Binary                 | ✅ Yes      | `binary`                                                   |
-| Boolean                | ✅ Yes      | `boolean`                                                  |
-| Date32                 | ✅ Yes      | `date` with format `yyyy-MM-dd`                            |
-| Date64                 | ✅ Yes      | `date` with format `yyyy-MM-dd`                            |
-| Decimal                | ✅ Yes      | `text`                                                     |
-| Dense Union            | ✅ Yes      | `text`                                                     |
-| Dictionary             | ✅ Yes      | `text`                                                     |
-| Duration[ms]           | ✅ Yes      | `text`                                                     |
-| Duration[ns]           | ✅ Yes      | `text`                                                     |
-| Duration[s]            | ✅ Yes      | `text`                                                     |
-| Duration[us]           | ✅ Yes      | `text`                                                     |
-| Fixed Size List        | ✅ Yes      | Uses type from list elements                               |
-| Float16                | ✅ Yes      | `half_float`                                               |
-| Float32                | ✅ Yes      | `float`                                                    |
-| Float64                | ✅ Yes      | `double`                                                   |
-| Inet                   | ✅ Yes      | `text`                                                     |
-| Int8                   | ✅ Yes      | `byte`                                                     |
-| Int16                  | ✅ Yes      | `short`                                                    |
-| Int32                  | ✅ Yes      | `integer`                                                  |
-| Int64                  | ✅ Yes      | `long`                                                     |
-| Interval[DayTime]      | ✅ Yes      | `object`                                                   |
-| Interval[MonthDayNano] | ✅ Yes      | `object`                                                   |
-| Interval[Month]        | ✅ Yes      | `object`                                                   |
-| JSON                   | ✅ Yes      | `text`                                                     |
-| Large Binary           | ✅ Yes      | `byte`                                                     |
-| Large List             | ✅ Yes      | Uses type from list elements                               |
-| Large String           | ✅ Yes      | `text`                                                     |
-| List                   | ✅ Yes      | Uses type from list elements                               |
-| MAC                    | ✅ Yes      | `text`                                                     |
-| Map                    | ✅ Yes      | `object` with `key` and `value` fields                                                     |
-| String                 | ✅ Yes      | `text`                                                     |
-| Struct                 | ✅ Yes      | `object`                                                   |
-| Time32[s]              | ✅ Yes      | `date` with format `HH:mm:ss`                              |
-| Time32[ms]             | ✅ Yes      | `date` with format `HH:mm:ss.SSS`                          |
-| Time64[us]             | ✅ Yes      | `text`                                                     |
-| Time64[ns]             | ✅ Yes      | `text`                                                     |
-| Timestamp[s]           | ✅ Yes      | `date` with format `strict_date_optional_time`             |
-| Timestamp[ms]          | ✅ Yes      | `date` with format `strict_date_optional_time`             |
-| Timestamp[us]          | ✅ Yes      | `date` with format `strict_date_optional_time`             |
-| Timestamp[ns]          | ✅ Yes      | `date_nanos` with format `strict_date_optional_time_nanos` |
-| UUID                   | ✅ Yes      | `text`                                                     |
-| Uint8                  | ✅ Yes      | `unsigned_long`                                            |
-| Uint16                 | ✅ Yes      | `unsigned_long`                                            |
-| Uint32                 | ✅ Yes      | `unsigned_long`                                            |
-| Uint64                 | ✅ Yes      | `unsigned_long`                                            |
-| Union                  | ✅ Yes      | `text`                                                     |
+| Arrow Column Type      | Supported? | Elasticsearch Type                                       |
+|------------------------|------------|----------------------------------------------------------|
+| Binary                 | ✅ Yes      | `binary`                                                 |
+| Boolean                | ✅ Yes      | `boolean`                                                |
+| Date32                 | ✅ Yes      | `date` with format `yyyy-MM-dd`                          |
+| Date64                 | ✅ Yes      | `date` with format `yyyy-MM-dd`                          |
+| Decimal                | ✅ Yes      | `text`                                                   |
+| Dense Union            | ✅ Yes      | `text`                                                   |
+| Dictionary             | ✅ Yes      | `text`                                                   |
+| Duration[ms]           | ✅ Yes      | `text`                                                   |
+| Duration[ns]           | ✅ Yes      | `text`                                                   |
+| Duration[s]            | ✅ Yes      | `text`                                                   |
+| Duration[us]           | ✅ Yes      | `text`                                                   |
+| Fixed Size List        | ✅ Yes      | Uses type from list elements                             |
+| Float16                | ✅ Yes      | `half_float`                                             |
+| Float32                | ✅ Yes      | `float`                                                  |
+| Float64                | ✅ Yes      | `double`                                                 |
+| Inet                   | ✅ Yes      | `text`                                                   |
+| Int8                   | ✅ Yes      | `byte`                                                   |
+| Int16                  | ✅ Yes      | `short`                                                  |
+| Int32                  | ✅ Yes      | `integer`                                                |
+| Int64                  | ✅ Yes      | `long`                                                   |
+| Interval[DayTime]      | ✅ Yes      | `object`                                                 |
+| Interval[MonthDayNano] | ✅ Yes      | `object`                                                 |
+| Interval[Month]        | ✅ Yes      | `object`                                                 |
+| JSON                   | ✅ Yes      | `text`                                                   |
+| Large Binary           | ✅ Yes      | `byte`                                                   |
+| Large List             | ✅ Yes      | Uses type from list elements                             |
+| Large String           | ✅ Yes      | `text`                                                   |
+| List                   | ✅ Yes      | Uses type from list elements                             |
+| MAC                    | ✅ Yes      | `text`                                                   |
+| Map                    | ✅ Yes      | `object` with `key` and `value` fields                   |
+| String                 | ✅ Yes      | `text`                                                   |
+| Struct                 | ✅ Yes      | `object`                                                 |
+| Time32[s]              | ✅ Yes      | `date` with format `HH:mm:ss`                            |
+| Time32[ms]             | ✅ Yes      | `date` with format `HH:mm:ss.SSS`                        |
+| Time64[us]             | ✅ Yes      | `text`                                                   |
+| Time64[ns]             | ✅ Yes      | `text`                                                   |
+| Timestamp[s]           | ✅ Yes      | `date` with format `2006-01-02T15:04:05Z`                |
+| Timestamp[ms]          | ✅ Yes      | `date` with format `2006-01-02T15:04:05.999Z`            |
+| Timestamp[us]          | ✅ Yes      | `date` with format `2006-01-02T15:04:05.999999Z"`        |
+| Timestamp[ns]          | ✅ Yes      | `date_nanos` with format `2006-01-02T15:04:05.99999999Z` |
+| UUID                   | ✅ Yes      | `text`                                                   |
+| Uint8                  | ✅ Yes      | `unsigned_long`                                          |
+| Uint16                 | ✅ Yes      | `unsigned_long`                                          |
+| Uint32                 | ✅ Yes      | `unsigned_long`                                          |
+| Uint64                 | ✅ Yes      | `unsigned_long`                                          |
+| Union                  | ✅ Yes      | `text`                                                   |
