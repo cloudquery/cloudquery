@@ -158,5 +158,7 @@ func testPlugin(t *testing.T, spec *Spec) {
 			MigrateStrategyOverwrite: migrateStrategy,
 			MigrateStrategyAppend:    migrateStrategy,
 		},
+		destination.WithTestSourceSkipDates(),
+		destination.WithTestSourceSkipTimes(),
 	)
 }
