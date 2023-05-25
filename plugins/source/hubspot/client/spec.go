@@ -8,7 +8,8 @@ type Spec struct {
 type TableOptions map[string]*TableOptionsSpec
 
 type TableOptionsSpec struct {
-	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty"`
+	Properties   []string `yaml:"properties,omitempty" json:"properties,omitempty"`
+	Associations []string `yaml:"associations,omitempty" json:"associations,omitempty"`
 }
 
 func (spec *Spec) setDefaults() {
@@ -34,4 +35,11 @@ func (to *TableOptionsSpec) GetProperties() []string {
 		return nil
 	}
 	return to.Properties
+}
+
+func (to *TableOptionsSpec) GetAssociations() []string {
+	if to == nil {
+		return nil
+	}
+	return to.Associations
 }
