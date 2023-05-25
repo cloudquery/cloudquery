@@ -33,7 +33,7 @@ Null values (in nested types) are represented as `(null)`
 | Extension Type | Underlying Arrow Type | String Representation | Example                                |
 |----------------|-----------------------|-----------------------|----------------------------------------|
 | UUID           | FixedSizeBinary(16)   | Formatted UUID        | "123e4567-e89b-12d3-a456-426614174000" |
-| MACAddress     | Binary                | Formatted MAC Address | "01:23:45:67:89:ab"                    |
+| MAC Address    | Binary                | Formatted MAC Address | "01:23:45:67:89:ab"                    |
 | Inet           | String                | As is                 | "192.168.1.0/24"                       | 
 | JSON           | String                | As is                 | `{"key": "value"}`                     |
 
