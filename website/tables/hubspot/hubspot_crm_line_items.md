@@ -20,3 +20,4 @@ The primary key for this table is **id**.
 |updated_at|Timestamp|
 |archived|Bool|
 |archived_at|Timestamp|
+|associations|JSON|
