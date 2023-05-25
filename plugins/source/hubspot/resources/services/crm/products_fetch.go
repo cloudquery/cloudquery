@@ -22,6 +22,7 @@ func fetchProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		req := hubspotClient.BasicApi.
 			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
 			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_products").GetProperties()).
+			Associations(cqClient.Spec.TableOptions.ForTable("hubspot_crm_products").GetAssociations()).
 			Limit(client.DefaultPageSize)
 
 		if len(after) > 0 {
