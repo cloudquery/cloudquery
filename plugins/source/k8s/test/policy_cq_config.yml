@@ -5,6 +5,7 @@ spec:
   destinations: [postgresql]
   path: ./k8s
   registry: local
+  tables: ["*"]
 ---
 kind: destination
 spec:
