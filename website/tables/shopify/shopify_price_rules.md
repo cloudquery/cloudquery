@@ -19,17 +19,17 @@ The following tables depend on shopify_price_rules:
 |_cq_parent_id|uuid|
 |id (PK)|int64|
 |updated_at (Incremental Key)|timestamp[us, tz=UTC]|
-|value_type|extension_type<storage=binary>|
-|value|extension_type<storage=binary>|
-|customer_selection|extension_type<storage=binary>|
-|target_type|extension_type<storage=binary>|
-|target_selection|extension_type<storage=binary>|
-|allocation_method|extension_type<storage=binary>|
-|once_per_customer|extension_type<storage=binary>|
-|usage_limit|extension_type<storage=binary>|
-|starts_at|extension_type<storage=binary>|
-|ends_at|extension_type<storage=binary>|
-|created_at|extension_type<storage=binary>|
+|value_type|utf8|
+|value|utf8|
+|customer_selection|utf8|
+|target_type|utf8|
+|target_selection|utf8|
+|allocation_method|utf8|
+|once_per_customer|bool|
+|usage_limit|int64|
+|starts_at|timestamp[us, tz=UTC]|
+|ends_at|timestamp[us, tz=UTC]|
+|created_at|timestamp[us, tz=UTC]|
 |entitled_product_ids|extension_type<storage=binary>|
 |entitled_variant_ids|extension_type<storage=binary>|
 |entitled_collection_ids|extension_type<storage=binary>|
@@ -41,5 +41,5 @@ The following tables depend on shopify_price_rules:
 |prerequisite_customer_ids|extension_type<storage=binary>|
 |prerequisite_to_entitlement_quantity_ratio|extension_type<storage=binary>|
 |prerequisite_to_entitlement_purchase|extension_type<storage=binary>|
-|title|extension_type<storage=binary>|
-|admin_graphql_api_id|extension_type<storage=binary>|
+|title|utf8|
+|admin_graphql_api_id|utf8|

@@ -18,12 +18,12 @@ This table depends on [shopify_products](shopify_products).
 |_cq_parent_id|uuid|
 |product_id (PK)|int64|
 |id (PK)|int64|
-|position|extension_type<storage=binary>|
-|created_at|extension_type<storage=binary>|
-|updated_at|extension_type<storage=binary>|
-|alt|extension_type<storage=binary>|
-|width|extension_type<storage=binary>|
-|height|extension_type<storage=binary>|
-|src|extension_type<storage=binary>|
+|position|int64|
+|created_at|timestamp[us, tz=UTC]|
+|updated_at|timestamp[us, tz=UTC]|
+|alt|utf8|
+|width|int64|
+|height|int64|
+|src|utf8|
 |variant_ids|extension_type<storage=binary>|
-|admin_graphql_api_id|extension_type<storage=binary>|
+|admin_graphql_api_id|utf8|

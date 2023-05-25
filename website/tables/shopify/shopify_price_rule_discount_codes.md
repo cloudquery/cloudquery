@@ -18,7 +18,7 @@ This table depends on [shopify_price_rules](shopify_price_rules).
 |_cq_parent_id|uuid|
 |id (PK)|int64|
 |price_rule_id (PK)|int64|
-|code|extension_type<storage=binary>|
-|usage_count|extension_type<storage=binary>|
-|created_at|extension_type<storage=binary>|
-|updated_at|extension_type<storage=binary>|
+|code|utf8|
+|usage_count|int64|
+|created_at|timestamp[us, tz=UTC]|
+|updated_at|timestamp[us, tz=UTC]|

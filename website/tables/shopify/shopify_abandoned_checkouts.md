@@ -15,34 +15,34 @@ It supports incremental syncs based on the **updated_at** column.
 |_cq_parent_id|uuid|
 |id (PK)|int64|
 |updated_at (Incremental Key)|timestamp[us, tz=UTC]|
-|token|extension_type<storage=binary>|
-|cart_token|extension_type<storage=binary>|
-|email|extension_type<storage=binary>|
-|gateway|extension_type<storage=binary>|
-|buyer_accepts_marketing|extension_type<storage=binary>|
-|created_at|extension_type<storage=binary>|
-|landing_site|extension_type<storage=binary>|
+|token|utf8|
+|cart_token|utf8|
+|email|utf8|
+|gateway|utf8|
+|buyer_accepts_marketing|bool|
+|created_at|timestamp[us, tz=UTC]|
+|landing_site|utf8|
 |note_attributes|extension_type<storage=binary>|
-|referring_site|extension_type<storage=binary>|
+|referring_site|utf8|
 |shipping_lines|extension_type<storage=binary>|
-|taxes_included|extension_type<storage=binary>|
-|total_weight|extension_type<storage=binary>|
-|currency|extension_type<storage=binary>|
-|completed_at|extension_type<storage=binary>|
-|closed_at|extension_type<storage=binary>|
-|user_id|extension_type<storage=binary>|
-|customer_locale|extension_type<storage=binary>|
+|taxes_included|bool|
+|total_weight|int64|
+|currency|utf8|
+|completed_at|timestamp[us, tz=UTC]|
+|closed_at|timestamp[us, tz=UTC]|
+|user_id|int64|
+|customer_locale|utf8|
 |line_items|extension_type<storage=binary>|
-|name|extension_type<storage=binary>|
-|abandoned_checkout_url|extension_type<storage=binary>|
+|name|utf8|
+|abandoned_checkout_url|utf8|
 |discount_codes|extension_type<storage=binary>|
 |tax_lines|extension_type<storage=binary>|
-|source_name|extension_type<storage=binary>|
-|presentment_currency|extension_type<storage=binary>|
-|buyer_accepts_sms_marketing|extension_type<storage=binary>|
-|total_discounts|extension_type<storage=binary>|
-|total_line_items_price|extension_type<storage=binary>|
-|total_price|extension_type<storage=binary>|
-|total_tax|extension_type<storage=binary>|
-|subtotal_price|extension_type<storage=binary>|
+|source_name|utf8|
+|presentment_currency|utf8|
+|buyer_accepts_sms_marketing|bool|
+|total_discounts|utf8|
+|total_line_items_price|utf8|
+|total_price|utf8|
+|total_tax|utf8|
+|subtotal_price|utf8|
 |customer|extension_type<storage=binary>|

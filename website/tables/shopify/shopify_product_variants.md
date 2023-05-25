@@ -18,23 +18,23 @@ This table depends on [shopify_products](shopify_products).
 |_cq_parent_id|uuid|
 |product_id (PK)|int64|
 |id (PK)|int64|
-|title|extension_type<storage=binary>|
-|price|extension_type<storage=binary>|
-|sku|extension_type<storage=binary>|
-|position|extension_type<storage=binary>|
-|inventory_policy|extension_type<storage=binary>|
-|compare_at_price|extension_type<storage=binary>|
-|fulfillment_service|extension_type<storage=binary>|
-|inventory_management|extension_type<storage=binary>|
-|created_at|extension_type<storage=binary>|
-|updated_at|extension_type<storage=binary>|
-|taxable|extension_type<storage=binary>|
-|barcode|extension_type<storage=binary>|
-|grams|extension_type<storage=binary>|
-|weight|extension_type<storage=binary>|
-|weight_unit|extension_type<storage=binary>|
-|inventory_item_id|extension_type<storage=binary>|
-|inventory_quantity|extension_type<storage=binary>|
-|old_inventory_quantity|extension_type<storage=binary>|
-|requires_shipping|extension_type<storage=binary>|
-|admin_graphql_api_id|extension_type<storage=binary>|
+|title|utf8|
+|price|utf8|
+|sku|utf8|
+|position|int64|
+|inventory_policy|utf8|
+|compare_at_price|utf8|
+|fulfillment_service|utf8|
+|inventory_management|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|updated_at|timestamp[us, tz=UTC]|
+|taxable|bool|
+|barcode|utf8|
+|grams|int64|
+|weight|float64|
+|weight_unit|utf8|
+|inventory_item_id|int64|
+|inventory_quantity|int64|
+|old_inventory_quantity|int64|
+|requires_shipping|bool|
+|admin_graphql_api_id|utf8|

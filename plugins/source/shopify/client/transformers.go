@@ -11,7 +11,7 @@ import (
 
 func typeTransformer(field reflect.StructField) (arrow.DataType, error) {
 	switch reflect.New(field.Type).Elem().Interface().(type) {
-	case any:
+	case []any:
 		return types.ExtensionTypes.JSON, nil
 	default:
 		return nil, nil

@@ -15,24 +15,24 @@ It supports incremental syncs based on the **updated_at** column.
 |_cq_parent_id|uuid|
 |id (PK)|int64|
 |updated_at (Incremental Key)|timestamp[us, tz=UTC]|
-|email|extension_type<storage=binary>|
-|accepts_marketing|extension_type<storage=binary>|
-|created_at|extension_type<storage=binary>|
-|first_name|extension_type<storage=binary>|
-|last_name|extension_type<storage=binary>|
-|orders_count|extension_type<storage=binary>|
-|state|extension_type<storage=binary>|
-|total_spent|extension_type<storage=binary>|
-|last_order_id|extension_type<storage=binary>|
-|verified_email|extension_type<storage=binary>|
-|tax_exempt|extension_type<storage=binary>|
-|tags|extension_type<storage=binary>|
-|last_order_name|extension_type<storage=binary>|
-|currency|extension_type<storage=binary>|
+|email|utf8|
+|accepts_marketing|bool|
+|created_at|timestamp[us, tz=UTC]|
+|first_name|utf8|
+|last_name|utf8|
+|orders_count|int64|
+|state|utf8|
+|total_spent|utf8|
+|last_order_id|int64|
+|verified_email|bool|
+|tax_exempt|bool|
+|tags|utf8|
+|last_order_name|utf8|
+|currency|utf8|
 |addresses|extension_type<storage=binary>|
-|accepts_marketing_updated_at|extension_type<storage=binary>|
-|marketing_opt_in_level|extension_type<storage=binary>|
+|accepts_marketing_updated_at|timestamp[us, tz=UTC]|
+|marketing_opt_in_level|utf8|
 |tax_exemptions|extension_type<storage=binary>|
 |email_marketing_consent|extension_type<storage=binary>|
-|admin_graphql_api_id|extension_type<storage=binary>|
+|admin_graphql_api_id|utf8|
 |default_address|extension_type<storage=binary>|

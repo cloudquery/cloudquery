@@ -20,16 +20,16 @@ The following tables depend on shopify_products:
 |_cq_parent_id|uuid|
 |id (PK)|int64|
 |updated_at (Incremental Key)|timestamp[us, tz=UTC]|
-|title|extension_type<storage=binary>|
-|body_html|extension_type<storage=binary>|
-|vendor|extension_type<storage=binary>|
-|product_type|extension_type<storage=binary>|
-|created_at|extension_type<storage=binary>|
-|handle|extension_type<storage=binary>|
-|published_at|extension_type<storage=binary>|
-|template_suffix|extension_type<storage=binary>|
-|status|extension_type<storage=binary>|
-|published_scope|extension_type<storage=binary>|
-|tags|extension_type<storage=binary>|
+|title|utf8|
+|body_html|utf8|
+|vendor|utf8|
+|product_type|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|handle|utf8|
+|published_at|timestamp[us, tz=UTC]|
+|template_suffix|utf8|
+|status|utf8|
+|published_scope|utf8|
+|tags|list<item: utf8, nullable>|
 |image|extension_type<storage=binary>|
-|admin_graphql_api_id|extension_type<storage=binary>|
+|admin_graphql_api_id|utf8|
