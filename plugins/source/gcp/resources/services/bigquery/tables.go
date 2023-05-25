@@ -21,9 +21,7 @@ func Tables() *schema.Table {
 				Name:     "project_id",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey: true,
 			},
 		},
 	}

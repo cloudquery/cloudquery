@@ -20,9 +20,7 @@ func Folders() *schema.Table {
 				Name:     "organization_id",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveOrganization,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey: true,
 			},
 		},
 	}

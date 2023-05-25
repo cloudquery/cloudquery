@@ -20,17 +20,13 @@ func Tables() *schema.Table {
 				Name:     "project_id",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey: true,
 			},
 			{
 				Name:     "instance_name",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey: true,
 			},
 		},
 	}

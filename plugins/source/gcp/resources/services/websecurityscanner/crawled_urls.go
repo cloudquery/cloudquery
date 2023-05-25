@@ -19,33 +19,25 @@ func CrawledUrls() *schema.Table {
 				Name:     "project_id",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey: true,
 			},
 			{
 				Name:     "scan_run_name",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey: true,
 			},
 			{
 				Name:     "http_method",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("HttpMethod"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey: true,
 			},
 			{
 				Name:     "url",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("Url"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey: true,
 			},
 		},
 	}

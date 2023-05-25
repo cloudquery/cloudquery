@@ -22,17 +22,13 @@ func ProjectFindings() *schema.Table {
 				Name:     "project_id",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey: true,
 			},
 			{
 				Name:     "name",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("Finding.Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey: true,
 			},
 		},
 	}

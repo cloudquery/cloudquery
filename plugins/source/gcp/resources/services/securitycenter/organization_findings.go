@@ -22,17 +22,13 @@ func OrganizationFindings() *schema.Table {
 				Name:     "organization_id",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveOrganization,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey: true,
 			},
 			{
 				Name:     "name",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("Finding.Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey: true,
 			},
 		},
 	}

@@ -32,9 +32,7 @@ func ServiceAccounts() *schema.Table {
 				Name:     "unique_id",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("UniqueId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey: true,
 			},
 		},
 		Relations: []*schema.Table{
