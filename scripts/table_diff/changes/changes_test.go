@@ -366,6 +366,11 @@ func Test_getChanges(t *testing.T) {
 			diffDataFile: "testdata/pr_10831_diff.txt",
 			wantChanges:  []change{},
 		},
+		{
+			name:         "Should handle CQTypes -> Apache Arrow column changes with lists, too",
+			diffDataFile: "testdata/pr_10797_diff.txt",
+			wantChanges:  []change{},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
